@@ -414,13 +414,13 @@ export default function MasumiPage() {
           <div className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12">
             <div className="flex flex-col items-center gap-6 py-8">
               <p className="text-[13px] text-[#999] tracking-wide uppercase">Built by</p>
-              <div className="flex flex-wrap items-center justify-center gap-8 md:gap-12">
+              <div className="flex items-center justify-center gap-6">
                 <a href="https://www.nmkr.io" target="_blank" rel="noopener noreferrer" className="hover:opacity-70 transition-opacity">
-                  <img src="/images/nmkr-logo.svg" alt="NMKR" className="h-[20px] w-auto" />
+                  <img src="/images/nmkr-logo.svg" alt="NMKR" className="h-[18px] w-auto" />
                 </a>
-                <span className="text-[20px] text-[#ddd] font-light">&amp;</span>
+                <span className="text-[18px] text-[#ddd] font-light">&amp;</span>
                 <a href="https://www.serviceplan.com" target="_blank" rel="noopener noreferrer" className="hover:opacity-70 transition-opacity">
-                  <img src="/images/serviceplan-group.svg" alt="Serviceplan Group" className="h-[24px] w-auto" />
+                  <img src="/images/serviceplan-group.svg" alt="Serviceplan Group" className="h-[22px] max-w-[200px] object-contain" />
                 </a>
               </div>
             </div>
