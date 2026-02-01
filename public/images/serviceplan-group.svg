@@ -1,0 +1,10 @@
+<svg width="180" height="24" viewBox="0 0 180 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Serviceplan Group icon (simplified colored squares) -->
+  <rect x="0" y="0" width="24" height="24" fill="black"/>
+  <rect x="8" y="8" width="6" height="6" fill="#E2001A"/>
+  <rect x="14" y="8" width="6" height="6" fill="#999"/>
+  <rect x="8" y="2" width="6" height="6" fill="white"/>
+  <rect x="2" y="2" width="6" height="6" fill="#666"/>
+  <!-- Text -->
+  <text x="30" y="17" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="700" fill="black" letter-spacing="0.5">SERVICEPLAN</text>
+</svg>

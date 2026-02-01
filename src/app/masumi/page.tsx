@@ -107,6 +107,14 @@ const features = [
     title: "Secure transactions between agents",
     description:
       "Masumi provides smart wallets and contracts that enable fair, secure service exchanges between AI agents. Built on Cardano for low fees and high throughput.",
+    badge: (
+      <div className="flex items-center gap-2 mt-6 bg-[#f9f9f9] border border-black/[0.04] rounded-full px-4 py-2 w-fit">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2cb67d" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2L4 6v5c0 5.5 3.4 10.7 8 12 4.6-1.3 8-6.5 8-12V6l-8-4z"/><path d="M9 12l2 2 4-4"/></svg>
+        <span className="text-[13px] text-[#666]">Audited by</span>
+        <img src="/images/txpipe.svg" alt="TxPipe" className="h-[16px] w-auto" />
+        <span className="text-[13px] font-medium text-black">TxPipe</span>
+      </div>
+    ),
     visual: (
       <div className="bg-[#f9f9f9] rounded-xl p-5 h-full flex items-center justify-center">
         <div className="flex flex-col gap-4 w-full max-w-[340px]">
@@ -183,13 +191,6 @@ const features = [
             </div>
           </div>
 
-          {/* Audit badge */}
-          <div className="flex items-center justify-center gap-2 bg-white border border-black/5 rounded-lg px-3 py-2.5 w-full mt-1">
-            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#2cb67d" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2L4 6v5c0 5.5 3.4 10.7 8 12 4.6-1.3 8-6.5 8-12V6l-8-4z"/><path d="M9 12l2 2 4-4"/></svg>
-            <span className="text-[10px] text-[#666]">Smart contract audited by</span>
-            <img src="/images/txpipe.svg" alt="TxPipe" className="h-[14px] w-auto" />
-            <span className="text-[10px] font-medium text-black">TxPipe</span>
-          </div>
         </div>
       </div>
     ),
@@ -280,12 +281,6 @@ const frameworks = [
   { name: "LangChain", color: "#2cb67d" },
 ];
 
-const partners = [
-  "NMKR",
-  "Serviceplan",
-  "Cardano Foundation",
-  "House of Communication",
-];
 
 export default function MasumiPage() {
   return (
@@ -378,6 +373,7 @@ export default function MasumiPage() {
                       <p className="mt-4 text-[18px] text-black leading-[1.31] max-w-[450px]">
                         {feature.description}
                       </p>
+                      {feature.badge && feature.badge}
                     </div>
                     <div className="flex-1 min-h-[300px] lg:min-h-[400px] p-2">
                       {feature.visual}
@@ -413,15 +409,38 @@ export default function MasumiPage() {
           </div>
         </section>
 
-        {/* Partners */}
+        {/* Built by */}
         <section className="pt-24">
           <div className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12">
             <div className="flex flex-col items-center gap-6 py-8">
-              <p className="text-[13px] text-[#999] tracking-wide uppercase">Supported by</p>
-              <div className="flex flex-wrap items-center justify-center gap-10 md:gap-16">
-                {partners.map((name) => (
-                  <span key={name} className="text-[16px] font-medium text-[#c0c0c0] tracking-tight">{name}</span>
-                ))}
+              <p className="text-[13px] text-[#999] tracking-wide uppercase">Built by</p>
+              <div className="flex flex-wrap items-center justify-center gap-8 md:gap-12">
+                <a href="https://www.nmkr.io" target="_blank" rel="noopener noreferrer" className="hover:opacity-70 transition-opacity">
+                  <img src="/images/nmkr-logo.svg" alt="NMKR" className="h-[20px] w-auto" />
+                </a>
+                <span className="text-[20px] text-[#ddd] font-light">&amp;</span>
+                <a href="https://www.serviceplan.com" target="_blank" rel="noopener noreferrer" className="hover:opacity-70 transition-opacity">
+                  <img src="/images/serviceplan-group.svg" alt="Serviceplan Group" className="h-[24px] w-auto" />
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Catalyst Grant */}
+        <section className="pt-12">
+          <div className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12">
+            <div className="flex items-center justify-center">
+              <div className="flex items-center gap-3 bg-[#f9f9f9] border border-black/[0.04] rounded-full px-6 py-3">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6366f1" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 2L2 7l10 5 10-5-10-5z" />
+                  <path d="M2 17l10 5 10-5" />
+                  <path d="M2 12l10 5 10-5" />
+                </svg>
+                <span className="text-[14px] text-[#666]">Grant recipient from</span>
+                <span className="text-[14px] font-medium text-black">Cardano Project Catalyst</span>
+                <span className="text-[13px] text-[#999]">—</span>
+                <span className="text-[14px] font-medium text-black">over $2,000,000 in funding</span>
               </div>
             </div>
           </div>
