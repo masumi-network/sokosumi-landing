@@ -5,33 +5,30 @@ export default function CTA() {
   return (
     <section className="pt-24 pb-0">
       <div className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12">
-        <div className="bg-black rounded-xl p-12 md:p-16 lg:p-20 relative overflow-hidden">
-          {/* Decorative elements */}
-          <div className="absolute top-[-60px] right-[-60px] w-[200px] h-[200px] rounded-full border border-white/[0.06]" />
-          <div className="absolute bottom-[-40px] left-[-40px] w-[160px] h-[160px] rounded-full border border-white/[0.04]" />
-
+        <div className="bg-black p-12 md:p-16 lg:p-24 relative overflow-hidden">
           <FadeIn>
-            <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
-              <div>
-                <h2 className="text-[28px] md:text-[40px] font-normal tracking-[-0.4px] leading-[1.2] text-white max-w-[500px]">
-                  Your marketing team, amplified.
-                </h2>
-                <p className="mt-4 text-[18px] text-[#797979] max-w-[400px] leading-[1.4]">
-                  Start working with AI agents that actually deliver. Early access available now.
-                </p>
-              </div>
-              <div className="flex items-center gap-4">
+            <div className="relative z-10 flex flex-col items-center text-center">
+              <p className="text-[14px] text-white/40 uppercase tracking-[0.15em] mb-6">
+                Early access is open
+              </p>
+              <h2 className="text-[32px] md:text-[56px] font-normal tracking-[-0.8px] leading-[1.1] text-white max-w-[700px]">
+                Your team, amplified.
+              </h2>
+              <p className="mt-6 text-[16px] md:text-[20px] text-white/40 max-w-[460px] leading-[1.4]">
+                Give your team AI coworkers that research, plan, write, and optimize — so you can focus on strategy.
+              </p>
+              <div className="mt-10 flex items-center gap-4">
                 <Link
-                  href="/get-started"
-                  className="bg-white text-black text-[14px] md:text-[16px] font-normal px-7 py-3 rounded-full hover:bg-white/90 transition-colors flex-shrink-0"
+                  href="https://app.sokosumi.com"
+                  className="bg-white text-black text-[16px] font-normal px-8 py-3.5 rounded-full hover:bg-white/90 transition-colors"
                 >
                   Get started
                 </Link>
                 <Link
-                  href="/product"
-                  className="text-white/70 text-[14px] md:text-[16px] font-normal px-4 py-3 hover:text-white transition-colors flex-shrink-0"
+                  href="https://app.sokosumi.com/auth/google"
+                  className="border border-white/20 text-white text-[16px] font-normal px-8 py-3.5 rounded-full hover:border-white/40 transition-colors"
                 >
-                  Learn more
+                  Book a demo
                 </Link>
               </div>
             </div>

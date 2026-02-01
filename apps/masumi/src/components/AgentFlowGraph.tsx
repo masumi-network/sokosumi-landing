@@ -39,7 +39,7 @@ function AgentNode({ data }: NodeProps) {
       <Handle type="target" position={Position.Top} className="!bg-transparent !border-0 !w-3 !h-3" />
       <div
         onClick={() => openModal(d)}
-        className={`bg-white rounded-xl border shadow-md px-4 py-3 min-w-[150px] max-w-[180px] cursor-pointer transition-all hover:shadow-lg hover:border-black/15 ${d.isRoot ? "border-black/20 shadow-lg" : "border-black/5"}`}
+        className={`bg-[#1a1a1a] border px-4 py-3 min-w-[150px] max-w-[180px] cursor-pointer transition-all hover:border-white/60 ${d.isRoot ? "border-white/50" : "border-white/30"}`}
       >
         <div className="flex items-center gap-2.5 mb-1.5">
           {d.avatar ? (
@@ -54,7 +54,7 @@ function AgentNode({ data }: NodeProps) {
           )}
           <div className="min-w-0">
             <div className="flex items-center gap-1">
-              <p className="text-[11px] font-medium text-black leading-tight truncate">{d.label}</p>
+              <p className="text-[11px] font-medium text-white leading-tight truncate">{d.label}</p>
               {d.verified && (
                 <div
                   className="relative flex-shrink-0"
@@ -67,7 +67,7 @@ function AgentNode({ data }: NodeProps) {
                     <path d="M9 12l2 2 4-4" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none" />
                   </svg>
                   {showTooltip && (
-                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 px-2.5 py-1.5 bg-black text-white text-[9px] rounded-md whitespace-nowrap z-50 shadow-lg">
+                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 px-2.5 py-1.5 bg-black text-white text-[9px] whitespace-nowrap z-50">
                       Identity Verified on Masumi
                       <div className="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-l-[4px] border-r-[4px] border-t-[4px] border-l-transparent border-r-transparent border-t-black" />
                     </div>
@@ -75,12 +75,12 @@ function AgentNode({ data }: NodeProps) {
                 </div>
               )}
             </div>
-            <p className="text-[9px] text-[#999] truncate">{d.role}</p>
+            <p className="text-[9px] text-white/65 truncate">{d.role}</p>
           </div>
         </div>
         {d.amount && (
-          <div className="flex items-center justify-between mt-1.5 pt-1.5 border-t border-black/5">
-            <span className="text-[9px] text-[#999]">Payment</span>
+          <div className="flex items-center justify-between mt-1.5 pt-1.5 border-t border-white/25">
+            <span className="text-[9px] text-white/55">Payment</span>
             <span className="text-[11px] font-medium text-[#FA008C]">{d.amount}</span>
           </div>
         )}
@@ -92,9 +92,9 @@ function AgentNode({ data }: NodeProps) {
 
 function AgentModal({ agent, onClose }: { agent: AgentData; onClose: () => void }) {
   return (
-    <div className="absolute inset-0 z-30 flex items-center justify-center bg-black/20 backdrop-blur-[2px]" onClick={onClose}>
+    <div className="absolute inset-0 z-30 flex items-center justify-center bg-black/40 backdrop-blur-[2px] p-4" onClick={onClose}>
       <div
-        className="bg-white rounded-2xl border border-black/10 shadow-2xl w-[340px] p-6 animate-in fade-in zoom-in-95"
+        className="bg-[#1a1a1a] border border-white/30 w-full max-w-[340px] p-6 animate-in fade-in zoom-in-95"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-start justify-between mb-4">
@@ -111,7 +111,7 @@ function AgentModal({ agent, onClose }: { agent: AgentData; onClose: () => void 
             )}
             <div>
               <div className="flex items-center gap-1.5">
-                <h3 className="text-[15px] font-medium text-black">{agent.label}</h3>
+                <h3 className="text-[15px] font-medium text-white">{agent.label}</h3>
                 {agent.verified && (
                   <svg width="14" height="14" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <circle cx="12" cy="12" r="10" fill="#FA008C" />
@@ -119,41 +119,41 @@ function AgentModal({ agent, onClose }: { agent: AgentData; onClose: () => void 
                   </svg>
                 )}
               </div>
-              <p className="text-[12px] text-[#999]">{agent.role}</p>
+              <p className="text-[12px] text-white/65">{agent.role}</p>
             </div>
           </div>
-          <button onClick={onClose} className="text-[#999] hover:text-black transition-colors p-1 -mr-1 -mt-1">
+          <button onClick={onClose} className="text-white/40 hover:text-white transition-colors p-1 -mr-1 -mt-1">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
               <path d="M4 4l8 8M12 4l-8 8" />
             </svg>
           </button>
         </div>
 
-        <p className="text-[13px] text-[#666] leading-[1.5] mb-4">
+        <p className="text-[13px] text-white/70 leading-[1.5] mb-4">
           {agent.description}
         </p>
 
         {agent.capabilities && agent.capabilities.length > 0 && (
           <div className="mb-4">
-            <p className="text-[11px] text-[#999] uppercase tracking-wide mb-2">Capabilities</p>
+            <p className="text-[11px] text-white/55 uppercase tracking-wide mb-2">Capabilities</p>
             <div className="flex flex-wrap gap-1.5">
               {agent.capabilities.map((cap) => (
-                <span key={cap} className="text-[11px] text-[#666] bg-[#f4f4f4] px-2.5 py-1 rounded-full">{cap}</span>
+                <span key={cap} className="text-[11px] text-white/70 bg-white/[0.08] px-2.5 py-1 rounded-full">{cap}</span>
               ))}
             </div>
           </div>
         )}
 
         {agent.amount && (
-          <div className="flex items-center justify-between py-3 border-t border-black/5 mb-4">
-            <span className="text-[12px] text-[#999]">Cost per task</span>
+          <div className="flex items-center justify-between py-3 border-t border-white/25 mb-4">
+            <span className="text-[12px] text-white/55">Cost per task</span>
             <span className="text-[14px] font-medium text-[#FA008C]">{agent.amount}</span>
           </div>
         )}
 
         <a
-          href="http://localhost:3000"
-          className="flex items-center justify-center gap-2 bg-black text-white text-[13px] font-medium rounded-full px-5 py-2.5 hover:bg-black/85 transition-colors w-full"
+          href="https://sokosumi.com"
+          className="flex items-center justify-center gap-2 bg-white text-black text-[13px] font-medium rounded-full px-5 py-2.5 hover:bg-white/90 transition-colors w-full"
         >
           Hire Agent on Sokosumi
           <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
@@ -333,7 +333,7 @@ const initialNodes: Node[] = [
 ];
 
 const greenEdge = { stroke: "#FA008C", strokeWidth: 2 };
-const grayEdge = { stroke: "#d0d0d0", strokeWidth: 1.5 };
+const grayEdge = { stroke: "#444", strokeWidth: 1.5 };
 
 const initialEdges: Edge[] = [
   // Hannah -> Coworkers
@@ -342,15 +342,15 @@ const initialEdges: Edge[] = [
   { id: "e-hannah-sofia", source: "hannah", target: "sofia", style: greenEdge, animated: true, markerEnd: { type: MarkerType.ArrowClosed, color: "#FA008C", width: 14, height: 14 } },
   { id: "e-hannah-kai", source: "hannah", target: "kai", style: greenEdge, animated: true, markerEnd: { type: MarkerType.ArrowClosed, color: "#FA008C", width: 14, height: 14 } },
   // Lena -> Research agents
-  { id: "e-lena-gwi", source: "lena", target: "gwi", style: grayEdge, animated: true, markerEnd: { type: MarkerType.ArrowClosed, color: "#d0d0d0", width: 12, height: 12 } },
-  { id: "e-lena-statista", source: "lena", target: "statista", style: grayEdge, animated: true, markerEnd: { type: MarkerType.ArrowClosed, color: "#d0d0d0", width: 12, height: 12 } },
+  { id: "e-lena-gwi", source: "lena", target: "gwi", style: grayEdge, animated: true, markerEnd: { type: MarkerType.ArrowClosed, color: "#444", width: 12, height: 12 } },
+  { id: "e-lena-statista", source: "lena", target: "statista", style: grayEdge, animated: true, markerEnd: { type: MarkerType.ArrowClosed, color: "#444", width: 12, height: 12 } },
   // Marcus -> Data agents
-  { id: "e-marcus-attention", source: "marcus", target: "attention", style: grayEdge, animated: true, markerEnd: { type: MarkerType.ArrowClosed, color: "#d0d0d0", width: 12, height: 12 } },
+  { id: "e-marcus-attention", source: "marcus", target: "attention", style: grayEdge, animated: true, markerEnd: { type: MarkerType.ArrowClosed, color: "#444", width: 12, height: 12 } },
   // Sofia -> Creative agents
-  { id: "e-sofia-nauth", source: "sofia", target: "nauth", style: grayEdge, animated: true, markerEnd: { type: MarkerType.ArrowClosed, color: "#d0d0d0", width: 12, height: 12 } },
+  { id: "e-sofia-nauth", source: "sofia", target: "nauth", style: grayEdge, animated: true, markerEnd: { type: MarkerType.ArrowClosed, color: "#444", width: 12, height: 12 } },
   // Kai -> Media agents
-  { id: "e-kai-trend", source: "kai", target: "trend", style: grayEdge, animated: true, markerEnd: { type: MarkerType.ArrowClosed, color: "#d0d0d0", width: 12, height: 12 } },
-  { id: "e-kai-nmkr", source: "kai", target: "nmkr", style: grayEdge, animated: true, markerEnd: { type: MarkerType.ArrowClosed, color: "#d0d0d0", width: 12, height: 12 } },
+  { id: "e-kai-trend", source: "kai", target: "trend", style: grayEdge, animated: true, markerEnd: { type: MarkerType.ArrowClosed, color: "#444", width: 12, height: 12 } },
+  { id: "e-kai-nmkr", source: "kai", target: "nmkr", style: grayEdge, animated: true, markerEnd: { type: MarkerType.ArrowClosed, color: "#444", width: 12, height: 12 } },
 ];
 
 export default function AgentFlowGraph() {
@@ -365,20 +365,7 @@ export default function AgentFlowGraph() {
 
   return (
     <ModalContext.Provider value={handleOpenModal}>
-      <div className="w-full h-[560px] md:h-[620px] bg-white rounded-[20px] border border-black/5 overflow-hidden relative">
-        <div className="absolute top-0 left-0 right-0 z-10 flex items-center justify-between px-5 py-3 border-b border-black/5 bg-white/80 backdrop-blur-sm">
-          <div className="flex items-center gap-3">
-            <span className="text-[13px] font-medium text-black">Agent Payment Network</span>
-            <span className="text-[10px] text-[#999] bg-[#f4f4f4] px-2 py-0.5 rounded-full">11 agents</span>
-            <span className="text-[10px] text-[#FA008C] bg-[#FA008C]/10 px-2 py-0.5 rounded-full font-medium">Live</span>
-          </div>
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-1.5">
-              <div className="w-2 h-2 rounded-full bg-[#FA008C] animate-pulse" />
-              <span className="text-[10px] text-[#999]">25.0 USDM flowing</span>
-            </div>
-          </div>
-        </div>
+      <div className="w-full h-[560px] md:h-[620px] bg-[#111] border border-white/[0.08] overflow-hidden relative">
 
         <ReactFlow
           nodes={nodes}
@@ -396,9 +383,9 @@ export default function AgentFlowGraph() {
           minZoom={0.4}
           maxZoom={1.5}
           proOptions={{ hideAttribution: true }}
-          className="!bg-[#fafafa]"
+          className="!bg-[#111]"
         >
-          <Background color="#e8e8e8" gap={20} size={1} />
+          <Background color="#222" gap={20} size={1} />
         </ReactFlow>
 
         {selectedAgent && (

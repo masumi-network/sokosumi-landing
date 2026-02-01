@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
 import { Header, Footer } from "@summation/shared";
 import Hero from "@/components/Hero";
-import ValueProps from "@/components/ValueProps";
+import LogoCloud from "@/components/LogoCloud";
 import Platform from "@/components/Platform";
-import Stats from "@/components/Stats";
-import Deployment from "@/components/Deployment";
+
+import VideoWalkthrough from "@/components/VideoWalkthrough";
 import Security from "@/components/Security";
-import Testimonial from "@/components/Testimonial";
 import CTA from "@/components/CTA";
 
 export const metadata: Metadata = {
@@ -21,12 +20,10 @@ export default function Home() {
       <Header product="sokosumi" />
       <main>
         <Hero />
-        <ValueProps />
+        <LogoCloud />
         <Platform />
-        <Stats />
-        <Deployment />
+        <VideoWalkthrough />
         <Security />
-        <Testimonial />
       </main>
       <CTA />
       <Footer product="sokosumi" />

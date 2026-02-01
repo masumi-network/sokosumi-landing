@@ -6,14 +6,14 @@ import { getAllPosts, getPostBySlug, type Category } from "@/lib/blog";
 
 const categoryColors: Record<Category, string> = {
   announcements: "#FA008C",
-  tutorials: "#460A23",
-  blogs: "#FF6400",
+  articles: "#460A23",
+  "press-releases": "#FF6400",
 };
 
 const categoryLabels: Record<Category, string> = {
   announcements: "Announcements",
-  tutorials: "Tutorials",
-  blogs: "Blogs",
+  articles: "Articles",
+  "press-releases": "Press Releases",
 };
 
 export async function generateStaticParams() {
@@ -27,10 +27,14 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const post = await getPostBySlug(slug);
-  if (!post) return { title: "Post Not Found — Masumi" };
+  if (!post) return { title: "Post Not Found" };
   return {
-    title: `${post.title} — Masumi Blog`,
+    title: post.title,
     description: post.description,
+    openGraph: {
+      title: `${post.title} — Masumi Blog`,
+      description: post.description,
+    },
   };
 }
 
@@ -50,7 +54,7 @@ export default async function BlogPostPage({
         <div className="max-w-[720px] mx-auto px-4 md:px-8">
           <FadeIn>
             <Link
-              href="/blog"
+              href="/blogs"
               className="inline-flex items-center gap-1.5 text-[13px] text-[#999] hover:text-black transition-colors mb-8"
             >
               <svg

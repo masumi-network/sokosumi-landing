@@ -9,7 +9,23 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Sokosumi",
+  metadataBase: new URL("https://sokosumi.com"),
+  title: {
+    default: "Sokosumi — AI Marketing Agents for Teams",
+    template: "%s — Sokosumi",
+  },
+  description:
+    "Sokosumi lets marketing teams work with specialized AI agents. Automate research, copy, SEO, and campaign execution. GDPR & EU AI Act compliant.",
+  icons: {
+    icon: "/images/sokosumi-favicon.svg",
+  },
+  openGraph: {
+    type: "website",
+    siteName: "Sokosumi",
+  },
+  twitter: {
+    card: "summary_large_image",
+  },
 };
 
 export default function RootLayout({

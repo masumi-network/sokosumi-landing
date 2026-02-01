@@ -2,16 +2,12 @@ export function SokosumiIcon({ className = "w-6 h-6" }: { className?: string }) 
   return (
     <svg
       className={className}
-      viewBox="0 0 24 24"
-      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 1080 1080"
       fill="none"
-      stroke="currentColor"
-      strokeWidth="1.8"
+      xmlns="http://www.w3.org/2000/svg"
     >
-      <rect x="3" y="3" width="18" height="18" rx="4" />
-      <circle cx="9" cy="9" r="2" fill="currentColor" stroke="none" />
-      <circle cx="15" cy="9" r="2" fill="currentColor" stroke="none" />
-      <path d="M8 15.5c0-1.5 1.8-3 4-3s4 1.5 4 3" strokeLinecap="round" />
+      <path d="M619.856 271.818C470.863 271.818 350.066 391.874 350.066 540.011H425.014C425.014 433.197 512.408 346.325 619.856 346.325C727.304 346.325 814.698 433.229 814.698 540.011H889.647C889.647 391.906 768.849 271.818 619.856 271.818Z" fill="white"/>
+      <path d="M470.143 808.181C619.135 808.181 739.933 688.125 739.933 539.988H664.984C664.984 646.802 577.591 733.674 470.143 733.674C362.694 733.674 275.301 646.771 275.301 539.988H200.352C200.352 688.094 321.15 808.181 470.143 808.181Z" fill="white"/>
     </svg>
   );
 }
@@ -19,8 +15,7 @@ export function SokosumiIcon({ className = "w-6 h-6" }: { className?: string }) 
 export function SokosumiLogoFull({ className = "" }: { className?: string }) {
   return (
     <div className={`flex items-center gap-2.5 ${className}`}>
-      <SokosumiIcon className="w-6 h-6" />
-      <span className="text-xl font-medium tracking-tight">sokosumi</span>
+      <img src="/images/sokosumi-wordmark.svg" alt="sokosumi" className="h-[20px] w-auto" />
     </div>
   );
 }

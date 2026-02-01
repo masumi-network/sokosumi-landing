@@ -3,7 +3,7 @@
 @source "../../../../packages/shared/src";
 
 @theme inline {
-  --color-background: #f4f4f4;
+  --color-background: #F5F5F5;
   --color-foreground: #000000;
   --font-sans: var(--font-inter);
 }
@@ -13,7 +13,7 @@ html {
 }
 
 body {
-  background: #f4f4f4;
+  background: #F5F5F5;
   color: #000;
   font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -117,7 +117,7 @@ body {
 
 .prose code {
   font-size: 14px;
-  background: #f4f4f4;
+  background: #F5F5F5;
   border: 1px solid rgba(0, 0, 0, 0.06);
   border-radius: 4px;
   padding: 2px 6px;
@@ -152,4 +152,124 @@ body {
   border: none;
   border-top: 1px solid rgba(0, 0, 0, 0.06);
   margin: 2em 0;
+}
+
+/* Pillar card hover — lift + shadow */
+.pillar-card {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s;
+}
+.pillar-card:hover {
+  transform: translateY(-4px);
+}
+
+/* Pillar mini illustration — fade/slide children on card hover */
+.pillar-card .pillar-mini > * {
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s;
+}
+.pillar-card:hover .pillar-mini > *:nth-child(1) { transform: translateX(2px); }
+.pillar-card:hover .pillar-mini > *:nth-child(2) { transform: translateX(-1px); }
+.pillar-card:hover .pillar-mini > *:nth-child(3) { transform: translateX(1px); }
+
+/* Payment dot pulse on pillar hover */
+.pillar-card:hover .payment-dot {
+  animation: dotPulse 1.2s ease-in-out infinite;
+}
+@keyframes dotPulse {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+  50% { transform: translate(-50%, -50%) scale(2); opacity: 0.4; }
+}
+
+/* Trust bars fill animation on hover */
+.pillar-card:hover .trust-bar {
+  animation: barFill 0.6s ease-out forwards;
+}
+@keyframes barFill {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+/* Feature card hover */
+.feature-card {
+  transition: border-color 0.3s;
+}
+
+/* Feature visual inner cards — stagger lift on parent hover */
+.feature-card:hover .feature-visual-item {
+  transform: translateY(-2px);
+}
+.feature-visual-item {
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.feature-visual-item:nth-child(2) { transition-delay: 0.05s; }
+.feature-visual-item:nth-child(3) { transition-delay: 0.1s; }
+.feature-visual-item:nth-child(4) { transition-delay: 0.15s; }
+.feature-visual-item:nth-child(5) { transition-delay: 0.2s; }
+
+/* Agent registry row hover */
+.registry-row {
+  transition: transform 0.25s ease, background-color 0.25s ease;
+}
+.registry-row:hover {
+  transform: translateX(4px);
+  background-color: #fafafa;
+}
+
+/* Decision log entry hover */
+.log-entry {
+  transition: transform 0.25s ease, border-color 0.25s ease;
+}
+.log-entry:hover {
+  transform: translateX(4px);
+  border-color: rgba(250, 0, 140, 0.12);
+}
+
+/* Stack logo hover */
+.stack-logo {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s;
+}
+.stack-logo:hover {
+  transform: scale(1.05);
+}
+.stack-logo:hover img {
+  opacity: 1 !important;
+}
+
+/* CTA code block — line highlight on hover */
+.code-line {
+  transition: background-color 0.2s ease, padding-left 0.2s ease;
+  margin: 0 -8px;
+  padding: 0 8px;
+}
+.code-line:hover {
+  background-color: rgba(255, 255, 255, 0.04);
+  padding-left: 12px;
+}
+
+/* Blinking cursor in code block */
+.code-cursor::after {
+  content: "▋";
+  color: #FA008C;
+  animation: blink 1s step-end infinite;
+  font-size: 13px;
+}
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* Badge hover */
+.audit-badge {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.audit-badge:hover {
+  transform: translateY(-2px);
+}
+
+/* Escrow status badge pulse on feature hover */
+.feature-card:hover .status-badge {
+  animation: badgePulse 2s ease-in-out infinite;
+}
+@keyframes badgePulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
 }

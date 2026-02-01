@@ -21,7 +21,7 @@ export default function Testimonial() {
                     </svg>
                   </div>
                   <p className="text-[20px] font-normal text-black leading-[1.4]">
-                    Marketing teams with real delivery responsibility
+                    Marketing teams that ship
                   </p>
                 </div>
                 <div className="flex items-start gap-3">
@@ -31,7 +31,7 @@ export default function Testimonial() {
                     </svg>
                   </div>
                   <p className="text-[20px] font-normal text-black leading-[1.4]">
-                    Leaders who care about output and predictability
+                    Leaders who need output, not promises
                   </p>
                 </div>
               </div>
@@ -90,8 +90,8 @@ export default function Testimonial() {
                 <span className="text-[14px] font-medium text-black">Hannah</span>
                 <span className="text-[12px] text-[#999] mt-0.5">Agentic Coworker</span>
                 <div className="mt-3 flex items-center gap-1.5">
-                  <div className="w-2 h-2 rounded-full bg-[#2cb67d]" />
-                  <span className="text-[11px] text-[#2cb67d]">Active</span>
+                  <div className="w-2 h-2 rounded-full bg-[#0AFA14]" />
+                  <span className="text-[11px] text-[#0AFA14]">Active</span>
                 </div>
                 <div className="mt-4 w-full grid grid-cols-2 gap-2">
                   <div className="bg-white rounded-lg p-2 text-center">

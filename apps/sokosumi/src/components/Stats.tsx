@@ -1,10 +1,10 @@
 import { FadeIn } from "@summation/shared";
 
 const stats = [
-  { value: "10x", label: "Faster campaign delivery", sublabel: "vs. manual workflows" },
-  { value: "75%", label: "Less coordination overhead", sublabel: "for marketing managers" },
-  { value: "24/7", label: "Agents work around the clock", sublabel: "no downtime, no delays" },
-  { value: "100%", label: "Decision transparency", sublabel: "full audit trail on every task" },
+  { value: "10x", label: "Faster delivery", sublabel: "vs. manual workflows" },
+  { value: "75%", label: "Less coordination", sublabel: "for managers" },
+  { value: "24/7", label: "Always on", sublabel: "no downtime" },
+  { value: "100%", label: "Full transparency", sublabel: "every action logged" },
 ];
 
 export default function Stats() {
@@ -14,7 +14,7 @@ export default function Stats() {
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-black/5">
           {stats.map((stat, i) => (
             <FadeIn key={stat.value} delay={i * 100}>
-              <div className="bg-[#f4f4f4] p-8 md:p-10 flex flex-col">
+              <div className="bg-[#F5F5F5] p-8 md:p-10 flex flex-col">
                 <span className="text-[36px] md:text-[48px] font-normal tracking-[-1px] text-black leading-none">
                   {stat.value}
                 </span>

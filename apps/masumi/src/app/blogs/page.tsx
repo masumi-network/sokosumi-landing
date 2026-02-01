@@ -4,21 +4,25 @@ import { Header, Footer, FadeIn } from "@summation/shared";
 import { getAllPosts, getCategories, type Category } from "@/lib/blog";
 
 export const metadata: Metadata = {
-  title: "Blog — Masumi",
+  title: "Blog",
   description:
     "Updates, guides, and ideas from the Masumi team.",
+  openGraph: {
+    title: "Blog — Masumi",
+    description: "Updates, guides, and ideas from the Masumi team.",
+  },
 };
 
 const categoryColors: Record<Category, string> = {
   announcements: "#FA008C",
-  tutorials: "#460A23",
-  blogs: "#FF6400",
+  articles: "#460A23",
+  "press-releases": "#FF6400",
 };
 
 const categoryLabels: Record<Category, string> = {
   announcements: "Announcements",
-  tutorials: "Tutorials",
-  blogs: "Blogs",
+  articles: "Articles",
+  "press-releases": "Press Releases",
 };
 
 export default async function BlogPage({
@@ -51,7 +55,7 @@ export default async function BlogPage({
           <FadeIn delay={100}>
             <div className="flex items-center justify-center gap-2 mb-12">
               <Link
-                href="/blog"
+                href="/blogs"
                 className={`text-[13px] font-medium px-4 py-2 rounded-full transition-colors ${
                   !activeCategory
                     ? "bg-black text-white"
@@ -63,7 +67,7 @@ export default async function BlogPage({
               {categories.map((cat) => (
                 <Link
                   key={cat.name}
-                  href={`/blog?category=${cat.name}`}
+                  href={`/blogs?category=${cat.name}`}
                   className={`text-[13px] font-medium px-4 py-2 rounded-full transition-colors ${
                     activeCategory === cat.name
                       ? "text-white"
@@ -86,8 +90,8 @@ export default async function BlogPage({
             {posts.map((post, i) => (
               <FadeIn key={post.slug} delay={i * 80}>
                 <Link
-                  href={`/blog/${post.slug}`}
-                  className="bg-white border border-black/[0.04] rounded-2xl p-6 flex flex-col hover:border-black/10 transition-colors h-full group"
+                  href={`/blogs/${post.slug}`}
+                  className="bg-white border border-black/[0.04] p-6 flex flex-col hover:border-black/10 transition-colors h-full group"
                 >
                   <span
                     className="text-[11px] font-medium px-2.5 py-1 rounded-full w-fit mb-4"

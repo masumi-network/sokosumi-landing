@@ -13,7 +13,7 @@ export default function Deployment() {
       ),
       title: "Task Board",
       description:
-        "See exactly what each agent is doing. Track progress, review decisions, and approve results before anything ships.",
+        "See what each agent is doing. Review and approve before anything ships.",
     },
     {
       icon: (
@@ -24,7 +24,7 @@ export default function Deployment() {
       ),
       title: "Chat, Email & Slack",
       description:
-        "Assign work from anywhere your team already works. Agents integrate with Slack, Microsoft Teams, email, and chat.",
+        "Assign work where your team already works.",
     },
     {
       icon: (
@@ -37,7 +37,7 @@ export default function Deployment() {
       ),
       title: "Full Audit Trail",
       description:
-        "Every action is logged. Nothing is hidden. Decision logs with timestamps and agent names for complete transparency.",
+        "Every action logged. Timestamps, agent names, full history.",
     },
   ];
 
@@ -84,7 +84,7 @@ export default function Deployment() {
               Human-First by Design
             </h2>
             <h3 className="text-[22px] md:text-[28px] font-normal tracking-[-0.28px] leading-[1.31] text-black max-w-[520px]">
-              Full control, no black box. AI works like a coworker&mdash;not another tool to manage.
+              Full control. No black box.
             </h3>
           </FadeIn>
 

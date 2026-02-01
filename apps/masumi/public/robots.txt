@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://masumi.network/sitemap.xml

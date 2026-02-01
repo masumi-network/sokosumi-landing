@@ -162,13 +162,13 @@ function TransactionsPanel({ open }: { open: boolean }) {
                 {txs.map((tx) => (
                   <div
                     key={tx.tx_hash}
-                    className="flex items-center justify-between py-2.5 px-3 rounded-lg border border-transparent hover:border-black/[0.08] transition-colors"
+                    className="flex items-center justify-between py-2.5 px-3 border border-transparent hover:border-black/[0.08] transition-colors"
                   >
                     <div className="flex items-center gap-3 min-w-0">
-                      <span className="font-mono text-[13px] text-black shrink-0">
+                      <span className="font-mono text-[12px] md:text-[13px] text-black truncate">
                         {truncateHash(tx.tx_hash)}
                       </span>
-                      <span className="text-[12px] text-[#bbb] shrink-0">
+                      <span className="hidden md:inline text-[12px] text-[#bbb] shrink-0">
                         Block {tx.block_height.toLocaleString()}
                       </span>
                     </div>
@@ -233,7 +233,7 @@ function AgentCard({ agent }: { agent: Agent }) {
 
   return (
     <div
-      className="border border-black/[0.04] hover:border-black/[0.08] rounded-xl p-4 cursor-pointer transition-colors"
+      className="border border-black/[0.04] hover:border-black/[0.08] p-4 cursor-pointer transition-colors"
       onClick={() => setExpanded(!expanded)}
     >
       <div className="flex items-center gap-2 flex-wrap">
@@ -330,7 +330,7 @@ function AgentsPanel({ open }: { open: boolean }) {
           {loading && agents.length === 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {Array.from({ length: 4 }).map((_, i) => (
-                <div key={i} className="h-24 bg-black/[0.02] rounded-xl animate-pulse" />
+                <div key={i} className="h-24 bg-black/[0.02] animate-pulse" />
               ))}
             </div>
           ) : (
@@ -446,7 +446,7 @@ export default function MasumiStats() {
       </div>
 
       {/* Stats row */}
-      <div className="flex items-center gap-6 md:gap-10">
+      <div className="grid grid-cols-2 gap-4 md:flex md:items-center md:gap-10 w-full max-w-xl">
         {stats ? (
           <>
             <ClickableStat
@@ -455,14 +455,14 @@ export default function MasumiStats() {
               active={activePanel === "transactions"}
               onClick={() => toggle("transactions")}
             />
-            <div className="w-px h-10 bg-black/[0.06]" />
+            <div className="hidden md:block w-px h-10 bg-black/[0.06]" />
             <ClickableStat
               value={<AnimatedNumber value={stats.registeredAgents} duration={1800} />}
               label="Agents"
               active={activePanel === "agents"}
               onClick={() => toggle("agents")}
             />
-            <div className="w-px h-10 bg-black/[0.06]" />
+            <div className="hidden md:block w-px h-10 bg-black/[0.06]" />
             <Stat
               value={
                 stats.volumeUsdm != null ? (
@@ -476,7 +476,7 @@ export default function MasumiStats() {
               }
               label="Volume"
             />
-            <div className="w-px h-10 bg-black/[0.06]" />
+            <div className="hidden md:block w-px h-10 bg-black/[0.06]" />
             <Stat
               value={
                 stats.lastTransactionTime
@@ -489,11 +489,8 @@ export default function MasumiStats() {
         ) : (
           <>
             <SkeletonStat />
-            <div className="w-px h-10 bg-black/[0.06]" />
             <SkeletonStat />
-            <div className="w-px h-10 bg-black/[0.06]" />
             <SkeletonStat />
-            <div className="w-px h-10 bg-black/[0.06]" />
             <SkeletonStat />
           </>
         )}

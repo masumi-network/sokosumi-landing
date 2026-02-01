@@ -8,7 +8,7 @@ import rehypeStringify from "rehype-stringify";
 
 const contentDir = path.join(process.cwd(), "content");
 
-const categories = ["announcements", "tutorials", "blogs"] as const;
+const categories = ["announcements", "articles", "press-releases"] as const;
 export type Category = (typeof categories)[number];
 
 export type PostMeta = {
