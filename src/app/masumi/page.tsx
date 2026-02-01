@@ -414,13 +414,13 @@ export default function MasumiPage() {
           <div className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12">
             <div className="flex flex-col items-center gap-6 py-8">
               <p className="text-[13px] text-[#999] tracking-wide uppercase">Built by</p>
-              <div className="flex items-center justify-center gap-5">
-                <a href="https://www.nmkr.io" target="_blank" rel="noopener noreferrer" className="hover:opacity-70 transition-opacity flex justify-end w-[120px]">
-                  <img src="/images/nmkr-logo.svg" alt="NMKR" className="h-[18px] w-auto" />
+              <div className="flex items-center justify-center gap-6">
+                <a href="https://www.nmkr.io" target="_blank" rel="noopener noreferrer" className="hover:opacity-70 transition-opacity">
+                  <img src="/images/nmkr-logo.svg" alt="NMKR" className="h-[20px] w-auto" />
                 </a>
-                <span className="text-[18px] text-[#ddd] font-light">&amp;</span>
-                <a href="https://www.serviceplan.com" target="_blank" rel="noopener noreferrer" className="hover:opacity-70 transition-opacity flex justify-start w-[120px]">
-                  <img src="/images/serviceplan-group.png" alt="Serviceplan Group" className="h-[28px] max-w-[120px] object-contain object-left" />
+                <span className="text-[20px] text-[#ddd] font-light">&amp;</span>
+                <a href="https://www.serviceplan.com" target="_blank" rel="noopener noreferrer" className="hover:opacity-70 transition-opacity">
+                  <img src="/images/serviceplan-group.png" alt="Serviceplan Group" className="h-[100px] w-auto -my-[34px]" />
                 </a>
               </div>
             </div>
