@@ -2,26 +2,17 @@
   "name": "rebuild-summation",
   "version": "0.1.0",
   "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "eslint"
-  },
-  "dependencies": {
-    "@xyflow/react": "^12.10.0",
-    "next": "16.1.6",
-    "react": "19.2.3",
-    "react-dom": "19.2.3"
-  },
-  "devDependencies": {
-    "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "eslint": "^9",
-    "eslint-config-next": "16.1.6",
-    "tailwindcss": "^4",
-    "typescript": "^5"
+    "dev": "npm run dev:sokosumi & npm run dev:masumi",
+    "dev:sokosumi": "npm -w @summation/sokosumi run dev",
+    "dev:masumi": "npm -w @summation/masumi run dev",
+    "build": "npm -w @summation/sokosumi run build && npm -w @summation/masumi run build",
+    "build:sokosumi": "npm -w @summation/sokosumi run build",
+    "build:masumi": "npm -w @summation/masumi run build",
+    "lint": "npm -w @summation/sokosumi run lint && npm -w @summation/masumi run lint"
   }
 }
