@@ -280,37 +280,33 @@ const galleryAgents = [
     name: "Hannah",
     avatar: "/images/hannah.png",
     role: "Research Lead",
-    description: "Market research, competitive analysis, audience insights, and data-driven strategy.",
-    skills: ["Market Research", "Audience Analysis", "Competitive Intel", "Data Synthesis"],
-    tasksCompleted: 24,
+    description: "Handles competitive analysis, audience research, and market sizing. Pulls data from GWI, Statista, and SimilarWeb to build strategy briefs your team can act on immediately.",
     color: "#6400FF",
+    logo: { src: "/images/serviceplan-group.png", alt: "Serviceplan Group", width: 140, height: 28, height_class: "h-[48px]" },
   },
   {
     name: "John",
     avatar: null,
     role: "Project Manager",
-    description: "Brief breakdowns, timeline planning, milestone tracking, and team coordination.",
-    skills: ["Planning", "Scheduling", "Budget Tracking", "Stakeholder Mgmt"],
-    tasksCompleted: 18,
+    description: "Breaks down client briefs into workstreams, assigns agents, sets milestones, and tracks progress. Keeps campaigns on schedule without the back-and-forth.",
     color: "#00A4FA",
+    logo: { src: "/images/nmkr-logo.svg", alt: "NMKR", width: 90, height: 16, height_class: "h-[18px]" },
   },
   {
     name: "SEO Agent",
     avatar: null,
     role: "SEO Specialist",
-    description: "Keyword research, content outlines, technical audits, and organic growth strategy.",
-    skills: ["Keyword Research", "Content Strategy", "Technical SEO", "Link Building"],
-    tasksCompleted: 31,
+    description: "Runs keyword research, identifies content gaps, and creates SEO-optimized outlines. Cross-references Semrush and Google Search Console for data-backed recommendations.",
     color: "#0AFED3",
+    logo: { src: "/images/serviceplan-group.png", alt: "Serviceplan Group", width: 140, height: 28, height_class: "h-[48px]" },
   },
   {
     name: "Copy Agent",
     avatar: null,
     role: "Copywriter",
-    description: "Ad copy, blog posts, social content, and brand voice development.",
-    skills: ["Ad Copy", "Blog Writing", "Social Content", "Brand Voice"],
-    tasksCompleted: 27,
+    description: "Writes ad copy, blog posts, and social content in your brand voice. Produces multiple variants for A/B testing and adapts tone across channels and audiences.",
     color: "#FF6400",
+    logo: { src: "/images/serviceplan-group.png", alt: "Serviceplan Group", width: 140, height: 28, height_class: "h-[48px]" },
   },
 ];
 
@@ -674,7 +670,7 @@ function ChatView() {
         </div>
       </div>
       <div className="flex flex-col h-[580px]">
-        <div className="flex-1 overflow-y-auto px-5 md:px-7 py-5 flex flex-col gap-0.5">
+        <div className="flex-1 overflow-y-auto px-5 md:px-7 py-5 flex flex-col justify-end gap-0.5 scrollbar-hide">
           {chatMessages.map((msg, i) => (
             <div key={i} className={`flex gap-3 py-2.5 ${msg.from === "user" ? "flex-row-reverse" : ""}`}>
               {msg.from === "user" ? (
@@ -713,7 +709,6 @@ function AgentGalleryView() {
       <div className="flex items-center justify-between px-7 py-5 border-b border-white/[0.06]">
         <div className="flex items-center gap-3">
           <span className="text-[15px] font-medium text-white">Agentic Coworkers</span>
-          <span className="text-[12px] text-white/30 bg-white/[0.06] px-2.5 py-0.5 rounded-full">4 agents</span>
         </div>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-0 h-[580px] overflow-y-auto">
@@ -726,15 +721,9 @@ function AgentGalleryView() {
                 <span className="text-[12px] text-white/35">{agent.role}</span>
               </div>
             </div>
-            <p className="text-[13px] text-white/45 leading-[1.55] mb-5">{agent.description}</p>
-            <div className="flex flex-wrap gap-1.5 mb-5">
-              {agent.skills.map((skill) => (
-                <span key={skill} className="text-[10px] px-2 py-0.5 text-white/50 border border-white/[0.08] font-medium">{skill}</span>
-              ))}
-            </div>
-            <div className="mt-auto flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-[#0AFA14]" />
-              <span className="text-[11px] text-white/30">{agent.tasksCompleted} tasks completed</span>
+            <p className="text-[13px] text-white/45 leading-[1.55] flex-1">{agent.description}</p>
+            <div className="mt-5 flex items-center gap-2">
+              <Image src={agent.logo.src} alt={agent.logo.alt} width={agent.logo.width} height={agent.logo.height} className={`${agent.logo.height_class} w-auto opacity-40`} style={{ filter: "brightness(0) invert(1)" }} />
             </div>
           </div>
         ))}
@@ -822,13 +811,6 @@ function EmailView() {
             )}
           </div>
 
-          {/* Reply bar */}
-          <div className="flex-shrink-0 px-6 pb-5">
-            <div className="flex items-center gap-3 bg-[#1a1a1f] border border-white/[0.06] px-5 py-3.5">
-              <span className="text-[13px] text-white/20 flex-1">Reply to {selectedEmail.from.name}...</span>
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="flex-shrink-0"><path d="M14 2L7 9M14 2l-5 12-2-5-5-2 12-5z" stroke="white" strokeOpacity="0.2" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" /></svg>
-            </div>
-          </div>
         </div>
       </div>
     </div>
@@ -883,7 +865,7 @@ export default function Hero() {
       </FadeIn>
 
       <FadeIn delay={200} className="w-full">
-      <div className="mt-28 max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12">
+      <div className="mt-28 max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12 text-left">
         <div className="flex justify-center mb-5">
           <TabSelector active={activeTab} onChange={(tab) => { setActiveTab(tab); setSelectedTask(null); }} />
         </div>
