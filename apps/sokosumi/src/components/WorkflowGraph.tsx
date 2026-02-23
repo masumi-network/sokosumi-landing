@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useCallback, useState } from "react";
 import {
   ReactFlow,
   Background,
@@ -27,10 +27,10 @@ function AgentNode({ data }: NodeProps) {
   const d = data as unknown as AgentData;
 
   return (
-    <div className={`relative group ${d.isRoot ? "scale-110" : ""}`}>
+    <div className={`relative ${d.isRoot ? "scale-110" : ""}`}>
       <Handle type="target" position={Position.Top} className="!bg-transparent !border-0 !w-3 !h-3" />
       <div
-        className={`bg-white border px-4 py-3 min-w-[140px] shadow-sm cursor-grab active:cursor-grabbing transition-shadow hover:shadow-md ${d.isRoot ? "max-w-[200px] border-black/20" : "max-w-[170px] border-black/[0.08]"}`}
+        className={`bg-white border px-4 py-3 min-w-[140px] max-w-[170px] shadow-sm ${d.isRoot ? "border-black/20" : "border-black/[0.08]"}`}
       >
         <div className="flex items-center gap-2.5">
           {d.avatar ? (
@@ -43,18 +43,10 @@ function AgentNode({ data }: NodeProps) {
               {d.label[0]}
             </div>
           )}
-          <div className="min-w-0 flex-1">
+          <div className="min-w-0">
             <p className="text-[11px] font-medium text-black leading-tight truncate">{d.label}</p>
             <p className="text-[9px] text-[#999] truncate">{d.role}</p>
           </div>
-          <svg className="w-3 h-3 text-black/0 group-hover:text-black/20 transition-colors flex-shrink-0" viewBox="0 0 12 12" fill="currentColor">
-            <circle cx="3.5" cy="2" r="1" />
-            <circle cx="8.5" cy="2" r="1" />
-            <circle cx="3.5" cy="6" r="1" />
-            <circle cx="8.5" cy="6" r="1" />
-            <circle cx="3.5" cy="10" r="1" />
-            <circle cx="8.5" cy="10" r="1" />
-          </svg>
         </div>
       </div>
       <Handle type="source" position={Position.Bottom} className="!bg-transparent !border-0 !w-3 !h-3" />
@@ -70,8 +62,8 @@ const initialNodes: Node[] = [
     type: "agent",
     position: { x: 280, y: 0 },
     data: {
-      label: "Orchestrator Agent",
-      role: "Coordinates Workflow",
+      label: "Hannah",
+      role: "Lead Marketing Agent",
       color: "#6400FF",
       avatar: "/images/hannah.png",
       isRoot: true,
@@ -159,17 +151,12 @@ export default function WorkflowGraph() {
   const [nodes, , onNodesChange] = useNodesState(initialNodes);
   const [edges, , onEdgesChange] = useEdgesState(initialEdges);
 
-  const [hasInteracted, setHasInteracted] = useState(false);
-
   return (
-    <div className="relative w-full h-full min-h-[300px] bg-[#f9f9f9] rounded-xl overflow-hidden">
+    <div className="w-full h-full min-h-[300px] bg-[#f9f9f9] rounded-xl overflow-hidden">
       <ReactFlow
         nodes={nodes}
         edges={edges}
-        onNodesChange={(changes) => {
-          onNodesChange(changes);
-          if (changes.some((c) => c.type === "position")) setHasInteracted(true);
-        }}
+        onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         nodeTypes={nodeTypesMemo}
         fitView
@@ -186,14 +173,6 @@ export default function WorkflowGraph() {
       >
         <Background color="#e5e5e5" gap={20} size={1} />
       </ReactFlow>
-      {!hasInteracted && (
-        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-1.5 text-[10px] text-black/30 pointer-events-none animate-pulse">
-          <svg className="w-3 h-3" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.2">
-            <path d="M6 1v4M4 3l2 2 2-2M1 7.5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2" />
-          </svg>
-          Drag nodes to rearrange
-        </div>
-      )}
     </div>
   );
 }

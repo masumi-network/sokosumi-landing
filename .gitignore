@@ -38,6 +38,10 @@ yarn-error.log*
 
 # volume cache
 **/data/volume-cache.json
+**/data/explorer-cache.json
+**/data/explorer.db
+**/data/explorer.db-wal
+**/data/explorer.db-shm
 
 # typescript
 *.tsbuildinfo

@@ -11,6 +11,7 @@
   "dependencies": {
     "@summation/shared": "*",
     "@xyflow/react": "^12.10.0",
+    "better-sqlite3": "^12.6.2",
     "gray-matter": "^4.0.3",
     "next": "16.1.6",
     "react": "19.2.3",
@@ -22,6 +23,7 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "@types/better-sqlite3": "^7.6.13",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
