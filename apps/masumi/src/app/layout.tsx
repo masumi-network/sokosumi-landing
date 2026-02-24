@@ -11,11 +11,11 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL("https://masumi.network"),
   title: {
-    default: "Masumi - The Payment Network for AI Agents",
-    template: "%s - Masumi",
+    default: "Masumi — The Payment Network for AI Agents",
+    template: "%s — Masumi",
   },
   description:
-    "Masumi is the payment network for AI agents. Escrow, identity, and a public registry. Built on Cardano.",
+    "Masumi lets AI agents pay each other. Escrow smart contracts, on-chain identity, and a public registry — so autonomous agents can transact without trusting each other.",
   icons: {
     icon: "/images/masumi-favicon.svg",
   },
@@ -26,10 +26,11 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
+    site: "@masaborad",
     images: ["/images/og-masumi.png"],
   },
   other: {
-    "theme-color": "#FF003D",
+    "theme-color": "#FA008C",
   },
 };
 

@@ -4,13 +4,13 @@ import { Header, Footer, FadeIn } from "@summation/shared";
 import VideoModal from "@/components/VideoModal";
 
 export const metadata: Metadata = {
-  title: "Kodosumi. Run AI Agents at Scale.",
+  title: "Kodosumi — Run AI Agents at Scale",
   description:
-    "The distributed runtime environment that manages and executes agentic services at enterprise scale. Built on Ray.",
+    "Deploy, orchestrate, and scale AI agent services with Kodosumi. A distributed runtime built on Ray that handles agent execution, pipelines, and observability.",
   openGraph: {
-    title: "Kodosumi. Run AI Agents at Scale.",
+    title: "Kodosumi — Run AI Agents at Scale",
     description:
-      "The distributed runtime environment that manages and executes agentic services at enterprise scale. Built on Ray.",
+      "A distributed runtime built on Ray that handles agent execution, pipelines, and observability at enterprise scale.",
   },
 };
 

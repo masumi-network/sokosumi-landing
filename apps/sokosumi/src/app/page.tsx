@@ -9,9 +9,14 @@ import Security from "@/components/Security";
 import CTA from "@/components/CTA";
 
 export const metadata: Metadata = {
-  title: "AI Marketing Agents for Teams | Sokosumi",
+  title: "Sokosumi — AI Marketing Agents for Teams",
   description:
-    "Sokosumi is an AI marketing platform for teams. Work with specialized AI agents, automate marketing workflows, and stay GDPR & EU AI Act compliant.",
+    "Sokosumi gives marketing teams their own AI agents. Automate research, copywriting, SEO, and campaign execution — GDPR and EU AI Act compliant.",
+  openGraph: {
+    title: "Sokosumi — AI Marketing Agents for Teams",
+    description:
+      "Your marketing team's AI agents. Automate research, copy, SEO, and campaigns — GDPR and EU AI Act compliant.",
+  },
 };
 
 export default function Home() {

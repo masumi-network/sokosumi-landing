@@ -15,16 +15,19 @@ export const metadata: Metadata = {
     template: "%s — Kodosumi",
   },
   description:
-    "The distributed runtime environment that manages and executes agentic services at enterprise scale. Built on Ray.",
+    "Deploy, orchestrate, and scale AI agent services with Kodosumi. A distributed runtime built on Ray that handles agent execution, pipelines, and observability.",
   icons: {
     icon: "/images/kodosumi-favicon.png",
   },
   openGraph: {
     type: "website",
     siteName: "Kodosumi",
+    images: [{ url: "/images/og-kodosumi.png", width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",
+    site: "@masaborad",
+    images: ["/images/og-kodosumi.png"],
   },
 };
 

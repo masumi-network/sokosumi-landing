@@ -15,16 +15,19 @@ export const metadata: Metadata = {
     template: "%s — Sokosumi",
   },
   description:
-    "Sokosumi lets marketing teams work with specialized AI agents. Automate research, copy, SEO, and campaign execution. GDPR & EU AI Act compliant.",
+    "Sokosumi gives marketing teams their own AI agents. Automate research, copywriting, SEO, and campaign execution — GDPR and EU AI Act compliant.",
   icons: {
     icon: "/images/sokosumi-favicon.svg",
   },
   openGraph: {
     type: "website",
     siteName: "Sokosumi",
+    images: [{ url: "/images/og-sokosumi.png", width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",
+    site: "@sokosumi",
+    images: ["/images/og-sokosumi.png"],
   },
 };
 
