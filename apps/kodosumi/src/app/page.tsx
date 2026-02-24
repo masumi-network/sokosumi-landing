@@ -385,7 +385,7 @@ export default function KodosumiPage() {
                 src="/images/kodosumi-kanji-black.png"
                 alt=""
                 aria-hidden="true"
-                className="w-[24px] select-none opacity-[0.08]"
+                className="w-[24px] select-none"
               />
             </div>
             <h1 className="text-[40px] md:text-[64px] font-normal tracking-[-1.28px] leading-[1.15] text-black max-w-[800px] px-6">

@@ -70,9 +70,9 @@ export default function VideoModal() {
             </svg>
           </button>
 
-          {/* Video container */}
+          {/* Video container - full width */}
           <div
-            className="relative w-full max-w-[1100px] mx-4 z-10"
+            className="relative w-full px-4 md:px-8 z-10"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="relative w-full rounded-lg overflow-hidden shadow-2xl" style={{ paddingBottom: "56.25%" }}>
