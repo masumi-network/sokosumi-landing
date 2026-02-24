@@ -22,7 +22,7 @@ export async function GET(req: NextRequest) {
     );
 
     if (!assets || !Array.isArray(assets) || assets.length === 0) {
-      return Response.json({ agents: [], page });
+      return Response.json({ agents: [], page, hasMore: false });
     }
 
     const agents = await Promise.all(
@@ -81,7 +81,7 @@ export async function GET(req: NextRequest) {
       })
     );
 
-    return Response.json({ agents, page });
+    return Response.json({ agents, page, hasMore: assets.length >= 10 });
   } catch (err) {
     console.error("masumi-agents error:", err);
     return Response.json(

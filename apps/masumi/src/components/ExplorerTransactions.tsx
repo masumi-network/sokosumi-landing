@@ -441,13 +441,16 @@ function Pagination({
   loading,
   onPrev,
   onNext,
+  hasMore,
 }: {
   page: number;
-  totalPages: number;
+  totalPages?: number;
   loading: boolean;
   onPrev: () => void;
   onNext: () => void;
+  hasMore?: boolean;
 }) {
+  const disableNext = hasMore !== undefined ? !hasMore : page >= (totalPages ?? page);
   return (
     <div className="flex items-center justify-center gap-3 mt-6">
       <button
@@ -458,11 +461,11 @@ function Pagination({
         Prev
       </button>
       <span className="text-[12px] text-[#bbb]">
-        Page {page} of {totalPages.toLocaleString()}
+        Page {page}{totalPages ? ` of ${totalPages.toLocaleString()}` : ""}
       </span>
       <button
         onClick={onNext}
-        disabled={page >= totalPages || loading}
+        disabled={disableNext || loading}
         className="text-[12px] text-[#999] hover:text-black disabled:opacity-30 disabled:cursor-default px-3 py-1 rounded-full border border-black/[0.06] hover:border-black/[0.12] transition-colors"
       >
         Next
@@ -547,6 +550,7 @@ export default function ExplorerTransactions() {
   const [agents, setAgents] = useState<Agent[]>([]);
   const agentPageCache = useRef<Map<number, Agent[]>>(new Map());
   const [agentSearch, setAgentSearch] = useState("");
+  const [agentHasMore, setAgentHasMore] = useState(true);
 
   // Debounce search input
   useEffect(() => {
@@ -617,6 +621,7 @@ export default function ExplorerTransactions() {
       agentPageCache.current.set(p, list);
       setAgents(list);
       setAgentPage(p);
+      setAgentHasMore(data.hasMore !== false);
     } catch {
       // keep current
     } finally {
@@ -782,7 +787,7 @@ export default function ExplorerTransactions() {
               {!agentSearch && (
                 <Pagination
                   page={agentPage}
-                  totalPages={agentPage + (agents.length >= 10 ? 1 : 0)}
+                  hasMore={agentHasMore}
                   loading={agentLoading}
                   onPrev={() => fetchAgentPage(agentPage - 1)}
                   onNext={() => fetchAgentPage(agentPage + 1)}
