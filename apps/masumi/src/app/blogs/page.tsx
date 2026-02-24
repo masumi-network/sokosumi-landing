@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   description:
     "Updates, guides, and ideas from the Masumi team.",
   openGraph: {
-    title: "Blog — Masumi",
+    title: "Blog - Masumi",
     description: "Updates, guides, and ideas from the Masumi team.",
   },
 };

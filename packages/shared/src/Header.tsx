@@ -11,6 +11,14 @@ const MasumiIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
+const KodosumiIcon = ({ className }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 1080 1080" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M26 540.5C26 256.35 256.35 26 540.5 26C824.65 26 1055 256.35 1055 540.5C1055 824.65 824.65 1055 540.5 1055C256.35 1055 26 824.65 26 540.5Z" fill="#C4FE0A"/>
+    <path d="M614.707 274.643C467.006 274.643 347.256 393.658 347.256 540.51H421.555C421.555 434.622 508.19 348.503 614.707 348.503C721.224 348.503 807.859 434.653 807.859 540.51H882.158C882.158 393.689 762.408 274.643 614.707 274.643Z" fill="#0A0A0A"/>
+    <path d="M466.292 806.356C613.993 806.356 733.743 687.341 733.743 540.488H659.444C659.444 646.376 572.808 732.495 466.292 732.495C359.775 732.495 273.139 646.345 273.139 540.488H198.84C198.84 687.31 318.59 806.356 466.292 806.356Z" fill="#0A0A0A"/>
+  </svg>
+);
+
 const products = [
   {
     id: "sokosumi" as const,
@@ -26,9 +34,16 @@ const products = [
     href: "https://masumi.network",
     icon: <MasumiIcon className="w-5 h-5" />,
   },
+  {
+    id: "kodosumi" as const,
+    name: "kodosumi",
+    desc: "Runtime for AI Agent Services",
+    href: "https://kodosumi.io",
+    icon: <KodosumiIcon className="w-5 h-5" />,
+  },
 ];
 
-export default function Header({ product = "sokosumi" }: { product?: "sokosumi" | "masumi" }) {
+export default function Header({ product = "sokosumi" }: { product?: "sokosumi" | "masumi" | "kodosumi" }) {
   const [showProducts, setShowProducts] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -62,9 +77,13 @@ export default function Header({ product = "sokosumi" }: { product?: "sokosumi" 
                 <Link href="/">
                   <img src="/images/sokosumi-wordmark.svg" alt="sokosumi" width={100} height={18} className="h-[18px] w-auto block" />
                 </Link>
-              ) : (
+              ) : product === "masumi" ? (
                 <Link href="/">
                   <img src="/images/masumi-wordmark.png" alt="masumi" width={100} height={18} className="h-[18px] w-auto block" />
+                </Link>
+              ) : (
+                <Link href="/">
+                  <img src="/images/kodosumi-wordmark-black.png" alt="kodosumi" width={100} height={18} className="h-[18px] w-auto block" />
                 </Link>
               )}
               <button>
@@ -84,7 +103,7 @@ export default function Header({ product = "sokosumi" }: { product?: "sokosumi" 
                       href={p.href}
                       className={`flex items-center gap-3 p-2.5 rounded-lg transition-colors ${p.id === product ? "bg-[#F5F5F5]" : "hover:bg-[#F5F5F5]"}`}
                     >
-                      <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${p.id === "masumi" ? "bg-[#FF003D]" : "bg-[#6400FF] text-white"}`}>
+                      <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${p.id === "masumi" ? "bg-[#FF003D]" : p.id === "kodosumi" ? "bg-[#C4FE0A]" : "bg-[#6400FF] text-white"}`}>
                         {p.icon}
                       </div>
                       <div>
@@ -109,15 +128,27 @@ export default function Header({ product = "sokosumi" }: { product?: "sokosumi" 
                 Press
               </Link>
             </nav>
-          ) : (
+          ) : product === "masumi" ? (
             <nav className="hidden lg:flex items-center h-[74px]">
               <Link href="https://docs.masumi.network" target="_blank" rel="noopener noreferrer" className="text-[14px] font-normal text-black hover:text-black/60 transition-colors px-[15px] h-full flex items-center">
                 Docs
+              </Link>
+              <Link href="/explorer" className="text-[14px] font-normal text-black hover:text-black/60 transition-colors px-[15px] h-full flex items-center">
+                Explorer
               </Link>
               <Link href="/blogs" className="text-[14px] font-normal text-black hover:text-black/60 transition-colors px-[15px] h-full flex items-center">
                 Blog
               </Link>
               <Link href="https://github.com/masumi-network" target="_blank" rel="noopener noreferrer" className="text-[14px] font-normal text-black hover:text-black/60 transition-colors px-[15px] h-full flex items-center">
+                GitHub
+              </Link>
+            </nav>
+          ) : (
+            <nav className="hidden lg:flex items-center h-[74px]">
+              <Link href="https://docs.kodosumi.io" target="_blank" rel="noopener noreferrer" className="text-[14px] font-normal text-black hover:text-black/60 transition-colors px-[15px] h-full flex items-center">
+                Docs
+              </Link>
+              <Link href="https://github.com/masumi-network/kodosumi" target="_blank" rel="noopener noreferrer" className="text-[14px] font-normal text-black hover:text-black/60 transition-colors px-[15px] h-full flex items-center">
                 GitHub
               </Link>
             </nav>
@@ -130,14 +161,19 @@ export default function Header({ product = "sokosumi" }: { product?: "sokosumi" 
                   Log in
                 </Link>
                 <Link href="https://app.sokosumi.com"
-                  className="hidden lg:block bg-black text-white text-[12px] font-normal px-6 py-2.5 rounded-full hover:bg-black/85 transition-colors">
+                  className="hidden lg:block bg-black text-white text-[14px] font-normal px-6 py-2 rounded-full hover:bg-black/85 transition-colors">
                   Get started
                 </Link>
               </>
-            ) : (
+            ) : product === "masumi" ? (
               <Link href="https://docs.masumi.network" target="_blank" rel="noopener noreferrer"
-                className="hidden lg:block bg-black text-white text-[12px] font-normal px-6 py-2.5 rounded-full hover:bg-black/85 transition-colors">
-                Read the Docs
+                className="hidden lg:block bg-black text-white text-[14px] font-normal px-6 py-2.5 rounded-full hover:bg-black/85 transition-colors">
+                Open Documentation
+              </Link>
+            ) : (
+              <Link href="https://docs.kodosumi.io" target="_blank" rel="noopener noreferrer"
+                className="hidden lg:block bg-black text-white text-[14px] font-normal px-6 py-2.5 rounded-full hover:bg-black/85 transition-colors">
+                Getting Started
               </Link>
             )}
             <button
@@ -171,10 +207,13 @@ export default function Header({ product = "sokosumi" }: { product?: "sokosumi" 
                   Get started
                 </Link>
               </>
-            ) : (
+            ) : product === "masumi" ? (
               <>
                 <Link href="https://docs.masumi.network" target="_blank" rel="noopener noreferrer" onClick={() => setMobileMenuOpen(false)} className="text-[18px] text-black py-3 border-b border-black/[0.06]">
                   Docs
+                </Link>
+                <Link href="/explorer" onClick={() => setMobileMenuOpen(false)} className="text-[18px] text-black py-3 border-b border-black/[0.06]">
+                  Explorer
                 </Link>
                 <Link href="/blogs" onClick={() => setMobileMenuOpen(false)} className="text-[18px] text-black py-3 border-b border-black/[0.06]">
                   Blog
@@ -187,7 +226,23 @@ export default function Header({ product = "sokosumi" }: { product?: "sokosumi" 
                 </Link>
                 <Link href="https://docs.masumi.network" target="_blank" rel="noopener noreferrer" onClick={() => setMobileMenuOpen(false)}
                   className="mt-6 bg-black text-white text-[14px] font-normal px-6 py-3 rounded-full text-center">
-                  Read the Docs
+                  Open Documentation
+                </Link>
+              </>
+            ) : (
+              <>
+                <Link href="https://docs.kodosumi.io" target="_blank" rel="noopener noreferrer" onClick={() => setMobileMenuOpen(false)} className="text-[18px] text-black py-3 border-b border-black/[0.06]">
+                  Docs
+                </Link>
+                <Link href="https://github.com/masumi-network/kodosumi" target="_blank" rel="noopener noreferrer" onClick={() => setMobileMenuOpen(false)} className="text-[18px] text-black py-3 border-b border-black/[0.06]">
+                  GitHub
+                </Link>
+                <Link href="https://discord.com/invite/aj4QfnTS92" target="_blank" rel="noopener noreferrer" onClick={() => setMobileMenuOpen(false)} className="text-[18px] text-black py-3 border-b border-black/[0.06]">
+                  Discord
+                </Link>
+                <Link href="https://docs.kodosumi.io" target="_blank" rel="noopener noreferrer" onClick={() => setMobileMenuOpen(false)}
+                  className="mt-6 bg-black text-white text-[14px] font-normal px-6 py-3 rounded-full text-center">
+                  Getting Started
                 </Link>
               </>
             )}

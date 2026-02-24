@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, useCallback, createContext, useContext } from "react";
+import { useMemo, useState, useCallback, useEffect, createContext, useContext } from "react";
 import {
   ReactFlow,
   Background,
@@ -25,6 +25,13 @@ interface AgentData {
   verified?: boolean;
   description?: string;
   capabilities?: string[];
+  networkStats?: { totalTxs: number; agentCount: number; lastTx: string };
+}
+
+interface NetworkStats {
+  totalTransactions: number;
+  registeredAgents: number;
+  lastTransactionTime: string | null;
 }
 
 const ModalContext = createContext<(agent: AgentData | null) => void>(() => {});
@@ -35,11 +42,11 @@ function AgentNode({ data }: NodeProps) {
   const [showTooltip, setShowTooltip] = useState(false);
 
   return (
-    <div className={`relative ${d.isRoot ? "scale-110" : ""}`}>
+    <div className={`relative group ${d.isRoot ? "scale-110" : ""}`}>
       <Handle type="target" position={Position.Top} className="!bg-transparent !border-0 !w-3 !h-3" />
       <div
         onClick={() => openModal(d)}
-        className={`bg-[#1a1a1a] border px-4 py-3 min-w-[150px] max-w-[180px] cursor-pointer transition-all hover:border-white/60 ${d.isRoot ? "border-white/50" : "border-white/30"}`}
+        className={`bg-[#1a1a1a] border px-4 py-3 min-w-[150px] cursor-grab active:cursor-grabbing transition-all hover:shadow-lg hover:shadow-white/5 hover:border-white/60 ${d.isRoot ? "max-w-[210px] border-white/50" : "max-w-[180px] border-white/30"}`}
       >
         <div className="flex items-center gap-2.5 mb-1.5">
           {d.avatar ? (
@@ -52,7 +59,7 @@ function AgentNode({ data }: NodeProps) {
               {d.label[0]}
             </div>
           )}
-          <div className="min-w-0">
+          <div className="min-w-0 flex-1">
             <div className="flex items-center gap-1">
               <p className="text-[11px] font-medium text-white leading-tight truncate">{d.label}</p>
               {d.verified && (
@@ -77,6 +84,14 @@ function AgentNode({ data }: NodeProps) {
             </div>
             <p className="text-[9px] text-white/65 truncate">{d.role}</p>
           </div>
+          <svg className="w-3 h-3 text-white/0 group-hover:text-white/20 transition-colors flex-shrink-0" viewBox="0 0 12 12" fill="currentColor">
+            <circle cx="3.5" cy="2" r="1" />
+            <circle cx="8.5" cy="2" r="1" />
+            <circle cx="3.5" cy="6" r="1" />
+            <circle cx="8.5" cy="6" r="1" />
+            <circle cx="3.5" cy="10" r="1" />
+            <circle cx="8.5" cy="10" r="1" />
+          </svg>
         </div>
         {d.amount && (
           <div className="flex items-center justify-between mt-1.5 pt-1.5 border-t border-white/25">
@@ -179,7 +194,7 @@ const initialNodes: Node[] = [
       role: "Lead Marketing Agent",
       color: "#460A23",
       avatar: "/images/hannah.png",
-      amount: "12.0 USDM",
+      amount: "12.0 USD",
       isRoot: true,
       verified: true,
       description: "Hannah orchestrates entire marketing campaigns by coordinating specialist agents. She plans strategy, delegates tasks, and ensures all deliverables meet quality standards.",
@@ -195,7 +210,7 @@ const initialNodes: Node[] = [
       role: "Research Strategist",
       color: "#FF6ED2",
       avatar: "/images/hannah.png",
-      amount: "3.2 USDM",
+      amount: "3.2 USD",
       verified: true,
       description: "Lena conducts deep audience research and competitive analysis. She synthesizes data from multiple sources into actionable strategic insights.",
       capabilities: ["Audience Analysis", "Competitive Intel", "Market Research", "Segmentation"],
@@ -210,7 +225,7 @@ const initialNodes: Node[] = [
       role: "Data Scientist",
       color: "#460A23",
       avatar: "/images/hannah.png",
-      amount: "2.6 USDM",
+      amount: "2.6 USD",
       verified: true,
       description: "Marcus transforms raw data into predictive models and visual reports. He identifies patterns and delivers data-driven recommendations.",
       capabilities: ["Predictive Modeling", "Data Visualization", "Statistical Analysis", "A/B Testing"],
@@ -225,7 +240,7 @@ const initialNodes: Node[] = [
       role: "Creative Director",
       color: "#FF51FF",
       avatar: "/images/hannah.png",
-      amount: "2.7 USDM",
+      amount: "2.7 USD",
       verified: true,
       description: "Sofia generates creative concepts, ad copy, and visual direction. She ensures brand consistency across all campaign assets.",
       capabilities: ["Ad Copy", "Creative Strategy", "Brand Guidelines", "Content Verification"],
@@ -240,7 +255,7 @@ const initialNodes: Node[] = [
       role: "Media & Social Lead",
       color: "#FF6ED2",
       avatar: "/images/hannah.png",
-      amount: "2.5 USDM",
+      amount: "2.5 USD",
       verified: true,
       description: "Kai manages social media strategy, monitors trends, and optimizes paid media placement across platforms.",
       capabilities: ["Social Strategy", "Trend Monitoring", "Paid Media", "Platform Analytics"],
@@ -254,7 +269,7 @@ const initialNodes: Node[] = [
       label: "GWI Spark",
       role: "Audience Insights",
       color: "#460A23",
-      amount: "1.2 USDM",
+      amount: "1.2 USD",
       verified: true,
       description: "Connects to GWI's global consumer dataset to deliver detailed audience profiling, demographics, and behavioral insights.",
       capabilities: ["Consumer Data", "Demographics", "Behavioral Insights"],
@@ -268,7 +283,7 @@ const initialNodes: Node[] = [
       label: "Statista",
       role: "Data Enrichment",
       color: "#FA008C",
-      amount: "1.5 USDM",
+      amount: "1.5 USD",
       verified: true,
       description: "Pulls verified statistics and market data from Statista's database to enrich reports and validate strategic assumptions.",
       capabilities: ["Market Stats", "Industry Data", "Trend Reports"],
@@ -282,7 +297,7 @@ const initialNodes: Node[] = [
       label: "Attention Insight",
       role: "Visual Analytics",
       color: "#FF51FF",
-      amount: "2.0 USDM",
+      amount: "2.0 USD",
       verified: true,
       description: "Uses AI-powered attention heatmaps to predict where users will look on ads and landing pages before they go live.",
       capabilities: ["Attention Heatmaps", "Design Optimization", "Pre-launch Testing"],
@@ -296,7 +311,7 @@ const initialNodes: Node[] = [
       label: "Deepfake Detect",
       role: "Verification",
       color: "#460A23",
-      amount: "0.7 USDM",
+      amount: "0.7 USD",
       verified: true,
       description: "Scans images and video for deepfake manipulation to ensure authenticity of creative assets before publishing.",
       capabilities: ["Deepfake Detection", "Image Verification", "Content Authenticity"],
@@ -310,7 +325,7 @@ const initialNodes: Node[] = [
       label: "Trend Analyser",
       role: "Media Trends",
       color: "#FF6ED2",
-      amount: "1.5 USDM",
+      amount: "1.5 USD",
       verified: true,
       description: "Monitors media and cultural trends across platforms, identifying emerging topics and viral patterns relevant to campaigns.",
       capabilities: ["Trend Detection", "Cultural Analysis", "Viral Patterns"],
@@ -324,7 +339,7 @@ const initialNodes: Node[] = [
       label: "X Analyst",
       role: "Social Intel",
       color: "#FF6400",
-      amount: "1.0 USDM",
+      amount: "1.0 USD",
       verified: true,
       description: "Analyzes X (Twitter) conversations, sentiment, and engagement patterns to inform social media strategy and content planning.",
       capabilities: ["Sentiment Analysis", "Engagement Tracking", "Hashtag Analytics"],
@@ -353,11 +368,30 @@ const initialEdges: Edge[] = [
   { id: "e-kai-nmkr", source: "kai", target: "nmkr", style: grayEdge, animated: true, markerEnd: { type: MarkerType.ArrowClosed, color: "#444", width: 12, height: 12 } },
 ];
 
+function timeAgoShort(iso: string): string {
+  const seconds = Math.floor((Date.now() - new Date(iso).getTime()) / 1000);
+  if (seconds < 60) return "just now";
+  const minutes = Math.floor(seconds / 60);
+  if (minutes < 60) return `${minutes}m ago`;
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) return `${hours}h ago`;
+  const days = Math.floor(hours / 24);
+  return `${days}d ago`;
+}
+
 export default function AgentFlowGraph() {
   const nodeTypesMemo = useMemo(() => nodeTypes, []);
   const [nodes, , onNodesChange] = useNodesState(initialNodes);
-  const [edges, , onEdgesChange] = useEdgesState(initialEdges);
+  const [edges] = useEdgesState(initialEdges);
   const [selectedAgent, setSelectedAgent] = useState<AgentData | null>(null);
+  const [netStats, setNetStats] = useState<NetworkStats | null>(null);
+
+  useEffect(() => {
+    fetch("/api/masumi-stats")
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data) => { if (data) setNetStats(data); })
+      .catch(() => {});
+  }, []);
 
   const handleOpenModal = useCallback((agent: AgentData | null) => {
     setSelectedAgent(agent);
@@ -367,19 +401,50 @@ export default function AgentFlowGraph() {
     <ModalContext.Provider value={handleOpenModal}>
       <div className="w-full h-[560px] md:h-[620px] bg-[#111] border border-white/[0.08] overflow-hidden relative">
 
+        {/* Live network stats overlay */}
+        {netStats && (
+          <div className="absolute top-4 left-4 z-20 flex items-center gap-3">
+            <div className="flex items-center gap-2 bg-black/60 backdrop-blur-sm border border-white/[0.08] px-3 py-1.5 rounded-full">
+              <span className="relative flex h-1.5 w-1.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#FA008C] opacity-75" />
+                <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-[#FA008C]" />
+              </span>
+              <span className="text-[10px] text-white/70">
+                {netStats.totalTransactions.toLocaleString()} txs
+              </span>
+              <span className="text-[10px] text-white/30">|</span>
+              <span className="text-[10px] text-white/70">
+                {netStats.registeredAgents} agents
+              </span>
+              {netStats.lastTransactionTime && (
+                <>
+                  <span className="text-[10px] text-white/30">|</span>
+                  <span className="text-[10px] text-white/50">
+                    Last: {timeAgoShort(netStats.lastTransactionTime)}
+                  </span>
+                </>
+              )}
+            </div>
+          </div>
+        )}
+
         <ReactFlow
           nodes={nodes}
           edges={edges}
           onNodesChange={onNodesChange}
-          onEdgesChange={onEdgesChange}
           nodeTypes={nodeTypesMemo}
           fitView
           fitViewOptions={{ padding: 0.25 }}
           nodesDraggable={true}
           nodesConnectable={false}
-          panOnDrag={true}
+          nodesFocusable={false}
+          edgesFocusable={false}
+          panOnDrag={false}
+          panOnScroll={false}
           zoomOnScroll={false}
-          zoomOnPinch={true}
+          zoomOnPinch={false}
+          zoomOnDoubleClick={false}
+          preventScrolling={false}
           minZoom={0.4}
           maxZoom={1.5}
           proOptions={{ hideAttribution: true }}

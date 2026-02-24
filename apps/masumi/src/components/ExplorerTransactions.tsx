@@ -161,7 +161,7 @@ function UTXOCard({ entry }: { entry: UTXOEntry }) {
           style={{ color: t.is_usdm ? "#FA008C" : "#999" }}
         >
           {t.is_usdm
-            ? `${formatUsdm(t.quantity)} USDM`
+            ? `${formatUsdm(t.quantity)} USD`
             : `${t.quantity} ${t.unit.slice(0, 8)}...`}
         </div>
       ))}
@@ -172,6 +172,7 @@ function UTXOCard({ entry }: { entry: UTXOEntry }) {
 // --- UTXO Flow ---
 
 function UTXOFlow({ detail }: { detail: TransactionDetail }) {
+  if (!detail.inputs || !detail.outputs) return null;
   return (
     <div className="mt-4">
       <div className="flex flex-col lg:flex-row gap-4">
@@ -188,7 +189,7 @@ function UTXOFlow({ detail }: { detail: TransactionDetail }) {
             Total: {detail.input_total_ada.toFixed(2)} ADA
             {detail.input_total_usdm > 0 && (
               <span className="ml-2" style={{ color: "#FA008C" }}>
-                {detail.input_total_usdm.toFixed(2)} USDM
+                {detail.input_total_usdm.toFixed(2)} USD
               </span>
             )}
           </div>
@@ -223,7 +224,7 @@ function UTXOFlow({ detail }: { detail: TransactionDetail }) {
             Total: {detail.output_total_ada.toFixed(2)} ADA
             {detail.output_total_usdm > 0 && (
               <span className="ml-2" style={{ color: "#FA008C" }}>
-                {detail.output_total_usdm.toFixed(2)} USDM
+                {detail.output_total_usdm.toFixed(2)} USD
               </span>
             )}
           </div>
@@ -288,12 +289,14 @@ function TransactionRow({
   onToggle,
   detail,
   loadingDetail,
+  agentNames,
 }: {
   tx: TransactionSummary;
   expanded: boolean;
   onToggle: () => void;
   detail: TransactionDetail | null;
   loadingDetail: boolean;
+  agentNames: string[] | null;
 }) {
   return (
     <div className="border border-black/[0.04] hover:border-black/[0.08] transition-colors">
@@ -306,11 +309,16 @@ function TransactionRow({
             {truncateHash(tx.hash)}
           </span>
           <TypeBadge type={tx.type} />
+          {agentNames && agentNames.length > 0 && (
+            <span className="text-[11px] text-[#666] bg-black/[0.03] px-2 py-0.5 rounded-full truncate max-w-[200px] hidden md:inline">
+              {agentNames.join(", ")}
+            </span>
+          )}
         </div>
         <div className="flex items-center gap-3 shrink-0">
           {tx.usdm_amount > 0 && (
             <span className="text-[12px] font-medium" style={{ color: "#FA008C" }}>
-              {tx.usdm_amount.toFixed(2)} USDM
+              {tx.usdm_amount.toFixed(2)} USD
             </span>
           )}
           <span className="text-[12px] text-[#999] hidden md:inline">
@@ -391,6 +399,25 @@ function AgentCard({ agent }: { agent: Agent }) {
           <div className="mt-3 pt-3 border-t border-black/[0.04] flex flex-col gap-1.5 text-[11px] text-[#999]">
             {agent.version && <div>Version: {agent.version}</div>}
             {agent.pricingType && <div>Pricing: {agent.pricingType}</div>}
+            {agent.walletAddress && (
+              <div className="flex items-center gap-2">
+                <span className="text-[#999]">Wallet:</span>
+                <CopyButton value={agent.walletAddress} label={truncateAddress(agent.walletAddress)} />
+                <a
+                  href={`https://cardanoscan.io/address/${agent.walletAddress}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(e) => e.stopPropagation()}
+                  className="text-[#999] hover:text-black transition-colors flex items-center gap-0.5"
+                >
+                  <svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M9 6.75v2.75a.5.5 0 01-.5.5h-6a.5.5 0 01-.5-.5v-6a.5.5 0 01.5-.5H5.25" />
+                    <path d="M7.5 2h2.5v2.5" />
+                    <path d="M5.5 6.5L10 2" />
+                  </svg>
+                </a>
+              </div>
+            )}
             {agent.fingerprint && (
               <div className="font-mono text-[10px] text-[#bbb]">
                 {agent.fingerprint}
@@ -511,6 +538,9 @@ export default function ExplorerTransactions() {
   const [loadingDetail, setLoadingDetail] = useState(false);
   const detailCache = useRef<Map<string, TransactionDetail>>(new Map());
 
+  // Agent address -> name(s) map
+  const [agentMap, setAgentMap] = useState<Record<string, string[]>>({});
+
   // Agents state
   const [agentPage, setAgentPage] = useState(1);
   const [agentLoading, setAgentLoading] = useState(false);
@@ -590,6 +620,14 @@ export default function ExplorerTransactions() {
     } finally {
       setAgentLoading(false);
     }
+  }, []);
+
+  // Fetch agent address map on mount
+  useEffect(() => {
+    fetch("/api/explorer/agent-map")
+      .then((r) => (r.ok ? r.json() : {}))
+      .then(setAgentMap)
+      .catch(() => {});
   }, []);
 
   // Fetch txs when page or debounced search changes
@@ -700,6 +738,7 @@ export default function ExplorerTransactions() {
                       onToggle={() => toggleExpand(tx.hash)}
                       detail={detailCache.current.get(tx.hash) ?? null}
                       loadingDetail={loadingDetail && expandedHash === tx.hash}
+                      agentNames={tx.sender_address ? agentMap[tx.sender_address] ?? null : null}
                     />
                   ))
                 )}

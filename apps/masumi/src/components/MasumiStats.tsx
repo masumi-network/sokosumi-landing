@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useRef, useCallback } from "react";
+import Link from "next/link";
 
 interface Stats {
   totalTransactions: number;
@@ -35,11 +36,13 @@ function timeAgo(iso: string): string {
   const seconds = Math.floor((Date.now() - new Date(iso).getTime()) / 1000);
   if (seconds < 60) return "just now";
   const minutes = Math.floor(seconds / 60);
-  if (minutes < 60) return `${minutes}m ago`;
+  if (minutes < 60) return `${minutes} min ago`;
   const hours = Math.floor(minutes / 60);
   if (hours < 24) return `${hours}h ago`;
   const days = Math.floor(hours / 24);
-  return `${days}d ago`;
+  if (days === 1) return "yesterday";
+  if (days < 7) return `${days} days ago`;
+  return new Date(iso).toLocaleDateString("en-US", { month: "short", day: "numeric" });
 }
 
 function timeAgoFromUnix(ts: number): string {
@@ -396,11 +399,11 @@ function ClickableStat({
 
 function Stat({ value, label }: { value: React.ReactNode; label: string }) {
   return (
-    <div className="flex flex-col items-center gap-1">
-      <span className="text-[24px] md:text-[32px] font-normal tracking-[-0.5px] text-black leading-none">
+    <div className="flex flex-col items-center gap-1 shrink-0">
+      <span className="text-[24px] md:text-[32px] font-normal tracking-[-0.5px] text-black leading-none whitespace-nowrap">
         {value}
       </span>
-      <span className="text-[11px] md:text-[12px] text-[#bbb]">{label}</span>
+      <span className="text-[11px] md:text-[12px] text-[#bbb] whitespace-nowrap">{label}</span>
     </div>
   );
 }
@@ -436,17 +439,8 @@ export default function MasumiStats() {
 
   return (
     <div className="flex flex-col items-center gap-5">
-      {/* Live badge */}
-      <div className="inline-flex items-center gap-2 bg-white border border-black/[0.06] rounded-full px-4 py-1.5">
-        <span className="relative flex h-1.5 w-1.5">
-          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#FA008C] opacity-75" />
-          <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-[#FA008C]" />
-        </span>
-        <span className="text-[12px] text-[#999]">Live on Mainnet</span>
-      </div>
-
       {/* Stats row */}
-      <div className="grid grid-cols-2 gap-4 md:flex md:items-center md:gap-10 w-full max-w-xl">
+      <div className="grid grid-cols-2 gap-4 md:flex md:items-center md:gap-10 w-full max-w-2xl">
         {stats ? (
           <>
             <ClickableStat
@@ -468,7 +462,7 @@ export default function MasumiStats() {
                 stats.volumeUsdm != null ? (
                   <span className="flex items-baseline gap-1">
                     <AnimatedNumber value={Math.round(stats.volumeUsdm)} duration={2000} />
-                    <span className="text-[14px] md:text-[16px] text-[#999] font-normal">USDM</span>
+                    <span className="text-[14px] md:text-[16px] text-[#999] font-normal">USD</span>
                   </span>
                 ) : (
                   "\u2014"
@@ -495,6 +489,16 @@ export default function MasumiStats() {
           </>
         )}
       </div>
+
+      <Link
+        href="/explorer"
+        className="text-[13px] text-[#999] hover:text-black transition-colors flex items-center gap-1"
+      >
+        View Explorer
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M4.5 3l3 3-3 3" />
+        </svg>
+      </Link>
 
       {/* Expand panels */}
       <div className="w-full px-4">

@@ -13,6 +13,7 @@ export interface TransactionSummary {
   fees: string;
   type: TransactionType;
   usdm_amount: number;
+  sender_address: string | null;
 }
 
 export interface AmountEntry {
@@ -55,4 +56,5 @@ export interface Agent {
   image: string | null;
   fingerprint: string | null;
   mintedAt: number | null;
+  walletAddress: string | null;
 }

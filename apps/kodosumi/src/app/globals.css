@@ -1,0 +1,93 @@
+@import "tailwindcss";
+
+@source "../../../../packages/shared/src";
+
+@theme inline {
+  --color-background: #f5f5f5;
+  --color-foreground: #000000;
+  --font-sans: var(--font-inter);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: #f5f5f5;
+  color: #000;
+  font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Pillar card hover — lift */
+.pillar-card {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s;
+}
+.pillar-card:hover {
+  transform: translateY(-4px);
+}
+
+/* Pillar mini illustration — shift children on card hover */
+.pillar-card .pillar-mini > * {
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s;
+}
+.pillar-card:hover .pillar-mini > *:nth-child(1) { transform: translateX(2px); }
+.pillar-card:hover .pillar-mini > *:nth-child(2) { transform: translateX(-1px); }
+.pillar-card:hover .pillar-mini > *:nth-child(3) { transform: translateX(1px); }
+
+/* Feature card hover */
+.feature-card {
+  transition: border-color 0.3s;
+}
+
+/* Feature visual inner cards — stagger lift on parent hover */
+.feature-card:hover .feature-visual-item {
+  transform: translateY(-2px);
+}
+.feature-visual-item {
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.feature-visual-item:nth-child(2) { transition-delay: 0.05s; }
+.feature-visual-item:nth-child(3) { transition-delay: 0.1s; }
+.feature-visual-item:nth-child(4) { transition-delay: 0.15s; }
+
+/* CTA code block — line highlight on hover */
+.code-line {
+  transition: background-color 0.2s ease, padding-left 0.2s ease;
+  margin: 0 -8px;
+  padding: 0 8px;
+}
+.code-line:hover {
+  background-color: rgba(255, 255, 255, 0.04);
+  padding-left: 12px;
+}
+
+/* Blinking cursor in code block */
+.code-cursor::after {
+  content: "▋";
+  color: #00C2FF;
+  animation: blink 1s step-end infinite;
+  font-size: 13px;
+}
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* Ecosystem card hover */
+.ecosystem-card {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s;
+}
+.ecosystem-card:hover {
+  transform: translateY(-4px);
+}
+
+/* Pulse animation for running indicator */
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.5); }
+}
+.pulse-dot {
+  animation: pulse-dot 2s ease-in-out infinite;
+}

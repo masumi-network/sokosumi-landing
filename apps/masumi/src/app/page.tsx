@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Header, Footer, FadeIn } from "@summation/shared";
 import LazyAgentFlowGraph from "@/components/LazyAgentFlowGraph";
 import MasumiStats from "@/components/MasumiStats";
+import VolumeTide from "@/components/VolumeTide";
 
 export const metadata: Metadata = {
   title: "Masumi. Agents pay agents.",
@@ -29,7 +30,7 @@ const pillars = [
           <div className="w-5 h-5 rounded-full bg-[#FA008C] flex items-center justify-center text-white text-[8px] font-medium">B</div>
         </div>
         <div className="bg-[#FA008C]/10 px-2.5 py-1.5 flex items-center justify-between">
-          <span className="text-[9px] text-[#FA008C] font-medium">+2.5 USDM</span>
+          <span className="text-[9px] text-[#FA008C] font-medium">+2.5 USD</span>
           <svg width="10" height="10" viewBox="0 0 10 10" fill="#FA008C"><circle cx="5" cy="5" r="5"/><path d="M3 5l1.5 1.5 2.5-3" stroke="white" strokeWidth="1.2" fill="none" strokeLinecap="round" strokeLinejoin="round"/></svg>
         </div>
       </div>
@@ -149,7 +150,7 @@ const features = [
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-1.5">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#FF6400" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                <span className="text-[12px] font-medium text-black">5.0 USDM</span>
+                <span className="text-[12px] font-medium text-black">5.0 USD</span>
               </div>
               <span className="status-badge text-[10px] text-[#FF6400] font-medium bg-[#FF6400]/10 px-2 py-0.5 rounded-full">Escrowed</span>
             </div>
@@ -181,7 +182,7 @@ const features = [
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-1.5">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#FA140A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/><line x1="8" y1="16" x2="8" y2="16.01"/></svg>
-                <span className="text-[12px] font-medium text-black">5.0 USDM</span>
+                <span className="text-[12px] font-medium text-black">5.0 USD</span>
               </div>
               <span className="text-[10px] text-[#FA140A] font-medium bg-[#FA140A]/10 px-2 py-0.5 rounded-full">Refunded</span>
             </div>
@@ -233,37 +234,37 @@ const features = [
   },
   {
     label: "Decision Logging",
-    title: "See what every agent did",
+    title: "Trace accountability across agents",
     description:
-      "Each action is written to the blockchain with a timestamp. You can query the log, build dashboards, and prove compliance.",
+      "Every step in a multi-agent chain is hashed and stored on-chain. Nothing is public - but the recipient can verify exactly where an issue occurred.",
     visual: (
       <div className="bg-[#F5F5F5] p-5 h-full">
         <div className="flex items-center justify-between mb-4">
-          <span className="text-[11px] font-medium text-[#666]">Decision Log</span>
+          <span className="text-[11px] font-medium text-[#666]">On-chain Proof</span>
           <span className="text-[10px] text-[#aaa]">Block #4,291,087</span>
         </div>
         <div className="flex flex-col gap-2">
           {[
-            { time: "14:32:01", agent: "Research Agent", action: "Started audience analysis for EMEA", status: "executed" },
-            { time: "14:32:18", agent: "Research Agent", action: "Queried GWI API for demographic data", status: "executed" },
-            { time: "14:33:02", agent: "Research Agent", action: "Generated segment report with 4 clusters", status: "executed" },
-            { time: "14:33:15", agent: "Research Agent", action: "Delegated copy brief to Copy Agent", status: "delegated" },
-            { time: "14:33:20", agent: "Copy Agent", action: "Received brief, started ad variations", status: "executed" },
+            { step: "1", agent: "Agent A", hash: "9f2e...c841", status: "verified" },
+            { step: "2", agent: "Agent B", hash: "3a7d...f102", status: "verified" },
+            { step: "3", agent: "Agent C", hash: "b14c...8e37", status: "disputed" },
+            { step: "4", agent: "Agent D", hash: "71e0...5a29", status: "verified" },
           ].map((log, i) => (
             <div key={i} className="log-entry bg-white px-3 py-2 border border-black/[0.03]">
-              <div className="flex items-center justify-between mb-1">
+              <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <span className="text-[9px] text-[#999] font-mono">{log.time}</span>
+                  <span className="text-[9px] text-[#bbb] font-mono w-3">#{log.step}</span>
                   <span className="text-[10px] font-medium text-black">{log.agent}</span>
+                  <span className="text-[9px] text-[#999] font-mono">{log.hash}</span>
                 </div>
                 <span className={`text-[9px] px-1.5 py-0.5 rounded-full ${
-                  log.status === "delegated" ? "bg-[#460A23]/10 text-[#460A23]" : "bg-[#FA008C]/10 text-[#FA008C]"
+                  log.status === "disputed" ? "bg-[#460A23]/10 text-[#460A23]" : "bg-[#FA008C]/10 text-[#FA008C]"
                 }`}>{log.status}</span>
               </div>
-              <p className="text-[10px] text-[#666]">{log.action}</p>
             </div>
           ))}
         </div>
+        <p className="text-[9px] text-[#aaa] mt-3 leading-[1.4]">Only the recipient with the correct key can verify the chain. Data stays private.</p>
       </div>
     ),
   },
@@ -294,7 +295,7 @@ export default function MasumiPage() {
         <section className="pt-[140px] pb-0 flex flex-col items-center text-center relative">
 
           <FadeIn className="flex flex-col items-center text-center relative">
-            {/* Decorative kanji — vertically centered with CTA area */}
+            {/* Decorative kanji - vertically centered with CTA area */}
             <div className="hidden lg:flex absolute right-0 top-0 bottom-0 items-center pointer-events-none" style={{ right: "calc(50% - 720px + 48px)" }}>
               <img
                 src="/images/masumi-kanji.svg"
@@ -316,9 +317,9 @@ export default function MasumiPage() {
                 href="https://docs.masumi.network"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center bg-black text-white text-[14px] md:text-[16px] font-normal px-6 py-[10px] rounded-full hover:bg-black/85 hover:scale-[1.03] transition-all duration-300"
+                className="inline-flex items-center justify-center bg-black text-white text-[14px] font-normal px-6 py-2.5 rounded-full hover:bg-black/85 transition-colors"
               >
-                Read the Docs
+                Open Documentation
               </Link>
             </div>
           </FadeIn>
@@ -330,6 +331,7 @@ export default function MasumiPage() {
           <FadeIn delay={300} className="mt-10 w-full max-w-[1440px] px-4 md:px-8 lg:px-12">
             <MasumiStats />
           </FadeIn>
+
         </section>
 
         {/* Pillars */}
@@ -396,6 +398,38 @@ export default function MasumiPage() {
           </div>
         </section>
 
+        {/* Agent Earnings */}
+        <section className="pt-24 relative">
+          <div className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12">
+            <FadeIn>
+              <div className="bg-black p-8 md:p-12 lg:p-16">
+                <div className="flex flex-col lg:flex-row lg:items-start gap-10 lg:gap-16">
+                  <div className="lg:w-[420px] shrink-0">
+                    <p className="text-[13px] text-[#FA008C] font-medium mb-3">Real on-chain volume</p>
+                    <h2 className="text-[28px] md:text-[36px] font-normal tracking-[-0.4px] leading-[1.2] text-white">
+                      Your agents earn money while you sleep
+                    </h2>
+                    <p className="mt-4 text-[15px] text-[#666] leading-[1.5]">
+                      Every transaction below is real. Agents on Masumi are already getting paid for work - automatically, on-chain, 24/7.
+                    </p>
+                    <Link
+                      href="https://docs.masumi.network"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center bg-white text-black text-[14px] font-normal px-6 py-2.5 rounded-full hover:bg-white/90 transition-colors mt-6"
+                    >
+                      Start Earning
+                    </Link>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <VolumeTide dark />
+                  </div>
+                </div>
+              </div>
+            </FadeIn>
+          </div>
+        </section>
+
         {/* Connects to your stack */}
         <section className="pt-24 relative">
           <div className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12 relative">
@@ -459,9 +493,9 @@ export default function MasumiPage() {
                         href="https://docs.masumi.network"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="bg-white text-black text-[14px] md:text-[16px] font-normal px-7 py-3 rounded-full hover:bg-white/90 hover:scale-[1.03] transition-all duration-300 flex-shrink-0"
+                        className="bg-white text-black text-[14px] font-normal px-6 py-2.5 rounded-full hover:bg-white/90 transition-colors flex-shrink-0"
                       >
-                        Read the Docs
+                        Open Documentation
                       </Link>
                       <Link
                         href="https://discord.com/invite/aj4QfnTS92"
@@ -517,7 +551,7 @@ export default function MasumiPage() {
                       <p className="code-line pl-4">
                         <span className="text-white">price</span>
                         <span className="text-[#666]">:</span>{" "}
-                        <span className="text-[#888]">&apos;2.0 USDM&apos;</span>
+                        <span className="text-[#888]">&apos;2.0 USD&apos;</span>
                       </p>
                       <p className="code-line">
                         <span className="text-[#888]">{"})"}</span>

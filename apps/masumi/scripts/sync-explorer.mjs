@@ -18,11 +18,13 @@ const ROOT = path.resolve(__dirname, "..");
 const DB_PATH = path.join(ROOT, "data", "explorer.db");
 
 const BLOCKFROST_BASE = "https://cardano-mainnet.blockfrost.io/api/v0";
-const BLOCKFROST_KEY = "mainnetETlxBHnzbvUa1yCD398EUu7FJpwdMbAM";
+const BLOCKFROST_KEY = "mainnet00sMeWIJX4P0RgXcrr9sTllNactDSJm5";
 const ADDRESS =
   "addr1wx7j4kmg2cs7yf92uat3ed4a3u97kr7axxr4avaz0lhwdsq87ujx7";
 const USDM_PREFIX =
   "c48cbb3d5e57ed56e276bc45f99ab39abe94e6cd7ac39fb402";
+const POLICY_ID =
+  "ad6424e3ce9e47bbd8364984bd731b41de591f1d11f6d7d43d0da9b9";
 
 const KNOWN_TYPES = new Set([
   "SubmitResult",
@@ -64,10 +66,34 @@ function openDb() {
       type TEXT NOT NULL DEFAULT 'other',
       usdm_amount REAL NOT NULL DEFAULT 0,
       fees TEXT NOT NULL DEFAULT '0',
-      enriched INTEGER NOT NULL DEFAULT 0
+      enriched INTEGER NOT NULL DEFAULT 0,
+      sender_address TEXT
     );
     CREATE INDEX IF NOT EXISTS idx_block_time ON transactions(block_time);
     CREATE INDEX IF NOT EXISTS idx_type ON transactions(type);
+  `);
+
+  // Migration: add sender_address column if missing
+  const cols = db.pragma("table_info(transactions)").map((c) => c.name);
+  if (!cols.includes("sender_address")) {
+    db.exec("ALTER TABLE transactions ADD COLUMN sender_address TEXT");
+  }
+
+  // Migration: fix double-counted USDM volume on withdrawal transactions
+  const needsVolumeFix = db.prepare(
+    "SELECT COUNT(*) as c FROM transactions WHERE type IN ('CollectCompleted', 'CollectRefund') AND usdm_amount > 0"
+  ).get().c;
+  if (needsVolumeFix > 0) {
+    console.log(`Fixing ${needsVolumeFix} withdrawal txs with double-counted volume...`);
+    db.exec("UPDATE transactions SET usdm_amount = 0 WHERE type IN ('CollectCompleted', 'CollectRefund')");
+  }
+
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS agent_wallets (
+      address TEXT NOT NULL,
+      name TEXT NOT NULL,
+      asset TEXT PRIMARY KEY
+    );
   `);
 
   return db;
@@ -86,22 +112,26 @@ function detectTypeFromMetadata(metadata) {
   return "other";
 }
 
+function extractSenderAddress(utxos) {
+  if (!utxos) return null;
+  // Look for non-escrow address in inputs first, then outputs
+  for (const inp of utxos.inputs || []) {
+    if (inp.address !== ADDRESS) return inp.address;
+  }
+  for (const out of utxos.outputs || []) {
+    if (out.address !== ADDRESS) return out.address;
+  }
+  return null;
+}
+
 function computeUsdmAmount(utxos) {
   if (!utxos) return 0;
+  // Only count USDM flowing INTO the escrow (outputs to contract address)
+  // to avoid double-counting the same payment on deposit + withdrawal
   let total = 0;
   for (const out of utxos.outputs || []) {
     if (out.address === ADDRESS) {
       for (const a of out.amount) {
-        if (a.unit.startsWith(USDM_PREFIX)) {
-          total += parseInt(a.quantity, 10) / 1_000_000;
-        }
-      }
-    }
-  }
-  if (total > 0) return total;
-  for (const inp of utxos.inputs || []) {
-    if (inp.address === ADDRESS) {
-      for (const a of inp.amount) {
         if (a.unit.startsWith(USDM_PREFIX)) {
           total += parseInt(a.quantity, 10) / 1_000_000;
         }
@@ -176,7 +206,7 @@ async function enrichTransactions(db) {
   console.log(`Phase 2: Enriching ${unenriched.length} transactions...`);
 
   const update = db.prepare(
-    `UPDATE transactions SET type = ?, usdm_amount = ?, fees = ?, enriched = 1
+    `UPDATE transactions SET type = ?, usdm_amount = ?, fees = ?, sender_address = ?, enriched = 1
      WHERE hash = ?`
   );
 
@@ -197,8 +227,9 @@ async function enrichTransactions(db) {
         const type = detectTypeFromMetadata(metadata);
         const usdmAmount = computeUsdmAmount(utxos);
         const fees = txData?.fees ?? "0";
+        const senderAddress = extractSenderAddress(utxos);
 
-        update.run(type, usdmAmount, fees, hash);
+        update.run(type, usdmAmount, fees, senderAddress, hash);
       } catch (err) {
         console.error(`  Failed to enrich ${hash}: ${err.message}`);
       }
@@ -215,6 +246,85 @@ async function enrichTransactions(db) {
   }
 
   console.log(`  Done. ${processed} transactions enriched.`);
+}
+
+// Phase 3: Backfill sender_address for enriched txs missing it (500 per sync cycle)
+async function backfillSenderAddresses(db) {
+  const missing = db
+    .prepare("SELECT hash FROM transactions WHERE enriched = 1 AND sender_address IS NULL LIMIT 500")
+    .all();
+
+  if (missing.length === 0) return;
+
+  console.log(`Phase 3: Backfilling sender_address for ${missing.length} transactions...`);
+
+  const update = db.prepare("UPDATE transactions SET sender_address = ? WHERE hash = ?");
+  let processed = 0;
+
+  for (const { hash } of missing) {
+    try {
+      const utxos = await bf(`/txs/${hash}/utxos`);
+      const addr = extractSenderAddress(utxos);
+      if (addr) update.run(addr, hash);
+    } catch (err) {
+      console.error(`  Failed to backfill ${hash}: ${err.message}`);
+    }
+    processed++;
+    if (processed % 100 === 0) {
+      console.log(`  ${processed}/${missing.length} backfilled`);
+    }
+    await sleep(120);
+  }
+
+  console.log(`  Done. ${processed} sender addresses backfilled.`);
+}
+
+// Phase 4: Sync agent wallet addresses (runs once per cycle, ~2-3 API pages + parallel detail fetches)
+async function syncAgentWallets(db) {
+  console.log("Phase 4: Syncing agent wallets...");
+
+  const upsert = db.prepare(
+    "INSERT OR REPLACE INTO agent_wallets (address, name, asset) VALUES (?, ?, ?)"
+  );
+  let count = 0;
+
+  for (let page = 1; page <= 50; page++) {
+    const assets = await bf(`/assets/policy/${POLICY_ID}?count=100&page=${page}&order=asc`);
+    if (!assets || !Array.isArray(assets) || assets.length === 0) break;
+
+    // Process in batches of 10 to limit concurrency
+    for (let i = 0; i < assets.length; i += 10) {
+      const batch = assets.slice(i, i + 10);
+      await Promise.all(
+        batch.map(async (a) => {
+          try {
+            const [detail, holders] = await Promise.all([
+              bf(`/assets/${a.asset}`),
+              bf(`/assets/${a.asset}/addresses`),
+            ]);
+            const meta = detail?.onchain_metadata || detail?.metadata || {};
+            let name = null;
+            if (meta.name) {
+              name = Array.isArray(meta.name) ? meta.name.join("") : String(meta.name);
+            }
+            name = name || detail?.asset_name || a.asset.slice(0, 16);
+            const address = holders?.[0]?.address;
+            if (address) {
+              upsert.run(address, name, a.asset);
+              count++;
+            }
+          } catch {
+            // skip
+          }
+        })
+      );
+      await sleep(200);
+    }
+
+    if (assets.length < 100) break;
+  }
+
+  console.log(`  Done. ${count} agent wallets synced.`);
 }
 
 async function main() {
@@ -239,6 +349,8 @@ async function main() {
   console.log(`Total: ${totalCount}, Enriched: ${enrichedCount}, Unenriched: ${totalCount - enrichedCount}`);
 
   await enrichTransactions(db);
+  await backfillSenderAddresses(db);
+  await syncAgentWallets(db);
 
   db.close();
 

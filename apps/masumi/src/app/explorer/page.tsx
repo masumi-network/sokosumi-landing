@@ -2,13 +2,15 @@ import type { Metadata } from "next";
 import { Header, Footer, FadeIn } from "@summation/shared";
 import ExplorerCharts from "@/components/ExplorerCharts";
 import ExplorerTransactions from "@/components/ExplorerTransactions";
+import ActivityHeatmap from "@/components/ActivityHeatmap";
+import VolumeTide from "@/components/VolumeTide";
 
 export const metadata: Metadata = {
-  title: "Explorer — Masumi",
+  title: "Explorer - Masumi",
   description:
     "Explore on-chain transactions for the Masumi escrow smart contract. View UTXOs, agent registrations, escrow payments, and releases.",
   openGraph: {
-    title: "Explorer — Masumi",
+    title: "Explorer - Masumi",
     description:
       "On-chain transaction explorer for the Masumi payment network.",
   },
@@ -19,7 +21,7 @@ export default function ExplorerPage() {
     <>
       <Header product="masumi" />
       <main className="pt-[140px] pb-24">
-        <div className="max-w-[960px] mx-auto px-4 md:px-8">
+        <div className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12">
           <FadeIn>
             <h1 className="text-[32px] md:text-[48px] font-normal tracking-[-0.5px] leading-[1.15] text-black">
               Explorer
@@ -38,6 +40,18 @@ export default function ExplorerPage() {
           <FadeIn delay={200}>
             <div className="mt-10">
               <ExplorerTransactions />
+            </div>
+          </FadeIn>
+
+          <FadeIn delay={300}>
+            <div className="mt-10">
+              <VolumeTide />
+            </div>
+          </FadeIn>
+
+          <FadeIn delay={400}>
+            <div className="mt-10 relative">
+              <ActivityHeatmap />
             </div>
           </FadeIn>
         </div>

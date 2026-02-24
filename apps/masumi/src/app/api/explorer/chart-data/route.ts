@@ -1,10 +1,17 @@
-import { getChartDataOrProxy } from "@/lib/explorer-db";
+import { getChartDataOrProxy, type ChartRange } from "@/lib/explorer-db";
+import { NextRequest } from "next/server";
 
 export const dynamic = "force-dynamic";
 
-export async function GET() {
+const VALID_RANGES = new Set(["30", "90", "365", "all"]);
+
+export async function GET(req: NextRequest) {
   try {
-    return Response.json(await getChartDataOrProxy());
+    const rangeParam = req.nextUrl.searchParams.get("range") || "30";
+    const range: ChartRange = VALID_RANGES.has(rangeParam)
+      ? (rangeParam as ChartRange)
+      : "30";
+    return Response.json(await getChartDataOrProxy(range));
   } catch (err) {
     console.error("explorer/chart-data error:", err);
     return Response.json(

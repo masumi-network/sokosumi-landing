@@ -61,6 +61,9 @@ export async function GET(req: NextRequest) {
           if (mintTx?.block_time) mintedAt = mintTx.block_time;
         }
 
+        const holders = await bfFetch(`/assets/${a.asset}/addresses`, 300);
+        const walletAddress = holders?.[0]?.address || null;
+
         return {
           asset: a.asset,
           name: str(meta.name) || detail?.asset_name || a.asset.slice(0, 16),
@@ -73,6 +76,7 @@ export async function GET(req: NextRequest) {
           image: str(meta.image),
           fingerprint: detail?.fingerprint || null,
           mintedAt,
+          walletAddress,
         };
       })
     );
