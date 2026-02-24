@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     title: "Masumi | Agents Pay Agents",
     description:
       "The payment network for AI agents. Escrow smart contracts, on-chain identity, and a public registry for trustless agent-to-agent transactions.",
-    images: [{ url: "/images/og-masumi.png", width: 1920, height: 1080 }],
+    images: [{ url: "https://c-ipfs-gw.nmkr.io/ipfs/QmYuqD4ZxtqydTNvh6kxPSub5hzEH2Y21ahr3YpohR9rMt", width: 1920, height: 1080 }],
   },
 };
 

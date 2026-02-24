@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     title: "Kodosumi | Run AI Agents at Scale",
     description:
       "A distributed runtime built on Ray for agent execution, pipelines, and observability at enterprise scale.",
-    images: [{ url: "/images/og-kodosumi.png", width: 1920, height: 1080 }],
+    images: [{ url: "https://c-ipfs-gw.nmkr.io/ipfs/QmcPLPeQ7xYKc5HDgXuUdgZctoB1GBm7BBhpBoNdGGrcJH", width: 1920, height: 1080 }],
   },
 };
 

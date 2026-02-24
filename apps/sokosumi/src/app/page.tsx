@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     title: "Sokosumi | AI Marketing Agents for Teams",
     description:
       "AI agents for marketing teams. Automate research, copy, SEO, and campaigns. GDPR and EU AI Act compliant.",
-    images: [{ url: "/images/og-sokosumi.png", width: 1920, height: 1080 }],
+    images: [{ url: "https://c-ipfs-gw.nmkr.io/ipfs/QmRY3cZYJKZKr48S7d5zkFsr1nyNfCeHpQTK54Heg8FZ5N", width: 1920, height: 1080 }],
   },
 };
 

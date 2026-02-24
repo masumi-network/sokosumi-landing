@@ -22,12 +22,12 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     siteName: "Sokosumi",
-    images: [{ url: "/images/og-sokosumi.png", width: 1920, height: 1080 }],
+    images: [{ url: "https://c-ipfs-gw.nmkr.io/ipfs/QmRY3cZYJKZKr48S7d5zkFsr1nyNfCeHpQTK54Heg8FZ5N", width: 1920, height: 1080 }],
   },
   twitter: {
     card: "summary_large_image",
     site: "@sokosumi",
-    images: ["/images/og-sokosumi.png"],
+    images: ["https://c-ipfs-gw.nmkr.io/ipfs/QmRY3cZYJKZKr48S7d5zkFsr1nyNfCeHpQTK54Heg8FZ5N"],
   },
 };
 
