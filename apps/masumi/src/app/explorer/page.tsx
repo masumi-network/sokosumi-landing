@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     title: "Explorer | Masumi",
     description:
       "On-chain transaction explorer for the Masumi payment network.",
-    images: [{ url: "/images/og-masumi.png", width: 1200, height: 630 }],
+    images: [{ url: "/images/og-masumi.png", width: 1920, height: 1080 }],
   },
 };
 

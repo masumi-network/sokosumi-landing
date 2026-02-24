@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Press | Masumi",
     description: "Brand assets, key facts, and media inquiries for the Masumi payment network.",
-    images: [{ url: "/images/og-masumi.png", width: 1200, height: 630 }],
+    images: [{ url: "/images/og-masumi.png", width: 1920, height: 1080 }],
   },
 };
 
@@ -62,26 +62,6 @@ export default function PressPage() {
                   <path d="M5.5 2.5H3.5C2.94772 2.5 2.5 2.94772 2.5 3.5V10.5C2.5 11.0523 2.94772 11.5 3.5 11.5H10.5C11.0523 11.5 11.5 11.0523 11.5 10.5V8.5M8.5 2.5H11.5V5.5M11.5 2.5L6.5 7.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
               </a>
-            </section>
-
-            {/* Key Facts */}
-            <section>
-              <h2 className="text-[13px] font-medium text-[#919191] uppercase tracking-[0.08em] mb-4">
-                Key Facts
-              </h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {[
-                  { label: "Founded", value: "2024" },
-                  { label: "Blockchain", value: "Cardano" },
-                  { label: "On-chain Transactions", value: "22,000+" },
-                  { label: "Open Source", value: "Yes" },
-                ].map((fact) => (
-                  <div key={fact.label} className="border border-black/[0.06] p-4">
-                    <p className="text-[12px] text-[#919191] mb-1">{fact.label}</p>
-                    <p className="text-[16px] font-medium text-black">{fact.value}</p>
-                  </div>
-                ))}
-              </div>
             </section>
 
             {/* Contact */}
