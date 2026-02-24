@@ -40,7 +40,7 @@ export default function Footer({ product = "sokosumi" }: { product?: "sokosumi" 
               Sokosumi
             </a>
           </div>
-          <div className="mt-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 text-[12px] text-[#888]">
+          <div className="mt-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 text-[12px] text-[#666]">
             <p>&copy; {new Date().getFullYear()} Kodosumi. All rights reserved.</p>
             <div className="flex items-center gap-4">
               <span>Built by</span>
@@ -101,7 +101,7 @@ export default function Footer({ product = "sokosumi" }: { product?: "sokosumi" 
               Kodosumi
             </a>
           </div>
-          <div className="mt-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 text-[12px] text-[#888]">
+          <div className="mt-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 text-[12px] text-[#666]">
             <p>&copy; {new Date().getFullYear()} Masumi. All rights reserved.</p>
             <div className="flex items-center gap-4">
               <span>Built by</span>
@@ -147,7 +147,7 @@ export default function Footer({ product = "sokosumi" }: { product?: "sokosumi" 
             Kodosumi
           </a>
         </div>
-        <div className="mt-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 text-[12px] text-[#888]">
+        <div className="mt-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 text-[12px] text-[#666]">
           <p>&copy; {new Date().getFullYear()} Sokosumi. All rights reserved.</p>
           <div className="flex items-center gap-4">
             <span>Built by</span>
