@@ -341,45 +341,78 @@ export function getVolumeSeries(): { points: { date: string; volume: number }[] 
   return { points: rows.map((r) => ({ date: r.dt, volume: r.vol })) };
 }
 
+interface NetworkNode {
+  id: string;
+  label: string;
+  agents: string[];
+  txCount: number;
+  volume: number;
+  types: Record<string, number>;
+}
+
+interface NetworkEdge {
+  source: string;
+  target: string;
+  txCount: number;
+  volume: number;
+}
+
 export function getNetworkGraph(): {
-  nodes: { id: string; label: string; txCount: number; volume: number }[];
-  edges: { source: string; target: string; txCount: number; volume: number }[];
+  nodes: NetworkNode[];
+  edges: NetworkEdge[];
 } {
   const d = getDb();
   const ESCROW_ID = "escrow";
 
-  // Get top agents by transaction count
+  // Get top addresses with type breakdown
   const rows = d.prepare(
     `SELECT sender_address, COUNT(*) as cnt, COALESCE(SUM(usdm_amount), 0) as vol
      FROM transactions
      WHERE enriched = 1 AND sender_address IS NOT NULL
      GROUP BY sender_address
      ORDER BY cnt DESC
-     LIMIT 40`
+     LIMIT 30`
   ).all() as { sender_address: string; cnt: number; vol: number }[];
 
-  // Get agent name mapping
+  const addresses = rows.map((r) => r.sender_address);
+
+  // Get type breakdown per address
+  const typeRows = d.prepare(
+    `SELECT sender_address, type, COUNT(*) as cnt
+     FROM transactions
+     WHERE enriched = 1 AND sender_address IN (${addresses.map(() => "?").join(",")})
+     GROUP BY sender_address, type`
+  ).all(...addresses) as { sender_address: string; type: string; cnt: number }[];
+
+  const typeMap = new Map<string, Record<string, number>>();
+  for (const r of typeRows) {
+    if (!typeMap.has(r.sender_address)) typeMap.set(r.sender_address, {});
+    typeMap.get(r.sender_address)![r.type] = r.cnt;
+  }
+
   const agentMap = getAgentMap();
 
-  const nodes: { id: string; label: string; txCount: number; volume: number }[] = [
-    { id: ESCROW_ID, label: "Masumi Escrow", txCount: 0, volume: 0 },
+  const nodes: NetworkNode[] = [
+    { id: ESCROW_ID, label: "Masumi Escrow", agents: [], txCount: 0, volume: 0, types: {} },
   ];
 
-  const edges: { source: string; target: string; txCount: number; volume: number }[] = [];
+  const edges: NetworkEdge[] = [];
   let totalTx = 0;
   let totalVol = 0;
 
   for (const r of rows) {
-    const names = agentMap[r.sender_address];
-    const label = names && names.length > 0
+    const names = agentMap[r.sender_address] || [];
+    const label = names.length > 0
       ? names[0]
       : r.sender_address.slice(0, 8) + "..." + r.sender_address.slice(-4);
 
     nodes.push({
       id: r.sender_address,
       label,
+      agents: names,
       txCount: r.cnt,
       volume: r.vol,
+      types: typeMap.get(r.sender_address) || {},
     });
 
     edges.push({
