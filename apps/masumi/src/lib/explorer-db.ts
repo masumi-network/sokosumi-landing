@@ -341,6 +341,64 @@ export function getVolumeSeries(): { points: { date: string; volume: number }[] 
   return { points: rows.map((r) => ({ date: r.dt, volume: r.vol })) };
 }
 
+export function getNetworkGraph(): {
+  nodes: { id: string; label: string; txCount: number; volume: number }[];
+  edges: { source: string; target: string; txCount: number; volume: number }[];
+} {
+  const d = getDb();
+  const ESCROW_ID = "escrow";
+
+  // Get top agents by transaction count
+  const rows = d.prepare(
+    `SELECT sender_address, COUNT(*) as cnt, COALESCE(SUM(usdm_amount), 0) as vol
+     FROM transactions
+     WHERE enriched = 1 AND sender_address IS NOT NULL
+     GROUP BY sender_address
+     ORDER BY cnt DESC
+     LIMIT 40`
+  ).all() as { sender_address: string; cnt: number; vol: number }[];
+
+  // Get agent name mapping
+  const agentMap = getAgentMap();
+
+  const nodes: { id: string; label: string; txCount: number; volume: number }[] = [
+    { id: ESCROW_ID, label: "Masumi Escrow", txCount: 0, volume: 0 },
+  ];
+
+  const edges: { source: string; target: string; txCount: number; volume: number }[] = [];
+  let totalTx = 0;
+  let totalVol = 0;
+
+  for (const r of rows) {
+    const names = agentMap[r.sender_address];
+    const label = names && names.length > 0
+      ? names[0]
+      : r.sender_address.slice(0, 8) + "..." + r.sender_address.slice(-4);
+
+    nodes.push({
+      id: r.sender_address,
+      label,
+      txCount: r.cnt,
+      volume: r.vol,
+    });
+
+    edges.push({
+      source: r.sender_address,
+      target: ESCROW_ID,
+      txCount: r.cnt,
+      volume: r.vol,
+    });
+
+    totalTx += r.cnt;
+    totalVol += r.vol;
+  }
+
+  nodes[0].txCount = totalTx;
+  nodes[0].volume = totalVol;
+
+  return { nodes, edges };
+}
+
 // Proxy to production when no local DB data (for local dev)
 
 export async function getTxPageOrProxy(
