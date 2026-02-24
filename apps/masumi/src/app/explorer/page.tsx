@@ -4,7 +4,6 @@ import ExplorerCharts from "@/components/ExplorerCharts";
 import ExplorerTransactions from "@/components/ExplorerTransactions";
 import ActivityHeatmap from "@/components/ActivityHeatmap";
 import VolumeTide from "@/components/VolumeTide";
-import NetworkGraph from "@/components/NetworkGraph";
 
 export const metadata: Metadata = {
   title: "Explorer - Masumi",
@@ -45,12 +44,6 @@ export default function ExplorerPage() {
           </FadeIn>
 
           <FadeIn delay={300}>
-            <div className="mt-10">
-              <NetworkGraph />
-            </div>
-          </FadeIn>
-
-          <FadeIn delay={350}>
             <div className="mt-10">
               <VolumeTide />
             </div>

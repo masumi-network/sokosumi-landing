@@ -18,7 +18,7 @@ const ROOT = path.resolve(__dirname, "..");
 const DB_PATH = path.join(ROOT, "data", "explorer.db");
 
 const BLOCKFROST_BASE = "https://cardano-mainnet.blockfrost.io/api/v0";
-const BLOCKFROST_KEY = "mainnet00sMeWIJX4P0RgXcrr9sTllNactDSJm5";
+const BLOCKFROST_KEY = "mainnetD813pPbW5SjD3oa6HbNVcy72eDJTsxgF";
 const ADDRESS =
   "addr1wx7j4kmg2cs7yf92uat3ed4a3u97kr7axxr4avaz0lhwdsq87ujx7";
 const USDM_PREFIX =

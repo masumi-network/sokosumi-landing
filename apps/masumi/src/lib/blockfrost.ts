@@ -1,5 +1,5 @@
 export const BLOCKFROST_BASE = "https://cardano-mainnet.blockfrost.io/api/v0";
-export const BLOCKFROST_KEY = "mainnet00sMeWIJX4P0RgXcrr9sTllNactDSJm5";
+export const BLOCKFROST_KEY = "mainnetD813pPbW5SjD3oa6HbNVcy72eDJTsxgF";
 export const ADDRESS =
   "addr1wx7j4kmg2cs7yf92uat3ed4a3u97kr7axxr4avaz0lhwdsq87ujx7";
 export const POLICY_ID =

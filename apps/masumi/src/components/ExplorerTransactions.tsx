@@ -611,9 +611,11 @@ export default function ExplorerTransactions() {
     setAgentLoading(true);
     try {
       const res = await fetch(`/api/masumi-agents?page=${p}`);
+      if (!res.ok) throw new Error(`${res.status}`);
       const data = await res.json();
-      agentPageCache.current.set(p, data.agents);
-      setAgents(data.agents);
+      const list = Array.isArray(data.agents) ? data.agents : [];
+      agentPageCache.current.set(p, list);
+      setAgents(list);
       setAgentPage(p);
     } catch {
       // keep current
