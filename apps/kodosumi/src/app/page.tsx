@@ -433,7 +433,7 @@ export default function KodosumiPage() {
           </FadeIn>
 
           {/* Hero visual — video thumbnail with popup */}
-          <FadeIn delay={200} className="mt-12 w-full max-w-[960px] px-4 md:px-8 lg:px-12 mx-auto">
+          <FadeIn delay={200} className="mt-12 w-full max-w-[1200px] px-4 md:px-8 lg:px-12 mx-auto">
             <VideoModal />
           </FadeIn>
         </section>

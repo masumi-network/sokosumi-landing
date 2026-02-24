@@ -1,26 +1,37 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function VideoModal() {
   const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => { document.body.style.overflow = ""; };
+  }, [open]);
 
   return (
     <>
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="relative w-full overflow-hidden border border-black/[0.06] group cursor-pointer"
+        className="relative w-full overflow-hidden rounded-lg group cursor-pointer"
         style={{ paddingBottom: "56.25%" }}
       >
         <img
-          src="/images/kodosumi-video-poster.jpg"
-          alt="Kodosumi Intro — click to play"
-          className="absolute inset-0 w-full h-full object-cover"
+          src="/images/kodosumi-video-preview.gif"
+          alt="Kodosumi Intro - click to play"
+          className="absolute inset-0 w-full h-full object-cover rounded-lg"
         />
-        {/* Play button overlay */}
+        {/* Gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent rounded-lg" />
+        {/* Play button */}
         <div className="absolute inset-0 flex items-center justify-center">
-          <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-black/60 backdrop-blur-sm flex items-center justify-center group-hover:bg-black/80 transition-colors">
+          <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-black/50 backdrop-blur-sm flex items-center justify-center group-hover:bg-black/70 group-hover:scale-110 transition-all duration-200">
             <svg
               width="28"
               height="28"
@@ -32,29 +43,39 @@ export default function VideoModal() {
             </svg>
           </div>
         </div>
+        {/* Label */}
+        <div className="absolute bottom-4 left-4 flex items-center gap-2">
+          <span className="text-white/80 text-[13px] font-medium">Watch Introduction</span>
+        </div>
       </button>
 
-      {/* Modal */}
+      {/* Modal with gray backdrop */}
       {open && (
         <div
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm"
+          className="fixed inset-0 z-[100] flex items-center justify-center"
           onClick={() => setOpen(false)}
         >
+          {/* Gray backdrop */}
+          <div className="absolute inset-0 bg-[#1a1a1a]/90 backdrop-blur-md" />
+
+          {/* Close button */}
           <button
             onClick={() => setOpen(false)}
-            className="absolute top-6 right-6 text-white/60 hover:text-white transition-colors cursor-pointer"
+            className="absolute top-5 right-5 z-10 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors cursor-pointer"
             aria-label="Close video"
           >
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round">
               <line x1="18" y1="6" x2="6" y2="18" />
               <line x1="6" y1="6" x2="18" y2="18" />
             </svg>
           </button>
+
+          {/* Video container */}
           <div
-            className="w-full max-w-[960px] mx-4"
+            className="relative w-full max-w-[1100px] mx-4 z-10"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="relative w-full" style={{ paddingBottom: "56.25%" }}>
+            <div className="relative w-full rounded-lg overflow-hidden shadow-2xl" style={{ paddingBottom: "56.25%" }}>
               <iframe
                 className="absolute inset-0 w-full h-full"
                 src="https://www.youtube.com/embed/QDllqb3VonQ?autoplay=1&rel=0&modestbranding=1"
