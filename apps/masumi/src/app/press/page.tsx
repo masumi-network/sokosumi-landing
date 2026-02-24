@@ -3,9 +3,9 @@ import { Header, Footer } from "@summation/shared";
 
 export const metadata: Metadata = {
   title: "Press",
-  description: "Press kit for Masumi — brand assets, key facts about the payment network for AI agents, and media contact information.",
+  description: "Press kit for Masumi. Brand assets, key facts about the payment network for AI agents, and media contact information.",
   openGraph: {
-    title: "Press — Masumi",
+    title: "Press | Masumi",
     description: "Brand assets, key facts, and media inquiries for the Masumi payment network.",
   },
 };

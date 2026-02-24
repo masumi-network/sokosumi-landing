@@ -6,11 +6,11 @@ import ActivityHeatmap from "@/components/ActivityHeatmap";
 import VolumeTide from "@/components/VolumeTide";
 
 export const metadata: Metadata = {
-  title: "Explorer - Masumi",
+  title: "Explorer",
   description:
     "Explore on-chain transactions for the Masumi escrow smart contract. View UTXOs, agent registrations, escrow payments, and releases.",
   openGraph: {
-    title: "Explorer - Masumi",
+    title: "Explorer | Masumi",
     description:
       "On-chain transaction explorer for the Masumi payment network.",
   },

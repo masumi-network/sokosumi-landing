@@ -6,9 +6,9 @@ import { getAllPosts, getCategories, type Category } from "@/lib/blog";
 export const metadata: Metadata = {
   title: "Blog",
   description:
-    "News, technical deep-dives, and product updates from the Masumi team — the payment network for AI agents.",
+    "News, technical deep-dives, and product updates from the Masumi team. The payment network for AI agents.",
   openGraph: {
-    title: "Blog — Masumi",
+    title: "Blog | Masumi",
     description: "News, technical deep-dives, and product updates from the Masumi team.",
   },
 };

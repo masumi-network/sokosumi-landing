@@ -11,11 +11,11 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL("https://kodosumi.io"),
   title: {
-    default: "Kodosumi — Run AI Agents at Scale",
-    template: "%s — Kodosumi",
+    default: "Kodosumi | Run AI Agents at Scale",
+    template: "%s | Kodosumi",
   },
   description:
-    "Deploy, orchestrate, and scale AI agent services with Kodosumi. A distributed runtime built on Ray that handles agent execution, pipelines, and observability.",
+    "Deploy, orchestrate, and scale AI agent services with Kodosumi. A distributed runtime built on Ray for agent execution, pipelines, and observability.",
   icons: {
     icon: "/images/kodosumi-favicon.png",
   },

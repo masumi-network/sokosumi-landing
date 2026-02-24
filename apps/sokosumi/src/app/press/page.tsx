@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Header, Footer } from "@summation/shared";
 
 export const metadata: Metadata = {
-  title: "Press — Sokosumi",
+  title: "Press",
 };
 
 export default function PressPage() {

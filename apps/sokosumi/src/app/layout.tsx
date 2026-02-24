@@ -11,11 +11,11 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL("https://sokosumi.com"),
   title: {
-    default: "Sokosumi — AI Marketing Agents for Teams",
-    template: "%s — Sokosumi",
+    default: "Sokosumi | AI Marketing Agents for Teams",
+    template: "%s | Sokosumi",
   },
   description:
-    "Sokosumi gives marketing teams their own AI agents. Automate research, copywriting, SEO, and campaign execution — GDPR and EU AI Act compliant.",
+    "Sokosumi gives marketing teams their own AI agents. Automate research, copywriting, SEO, and campaign execution. GDPR and EU AI Act compliant.",
   icons: {
     icon: "/images/sokosumi-favicon.svg",
   },

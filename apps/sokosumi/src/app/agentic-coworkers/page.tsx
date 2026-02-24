@@ -6,7 +6,7 @@ import { Header, Footer, FadeIn } from "@summation/shared";
 export const metadata: Metadata = {
   title: "Agentic Coworkers",
   description:
-    "Meet the AI agents that do the work. Research, planning, SEO, and copywriting — each agent owns their domain.",
+    "Meet the AI agents that do the work. Research, planning, SEO, and copywriting. Each agent owns their domain.",
 };
 
 const agents = [

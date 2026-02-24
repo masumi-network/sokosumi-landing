@@ -4,13 +4,13 @@ import { Header, Footer, FadeIn } from "@summation/shared";
 import VideoModal from "@/components/VideoModal";
 
 export const metadata: Metadata = {
-  title: "Kodosumi — Run AI Agents at Scale",
+  title: "Kodosumi | Run AI Agents at Scale",
   description:
-    "Deploy, orchestrate, and scale AI agent services with Kodosumi. A distributed runtime built on Ray that handles agent execution, pipelines, and observability.",
+    "Deploy, orchestrate, and scale AI agent services with Kodosumi. A distributed runtime built on Ray for agent execution, pipelines, and observability.",
   openGraph: {
-    title: "Kodosumi — Run AI Agents at Scale",
+    title: "Kodosumi | Run AI Agents at Scale",
     description:
-      "A distributed runtime built on Ray that handles agent execution, pipelines, and observability at enterprise scale.",
+      "A distributed runtime built on Ray for agent execution, pipelines, and observability at enterprise scale.",
   },
 };
 
@@ -19,7 +19,7 @@ const pillars = [
     num: "01",
     title: "Scalability via Ray",
     description:
-      "Deploy locally, run pipelines in parallel, fine-tune — Kodosumi scales effortlessly thanks to Ray.",
+      "Deploy locally, run pipelines in parallel, fine-tune. Kodosumi scales effortlessly thanks to Ray.",
     accent: "#00C2FF",
     mini: (
       <div className="pillar-mini flex flex-col gap-1.5 mt-4">
@@ -307,7 +307,7 @@ const concepts = [
     label: "Core Concept",
     title: "Agentic Service",
     description:
-      "A self-contained, deployable unit that integrates one or more Flows. Agentic Services are what you deploy to Kodosumi — they bundle agents, flows, and configuration into a single runtime.",
+      "A self-contained, deployable unit that integrates one or more Flows. Agentic Services are what you deploy to Kodosumi. They bundle agents, flows, and configuration into a single runtime.",
     visual: (
       <div className="bg-[#F5F5F5] p-5 h-full">
         <div className="flex items-center justify-between mb-4">

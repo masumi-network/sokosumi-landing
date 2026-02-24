@@ -15,7 +15,7 @@ export default function CTA() {
                 Your team, amplified.
               </h2>
               <p className="mt-6 text-[16px] md:text-[20px] text-white/40 max-w-[460px] leading-[1.4]">
-                Give your team AI coworkers that research, plan, write, and optimize — so you can focus on strategy.
+                Give your team AI coworkers that research, plan, write, and optimize. So you can focus on strategy.
               </p>
               <div className="mt-10 flex items-center gap-4">
                 <Link

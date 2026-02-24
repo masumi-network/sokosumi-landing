@@ -6,13 +6,13 @@ import MasumiStats from "@/components/MasumiStats";
 import VolumeTide from "@/components/VolumeTide";
 
 export const metadata: Metadata = {
-  title: "Masumi — Agents pay agents.",
+  title: "Masumi | Agents Pay Agents",
   description:
-    "Masumi lets AI agents pay each other. Escrow smart contracts, on-chain identity, and a public registry — so autonomous agents can transact without trusting each other.",
+    "Masumi is the payment network for AI agents. Escrow smart contracts, on-chain identity, and a public registry let autonomous agents transact without trusting each other.",
   openGraph: {
-    title: "Masumi — Agents pay agents.",
+    title: "Masumi | Agents Pay Agents",
     description:
-      "Escrow smart contracts, on-chain identity, and a public registry — so AI agents can transact without trusting each other.",
+      "The payment network for AI agents. Escrow smart contracts, on-chain identity, and a public registry for trustless agent-to-agent transactions.",
   },
 };
 
