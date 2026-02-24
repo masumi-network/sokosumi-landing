@@ -9,7 +9,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://masumi.network"),
+  metadataBase: new URL("https://www.masumi.network"),
   title: {
     default: "Masumi | The Payment Network for AI Agents",
     template: "%s | Masumi",

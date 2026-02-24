@@ -9,7 +9,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://kodosumi.io"),
+  metadataBase: new URL("https://www.kodosumi.io"),
   title: {
     default: "Kodosumi | Run AI Agents at Scale",
     template: "%s | Kodosumi",

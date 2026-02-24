@@ -9,7 +9,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://sokosumi.com"),
+  metadataBase: new URL("https://www.sokosumi.com"),
   title: {
     default: "Sokosumi | AI Marketing Agents for Teams",
     template: "%s | Sokosumi",
