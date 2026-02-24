@@ -379,21 +379,13 @@ export default function KodosumiPage() {
         {/* Hero */}
         <section className="pt-[140px] pb-0 flex flex-col items-center text-center relative">
           <FadeIn className="flex flex-col items-center text-center relative">
-            {/* Decorative kanji stamps */}
-            <div className="hidden lg:flex absolute top-0 bottom-0 items-center pointer-events-none select-none" style={{ right: "calc(50% + 420px)" }}>
+            {/* Decorative kanji - vertically centered with CTA area */}
+            <div className="hidden lg:flex absolute right-0 top-0 bottom-0 items-center pointer-events-none" style={{ right: "calc(50% - 720px + 48px)" }}>
               <img
                 src="/images/kodosumi-kanji-black.png"
                 alt=""
                 aria-hidden="true"
-                className="w-[48px] opacity-[0.07]"
-              />
-            </div>
-            {/* Wordmark logo */}
-            <div className="mb-6">
-              <img
-                src="/images/kodosumi-wordmark-black.png"
-                alt="Kodosumi"
-                className="h-[28px] md:h-[36px] opacity-90"
+                className="w-[24px] select-none opacity-[0.08]"
               />
             </div>
             <h1 className="text-[40px] md:text-[64px] font-normal tracking-[-1.28px] leading-[1.15] text-black max-w-[800px] px-6">
