@@ -21,6 +21,12 @@
     "remark-rehype": "^11.1.2",
     "unified": "^11.0.5"
   },
+  "browserslist": [
+    "chrome >= 100",
+    "firefox >= 100",
+    "safari >= 15.4",
+    "edge >= 100"
+  ],
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/better-sqlite3": "^7.6.13",
