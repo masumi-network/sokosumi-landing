@@ -79,14 +79,14 @@ export default function Header({ product = "sokosumi" }: { product?: "sokosumi" 
                 </Link>
               ) : product === "masumi" ? (
                 <Link href="/">
-                  <img src="/images/masumi-wordmark.png" alt="masumi" width={100} height={18} className="h-[18px] w-auto block" />
+                  <img src="/images/masumi-wordmark.webp" alt="masumi" width={100} height={18} className="h-[18px] w-auto block" fetchPriority="high" />
                 </Link>
               ) : (
                 <Link href="/">
                   <img src="/images/kodosumi-wordmark-black.png" alt="kodosumi" width={100} height={18} className="h-[18px] w-auto block" />
                 </Link>
               )}
-              <button>
+              <button aria-label="Switch product">
                 <svg width="8" height="5" viewBox="0 0 8 5" fill="none" className={`hidden sm:block transition-transform ${showProducts ? "rotate-180" : ""}`}>
                   <path d="M1 1l3 3 3-3" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>

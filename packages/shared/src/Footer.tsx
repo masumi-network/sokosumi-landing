@@ -11,7 +11,7 @@ export default function Footer({ product = "sokosumi" }: { product?: "sokosumi" 
             <Link href="/">
               <span className="text-[18px] font-medium tracking-tight text-black">kodosumi</span>
             </Link>
-            <div className="flex flex-wrap items-center gap-5 text-[13px] text-[#999]">
+            <div className="flex flex-wrap items-center gap-5 text-[13px] text-[#666]">
               <Link href="https://docs.kodosumi.io" className="hover:text-black transition-colors" target="_blank" rel="noopener noreferrer">
                 Docs
               </Link>
@@ -26,7 +26,7 @@ export default function Footer({ product = "sokosumi" }: { product?: "sokosumi" 
               </Link>
             </div>
           </div>
-          <div className="mt-6 flex flex-wrap items-center justify-end gap-5 text-[13px] text-[#999]">
+          <div className="mt-6 flex flex-wrap items-center justify-end gap-5 text-[13px] text-[#666]">
             <Link href="/imprint" className="hover:text-black transition-colors">
               Imprint
             </Link>
@@ -49,7 +49,7 @@ export default function Footer({ product = "sokosumi" }: { product?: "sokosumi" 
               </a>
               <span>&amp;</span>
               <a href="https://www.serviceplan.com" target="_blank" rel="noopener noreferrer" className="hover:opacity-70 transition-opacity">
-                <img src="/images/serviceplan-group.png" alt="Serviceplan Group" width={120} height={60} className="h-[60px] w-auto -my-[20px] opacity-40 hover:opacity-70 transition-opacity" />
+                <img src="/images/serviceplan-group.webp" alt="Serviceplan Group" width={120} height={60} className="h-[60px] w-auto -my-[20px] opacity-40 hover:opacity-70 transition-opacity" />
               </a>
             </div>
           </div>
@@ -64,9 +64,9 @@ export default function Footer({ product = "sokosumi" }: { product?: "sokosumi" 
         <div className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12">
           <div className="border-t border-black/[0.06] pt-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
             <Link href="/">
-              <img src="/images/masumi-wordmark.png" alt="masumi" width={90} height={16} className="h-[16px] w-auto" />
+              <img src="/images/masumi-wordmark.webp" alt="masumi" width={90} height={16} className="h-[16px] w-auto" />
             </Link>
-            <div className="flex flex-wrap items-center gap-5 text-[13px] text-[#999]">
+            <div className="flex flex-wrap items-center gap-5 text-[13px] text-[#666]">
               <Link href="https://docs.masumi.network" className="hover:text-black transition-colors" target="_blank" rel="noopener noreferrer">
                 Docs
               </Link>
@@ -84,7 +84,7 @@ export default function Footer({ product = "sokosumi" }: { product?: "sokosumi" 
               </Link>
             </div>
           </div>
-          <div className="mt-6 flex flex-wrap items-center justify-end gap-5 text-[13px] text-[#999]">
+          <div className="mt-6 flex flex-wrap items-center justify-end gap-5 text-[13px] text-[#666]">
             <Link href="/privacy" className="hover:text-black transition-colors">
               Privacy Policy
             </Link>
@@ -110,7 +110,7 @@ export default function Footer({ product = "sokosumi" }: { product?: "sokosumi" 
               </a>
               <span>&amp;</span>
               <a href="https://www.serviceplan.com" target="_blank" rel="noopener noreferrer" className="hover:opacity-70 transition-opacity">
-                <img src="/images/serviceplan-group.png" alt="Serviceplan Group" width={120} height={60} className="h-[60px] w-auto -my-[20px] opacity-40 hover:opacity-70 transition-opacity" />
+                <img src="/images/serviceplan-group.webp" alt="Serviceplan Group" width={120} height={60} className="h-[60px] w-auto -my-[20px] opacity-40 hover:opacity-70 transition-opacity" />
               </a>
             </div>
           </div>
@@ -124,7 +124,7 @@ export default function Footer({ product = "sokosumi" }: { product?: "sokosumi" 
       <div className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12">
         <div className="border-t border-black/[0.06] pt-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
           <SokosumiLogoFull />
-          <div className="flex flex-wrap items-center gap-5 text-[13px] text-[#999]">
+          <div className="flex flex-wrap items-center gap-5 text-[13px] text-[#666]">
             <Link href="https://app.sokosumi.com" className="hover:text-black transition-colors">
               Log in
             </Link>
@@ -139,7 +139,7 @@ export default function Footer({ product = "sokosumi" }: { product?: "sokosumi" 
             </Link>
           </div>
         </div>
-        <div className="mt-6 flex flex-wrap items-center justify-end gap-5 text-[13px] text-[#999]">
+        <div className="mt-6 flex flex-wrap items-center justify-end gap-5 text-[13px] text-[#666]">
           <a href="https://masumi.network" className="hover:text-black transition-colors" target="_blank" rel="noopener noreferrer">
             Masumi
           </a>
@@ -156,7 +156,7 @@ export default function Footer({ product = "sokosumi" }: { product?: "sokosumi" 
             </a>
             <span>&amp;</span>
             <a href="https://www.serviceplan.com" target="_blank" rel="noopener noreferrer" className="hover:opacity-70 transition-opacity">
-              <img src="/images/serviceplan-group.png" alt="Serviceplan Group" width={120} height={60} className="h-[60px] w-auto -my-[20px] opacity-40 hover:opacity-70 transition-opacity" />
+              <img src="/images/serviceplan-group.webp" alt="Serviceplan Group" width={120} height={60} className="h-[60px] w-auto -my-[20px] opacity-40 hover:opacity-70 transition-opacity" />
             </a>
           </div>
         </div>

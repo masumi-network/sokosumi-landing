@@ -461,7 +461,7 @@ export default function MasumiPage() {
                           <span className="text-[14px] font-medium text-black block leading-tight">{item.name}</span>
                           {"isStandard" in item && (
                             <a href={(item as unknown as typeof standards[0]).href} target="_blank" rel="noopener noreferrer" className="text-[11px] text-[#FA008C]">
-                              Learn more →
+                              Learn more about {item.name} →
                             </a>
                           )}
                         </div>
