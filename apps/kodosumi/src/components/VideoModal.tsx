@@ -23,7 +23,7 @@ export default function VideoModal() {
         style={{ paddingBottom: "56.25%" }}
       >
         <img
-          src="/images/kodosumi-video-preview.gif"
+          src="/images/kodosumi-video-preview.webp"
           alt="Kodosumi Intro - click to play"
           className="absolute inset-0 w-full h-full object-cover rounded-lg"
         />
@@ -49,14 +49,14 @@ export default function VideoModal() {
         </div>
       </button>
 
-      {/* Modal with gray backdrop */}
+      {/* Full-page modal */}
       {open && (
         <div
-          className="fixed inset-0 z-[100] flex items-center justify-center"
+          className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8 lg:p-12"
           onClick={() => setOpen(false)}
         >
-          {/* Gray backdrop */}
-          <div className="absolute inset-0 bg-[#1a1a1a]/90 backdrop-blur-md" />
+          {/* Backdrop */}
+          <div className="absolute inset-0 bg-[#0a0a0a]/95 backdrop-blur-md" />
 
           {/* Close button */}
           <button
@@ -70,20 +70,19 @@ export default function VideoModal() {
             </svg>
           </button>
 
-          {/* Video container - full width */}
+          {/* Video — fills available space */}
           <div
-            className="relative w-full px-4 md:px-8 z-10"
+            className="relative w-full h-full max-h-[80vh] z-10"
+            style={{ aspectRatio: "16/9", maxWidth: "calc(80vh * 16 / 9)" }}
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="relative w-full rounded-lg overflow-hidden shadow-2xl" style={{ paddingBottom: "56.25%" }}>
-              <iframe
-                className="absolute inset-0 w-full h-full"
-                src="https://www.youtube.com/embed/QDllqb3VonQ?autoplay=1&rel=0&modestbranding=1"
-                title="Kodosumi Intro"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
-            </div>
+            <iframe
+              className="absolute inset-0 w-full h-full rounded-lg"
+              src="https://www.youtube.com/embed/QDllqb3VonQ?autoplay=1&rel=0&modestbranding=1"
+              title="Kodosumi Intro"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
           </div>
         </div>
       )}

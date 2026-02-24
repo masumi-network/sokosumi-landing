@@ -83,7 +83,7 @@ export default function Header({ product = "sokosumi" }: { product?: "sokosumi" 
                 </Link>
               ) : (
                 <Link href="/">
-                  <img src="/images/kodosumi-wordmark-black.png" alt="kodosumi" width={100} height={18} className="h-[18px] w-auto block" />
+                  <img src="/images/kodosumi-wordmark-black.webp" alt="kodosumi" width={100} height={18} className="h-[18px] w-auto block" fetchPriority="high" />
                 </Link>
               )}
               <button aria-label="Switch product">
