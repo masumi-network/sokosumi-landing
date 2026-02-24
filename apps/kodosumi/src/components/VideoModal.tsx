@@ -23,7 +23,7 @@ export default function VideoModal() {
         style={{ paddingBottom: "56.25%" }}
       >
         <img
-          src="/images/kodosumi-video-preview.gif"
+          src="/images/kodosumi-video-preview.webp"
           alt="Kodosumi Intro - click to play"
           className="absolute inset-0 w-full h-full object-cover rounded-lg"
         />

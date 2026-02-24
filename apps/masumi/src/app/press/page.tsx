@@ -7,6 +7,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Press | Masumi",
     description: "Brand assets, key facts, and media inquiries for the Masumi payment network.",
+    images: [{ url: "/images/og-masumi.png", width: 1200, height: 630 }],
   },
 };
 

@@ -10,6 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Blog | Masumi",
     description: "News, technical deep-dives, and product updates from the Masumi team.",
+    images: [{ url: "/images/og-masumi.png", width: 1200, height: 630 }],
   },
 };
 
