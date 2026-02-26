@@ -40,6 +40,7 @@ interface ChartData {
     month: number;
     monthPrev: number;
   };
+  totalFeesAda: number;
   bars: { date: string; count: number; byType: Record<string, number> }[];
   typeBreakdown: { type: TransactionType; count: number; percentage: number }[];
 }
@@ -273,7 +274,7 @@ export default function ExplorerCharts() {
   return (
     <div className="flex flex-col gap-8">
       {/* Period stat cards */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4">
         <div className="flex flex-col gap-1 p-4 border border-black/[0.04]">
           <span className="text-[11px] text-[#bbb]">24h</span>
           <span className="text-[24px] md:text-[28px] font-normal tracking-[-0.5px] text-black leading-none">
@@ -315,6 +316,13 @@ export default function ExplorerCharts() {
             {formatUsd(data.volumeStats.total)}
           </span>
           <span className="text-[10px] text-[#bbb]">USD</span>
+        </div>
+        <div className="flex flex-col gap-1 p-4 border border-black/[0.04]">
+          <span className="text-[11px] text-[#bbb]">Fees paid to Cardano</span>
+          <span className="text-[24px] md:text-[28px] font-normal tracking-[-0.5px] text-black leading-none">
+            {data.totalFeesAda.toFixed(0)}
+          </span>
+          <span className="text-[10px] text-[#bbb]">ADA</span>
         </div>
       </div>
 

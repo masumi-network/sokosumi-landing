@@ -163,6 +163,7 @@ export function getChartData(range: ChartRange = "30"): {
     month: number;
     monthPrev: number;
   };
+  totalFeesAda: number;
   bars: { date: string; count: number; byType: Record<string, number> }[];
   typeBreakdown: { type: TransactionType; count: number; percentage: number }[];
 } {
@@ -293,7 +294,12 @@ export function getChartData(range: ChartRange = "30"): {
     percentage: enrichedTotal > 0 ? (r.cnt / enrichedTotal) * 100 : 0,
   }));
 
-  return { periodCounts, volumeStats, bars, typeBreakdown };
+  const totalFeesLovelace = (d.prepare(
+    "SELECT COALESCE(SUM(CAST(fees AS INTEGER)), 0) as total FROM transactions WHERE enriched = 1"
+  ).get() as { total: number }).total;
+  const totalFeesAda = totalFeesLovelace / 1_000_000;
+
+  return { periodCounts, volumeStats, totalFeesAda, bars, typeBreakdown };
 }
 
 export function getHeatmapData(): { days: { date: string; count: number }[] } {
