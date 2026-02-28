@@ -96,6 +96,13 @@ function openDb() {
     );
   `);
 
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS sync_meta (
+      key TEXT PRIMARY KEY,
+      value TEXT NOT NULL
+    );
+  `);
+
   return db;
 }
 
@@ -248,8 +255,23 @@ async function enrichTransactions(db) {
   console.log(`  Done. ${processed} transactions enriched.`);
 }
 
-// Phase 3: Backfill sender_address for enriched txs missing it (500 per sync cycle)
+// Throttle helper: returns true if enough time has passed since last run
+function shouldRun(db, key, intervalMs) {
+  const row = db.prepare("SELECT value FROM sync_meta WHERE key = ?").get(key);
+  if (!row) return true;
+  return Date.now() - Number(row.value) >= intervalMs;
+}
+
+function markRan(db, key) {
+  db.prepare("INSERT OR REPLACE INTO sync_meta (key, value) VALUES (?, ?)").run(key, String(Date.now()));
+}
+
+// Phase 3: Backfill sender_address for enriched txs missing it (500 per sync cycle, once per hour)
 async function backfillSenderAddresses(db) {
+  if (!shouldRun(db, "backfill_sender", 60 * 60 * 1000)) {
+    console.log("Phase 3: Skipping backfill (ran less than 1h ago).");
+    return;
+  }
   const missing = db
     .prepare("SELECT hash FROM transactions WHERE enriched = 1 AND sender_address IS NULL LIMIT 500")
     .all();
@@ -277,10 +299,15 @@ async function backfillSenderAddresses(db) {
   }
 
   console.log(`  Done. ${processed} sender addresses backfilled.`);
+  markRan(db, "backfill_sender");
 }
 
-// Phase 4: Sync agent wallet addresses (runs once per cycle, ~2-3 API pages + parallel detail fetches)
+// Phase 4: Sync agent wallet addresses (runs once every 6 hours)
 async function syncAgentWallets(db) {
+  if (!shouldRun(db, "sync_agent_wallets", 6 * 60 * 60 * 1000)) {
+    console.log("Phase 4: Skipping agent wallet sync (ran less than 6h ago).");
+    return;
+  }
   console.log("Phase 4: Syncing agent wallets...");
 
   const upsert = db.prepare(
@@ -325,6 +352,7 @@ async function syncAgentWallets(db) {
   }
 
   console.log(`  Done. ${count} agent wallets synced.`);
+  markRan(db, "sync_agent_wallets");
 }
 
 async function main() {

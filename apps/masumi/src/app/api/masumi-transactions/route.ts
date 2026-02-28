@@ -1,26 +1,34 @@
-import { bfFetch, ADDRESS } from "@/lib/blockfrost";
+import { getDb, hasData } from "@/lib/explorer-db";
 import { NextRequest } from "next/server";
+
+export const dynamic = "force-dynamic";
 
 export async function GET(req: NextRequest) {
   const page = Number(req.nextUrl.searchParams.get("page") || "1");
+  const pageSize = 10;
 
   try {
-    const txs = await bfFetch(
-      `/addresses/${ADDRESS}/transactions?count=10&page=${page}&order=desc`,
-      60
-    );
-
-    if (!txs || !Array.isArray(txs) || txs.length === 0) {
+    if (!hasData()) {
       return Response.json({ transactions: [], page });
     }
 
-    const transactions = txs.map(
-      (tx: { tx_hash: string; block_height: number; block_time: number }) => ({
-        tx_hash: tx.tx_hash,
-        block_height: tx.block_height,
-        block_time: tx.block_time,
-      })
-    );
+    const d = getDb();
+    const offset = (Math.max(1, page) - 1) * pageSize;
+
+    const rows = d
+      .prepare(
+        `SELECT hash, block_height, block_time
+         FROM transactions
+         ORDER BY block_time DESC, block_height DESC
+         LIMIT ? OFFSET ?`
+      )
+      .all(pageSize, offset) as { hash: string; block_height: number; block_time: number }[];
+
+    const transactions = rows.map((r) => ({
+      tx_hash: r.hash,
+      block_height: r.block_height,
+      block_time: r.block_time,
+    }));
 
     return Response.json({ transactions, page });
   } catch (err) {
