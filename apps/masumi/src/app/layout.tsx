@@ -26,7 +26,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    site: "@masaborad",
+    site: "@MasumiNetwork",
+    creator: "@MasumiNetwork",
     images: ["https://c-ipfs-gw.nmkr.io/ipfs/QmYuqD4ZxtqydTNvh6kxPSub5hzEH2Y21ahr3YpohR9rMt"],
   },
   other: {
