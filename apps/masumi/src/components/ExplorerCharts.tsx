@@ -239,9 +239,13 @@ export default function ExplorerCharts() {
   const [data, setData] = useState<ChartData | null>(null);
   const [loading, setLoading] = useState(false);
 
+  // Reset only on network change
+  useEffect(() => {
+    setData(null);
+  }, [network]);
+
   useEffect(() => {
     setLoading(true);
-    setData(null);
     fetch(`/api/explorer/chart-data?range=${range}&network=${network}`)
       .then((r) => {
         if (!r.ok) throw new Error();
