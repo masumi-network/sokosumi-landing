@@ -29,7 +29,7 @@ const RANGE_SUBTITLES: Record<ChartRange, string> = {
   all: "Monthly \u00b7 All time",
 };
 
-interface ChartData {
+interface StatsData {
   periodCounts: {
     day: number; dayPrev: number;
     week: number; weekPrev: number;
@@ -42,6 +42,9 @@ interface ChartData {
     monthPrev: number;
   };
   totalFeesAda: number;
+}
+
+interface RangeData {
   bars: { date: string; count: number; byType: Record<string, number> }[];
   typeBreakdown: { type: TransactionType; count: number; percentage: number }[];
 }
@@ -132,7 +135,7 @@ function labelInterval(range: ChartRange, total: number): number {
   return Math.max(1, Math.floor(total / 6));
 }
 
-function BarChart({ bars, range }: { bars: ChartData["bars"]; range: ChartRange }) {
+function BarChart({ bars, range }: { bars: RangeData["bars"]; range: ChartRange }) {
   const [hovered, setHovered] = useState<number | null>(null);
   const max = Math.max(...bars.map((d) => d.count), 1);
   const interval = labelInterval(range, bars.length);
@@ -184,7 +187,7 @@ function TypeBreakdown({
   breakdown,
   range,
 }: {
-  breakdown: ChartData["typeBreakdown"];
+  breakdown: RangeData["typeBreakdown"];
   range: ChartRange;
 }) {
   if (breakdown.length === 0) return null;
@@ -236,12 +239,13 @@ function TypeBreakdown({
 export default function ExplorerCharts() {
   const network = useNetwork();
   const [range, setRange] = useState<ChartRange>("30");
-  const [data, setData] = useState<ChartData | null>(null);
+  const [stats, setStats] = useState<StatsData | null>(null);
+  const [rangeData, setRangeData] = useState<RangeData | null>(null);
   const [loading, setLoading] = useState(false);
 
-  // Reset only on network change
   useEffect(() => {
-    setData(null);
+    setStats(null);
+    setRangeData(null);
   }, [network]);
 
   useEffect(() => {
@@ -252,13 +256,16 @@ export default function ExplorerCharts() {
         return r.json();
       })
       .then((d) => {
-        setData(d);
+        if (!stats) {
+          setStats({ periodCounts: d.periodCounts, volumeStats: d.volumeStats, totalFeesAda: d.totalFeesAda });
+        }
+        setRangeData({ bars: d.bars, typeBreakdown: d.typeBreakdown });
         setLoading(false);
       })
       .catch(() => setLoading(false));
-  }, [range, network]);
+  }, [range, network]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  if (!data) {
+  if (!stats || !rangeData) {
     return (
       <div className="flex flex-col gap-6">
         {/* Skeleton period stats */}
@@ -285,49 +292,49 @@ export default function ExplorerCharts() {
         <div className="flex flex-col gap-1 p-4 border border-black/[0.04]">
           <span className="text-[11px] text-[#bbb]">24h</span>
           <span className="text-[24px] md:text-[28px] font-normal tracking-[-0.5px] text-black leading-none">
-            <AnimatedNumber value={data.periodCounts.day} duration={1500} />
+            <AnimatedNumber value={stats.periodCounts.day} duration={1500} />
           </span>
-          <GrowthBadge current={data.periodCounts.day} prev={data.periodCounts.dayPrev} />
+          <GrowthBadge current={stats.periodCounts.day} prev={stats.periodCounts.dayPrev} />
         </div>
         <div className="flex flex-col gap-1 p-4 border border-black/[0.04]">
           <span className="text-[11px] text-[#bbb]">7 days</span>
           <span className="text-[24px] md:text-[28px] font-normal tracking-[-0.5px] text-black leading-none">
-            <AnimatedNumber value={data.periodCounts.week} duration={1800} />
+            <AnimatedNumber value={stats.periodCounts.week} duration={1800} />
           </span>
-          <GrowthBadge current={data.periodCounts.week} prev={data.periodCounts.weekPrev} />
+          <GrowthBadge current={stats.periodCounts.week} prev={stats.periodCounts.weekPrev} />
         </div>
         <div className="flex flex-col gap-1 p-4 border border-black/[0.04]">
           <span className="text-[11px] text-[#bbb]">30 days</span>
           <span className="text-[24px] md:text-[28px] font-normal tracking-[-0.5px] text-black leading-none">
-            <AnimatedNumber value={data.periodCounts.month} duration={2200} />
+            <AnimatedNumber value={stats.periodCounts.month} duration={2200} />
           </span>
-          <GrowthBadge current={data.periodCounts.month} prev={data.periodCounts.monthPrev} />
+          <GrowthBadge current={stats.periodCounts.month} prev={stats.periodCounts.monthPrev} />
         </div>
         <div className="flex flex-col gap-1 p-4 border border-black/[0.04]">
           <span className="text-[11px] text-[#bbb]">All time</span>
           <span className="text-[24px] md:text-[28px] font-normal tracking-[-0.5px] text-black leading-none">
-            <AnimatedNumber value={data.periodCounts.total} duration={2500} />
+            <AnimatedNumber value={stats.periodCounts.total} duration={2500} />
           </span>
           <span className="text-[10px] text-[#bbb]">transactions</span>
         </div>
         <div className="flex flex-col gap-1 p-4 border border-black/[0.04]">
           <span className="text-[11px] text-[#bbb]">Volume (30d)</span>
           <span className="text-[24px] md:text-[28px] font-normal tracking-[-0.5px] text-black leading-none">
-            {formatUsd(data.volumeStats.month)}
+            {formatUsd(stats.volumeStats.month)}
           </span>
-          <GrowthBadge current={data.volumeStats.month} prev={data.volumeStats.monthPrev} />
+          <GrowthBadge current={stats.volumeStats.month} prev={stats.volumeStats.monthPrev} />
         </div>
         <div className="flex flex-col gap-1 p-4 border border-black/[0.04]">
           <span className="text-[11px] text-[#bbb]">Volume (all)</span>
           <span className="text-[24px] md:text-[28px] font-normal tracking-[-0.5px] text-black leading-none">
-            {formatUsd(data.volumeStats.total)}
+            {formatUsd(stats.volumeStats.total)}
           </span>
           <span className="text-[10px] text-[#bbb]">USD</span>
         </div>
         <div className="flex flex-col gap-1 p-4 border border-black/[0.04]">
           <span className="text-[11px] text-[#bbb]">Cardano Transaction Fees</span>
           <span className="text-[24px] md:text-[28px] font-normal tracking-[-0.5px] text-black leading-none">
-            {data.totalFeesAda.toFixed(0)}
+            {stats.totalFeesAda.toFixed(0)}
           </span>
           <span className="text-[10px] text-[#bbb]">ADA</span>
         </div>
@@ -356,11 +363,11 @@ export default function ExplorerCharts() {
           </div>
         </div>
         <div className={loading ? "opacity-50 transition-opacity" : "transition-opacity"}>
-          <BarChart bars={data.bars} range={range} />
+          <BarChart bars={rangeData.bars} range={range} />
         </div>
       </div>
 
-      <TypeBreakdown breakdown={data.typeBreakdown} range={range} />
+      <TypeBreakdown breakdown={rangeData.typeBreakdown} range={range} />
     </div>
   );
 }
