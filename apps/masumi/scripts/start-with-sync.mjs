@@ -25,7 +25,7 @@ function runSync() {
   syncing = true;
   console.log("[sync] Starting explorer sync...");
 
-  const child = spawn("node", [SYNC_SCRIPT], {
+  const child = spawn("node", [SYNC_SCRIPT, "all"], {
     stdio: "inherit",
     cwd: path.resolve(__dirname, ".."),
   });

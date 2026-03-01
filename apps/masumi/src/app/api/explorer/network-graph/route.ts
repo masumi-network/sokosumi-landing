@@ -1,11 +1,14 @@
 import { getNetworkGraph, hasData } from "@/lib/explorer-db";
+import { parseNetworkParam } from "@/lib/network-config";
+import { NextRequest } from "next/server";
 
 export const dynamic = "force-dynamic";
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   try {
-    if (hasData()) {
-      return Response.json(getNetworkGraph());
+    const network = parseNetworkParam(req.nextUrl.searchParams);
+    if (hasData(network)) {
+      return Response.json(getNetworkGraph(network));
     }
     return Response.json({ nodes: [], edges: [] });
   } catch (err) {

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Suspense } from "react";
 import { Header, Footer, FadeIn } from "@summation/shared";
 import LazyAgentFlowGraph from "@/components/LazyAgentFlowGraph";
 import MasumiStats from "@/components/MasumiStats";
@@ -423,7 +424,9 @@ export default function MasumiPage() {
                     </Link>
                   </div>
                   <div className="flex-1 min-w-0">
-                    <VolumeTide dark />
+                    <Suspense fallback={<div className="h-[220px]" />}>
+                      <VolumeTide dark />
+                    </Suspense>
                   </div>
                 </div>
               </div>

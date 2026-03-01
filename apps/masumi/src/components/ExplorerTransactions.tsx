@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState, useRef, useCallback } from "react";
+import { useNetwork } from "@/hooks/useNetwork";
+import { NETWORKS, type NetworkId } from "@/lib/network-config";
 import type {
   TransactionSummary,
   TransactionDetail,
@@ -9,9 +11,6 @@ import type {
   AmountEntry,
   Agent,
 } from "@/lib/explorer-types";
-
-const CONTRACT_ADDRESS = "addr1wx7j4kmg2cs7yf92uat3ed4a3u97kr7axxr4avaz0lhwdsq87ujx7";
-const POLICY_ID = "ad6424e3ce9e47bbd8364984bd731b41de591f1d11f6d7d43d0da9b9";
 
 type Tab = "transactions" | "agents";
 
@@ -171,7 +170,7 @@ function UTXOCard({ entry }: { entry: UTXOEntry }) {
 
 // --- UTXO Flow ---
 
-function UTXOFlow({ detail }: { detail: TransactionDetail }) {
+function UTXOFlow({ detail, cardanoscanBase }: { detail: TransactionDetail; cardanoscanBase: string }) {
   if (!detail.inputs || !detail.outputs) return null;
   return (
     <div className="mt-4">
@@ -244,7 +243,7 @@ function UTXOFlow({ detail }: { detail: TransactionDetail }) {
         <span>Block {detail.block_height.toLocaleString()}</span>
         <span>Size: {detail.size.toLocaleString()} bytes</span>
         <a
-          href={`https://cardanoscan.io/transaction/${detail.hash}`}
+          href={`${cardanoscanBase}/transaction/${detail.hash}`}
           target="_blank"
           rel="noopener noreferrer"
           className="text-[#999] hover:text-black transition-colors flex items-center gap-1"
@@ -290,6 +289,7 @@ function TransactionRow({
   detail,
   loadingDetail,
   agentNames,
+  cardanoscanBase,
 }: {
   tx: TransactionSummary;
   expanded: boolean;
@@ -297,6 +297,7 @@ function TransactionRow({
   detail: TransactionDetail | null;
   loadingDetail: boolean;
   agentNames: string[] | null;
+  cardanoscanBase: string;
 }) {
   return (
     <div className="border border-black/[0.04] hover:border-black/[0.08] transition-colors">
@@ -341,7 +342,7 @@ function TransactionRow({
                 ))}
               </div>
             ) : detail ? (
-              <UTXOFlow detail={detail} />
+              <UTXOFlow detail={detail} cardanoscanBase={cardanoscanBase} />
             ) : null}
           </div>
         </div>
@@ -352,7 +353,7 @@ function TransactionRow({
 
 // --- Agent Card ---
 
-function AgentCard({ agent }: { agent: Agent }) {
+function AgentCard({ agent, cardanoscanBase }: { agent: Agent; cardanoscanBase: string }) {
   const [expanded, setExpanded] = useState(false);
 
   return (
@@ -404,7 +405,7 @@ function AgentCard({ agent }: { agent: Agent }) {
                 <span className="text-[#999]">Wallet:</span>
                 <CopyButton value={agent.walletAddress} label={truncateAddress(agent.walletAddress)} />
                 <a
-                  href={`https://cardanoscan.io/address/${agent.walletAddress}`}
+                  href={`${cardanoscanBase}/address/${agent.walletAddress}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={(e) => e.stopPropagation()}
@@ -527,6 +528,8 @@ function SearchBar({
 // --- Main Component ---
 
 export default function ExplorerTransactions() {
+  const network = useNetwork();
+  const config = NETWORKS[network];
   const [tab, setTab] = useState<Tab>("transactions");
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
@@ -552,6 +555,17 @@ export default function ExplorerTransactions() {
   const [agentSearch, setAgentSearch] = useState("");
   const [agentHasMore, setAgentHasMore] = useState(true);
 
+  // Reset state when network changes
+  useEffect(() => {
+    setTransactions([]);
+    setAgents([]);
+    setTxPage(1);
+    setAgentPage(1);
+    setExpandedHash(null);
+    detailCache.current.clear();
+    agentPageCache.current.clear();
+  }, [network]);
+
   // Debounce search input
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -565,7 +579,7 @@ export default function ExplorerTransactions() {
   const fetchTxPage = useCallback(async (p: number, searchQuery: string) => {
     setTxLoading(true);
     try {
-      const params = new URLSearchParams({ page: String(p) });
+      const params = new URLSearchParams({ page: String(p), network });
       if (searchQuery) params.set("search", searchQuery);
       const res = await fetch(`/api/explorer/transactions?${params}`);
       const data = await res.json();
@@ -578,13 +592,13 @@ export default function ExplorerTransactions() {
     } finally {
       setTxLoading(false);
     }
-  }, []);
+  }, [network]);
 
   const fetchDetail = useCallback(async (hash: string) => {
     if (detailCache.current.has(hash)) return;
     setLoadingDetail(true);
     try {
-      const res = await fetch(`/api/explorer/tx-detail?hash=${hash}`);
+      const res = await fetch(`/api/explorer/tx-detail?hash=${hash}&network=${network}`);
       const data = await res.json();
       detailCache.current.set(hash, data);
     } catch {
@@ -592,7 +606,7 @@ export default function ExplorerTransactions() {
     } finally {
       setLoadingDetail(false);
     }
-  }, []);
+  }, [network]);
 
   const toggleExpand = useCallback(
     (hash: string) => {
@@ -614,7 +628,7 @@ export default function ExplorerTransactions() {
     }
     setAgentLoading(true);
     try {
-      const res = await fetch(`/api/masumi-agents?page=${p}`);
+      const res = await fetch(`/api/masumi-agents?page=${p}&network=${network}`);
       if (!res.ok) throw new Error(`${res.status}`);
       const data = await res.json();
       const list = Array.isArray(data.agents) ? data.agents : [];
@@ -627,15 +641,15 @@ export default function ExplorerTransactions() {
     } finally {
       setAgentLoading(false);
     }
-  }, []);
+  }, [network]);
 
-  // Fetch agent address map on mount
+  // Fetch agent address map when network changes
   useEffect(() => {
-    fetch("/api/explorer/agent-map")
+    fetch(`/api/explorer/agent-map?network=${network}`)
       .then((r) => (r.ok ? r.json() : {}))
       .then(setAgentMap)
       .catch(() => {});
-  }, []);
+  }, [network]);
 
   // Fetch txs when page or debounced search changes
   useEffect(() => {
@@ -668,11 +682,11 @@ export default function ExplorerTransactions() {
       <div className="mb-8 flex flex-col gap-2">
         <div className="flex items-center gap-2 flex-wrap">
           <span className="text-[11px] text-[#999] shrink-0">Smart Contract</span>
-          <CopyButton value={CONTRACT_ADDRESS} label={truncateAddress(CONTRACT_ADDRESS)} />
+          <CopyButton value={config.escrowAddress} label={truncateAddress(config.escrowAddress)} />
         </div>
         <div className="flex items-center gap-2 flex-wrap">
           <span className="text-[11px] text-[#999] shrink-0">Policy ID</span>
-          <CopyButton value={POLICY_ID} label={truncateHash(POLICY_ID)} />
+          <CopyButton value={config.policyId} label={truncateHash(config.policyId)} />
         </div>
       </div>
 
@@ -746,6 +760,7 @@ export default function ExplorerTransactions() {
                       detail={detailCache.current.get(tx.hash) ?? null}
                       loadingDetail={loadingDetail && expandedHash === tx.hash}
                       agentNames={tx.sender_address ? agentMap[tx.sender_address] ?? null : null}
+                      cardanoscanBase={config.cardanoscanBase}
                     />
                   ))
                 )}
@@ -780,7 +795,7 @@ export default function ExplorerTransactions() {
                   </div>
                 ) : (
                   filteredAgents.map((agent) => (
-                    <AgentCard key={agent.asset} agent={agent} />
+                    <AgentCard key={agent.asset} agent={agent} cardanoscanBase={config.cardanoscanBase} />
                   ))
                 )}
               </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useRef, useCallback } from "react";
+import { useNetwork } from "@/hooks/useNetwork";
 import type { TransactionType } from "@/lib/explorer-types";
 
 type ChartRange = "30" | "90" | "365" | "all";
@@ -233,13 +234,15 @@ function TypeBreakdown({
 }
 
 export default function ExplorerCharts() {
+  const network = useNetwork();
   const [range, setRange] = useState<ChartRange>("30");
   const [data, setData] = useState<ChartData | null>(null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setLoading(true);
-    fetch(`/api/explorer/chart-data?range=${range}`)
+    setData(null);
+    fetch(`/api/explorer/chart-data?range=${range}&network=${network}`)
       .then((r) => {
         if (!r.ok) throw new Error();
         return r.json();
@@ -249,7 +252,7 @@ export default function ExplorerCharts() {
         setLoading(false);
       })
       .catch(() => setLoading(false));
-  }, [range]);
+  }, [range, network]);
 
   if (!data) {
     return (

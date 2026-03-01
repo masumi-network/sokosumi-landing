@@ -1,11 +1,14 @@
 import { getAgentMap, hasData } from "@/lib/explorer-db";
+import { parseNetworkParam } from "@/lib/network-config";
+import { NextRequest } from "next/server";
 
 export const dynamic = "force-dynamic";
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   try {
-    if (hasData()) {
-      return Response.json(getAgentMap());
+    const network = parseNetworkParam(req.nextUrl.searchParams);
+    if (hasData(network)) {
+      return Response.json(getAgentMap(network));
     }
     return Response.json({});
   } catch (err) {

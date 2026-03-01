@@ -1,14 +1,18 @@
 import { hasData, getTotalVolume, getDb } from "@/lib/explorer-db";
+import { parseNetworkParam } from "@/lib/network-config";
+import { NextRequest } from "next/server";
 
 export const dynamic = "force-dynamic";
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   try {
-    if (!hasData()) {
+    const network = parseNetworkParam(req.nextUrl.searchParams);
+
+    if (!hasData(network)) {
       return Response.json({ error: "No data available" }, { status: 503 });
     }
 
-    const d = getDb();
+    const d = getDb(network);
 
     const totalTransactions = (
       d.prepare("SELECT COUNT(*) as c FROM transactions").get() as { c: number }
@@ -26,7 +30,7 @@ export async function GET() {
       ? new Date(latestRow.block_time * 1000).toISOString()
       : null;
 
-    const volumeUsdm = getTotalVolume();
+    const volumeUsdm = getTotalVolume(network);
 
     return Response.json({
       totalTransactions,

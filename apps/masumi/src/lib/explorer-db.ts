@@ -2,18 +2,29 @@ import Database from "better-sqlite3";
 import fs from "fs";
 import path from "path";
 import type { TransactionType } from "./explorer-types";
+import { type NetworkId, getNetworkConfig } from "./network-config";
 
-const DB_PATH = path.join(process.cwd(), "data", "explorer.db");
-const PROD_BASE = "https://masumi-production.up.railway.app";
+const dbMap = new Map<NetworkId, Database.Database>();
 
-let db: Database.Database | null = null;
+export function getDb(network: NetworkId = "mainnet"): Database.Database {
+  const existing = dbMap.get(network);
+  if (existing) return existing;
 
-export function getDb(): Database.Database {
-  if (db) return db;
+  const config = getNetworkConfig(network);
+  const dataDir = path.join(process.cwd(), "data");
+  const dbPath = path.join(dataDir, config.dbFilename);
 
-  fs.mkdirSync(path.dirname(DB_PATH), { recursive: true });
+  fs.mkdirSync(dataDir, { recursive: true });
 
-  db = new Database(DB_PATH);
+  // Auto-migrate: rename old explorer.db to explorer-mainnet.db
+  if (network === "mainnet") {
+    const oldPath = path.join(dataDir, "explorer.db");
+    if (fs.existsSync(oldPath) && !fs.existsSync(dbPath)) {
+      fs.renameSync(oldPath, dbPath);
+    }
+  }
+
+  const db = new Database(dbPath);
   db.pragma("journal_mode = WAL");
 
   db.exec(`
@@ -60,12 +71,13 @@ export function getDb(): Database.Database {
     );
   `);
 
+  dbMap.set(network, db);
   return db;
 }
 
-export function hasData(): boolean {
+export function hasData(network: NetworkId = "mainnet"): boolean {
   try {
-    const d = getDb();
+    const d = getDb(network);
     const row = d.prepare("SELECT COUNT(*) as c FROM transactions").get() as { c: number };
     return row.c > 0;
   } catch {
@@ -74,15 +86,6 @@ export function hasData(): boolean {
 }
 
 const PAGE_SIZE = 10;
-
-const TYPE_LABELS: Record<TransactionType, string> = {
-  SubmitResult: "Submit Result",
-  PaymentBatched: "Payment Batched",
-  CollectCompleted: "Collect Completed",
-  CollectRefund: "Collect Refund",
-  RequestRefund: "Request Refund",
-  other: "Other",
-};
 
 interface TxRow {
   hash: string;
@@ -96,6 +99,7 @@ interface TxRow {
 }
 
 export function getTxPage(
+  network: NetworkId,
   page: number,
   search?: string,
   typeFilter?: string
@@ -107,12 +111,13 @@ export function getTxPage(
     fees: string;
     type: TransactionType;
     usdm_amount: number;
+    sender_address: string | null;
   }[];
   page: number;
   totalCount: number;
   totalPages: number;
 } {
-  const d = getDb();
+  const d = getDb(network);
   const conditions: string[] = [];
   const params: (string | number)[] = [];
 
@@ -158,7 +163,7 @@ export function getTxPage(
 
 export type ChartRange = "30" | "90" | "365" | "all";
 
-export function getChartData(range: ChartRange = "30"): {
+export function getChartData(network: NetworkId, range: ChartRange = "30"): {
   periodCounts: {
     day: number; dayPrev: number;
     week: number; weekPrev: number;
@@ -174,7 +179,7 @@ export function getChartData(range: ChartRange = "30"): {
   bars: { date: string; count: number; byType: Record<string, number> }[];
   typeBreakdown: { type: TransactionType; count: number; percentage: number }[];
 } {
-  const d = getDb();
+  const d = getDb(network);
   const now = Math.floor(Date.now() / 1000);
   const dayAgo = now - 86400;
   const twoDaysAgo = now - 2 * 86400;
@@ -200,32 +205,26 @@ export function getChartData(range: ChartRange = "30"): {
     (d.prepare(`SELECT COALESCE(SUM(usdm_amount), 0) as v FROM transactions WHERE enriched = 1 AND ${where}`).get(...p) as { v: number }).v;
 
   const volumeStats = {
-    total: getTotalVolume(),
+    total: getTotalVolume(network),
     month: vol("block_time >= ?", monthAgo),
     monthPrev: vol("block_time >= ? AND block_time < ?", twoMonthsAgo, monthAgo),
   };
 
-  // Determine range cutoff and aggregation
   let cutoff: number | null = null;
   let groupExpr: string;
-  let numBars: number;
 
   if (range === "all") {
     cutoff = null;
     groupExpr = "strftime('%Y-%m', block_time, 'unixepoch')";
-    numBars = 0; // dynamic
   } else if (range === "365") {
     cutoff = now - 365 * 86400;
     groupExpr = "strftime('%Y-%W', block_time, 'unixepoch')";
-    numBars = 52;
   } else if (range === "90") {
     cutoff = now - 90 * 86400;
     groupExpr = "date(block_time, 'unixepoch')";
-    numBars = 90;
   } else {
     cutoff = monthAgo;
     groupExpr = "date(block_time, 'unixepoch')";
-    numBars = 30;
   }
 
   const whereClause = cutoff != null ? `WHERE block_time >= ?` : "";
@@ -241,7 +240,6 @@ export function getChartData(range: ChartRange = "30"): {
     )
     .all(...params) as { dt: string; type: string; cnt: number }[];
 
-  // Build bar map with empty slots for daily/weekly ranges
   const barMap = new Map<string, { count: number; byType: Record<string, number> }>();
 
   if (range === "30" || range === "90") {
@@ -262,7 +260,6 @@ export function getChartData(range: ChartRange = "30"): {
       barMap.set(key, { count: 0, byType: {} });
     }
   }
-  // For "all", we just use whatever months appear in the data
 
   for (const row of rows) {
     let entry = barMap.get(row.dt);
@@ -282,7 +279,6 @@ export function getChartData(range: ChartRange = "30"): {
       byType: data.byType,
     }));
 
-  // Type breakdown scoped to selected range (enriched only)
   const typeRows = d
     .prepare(
       `SELECT type, COUNT(*) as cnt
@@ -309,8 +305,8 @@ export function getChartData(range: ChartRange = "30"): {
   return { periodCounts, volumeStats, totalFeesAda, bars, typeBreakdown };
 }
 
-export function getHeatmapData(): { days: { date: string; count: number }[] } {
-  const d = getDb();
+export function getHeatmapData(network: NetworkId): { days: { date: string; count: number }[] } {
+  const d = getDb(network);
   const yearAgo = Math.floor(Date.now() / 1000) - 365 * 86400;
   const rows = d
     .prepare(
@@ -322,8 +318,8 @@ export function getHeatmapData(): { days: { date: string; count: number }[] } {
   return { days: rows.map((r) => ({ date: r.dt, count: r.cnt })) };
 }
 
-export function getAgentMap(): Record<string, string[]> {
-  const d = getDb();
+export function getAgentMap(network: NetworkId): Record<string, string[]> {
+  const d = getDb(network);
   const rows = d.prepare("SELECT address, name FROM agent_wallets").all() as { address: string; name: string }[];
   const map: Record<string, string[]> = {};
   for (const r of rows) {
@@ -333,16 +329,16 @@ export function getAgentMap(): Record<string, string[]> {
   return map;
 }
 
-export function getTotalVolume(): number {
-  const d = getDb();
+export function getTotalVolume(network: NetworkId = "mainnet"): number {
+  const d = getDb(network);
   const row = d
     .prepare(`SELECT SUM(usdm_amount) as total FROM transactions WHERE enriched = 1 AND usdm_amount > 0`)
     .get() as { total: number | null };
   return row.total ?? 0;
 }
 
-export function getVolumeSeries(): { points: { date: string; volume: number }[] } {
-  const d = getDb();
+export function getVolumeSeries(network: NetworkId): { points: { date: string; volume: number }[] } {
+  const d = getDb(network);
   const rows = d
     .prepare(
       `SELECT strftime('%Y-%m', block_time, 'unixepoch') as dt,
@@ -370,14 +366,13 @@ interface NetworkEdge {
   volume: number;
 }
 
-export function getNetworkGraph(): {
+export function getNetworkGraph(network: NetworkId): {
   nodes: NetworkNode[];
   edges: NetworkEdge[];
 } {
-  const d = getDb();
+  const d = getDb(network);
   const ESCROW_ID = "escrow";
 
-  // Get top addresses with type breakdown
   const rows = d.prepare(
     `SELECT sender_address, COUNT(*) as cnt, COALESCE(SUM(usdm_amount), 0) as vol
      FROM transactions
@@ -389,13 +384,14 @@ export function getNetworkGraph(): {
 
   const addresses = rows.map((r) => r.sender_address);
 
-  // Get type breakdown per address
-  const typeRows = d.prepare(
-    `SELECT sender_address, type, COUNT(*) as cnt
-     FROM transactions
-     WHERE enriched = 1 AND sender_address IN (${addresses.map(() => "?").join(",")})
-     GROUP BY sender_address, type`
-  ).all(...addresses) as { sender_address: string; type: string; cnt: number }[];
+  const typeRows = addresses.length > 0
+    ? d.prepare(
+        `SELECT sender_address, type, COUNT(*) as cnt
+         FROM transactions
+         WHERE enriched = 1 AND sender_address IN (${addresses.map(() => "?").join(",")})
+         GROUP BY sender_address, type`
+      ).all(...addresses) as { sender_address: string; type: string; cnt: number }[]
+    : [];
 
   const typeMap = new Map<string, Record<string, number>>();
   for (const r of typeRows) {
@@ -403,7 +399,7 @@ export function getNetworkGraph(): {
     typeMap.get(r.sender_address)![r.type] = r.cnt;
   }
 
-  const agentMap = getAgentMap();
+  const agentMap = getAgentMap(network);
 
   const nodes: NetworkNode[] = [
     { id: ESCROW_ID, label: "Masumi Escrow", agents: [], txCount: 0, volume: 0, types: {} },
@@ -448,32 +444,41 @@ export function getNetworkGraph(): {
 // Proxy to production when no local DB data (for local dev)
 
 export async function getTxPageOrProxy(
+  network: NetworkId,
   page: number,
   search?: string,
   typeFilter?: string
 ): Promise<ReturnType<typeof getTxPage>> {
-  if (hasData()) return getTxPage(page, search, typeFilter);
+  if (hasData(network)) return getTxPage(network, page, search, typeFilter);
+  const config = getNetworkConfig(network);
+  if (!config.proxyBase) return getTxPage(network, page, search, typeFilter);
   const params = new URLSearchParams({ page: String(page) });
   if (search) params.set("search", search);
   if (typeFilter) params.set("type", typeFilter);
-  const res = await fetch(`${PROD_BASE}/api/explorer/transactions?${params}`);
+  const res = await fetch(`${config.proxyBase}/api/explorer/transactions?${params}`);
   return res.json();
 }
 
-export async function getChartDataOrProxy(range: ChartRange = "30"): Promise<ReturnType<typeof getChartData>> {
-  if (hasData()) return getChartData(range);
-  const res = await fetch(`${PROD_BASE}/api/explorer/chart-data?range=${range}`);
+export async function getChartDataOrProxy(network: NetworkId, range: ChartRange = "30"): Promise<ReturnType<typeof getChartData>> {
+  if (hasData(network)) return getChartData(network, range);
+  const config = getNetworkConfig(network);
+  if (!config.proxyBase) return getChartData(network, range);
+  const res = await fetch(`${config.proxyBase}/api/explorer/chart-data?range=${range}`);
   return res.json();
 }
 
-export async function getHeatmapDataOrProxy(): Promise<ReturnType<typeof getHeatmapData>> {
-  if (hasData()) return getHeatmapData();
-  const res = await fetch(`${PROD_BASE}/api/explorer/heatmap-data`);
+export async function getHeatmapDataOrProxy(network: NetworkId): Promise<ReturnType<typeof getHeatmapData>> {
+  if (hasData(network)) return getHeatmapData(network);
+  const config = getNetworkConfig(network);
+  if (!config.proxyBase) return getHeatmapData(network);
+  const res = await fetch(`${config.proxyBase}/api/explorer/heatmap-data`);
   return res.json();
 }
 
-export async function getVolumeSeriesOrProxy(): Promise<ReturnType<typeof getVolumeSeries>> {
-  if (hasData()) return getVolumeSeries();
-  const res = await fetch(`${PROD_BASE}/api/explorer/volume-series`);
+export async function getVolumeSeriesOrProxy(network: NetworkId): Promise<ReturnType<typeof getVolumeSeries>> {
+  if (hasData(network)) return getVolumeSeries(network);
+  const config = getNetworkConfig(network);
+  if (!config.proxyBase) return getVolumeSeries(network);
+  const res = await fetch(`${config.proxyBase}/api/explorer/volume-series`);
   return res.json();
 }

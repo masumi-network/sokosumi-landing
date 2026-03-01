@@ -1,16 +1,17 @@
-export const BLOCKFROST_BASE = "https://cardano-mainnet.blockfrost.io/api/v0";
-export const BLOCKFROST_KEY = "mainnetD813pPbW5SjD3oa6HbNVcy72eDJTsxgF";
-export const ADDRESS =
-  "addr1wx7j4kmg2cs7yf92uat3ed4a3u97kr7axxr4avaz0lhwdsq87ujx7";
-export const POLICY_ID =
-  "ad6424e3ce9e47bbd8364984bd731b41de591f1d11f6d7d43d0da9b9";
+import { type NetworkId, getNetworkConfig } from "./network-config";
 
-export const USDM_PREFIX =
-  "c48cbb3d5e57ed56e276bc45f99ab39abe94e6cd7ac39fb402";
+export function getEscrowAddress(network: NetworkId = "mainnet"): string {
+  return getNetworkConfig(network).escrowAddress;
+}
 
-export async function bfFetch(path: string, revalidate = 300) {
-  const res = await fetch(`${BLOCKFROST_BASE}${path}`, {
-    headers: { project_id: BLOCKFROST_KEY },
+export function getUsdmPrefix(network: NetworkId = "mainnet"): string {
+  return getNetworkConfig(network).usdmPrefix;
+}
+
+export async function bfFetch(path: string, revalidate = 300, network: NetworkId = "mainnet") {
+  const config = getNetworkConfig(network);
+  const res = await fetch(`${config.blockfrostBase}${path}`, {
+    headers: { project_id: config.blockfrostKey },
     next: { revalidate },
   });
   if (!res.ok) {

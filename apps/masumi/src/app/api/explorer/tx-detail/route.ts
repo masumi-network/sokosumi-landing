@@ -1,8 +1,7 @@
-import { bfFetch, ADDRESS } from "@/lib/blockfrost";
+import { bfFetch, getEscrowAddress, getUsdmPrefix } from "@/lib/blockfrost";
+import { parseNetworkParam } from "@/lib/network-config";
 import { NextRequest } from "next/server";
 import type { TransactionDetail, UTXOEntry, AmountEntry, TransactionType } from "@/lib/explorer-types";
-
-const USDM_PREFIX = "c48cbb3d5e57ed56e276bc45f99ab39abe94e6cd7ac39fb402";
 
 const KNOWN_TYPES = new Set<string>([
   "SubmitResult",
@@ -40,14 +39,14 @@ function detectTypeFromMetadata(metadata: BfMetadataEntry[] | null): Transaction
   return "other";
 }
 
-function mapUtxo(entry: BfUTXOEntry): UTXOEntry {
+function mapUtxo(entry: BfUTXOEntry, escrowAddress: string, usdmPrefix: string): UTXOEntry {
   return {
     address: entry.address,
-    is_escrow: entry.address === ADDRESS,
+    is_escrow: entry.address === escrowAddress,
     amounts: entry.amount.map((a): AmountEntry => ({
       unit: a.unit,
       quantity: a.quantity,
-      is_usdm: a.unit.startsWith(USDM_PREFIX),
+      is_usdm: usdmPrefix ? a.unit.startsWith(usdmPrefix) : false,
     })),
   };
 }
@@ -78,19 +77,23 @@ export async function GET(req: NextRequest) {
     return Response.json({ error: "Missing hash parameter" }, { status: 400 });
   }
 
+  const network = parseNetworkParam(req.nextUrl.searchParams);
+  const escrowAddress = getEscrowAddress(network);
+  const usdmPrefix = getUsdmPrefix(network);
+
   try {
     const [txData, utxos, metadata] = await Promise.all([
-      bfFetch(`/txs/${hash}`, 86400),
-      bfFetch(`/txs/${hash}/utxos`, 86400),
-      bfFetch(`/txs/${hash}/metadata`, 86400),
+      bfFetch(`/txs/${hash}`, 86400, network),
+      bfFetch(`/txs/${hash}/utxos`, 86400, network),
+      bfFetch(`/txs/${hash}/metadata`, 86400, network),
     ]);
 
     if (!txData || !utxos) {
       return Response.json({ error: "Transaction not found" }, { status: 404 });
     }
 
-    const inputs = (utxos.inputs || []).map(mapUtxo);
-    const outputs = (utxos.outputs || []).map(mapUtxo);
+    const inputs = (utxos.inputs || []).map((e: BfUTXOEntry) => mapUtxo(e, escrowAddress, usdmPrefix));
+    const outputs = (utxos.outputs || []).map((e: BfUTXOEntry) => mapUtxo(e, escrowAddress, usdmPrefix));
     const metadataArray = Array.isArray(metadata) && metadata.length > 0 ? metadata : null;
 
     const detail: TransactionDetail = {

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useRef, useCallback } from "react";
+import { useNetwork } from "@/hooks/useNetwork";
 
 interface VolumePoint {
   date: string;
@@ -32,6 +33,7 @@ function smoothPath(coords: [number, number][]): string {
 }
 
 export default function VolumeTide({ dark = false }: { dark?: boolean }) {
+  const network = useNetwork();
   const [points, setPoints] = useState<VolumePoint[]>([]);
   const [hovered, setHovered] = useState<VolumePoint | null>(null);
   const [mouseX, setMouseX] = useState(0);
@@ -42,7 +44,9 @@ export default function VolumeTide({ dark = false }: { dark?: boolean }) {
   const [pathLen, setPathLen] = useState(0);
 
   useEffect(() => {
-    fetch("/api/explorer/volume-series")
+    setPoints([]);
+    setDrawn(false);
+    fetch(`/api/explorer/volume-series?network=${network}`)
       .then((r) => (r.ok ? r.json() : null))
       .then((data) => {
         if (!data?.points) return;
@@ -54,7 +58,7 @@ export default function VolumeTide({ dark = false }: { dark?: boolean }) {
         setPoints(pts);
       })
       .catch(() => {});
-  }, []);
+  }, [network]);
 
   useEffect(() => {
     if (pathRef.current) {

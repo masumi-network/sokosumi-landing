@@ -2,7 +2,7 @@
 
 /**
  * Syncs explorer transaction data from Blockfrost into SQLite.
- * Run on a cron (every 5 min) or manually: node scripts/sync-explorer.mjs
+ * Run on a cron (every 5 min) or manually: node scripts/sync-explorer.mjs [mainnet|preprod|all]
  *
  * Phase 1: Fetch all tx refs (fast, ~220 API calls for 22K txs)
  * Phase 2: Enrich unenriched txs with metadata/utxos/fees (slow first run, fast incremental)
@@ -12,19 +12,10 @@ import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import Database from "better-sqlite3";
+import { NETWORKS } from "./network-config.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
-const DB_PATH = path.join(ROOT, "data", "explorer.db");
-
-const BLOCKFROST_BASE = "https://cardano-mainnet.blockfrost.io/api/v0";
-const BLOCKFROST_KEY = "mainnetD813pPbW5SjD3oa6HbNVcy72eDJTsxgF";
-const ADDRESS =
-  "addr1wx7j4kmg2cs7yf92uat3ed4a3u97kr7axxr4avaz0lhwdsq87ujx7";
-const USDM_PREFIX =
-  "c48cbb3d5e57ed56e276bc45f99ab39abe94e6cd7ac39fb402";
-const POLICY_ID =
-  "ad6424e3ce9e47bbd8364984bd731b41de591f1d11f6d7d43d0da9b9";
 
 const KNOWN_TYPES = new Set([
   "SubmitResult",
@@ -36,26 +27,41 @@ const KNOWN_TYPES = new Set([
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
-async function bf(endpoint, retries = 3) {
-  for (let attempt = 0; attempt <= retries; attempt++) {
-    const res = await fetch(`${BLOCKFROST_BASE}${endpoint}`, {
-      headers: { project_id: BLOCKFROST_KEY },
-    });
-    if (res.ok) return res.json();
-    if (res.status === 404) return null;
-    if (res.status === 429 && attempt < retries) {
-      const wait = Math.min((attempt + 1) * 2000, 10000);
-      console.log(`  Rate limited, waiting ${wait}ms...`);
-      await sleep(wait);
-      continue;
+function makeBf(config) {
+  return async function bf(endpoint, retries = 3) {
+    for (let attempt = 0; attempt <= retries; attempt++) {
+      const res = await fetch(`${config.blockfrostBase}${endpoint}`, {
+        headers: { project_id: config.blockfrostKey },
+      });
+      if (res.ok) return res.json();
+      if (res.status === 404) return null;
+      if (res.status === 429 && attempt < retries) {
+        const wait = Math.min((attempt + 1) * 2000, 10000);
+        console.log(`  Rate limited, waiting ${wait}ms...`);
+        await sleep(wait);
+        continue;
+      }
+      throw new Error(`Blockfrost ${res.status}: ${await res.text()}`);
     }
-    throw new Error(`Blockfrost ${res.status}: ${await res.text()}`);
-  }
+  };
 }
 
-function openDb() {
-  fs.mkdirSync(path.dirname(DB_PATH), { recursive: true });
-  const db = new Database(DB_PATH);
+function openDb(config) {
+  const dataDir = path.join(ROOT, "data");
+  const dbPath = path.join(dataDir, config.dbFilename);
+
+  fs.mkdirSync(dataDir, { recursive: true });
+
+  // Auto-migrate: rename old explorer.db to explorer-mainnet.db
+  if (config.id === "mainnet") {
+    const oldPath = path.join(dataDir, "explorer.db");
+    if (fs.existsSync(oldPath) && !fs.existsSync(dbPath)) {
+      console.log(`Migrating explorer.db -> ${config.dbFilename}`);
+      fs.renameSync(oldPath, dbPath);
+    }
+  }
+
+  const db = new Database(dbPath);
   db.pragma("journal_mode = WAL");
 
   db.exec(`
@@ -119,37 +125,38 @@ function detectTypeFromMetadata(metadata) {
   return "other";
 }
 
-function extractSenderAddress(utxos) {
-  if (!utxos) return null;
-  // Look for non-escrow address in inputs first, then outputs
-  for (const inp of utxos.inputs || []) {
-    if (inp.address !== ADDRESS) return inp.address;
-  }
-  for (const out of utxos.outputs || []) {
-    if (out.address !== ADDRESS) return out.address;
-  }
-  return null;
+function makeExtractSenderAddress(config) {
+  return function extractSenderAddress(utxos) {
+    if (!utxos) return null;
+    for (const inp of utxos.inputs || []) {
+      if (inp.address !== config.escrowAddress) return inp.address;
+    }
+    for (const out of utxos.outputs || []) {
+      if (out.address !== config.escrowAddress) return out.address;
+    }
+    return null;
+  };
 }
 
-function computeUsdmAmount(utxos) {
-  if (!utxos) return 0;
-  // Only count USDM flowing INTO the escrow (outputs to contract address)
-  // to avoid double-counting the same payment on deposit + withdrawal
-  let total = 0;
-  for (const out of utxos.outputs || []) {
-    if (out.address === ADDRESS) {
-      for (const a of out.amount) {
-        if (a.unit.startsWith(USDM_PREFIX)) {
-          total += parseInt(a.quantity, 10) / 1_000_000;
+function makeComputeUsdmAmount(config) {
+  return function computeUsdmAmount(utxos) {
+    if (!utxos || !config.usdmPrefix) return 0;
+    let total = 0;
+    for (const out of utxos.outputs || []) {
+      if (out.address === config.escrowAddress) {
+        for (const a of out.amount) {
+          if (a.unit.startsWith(config.usdmPrefix)) {
+            total += parseInt(a.quantity, 10) / 1_000_000;
+          }
         }
       }
     }
-  }
-  return total;
+    return total;
+  };
 }
 
 // Phase 1: Fetch new tx refs — stops when it hits a known hash
-async function syncTxRefs(db) {
+async function syncTxRefs(db, bf, config) {
   const existingCount = db.prepare("SELECT COUNT(*) as c FROM transactions").get().c;
   const isFirstRun = existingCount === 0;
 
@@ -166,7 +173,7 @@ async function syncTxRefs(db) {
 
   while (true) {
     const txs = await bf(
-      `/addresses/${ADDRESS}/transactions?count=100&page=${page}&order=desc`
+      `/addresses/${config.escrowAddress}/transactions?count=100&page=${page}&order=desc`
     );
     if (!txs || !Array.isArray(txs) || txs.length === 0) break;
 
@@ -200,7 +207,10 @@ async function syncTxRefs(db) {
 }
 
 // Phase 2: Enrich unenriched rows
-async function enrichTransactions(db) {
+async function enrichTransactions(db, bf, config) {
+  const extractSenderAddress = makeExtractSenderAddress(config);
+  const computeUsdmAmount = makeComputeUsdmAmount(config);
+
   const unenriched = db
     .prepare("SELECT hash FROM transactions WHERE enriched = 0")
     .all();
@@ -267,7 +277,9 @@ function markRan(db, key) {
 }
 
 // Phase 3: Backfill sender_address for enriched txs missing it (500 per sync cycle, once per hour)
-async function backfillSenderAddresses(db) {
+async function backfillSenderAddresses(db, bf, config) {
+  const extractSenderAddress = makeExtractSenderAddress(config);
+
   if (!shouldRun(db, "backfill_sender", 60 * 60 * 1000)) {
     console.log("Phase 3: Skipping backfill (ran less than 1h ago).");
     return;
@@ -303,7 +315,7 @@ async function backfillSenderAddresses(db) {
 }
 
 // Phase 4: Sync agent wallet addresses (runs once every 6 hours)
-async function syncAgentWallets(db) {
+async function syncAgentWallets(db, bf, config) {
   if (!shouldRun(db, "sync_agent_wallets", 6 * 60 * 60 * 1000)) {
     console.log("Phase 4: Skipping agent wallet sync (ran less than 6h ago).");
     return;
@@ -316,7 +328,7 @@ async function syncAgentWallets(db) {
   let count = 0;
 
   for (let page = 1; page <= 50; page++) {
-    const assets = await bf(`/assets/policy/${POLICY_ID}?count=100&page=${page}&order=asc`);
+    const assets = await bf(`/assets/policy/${config.policyId}?count=100&page=${page}&order=asc`);
     if (!assets || !Array.isArray(assets) || assets.length === 0) break;
 
     // Process in batches of 10 to limit concurrency
@@ -355,18 +367,19 @@ async function syncAgentWallets(db) {
   markRan(db, "sync_agent_wallets");
 }
 
-async function main() {
-  console.log("Explorer sync starting...");
+async function syncNetwork(networkId, config) {
+  console.log(`\n=== Syncing ${config.label} (${networkId}) ===`);
   const start = Date.now();
 
-  const db = openDb();
+  const bf = makeBf(config);
+  const db = openDb(config);
 
   const existingCount = db
     .prepare("SELECT COUNT(*) as c FROM transactions")
     .get().c;
   console.log(`Database has ${existingCount} existing transactions.`);
 
-  await syncTxRefs(db);
+  await syncTxRefs(db, bf, config);
 
   const totalCount = db
     .prepare("SELECT COUNT(*) as c FROM transactions")
@@ -376,14 +389,41 @@ async function main() {
     .get().c;
   console.log(`Total: ${totalCount}, Enriched: ${enrichedCount}, Unenriched: ${totalCount - enrichedCount}`);
 
-  await enrichTransactions(db);
-  await backfillSenderAddresses(db);
-  await syncAgentWallets(db);
+  await enrichTransactions(db, bf, config);
+  await backfillSenderAddresses(db, bf, config);
+  await syncAgentWallets(db, bf, config);
 
   db.close();
 
   const elapsed = ((Date.now() - start) / 1000).toFixed(1);
-  console.log(`Explorer sync completed in ${elapsed}s`);
+  console.log(`${config.label} sync completed in ${elapsed}s`);
+}
+
+async function main() {
+  const arg = process.argv[2] || "all";
+  console.log("Explorer sync starting...");
+
+  if (arg === "all") {
+    for (const [id, config] of Object.entries(NETWORKS)) {
+      if (!config.escrowAddress || config.escrowAddress === "TBD") {
+        console.log(`Skipping ${id}: no escrow address configured.`);
+        continue;
+      }
+      await syncNetwork(id, config);
+    }
+  } else if (NETWORKS[arg]) {
+    const config = NETWORKS[arg];
+    if (!config.escrowAddress || config.escrowAddress === "TBD") {
+      console.log(`Skipping ${arg}: no escrow address configured.`);
+      return;
+    }
+    await syncNetwork(arg, config);
+  } else {
+    console.error(`Unknown network: ${arg}. Use mainnet, preprod, or all.`);
+    process.exit(1);
+  }
+
+  console.log("\nAll syncs completed.");
 }
 
 main().catch((err) => {

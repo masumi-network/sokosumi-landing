@@ -1,18 +1,20 @@
 import { getDb, hasData } from "@/lib/explorer-db";
+import { parseNetworkParam } from "@/lib/network-config";
 import { NextRequest } from "next/server";
 
 export const dynamic = "force-dynamic";
 
 export async function GET(req: NextRequest) {
+  const network = parseNetworkParam(req.nextUrl.searchParams);
   const page = Number(req.nextUrl.searchParams.get("page") || "1");
   const pageSize = 10;
 
   try {
-    if (!hasData()) {
+    if (!hasData(network)) {
       return Response.json({ agents: [], page, hasMore: false });
     }
 
-    const d = getDb();
+    const d = getDb(network);
     const offset = (Math.max(1, page) - 1) * pageSize;
 
     const rows = d

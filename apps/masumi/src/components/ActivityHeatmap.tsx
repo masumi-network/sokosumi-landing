@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
+import { useNetwork } from "@/hooks/useNetwork";
 
 interface DayData {
   date: string;
@@ -72,17 +73,20 @@ function formatTooltipDate(date: string): string {
 }
 
 export default function ActivityHeatmap() {
+  const network = useNetwork();
   const [days, setDays] = useState<DayData[]>([]);
   const [tooltip, setTooltip] = useState<{ date: string; count: number; x: number; y: number } | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    fetch("/api/explorer/heatmap-data")
+    setDays([]);
+    setVisible(false);
+    fetch(`/api/explorer/heatmap-data?network=${network}`)
       .then((r) => (r.ok ? r.json() : null))
       .then((data) => { if (data?.days) setDays(data.days); })
       .catch(() => {});
-  }, []);
+  }, [network]);
 
   useEffect(() => {
     if (!containerRef.current || days.length === 0) return;
