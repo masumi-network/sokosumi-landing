@@ -33,7 +33,7 @@ export const NETWORKS: Record<NetworkId, NetworkConfig> = {
     blockfrostKey: "preprodyAaq0Es1UnScwBp5vxdBH7ks2IbBaRro",
     escrowAddress: "addr_test1wz7j4kmg2cs7yf92uat3ed4a3u97kr7axxr4avaz0lhwdsqukgwfm",
     policyId: "7e8bdaf2b2b919a3a4b94002cafb50086c0c845fe535d07a77ab7f77",
-    usdmPrefix: "",
+    usdmPrefix: "16a55b2a349361ff88c03788f93e1e966e5d689605d044fef722ddde0014df10745553444d",
     dbFilename: "explorer-preprod.db",
     cardanoscanBase: "https://preprod.cardanoscan.io",
     proxyBase: null,
