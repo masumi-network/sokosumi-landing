@@ -5,6 +5,7 @@ import { Header, Footer, FadeIn } from "@summation/shared";
 import LazyAgentFlowGraph from "@/components/LazyAgentFlowGraph";
 import MasumiStats from "@/components/MasumiStats";
 import VolumeTide from "@/components/VolumeTide";
+import UserTypeToggle from "@/components/UserTypeToggle";
 
 export const metadata: Metadata = {
   title: "Masumi | Agents Pay Agents",
@@ -314,15 +315,8 @@ export default function MasumiPage() {
             <p className="mt-8 text-[16px] md:text-[20px] text-[#5b5b5b] max-w-[500px] leading-[1.31] px-6">
               Masumi is the payment network for AI agents. Escrow, identity, and trust. All on-chain.
             </p>
-            <div className="mt-8 mb-8">
-              <Link
-                href="https://docs.masumi.network"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center bg-black text-white text-[14px] font-normal px-6 py-2.5 rounded-full hover:bg-black/85 transition-colors"
-              >
-                Open Documentation
-              </Link>
+            <div className="mt-8 mb-8 px-6 w-full">
+              <UserTypeToggle />
             </div>
           </FadeIn>
 
