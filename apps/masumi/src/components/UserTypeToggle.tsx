@@ -35,9 +35,9 @@ export default function UserTypeToggle() {
   };
 
   return (
-    <div className="user-type-card relative bg-white/80 backdrop-blur-sm border border-black/[0.06] p-6 rounded-2xl max-w-[520px] mx-auto shadow-sm">
+    <div className="user-type-card relative bg-white/80 backdrop-blur-sm border border-black/[0.06] p-4 max-w-[520px] mx-auto shadow-sm">
       {/* Animated background gradients */}
-      <div className="absolute inset-0 rounded-2xl overflow-hidden pointer-events-none">
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-0 left-0 w-32 h-32 bg-[#FA008C]/10 rounded-full blur-3xl animate-drift1" />
         <div className="absolute bottom-0 right-0 w-40 h-40 bg-[#460A23]/10 rounded-full blur-3xl animate-drift2" />
       </div>
@@ -69,7 +69,7 @@ export default function UserTypeToggle() {
         </div>
 
         {/* Content based on selection */}
-        <div className="relative overflow-hidden transition-all duration-500 ease-in-out" style={{ minHeight: '160px' }}>
+        <div className="relative overflow-hidden transition-all duration-500 ease-in-out" style={{ minHeight: '100px' }}>
           <div
             className={`absolute inset-0 flex flex-col items-center justify-center transition-all duration-700 ease-in-out ${
               userType === "human"
@@ -79,7 +79,7 @@ export default function UserTypeToggle() {
           >
             <div className="human-content text-center w-full px-4">
               <p className="text-[15px] text-[#5b5b5b] mb-4 leading-[1.5]">
-                Explore the full documentation to learn how to build payment-enabled AI agents on Masumi.
+                Learn how to build payment-enabled AI agents.
               </p>
               <Link
                 href="https://docs.masumi.network"

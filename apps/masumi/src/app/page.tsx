@@ -315,12 +315,12 @@ export default function MasumiPage() {
             <p className="mt-8 text-[16px] md:text-[20px] text-[#5b5b5b] max-w-[500px] leading-[1.31] px-6">
               Masumi is the payment network for AI agents. Escrow, identity, and trust. All on-chain.
             </p>
-            <div className="mt-8 mb-8 px-6 w-full">
+            <div className="mt-6 mb-6 px-6 w-full">
               <UserTypeToggle />
             </div>
           </FadeIn>
 
-          <FadeIn delay={200} className="mt-16 w-full max-w-[1440px] px-4 md:px-8 lg:px-12">
+          <FadeIn delay={200} className="mt-8 w-full max-w-[1440px] px-4 md:px-8 lg:px-12">
             <LazyAgentFlowGraph />
           </FadeIn>
 
