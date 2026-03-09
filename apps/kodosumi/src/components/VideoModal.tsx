@@ -5,13 +5,21 @@ import { useState, useEffect } from "react";
 export default function VideoModal() {
   const [open, setOpen] = useState(false);
 
+  // Handle ESC key to close modal
   useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && open) {
+        setOpen(false);
+      }
+    };
+
     if (open) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
+      document.addEventListener("keydown", handleEscape);
     }
-    return () => { document.body.style.overflow = ""; };
+
+    return () => {
+      document.removeEventListener("keydown", handleEscape);
+    };
   }, [open]);
 
   return (
@@ -55,20 +63,25 @@ export default function VideoModal() {
           className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8 lg:p-12"
           onClick={() => setOpen(false)}
         >
-          {/* Backdrop */}
-          <div className="absolute inset-0 bg-[#0a0a0a]/95 backdrop-blur-md" />
+          {/* Backdrop - light and subtle */}
+          <div className="absolute inset-0 bg-white/95 backdrop-blur-xl" />
 
-          {/* Close button */}
+          {/* Close button - more visible and prominent */}
           <button
             onClick={() => setOpen(false)}
-            className="absolute top-5 right-5 z-10 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors cursor-pointer"
+            className="absolute top-4 right-4 md:top-6 md:right-6 z-[110] w-12 h-12 rounded-full bg-white border border-black/10 hover:border-black/20 hover:bg-black/5 flex items-center justify-center transition-all duration-200 cursor-pointer shadow-lg hover:scale-110"
             aria-label="Close video"
           >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" strokeWidth="2.5" strokeLinecap="round">
               <line x1="18" y1="6" x2="6" y2="18" />
               <line x1="6" y1="6" x2="18" y2="18" />
             </svg>
           </button>
+
+          {/* Helper text */}
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-[110] text-black/50 text-sm hidden md:block">
+            Press <kbd className="px-2 py-1 bg-black/10 rounded text-black/70 font-mono text-xs">ESC</kbd> or click outside to close
+          </div>
 
           {/* Video — fills available space */}
           <div
