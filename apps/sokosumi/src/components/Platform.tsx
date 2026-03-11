@@ -41,7 +41,7 @@ function AgentCoworkersMockup() {
           <div key={agent.name} className="bg-white rounded-lg p-4 border border-black/[0.03] flex flex-col">
             <div className="flex items-center gap-3 mb-3">
               <div className="w-10 h-10 rounded-full overflow-hidden flex-shrink-0">
-                <Image src="/images/hannah.png" alt={agent.name} width={40} height={40} className="w-full h-full object-cover" />
+                <Image src="/images/hannah.png" alt={`${agent.name} - ${agent.role} AI agent avatar`} width={40} height={40} loading="lazy" className="w-full h-full object-cover" />
               </div>
               <div>
                 <p className="text-[13px] font-medium text-black leading-tight">{agent.name}</p>
@@ -133,7 +133,7 @@ const features = [
 
 export default function Platform() {
   return (
-    <section className="pt-24 pb-0">
+    <section className="pt-24 pb-0" aria-label="Platform features">
       <div className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12">
         <FadeIn>
           <h2 className="text-[28px] md:text-[40px] font-normal tracking-[-0.4px] leading-[1.31] text-black text-center max-w-[800px] mx-auto mb-16">

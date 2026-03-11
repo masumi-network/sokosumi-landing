@@ -9,7 +9,7 @@ const stats = [
 
 export default function Stats() {
   return (
-    <section className="pt-24">
+    <section className="pt-24" aria-label="Platform statistics">
       <div className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-black/5">
           {stats.map((stat, i) => (

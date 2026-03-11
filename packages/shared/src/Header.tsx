@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { SokosumiIcon } from "./SummationLogo";
 
 const MasumiIcon = ({ className }: { className?: string }) => (
@@ -75,15 +76,15 @@ export default function Header({ product = "sokosumi" }: { product?: "sokosumi" 
             <div className="flex items-center gap-2 group">
               {product === "sokosumi" ? (
                 <Link href="/">
-                  <img src="/images/sokosumi-wordmark.svg" alt="sokosumi" width={100} height={18} className="h-[18px] w-auto block" />
+                  <Image src="/images/sokosumi-wordmark.svg" alt="Sokosumi home" width={100} height={18} className="h-[18px] w-auto block" priority />
                 </Link>
               ) : product === "masumi" ? (
                 <Link href="/">
-                  <img src="/images/masumi-wordmark.webp" alt="masumi" width={100} height={18} className="h-[18px] w-auto block" fetchPriority="high" />
+                  <Image src="/images/masumi-wordmark.webp" alt="Masumi home" width={100} height={18} className="h-[18px] w-auto block" priority />
                 </Link>
               ) : (
                 <Link href="/">
-                  <img src="/images/kodosumi-wordmark-black.webp" alt="kodosumi" width={100} height={18} className="h-[18px] w-auto block" fetchPriority="high" />
+                  <Image src="/images/kodosumi-wordmark-black.webp" alt="Kodosumi home" width={100} height={18} className="h-[18px] w-auto block" priority />
                 </Link>
               )}
               <button aria-label="Switch product">
@@ -123,13 +124,16 @@ export default function Header({ product = "sokosumi" }: { product?: "sokosumi" 
           </div>
 
           {product === "sokosumi" ? (
-            <nav className="hidden lg:flex items-center h-[74px]">
+            <nav className="hidden lg:flex items-center h-[74px]" aria-label="Main navigation">
+              <Link href="/agentic-coworkers" className="text-[14px] font-normal text-black hover:text-black/60 transition-colors px-[15px] h-full flex items-center">
+                Coworkers
+              </Link>
               <Link href="/press" className="text-[14px] font-normal text-black hover:text-black/60 transition-colors px-[15px] h-full flex items-center">
                 Press
               </Link>
             </nav>
           ) : product === "masumi" ? (
-            <nav className="hidden lg:flex items-center h-[74px]">
+            <nav className="hidden lg:flex items-center h-[74px]" aria-label="Main navigation">
               <Link href="https://docs.masumi.network" target="_blank" rel="noopener noreferrer" className="text-[14px] font-normal text-black hover:text-black/60 transition-colors px-[15px] h-full flex items-center">
                 Docs
               </Link>
@@ -144,7 +148,7 @@ export default function Header({ product = "sokosumi" }: { product?: "sokosumi" 
               </Link>
             </nav>
           ) : (
-            <nav className="hidden lg:flex items-center h-[74px]">
+            <nav className="hidden lg:flex items-center h-[74px]" aria-label="Main navigation">
               <Link href="https://docs.kodosumi.io" target="_blank" rel="noopener noreferrer" className="text-[14px] font-normal text-black hover:text-black/60 transition-colors px-[15px] h-full flex items-center">
                 Docs
               </Link>
@@ -196,6 +200,9 @@ export default function Header({ product = "sokosumi" }: { product?: "sokosumi" 
           <nav className="relative flex flex-col px-6 pt-8 gap-1">
             {product === "sokosumi" ? (
               <>
+                <Link href="/agentic-coworkers" onClick={() => setMobileMenuOpen(false)} className="text-[18px] text-black py-3 border-b border-black/[0.06]">
+                  Coworkers
+                </Link>
                 <Link href="/press" onClick={() => setMobileMenuOpen(false)} className="text-[18px] text-black py-3 border-b border-black/[0.06]">
                   Press
                 </Link>

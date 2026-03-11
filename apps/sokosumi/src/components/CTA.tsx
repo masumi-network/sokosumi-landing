@@ -3,7 +3,7 @@ import { FadeIn } from "@summation/shared";
 
 export default function CTA() {
   return (
-    <section className="pt-24 pb-0">
+    <section className="pt-24 pb-0" aria-label="Call to action">
       <div className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12">
         <div className="bg-black p-12 md:p-16 lg:p-24 relative overflow-hidden">
           <FadeIn>
@@ -17,7 +17,7 @@ export default function CTA() {
               <p className="mt-6 text-[16px] md:text-[20px] text-white/40 max-w-[460px] leading-[1.4]">
                 Give your team AI coworkers that research, plan, write, and optimize. So you can focus on strategy.
               </p>
-              <div className="mt-10 flex items-center gap-4">
+              <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
                 <Link
                   href="https://app.sokosumi.com"
                   className="bg-white text-black text-[16px] font-normal px-8 py-3.5 rounded-full hover:bg-white/90 transition-colors"
@@ -31,6 +31,11 @@ export default function CTA() {
                   Book a demo
                 </Link>
               </div>
+              <p className="mt-6 text-[14px] text-white/30">
+                <Link href="/agentic-coworkers" className="underline underline-offset-2 hover:text-white/50 transition-colors">
+                  Meet our AI coworkers
+                </Link>
+              </p>
             </div>
           </FadeIn>
         </div>

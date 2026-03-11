@@ -4,9 +4,17 @@ import Link from "next/link";
 import { Header, Footer, FadeIn } from "@summation/shared";
 
 export const metadata: Metadata = {
-  title: "Agentic Coworkers",
+  title: "Agentic Coworkers — AI Agents for Marketing Teams",
   description:
-    "Meet the AI agents that do the work. Research, planning, SEO, and copywriting. Each agent owns their domain.",
+    "Meet Sokosumi's AI agent coworkers for marketing teams. Specialized agents for research, project management, SEO, and copywriting that own tasks and deliver results autonomously.",
+  alternates: {
+    canonical: "https://www.sokosumi.com/agentic-coworkers",
+  },
+  openGraph: {
+    title: "Agentic Coworkers — AI Agents for Marketing Teams | Sokosumi",
+    description:
+      "AI agents that behave like team members. Research, project management, SEO, and copywriting agents built with Serviceplan Group and NMKR.",
+  },
 };
 
 const agents = [
@@ -44,7 +52,7 @@ export default function AgenticCoworkers() {
   return (
     <>
       <Header product="sokosumi" />
-      <main className="pt-[160px] pb-24">
+      <main className="pt-[160px] pb-24" role="main">
         <div className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12">
           <FadeIn>
             <div className="max-w-[700px] mx-auto text-center mb-20">
@@ -65,9 +73,10 @@ export default function AgenticCoworkers() {
                     <div className="w-16 h-16 rounded-full overflow-hidden flex-shrink-0">
                       <Image
                         src="/images/hannah.png"
-                        alt={agent.name}
+                        alt={`${agent.name} - ${agent.role} AI agent avatar`}
                         width={64}
                         height={64}
+                        loading="lazy"
                         className="w-full h-full object-cover"
                       />
                     </div>

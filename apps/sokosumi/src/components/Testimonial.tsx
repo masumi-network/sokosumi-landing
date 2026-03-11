@@ -3,7 +3,7 @@ import { FadeIn } from "@summation/shared";
 
 export default function Testimonial() {
   return (
-    <section className="pt-24">
+    <section className="pt-24" aria-label="Who this is for">
       <div className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12">
         <div className="bg-white py-12 px-8 md:py-[72px] md:px-[100px] md:pr-[120px]">
           <div className="flex flex-col md:flex-row gap-16 md:gap-20">
@@ -81,9 +81,10 @@ export default function Testimonial() {
                 <div className="w-20 h-20 rounded-full overflow-hidden mb-3 border-2 border-white shadow-sm">
                   <Image
                     src="/images/hannah.png"
-                    alt="Hannah — Agentic Coworker"
+                    alt="Hannah - Agentic Coworker AI agent avatar"
                     width={80}
                     height={80}
+                    loading="lazy"
                     className="w-full h-full object-cover"
                   />
                 </div>

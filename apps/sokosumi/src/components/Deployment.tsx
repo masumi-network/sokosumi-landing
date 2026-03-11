@@ -76,7 +76,7 @@ export default function Deployment() {
   ];
 
   return (
-    <section className="pt-16">
+    <section className="pt-16" aria-label="Deployment and integrations">
       <div className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12">
         <div className="bg-[#eaeaea] p-8 md:p-12 lg:p-16">
           <FadeIn>

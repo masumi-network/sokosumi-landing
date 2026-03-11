@@ -2,14 +2,24 @@ import type { Metadata } from "next";
 import { Header, Footer } from "@summation/shared";
 
 export const metadata: Metadata = {
-  title: "Press",
+  title: "Press — Sokosumi Media Resources",
+  description:
+    "Press resources, logos, and brand assets for Sokosumi. Access our press kit for media inquiries about AI marketing agents and marketing automation.",
+  alternates: {
+    canonical: "https://www.sokosumi.com/press",
+  },
+  openGraph: {
+    title: "Press — Sokosumi Media Resources",
+    description:
+      "Press resources, logos, and brand assets for Sokosumi. AI marketing agents for teams.",
+  },
 };
 
 export default function PressPage() {
   return (
     <>
       <Header product="sokosumi" />
-      <main className="pt-[140px] pb-24">
+      <main className="pt-[140px] pb-24" role="main">
         <div className="max-w-[720px] mx-auto px-4 md:px-8">
           <h1 className="text-[32px] md:text-[40px] font-normal tracking-[-0.4px] leading-[1.2] text-black mb-16">
             Press
