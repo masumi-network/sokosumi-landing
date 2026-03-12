@@ -256,9 +256,9 @@ export default function ExplorerCharts() {
         return r.json();
       })
       .then((d) => {
-        if (!stats) {
-          setStats({ periodCounts: d.periodCounts, volumeStats: d.volumeStats, totalFeesAda: d.totalFeesAda });
-        }
+        setStats((prev) =>
+          prev ?? { periodCounts: d.periodCounts, volumeStats: d.volumeStats, totalFeesAda: d.totalFeesAda }
+        );
         setRangeData({ bars: d.bars, typeBreakdown: d.typeBreakdown });
         setLoading(false);
       })
