@@ -274,13 +274,12 @@ body {
   50% { opacity: 0.6; }
 }
 
-/* User Type Toggle animations */
+/* User Type Toggle */
 .user-type-card {
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s;
 }
 .user-type-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+  transform: translateY(-4px);
 }
 
 .animate-drift1 {

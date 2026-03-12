@@ -35,15 +35,8 @@ export default function UserTypeToggle() {
   };
 
   return (
-    <div className="user-type-card relative bg-white/80 backdrop-blur-sm border border-black/[0.06] p-4 max-w-[520px] mx-auto shadow-sm">
-      {/* Animated background gradients */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 left-0 w-32 h-32 bg-[#FA008C]/10 rounded-full blur-3xl animate-drift1" />
-        <div className="absolute bottom-0 right-0 w-40 h-40 bg-[#460A23]/10 rounded-full blur-3xl animate-drift2" />
-      </div>
-
-      {/* Content */}
-      <div className="relative z-10">
+    <div className="user-type-card bg-white border border-black/[0.04] p-4 max-w-[520px] mx-auto hover:border-black/10">
+      <div>
         {/* Toggle */}
         <div className="flex gap-2 bg-[#F5F5F5] p-1.5 rounded-xl mb-6">
           <button
