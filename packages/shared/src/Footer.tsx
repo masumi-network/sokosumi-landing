@@ -79,7 +79,7 @@ export default function Footer({ product = "sokosumi" }: { product?: "sokosumi" 
               <Link href="https://discord.com/invite/aj4QfnTS92" className="hover:text-black transition-colors" target="_blank" rel="noopener noreferrer">
                 Discord
               </Link>
-              <Link href="https://x.com/masaborad" className="hover:text-black transition-colors" target="_blank" rel="noopener noreferrer">
+              <Link href="https://x.com/MasumiNetwork" className="hover:text-black transition-colors" target="_blank" rel="noopener noreferrer">
                 X
               </Link>
             </div>
