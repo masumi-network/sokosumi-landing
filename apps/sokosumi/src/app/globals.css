@@ -60,3 +60,114 @@ body {
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
+
+/* Prose — markdown article typography */
+.prose {
+  font-size: 16px;
+  line-height: 1.7;
+  color: #333;
+}
+
+.prose h1 {
+  display: none;
+}
+
+.prose h2 {
+  font-size: 24px;
+  font-weight: 500;
+  color: #000;
+  margin-top: 2em;
+  margin-bottom: 0.75em;
+  letter-spacing: -0.3px;
+}
+
+.prose h3 {
+  font-size: 20px;
+  font-weight: 500;
+  color: #000;
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+}
+
+.prose p {
+  margin-bottom: 1.25em;
+}
+
+.prose a {
+  color: #6400FF;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.prose a:hover {
+  color: #4B00BF;
+}
+
+.prose strong {
+  font-weight: 600;
+  color: #000;
+}
+
+.prose ul, .prose ol {
+  margin-bottom: 1.25em;
+  padding-left: 1.5em;
+}
+
+.prose li {
+  margin-bottom: 0.5em;
+}
+
+.prose ul li {
+  list-style-type: disc;
+}
+
+.prose ol li {
+  list-style-type: decimal;
+}
+
+.prose blockquote {
+  border-left: 3px solid #6400FF;
+  padding-left: 1em;
+  margin: 1.5em 0;
+  color: #666;
+  font-style: italic;
+}
+
+.prose code {
+  font-size: 14px;
+  background: #F5F5F5;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-family: "SF Mono", Monaco, "Cascadia Code", monospace;
+}
+
+.prose pre {
+  background: #1a1a1a;
+  color: #e5e5e5;
+  border-radius: 12px;
+  padding: 1.25em 1.5em;
+  overflow-x: auto;
+  margin: 1.5em 0;
+}
+
+.prose pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  color: inherit;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.prose img {
+  border-radius: 12px;
+  margin: 1.5em 0;
+  max-width: 100%;
+}
+
+.prose hr {
+  border: none;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  margin: 2em 0;
+}
