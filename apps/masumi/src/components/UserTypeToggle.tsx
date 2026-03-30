@@ -9,7 +9,7 @@ export default function UserTypeToggle() {
   const copyTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const isMountedRef = useRef(true);
 
-  const skillUrl = "curl -s https://masumi.network/skill.md";
+  const skillUrl = "curl -s https://www.masumi.network/skill.md";
 
   useEffect(() => {
     return () => {
