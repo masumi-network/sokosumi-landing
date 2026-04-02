@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
+import Image from "next/image";
 import { Header, Footer, FadeIn } from "@summation/shared";
 import ExplorerCharts from "@/components/ExplorerCharts";
 import ExplorerTransactions from "@/components/ExplorerTransactions";
@@ -38,6 +39,37 @@ export default function ExplorerPage() {
               <Suspense fallback={null}>
                 <NetworkToggle />
               </Suspense>
+            </div>
+          </FadeIn>
+
+          <FadeIn delay={50}>
+            <div className="mt-8">
+              <a
+                href="https://dune.com/masumi_network/masumi-protocol"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-3 px-5 py-3 rounded-full border border-black/[0.08] bg-black/[0.02] hover:bg-black/[0.06] transition-colors group"
+              >
+                <Image
+                  src="/images/dune-logo.svg"
+                  alt="Dune Analytics"
+                  width={20}
+                  height={20}
+                  className="shrink-0"
+                />
+                <span className="text-[14px] text-black/80 group-hover:text-black transition-colors">
+                  View on Dune Analytics
+                </span>
+                <svg
+                  className="w-3.5 h-3.5 text-black/30 group-hover:text-black/60 transition-colors shrink-0"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M7 17L17 7M17 7H7M17 7v10" />
+                </svg>
+              </a>
             </div>
           </FadeIn>
 
