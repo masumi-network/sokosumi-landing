@@ -47,18 +47,18 @@ export default function ExplorerPage() {
                 href="https://dune.com/masumi/masumi?utm_source=share&utm_medium=copy&utm_campaign=dashboard"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-3 px-5 py-3 rounded-2xl bg-[#0F0F15] hover:brightness-125 hover:scale-[1.02] transition-all duration-200 group shadow-lg shadow-black/10"
+                className="inline-flex items-center gap-5 px-8 py-4 rounded-2xl bg-[#0F0F15] hover:brightness-125 hover:scale-[1.02] transition-all duration-200 group shadow-lg shadow-black/10"
               >
                 <img
                   src="/images/dune-logo.svg"
                   alt="Dune Analytics"
-                  className="h-7 w-auto shrink-0"
+                  className="h-11 w-auto shrink-0"
                 />
-                <span className="text-[14px] font-medium text-white/70 group-hover:text-white transition-colors">
+                <span className="text-[17px] font-medium text-white/70 group-hover:text-white transition-colors">
                   Analytics Dashboard
                 </span>
                 <svg
-                  className="w-4 h-4 text-white/30 group-hover:text-white/70 transition-colors shrink-0"
+                  className="w-5 h-5 text-white/30 group-hover:text-white/70 transition-colors shrink-0"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
