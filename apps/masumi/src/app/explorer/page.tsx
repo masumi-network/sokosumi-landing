@@ -47,7 +47,7 @@ export default function ExplorerPage() {
                 href="https://dune.com/masumi/masumi?utm_source=share&utm_medium=copy&utm_campaign=dashboard"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-5 px-4 py-3 rounded-xl border border-black/10 bg-white hover:bg-gray-50 hover:shadow-md transition-all duration-200 group"
+                className="inline-flex items-center gap-5 px-4 py-3 border border-black/[0.04] bg-white hover:border-black/10 transition-colors group"
               >
                 <img
                   src="/images/dune-logo.svg"
