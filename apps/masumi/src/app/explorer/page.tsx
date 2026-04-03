@@ -41,6 +41,35 @@ export default function ExplorerPage() {
             </div>
           </FadeIn>
 
+          <FadeIn delay={50}>
+            <div className="mt-8">
+              <a
+                href="https://dune.com/masumi/masumi?utm_source=share&utm_medium=copy&utm_campaign=dashboard"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-5 px-4 py-3 border border-black/[0.04] bg-white hover:border-black/10 transition-colors group"
+              >
+                <img
+                  src="/images/dune-logo.svg"
+                  alt="Dune Analytics"
+                  className="h-14 w-auto shrink-0"
+                />
+                <span className="text-[17px] font-medium text-gray-700 group-hover:text-black transition-colors">
+                  Analytics Dashboard
+                </span>
+                <svg
+                  className="w-5 h-5 text-gray-400 group-hover:text-gray-600 transition-colors shrink-0"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M7 17L17 7M17 7H7M17 7v10" />
+                </svg>
+              </a>
+            </div>
+          </FadeIn>
+
           <Suspense fallback={null}>
             <FadeIn delay={100}>
               <div className="mt-10">
