@@ -51,7 +51,7 @@ export default function Security() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-0 border border-black/[0.06]">
           {items.map((item, i) => (
             <FadeIn key={item.title} delay={i * 80}>
-              <div className={`p-8 md:p-10 flex flex-col h-full ${i < items.length - 1 ? "md:border-r border-b md:border-b-0 border-black/[0.06]" : ""}`}>
+              <div className={`p-8 md:p-10 flex flex-col h-full hover:bg-black/[0.02] transition-colors duration-300 ${i < items.length - 1 ? "md:border-r border-b md:border-b-0 border-black/[0.06]" : ""}`}>
                 <div className="w-12 h-12 rounded-full bg-black flex items-center justify-center text-white mb-6">
                   {item.icon}
                 </div>
