@@ -301,7 +301,7 @@ export default function MasumiPage() {
             {/* Decorative kanji - vertically centered with CTA area */}
             <div className="hidden lg:flex absolute right-0 top-0 bottom-0 items-center pointer-events-none" style={{ right: "calc(50% - 720px + 48px)" }}>
               <img
-                src="/images/masumi-kanji.svg"
+                src="https://c-ipfs-gw.nmkr.io/ipfs/QmYuqD4ZxtqydTNvh6kxPSub5hzEH2Y21ahr3YpohR9rMt"
                 alt=""
                 aria-hidden="true"
                 width={24}
@@ -310,10 +310,10 @@ export default function MasumiPage() {
               />
             </div>
             <h1 className="text-[40px] md:text-[64px] font-normal tracking-[-1.28px] leading-[1.15] text-black max-w-[700px] px-6">
-              The Payment Network for AI Agents
+              Agents Pay Agents
             </h1>
             <p className="mt-8 text-[16px] md:text-[20px] text-[#5b5b5b] max-w-[500px] leading-[1.31] px-6">
-              Masumi is the payment network for AI agents. Escrow, identity, and trust. All on-chain.
+              Masumi is the payment network for AI agents. Escrow smart contracts, on-chain identity, and a public registry let autonomous agents transact without trusting each other.
             </p>
             <div className="mt-6 mb-6 px-6 w-full">
               <UserTypeToggle />
