@@ -9,13 +9,13 @@ export default function CTA() {
           <FadeIn>
             <div className="relative z-10 flex flex-col items-center text-center">
               <p className="text-[14px] text-white/40 uppercase tracking-[0.15em] mb-6">
-                Early access is open
+                Trusted by 600+ teams
               </p>
               <h2 className="text-[32px] md:text-[56px] font-normal tracking-[-0.8px] leading-[1.1] text-white max-w-[700px]">
                 Your team, amplified.
               </h2>
               <p className="mt-6 text-[16px] md:text-[20px] text-white/40 max-w-[460px] leading-[1.4]">
-                Give your team AI coworkers that research, plan, write, and optimize. So you can focus on strategy.
+                Give your team AI coworkers that research, plan, write, and optimize — so you can focus on what matters most.
               </p>
               <div className="mt-10 flex items-center gap-4">
                 <Link

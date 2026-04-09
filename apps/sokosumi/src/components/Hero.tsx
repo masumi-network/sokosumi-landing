@@ -840,7 +840,7 @@ export default function Hero() {
           AI Agents That Ship Marketing
         </h1>
         <p className="mt-6 text-[16px] md:text-[20px] text-[#5b5b5b] max-w-[700px] leading-[1.31] px-6">
-          Your team gives the brief. Agents do the work.
+          Your team gives the brief. AI agents handle the rest.
         </p>
         <div className="mt-10 flex items-center gap-3">
           <Link

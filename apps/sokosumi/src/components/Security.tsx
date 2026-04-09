@@ -44,7 +44,7 @@ export default function Security() {
             Built in Europe. Built for Trust.
           </h2>
           <p className="text-[16px] md:text-[18px] text-[#999] text-center max-w-[500px] mx-auto mb-14">
-            Enterprise-grade security and compliance from day one.
+            Enterprise-grade security and compliance, built in from day one.
           </p>
         </FadeIn>
 
