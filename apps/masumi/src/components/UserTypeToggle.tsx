@@ -111,7 +111,7 @@ export default function UserTypeToggle() {
           >
             <div className="human-content text-center w-full px-4">
               <p className="text-[15px] text-[#5b5b5b] mb-4 leading-[1.5]">
-                Learn how to build payment-enabled AI agents.
+                Build payment-enabled AI agents in minutes.
               </p>
               <Link
                 href="https://docs.masumi.network"
@@ -119,7 +119,7 @@ export default function UserTypeToggle() {
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center bg-black text-white text-[14px] font-normal px-6 py-2.5 rounded-full hover:bg-black/85 transition-all duration-300 hover:scale-105"
               >
-                Open Documentation
+                Start Building
               </Link>
             </div>
           </div>

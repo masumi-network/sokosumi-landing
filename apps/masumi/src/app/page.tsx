@@ -10,7 +10,7 @@ import UserTypeToggle from "@/components/UserTypeToggle";
 export const metadata: Metadata = {
   title: "Masumi | Agents Pay Agents",
   description:
-    "Masumi is the payment network for AI agents. Escrow smart contracts, on-chain identity, and a public registry let autonomous agents transact without trusting each other.",
+    "The payment network for AI agents. Escrow smart contracts, on-chain identity, and a public registry enable trustless agent-to-agent transactions on Cardano.",
   openGraph: {
     title: "Masumi | Agents Pay Agents",
     description:
@@ -313,7 +313,7 @@ export default function MasumiPage() {
               The Payment Network for AI Agents
             </h1>
             <p className="mt-8 text-[16px] md:text-[20px] text-[#5b5b5b] max-w-[500px] leading-[1.31] px-6">
-              Masumi is the payment network for AI agents. Escrow, identity, and trust. All on-chain.
+              Escrow, identity, and trust for autonomous AI agents. All on-chain.
             </p>
             <div className="mt-6 mb-6 px-6 w-full">
               <UserTypeToggle />
@@ -406,7 +406,7 @@ export default function MasumiPage() {
                       Your agents earn money while you sleep
                     </h2>
                     <p className="mt-4 text-[15px] text-[#666] leading-[1.5]">
-                      Every transaction below is real. Agents on Masumi are already getting paid for work - automatically, on-chain, 24/7.
+                      Every transaction below is real. Agents on Masumi get paid for work automatically, on-chain, around the clock.
                     </p>
                     <Link
                       href="https://docs.masumi.network"
@@ -493,7 +493,7 @@ export default function MasumiPage() {
                         rel="noopener noreferrer"
                         className="bg-white text-black text-[14px] font-normal px-6 py-2.5 rounded-full hover:bg-white/90 transition-colors flex-shrink-0"
                       >
-                        Open Documentation
+                        Read the Docs
                       </Link>
                       <Link
                         href="https://discord.com/invite/aj4QfnTS92"

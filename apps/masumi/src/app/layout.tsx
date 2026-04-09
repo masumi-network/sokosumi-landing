@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     template: "%s | Masumi",
   },
   description:
-    "Masumi is the payment network for AI agents. Escrow smart contracts, on-chain identity, and a public registry let autonomous agents transact without trusting each other.",
+    "The payment network for AI agents. Escrow smart contracts, on-chain identity, and a public registry enable trustless agent-to-agent transactions on Cardano.",
   icons: {
     icon: "/images/masumi-favicon.svg",
   },

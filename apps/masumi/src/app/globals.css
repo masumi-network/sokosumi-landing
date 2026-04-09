@@ -156,10 +156,11 @@ body {
 
 /* Pillar card hover — lift + shadow */
 .pillar-card {
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s, box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .pillar-card:hover {
   transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.02);
 }
 
 /* Pillar mini illustration — fade/slide children on card hover */
@@ -190,7 +191,10 @@ body {
 
 /* Feature card hover */
 .feature-card {
-  transition: border-color 0.3s;
+  transition: border-color 0.3s, box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.feature-card:hover {
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.02);
 }
 
 /* Feature visual inner cards — stagger lift on parent hover */
@@ -276,10 +280,11 @@ body {
 
 /* User Type Toggle */
 .user-type-card {
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s, box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .user-type-card:hover {
   transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.02);
 }
 
 .animate-drift1 {
