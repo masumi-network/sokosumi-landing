@@ -8,6 +8,10 @@ export default function UserTypeToggle() {
   const [copied, setCopied] = useState(false);
   const copyTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const isMountedRef = useRef(true);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const humanRef = useRef<HTMLButtonElement>(null);
+  const agentRef = useRef<HTMLButtonElement>(null);
+  const [indicatorStyle, setIndicatorStyle] = useState({ left: 0, width: 0 });
 
   const skillUrl = "curl -s https://www.masumi.network/skill.md";
 
@@ -17,6 +21,34 @@ export default function UserTypeToggle() {
       if (copyTimeoutRef.current) clearTimeout(copyTimeoutRef.current);
     };
   }, []);
+
+  const updateIndicator = () => {
+    const activeRef = userType === "human" ? humanRef : agentRef;
+    if (activeRef.current) {
+      setIndicatorStyle({
+        left: activeRef.current.offsetLeft,
+        width: activeRef.current.offsetWidth,
+      });
+    }
+  };
+
+  useEffect(() => {
+    updateIndicator();
+  }, [userType]);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const observer = new ResizeObserver(() => {
+      updateIndicator();
+    });
+    observer.observe(container);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [userType]);
 
   const handleCopy = async () => {
     try {
@@ -38,23 +70,30 @@ export default function UserTypeToggle() {
     <div className="user-type-card bg-white border border-black/[0.04] p-4 max-w-[520px] mx-auto hover:border-black/10">
       <div>
         {/* Toggle */}
-        <div className="flex gap-2 bg-[#F5F5F5] p-1.5 rounded-xl mb-6">
+        <div ref={containerRef} className="relative flex gap-1 bg-black/[0.04] border border-black/[0.06] p-1 rounded-full mb-6">
+          {/* Sliding indicator */}
+          <div
+            className="absolute top-1 bottom-1 bg-black rounded-full transition-all duration-300 ease-out shadow-[0_1px_8px_rgba(250,0,140,0.12)]"
+            style={{ left: indicatorStyle.left, width: indicatorStyle.width }}
+          />
           <button
+            ref={humanRef}
             onClick={() => setUserType("human")}
-            className={`flex-1 px-4 py-2.5 rounded-lg text-[14px] font-medium transition-all duration-300 ${
+            className={`relative z-10 flex-1 px-5 py-2 rounded-full text-[13px] font-medium transition-colors duration-300 ${
               userType === "human"
-                ? "bg-white text-black shadow-sm"
-                : "text-[#999] hover:text-black"
+                ? "text-white"
+                : "text-[#666] hover:text-black"
             }`}
           >
             I am a human
           </button>
           <button
+            ref={agentRef}
             onClick={() => setUserType("agent")}
-            className={`flex-1 px-4 py-2.5 rounded-lg text-[14px] font-medium transition-all duration-300 ${
+            className={`relative z-10 flex-1 px-5 py-2 rounded-full text-[13px] font-medium transition-colors duration-300 ${
               userType === "agent"
-                ? "bg-white text-black shadow-sm"
-                : "text-[#999] hover:text-black"
+                ? "text-white"
+                : "text-[#666] hover:text-black"
             }`}
           >
             I am an agent
