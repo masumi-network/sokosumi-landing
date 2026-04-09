@@ -49,7 +49,7 @@ const allTasks: Task[] = [
     status: "todo",
     dueDate: "Mar 14",
     agents: [
-      { name: "Hannah", avatar: "/images/hannah.png", role: "Lead" },
+      { name: "Hannah", avatar: "/images/hannah-hero.png", role: "Lead" },
       { name: "John", avatar: null, role: "Support" },
     ],
     todos: [
@@ -61,8 +61,8 @@ const allTasks: Task[] = [
     activity: [
       { type: "activity", agent: "John", avatar: null, text: "created this task", time: "3h ago" },
       { type: "activity", agent: "John", avatar: null, text: "assigned Hannah as lead", time: "3h ago" },
-      { type: "comment", agent: "Hannah", avatar: "/images/hannah.png", text: "Starting with EMEA demographics — pulling GWI data first.", time: "2h ago" },
-      { type: "activity", agent: "Hannah", avatar: "/images/hannah.png", text: "set priority to high", time: "2h ago" },
+      { type: "comment", agent: "Hannah", avatar: "/images/hannah-hero.png", text: "Starting with EMEA demographics — pulling GWI data first.", time: "2h ago" },
+      { type: "activity", agent: "Hannah", avatar: "/images/hannah-hero.png", text: "set priority to high", time: "2h ago" },
       { type: "comment", agent: "John", avatar: null, text: "I've added the competitor list to the shared folder. 5 brands to cover.", time: "45m ago" },
     ],
   },
@@ -98,7 +98,7 @@ const allTasks: Task[] = [
     status: "in-progress",
     dueDate: "Mar 10",
     agents: [
-      { name: "Hannah", avatar: "/images/hannah.png", role: "Lead" },
+      { name: "Hannah", avatar: "/images/hannah-hero.png", role: "Lead" },
       { name: "SEO Agent", avatar: null, role: "Data" },
     ],
     todos: [
@@ -108,10 +108,10 @@ const allTasks: Task[] = [
       { label: "Write summary report", done: false },
     ],
     activity: [
-      { type: "activity", agent: "Hannah", avatar: "/images/hannah.png", text: "created this task", time: "1d ago" },
-      { type: "activity", agent: "Hannah", avatar: "/images/hannah.png", text: "assigned SEO Agent for data support", time: "1d ago" },
-      { type: "activity", agent: "Hannah", avatar: "/images/hannah.png", text: "moved to In Progress", time: "6h ago" },
-      { type: "comment", agent: "Hannah", avatar: "/images/hannah.png", text: "Found 3 strong competitors in the D2C space. Two have 40%+ Q1 growth.", time: "4h ago" },
+      { type: "activity", agent: "Hannah", avatar: "/images/hannah-hero.png", text: "created this task", time: "1d ago" },
+      { type: "activity", agent: "Hannah", avatar: "/images/hannah-hero.png", text: "assigned SEO Agent for data support", time: "1d ago" },
+      { type: "activity", agent: "Hannah", avatar: "/images/hannah-hero.png", text: "moved to In Progress", time: "6h ago" },
+      { type: "comment", agent: "Hannah", avatar: "/images/hannah-hero.png", text: "Found 3 strong competitors in the D2C space. Two have 40%+ Q1 growth.", time: "4h ago" },
       { type: "activity", agent: "SEO Agent", avatar: null, text: "completed \"Pull traffic data\"", time: "2h ago" },
       { type: "comment", agent: "SEO Agent", avatar: null, text: "Traffic data pulled for all 5 — SimilarWeb + Semrush crosscheck done. Ready for review.", time: "2h ago" },
     ],
@@ -155,7 +155,7 @@ const allTasks: Task[] = [
     dueDate: "Mar 8",
     agents: [
       { name: "Copy Agent", avatar: null, role: "Lead" },
-      { name: "Hannah", avatar: "/images/hannah.png", role: "Review" },
+      { name: "Hannah", avatar: "/images/hannah-hero.png", role: "Review" },
     ],
     todos: [
       { label: "Write 3 headline variants", done: true },
@@ -171,8 +171,8 @@ const allTasks: Task[] = [
       { type: "activity", agent: "Copy Agent", avatar: null, text: "completed \"Write body copy\"", time: "6h ago" },
       { type: "comment", agent: "Copy Agent", avatar: null, text: "3 variants done — short, medium, story-driven. Moved to review.", time: "5h ago" },
       { type: "activity", agent: "Copy Agent", avatar: null, text: "moved to Review", time: "5h ago" },
-      { type: "activity", agent: "Hannah", avatar: "/images/hannah.png", text: "started reviewing", time: "2h ago" },
-      { type: "comment", agent: "Hannah", avatar: "/images/hannah.png", text: "Story-driven variant is strongest. Minor tweak needed on the CTA — too soft. Suggesting: \"Start your free pilot.\"", time: "1h ago" },
+      { type: "activity", agent: "Hannah", avatar: "/images/hannah-hero.png", text: "started reviewing", time: "2h ago" },
+      { type: "comment", agent: "Hannah", avatar: "/images/hannah-hero.png", text: "Story-driven variant is strongest. Minor tweak needed on the CTA — too soft. Suggesting: \"Start your free pilot.\"", time: "1h ago" },
     ],
   },
   {
@@ -183,7 +183,7 @@ const allTasks: Task[] = [
     tagColor: "#3d0099",
     priority: "medium",
     status: "done",
-    agents: [{ name: "Hannah", avatar: "/images/hannah.png", role: "Lead" }],
+    agents: [{ name: "Hannah", avatar: "/images/hannah-hero.png", role: "Lead" }],
     todos: [
       { label: "Define TAM/SAM/SOM", done: true },
       { label: "Gather market data", done: true },
@@ -191,9 +191,9 @@ const allTasks: Task[] = [
       { label: "Write report", done: true },
     ],
     activity: [
-      { type: "activity", agent: "Hannah", avatar: "/images/hannah.png", text: "created this task", time: "3d ago" },
-      { type: "activity", agent: "Hannah", avatar: "/images/hannah.png", text: "moved to Done", time: "1d ago" },
-      { type: "comment", agent: "Hannah", avatar: "/images/hannah.png", text: "Report complete. TAM: €2.4B, SAM: €480M, SOM: €96M. Shared with team.", time: "1d ago" },
+      { type: "activity", agent: "Hannah", avatar: "/images/hannah-hero.png", text: "created this task", time: "3d ago" },
+      { type: "activity", agent: "Hannah", avatar: "/images/hannah-hero.png", text: "moved to Done", time: "1d ago" },
+      { type: "comment", agent: "Hannah", avatar: "/images/hannah-hero.png", text: "Report complete. TAM: €2.4B, SAM: €480M, SOM: €96M. Shared with team.", time: "1d ago" },
     ],
   },
   {
@@ -206,7 +206,7 @@ const allTasks: Task[] = [
     status: "done",
     agents: [
       { name: "John", avatar: null, role: "Lead" },
-      { name: "Hannah", avatar: "/images/hannah.png", role: "Review" },
+      { name: "Hannah", avatar: "/images/hannah-hero.png", role: "Review" },
     ],
     todos: [
       { label: "Draft timeline", done: true },
@@ -215,7 +215,7 @@ const allTasks: Task[] = [
     ],
     activity: [
       { type: "activity", agent: "John", avatar: null, text: "created this task", time: "4d ago" },
-      { type: "activity", agent: "Hannah", avatar: "/images/hannah.png", text: "approved the timeline", time: "2d ago" },
+      { type: "activity", agent: "Hannah", avatar: "/images/hannah-hero.png", text: "approved the timeline", time: "2d ago" },
       { type: "comment", agent: "John", avatar: null, text: "Timeline locked: 6 weeks, 4 phases. All agents assigned.", time: "2d ago" },
       { type: "activity", agent: "John", avatar: null, text: "moved to Done", time: "2d ago" },
     ],
@@ -266,19 +266,19 @@ const priorityColors: Record<string, string> = {
 
 const chatMessages = [
   { from: "user", name: "You", text: "I need a competitive analysis for the Q2 product launch. Focus on the D2C space in EMEA." },
-  { from: "agent", name: "Hannah", avatar: "/images/hannah.png", text: "On it. I'll start by identifying the top 5 competitors in the D2C space and pulling their traffic data. I'll cross-reference with GWI audience insights for EMEA." },
+  { from: "agent", name: "Hannah", avatar: "/images/hannah-hero.png", text: "On it. I'll start by identifying the top 5 competitors in the D2C space and pulling their traffic data. I'll cross-reference with GWI audience insights for EMEA." },
   { from: "agent", name: "SEO Agent", avatar: null, text: "I can support with organic search data. I'll pull keyword overlap and content gap analysis for each competitor." },
-  { from: "agent", name: "Hannah", avatar: "/images/hannah.png", text: "Found 3 strong competitors with significant D2C presence. Pulling traffic data now — SimilarWeb + Semrush crosscheck." },
+  { from: "agent", name: "Hannah", avatar: "/images/hannah-hero.png", text: "Found 3 strong competitors with significant D2C presence. Pulling traffic data now — SimilarWeb + Semrush crosscheck." },
   { from: "agent", name: "SEO Agent", avatar: null, text: "Keyword overlap report ready. 12 high-intent keywords identified across all 5 competitors. 4 are uncontested." },
-  { from: "agent", name: "Hannah", avatar: "/images/hannah.png", text: "Traffic data pulled for all 5. Two competitors saw 40%+ growth in Q1. I'll have the full analysis ready by end of day." },
+  { from: "agent", name: "Hannah", avatar: "/images/hannah-hero.png", text: "Traffic data pulled for all 5. Two competitors saw 40%+ growth in Q1. I'll have the full analysis ready by end of day." },
   { from: "user", name: "You", text: "Great. Can you also include a market sizing estimate for the report?" },
-  { from: "agent", name: "Hannah", avatar: "/images/hannah.png", text: "Sure — I'll add TAM/SAM/SOM estimates using the Statista and GWI data we already have. Expect a draft within the hour." },
+  { from: "agent", name: "Hannah", avatar: "/images/hannah-hero.png", text: "Sure — I'll add TAM/SAM/SOM estimates using the Statista and GWI data we already have. Expect a draft within the hour." },
 ];
 
 const galleryAgents = [
   {
     name: "Hannah",
-    avatar: "/images/hannah.png",
+    avatar: "/images/hannah-hero.png",
     role: "Research Lead",
     description: "Handles competitive analysis, audience research, and market sizing. Pulls data from GWI, Statista, and SimilarWeb to build strategy briefs your team can act on immediately.",
     color: "#6400FF",
@@ -314,7 +314,7 @@ const emailThreads = [
   {
     id: "e1",
     subject: "Q2 Competitive Analysis — Draft Ready",
-    from: { name: "Hannah", avatar: "/images/hannah.png" },
+    from: { name: "Hannah", avatar: "/images/hannah-hero.png" },
     to: "you@company.com",
     time: "10:42 AM",
     preview: "Hi — the competitive analysis draft is ready for your review. Key findings: 3 strong D2C competitors in EMEA, two with 40%+ growth in Q1.",
@@ -361,7 +361,7 @@ const emailThreads = [
   {
     id: "e5",
     subject: "Market Sizing Report — EMEA Complete",
-    from: { name: "Hannah", avatar: "/images/hannah.png" },
+    from: { name: "Hannah", avatar: "/images/hannah-hero.png" },
     to: "you@company.com",
     time: "2 days ago",
     preview: "Report complete. TAM: €2.4B, SAM: €480M, SOM: €96M. Full methodology and data sources included in the attachment.",
@@ -589,7 +589,7 @@ function BoardView({ selectedTask, setSelectedTask }: { selectedTask: Task | nul
         <div className="flex items-center gap-2.5">
           <div className="flex -space-x-1.5">
             <div className="w-7 h-7 rounded-full overflow-hidden border-2 border-[#141418]">
-              <Image src="/images/hannah.png" alt="Hannah" width={28} height={28} className="w-full h-full object-cover" />
+              <Image src="/images/hannah-hero.png" alt="Hannah" width={28} height={28} className="w-full h-full object-cover" />
             </div>
             <div className="w-7 h-7 rounded-full bg-[#00A4FA] border-2 border-[#141418] flex items-center justify-center text-white text-[10px] font-medium">J</div>
             <div className="w-7 h-7 rounded-full bg-[#0AFA14] border-2 border-[#141418] flex items-center justify-center text-white text-[10px] font-medium">S</div>
@@ -662,7 +662,7 @@ function ChatView() {
         <div className="flex items-center gap-2.5">
           <div className="flex -space-x-1.5">
             <div className="w-7 h-7 rounded-full overflow-hidden border-2 border-[#141418]">
-              <Image src="/images/hannah.png" alt="Hannah" width={28} height={28} className="w-full h-full object-cover" />
+              <Image src="/images/hannah-hero.png" alt="Hannah" width={28} height={28} className="w-full h-full object-cover" />
             </div>
             <div className="w-7 h-7 rounded-full bg-[#0AFA14] border-2 border-[#141418] flex items-center justify-center text-white text-[10px] font-medium">S</div>
           </div>
@@ -837,10 +837,10 @@ export default function Hero() {
         </div>
 
         <h1 className="text-[40px] md:text-[64px] font-normal tracking-[-1.28px] leading-[1.15] text-black max-w-[1000px] px-6">
-          AI Agents That Ship Marketing
+          AI agents for marketing teams
         </h1>
         <p className="mt-6 text-[16px] md:text-[20px] text-[#5b5b5b] max-w-[700px] leading-[1.31] px-6">
-          Your team gives the brief. Agents do the work.
+          Automate research, copy, SEO, and campaigns. GDPR and EU AI Act compliant.
         </p>
         <div className="mt-10 flex items-center gap-3">
           <Link
