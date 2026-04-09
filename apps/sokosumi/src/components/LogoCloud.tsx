@@ -23,7 +23,7 @@ export default function LogoCloud() {
       <div className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12">
         <FadeIn>
           <p className="text-center text-[14px] text-[#999] mb-10">
-            Over 500+ companies use Agents on Sokosumi
+            Over 600+ companies use Agents on Sokosumi
           </p>
           <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-6 md:gap-x-14 md:gap-y-8">
             {companies.map((company) => (
