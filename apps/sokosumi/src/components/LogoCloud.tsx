@@ -5,10 +5,8 @@ const companies = [
   { name: "Lufthansa", src: "/images/logos/lufthansa.svg", width: 120 },
   { name: "ARD", src: "/images/logos/ard.svg", width: 55 },
   { name: "UNICEF", src: "/images/logos/unicef.svg", width: 90 },
-  { name: "Lünendonk", src: "/images/logos/lunendonk.webp", width: 100 },
-  { name: "OMR", src: "/images/logos/omr.svg", width: 65 },
   { name: "DPA", src: "/images/logos/dpa.webp", width: 55 },
-  { name: "TDK", src: "/images/logos/tdk.svg", width: 55 },
+  { name: "TDK", src: "/images/logos/tdk.svg", width: 55 },  { name: "Exquisa", src: "/images/logos/exquisa.svg", width: 80 },  { name: "Samsung", src: "/images/logos/samsung.svg", width: 90 },
   { name: "Telekom", src: "/images/logos/telekom.svg", width: 30 },
   { name: "BSH", src: "/images/logos/bsh.webp", width: 55 },
   { name: "Allianz", src: "/images/logos/allianz.svg", width: 80 },
@@ -23,7 +21,7 @@ export default function LogoCloud() {
       <div className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12">
         <FadeIn>
           <p className="text-center text-[14px] text-[#999] mb-10">
-            Over 500+ companies use Agents on Sokosumi
+            Trusted by the world's most innovative companies
           </p>
           <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-6 md:gap-x-14 md:gap-y-8">
             {companies.map((company) => (
