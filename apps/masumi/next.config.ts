@@ -7,6 +7,10 @@ const nextConfig: NextConfig = {
     root: path.resolve(__dirname, "../.."),
   },
   serverExternalPackages: ["better-sqlite3"],
+  outputFileTracingIncludes: {
+    "/blogs": ["./content/**/*.md"],
+    "/blogs/[slug]": ["./content/**/*.md"],
+  },
 };
 
 export default nextConfig;
