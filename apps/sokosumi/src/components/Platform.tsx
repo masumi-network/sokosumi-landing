@@ -144,7 +144,7 @@ export default function Platform() {
         <div className="flex flex-col gap-5">
           {features.map((feature, i) => (
             <FadeIn key={feature.label} delay={i * 100}>
-            <div className="bg-white p-[14px]">
+            <div className="bg-white p-[14px] hover:shadow-lg transition-shadow duration-300">
               <div className={`flex flex-col ${i % 2 === 0 ? "lg:flex-row" : "lg:flex-row-reverse"} gap-0`}>
                 <div className="flex-1 p-8 md:p-12 lg:p-16 flex flex-col justify-center">
                   <p className="text-[16px] text-[#979797] mb-3">{feature.label}</p>

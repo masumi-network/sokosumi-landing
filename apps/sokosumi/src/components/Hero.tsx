@@ -839,13 +839,13 @@ export default function Hero() {
         <h1 className="text-[40px] md:text-[64px] font-normal tracking-[-1.28px] leading-[1.15] text-black max-w-[1000px] px-6">
           AI Agents That Ship Marketing
         </h1>
-        <p className="mt-6 text-[16px] md:text-[20px] text-[#5b5b5b] max-w-[700px] leading-[1.31] px-6">
+        <p className="mt-6 text-[16px] md:text-[20px] text-[#5b5b5b] max-w-[700px] leading-[1.31] px-6 tracking-wide">
           Your team gives the brief. Agents do the work.
         </p>
         <div className="mt-10 flex items-center gap-3">
           <Link
             href="https://app.sokosumi.com"
-            className="inline-flex items-center justify-center bg-black text-white text-[12px] md:text-[16px] font-normal px-6 py-[10px] rounded-full hover:bg-black/85 transition-colors"
+            className="inline-flex items-center justify-center bg-black text-white text-[12px] md:text-[16px] font-normal px-6 py-[10px] rounded-full hover:bg-black/90 hover:scale-[1.02] transition-all duration-200"
           >
             Get started
           </Link>

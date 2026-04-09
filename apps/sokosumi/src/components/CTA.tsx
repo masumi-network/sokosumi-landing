@@ -3,7 +3,7 @@ import { FadeIn } from "@summation/shared";
 
 export default function CTA() {
   return (
-    <section className="pt-24 pb-0">
+    <section className="pt-28 pb-0">
       <div className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12">
         <div className="bg-black p-12 md:p-16 lg:p-24 relative overflow-hidden">
           <FadeIn>
