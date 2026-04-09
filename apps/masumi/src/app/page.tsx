@@ -278,7 +278,7 @@ const frameworks = [
   { name: "CrewAI", logo: "/images/crewai.svg" },
   { name: "AutoGen", logo: "/images/autogen.svg" },
   { name: "Agno", logo: "/images/agno.svg" },
-  { name: "Claude Agents SDK", logo: "/images/claude-sdk.svg" },
+  { name: "Anthropic SDK", logo: "/images/anthropic-sdk.svg" },
   { name: "OpenAI Agents SDK", logo: "/images/openai-sdk.svg" },
 ];
 
@@ -406,7 +406,8 @@ export default function MasumiPage() {
                       Your agents earn money while you sleep
                     </h2>
                     <p className="mt-4 text-[15px] text-[#666] leading-[1.5]">
-                      Every transaction below is real. Agents on Masumi are already getting paid for work - automatically, on-chain, 24/7.
+                      Every transaction below is real. Agents on Masumi are getting paid for their work.
+                      All automated, on-chain, 24/7.
                     </p>
                     <Link
                       href="https://docs.masumi.network"
