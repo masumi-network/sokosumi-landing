@@ -301,7 +301,7 @@ export default function MasumiPage() {
             {/* Decorative kanji - vertically centered with CTA area */}
             <div className="hidden lg:flex absolute right-0 top-0 bottom-0 items-center pointer-events-none" style={{ right: "calc(50% - 720px + 48px)" }}>
               <img
-                src="https://c-ipfs-gw.nmkr.io/ipfs/QmYuqD4ZxtqydTNvh6kxPSub5hzEH2Y21ahr3YpohR9rMt"
+                src="/images/masumi-kanji.svg"
                 alt=""
                 aria-hidden="true"
                 width={24}
