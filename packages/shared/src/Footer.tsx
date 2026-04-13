@@ -140,6 +140,12 @@ export default function Footer({ product = "sokosumi" }: { product?: "sokosumi" 
           </div>
         </div>
         <div className="mt-6 flex flex-wrap items-center justify-end gap-5 text-[13px] text-[#666]">
+          <Link href="/imprint" className="hover:text-black transition-colors">
+            Imprint
+          </Link>
+          <Link href="/privacy" className="hover:text-black transition-colors">
+            Privacy
+          </Link>
           <a href="https://masumi.network" className="hover:text-black transition-colors" target="_blank" rel="noopener noreferrer">
             Masumi
           </a>
