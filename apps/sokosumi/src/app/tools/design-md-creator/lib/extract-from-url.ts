@@ -1,5 +1,6 @@
 import * as cheerio from "cheerio";
 import type { Frontmatter, Typography } from "./design-md";
+import { llmExtract } from "./llm-extract";
 
 const HEX_RE = /#[0-9a-fA-F]{6}\b|#[0-9a-fA-F]{3}\b/g;
 const RGB_RE = /rgba?\(\s*(\d+)[,\s]+(\d+)[,\s]+(\d+)/g;
@@ -7,6 +8,7 @@ const RGB_RE = /rgba?\(\s*(\d+)[,\s]+(\d+)[,\s]+(\d+)/g;
 export type ExtractResult = {
   frontmatter: Frontmatter;
   prose: { heading: string; body: string }[];
+  source: "llm" | "heuristic";
 };
 
 export async function extractFromUrl(rawUrl: string): Promise<ExtractResult> {
@@ -51,8 +53,13 @@ export async function extractFromUrl(rawUrl: string): Promise<ExtractResult> {
   }
 
   const allCss = cssTexts.join("\n");
-  const allText = html + "\n" + allCss;
 
+  const llm = await llmExtract(url, html, allCss);
+  if (llm) {
+    return { ...llm, source: "llm" };
+  }
+
+  const allText = html + "\n" + allCss;
   const colors = extractColors(allText);
   const fonts = extractFonts(allCss, $);
   const radii = extractRadii(allCss);
@@ -91,7 +98,7 @@ export async function extractFromUrl(rawUrl: string): Promise<ExtractResult> {
     },
   ];
 
-  return { frontmatter, prose };
+  return { frontmatter, prose, source: "heuristic" };
 }
 
 function normalizeUrl(input: string): string {

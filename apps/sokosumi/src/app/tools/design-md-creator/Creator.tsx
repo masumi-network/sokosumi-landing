@@ -266,10 +266,38 @@ function CardLabel({ children }: { children: React.ReactNode }) {
 }
 
 function Loading() {
+  const steps = [
+    "Reading the page",
+    "Sampling colors",
+    "Identifying fonts",
+    "Inferring components",
+    "Composing your DESIGN.md",
+  ];
+  const [active, setActive] = useState(0);
+  useEffect(() => {
+    const id = setInterval(() => {
+      setActive((i) => Math.min(i + 1, steps.length - 1));
+    }, 1400);
+    return () => clearInterval(id);
+  }, [steps.length]);
   return (
-    <div className="flex flex-col items-center gap-3 py-24">
-      <div className="w-6 h-6 border-2 border-black/10 border-t-black rounded-full animate-spin" />
-      <p className="text-[14px] text-[#999]">Extracting design tokens…</p>
+    <div className="flex flex-col items-center gap-6 py-24">
+      <div className="w-7 h-7 border-2 border-black/10 border-t-black rounded-full animate-spin" />
+      <ul className="flex flex-col gap-2 items-start min-w-[220px]">
+        {steps.map((s, i) => (
+          <li
+            key={s}
+            className={`flex items-center gap-2 text-[13px] transition-opacity ${
+              i <= active ? "text-black opacity-100" : "text-[#999] opacity-50"
+            }`}
+          >
+            <span
+              className={`w-1 h-1 rounded-full ${i < active ? "bg-black" : i === active ? "bg-black animate-pulse" : "bg-[#ccc]"}`}
+            />
+            {s}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
