@@ -21,6 +21,11 @@ export type ComponentTokens = {
   width?: string;
 };
 
+export type Layout = {
+  containerMaxWidth?: string;
+  gridColumns?: number;
+};
+
 export type Frontmatter = {
   version?: string;
   name?: string;
@@ -29,6 +34,8 @@ export type Frontmatter = {
   typography?: Record<string, Typography>;
   rounded?: Record<string, string>;
   spacing?: Record<string, string | number>;
+  elevation?: Record<string, string>;
+  layout?: Layout;
   components?: Record<string, ComponentTokens>;
 };
 

@@ -26,6 +26,9 @@ export default function Renderer({ system }: { system: DesignSystem }) {
     document.head.appendChild(link);
   }, [fm.typography]);
 
+  const dosAndDonts = system.sections.find((s) => /do.*don.*t/i.test(s.heading));
+  const otherSections = system.sections.filter((s) => s !== dosAndDonts);
+
   return (
     <div className="flex flex-col gap-20">
       <BrandHero
@@ -34,8 +37,16 @@ export default function Renderer({ system }: { system: DesignSystem }) {
         primary={primary}
         headingFont={headingFont}
       />
+      {otherSections.find((s) => /overview/i.test(s.heading)) && (
+        <OverviewSection
+          section={otherSections.find((s) => /overview/i.test(s.heading))!}
+        />
+      )}
       {fm.colors && Object.keys(fm.colors).length > 0 && (
-        <ColorsSection colors={fm.colors} />
+        <ColorsSection
+          colors={fm.colors}
+          usageNote={otherSections.find((s) => /color.*usage|usage/i.test(s.heading))?.body}
+        />
       )}
       {fm.typography && Object.keys(fm.typography).length > 0 && (
         <TypographySection typography={fm.typography} brandName={fm.name} />
@@ -43,13 +54,42 @@ export default function Renderer({ system }: { system: DesignSystem }) {
       {(fm.rounded || fm.spacing) && (
         <ShapeSpacingSection rounded={fm.rounded} spacing={fm.spacing} />
       )}
+      {fm.elevation && Object.keys(fm.elevation).length > 0 && (
+        <ElevationSection elevation={fm.elevation} />
+      )}
+      {fm.layout && (fm.layout.containerMaxWidth || fm.layout.gridColumns) && (
+        <LayoutSection
+          layout={fm.layout}
+          notes={otherSections.find((s) => /layout/i.test(s.heading))?.body}
+        />
+      )}
       {fm.components && Object.keys(fm.components).length > 0 && (
         <ComponentsSection
           components={fm.components}
           frontmatter={fm}
         />
       )}
-      {system.sections.length > 0 && <ProseSection sections={system.sections} />}
+      {otherSections.find((s) => /voice/i.test(s.heading)) && (
+        <VoiceSection
+          section={otherSections.find((s) => /voice/i.test(s.heading))!}
+          headingFont={headingFont}
+          primary={primary}
+        />
+      )}
+      {dosAndDonts && <DosAndDontsSection body={dosAndDonts.body} />}
+      {otherSections
+        .filter(
+          (s) =>
+            !/overview|voice|color.*usage|^usage$|layout/i.test(s.heading),
+        )
+        .length > 0 && (
+        <ProseSection
+          sections={otherSections.filter(
+            (s) =>
+              !/overview|voice|color.*usage|^usage$|layout/i.test(s.heading),
+          )}
+        />
+      )}
     </div>
   );
 }
@@ -121,7 +161,13 @@ function SectionTitle({
   );
 }
 
-function ColorsSection({ colors }: { colors: Record<string, string> }) {
+function ColorsSection({
+  colors,
+  usageNote,
+}: {
+  colors: Record<string, string>;
+  usageNote?: string;
+}) {
   const entries = Object.entries(colors);
   const [primaryEntry, ...rest] = entries;
   return (
@@ -141,6 +187,225 @@ function ColorsSection({ colors }: { colors: Record<string, string> }) {
           ))}
         </div>
       </div>
+      {usageNote && (
+        <p className="mt-8 text-[15px] text-[#5b5b5b] leading-[1.65] max-w-[640px]">
+          {usageNote}
+        </p>
+      )}
+    </section>
+  );
+}
+
+function OverviewSection({
+  section,
+}: {
+  section: { heading: string; body: string };
+}) {
+  return (
+    <section>
+      <SectionTitle eyebrow="The brand">Overview</SectionTitle>
+      <div
+        className="text-[18px] md:text-[20px] text-[#222] leading-[1.5] max-w-[680px]"
+        dangerouslySetInnerHTML={{ __html: renderInlineMarkdown(section.body) }}
+      />
+    </section>
+  );
+}
+
+function VoiceSection({
+  section,
+  headingFont,
+  primary,
+}: {
+  section: { heading: string; body: string };
+  headingFont?: string;
+  primary?: string;
+}) {
+  const fontStack = headingFont ? `"${headingFont}", system-ui, sans-serif` : undefined;
+  return (
+    <section>
+      <SectionTitle eyebrow="Tone">Voice</SectionTitle>
+      <div
+        className="border-l-2 pl-8 py-2 max-w-[680px]"
+        style={{ borderColor: primary ?? "#000" }}
+      >
+        <p
+          className="text-[20px] md:text-[24px] text-black leading-[1.4]"
+          style={{ fontFamily: fontStack }}
+          dangerouslySetInnerHTML={{ __html: renderInlineMarkdown(section.body) }}
+        />
+      </div>
+    </section>
+  );
+}
+
+function DosAndDontsSection({ body }: { body: string }) {
+  const { dos, donts } = parseDosAndDonts(body);
+  return (
+    <section>
+      <SectionTitle eyebrow="Rules of the brand">
+        Do&apos;s &amp; Don&apos;ts
+      </SectionTitle>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <RuleColumn
+          variant="do"
+          items={dos}
+          title="Do"
+        />
+        <RuleColumn
+          variant="dont"
+          items={donts}
+          title="Don't"
+        />
+      </div>
+    </section>
+  );
+}
+
+function RuleColumn({
+  variant,
+  items,
+  title,
+}: {
+  variant: "do" | "dont";
+  items: string[];
+  title: string;
+}) {
+  if (items.length === 0) return null;
+  const accent = variant === "do" ? "#0a8a3a" : "#B8422E";
+  const symbol = variant === "do" ? "+" : "−";
+  return (
+    <div className="border border-black/[0.06] p-7">
+      <p
+        className="text-[12px] uppercase tracking-[0.18em] mb-5"
+        style={{ color: accent }}
+      >
+        {title}
+      </p>
+      <ul className="flex flex-col gap-4">
+        {items.map((item, i) => (
+          <li key={i} className="flex gap-3 text-[15px] text-black leading-[1.5]">
+            <span
+              className="flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center text-[12px] font-medium mt-[2px]"
+              style={{ background: accent + "1f", color: accent }}
+            >
+              {symbol}
+            </span>
+            <span>{item}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+function parseDosAndDonts(body: string): { dos: string[]; donts: string[] } {
+  const dos: string[] = [];
+  const donts: string[] = [];
+  let current: "do" | "dont" | null = null;
+  for (const rawLine of body.split("\n")) {
+    const line = rawLine.trim();
+    if (!line) continue;
+    if (/^\*\*\s*do\s*\*\*$/i.test(line) || /^do\b/i.test(line.replace(/[*_]/g, ""))) {
+      current = "do";
+      continue;
+    }
+    if (/^\*\*\s*don.?t\s*\*\*$/i.test(line) || /^don.?t\b/i.test(line.replace(/[*_]/g, ""))) {
+      current = "dont";
+      continue;
+    }
+    if (line.startsWith("- ") || line.startsWith("* ")) {
+      const text = line.replace(/^[-*]\s+/, "").trim();
+      if (current === "do") dos.push(text);
+      else if (current === "dont") donts.push(text);
+    }
+  }
+  return { dos, donts };
+}
+
+function ElevationSection({
+  elevation,
+}: {
+  elevation: Record<string, string>;
+}) {
+  return (
+    <section>
+      <SectionTitle eyebrow="Depth">Elevation</SectionTitle>
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+        {Object.entries(elevation).map(([name, value]) => (
+          <div key={name} className="flex flex-col gap-3">
+            <div
+              className="h-[120px] bg-white rounded-[10px]"
+              style={{ boxShadow: value }}
+            />
+            <div>
+              <p className="text-[13px] font-medium text-black">{name}</p>
+              <p className="text-[11px] text-[#999] font-mono break-words mt-1">
+                {value}
+              </p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function LayoutSection({
+  layout,
+  notes,
+}: {
+  layout: { containerMaxWidth?: string; gridColumns?: number };
+  notes?: string;
+}) {
+  return (
+    <section>
+      <SectionTitle eyebrow="Structure">Layout</SectionTitle>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+        <div>
+          <p className="text-[12px] text-[#999] uppercase tracking-[0.15em] mb-4">
+            Container
+          </p>
+          <div className="relative h-[120px] bg-black/[0.03] rounded-[6px] overflow-hidden">
+            <div
+              className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 bg-black/[0.08] border-l border-r border-black/10"
+              style={{
+                width: layout.containerMaxWidth
+                  ? `min(100%, ${layout.containerMaxWidth})`
+                  : "100%",
+              }}
+            />
+          </div>
+          <p className="mt-3 text-[13px] text-black">
+            Max width: <span className="font-mono">{layout.containerMaxWidth ?? "—"}</span>
+          </p>
+        </div>
+        {layout.gridColumns && (
+          <div>
+            <p className="text-[12px] text-[#999] uppercase tracking-[0.15em] mb-4">
+              Grid
+            </p>
+            <div
+              className="grid gap-1 h-[120px]"
+              style={{
+                gridTemplateColumns: `repeat(${layout.gridColumns}, 1fr)`,
+              }}
+            >
+              {Array.from({ length: layout.gridColumns }).map((_, i) => (
+                <div key={i} className="bg-black/[0.06] rounded-[2px]" />
+              ))}
+            </div>
+            <p className="mt-3 text-[13px] text-black">
+              {layout.gridColumns}-column grid
+            </p>
+          </div>
+        )}
+      </div>
+      {notes && (
+        <p className="mt-8 text-[15px] text-[#5b5b5b] leading-[1.65] max-w-[640px]">
+          {notes}
+        </p>
+      )}
     </section>
   );
 }

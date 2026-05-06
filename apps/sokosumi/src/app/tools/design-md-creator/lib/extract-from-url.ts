@@ -1,6 +1,7 @@
 import * as cheerio from "cheerio";
 import type { Frontmatter, Typography } from "./design-md";
-import { llmExtract } from "./llm-extract";
+import { llmExtract, type LlmMeta } from "./llm-extract";
+import { preprocessSite } from "./preprocess";
 
 const HEX_RE = /#[0-9a-fA-F]{6}\b|#[0-9a-fA-F]{3}\b/g;
 const RGB_RE = /rgba?\(\s*(\d+)[,\s]+(\d+)[,\s]+(\d+)/g;
@@ -9,6 +10,7 @@ export type ExtractResult = {
   frontmatter: Frontmatter;
   prose: { heading: string; body: string }[];
   source: "llm" | "heuristic";
+  meta?: LlmMeta;
 };
 
 export async function extractFromUrl(rawUrl: string): Promise<ExtractResult> {
@@ -54,9 +56,15 @@ export async function extractFromUrl(rawUrl: string): Promise<ExtractResult> {
 
   const allCss = cssTexts.join("\n");
 
-  const llm = await llmExtract(url, html, allCss);
+  const signal = preprocessSite(url, $, html, allCss);
+  const llm = await llmExtract(url, signal, html, allCss);
   if (llm) {
-    return { ...llm, source: "llm" };
+    return {
+      frontmatter: llm.frontmatter,
+      prose: llm.prose,
+      source: "llm",
+      meta: llm.meta,
+    };
   }
 
   const allText = html + "\n" + allCss;

@@ -13,70 +13,157 @@ import Editor from "./Editor";
 type View = "select" | "loading" | "render";
 type Source = "upload" | "url" | "example" | null;
 
+export type ExtractMeta = {
+  source: "llm" | "heuristic" | "upload" | "example";
+  model?: string;
+  latencyMs?: number;
+  inputTokens?: number;
+  outputTokens?: number;
+};
+
 const EXAMPLE = `---
+version: alpha
 name: Heritage
-description: Architectural Minimalism meets Journalistic Gravitas.
+description: A digital publication for design and culture, where editorial gravitas meets architectural minimalism.
 colors:
-  primary: "#1A1C1E"
-  secondary: "#6C7278"
-  tertiary: "#B8422E"
-  neutral: "#F7F5F2"
+  primary: "#B8422E"
+  secondary: "#1A1C1E"
+  tertiary: "#6C7278"
+  neutral: "#5b5b5b"
+  surface: "#F7F5F2"
 typography:
+  display:
+    fontFamily: Fraunces
+    fontSize: 4.5rem
+    fontWeight: 600
+    lineHeight: 1.0
+    letterSpacing: "-0.04em"
   h1:
-    fontFamily: Public Sans
+    fontFamily: Fraunces
     fontSize: 3rem
     fontWeight: 600
     lineHeight: 1.1
+  h2:
+    fontFamily: Fraunces
+    fontSize: 2rem
+    fontWeight: 500
+    lineHeight: 1.2
+  h3:
+    fontFamily: Public Sans
+    fontSize: 1.25rem
+    fontWeight: 500
+    lineHeight: 1.3
+  body-lg:
+    fontFamily: Public Sans
+    fontSize: 1.125rem
+    lineHeight: 1.6
   body-md:
     fontFamily: Public Sans
     fontSize: 1rem
-    lineHeight: 1.5
+    lineHeight: 1.6
+  caption:
+    fontFamily: Public Sans
+    fontSize: 0.75rem
+    lineHeight: 1.4
+    letterSpacing: "0.05em"
 rounded:
-  sm: 4px
-  md: 8px
+  sm: 2px
+  md: 4px
+  lg: 8px
 spacing:
+  xs: 4px
   sm: 8px
   md: 16px
   lg: 32px
+  xl: 64px
+elevation:
+  sm: "0 1px 2px rgba(26,28,30,0.05)"
+  md: "0 4px 12px rgba(26,28,30,0.08)"
+  lg: "0 16px 40px rgba(26,28,30,0.12)"
+layout:
+  containerMaxWidth: "1200px"
+  gridColumns: 12
 components:
   button-primary:
-    backgroundColor: "{colors.tertiary}"
+    backgroundColor: "{colors.primary}"
     textColor: "#ffffff"
     rounded: "{rounded.sm}"
-    padding: 12px 24px
+    padding: "12px 24px"
+  button-secondary:
+    backgroundColor: "{colors.surface}"
+    textColor: "{colors.secondary}"
+    rounded: "{rounded.sm}"
+    padding: "12px 24px"
+  card:
+    backgroundColor: "{colors.surface}"
+    rounded: "{rounded.md}"
+    padding: "24px"
+  input:
+    backgroundColor: "{colors.surface}"
+    textColor: "{colors.secondary}"
+    rounded: "{rounded.sm}"
+    padding: "10px 14px"
 ---
 
 ## Overview
 
-Architectural Minimalism meets Journalistic Gravitas. The UI evokes a premium matte finish — a high-end broadsheet or contemporary gallery.
+Heritage is a digital publication for design and culture. The brand evokes the matte finish of a premium broadsheet — restrained, considered, and built to be read slowly. Visual identity rests on architectural neutrals offset by a single, defiant accent: Boston Clay.
 
-## Colors
+## Voice
 
-The palette is rooted in high-contrast neutrals and a single accent color.
+Heritage writes the way an editor speaks at a quiet kitchen table. Precise, never breathless. We use complete sentences, plain words, and active verbs. Our headlines state, they don't shout. We treat the reader as someone whose time is more valuable than our copy.
+
+## Color usage
+
+Boston Clay is the only interactive color — every link, button, and selected state. Deep ink is for headlines and core text. Slate is metadata, captions, and structural lines. Limestone is the foundation; never use pure white. Reserve clay for moments that genuinely earn the eye.
+
+## Layout
+
+The Heritage page rhythm is generous. Single column at body widths, with a 1200px outer container that breathes. White space is content. Section spacing follows a doubling cadence (16, 32, 64) so vertical rhythm feels considered, not arbitrary.
+
+## Do's and Don'ts
+
+**Do**
+- Pair Fraunces display with Public Sans body — never two display faces.
+- Set body copy at body-lg for editorial reading; body-md is for utility.
+- Use Boston Clay sparingly, on interactive elements only.
+- Keep elevation subtle; we are a publication, not a dashboard.
+
+**Don't**
+- Don't tint surfaces with primary — keep clay for interaction, never decoration.
+- Don't pile rounded corners; sharp 2px is our visual signature.
+- Don't use pure white backgrounds; Limestone is the foundation.
+- Don't combine elevation md + lg in the same composition.
 `;
 
 export default function Creator() {
   const [view, setView] = useState<View>("select");
   const [source, setSource] = useState<Source>(null);
   const [system, setSystem] = useState<DesignSystem | null>(null);
+  const [extractMeta, setExtractMeta] = useState<ExtractMeta | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const startWith = useCallback((md: string, src: Source) => {
-    try {
-      const parsed = parseDesignMd(md);
-      setSystem(parsed);
-      setSource(src);
-      setError(null);
-      setView("render");
-    } catch (e) {
-      setError(e instanceof Error ? e.message : "Failed to parse");
-      setView("select");
-    }
-  }, []);
+  const startWith = useCallback(
+    (md: string, src: Source, meta?: ExtractMeta) => {
+      try {
+        const parsed = parseDesignMd(md);
+        setSystem(parsed);
+        setSource(src);
+        setExtractMeta(meta ?? { source: srcToMetaSource(src) });
+        setError(null);
+        setView("render");
+      } catch (e) {
+        setError(e instanceof Error ? e.message : "Failed to parse");
+        setView("select");
+      }
+    },
+    [],
+  );
 
   const reset = () => {
     setSystem(null);
     setSource(null);
+    setExtractMeta(null);
     setError(null);
     setView("select");
   };
@@ -88,7 +175,16 @@ export default function Creator() {
   }, [startWith]);
 
   if (view === "select") {
-    return <ModeSelect onUpload={startWith} onUrl={startWith} onExample={() => startWith(EXAMPLE, "example")} setLoading={() => setView("loading")} setError={setError} error={error} />;
+    return (
+      <ModeSelect
+        onUpload={startWith}
+        onUrl={startWith}
+        onExample={() => startWith(EXAMPLE, "example")}
+        setLoading={() => setView("loading")}
+        setError={setError}
+        error={error}
+      />
+    );
   }
 
   if (view === "loading") {
@@ -102,11 +198,18 @@ export default function Creator() {
         onChange={setSystem}
         onReset={reset}
         source={source}
+        extractMeta={extractMeta}
       />
     );
   }
 
   return null;
+}
+
+function srcToMetaSource(src: Source): ExtractMeta["source"] {
+  if (src === "upload") return "upload";
+  if (src === "example") return "example";
+  return "heuristic";
 }
 
 function ModeSelect({
@@ -117,8 +220,8 @@ function ModeSelect({
   setError,
   error,
 }: {
-  onUpload: (md: string, src: Source) => void;
-  onUrl: (md: string, src: Source) => void;
+  onUpload: (md: string, src: Source, meta?: ExtractMeta) => void;
+  onUrl: (md: string, src: Source, meta?: ExtractMeta) => void;
   onExample: () => void;
   setLoading: () => void;
   setError: (msg: string | null) => void;
@@ -151,7 +254,14 @@ function ModeSelect({
       const data = await res.json();
       if (!res.ok) throw new Error(data?.error ?? "Failed to extract");
       const md = composeFromExtract(data);
-      onUrl(md, "url");
+      const meta: ExtractMeta = {
+        source: data?.source ?? "heuristic",
+        model: data?.meta?.model,
+        latencyMs: data?.meta?.latencyMs,
+        inputTokens: data?.meta?.inputTokens,
+        outputTokens: data?.meta?.outputTokens,
+      };
+      onUrl(md, "url", meta);
     } catch (e) {
       setError(e instanceof Error ? e.message : "Failed to extract");
     } finally {
@@ -307,11 +417,13 @@ function RenderView({
   onChange,
   onReset,
   source,
+  extractMeta,
 }: {
   system: DesignSystem;
   onChange: (next: DesignSystem) => void;
   onReset: () => void;
   source: Source;
+  extractMeta: ExtractMeta | null;
 }) {
   const download = () => {
     const md = serializeDesignMd(system);
@@ -335,13 +447,32 @@ function RenderView({
     <div className="flex flex-col gap-10">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pb-6 border-b border-black/[0.06]">
         <div>
-          <p className="text-[12px] text-[#999] uppercase tracking-[0.15em]">
-            {source === "url"
-              ? "Generated from URL"
-              : source === "upload"
-                ? "Uploaded"
-                : "Example"}
-          </p>
+          <div className="flex items-center gap-3 mb-1">
+            <p className="text-[12px] text-[#999] uppercase tracking-[0.15em]">
+              {source === "url"
+                ? "Generated from URL"
+                : source === "upload"
+                  ? "Uploaded"
+                  : "Example"}
+            </p>
+            {extractMeta?.source === "llm" && (
+              <span
+                className="text-[11px] px-2 py-0.5 rounded-full border border-black/10 text-[#666] flex items-center gap-1.5"
+                title={`${extractMeta.model}${extractMeta.latencyMs ? ` · ${extractMeta.latencyMs}ms` : ""}${extractMeta.inputTokens ? ` · ${extractMeta.inputTokens}+${extractMeta.outputTokens} tokens` : ""}`}
+              >
+                <span className="w-1.5 h-1.5 rounded-full bg-black" />
+                AI · Claude Haiku 4.5
+              </span>
+            )}
+            {extractMeta?.source === "heuristic" && source === "url" && (
+              <span
+                className="text-[11px] px-2 py-0.5 rounded-full border border-[#B8422E]/30 text-[#B8422E]"
+                title="LLM call failed; falling back to heuristic extraction"
+              >
+                Fallback · heuristic
+              </span>
+            )}
+          </div>
           <p className="text-[15px] text-black">
             Edit, preview, and download your DESIGN.md
           </p>
