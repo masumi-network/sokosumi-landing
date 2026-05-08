@@ -108,8 +108,8 @@ export async function llmExtract(
       headers: {
         authorization: `Bearer ${key}`,
         "content-type": "application/json",
-        "x-title": "Sokosumi DESIGN.md Creator",
-        "http-referer": "https://sokosumi.com/tools/design-md-creator",
+        "x-title": "Masumi DESIGN.md Generator",
+        "http-referer": "https://www.masumi.network/tools/design-md",
       },
       body: JSON.stringify({
         model: MODEL,

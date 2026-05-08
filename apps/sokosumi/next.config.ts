@@ -6,6 +6,20 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: path.resolve(__dirname, "../.."),
   },
+  async redirects() {
+    return [
+      {
+        source: "/tools/design-md-creator",
+        destination: "https://www.masumi.network/tools/design-md",
+        permanent: true,
+      },
+      {
+        source: "/tools/design-md-creator/:path*",
+        destination: "https://www.masumi.network/tools/design-md/:path*",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

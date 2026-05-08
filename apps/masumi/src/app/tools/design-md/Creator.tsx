@@ -182,10 +182,17 @@ export default function Creator() {
     setView("select");
   };
 
+  const [autoUrl, setAutoUrl] = useState<string | null>(null);
+
   useEffect(() => {
     if (typeof window === "undefined") return;
     const params = new URLSearchParams(window.location.search);
-    if (params.get("example") === "1") startWith(EXAMPLE, "example");
+    if (params.get("example") === "1") {
+      startWith(EXAMPLE, "example");
+      return;
+    }
+    const u = params.get("url");
+    if (u) setAutoUrl(u);
   }, [startWith]);
 
   if (view === "select") {
@@ -197,6 +204,7 @@ export default function Creator() {
         setLoading={() => setView("loading")}
         setError={setError}
         error={error}
+        initialUrl={autoUrl}
       />
     );
   }
@@ -233,6 +241,7 @@ function ModeSelect({
   setLoading,
   setError,
   error,
+  initialUrl,
 }: {
   onUpload: (md: string, src: Source, meta?: ExtractMeta) => void;
   onUrl: (md: string, src: Source, meta?: ExtractMeta) => void;
@@ -240,9 +249,11 @@ function ModeSelect({
   setLoading: () => void;
   setError: (msg: string | null) => void;
   error: string | null;
+  initialUrl: string | null;
 }) {
-  const [url, setUrl] = useState("");
+  const [url, setUrl] = useState(initialUrl ?? "");
   const [submitting, setSubmitting] = useState(false);
+  const [autoSubmitted, setAutoSubmitted] = useState(false);
 
   const handleFile = (file: File) => {
     const reader = new FileReader();
@@ -253,34 +264,48 @@ function ModeSelect({
     reader.readAsText(file);
   };
 
+  const submitUrl = useCallback(
+    async (target: string) => {
+      if (!target.trim()) return;
+      setSubmitting(true);
+      setError(null);
+      setLoading();
+      try {
+        const res = await fetch("/tools/design-md/api/extract", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ url: target }),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data?.error ?? "Failed to extract");
+        const md = composeFromExtract(data);
+        const meta: ExtractMeta = {
+          source: data?.source ?? "heuristic",
+          model: data?.meta?.model,
+          latencyMs: data?.meta?.latencyMs,
+          inputTokens: data?.meta?.inputTokens,
+          outputTokens: data?.meta?.outputTokens,
+        };
+        onUrl(md, "url", meta);
+      } catch (e) {
+        setError(e instanceof Error ? e.message : "Failed to extract");
+      } finally {
+        setSubmitting(false);
+      }
+    },
+    [onUrl, setError, setLoading],
+  );
+
+  useEffect(() => {
+    if (initialUrl && !autoSubmitted) {
+      setAutoSubmitted(true);
+      void submitUrl(initialUrl);
+    }
+  }, [initialUrl, autoSubmitted, submitUrl]);
+
   const handleUrl = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!url.trim()) return;
-    setSubmitting(true);
-    setError(null);
-    setLoading();
-    try {
-      const res = await fetch("/tools/design-md-creator/api/extract", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({ url }),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data?.error ?? "Failed to extract");
-      const md = composeFromExtract(data);
-      const meta: ExtractMeta = {
-        source: data?.source ?? "heuristic",
-        model: data?.meta?.model,
-        latencyMs: data?.meta?.latencyMs,
-        inputTokens: data?.meta?.inputTokens,
-        outputTokens: data?.meta?.outputTokens,
-      };
-      onUrl(md, "url", meta);
-    } catch (e) {
-      setError(e instanceof Error ? e.message : "Failed to extract");
-    } finally {
-      setSubmitting(false);
-    }
+    await submitUrl(url);
   };
 
   return (
