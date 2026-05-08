@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import yaml from "js-yaml";
 import {
   parseDesignMd,
@@ -183,6 +183,7 @@ export default function Creator() {
   };
 
   const [autoUrl, setAutoUrl] = useState<string | null>(null);
+  const [activeUrl, setActiveUrl] = useState<string | null>(null);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -201,7 +202,10 @@ export default function Creator() {
         onUpload={startWith}
         onUrl={startWith}
         onExample={() => startWith(EXAMPLE, "example")}
-        setLoading={() => setView("loading")}
+        setLoading={(url) => {
+          setActiveUrl(url ?? null);
+          setView("loading");
+        }}
         setError={setError}
         error={error}
         initialUrl={autoUrl}
@@ -210,7 +214,7 @@ export default function Creator() {
   }
 
   if (view === "loading") {
-    return <Loading />;
+    return <Loading targetUrl={activeUrl} />;
   }
 
   if (view === "render" && system) {
@@ -246,7 +250,7 @@ function ModeSelect({
   onUpload: (md: string, src: Source, meta?: ExtractMeta) => void;
   onUrl: (md: string, src: Source, meta?: ExtractMeta) => void;
   onExample: () => void;
-  setLoading: () => void;
+  setLoading: (url?: string) => void;
   setError: (msg: string | null) => void;
   error: string | null;
   initialUrl: string | null;
@@ -269,7 +273,7 @@ function ModeSelect({
       if (!target.trim()) return;
       setSubmitting(true);
       setError(null);
-      setLoading();
+      setLoading(target);
       try {
         const res = await fetch("/tools/design-md/api/extract", {
           method: "POST",
@@ -308,31 +312,66 @@ function ModeSelect({
     await submitUrl(url);
   };
 
+  const valid = isLikelyUrl(url);
+
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
       <Card>
         <CardLabel>1. Generate from URL</CardLabel>
         <h3 className="text-[24px] font-normal tracking-[-0.3px] text-black mb-3">
           Have a website?
         </h3>
         <p className="text-[15px] text-[#5b5b5b] leading-[1.5] mb-6">
-          Paste any URL. We&apos;ll extract the colors, fonts, and shapes that define
-          its visual identity.
+          Paste any URL. We&apos;ll extract the brand colors, typography,
+          shapes, and components that define its visual identity.
         </p>
         <form onSubmit={handleUrl} className="flex flex-col gap-3">
-          <input
-            type="text"
-            value={url}
-            onChange={(e) => setUrl(e.target.value)}
-            placeholder="https://stripe.com"
-            className="w-full text-[15px] px-4 py-3 border border-black/[0.08] rounded-full bg-white focus:outline-none focus:border-black/30"
-          />
+          <div className="relative">
+            <input
+              type="text"
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
+              onPaste={(e) => {
+                const pasted = e.clipboardData.getData("text").trim();
+                if (pasted && !/^https?:\/\//i.test(pasted) && /^[\w-]+\.[\w.-]+/.test(pasted)) {
+                  e.preventDefault();
+                  setUrl(`https://${pasted}`);
+                }
+              }}
+              placeholder="https://your-brand.com"
+              autoComplete="url"
+              spellCheck={false}
+              className="w-full text-[15px] pl-4 pr-10 py-3 border border-black/[0.08] rounded-full bg-white focus:outline-none focus:border-black/30 transition-colors"
+            />
+            {url.length > 0 && (
+              <span
+                className={`absolute right-4 top-1/2 -translate-y-1/2 text-[12px] ${
+                  valid ? "text-[#16A34A]" : "text-[#ccc]"
+                }`}
+                aria-hidden
+              >
+                {valid ? <CheckIcon className="w-3.5 h-3.5" /> : null}
+              </span>
+            )}
+          </div>
           <button
             type="submit"
-            disabled={submitting || !url.trim()}
-            className="inline-flex items-center justify-center bg-black text-white text-[14px] font-normal px-6 py-3 rounded-full hover:bg-black/85 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+            disabled={submitting || !valid}
+            className="inline-flex items-center justify-center gap-2 bg-black text-white text-[14px] font-normal px-6 py-3 rounded-full hover:bg-black/85 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
           >
-            {submitting ? "Extracting…" : "Generate DESIGN.md"}
+            {submitting ? (
+              <>
+                <Spinner className="w-4 h-4" />
+                Extracting…
+              </>
+            ) : (
+              <>
+                Generate DESIGN.md
+                <span className="hidden md:inline text-[11px] opacity-60 border border-white/30 rounded px-1.5 py-0.5 ml-1">
+                  ↵
+                </span>
+              </>
+            )}
           </button>
         </form>
       </Card>
@@ -343,22 +382,94 @@ function ModeSelect({
           Already have one?
         </h3>
         <p className="text-[15px] text-[#5b5b5b] leading-[1.5] mb-6">
-          Drop your <code className="text-[13px] bg-black/[0.04] px-1 rounded">DESIGN.md</code> file
-          and we&apos;ll render it visually.
+          Drop your{" "}
+          <code className="text-[13px] bg-black/[0.04] px-1 rounded font-mono">
+            DESIGN.md
+          </code>{" "}
+          file and we&apos;ll render it visually so you can edit and re-export.
         </p>
         <FileDrop onFile={handleFile} />
         <button
           onClick={onExample}
-          className="mt-4 text-[13px] text-[#999] hover:text-black underline-offset-2 hover:underline transition-colors"
+          className="mt-4 inline-flex items-center gap-1.5 text-[13px] text-[#666] hover:text-black underline-offset-2 hover:underline transition-colors"
         >
-          Or try with an example file →
+          Or open an example file
+          <span aria-hidden>→</span>
         </button>
       </Card>
 
       {error && (
-        <p className="md:col-span-2 text-[14px] text-[#B8422E]">{error}</p>
+        <div className="md:col-span-2">
+          <ErrorBanner message={error} onDismiss={() => setError(null)} />
+        </div>
       )}
     </div>
+  );
+}
+
+function isLikelyUrl(value: string): boolean {
+  const trimmed = value.trim();
+  if (!trimmed) return false;
+  try {
+    const u = new URL(trimmed.startsWith("http") ? trimmed : `https://${trimmed}`);
+    return !!u.hostname && /\./.test(u.hostname);
+  } catch {
+    return false;
+  }
+}
+
+function ErrorBanner({
+  message,
+  onDismiss,
+}: {
+  message: string;
+  onDismiss: () => void;
+}) {
+  return (
+    <div className="flex items-start gap-3 p-4 bg-[#B8422E]/[0.05] border border-[#B8422E]/30 rounded-[8px]">
+      <div className="flex-shrink-0 w-5 h-5 rounded-full bg-[#B8422E]/15 text-[#B8422E] flex items-center justify-center text-[12px] font-medium mt-0.5">
+        !
+      </div>
+      <div className="flex-1 min-w-0">
+        <p className="text-[14px] font-medium text-[#B8422E] mb-0.5">
+          Couldn&apos;t generate from that URL
+        </p>
+        <p className="text-[13px] text-[#5b5b5b] leading-[1.5] break-words">
+          {humanizeError(message)}
+        </p>
+      </div>
+      <button
+        onClick={onDismiss}
+        className="flex-shrink-0 text-[14px] text-[#999] hover:text-black px-2 py-0.5"
+        aria-label="Dismiss error"
+      >
+        ✕
+      </button>
+    </div>
+  );
+}
+
+function humanizeError(msg: string): string {
+  if (/HTTP 4\d\d/i.test(msg)) {
+    return `${msg}. The site returned a client error — try a different URL or check the address.`;
+  }
+  if (/HTTP 5\d\d/i.test(msg)) {
+    return `${msg}. The site returned a server error — try again in a moment.`;
+  }
+  if (/timeout|timed out|aborted/i.test(msg)) {
+    return "The site took too long to respond. Try again, or pick a different URL.";
+  }
+  if (/fetch|network/i.test(msg)) {
+    return "We couldn't reach that URL. Check the spelling, or try with the full https:// prefix.";
+  }
+  return msg;
+}
+
+function Spinner({ className }: { className?: string }) {
+  return (
+    <span
+      className={`inline-block border-2 border-white/30 border-t-white rounded-full animate-spin ${className ?? ""}`}
+    />
   );
 }
 
@@ -414,40 +525,103 @@ function CardLabel({ children }: { children: React.ReactNode }) {
   );
 }
 
-function Loading() {
-  const steps = [
-    "Reading the page",
-    "Sampling colors",
-    "Identifying fonts",
-    "Inferring components",
-    "Composing your DESIGN.md",
-  ];
+function Loading({ targetUrl }: { targetUrl?: string | null }) {
+  const steps = targetUrl
+    ? [
+        `Fetching ${prettyHost(targetUrl)}`,
+        "Parsing CSS, fonts, and structure",
+        "Analyzing brand tokens with Claude Haiku 4.5",
+        "Composing your DESIGN.md",
+      ]
+    : [
+        "Reading your file",
+        "Parsing tokens",
+        "Composing your DESIGN.md",
+      ];
+
+  // Realistic pacing: first step is fast (HTTP fetch), middle steps slower,
+  // last step lingers because LLM is the long pole.
+  const intervals = targetUrl ? [600, 800, 1500, 99999] : [400, 700, 99999];
+
   const [active, setActive] = useState(0);
   useEffect(() => {
-    const id = setInterval(() => {
-      setActive((i) => Math.min(i + 1, steps.length - 1));
-    }, 1400);
-    return () => clearInterval(id);
-  }, [steps.length]);
+    if (active >= steps.length - 1) return;
+    const id = setTimeout(() => setActive((i) => i + 1), intervals[active] ?? 1000);
+    return () => clearTimeout(id);
+  }, [active, steps.length, intervals]);
+
   return (
-    <div className="flex flex-col items-center gap-6 py-24">
-      <div className="w-7 h-7 border-2 border-black/10 border-t-black rounded-full animate-spin" />
-      <ul className="flex flex-col gap-2 items-start min-w-[220px]">
+    <div className="flex flex-col items-center justify-center gap-8 py-24">
+      <div className="relative">
+        <div className="w-12 h-12 border-2 border-black/10 border-t-black rounded-full animate-spin" />
+        {targetUrl && (
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div
+              className="w-2 h-2 rounded-full bg-[#FA008C]"
+              style={{ animation: "pulse 1.5s ease-in-out infinite" }}
+            />
+          </div>
+        )}
+      </div>
+      <ul className="flex flex-col gap-2.5 items-start min-w-[260px]">
         {steps.map((s, i) => (
           <li
             key={s}
-            className={`flex items-center gap-2 text-[13px] transition-opacity ${
-              i <= active ? "text-black opacity-100" : "text-[#999] opacity-50"
+            className={`flex items-center gap-3 text-[13px] transition-all duration-300 ${
+              i < active
+                ? "text-[#999]"
+                : i === active
+                  ? "text-black"
+                  : "text-[#ccc]"
             }`}
           >
-            <span
-              className={`w-1 h-1 rounded-full ${i < active ? "bg-black" : i === active ? "bg-black animate-pulse" : "bg-[#ccc]"}`}
-            />
-            {s}
+            {i < active ? (
+              <CheckIcon className="w-3 h-3 text-[#FA008C] flex-shrink-0" />
+            ) : i === active ? (
+              <span className="w-3 h-3 flex items-center justify-center flex-shrink-0">
+                <span className="w-1.5 h-1.5 rounded-full bg-black animate-pulse" />
+              </span>
+            ) : (
+              <span className="w-3 h-3 flex items-center justify-center flex-shrink-0">
+                <span className="w-1 h-1 rounded-full bg-[#ddd]" />
+              </span>
+            )}
+            <span>{s}</span>
           </li>
         ))}
       </ul>
     </div>
+  );
+}
+
+function prettyHost(url: string): string {
+  try {
+    return new URL(url.startsWith("http") ? url : `https://${url}`).hostname.replace(
+      /^www\./,
+      "",
+    );
+  } catch {
+    return url;
+  }
+}
+
+function CheckIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 12 12"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden
+    >
+      <path
+        d="M2.5 6.5L5 9L9.5 3.5"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
   );
 }
 
@@ -464,8 +638,13 @@ function RenderView({
   source: Source;
   extractMeta: ExtractMeta | null;
 }) {
+  const [tab, setTab] = useState<"visual" | "markdown">("visual");
+  const [copied, setCopied] = useState(false);
+  const [downloaded, setDownloaded] = useState(false);
+
+  const md = useMemo(() => serializeDesignMd(system), [system]);
+
   const download = () => {
-    const md = serializeDesignMd(system);
     const blob = new Blob([md], { type: "text/markdown" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
@@ -475,78 +654,288 @@ function RenderView({
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
+    setDownloaded(true);
   };
 
   const copyMarkdown = async () => {
-    const md = serializeDesignMd(system);
-    await navigator.clipboard.writeText(md);
+    try {
+      await navigator.clipboard.writeText(md);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1800);
+    } catch {
+      // ignore
+    }
   };
 
+  const sourceLabel =
+    source === "url"
+      ? "Generated from URL"
+      : source === "upload"
+        ? "Uploaded"
+        : "Example";
+
   return (
-    <div className="flex flex-col gap-10">
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pb-6 border-b border-black/[0.06]">
-        <div>
-          <div className="flex items-center gap-3 mb-1">
-            <p className="text-[12px] text-[#999] uppercase tracking-[0.15em]">
-              {source === "url"
-                ? "Generated from URL"
-                : source === "upload"
-                  ? "Uploaded"
-                  : "Example"}
-            </p>
-            {extractMeta?.source === "llm" && (
-              <span
-                className="text-[11px] px-2 py-0.5 rounded-full border border-black/10 text-[#666] flex items-center gap-1.5"
-                title={`${extractMeta.model}${extractMeta.latencyMs ? ` · ${extractMeta.latencyMs}ms` : ""}${extractMeta.inputTokens ? ` · ${extractMeta.inputTokens}+${extractMeta.outputTokens} tokens` : ""}`}
-              >
-                <span className="w-1.5 h-1.5 rounded-full bg-black" />
-                AI · Claude Haiku 4.5
-              </span>
-            )}
-            {extractMeta?.source === "heuristic" && source === "url" && (
-              <span
-                className="text-[11px] px-2 py-0.5 rounded-full border border-[#B8422E]/30 text-[#B8422E]"
-                title="LLM call failed; falling back to heuristic extraction"
-              >
-                Fallback · heuristic
-              </span>
-            )}
-          </div>
-          <p className="text-[15px] text-black">
-            Edit, preview, and download your DESIGN.md
+    <div className="flex flex-col gap-8">
+      {/* Toolbar */}
+      <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between pb-5 border-b border-black/[0.06]">
+        <div className="flex flex-wrap items-center gap-2">
+          <p className="text-[12px] text-[#999] uppercase tracking-[0.15em]">
+            {sourceLabel}
           </p>
+          {extractMeta?.source === "llm" && (
+            <span
+              className="text-[11px] px-2 py-0.5 rounded-full border border-black/10 text-[#666] flex items-center gap-1.5"
+              title={`${extractMeta.model}${extractMeta.latencyMs ? ` · ${extractMeta.latencyMs}ms` : ""}${extractMeta.inputTokens ? ` · ${extractMeta.inputTokens}+${extractMeta.outputTokens} tokens` : ""}`}
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-[#FA008C]" />
+              Claude Haiku 4.5
+            </span>
+          )}
+          {extractMeta?.source === "heuristic" && source === "url" && (
+            <span
+              className="text-[11px] px-2 py-0.5 rounded-full border border-[#B8422E]/30 text-[#B8422E]"
+              title="LLM call failed; falling back to heuristic extraction"
+            >
+              Fallback · heuristic
+            </span>
+          )}
         </div>
-        <div className="flex flex-wrap items-center justify-end gap-x-3 gap-y-2">
+        <div className="flex flex-wrap items-center gap-x-2 gap-y-2 lg:justify-end">
           <button
             onClick={onReset}
-            className="text-[13px] text-[#666] hover:text-black underline-offset-2 hover:underline transition-colors"
+            className="text-[13px] text-[#666] hover:text-black underline-offset-2 hover:underline transition-colors mr-2"
           >
-            Start over
+            ← Start over
           </button>
           <button
             onClick={copyMarkdown}
-            className="inline-flex items-center justify-center bg-white text-black text-[13px] font-normal px-4 py-2 rounded-full border border-black/10 hover:bg-black/[0.03] transition-colors"
+            className={`inline-flex items-center justify-center gap-1.5 text-[13px] font-normal px-4 py-2 rounded-full border transition-colors ${
+              copied
+                ? "bg-[#FA008C]/[0.08] border-[#FA008C]/40 text-[#FA008C]"
+                : "bg-white border-black/10 text-black hover:bg-black/[0.03]"
+            }`}
           >
-            Copy markdown
+            {copied ? (
+              <>
+                <CheckIcon className="w-3 h-3" />
+                Copied
+              </>
+            ) : (
+              <>
+                <CopyIcon className="w-3.5 h-3.5" />
+                Copy markdown
+              </>
+            )}
           </button>
           <button
             onClick={download}
-            className="inline-flex items-center justify-center bg-black text-white text-[13px] font-normal px-4 py-2 rounded-full hover:bg-black/85 transition-colors"
+            className="inline-flex items-center justify-center gap-1.5 bg-black text-white text-[13px] font-normal px-4 py-2 rounded-full hover:bg-black/85 transition-colors"
           >
-            Download .md
+            {downloaded ? (
+              <>
+                <CheckIcon className="w-3 h-3" />
+                Downloaded
+              </>
+            ) : (
+              <>
+                <DownloadIcon className="w-3.5 h-3.5" />
+                Download .md
+              </>
+            )}
           </button>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-10">
-        <div className="order-2 lg:order-1">
-          <Editor system={system} onChange={onChange} />
-        </div>
-        <div className="order-1 lg:order-2">
-          <Renderer system={system} />
-        </div>
+      {/* View tabs */}
+      <div className="flex items-center gap-1 -mt-2">
+        <ViewTab active={tab === "visual"} onClick={() => setTab("visual")}>
+          Visual preview
+        </ViewTab>
+        <ViewTab
+          active={tab === "markdown"}
+          onClick={() => setTab("markdown")}
+        >
+          Markdown
+        </ViewTab>
       </div>
+
+      {/* Post-download tip */}
+      {downloaded && <PostDownloadTip onDismiss={() => setDownloaded(false)} />}
+
+      {/* Body */}
+      {tab === "visual" ? (
+        <div className="grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-10">
+          <div className="order-2 lg:order-1">
+            <details className="lg:hidden mb-4 group">
+              <summary className="cursor-pointer flex items-center justify-between p-4 bg-[#fafafa] border border-black/[0.06] rounded-[8px] list-none">
+                <span className="text-[14px] font-medium text-black">
+                  Edit tokens
+                </span>
+                <span className="text-[16px] text-[#999] group-open:rotate-45 transition-transform">
+                  +
+                </span>
+              </summary>
+              <div className="mt-4">
+                <Editor system={system} onChange={onChange} />
+              </div>
+            </details>
+            <div className="hidden lg:block">
+              <Editor system={system} onChange={onChange} />
+            </div>
+          </div>
+          <div className="order-1 lg:order-2">
+            <Renderer system={system} />
+          </div>
+        </div>
+      ) : (
+        <MarkdownView md={md} onCopy={copyMarkdown} copied={copied} />
+      )}
     </div>
+  );
+}
+
+function ViewTab({
+  active,
+  onClick,
+  children,
+}: {
+  active: boolean;
+  onClick: () => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      className={`text-[13px] px-4 py-2 rounded-full transition-colors ${
+        active
+          ? "bg-black text-white"
+          : "text-[#666] hover:text-black hover:bg-black/[0.03]"
+      }`}
+    >
+      {children}
+    </button>
+  );
+}
+
+function MarkdownView({
+  md,
+  onCopy,
+  copied,
+}: {
+  md: string;
+  onCopy: () => void;
+  copied: boolean;
+}) {
+  return (
+    <div className="relative">
+      <button
+        onClick={onCopy}
+        className={`absolute top-4 right-4 z-10 inline-flex items-center gap-1.5 text-[12px] px-3 py-1.5 rounded-full border transition-colors ${
+          copied
+            ? "bg-[#FA008C]/[0.08] border-[#FA008C]/40 text-[#FA008C]"
+            : "bg-white border-black/10 text-[#666] hover:text-black"
+        }`}
+      >
+        {copied ? (
+          <>
+            <CheckIcon className="w-3 h-3" />
+            Copied
+          </>
+        ) : (
+          <>
+            <CopyIcon className="w-3 h-3" />
+            Copy
+          </>
+        )}
+      </button>
+      <pre className="bg-[#fafafa] border border-black/[0.06] rounded-[8px] p-6 md:p-8 overflow-x-auto text-[13px] leading-[1.6] text-[#222] font-mono whitespace-pre-wrap break-words">
+        {md}
+      </pre>
+      <p className="mt-4 text-[12px] text-[#999]">
+        This is the literal contents of your <code className="font-mono">DESIGN.md</code> file.
+        Save it at the root of your repo so AI coding agents pick it up automatically.
+      </p>
+    </div>
+  );
+}
+
+function PostDownloadTip({ onDismiss }: { onDismiss: () => void }) {
+  return (
+    <div className="flex flex-col sm:flex-row sm:items-start gap-3 p-4 sm:p-5 bg-[#FA008C]/[0.06] border border-[#FA008C]/20 rounded-[8px]">
+      <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#FA008C] text-white flex items-center justify-center">
+        <CheckIcon className="w-4 h-4" />
+      </div>
+      <div className="flex-1 min-w-0">
+        <p className="text-[14px] font-medium text-black mb-1">
+          Got it. Now drop it at the root of your repo.
+        </p>
+        <p className="text-[13px] text-[#5b5b5b] leading-[1.55]">
+          Most AI coding agents (Claude Code, Cursor, Copilot) auto-discover{" "}
+          <code className="font-mono text-[12px] bg-white px-1 py-0.5 rounded border border-black/[0.06]">
+            DESIGN.md
+          </code>{" "}
+          when it sits next to your{" "}
+          <code className="font-mono text-[12px] bg-white px-1 py-0.5 rounded border border-black/[0.06]">
+            package.json
+          </code>
+          . No config needed.
+        </p>
+      </div>
+      <button
+        onClick={onDismiss}
+        className="self-start text-[12px] text-[#999] hover:text-black px-2 py-1"
+        aria-label="Dismiss"
+      >
+        ✕
+      </button>
+    </div>
+  );
+}
+
+function CopyIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 16 16"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden
+    >
+      <rect
+        x="5"
+        y="5"
+        width="9"
+        height="9"
+        rx="1.5"
+        stroke="currentColor"
+        strokeWidth="1.4"
+      />
+      <path
+        d="M11 5V3.5C11 2.67 10.33 2 9.5 2H3.5C2.67 2 2 2.67 2 3.5V9.5C2 10.33 2.67 11 3.5 11H5"
+        stroke="currentColor"
+        strokeWidth="1.4"
+      />
+    </svg>
+  );
+}
+
+function DownloadIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 16 16"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden
+    >
+      <path
+        d="M8 2V11M8 11L4.5 7.5M8 11L11.5 7.5M3 13.5H13"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
   );
 }
 
