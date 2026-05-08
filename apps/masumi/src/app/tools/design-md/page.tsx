@@ -143,7 +143,7 @@ export default function Page() {
       />
       <Header product="masumi" />
       <main className="pt-[120px] md:pt-[140px] pb-24">
-        <div className="max-w-[1200px] mx-auto px-4 md:px-8 lg:px-12">
+        <div className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12">
           <Hero exampleSites={EXAMPLE_SITES} />
           <Creator />
           <Explainer />
@@ -168,10 +168,10 @@ function Hero({
           Free · No signup · Open spec
         </span>
       </div>
-      <h1 className="text-[36px] sm:text-[44px] md:text-[64px] font-normal tracking-[-0.04em] leading-[1.05] text-black">
+      <h1 className="text-[36px] sm:text-[44px] md:text-[64px] font-normal tracking-[-1.28px] leading-[1.15] text-black max-w-[820px]">
         Generate a DESIGN.md from any URL.
       </h1>
-      <p className="mt-6 text-[16px] md:text-[19px] text-[#5b5b5b] leading-[1.55] max-w-[640px]">
+      <p className="mt-6 text-[16px] md:text-[20px] text-[#5b5b5b] leading-[1.4] max-w-[640px]">
         Paste any website. We extract the brand colors, fonts, layout, and
         components into a{" "}
         <Link
@@ -209,7 +209,7 @@ function Explainer() {
       <p className="text-[12px] text-[#999] uppercase tracking-[0.18em] mb-4">
         What is DESIGN.md?
       </p>
-      <h2 className="text-[28px] md:text-[40px] font-normal tracking-[-0.02em] leading-[1.15] text-black mb-6">
+      <h2 className="text-[28px] md:text-[40px] font-normal tracking-[-0.4px] leading-[1.31] text-black mb-6">
         One file your AI agents can read across every coding session.
       </h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
@@ -315,7 +315,7 @@ function FAQ() {
       <p className="text-[12px] text-[#999] uppercase tracking-[0.18em] mb-4">
         Questions
       </p>
-      <h2 className="text-[28px] md:text-[40px] font-normal tracking-[-0.02em] leading-[1.15] text-black mb-10">
+      <h2 className="text-[28px] md:text-[40px] font-normal tracking-[-0.4px] leading-[1.31] text-black mb-10">
         Frequently asked
       </h2>
       <div className="border-t border-black/[0.06]">
