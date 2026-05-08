@@ -142,12 +142,11 @@ export default function Page() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD_FAQ) }}
       />
       <Header product="masumi" />
-      <main className="pt-[120px] md:pt-[140px] pb-24">
+      <main className="pt-[100px] md:pt-[110px] pb-20">
         <div className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12">
-          <Hero exampleSites={EXAMPLE_SITES} />
-          <Creator />
-          <Explainer />
-          <FAQ />
+          <ToolHeader />
+          <Creator examples={EXAMPLE_SITES} />
+          <BelowFold />
         </div>
       </main>
       <Footer product="masumi" />
@@ -155,78 +154,70 @@ export default function Page() {
   );
 }
 
-function Hero({
-  exampleSites,
-}: {
-  exampleSites: { label: string; url: string }[];
-}) {
+function ToolHeader() {
   return (
-    <section className="max-w-[820px] mb-12 md:mb-16">
-      <div className="inline-flex items-center gap-2 px-3 py-1 mb-6 rounded-full border border-black/[0.08] bg-white">
-        <span className="w-1.5 h-1.5 rounded-full bg-[#FA008C]" />
-        <span className="text-[12px] text-[#5b5b5b]">
-          Free · No signup · Open spec
-        </span>
+    <header className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 pb-4 mb-6 border-b border-black/[0.06]">
+      <div>
+        <p className="text-[11px] text-[#999] uppercase tracking-[0.18em] font-mono mb-1.5">
+          Tool · v1
+        </p>
+        <h1 className="text-[22px] md:text-[26px] font-normal tracking-[-0.5px] text-black">
+          DESIGN.md Generator
+        </h1>
       </div>
-      <h1 className="text-[36px] sm:text-[44px] md:text-[64px] font-normal tracking-[-1.28px] leading-[1.15] text-black max-w-[820px]">
-        Generate a DESIGN.md from any URL.
-      </h1>
-      <p className="mt-6 text-[16px] md:text-[20px] text-[#5b5b5b] leading-[1.4] max-w-[640px]">
-        Paste any website. We extract the brand colors, fonts, layout, and
-        components into a{" "}
+      <div className="flex items-center gap-4 text-[12px] text-[#666]">
         <Link
           href="https://github.com/google-labs-code/design.md"
           target="_blank"
           rel="noopener noreferrer"
-          className="underline underline-offset-2 hover:text-black"
+          className="inline-flex items-center gap-1.5 hover:text-black transition-colors"
         >
-          DESIGN.md
-        </Link>{" "}
-        file your AI coding agents — Claude Code, Cursor, Copilot — can read.
-        Edit visually, download, drop into your repo.
-      </p>
-      <div className="mt-8 flex flex-wrap items-center gap-2">
-        <span className="text-[12px] text-[#999] uppercase tracking-[0.12em] mr-2">
-          Try with
+          <span>Spec</span>
+          <span aria-hidden>↗</span>
+        </Link>
+        <span className="w-px h-3 bg-black/[0.1]" aria-hidden />
+        <span className="inline-flex items-center gap-1.5">
+          <span className="w-1.5 h-1.5 rounded-full bg-[#16A34A]" />
+          <span className="font-mono">claude-haiku-4.5</span>
         </span>
-        {exampleSites.map((s) => (
-          <a
-            key={s.url}
-            href={`?url=${encodeURIComponent(s.url)}`}
-            className="text-[13px] px-3 py-1.5 rounded-full border border-black/[0.08] bg-white hover:bg-black hover:text-white hover:border-black transition-colors"
-          >
-            {s.label}
-          </a>
-        ))}
       </div>
-    </section>
+    </header>
+  );
+}
+
+function BelowFold() {
+  return (
+    <div className="mt-32 md:mt-40 max-w-[820px]">
+      <Explainer />
+      <FAQ />
+    </div>
   );
 }
 
 function Explainer() {
   return (
-    <section className="mt-24 md:mt-32 max-w-[820px]">
-      <p className="text-[12px] text-[#999] uppercase tracking-[0.18em] mb-4">
-        What is DESIGN.md?
+    <section>
+      <p className="text-[11px] text-[#999] uppercase tracking-[0.18em] mb-3 font-mono">
+        How it works
       </p>
-      <h2 className="text-[28px] md:text-[40px] font-normal tracking-[-0.4px] leading-[1.31] text-black mb-6">
-        One file your AI agents can read across every coding session.
+      <h2 className="text-[22px] md:text-[28px] font-normal tracking-[-0.4px] leading-[1.3] text-black mb-8">
+        One file your AI agents read across every coding session.
       </h2>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-10">
         <Step
           n="01"
           title="Paste a URL"
-          body="We fetch the page, parse CSS variables, Tailwind atomic classes, Google Fonts, hero selectors, and logo candidates."
+          body="We fetch the page, parse CSS variables, Tailwind classes, Google Fonts, hero selectors, and logo candidates."
         />
         <Step
           n="02"
           title="AI builds your spec"
-          body="Claude Haiku 4.5 reads the structured signal and produces a brand-distinctive DESIGN.md following the canonical 8-section format."
+          body="Claude Haiku 4.5 reads the structured signal and produces a brand-distinctive DESIGN.md in canonical 8-section format."
         />
         <Step
           n="03"
           title="Edit & download"
-          body="Tweak colors, fonts, and tokens with live preview. Download the .md and drop it at the root of your repo. Done."
+          body="Tweak colors, fonts, and tokens with live preview. Download the .md, drop it at the root of your repo. Done."
         />
       </div>
     </section>
@@ -311,11 +302,11 @@ function FAQ() {
   ];
 
   return (
-    <section className="mt-24 md:mt-32 max-w-[820px]">
-      <p className="text-[12px] text-[#999] uppercase tracking-[0.18em] mb-4">
+    <section className="mt-20 md:mt-28">
+      <p className="text-[11px] text-[#999] uppercase tracking-[0.18em] mb-3 font-mono">
         Questions
       </p>
-      <h2 className="text-[28px] md:text-[40px] font-normal tracking-[-0.4px] leading-[1.31] text-black mb-10">
+      <h2 className="text-[22px] md:text-[28px] font-normal tracking-[-0.4px] leading-[1.3] text-black mb-8">
         Frequently asked
       </h2>
       <div className="border-t border-black/[0.06]">

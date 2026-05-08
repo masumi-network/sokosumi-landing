@@ -150,7 +150,13 @@ Buttons follow a strict three-tier hierarchy: primary (Clay) for the single most
 - Don't combine elevation md + lg in the same composition.
 `;
 
-export default function Creator() {
+type ExampleSite = { label: string; url: string };
+
+export default function Creator({
+  examples = [],
+}: {
+  examples?: ExampleSite[];
+}) {
   const [view, setView] = useState<View>("select");
   const [source, setSource] = useState<Source>(null);
   const [system, setSystem] = useState<DesignSystem | null>(null);
@@ -209,6 +215,7 @@ export default function Creator() {
         setError={setError}
         error={error}
         initialUrl={autoUrl}
+        examples={examples}
       />
     );
   }
@@ -246,6 +253,7 @@ function ModeSelect({
   setError,
   error,
   initialUrl,
+  examples,
 }: {
   onUpload: (md: string, src: Source, meta?: ExtractMeta) => void;
   onUrl: (md: string, src: Source, meta?: ExtractMeta) => void;
@@ -254,6 +262,7 @@ function ModeSelect({
   setError: (msg: string | null) => void;
   error: string | null;
   initialUrl: string | null;
+  examples: ExampleSite[];
 }) {
   const [url, setUrl] = useState(initialUrl ?? "");
   const [submitting, setSubmitting] = useState(false);
@@ -313,97 +322,154 @@ function ModeSelect({
   };
 
   const valid = isLikelyUrl(url);
+  const [showUpload, setShowUpload] = useState(false);
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-      <Card>
-        <CardLabel>1. Generate from URL</CardLabel>
-        <h3 className="text-[24px] font-normal tracking-[-0.3px] text-black mb-3">
-          Have a website?
-        </h3>
-        <p className="text-[15px] text-[#5b5b5b] leading-[1.5] mb-6">
-          Paste any URL. We&apos;ll extract the brand colors, typography,
-          shapes, and components that define its visual identity.
-        </p>
-        <form onSubmit={handleUrl} className="flex flex-col gap-3">
-          <div className="relative">
-            <input
-              type="text"
-              value={url}
-              onChange={(e) => setUrl(e.target.value)}
-              onPaste={(e) => {
-                const pasted = e.clipboardData.getData("text").trim();
-                if (pasted && !/^https?:\/\//i.test(pasted) && /^[\w-]+\.[\w.-]+/.test(pasted)) {
-                  e.preventDefault();
-                  setUrl(`https://${pasted}`);
-                }
-              }}
-              placeholder="https://your-brand.com"
-              autoComplete="url"
-              spellCheck={false}
-              className="w-full text-[15px] pl-4 pr-10 py-3 border border-black/[0.08] rounded-full bg-white focus:outline-none focus:border-black/30 transition-colors"
-            />
-            {url.length > 0 && (
-              <span
-                className={`absolute right-4 top-1/2 -translate-y-1/2 text-[12px] ${
-                  valid ? "text-[#16A34A]" : "text-[#ccc]"
-                }`}
-                aria-hidden
-              >
-                {valid ? <CheckIcon className="w-3.5 h-3.5" /> : null}
+    <div className="flex flex-col gap-5">
+      {/* Tool input bar */}
+      <form
+        onSubmit={handleUrl}
+        className="flex items-stretch gap-1.5 p-1.5 border border-black/[0.1] bg-white rounded-[14px] focus-within:border-black/30 transition-colors"
+      >
+        <div className="flex-1 flex items-center gap-3 min-w-0 pl-3">
+          <span className="text-[10px] text-[#999] uppercase tracking-[0.18em] font-mono shrink-0 hidden sm:inline">
+            URL
+          </span>
+          <input
+            type="text"
+            value={url}
+            onChange={(e) => setUrl(e.target.value)}
+            onPaste={(e) => {
+              const pasted = e.clipboardData.getData("text").trim();
+              if (
+                pasted &&
+                !/^https?:\/\//i.test(pasted) &&
+                /^[\w-]+\.[\w.-]+/.test(pasted)
+              ) {
+                e.preventDefault();
+                setUrl(`https://${pasted}`);
+              }
+            }}
+            placeholder="https://your-brand.com"
+            autoComplete="url"
+            spellCheck={false}
+            autoFocus
+            className="w-full min-w-0 text-[15px] md:text-[16px] py-3 bg-transparent outline-none placeholder:text-[#bbb]"
+          />
+          {url.length > 0 && valid && (
+            <CheckIcon className="w-3.5 h-3.5 text-[#16A34A] shrink-0 mr-2" />
+          )}
+        </div>
+        <button
+          type="submit"
+          disabled={submitting || !valid}
+          className="inline-flex items-center justify-center gap-2 bg-black text-white text-[13px] md:text-[14px] font-medium px-4 md:px-6 rounded-[10px] hover:bg-black/85 transition-colors disabled:opacity-40 disabled:cursor-not-allowed shrink-0"
+        >
+          {submitting ? (
+            <>
+              <Spinner className="w-4 h-4" />
+              <span className="hidden sm:inline">Generating…</span>
+            </>
+          ) : (
+            <>
+              <span className="hidden sm:inline">Generate</span>
+              <span className="sm:hidden">Go</span>
+              <span className="hidden md:inline text-[11px] opacity-60 border border-white/30 rounded px-1.5 py-0.5">
+                ↵
               </span>
-            )}
-          </div>
-          <button
-            type="submit"
-            disabled={submitting || !valid}
-            className="inline-flex items-center justify-center gap-2 bg-black text-white text-[14px] font-normal px-6 py-3 rounded-full hover:bg-black/85 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
-          >
-            {submitting ? (
-              <>
-                <Spinner className="w-4 h-4" />
-                Extracting…
-              </>
-            ) : (
-              <>
-                Generate DESIGN.md
-                <span className="hidden md:inline text-[11px] opacity-60 border border-white/30 rounded px-1.5 py-0.5 ml-1">
-                  ↵
-                </span>
-              </>
-            )}
-          </button>
-        </form>
-      </Card>
+            </>
+          )}
+        </button>
+      </form>
 
-      <Card>
-        <CardLabel>2. Upload existing file</CardLabel>
-        <h3 className="text-[24px] font-normal tracking-[-0.3px] text-black mb-3">
-          Already have one?
-        </h3>
-        <p className="text-[15px] text-[#5b5b5b] leading-[1.5] mb-6">
-          Drop your{" "}
-          <code className="text-[13px] bg-black/[0.04] px-1 rounded font-mono">
-            DESIGN.md
-          </code>{" "}
-          file and we&apos;ll render it visually so you can edit and re-export.
-        </p>
-        <FileDrop onFile={handleFile} />
+      {/* Secondary actions row */}
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-3 text-[13px]">
+        <span className="text-[11px] text-[#999] uppercase tracking-[0.18em] font-mono">
+          Try
+        </span>
+        <div className="flex flex-wrap items-center gap-1.5">
+          {examples.map((s) => (
+            <a
+              key={s.url}
+              href={`?url=${encodeURIComponent(s.url)}`}
+              className="text-[12px] px-2.5 py-1 rounded-full border border-black/[0.08] bg-white hover:bg-black hover:text-white hover:border-black transition-colors"
+            >
+              {s.label}
+            </a>
+          ))}
+        </div>
+        <span className="hidden sm:inline w-px h-3 bg-black/[0.1]" aria-hidden />
+        <button
+          onClick={() => setShowUpload((v) => !v)}
+          className="inline-flex items-center gap-1 text-[12px] text-[#666] hover:text-black transition-colors"
+        >
+          <UploadIcon className="w-3.5 h-3.5" />
+          Upload existing file
+          <span
+            className={`text-[10px] transition-transform ${showUpload ? "rotate-180" : ""}`}
+            aria-hidden
+          >
+            ▾
+          </span>
+        </button>
         <button
           onClick={onExample}
-          className="mt-4 inline-flex items-center gap-1.5 text-[13px] text-[#666] hover:text-black underline-offset-2 hover:underline transition-colors"
+          className="text-[12px] text-[#666] hover:text-black transition-colors"
         >
-          Or open an example file
-          <span aria-hidden>→</span>
+          Open example
         </button>
-      </Card>
+      </div>
 
-      {error && (
-        <div className="md:col-span-2">
-          <ErrorBanner message={error} onDismiss={() => setError(null)} />
-        </div>
+      {/* Inline file drop, only when toggled */}
+      {showUpload && (
+        <FileDrop onFile={handleFile} />
+      )}
+
+      {/* Error banner */}
+      {error && <ErrorBanner message={error} onDismiss={() => setError(null)} />}
+
+      {/* Workspace empty-state */}
+      {!error && !showUpload && (
+        <EmptyWorkspace />
       )}
     </div>
+  );
+}
+
+function EmptyWorkspace() {
+  return (
+    <div className="mt-2 border border-dashed border-black/[0.1] rounded-[12px] py-16 md:py-20 px-6 flex flex-col items-center justify-center gap-3 text-center bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.02)_1px,transparent_1px)] [background-size:20px_20px]">
+      <div className="w-8 h-8 rounded-full bg-black/[0.04] flex items-center justify-center">
+        <span className="text-[16px] text-[#999]" aria-hidden>↑</span>
+      </div>
+      <p className="text-[13px] text-[#666]">
+        Output will appear here.
+      </p>
+      <p className="text-[12px] text-[#999] max-w-[420px] leading-[1.5]">
+        Paste a URL above to extract brand colors, typography, layout,
+        components, and a logo. Edit visually, download <code className="font-mono">DESIGN.md</code>.
+      </p>
+    </div>
+  );
+}
+
+function UploadIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 16 16"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden
+    >
+      <path
+        d="M8 11V2M8 2L4.5 5.5M8 2L11.5 5.5M3 13.5H13"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
   );
 }
 
@@ -506,22 +572,6 @@ function FileDrop({ onFile }: { onFile: (f: File) => void }) {
         }}
       />
     </label>
-  );
-}
-
-function Card({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="border border-black/[0.06] bg-white p-8 md:p-10">
-      {children}
-    </div>
-  );
-}
-
-function CardLabel({ children }: { children: React.ReactNode }) {
-  return (
-    <p className="text-[12px] text-[#999] uppercase tracking-[0.15em] mb-4">
-      {children}
-    </p>
   );
 }
 
