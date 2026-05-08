@@ -491,7 +491,7 @@ function RenderView({
             Edit, preview, and download your DESIGN.md
           </p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center justify-end gap-x-3 gap-y-2">
           <button
             onClick={onReset}
             className="text-[13px] text-[#666] hover:text-black underline-offset-2 hover:underline transition-colors"

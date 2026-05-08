@@ -161,7 +161,7 @@ function BrandHero({
           Design system
         </p>
         <h1
-          className="text-[48px] md:text-[88px] leading-[0.95] tracking-[-0.04em]"
+          className="text-[36px] sm:text-[48px] md:text-[88px] leading-[0.95] tracking-[-0.04em] break-words"
           style={{ fontFamily: fontStack, fontWeight: 600 }}
         >
           {name ?? "Untitled"}

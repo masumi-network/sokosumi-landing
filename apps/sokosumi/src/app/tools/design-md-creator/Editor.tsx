@@ -15,7 +15,7 @@ export default function Editor({ system, onChange }: Props) {
   };
 
   return (
-    <div className="flex flex-col gap-8 p-6 bg-[#fafafa] border border-black/[0.06] rounded-[8px] sticky top-6">
+    <div className="flex flex-col gap-8 p-6 bg-[#fafafa] border border-black/[0.06] rounded-[8px] lg:sticky lg:top-6">
       <div>
         <Label>Name</Label>
         <Input
