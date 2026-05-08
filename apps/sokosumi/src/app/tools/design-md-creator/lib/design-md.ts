@@ -26,10 +26,17 @@ export type Layout = {
   gridColumns?: number;
 };
 
+export type Logo = {
+  src: string;
+  srcDark?: string;
+  alt?: string;
+};
+
 export type Frontmatter = {
   version?: string;
   name?: string;
   description?: string;
+  logo?: Logo;
   colors?: Record<string, string>;
   typography?: Record<string, Typography>;
   rounded?: Record<string, string>;

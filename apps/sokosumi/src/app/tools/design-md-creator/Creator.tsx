@@ -109,17 +109,31 @@ components:
 
 Heritage is a digital publication for design and culture. The brand evokes the matte finish of a premium broadsheet — restrained, considered, and built to be read slowly. Visual identity rests on architectural neutrals offset by a single, defiant accent: Boston Clay.
 
-## Voice
+Heritage writes the way an editor speaks at a quiet kitchen table. Precise, never breathless. We use complete sentences, plain words, and active verbs. Our headlines state, they don't shout. *Example: "The new Hermès store on Rue de Sèvres is small, well-lit, and smells faintly of old leather. We went on a Tuesday."*
 
-Heritage writes the way an editor speaks at a quiet kitchen table. Precise, never breathless. We use complete sentences, plain words, and active verbs. Our headlines state, they don't shout. We treat the reader as someone whose time is more valuable than our copy.
+## Colors
 
-## Color usage
+The palette is rooted in high-contrast neutrals and a single, evocative accent. Boston Clay is the only interactive color — every link, button, and selected state. Deep ink (secondary) is for headlines and core text. Slate (tertiary) is metadata, captions, and structural lines. Limestone (surface) is the foundation; never use pure white. Reserve clay for moments that genuinely earn the eye.
 
-Boston Clay is the only interactive color — every link, button, and selected state. Deep ink is for headlines and core text. Slate is metadata, captions, and structural lines. Limestone is the foundation; never use pure white. Reserve clay for moments that genuinely earn the eye.
+## Typography
+
+Two faces, distinct roles. Fraunces — a literary serif with optical sizes — handles all display, h1, and h2; it carries the editorial gravitas. Public Sans, a humanist sans, handles h3 and all body copy at relaxed line-heights for long-form readability. Caption uses Public Sans uppercase with generous tracking, evoking metadata bands in a print magazine.
 
 ## Layout
 
-The Heritage page rhythm is generous. Single column at body widths, with a 1200px outer container that breathes. White space is content. Section spacing follows a doubling cadence (16, 32, 64) so vertical rhythm feels considered, not arbitrary.
+The Heritage page rhythm is generous. Single column at body widths, with a 1200px outer container that breathes. White space is content. Section spacing follows a doubling cadence (xs 4, sm 8, md 16, lg 32, xl 64) so vertical rhythm feels considered, not arbitrary.
+
+## Elevation & Depth
+
+Depth is conveyed through **tonal layers** rather than heavy shadows. Limestone is the foundation, white cards rise above it, and elevation is reserved for genuinely interactive surfaces — modals, dropdowns, and hovered cards. Default state is flat.
+
+## Shapes
+
+Architectural sharpness. All interactive elements use a 2px corner radius — just enough softness to feel finished while preserving rigor. md/lg radii apply only to large compositional blocks like images and cards. We never use pill shapes (no \`full\`); they read as consumer software, which we are not.
+
+## Components
+
+Buttons follow a strict three-tier hierarchy: primary (Clay) for the single most important action per screen, secondary (Limestone) for supporting actions, and ghost for tertiary navigation. Inputs sit on Limestone with a 1px slate border that darkens on focus. Cards are flat by default, gaining elevation only on hover.
 
 ## Do's and Don'ts
 

@@ -1,4 +1,4 @@
-import type { Frontmatter, Typography } from "./design-md";
+import type { Frontmatter, Logo, Typography } from "./design-md";
 import type { SiteSignal } from "./preprocess";
 import { signalToMarkdown } from "./preprocess";
 
@@ -21,25 +21,26 @@ export type LlmResult = {
 const cache = new Map<string, { ts: number; result: LlmResult }>();
 const TTL_MS = 60 * 60 * 1000;
 
-const SYSTEM = `You are a senior brand designer producing a DESIGN.md file for AI coding agents.
+const SYSTEM = `You are a senior brand designer producing a DESIGN.md file (https://github.com/google-labs-code/design.md) for AI coding agents.
 
-Your job is to look at a website's structured signal blob and raw HTML/CSS samples and produce a *believable, brand-distinctive* design system — not generic defaults.
+Your job: look at a structured signal blob from a website plus raw HTML/CSS samples, and produce a *believable, brand-distinctive* design system.
 
 Hard rules:
-- Output STRICT JSON. No markdown fences. No commentary. No prose outside the JSON.
-- Pick brand-distinctive colors. If you see a CSS variable named --primary, --brand, --accent, or a Tailwind arbitrary class like bg-[#xxx] in a hero/CTA, that's your primary. Skip near-black and near-white when picking accents.
-- Use real font families found in Google Fonts links or font-family declarations. Do not invent fonts. Skip system-ui, sans-serif, inherit.
-- Radii: prefer values in the 4-32px range, plus optionally a "full: 9999px" for pills. Skip 50% (avatars) and 1px (borders/shadow tricks).
-- Components must use token references like "{colors.primary}" so the design system is wired up, not hardcoded.
-- Voice should be a paragraph (3-5 sentences) describing tone, audience, and brand personality — not a tagline.
-- Do's and Don'ts: 4-6 specific rules each, written as imperatives. Be opinionated.
-- If something is genuinely unknowable, omit the field rather than invent a vague placeholder.`;
+- Output STRICT JSON. No markdown fences, no commentary, no prose outside JSON.
+- Pick brand-distinctive colors. If you see a CSS var named --primary/--brand/--accent or a Tailwind bg-[#xxx] in a hero/CTA, that's primary. Skip near-black and near-white when picking accents.
+- Use real font families found in Google Fonts links or font-family declarations. Skip system-ui/sans-serif/inherit. Don't invent fonts.
+- Radii: prefer 4-32px, plus optionally "full: 9999px". Skip 50% (avatars) and 1px (borders/shadow tricks).
+- Components must use token references like {colors.primary} so the system is wired up, not hardcoded.
+- Prose follows the canonical DESIGN.md section order: Overview, Colors, Typography, Layout, Elevation & Depth, Shapes, Components, Do's and Don'ts. Voice and brand personality belong inside Overview. Color usage rules belong inside Colors. Spacing rationale belongs inside Layout. Border-radius rationale belongs inside Shapes.
+- Logo: from the provided candidate list, pick the single best one for "src" — preferring a vector SVG > apple-touch-icon > header img logo > og-image. If the site appears to have a separate dark-mode logo, set "srcDark". Always copy candidate URLs verbatim. If no candidates are provided, omit the logo field entirely.
+- If something is genuinely unknowable, omit the field rather than invent a placeholder.`;
 
 const SCHEMA = `{
   "frontmatter": {
     "version": "alpha",
     "name": "Brand name",
-    "description": "1-2 sentence summary of what the brand does and who it serves.",
+    "description": "1-2 sentence brand summary.",
+    "logo": { "src": "https://...", "srcDark": "https://..." },
     "colors": {
       "primary": "#hex",
       "secondary": "#hex",
@@ -57,8 +58,8 @@ const SCHEMA = `{
       "body-sm": { "fontFamily": "...", "fontSize": "0.875rem", "lineHeight": 1.5 },
       "caption": { "fontFamily": "...", "fontSize": "0.75rem", "lineHeight": 1.4, "letterSpacing": "0.05em" }
     },
-    "rounded":  { "sm": "4px", "md": "8px", "lg": "16px", "xl": "24px", "full": "9999px" },
     "spacing":  { "xs": "4px", "sm": "8px", "md": "16px", "lg": "32px", "xl": "64px" },
+    "rounded":  { "sm": "4px", "md": "8px", "lg": "16px", "xl": "24px", "full": "9999px" },
     "elevation":{ "sm": "0 1px 2px rgba(0,0,0,0.06)", "md": "0 4px 12px rgba(0,0,0,0.08)", "lg": "0 16px 40px rgba(0,0,0,0.12)" },
     "layout":   { "containerMaxWidth": "1280px", "gridColumns": 12 },
     "components": {
@@ -71,10 +72,13 @@ const SCHEMA = `{
     }
   },
   "prose": {
-    "overview":    "1-2 paragraphs about the brand: what they do, who they serve, what makes them visually distinctive.",
-    "voice":       "Paragraph describing tone of voice, vocabulary patterns, and brand personality. Include 1-2 example sentences in the brand's voice.",
-    "colorUsage":  "Paragraph: which color goes where. e.g. 'Primary on CTAs and key data viz only. Secondary as supporting structure. Tertiary sparingly for highlights.'",
-    "layoutNotes": "Paragraph: typical page rhythm, container behavior, white-space philosophy.",
+    "overview":   "1-2 paragraphs covering: (a) what the brand does and who it serves; (b) the visual personality and emotional response the UI evokes; (c) tone of voice, vocabulary, and brand personality (3-4 sentences within the same prose). End with one short example sentence written in the brand's voice.",
+    "colors":     "1 paragraph covering color philosophy AND specific usage rules. e.g. 'Primary on CTAs and key data viz only. Secondary as supporting structure. Tertiary sparingly for highlights.'",
+    "typography": "1 paragraph covering the type system rationale: how display/h1/body relate, what the type pairing communicates, when to use which weight.",
+    "layout":     "1 paragraph covering page rhythm, container behavior, white-space philosophy, and how the spacing scale is used.",
+    "elevation":  "1 paragraph: how visual hierarchy is conveyed. If shadows used, when. If flat, what conveys depth instead (borders, color contrast).",
+    "shapes":     "1 paragraph: shape language rationale. How the radii scale supports the brand (sharp vs soft, mechanical vs organic).",
+    "components": "1 paragraph: component patterns, button hierarchy, what makes a card/input feel on-brand.",
     "dos":  ["Do this.", "Do that.", "Do another."],
     "donts":["Don't this.", "Don't that.", "Don't another."]
   }
@@ -89,7 +93,7 @@ export async function llmExtract(
   const key = process.env.OPENROUTER_API_KEY;
   if (!key) return null;
 
-  const cacheKey = `${MODEL}:v2:${url}`;
+  const cacheKey = `${MODEL}:v3:${url}`;
   const cached = cache.get(cacheKey);
   if (cached && Date.now() - cached.ts < TTL_MS) return cached.result;
 
@@ -115,7 +119,7 @@ export async function llmExtract(
         ],
         response_format: { type: "json_object" },
         temperature: 0.3,
-        max_tokens: 3000,
+        max_tokens: 3500,
       }),
       signal: AbortSignal.timeout(45000),
     });
@@ -133,7 +137,7 @@ export async function llmExtract(
   const parsed = parseJsonLoose(content);
   if (!parsed || typeof parsed !== "object") return null;
 
-  const result = shape(parsed as RawShape, url, {
+  const result = shape(parsed as RawShape, url, signal, {
     model: MODEL,
     latencyMs,
     inputTokens: data?.usage?.prompt_tokens,
@@ -181,12 +185,18 @@ function parseJsonLoose(text: string): unknown {
   return null;
 }
 
-function shape(raw: RawShape, url: string, meta: LlmMeta): LlmResult {
+function shape(
+  raw: RawShape,
+  url: string,
+  signal: SiteSignal,
+  meta: LlmMeta,
+): LlmResult {
   const fmRaw = (raw.frontmatter ?? {}) as Record<string, unknown>;
   const proseRaw = (raw.prose ?? {}) as Record<string, unknown>;
 
   const name = sanitizeString(fmRaw.name) || hostnameFromUrl(url);
   const description = sanitizeString(fmRaw.description, 320);
+  const logo = sanitizeLogo(fmRaw.logo, signal);
   const colors = sanitizeColors(fmRaw.colors);
   const typography = sanitizeTypography(fmRaw.typography);
   const rounded = sanitizeStringMap(fmRaw.rounded);
@@ -199,6 +209,7 @@ function shape(raw: RawShape, url: string, meta: LlmMeta): LlmResult {
     version: "alpha",
     name,
     ...(description ? { description } : {}),
+    ...(logo ? { logo } : {}),
     ...(Object.keys(colors).length ? { colors } : {}),
     ...(Object.keys(typography).length ? { typography } : {}),
     ...(Object.keys(rounded).length ? { rounded } : {}),
@@ -209,17 +220,23 @@ function shape(raw: RawShape, url: string, meta: LlmMeta): LlmResult {
   };
 
   const prose: { heading: string; body: string }[] = [];
-  const overview = sanitizeString(proseRaw.overview, 1200);
-  const voice = sanitizeString(proseRaw.voice, 800);
-  const colorUsage = sanitizeString(proseRaw.colorUsage, 600);
-  const layoutNotes = sanitizeString(proseRaw.layoutNotes, 600);
+  const overview = sanitizeString(proseRaw.overview, 1600);
+  const colorsText = sanitizeString(proseRaw.colors, 800);
+  const typographyText = sanitizeString(proseRaw.typography, 800);
+  const layoutText = sanitizeString(proseRaw.layout, 800);
+  const elevationText = sanitizeString(proseRaw.elevation, 600);
+  const shapesText = sanitizeString(proseRaw.shapes, 600);
+  const componentsText = sanitizeString(proseRaw.components, 800);
   const dos = sanitizeStringArray(proseRaw.dos, 8);
   const donts = sanitizeStringArray(proseRaw.donts, 8);
 
   if (overview) prose.push({ heading: "Overview", body: overview });
-  if (voice) prose.push({ heading: "Voice", body: voice });
-  if (colorUsage) prose.push({ heading: "Color usage", body: colorUsage });
-  if (layoutNotes) prose.push({ heading: "Layout", body: layoutNotes });
+  if (colorsText) prose.push({ heading: "Colors", body: colorsText });
+  if (typographyText) prose.push({ heading: "Typography", body: typographyText });
+  if (layoutText) prose.push({ heading: "Layout", body: layoutText });
+  if (elevationText) prose.push({ heading: "Elevation & Depth", body: elevationText });
+  if (shapesText) prose.push({ heading: "Shapes", body: shapesText });
+  if (componentsText) prose.push({ heading: "Components", body: componentsText });
   if (dos.length || donts.length) {
     const lines: string[] = [];
     if (dos.length) {
@@ -246,7 +263,7 @@ function sanitizeStringArray(v: unknown, max: number): string[] {
   if (!Array.isArray(v)) return [];
   return v
     .filter((s): s is string => typeof s === "string" && s.trim().length > 0)
-    .map((s) => s.trim().slice(0, 200))
+    .map((s) => s.trim().slice(0, 240))
     .slice(0, max);
 }
 
@@ -313,6 +330,35 @@ function sanitizeLayout(raw: unknown):
   }
   if (typeof r.gridColumns === "number") out.gridColumns = r.gridColumns;
   return Object.keys(out).length ? out : undefined;
+}
+
+function sanitizeLogo(raw: unknown, signal: SiteSignal): Logo | undefined {
+  const candidates = signal.logos.map((l) => l.url);
+  const candidateSet = new Set(candidates);
+
+  if (raw && typeof raw === "object") {
+    const r = raw as Record<string, unknown>;
+    const src =
+      typeof r.src === "string" && (candidateSet.has(r.src) || isHttpUrl(r.src))
+        ? r.src
+        : undefined;
+    const srcDark =
+      typeof r.srcDark === "string" &&
+      (candidateSet.has(r.srcDark) || isHttpUrl(r.srcDark))
+        ? r.srcDark
+        : undefined;
+    const alt = typeof r.alt === "string" ? r.alt.slice(0, 200) : undefined;
+    if (src) return { src, ...(srcDark ? { srcDark } : {}), ...(alt ? { alt } : {}) };
+  }
+
+  if (signal.logos.length > 0) {
+    return { src: signal.logos[0].url };
+  }
+  return undefined;
+}
+
+function isHttpUrl(s: string): boolean {
+  return /^https?:\/\//i.test(s) || s.startsWith("data:");
 }
 
 function sanitizeComponents(

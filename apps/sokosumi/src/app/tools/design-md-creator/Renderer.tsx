@@ -26,82 +26,98 @@ export default function Renderer({ system }: { system: DesignSystem }) {
     document.head.appendChild(link);
   }, [fm.typography]);
 
-  const dosAndDonts = system.sections.find((s) => /do.*don.*t/i.test(s.heading));
-  const otherSections = system.sections.filter((s) => s !== dosAndDonts);
+  const findSection = (re: RegExp) =>
+    system.sections.find((s) => re.test(s.heading));
+  const overview = findSection(/^overview\b/i);
+  const colorsProse = findSection(/^colors?\b/i);
+  const typographyProse = findSection(/^typography\b/i);
+  const layoutProse = findSection(/^layout\b/i);
+  const elevationProse = findSection(/^elevation/i);
+  const shapesProse = findSection(/^shapes?\b/i);
+  const componentsProse = findSection(/^components?\b/i);
+  const dosAndDonts = findSection(/do.*don.*t/i);
 
   return (
     <div className="flex flex-col gap-20">
       <BrandHero
         name={fm.name}
         description={fm.description}
+        logo={fm.logo}
         primary={primary}
         headingFont={headingFont}
       />
-      {otherSections.find((s) => /overview/i.test(s.heading)) && (
-        <OverviewSection
-          section={otherSections.find((s) => /overview/i.test(s.heading))!}
-        />
-      )}
+      {overview && <OverviewSection section={overview} />}
       {fm.colors && Object.keys(fm.colors).length > 0 && (
-        <ColorsSection
-          colors={fm.colors}
-          usageNote={otherSections.find((s) => /color.*usage|usage/i.test(s.heading))?.body}
-        />
+        <ColorsSection colors={fm.colors} usageNote={colorsProse?.body} />
       )}
       {fm.typography && Object.keys(fm.typography).length > 0 && (
-        <TypographySection typography={fm.typography} brandName={fm.name} />
+        <TypographySection
+          typography={fm.typography}
+          brandName={fm.name}
+          notes={typographyProse?.body}
+        />
       )}
-      {(fm.rounded || fm.spacing) && (
-        <ShapeSpacingSection rounded={fm.rounded} spacing={fm.spacing} />
-      )}
-      {fm.elevation && Object.keys(fm.elevation).length > 0 && (
-        <ElevationSection elevation={fm.elevation} />
-      )}
-      {fm.layout && (fm.layout.containerMaxWidth || fm.layout.gridColumns) && (
+      {(fm.layout || fm.spacing) && (
         <LayoutSection
           layout={fm.layout}
-          notes={otherSections.find((s) => /layout/i.test(s.heading))?.body}
+          spacing={fm.spacing}
+          notes={layoutProse?.body}
         />
+      )}
+      {fm.elevation && Object.keys(fm.elevation).length > 0 && (
+        <ElevationSection elevation={fm.elevation} notes={elevationProse?.body} />
+      )}
+      {fm.rounded && Object.keys(fm.rounded).length > 0 && (
+        <ShapesSection rounded={fm.rounded} notes={shapesProse?.body} />
       )}
       {fm.components && Object.keys(fm.components).length > 0 && (
         <ComponentsSection
           components={fm.components}
           frontmatter={fm}
-        />
-      )}
-      {otherSections.find((s) => /voice/i.test(s.heading)) && (
-        <VoiceSection
-          section={otherSections.find((s) => /voice/i.test(s.heading))!}
-          headingFont={headingFont}
-          primary={primary}
+          notes={componentsProse?.body}
         />
       )}
       {dosAndDonts && <DosAndDontsSection body={dosAndDonts.body} />}
-      {otherSections
-        .filter(
-          (s) =>
-            !/overview|voice|color.*usage|^usage$|layout/i.test(s.heading),
-        )
-        .length > 0 && (
-        <ProseSection
-          sections={otherSections.filter(
-            (s) =>
-              !/overview|voice|color.*usage|^usage$|layout/i.test(s.heading),
-          )}
-        />
-      )}
+      <SpecFooter />
     </div>
+  );
+}
+
+function SpecFooter() {
+  return (
+    <footer className="pt-10 mt-4 border-t border-black/[0.06]">
+      <p className="text-[12px] text-[#999] leading-[1.6]">
+        Output follows the canonical{" "}
+        <a
+          href="https://github.com/google-labs-code/design.md"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="underline underline-offset-2 hover:text-black"
+        >
+          DESIGN.md
+        </a>{" "}
+        section order (Overview → Colors → Typography → Layout → Elevation →
+        Shapes → Components → Do&apos;s and Don&apos;ts). Fields like{" "}
+        <code className="font-mono text-[11px]">elevation</code>,{" "}
+        <code className="font-mono text-[11px]">layout</code>, and{" "}
+        <code className="font-mono text-[11px]">logo</code> are non-standard
+        extensions, accepted under the spec&apos;s &quot;unknown content&quot;
+        rule for forward-compatibility.
+      </p>
+    </footer>
   );
 }
 
 function BrandHero({
   name,
   description,
+  logo,
   primary,
   headingFont,
 }: {
   name?: string;
   description?: string;
+  logo?: { src: string; srcDark?: string; alt?: string };
   primary?: string;
   headingFont?: string;
 }) {
@@ -109,12 +125,35 @@ function BrandHero({
     ? `"${headingFont}", system-ui, sans-serif`
     : undefined;
   const onPrimary = primary ? bestTextOn(primary) : "#000";
+  // Pick light vs dark logo variant based on background
+  const logoSrc =
+    logo &&
+    (onPrimary === "#ffffff" && logo.src
+      ? logo.src
+      : onPrimary === "#000000" && logo.srcDark
+        ? logo.srcDark
+        : logo.src);
+
   return (
     <header className="relative overflow-hidden border border-black/[0.06]">
       <div
         className="px-8 py-16 md:px-14 md:py-24"
         style={{ background: primary ?? "#0a0a0a", color: onPrimary }}
       >
+        {logoSrc && (
+          <div className="mb-10">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={logoSrc}
+              alt={logo?.alt ?? `${name ?? ""} logo`}
+              className="max-h-[56px] w-auto"
+              style={{ filter: onPrimary === "#000000" ? undefined : undefined }}
+              onError={(e) => {
+                (e.target as HTMLImageElement).style.display = "none";
+              }}
+            />
+          </div>
+        )}
         <p
           className="text-[12px] uppercase tracking-[0.2em] mb-6 opacity-70"
           style={{ fontFamily: fontStack }}
@@ -212,33 +251,6 @@ function OverviewSection({
   );
 }
 
-function VoiceSection({
-  section,
-  headingFont,
-  primary,
-}: {
-  section: { heading: string; body: string };
-  headingFont?: string;
-  primary?: string;
-}) {
-  const fontStack = headingFont ? `"${headingFont}", system-ui, sans-serif` : undefined;
-  return (
-    <section>
-      <SectionTitle eyebrow="Tone">Voice</SectionTitle>
-      <div
-        className="border-l-2 pl-8 py-2 max-w-[680px]"
-        style={{ borderColor: primary ?? "#000" }}
-      >
-        <p
-          className="text-[20px] md:text-[24px] text-black leading-[1.4]"
-          style={{ fontFamily: fontStack }}
-          dangerouslySetInnerHTML={{ __html: renderInlineMarkdown(section.body) }}
-        />
-      </div>
-    </section>
-  );
-}
-
 function DosAndDontsSection({ body }: { body: string }) {
   const { dos, donts } = parseDosAndDonts(body);
   return (
@@ -325,12 +337,14 @@ function parseDosAndDonts(body: string): { dos: string[]; donts: string[] } {
 
 function ElevationSection({
   elevation,
+  notes,
 }: {
   elevation: Record<string, string>;
+  notes?: string;
 }) {
   return (
     <section>
-      <SectionTitle eyebrow="Depth">Elevation</SectionTitle>
+      <SectionTitle eyebrow="Depth">Elevation &amp; Depth</SectionTitle>
       <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
         {Object.entries(elevation).map(([name, value]) => (
           <div key={name} className="flex flex-col gap-3">
@@ -347,59 +361,111 @@ function ElevationSection({
           </div>
         ))}
       </div>
+      {notes && (
+        <p className="mt-8 text-[15px] text-[#5b5b5b] leading-[1.65] max-w-[640px]">
+          {notes}
+        </p>
+      )}
     </section>
   );
 }
 
 function LayoutSection({
   layout,
+  spacing,
   notes,
 }: {
-  layout: { containerMaxWidth?: string; gridColumns?: number };
+  layout?: { containerMaxWidth?: string; gridColumns?: number };
+  spacing?: Record<string, string | number>;
+  notes?: string;
+}) {
+  const hasContainer = layout?.containerMaxWidth || layout?.gridColumns;
+  return (
+    <section>
+      <SectionTitle eyebrow="Structure">Layout</SectionTitle>
+      {hasContainer && (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-10">
+          {layout?.containerMaxWidth && (
+            <div>
+              <p className="text-[12px] text-[#999] uppercase tracking-[0.15em] mb-4">
+                Container
+              </p>
+              <div className="relative h-[120px] bg-black/[0.03] rounded-[6px] overflow-hidden">
+                <div
+                  className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 bg-black/[0.08] border-l border-r border-black/10"
+                  style={{
+                    width: `min(100%, ${layout.containerMaxWidth})`,
+                  }}
+                />
+              </div>
+              <p className="mt-3 text-[13px] text-black">
+                Max width:{" "}
+                <span className="font-mono">{layout.containerMaxWidth}</span>
+              </p>
+            </div>
+          )}
+          {layout?.gridColumns && (
+            <div>
+              <p className="text-[12px] text-[#999] uppercase tracking-[0.15em] mb-4">
+                Grid
+              </p>
+              <div
+                className="grid gap-1 h-[120px]"
+                style={{
+                  gridTemplateColumns: `repeat(${layout.gridColumns}, 1fr)`,
+                }}
+              >
+                {Array.from({ length: layout.gridColumns }).map((_, i) => (
+                  <div key={i} className="bg-black/[0.06] rounded-[2px]" />
+                ))}
+              </div>
+              <p className="mt-3 text-[13px] text-black">
+                {layout.gridColumns}-column grid
+              </p>
+            </div>
+          )}
+        </div>
+      )}
+      {spacing && Object.keys(spacing).length > 0 && (
+        <div>
+          <p className="text-[12px] text-[#999] uppercase tracking-[0.15em] mb-5">
+            Spacing scale
+          </p>
+          <SpacingBars spacing={spacing} />
+        </div>
+      )}
+      {notes && (
+        <p className="mt-8 text-[15px] text-[#5b5b5b] leading-[1.65] max-w-[640px]">
+          {notes}
+        </p>
+      )}
+    </section>
+  );
+}
+
+function ShapesSection({
+  rounded,
+  notes,
+}: {
+  rounded: Record<string, string>;
   notes?: string;
 }) {
   return (
     <section>
-      <SectionTitle eyebrow="Structure">Layout</SectionTitle>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-        <div>
-          <p className="text-[12px] text-[#999] uppercase tracking-[0.15em] mb-4">
-            Container
-          </p>
-          <div className="relative h-[120px] bg-black/[0.03] rounded-[6px] overflow-hidden">
+      <SectionTitle eyebrow="Geometry">Shapes</SectionTitle>
+      <div className="flex flex-wrap gap-6">
+        {Object.entries(rounded).map(([name, value]) => (
+          <div key={name} className="flex flex-col gap-2 items-start">
             <div
-              className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 bg-black/[0.08] border-l border-r border-black/10"
-              style={{
-                width: layout.containerMaxWidth
-                  ? `min(100%, ${layout.containerMaxWidth})`
-                  : "100%",
-              }}
+              className="w-[88px] h-[88px] bg-black"
+              style={{ borderRadius: value }}
             />
-          </div>
-          <p className="mt-3 text-[13px] text-black">
-            Max width: <span className="font-mono">{layout.containerMaxWidth ?? "—"}</span>
-          </p>
-        </div>
-        {layout.gridColumns && (
-          <div>
-            <p className="text-[12px] text-[#999] uppercase tracking-[0.15em] mb-4">
-              Grid
-            </p>
-            <div
-              className="grid gap-1 h-[120px]"
-              style={{
-                gridTemplateColumns: `repeat(${layout.gridColumns}, 1fr)`,
-              }}
-            >
-              {Array.from({ length: layout.gridColumns }).map((_, i) => (
-                <div key={i} className="bg-black/[0.06] rounded-[2px]" />
-              ))}
+            <div>
+              <p className="text-[13px] text-black">{name}</p>
+              <p className="text-[11px] text-[#999]">{value}</p>
             </div>
-            <p className="mt-3 text-[13px] text-black">
-              {layout.gridColumns}-column grid
-            </p>
           </div>
-        )}
+        ))}
       </div>
       {notes && (
         <p className="mt-8 text-[15px] text-[#5b5b5b] leading-[1.65] max-w-[640px]">
@@ -451,9 +517,11 @@ function ColorTile({
 function TypographySection({
   typography,
   brandName,
+  notes,
 }: {
   typography: Record<string, Typography>;
   brandName?: string;
+  notes?: string;
 }) {
   const sample = brandName ?? "The quick brown fox jumps";
   const longSample =
@@ -499,54 +567,11 @@ function TypographySection({
           );
         })}
       </div>
-    </section>
-  );
-}
-
-function ShapeSpacingSection({
-  rounded,
-  spacing,
-}: {
-  rounded?: Record<string, string>;
-  spacing?: Record<string, string | number>;
-}) {
-  return (
-    <section>
-      <SectionTitle eyebrow="Geometry">Shape & spacing</SectionTitle>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-        {rounded && (
-          <div>
-            <p className="text-[12px] text-[#999] uppercase tracking-[0.15em] mb-5">
-              Rounded
-            </p>
-            <div className="flex flex-wrap gap-5">
-              {Object.entries(rounded).map(([name, value]) => (
-                <div
-                  key={name}
-                  className="flex flex-col gap-2 items-start"
-                >
-                  <div
-                    className="w-[80px] h-[80px] bg-black"
-                    style={{ borderRadius: value }}
-                  />
-                  <div>
-                    <p className="text-[13px] text-black">{name}</p>
-                    <p className="text-[11px] text-[#999]">{value}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-        {spacing && (
-          <div>
-            <p className="text-[12px] text-[#999] uppercase tracking-[0.15em] mb-5">
-              Spacing
-            </p>
-            <SpacingBars spacing={spacing} />
-          </div>
-        )}
-      </div>
+      {notes && (
+        <p className="mt-8 text-[15px] text-[#5b5b5b] leading-[1.65] max-w-[640px]">
+          {notes}
+        </p>
+      )}
     </section>
   );
 }
@@ -589,9 +614,11 @@ function SpacingBars({
 function ComponentsSection({
   components,
   frontmatter,
+  notes,
 }: {
   components: NonNullable<DesignSystem["frontmatter"]["components"]>;
   frontmatter: DesignSystem["frontmatter"];
+  notes?: string;
 }) {
   return (
     <section>
@@ -606,6 +633,11 @@ function ComponentsSection({
           />
         ))}
       </div>
+      {notes && (
+        <p className="mt-8 text-[15px] text-[#5b5b5b] leading-[1.65] max-w-[640px]">
+          {notes}
+        </p>
+      )}
     </section>
   );
 }
@@ -679,31 +711,6 @@ function humanize(slug: string): string {
   return slug
     .replace(/-/g, " ")
     .replace(/\b\w/g, (c) => c.toUpperCase());
-}
-
-function ProseSection({
-  sections,
-}: {
-  sections: { heading: string; body: string }[];
-}) {
-  return (
-    <section>
-      <SectionTitle eyebrow="Notes">Brand notes</SectionTitle>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-        {sections.map((s, i) => (
-          <div key={i}>
-            <h3 className="text-[14px] font-medium text-black mb-3 uppercase tracking-[0.1em]">
-              {s.heading}
-            </h3>
-            <div
-              className="text-[15px] text-[#5b5b5b] leading-[1.65]"
-              dangerouslySetInnerHTML={{ __html: renderInlineMarkdown(s.body) }}
-            />
-          </div>
-        ))}
-      </div>
-    </section>
-  );
 }
 
 function renderInlineMarkdown(text: string): string {

@@ -1,5 +1,22 @@
 import type { CheerioAPI } from "cheerio";
 
+export type LogoCandidate = {
+  source:
+    | "icon-svg"
+    | "mask-icon"
+    | "apple-touch-icon"
+    | "header-svg"
+    | "header-img"
+    | "icon-png"
+    | "og-image"
+    | "favicon-ico";
+  url: string;
+  format: "svg" | "png" | "jpg" | "ico" | "webp" | "unknown";
+  size?: string;
+  alt?: string;
+  className?: string;
+};
+
 export type SiteSignal = {
   url: string;
   meta: {
@@ -9,6 +26,7 @@ export type SiteSignal = {
     themeColor?: string;
     ogImage?: string;
   };
+  logos: LogoCandidate[];
   colors: {
     explicit: string[];
     cssVars: { name: string; value: string }[];
@@ -42,11 +60,130 @@ export function preprocessSite(
   rawCss: string,
 ): SiteSignal {
   const meta = extractMeta($);
+  const logos = extractLogos($, url);
   const colors = extractColors($, rawHtml, rawCss);
   const typography = extractTypography($, rawCss);
   const geometry = extractGeometry(rawCss);
   const components = extractComponents($);
-  return { url, meta, colors, typography, geometry, components };
+  return { url, meta, logos, colors, typography, geometry, components };
+}
+
+function extractLogos($: CheerioAPI, baseUrl: string): LogoCandidate[] {
+  const out: LogoCandidate[] = [];
+  const seen = new Set<string>();
+  const push = (c: LogoCandidate) => {
+    if (!c.url) return;
+    if (seen.has(c.url)) return;
+    seen.add(c.url);
+    out.push(c);
+  };
+
+  $('link[rel="icon"][type="image/svg+xml"][href]').each((_, el) => {
+    const href = $(el).attr("href");
+    if (href) push({ source: "icon-svg", url: absolutize(href, baseUrl), format: "svg" });
+  });
+
+  $('link[rel="mask-icon"][href]').each((_, el) => {
+    const href = $(el).attr("href");
+    if (href) push({ source: "mask-icon", url: absolutize(href, baseUrl), format: "svg" });
+  });
+
+  $('link[rel="apple-touch-icon"][href], link[rel="apple-touch-icon-precomposed"][href]').each(
+    (_, el) => {
+      const href = $(el).attr("href");
+      const sizes = $(el).attr("sizes");
+      if (href)
+        push({
+          source: "apple-touch-icon",
+          url: absolutize(href, baseUrl),
+          format: detectFormat(href),
+          size: sizes,
+        });
+    },
+  );
+
+  const headerSelector = "header, [role=banner], nav";
+  $(headerSelector)
+    .first()
+    .find("svg")
+    .each((_, el) => {
+      const $svg = $(el);
+      const cls = ($svg.attr("class") ?? "").toLowerCase();
+      const wrapperCls = ($svg.parent().attr("class") ?? "").toLowerCase();
+      const looksLikeLogo = /(logo|wordmark|brand)/.test(cls + " " + wrapperCls);
+      if (!looksLikeLogo) return;
+      const svgString = $.html($svg);
+      if (!svgString || svgString.length > 8000) return;
+      const dataUrl = `data:image/svg+xml;utf8,${encodeURIComponent(svgString)}`;
+      push({
+        source: "header-svg",
+        url: dataUrl,
+        format: "svg",
+        className: cls || wrapperCls || undefined,
+      });
+    });
+
+  $(headerSelector)
+    .first()
+    .find("img")
+    .each((_, el) => {
+      const src = $(el).attr("src");
+      const cls = ($(el).attr("class") ?? "").toLowerCase();
+      const alt = ($(el).attr("alt") ?? "").toLowerCase();
+      if (!src) return;
+      const looksLikeLogo = /(logo|wordmark|brand|mark)/.test(cls + " " + alt);
+      if (!looksLikeLogo) return;
+      push({
+        source: "header-img",
+        url: absolutize(src, baseUrl),
+        format: detectFormat(src),
+        alt: $(el).attr("alt") || undefined,
+        className: cls || undefined,
+      });
+    });
+
+  $('link[rel="icon"][href]').each((_, el) => {
+    const href = $(el).attr("href");
+    const type = $(el).attr("type");
+    if (!href || type === "image/svg+xml") return;
+    const sizes = $(el).attr("sizes");
+    push({
+      source: "icon-png",
+      url: absolutize(href, baseUrl),
+      format: detectFormat(href),
+      size: sizes,
+    });
+  });
+
+  const og = $('meta[property="og:image"]').attr("content");
+  if (og) {
+    push({
+      source: "og-image",
+      url: absolutize(og, baseUrl),
+      format: detectFormat(og),
+    });
+  }
+
+  return out.slice(0, 8);
+}
+
+function detectFormat(url: string): LogoCandidate["format"] {
+  const lower = url.toLowerCase().split("?")[0];
+  if (lower.endsWith(".svg") || lower.startsWith("data:image/svg")) return "svg";
+  if (lower.endsWith(".png")) return "png";
+  if (lower.endsWith(".jpg") || lower.endsWith(".jpeg")) return "jpg";
+  if (lower.endsWith(".webp")) return "webp";
+  if (lower.endsWith(".ico")) return "ico";
+  return "unknown";
+}
+
+function absolutize(href: string, base: string): string {
+  if (href.startsWith("data:")) return href;
+  try {
+    return new URL(href, base).toString();
+  } catch {
+    return href;
+  }
 }
 
 function extractMeta($: CheerioAPI) {
@@ -273,6 +410,17 @@ export function signalToMarkdown(signal: SiteSignal): string {
   if (signal.meta.description) lines.push(`Description: ${signal.meta.description}`);
   if (signal.meta.themeColor) lines.push(`Theme color (meta): ${signal.meta.themeColor}`);
   if (signal.meta.ogImage) lines.push(`OG image: ${signal.meta.ogImage}`);
+
+  if (signal.logos.length) {
+    lines.push(`\n## Logo candidates`);
+    for (const l of signal.logos) {
+      const label = `${l.source} (${l.format}${l.size ? ", " + l.size : ""})`;
+      const display = l.url.startsWith("data:")
+        ? `${l.url.slice(0, 80)}…`
+        : l.url;
+      lines.push(`  - [${label}] ${display}${l.alt ? ` — alt: "${l.alt}"` : ""}`);
+    }
+  }
 
   lines.push(`\n## Colors observed`);
   if (signal.colors.cssVars.length) {
