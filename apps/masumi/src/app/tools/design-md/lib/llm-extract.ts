@@ -284,21 +284,45 @@ export async function llmExtract(
         temperature: 0.3,
         max_tokens: 7000,
       }),
-      signal: AbortSignal.timeout(75_000),
+      signal: AbortSignal.timeout(90_000),
     });
-  } catch {
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : String(e);
+    console.error(`[llm-extract] fetch failed for ${url}: ${msg}`);
     return null;
   }
   const latencyMs = Date.now() - t0;
 
-  if (!res.ok) return null;
+  if (!res.ok) {
+    const body = await res.text().catch(() => "(no body)");
+    console.error(
+      `[llm-extract] HTTP ${res.status} for ${url} after ${latencyMs}ms: ${body.slice(0, 400)}`,
+    );
+    return null;
+  }
 
-  const data = await res.json().catch(() => null);
+  const data = await res.json().catch((e) => {
+    console.error(`[llm-extract] JSON parse failed for ${url}:`, e);
+    return null;
+  });
   const content = data?.choices?.[0]?.message?.content;
-  if (typeof content !== "string") return null;
+  if (typeof content !== "string") {
+    const finishReason = data?.choices?.[0]?.finish_reason ?? "?";
+    console.error(
+      `[llm-extract] missing content for ${url} (finish_reason=${finishReason}):`,
+      JSON.stringify(data).slice(0, 400),
+    );
+    return null;
+  }
 
   const parsed = parseJsonLoose(content);
-  if (!parsed || typeof parsed !== "object") return null;
+  if (!parsed || typeof parsed !== "object") {
+    console.error(
+      `[llm-extract] could not parse JSON for ${url} (content len ${content.length}, first 300 chars):`,
+      content.slice(0, 300),
+    );
+    return null;
+  }
 
   const result = shape(parsed as RawShape, url, signal, {
     model: MODEL,
@@ -306,7 +330,11 @@ export async function llmExtract(
     inputTokens: data?.usage?.prompt_tokens,
     outputTokens: data?.usage?.completion_tokens,
   });
-  cache.set(cacheKey, { ts: Date.now(), result });
+  // Only cache *successful* results. Caching nulls would mean a single
+  // transient failure locks the URL into heuristic-fallback for an hour.
+  if (result) {
+    cache.set(cacheKey, { ts: Date.now(), result });
+  }
   return result;
 }
 
