@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { appendLead } from "../../lib/sheets";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -66,10 +67,10 @@ export async function POST(req: Request) {
     source: "design-md-generator",
   };
 
-  // Forward to all configured downstream sinks in parallel. None block the
-  // user-facing response on failure — the lead is already in our logs.
+  // Forward to all sinks in parallel. None block the user-facing response
+  // on failure — the lead is already in our logs.
   await Promise.allSettled([
-    forwardToSheetWebhook(payload, email, url),
+    forwardToSheet(payload),
     forwardToOnboarding(email, url),
   ]);
 
@@ -97,30 +98,32 @@ async function forwardToOnboarding(email: string, websiteUrl: string) {
   }
 }
 
-async function forwardToSheetWebhook(
-  payload: Record<string, unknown>,
-  email: string,
-  websiteUrl: string,
-) {
-  const webhook = process.env.LEAD_WEBHOOK_URL;
-  if (!webhook) {
-    console.log("[lead] (no sheet webhook configured)", JSON.stringify(payload));
-    return;
-  }
+async function forwardToSheet(payload: {
+  email: string;
+  url: string;
+  ip: string;
+  ts: string;
+  userAgent: string;
+  referer: string;
+  source: string;
+}) {
   try {
-    const res = await fetch(webhook, {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify(payload),
-      signal: AbortSignal.timeout(8000),
-      redirect: "follow",
+    const wrote = await appendLead({
+      timestamp: payload.ts,
+      email: payload.email,
+      websiteUrl: payload.url,
+      source: payload.source,
+      ip: payload.ip,
+      userAgent: payload.userAgent,
+      referer: payload.referer,
     });
-    if (!res.ok) {
-      console.error(
-        `[lead] sheet webhook responded ${res.status} for ${email} / ${websiteUrl}`,
+    if (!wrote) {
+      console.log(
+        "[lead] (Sheets not configured — set GOOGLE_SERVICE_ACCOUNT_B64, SIGNUPS_SHEET_ID, SIGNUPS_SHEET_TAB_NAME)",
+        JSON.stringify(payload),
       );
     }
   } catch (e) {
-    console.error("[lead] sheet webhook error:", e);
+    console.error("[lead] sheet write error:", e);
   }
 }
