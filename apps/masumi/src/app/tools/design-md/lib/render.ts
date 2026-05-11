@@ -17,10 +17,16 @@ export type ComputedStyle = {
 export type RenderedPage = {
   url: string;
   html: string;
-  // Screenshot is optional — if Browserbase's screenshot step times out
-  // we still want to keep the rendered HTML + computed styles for the LLM.
+  // Viewport-only screenshot fed to the LLM as vision input. Guaranteed
+  // to fit inside Claude's 8000px image dimension limit. Optional — if
+  // capture fails we still want to keep the rendered HTML + computed
+  // styles so the LLM call can proceed in text-only mode.
   screenshotBase64?: string;
   screenshotMime?: "image/jpeg";
+  // Clipped full-page capture used purely for the gallery thumbnail.
+  // Never sent to the LLM.
+  thumbnailBase64?: string;
+  thumbnailMime?: "image/jpeg";
   computed: {
     body?: ComputedStyle;
     h1?: ComputedStyle;
@@ -68,38 +74,52 @@ export async function renderWithBrowserbase(
     const computed = await collectComputed(page);
     const html = await page.content();
 
-    // Screenshot last and best-effort. Tall pages with lots of images can
-    // time out on full-page capture; in that case we try viewport-only,
-    // and if that also fails, we proceed without a screenshot (vision
-    // input is a bonus, not a hard requirement).
+    // Screenshot best-effort. Two-stage capture:
+    // 1. Viewport-only (1280×800) for the LLM vision input. Claude / Bedrock
+    //    rejects images whose longest dimension exceeds 8000px, so full-page
+    //    captures on tall sites blow up. Viewport-only is always safe AND
+    //    captures the hero/CTA region, which is the most brand-informative.
+    // 2. A capped full-page capture for the gallery thumbnail (purely
+    //    visual, never sent to the LLM).
     let screenshotBase64: string | undefined;
+    let thumbnailBase64: string | undefined;
     try {
-      const fullPage = await page.screenshot({
+      const viewportShot = await page.screenshot({
         type: "jpeg",
-        quality: 78,
-        fullPage: true,
-        timeout: 20_000,
+        quality: 80,
+        fullPage: false,
+        timeout: 12_000,
       });
-      screenshotBase64 = await trimScreenshot(fullPage);
+      screenshotBase64 = viewportShot.toString("base64");
     } catch (e) {
       console.warn(
-        `[render] full-page screenshot timed out for ${url}, retrying viewport-only:`,
+        `[render] viewport screenshot failed for ${url}, continuing without vision:`,
         e instanceof Error ? e.message : e,
       );
-      try {
-        const viewportOnly = await page.screenshot({
-          type: "jpeg",
-          quality: 78,
-          fullPage: false,
-          timeout: 8_000,
-        });
-        screenshotBase64 = await trimScreenshot(viewportOnly);
-      } catch (e2) {
-        console.warn(
-          `[render] viewport screenshot also failed for ${url}, continuing without vision:`,
-          e2 instanceof Error ? e2.message : e2,
-        );
-      }
+    }
+
+    // Gallery thumbnail — clipped full-page so we don't run into the 8000px
+    // limit (which doesn't apply here since we're not sending to LLM, but
+    // huge images bloat the DB BLOB anyway).
+    try {
+      const docHeight = await page
+        .evaluate(() => document.documentElement.scrollHeight)
+        .catch(() => VIEWPORT.height);
+      const clipHeight = Math.min(docHeight, 4000);
+      const thumb = await page.screenshot({
+        type: "jpeg",
+        quality: 75,
+        clip: { x: 0, y: 0, width: VIEWPORT.width, height: clipHeight },
+        timeout: 15_000,
+      });
+      thumbnailBase64 = await trimScreenshot(thumb);
+    } catch (e) {
+      console.warn(
+        `[render] thumbnail capture failed for ${url}:`,
+        e instanceof Error ? e.message : e,
+      );
+      // Fall back to using the viewport shot as the thumbnail too
+      thumbnailBase64 = screenshotBase64;
     }
 
     return {
@@ -107,6 +127,9 @@ export async function renderWithBrowserbase(
       html,
       ...(screenshotBase64
         ? { screenshotBase64, screenshotMime: "image/jpeg" as const }
+        : {}),
+      ...(thumbnailBase64
+        ? { thumbnailBase64, thumbnailMime: "image/jpeg" as const }
         : {}),
       computed,
     };

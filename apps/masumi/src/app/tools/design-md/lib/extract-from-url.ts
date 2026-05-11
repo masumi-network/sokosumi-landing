@@ -83,12 +83,15 @@ export async function extractFromUrl(
     force: opts?.force === true,
   });
   if (llm) {
+    // Gallery thumbnail uses the bigger clipped full-page capture when we
+    // have it; otherwise falls back to the viewport-only shot.
+    const thumbBase64 =
+      rendered?.thumbnailBase64 ?? rendered?.screenshotBase64;
+    const thumbMime =
+      rendered?.thumbnailMime ?? rendered?.screenshotMime;
     const screenshot =
-      rendered?.screenshotBase64 && rendered.screenshotMime
-        ? {
-            mime: rendered.screenshotMime,
-            base64: rendered.screenshotBase64,
-          }
+      thumbBase64 && thumbMime
+        ? { mime: thumbMime, base64: thumbBase64 }
         : undefined;
     return {
       frontmatter: llm.frontmatter,
