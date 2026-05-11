@@ -194,6 +194,36 @@ export default function Creator({
   const [autoUrl, setAutoUrl] = useState<string | null>(null);
   const [activeUrl, setActiveUrl] = useState<string | null>(null);
 
+  const regenerate = useCallback(
+    async (target: string) => {
+      setActiveUrl(target);
+      setView("loading");
+      try {
+        const res = await fetch("/tools/design-md/api/extract", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ url: target, force: true }),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data?.error ?? "Failed to regenerate");
+        const md = composeFromExtract(data);
+        startWith(md, "url", {
+          source: data?.source ?? "heuristic",
+          model: data?.meta?.model,
+          latencyMs: data?.meta?.latencyMs,
+          inputTokens: data?.meta?.inputTokens,
+          outputTokens: data?.meta?.outputTokens,
+          targetUrl: target,
+        });
+      } catch (e) {
+        setError(e instanceof Error ? e.message : "Failed to regenerate");
+        // Bounce back to render view so the user doesn't lose context
+        setView("render");
+      }
+    },
+    [startWith],
+  );
+
   useEffect(() => {
     if (typeof window === "undefined") return;
     const params = new URLSearchParams(window.location.search);
@@ -245,36 +275,6 @@ export default function Creator({
   if (view === "loading") {
     return <Loading targetUrl={activeUrl} />;
   }
-
-  const regenerate = useCallback(
-    async (target: string) => {
-      setActiveUrl(target);
-      setView("loading");
-      try {
-        const res = await fetch("/tools/design-md/api/extract", {
-          method: "POST",
-          headers: { "content-type": "application/json" },
-          body: JSON.stringify({ url: target, force: true }),
-        });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data?.error ?? "Failed to regenerate");
-        const md = composeFromExtract(data);
-        startWith(md, "url", {
-          source: data?.source ?? "heuristic",
-          model: data?.meta?.model,
-          latencyMs: data?.meta?.latencyMs,
-          inputTokens: data?.meta?.inputTokens,
-          outputTokens: data?.meta?.outputTokens,
-          targetUrl: target,
-        });
-      } catch (e) {
-        setError(e instanceof Error ? e.message : "Failed to regenerate");
-        // Bounce back to render view so the user doesn't lose context
-        setView("render");
-      }
-    },
-    [startWith],
-  );
 
   if (view === "render" && system) {
     return (
