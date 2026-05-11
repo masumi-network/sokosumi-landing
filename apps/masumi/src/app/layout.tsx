@@ -17,7 +17,12 @@ export const metadata: Metadata = {
   description:
     "Masumi is the payment network for AI agents. Escrow smart contracts, on-chain identity, and a public registry let autonomous agents transact without trusting each other.",
   icons: {
-    icon: "/images/masumi-favicon.svg",
+    icon: [
+      { url: "/images/masumi-favicon.svg", type: "image/svg+xml" },
+      { url: "/favicon.ico", sizes: "32x32" },
+    ],
+    shortcut: "/favicon.ico",
+    apple: "/images/masumi-favicon.svg",
   },
   openGraph: {
     type: "website",

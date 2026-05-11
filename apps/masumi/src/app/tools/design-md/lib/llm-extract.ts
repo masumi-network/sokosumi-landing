@@ -37,6 +37,15 @@ Quality bar (non-negotiable):
 Hard rules:
 - Output STRICT JSON. No markdown fences, no commentary, no prose outside JSON.
 - A SCREENSHOT may be attached. When attached, the screenshot is ground truth — when it conflicts with the text signal, trust the screenshot. Identify the most prominent CTA visually and use its color as primary.
+
+PRIMARY COLOR — read this carefully, it's the most-mistaken token:
+- "primary" is the brand's signature ACCENT color — the hex used on Call-To-Action buttons, key links, focus/active states, and brand-specific interactive elements. It is NOT the page background, NOT the dominant text color, NOT pure white, NOT pure black, NOT near-black, NOT a neutral gray, even if that neutral is the most-frequent color on the page.
+- If the site appears monochrome (mostly black/white with one bright accent), the accent IS the primary even though it appears less often. Examples: Masumi uses lots of black + a vivid pink on CTAs — primary is the pink (#FA008C), not black. Linear uses a near-black canvas + a violet accent — primary is the violet, not the canvas.
+- If a site is genuinely monochrome with no accent at all (extremely rare; some austere print-style brands), only then use the darkest text color as primary.
+- Sanity test: would a user click on this color? If yes → primary candidate. If no (it's a frame, a background, body text) → it's surface/on-surface/background, not primary.
+
+Other rules:
+- "secondary" and "tertiary" are additional brand colors — supporting accents, highlights, or status colors. NOT the same as primary, never identical hex to primary.
 - Pick brand-distinctive accents — skip near-black and near-white when picking primary/secondary/tertiary. Look for CSS vars named --primary/--brand/--accent, Tailwind bg-[#xxx] classes in hero/CTA, and the "Live computed styles" block.
 - Components must use token references like {colors.primary} so the system is wired up, not hardcoded.
 - Prose follows the canonical DESIGN.md section order: Overview (also "Brand & Style"), Colors, Typography, Layout, Elevation & Depth, Shapes, Components, Do's and Don'ts. Voice and brand personality belong inside Overview. Color usage rules belong inside Colors. Spacing rationale belongs inside Layout. Border-radius rationale belongs inside Shapes.
@@ -244,8 +253,9 @@ export async function llmExtract(
   // Cache key reflects whether we had vision input on that run. A
   // vision-augmented run will produce a different (better) result than a
   // text-only run for the same URL.
-  // v5 bumps for the M3-expanded schema + few-shot prompt.
-  const cacheKey = `${MODEL}:v5${hasScreenshot ? ":vision" : ":text"}:${url}`;
+  // v6 bumps for the sharpened primary-color definition (was producing
+  // primary=#000 on monochrome-with-accent brands like Masumi).
+  const cacheKey = `${MODEL}:v6${hasScreenshot ? ":vision" : ":text"}:${url}`;
   if (!opts?.force) {
     const cached = cache.get(cacheKey);
     if (cached && Date.now() - cached.ts < TTL_MS) return cached.result;

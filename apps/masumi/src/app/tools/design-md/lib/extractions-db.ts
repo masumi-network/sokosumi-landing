@@ -33,6 +33,28 @@ function db(): Database.Database {
       ON extractions(hostname);
   `);
 
+  // Idempotent one-off migration via PRAGMA user_version. Each version
+  // bump runs its block exactly once across the lifetime of the DB file.
+  const current = Number(
+    (conn.pragma("user_version") as { user_version: number }[])[0]
+      ?.user_version ?? 0,
+  );
+  if (current < 1) {
+    // v1: dedupe by URL, keeping the most-recent row. Earlier versions
+    // of /api/extract didn't check the persistent cache, so the same
+    // URL could land in the table multiple times.
+    const before = (conn.prepare("SELECT COUNT(*) as c FROM extractions").get() as { c: number }).c;
+    conn.exec(`
+      DELETE FROM extractions
+      WHERE id NOT IN (
+        SELECT MAX(id) FROM extractions GROUP BY url
+      );
+    `);
+    const after = (conn.prepare("SELECT COUNT(*) as c FROM extractions").get() as { c: number }).c;
+    console.log(`[extractions-db] dedup v1: ${before} → ${after} rows`);
+    conn.pragma("user_version = 1");
+  }
+
   _db = conn;
   return conn;
 }
