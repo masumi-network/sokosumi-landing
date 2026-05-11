@@ -85,7 +85,7 @@ const JSON_LD_FAQ = {
       name: "How does the generator work?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Paste a website URL. The tool fetches the page, extracts a structured signal (CSS variables, Tailwind classes, Google Fonts, hero elements, logo candidates), then sends that signal to Claude Haiku 4.5 via OpenRouter to produce a brand-distinctive DESIGN.md following the canonical 8-section spec.",
+        text: "Paste a website URL. The tool fetches the page, extracts a structured signal (CSS variables, Tailwind classes, Google Fonts, hero elements, logo candidates), then runs it through an AI model that produces a brand-distinctive DESIGN.md following the canonical 8-section spec.",
       },
     },
     {
@@ -166,6 +166,11 @@ function ToolHeader() {
         </h1>
       </div>
       <div className="flex items-center gap-4 text-[12px] text-[#666]">
+        <span className="inline-flex items-center gap-1.5">
+          <span className="w-1.5 h-1.5 rounded-full bg-[#16A34A]" />
+          <span>Live</span>
+        </span>
+        <span className="w-px h-3 bg-black/[0.1]" aria-hidden />
         <Link
           href="https://github.com/google-labs-code/design.md"
           target="_blank"
@@ -175,11 +180,6 @@ function ToolHeader() {
           <span>Spec</span>
           <span aria-hidden>↗</span>
         </Link>
-        <span className="w-px h-3 bg-black/[0.1]" aria-hidden />
-        <span className="inline-flex items-center gap-1.5">
-          <span className="w-1.5 h-1.5 rounded-full bg-[#16A34A]" />
-          <span className="font-mono">claude-haiku-4.5</span>
-        </span>
       </div>
     </header>
   );
@@ -212,7 +212,7 @@ function Explainer() {
         <Step
           n="02"
           title="AI builds your spec"
-          body="Claude Haiku 4.5 reads the structured signal and produces a brand-distinctive DESIGN.md in canonical 8-section format."
+          body="Our AI model reads the structured signal and produces a brand-distinctive DESIGN.md in canonical 8-section format."
         />
         <Step
           n="03"
@@ -266,7 +266,7 @@ function FAQ() {
     },
     {
       q: "How does the generator work?",
-      a: "Paste a URL. We fetch the page, extract a structured signal (CSS variables, Tailwind classes, Google Fonts, hero selectors, logo candidates), then send that signal to Claude Haiku 4.5 via OpenRouter to produce a brand-distinctive DESIGN.md.",
+      a: "Paste a URL. We fetch the page, extract a structured signal (CSS variables, Tailwind classes, Google Fonts, hero selectors, logo candidates), then run it through an AI model that produces a brand-distinctive DESIGN.md.",
     },
     {
       q: "Is it free?",

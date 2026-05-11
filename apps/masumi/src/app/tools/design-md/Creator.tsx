@@ -825,7 +825,7 @@ function Loading({ targetUrl }: { targetUrl?: string | null }) {
     ? [
         `Fetching ${prettyHost(targetUrl)}`,
         "Parsing CSS, fonts, and structure",
-        "Analyzing brand tokens with Claude Haiku 4.5",
+        "Analyzing brand tokens with AI",
         "Composing your DESIGN.md",
       ]
     : [
@@ -980,10 +980,14 @@ function RenderView({
           {extractMeta?.source === "llm" && (
             <span
               className="text-[11px] px-2 py-0.5 rounded-full border border-black/10 text-[#666] flex items-center gap-1.5"
-              title={`${extractMeta.model}${extractMeta.latencyMs ? ` · ${extractMeta.latencyMs}ms` : ""}${extractMeta.inputTokens ? ` · ${extractMeta.inputTokens}+${extractMeta.outputTokens} tokens` : ""}`}
+              title={
+                extractMeta.latencyMs
+                  ? `Generated in ${extractMeta.latencyMs}ms`
+                  : "AI-generated"
+              }
             >
               <span className="w-1.5 h-1.5 rounded-full bg-[#FA008C]" />
-              Claude Haiku 4.5
+              AI-generated
             </span>
           )}
           {extractMeta?.source === "heuristic" && source === "url" && (
