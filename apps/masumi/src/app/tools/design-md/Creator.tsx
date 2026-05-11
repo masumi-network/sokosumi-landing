@@ -267,6 +267,7 @@ function ModeSelect({
   const [url, setUrl] = useState(initialUrl ?? "");
   const [submitting, setSubmitting] = useState(false);
   const [autoSubmitted, setAutoSubmitted] = useState(false);
+  const [leadModalUrl, setLeadModalUrl] = useState<string | null>(null);
 
   const handleFile = (file: File) => {
     const reader = new FileReader();
@@ -277,9 +278,8 @@ function ModeSelect({
     reader.readAsText(file);
   };
 
-  const submitUrl = useCallback(
+  const runExtraction = useCallback(
     async (target: string) => {
-      if (!target.trim()) return;
       setSubmitting(true);
       setError(null);
       setLoading(target);
@@ -307,6 +307,30 @@ function ModeSelect({
       }
     },
     [onUrl, setError, setLoading],
+  );
+
+  const submitUrl = useCallback(
+    async (target: string) => {
+      const trimmed = target.trim();
+      if (!trimmed) return;
+      // Lead gate: open modal if we haven't captured this browser's email yet
+      if (!hasLead()) {
+        setLeadModalUrl(trimmed);
+        return;
+      }
+      await runExtraction(trimmed);
+    },
+    [runExtraction],
+  );
+
+  const handleLeadSubmitted = useCallback(
+    async (email: string) => {
+      const target = leadModalUrl;
+      saveLead(email);
+      setLeadModalUrl(null);
+      if (target) await runExtraction(target);
+    },
+    [leadModalUrl, runExtraction],
   );
 
   useEffect(() => {
@@ -432,6 +456,15 @@ function ModeSelect({
       {!error && !showUpload && (
         <EmptyWorkspace />
       )}
+
+      {/* Lead-gate modal */}
+      {leadModalUrl && (
+        <LeadModal
+          targetUrl={leadModalUrl}
+          onSubmitted={handleLeadSubmitted}
+          onClose={() => setLeadModalUrl(null)}
+        />
+      )}
     </div>
   );
 }
@@ -529,6 +562,188 @@ function humanizeError(msg: string): string {
     return "We couldn't reach that URL. Check the spelling, or try with the full https:// prefix.";
   }
   return msg;
+}
+
+const LEAD_STORAGE_KEY = "design-md-lead-v1";
+
+function hasLead(): boolean {
+  if (typeof window === "undefined") return false;
+  try {
+    return !!window.localStorage.getItem(LEAD_STORAGE_KEY);
+  } catch {
+    return false;
+  }
+}
+
+function saveLead(email: string) {
+  if (typeof window === "undefined") return;
+  try {
+    window.localStorage.setItem(
+      LEAD_STORAGE_KEY,
+      JSON.stringify({ email, ts: Date.now() }),
+    );
+  } catch {
+    // ignore
+  }
+}
+
+function LeadModal({
+  targetUrl,
+  onSubmitted,
+  onClose,
+}: {
+  targetUrl: string;
+  onSubmitted: (email: string) => Promise<void> | void;
+  onClose: () => void;
+}) {
+  const [email, setEmail] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [err, setErr] = useState<string | null>(null);
+
+  // Close on Escape, lock body scroll
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", onKey);
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [onClose]);
+
+  const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+  const host = prettyHost(targetUrl);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!emailValid || submitting) return;
+    setSubmitting(true);
+    setErr(null);
+    try {
+      const res = await fetch("/tools/design-md/api/lead", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ email: email.trim(), url: targetUrl }),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => null);
+        throw new Error(data?.error ?? "Couldn't record your email");
+      }
+      await onSubmitted(email.trim());
+    } catch (e) {
+      setErr(e instanceof Error ? e.message : "Something went wrong");
+      setSubmitting(false);
+    }
+  };
+
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-6 bg-black/40 backdrop-blur-sm animate-in fade-in"
+      onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="lead-modal-title"
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="w-full sm:max-w-[460px] bg-white rounded-t-[20px] sm:rounded-[16px] border border-black/[0.06] shadow-[0_20px_60px_rgba(0,0,0,0.18)] flex flex-col"
+      >
+        {/* Top accent strip */}
+        <div className="h-[3px] bg-[#FA008C] rounded-t-[20px] sm:rounded-t-[16px]" />
+
+        <div className="p-6 md:p-8">
+          <div className="flex items-start justify-between mb-1">
+            <p className="text-[11px] text-[#999] uppercase tracking-[0.18em] font-mono">
+              Almost there
+            </p>
+            <button
+              onClick={onClose}
+              className="-mr-2 -mt-1 w-8 h-8 rounded-full flex items-center justify-center text-[#999] hover:text-black hover:bg-black/[0.04] transition-colors"
+              aria-label="Close"
+              type="button"
+            >
+              ✕
+            </button>
+          </div>
+          <h2
+            id="lead-modal-title"
+            className="text-[22px] md:text-[24px] font-normal tracking-[-0.4px] text-black leading-[1.25] mb-3"
+          >
+            Get your DESIGN.md{" "}
+            <span className="text-[#FA008C]">+</span> a free competitor
+            analysis.
+          </h2>
+          <p className="text-[14px] text-[#5b5b5b] leading-[1.55] mb-6">
+            We&apos;ll generate the DESIGN.md for{" "}
+            <span className="font-mono text-black">{host}</span> right now, and
+            email you a competitor analysis (a one-shot benchmark of{" "}
+            {host}&apos;s brand positioning vs. its top 3 competitors) within
+            48 hours. No spam, one email, then quiet.
+          </p>
+
+          <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+            <label className="flex flex-col gap-2">
+              <span className="text-[11px] text-[#666] uppercase tracking-[0.15em] font-mono">
+                Email
+              </span>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="you@yourcompany.com"
+                autoFocus
+                required
+                autoComplete="email"
+                className="w-full text-[15px] px-4 py-3 border border-black/[0.1] rounded-[10px] bg-white focus:outline-none focus:border-black/30 transition-colors"
+              />
+            </label>
+
+            {err && (
+              <p className="text-[12px] text-[#B8422E] flex items-start gap-1.5">
+                <span className="inline-block w-3 h-3 rounded-full bg-[#B8422E]/15 text-[#B8422E] text-center leading-none font-medium pt-px text-[10px]">
+                  !
+                </span>
+                {err}
+              </p>
+            )}
+
+            <button
+              type="submit"
+              disabled={!emailValid || submitting}
+              className="mt-1 inline-flex items-center justify-center gap-2 bg-black text-white text-[14px] font-medium px-6 py-3 rounded-[10px] hover:bg-black/85 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+            >
+              {submitting ? (
+                <>
+                  <Spinner className="w-4 h-4" />
+                  Sending…
+                </>
+              ) : (
+                <>Continue to generate</>
+              )}
+            </button>
+
+            <p className="text-[11px] text-[#999] leading-[1.5] mt-1">
+              By continuing you agree to receive one (1) competitor-analysis
+              email from Masumi.{" "}
+              <a
+                href="/privacy"
+                className="underline underline-offset-2 hover:text-black"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Privacy policy
+              </a>
+              .
+            </p>
+          </form>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 function Spinner({ className }: { className?: string }) {
