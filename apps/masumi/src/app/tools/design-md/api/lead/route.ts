@@ -66,29 +66,61 @@ export async function POST(req: Request) {
     source: "design-md-generator",
   };
 
-  // Forward to webhook if configured. Otherwise just log.
-  const webhook = process.env.LEAD_WEBHOOK_URL;
-  if (webhook) {
-    try {
-      const res = await fetch(webhook, {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify(payload),
-        signal: AbortSignal.timeout(8000),
-        redirect: "follow",
-      });
-      if (!res.ok) {
-        console.error(
-          `[lead] webhook responded ${res.status} for ${email} / ${url}`,
-        );
-        // Don't fail the user-facing request — we already have the lead in logs
-      }
-    } catch (e) {
-      console.error("[lead] webhook error:", e);
-    }
-  } else {
-    console.log("[lead] (no webhook configured)", JSON.stringify(payload));
-  }
+  // Forward to all configured downstream sinks in parallel. None block the
+  // user-facing response on failure — the lead is already in our logs.
+  await Promise.allSettled([
+    forwardToSheetWebhook(payload, email, url),
+    forwardToOnboarding(email, url),
+  ]);
 
   return NextResponse.json({ ok: true });
+}
+
+const ONBOARDING_URL = "https://elena.serviceplan-agents.com/onboarding/submit";
+
+async function forwardToOnboarding(email: string, websiteUrl: string) {
+  try {
+    const res = await fetch(ONBOARDING_URL, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ email, website_url: websiteUrl }),
+      signal: AbortSignal.timeout(8000),
+      redirect: "follow",
+    });
+    if (!res.ok) {
+      console.error(
+        `[lead] onboarding webhook responded ${res.status} for ${email} / ${websiteUrl}`,
+      );
+    }
+  } catch (e) {
+    console.error("[lead] onboarding webhook error:", e);
+  }
+}
+
+async function forwardToSheetWebhook(
+  payload: Record<string, unknown>,
+  email: string,
+  websiteUrl: string,
+) {
+  const webhook = process.env.LEAD_WEBHOOK_URL;
+  if (!webhook) {
+    console.log("[lead] (no sheet webhook configured)", JSON.stringify(payload));
+    return;
+  }
+  try {
+    const res = await fetch(webhook, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(payload),
+      signal: AbortSignal.timeout(8000),
+      redirect: "follow",
+    });
+    if (!res.ok) {
+      console.error(
+        `[lead] sheet webhook responded ${res.status} for ${email} / ${websiteUrl}`,
+      );
+    }
+  } catch (e) {
+    console.error("[lead] sheet webhook error:", e);
+  }
 }

@@ -323,13 +323,13 @@ function ModeSelect({
   );
 
   const handleLeadSubmitted = useCallback(
-    async (email: string) => {
-      const target = leadModalUrl;
+    async ({ email, url: submittedUrl }: { email: string; url: string }) => {
       saveLead(email);
       setLeadModalUrl(null);
-      if (target) await runExtraction(target);
+      setUrl(submittedUrl);
+      await runExtraction(submittedUrl);
     },
-    [leadModalUrl, runExtraction],
+    [runExtraction],
   );
 
   const handleUrl = async (e: React.FormEvent) => {
@@ -585,10 +585,12 @@ function LeadModal({
   onClose,
 }: {
   targetUrl: string;
-  onSubmitted: (email: string) => Promise<void> | void;
+  onSubmitted: (data: { email: string; url: string }) => Promise<void> | void;
   onClose: () => void;
 }) {
   const [email, setEmail] = useState("");
+  const [websiteUrl, setWebsiteUrl] = useState(targetUrl);
+  const [agreed, setAgreed] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [err, setErr] = useState<string | null>(null);
 
@@ -608,24 +610,28 @@ function LeadModal({
   }, [onClose]);
 
   const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
-  const host = prettyHost(targetUrl);
+  const urlValid = isLikelyUrl(websiteUrl);
+  const canSubmit = emailValid && urlValid && agreed && !submitting;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!emailValid || submitting) return;
+    if (!canSubmit) return;
     setSubmitting(true);
     setErr(null);
     try {
+      const normalizedUrl = websiteUrl.trim().startsWith("http")
+        ? websiteUrl.trim()
+        : `https://${websiteUrl.trim()}`;
       const res = await fetch("/tools/design-md/api/lead", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ email: email.trim(), url: targetUrl }),
+        body: JSON.stringify({ email: email.trim(), url: normalizedUrl }),
       });
       if (!res.ok) {
         const data = await res.json().catch(() => null);
         throw new Error(data?.error ?? "Couldn't record your email");
       }
-      await onSubmitted(email.trim());
+      await onSubmitted({ email: email.trim(), url: normalizedUrl });
     } catch (e) {
       setErr(e instanceof Error ? e.message : "Something went wrong");
       setSubmitting(false);
@@ -665,19 +671,31 @@ function LeadModal({
             id="lead-modal-title"
             className="text-[22px] md:text-[24px] font-normal tracking-[-0.4px] text-black leading-[1.25] mb-3"
           >
-            Get your DESIGN.md{" "}
-            <span className="text-[#FA008C]">+</span> a free competitor
-            analysis.
+            Free competitive analysis{" "}
+            <span className="text-[#FA008C]">+</span> your DESIGN.md
           </h2>
           <p className="text-[14px] text-[#5b5b5b] leading-[1.55] mb-6">
-            We&apos;ll generate the DESIGN.md for{" "}
-            <span className="font-mono text-black">{host}</span> right now, and
-            email you a competitor analysis (a one-shot benchmark of{" "}
-            {host}&apos;s brand positioning vs. its top 3 competitors) within
-            48 hours. No spam, one email, then quiet.
+            Enter your website URL and our AI-Coworker will deliver a free
+            competitive analysis straight to your inbox. We&apos;ll also
+            generate your DESIGN.md right now.
           </p>
 
-          <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+            <label className="flex flex-col gap-2">
+              <span className="text-[11px] text-[#666] uppercase tracking-[0.15em] font-mono">
+                Website URL
+              </span>
+              <input
+                type="text"
+                value={websiteUrl}
+                onChange={(e) => setWebsiteUrl(e.target.value)}
+                placeholder="https://your-brand.com"
+                required
+                autoComplete="url"
+                spellCheck={false}
+                className="w-full text-[15px] px-4 py-3 border border-black/[0.1] rounded-[10px] bg-white focus:outline-none focus:border-black/30 transition-colors"
+              />
+            </label>
             <label className="flex flex-col gap-2">
               <span className="text-[11px] text-[#666] uppercase tracking-[0.15em] font-mono">
                 Email
@@ -694,6 +712,18 @@ function LeadModal({
               />
             </label>
 
+            <label className="flex items-start gap-2.5 cursor-pointer select-none mt-1">
+              <input
+                type="checkbox"
+                checked={agreed}
+                onChange={(e) => setAgreed(e.target.checked)}
+                className="mt-[3px] w-4 h-4 accent-[#FA008C] cursor-pointer"
+              />
+              <span className="text-[12px] text-[#5b5b5b] leading-[1.5]">
+                I agree to receive a free competitive analysis from Masumi.
+              </span>
+            </label>
+
             {err && (
               <p className="text-[12px] text-[#B8422E] flex items-start gap-1.5">
                 <span className="inline-block w-3 h-3 rounded-full bg-[#B8422E]/15 text-[#B8422E] text-center leading-none font-medium pt-px text-[10px]">
@@ -705,7 +735,7 @@ function LeadModal({
 
             <button
               type="submit"
-              disabled={!emailValid || submitting}
+              disabled={!canSubmit}
               className="mt-1 inline-flex items-center justify-center gap-2 bg-black text-white text-[14px] font-medium px-6 py-3 rounded-[10px] hover:bg-black/85 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
             >
               {submitting ? (
@@ -714,20 +744,28 @@ function LeadModal({
                   Sending…
                 </>
               ) : (
-                <>Continue to generate</>
+                <>Get my free analysis</>
               )}
             </button>
 
-            <p className="text-[11px] text-[#999] leading-[1.5] mt-1">
-              By continuing you agree to receive one (1) competitor-analysis
-              email from Masumi.{" "}
+            <p className="text-[11px] text-[#999] leading-[1.6] mt-1">
+              *By entering your data for a free analysis, you agree to our{" "}
               <a
-                href="/privacy"
+                href="https://www.sokosumi.com/privacy-policy"
                 className="underline underline-offset-2 hover:text-black"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Privacy policy
+                Privacy Policy
+              </a>{" "}
+              and{" "}
+              <a
+                href="https://www.sokosumi.com/terms-of-service"
+                className="underline underline-offset-2 hover:text-black"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Terms of Use
               </a>
               .
             </p>
