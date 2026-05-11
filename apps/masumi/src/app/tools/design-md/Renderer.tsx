@@ -207,32 +207,120 @@ function ColorsSection({
   colors: Record<string, string>;
   usageNote?: string;
 }) {
-  const entries = Object.entries(colors);
-  const [primaryEntry, ...rest] = entries;
+  const groups = groupM3Colors(colors);
+  const featured = ["primary", "secondary", "tertiary"]
+    .map((k) => [k, colors[k]] as const)
+    .filter((p): p is readonly [string, string] => typeof p[1] === "string");
+
   return (
     <section>
       <SectionTitle eyebrow="Palette">Colors</SectionTitle>
-      <div className="grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-4">
-        {primaryEntry && (
-          <ColorTile
-            name={primaryEntry[0]}
-            hex={primaryEntry[1]}
-            size="hero"
-          />
-        )}
-        <div className="grid grid-cols-2 gap-4">
-          {rest.map(([n, h]) => (
-            <ColorTile key={n} name={n} hex={h} size="standard" />
+
+      {/* Hero row: the three brand-defining accents */}
+      {featured.length > 0 && (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
+          {featured.map(([name, hex]) => (
+            <ColorTile key={name} name={name} hex={hex} size="hero" />
           ))}
         </div>
+      )}
+
+      {/* Grouped M3 token ramps */}
+      <div className="flex flex-col gap-10">
+        {groups.map((group) => (
+          <div key={group.label}>
+            <p className="text-[12px] text-[#999] uppercase tracking-[0.18em] font-mono mb-3">
+              {group.label}
+              <span className="text-[#ccc] ml-2 normal-case tracking-normal font-sans">
+                {group.tokens.length} tokens
+              </span>
+            </p>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2">
+              {group.tokens.map(([name, hex]) => (
+                <ColorTile key={name} name={name} hex={hex} size="mini" />
+              ))}
+            </div>
+          </div>
+        ))}
       </div>
+
       {usageNote && (
-        <p className="mt-8 text-[15px] text-[#5b5b5b] leading-[1.65] max-w-[640px]">
-          {usageNote}
-        </p>
+        <div
+          className="mt-10 text-[15px] text-[#5b5b5b] leading-[1.65] max-w-[680px]"
+          dangerouslySetInnerHTML={{ __html: renderInlineMarkdown(usageNote) }}
+        />
       )}
     </section>
   );
+}
+
+type ColorGroup = { label: string; tokens: [string, string][] };
+
+function groupM3Colors(colors: Record<string, string>): ColorGroup[] {
+  const used = new Set<string>(["primary", "secondary", "tertiary"]);
+  const pick = (predicate: (key: string) => boolean): [string, string][] => {
+    const out: [string, string][] = [];
+    for (const [name, hex] of Object.entries(colors)) {
+      if (used.has(name)) continue;
+      if (predicate(name)) {
+        used.add(name);
+        out.push([name, hex]);
+      }
+    }
+    return out;
+  };
+
+  const groups: ColorGroup[] = [
+    {
+      label: "Surface stack",
+      tokens: pick(
+        (k) =>
+          k === "surface" ||
+          k.startsWith("surface-") ||
+          k === "background" ||
+          k === "on-background",
+      ),
+    },
+    {
+      label: "Primary family",
+      tokens: [
+        ["primary", colors.primary],
+        ...pick((k) => k.startsWith("primary-") || k.startsWith("on-primary") || k === "inverse-primary"),
+      ].filter((p): p is [string, string] => typeof p[1] === "string"),
+    },
+    {
+      label: "Secondary family",
+      tokens: [
+        ["secondary", colors.secondary],
+        ...pick((k) => k.startsWith("secondary-") || k.startsWith("on-secondary")),
+      ].filter((p): p is [string, string] => typeof p[1] === "string"),
+    },
+    {
+      label: "Tertiary family",
+      tokens: [
+        ["tertiary", colors.tertiary],
+        ...pick((k) => k.startsWith("tertiary-") || k.startsWith("on-tertiary")),
+      ].filter((p): p is [string, string] => typeof p[1] === "string"),
+    },
+    {
+      label: "Error",
+      tokens: pick((k) => k === "error" || k.startsWith("error-") || k.startsWith("on-error")),
+    },
+    {
+      label: "Outline & utility",
+      tokens: pick(
+        (k) => k.startsWith("outline") || k === "surface-tint" || k.startsWith("on-surface") || k.startsWith("inverse-"),
+      ),
+    },
+    {
+      label: "Other",
+      tokens: pick(() => true), // anything left over
+    },
+  ];
+
+  // Drop empty groups; also drop "Primary family" if it's just the primary
+  // we already showed in the hero row alone.
+  return groups.filter((g) => g.tokens.length > 0);
 }
 
 function OverviewSection({
@@ -483,15 +571,36 @@ function ColorTile({
 }: {
   name: string;
   hex: string;
-  size: "hero" | "standard";
+  size: "hero" | "standard" | "mini";
 }) {
   const onColor = bestTextOn(hex);
   const onWhite = contrastRatio(hex, "#ffffff");
   const onBlack = contrastRatio(hex, "#000000");
-  const heightClass = size === "hero" ? "min-h-[280px]" : "min-h-[140px]";
+
+  if (size === "mini") {
+    return (
+      <div className="flex flex-col gap-1.5">
+        <div
+          className="aspect-[5/3] rounded-[6px] border border-black/[0.06]"
+          style={{ background: hex }}
+          title={`${name} — ${hex.toUpperCase()}`}
+        />
+        <div className="min-w-0">
+          <p className="text-[11px] text-black truncate" title={name}>
+            {name}
+          </p>
+          <p className="text-[10px] text-[#999] font-mono">
+            {hex.toUpperCase()}
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  const heightClass = size === "hero" ? "min-h-[200px]" : "min-h-[140px]";
   return (
     <div
-      className={`flex flex-col justify-between p-6 ${heightClass}`}
+      className={`flex flex-col justify-between p-6 rounded-[8px] ${heightClass}`}
       style={{ background: hex, color: onColor }}
     >
       <p
@@ -620,78 +729,148 @@ function ComponentsSection({
   frontmatter: DesignSystem["frontmatter"];
   notes?: string;
 }) {
+  const groups = groupComponentVariants(components);
   return (
     <section>
       <SectionTitle eyebrow="Tokens in context">Components</SectionTitle>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-        {Object.entries(components).map(([name, tokens]) => (
+        {groups.map(({ base, variants }) => (
           <ComponentCard
-            key={name}
-            name={name}
-            tokens={tokens}
+            key={base.name}
+            name={base.name}
+            tokens={base.tokens}
+            variants={variants}
             frontmatter={frontmatter}
           />
         ))}
       </div>
       {notes && (
-        <p className="mt-8 text-[15px] text-[#5b5b5b] leading-[1.65] max-w-[640px]">
-          {notes}
-        </p>
+        <div
+          className="mt-8 text-[15px] text-[#5b5b5b] leading-[1.65] max-w-[680px]"
+          dangerouslySetInnerHTML={{ __html: renderInlineMarkdown(notes) }}
+        />
       )}
     </section>
   );
 }
 
+type ComponentEntry = { name: string; tokens: Record<string, string> };
+type ComponentGroup = { base: ComponentEntry; variants: ComponentEntry[] };
+
+function groupComponentVariants(
+  components: Record<string, Record<string, string>>,
+): ComponentGroup[] {
+  const entries = Object.entries(components);
+  const map = new Map<string, ComponentGroup>();
+
+  // First pass: register everything that doesn't look like a variant
+  const variantSuffix = /-(hover|active|focus|pressed|disabled|selected|open)$/;
+  for (const [name, tokens] of entries) {
+    if (!variantSuffix.test(name)) {
+      map.set(name, { base: { name, tokens }, variants: [] });
+    }
+  }
+  // Second pass: attach variants to their base if it exists
+  for (const [name, tokens] of entries) {
+    const m = name.match(variantSuffix);
+    if (!m) continue;
+    const baseName = name.slice(0, -m[0].length);
+    const target = map.get(baseName);
+    if (target) {
+      target.variants.push({ name, tokens });
+    } else {
+      // Variant without a base — surface as its own card
+      map.set(name, { base: { name, tokens }, variants: [] });
+    }
+  }
+
+  return [...map.values()];
+}
+
 function ComponentCard({
   name,
   tokens,
+  variants = [],
   frontmatter,
 }: {
   name: string;
   tokens: Record<string, string>;
+  variants?: { name: string; tokens: Record<string, string> }[];
   frontmatter: DesignSystem["frontmatter"];
 }) {
-  const bg = resolveToken(tokens.backgroundColor, frontmatter);
-  const fg = resolveToken(tokens.textColor, frontmatter);
-  const radius = resolveToken(tokens.rounded, frontmatter);
   const isButton = /button|cta|btn/i.test(name);
   const fontStack = frontmatter.typography?.["body-md"]?.fontFamily
     ? `"${frontmatter.typography["body-md"].fontFamily}", system-ui, sans-serif`
     : undefined;
 
+  // Merge base + variant tokens so a hover state inherits unspecified fields
+  const states: { label: string; tokens: Record<string, string> }[] = [
+    { label: "default", tokens },
+    ...variants.map((v) => ({
+      label: v.name.split("-").slice(-1)[0],
+      tokens: { ...tokens, ...v.tokens },
+    })),
+  ];
+
   return (
     <div className="border border-black/[0.06] bg-white">
       <div
-        className="min-h-[160px] flex items-center justify-center p-10"
+        className="min-h-[160px] p-6 md:p-8 flex flex-wrap items-center justify-center gap-4"
         style={{ background: "#fafafa" }}
       >
-        {isButton ? (
-          <span
-            className="inline-flex items-center justify-center text-[15px] font-medium"
-            style={{
-              background: bg ?? "#000",
-              color: fg ?? "#fff",
-              borderRadius: radius ?? "4px",
-              padding: tokens.padding ?? "12px 24px",
-              fontFamily: fontStack,
-              fontWeight: 500,
-            }}
-          >
-            {humanize(name)}
-          </span>
-        ) : (
-          <div
-            className="w-full max-w-[260px] h-[80px] flex items-center justify-center text-[14px]"
-            style={{
-              background: bg ?? "#eee",
-              color: fg ?? "#000",
-              borderRadius: radius ?? "4px",
-              fontFamily: fontStack,
-            }}
-          >
-            {humanize(name)}
-          </div>
-        )}
+        {states.map((s, i) => {
+          const bg = resolveToken(s.tokens.backgroundColor, frontmatter) ?? s.tokens.backgroundColor;
+          const fg = resolveToken(s.tokens.textColor, frontmatter) ?? s.tokens.textColor;
+          const radius = resolveToken(s.tokens.rounded, frontmatter) ?? s.tokens.rounded;
+          const previewLabel = i === 0 ? humanize(name) : s.label;
+          return isButton ? (
+            <div
+              key={s.label}
+              className="flex flex-col items-center gap-2"
+            >
+              <span
+                className="inline-flex items-center justify-center text-[14px] font-medium"
+                style={{
+                  background: bg ?? "#000",
+                  color: fg ?? "#fff",
+                  borderRadius: radius ?? "4px",
+                  padding: s.tokens.padding ?? "12px 24px",
+                  fontFamily: fontStack,
+                  fontWeight: 500,
+                }}
+              >
+                {previewLabel}
+              </span>
+              {i > 0 && (
+                <span className="text-[10px] text-[#999] uppercase tracking-[0.15em] font-mono">
+                  {s.label}
+                </span>
+              )}
+            </div>
+          ) : (
+            <div
+              key={s.label}
+              className="flex flex-col items-center gap-2"
+            >
+              <div
+                className="w-[140px] h-[64px] flex items-center justify-center text-[13px]"
+                style={{
+                  background: bg ?? "#eee",
+                  color: fg ?? "#000",
+                  borderRadius: radius ?? "4px",
+                  fontFamily: fontStack,
+                }}
+              >
+                {previewLabel}
+              </div>
+              {i > 0 && (
+                <span className="text-[10px] text-[#999] uppercase tracking-[0.15em] font-mono">
+                  {s.label}
+                </span>
+              )}
+            </div>
+          );
+        })}
       </div>
       <div className="px-5 py-4 border-t border-black/[0.06]">
         <p className="text-[13px] font-medium text-black mb-2">{name}</p>
@@ -702,6 +881,12 @@ function ComponentCard({
             </li>
           ))}
         </ul>
+        {variants.length > 0 && (
+          <p className="mt-2 text-[10px] text-[#999] uppercase tracking-[0.15em] font-mono">
+            {variants.length} state{variants.length > 1 ? "s" : ""}:{" "}
+            {variants.map((v) => v.name.split("-").slice(-1)[0]).join(", ")}
+          </p>
+        )}
       </div>
     </div>
   );

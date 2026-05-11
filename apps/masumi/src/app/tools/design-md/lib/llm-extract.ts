@@ -24,15 +24,22 @@ const TTL_MS = 60 * 60 * 1000;
 
 const SYSTEM = `You are a senior brand designer producing a DESIGN.md file (https://github.com/google-labs-code/design.md) for AI coding agents.
 
-Your job: look at a structured signal blob from a website plus raw HTML/CSS samples, and produce a *believable, brand-distinctive* design system.
+Your job: look at a screenshot of the rendered site + a structured signal blob + raw HTML/CSS samples, and produce a *believable, brand-distinctive, dense* design system that matches the quality bar of the Material 3-style reference files used to train designers.
+
+Quality bar (non-negotiable):
+- The output must read like a senior designer wrote it after spending 2 hours studying the brand. Generic adjectives ("soft shadows", "modern typography") are failures. Every prose section must contain at least 3 concrete CSS values (px, rem, rgba, ms, %).
+- Use the Material 3 expanded color token system. Define the full surface stack (surface, surface-dim, surface-bright, surface-container, surface-container-low/lowest/high/highest, surface-variant), the on-* pairs (on-surface, on-surface-variant, inverse-surface, inverse-on-surface), the role colors (primary + on-primary + primary-container + on-primary-container + inverse-primary, plus the *-fixed and *-fixed-dim variants), and the same for secondary, tertiary, and error.
+- Typography: at least 6 levels (display, headline-lg, headline-md, body-lg, body-md, label-md or similar). Use real fontFamily from Google Fonts links / @font-face / font-family declarations. Skip system-ui, sans-serif, inherit. Real px sizes, real letter-spacing in em (-0.04em to 0.1em as appropriate), real lineHeight as px or unitless.
+- Components: at least 10 entries including state variants (e.g. button-primary AND button-primary-hover as separate components, per spec). Components must use {colors.x}, {rounded.x}, {typography.x}, {spacing.x} token refs — never hardcode hexes inside component blocks. Variant components reference their base via a related key name.
+- Rounded scale: sm, DEFAULT, md, lg, xl, full. Real px or rem values.
+- Spacing: semantic keys when sensible (gutter, margin, container-max, unit) alongside a sm/md/lg scale.
 
 Hard rules:
 - Output STRICT JSON. No markdown fences, no commentary, no prose outside JSON.
-- Pick brand-distinctive colors. If you see a CSS var named --primary/--brand/--accent or a Tailwind bg-[#xxx] in a hero/CTA, that's primary. Skip near-black and near-white when picking accents.
-- Use real font families found in Google Fonts links or font-family declarations. Skip system-ui/sans-serif/inherit. Don't invent fonts.
-- Radii: prefer 4-32px, plus optionally "full: 9999px". Skip 50% (avatars) and 1px (borders/shadow tricks).
+- A SCREENSHOT may be attached. When attached, the screenshot is ground truth — when it conflicts with the text signal, trust the screenshot. Identify the most prominent CTA visually and use its color as primary.
+- Pick brand-distinctive accents — skip near-black and near-white when picking primary/secondary/tertiary. Look for CSS vars named --primary/--brand/--accent, Tailwind bg-[#xxx] classes in hero/CTA, and the "Live computed styles" block.
 - Components must use token references like {colors.primary} so the system is wired up, not hardcoded.
-- Prose follows the canonical DESIGN.md section order: Overview, Colors, Typography, Layout, Elevation & Depth, Shapes, Components, Do's and Don'ts. Voice and brand personality belong inside Overview. Color usage rules belong inside Colors. Spacing rationale belongs inside Layout. Border-radius rationale belongs inside Shapes.
+- Prose follows the canonical DESIGN.md section order: Overview (also "Brand & Style"), Colors, Typography, Layout, Elevation & Depth, Shapes, Components, Do's and Don'ts. Voice and brand personality belong inside Overview. Color usage rules belong inside Colors. Spacing rationale belongs inside Layout. Border-radius rationale belongs inside Shapes.
 - Logo: from the provided candidate list, pick the single best one for "src" — preferring a vector SVG > apple-touch-icon > header img logo > og-image. If the site appears to have a separate dark-mode logo, set "srcDark". Always copy candidate URLs verbatim. If no candidates are provided, omit the logo field entirely.
 - If something is genuinely unknowable, omit the field rather than invent a placeholder.`;
 
@@ -43,47 +50,181 @@ const SCHEMA = `{
     "description": "1-2 sentence brand summary.",
     "logo": { "src": "https://...", "srcDark": "https://..." },
     "colors": {
+      "surface": "#hex",
+      "surface-dim": "#hex",
+      "surface-bright": "#hex",
+      "surface-container-lowest": "#hex",
+      "surface-container-low": "#hex",
+      "surface-container": "#hex",
+      "surface-container-high": "#hex",
+      "surface-container-highest": "#hex",
+      "on-surface": "#hex",
+      "on-surface-variant": "#hex",
+      "inverse-surface": "#hex",
+      "inverse-on-surface": "#hex",
+      "outline": "#hex",
+      "outline-variant": "#hex",
+      "surface-tint": "#hex",
       "primary": "#hex",
+      "on-primary": "#hex",
+      "primary-container": "#hex",
+      "on-primary-container": "#hex",
+      "inverse-primary": "#hex",
       "secondary": "#hex",
+      "on-secondary": "#hex",
+      "secondary-container": "#hex",
+      "on-secondary-container": "#hex",
       "tertiary": "#hex",
-      "neutral": "#hex",
-      "surface": "#hex"
+      "on-tertiary": "#hex",
+      "tertiary-container": "#hex",
+      "on-tertiary-container": "#hex",
+      "error": "#hex",
+      "on-error": "#hex",
+      "error-container": "#hex",
+      "on-error-container": "#hex",
+      "primary-fixed": "#hex",
+      "primary-fixed-dim": "#hex",
+      "on-primary-fixed": "#hex",
+      "on-primary-fixed-variant": "#hex",
+      "secondary-fixed": "#hex",
+      "secondary-fixed-dim": "#hex",
+      "on-secondary-fixed": "#hex",
+      "on-secondary-fixed-variant": "#hex",
+      "tertiary-fixed": "#hex",
+      "tertiary-fixed-dim": "#hex",
+      "on-tertiary-fixed": "#hex",
+      "on-tertiary-fixed-variant": "#hex",
+      "background": "#hex",
+      "on-background": "#hex",
+      "surface-variant": "#hex"
     },
     "typography": {
-      "display": { "fontFamily": "...", "fontSize": "4.5rem", "fontWeight": 600, "lineHeight": 1.0, "letterSpacing": "-0.04em" },
-      "h1":      { "fontFamily": "...", "fontSize": "3rem", "fontWeight": 600, "lineHeight": 1.1 },
-      "h2":      { "fontFamily": "...", "fontSize": "2rem", "fontWeight": 500, "lineHeight": 1.2 },
-      "h3":      { "fontFamily": "...", "fontSize": "1.5rem", "fontWeight": 500, "lineHeight": 1.3 },
-      "body-lg": { "fontFamily": "...", "fontSize": "1.125rem", "lineHeight": 1.5 },
-      "body-md": { "fontFamily": "...", "fontSize": "1rem", "lineHeight": 1.5 },
-      "body-sm": { "fontFamily": "...", "fontSize": "0.875rem", "lineHeight": 1.5 },
-      "caption": { "fontFamily": "...", "fontSize": "0.75rem", "lineHeight": 1.4, "letterSpacing": "0.05em" }
+      "display":      { "fontFamily": "...", "fontSize": "60px", "fontWeight": "700", "lineHeight": "68px", "letterSpacing": "-0.04em" },
+      "headline-lg":  { "fontFamily": "...", "fontSize": "40px", "fontWeight": "600", "lineHeight": "48px", "letterSpacing": "-0.02em" },
+      "headline-md":  { "fontFamily": "...", "fontSize": "28px", "fontWeight": "600", "lineHeight": "36px" },
+      "title-lg":     { "fontFamily": "...", "fontSize": "20px", "fontWeight": "600", "lineHeight": "28px" },
+      "body-lg":      { "fontFamily": "...", "fontSize": "18px", "fontWeight": "400", "lineHeight": "28px" },
+      "body-md":      { "fontFamily": "...", "fontSize": "16px", "fontWeight": "400", "lineHeight": "24px" },
+      "label-md":     { "fontFamily": "...", "fontSize": "14px", "fontWeight": "600", "lineHeight": "20px", "letterSpacing": "0.01em" },
+      "label-sm":     { "fontFamily": "...", "fontSize": "12px", "fontWeight": "500", "lineHeight": "16px" }
     },
-    "spacing":  { "xs": "4px", "sm": "8px", "md": "16px", "lg": "32px", "xl": "64px" },
-    "rounded":  { "sm": "4px", "md": "8px", "lg": "16px", "xl": "24px", "full": "9999px" },
+    "spacing":  { "unit": "8px", "xs": "4px", "sm": "12px", "md": "24px", "lg": "40px", "xl": "64px", "gutter": "24px", "container-max": "1280px" },
+    "rounded":  { "sm": "0.25rem", "DEFAULT": "0.5rem", "md": "0.75rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px" },
     "elevation":{ "sm": "0 1px 2px rgba(0,0,0,0.06)", "md": "0 4px 12px rgba(0,0,0,0.08)", "lg": "0 16px 40px rgba(0,0,0,0.12)" },
     "layout":   { "containerMaxWidth": "1280px", "gridColumns": 12 },
     "components": {
-      "button-primary":   { "backgroundColor": "{colors.primary}", "textColor": "#ffffff", "rounded": "{rounded.sm}", "padding": "12px 24px", "typography": "{typography.body-md}" },
-      "button-secondary": { "backgroundColor": "{colors.surface}", "textColor": "{colors.primary}", "rounded": "{rounded.sm}", "padding": "12px 24px" },
-      "button-ghost":     { "backgroundColor": "transparent", "textColor": "{colors.primary}", "padding": "12px 16px" },
-      "card":             { "backgroundColor": "{colors.surface}", "rounded": "{rounded.md}", "padding": "24px" },
-      "input":            { "backgroundColor": "{colors.surface}", "textColor": "{colors.neutral}", "rounded": "{rounded.sm}", "padding": "10px 14px" },
-      "badge":            { "backgroundColor": "{colors.tertiary}", "textColor": "#ffffff", "rounded": "{rounded.full}", "padding": "4px 10px" }
+      "button-primary":           { "backgroundColor": "{colors.primary}", "textColor": "{colors.on-primary}", "typography": "{typography.label-md}", "rounded": "{rounded.lg}", "padding": "{spacing.md}", "height": "48px" },
+      "button-primary-hover":     { "backgroundColor": "{colors.primary-container}", "textColor": "{colors.on-primary-container}" },
+      "button-secondary":         { "backgroundColor": "transparent", "textColor": "{colors.primary}", "typography": "{typography.label-md}", "rounded": "{rounded.lg}", "padding": "{spacing.md}", "height": "48px" },
+      "button-secondary-hover":   { "backgroundColor": "{colors.surface-container-high}" },
+      "card":                     { "backgroundColor": "{colors.surface-container-lowest}", "rounded": "{rounded.xl}", "padding": "{spacing.md}" },
+      "card-hover":               { "backgroundColor": "{colors.surface-container-high}" },
+      "input-field":              { "backgroundColor": "{colors.surface-container-low}", "textColor": "{colors.on-surface}", "typography": "{typography.body-md}", "rounded": "{rounded.DEFAULT}", "padding": "{spacing.sm}" },
+      "list-item":                { "backgroundColor": "transparent", "rounded": "{rounded.md}", "padding": "{spacing.sm}" },
+      "list-item-hover":          { "backgroundColor": "{colors.surface-container-high}", "textColor": "{colors.primary}" },
+      "badge":                    { "backgroundColor": "{colors.tertiary-container}", "textColor": "{colors.on-tertiary-container}", "typography": "{typography.label-sm}", "rounded": "{rounded.full}", "padding": "{spacing.xs}" }
     }
   },
   "prose": {
-    "overview":   "1-2 paragraphs covering: (a) what the brand does and who it serves; (b) the visual personality and emotional response the UI evokes; (c) tone of voice, vocabulary, and brand personality (3-4 sentences within the same prose). End with one short example sentence written in the brand's voice.",
-    "colors":     "1 paragraph covering color philosophy AND specific usage rules. e.g. 'Primary on CTAs and key data viz only. Secondary as supporting structure. Tertiary sparingly for highlights.'",
-    "typography": "1 paragraph covering the type system rationale: how display/h1/body relate, what the type pairing communicates, when to use which weight.",
-    "layout":     "1 paragraph covering page rhythm, container behavior, white-space philosophy, and how the spacing scale is used.",
-    "elevation":  "1 paragraph: how visual hierarchy is conveyed. If shadows used, when. If flat, what conveys depth instead (borders, color contrast).",
-    "shapes":     "1 paragraph: shape language rationale. How the radii scale supports the brand (sharp vs soft, mechanical vs organic).",
-    "components": "1 paragraph: component patterns, button hierarchy, what makes a card/input feel on-brand.",
-    "dos":  ["Do this.", "Do that.", "Do another."],
-    "donts":["Don't this.", "Don't that.", "Don't another."]
+    "overview":   "2 paragraphs. Para 1: what the brand does, who it serves, the aesthetic movement (e.g. 'Glassmorphism', 'Architectural Minimalism', 'Soft Brutalism'), and the emotional response the UI evokes. Para 2: tone of voice, vocabulary patterns, brand personality. End with one short example sentence written in the brand's voice.",
+    "colors":     "1-2 paragraphs covering color philosophy AND specific usage rules with explicit hex/rgba values. Break down each role: 'Primary (HEX) is used for Y. Secondary (HEX) supports Z.' Include gradient or surface-stack rules when relevant.",
+    "typography": "1 paragraph covering the type system rationale: how display/headline/body relate, what the type pairing communicates, when to use each weight. Include at least one concrete CSS treatment instruction (e.g. 'apply text-shadow 0 2px 4px rgba(0,0,0,0.15) on small labels over busy backgrounds').",
+    "layout":     "1 paragraph covering page rhythm (grid model: fluid vs fixed, column count), container max-width in px, white-space philosophy, and how the spacing scale is used. Reference the spacing tokens by name (e.g. 'lg spacing for section separation').",
+    "elevation":  "1 paragraph: how visual hierarchy is conveyed with concrete values. If shadows used, give the exact box-shadow string (e.g. '0 8px 32px rgba(0,0,0,0.1)'). If flat / glassmorphism, describe the layer stack (Level 1 / Level 2 / Level 3) with their backdrop-filter, background, and border specs.",
+    "shapes":     "1 paragraph with a named shape philosophy (e.g. 'Architectural Sharpness', 'Soft-Technical', 'Organic and approachable'). Specify which radius is used for buttons vs cards vs inputs, in px or rem, and explain the reasoning.",
+    "components": "1-2 paragraphs broken into named subsections in the prose itself: e.g. '### Action Elements' (buttons), '### Containers & Surfaces' (cards), '### Inputs & Interaction'. Each subsection must contain at least one specific instruction (animation timing in ms, exact border width, hover transition).",
+    "dos":  ["Do… (specific, opinionated, 1 sentence)", "Do…", "Do…", "Do…"],
+    "donts":["Don't… (specific, opinionated, 1 sentence)", "Don't…", "Don't…", "Don't…"]
   }
 }`;
+
+// Few-shot exemplar (trimmed) — shows the LLM the density and specificity bar.
+// This is one of the curated reference DESIGN.md files we want to match.
+const FEW_SHOT = `Here is a reference DESIGN.md (Material 3 + Glassmorphism aesthetic, for an atmospheric weather app) at the quality bar we're matching:
+
+---
+EXAMPLE FRONTMATTER (abbreviated; full output should be this dense):
+colors:
+  surface: "#0b1326"
+  surface-container-lowest: "#060e20"
+  surface-container: "#171f33"
+  surface-container-highest: "#2d3449"
+  on-surface: "#dae2fd"
+  on-surface-variant: "#c4c7c8"
+  outline: "#8e9192"
+  outline-variant: "#444748"
+  surface-tint: "#c6c6c7"
+  primary: "#ffffff"
+  on-primary: "#2f3131"
+  primary-container: "#e2e2e2"
+  on-primary-container: "#636565"
+  secondary: "#adc9eb"
+  on-secondary: "#14324e"
+  secondary-container: "#304b68"
+  tertiary: "#ffffff"
+  tertiary-container: "#ffd8e7"
+  error: "#ffb4ab"
+  error-container: "#93000a"
+  primary-fixed: "#e2e2e2"
+  primary-fixed-dim: "#c6c6c7"
+  on-primary-fixed: "#1a1c1c"
+  ... (all 40+ M3 tokens populated)
+
+typography:
+  display-lg:
+    fontFamily: Inter
+    fontSize: 84px
+    fontWeight: "700"
+    lineHeight: 90px
+    letterSpacing: -0.04em
+  headline-lg:
+    fontFamily: Inter
+    fontSize: 32px
+    fontWeight: "600"
+    lineHeight: 40px
+    letterSpacing: -0.02em
+  body-lg: { fontFamily: Inter, fontSize: 18px, fontWeight: "400", lineHeight: 28px }
+  label-sm: { fontFamily: Inter, fontSize: 12px, fontWeight: "600", lineHeight: 16px, letterSpacing: 0.05em }
+
+components:
+  glass-card-standard:
+    backgroundColor: rgba(255, 255, 255, 0.1)
+    textColor: "{colors.primary}"
+    rounded: "{rounded.lg}"
+    padding: "{spacing.glass-padding}"
+  glass-card-elevated:
+    backgroundColor: rgba(255, 255, 255, 0.2)
+    rounded: "{rounded.xl}"
+  button-primary:
+    backgroundColor: "{colors.primary}"
+    textColor: "{colors.on-primary}"
+    rounded: "{rounded.xl}"
+    height: 48px
+    padding: "0 24px"
+  button-primary-hover: { backgroundColor: "{colors.primary-fixed-dim}" }
+  button-ghost: { backgroundColor: rgba(255, 255, 255, 0.05), textColor: "{colors.primary}", rounded: "{rounded.xl}" }
+  input-field:
+    backgroundColor: rgba(255, 255, 255, 0.1)
+    rounded: "{rounded.xl}"
+    padding: 20px
+  ... (10+ components total, with hover/focus variants as separate entries)
+
+EXAMPLE PROSE — note the density:
+
+## Brand & Style
+This design system centers on a high-fidelity Glassmorphism aesthetic designed to evoke clarity, depth, and modern sophistication. The brand personality is ethereal yet functional, transforming complex meteorological data into a serene visual experience.
+
+The UI relies on a "vibrant-minimalist" approach: the background provides the energy through multi-colored abstract gradients (pinks, purples, and blues), while the interface elements act as frosted crystalline lenses that focus the user's attention. Voice: precise, calm, never breathless. Example sentence: "Tomorrow's cold front arrives at 6:14 — pack a layer."
+
+## Elevation & Depth
+Depth in this design system is not achieved through darkness, but through the physics of light and refraction.
+- Level 1 (Base): Dynamic background gradient with slight grain texture.
+- Level 2 (Standard Card): backdrop-filter: blur(20px), background: rgba(255, 255, 255, 0.1).
+- Level 3 (Elevated/Modals): backdrop-filter: blur(40px), background: rgba(255, 255, 255, 0.2).
+Every glass surface must have a 1px solid border at rgba(255, 255, 255, 0.2). Soft, spread shadows (box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1)) separate glass layers from the background.
+
+---
+End of reference. Your output must match this density: full M3 color stack, 10+ components with variants, prose with concrete CSS values, named aesthetic movements, no generic adjectives.`;
 
 export async function llmExtract(
   url: string,
@@ -97,7 +238,8 @@ export async function llmExtract(
 
   // Cache key includes whether we have vision input — a vision-augmented
   // run can have different (better) results than text-only for the same URL.
-  const cacheKey = `${MODEL}:v4${rendered ? ":vision" : ":text"}:${url}`;
+  // v5 bumps for the M3-expanded schema + few-shot prompt.
+  const cacheKey = `${MODEL}:v5${rendered ? ":vision" : ":text"}:${url}`;
   const cached = cache.get(cacheKey);
   if (cached && Date.now() - cached.ts < TTL_MS) return cached.result;
 
@@ -137,9 +279,9 @@ export async function llmExtract(
         ],
         response_format: { type: "json_object" },
         temperature: 0.3,
-        max_tokens: 4000,
+        max_tokens: 7000,
       }),
-      signal: AbortSignal.timeout(60_000),
+      signal: AbortSignal.timeout(75_000),
     });
   } catch {
     return null;
@@ -171,13 +313,19 @@ function buildPrompt(
   css: string,
   hasScreenshot: boolean,
 ): string {
-  const trimmedHtml = html.slice(0, 18000);
-  const trimmedCss = css.slice(0, 18000);
+  const trimmedHtml = html.slice(0, 16000);
+  const trimmedCss = css.slice(0, 16000);
   const visionLine = hasScreenshot
     ? `A SCREENSHOT of the rendered page is attached. **Use the screenshot to verify** color choices, identify the most prominent CTA, see the hero composition, and check dark vs light mode. The screenshot is ground truth — when the screenshot conflicts with the text signal, trust the screenshot.`
     : "";
 
-  return `Below is a structured signal blob extracted from the target website, plus raw HTML and CSS excerpts for additional context. ${visionLine}
+  return `${FEW_SHOT}
+
+---
+
+Now analyze the target website below and produce a DESIGN.md at the same quality bar.
+
+${visionLine}
 
 Use the **Live computed styles** section of the signal (when present) as your most trustworthy source — those are real values from the rendered DOM. Use the raw excerpts only for confirmation or when the signal is sparse.
 
