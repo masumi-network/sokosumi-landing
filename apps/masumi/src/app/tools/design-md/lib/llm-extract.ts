@@ -237,28 +237,33 @@ export async function llmExtract(
   const key = process.env.OPENROUTER_API_KEY;
   if (!key) return null;
 
-  // Cache key includes whether we have vision input — a vision-augmented
-  // run can have different (better) results than text-only for the same URL.
+  const hasScreenshot = !!(
+    rendered?.screenshotBase64 && rendered?.screenshotMime
+  );
+
+  // Cache key reflects whether we had vision input on that run. A
+  // vision-augmented run will produce a different (better) result than a
+  // text-only run for the same URL.
   // v5 bumps for the M3-expanded schema + few-shot prompt.
-  const cacheKey = `${MODEL}:v5${rendered ? ":vision" : ":text"}:${url}`;
+  const cacheKey = `${MODEL}:v5${hasScreenshot ? ":vision" : ":text"}:${url}`;
   if (!opts?.force) {
     const cached = cache.get(cacheKey);
     if (cached && Date.now() - cached.ts < TTL_MS) return cached.result;
   }
 
   const signalMd = signalToMarkdown(signal);
-  const prompt = buildPrompt(signalMd, rawHtml, rawCss, !!rendered);
+  const prompt = buildPrompt(signalMd, rawHtml, rawCss, hasScreenshot);
 
   // Vision input: pass screenshot as image_url with data URL.
   const userContent: Array<
     | { type: "text"; text: string }
     | { type: "image_url"; image_url: { url: string } }
   > = [{ type: "text", text: prompt }];
-  if (rendered) {
+  if (hasScreenshot) {
     userContent.push({
       type: "image_url",
       image_url: {
-        url: `data:${rendered.screenshotMime};base64,${rendered.screenshotBase64}`,
+        url: `data:${rendered!.screenshotMime};base64,${rendered!.screenshotBase64}`,
       },
     });
   }

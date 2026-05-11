@@ -83,19 +83,19 @@ export async function extractFromUrl(
     force: opts?.force === true,
   });
   if (llm) {
+    const screenshot =
+      rendered?.screenshotBase64 && rendered.screenshotMime
+        ? {
+            mime: rendered.screenshotMime,
+            base64: rendered.screenshotBase64,
+          }
+        : undefined;
     return {
       frontmatter: llm.frontmatter,
       prose: llm.prose,
       source: "llm",
       meta: llm.meta,
-      ...(rendered
-        ? {
-            screenshot: {
-              mime: rendered.screenshotMime,
-              base64: rendered.screenshotBase64,
-            },
-          }
-        : {}),
+      ...(screenshot ? { screenshot } : {}),
     };
   }
 

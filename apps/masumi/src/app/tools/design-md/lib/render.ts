@@ -17,8 +17,10 @@ export type ComputedStyle = {
 export type RenderedPage = {
   url: string;
   html: string;
-  screenshotBase64: string;
-  screenshotMime: "image/jpeg";
+  // Screenshot is optional — if Browserbase's screenshot step times out
+  // we still want to keep the rendered HTML + computed styles for the LLM.
+  screenshotBase64?: string;
+  screenshotMime?: "image/jpeg";
   computed: {
     body?: ComputedStyle;
     h1?: ComputedStyle;
@@ -61,27 +63,55 @@ export async function renderWithBrowserbase(
     // Give animations / fade-ins a moment
     await page.waitForTimeout(800);
 
+    // Cheap steps first — HTML + computed styles. If these succeed we
+    // already have most of what the LLM needs.
     const computed = await collectComputed(page);
     const html = await page.content();
 
-    const fullPageBuffer = await page.screenshot({
-      type: "jpeg",
-      quality: 78,
-      fullPage: true,
-      timeout: 10_000,
-    });
-    // Truncate huge full-page captures to a reasonable height
-    const screenshotBase64 = await trimScreenshot(fullPageBuffer);
+    // Screenshot last and best-effort. Tall pages with lots of images can
+    // time out on full-page capture; in that case we try viewport-only,
+    // and if that also fails, we proceed without a screenshot (vision
+    // input is a bonus, not a hard requirement).
+    let screenshotBase64: string | undefined;
+    try {
+      const fullPage = await page.screenshot({
+        type: "jpeg",
+        quality: 78,
+        fullPage: true,
+        timeout: 20_000,
+      });
+      screenshotBase64 = await trimScreenshot(fullPage);
+    } catch (e) {
+      console.warn(
+        `[render] full-page screenshot timed out for ${url}, retrying viewport-only:`,
+        e instanceof Error ? e.message : e,
+      );
+      try {
+        const viewportOnly = await page.screenshot({
+          type: "jpeg",
+          quality: 78,
+          fullPage: false,
+          timeout: 8_000,
+        });
+        screenshotBase64 = await trimScreenshot(viewportOnly);
+      } catch (e2) {
+        console.warn(
+          `[render] viewport screenshot also failed for ${url}, continuing without vision:`,
+          e2 instanceof Error ? e2.message : e2,
+        );
+      }
+    }
 
     return {
       url,
       html,
-      screenshotBase64,
-      screenshotMime: "image/jpeg",
+      ...(screenshotBase64
+        ? { screenshotBase64, screenshotMime: "image/jpeg" as const }
+        : {}),
       computed,
     };
   } catch (err) {
-    console.error("[render] browserbase error:", err);
+    console.error(`[render] browserbase error for ${url}:`, err);
     return null;
   } finally {
     // Closing the browser drops the WS connection and Browserbase releases
