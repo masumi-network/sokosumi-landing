@@ -198,6 +198,24 @@ export default function Creator({
       startWith(EXAMPLE, "example");
       return;
     }
+    const cached = params.get("cached");
+    if (cached) {
+      // Load a previously-generated extraction from the gallery — no fresh
+      // browser/LLM call, no lead gate.
+      (async () => {
+        try {
+          const res = await fetch(`/tools/design-md/api/extractions/${encodeURIComponent(cached)}`);
+          if (!res.ok) throw new Error("Couldn't load that entry");
+          const data = await res.json();
+          startWith(data.designMd, "example", {
+            source: data.source === "llm" ? "llm" : "heuristic",
+          });
+        } catch (e) {
+          setError(e instanceof Error ? e.message : "Couldn't load that entry");
+        }
+      })();
+      return;
+    }
     const u = params.get("url");
     if (u) setAutoUrl(u);
   }, [startWith]);

@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Header, Footer } from "@summation/shared";
 import Creator from "./Creator";
+import { getRecent, type SavedExtraction } from "./lib/extractions-db";
+
+export const dynamic = "force-dynamic";
 
 const URL_BASE = "https://www.masumi.network";
 const PAGE_PATH = "/tools/design-md";
@@ -146,6 +149,7 @@ export default function Page() {
         <div className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12">
           <ToolHeader />
           <Creator examples={EXAMPLE_SITES} />
+          <RecentGallery />
           <BelowFold />
         </div>
       </main>
@@ -191,6 +195,89 @@ function BelowFold() {
       <Explainer />
       <FAQ />
     </div>
+  );
+}
+
+function RecentGallery() {
+  let entries: SavedExtraction[] = [];
+  try {
+    entries = getRecent(12);
+  } catch (e) {
+    console.error("[gallery] failed to load recent:", e);
+    entries = [];
+  }
+  if (entries.length === 0) return null;
+
+  return (
+    <section className="mt-16 md:mt-20">
+      <div className="flex items-end justify-between mb-6">
+        <div>
+          <p className="text-[11px] text-[#999] uppercase tracking-[0.18em] font-mono mb-1.5">
+            Recently analyzed
+          </p>
+          <h2 className="text-[18px] md:text-[20px] font-medium text-black">
+            Latest sites the AI looked at
+          </h2>
+        </div>
+        <p className="text-[12px] text-[#999]">
+          Click a card to load its DESIGN.md instantly
+        </p>
+      </div>
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
+        {entries.map((e) => (
+          <GalleryCard key={e.id} entry={e} />
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function GalleryCard({ entry }: { entry: SavedExtraction }) {
+  const fallbackBg = entry.primaryColor ?? "#f0f0f0";
+  return (
+    <Link
+      href={`?cached=${entry.id}`}
+      className="group block bg-white border border-black/[0.06] rounded-[10px] overflow-hidden hover:border-black/30 transition-colors"
+    >
+      <div
+        className="aspect-[16/10] relative overflow-hidden"
+        style={{ background: fallbackBg }}
+      >
+        {entry.hasScreenshot ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={`/tools/design-md/api/screenshots/${entry.id}`}
+            alt={`${entry.hostname} screenshot`}
+            loading="lazy"
+            className="w-full h-full object-cover object-top group-hover:scale-[1.02] transition-transform duration-300"
+          />
+        ) : (
+          <div className="absolute inset-0 flex items-center justify-center text-white/70 text-[12px]">
+            no preview
+          </div>
+        )}
+      </div>
+      <div className="p-3 md:p-4 flex items-center gap-2 min-w-0">
+        {entry.primaryColor && (
+          <span
+            className="w-3 h-3 rounded-full flex-shrink-0 border border-black/[0.06]"
+            style={{ background: entry.primaryColor }}
+            aria-hidden
+          />
+        )}
+        <div className="min-w-0 flex-1">
+          <p
+            className="text-[13px] font-medium text-black truncate"
+            title={entry.name ?? entry.hostname}
+          >
+            {entry.name ?? entry.hostname}
+          </p>
+          <p className="text-[11px] text-[#999] truncate font-mono">
+            {entry.hostname}
+          </p>
+        </div>
+      </div>
+    </Link>
   );
 }
 
