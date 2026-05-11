@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import yaml from "js-yaml";
 import {
   parseDesignMd,
@@ -224,20 +225,25 @@ export default function Creator({
     [startWith],
   );
 
+  // Use Next's reactive search params so client-side navigation to ?cached=N
+  // (gallery card clicks) actually triggers the effect — a plain
+  // window.location.search read would only fire on initial mount.
+  const searchParams = useSearchParams();
+  const cachedParam = searchParams.get("cached");
+  const exampleParam = searchParams.get("example");
+  const urlParam = searchParams.get("url");
+
   useEffect(() => {
-    if (typeof window === "undefined") return;
-    const params = new URLSearchParams(window.location.search);
-    if (params.get("example") === "1") {
+    if (exampleParam === "1") {
       startWith(EXAMPLE, "example");
       return;
     }
-    const cached = params.get("cached");
-    if (cached) {
+    if (cachedParam) {
       // Load a previously-generated extraction from the gallery — no fresh
       // browser/LLM call, no lead gate.
       (async () => {
         try {
-          const res = await fetch(`/tools/design-md/api/extractions/${encodeURIComponent(cached)}`);
+          const res = await fetch(`/tools/design-md/api/extractions/${encodeURIComponent(cachedParam)}`);
           if (!res.ok) throw new Error("Couldn't load that entry");
           const data = await res.json();
           startWith(data.designMd, "example", {
@@ -250,9 +256,8 @@ export default function Creator({
       })();
       return;
     }
-    const u = params.get("url");
-    if (u) setAutoUrl(u);
-  }, [startWith]);
+    if (urlParam) setAutoUrl(urlParam);
+  }, [exampleParam, cachedParam, urlParam, startWith]);
 
   if (view === "select") {
     return (
@@ -462,13 +467,18 @@ function ModeSelect({
         </span>
         <div className="flex flex-wrap items-center gap-1.5">
           {examples.map((s) => (
-            <a
+            <button
               key={s.url}
-              href={`?url=${encodeURIComponent(s.url)}`}
-              className="text-[12px] px-2.5 py-1 rounded-full border border-black/[0.08] bg-white hover:bg-black hover:text-white hover:border-black transition-colors"
+              type="button"
+              onClick={() => {
+                setUrl(s.url);
+                void submitUrl(s.url);
+              }}
+              disabled={submitting}
+              className="text-[12px] px-2.5 py-1 rounded-full border border-black/[0.08] bg-white hover:bg-black hover:text-white hover:border-black transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
             >
               {s.label}
-            </a>
+            </button>
           ))}
         </div>
         <span className="hidden sm:inline w-px h-3 bg-black/[0.1]" aria-hidden />
