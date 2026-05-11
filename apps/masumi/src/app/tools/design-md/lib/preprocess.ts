@@ -1,4 +1,5 @@
 import type { CheerioAPI } from "cheerio";
+import type { ComputedStyle } from "./render";
 
 export type LogoCandidate = {
   source:
@@ -50,6 +51,17 @@ export type SiteSignal = {
     headerNav?: string;
     heroHeading?: string;
     heroCopy?: string;
+  };
+  // Populated when we render via Browserbase. Contains real computed styles
+  // for key elements, which is high-quality signal for the LLM.
+  computed?: {
+    body?: ComputedStyle;
+    h1?: ComputedStyle;
+    header?: ComputedStyle;
+    primaryCta?: ComputedStyle;
+    secondaryCta?: ComputedStyle;
+    firstCard?: ComputedStyle;
+    firstInput?: ComputedStyle;
   };
 };
 
@@ -470,6 +482,23 @@ export function signalToMarkdown(signal: SiteSignal): string {
     lines.push(`Primary CTA: "${signal.components.primaryButton.text}"`);
   if (signal.components.secondaryButton)
     lines.push(`Secondary CTA: "${signal.components.secondaryButton.text}"`);
+
+  // Computed styles from the live rendered DOM are the most trustworthy
+  // signal we have. Surface them explicitly to the LLM.
+  if (signal.computed && Object.keys(signal.computed).length > 0) {
+    lines.push(`\n## Live computed styles (from rendered DOM)`);
+    lines.push(
+      `These are the real values applied to elements on the page after JS executes.`,
+    );
+    for (const [name, style] of Object.entries(signal.computed)) {
+      if (!style) continue;
+      const entries = Object.entries(style)
+        .filter(([, v]) => typeof v === "string" && v.length > 0)
+        .map(([k, v]) => `${k}: ${v}`)
+        .join(", ");
+      if (entries) lines.push(`- **${name}** → ${entries}`);
+    }
+  }
 
   return lines.join("\n");
 }

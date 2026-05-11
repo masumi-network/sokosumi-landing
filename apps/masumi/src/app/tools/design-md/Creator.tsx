@@ -823,9 +823,9 @@ function FileDrop({ onFile }: { onFile: (f: File) => void }) {
 function Loading({ targetUrl }: { targetUrl?: string | null }) {
   const steps = targetUrl
     ? [
-        `Fetching ${prettyHost(targetUrl)}`,
-        "Parsing CSS, fonts, and structure",
-        "Analyzing brand tokens with AI",
+        `Booting a browser to render ${prettyHost(targetUrl)}`,
+        "Capturing screenshot + computed styles",
+        "Analyzing visual identity with AI",
         "Composing your DESIGN.md",
       ]
     : [
@@ -834,9 +834,9 @@ function Loading({ targetUrl }: { targetUrl?: string | null }) {
         "Composing your DESIGN.md",
       ];
 
-  // Realistic pacing: first step is fast (HTTP fetch), middle steps slower,
-  // last step lingers because LLM is the long pole.
-  const intervals = targetUrl ? [600, 800, 1500, 99999] : [400, 700, 99999];
+  // Realistic pacing: Browserbase session is the long pole (~15-25s), then
+  // signal/screenshot are quick, then LLM ~3-5s.
+  const intervals = targetUrl ? [9000, 11000, 4000, 99999] : [400, 700, 99999];
 
   const [active, setActive] = useState(0);
   useEffect(() => {

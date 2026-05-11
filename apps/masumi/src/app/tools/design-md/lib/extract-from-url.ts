@@ -2,6 +2,7 @@ import * as cheerio from "cheerio";
 import type { Frontmatter, Typography } from "./design-md";
 import { llmExtract, type LlmMeta } from "./llm-extract";
 import { preprocessSite } from "./preprocess";
+import { renderWithBrowserbase, type RenderedPage } from "./render";
 
 const HEX_RE = /#[0-9a-fA-F]{6}\b|#[0-9a-fA-F]{3}\b/g;
 const RGB_RE = /rgba?\(\s*(\d+)[,\s]+(\d+)[,\s]+(\d+)/g;
@@ -11,26 +12,41 @@ export type ExtractResult = {
   prose: { heading: string; body: string }[];
   source: "llm" | "heuristic";
   meta?: LlmMeta;
+  screenshot?: { mime: string; base64: string };
 };
 
 export async function extractFromUrl(rawUrl: string): Promise<ExtractResult> {
   const url = normalizeUrl(rawUrl);
 
-  const res = await fetch(url, {
-    headers: {
-      "user-agent":
-        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36",
-      accept:
-        "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
-    },
-    redirect: "follow",
-  });
-
-  if (!res.ok) {
-    throw new Error(`Failed to fetch ${url} (HTTP ${res.status})`);
+  // Primary path: Browserbase rendering. Captures HTML *after* JS runs +
+  // viewport screenshot + computed styles of key elements.
+  let rendered: RenderedPage | null = null;
+  try {
+    rendered = await renderWithBrowserbase(url);
+  } catch {
+    rendered = null;
   }
 
-  const html = await res.text();
+  let html: string;
+  if (rendered) {
+    html = rendered.html;
+  } else {
+    // Fallback: plain fetch (works for SSR'd marketing sites, fails for SPAs)
+    const res = await fetch(url, {
+      headers: {
+        "user-agent":
+          "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36",
+        accept:
+          "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+      },
+      redirect: "follow",
+    });
+    if (!res.ok) {
+      throw new Error(`Failed to fetch ${url} (HTTP ${res.status})`);
+    }
+    html = await res.text();
+  }
+
   const $ = cheerio.load(html);
 
   const cssTexts: string[] = [];
@@ -57,13 +73,24 @@ export async function extractFromUrl(rawUrl: string): Promise<ExtractResult> {
   const allCss = cssTexts.join("\n");
 
   const signal = preprocessSite(url, $, html, allCss);
-  const llm = await llmExtract(url, signal, html, allCss);
+  if (rendered) {
+    signal.computed = rendered.computed;
+  }
+  const llm = await llmExtract(url, signal, html, allCss, rendered);
   if (llm) {
     return {
       frontmatter: llm.frontmatter,
       prose: llm.prose,
       source: "llm",
       meta: llm.meta,
+      ...(rendered
+        ? {
+            screenshot: {
+              mime: rendered.screenshotMime,
+              base64: rendered.screenshotBase64,
+            },
+          }
+        : {}),
     };
   }
 

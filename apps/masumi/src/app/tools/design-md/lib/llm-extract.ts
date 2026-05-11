@@ -1,6 +1,7 @@
 import type { Frontmatter, Logo, Typography } from "./design-md";
 import type { SiteSignal } from "./preprocess";
 import { signalToMarkdown } from "./preprocess";
+import type { RenderedPage } from "./render";
 
 const MODEL = "anthropic/claude-haiku-4.5";
 const ENDPOINT = "https://openrouter.ai/api/v1/chat/completions";
@@ -89,16 +90,33 @@ export async function llmExtract(
   signal: SiteSignal,
   rawHtml: string,
   rawCss: string,
+  rendered: RenderedPage | null,
 ): Promise<LlmResult> {
   const key = process.env.OPENROUTER_API_KEY;
   if (!key) return null;
 
-  const cacheKey = `${MODEL}:v3:${url}`;
+  // Cache key includes whether we have vision input — a vision-augmented
+  // run can have different (better) results than text-only for the same URL.
+  const cacheKey = `${MODEL}:v4${rendered ? ":vision" : ":text"}:${url}`;
   const cached = cache.get(cacheKey);
   if (cached && Date.now() - cached.ts < TTL_MS) return cached.result;
 
   const signalMd = signalToMarkdown(signal);
-  const prompt = buildPrompt(signalMd, rawHtml, rawCss);
+  const prompt = buildPrompt(signalMd, rawHtml, rawCss, !!rendered);
+
+  // Vision input: pass screenshot as image_url with data URL.
+  const userContent: Array<
+    | { type: "text"; text: string }
+    | { type: "image_url"; image_url: { url: string } }
+  > = [{ type: "text", text: prompt }];
+  if (rendered) {
+    userContent.push({
+      type: "image_url",
+      image_url: {
+        url: `data:${rendered.screenshotMime};base64,${rendered.screenshotBase64}`,
+      },
+    });
+  }
 
   const t0 = Date.now();
   let res: Response;
@@ -115,13 +133,13 @@ export async function llmExtract(
         model: MODEL,
         messages: [
           { role: "system", content: SYSTEM },
-          { role: "user", content: prompt },
+          { role: "user", content: userContent },
         ],
         response_format: { type: "json_object" },
         temperature: 0.3,
-        max_tokens: 3500,
+        max_tokens: 4000,
       }),
-      signal: AbortSignal.timeout(45000),
+      signal: AbortSignal.timeout(60_000),
     });
   } catch {
     return null;
@@ -147,12 +165,21 @@ export async function llmExtract(
   return result;
 }
 
-function buildPrompt(signalMd: string, html: string, css: string): string {
+function buildPrompt(
+  signalMd: string,
+  html: string,
+  css: string,
+  hasScreenshot: boolean,
+): string {
   const trimmedHtml = html.slice(0, 18000);
   const trimmedCss = css.slice(0, 18000);
-  return `Below is a structured signal blob extracted from the target website, plus raw HTML and CSS excerpts for additional context.
+  const visionLine = hasScreenshot
+    ? `A SCREENSHOT of the rendered page is attached. **Use the screenshot to verify** color choices, identify the most prominent CTA, see the hero composition, and check dark vs light mode. The screenshot is ground truth — when the screenshot conflicts with the text signal, trust the screenshot.`
+    : "";
 
-Use the structured signal as your PRIMARY source. Use the raw excerpts only for confirmation or when the signal is sparse.
+  return `Below is a structured signal blob extracted from the target website, plus raw HTML and CSS excerpts for additional context. ${visionLine}
+
+Use the **Live computed styles** section of the signal (when present) as your most trustworthy source — those are real values from the rendered DOM. Use the raw excerpts only for confirmation or when the signal is sparse.
 
 Return a JSON object matching this exact shape:
 ${SCHEMA}
