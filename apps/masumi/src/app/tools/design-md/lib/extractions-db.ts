@@ -136,6 +136,56 @@ export function getRecent(limit = 12): SavedExtraction[] {
   }));
 }
 
+/**
+ * Look up the most recent saved extraction for a URL. Used by /api/extract
+ * as a persistent cache so repeat URL submissions don't burn Browserbase +
+ * LLM costs. The in-memory LLM cache (lib/llm-extract.ts) only covers ~1h
+ * and dies on every deploy; this one persists in the Railway volume.
+ */
+export function getRecentByUrl(
+  url: string,
+  maxAgeMs: number,
+): SavedExtractionFull | null {
+  const row = db()
+    .prepare(
+      `
+      SELECT id, url, hostname, name, primary_color, logo_url, screenshot, source, design_md, created_at
+      FROM extractions
+      WHERE url = ? AND created_at > ?
+      ORDER BY created_at DESC
+      LIMIT 1
+    `,
+    )
+    .get(url, Date.now() - maxAgeMs) as
+    | {
+        id: number;
+        url: string;
+        hostname: string;
+        name: string | null;
+        primary_color: string | null;
+        logo_url: string | null;
+        screenshot: Buffer | null;
+        source: string;
+        design_md: string;
+        created_at: number;
+      }
+    | undefined;
+
+  if (!row) return null;
+  return {
+    id: row.id,
+    url: row.url,
+    hostname: row.hostname,
+    name: row.name,
+    primaryColor: row.primary_color,
+    logoUrl: row.logo_url,
+    hasScreenshot: !!row.screenshot,
+    source: row.source,
+    designMd: row.design_md,
+    createdAt: row.created_at,
+  };
+}
+
 export function getById(id: number): SavedExtractionFull | null {
   const row = db()
     .prepare(

@@ -1,10 +1,15 @@
 import { NextResponse } from "next/server";
 import { extractFromUrl } from "../../lib/extract-from-url";
-import { saveExtraction } from "../../lib/extractions-db";
+import { getRecentByUrl, saveExtraction } from "../../lib/extractions-db";
 import { serializeDesignMd, parseDesignMd } from "../../lib/design-md";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
+
+// Persistent cache TTL — same URL within this window returns the saved
+// extraction instantly, saving the Browserbase + LLM round-trip. Brand
+// identity rarely changes in a week; Regenerate (force=true) bypasses.
+const CACHE_TTL_MS = 7 * 24 * 60 * 60 * 1000;
 
 export async function POST(req: Request) {
   let url: string | undefined;
@@ -19,6 +24,33 @@ export async function POST(req: Request) {
 
   if (!url) {
     return NextResponse.json({ error: "Missing 'url' field" }, { status: 400 });
+  }
+
+  // Persistent cache: check SQLite for a recent successful extraction of
+  // this exact URL before spending Browserbase + LLM cycles. Skipped on
+  // explicit Regenerate.
+  if (!force) {
+    try {
+      const cached = getRecentByUrl(url, CACHE_TTL_MS);
+      if (cached) {
+        const parsed = parseDesignMd(cached.designMd);
+        const ageMs = Date.now() - cached.createdAt;
+        return NextResponse.json({
+          frontmatter: parsed.frontmatter,
+          prose: parsed.sections.map((s) => ({
+            heading: s.heading,
+            body: s.body,
+          })),
+          source: cached.source,
+          meta: { model: "cached", latencyMs: 0, ageMs },
+          cached: true,
+          savedId: cached.id,
+        });
+      }
+    } catch (e) {
+      console.error("[extract] cache lookup error:", e);
+      // Fall through to fresh extraction
+    }
   }
 
   try {
