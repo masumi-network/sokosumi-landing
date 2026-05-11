@@ -73,6 +73,9 @@ export default function Footer({ product = "sokosumi" }: { product?: "sokosumi" 
               <Link href="/blogs" className="hover:text-black transition-colors">
                 Blog
               </Link>
+              <Link href="/tools/design-md" className="hover:text-black transition-colors">
+                DESIGN.md Tool
+              </Link>
               <Link href="https://github.com/masumi-network" className="hover:text-black transition-colors" target="_blank" rel="noopener noreferrer">
                 GitHub
               </Link>

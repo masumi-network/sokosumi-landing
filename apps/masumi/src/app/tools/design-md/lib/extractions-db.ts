@@ -186,6 +186,46 @@ export function getRecentByUrl(
   };
 }
 
+/**
+ * Returns every extraction (LLM-source only), most recent first. Used by
+ * the /tools/design-md/gallery "all entries" view. Caps at `limit` for
+ * sanity; we can paginate later if the table grows huge.
+ */
+export function getAll(limit = 100): SavedExtraction[] {
+  const rows = db()
+    .prepare(
+      `
+      SELECT id, url, hostname, name, primary_color, logo_url, screenshot, source, created_at
+      FROM extractions
+      ORDER BY created_at DESC
+      LIMIT ?
+    `,
+    )
+    .all(limit) as Array<{
+    id: number;
+    url: string;
+    hostname: string;
+    name: string | null;
+    primary_color: string | null;
+    logo_url: string | null;
+    screenshot: Buffer | null;
+    source: string;
+    created_at: number;
+  }>;
+
+  return rows.map((r) => ({
+    id: r.id,
+    url: r.url,
+    hostname: r.hostname,
+    name: r.name,
+    primaryColor: r.primary_color,
+    logoUrl: r.logo_url,
+    hasScreenshot: !!r.screenshot,
+    source: r.source,
+    createdAt: r.created_at,
+  }));
+}
+
 export function getById(id: number): SavedExtractionFull | null {
   const row = db()
     .prepare(

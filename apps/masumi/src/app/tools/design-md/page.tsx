@@ -210,7 +210,7 @@ function RecentGallery() {
 
   return (
     <section className="mt-16 md:mt-20">
-      <div className="flex items-end justify-between mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2 mb-6">
         <div>
           <p className="text-[11px] text-[#999] uppercase tracking-[0.18em] font-mono mb-1.5">
             Recently analyzed
@@ -219,9 +219,18 @@ function RecentGallery() {
             Latest sites the AI looked at
           </h2>
         </div>
-        <p className="text-[12px] text-[#999]">
-          Click a card to load its DESIGN.md instantly
-        </p>
+        <div className="flex items-center gap-4">
+          <p className="text-[12px] text-[#999] hidden md:block">
+            Click a card to load its DESIGN.md instantly
+          </p>
+          <Link
+            href="/tools/design-md/gallery"
+            className="text-[12px] text-[#666] hover:text-black underline-offset-2 hover:underline transition-colors flex items-center gap-1 whitespace-nowrap"
+          >
+            View all
+            <span aria-hidden>→</span>
+          </Link>
+        </div>
       </div>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
         {entries.map((e) => (

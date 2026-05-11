@@ -23,6 +23,9 @@ export type ExtractMeta = {
   // The URL this design system was extracted from. Set on URL + cached
   // sources so the render view can offer a "Regenerate" affordance.
   targetUrl?: string;
+  // Gallery row id, when this entry exists in the persistent DB. Powers
+  // the "Copy share link" button → ?cached=<id>.
+  savedId?: number;
 };
 
 const EXAMPLE = `---
@@ -215,6 +218,7 @@ export default function Creator({
           inputTokens: data?.meta?.inputTokens,
           outputTokens: data?.meta?.outputTokens,
           targetUrl: target,
+          savedId: data?.savedId,
         });
       } catch (e) {
         setError(e instanceof Error ? e.message : "Failed to regenerate");
@@ -249,6 +253,7 @@ export default function Creator({
           startWith(data.designMd, "example", {
             source: data.source === "llm" ? "llm" : "heuristic",
             targetUrl: data.url,
+            savedId: Number(cachedParam),
           });
         } catch (e) {
           setError(e instanceof Error ? e.message : "Couldn't load that entry");
@@ -359,6 +364,7 @@ function ModeSelect({
           inputTokens: data?.meta?.inputTokens,
           outputTokens: data?.meta?.outputTokens,
           targetUrl: target,
+          savedId: data?.savedId,
         };
         onUrl(md, "url", meta);
       } catch (e) {
@@ -1031,6 +1037,19 @@ function RenderView({
     }
   };
 
+  const [shared, setShared] = useState(false);
+  const copyShareLink = async () => {
+    if (!extractMeta?.savedId) return;
+    const link = `${typeof window !== "undefined" ? window.location.origin : "https://www.masumi.network"}/tools/design-md?cached=${extractMeta.savedId}`;
+    try {
+      await navigator.clipboard.writeText(link);
+      setShared(true);
+      setTimeout(() => setShared(false), 1800);
+    } catch {
+      // ignore
+    }
+  };
+
   const sourceLabel =
     source === "url"
       ? "Generated from URL"
@@ -1082,7 +1101,30 @@ function RenderView({
               title="Re-run the AI extraction, bypassing the cache"
             >
               <RegenerateIcon className="w-3.5 h-3.5" />
-              Regenerate
+              <span className="hidden sm:inline">Regenerate</span>
+            </button>
+          )}
+          {extractMeta?.savedId !== undefined && (
+            <button
+              onClick={copyShareLink}
+              className={`inline-flex items-center justify-center gap-1.5 text-[13px] font-normal px-4 py-2 rounded-full border transition-colors ${
+                shared
+                  ? "bg-[#FA008C]/[0.08] border-[#FA008C]/40 text-[#FA008C]"
+                  : "bg-white border-black/10 text-[#666] hover:text-black hover:bg-black/[0.03]"
+              }`}
+              title="Copy a public link to this DESIGN.md"
+            >
+              {shared ? (
+                <>
+                  <CheckIcon className="w-3 h-3" />
+                  Link copied
+                </>
+              ) : (
+                <>
+                  <ShareIcon className="w-3.5 h-3.5" />
+                  <span className="hidden sm:inline">Share</span>
+                </>
+              )}
             </button>
           )}
           <button
@@ -1292,6 +1334,32 @@ function CopyIcon({ className }: { className?: string }) {
         d="M11 5V3.5C11 2.67 10.33 2 9.5 2H3.5C2.67 2 2 2.67 2 3.5V9.5C2 10.33 2.67 11 3.5 11H5"
         stroke="currentColor"
         strokeWidth="1.4"
+      />
+    </svg>
+  );
+}
+
+function ShareIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 16 16"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden
+    >
+      <path
+        d="M5.5 9.5L10 5.5M6 8a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm8 4.5a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm0-9a2 2 0 1 1-4 0 2 2 0 0 1 4 0Z"
+        stroke="currentColor"
+        strokeWidth="1.4"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M10 10.5L5.5 6.5"
+        stroke="currentColor"
+        strokeWidth="1.4"
+        strokeLinecap="round"
       />
     </svg>
   );
