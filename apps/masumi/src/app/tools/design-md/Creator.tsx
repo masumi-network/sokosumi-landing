@@ -266,7 +266,6 @@ function ModeSelect({
 }) {
   const [url, setUrl] = useState(initialUrl ?? "");
   const [submitting, setSubmitting] = useState(false);
-  const [autoSubmitted, setAutoSubmitted] = useState(false);
   const [leadModalUrl, setLeadModalUrl] = useState<string | null>(null);
 
   const handleFile = (file: File) => {
@@ -332,13 +331,6 @@ function ModeSelect({
     },
     [leadModalUrl, runExtraction],
   );
-
-  useEffect(() => {
-    if (initialUrl && !autoSubmitted) {
-      setAutoSubmitted(true);
-      void submitUrl(initialUrl);
-    }
-  }, [initialUrl, autoSubmitted, submitUrl]);
 
   const handleUrl = async (e: React.FormEvent) => {
     e.preventDefault();
