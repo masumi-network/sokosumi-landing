@@ -15,7 +15,10 @@ export type ExtractResult = {
   screenshot?: { mime: string; base64: string };
 };
 
-export async function extractFromUrl(rawUrl: string): Promise<ExtractResult> {
+export async function extractFromUrl(
+  rawUrl: string,
+  opts?: { force?: boolean },
+): Promise<ExtractResult> {
   const url = normalizeUrl(rawUrl);
 
   // Primary path: Browserbase rendering. Captures HTML *after* JS runs +
@@ -76,7 +79,9 @@ export async function extractFromUrl(rawUrl: string): Promise<ExtractResult> {
   if (rendered) {
     signal.computed = rendered.computed;
   }
-  const llm = await llmExtract(url, signal, html, allCss, rendered);
+  const llm = await llmExtract(url, signal, html, allCss, rendered, {
+    force: opts?.force === true,
+  });
   if (llm) {
     return {
       frontmatter: llm.frontmatter,

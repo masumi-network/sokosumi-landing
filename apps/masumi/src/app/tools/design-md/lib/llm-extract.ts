@@ -232,6 +232,7 @@ export async function llmExtract(
   rawHtml: string,
   rawCss: string,
   rendered: RenderedPage | null,
+  opts?: { force?: boolean },
 ): Promise<LlmResult> {
   const key = process.env.OPENROUTER_API_KEY;
   if (!key) return null;
@@ -240,8 +241,10 @@ export async function llmExtract(
   // run can have different (better) results than text-only for the same URL.
   // v5 bumps for the M3-expanded schema + few-shot prompt.
   const cacheKey = `${MODEL}:v5${rendered ? ":vision" : ":text"}:${url}`;
-  const cached = cache.get(cacheKey);
-  if (cached && Date.now() - cached.ts < TTL_MS) return cached.result;
+  if (!opts?.force) {
+    const cached = cache.get(cacheKey);
+    if (cached && Date.now() - cached.ts < TTL_MS) return cached.result;
+  }
 
   const signalMd = signalToMarkdown(signal);
   const prompt = buildPrompt(signalMd, rawHtml, rawCss, !!rendered);
@@ -378,7 +381,20 @@ function shape(
   const spacing = sanitizeStringOrNumberMap(fmRaw.spacing);
   const elevation = sanitizeStringMap(fmRaw.elevation);
   const layout = sanitizeLayout(fmRaw.layout);
-  const components = sanitizeComponents(fmRaw.components);
+  let components = sanitizeComponents(fmRaw.components);
+
+  // Validate token refs in components against actually-defined tokens.
+  // A reference like {colors.surface} when no `surface` is defined gets
+  // replaced with a sensible fallback so the rendered output never shows
+  // unresolved tokens.
+  if (components) {
+    components = validateComponentRefs(components, {
+      colors,
+      rounded,
+      spacing,
+      typography: Object.keys(typography),
+    });
+  }
 
   const frontmatter: Frontmatter = {
     version: "alpha",
@@ -550,6 +566,70 @@ function sanitizeComponents(
     if (Object.keys(inner).length > 0) out[k] = inner;
   }
   return Object.keys(out).length > 0 ? out : undefined;
+}
+
+function validateComponentRefs(
+  components: Record<string, Record<string, string>>,
+  defined: {
+    colors: Record<string, string>;
+    rounded: Record<string, string>;
+    spacing: Record<string, string | number>;
+    typography: string[];
+  },
+): Record<string, Record<string, string>> {
+  const validRef = (ref: string): boolean => {
+    const m = ref.match(/^\{([\w.-]+)\}$/);
+    if (!m) return true; // not a ref — raw value, leave it
+    const [group, ...rest] = m[1].split(".");
+    const token = rest.join(".");
+    if (!token) return false;
+    if (group === "colors") return token in defined.colors;
+    if (group === "rounded") return token in defined.rounded;
+    if (group === "spacing") return token in defined.spacing;
+    if (group === "typography") return defined.typography.includes(token);
+    return true; // unknown group — leave for forward-compat
+  };
+
+  const fallback = (key: string): string | undefined => {
+    if (key === "backgroundColor") {
+      // Prefer a defined neutral, fall back to a fixed light surface.
+      if ("surface" in defined.colors) return "{colors.surface}";
+      if ("primary" in defined.colors) return "{colors.primary}";
+      return undefined;
+    }
+    if (key === "textColor") {
+      if ("on-surface" in defined.colors) return "{colors.on-surface}";
+      if ("on-primary" in defined.colors) return "{colors.on-primary}";
+      return undefined;
+    }
+    if (key === "rounded") {
+      if ("md" in defined.rounded) return "{rounded.md}";
+      if ("DEFAULT" in defined.rounded) return "{rounded.DEFAULT}";
+      return undefined;
+    }
+    if (key === "typography") {
+      if (defined.typography.includes("body-md")) return "{typography.body-md}";
+      return undefined;
+    }
+    return undefined;
+  };
+
+  const out: Record<string, Record<string, string>> = {};
+  for (const [name, props] of Object.entries(components)) {
+    const fixed: Record<string, string> = {};
+    for (const [k, v] of Object.entries(props)) {
+      if (typeof v !== "string") continue;
+      if (validRef(v)) {
+        fixed[k] = v;
+      } else {
+        const fb = fallback(k);
+        if (fb) fixed[k] = fb;
+        // else drop the field entirely — invalid ref with no sane fallback
+      }
+    }
+    out[name] = fixed;
+  }
+  return out;
 }
 
 function hostnameFromUrl(url: string): string {

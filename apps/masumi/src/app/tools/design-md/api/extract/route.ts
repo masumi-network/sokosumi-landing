@@ -8,9 +8,11 @@ export const dynamic = "force-dynamic";
 
 export async function POST(req: Request) {
   let url: string | undefined;
+  let force = false;
   try {
     const body = await req.json();
     url = typeof body?.url === "string" ? body.url : undefined;
+    force = body?.force === true;
   } catch {
     return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
   }
@@ -20,27 +22,27 @@ export async function POST(req: Request) {
   }
 
   try {
-    const result = await extractFromUrl(url);
+    const result = await extractFromUrl(url, { force });
 
-    // Persist a copy of the extraction so it can appear in the public gallery
-    // and be loaded again instantly without burning another browser+LLM call.
-    // Failures here are silent — we don't want to break the user-facing flow.
+    // Persist successful LLM-extracted entries so they appear in the public
+    // gallery + can be reloaded instantly. Don't save heuristic fallbacks —
+    // they're low quality and would clutter the gallery.
     let savedId: number | undefined;
-    try {
-      // Compose the serialized .md so the gallery card can load it later
-      // without re-running anything.
-      const md = serializeFromExtract(result);
-      savedId = saveExtraction({
-        url,
-        name: result.frontmatter.name ?? null,
-        primaryColor: result.frontmatter.colors?.primary ?? null,
-        logoUrl: result.frontmatter.logo?.src ?? null,
-        screenshot: result.screenshot ?? null,
-        designMd: md,
-        source: result.source,
-      });
-    } catch (e) {
-      console.error("[extract] save error:", e);
+    if (result.source === "llm") {
+      try {
+        const md = serializeFromExtract(result);
+        savedId = saveExtraction({
+          url,
+          name: result.frontmatter.name ?? null,
+          primaryColor: result.frontmatter.colors?.primary ?? null,
+          logoUrl: result.frontmatter.logo?.src ?? null,
+          screenshot: result.screenshot ?? null,
+          designMd: md,
+          source: result.source,
+        });
+      } catch (e) {
+        console.error("[extract] save error:", e);
+      }
     }
 
     return NextResponse.json({ ...result, savedId });

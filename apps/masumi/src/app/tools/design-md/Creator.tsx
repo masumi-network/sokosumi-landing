@@ -19,6 +19,9 @@ export type ExtractMeta = {
   latencyMs?: number;
   inputTokens?: number;
   outputTokens?: number;
+  // The URL this design system was extracted from. Set on URL + cached
+  // sources so the render view can offer a "Regenerate" affordance.
+  targetUrl?: string;
 };
 
 const EXAMPLE = `---
@@ -209,6 +212,7 @@ export default function Creator({
           const data = await res.json();
           startWith(data.designMd, "example", {
             source: data.source === "llm" ? "llm" : "heuristic",
+            targetUrl: data.url,
           });
         } catch (e) {
           setError(e instanceof Error ? e.message : "Couldn't load that entry");
@@ -242,6 +246,36 @@ export default function Creator({
     return <Loading targetUrl={activeUrl} />;
   }
 
+  const regenerate = useCallback(
+    async (target: string) => {
+      setActiveUrl(target);
+      setView("loading");
+      try {
+        const res = await fetch("/tools/design-md/api/extract", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ url: target, force: true }),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data?.error ?? "Failed to regenerate");
+        const md = composeFromExtract(data);
+        startWith(md, "url", {
+          source: data?.source ?? "heuristic",
+          model: data?.meta?.model,
+          latencyMs: data?.meta?.latencyMs,
+          inputTokens: data?.meta?.inputTokens,
+          outputTokens: data?.meta?.outputTokens,
+          targetUrl: target,
+        });
+      } catch (e) {
+        setError(e instanceof Error ? e.message : "Failed to regenerate");
+        // Bounce back to render view so the user doesn't lose context
+        setView("render");
+      }
+    },
+    [startWith],
+  );
+
   if (view === "render" && system) {
     return (
       <RenderView
@@ -250,6 +284,7 @@ export default function Creator({
         onReset={reset}
         source={source}
         extractMeta={extractMeta}
+        onRegenerate={regenerate}
       />
     );
   }
@@ -296,7 +331,7 @@ function ModeSelect({
   };
 
   const runExtraction = useCallback(
-    async (target: string) => {
+    async (target: string, opts?: { force?: boolean }) => {
       setSubmitting(true);
       setError(null);
       setLoading(target);
@@ -304,7 +339,10 @@ function ModeSelect({
         const res = await fetch("/tools/design-md/api/extract", {
           method: "POST",
           headers: { "content-type": "application/json" },
-          body: JSON.stringify({ url: target }),
+          body: JSON.stringify({
+            url: target,
+            ...(opts?.force ? { force: true } : {}),
+          }),
         });
         const data = await res.json();
         if (!res.ok) throw new Error(data?.error ?? "Failed to extract");
@@ -315,6 +353,7 @@ function ModeSelect({
           latencyMs: data?.meta?.latencyMs,
           inputTokens: data?.meta?.inputTokens,
           outputTokens: data?.meta?.outputTokens,
+          targetUrl: target,
         };
         onUrl(md, "url", meta);
       } catch (e) {
@@ -944,12 +983,14 @@ function RenderView({
   onReset,
   source,
   extractMeta,
+  onRegenerate,
 }: {
   system: DesignSystem;
   onChange: (next: DesignSystem) => void;
   onReset: () => void;
   source: Source;
   extractMeta: ExtractMeta | null;
+  onRegenerate?: (url: string) => void | Promise<void>;
 }) {
   const [tab, setTab] = useState<"visual" | "markdown">("visual");
   const [copied, setCopied] = useState(false);
@@ -1024,6 +1065,16 @@ function RenderView({
           >
             ← Start over
           </button>
+          {extractMeta?.targetUrl && onRegenerate && (
+            <button
+              onClick={() => onRegenerate(extractMeta.targetUrl!)}
+              className="inline-flex items-center justify-center gap-1.5 text-[13px] font-normal px-4 py-2 rounded-full border border-black/10 bg-white text-[#666] hover:text-black hover:bg-black/[0.03] transition-colors"
+              title="Re-run the AI extraction, bypassing the cache"
+            >
+              <RegenerateIcon className="w-3.5 h-3.5" />
+              Regenerate
+            </button>
+          )}
           <button
             onClick={copyMarkdown}
             className={`inline-flex items-center justify-center gap-1.5 text-[13px] font-normal px-4 py-2 rounded-full border transition-colors ${
@@ -1231,6 +1282,32 @@ function CopyIcon({ className }: { className?: string }) {
         d="M11 5V3.5C11 2.67 10.33 2 9.5 2H3.5C2.67 2 2 2.67 2 3.5V9.5C2 10.33 2.67 11 3.5 11H5"
         stroke="currentColor"
         strokeWidth="1.4"
+      />
+    </svg>
+  );
+}
+
+function RegenerateIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 16 16"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden
+    >
+      <path
+        d="M3 8a5 5 0 0 1 9-3M13 8a5 5 0 0 1-9 3"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+      />
+      <path
+        d="M12 2v3.5H8.5M4 14v-3.5h3.5"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );
