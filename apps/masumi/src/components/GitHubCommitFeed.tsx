@@ -331,8 +331,10 @@ export default function GitHubCommitFeed() {
               label="Avg per day"
             />
             <Stat
-              value={data.stats.topRepos.length.toLocaleString()}
-              label="Active repos"
+              value={data.allRepos
+                .filter((r) => r.commits28d > 0)
+                .length.toLocaleString()}
+              label={`Active repos · last ${data.stats.headlineDays}d`}
             />
             <div className="flex flex-col gap-1">
               <Sparkline data={data.stats.weeklyTotals} width={140} height={32} />
