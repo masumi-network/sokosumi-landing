@@ -26,11 +26,8 @@ type Commit = {
   repo: Repo;
 };
 
-type RepoActivity = {
-  name: string;
-  htmlUrl: string;
-  language: string | null;
-  commits: number;
+type RepoListing = Repo & {
+  commits28d: number;
 };
 
 type FeedStats = {
@@ -38,13 +35,14 @@ type FeedStats = {
   avgPerDay: number;
   headlineDays: number;
   sparklineWeeks: number;
-  topRepos: RepoActivity[];
+  topRepos: RepoListing[];
   weeklyTotals: number[];
 };
 
 type FeedResponse = {
   commits: Commit[];
   repos: Repo[];
+  allRepos: RepoListing[];
   stats: FeedStats;
   updatedAt: string;
 };
@@ -157,8 +155,8 @@ function CommitRow({ commit }: { commit: Commit }) {
   );
 }
 
-function RepoActivityRow({ repo, max }: { repo: RepoActivity; max: number }) {
-  const widthPct = max > 0 ? Math.max(2, (repo.commits / max) * 100) : 0;
+function RepoActivityRow({ repo, max }: { repo: RepoListing; max: number }) {
+  const widthPct = max > 0 ? Math.max(2, (repo.commits28d / max) * 100) : 0;
   return (
     <a
       href={repo.htmlUrl}
@@ -181,8 +179,48 @@ function RepoActivityRow({ repo, max }: { repo: RepoActivity; max: number }) {
         </div>
       </div>
       <span className="text-[13px] text-black tabular-nums w-12 text-right shrink-0">
-        {repo.commits}
+        {repo.commits28d}
       </span>
+    </a>
+  );
+}
+
+function RepoCard({ repo }: { repo: RepoListing }) {
+  return (
+    <a
+      href={repo.htmlUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="flex flex-col gap-1.5 p-3 border border-black/[0.06] hover:border-black/[0.16] hover:bg-black/[0.01] transition-colors group"
+    >
+      <div className="flex items-start justify-between gap-2">
+        <span className="text-[13px] font-medium text-black leading-tight break-all">
+          {repo.name}
+        </span>
+        {repo.commits28d > 0 && (
+          <span className="text-[11px] text-[#999] tabular-nums shrink-0 mt-0.5">
+            {repo.commits28d} · 28d
+          </span>
+        )}
+      </div>
+      {repo.description && (
+        <p className="text-[11px] text-[#999] leading-[1.4] line-clamp-2">
+          {repo.description}
+        </p>
+      )}
+      <div className="flex items-center gap-2 mt-auto pt-1 text-[11px] text-[#bbb]">
+        {repo.language && <span>{repo.language}</span>}
+        {repo.language && repo.stars > 0 && <span>·</span>}
+        {repo.stars > 0 && (
+          <span className="flex items-center gap-0.5">
+            <svg width="9" height="9" viewBox="0 0 9 9" fill="currentColor" aria-hidden>
+              <path d="M4.5.5l1.18 2.39 2.64.38-1.91 1.86.45 2.62L4.5 6.51 2.14 7.75l.45-2.62L.68 3.27l2.64-.38z" />
+            </svg>
+            {repo.stars}
+          </span>
+        )}
+        <span className="ml-auto">{timeAgo(repo.pushedAt)}</span>
+      </div>
     </a>
   );
 }
@@ -200,10 +238,13 @@ function SkeletonRow() {
   );
 }
 
+type RepoSort = "activity" | "pushed" | "name" | "stars";
+
 export default function GitHubCommitFeed() {
   const [data, setData] = useState<FeedResponse | null>(null);
   const [error, setError] = useState(false);
   const [expanded, setExpanded] = useState(false);
+  const [repoSort, setRepoSort] = useState<RepoSort>("activity");
 
   useEffect(() => {
     let cancelled = false;
@@ -231,7 +272,22 @@ export default function GitHubCommitFeed() {
       : data.commits.slice(0, COLLAPSED_COMMITS)
     : [];
   const hiddenCount = data ? data.commits.length - COLLAPSED_COMMITS : 0;
-  const topRepoMax = data?.stats.topRepos[0]?.commits ?? 0;
+  const topRepoMax = data?.stats.topRepos[0]?.commits28d ?? 0;
+
+  const sortedRepos = data
+    ? [...data.allRepos].sort((a, b) => {
+        switch (repoSort) {
+          case "activity":
+            return b.commits28d - a.commits28d || a.name.localeCompare(b.name);
+          case "pushed":
+            return a.pushedAt < b.pushedAt ? 1 : -1;
+          case "stars":
+            return b.stars - a.stars || a.name.localeCompare(b.name);
+          case "name":
+            return a.name.localeCompare(b.name);
+        }
+      })
+    : [];
 
   return (
     <section className="w-full">
@@ -297,6 +353,44 @@ export default function GitHubCommitFeed() {
               </div>
             </div>
           )}
+        </div>
+      )}
+
+      {/* All repos */}
+      {data && data.allRepos.length > 0 && (
+        <div className="mb-8">
+          <div className="flex items-center justify-between flex-wrap gap-2 mb-3">
+            <h3 className="text-[13px] text-[#666]">
+              All repos · {data.allRepos.length}
+            </h3>
+            <div className="flex gap-1">
+              {(
+                [
+                  ["activity", "Activity"],
+                  ["pushed", "Pushed"],
+                  ["stars", "Stars"],
+                  ["name", "Name"],
+                ] as Array<[RepoSort, string]>
+              ).map(([key, label]) => (
+                <button
+                  key={key}
+                  onClick={() => setRepoSort(key)}
+                  className={`text-[11px] px-2.5 py-1 rounded-full border transition-colors ${
+                    repoSort === key
+                      ? "border-black/[0.12] text-black bg-black/[0.03]"
+                      : "border-transparent text-[#999] hover:text-black"
+                  }`}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+            {sortedRepos.map((repo) => (
+              <RepoCard key={repo.name} repo={repo} />
+            ))}
+          </div>
         </div>
       )}
 
