@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import CookieConsent from "@/components/CookieConsent";
+import GoogleAnalytics from "@/components/GoogleAnalytics";
+
+const GA_ID = "G-ESDVDX948Q";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -47,7 +51,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.variable} antialiased`} suppressHydrationWarning>{children}</body>
+      <body className={`${inter.variable} antialiased`} suppressHydrationWarning>
+        {children}
+        <CookieConsent />
+        <GoogleAnalytics id={GA_ID} />
+      </body>
     </html>
   );
 }
