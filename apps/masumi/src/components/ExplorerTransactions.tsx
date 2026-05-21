@@ -554,6 +554,7 @@ export default function ExplorerTransactions() {
   const agentPageCache = useRef<Map<number, Agent[]>>(new Map());
   const [agentSearch, setAgentSearch] = useState("");
   const [agentHasMore, setAgentHasMore] = useState(true);
+  const [agentTotal, setAgentTotal] = useState<number | null>(null);
 
   // Reset state when network changes
   useEffect(() => {
@@ -561,6 +562,7 @@ export default function ExplorerTransactions() {
     setAgents([]);
     setTxPage(1);
     setAgentPage(1);
+    setAgentTotal(null);
     setExpandedHash(null);
     detailCache.current.clear();
     agentPageCache.current.clear();
@@ -636,6 +638,7 @@ export default function ExplorerTransactions() {
       setAgents(list);
       setAgentPage(p);
       setAgentHasMore(data.hasMore !== false);
+      if (typeof data.total === "number") setAgentTotal(data.total);
     } catch {
       // keep current
     } finally {
@@ -648,6 +651,17 @@ export default function ExplorerTransactions() {
     fetch(`/api/explorer/agent-map?network=${network}`)
       .then((r) => (r.ok ? r.json() : {}))
       .then(setAgentMap)
+      .catch(() => {});
+  }, [network]);
+
+  // Fetch the registered-agent count up-front so the tab label shows it
+  // before the user clicks. Cheap query; reuses /api/masumi-agents.
+  useEffect(() => {
+    fetch(`/api/masumi-agents?page=1&network=${network}`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data) => {
+        if (data && typeof data.total === "number") setAgentTotal(data.total);
+      })
       .catch(() => {});
   }, [network]);
 
@@ -712,6 +726,11 @@ export default function ExplorerTransactions() {
             }`}
           >
             Registered Agents
+            {agentTotal != null && (
+              <span className="ml-1.5 text-[#999]">
+                {agentTotal.toLocaleString()}
+              </span>
+            )}
           </button>
         </div>
         <div className="flex-1 sm:max-w-[280px]">

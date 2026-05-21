@@ -316,7 +316,7 @@ async function backfillSenderAddresses(db, bf, config) {
 
 // Phase 4: Sync agent wallet addresses (runs once every 6 hours)
 async function syncAgentWallets(db, bf, config) {
-  if (!shouldRun(db, "sync_agent_wallets", 6 * 60 * 60 * 1000)) {
+  if (!shouldRun(db, "sync_agent_wallets_v2", 6 * 60 * 60 * 1000)) {
     console.log("Phase 4: Skipping agent wallet sync (ran less than 6h ago).");
     return;
   }
@@ -326,16 +326,26 @@ async function syncAgentWallets(db, bf, config) {
     "INSERT OR REPLACE INTO agent_wallets (address, name, asset) VALUES (?, ?, ?)"
   );
   let count = 0;
+  // Burned NFTs (quantity=0) stay in the policy listing forever. We collect
+  // currently-live asset ids so we can prune `agent_wallets` rows for agents
+  // whose token was burned after a previous sync wrote them.
+  const liveAssets = [];
+  let listingComplete = false;
 
   for (let page = 1; page <= 50; page++) {
     const assets = await bf(`/assets/policy/${config.policyId}?count=100&page=${page}&order=asc`);
-    if (!assets || !Array.isArray(assets) || assets.length === 0) break;
+    if (!assets || !Array.isArray(assets) || assets.length === 0) {
+      listingComplete = true;
+      break;
+    }
 
     // Process in batches of 10 to limit concurrency
     for (let i = 0; i < assets.length; i += 10) {
       const batch = assets.slice(i, i + 10);
       await Promise.all(
         batch.map(async (a) => {
+          if (Number(a.quantity) === 0) return; // burned — skip enrich and don't track as live
+          liveAssets.push(a.asset);
           try {
             const [detail, holders] = await Promise.all([
               bf(`/assets/${a.asset}`),
@@ -360,11 +370,36 @@ async function syncAgentWallets(db, bf, config) {
       await sleep(200);
     }
 
-    if (assets.length < 100) break;
+    if (assets.length < 100) {
+      listingComplete = true;
+      break;
+    }
+  }
+
+  // Prune burned agents only when we got a full policy listing. Skipping the
+  // prune on a partial fetch protects against a Blockfrost outage wiping the
+  // table.
+  if (listingComplete && liveAssets.length > 0) {
+    const before = db.prepare("SELECT COUNT(*) as c FROM agent_wallets").get().c;
+    // SQLite caps bound params per statement; chunk the NOT IN list.
+    const liveSet = new Set(liveAssets);
+    const allRows = db.prepare("SELECT asset FROM agent_wallets").all();
+    const toDelete = allRows.filter((r) => !liveSet.has(r.asset)).map((r) => r.asset);
+    if (toDelete.length > 0) {
+      const del = db.prepare("DELETE FROM agent_wallets WHERE asset = ?");
+      const delMany = db.transaction((ids) => {
+        for (const id of ids) del.run(id);
+      });
+      delMany(toDelete);
+    }
+    const after = db.prepare("SELECT COUNT(*) as c FROM agent_wallets").get().c;
+    console.log(`  Pruned ${before - after} stale (burned) agent rows.`);
+  } else if (!listingComplete) {
+    console.log("  Skipping prune — policy listing did not complete cleanly.");
   }
 
   console.log(`  Done. ${count} agent wallets synced.`);
-  markRan(db, "sync_agent_wallets");
+  markRan(db, "sync_agent_wallets_v2");
 }
 
 async function syncNetwork(networkId, config) {

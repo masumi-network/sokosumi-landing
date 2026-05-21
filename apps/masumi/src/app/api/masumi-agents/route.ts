@@ -11,11 +11,15 @@ export async function GET(req: NextRequest) {
 
   try {
     if (!hasData(network)) {
-      return Response.json({ agents: [], page, hasMore: false });
+      return Response.json({ agents: [], page, hasMore: false, total: 0 });
     }
 
     const d = getDb(network);
     const offset = (Math.max(1, page) - 1) * pageSize;
+
+    const total = (
+      d.prepare("SELECT COUNT(*) as c FROM agent_wallets").get() as { c: number }
+    ).c;
 
     const rows = d
       .prepare(
@@ -32,7 +36,7 @@ export async function GET(req: NextRequest) {
       walletAddress: r.address,
     }));
 
-    return Response.json({ agents, page, hasMore });
+    return Response.json({ agents, page, hasMore, total });
   } catch (err) {
     console.error("masumi-agents error:", err);
     return Response.json(
