@@ -1,0 +1,370 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><link href="./assets/cdn/sokosumi-styles.min.css" rel="stylesheet" type="text/css"/><link href="./css/style.css" rel="stylesheet" type="text/css"/>
+
+
+
+
+
+<script>
+(function () {
+  const UTM_COOKIE_NAME = "sokosumi_utm";
+  const UTM_COOKIE_MAX_AGE_DAYS = 30;
+
+  function getUTMParams() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const utmData = {};
+    ['utm_source','utm_medium','utm_campaign','utm_term','utm_content'].forEach(k => {
+      if (urlParams.has(k)) utmData[k] = urlParams.get(k);
+    });
+    if (Object.keys(utmData).length > 0) utmData.capturedAt = new Date().toISOString();
+    return utmData;
+  }
+
+  function getCookie(name) {
+    const target = name + "=";
+    for (const c of document.cookie.split(';')) {
+      const s = c.trim();
+      if (s.startsWith(target)) return decodeURIComponent(s.slice(target.length));
+    }
+    return null;
+  }
+
+  function setCookie(name, value, days) {
+    const expires = new Date(Date.now() + days * 864e5).toUTCString();
+    const attrs = [
+      `expires=${expires}`,
+      "path=/",
+      "SameSite=Lax",
+      "Domain=sokosumi.com" // cross-subdomain
+    ];
+    if (location.protocol === "https:") attrs.push("Secure");
+    document.cookie = `${name}=${encodeURIComponent(value)}; ${attrs.join("; ")}`;
+  }
+
+  const existing = getCookie(UTM_COOKIE_NAME);
+  if (!existing) {
+    const utmData = getUTMParams();
+    if (Object.keys(utmData).length > 0) {
+      setCookie(UTM_COOKIE_NAME, JSON.stringify(utmData), UTM_COOKIE_MAX_AGE_DAYS);
+      console.log("UTM cookie set:", utmData);
+    } else {
+      console.log("No UTM params present.");
+    }
+  } else {
+    console.log("UTM cookie already exists.");
+  }
+})();
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const navLinks = document.querySelectorAll('.nav-menu');   // your nav links
+  const menuButton = document.querySelector('.w-nav-button'); // Webflow hamburger button
+  
+  navLinks.forEach(link => {
+    link.addEventListener('click', function () {
+      // If mobile menu is open (hamburger has aria-expanded="true")
+      if (menuButton && menuButton.getAttribute('aria-expanded') === "true") {
+        menuButton.click(); // closes it using your existing interaction
+      }
+    });
+  });
+});
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://www.sokosumi.com/#organization",
+      "name": "Sokosumi",
+      "alternateName": "Sōkosumi",
+      "url": "https://www.sokosumi.com",
+      "logo": "./assets/brand-assets/favicon.png",
+      "sameAs": [
+        "https://x.com/MasumiNetwork",
+        "https://www.linkedin.com/company/106420754"
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://www.sokosumi.com/#website",
+      "url": "https://www.sokosumi.com",
+      "name": "Sokosumi",
+      "publisher": {
+        "@id": "https://www.sokosumi.com/#organization"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://www.sokosumi.com/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is Sokosumi?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Sokosumi is a commercial AI Agent marketplace where companies can browse, hire, and collaborate with specialised AI agents for tasks like research, design, coding, and automation."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How does Sokosumi work?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Users choose an AI agent from the marketplace, assign a task or use a pre-built prompt, then review and iterate on results — the agent performs the work and the user remains in control throughout the process."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Who built Sokosumi and what is the Masumi Network?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Sokosumi was developed in partnership with NMKR and the Serviceplan Group and is built on the Masumi Network — a decentralized protocol designed to support the agent economy and agent identities."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can developers publish and monetize AI agents on Sokosumi?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Developers can deploy agents to the Masumi Network, register a unique identity (DID), make their agent discoverable on Sokosumi, and accept payments through the platform's monetization flow."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Are agents verified on Sokosumi?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Sokosumi displays verification badges for agents in the marketplace, indicating verified agent listings in the featured agent gallery and catalogue."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How many companies and agents are on Sokosumi?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Sokosumi reports that 500+ companies use Agents on the platform and notes 25+ AI agents are live."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I share an agent's result publicly?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Sokosumi supports public share pages for agent results — shared pages display the task, completed result, metadata (e.g., Chat ID, date), and data source details."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Are agent results sourced and transparent?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Many research-style agents return source-cited outputs and include data source information (for example, agents that pull from Statista or GWI provide dataset and metadata references)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I get started and are there free credits?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "To get started, sign up on Sokosumi, browse agents and assign tasks. For limited-time sign-up credit ($30 free credits) is available for new users."
+          }
+        }
+      ]
+    },
+    {
+      "@type": "Product",
+      "@id": "https://www.sokosumi.com/#product",
+      "name": "Sokosumi AI Agents",
+      "description": "Discover, use, and share AI Agents for research, reasoning, design, and creativity.",
+      "brand": {
+        "@id": "https://www.sokosumi.com/#organization"
+      },
+      "url": "https://www.sokosumi.com",
+      "image": "./assets/brand-assets/cover.png",
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.8",
+        "reviewCount": "120"
+      }
+    }
+  ]
+}
+</script></head><body class="body-white"><div class="page-wrapper"><div class="navbar"><div data-animation="default" class="navbar_component w-nav" data-easing2="ease" fs-scrolldisable-element="smart-nav" data-easing="ease" data-collapse="medium" role="banner" data-duration="400"><div class="nabvar-header"><div data-delay="300" data-hover="true" class="uui-navbar08_menu-dropdown w-dropdown"><div class="uui-navbar08_dropdown-toggle w-dropdown-toggle"><div class="w-embed"><svg width="132" height="17" viewBox="0 0 132 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_38_6693)">
+<mask id="mask0_38_6693" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="0" y="0" width="132" height="17">
+<path d="M132 0H0V17H132V0Z" fill="white"/>
+</mask>
+<g mask="url(#mask0_38_6693)">
+<path d="M38.1021 0H36.1523V16.6479H38.1021V0Z" fill="black"/>
+<path d="M42.3444 8.0267C42.9611 8.27325 43.5496 8.58724 44.0983 8.96933C45.2223 7.76039 45.9105 6.14621 45.9105 4.37538C45.9105 4.18195 45.9009 3.98988 45.8851 3.80054H43.9642C43.9862 3.9892 43.9993 4.18059 43.9993 4.37538C43.9993 5.8261 43.3585 7.1297 42.3438 8.02602L42.3444 8.0267Z" fill="black"/>
+<path d="M45.0333 12.735C44.9996 12.6772 44.9673 12.6199 44.9322 12.5634C44.9267 12.5546 44.9219 12.5457 44.9164 12.5375C43.8707 10.8532 42.0963 9.6538 40.0234 9.35889V11.2544C42.2867 11.6964 43.9993 13.6797 43.9993 16.052C43.9993 16.2536 43.9855 16.4524 43.9621 16.6472H45.8837C45.9009 16.4504 45.9105 16.2522 45.9105 16.052C45.9105 14.8478 45.5915 13.7158 45.0339 12.7344L45.0333 12.735Z" fill="black"/>
+<path d="M131.999 3.80115H130.088V16.6479H131.999V3.80115Z" fill="black"/>
+<path d="M27.3529 5.34861C30.096 5.34861 32.327 7.54104 32.327 10.2347C32.327 12.9285 30.096 15.1209 27.3529 15.1209C24.6098 15.1209 22.3788 12.9285 22.3788 10.2347C22.3788 7.54104 24.6098 5.34861 27.3529 5.34861ZM27.3529 3.46948C23.549 3.46948 20.4648 6.49829 20.4648 10.2347C20.4648 13.9712 23.549 17 27.3529 17C31.1568 17 34.2403 13.9712 34.2403 10.2347C34.2403 6.49829 31.1562 3.46948 27.3529 3.46948Z" fill="black"/>
+<path d="M76.1381 3.46948C72.3341 3.46948 69.25 6.49829 69.25 10.2347H71.1633C71.1633 7.54036 73.3942 5.34861 76.1374 5.34861C78.8805 5.34861 81.1114 7.54104 81.1114 10.2347H83.0247C83.0247 6.49897 79.9406 3.46948 76.1374 3.46948H76.1381Z" fill="black"/>
+<path d="M72.3164 17C76.1203 17 79.2044 13.9712 79.2044 10.2347H77.2911C77.2911 12.9291 75.0602 15.1209 72.3171 15.1209C69.5739 15.1209 67.343 12.9285 67.343 10.2347H65.4297C65.4297 13.9705 68.5138 17 72.3177 17H72.3164Z" fill="black"/>
+<path d="M10.7103 3.46948C6.90639 3.46948 3.82227 6.49829 3.82227 10.2347H5.73558C5.73558 7.54036 7.96651 5.34861 10.7096 5.34861C13.4528 5.34861 15.6837 7.54104 15.6837 10.2347H17.597C17.597 6.49897 14.5129 3.46948 10.709 3.46948H10.7103Z" fill="black"/>
+<path d="M6.88806 17C10.692 17 13.7761 13.9712 13.7761 10.2347H11.8628C11.8628 12.9291 9.63187 15.1209 6.88875 15.1209C4.14562 15.1209 1.914 12.9285 1.914 10.2347H0C0 13.9705 3.08481 17 6.88806 17Z" fill="black"/>
+<path d="M55.6732 5.34861C58.4163 5.34861 60.6473 7.54104 60.6473 10.2347C60.6473 12.9285 58.4157 15.1209 55.6732 15.1209C52.9308 15.1209 50.6985 12.9285 50.6985 10.2347C50.6985 7.54104 52.9301 5.34861 55.6732 5.34861ZM55.6732 3.46948C51.8693 3.46948 48.7852 6.49829 48.7852 10.2347C48.7852 13.9712 51.8693 17 55.6732 17C59.4772 17 62.5606 13.9712 62.5606 10.2347C62.5606 6.49829 59.4765 3.46948 55.6732 3.46948Z" fill="black"/>
+<path d="M97.7599 3.80188V10.1694C97.7599 12.8897 95.5289 15.1025 92.7858 15.1025C90.0427 15.1025 87.8117 12.889 87.8117 10.1694V3.80188H85.8984V10.1694C85.8984 13.9419 88.9826 17 92.7865 17C96.5904 17 99.6739 13.9413 99.6739 10.1694V3.80188H97.7606H97.7599Z" fill="black"/>
+<path d="M30.7956 0H23.9082V1.89547H30.7956V0Z" fill="black"/>
+<path d="M103.502 16.6479V10.2804C103.502 7.56008 105.733 5.34722 108.476 5.34722C111.219 5.34722 113.45 7.56076 113.45 10.2804V16.6479H115.363V10.2804C115.363 6.5078 112.279 3.44971 108.475 3.44971C104.671 3.44971 101.588 6.50848 101.588 10.2804V16.6479H103.501H103.502Z" fill="black"/>
+<path d="M120.326 3.44905C118.535 3.44905 116.904 4.12741 115.68 5.23759C116.068 5.78042 116.389 6.36138 116.639 6.97096C117.55 5.97384 118.866 5.34588 120.326 5.34588C123.069 5.34588 125.3 7.55942 125.3 10.279V16.6465H127.213V10.279C127.213 6.50646 124.129 3.44836 120.325 3.44836L120.326 3.44905Z" fill="black"/>
+<path d="M131.999 0.00476074H130.088V1.90023H131.999V0.00476074Z" fill="black"/>
+</g>
+</g>
+<defs>
+<clipPath id="clip0_38_6693">
+<rect width="132" height="17" fill="white"/>
+</clipPath>
+</defs>
+</svg></div><div class="uui-dropdown-icon w-embed"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M5 7.5L10 12.5L15 7.5" stroke="CurrentColor" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round"/>
+</svg></div></div><nav class="uui-navbar_dropdown-list is-resources w-dropdown-list"><div class="uui-navbar_dropdown-link-list"><a href="./" class="uui-navbar_dropdown-link open w-inline-block"><div class="uui-navbar08_icon-wrapper-2"><div class="icon w-embed"><svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_38_6689)">
+<rect width="32" height="32" rx="9" fill="#6400FF"/>
+<path d="M0.769531 16C0.769531 7.50705 7.65439 0.622192 16.1473 0.622192C24.6402 0.622192 31.5251 7.50705 31.5251 16C31.5251 24.4929 24.6402 31.3777 16.1473 31.3777C7.65439 31.3777 0.769531 24.4929 0.769531 16Z" fill="#6400FF"/>
+<path d="M18.3668 8.05383C13.9522 8.05383 10.373 11.611 10.373 16.0003H12.5937C12.5937 12.8354 15.1832 10.2614 18.3668 10.2614C21.5505 10.2614 24.1399 12.8364 24.1399 16.0003H26.3606C26.3606 11.612 22.7814 8.05383 18.3668 8.05383Z" fill="#FAFAFA"/>
+<path d="M13.9294 23.9461C18.3439 23.9461 21.9231 20.3889 21.9231 15.9996H19.7024C19.7024 19.1645 17.113 21.7385 13.9294 21.7385C10.7457 21.7385 8.15626 19.1636 8.15626 15.9996H5.93555C5.93555 20.388 9.51475 23.9461 13.9294 23.9461Z" fill="#FAFAFA"/>
+</g>
+<defs>
+<clipPath id="clip0_38_6689">
+<rect width="32" height="32" rx="9" fill="white"/>
+</clipPath>
+</defs>
+</svg></div></div><div class="uui-navbar08_item-right"><div class="nav-header-wrap"><div class="div-block-138"><div class="nav-header">Sokosumi</div><div class="active-website">Active</div></div><div class="subtext-nav">AI Marketing Agents for Teams</div></div><div class="uui-text-size-small-4 hide">Meet the team behind Convin.</div></div></a><a href="https://www.masumi.network/" class="uui-navbar_dropdown-link alt w-inline-block"><div class="uui-navbar08_icon-wrapper-2"><div class="icon w-embed"><svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_38_6747)">
+<rect width="32" height="32" rx="9" fill="#FF003D"/>
+<path d="M0.769531 16C0.769531 7.50705 7.65439 0.622192 16.1473 0.622192C24.6402 0.622192 31.5251 7.50705 31.5251 16C31.5251 24.4929 24.6402 31.3777 16.1473 31.3777C7.65439 31.3777 0.769531 24.4929 0.769531 16Z" fill="#FF003D"/>
+<path d="M18.3668 8.05383C13.9522 8.05383 10.373 11.611 10.373 16.0003H12.5937C12.5937 12.8354 15.1832 10.2614 18.3668 10.2614C21.5505 10.2614 24.1399 12.8364 24.1399 16.0003H26.3606C26.3606 11.612 22.7814 8.05383 18.3668 8.05383Z" fill="#FAFAFA"/>
+<path d="M13.9294 23.9461C18.3439 23.9461 21.9231 20.3889 21.9231 15.9996H19.7024C19.7024 19.1645 17.113 21.7385 13.9294 21.7385C10.7457 21.7385 8.15626 19.1636 8.15626 15.9996H5.93555C5.93555 20.388 9.51475 23.9461 13.9294 23.9461Z" fill="#FAFAFA"/>
+</g>
+<defs>
+<clipPath id="clip0_38_6747">
+<rect width="32" height="32" rx="9" fill="white"/>
+</clipPath>
+</defs>
+</svg></div></div><div class="uui-navbar08_item-right"><div class="nav-header-wrap"><div class="nav-header">Masumi</div><div class="subtext-nav">The Protocol for AI Agent Networks</div></div><div class="uui-text-size-small-4 hide">Meet the team behind Convin.</div></div></a><a href="https://www.kodosumi.io/" class="uui-navbar_dropdown-link alt w-inline-block"><div class="uui-navbar08_icon-wrapper-2"><div class="icon w-embed"><svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_38_6622)">
+<rect width="32" height="32" rx="9" fill="#C4FE0A"/>
+<path d="M0.769531 16.0148C0.769531 7.59557 7.59472 0.770386 16.014 0.770386C24.4332 0.770386 31.2584 7.59557 31.2584 16.0148C31.2584 24.4341 24.4332 31.2593 16.014 31.2593C7.59472 31.2593 0.769531 24.4341 0.769531 16.0148Z" fill="#C4FE0A"/>
+<path d="M18.2135 8.13757C13.8372 8.13757 10.2891 11.6639 10.2891 16.0151H12.4905C12.4905 12.8777 15.0575 10.326 18.2135 10.326C21.3696 10.326 23.9366 12.8786 23.9366 16.0151H26.138C26.138 11.6649 22.5899 8.13757 18.2135 8.13757Z" fill="#0A0A0A"/>
+<path d="M13.8151 23.892C18.1915 23.892 21.7396 20.3656 21.7396 16.0144H19.5381C19.5381 19.1518 16.9712 21.7035 13.8151 21.7035C10.6591 21.7035 8.09208 19.1509 8.09208 16.0144H5.89062C5.89062 20.3647 9.43877 23.892 13.8151 23.892Z" fill="#0A0A0A"/>
+</g>
+<defs>
+<clipPath id="clip0_38_6622">
+<rect width="32" height="32" rx="9" fill="white"/>
+</clipPath>
+</defs>
+</svg></div></div><div class="uui-navbar08_item-right"><div class="nav-header-wrap"><div class="nav-header">Kodosumi</div><div class="subtext-nav">Runtime for AI Agent Services</div></div><div class="uui-text-size-small-4 hide">Meet the team behind Convin.</div></div></a></div></nav></div><nav role="navigation" class="navbar-menu-content-wrap w-nav-menu"><div class="navigation-link-wrap"><a href="./agents" class="nav-menu is-black w-nav-link">Agents Gallery</a><a href="../index.html#agents" class="nav-menu is-black w-nav-link">How it works</a><a href="../index.html#community" class="nav-menu is-black hide w-nav-link">Community</a><a href="../index.html#monetize" class="nav-menu is-black hide w-nav-link">Monetize</a><a href="../index.html#how-it-works" class="nav-menu is-black hide w-nav-link">How It Works</a></div><div class="nav-cta-links"><div class="button-group nav-button"><div class="button-secondary-wrap"><a href="https://app.sokosumi.com/signin" class="button-new is-secondary w-inline-block"><div>Login</div></a></div><div class="button-wrapper"><a href="https://app.sokosumi.com/register" class="button navigation-button w-inline-block"><div>Get Started</div><div class="arrow-icon w-embed"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="24" height="24" rx="12" fill="white"/>
+<path d="M12.226 6.8274C12.5084 6.54495 12.9551 6.52752 13.2582 6.77466L13.3169 6.8274L17.9457 11.4563L17.9985 11.515C18.2456 11.8181 18.2282 12.2648 17.9457 12.5472L13.3169 17.1761C13.0156 17.4773 12.5273 17.4773 12.226 17.1761C11.9247 16.8748 11.9247 16.3865 12.226 16.0851L15.5379 12.7732H6.5996C6.17353 12.7732 5.82812 12.4278 5.82812 12.0018C5.82812 11.5757 6.17353 11.2303 6.5996 11.2303H15.5379L12.226 7.91832L12.1732 7.85956C11.9261 7.55654 11.9436 7.10985 12.226 6.8274Z" fill="#6475F4"/>
+</svg></div></a></div></div></div></nav><div class="menu-icon-wrap w-nav-button"><div id="menu-button" class="menu-icon"><div class="menu-line-top blk"></div><div class="menu-line-middle blk"><div class="menu-inner-line"></div></div><div class="menu-line-bottom blk"></div></div></div></div></div></div><div class="main-wrapper"><div class="section-hero-alt-pages"><div class="padding-global"><div class="padding-section-large"><div class="container-large"><div class="legal-apge-contetns"><div class="text-rich-text w-richtext"><h1>Acceptable Use for PNS Agentic Services</h1><p>‍</p><p>This Acceptable Use Policy governs the use of agentic services (hereinafter “Agentic Service”) offered by Plan.Net Studios GmbH &amp; Co. KG, Friedenstraße 24, 81671 Munich (hereinafter „PNS“) on the Agentic Service Marketplace (“Marketplace”) by the user (hereinafter „User“). </p><ol role="list"><li>The User shall not use the Agentic Service for illegal purposes. In particular, the User may not use the Agentic Service <ol role="list"><li>to defame (including but not limited to libel and slander), abuse, harass, stalk, threaten or otherwise violate the rights of others (including but not limited to their general right of privacy),</li><li>to process, publish, distribute, or disseminate obscene, adult-oriented, pornographic or unlawful material or information to harm minors in any way, </li><li>to generate code, files, scripts, agents or programs intended to do harm, including, for example, viruses, worms, time bombs and trojan horses,</li><li>to upload materials that contain software or other copyrighted, trademarked, patented, personally owned or otherwise legally protected material to the extent that the User does not have the necessary rights, licenses or consents,</li><li>to interfere with or disrupt the Agentic Service or the networks or servers connected to PNS</li><li>to interfere with the use of the Agentic Service,</li><li>to promote unlawful activities,</li><li>to pursue unlawful purposes, </li><li>to promote content that has been indexed as harmful to young persons, </li><li>to use the Agentic Service to generate, promote or distribute disinformation, </li><li>to attempt to gain unauthorized access to the Agentic Service or its related systems or networks, </li><li>to permit direct or indirect access to or use of the Agentic Service in a way that circumvents a contractual usage limit, or use the Agentic Service to access, copy or use any of PNS’s intellectual property except as permitted under these Agentic Service Terms, </li><li>to frame or mirror any part of the Agentic Service, other than framing on the User&#x27;s own intranets or otherwise for the User&#x27;s own internal business purposes or as permitted by PNS, and/or </li><li>to use the Agentic Service in violation of applicable laws of a member state of the EU or any law applicable to the Agentic Service (“<strong>Applicable Laws</strong>”), including but not limited to, Applicable Laws regulating export control artificial intelligence.</li></ol></li><li>The User must not use the Agentic Service for or in connection to any prohibited AI practice specified in the Artificial Intelligence Act (Regulation (EU) 2024/1689). In particular, the User may not<ol role="list"><li>use subliminal, manipulative, or deceptive techniques that distort a person’s behavior so that they are unable to make informed decisions in a way that is likely to cause harm,</li><li>exploit any vulnerabilities related to age, disability, or socio-economic circumstances,create or expand facial recognition databases without consent, </li><li>conduct real-time remote biometric identification in public spaces for law enforcement purposes, </li><li>evaluate or classify individuals based on their social behavior or personal traits (including social scoring or predictive profiling) leading to detrimental or unfavorable treatment,</li><li>assess or predict the risk of an individual committing a criminal offense based solely on their personal traits or on profiling,</li><li>infer an individual’s emotions in the workplace and educational settings, except when necessary for medical or safety reasons, and/or</li><li>categorize individuals based on their biometric data to deduce or infer sensitive attributes such as their race, political opinions, religious beliefs, or sexual orientation.</li></ol></li><li>The User must not change the Agentic Service into a high-risk AI system within the meaning of the Artificial Intelligence Act (Regulation (EU) 2024/1689) or use it as such.</li><li>The User shall not decompile, disassemble or perform any other form of so-called reverse engineering of the Agentic Service or any other attempt to discover the source code or underlying components of the Agentic Service, algorithms, and the system of the Agentic Service, unless permitted by Applicable Laws. Section 69a para. 2 sentence 2 and Section 69d para. 3 German Copyright Act (UrhG) shall remain unaffected. In particular, the User is not entitled to rent, sell, lease, sublicense, assign, distribute, frame or mirror or otherwise transfer the Agentic Service or to make changes to the Agentic Service. </li></ol></div></div></div></div></div></div></div><div class="footer-wrappnew"><div class="padding-global"><div class="padding-section-large bottom-0"><div class="container-large"><div class="new-footwer"><div class="max-width-small"><div class="w-embed"><svg width="254" height="33" viewBox="0 0 254 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M73.0378 0H69.3002V32.2139H73.0378V0Z" fill="black"/>
+<path d="M81.1714 15.5322C82.3536 16.0092 83.4817 16.6168 84.5334 17.3562C86.6882 15.0168 88.0075 11.8934 88.0075 8.46678C88.0075 8.09249 87.989 7.72084 87.9587 7.35446H84.2764C84.3186 7.71952 84.3437 8.08986 84.3437 8.46678C84.3437 11.274 83.1167 13.7978 81.1714 15.5322Z" fill="black"/>
+<path d="M86.3286 24.643C86.264 24.531 86.2021 24.4203 86.1348 24.3109C86.1243 24.2938 86.1151 24.2766 86.1045 24.2608C84.1 21.0016 80.6984 18.6807 76.7249 18.1101V21.7779C81.0635 22.6332 84.3464 26.471 84.3464 31.0613C84.3464 31.4514 84.3201 31.8362 84.2753 32.2131H87.9589C87.9918 31.8323 88.0103 31.4487 88.0103 31.0613C88.0103 28.7312 87.3974 26.5421 86.3286 24.643Z" fill="black"/>
+<path d="M253.041 7.35446H249.377V32.2131H253.041V7.35446Z" fill="black"/>
+<path d="M52.432 10.3501C57.6906 10.3501 61.9672 14.5925 61.9672 19.8049C61.9672 25.0173 57.6906 29.2596 52.432 29.2596C47.1735 29.2596 42.8969 25.0173 42.8969 19.8049C42.8969 14.5925 47.1735 10.3501 52.432 10.3501ZM52.432 6.71398C45.14 6.71398 39.2278 12.5748 39.2278 19.8049C39.2278 27.035 45.14 32.8958 52.432 32.8958C59.7241 32.8958 65.635 27.035 65.635 19.8049C65.635 12.5748 59.7228 6.71398 52.432 6.71398Z" fill="black"/>
+<path d="M145.954 6.71398C138.662 6.71398 132.75 12.5748 132.75 19.8049H136.417C136.417 14.5912 140.694 10.3501 145.953 10.3501C151.211 10.3501 155.488 14.5925 155.488 19.8049H159.156C159.156 12.5761 153.245 6.71398 145.954 6.71398Z" fill="black"/>
+<path d="M138.627 32.8955C145.919 32.8955 151.831 27.0347 151.831 19.8046H148.163C148.163 25.0183 143.887 29.2594 138.628 29.2594C133.37 29.2594 129.093 25.017 129.093 19.8046H125.425C125.425 27.0334 131.338 32.8955 138.63 32.8955H138.627Z" fill="black"/>
+<path d="M20.5326 6.71398C13.2405 6.71398 7.32836 12.5748 7.32836 19.8049H10.9961C10.9961 14.5912 15.2728 10.3501 20.5313 10.3501C25.7898 10.3501 30.0664 14.5925 30.0664 19.8049H33.7342C33.7342 12.5761 27.822 6.71398 20.53 6.71398H20.5326Z" fill="black"/>
+<path d="M13.2042 32.8955C20.4963 32.8955 26.4085 27.0347 26.4085 19.8046H22.7407C22.7407 25.0183 18.4641 29.2594 13.2056 29.2594C7.94706 29.2594 3.66909 25.017 3.66909 19.8046H0C0 27.0334 5.91351 32.8955 13.2042 32.8955Z" fill="black"/>
+<path d="M106.726 10.3501C111.985 10.3501 116.261 14.5925 116.261 19.8049C116.261 25.0173 111.983 29.2596 106.726 29.2596C101.469 29.2596 97.1897 25.0173 97.1897 19.8049C97.1897 14.5925 101.468 10.3501 106.726 10.3501ZM106.726 6.71398C99.4341 6.71398 93.5219 12.5748 93.5219 19.8049C93.5219 27.035 99.4341 32.8958 106.726 32.8958C114.018 32.8958 119.929 27.035 119.929 19.8049C119.929 12.5748 114.017 6.71398 106.726 6.71398Z" fill="black"/>
+<path d="M187.403 7.35647V19.6777C187.403 24.9415 183.127 29.2234 177.868 29.2234C172.61 29.2234 168.333 24.9402 168.333 19.6777V7.35647H164.665V19.6777C164.665 26.9777 170.577 32.8951 177.869 32.8951C185.161 32.8951 191.072 26.9763 191.072 19.6777V7.35647H187.403Z" fill="black"/>
+<path d="M59.0363 0H45.8334V3.66777H59.0363V0Z" fill="black"/>
+<path d="M198.411 32.2145V19.8933C198.411 14.6295 202.687 10.3476 207.946 10.3476C213.204 10.3476 217.481 14.6308 217.481 19.8933V32.2145H221.149V19.8933C221.149 12.5933 215.237 6.67583 207.945 6.67583C200.652 6.67583 194.742 12.5946 194.742 19.8933V32.2145H198.411Z" fill="black"/>
+<path d="M230.661 6.67313C227.227 6.67313 224.101 7.98578 221.754 10.134C222.499 11.1844 223.114 12.3086 223.594 13.4881C225.34 11.5587 227.861 10.3435 230.661 10.3435C235.919 10.3435 240.196 14.6268 240.196 19.8892V32.2105H243.864V19.8892C243.864 12.5893 237.953 6.67313 230.661 6.67313Z" fill="black"/>
+<path d="M253.041 0.0100388H249.377V3.67781H253.041V0.0100388Z" fill="black"/>
+</svg></div><div class="spacer-small"></div><div class="text-size-regular text-color-black">AI agents that actually complete your marketing work. Built on the Masumi Protocol.</div></div><div class="footer-links-wrapper"><div><h5 class="heading-h5">Products</h5><div class="spacer-small"></div><div><a href="http://masumi.network/" target="_blank" class="footler-links">Masumi</a><a href="https://www.kodosumi.io/" target="_blank" class="footler-links">Kodosumi</a><a href="./" class="footler-links">Sokosumi</a></div></div><div><h5 class="heading-h5">References</h5><div class="spacer-small"></div><div><a href="https://docs.sokosumi.com/documentation" target="_blank" class="footler-links">Documentation</a><a href="https://docs.sokosumi.com/api-reference" target="_blank" class="footler-links">API</a><a href="https://tally.so/r/nPLBaV" target="_blank" class="footler-links">List Agents</a></div></div><div><h5 class="heading-h5">Community</h5><div class="spacer-small"></div><div><a href="https://x.com/MasumiNetwork" target="_blank" class="footler-links">X/Twitter</a><a href="https://discord.com/invite/aj4QfnTS92" target="_blank" class="footler-links">Discord</a><a href="https://github.com/masumi-network" target="_blank" class="footler-links">GitHub</a><a href="https://t.me/+igMz0AazR-cwMzJi" target="_blank" class="footler-links">Telegram</a></div></div><div><h5 class="heading-h5">Legal</h5><div class="spacer-small"></div><div><a href="./imprint.html" class="footler-links">Imprint</a><a href="./privacy-policy.html" class="footler-links">Privacy Policy</a><a href="./cookie-policy.html" class="footler-links">Cookie Policy</a><a href="./terms-of-service.html" class="footler-links">Terms of Service</a><a href="./acceptable-use.html" aria-current="page" class="footler-links w--current">Acceptable Use</a></div></div></div></div><div class="sokosumi-bottom-logo w-embed"><svg width="1439" height="187" viewBox="0 0 1439 187" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g filter="url(#filter0_i_5342_8527)">
+<path d="M415.404 0H394.146V183.217H415.404V0Z" fill="url(#paint0_linear_5342_8527)"/>
+<path d="M461.664 88.3395C468.388 91.0529 474.804 94.5085 480.786 98.7136C493.041 85.4087 500.545 67.6439 500.545 48.155C500.545 46.0262 500.44 43.9125 500.267 41.8287H479.324C479.564 43.905 479.707 46.0113 479.707 48.155C479.707 64.1209 472.728 78.4752 461.664 88.3395Z" fill="url(#paint1_linear_5342_8527)"/>
+<path d="M490.996 140.158C490.629 139.521 490.276 138.891 489.894 138.269C489.834 138.171 489.782 138.074 489.722 137.984C478.321 119.447 458.974 106.247 436.375 103.001V123.862C461.051 128.727 479.722 150.554 479.722 176.662C479.722 178.88 479.572 181.069 479.318 183.213H500.268C500.455 181.047 500.56 178.865 500.56 176.662C500.56 163.409 497.075 150.959 490.996 140.158Z" fill="url(#paint2_linear_5342_8527)"/>
+<path d="M1439.18 41.8287H1418.34V183.213H1439.18V41.8287Z" fill="url(#paint3_linear_5342_8527)"/>
+<path d="M298.208 58.8666C328.116 58.8666 352.44 82.9952 352.44 112.641C352.44 142.286 328.116 166.415 298.208 166.415C268.301 166.415 243.977 142.286 243.977 112.641C243.977 82.9952 268.301 58.8666 298.208 58.8666ZM298.208 38.1859C256.735 38.1859 223.109 71.5193 223.109 112.641C223.109 153.762 256.735 187.096 298.208 187.096C339.682 187.096 373.3 153.762 373.3 112.641C373.3 71.5193 339.675 38.1859 298.208 38.1859Z" fill="url(#paint4_linear_5342_8527)"/>
+<path d="M830.116 38.1859C788.643 38.1859 755.017 71.5193 755.017 112.641H775.878C775.878 82.9877 800.201 58.8666 830.109 58.8666C860.017 58.8666 884.34 82.9952 884.34 112.641H905.201C905.201 71.5268 871.583 38.1859 830.116 38.1859Z" fill="url(#paint5_linear_5342_8527)"/>
+<path d="M788.444 187.094C829.918 187.094 863.544 153.761 863.544 112.639H842.683C842.683 142.292 818.359 166.413 788.452 166.413C758.544 166.413 734.22 142.285 734.22 112.639H713.36C713.36 153.753 746.985 187.094 788.459 187.094H788.444Z" fill="url(#paint6_linear_5342_8527)"/>
+<path d="M116.78 38.1859C75.3059 38.1859 41.6802 71.5193 41.6802 112.641H62.5408C62.5408 82.9877 86.8643 58.8666 116.772 58.8666C146.68 58.8666 171.004 82.9952 171.004 112.641H191.864C191.864 71.5268 158.238 38.1859 116.765 38.1859H116.78Z" fill="url(#paint7_linear_5342_8527)"/>
+<path d="M75.0995 187.094C116.573 187.094 150.199 153.761 150.199 112.639H129.338C129.338 142.292 105.015 166.413 75.1069 166.413C45.1991 166.413 20.868 142.285 20.868 112.639H0C0 153.753 33.6332 187.094 75.0995 187.094Z" fill="url(#paint8_linear_5342_8527)"/>
+<path d="M607.007 58.8666C636.915 58.8666 661.239 82.9952 661.239 112.641C661.239 142.286 636.908 166.415 607.007 166.415C577.107 166.415 552.769 142.286 552.769 112.641C552.769 82.9952 577.1 58.8666 607.007 58.8666ZM607.007 38.1859C565.534 38.1859 531.908 71.5193 531.908 112.641C531.908 153.762 565.534 187.096 607.007 187.096C648.481 187.096 682.099 153.762 682.099 112.641C682.099 71.5193 648.474 38.1859 607.007 38.1859Z" fill="url(#paint9_linear_5342_8527)"/>
+<path d="M1065.86 41.8401V111.917C1065.86 141.855 1041.54 166.209 1011.63 166.209C981.721 166.209 957.398 141.848 957.398 111.917V41.8401H936.537V111.917C936.537 153.436 970.163 187.092 1011.64 187.092C1053.11 187.092 1086.73 153.429 1086.73 111.917V41.8401H1065.86Z" fill="url(#paint10_linear_5342_8527)"/>
+<path d="M335.77 0H260.678V20.8605H335.77V0Z" fill="url(#paint11_linear_5342_8527)"/>
+<path d="M1128.47 183.221V113.143C1128.47 83.2055 1152.79 58.852 1182.7 58.852C1212.6 58.852 1236.93 83.213 1236.93 113.143V183.221H1257.79V113.143C1257.79 71.6247 1224.16 37.969 1182.69 37.969C1141.22 37.969 1107.6 71.6322 1107.6 113.143V183.221H1128.47Z" fill="url(#paint12_linear_5342_8527)"/>
+<path d="M1311.89 37.9536C1292.36 37.9536 1274.58 45.4193 1261.23 57.6373C1265.47 63.6114 1268.97 70.0052 1271.7 76.7139C1281.63 65.7402 1295.97 58.8291 1311.89 58.8291C1341.8 58.8291 1366.12 83.1902 1366.12 113.121V183.198H1386.98V113.121C1386.98 71.6018 1353.36 37.9536 1311.89 37.9536Z" fill="url(#paint13_linear_5342_8527)"/>
+<path d="M1439.18 0.0570962H1418.34V20.9176H1439.18V0.0570962Z" fill="url(#paint14_linear_5342_8527)"/>
+</g>
+<defs>
+<filter id="filter0_i_5342_8527" x="0" y="0" width="1439.18" height="191.096" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="4"/>
+<feGaussianBlur stdDeviation="2"/>
+<feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.11 0"/>
+<feBlend mode="normal" in2="shape" result="effect1_innerShadow_5342_8527"/>
+</filter>
+<linearGradient id="paint0_linear_5342_8527" x1="719.588" y1="-132.811" x2="719.588" y2="187.096" gradientUnits="userSpaceOnUse">
+<stop stop-color="#DFDEE9"/>
+<stop offset="1" stop-color="#7D7D83" stop-opacity="0"/>
+</linearGradient>
+<linearGradient id="paint1_linear_5342_8527" x1="719.588" y1="-132.811" x2="719.588" y2="187.096" gradientUnits="userSpaceOnUse">
+<stop stop-color="#DFDEE9"/>
+<stop offset="1" stop-color="#7D7D83" stop-opacity="0"/>
+</linearGradient>
+<linearGradient id="paint2_linear_5342_8527" x1="719.588" y1="-132.811" x2="719.588" y2="187.096" gradientUnits="userSpaceOnUse">
+<stop stop-color="#DFDEE9"/>
+<stop offset="1" stop-color="#7D7D83" stop-opacity="0"/>
+</linearGradient>
+<linearGradient id="paint3_linear_5342_8527" x1="719.588" y1="-132.811" x2="719.588" y2="187.096" gradientUnits="userSpaceOnUse">
+<stop stop-color="#DFDEE9"/>
+<stop offset="1" stop-color="#7D7D83" stop-opacity="0"/>
+</linearGradient>
+<linearGradient id="paint4_linear_5342_8527" x1="719.588" y1="-132.811" x2="719.588" y2="187.096" gradientUnits="userSpaceOnUse">
+<stop stop-color="#DFDEE9"/>
+<stop offset="1" stop-color="#7D7D83" stop-opacity="0"/>
+</linearGradient>
+<linearGradient id="paint5_linear_5342_8527" x1="719.588" y1="-132.811" x2="719.588" y2="187.096" gradientUnits="userSpaceOnUse">
+<stop stop-color="#DFDEE9"/>
+<stop offset="1" stop-color="#7D7D83" stop-opacity="0"/>
+</linearGradient>
+<linearGradient id="paint6_linear_5342_8527" x1="719.588" y1="-132.811" x2="719.588" y2="187.096" gradientUnits="userSpaceOnUse">
+<stop stop-color="#DFDEE9"/>
+<stop offset="1" stop-color="#7D7D83" stop-opacity="0"/>
+</linearGradient>
+<linearGradient id="paint7_linear_5342_8527" x1="719.588" y1="-132.811" x2="719.588" y2="187.096" gradientUnits="userSpaceOnUse">
+<stop stop-color="#DFDEE9"/>
+<stop offset="1" stop-color="#7D7D83" stop-opacity="0"/>
+</linearGradient>
+<linearGradient id="paint8_linear_5342_8527" x1="719.588" y1="-132.811" x2="719.588" y2="187.096" gradientUnits="userSpaceOnUse">
+<stop stop-color="#DFDEE9"/>
+<stop offset="1" stop-color="#7D7D83" stop-opacity="0"/>
+</linearGradient>
+<linearGradient id="paint9_linear_5342_8527" x1="719.588" y1="-132.811" x2="719.588" y2="187.096" gradientUnits="userSpaceOnUse">
+<stop stop-color="#DFDEE9"/>
+<stop offset="1" stop-color="#7D7D83" stop-opacity="0"/>
+</linearGradient>
+<linearGradient id="paint10_linear_5342_8527" x1="719.588" y1="-132.811" x2="719.588" y2="187.096" gradientUnits="userSpaceOnUse">
+<stop stop-color="#DFDEE9"/>
+<stop offset="1" stop-color="#7D7D83" stop-opacity="0"/>
+</linearGradient>
+<linearGradient id="paint11_linear_5342_8527" x1="719.588" y1="-132.811" x2="719.588" y2="187.096" gradientUnits="userSpaceOnUse">
+<stop stop-color="#DFDEE9"/>
+<stop offset="1" stop-color="#7D7D83" stop-opacity="0"/>
+</linearGradient>
+<linearGradient id="paint12_linear_5342_8527" x1="719.588" y1="-132.811" x2="719.588" y2="187.096" gradientUnits="userSpaceOnUse">
+<stop stop-color="#DFDEE9"/>
+<stop offset="1" stop-color="#7D7D83" stop-opacity="0"/>
+</linearGradient>
+<linearGradient id="paint13_linear_5342_8527" x1="719.588" y1="-132.811" x2="719.588" y2="187.096" gradientUnits="userSpaceOnUse">
+<stop stop-color="#DFDEE9"/>
+<stop offset="1" stop-color="#7D7D83" stop-opacity="0"/>
+</linearGradient>
+<linearGradient id="paint14_linear_5342_8527" x1="719.588" y1="-132.811" x2="719.588" y2="187.096" gradientUnits="userSpaceOnUse">
+<stop stop-color="#DFDEE9"/>
+<stop offset="1" stop-color="#7D7D83" stop-opacity="0"/>
+</linearGradient>
+</defs>
+</svg></div></div></div></div></div></div><script src="https://d3e54v103j8qbb.cloudfront.net/js/jquery-3.5.1.min.dc5e7f18c8.js?site=67e1399c1a13a9fef827f183" type="text/javascript"></script><script src="./assets/js/dropdown.js"></script><script src="./js/script.js"></script></body></html>

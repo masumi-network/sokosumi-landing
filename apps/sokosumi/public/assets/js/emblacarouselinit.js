@@ -1,0 +1,1 @@
+(function(){var s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/embla-carousel@8/embla-carousel.umd.js';s.onload=function(){document.querySelectorAll('.embla').forEach(function(el){var vp=el.querySelector('.embla__viewport');if(vp)EmblaCarousel(vp,{loop:false,align:'start',dragFree:true});});};document.head.appendChild(s);})();
