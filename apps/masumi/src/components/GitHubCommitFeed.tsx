@@ -26,11 +26,30 @@ type Commit = {
   repo: Repo;
 };
 
+type RepoActivity = {
+  name: string;
+  htmlUrl: string;
+  language: string | null;
+  commits: number;
+};
+
+type FeedStats = {
+  totalCommits: number;
+  avgPerDay: number;
+  headlineDays: number;
+  sparklineWeeks: number;
+  topRepos: RepoActivity[];
+  weeklyTotals: number[];
+};
+
 type FeedResponse = {
   commits: Commit[];
   repos: Repo[];
+  stats: FeedStats;
   updatedAt: string;
 };
+
+const COLLAPSED_COMMITS = 8;
 
 function timeAgo(iso: string): string {
   const seconds = Math.floor((Date.now() - new Date(iso).getTime()) / 1000);
@@ -47,6 +66,53 @@ function timeAgo(iso: string): string {
     day: "numeric",
     year: "numeric",
   });
+}
+
+function Sparkline({
+  data,
+  width = 100,
+  height = 24,
+  color = "#000",
+}: {
+  data: number[];
+  width?: number;
+  height?: number;
+  color?: string;
+}) {
+  if (data.length === 0) return null;
+  const max = Math.max(1, ...data);
+  const barWidth = width / data.length;
+  return (
+    <svg width={width} height={height} className="block shrink-0">
+      {data.map((value, i) => {
+        const h = Math.max(1, (value / max) * height);
+        return (
+          <rect
+            key={i}
+            x={i * barWidth + 0.5}
+            y={height - h}
+            width={Math.max(1, barWidth - 1)}
+            height={h}
+            fill={color}
+            opacity={value === 0 ? 0.08 : 0.65}
+          />
+        );
+      })}
+    </svg>
+  );
+}
+
+function Stat({ value, label }: { value: React.ReactNode; label: string }) {
+  return (
+    <div className="flex flex-col gap-1">
+      <span className="text-[24px] md:text-[28px] font-normal tracking-[-0.4px] text-black leading-none tabular-nums">
+        {value}
+      </span>
+      <span className="text-[11px] text-[#999] uppercase tracking-[0.04em]">
+        {label}
+      </span>
+    </div>
+  );
 }
 
 function CommitRow({ commit }: { commit: Commit }) {
@@ -80,7 +146,7 @@ function CommitRow({ commit }: { commit: Commit }) {
             {commit.shortSha}
           </span>
         </div>
-        <div className="text-[13px] text-black leading-snug mt-0.5 line-clamp-2 group-hover:text-black">
+        <div className="text-[13px] text-black leading-snug mt-0.5 line-clamp-2">
           {commit.message}
         </div>
         <div className="text-[11px] text-[#bbb] mt-0.5">
@@ -91,33 +157,32 @@ function CommitRow({ commit }: { commit: Commit }) {
   );
 }
 
-function RepoChip({ repo }: { repo: Repo }) {
+function RepoActivityRow({ repo, max }: { repo: RepoActivity; max: number }) {
+  const widthPct = max > 0 ? Math.max(2, (repo.commits / max) * 100) : 0;
   return (
     <a
       href={repo.htmlUrl}
       target="_blank"
       rel="noopener noreferrer"
-      className="flex items-center gap-1.5 px-2.5 py-1 border border-black/[0.06] hover:border-black/[0.16] rounded-full text-[11px] text-[#666] hover:text-black transition-colors whitespace-nowrap"
-      title={repo.description ?? undefined}
+      className="flex items-center gap-4 py-2 px-3 border border-transparent hover:border-black/[0.08] hover:bg-black/[0.01] transition-colors group"
     >
-      <span>{repo.name}</span>
-      {repo.language && (
-        <span className="text-[#bbb]">·</span>
-      )}
-      {repo.language && (
-        <span className="text-[#999]">{repo.language}</span>
-      )}
-      {repo.stars > 0 && (
-        <>
-          <span className="text-[#bbb]">·</span>
-          <span className="text-[#999] flex items-center gap-0.5">
-            <svg width="9" height="9" viewBox="0 0 9 9" fill="currentColor" aria-hidden>
-              <path d="M4.5.5l1.18 2.39 2.64.38-1.91 1.86.45 2.62L4.5 6.51 2.14 7.75l.45-2.62L.68 3.27l2.64-.38z" />
-            </svg>
-            {repo.stars}
-          </span>
-        </>
-      )}
+      <div className="min-w-0 flex-1">
+        <div className="flex items-center gap-2">
+          <span className="text-[13px] text-black truncate">{repo.name}</span>
+          {repo.language && (
+            <span className="text-[11px] text-[#bbb] shrink-0">{repo.language}</span>
+          )}
+        </div>
+        <div className="mt-1 h-1 bg-black/[0.04] rounded-full overflow-hidden">
+          <div
+            className="h-full bg-black/60 group-hover:bg-black transition-colors"
+            style={{ width: `${widthPct}%` }}
+          />
+        </div>
+      </div>
+      <span className="text-[13px] text-black tabular-nums w-12 text-right shrink-0">
+        {repo.commits}
+      </span>
     </a>
   );
 }
@@ -138,6 +203,7 @@ function SkeletonRow() {
 export default function GitHubCommitFeed() {
   const [data, setData] = useState<FeedResponse | null>(null);
   const [error, setError] = useState(false);
+  const [expanded, setExpanded] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -159,9 +225,17 @@ export default function GitHubCommitFeed() {
 
   if (error) return null;
 
+  const visibleCommits = data
+    ? expanded
+      ? data.commits
+      : data.commits.slice(0, COLLAPSED_COMMITS)
+    : [];
+  const hiddenCount = data ? data.commits.length - COLLAPSED_COMMITS : 0;
+  const topRepoMax = data?.stats.topRepos[0]?.commits ?? 0;
+
   return (
     <section className="w-full">
-      <div className="flex items-baseline justify-between flex-wrap gap-2 mb-4">
+      <div className="flex items-baseline justify-between flex-wrap gap-2 mb-6">
         <div>
           <h2 className="text-[20px] md:text-[24px] font-normal tracking-[-0.3px] text-black">
             GitHub Activity
@@ -186,12 +260,43 @@ export default function GitHubCommitFeed() {
         )}
       </div>
 
-      {/* Repo chips */}
-      {data && data.repos.length > 0 && (
-        <div className="flex flex-wrap gap-1.5 mb-5">
-          {data.repos.map((repo) => (
-            <RepoChip key={repo.name} repo={repo} />
-          ))}
+      {/* Stats panel */}
+      {data && (
+        <div className="border border-black/[0.06] p-5 mb-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
+            <Stat
+              value={data.stats.totalCommits.toLocaleString()}
+              label={`Commits · last ${data.stats.headlineDays}d`}
+            />
+            <Stat
+              value={data.stats.avgPerDay.toLocaleString()}
+              label="Avg per day"
+            />
+            <Stat
+              value={data.stats.topRepos.length.toLocaleString()}
+              label="Active repos"
+            />
+            <div className="flex flex-col gap-1">
+              <Sparkline data={data.stats.weeklyTotals} width={140} height={32} />
+              <span className="text-[11px] text-[#999] uppercase tracking-[0.04em]">
+                Last {data.stats.sparklineWeeks} weeks
+              </span>
+            </div>
+          </div>
+
+          {/* Most active repos */}
+          {data.stats.topRepos.length > 0 && (
+            <div className="mt-6 pt-5 border-t border-black/[0.05]">
+              <h3 className="text-[11px] text-[#999] uppercase tracking-[0.04em] mb-2">
+                Most active repos · last {data.stats.headlineDays} days
+              </h3>
+              <div className="flex flex-col">
+                {data.stats.topRepos.map((repo) => (
+                  <RepoActivityRow key={repo.name} repo={repo} max={topRepoMax} />
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       )}
 
@@ -203,12 +308,28 @@ export default function GitHubCommitFeed() {
               No commits found
             </div>
           ) : (
-            data.commits.map((c) => <CommitRow key={`${c.repo.name}-${c.sha}`} commit={c} />)
+            visibleCommits.map((c) => (
+              <CommitRow key={`${c.repo.name}-${c.sha}`} commit={c} />
+            ))
           )
         ) : (
-          Array.from({ length: 6 }).map((_, i) => <SkeletonRow key={i} />)
+          Array.from({ length: 4 }).map((_, i) => <SkeletonRow key={i} />)
         )}
       </div>
+
+      {/* Expand/collapse */}
+      {data && hiddenCount > 0 && (
+        <div className="mt-3 flex justify-center">
+          <button
+            onClick={() => setExpanded((v) => !v)}
+            className="text-[12px] text-[#999] hover:text-black transition-colors px-4 py-2 rounded-full border border-black/[0.06] hover:border-black/[0.16]"
+          >
+            {expanded
+              ? "Show less"
+              : `Show ${hiddenCount} more commit${hiddenCount === 1 ? "" : "s"}`}
+          </button>
+        </div>
+      )}
     </section>
   );
 }
