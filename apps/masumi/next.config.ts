@@ -11,6 +11,11 @@ const nextConfig: NextConfig = {
     "/blogs": ["./content/**/*.md"],
     "/blogs/[slug]": ["./content/**/*.md"],
   },
+  images: {
+    remotePatterns: [
+      { protocol: "https", hostname: "avatars.githubusercontent.com" },
+    ],
+  },
 };
 
 export default nextConfig;

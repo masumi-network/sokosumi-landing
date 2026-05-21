@@ -6,6 +6,7 @@ import ExplorerTransactions from "@/components/ExplorerTransactions";
 import ActivityHeatmap from "@/components/ActivityHeatmap";
 import VolumeTide from "@/components/VolumeTide";
 import NetworkToggle from "@/components/NetworkToggle";
+import GitHubCommitFeed from "@/components/GitHubCommitFeed";
 
 export const metadata: Metadata = {
   title: "Explorer",
@@ -92,6 +93,12 @@ export default function ExplorerPage() {
             <FadeIn delay={400}>
               <div className="mt-10 relative">
                 <ActivityHeatmap />
+              </div>
+            </FadeIn>
+
+            <FadeIn delay={500}>
+              <div className="mt-16">
+                <GitHubCommitFeed />
               </div>
             </FadeIn>
           </Suspense>
