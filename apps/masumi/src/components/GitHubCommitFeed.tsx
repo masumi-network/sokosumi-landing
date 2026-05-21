@@ -48,6 +48,7 @@ type FeedResponse = {
 };
 
 const COLLAPSED_COMMITS = 8;
+const COLLAPSED_REPOS = 6;
 
 function timeAgo(iso: string): string {
   const seconds = Math.floor((Date.now() - new Date(iso).getTime()) / 1000);
@@ -244,6 +245,7 @@ export default function GitHubCommitFeed() {
   const [data, setData] = useState<FeedResponse | null>(null);
   const [error, setError] = useState(false);
   const [expanded, setExpanded] = useState(false);
+  const [reposExpanded, setReposExpanded] = useState(false);
   const [repoSort, setRepoSort] = useState<RepoSort>("activity");
 
   useEffect(() => {
@@ -387,10 +389,24 @@ export default function GitHubCommitFeed() {
             </div>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
-            {sortedRepos.map((repo) => (
-              <RepoCard key={repo.name} repo={repo} />
-            ))}
+            {(reposExpanded ? sortedRepos : sortedRepos.slice(0, COLLAPSED_REPOS)).map(
+              (repo) => (
+                <RepoCard key={repo.name} repo={repo} />
+              ),
+            )}
           </div>
+          {sortedRepos.length > COLLAPSED_REPOS && (
+            <div className="mt-3 flex justify-center">
+              <button
+                onClick={() => setReposExpanded((v) => !v)}
+                className="text-[12px] text-[#999] hover:text-black transition-colors px-4 py-2 rounded-full border border-black/[0.06] hover:border-black/[0.16]"
+              >
+                {reposExpanded
+                  ? "Show less"
+                  : `Show ${sortedRepos.length - COLLAPSED_REPOS} more repos`}
+              </button>
+            </div>
+          )}
         </div>
       )}
 
