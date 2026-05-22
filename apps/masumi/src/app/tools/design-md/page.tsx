@@ -37,12 +37,22 @@ export const metadata: Metadata = {
       "Paste any URL and generate a DESIGN.md file your AI agents can read. Brand colors, typography, components, and tokens — extracted automatically.",
     url: `${URL_BASE}${PAGE_PATH}`,
     siteName: "Masumi",
+    images: [
+      {
+        url: "https://c-ipfs-gw.nmkr.io/ipfs/QmYuqD4ZxtqydTNvh6kxPSub5hzEH2Y21ahr3YpohR9rMt",
+        width: 1920,
+        height: 1080,
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "DESIGN.md Generator — Create AI-Ready Design Systems",
     description:
       "Paste any URL and generate a DESIGN.md file your AI agents can read.",
+    images: [
+      "https://c-ipfs-gw.nmkr.io/ipfs/QmYuqD4ZxtqydTNvh6kxPSub5hzEH2Y21ahr3YpohR9rMt",
+    ],
   },
   robots: {
     index: true,
