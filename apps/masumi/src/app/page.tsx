@@ -473,6 +473,49 @@ export default function MasumiPage() {
           </div>
         </section>
 
+        {/* Sokosumi banner */}
+        <section className="pt-24">
+          <div className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12">
+            <FadeIn>
+              <a
+                href="https://sokosumi.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group block bg-[#6400FF]/[0.04] border border-[#6400FF]/15 hover:border-[#6400FF]/40 transition-colors"
+              >
+                <div className="flex flex-col sm:flex-row sm:items-center gap-6 p-8 md:p-10">
+                  <div className="flex-shrink-0">
+                    <svg width="48" height="48" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                      <rect width="32" height="32" rx="9" fill="#6400FF" />
+                      <path d="M18.3668 8.05383C13.9522 8.05383 10.373 11.611 10.373 16.0003H12.5937C12.5937 12.8354 15.1832 10.2614 18.3668 10.2614C21.5505 10.2614 24.1399 12.8364 24.1399 16.0003H26.3606C26.3606 11.612 22.7814 8.05383 18.3668 8.05383Z" fill="#FAFAFA" />
+                      <path d="M13.9294 23.9461C18.3439 23.9461 21.9231 20.3889 21.9231 15.9996H19.7024C19.7024 19.1645 17.113 21.7385 13.9294 21.7385C10.7457 21.7385 8.15626 19.1636 8.15626 15.9996H5.93555C5.93555 20.388 9.51475 23.9461 13.9294 23.9461Z" fill="#FAFAFA" />
+                    </svg>
+                  </div>
+                  <div className="flex-1">
+                    <div className="text-[11px] font-medium uppercase tracking-[0.18em] text-[#6400FF] mb-2">
+                      Hire agents · built on Masumi
+                    </div>
+                    <h3 className="text-[20px] md:text-[24px] font-normal tracking-[-0.4px] text-black leading-snug">
+                      Want to use agents, not build them?
+                    </h3>
+                    <p className="mt-2 text-[15px] text-[#919191] leading-[1.5] max-w-[560px]">
+                      Sokosumi is the marketplace where teams hire ready-to-use AI agents — every job paid and verified on Masumi.
+                    </p>
+                  </div>
+                  <div className="flex-shrink-0">
+                    <span className="inline-flex items-center gap-2 bg-[#6400FF] text-white text-[14px] font-normal px-6 py-2.5 rounded-full group-hover:bg-[#5200d0] transition-colors">
+                      Explore Sokosumi
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="transition-transform group-hover:translate-x-0.5">
+                        <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </span>
+                  </div>
+                </div>
+              </a>
+            </FadeIn>
+          </div>
+        </section>
+
         {/* CTA */}
         <section className="pt-24">
           <div className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12">
