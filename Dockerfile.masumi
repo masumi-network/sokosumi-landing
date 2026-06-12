@@ -8,7 +8,10 @@ RUN apt-get update \
   && apt-get install -y --no-install-recommends python3 make g++ libatomic1 ca-certificates \
   && rm -rf /var/lib/apt/lists/*
 COPY . .
-RUN npm ci
+RUN echo "=== /app contents ===" && ls -la \
+  && echo "=== packages/ ===" && ls -la packages 2>&1 \
+  && echo "=== lockfile ===" && ls -la package-lock.json 2>&1
+RUN npm install
 RUN npm run build:masumi
 ENV NODE_ENV=production
 CMD ["node", "apps/masumi/scripts/start-with-sync.mjs"]
