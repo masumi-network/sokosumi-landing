@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
 import { Header, Footer, FadeIn } from "@summation/shared";
-import LazyAgentFlowGraph from "@/components/LazyAgentFlowGraph";
+import AgentNetworkGraph from "@/components/AgentNetworkGraph";
 import MasumiStats from "@/components/MasumiStats";
 import VolumeTide from "@/components/VolumeTide";
 import UserTypeToggle from "@/components/UserTypeToggle";
@@ -320,8 +320,8 @@ export default function MasumiPage() {
             </div>
           </FadeIn>
 
-          <FadeIn delay={200} className="mt-8 w-full max-w-[1440px] px-4 md:px-8 lg:px-12">
-            <LazyAgentFlowGraph />
+          <FadeIn delay={200} className="mt-10 w-full max-w-[1000px] px-6">
+            <AgentNetworkGraph />
           </FadeIn>
 
           <FadeIn delay={300} className="mt-10 w-full max-w-[1440px] px-4 md:px-8 lg:px-12">

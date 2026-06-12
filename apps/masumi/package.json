@@ -11,7 +11,6 @@
   "dependencies": {
     "@browserbasehq/sdk": "^2.10.0",
     "@summation/shared": "*",
-    "@xyflow/react": "^12.10.0",
     "better-sqlite3": "^12.6.2",
     "cheerio": "^1.2.0",
     "gray-matter": "^4.0.3",
