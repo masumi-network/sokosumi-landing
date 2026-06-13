@@ -309,6 +309,20 @@ export default function MasumiPage() {
                 className="w-[24px] select-none"
               />
             </div>
+            <div className="x402-badge mx-6 mb-7">
+              <span className="vch">
+                <svg viewBox="0 0 24 24">
+                  <path d="M5 12.5l4.5 4.5L19 7" />
+                </svg>
+              </span>
+              <span>
+                Officially merged &amp; recognized as the <strong>x402 Standard</strong>{" "}
+                <span className="x402-seg">
+                  by the x402 Foundation, founded by{" "}
+                  <img src="/images/network/coinbase.svg" alt="Coinbase" />
+                </span>
+              </span>
+            </div>
             <h1 className="text-[40px] md:text-[64px] font-normal tracking-[-1.28px] leading-[1.15] text-black max-w-[700px] px-6">
               Agents Pay Agents
             </h1>
@@ -320,7 +334,7 @@ export default function MasumiPage() {
             </div>
           </FadeIn>
 
-          <FadeIn delay={200} className="mt-10 w-full max-w-[1000px] px-6">
+          <FadeIn delay={200} className="mt-8 w-full max-w-[1000px] px-6">
             <AgentNetworkGraph />
           </FadeIn>
 

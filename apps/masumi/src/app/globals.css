@@ -305,24 +305,27 @@ body {
   animation: fadeIn 0.4s ease-out forwards;
 }
 
-/* Agent network visualization (hero) — mirrors pitch deck */
+/* Agent network visualization (hero) — geometry in SVG, text in HTML */
 .agent-netviz {
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-.netviz {
+.nv-stage {
+  position: relative;
   width: 100%;
   max-width: 880px;
   margin: 0 auto;
-  display: block;
-  font-family: var(--font-sans, "Inter", system-ui, sans-serif);
 }
-.nv-edge { stroke: rgba(250, 0, 140, 0.16); stroke-width: 1.5; }
-.nv-node { fill: #fff; stroke: rgba(250, 0, 140, 0.30); stroke-width: 1.5; }
-.nv-node.amb { fill: rgba(250, 0, 140, 0.04); stroke: rgba(250, 0, 140, 0.20); }
-.nv-ring { fill: none; stroke: rgba(250, 0, 140, 0.30); stroke-width: 1.5; }
+.netviz {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1000 / 390;
+}
+.nv-edge { stroke: rgba(250, 0, 140, 0.26); stroke-width: 1.5; }
+.nv-node.amb { fill: rgba(250, 0, 140, 0.06); stroke: rgba(250, 0, 140, 0.30); stroke-width: 1.5; }
+.nv-ring { fill: none; stroke: rgba(250, 0, 140, 0.35); stroke-width: 1.5; }
 .nv-tx { stroke: #fa008c; stroke-width: 3; fill: none; stroke-linecap: round; }
 .nv-tx.draw {
   stroke-dasharray: 320;
@@ -333,23 +336,69 @@ body {
 .nv-arrow { fill: #fa008c; }
 .nv-badge { fill: #fa008c; }
 .nv-check { fill: none; stroke: #fff; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
-.nv-pill-bg { fill: #fff; stroke: rgba(250, 0, 140, 0.30); stroke-width: 1; }
-.nv-pill-t { font-weight: 600; font-size: 14px; fill: #fa008c; }
-.nv-lbl { font-weight: 600; font-size: 15px; fill: rgba(15, 15, 20, 0.92); }
-.nv-sub { font-weight: 500; font-size: 11px; fill: rgba(15, 15, 20, 0.44); letter-spacing: 0.08em; }
-.netcap { font-size: 11.5px; color: rgba(15, 15, 20, 0.32); margin-top: 16px; text-align: center; }
+
+/* HTML overlays — fixed type sizes, legible at every viewport */
+.nv-pill {
+  position: absolute;
+  left: 50%;
+  top: 36%;
+  transform: translate(-50%, -50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: #fff;
+  border: 1px solid rgba(250, 0, 140, 0.30);
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #fa008c;
+  white-space: nowrap;
+}
+.nv-pill img { width: 17px; height: 17px; }
+.nv-tag {
+  position: absolute;
+  left: 50%;
+  top: 60.5%;
+  transform: translateX(-50%);
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(15, 15, 20, 0.62);
+  white-space: nowrap;
+}
+.nv-agents { display: contents; }
+.nv-agent {
+  position: absolute;
+  top: 63%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+.nv-agent-a { left: 30%; transform: translateX(-50%); }
+.nv-agent-b { left: 70%; transform: translateX(-50%); }
+.nv-name { font-size: 14px; font-weight: 600; color: rgba(15, 15, 20, 0.92); white-space: nowrap; }
+.nv-org { font-size: 10.5px; font-weight: 500; letter-spacing: 0.08em; color: rgba(15, 15, 20, 0.55); }
+.netcap { font-size: 13px; color: rgba(15, 15, 20, 0.62); margin-top: 14px; text-align: center; }
+.netcap a { text-decoration: underline; text-underline-offset: 2px; }
+.netcap a:hover { color: #fa008c; }
+
+/* x402 badge — hero eyebrow */
 .x402-badge {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
   gap: 9px;
-  margin-top: 16px;
-  padding: 8px 17px;
+  padding: 8px 18px;
   border: 1px solid rgba(250, 0, 140, 0.30);
   border-radius: 999px;
   background: rgba(250, 0, 140, 0.05);
-  font-size: 12.5px;
-  line-height: 1.35;
-  color: rgba(15, 15, 20, 0.60);
+  font-size: 13px;
+  line-height: 1.45;
+  color: rgba(15, 15, 20, 0.72);
 }
 .x402-badge .vch {
   flex: 0 0 auto;
@@ -363,7 +412,30 @@ body {
 }
 .x402-badge .vch svg { width: 9px; height: 9px; fill: none; stroke: #fff; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
 .x402-badge strong { color: #fa008c; font-weight: 600; }
-.x402-badge img { height: 14px; width: auto; opacity: 0.72; filter: grayscale(1) brightness(0); vertical-align: middle; }
+.x402-seg { white-space: nowrap; }
+.x402-badge img {
+  height: 13px;
+  width: auto;
+  display: inline;
+  vertical-align: -2px;
+  margin-left: 2px;
+  opacity: 0.85;
+  filter: grayscale(1) brightness(0);
+}
+
 @media (max-width: 640px) {
-  .x402-badge { flex-wrap: wrap; justify-content: center; text-align: center; font-size: 11.5px; padding: 8px 14px; }
+  /* slice-crop the network sides; reflow all text below the graphic */
+  .netviz { aspect-ratio: auto; height: 200px; }
+  .nv-stage { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+  .nv-pill, .nv-tag, .nv-agent { position: static; transform: none; }
+  .nv-agents { display: flex; width: 100%; max-width: 320px; justify-content: space-between; }
+  .nv-agent-a, .nv-agent-b { transform: none; }
+  .x402-badge { font-size: 11.5px; padding: 7px 14px; text-align: center; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nv-tx.draw { animation: none; stroke-dashoffset: 0; }
+  .animate-fadeIn, .animate-drift1, .animate-drift2 { animation: none; }
+  .feature-card:hover .status-badge { animation: none; }
+  .code-cursor::after { animation: none; }
 }
