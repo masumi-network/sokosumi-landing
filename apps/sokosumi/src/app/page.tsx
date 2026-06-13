@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Header } from "@summation/shared";
 import Hero from "@/components/landing/Hero";
+import CoworkerBand from "@/components/landing/CoworkerBand";
 import Feature from "@/components/landing/Feature";
 import StatementBand from "@/components/landing/StatementBand";
 import Workflow from "@/components/landing/Workflow";
@@ -30,6 +31,8 @@ export default function HomePage() {
       <Header product="sokosumi" />
       <main>
         <Hero />
+
+        <CoworkerBand />
 
         <Feature
           eyebrow="What they do"
