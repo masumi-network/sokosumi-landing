@@ -1,5 +1,4 @@
-import fs from "node:fs";
-import path from "node:path";
+import agentsData from "./agents-data.json";
 
 export interface Agent {
   name: string;
@@ -29,8 +28,7 @@ let cache: Agent[] | null = null;
 
 export function loadAgents(): Agent[] {
   if (cache) return cache;
-  const file = path.join(process.cwd(), "public", "data", "agents.json");
-  const raw = JSON.parse(fs.readFileSync(file, "utf-8")) as Agent[];
+  const raw = agentsData as Agent[];
   cache = raw.map((a) => ({
     ...a,
     thumbnail: abs(a.thumbnail),
