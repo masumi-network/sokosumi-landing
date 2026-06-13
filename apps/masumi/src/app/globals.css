@@ -315,7 +315,7 @@ body {
 .nv-stage {
   position: relative;
   width: 100%;
-  max-width: 880px;
+  max-width: 1240px;
   margin: 0 auto;
 }
 .netviz {
@@ -324,7 +324,30 @@ body {
   aspect-ratio: 1000 / 390;
 }
 .nv-edge { stroke: rgba(250, 0, 140, 0.26); stroke-width: 1.5; }
-.nv-node.amb { fill: rgba(250, 0, 140, 0.06); stroke: rgba(250, 0, 140, 0.30); stroke-width: 1.5; }
+.nv-node.amb {
+  fill: rgba(250, 0, 140, 0.06);
+  stroke: rgba(250, 0, 140, 0.30);
+  stroke-width: 1.5;
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: fill 0.25s ease, stroke 0.25s ease;
+  animation: nvPulse 6s ease-in-out infinite;
+}
+.nv-node.amb:nth-of-type(2n) { animation-delay: -2s; }
+.nv-node.amb:nth-of-type(3n) { animation-delay: -4s; }
+.nv-node.amb:hover { fill: rgba(250, 0, 140, 0.14); stroke: rgba(250, 0, 140, 0.50); }
+@keyframes nvPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+.nv-flow { fill: #fa008c; opacity: 0; }
+.nv-anode {
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.nv-anode:hover { transform: scale(1.05); }
+.nv-anode:hover .nv-ring { stroke: rgba(250, 0, 140, 0.65); }
 .nv-ring { fill: none; stroke: rgba(250, 0, 140, 0.35); stroke-width: 1.5; }
 .nv-tx { stroke: #fa008c; stroke-width: 3; fill: none; stroke-linecap: round; }
 .nv-tx.draw {
@@ -349,13 +372,18 @@ body {
   background: #fff;
   border: 1px solid rgba(250, 0, 140, 0.30);
   border-radius: 999px;
-  padding: 6px 14px;
-  font-size: 13.5px;
+  padding: 7px 16px;
+  font-size: 14px;
   font-weight: 600;
   color: #fa008c;
   white-space: nowrap;
+  transition: transform 0.25s ease, border-color 0.25s ease;
 }
-.nv-pill img { width: 17px; height: 17px; }
+.nv-pill:hover {
+  transform: translate(-50%, calc(-50% - 2px));
+  border-color: rgba(250, 0, 140, 0.55);
+}
+.nv-pill img { width: 18px; height: 18px; }
 .nv-tag {
   position: absolute;
   left: 50%;
@@ -379,7 +407,7 @@ body {
 }
 .nv-agent-a { left: 30%; transform: translateX(-50%); }
 .nv-agent-b { left: 70%; transform: translateX(-50%); }
-.nv-name { font-size: 14px; font-weight: 600; color: rgba(15, 15, 20, 0.92); white-space: nowrap; }
+.nv-name { font-size: 15px; font-weight: 600; color: rgba(15, 15, 20, 0.92); white-space: nowrap; }
 .nv-org { font-size: 10.5px; font-weight: 500; letter-spacing: 0.08em; color: rgba(15, 15, 20, 0.55); }
 .netcap { font-size: 13px; color: rgba(15, 15, 20, 0.62); margin-top: 14px; text-align: center; }
 .netcap a { text-decoration: underline; text-underline-offset: 2px; }
@@ -428,6 +456,7 @@ body {
   .netviz { aspect-ratio: auto; height: 200px; }
   .nv-stage { display: flex; flex-direction: column; align-items: center; gap: 10px; }
   .nv-pill, .nv-tag, .nv-agent { position: static; transform: none; }
+  .nv-pill:hover { transform: none; }
   .nv-agents { display: flex; width: 100%; max-width: 320px; justify-content: space-between; }
   .nv-agent-a, .nv-agent-b { transform: none; }
   .x402-badge { font-size: 11.5px; padding: 7px 14px; text-align: center; }
@@ -435,6 +464,9 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   .nv-tx.draw { animation: none; stroke-dashoffset: 0; }
+  .nv-flow { display: none; }
+  .nv-node.amb { animation: none; }
+  .nv-anode { transition: none; }
   .animate-fadeIn, .animate-drift1, .animate-drift2 { animation: none; }
   .feature-card:hover .status-badge { animation: none; }
   .code-cursor::after { animation: none; }

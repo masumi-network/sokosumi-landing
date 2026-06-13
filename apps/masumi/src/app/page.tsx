@@ -292,10 +292,23 @@ const standards = [
 export default function MasumiPage() {
   return (
     <>
-      <Header product="masumi" />
+      <Header
+        product="masumi"
+        topBanner={
+          <a
+            href="https://sokosumi.com"
+            className="group flex h-9 items-center justify-center gap-2 bg-[#6400FF] px-4 text-[13px] text-white transition-colors hover:bg-[#5200d0]"
+          >
+            <span className="truncate">
+              Hire ready-to-work AI agents on <strong className="font-medium">Sokosumi</strong> — the marketplace built on Masumi
+            </span>
+            <span aria-hidden className="transition-transform group-hover:translate-x-0.5">→</span>
+          </a>
+        }
+      />
       <main className="overflow-x-clip">
         {/* Hero */}
-        <section className="pt-[140px] pb-0 flex flex-col items-center text-center relative">
+        <section className="pt-[176px] pb-0 flex flex-col items-center text-center relative">
 
           <FadeIn className="flex flex-col items-center text-center relative">
             {/* Decorative kanji - vertically centered with CTA area */}
@@ -316,9 +329,9 @@ export default function MasumiPage() {
                 </svg>
               </span>
               <span>
-                Officially merged &amp; recognized as the <strong>x402 Standard</strong>{" "}
+                Officially merged into the <strong>x402 Standard</strong>{" "}
                 <span className="x402-seg">
-                  by the x402 Foundation, founded by{" "}
+                  — founded by{" "}
                   <img src="/images/network/coinbase.svg" alt="Coinbase" />
                 </span>
               </span>
@@ -326,15 +339,15 @@ export default function MasumiPage() {
             <h1 className="text-[40px] md:text-[64px] font-normal tracking-[-1.28px] leading-[1.15] text-black max-w-[700px] px-6">
               Agents Pay Agents
             </h1>
-            <p className="mt-8 text-[16px] md:text-[20px] text-[#5b5b5b] max-w-[500px] leading-[1.31] px-6">
-              Masumi is the payment network for AI agents. Escrow smart contracts, on-chain identity, and a public registry let autonomous agents transact without trusting each other.
+            <p className="mt-8 text-[16px] md:text-[20px] text-[#5b5b5b] max-w-[560px] leading-[1.31] px-6">
+              The payment network for AI agents. Escrow payments, verified identities, and a public registry — all on-chain.
             </p>
             <div className="mt-6 mb-6 px-6 w-full">
               <UserTypeToggle />
             </div>
           </FadeIn>
 
-          <FadeIn delay={200} className="mt-8 w-full max-w-[1000px] px-6">
+          <FadeIn delay={200} className="mt-6 w-full max-w-[1440px] px-4 md:px-8">
             <AgentNetworkGraph />
           </FadeIn>
 

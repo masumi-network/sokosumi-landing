@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, type ReactNode } from "react";
 import Link from "next/link";
 import { SokosumiIcon } from "./SummationLogo";
 
@@ -43,7 +43,7 @@ const products = [
   },
 ];
 
-export default function Header({ product = "sokosumi" }: { product?: "sokosumi" | "masumi" | "kodosumi" }) {
+export default function Header({ product = "sokosumi", topBanner }: { product?: "sokosumi" | "masumi" | "kodosumi"; topBanner?: ReactNode }) {
   const [showProducts, setShowProducts] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -58,13 +58,16 @@ export default function Header({ product = "sokosumi" }: { product?: "sokosumi" 
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-50 flex justify-center"
-        style={{
-          height: 74,
-          backgroundColor: "rgba(244,244,244,0.85)",
-          backdropFilter: "blur(12px)",
-        }}
-      >
+      <header className="fixed top-0 left-0 right-0 z-50">
+        {topBanner}
+        <div
+          className="flex justify-center"
+          style={{
+            height: 74,
+            backgroundColor: "rgba(244,244,244,0.85)",
+            backdropFilter: "blur(12px)",
+          }}
+        >
         <div className="w-full max-w-[1440px] flex items-center justify-between px-6 lg:px-12">
           {/* Logo with product switcher */}
           <div
@@ -187,11 +190,12 @@ export default function Header({ product = "sokosumi" }: { product?: "sokosumi" 
             </button>
           </div>
         </div>
+        </div>
       </header>
 
       {/* Mobile menu overlay */}
       {mobileMenuOpen && (
-        <div className="fixed inset-0 z-40 lg:hidden" style={{ top: 74 }}>
+        <div className="fixed inset-0 z-40 lg:hidden" style={{ top: topBanner ? 110 : 74 }}>
           <div className="absolute inset-0 bg-[#F5F5F5]" />
           <nav className="relative flex flex-col px-6 pt-8 gap-1">
             {product === "sokosumi" ? (
