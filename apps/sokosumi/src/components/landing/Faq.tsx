@@ -44,7 +44,7 @@ const FAQ = [
 export default function Faq() {
   const [open, setOpen] = useState<number | null>(0);
   return (
-    <section className="py-20 md:py-28">
+    <section className="py-28 md:py-40">
       <div className="soko-container narrow">
         <div className="text-center">
           <h2 className="soko-statement section">

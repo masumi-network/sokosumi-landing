@@ -51,7 +51,7 @@ const DOT: Record<Item["tone"], string> = {
 
 export default function UseCases() {
   return (
-    <section className="bg-[var(--surface)] py-20 md:py-28">
+    <section className="bg-[var(--surface)] py-28 md:py-40">
       <div className="soko-container">
         <div className="max-w-[640px]">
           <span className="soko-eyebrow">In practice</span>

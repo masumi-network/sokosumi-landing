@@ -15,7 +15,7 @@ const POINTS = [
 
 export default function Pricing() {
   return (
-    <section className="bg-[var(--surface)] py-20 md:py-28">
+    <section className="bg-[var(--surface)] py-28 md:py-40">
       <div className="soko-container">
         <div className="mx-auto max-w-[760px] text-center">
           <h2 className="soko-statement section">

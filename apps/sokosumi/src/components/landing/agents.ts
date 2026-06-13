@@ -41,12 +41,10 @@ export function loadAgents(): Agent[] {
 const FEATURED_SLUGS = [
   "advanced-web-research",
   "gwi-spark",
-  "statista-single-answer",
   "extended-audience-profiles",
-  "page-design-analysis",
+  "statista-single-answer",
   "attention-insight",
-  "youtube-channel-analysis",
-  "meme-creator",
+  "page-design-analysis",
 ];
 
 export function featuredAgents(): Agent[] {
@@ -55,14 +53,30 @@ export function featuredAgents(): Agent[] {
   const picked = FEATURED_SLUGS.map((s) => bySlug.get(s)).filter(
     (a): a is Agent => Boolean(a)
   );
-  // Top up from verified agents if any curated slug is missing.
-  if (picked.length < 8) {
-    for (const a of all) {
-      if (picked.length >= 8) break;
-      if (a.isVerified && !picked.includes(a)) picked.push(a);
-    }
+  for (const a of all) {
+    if (picked.length >= 6) break;
+    if (a.isVerified && !picked.includes(a)) picked.push(a);
   }
-  return picked.slice(0, 8);
+  return picked.slice(0, 6);
+}
+
+const COMPANY_LABELS: Record<string, string> = {
+  "serviceplan-group": "Serviceplan Group",
+  gwi: "GWI",
+  nmkr: "NMKR",
+  "utxo-ag": "utxo AG",
+  factor168: "factor168",
+  "attention-insight": "Attention Insight",
+  hybridai: "HybridAI",
+  nuauth: "Nuauth",
+};
+
+export function prettyCompany(name: string): string {
+  if (COMPANY_LABELS[name]) return COMPANY_LABELS[name];
+  return name
+    .split("-")
+    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(" ");
 }
 
 export function agentCount(): number {

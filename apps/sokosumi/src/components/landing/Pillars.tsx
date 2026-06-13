@@ -7,7 +7,7 @@ const TRUST = [
 
 export default function Pillars() {
   return (
-    <section className="py-20 md:py-28">
+    <section className="py-28 md:py-40">
       <div className="soko-container wide">
         <div className="max-w-[680px]">
           <h2 className="soko-statement section">

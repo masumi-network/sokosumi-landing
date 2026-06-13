@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { Header, Footer } from "@summation/shared";
 import Hero from "@/components/landing/Hero";
-import LogoWall from "@/components/landing/LogoWall";
-import PromiseReality from "@/components/landing/PromiseReality";
+import StatementBand from "@/components/landing/StatementBand";
 import AgentsShowcase from "@/components/landing/AgentsShowcase";
 import UseCases from "@/components/landing/UseCases";
 import Pillars from "@/components/landing/Pillars";
@@ -29,8 +28,7 @@ export default function HomePage() {
       <Header product="sokosumi" />
       <main>
         <Hero />
-        <LogoWall />
-        <PromiseReality />
+        <StatementBand />
         <AgentsShowcase agents={agents} count={count} />
         <UseCases />
         <Pillars />

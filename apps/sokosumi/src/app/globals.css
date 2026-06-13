@@ -103,16 +103,16 @@ body {
 
 /* two-tone statement headline */
 .soko-statement {
-  font-size: clamp(2.5rem, 6.2vw, 5.1rem);
-  line-height: 1.02; letter-spacing: -0.038em; font-weight: 400;
+  font-size: clamp(2.9rem, 7.4vw, 6.5rem);
+  line-height: 0.98; letter-spacing: -0.042em; font-weight: 400;
   color: var(--ink); text-wrap: balance; overflow-wrap: anywhere;
 }
-.soko-statement .muted { color: rgba(30, 30, 30, 0.3); }
-.soko-statement.section { font-size: clamp(2rem, 4.6vw, 3.4rem); letter-spacing: -0.03em; line-height: 1.05; }
-.soko-statement.small { font-size: clamp(1.7rem, 3.4vw, 2.5rem); letter-spacing: -0.025em; line-height: 1.08; }
+.soko-statement .muted { color: rgba(30, 30, 30, 0.28); }
+.soko-statement.section { font-size: clamp(2.3rem, 5.2vw, 4.25rem); letter-spacing: -0.038em; line-height: 1.0; }
+.soko-statement.small { font-size: clamp(1.9rem, 3.9vw, 3rem); letter-spacing: -0.03em; line-height: 1.04; }
 
 /* body copy */
-.soko-lead { font-size: clamp(1.05rem, 1.35vw, 1.28rem); line-height: 1.5; color: var(--body); text-wrap: pretty; }
+.soko-lead { font-size: clamp(1.1rem, 1.4vw, 1.4rem); line-height: 1.5; color: var(--body); text-wrap: pretty; }
 
 /* pills */
 .soko-pill {
