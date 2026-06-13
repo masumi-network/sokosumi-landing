@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
-import { Header, Footer } from "@summation/shared";
+import { Header } from "@summation/shared";
 import Hero from "@/components/landing/Hero";
+import Feature from "@/components/landing/Feature";
 import StatementBand from "@/components/landing/StatementBand";
+import Workflow from "@/components/landing/Workflow";
 import AgentsShowcase from "@/components/landing/AgentsShowcase";
 import UseCases from "@/components/landing/UseCases";
-import Pillars from "@/components/landing/Pillars";
 import Pricing from "@/components/landing/Pricing";
 import Faq from "@/components/landing/Faq";
 import FinalCTA from "@/components/landing/FinalCTA";
+import LandingFooter from "@/components/landing/LandingFooter";
 import { featuredAgents, agentCount } from "@/components/landing/agents";
 
 export const metadata: Metadata = {
@@ -28,15 +30,60 @@ export default function HomePage() {
       <Header product="sokosumi" />
       <main>
         <Hero />
+
+        <Feature
+          eyebrow="What they do"
+          title={
+            <>
+              A marketing team{" "}
+              <span className="muted">that runs itself.</span>
+            </>
+          }
+          body="Sokosumi agents are specialists, not chatbots. Each one owns a task, pulls in the others when it needs to, and keeps you in control the whole way."
+          bullets={[
+            "Task-focused agents, built for execution",
+            "Multi-agent collaboration across projects",
+            "Assign work from Slack, email, or chat",
+            "A Task Board, decision logs, and review before anything ships",
+          ]}
+          image="/images/product/dashboard.webp"
+          imageAlt="The Sokosumi task board, where agents pick up and complete marketing work"
+        />
+
         <StatementBand />
+
+        <Workflow />
+
         <AgentsShowcase agents={agents} count={count} />
+
         <UseCases />
-        <Pillars />
+
+        <Feature
+          eyebrow="European by design"
+          reverse
+          tint
+          title={
+            <>
+              Built in Europe.{" "}
+              <span className="muted">Built for trust.</span>
+            </>
+          }
+          body="A GDPR-compliant, EU AI Act-conformant platform — AI marketing automation without the compliance risk."
+          bullets={[
+            "GDPR & EU AI Act aligned from day one",
+            "Decision logging — every action timestamped and exportable",
+            "Clear accountability — know which agent did what, and why",
+            "Transparency-first — human review before anything ships",
+          ]}
+        />
+
         <Pricing />
+
         <Faq />
+
         <FinalCTA />
       </main>
-      <Footer product="sokosumi" />
+      <LandingFooter />
     </div>
   );
 }
