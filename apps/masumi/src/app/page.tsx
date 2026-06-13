@@ -329,11 +329,7 @@ export default function MasumiPage() {
                 </svg>
               </span>
               <span>
-                Officially merged into the <strong>x402 Standard</strong>{" "}
-                <span className="x402-seg">
-                  — founded by{" "}
-                  <img src="/images/network/coinbase.svg" alt="Coinbase" />
-                </span>
+                Officially merged into the <strong>x402 Standard</strong>
               </span>
             </div>
             <h1 className="text-[40px] md:text-[64px] font-normal tracking-[-1.28px] leading-[1.15] text-black max-w-[700px] px-6">

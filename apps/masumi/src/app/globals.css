@@ -323,9 +323,16 @@ body {
   width: 100%;
   aspect-ratio: 1000 / 390;
 }
-.nv-edge { stroke: rgba(250, 0, 140, 0.26); stroke-width: 1.5; }
+.nv-edge {
+  fill: none;
+  stroke: rgba(250, 0, 140, 0.35);
+  stroke-width: 1.6;
+  stroke-dasharray: 0.1 7;
+  stroke-linecap: round;
+}
+.nv-arrowhead { fill: none; stroke: #fa008c; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
 .nv-node.amb {
-  fill: rgba(250, 0, 140, 0.06);
+  fill: rgb(245, 230, 239); /* opaque 6% pink over #F5F5F5 — hides edge dots beneath */
   stroke: rgba(250, 0, 140, 0.30);
   stroke-width: 1.5;
   transform-box: fill-box;
@@ -335,7 +342,7 @@ body {
 }
 .nv-node.amb:nth-of-type(2n) { animation-delay: -2s; }
 .nv-node.amb:nth-of-type(3n) { animation-delay: -4s; }
-.nv-node.amb:hover { fill: rgba(250, 0, 140, 0.14); stroke: rgba(250, 0, 140, 0.50); }
+.nv-node.amb:hover { fill: rgb(246, 211, 230); stroke: rgba(250, 0, 140, 0.50); }
 @keyframes nvPulse {
   0%, 100% { transform: scale(1); }
   50% { transform: scale(1.1); }
@@ -409,9 +416,6 @@ body {
 .nv-agent-b { left: 70%; transform: translateX(-50%); }
 .nv-name { font-size: 15px; font-weight: 600; color: rgba(15, 15, 20, 0.92); white-space: nowrap; }
 .nv-org { font-size: 10.5px; font-weight: 500; letter-spacing: 0.08em; color: rgba(15, 15, 20, 0.55); }
-.netcap { font-size: 13px; color: rgba(15, 15, 20, 0.62); margin-top: 14px; text-align: center; }
-.netcap a { text-decoration: underline; text-underline-offset: 2px; }
-.netcap a:hover { color: #fa008c; }
 
 /* x402 badge — hero eyebrow */
 .x402-badge {
@@ -440,16 +444,6 @@ body {
 }
 .x402-badge .vch svg { width: 9px; height: 9px; fill: none; stroke: #fff; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
 .x402-badge strong { color: #fa008c; font-weight: 600; }
-.x402-seg { white-space: nowrap; }
-.x402-badge img {
-  height: 13px;
-  width: auto;
-  display: inline;
-  vertical-align: -2px;
-  margin-left: 2px;
-  opacity: 0.85;
-  filter: grayscale(1) brightness(0);
-}
 
 @media (max-width: 640px) {
   /* slice-crop the network sides; reflow all text below the graphic */

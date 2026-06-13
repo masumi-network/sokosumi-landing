@@ -1,16 +1,47 @@
 /* Hero network visualization — two verified agents settling a payment
    on-chain, surrounded by the wider agent network. The SVG carries only
    geometry (scales freely); all text is HTML so it stays legible at every
-   viewport. Payment dots flow through the network via SMIL (hidden under
+   viewport. Ambient edges are curved, dotted whisper-lines radiating from
+   the two agents (no crossings); the solid pink line is reserved for the
+   payment itself. Payment dots flow via SMIL (hidden under
    prefers-reduced-motion). On mobile the SVG slice-crops its sides and
    the labels reflow below the graphic. */
 
+const EDGES = [
+  // Marketing Agent spokes
+  "M300 250 Q390 150 510 92",
+  "M300 250 Q220 170 150 118",
+  "M300 250 Q225 330 175 392",
+  "M300 250 Q380 350 495 424",
+  // Data Agent spokes
+  "M700 250 Q620 150 510 92",
+  "M700 250 Q780 170 845 115",
+  "M700 250 Q770 330 830 395",
+  "M700 250 Q620 350 495 424",
+  // far-node chains
+  "M150 118 Q80 150 42 210",
+  "M175 392 Q90 310 42 210",
+  "M845 115 Q925 200 958 318",
+  "M830 395 Q910 372 958 318",
+];
+
+const SATELLITES = [
+  { cx: 510, cy: 92, r: 22 },
+  { cx: 150, cy: 118, r: 17 },
+  { cx: 42, cy: 210, r: 12 },
+  { cx: 175, cy: 392, r: 15 },
+  { cx: 495, cy: 424, r: 19 },
+  { cx: 845, cy: 115, r: 17 },
+  { cx: 830, cy: 395, r: 15 },
+  { cx: 958, cy: 318, r: 12 },
+];
+
 const FLOWS = [
-  { path: "M160 120 L300 250", dur: "3.2s", begin: "0s", r: 3.5 },
-  { path: "M160 390 L300 250", dur: "3.6s", begin: "1.7s", r: 3.5 },
-  { path: "M345 250 L650 250", dur: "2.4s", begin: "0.9s", r: 4.5 },
-  { path: "M700 250 L840 120", dur: "3.4s", begin: "2.3s", r: 3.5 },
-  { path: "M700 250 L840 390", dur: "3s", begin: "3.1s", r: 3.5 },
+  { path: "M150 118 Q220 170 300 250", dur: "3.2s", begin: "0s", r: 3.5 },
+  { path: "M175 392 Q225 330 300 250", dur: "3.6s", begin: "1.7s", r: 3.5 },
+  { path: "M345 250 L646 250", dur: "2.4s", begin: "0.9s", r: 4.5 },
+  { path: "M700 250 Q780 170 845 115", dur: "3.4s", begin: "2.3s", r: 3.5 },
+  { path: "M700 250 Q770 330 830 395", dur: "3s", begin: "3.1s", r: 3.5 },
 ];
 
 export default function AgentNetworkGraph() {
@@ -23,37 +54,17 @@ export default function AgentNetworkGraph() {
           preserveAspectRatio="xMidYMid slice"
           aria-hidden="true"
         >
-          {/* network edges */}
-          <line className="nv-edge" x1="300" y1="250" x2="160" y2="120" />
-          <line className="nv-edge" x1="300" y1="250" x2="160" y2="390" />
-          <line className="nv-edge" x1="300" y1="250" x2="500" y2="95" />
-          <line className="nv-edge" x1="300" y1="250" x2="500" y2="420" />
-          <line className="nv-edge" x1="700" y1="250" x2="840" y2="120" />
-          <line className="nv-edge" x1="700" y1="250" x2="840" y2="390" />
-          <line className="nv-edge" x1="700" y1="250" x2="500" y2="95" />
-          <line className="nv-edge" x1="700" y1="250" x2="500" y2="420" />
-          <line className="nv-edge" x1="500" y1="95" x2="160" y2="120" />
-          <line className="nv-edge" x1="500" y1="95" x2="840" y2="120" />
-          <line className="nv-edge" x1="500" y1="420" x2="160" y2="390" />
-          <line className="nv-edge" x1="500" y1="420" x2="840" y2="390" />
-          <line className="nv-edge" x1="45" y1="205" x2="160" y2="120" />
-          <line className="nv-edge" x1="45" y1="205" x2="160" y2="390" />
-          <line className="nv-edge" x1="955" y1="320" x2="840" y2="390" />
-          <line className="nv-edge" x1="955" y1="320" x2="840" y2="120" />
+          {EDGES.map((d, i) => (
+            <path key={i} className="nv-edge" d={d} />
+          ))}
 
-          {/* satellite agents */}
-          <circle className="nv-node amb" cx="160" cy="120" r="18" />
-          <circle className="nv-node amb" cx="500" cy="95" r="24" />
-          <circle className="nv-node amb" cx="840" cy="120" r="18" />
-          <circle className="nv-node amb" cx="160" cy="390" r="16" />
-          <circle className="nv-node amb" cx="500" cy="420" r="20" />
-          <circle className="nv-node amb" cx="840" cy="390" r="16" />
-          <circle className="nv-node amb" cx="45" cy="205" r="12" />
-          <circle className="nv-node amb" cx="955" cy="320" r="13" />
+          {SATELLITES.map((s, i) => (
+            <circle key={i} className="nv-node amb" cx={s.cx} cy={s.cy} r={s.r} />
+          ))}
 
           {/* payment flow */}
-          <path className="nv-tx draw" d="M345 250 L650 250" />
-          <polygon className="nv-arrow" points="648,242 648,258 666,250" />
+          <path className="nv-tx draw" d="M345 250 L646 250" />
+          <path className="nv-arrowhead" d="M640 241 L657 250 L640 259" />
 
           {/* flowing payment dots */}
           {FLOWS.map((f, i) => (
@@ -121,11 +132,6 @@ export default function AgentNetworkGraph() {
             <span className="nv-org">STATISTA</span>
           </div>
         </div>
-      </div>
-
-      <div className="netcap">
-        35,000+ transactions · open source ·{" "}
-        <a href="/explorer">live on the Masumi Explorer</a>
       </div>
     </div>
   );
