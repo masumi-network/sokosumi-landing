@@ -2,9 +2,12 @@ import type { Metadata } from "next";
 import { Header } from "@summation/shared";
 import MarketHero from "@/components/landing/MarketHero";
 import TrustStrip from "@/components/landing/TrustStrip";
+import StatsBand from "@/components/landing/StatsBand";
 import CategoryTiles from "@/components/landing/CategoryTiles";
 import PopularAgents from "@/components/landing/PopularAgents";
+import HowItWorks from "@/components/landing/HowItWorks";
 import ValueProp from "@/components/landing/ValueProp";
+import Testimonials from "@/components/landing/Testimonials";
 import BusinessBand from "@/components/landing/BusinessBand";
 import LandingFooter from "@/components/landing/LandingFooter";
 import { featuredAgents, agentCount } from "@/components/landing/agents";
@@ -28,9 +31,12 @@ export default function HomePage() {
       <main>
         <MarketHero />
         <TrustStrip />
+        <StatsBand />
         <CategoryTiles />
         <PopularAgents agents={agents} count={count} />
+        <HowItWorks />
         <ValueProp />
+        <Testimonials />
         <BusinessBand />
       </main>
       <LandingFooter />

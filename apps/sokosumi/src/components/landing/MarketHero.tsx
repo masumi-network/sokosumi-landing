@@ -77,6 +77,19 @@ export default function MarketHero() {
                 </a>
               ))}
             </div>
+
+            {/* trust line (placeholder figures) */}
+            <div
+              className="mt-7 flex items-center gap-2 text-[14px]"
+              style={{ color: "rgba(255,255,255,0.72)" }}
+            >
+              <span aria-hidden className="text-[#ffd27a]">
+                ★★★★★
+              </span>
+              <span className="soko-num">
+                4.8 average · 12,000+ tasks delivered
+              </span>
+            </div>
           </div>
 
           {/* Right: persona */}

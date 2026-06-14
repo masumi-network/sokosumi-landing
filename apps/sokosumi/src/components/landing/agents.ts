@@ -81,6 +81,34 @@ export function prettyCompany(name: string): string {
     .join(" ");
 }
 
+/**
+ * PLACEHOLDER marketplace metadata (ratings, reviews, seller level, delivery).
+ * Deterministically derived from the slug so it's stable across renders.
+ * Swap for real platform data when available.
+ */
+export interface GigMeta {
+  rating: string;
+  reviews: number;
+  level: string;
+  delivery: string;
+}
+
+const LEVELS = ["Top Rated", "Pro", "Level 2", "Rising Talent"];
+
+export function gigMeta(a: Agent): GigMeta {
+  let h = 2166136261;
+  for (let i = 0; i < a.slug.length; i++) {
+    h ^= a.slug.charCodeAt(i);
+    h = Math.imul(h, 16777619);
+  }
+  h = h >>> 0;
+  const rating = (4.6 + (h % 5) / 10).toFixed(1); // 4.6–5.0
+  const reviews = 38 + (h % 920); // 38–957
+  const level = a.isVerified ? LEVELS[h % 2] : LEVELS[2 + (h % 2)];
+  const delivery = ["~2 min", "~5 min", "~10 min", "instant"][h % 4];
+  return { rating, reviews, level, delivery };
+}
+
 export function agentCount(): number {
   return loadAgents().length;
 }
