@@ -45,19 +45,21 @@ const FEATURED_SLUGS = [
   "statista-single-answer",
   "attention-insight",
   "page-design-analysis",
+  "youtube-channel-analysis",
+  "basic-company-researcher",
 ];
 
-export function featuredAgents(): Agent[] {
+export function featuredAgents(count = 8): Agent[] {
   const all = loadAgents();
   const bySlug = new Map(all.map((a) => [a.slug, a]));
   const picked = FEATURED_SLUGS.map((s) => bySlug.get(s)).filter(
     (a): a is Agent => Boolean(a)
   );
   for (const a of all) {
-    if (picked.length >= 6) break;
+    if (picked.length >= count) break;
     if (a.isVerified && !picked.includes(a)) picked.push(a);
   }
-  return picked.slice(0, 6);
+  return picked.slice(0, count);
 }
 
 const COMPANY_LABELS: Record<string, string> = {
