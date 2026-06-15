@@ -10,29 +10,50 @@ declare global {
   }
 }
 
-// Injects gtag.js into the document after consent is granted. Manual
-// injection avoids known quirks with Next.js <Script> being conditionally
-// mounted after hydration.
+// Loads GA4 with Google Consent Mode v2. The tag loads on every page, but
+// analytics storage starts DENIED — before the visitor consents, Google still
+// receives anonymous, cookieless pings that power aggregated/modeled reporting.
+// When the visitor accepts the cookie banner we upgrade analytics_storage to
+// granted for full, cookie-based measurement. This maximizes data while keeping
+// a GDPR-defensible posture (no analytics cookies until consent).
 export default function GoogleAnalytics({ id }: { id: string }) {
   const consent = useConsent();
 
+  // Load the tag once, with consent defaults set before any config command.
   useEffect(() => {
-    if (consent !== "accepted") return;
     if (document.querySelector(`script[data-ga-id="${id}"]`)) return;
 
     window.dataLayer = window.dataLayer || [];
     window.gtag = function gtag(...args: unknown[]) {
       window.dataLayer.push(args);
     };
+
+    window.gtag("consent", "default", {
+      ad_storage: "denied",
+      ad_user_data: "denied",
+      ad_personalization: "denied",
+      analytics_storage: "denied",
+      wait_for_update: 500,
+    });
+
     window.gtag("js", new Date());
-    window.gtag("config", id, { anonymize_ip: true });
+    window.gtag("config", id);
 
     const script = document.createElement("script");
     script.async = true;
     script.src = `https://www.googletagmanager.com/gtag/js?id=${id}`;
     script.setAttribute("data-ga-id", id);
     document.head.appendChild(script);
-  }, [id, consent]);
+  }, [id]);
+
+  // Reflect the visitor's decision into Consent Mode. Undecided stays denied
+  // (cookieless pings continue); accepting upgrades to full measurement.
+  useEffect(() => {
+    if (consent === "ssr" || typeof window.gtag !== "function") return;
+    window.gtag("consent", "update", {
+      analytics_storage: consent === "accepted" ? "granted" : "denied",
+    });
+  }, [consent]);
 
   return null;
 }
