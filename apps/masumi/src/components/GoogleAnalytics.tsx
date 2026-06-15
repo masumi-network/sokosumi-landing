@@ -24,8 +24,11 @@ export default function GoogleAnalytics({ id }: { id: string }) {
     if (document.querySelector(`script[data-ga-id="${id}"]`)) return;
 
     window.dataLayer = window.dataLayer || [];
-    window.gtag = function gtag(...args: unknown[]) {
-      window.dataLayer.push(args);
+    // gtag.js only processes the `arguments` object as a command — pushing a
+    // plain array is silently ignored, so this MUST stay arguments-based.
+    window.gtag = function gtag() {
+      // eslint-disable-next-line prefer-rest-params
+      window.dataLayer.push(arguments);
     };
 
     window.gtag("consent", "default", {
