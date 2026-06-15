@@ -43,9 +43,30 @@ const products = [
   },
 ];
 
+const MASUMI_SOKOSUMI_BANNER = (
+  <a
+    href="https://sokosumi.com"
+    className="group flex h-9 items-center justify-center gap-2 bg-[#6400FF] px-4 text-[13px] text-white transition-colors hover:bg-[#5200d0]"
+  >
+    <span className="truncate">
+      Hire ready-to-work AI agents on <strong className="font-medium">Sokosumi</strong> — the marketplace built on Masumi
+    </span>
+    <span aria-hidden className="transition-transform group-hover:translate-x-0.5">→</span>
+  </a>
+);
+
 export default function Header({ product = "sokosumi", topBanner }: { product?: "sokosumi" | "masumi" | "kodosumi"; topBanner?: ReactNode }) {
   const [showProducts, setShowProducts] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  // Masumi pages show the Sokosumi cross-promo banner by default; an explicit
+  // topBanner prop (including null) overrides it.
+  const banner =
+    topBanner !== undefined
+      ? topBanner
+      : product === "masumi"
+        ? MASUMI_SOKOSUMI_BANNER
+        : null;
 
   useEffect(() => {
     if (mobileMenuOpen) {
@@ -59,7 +80,7 @@ export default function Header({ product = "sokosumi", topBanner }: { product?: 
   return (
     <>
       <header className="fixed top-0 left-0 right-0 z-50">
-        {topBanner}
+        {banner}
         <div
           className="flex justify-center"
           style={{
@@ -195,7 +216,7 @@ export default function Header({ product = "sokosumi", topBanner }: { product?: 
 
       {/* Mobile menu overlay */}
       {mobileMenuOpen && (
-        <div className="fixed inset-0 z-40 lg:hidden" style={{ top: topBanner ? 110 : 74 }}>
+        <div className="fixed inset-0 z-40 lg:hidden" style={{ top: banner ? 110 : 74 }}>
           <div className="absolute inset-0 bg-[#F5F5F5]" />
           <nav className="relative flex flex-col px-6 pt-8 gap-1">
             {product === "sokosumi" ? (

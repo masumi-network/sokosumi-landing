@@ -29,7 +29,7 @@ export default function Page() {
   return (
     <>
       <Header product="masumi" />
-      <main className="pt-[100px] md:pt-[110px] pb-20">
+      <main className="pt-[130px] md:pt-[140px] pb-20">
         <div className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12">
           <header className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 pb-4 mb-8 border-b border-black/[0.06]">
             <div>

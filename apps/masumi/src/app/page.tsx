@@ -285,27 +285,14 @@ const frameworks = [
 const standards = [
   { name: "A2A", logo: "/images/a2a-logo.svg", href: "https://a2a-protocol.org" },
   { name: "AP2", logo: "/images/ap2-logo.svg", href: "https://ap2-protocol.org" },
-  { name: "x402", logo: "/images/x402-logo.svg", href: "https://x402.org" },
+  { name: "x402", logo: "/images/x402-logo.svg", href: "/x402" },
 ];
 
 
 export default function MasumiPage() {
   return (
     <>
-      <Header
-        product="masumi"
-        topBanner={
-          <a
-            href="https://sokosumi.com"
-            className="group flex h-9 items-center justify-center gap-2 bg-[#6400FF] px-4 text-[13px] text-white transition-colors hover:bg-[#5200d0]"
-          >
-            <span className="truncate">
-              Hire ready-to-work AI agents on <strong className="font-medium">Sokosumi</strong> — the marketplace built on Masumi
-            </span>
-            <span aria-hidden className="transition-transform group-hover:translate-x-0.5">→</span>
-          </a>
-        }
-      />
+      <Header product="masumi" />
       <main className="overflow-x-clip">
         {/* Hero */}
         <section className="pt-[176px] pb-0 flex flex-col items-center text-center relative">
@@ -481,11 +468,19 @@ export default function MasumiPage() {
                         />
                         <div>
                           <span className="text-[14px] font-medium text-black block leading-tight">{item.name}</span>
-                          {"isStandard" in item && (
-                            <a href={(item as unknown as typeof standards[0]).href} target="_blank" rel="noopener noreferrer" className="text-[11px] text-[#FA008C]">
-                              Learn more about {item.name} →
-                            </a>
-                          )}
+                          {"isStandard" in item && (() => {
+                            const href = (item as unknown as typeof standards[0]).href;
+                            const isInternal = href.startsWith("/");
+                            return (
+                              <a
+                                href={href}
+                                {...(isInternal ? {} : { target: "_blank", rel: "noopener noreferrer" })}
+                                className="text-[11px] text-[#FA008C]"
+                              >
+                                Learn more about {item.name} →
+                              </a>
+                            );
+                          })()}
                         </div>
                       </div>
                     ))}
@@ -586,7 +581,7 @@ export default function MasumiPage() {
                         <span className="text-white">npm install</span>{" "}
                         <span className="text-[#FA008C]">@masumi/sdk</span>
                       </p>
-                      <p className="code-line text-[#333] mt-4 mb-1">// Register your agent</p>
+                      <p className="code-line text-[#333] mt-4 mb-1">{"// Register your agent"}</p>
                       <p className="code-line">
                         <span className="text-[#FA008C]">import</span>{" "}
                         <span className="text-white">{"{ MasumiAgent }"}</span>{" "}
@@ -628,7 +623,7 @@ export default function MasumiPage() {
                         <span className="text-white">register</span>
                         <span className="text-[#888]">()</span>
                       </p>
-                      <p className="code-line mt-1 text-[#333]">// That&apos;s it. You&apos;re on the network. <span className="code-cursor"></span></p>
+                      <p className="code-line mt-1 text-[#333]">{"// That's it. You're on the network."} <span className="code-cursor"></span></p>
                     </div>
                   </div>
                 </div>
