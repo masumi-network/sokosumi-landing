@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@browserbasehq/sdk": "^2.10.0",
+    "@emurgo/cardano-serialization-lib-nodejs": "^15.0.3",
+    "@meshsdk/core": "^1.9.1",
     "@summation/shared": "*",
     "better-sqlite3": "^12.6.2",
     "cheerio": "^1.2.0",
