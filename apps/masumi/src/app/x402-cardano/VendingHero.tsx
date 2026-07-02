@@ -141,6 +141,7 @@ const VH_CSS = `
 .http-status-v { margin-top: 2px; font-size: 13px; font-weight: 600; color: #0a0a0a; }
 .run-response-body { max-height: 160px; }
 .resp-bubble { position: absolute; z-index: 30; pointer-events: none; }
+.resp-bubble-machine { top: 8%; left: 6%; }
 .resp-bubble-inner { display: inline-flex; align-items: center; gap: 8px; background: #0a0a0a; border-radius: 11px; padding: 9px 13px; box-shadow: 0 12px 26px rgba(0,0,0,0.24); white-space: nowrap; }
 .resp-code { font-family: ${MONO}; font-size: 13px; font-weight: 700; color: ${PINK}; }
 .resp-code[data-ok="true"] { color: #4ade80; }
@@ -172,6 +173,9 @@ const VH_CSS = `
     mask-image: linear-gradient(to bottom, transparent 0, #000 80px, #000 calc(100% - 36px), transparent 100%);
   }
   .vh-nav { display: flex; position: absolute; left: 0; right: 0; top: -44px; z-index: 5; }
+}
+@media (min-width: 640px) {
+  .resp-bubble-machine { top: 13%; left: auto; right: 92%; }
 }
 .wallet-options { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 12px; }
 .wallet-btn { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; padding: 7px 13px; border: 1px solid rgba(0, 0, 0, 0.14); border-radius: 8px; cursor: pointer; transition: border-color 0.15s, background 0.15s; color: #0a0a0a; }
@@ -713,7 +717,7 @@ export default function VendingHero() {
 
                   {/* the machine's reply — a speech bubble popping out of it */}
                   {machineResp && (
-                    <div key={machineResp.code} className="resp-bubble vh-bubble" style={{ top: "13%", right: "92%" }}>
+                    <div key={machineResp.code} className="resp-bubble resp-bubble-machine vh-bubble">
                       <div className="resp-bubble-inner">
                         <span className="resp-code" data-ok={machineResp.ok}>{machineResp.code}</span>
                         <span className="resp-name">{machineResp.name}</span>
