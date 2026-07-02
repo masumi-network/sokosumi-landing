@@ -465,16 +465,16 @@ export default function VendingHero() {
       : null;
 
   return (
-    <section className="pt-[108px] pb-16">
+    <section className="pt-[140px] pb-16">
       <div className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12 text-center">
         <p className="text-[11px] uppercase tracking-[0.18em] text-[#FA008C] font-mono mb-3">
-          x402 · interactive
+          Agent Payments
         </p>
         <h1 className="mx-auto text-[34px] md:text-[52px] font-normal tracking-[-1px] leading-[1.04] text-black max-w-[860px]">
-          Try x402 with our virtual vending machine.
+          Try x402 on Cardano with our virtual vending machine.
         </h1>
 
-        <div className="relative w-full mt-10 rounded-[28px] border border-black/[0.07] bg-white">
+        <div className="relative w-full mt-10 border border-black/[0.04] bg-white hover:border-black/10 transition-colors">
           <div className="px-6 py-9 md:px-10 md:py-12">
             {/* intro — collapses once the first request runs */}
             <div
@@ -598,7 +598,7 @@ export default function VendingHero() {
           {/* ── wallet signing prompt ── */}
           {signing && (
             <div className="absolute inset-0 z-40 flex items-center justify-center p-4">
-              <button aria-label="Close" className="absolute inset-0 rounded-[28px] bg-black/30 backdrop-blur-[2px]" onClick={() => setSigning(false)} />
+              <button aria-label="Close" className="absolute inset-0 bg-black/30 backdrop-blur-[2px]" onClick={() => setSigning(false)} />
               <div className="vh-pop relative w-full max-w-[420px] rounded-2xl bg-white border border-black/10 shadow-[0_24px_60px_rgba(0,0,0,0.22)] p-6 text-left">
                 <div className="flex items-center gap-3">
                   <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#f5f5f6] border border-black/[0.06] overflow-hidden">
