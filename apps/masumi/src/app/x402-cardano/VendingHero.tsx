@@ -17,9 +17,20 @@ const SETTLE_RESULT_DWELL_MS = 2600;
 const CONFIRM_RESULT_DWELL_MS = 2200;
 const DISPENSE_DWELL_MS = 1250;
 const DESKTOP_STEPS_WINDOW_HEIGHT = 560;
+const MOCK_WALLET_ID = "mock-wallet";
+const MOCK_SIGNED_TX =
+  "mock_signed_cardano_tx_7a31f5e8d26b4c91a9f0e6c3b5d2847f011be9aa6e522647f7c0b38d18f29c44";
+const MOCK_TX_HASH =
+  "mock_tx_2d9f0c7a8b31e64d93a5f0b24c81a7f2";
 // centre of the keypad (% of the square machine image)
 
 type Wallet = { id: string; name: string; icon?: string };
+type Cip30Provider = {
+  name?: unknown;
+  icon?: unknown;
+  apiVersion?: unknown;
+  enable?: unknown;
+};
 type Stage = "choose" | "verify" | "settle" | "confirm" | "done";
 type NodeStatus = "done" | "active" | "pending";
 type PaymentReq = { scheme?: string; network?: string; maxAmountRequired?: string; asset?: string; payTo?: string };
@@ -46,6 +57,20 @@ function adaFromLovelace(l?: string) {
 function shortHash(h: unknown) {
   const s = String(h ?? "");
   return s.length > 20 ? `${s.slice(0, 10)}…${s.slice(-6)}` : s;
+}
+
+function isCip30Provider(provider: unknown): provider is { name: string; icon: string; apiVersion: string; enable: () => unknown } {
+  if (!provider || typeof provider !== "object") return false;
+  const w = provider as Cip30Provider;
+  return (
+    typeof w.name === "string" &&
+    w.name.trim().length > 0 &&
+    typeof w.icon === "string" &&
+    w.icon.length > 0 &&
+    typeof w.apiVersion === "string" &&
+    w.apiVersion.trim().length > 0 &&
+    typeof w.enable === "function"
+  );
 }
 
 // Wallet (CIP-30) errors are plain { code, info } objects, not Error instances —
@@ -96,13 +121,13 @@ const VH_CSS = `
 
 .msg-desc { font-size: 13px; line-height: 1.55; color: #6b6b6b; max-width: 560px; }
 .code { font-family: ${MONO}; font-size: 12px; color: #0a0a0a; }
-.tgl { display: inline-flex; align-items: center; gap: 6px; margin-top: 11px; margin-right: 7px; padding: 4px 10px 4px 9px; border: 1px solid rgba(0,0,0,0.12); border-radius: 8px; background: #fafafa; font-size: 11.5px; font-weight: 500; color: #666; cursor: pointer; transition: border-color .15s, color .15s, background .15s; }
+.tgl { display: inline-flex; align-items: center; gap: 6px; margin-top: 11px; margin-right: 7px; padding: 4px 10px 4px 9px; border: 1px solid rgba(0,0,0,0.12); border-radius: 8px; background: #fafafa; font-size: 11px; font-weight: 500; color: #666; cursor: pointer; transition: border-color .15s, color .15s, background .15s; }
 .tgl:hover { border-color: rgba(250,0,140,0.45); color: #0a0a0a; }
 .tgl-open { background: rgba(250,0,140,0.05); border-color: rgba(250,0,140,0.4); color: ${PINK}; }
 .tgl-chev { flex-shrink: 0; transition: transform .18s; }
 .tgl-open .tgl-chev { transform: rotate(90deg); }
 .json-block { margin-top: 9px; background: #0a0a0a; color: rgba(255, 255, 255, 0.8); font-family: ${MONO}; font-size: 11px; line-height: 1.6; padding: 13px; max-height: 440px; overflow-y: auto; overflow-x: hidden; white-space: pre-wrap; overflow-wrap: anywhere; border-radius: 9px; }
-.code-block { margin-top: 10px; background: #0f0f12; color: #e7e7e9; font-family: ${MONO}; font-size: 11.5px; line-height: 1.6; padding: 12px 13px; border-radius: 9px; white-space: pre-wrap; overflow-wrap: anywhere; }
+.code-block { margin-top: 10px; background: #0f0f12; color: #e7e7e9; font-family: ${MONO}; font-size: 11px; line-height: 1.6; padding: 12px 13px; border-radius: 9px; white-space: pre-wrap; overflow-wrap: anywhere; }
 .run-btn { margin-top: 11px; display: inline-flex; align-items: center; gap: 7px; padding: 8px 15px; border-radius: 9px; background: ${PINK}; color: #fff; font-size: 13px; font-weight: 600; cursor: pointer; transition: opacity .15s; }
 .run-btn:hover { opacity: 0.9; }
 .run-btn:disabled { opacity: 0.6; cursor: wait; }
@@ -113,13 +138,13 @@ const VH_CSS = `
 .http-status-code { display: flex; align-items: center; justify-content: center; min-width: 52px; padding: 8px 11px; background: #0a0a0a; color: ${PINK}; font-family: ${MONO}; font-size: 16px; line-height: 1; font-weight: 800; }
 .http-status-meta { min-width: 0; flex: 1; padding: 8px 11px 9px; }
 .http-status-k { font-family: ${MONO}; font-size: 10px; text-transform: uppercase; letter-spacing: 0.09em; color: ${PINK}; }
-.http-status-v { margin-top: 2px; font-size: 13.5px; font-weight: 650; letter-spacing: -0.01em; color: #0a0a0a; }
+.http-status-v { margin-top: 2px; font-size: 13px; font-weight: 600; color: #0a0a0a; }
 .run-response-body { max-height: 160px; }
 .resp-bubble { position: absolute; z-index: 30; pointer-events: none; }
 .resp-bubble-inner { display: inline-flex; align-items: center; gap: 8px; background: #0a0a0a; border-radius: 11px; padding: 9px 13px; box-shadow: 0 12px 26px rgba(0,0,0,0.24); white-space: nowrap; }
 .resp-code { font-family: ${MONO}; font-size: 13px; font-weight: 700; color: ${PINK}; }
 .resp-code[data-ok="true"] { color: #4ade80; }
-.resp-name { font-size: 12.5px; font-weight: 500; color: rgba(255,255,255,0.92); }
+.resp-name { font-size: 12px; font-weight: 500; color: rgba(255,255,255,0.92); }
 .resp-tail { position: absolute; right: -4px; top: 50%; width: 11px; height: 11px; background: #0a0a0a; transform: translateY(-50%) rotate(45deg); border-radius: 2px; }
 .vh-bubble { animation: vhBubble 0.9s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
 @keyframes vhBubble { from { opacity: 0; transform: translateX(10px) scale(0.9); } to { opacity: 1; transform: none; } }
@@ -135,7 +160,7 @@ const VH_CSS = `
 .vh-nav-btn { display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 50%; border: 1px solid rgba(0,0,0,0.14); background: #fff; color: #0a0a0a; cursor: pointer; transition: border-color .15s, background .15s, opacity .15s; }
 .vh-nav-btn:hover:not(:disabled) { border-color: ${PINK}; color: ${PINK}; }
 .vh-nav-btn:disabled { opacity: 0.32; cursor: default; }
-.vh-nav-label { font-family: ${MONO}; font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.07em; color: #9a9a9a; min-width: 88px; text-align: center; }
+.vh-nav-label { font-family: ${MONO}; font-size: 11px; text-transform: uppercase; letter-spacing: 0.07em; color: #9a9a9a; min-width: 88px; text-align: center; }
 @media (min-width: 1024px) {
   .vh-stepswin {
     height: 480px; /* fallback; the component sets an exact height that fits the focused step */
@@ -148,28 +173,38 @@ const VH_CSS = `
   }
   .vh-nav { display: flex; position: absolute; left: 0; right: 0; top: -44px; z-index: 5; }
 }
-.wallet-btn { display: inline-flex; align-items: center; gap: 8px; font-size: 12.5px; padding: 7px 13px; border: 1px solid rgba(0, 0, 0, 0.14); border-radius: 8px; cursor: pointer; transition: border-color 0.15s, background 0.15s; color: #0a0a0a; }
+.wallet-options { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 12px; }
+.wallet-btn { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; padding: 7px 13px; border: 1px solid rgba(0, 0, 0, 0.14); border-radius: 8px; cursor: pointer; transition: border-color 0.15s, background 0.15s; color: #0a0a0a; }
 .wallet-btn:hover { border-color: ${PINK}; }
 .wallet-btn:disabled { cursor: wait; opacity: 0.74; }
 .wallet-on { border-color: ${PINK}; background: rgba(250, 0, 140, 0.06); color: ${PINK}; }
 .wallet-btn-spin { width: 11px; height: 11px; border: 2px solid rgba(250,0,140,0.24); border-top-color: ${PINK}; border-radius: 50%; animation: vhSpin 0.8s linear infinite; }
+.wallet-or { display: flex; align-items: center; gap: 10px; width: min(100%, 360px); margin: 13px auto 1px; color: #9a9a9a; font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; }
+.wallet-or::before, .wallet-or::after { content: ""; flex: 1; height: 1px; background: rgba(0,0,0,0.08); }
+.mock-wallet-btn { margin-top: 12px; display: inline-flex; align-items: center; gap: 8px; max-width: 100%; padding: 7px 13px; border: 1px solid rgba(0,0,0,0.14); border-radius: 8px; background: #fff; color: #0a0a0a; font-size: 13px; font-weight: 500; line-height: 1.35; cursor: pointer; transition: border-color .15s, background .15s, color .15s; text-align: left; }
+.mock-wallet-btn:hover { border-color: rgba(250,0,140,0.5); background: rgba(250,0,140,0.035); color: ${PINK}; }
+.mock-wallet-btn:disabled { cursor: wait; opacity: 0.7; }
+.mock-wallet-label { min-width: 0; overflow-wrap: anywhere; }
+.mock-note { margin-top: 7px; max-width: 440px; font-size: 12px; line-height: 1.45; color: #8a8a8a; }
+.mock-wallet-wrap { text-align: center; }
+.mock-wallet-wrap .mock-note { margin-left: auto; margin-right: auto; }
 .wallet-action { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-width: 122px; }
 .wallet-action:disabled { cursor: wait; opacity: 0.78; }
 .wallet-spin { width: 12px; height: 12px; border: 2px solid rgba(255,255,255,0.45); border-top-color: #fff; border-radius: 50%; animation: vhSpin 0.75s linear infinite; }
 
 /* checklist (facilitator) + settle steps share one calm style */
-.tick-row { display: flex; align-items: center; gap: 9px; font-size: 12.5px; line-height: 1.5; padding: 3px 0; }
-.tick { flex-shrink: 0; width: 15px; height: 15px; border-radius: 50%; background: ${INK}; color: #fff; font-size: 8.5px; display: inline-flex; align-items: center; justify-content: center; }
+.tick-row { display: flex; align-items: center; gap: 9px; font-size: 13px; line-height: 1.5; padding: 3px 0; }
+.tick { flex-shrink: 0; width: 15px; height: 15px; border-radius: 50%; background: ${INK}; color: #fff; font-size: 9px; display: inline-flex; align-items: center; justify-content: center; }
 .tick-label { color: #0a0a0a; }
 .tick-detail { margin-left: auto; color: #9a9a9a; font-family: ${MONO}; font-size: 11px; }
-.hash-chip { margin-top: 10px; display: inline-flex; align-items: center; gap: 9px; background: #f6f6f7; border: 1px solid rgba(0,0,0,0.07); border-radius: 8px; padding: 7px 11px; font-family: ${MONO}; font-size: 11.5px; text-decoration: none; transition: border-color .15s; }
+.hash-chip { margin-top: 10px; display: inline-flex; align-items: center; gap: 9px; background: #f6f6f7; border: 1px solid rgba(0,0,0,0.07); border-radius: 8px; padding: 7px 11px; font-family: ${MONO}; font-size: 11px; text-decoration: none; transition: border-color .15s; }
 .hash-chip:hover { border-color: rgba(250,0,140,0.4); }
 .hash-k { color: #9a9a9a; }
 .hash-v { color: #0a0a0a; }
 .hash-ext { color: ${PINK}; }
 .result-link { color: ${PINK}; text-decoration: none; }
 .result-link:hover { text-decoration: underline; }
-.pay-error { margin-top: 11px; font-size: 12.5px; line-height: 1.45; color: #c0245f; background: rgba(250,0,140,0.05); border: 1px solid rgba(250,0,140,0.22); border-radius: 8px; padding: 8px 11px; }
+.pay-error { margin-top: 11px; font-size: 13px; line-height: 1.45; color: #c0245f; background: rgba(250,0,140,0.05); border: 1px solid rgba(250,0,140,0.22); border-radius: 8px; padding: 8px 11px; }
 
 /* "waiting" / "broadcasting" pulse while an in-flight request is mid-air */
 .vh-dots { animation: vhDots 1.6s ease-in-out infinite; }
@@ -177,19 +212,19 @@ const VH_CSS = `
 
 /* confirmation polling (S4b) */
 .confirm-box { margin-top: 13px; border-top: 1px dashed rgba(0,0,0,0.1); padding-top: 12px; }
-.confirm-head { display: flex; align-items: center; gap: 8px; font-size: 12.5px; }
+.confirm-head { display: flex; align-items: center; gap: 8px; font-size: 13px; }
 .confirm-title { font-weight: 500; color: #0a0a0a; }
 .confirm-spin { flex-shrink: 0; width: 13px; height: 13px; border: 2px solid rgba(250,0,140,0.25); border-top-color: ${PINK}; border-radius: 50%; animation: vhSpin 0.7s linear infinite; }
 .confirm-badge { flex-shrink: 0; width: 15px; height: 15px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 9px; border: 1.5px solid rgba(0,0,0,0.15); }
 .confirm-badge.ok { background: #16a34a; color: #fff; border: none; }
-.confirm-attempt { margin-left: auto; font-family: ${MONO}; font-size: 10.5px; color: #9a9a9a; }
+.confirm-attempt { margin-left: auto; font-family: ${MONO}; font-size: 10px; color: #9a9a9a; }
 .confirm-code { margin-top: 9px; }
 .confirm-log { margin-top: 8px; display: flex; flex-direction: column; gap: 3px; }
 .confirm-row { display: flex; gap: 9px; align-items: baseline; font-family: ${MONO}; font-size: 11px; line-height: 1.4; }
 .confirm-n { color: #bcbcbc; min-width: 22px; flex-shrink: 0; }
 .confirm-pending { color: #9a9a9a; }
 .confirm-found { color: #16a34a; }
-.confirm-done { margin-top: 9px; font-size: 12.5px; line-height: 1.5; color: #16a34a; }
+.confirm-done { margin-top: 9px; font-size: 13px; line-height: 1.5; color: #16a34a; }
 
 /* dispensed result */
 .result { margin-top: 10px; border: 1px solid rgba(0,0,0,0.08); border-radius: 10px; overflow: hidden; }
@@ -197,14 +232,14 @@ const VH_CSS = `
 .result-row:first-child { border-top: none; }
 .result-k { color: #9a9a9a; min-width: 92px; }
 .result-v { color: #0a0a0a; word-break: break-all; }
-.vend-cue { margin-top: 11px; display: flex; align-items: center; gap: 8px; font-size: 12.5px; color: #0a0a0a; }
+.vend-cue { margin-top: 11px; display: flex; align-items: center; gap: 8px; font-size: 13px; color: #0a0a0a; }
 .vend-cue .arrow { color: ${PINK}; font-size: 15px; }
 
 /* state machine */
 .sd-machine { display: flex; flex-direction: column; }
 .sd-init { display: flex; align-items: center; justify-content: center; gap: 8px; }
 .sd-init i { width: 11px; height: 11px; border-radius: 50%; background: ${INK}; box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.05); }
-.sd-init-label { font-size: 9.5px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.16em; color: #b0b0b0; }
+.sd-init-label { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.16em; color: #b0b0b0; }
 .sd-trans { position: relative; height: 30px; display: flex; align-items: center; justify-content: center; }
 .sd-trans::before { content: ""; position: absolute; left: 50%; top: 0; bottom: 7px; width: 1.5px; transform: translateX(-50%); background: rgba(0,0,0,0.55); }
 .sd-trans.pending::before { background: none; border-left: 1.5px dashed rgba(0, 0, 0, 0.14); }
@@ -218,12 +253,12 @@ const VH_CSS = `
 .sd-node.sd-final.sd-done { box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05); }
 .sd-head { display: flex; align-items: center; gap: 9px; }
 .sd-num { font-family: ${MONO}; font-size: 9px; color: #bcbcbc; letter-spacing: 0.05em; }
-.sd-name { flex: 1; font-size: 14px; font-weight: 600; letter-spacing: -0.01em; color: #0a0a0a; }
+.sd-name { flex: 1; font-size: 14px; font-weight: 600; color: #0a0a0a; }
 .sd-node.sd-pending .sd-name { color: #a6a6a6; font-weight: 500; }
 .sd-badge { flex-shrink: 0; width: 17px; height: 17px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 9px; }
 .sd-badge.done { background: ${INK}; color: #fff; }
 .sd-badge.pending { border: 1.5px solid rgba(0, 0, 0, 0.15); }
-.sd-cur { flex-shrink: 0; font-size: 9.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em; color: ${PINK}; background: rgba(250, 0, 140, 0.09); border-radius: 999px; padding: 2px 8px; }
+.sd-cur { flex-shrink: 0; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em; color: ${PINK}; background: rgba(250, 0, 140, 0.09); border-radius: 999px; padding: 2px 8px; }
 .sd-body { margin-top: 8px; }
 
 @media (prefers-reduced-motion: reduce) {
@@ -243,6 +278,8 @@ export default function VendingHero() {
   const [chosen, setChosen] = useState<string | null>(null);
   const [signing, setSigning] = useState(false);
   const [walletSigning, setWalletSigning] = useState(false);
+  const [mocking, setMocking] = useState(false);
+  const [mockMode, setMockMode] = useState(false);
   const [stage, setStage] = useState<Stage>("choose");
   const [txHash, setTxHash] = useState<string | null>(null);
   const [result, setResult] = useState<{ status: number; body: unknown; payment: PaymentResponse | null } | null>(null);
@@ -271,13 +308,15 @@ export default function VendingHero() {
   useEffect(() => {
     if (typeof window === "undefined") return;
     const detect = () => {
-      const c = (window as unknown as { cardano?: Record<string, { enable?: unknown; name?: string; icon?: string }> }).cardano;
-      if (!c) return;
-      const found: Wallet[] = [];
-      for (const id of Object.keys(c)) {
-        const w = c[id];
-        if (w && typeof w.enable === "function") found.push({ id, name: w.name || id, icon: w.icon });
+      const c = (window as unknown as { cardano?: Record<string, unknown> }).cardano;
+      if (!c || typeof c !== "object") {
+        setWallets([]);
+        return;
       }
+      const found: Wallet[] = Object.entries(c).flatMap(([id, provider]) => {
+        if (!isCip30Provider(provider)) return [];
+        return [{ id, name: provider.name, icon: provider.icon }];
+      });
       setWallets(found);
     };
     detect();
@@ -356,6 +395,7 @@ export default function VendingHero() {
 
   function selectWallet(id: string) {
     if (stage !== "choose") return;
+    setMockMode(false);
     setChosen(id);
     setWalletSigning(false);
     setSigning(true);
@@ -373,6 +413,7 @@ export default function VendingHero() {
       return;
     }
     setError(null);
+    setMockMode(false);
     setVerifyData(null);
     setSettleData(null);
     setConfirms([]);
@@ -481,9 +522,91 @@ export default function VendingHero() {
     }
   }
 
+  async function mockTransaction() {
+    if (stage !== "choose" || mocking || walletSigning) return;
+    const req = acc;
+    const network = req?.network ?? "cardano:mainnet";
+    const xPayment = btoa(
+      JSON.stringify({
+        x402Version: 1,
+        scheme: req?.scheme ?? "exact",
+        network,
+        payload: { transaction: MOCK_SIGNED_TX, mode: "mock" },
+      })
+    );
+
+    setError(null);
+    setSigning(false);
+    setWalletSigning(false);
+    setMocking(true);
+    setMockMode(true);
+    setChosen(MOCK_WALLET_ID);
+    setVerifyData(null);
+    setSettleData(null);
+    setConfirms([]);
+    setConfirmed(false);
+    setTxHash(null);
+    setResult(null);
+    setVended(false);
+    setCoin(true);
+
+    try {
+      setStage("verify");
+      setVerifyData({ reqBody: MOCK_SIGNED_TX });
+      await delay(VERIFY_REQUEST_DWELL_MS);
+      setVerifyData({
+        reqBody: MOCK_SIGNED_TX,
+        status: 200,
+        resp: {
+          isValid: true,
+          mode: "mock",
+          checks: ["amount", "recipient", "signature"],
+        },
+      });
+      await delay(VERIFY_RESULT_DWELL_MS);
+
+      setStage("settle");
+      setSettleData({ xPayment });
+      await delay(SETTLE_REQUEST_DWELL_MS);
+      setSettleData({ xPayment, status: 200 });
+      const payment: PaymentResponse = { success: true, network, transaction: MOCK_TX_HASH };
+      setTxHash(MOCK_TX_HASH);
+      setResult({
+        status: 200,
+        body: {
+          ok: true,
+          snack: "dispensed",
+          mode: "mock",
+          payment,
+        },
+        payment,
+      });
+      await delay(SETTLE_RESULT_DWELL_MS);
+
+      setStage("confirm");
+      setConfirms([{ n: 1, found: false }]);
+      await delay(900);
+      setConfirms((prev) => [...prev, { n: 2, found: true, confirmations: 1, block: 9876543 }]);
+      setConfirmed(true);
+      await delay(CONFIRM_RESULT_DWELL_MS);
+
+      setStage("done");
+      await delay(DISPENSE_DWELL_MS);
+      setVended(true);
+      shake();
+    } catch {
+      setError("Mock transaction failed.");
+      setMockMode(false);
+      setChosen(null);
+      setStage("choose");
+    } finally {
+      setMocking(false);
+    }
+  }
+
   const acc = (resp?.body as { accepts?: PaymentReq[] })?.accepts?.[0];
-  const walletName = wallets.find((w) => w.id === chosen)?.name || chosen || "wallet";
-  const walletIcon = wallets.find((w) => w.id === chosen)?.icon;
+  const walletName = mockMode ? "Mock wallet" : wallets.find((w) => w.id === chosen)?.name || chosen || "wallet";
+  const walletIcon = mockMode ? undefined : wallets.find((w) => w.id === chosen)?.icon;
 
   // what the machine says — keep the 402 bubble scoped to step 1
   const machineResp = result
@@ -495,10 +618,10 @@ export default function VendingHero() {
   return (
     <section className="pt-[140px] pb-16">
       <div className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12 text-center">
-        <p className="text-[11px] uppercase tracking-[0.18em] text-[#FA008C] font-mono mb-3">
+        <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-[#FA008C] mb-3">
           Agent Payments
         </p>
-        <h1 className="mx-auto text-[34px] md:text-[52px] font-normal tracking-[-1px] leading-[1.04] text-black max-w-[860px]">
+        <h1 className="mx-auto text-[40px] md:text-[64px] font-normal leading-[1.15] text-black max-w-[860px]">
           Try x402 on Cardano with our virtual vending machine.
         </h1>
 
@@ -510,10 +633,10 @@ export default function VendingHero() {
                 started ? "opacity-0 pointer-events-none" : "opacity-100"
               }`}
             >
-              <p className="text-[12px] font-mono uppercase tracking-[0.16em]" style={{ color: PINK }}>
+              <p className="text-[11px] font-medium uppercase tracking-[0.18em]" style={{ color: PINK }}>
                 Run it yourself
               </p>
-              <p className="mx-auto mt-2 text-[14px] md:text-[15px] text-[#5b5b5b] leading-[1.55] max-w-[540px]">
+              <p className="mx-auto mt-2 text-[15px] md:text-[16px] text-[#5b5b5b] leading-[1.6] max-w-[540px]">
                 Every step below is a real request. Run them one at a time and watch the machine react.
               </p>
             </div>
@@ -556,7 +679,10 @@ export default function VendingHero() {
                       chosen={chosen}
                       onSelectWallet={selectWallet}
                       onRunRequest={runRequest}
+                      onMockTransaction={mockTransaction}
                       walletSigning={walletSigning}
+                      mocking={mocking}
+                      mockMode={mockMode}
                       busy={busy}
                       started={started}
                       stage={stage}
@@ -644,7 +770,7 @@ export default function VendingHero() {
                     )}
                   </div>
                   <div className="min-w-0">
-                    <p className="text-[10.5px] font-mono uppercase tracking-[0.12em] text-[#999] capitalize">{walletName}</p>
+                    <p className="text-[11px] font-medium uppercase tracking-[0.12em] text-[#999] capitalize">{walletName}</p>
                     <p className="text-[16px] font-medium text-[#0a0a0a]">Signature request</p>
                   </div>
                 </div>
@@ -652,7 +778,7 @@ export default function VendingHero() {
                   This is a <b className="text-black font-medium">real Cardano mainnet</b> payment. Your
                   wallet will build and sign the transaction — then the facilitator submits it on-chain.
                 </p>
-                <dl className="mt-4 rounded-xl bg-[#f7f7f8] border border-black/[0.06] p-3.5 text-[12.5px] font-mono">
+                <dl className="mt-4 rounded-xl bg-[#f7f7f8] border border-black/[0.06] p-3.5 text-[12px] font-mono">
                   <SignRow k="Amount" v={adaFromLovelace(acc?.maxAmountRequired) || "1 ADA"} strong />
                   <SignRow k="To" v={shortAddr(acc?.payTo)} />
                   <SignRow k="Network" v="Cardano mainnet" last />
@@ -695,7 +821,10 @@ function Steps({
   chosen,
   onSelectWallet,
   onRunRequest,
+  onMockTransaction,
   walletSigning,
+  mocking,
+  mockMode,
   busy,
   started,
   stage,
@@ -713,7 +842,10 @@ function Steps({
   chosen: string | null;
   onSelectWallet: (id: string) => void;
   onRunRequest: () => void;
+  onMockTransaction: () => void;
   walletSigning: boolean;
+  mocking: boolean;
+  mockMode: boolean;
   busy: boolean;
   started: boolean;
   stage: Stage;
@@ -733,7 +865,7 @@ function Steps({
   const reachedVerify = stage === "verify" || stage === "settle" || stage === "confirm" || stage === "done";
   const reachedSettle = stage === "settle" || stage === "confirm" || stage === "done";
   const reachedDone = stage === "done";
-  const walletLabel = chosen || "wallet";
+  const walletLabel = mockMode ? "mock wallet" : chosen || "wallet";
   const hash = txHash ?? result?.payment?.transaction ?? null;
   const verifyOk = (verifyData?.resp as { isValid?: boolean } | undefined)?.isValid === true;
   const settleOk = settleData?.status === 200;
@@ -773,11 +905,20 @@ function Steps({
 
       {/* S2 — sign & pay */}
       <Transition label="choose how to pay" fired={started} />
-      <StateNode n={2} name={paid ? "Paid" : "Sign & pay"} status={started ? st(!paid, paid) : "pending"}>
+      <StateNode n={2} name={paid ? (mockMode ? "Mocked payment" : "Paid") : "Sign & pay"} status={started ? st(!paid, paid) : "pending"}>
         {paid ? (
           <p className="msg-desc">
-            Paid <b className="text-black font-medium">{ada}</b> on mainnet, signed with{" "}
-            <span className="text-black capitalize">{walletLabel}</span>.
+            {mockMode ? (
+              <>
+                Mocked a <b className="text-black font-medium">{ada}</b> Cardano payment. No wallet opened
+                and no real funds moved.
+              </>
+            ) : (
+              <>
+                Paid <b className="text-black font-medium">{ada}</b> on mainnet, signed with{" "}
+                <span className="text-black capitalize">{walletLabel}</span>.
+              </>
+            )}
           </p>
         ) : (
           <>
@@ -786,14 +927,14 @@ function Steps({
               build and sign the transaction. (Real funds.)
             </p>
             {wallets.length > 0 ? (
-              <div className="mt-3 flex flex-wrap gap-2">
+              <div className="wallet-options">
                 {wallets.map((w) => {
                   const waitingForSignature = walletSigning && chosen === w.id;
                   return (
                     <button
                       key={w.id}
                       onClick={() => onSelectWallet(w.id)}
-                      disabled={walletSigning}
+                      disabled={walletSigning || mocking}
                       aria-busy={waitingForSignature}
                       className={`wallet-btn ${chosen === w.id ? "wallet-on" : ""}`}
                     >
@@ -808,10 +949,32 @@ function Steps({
                 })}
               </div>
             ) : (
-              <p className="mt-2.5 text-[12.5px] text-[#8a8a8a]">
+              <p className="mt-2.5 text-[13px] text-[#8a8a8a]">
                 No Cardano wallet detected — install one (Eternl, Lace, Begin, Vespr…) and reload.
               </p>
             )}
+            {wallets.length > 0 && (
+              <div className="wallet-or" aria-hidden>
+                <span>Or</span>
+              </div>
+            )}
+            <div className="mock-wallet-wrap">
+              <button
+                type="button"
+                onClick={onMockTransaction}
+                disabled={walletSigning || mocking}
+                aria-busy={mocking}
+                className="mock-wallet-btn"
+              >
+                {mocking ? <span className="wallet-btn-spin" aria-hidden /> : null}
+                <span className="mock-wallet-label">
+                  {mocking ? "Mocking transaction..." : "I don't have a Cardano wallet - mock the transaction"}
+                </span>
+              </button>
+              <p className="mock-note">
+                Runs the same visual flow with simulated payment data. No wallet opens and no funds move.
+              </p>
+            </div>
             {error && <p className="pay-error">{error}</p>}
           </>
         )}
@@ -827,8 +990,9 @@ function Steps({
         {reachedVerify && (
           <>
             <p className="msg-desc">
-              The facilitator decodes your signed transaction and confirms it really pays the right
-              amount to the right address — before anything is broadcast.
+              {mockMode
+                ? "The mock facilitator checks the simulated transaction against the same amount, recipient, and signature requirements."
+                : "The facilitator decodes your signed transaction and confirms it really pays the right amount to the right address - before anything is broadcast."}
             </p>
             {verifyData && (
               <>
@@ -851,7 +1015,7 @@ function Steps({
               <div className="mt-2.5">
                 <Tick i={0} label="Amount" detail={`≥ ${ada}`} />
                 <Tick i={1} label="Recipient" detail={shortAddr(acc?.payTo)} />
-                <Tick i={2} label="Signature" detail="present" />
+                <Tick i={2} label="Signature" detail={mockMode ? "mocked" : "present"} />
               </div>
             )}
           </>
@@ -868,8 +1032,9 @@ function Steps({
         {reachedSettle && (
           <>
             <p className="msg-desc">
-              The client retries the request with the signed payment attached. The facilitator re-verifies,
-              then broadcasts the transaction to Cardano mainnet via Blockfrost.
+              {mockMode
+                ? "The client retries the request with a simulated X-PAYMENT header. The mock facilitator accepts it so you can see the full x402 flow."
+                : "The client retries the request with the signed payment attached. The facilitator re-verifies, then broadcasts the transaction to Cardano mainnet via Blockfrost."}
             </p>
             {settleData && (
               <pre className="code-block">
@@ -879,22 +1044,28 @@ function Steps({
             {settleOk ? (
               <>
                 <div className="mt-2.5">
-                  <Tick i={0} label="Submitted to Cardano mainnet" />
-                  <Tick i={1} label="Accepted by the network" />
+                  <Tick i={0} label={mockMode ? "Simulated Cardano submission" : "Submitted to Cardano mainnet"} />
+                  <Tick i={1} label={mockMode ? "Accepted by the mock network" : "Accepted by the network"} />
                 </div>
-                {hash && (
+                {hash && mockMode ? (
+                  <span className="hash-chip">
+                    <span className="hash-k">tx</span>
+                    <span className="hash-v">{shortHash(hash)}</span>
+                    <span className="hash-ext">mock</span>
+                  </span>
+                ) : hash ? (
                   <a className="hash-chip" href={`https://cardanoscan.io/transaction/${hash}`} target="_blank" rel="noopener noreferrer">
                     <span className="hash-k">tx</span>
                     <span className="hash-v">{shortHash(hash)}</span>
                     <span className="hash-ext">Cardanoscan ↗</span>
                   </a>
-                )}
+                ) : null}
               </>
             ) : (
               <p className="run-out-label vh-dots">broadcasting to the network</p>
             )}
             {(stage === "confirm" || stage === "done") && hash && (
-              <ConfirmCheck hash={hash} confirms={confirms} confirmed={confirmed} active={stage === "confirm"} />
+              <ConfirmCheck hash={hash} confirms={confirms} confirmed={confirmed} active={stage === "confirm"} mockMode={mockMode} />
             )}
           </>
         )}
@@ -906,7 +1077,12 @@ function Steps({
         {reachedDone && (
           <>
             <p className="msg-desc">
-              {confirmed ? (
+              {mockMode ? (
+                <>
+                  Mocked and accepted - the machine returns your snack with a <span className="code">200 OK</span>.
+                  No real funds moved.
+                </>
+              ) : confirmed ? (
                 <>
                   Paid and confirmed on-chain — the machine returns your snack with a <span className="code">200 OK</span>.
                 </>
@@ -919,10 +1095,15 @@ function Steps({
             </p>
             <div className="result vh-seq" style={{ animationDelay: "80ms" }}>
               <div className="result-row"><span className="result-k">status</span><span className="result-v">success</span></div>
-              <div className="result-row"><span className="result-k">network</span><span className="result-v">{result?.payment?.network ?? "cardano:mainnet"}</span></div>
+              <div className="result-row">
+                <span className="result-k">network</span>
+                <span className="result-v">{result?.payment?.network ?? "cardano:mainnet"}{mockMode ? " (mock)" : ""}</span>
+              </div>
               <div className="result-row">
                 <span className="result-k">transaction</span>
-                {hash ? (
+                {hash && mockMode ? (
+                  <span className="result-v">{shortHash(hash)} (mock)</span>
+                ) : hash ? (
                   <a className="result-v result-link" href={`https://cardanoscan.io/transaction/${hash}`} target="_blank" rel="noopener noreferrer">
                     {shortHash(hash)} ↗
                   </a>
@@ -1011,17 +1192,29 @@ function ConfirmCheck({
   confirms,
   confirmed,
   active,
+  mockMode,
 }: {
   hash: string;
   confirms: ConfirmPoll[];
   confirmed: boolean;
   active: boolean;
+  mockMode: boolean;
 }) {
   const recent = confirms.slice(-3);
   const conf = confirms.find((p) => p.found);
   const short = shortHash(hash);
   // active poll → checking; resolved → confirmed; ran out of polls → pending
-  const title = confirmed ? "Confirmed on-chain" : active ? "Checking for confirmations…" : "Confirmation pending";
+  const title = mockMode
+    ? confirmed
+      ? "Mock confirmation complete"
+      : active
+        ? "Simulating confirmation..."
+        : "Mock confirmation pending"
+    : confirmed
+      ? "Confirmed on-chain"
+      : active
+        ? "Checking for confirmations…"
+        : "Confirmation pending";
   return (
     <div className="confirm-box" role="status" aria-live="polite">
       <div className="confirm-head">
@@ -1038,7 +1231,11 @@ function ConfirmCheck({
       {/* the browser polls our own route; the facilitator queries Blockfrost
           server-side, so the metered key is never exposed to the client */}
       <pre className="code-block confirm-code">
-        <code>{`GET /api/x402/confirm?hash=${short}\n    ↳ facilitator → blockfrost.io/api/v0/txs/${short}`}</code>
+        <code>
+          {mockMode
+            ? `GET /api/x402/confirm?hash=${short}\n    ↳ simulated confirmation ledger`
+            : `GET /api/x402/confirm?hash=${short}\n    ↳ facilitator → blockfrost.io/api/v0/txs/${short}`}
+        </code>
       </pre>
       {recent.length > 0 && (
         <div className="confirm-log">
@@ -1047,11 +1244,11 @@ function ConfirmCheck({
               <span className="confirm-n">#{p.n}</span>
               {p.found ? (
                 <span className="confirm-found">
-                  200 · in block{p.block ? ` #${p.block.toLocaleString()}` : ""} · {p.confirmations ?? 1} confirmation
+                  200 · {mockMode ? "mock block" : "in block"}{p.block ? ` #${p.block.toLocaleString()}` : ""} · {p.confirmations ?? 1} confirmation
                   {(p.confirmations ?? 1) === 1 ? "" : "s"}
                 </span>
               ) : (
-                <span className="confirm-pending">404 · not yet in a block</span>
+                <span className="confirm-pending">{mockMode ? "202 · waiting in mock mempool" : "404 · not yet in a block"}</span>
               )}
             </div>
           ))}
@@ -1059,7 +1256,7 @@ function ConfirmCheck({
       )}
       {confirmed && conf && (
         <p className="confirm-done vh-seq">
-          Block {conf.block ? `#${conf.block.toLocaleString()}` : "found"} · {conf.confirmations ?? 1} confirmation
+          {mockMode ? "Mock block" : "Block"} {conf.block ? `#${conf.block.toLocaleString()}` : "found"} · {conf.confirmations ?? 1} confirmation
           {(conf.confirmations ?? 1) === 1 ? "" : "s"} — releasing your snack.
         </p>
       )}

@@ -134,10 +134,10 @@ export default function X402Page() {
         {/* ── What is x402? ── */}
         <section className="pt-20 pb-24">
           <div className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12">
-            <p className="text-[11px] uppercase tracking-[0.18em] text-[#FA008C] font-mono mb-3 text-center">
+            <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-[#FA008C] mb-3 text-center">
               what is x402?
             </p>
-            <h2 className="text-[26px] md:text-[34px] font-normal tracking-[-0.6px] leading-[1.15] text-black max-w-[700px] mx-auto mb-10 text-center" style={{ overflowWrap: "anywhere" }}>
+            <h2 className="text-[28px] md:text-[40px] font-normal leading-[1.31] text-black max-w-[700px] mx-auto mb-10 text-center" style={{ overflowWrap: "anywhere" }}>
               Payments, built into the internet itself.
             </h2>
 
@@ -161,16 +161,28 @@ export default function X402Page() {
                     <span aria-hidden>→</span>
                   </Link>
                 </div>
-                <div className="flex-1 min-h-[220px] lg:min-h-0 bg-[#0a0a0a] flex flex-col items-center justify-center gap-5 p-10">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src="/images/linux-foundation-logo.svg"
-                    alt="Linux Foundation"
-                    className="h-9 md:h-11 w-auto"
-                  />
-                  <p className="text-[12px] text-white/40 text-center max-w-[280px] leading-[1.5]">
-                    The x402 Foundation is part of the Linux Foundation.
-                  </p>
+                <div className="flex-1 min-h-[240px] lg:min-h-0 bg-[#0a0a0a] flex flex-col items-center justify-center p-10">
+                  <div className="flex flex-col items-center gap-6">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src="/images/x402-logo.svg"
+                      alt="x402"
+                      className="h-10 md:h-14 w-auto"
+                      style={{ filter: "invert(1)" }}
+                    />
+                    <div className="h-px w-28 bg-white/15" aria-hidden />
+                    <div className="flex flex-col items-center gap-3">
+                      <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-white/35">
+                        part of
+                      </p>
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src="/images/linux-foundation-logo.svg"
+                        alt="Linux Foundation"
+                        className="h-6 md:h-7 w-auto opacity-85"
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -180,10 +192,10 @@ export default function X402Page() {
         {/* ── Cardano vs. other chains ── */}
         <section className="pt-0 pb-24">
           <div className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12">
-            <p className="text-[11px] uppercase tracking-[0.18em] text-[#FA008C] font-mono mb-3 text-center">
+            <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-[#FA008C] mb-3 text-center">
               cardano vs. other chains
             </p>
-            <h2 className="text-[26px] md:text-[34px] font-normal tracking-[-0.6px] leading-[1.15] text-black max-w-[720px] mx-auto text-center">
+            <h2 className="text-[28px] md:text-[40px] font-normal leading-[1.31] text-black max-w-[760px] mx-auto text-center">
               x402 on Cardano is more powerful than x402 on any other chain.
             </h2>
 
@@ -195,12 +207,12 @@ export default function X402Page() {
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src="/images/x402-logo.svg" alt="x402" width={80} height={32} className="h-6 md:h-8 w-auto max-w-full object-contain" />
                   </span>
-                  <span className="inline-flex h-8 md:h-10 items-center text-[18px] md:text-[26px] font-light text-[#FA008C]/50" aria-hidden>+</span>
+                  <span className="inline-flex h-8 md:h-10 items-center text-[20px] md:text-[24px] font-light text-[#FA008C]/50" aria-hidden>+</span>
                   <span className="inline-flex h-8 w-8 md:h-10 md:w-10 items-center justify-center">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src="/images/cardano-ada-logo.png" alt="Cardano" width={40} height={40} className="h-full w-full object-contain" />
                   </span>
-                  <span className="inline-flex h-8 md:h-10 items-center text-[18px] md:text-[26px] font-light text-[#FA008C]/50" aria-hidden>+</span>
+                  <span className="inline-flex h-8 md:h-10 items-center text-[20px] md:text-[24px] font-light text-[#FA008C]/50" aria-hidden>+</span>
                   <span className="inline-flex h-8 w-8 md:h-10 md:w-10 items-center justify-center">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src="/images/masumi-favicon.svg" alt="Masumi" width={40} height={40} className="h-full w-full object-contain" />
@@ -208,10 +220,10 @@ export default function X402Page() {
                 </div>
                 <div className="hidden md:block w-[1px] self-stretch bg-[#FA008C]/15" aria-hidden />
                 <div className="min-w-0">
-                  <p className="text-[11px] uppercase tracking-[0.18em] text-[#FA008C] font-mono mb-2.5">
+                  <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-[#FA008C] mb-2.5">
                     native support
                   </p>
-                  <p className="text-[20px] md:text-[26px] font-normal tracking-[-0.4px] leading-[1.3] text-black max-w-[560px]">
+                  <p className="text-[20px] md:text-[24px] font-normal leading-snug text-black max-w-[560px]">
                     x402 on Cardano natively supports the{" "}
                     <span className="text-[#FA008C]">Masumi Smart Contract</span>.
                   </p>
@@ -233,7 +245,7 @@ export default function X402Page() {
                     <EthMark className="h-4 md:h-5 w-auto" />
                     <SolMark className="h-3 md:h-3.5 w-auto" />
                   </div>
-                  <p className="text-[9px] md:text-[11px] font-mono uppercase tracking-[0.06em] text-[#9a9a9a] leading-[1.4] text-center">
+                  <p className="text-[10px] md:text-[11px] font-medium uppercase tracking-[0.06em] text-[#9a9a9a] leading-[1.4] text-center">
                     EVM · Solana
                     <br className="md:hidden" /> · others{" "}
                     <br className="md:hidden" />x402
@@ -244,7 +256,7 @@ export default function X402Page() {
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src="/images/cardano-ada-logo.png" alt="" aria-hidden className="h-4 w-4 md:h-5 md:w-5" />
                   </div>
-                  <p className="text-[9px] md:text-[11px] font-mono uppercase tracking-[0.06em] text-[#9a9a9a] leading-[1.4] text-center">
+                  <p className="text-[10px] md:text-[11px] font-medium uppercase tracking-[0.06em] text-[#9a9a9a] leading-[1.4] text-center">
                     Cardano
                     <br className="md:hidden" /> Regular{" "}
                     <br className="md:hidden" />x402
@@ -257,7 +269,7 @@ export default function X402Page() {
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src="/images/masumi-favicon.svg" alt="" aria-hidden className="h-4 w-4 md:h-5 md:w-5" />
                   </div>
-                  <p className="text-[9px] md:text-[11px] font-mono uppercase tracking-[0.06em] text-[#FA008C] font-semibold leading-[1.4] text-center">
+                  <p className="text-[10px] md:text-[11px] font-semibold uppercase tracking-[0.06em] text-[#FA008C] leading-[1.4] text-center">
                     Cardano +
                     <br className="md:hidden" /> Masumi{" "}
                     <br className="md:hidden" />x402
@@ -274,8 +286,8 @@ export default function X402Page() {
                   }`}
                 >
                   <div className="p-3 md:p-6 min-w-0">
-                    <p className="text-[13.5px] md:text-[14px] font-medium text-black">{row.label}</p>
-                    <p className="mt-1 text-[12px] md:text-[12.5px] text-[#8a8a8a] leading-[1.5] max-w-[440px]">
+                    <p className="text-[13px] md:text-[14px] font-medium text-black">{row.label}</p>
+                    <p className="mt-1 text-[12px] md:text-[13px] text-[#8a8a8a] leading-[1.5] max-w-[440px]">
                       {row.note}
                     </p>
                   </div>
@@ -297,8 +309,8 @@ export default function X402Page() {
               <span className="text-[26px] font-light text-[#FA008C]/50 leading-none" aria-hidden>
                 +
               </span>
-              <p className="text-[11px] uppercase tracking-[0.18em] text-[#FA008C] font-mono text-center px-4">
-                interoperable other Masumi features
+              <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-[#FA008C] text-center px-4">
+                works with other Masumi features
               </p>
             </div>
 
@@ -311,8 +323,8 @@ export default function X402Page() {
                   }`}
                 >
                   <div className="p-3 md:p-6 min-w-0">
-                    <p className="text-[13.5px] md:text-[14px] font-medium text-black">{row.label}</p>
-                    <p className="mt-1 text-[12px] md:text-[12.5px] text-[#8a8a8a] leading-[1.5] max-w-[440px]">
+                    <p className="text-[13px] md:text-[14px] font-medium text-black">{row.label}</p>
+                    <p className="mt-1 text-[12px] md:text-[13px] text-[#8a8a8a] leading-[1.5] max-w-[440px]">
                       {row.note}
                     </p>
                   </div>
@@ -343,10 +355,10 @@ export default function X402Page() {
 
         <section className="pt-0 pb-24">
           <div className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12 text-center">
-            <p className="text-[11px] uppercase tracking-[0.18em] text-[#FA008C] font-mono mb-3">
+            <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-[#FA008C] mb-3">
               agent handoff
             </p>
-            <h2 className="text-[26px] md:text-[34px] font-normal tracking-[-0.6px] leading-[1.15] text-black max-w-[680px] mx-auto">
+            <h2 className="text-[28px] md:text-[40px] font-normal leading-[1.31] text-black max-w-[680px] mx-auto">
               Give your agents the Masumi skill.
             </h2>
             <p className="mx-auto mt-4 text-[15px] md:text-[16px] text-[#5b5b5b] leading-[1.6] max-w-[620px]">
