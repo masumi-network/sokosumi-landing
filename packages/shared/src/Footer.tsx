@@ -70,6 +70,9 @@ export default function Footer({ product = "sokosumi" }: { product?: "sokosumi" 
               <Link href="https://docs.masumi.network" className="hover:text-black transition-colors" target="_blank" rel="noopener noreferrer">
                 Docs
               </Link>
+              <Link href="/x402-cardano" className="hover:text-black transition-colors">
+                x402
+              </Link>
               <Link href="/blogs" className="hover:text-black transition-colors">
                 Blog
               </Link>

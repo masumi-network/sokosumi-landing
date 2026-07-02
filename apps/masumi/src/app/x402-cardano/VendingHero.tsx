@@ -9,6 +9,14 @@ const INK = "#0a0a0a";
 const MONO = `"SF Mono", Monaco, "Cascadia Code", monospace`;
 const MACHINE_IMG = "/images/vending-machine-new.png";
 const ENDPOINT = "/vending-machine";
+const RUN_REQUEST_RESPONSE_DWELL_MS = 3400;
+const VERIFY_REQUEST_DWELL_MS = 1600;
+const VERIFY_RESULT_DWELL_MS = 3200;
+const SETTLE_REQUEST_DWELL_MS = 1600;
+const SETTLE_RESULT_DWELL_MS = 2600;
+const CONFIRM_RESULT_DWELL_MS = 2200;
+const DISPENSE_DWELL_MS = 1250;
+const DESKTOP_STEPS_WINDOW_HEIGHT = 560;
 // centre of the keypad (% of the square machine image)
 
 type Wallet = { id: string; name: string; icon?: string };
@@ -66,24 +74,24 @@ const VH_CSS = `
   0%, 100% { box-shadow: 0 0 0 0 rgba(250, 0, 140, 0.45); }
   50% { box-shadow: 0 0 0 7px rgba(250, 0, 140, 0); }
 }
-.vh-seq { animation: vhSeq 0.45s cubic-bezier(0.6, 0, 0.3, 1) both; }
+.vh-seq { animation: vhSeq 0.95s cubic-bezier(0.6, 0, 0.3, 1) both; }
 @keyframes vhSeq { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
-.vh-pop { animation: vhPop 0.28s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+.vh-pop { animation: vhPop 0.65s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
 @keyframes vhPop { from { opacity: 0; transform: translateY(10px) scale(0.97); } to { opacity: 1; transform: none; } }
-.vh-drink { animation: vhDrop 0.75s cubic-bezier(0.34, 1.45, 0.64, 1) both; }
+.vh-drink { animation: vhDrop 1.55s cubic-bezier(0.34, 1.45, 0.64, 1) both; }
 @keyframes vhDrop {
   0% { opacity: 0; transform: translate(-50%, -260%) scale(0.7); }
   55% { opacity: 1; }
   100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
 }
-.vh-shake { animation: vhShake 0.55s ease-in-out 1; }
+.vh-shake { animation: vhShake 1.05s ease-in-out 1; }
 @keyframes vhShake {
   0%, 100% { transform: none; }
   25% { transform: translateX(-2px) rotate(-0.5deg); }
   50% { transform: translateX(2px) rotate(0.5deg); }
   75% { transform: translateX(-1.5px); }
 }
-.vh-flash { animation: vhFlash 0.65s ease-out forwards; }
+.vh-flash { animation: vhFlash 1.25s ease-out forwards; }
 @keyframes vhFlash { 0% { opacity: 0; } 30% { opacity: 1; } 100% { opacity: 0; } }
 
 .msg-desc { font-size: 13px; line-height: 1.55; color: #6b6b6b; max-width: 560px; }
@@ -101,23 +109,29 @@ const VH_CSS = `
 .run-spin { width: 11px; height: 11px; border: 2px solid rgba(255,255,255,0.45); border-top-color: #fff; border-radius: 50%; animation: vhSpin 0.7s linear infinite; }
 @keyframes vhSpin { to { transform: rotate(360deg); } }
 .run-out-label { margin-top: 12px; font-family: ${MONO}; font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: #9a9a9a; }
+.http-status { margin-top: 13px; display: flex; align-items: stretch; overflow: hidden; border-radius: 10px; border: 1px solid rgba(250,0,140,0.28); background: rgba(250,0,140,0.035); }
+.http-status-code { display: flex; align-items: center; justify-content: center; min-width: 52px; padding: 8px 11px; background: #0a0a0a; color: ${PINK}; font-family: ${MONO}; font-size: 16px; line-height: 1; font-weight: 800; }
+.http-status-meta { min-width: 0; flex: 1; padding: 8px 11px 9px; }
+.http-status-k { font-family: ${MONO}; font-size: 10px; text-transform: uppercase; letter-spacing: 0.09em; color: ${PINK}; }
+.http-status-v { margin-top: 2px; font-size: 13.5px; font-weight: 650; letter-spacing: -0.01em; color: #0a0a0a; }
+.run-response-body { max-height: 160px; }
 .resp-bubble { position: absolute; z-index: 30; pointer-events: none; }
 .resp-bubble-inner { display: inline-flex; align-items: center; gap: 8px; background: #0a0a0a; border-radius: 11px; padding: 9px 13px; box-shadow: 0 12px 26px rgba(0,0,0,0.24); white-space: nowrap; }
 .resp-code { font-family: ${MONO}; font-size: 13px; font-weight: 700; color: ${PINK}; }
 .resp-code[data-ok="true"] { color: #4ade80; }
 .resp-name { font-size: 12.5px; font-weight: 500; color: rgba(255,255,255,0.92); }
 .resp-tail { position: absolute; right: -4px; top: 50%; width: 11px; height: 11px; background: #0a0a0a; transform: translateY(-50%) rotate(45deg); border-radius: 2px; }
-.vh-bubble { animation: vhBubble 0.42s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+.vh-bubble { animation: vhBubble 0.9s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
 @keyframes vhBubble { from { opacity: 0; transform: translateX(10px) scale(0.9); } to { opacity: 1; transform: none; } }
-.vh-coin { position: absolute; z-index: 25; left: 84%; top: 40%; width: 12%; transform: translate(-50%, -50%); pointer-events: none; animation: vhCoin 0.95s cubic-bezier(0.4, 0, 0.35, 1) forwards; }
+.vh-coin { position: absolute; z-index: 25; left: 84%; top: 40%; width: 12%; transform: translate(-50%, -50%); pointer-events: none; animation: vhCoin 1.85s cubic-bezier(0.4, 0, 0.35, 1) forwards; }
 @keyframes vhCoin {
   0% { opacity: 0; transform: translate(-950%, -150%) scale(1.05) rotate(-25deg); }
   18% { opacity: 1; }
   60% { opacity: 1; transform: translate(-50%, -50%) scale(1) rotate(210deg); }
   100% { opacity: 0; transform: translate(-50%, 70%) scale(0.4) rotate(380deg); }
 }
-.vh-steps-track { position: relative; transition: transform 0.85s cubic-bezier(0.5, 0, 0.15, 1); }
-.vh-nav { display: none; align-items: center; justify-content: center; gap: 10px; margin-bottom: 14px; }
+.vh-steps-track { position: relative; transition: transform 1.7s cubic-bezier(0.5, 0, 0.15, 1); }
+.vh-nav { display: none; align-items: center; justify-content: center; gap: 10px; margin-bottom: 0; }
 .vh-nav-btn { display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 50%; border: 1px solid rgba(0,0,0,0.14); background: #fff; color: #0a0a0a; cursor: pointer; transition: border-color .15s, background .15s, opacity .15s; }
 .vh-nav-btn:hover:not(:disabled) { border-color: ${PINK}; color: ${PINK}; }
 .vh-nav-btn:disabled { opacity: 0.32; cursor: default; }
@@ -132,11 +146,16 @@ const VH_CSS = `
     -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 80px, #000 calc(100% - 36px), transparent 100%);
     mask-image: linear-gradient(to bottom, transparent 0, #000 80px, #000 calc(100% - 36px), transparent 100%);
   }
-  .vh-nav { display: flex; }
+  .vh-nav { display: flex; position: absolute; left: 0; right: 0; top: -44px; z-index: 5; }
 }
 .wallet-btn { display: inline-flex; align-items: center; gap: 8px; font-size: 12.5px; padding: 7px 13px; border: 1px solid rgba(0, 0, 0, 0.14); border-radius: 8px; cursor: pointer; transition: border-color 0.15s, background 0.15s; color: #0a0a0a; }
 .wallet-btn:hover { border-color: ${PINK}; }
+.wallet-btn:disabled { cursor: wait; opacity: 0.74; }
 .wallet-on { border-color: ${PINK}; background: rgba(250, 0, 140, 0.06); color: ${PINK}; }
+.wallet-btn-spin { width: 11px; height: 11px; border: 2px solid rgba(250,0,140,0.24); border-top-color: ${PINK}; border-radius: 50%; animation: vhSpin 0.8s linear infinite; }
+.wallet-action { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-width: 122px; }
+.wallet-action:disabled { cursor: wait; opacity: 0.78; }
+.wallet-spin { width: 12px; height: 12px; border: 2px solid rgba(255,255,255,0.45); border-top-color: #fff; border-radius: 50%; animation: vhSpin 0.75s linear infinite; }
 
 /* checklist (facilitator) + settle steps share one calm style */
 .tick-row { display: flex; align-items: center; gap: 9px; font-size: 12.5px; line-height: 1.5; padding: 3px 0; }
@@ -153,7 +172,7 @@ const VH_CSS = `
 .pay-error { margin-top: 11px; font-size: 12.5px; line-height: 1.45; color: #c0245f; background: rgba(250,0,140,0.05); border: 1px solid rgba(250,0,140,0.22); border-radius: 8px; padding: 8px 11px; }
 
 /* "waiting" / "broadcasting" pulse while an in-flight request is mid-air */
-.vh-dots { animation: vhDots 1.25s ease-in-out infinite; }
+.vh-dots { animation: vhDots 1.6s ease-in-out infinite; }
 @keyframes vhDots { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
 
 /* confirmation polling (S4b) */
@@ -208,10 +227,10 @@ const VH_CSS = `
 .sd-body { margin-top: 8px; }
 
 @media (prefers-reduced-motion: reduce) {
-  .wt-pulse, .vh-seq, .vh-pop, .vh-shake, .vh-flash, .vh-dots { animation: none !important; }
+  .wt-pulse, .vh-seq, .vh-pop, .vh-shake, .vh-flash, .vh-dots, .vh-coin { animation: none !important; }
   .vh-dots { opacity: 0.7; }
   /* stop the perpetual spinners — show them as static pending rings instead */
-  .confirm-spin, .run-spin { animation: none !important; }
+  .confirm-spin, .run-spin, .wallet-spin, .wallet-btn-spin { animation: none !important; }
   .vh-drink { animation: none !important; opacity: 1; transform: translate(-50%, -50%); }
 }
 `;
@@ -223,6 +242,7 @@ export default function VendingHero() {
   const [wallets, setWallets] = useState<Wallet[]>([]);
   const [chosen, setChosen] = useState<string | null>(null);
   const [signing, setSigning] = useState(false);
+  const [walletSigning, setWalletSigning] = useState(false);
   const [stage, setStage] = useState<Stage>("choose");
   const [txHash, setTxHash] = useState<string | null>(null);
   const [result, setResult] = useState<{ status: number; body: unknown; payment: PaymentResponse | null } | null>(null);
@@ -302,9 +322,7 @@ export default function VendingHero() {
       }
       // offsetTop is layout-relative (ignores the track's transform)
       setStepsY(FOCAL_TOP - target.offsetTop);
-      // grow the window so the whole focused step fits (its bottom never clips),
-      // clamped so short steps don't collapse and tall ones stay reasonable
-      setWinH(Math.min(760, Math.max(440, FOCAL_TOP + target.offsetHeight + 40)));
+      setWinH(DESKTOP_STEPS_WINDOW_HEIGHT);
     };
     measure();
     const ro = new ResizeObserver(measure);
@@ -320,6 +338,8 @@ export default function VendingHero() {
   async function runRequest() {
     if (busy || started) return;
     setBusy(true);
+    setResp(null);
+    shake();
     try {
       const r = await fetch(ENDPOINT, { method: "GET", cache: "no-store" });
       const body = await r.json();
@@ -327,15 +347,17 @@ export default function VendingHero() {
     } catch {
       setResp({ status: 0, body: { error: "Network error" } });
     } finally {
+      shake();
+      await delay(RUN_REQUEST_RESPONSE_DWELL_MS);
       setStarted(true);
       setBusy(false);
-      shake();
     }
   }
 
   function selectWallet(id: string) {
     if (stage !== "choose") return;
     setChosen(id);
+    setWalletSigning(false);
     setSigning(true);
   }
 
@@ -344,26 +366,30 @@ export default function VendingHero() {
   // facilitator (server), which submits it to mainnet and returns the txHash.
   // Mesh is imported lazily — a static import of its WASM crashes under Turbopack.
   async function signAndPay() {
-    if (stage !== "choose" || !chosen) return;
+    if (stage !== "choose" || !chosen || walletSigning) return;
     const req = acc;
     if (!req?.payTo || !req?.maxAmountRequired) {
       setError("Missing payment requirements from the machine.");
       return;
     }
     setError(null);
-    setSigning(false);
     setVerifyData(null);
     setSettleData(null);
     setConfirms([]);
     setConfirmed(false);
-    // stage stays "choose" while the wallet builds + signs the transaction
+    // Close our modal before the wallet opens its own signing UI; some wallets
+    // render in-page prompts that need to sit above the app.
+    setWalletSigning(true);
+    setSigning(false);
     try {
+      await delay(80);
       const { BrowserWallet, Transaction } = await import("@meshsdk/core");
       const wallet = await BrowserWallet.enable(chosen);
       const tx = new Transaction({ initiator: wallet });
       tx.sendLovelace(req.payTo, req.maxAmountRequired);
       const unsigned = await tx.build();
       const signed = await wallet.signTx(unsigned); // full signed tx, ready to submit
+      setWalletSigning(false);
       setCoin(true); // a coin flies into the machine
 
       // ── S3 · VALIDATE ──────────────────────────────────────────────
@@ -371,7 +397,7 @@ export default function VendingHero() {
       // amount to the right address (no chain call yet). Surface the real POST.
       setStage("verify");
       setVerifyData({ reqBody: signed });
-      await delay(800); // let the request register before its reply lands
+      await delay(VERIFY_REQUEST_DWELL_MS); // let the request register before its reply lands
       const vr = await fetch("/api/x402/verify", {
         method: "POST",
         headers: { "content-type": "application/json" },
@@ -380,7 +406,7 @@ export default function VendingHero() {
       const vb = (await vr.json()) as { isValid?: boolean; invalidReason?: string };
       setVerifyData({ reqBody: signed, status: vr.status, resp: vb });
       if (!vb.isValid) throw new Error(vb.invalidReason || "Payment failed verification");
-      await delay(1700); // dwell so the validation result is readable
+      await delay(VERIFY_RESULT_DWELL_MS); // dwell so the validation result is readable
 
       // ── S4a · SETTLE (broadcast) ───────────────────────────────────
       // The resource server re-verifies, then broadcasts to mainnet via Blockfrost.
@@ -389,7 +415,7 @@ export default function VendingHero() {
         JSON.stringify({ x402Version: 1, scheme: "exact", network: req.network ?? "cardano:mainnet", payload: { transaction: signed } })
       );
       setSettleData({ xPayment });
-      await delay(800);
+      await delay(SETTLE_REQUEST_DWELL_MS);
       const r = await fetch(ENDPOINT, { method: "GET", cache: "no-store", headers: { "X-PAYMENT": xPayment } });
       const body = (await r.json()) as { error?: string; detail?: unknown; payment?: PaymentResponse };
       const pr = r.headers.get("x-payment-response");
@@ -410,7 +436,7 @@ export default function VendingHero() {
       const settledHash = typeof payment.transaction === "string" ? payment.transaction : null;
       setTxHash(settledHash);
       setResult({ status: r.status, body, payment });
-      await delay(1100); // dwell on the on-chain receipt
+      await delay(SETTLE_RESULT_DWELL_MS); // dwell on the on-chain receipt
 
       // ── S4b · CONFIRM ──────────────────────────────────────────────
       // Submission ≠ confirmation. Poll the chain until the tx lands in a block;
@@ -437,16 +463,18 @@ export default function VendingHero() {
           await delay(6000);
         }
       }
-      await delay(1000); // let the confirmation settle in before dispensing
+      await delay(CONFIRM_RESULT_DWELL_MS); // let the confirmation settle in before dispensing
 
       // ── S5 · DISPENSE ──────────────────────────────────────────────
       setStage("done");
-      await delay(650);
+      await delay(DISPENSE_DWELL_MS);
       setVended(true);
       shake();
     } catch (e) {
       console.error("[x402] payment error:", e);
       const msg = errText(e);
+      setWalletSigning(false);
+      setSigning(false);
       // user-declined signing shouldn't read like a crash
       setError(/declin|cancel|user|reject|no longer/i.test(msg) ? "Payment cancelled in your wallet." : msg);
       setStage("choose");
@@ -457,10 +485,10 @@ export default function VendingHero() {
   const walletName = wallets.find((w) => w.id === chosen)?.name || chosen || "wallet";
   const walletIcon = wallets.find((w) => w.id === chosen)?.icon;
 
-  // what the machine last "said" — shown as a bubble popping out of it
+  // what the machine says — keep the 402 bubble scoped to step 1
   const machineResp = result
     ? { code: "200", name: "OK", ok: true }
-    : resp
+    : resp && focusIndex === 0
       ? { code: String(resp.status), name: resp.status === 402 ? "Payment Required" : "Response", ok: false }
       : null;
 
@@ -478,8 +506,8 @@ export default function VendingHero() {
           <div className="px-6 py-9 md:px-10 md:py-12">
             {/* intro — collapses once the first request runs */}
             <div
-              className={`overflow-hidden text-center transition-all duration-[550ms] ease-[cubic-bezier(.6,0,.3,1)] ${
-                started ? "max-h-0 opacity-0" : "max-h-[160px] opacity-100 mb-6"
+              className={`overflow-hidden text-center mb-6 transition-opacity duration-[550ms] ease-[cubic-bezier(.6,0,.3,1)] ${
+                started ? "opacity-0 pointer-events-none" : "opacity-100"
               }`}
             >
               <p className="text-[12px] font-mono uppercase tracking-[0.16em]" style={{ color: PINK }}>
@@ -492,7 +520,7 @@ export default function VendingHero() {
 
             <div className="flex flex-col items-center lg:flex-row lg:justify-center lg:items-start">
               {/* ── runnable steps, inside a focal window ── */}
-              <div className="order-2 lg:order-1 w-full lg:w-[700px] flex-shrink-0 mt-8 lg:mt-0">
+              <div className="relative order-2 lg:order-1 w-full lg:w-[700px] flex-shrink-0 mt-8 lg:mt-0">
                 {started && (
                   <div className="vh-nav" aria-label="Step navigation">
                     <button
@@ -528,6 +556,7 @@ export default function VendingHero() {
                       chosen={chosen}
                       onSelectWallet={selectWallet}
                       onRunRequest={runRequest}
+                      walletSigning={walletSigning}
                       busy={busy}
                       started={started}
                       stage={stage}
@@ -598,7 +627,12 @@ export default function VendingHero() {
           {/* ── wallet signing prompt ── */}
           {signing && (
             <div className="absolute inset-0 z-40 flex items-center justify-center p-4">
-              <button aria-label="Close" className="absolute inset-0 bg-black/30 backdrop-blur-[2px]" onClick={() => setSigning(false)} />
+              <button
+                aria-label="Close"
+                className="absolute inset-0 bg-black/30 backdrop-blur-[2px] disabled:cursor-wait"
+                disabled={walletSigning}
+                onClick={() => setSigning(false)}
+              />
               <div className="vh-pop relative w-full max-w-[420px] rounded-2xl bg-white border border-black/10 shadow-[0_24px_60px_rgba(0,0,0,0.22)] p-6 text-left">
                 <div className="flex items-center gap-3">
                   <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#f5f5f6] border border-black/[0.06] overflow-hidden">
@@ -624,15 +658,22 @@ export default function VendingHero() {
                   <SignRow k="Network" v="Cardano mainnet" last />
                 </dl>
                 <div className="mt-5 flex items-center justify-end gap-2">
-                  <button onClick={() => setSigning(false)} className="text-[13px] font-medium px-4 py-2 rounded-full text-[#555] hover:bg-black/[0.04] transition">
+                  <button
+                    onClick={() => setSigning(false)}
+                    disabled={walletSigning}
+                    className="text-[13px] font-medium px-4 py-2 rounded-full text-[#555] hover:bg-black/[0.04] transition disabled:cursor-wait disabled:opacity-40 disabled:hover:bg-transparent"
+                  >
                     Cancel
                   </button>
                   <button
                     onClick={signAndPay}
-                    className="text-[13px] font-medium px-5 py-2 rounded-full text-white transition hover:opacity-90"
+                    disabled={walletSigning}
+                    aria-busy={walletSigning}
+                    className="wallet-action text-[13px] font-medium px-5 py-2 rounded-full text-white transition hover:opacity-90 disabled:hover:opacity-80"
                     style={{ background: PINK }}
                   >
-                    Sign &amp; pay
+                    {walletSigning && <span className="wallet-spin" aria-hidden />}
+                    {walletSigning ? "Waiting for signature…" : "Sign & pay"}
                   </button>
                 </div>
               </div>
@@ -654,6 +695,7 @@ function Steps({
   chosen,
   onSelectWallet,
   onRunRequest,
+  walletSigning,
   busy,
   started,
   stage,
@@ -671,6 +713,7 @@ function Steps({
   chosen: string | null;
   onSelectWallet: (id: string) => void;
   onRunRequest: () => void;
+  walletSigning: boolean;
   busy: boolean;
   started: boolean;
   stage: Stage;
@@ -713,16 +756,19 @@ function Steps({
         <pre className="code-block">
           <code>curl -i https://www.masumi.network/vending-machine</code>
         </pre>
-        {!started ? (
-          <RunButton onClick={onRunRequest} busy={busy} label="Run request" />
-        ) : (
-          <>
-            <p className="run-out-label">402 response</p>
-            <pre className="json-block">
-              <code>{resp ? JSON.stringify(resp.body, null, 2) : ""}</code>
-            </pre>
-          </>
-        )}
+        <div className="run-slot">
+          {!started && !resp ? (
+            <RunButton onClick={onRunRequest} busy={busy} label="Run request" />
+          ) : (
+            <>
+              <HttpStatus status={resp?.status ?? 0} />
+              <p className="run-out-label">response body</p>
+              <pre className="json-block run-response-body">
+                <code>{resp ? JSON.stringify(resp.body, null, 2) : ""}</code>
+              </pre>
+            </>
+          )}
+        </div>
       </StateNode>
 
       {/* S2 — sign & pay */}
@@ -741,15 +787,25 @@ function Steps({
             </p>
             {wallets.length > 0 ? (
               <div className="mt-3 flex flex-wrap gap-2">
-                {wallets.map((w) => (
-                  <button key={w.id} onClick={() => onSelectWallet(w.id)} className={`wallet-btn ${chosen === w.id ? "wallet-on" : ""}`}>
-                    {w.icon ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img src={w.icon} alt="" width={16} height={16} className="w-4 h-4 rounded" />
-                    ) : null}
-                    <span className="capitalize">{w.name}</span>
-                  </button>
-                ))}
+                {wallets.map((w) => {
+                  const waitingForSignature = walletSigning && chosen === w.id;
+                  return (
+                    <button
+                      key={w.id}
+                      onClick={() => onSelectWallet(w.id)}
+                      disabled={walletSigning}
+                      aria-busy={waitingForSignature}
+                      className={`wallet-btn ${chosen === w.id ? "wallet-on" : ""}`}
+                    >
+                      {w.icon ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img src={w.icon} alt="" width={16} height={16} className="w-4 h-4 rounded" />
+                      ) : null}
+                      <span className="capitalize">{w.name}</span>
+                      {waitingForSignature && <span className="wallet-btn-spin" aria-hidden />}
+                    </button>
+                  );
+                })}
               </div>
             ) : (
               <p className="mt-2.5 text-[12.5px] text-[#8a8a8a]">
@@ -891,6 +947,21 @@ function Steps({
           </>
         )}
       </StateNode>
+    </div>
+  );
+}
+
+function HttpStatus({ status }: { status: number }) {
+  const isPaymentRequired = status === 402;
+  return (
+    <div className="http-status vh-seq" role="status" aria-live="polite">
+      <div className="http-status-code">{status || "ERR"}</div>
+      <div className="http-status-meta">
+        <div className="http-status-k">HTTP response type</div>
+        <div className="http-status-v">
+          {isPaymentRequired ? "402 Payment Required" : status ? `${status} Response` : "Network error"}
+        </div>
+      </div>
     </div>
   );
 }
@@ -1096,4 +1167,3 @@ function SnackCan() {
     </svg>
   );
 }
-

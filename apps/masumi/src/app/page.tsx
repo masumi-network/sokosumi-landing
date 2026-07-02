@@ -285,7 +285,7 @@ const frameworks = [
 const standards = [
   { name: "A2A", logo: "/images/a2a-logo.svg", href: "https://a2a-protocol.org" },
   { name: "AP2", logo: "/images/ap2-logo.svg", href: "https://ap2-protocol.org" },
-  { name: "x402", logo: "/images/x402-logo.svg", href: "/x402" },
+  { name: "x402", logo: "/images/x402-logo.svg", href: "/x402-cardano" },
 ];
 
 
@@ -309,7 +309,7 @@ export default function MasumiPage() {
                 className="w-[24px] select-none"
               />
             </div>
-            <div className="x402-badge mx-6 mb-7">
+            <Link href="/x402-cardano" className="x402-badge mx-6 mb-7 transition-colors hover:border-[#FA008C]/50 hover:bg-[#FA008C]/[0.08]">
               <span className="vch">
                 <svg viewBox="0 0 24 24">
                   <path d="M5 12.5l4.5 4.5L19 7" />
@@ -318,7 +318,7 @@ export default function MasumiPage() {
               <span>
                 Officially merged into the <strong>x402 Standard</strong>
               </span>
-            </div>
+            </Link>
             <h1 className="text-[40px] md:text-[64px] font-normal tracking-[-1.28px] leading-[1.15] text-black max-w-[700px] px-6">
               Agents Pay Agents
             </h1>

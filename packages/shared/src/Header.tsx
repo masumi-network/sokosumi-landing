@@ -157,6 +157,9 @@ export default function Header({ product = "sokosumi", topBanner }: { product?: 
               <Link href="https://docs.masumi.network" target="_blank" rel="noopener noreferrer" className="text-[14px] font-normal text-black hover:text-black/60 transition-colors px-[15px] h-full flex items-center">
                 Docs
               </Link>
+              <Link href="/x402-cardano" className="text-[14px] font-normal text-black hover:text-black/60 transition-colors px-[15px] h-full flex items-center">
+                x402
+              </Link>
               <Link href="/explorer" className="text-[14px] font-normal text-black hover:text-black/60 transition-colors px-[15px] h-full flex items-center">
                 Explorer
               </Link>
@@ -236,6 +239,9 @@ export default function Header({ product = "sokosumi", topBanner }: { product?: 
               <>
                 <Link href="https://docs.masumi.network" target="_blank" rel="noopener noreferrer" onClick={() => setMobileMenuOpen(false)} className="text-[18px] text-black py-3 border-b border-black/[0.06]">
                   Docs
+                </Link>
+                <Link href="/x402-cardano" onClick={() => setMobileMenuOpen(false)} className="text-[18px] text-black py-3 border-b border-black/[0.06]">
+                  x402
                 </Link>
                 <Link href="/explorer" onClick={() => setMobileMenuOpen(false)} className="text-[18px] text-black py-3 border-b border-black/[0.06]">
                   Explorer

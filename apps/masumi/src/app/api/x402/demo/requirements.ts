@@ -1,6 +1,6 @@
 // Single source of truth for the x402 "exact" Cardano PaymentRequirements.
 // Imported by the live route (GET /api/x402/demo) AND server-rendered on the
-// /x402 page, so the JSON shown on the page is exactly what the endpoint emits.
+// /x402-cardano page, so the JSON shown on the page is exactly what the endpoint emits.
 //
 // Spec: https://github.com/x402-foundation/x402/blob/main/specs/schemes/exact/scheme_exact_cardano.md
 
