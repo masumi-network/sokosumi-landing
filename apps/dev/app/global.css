@@ -1839,16 +1839,9 @@ header a:has(.masumi-brand-mark) {
 }
 
 .nori-id-card[data-variant='boot'] {
-  width: min(560px, 100%);
+  width: 100%;
   max-width: 100%;
   min-width: 0;
-}
-
-/* cq units inside the card resolve against these wrappers
-   (an element cannot be its own container) */
-.nori-hire-card,
-.nori-session {
-  container-type: inline-size;
 }
 
 /* Physical hover tilt (driven by pointer position, see useCardTilt).
@@ -1856,11 +1849,15 @@ header a:has(.masumi-brand-mark) {
    the pointer, which is what makes it feel springy and physical. */
 .nori-id-tilt {
   position: relative;
+  width: 100%;
+  aspect-ratio: 85.6 / 54;
+  container-type: inline-size;
   perspective: 800px;
   min-width: 0;
 }
 
 .nori-id-tilt .nori-id-card {
+  height: 100%;
   transition: transform 150ms ease-out;
 }
 
@@ -1903,59 +1900,6 @@ header a:has(.masumi-brand-mark) {
 .nori-id-card[data-variant='panel'] {
   width: 100%;
   margin-bottom: 16px;
-}
-
-/* Below ~400px the standard legibility floors would outgrow the true ID-1
-   ratio. The ratio always wins: the floors step down just enough for the
-   full document (MRZ included) to fit. */
-@container (max-width: 400px) {
-  .nori-id-issuer {
-    font-size: max(2cqw, 7px);
-  }
-
-  .nori-id-issuer small {
-    font-size: max(1.6cqw, 5.5px);
-  }
-
-  .nori-id-network {
-    font-size: max(1.7cqw, 6px);
-  }
-
-  .nori-id-field dt {
-    font-size: max(1.4cqw, 5px);
-  }
-
-  .nori-id-field dd {
-    font-size: max(2.1cqw, 7.5px);
-  }
-
-  .nori-id-field dd.nori-id-name {
-    font-size: max(3cqw, 10px);
-  }
-
-  .nori-id-mono {
-    font-size: max(1.9cqw, 7px);
-  }
-
-  .nori-id-sig-label {
-    font-size: max(1.4cqw, 5px);
-  }
-
-  .nori-id-script {
-    font-size: max(4.6cqw, 12px);
-  }
-
-  .nori-id-stamp strong {
-    font-size: max(2.6cqw, 8.5px);
-  }
-
-  .nori-id-stamp small {
-    font-size: max(1.4cqw, 5px);
-  }
-
-  .nori-id-mrz {
-    font-size: max(1.9cqw, 6.5px);
-  }
 }
 
 .nori-id-sheen {
@@ -2015,7 +1959,7 @@ header a:has(.masumi-brand-mark) {
   display: flex;
   flex-direction: column;
   gap: 0.3cqw;
-  font-size: max(2cqw, 8px);
+  font-size: 2cqw;
   font-weight: 800;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -2027,7 +1971,7 @@ header a:has(.masumi-brand-mark) {
 }
 
 .nori-id-issuer small {
-  font-size: max(1.6cqw, 6.5px);
+  font-size: 1.6cqw;
   font-weight: 700;
   letter-spacing: 0.22em;
   color: var(--id-muted);
@@ -2083,7 +2027,7 @@ header a:has(.masumi-brand-mark) {
   border: 1px solid rgba(250, 0, 140, 0.28);
   border-radius: 999px;
   background: rgba(250, 0, 140, 0.06);
-  font-size: max(1.7cqw, 7px);
+  font-size: 1.7cqw;
   font-weight: 800;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -2188,7 +2132,7 @@ header a:has(.masumi-brand-mark) {
 
 .nori-id-field dt {
   margin: 0 0 0.3cqw;
-  font-size: max(1.4cqw, 6px);
+  font-size: 1.4cqw;
   font-weight: 700;
   letter-spacing: 0.05em;
   text-align: left;
@@ -2205,7 +2149,7 @@ header a:has(.masumi-brand-mark) {
   gap: 1cqw;
   flex-wrap: wrap;
   margin: 0;
-  font-size: max(2.1cqw, 8.5px);
+  font-size: 2.1cqw;
   font-weight: 650;
   line-height: 1.25;
   letter-spacing: 0.04em;
@@ -2213,7 +2157,7 @@ header a:has(.masumi-brand-mark) {
 }
 
 .nori-id-field dd.nori-id-name {
-  font-size: max(3cqw, 12px);
+  font-size: 3cqw;
   font-weight: 800;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -2221,7 +2165,7 @@ header a:has(.masumi-brand-mark) {
 
 .nori-id-mono {
   font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, monospace);
-  font-size: max(1.9cqw, 8px);
+  font-size: 1.9cqw;
   font-weight: 600;
   letter-spacing: 0.02em;
   word-break: break-all;
@@ -2238,8 +2182,8 @@ header a:has(.masumi-brand-mark) {
 }
 
 .nori-id-lookup svg {
-  width: max(2.4cqw, 10px);
-  height: max(2.4cqw, 10px);
+  width: 2.4cqw;
+  height: 2.4cqw;
   animation: nori-spin 1s linear infinite;
 }
 
@@ -2277,14 +2221,14 @@ header a:has(.masumi-brand-mark) {
 }
 
 .nori-id-stamp strong {
-  font-size: max(2.6cqw, 10px);
+  font-size: 2.6cqw;
   font-weight: 900;
   letter-spacing: 0.14em;
   line-height: 1;
 }
 
 .nori-id-stamp small {
-  font-size: max(1.4cqw, 6px);
+  font-size: 1.4cqw;
   font-weight: 700;
   letter-spacing: 0.2em;
   line-height: 1.25;
@@ -2463,7 +2407,7 @@ header a:has(.masumi-brand-mark) {
 }
 
 .nori-id-sig-label {
-  font-size: max(1.4cqw, 6px);
+  font-size: 1.4cqw;
   font-weight: 700;
   letter-spacing: 0.05em;
   text-transform: uppercase;
@@ -2475,7 +2419,7 @@ header a:has(.masumi-brand-mark) {
 
 .nori-id-script {
   font-family: 'Snell Roundhand', 'Segoe Script', 'Savoye LET', 'Apple Chancery', cursive;
-  font-size: max(4.6cqw, 15px);
+  font-size: 4.6cqw;
   font-weight: 400;
   line-height: 1;
   color: rgba(42, 26, 33, 0.85);
@@ -2494,7 +2438,7 @@ header a:has(.masumi-brand-mark) {
   background: rgba(255, 255, 255, 0.85);
   box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.04);
   font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, monospace);
-  font-size: max(1.9cqw, 7.5px);
+  font-size: 1.9cqw;
   font-weight: 600;
   letter-spacing: 0.14em;
   color: rgba(0, 0, 0, 0.65);
