@@ -181,16 +181,16 @@ const traceEvents: Array<{
     meta: (task) => task?.paymentId ?? 'Awaiting payment event',
   },
   {
+    phase: 'running',
+    label: 'Nori is working',
+    description: 'The answer streams optimistically while payment settlement continues.',
+    meta: () => '/api/nori/chat',
+  },
+  {
     phase: 'locked',
     label: 'Funds locked in escrow',
     description: 'The docs treasury funds the purchase, held by the Masumi smart contract on Cardano preprod.',
     meta: (task) => task?.paymentStatus ?? task?.blockchainIdentifier ?? 'Cardano preprod',
-  },
-  {
-    phase: 'running',
-    label: 'Nori is working',
-    description: 'The answer streams back while escrow holds the funds.',
-    meta: () => '/api/nori/chat',
   },
   {
     phase: 'completed',
@@ -546,7 +546,8 @@ const NoriPaymentTrace = memo(function NoriPaymentTrace({
   isStreaming: boolean;
   hasLastMessageError: boolean;
 }) {
-  const tracePhaseOrder: TracePhase[] = ['created', 'claimed', 'locked', 'running', 'completed', 'settled'];
+  const tracePhaseOrder: TracePhase[] = ['created', 'claimed', 'running', 'locked', 'completed', 'settled'];
+  const hasPaymentRequest = Boolean(taskDetails?.paymentId || taskDetails?.blockchainIdentifier);
 
   const traceStepDone = (phase: TracePhase): boolean => {
     const rank = phaseRank[taskPhase];
@@ -554,7 +555,7 @@ const NoriPaymentTrace = memo(function NoriPaymentTrace({
       case 'created':
         return taskPhase !== 'quote';
       case 'claimed':
-        return Boolean(taskDetails?.paymentId || taskDetails?.blockchainIdentifier);
+        return hasPaymentRequest;
       case 'usage':
         return (
           taskDetails?.agentRegistryVerified === true ||
@@ -574,13 +575,23 @@ const NoriPaymentTrace = memo(function NoriPaymentTrace({
   const getTraceStatus = (phase: TracePhase): TraceStatus => {
     if (traceStepDone(phase)) return 'done';
 
-    const firstIncomplete = tracePhaseOrder.find((candidate) => !traceStepDone(candidate));
     if (taskPhase === 'failed') {
+      const firstIncomplete = tracePhaseOrder.find((candidate) => !traceStepDone(candidate));
       return phase === firstIncomplete ? 'error' : 'pending';
     }
 
-    const inFlight = isStreaming || (taskPhase !== 'quote' && taskPhase !== 'settled');
-    return phase === firstIncomplete && inFlight ? 'active' : 'pending';
+    switch (phase) {
+      case 'claimed':
+        return taskPhase !== 'quote' && !hasPaymentRequest ? 'active' : 'pending';
+      case 'running':
+        return isStreaming && !hasLastMessageError ? 'active' : 'pending';
+      case 'locked':
+        return hasPaymentRequest && !isStreaming && phaseRank[taskPhase] >= phaseRank.claimed ? 'active' : 'pending';
+      case 'settled':
+        return phaseRank[taskPhase] >= phaseRank.completed ? 'active' : 'pending';
+      default:
+        return 'pending';
+    }
   };
 
   const taskStatusLabel =
