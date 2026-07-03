@@ -15,6 +15,14 @@ import { withBasePath } from '@/lib/base-path';
 
 const entries = [
   {
+    id: 'nori',
+    href: '/',
+    label: 'Ask Nori',
+    description: 'Chat with the docs AI agent',
+    tileClass: 'masumi-product-tile--nori',
+    tileIcon: '/assets/nori-pfp.png',
+  },
+  {
     id: 'masumi',
     href: productHome('masumi'),
     label: 'masumi',
@@ -41,8 +49,10 @@ export function ProductSwitcher({ className = '' }: { className?: string }) {
   // beneath the sidebar by the header's stacking context.
   const [menuPosition, setMenuPosition] = useState<{ top: number; left: number } | null>(null);
   const activeProduct = productFromPathname(pathname);
+  // Outside the docs (portal root / ask page) the Ask Nori entry is active.
+  const activeId = activeProduct ?? 'nori';
 
-  // Remember the last visited product so "Browse" can return to it
+  // Remember the last visited product
   useEffect(() => {
     if (activeProduct) rememberProduct(activeProduct);
   }, [activeProduct]);
@@ -131,9 +141,9 @@ export function ProductSwitcher({ className = '' }: { className?: string }) {
           role="menu"
           style={{ top: menuPosition.top, left: menuPosition.left }}
         >
-          <div className="masumi-product-menu-heading">Documentation</div>
+          <div className="masumi-product-menu-heading">Developer Portal</div>
           {entries.map((entry) => {
-            const isActive = entry.id === activeProduct;
+            const isActive = entry.id === activeId;
             return (
               <Link
                 key={entry.id}
