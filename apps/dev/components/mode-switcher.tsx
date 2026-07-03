@@ -5,6 +5,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import type { MouseEvent } from 'react';
 import { Bot, BookOpen } from 'lucide-react';
+import { getLastProduct, productHome } from '@/lib/last-product';
 
 const modes = [
   {
@@ -15,14 +16,14 @@ const modes = [
   },
   {
     id: 'browse',
-    href: '/masumi/documentation',
+    href: productHome('masumi'),
     label: 'Browse',
     icon: BookOpen,
   },
 ] as const;
 
 type ModeId = (typeof modes)[number]['id'];
-type Mode = (typeof modes)[number];
+type Mode = { id: ModeId; href: string; label: string; icon: typeof Bot };
 
 function getActiveMode(pathname: string | null) {
   if (!pathname || pathname === '/' || pathname.startsWith('/ask')) return 'ask';
@@ -34,16 +35,26 @@ export function ModeSwitcher({ className = '' }: { className?: string }) {
   const router = useRouter();
   const routeActive = getActiveMode(pathname);
   const [pendingActive, setPendingActive] = useState<ModeId | null>(null);
+  // "Browse" returns to the product the user last visited (default: Masumi).
+  const [browseHref, setBrowseHref] = useState<string>(productHome('masumi'));
   const navigationFrame = useRef<number | null>(null);
   const active = pendingActive ?? routeActive;
+  const resolvedModes: Mode[] = modes.map((mode) =>
+    mode.id === 'browse' ? { ...mode, href: browseHref } : mode,
+  );
 
   useEffect(() => {
     setPendingActive(null);
   }, [routeActive]);
 
   useEffect(() => {
-    modes.forEach((mode) => router.prefetch(mode.href));
-  }, [router]);
+    setBrowseHref(productHome(getLastProduct()));
+  }, [pathname]);
+
+  useEffect(() => {
+    resolvedModes.forEach((mode) => router.prefetch(mode.href));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router, browseHref]);
 
   useEffect(() => {
     return () => {
@@ -85,7 +96,7 @@ export function ModeSwitcher({ className = '' }: { className?: string }) {
 
   return (
     <nav className={`masumi-mode-switcher ${className}`} data-mode={active} aria-label="Documentation mode">
-      {modes.map((mode) => {
+      {resolvedModes.map((mode) => {
         const Icon = mode.icon;
         const isActive = active === mode.id;
 

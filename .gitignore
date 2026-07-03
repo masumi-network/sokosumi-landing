@@ -53,3 +53,4 @@ skills-lock.json
 
 # app data
 **/data/
+.gstack/

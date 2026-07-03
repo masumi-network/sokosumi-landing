@@ -1,6 +1,7 @@
 import type { BaseLayoutProps } from "fumadocs-ui/layouts/shared";
 import Image from "next/image";
 import { ModeSwitcher } from "@/components/mode-switcher";
+import { ProductSwitcher } from "@/components/product-switcher";
 import { withBasePath } from "@/lib/base-path";
 
 /**
@@ -30,7 +31,12 @@ export const baseOptions: BaseLayoutProps = {
         />
       </span>
     ),
-    children: <ModeSwitcher className="masumi-mode-switcher--nav" />,
+    children: (
+      <>
+        <ProductSwitcher className="masumi-product-switcher--nav" />
+        <ModeSwitcher className="masumi-mode-switcher--nav" />
+      </>
+    ),
   },
   // see https://fumadocs.dev/docs/ui/navigation/links
   links: [],
