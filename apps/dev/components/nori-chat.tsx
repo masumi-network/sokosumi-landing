@@ -1218,20 +1218,27 @@ export function NoriChat({
         ? 'verified'
         : agentIdentity.status;
 
-  // Stable card data so the (GPU-heavy) ID card doesn't re-render on every
-  // streamed token — it only updates when task/identity details change.
+  // Stable card data so the (GPU-heavy) ID card doesn't re-render while the
+  // agent is running. Depend on the primitive values the card actually shows —
+  // payment polling replaces the taskDetails/identity objects every few
+  // seconds without changing these fields, and the memoized card must not be
+  // invalidated by that.
+  const cardAgentIdentifier = taskDetails?.agentIdentifier ?? agentIdentity.agentIdentifier;
+  const cardPolicyId = taskDetails?.policyId ?? agentIdentity.policyId;
+  const cardAssetHref = taskDetails?.explorerLinks?.agentAsset ?? agentIdentity.assetHref;
+
   const agentCard: AgentIdCardData = useMemo(
     () => ({
       name: 'Nori',
       signature: 'Nori DevRel Agent',
       role: 'Developer Relations Agent',
-      agentIdentifier: taskDetails?.agentIdentifier ?? agentIdentity.agentIdentifier,
-      policyId: taskDetails?.policyId ?? agentIdentity.policyId,
+      agentIdentifier: cardAgentIdentifier,
+      policyId: cardPolicyId,
       network: 'Cardano · Preprod',
       registryState,
-      assetHref: taskDetails?.explorerLinks?.agentAsset ?? agentIdentity.assetHref,
+      assetHref: cardAssetHref,
     }),
-    [taskDetails, agentIdentity, registryState],
+    [cardAgentIdentifier, cardPolicyId, cardAssetHref, registryState],
   );
 
   const isActive = messages.length > 0;
