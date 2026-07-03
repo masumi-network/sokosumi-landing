@@ -83,6 +83,7 @@ export const AgentIdCard = memo(function AgentIdCard({
   stamped = false,
   stampAnimated = true,
   registrySheen = true,
+  interactiveTilt,
 }: {
   data: AgentIdCardData;
   variant?: 'boot' | 'panel';
@@ -92,11 +93,14 @@ export const AgentIdCard = memo(function AgentIdCard({
   stampAnimated?: boolean;
   /** Whether verified registry state should trigger the reflective card sweep. */
   registrySheen?: boolean;
+  /** Pointer-following tilt is kept for the hero card, but disabled in the sticky rail. */
+  interactiveTilt?: boolean;
 }) {
   const agentId = data.agentIdentifier ? truncateMiddle(data.agentIdentifier, 17) : '';
   const checking = data.registryState === 'checking';
   const [line1, line2] = mrzLines(data);
   const tilt = useCardTilt();
+  const tiltEnabled = interactiveTilt ?? variant === 'boot';
   const showStamp = stamped && (data.registryState === 'verified' || data.registryState === 'failed');
   const stampState = data.registryState === 'failed' ? 'failed' : 'verified';
 
@@ -104,9 +108,10 @@ export const AgentIdCard = memo(function AgentIdCard({
     <div
       ref={tilt.ref}
       className="nori-id-tilt"
-      onPointerEnter={tilt.onPointerEnter}
-      onPointerMove={tilt.onPointerMove}
-      onPointerLeave={tilt.onPointerLeave}
+      data-tilt={tiltEnabled ? 'enabled' : 'disabled'}
+      onPointerEnter={tiltEnabled ? tilt.onPointerEnter : undefined}
+      onPointerMove={tiltEnabled ? tilt.onPointerMove : undefined}
+      onPointerLeave={tiltEnabled ? tilt.onPointerLeave : undefined}
     >
     <figure
       className="nori-id-card"

@@ -1881,7 +1881,7 @@ header a:has(.masumi-brand-mark) {
   transition: transform 150ms ease-out;
 }
 
-.nori-id-tilt:hover .nori-id-card {
+.nori-id-tilt[data-tilt='enabled']:hover .nori-id-card {
   transform: rotateX(var(--x-rotation, 0deg)) rotateY(var(--y-rotation, 0deg)) scale(1.05);
   will-change: transform;
 }
@@ -1902,12 +1902,12 @@ header a:has(.masumi-brand-mark) {
   transition: opacity 150ms ease-out;
 }
 
-.nori-id-tilt:hover .nori-id-glare {
+.nori-id-tilt[data-tilt='enabled']:hover .nori-id-glare {
   opacity: 1;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .nori-id-tilt:hover .nori-id-card {
+  .nori-id-tilt[data-tilt='enabled']:hover .nori-id-card {
     transform: none;
     transition: none;
   }
