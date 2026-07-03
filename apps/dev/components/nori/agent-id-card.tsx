@@ -82,6 +82,7 @@ export const AgentIdCard = memo(function AgentIdCard({
   variant = 'panel',
   stamped = false,
   stampAnimated = true,
+  registrySheen = true,
 }: {
   data: AgentIdCardData;
   variant?: 'boot' | 'panel';
@@ -89,6 +90,8 @@ export const AgentIdCard = memo(function AgentIdCard({
   stamped?: boolean;
   /** When false the ink is simply present — no tool descent, no thud. */
   stampAnimated?: boolean;
+  /** Whether verified registry state should trigger the reflective card sweep. */
+  registrySheen?: boolean;
 }) {
   const agentId = data.agentIdentifier ? truncateMiddle(data.agentIdentifier, 17) : '';
   const checking = data.registryState === 'checking';
@@ -109,6 +112,7 @@ export const AgentIdCard = memo(function AgentIdCard({
       className="nori-id-card"
       data-variant={variant}
       data-registry={data.registryState}
+      data-registry-sheen={registrySheen ? 'true' : 'false'}
       data-stamped={showStamp ? 'true' : 'false'}
       data-stamp-static={showStamp && !stampAnimated ? 'true' : 'false'}
     >

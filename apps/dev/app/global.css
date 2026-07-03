@@ -1994,7 +1994,7 @@ header a:has(.masumi-brand-mark) {
   animation: nori-id-sheen 1.6s cubic-bezier(0.3, 0.6, 0.2, 1) 0.85s both;
 }
 
-.nori-id-card[data-registry='verified'] .nori-id-sheen {
+.nori-id-card[data-registry='verified'][data-registry-sheen='true'] .nori-id-sheen {
   animation: nori-id-sheen 1.4s cubic-bezier(0.3, 0.6, 0.2, 1) both;
 }
 

@@ -19,7 +19,7 @@ import {
   WalletCards,
   XCircle,
 } from 'lucide-react';
-import { AgentIdCard, type AgentIdCardData, type RegistryState } from '@/components/nori/agent-id-card';
+import { NoriIdentityCard, NoriIdentityRail } from '@/components/nori/nori-identity';
 import { withBasePath } from '@/lib/base-path';
 
 export interface NoriPageContext {
@@ -104,15 +104,6 @@ interface NoriAgentRegistryStatus {
   name?: string;
   status?: string;
   apiBaseUrl?: string;
-  error?: string;
-}
-
-interface AgentIdentityState {
-  status: 'checking' | 'verified' | 'failed';
-  agentIdentifier?: string;
-  policyId?: string;
-  name?: string;
-  assetHref?: string;
   error?: string;
 }
 
@@ -545,39 +536,6 @@ const MessageBody = memo(function MessageBody({ content }: { content: string }) 
   return <>{renderMarkdown(content)}</>;
 });
 
-const NoriSessionRail = memo(function NoriSessionRail({
-  agentCard,
-  taskDetails,
-  initialPage,
-}: {
-  agentCard: AgentIdCardData;
-  taskDetails: NoriTaskDetails | null;
-  initialPage?: NoriPageContext;
-}) {
-  return (
-    <aside className="nori-session" aria-label="Nori identity">
-      <AgentIdCard data={agentCard} variant="panel" stamped stampAnimated={false} />
-
-      {taskDetails?.errorNote && <p className="nori-payment-error">{taskDetails.errorNote}</p>}
-
-      {initialPage && (
-        <div className="nori-context-card">
-          <div>
-            <p className="nori-card-label">Current page context</p>
-            <strong>{initialPage.title || initialPage.path}</strong>
-            <span>{initialPage.path}</span>
-          </div>
-          {initialPage.markdownUrl && (
-            <a href={initialPage.markdownUrl} target="_blank" rel="noreferrer">
-              View Markdown <ExternalLink aria-hidden="true" />
-            </a>
-          )}
-        </div>
-      )}
-    </aside>
-  );
-});
-
 const NoriPaymentTrace = memo(function NoriPaymentTrace({
   taskPhase,
   taskDetails,
@@ -700,6 +658,8 @@ const NoriPaymentTrace = memo(function NoriPaymentTrace({
           </span>
         </div>
 
+        {taskDetails?.errorNote && <p className="nori-payment-error">{taskDetails.errorNote}</p>}
+
         <ol className="nori-trace-list" aria-live="polite">
           {traceEvents.map((event) => {
             const status = getTraceStatus(event.phase);
@@ -759,7 +719,6 @@ export function NoriChat({
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
   const [taskPhase, setTaskPhase] = useState<TaskPhase>('quote');
   const [taskDetails, setTaskDetails] = useState<NoriTaskDetails | null>(null);
-  const [agentIdentity, setAgentIdentity] = useState<AgentIdentityState>({ status: 'checking' });
   const [hireStamping, setHireStamping] = useState(false);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const threadEndRef = useRef<HTMLDivElement>(null);
@@ -811,46 +770,6 @@ export function NoriChat({
       threadEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
     }
   }, [messages.length]);
-
-  // Look Nori up in the live Masumi registry on page open; the ID card only
-  // gets its VERIFIED stamp once this real lookup has succeeded.
-  useEffect(() => {
-    let cancelled = false;
-    (async () => {
-      try {
-        const response = await fetch(withBasePath('/api/nori/identity'), { cache: 'no-store' });
-        const payload = (await response.json()) as {
-          ok?: boolean;
-          error?: string;
-          identity?: {
-            verified?: boolean;
-            agentIdentifier?: string;
-            policyId?: string;
-            name?: string;
-            error?: string;
-            explorerLinks?: NoriExplorerLinks;
-          };
-        };
-        if (cancelled) return;
-        if (response.ok && payload.ok && payload.identity?.verified) {
-          setAgentIdentity({
-            status: 'verified',
-            agentIdentifier: payload.identity.agentIdentifier,
-            policyId: payload.identity.policyId,
-            name: payload.identity.name,
-            assetHref: payload.identity.explorerLinks?.agentAsset,
-          });
-        } else {
-          setAgentIdentity({ status: 'failed', error: payload.identity?.error || payload.error });
-        }
-      } catch {
-        if (!cancelled) setAgentIdentity({ status: 'failed', error: 'Registry lookup failed.' });
-      }
-    })();
-    return () => {
-      cancelled = true;
-    };
-  }, []);
 
   const appendAssistant = (updater: (message: Message) => Message) => {
     setMessages((current) => {
@@ -1191,7 +1110,7 @@ export function NoriChat({
 
     // First question: stamp the hero card while it's still center stage, and
     // only move to the console once the tool has lifted away.
-    if (messages.length === 0 && !reducedMotion && agentIdentity.status !== 'checking') {
+    if (messages.length === 0 && !reducedMotion) {
       setHireStamping(true);
       await new Promise((resolve) => setTimeout(resolve, STAMP_CEREMONY_MS));
       setHireStamping(false);
@@ -1293,16 +1212,16 @@ export function NoriChat({
       clearTaskTimers();
       if (streamErrorRef.current) {
         setTaskPhase('failed');
-    } else if (hasLivePaymentRef.current) {
-      setTaskPhase((current) => (phaseRank[current] < phaseRank.completed ? 'completed' : current));
-    } else {
+      } else if (hasLivePaymentRef.current) {
+        setTaskPhase((current) => (phaseRank[current] < phaseRank.completed ? 'completed' : current));
+      } else {
         setTaskDetails((current) => ({
           ...(current ?? buildPendingTask()),
           paymentStatus: 'No live payment event',
           errorNote: 'Nori answered, but no Masumi payment request was returned.',
         }));
         setTaskPhase('failed');
-    }
+      }
       setIsStreaming(false);
       inputRef.current?.focus();
     }
@@ -1312,38 +1231,6 @@ export function NoriChat({
     event.preventDefault();
     void submitPrompt(input);
   };
-
-  // The card is stamped VERIFIED only after the live registry lookup returns;
-  // a live task check can still override it either way.
-  const registryState: RegistryState =
-    taskDetails?.agentRegistryVerified === false
-      ? 'failed'
-      : taskDetails?.agentRegistryVerified === true
-        ? 'verified'
-        : agentIdentity.status;
-
-  // Stable card data so the (GPU-heavy) ID card doesn't re-render while the
-  // agent is running. Depend on the primitive values the card actually shows —
-  // payment polling replaces the taskDetails/identity objects every few
-  // seconds without changing these fields, and the memoized card must not be
-  // invalidated by that.
-  const cardAgentIdentifier = taskDetails?.agentIdentifier ?? agentIdentity.agentIdentifier;
-  const cardPolicyId = taskDetails?.policyId ?? agentIdentity.policyId;
-  const cardAssetHref = taskDetails?.explorerLinks?.agentAsset ?? agentIdentity.assetHref;
-
-  const agentCard: AgentIdCardData = useMemo(
-    () => ({
-      name: 'Nori',
-      signature: 'Nori DevRel Agent',
-      role: 'Developer Relations Agent',
-      agentIdentifier: cardAgentIdentifier,
-      policyId: cardPolicyId,
-      network: 'Cardano · Preprod',
-      registryState,
-      assetHref: cardAssetHref,
-    }),
-    [cardAgentIdentifier, cardPolicyId, cardAssetHref, registryState],
-  );
 
   const isActive = messages.length > 0;
 
@@ -1386,7 +1273,7 @@ export function NoriChat({
           </p>
 
           <div className="nori-hire-card">
-            <AgentIdCard data={agentCard} variant="boot" stamped={hireStamping} />
+            <NoriIdentityCard variant="boot" stamped={hireStamping} />
           </div>
 
           {composer('hire')}
@@ -1405,7 +1292,7 @@ export function NoriChat({
         </div>
       ) : (
         <div className="nori-console">
-          <NoriSessionRail agentCard={agentCard} taskDetails={taskDetails} initialPage={initialPage} />
+          <NoriIdentityRail initialPage={initialPage} />
 
           <main className="nori-thread-col" aria-label="Conversation with Nori">
             <div className="nori-thread" aria-live="polite">
