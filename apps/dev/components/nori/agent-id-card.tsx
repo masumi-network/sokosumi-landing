@@ -1,6 +1,6 @@
 'use client';
 
-import { PointerEvent as ReactPointerEvent, useRef } from 'react';
+import { PointerEvent as ReactPointerEvent, memo, useRef } from 'react';
 import Image from 'next/image';
 import { ExternalLink, Loader2 } from 'lucide-react';
 import { withBasePath } from '@/lib/base-path';
@@ -75,7 +75,9 @@ function truncateMiddle(value: string, max = 26) {
   return `${value.slice(0, half)}...${value.slice(-half)}`;
 }
 
-export function AgentIdCard({
+// Memoized: the card stacks blend modes/filters, so avoid re-rendering it
+// while chat responses stream in.
+export const AgentIdCard = memo(function AgentIdCard({
   data,
   variant = 'panel',
   stamped = false,
@@ -246,4 +248,4 @@ export function AgentIdCard({
     )}
     </div>
   );
-}
+});

@@ -1,6 +1,6 @@
 'use client';
 
-import { FormEvent, ReactNode, useEffect, useMemo, useRef, useState } from 'react';
+import { FormEvent, ReactNode, memo, useEffect, useMemo, useRef, useState } from 'react';
 import { flushSync } from 'react-dom';
 import Link from 'next/link';
 import {
@@ -538,6 +538,12 @@ function renderMarkdown(content: string) {
   });
 }
 
+// Memoized so finished messages don't re-parse their markdown on every
+// streaming update — only the growing message re-renders.
+const MessageBody = memo(function MessageBody({ content }: { content: string }) {
+  return <>{renderMarkdown(content)}</>;
+});
+
 export function NoriChat({
   initialPrompt = '',
   initialPage,
@@ -587,7 +593,11 @@ export function NoriChat({
     () => () => {
       clearTaskTimers();
       clearPaymentPoll();
+      if (deltaFrameRef.current !== null) {
+        window.cancelAnimationFrame(deltaFrameRef.current);
+      }
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   );
 
@@ -645,6 +655,33 @@ export function NoriChat({
         next[index] = updater(next[index]);
       }
       return next;
+    });
+  };
+
+  // Streamed text arrives many times per second; committing every token to
+  // React state re-renders the whole console and makes the page animations
+  // stutter. Buffer deltas and flush at most once per animation frame.
+  const pendingDeltaRef = useRef('');
+  const deltaFrameRef = useRef<number | null>(null);
+
+  const flushPendingDelta = () => {
+    if (deltaFrameRef.current !== null) {
+      window.cancelAnimationFrame(deltaFrameRef.current);
+      deltaFrameRef.current = null;
+    }
+    const chunk = pendingDeltaRef.current;
+    pendingDeltaRef.current = '';
+    if (chunk) {
+      appendAssistant((message) => ({ ...message, content: `${message.content}${chunk}` }));
+    }
+  };
+
+  const queueAssistantDelta = (delta: string) => {
+    pendingDeltaRef.current += delta;
+    if (deltaFrameRef.current !== null) return;
+    deltaFrameRef.current = window.requestAnimationFrame(() => {
+      deltaFrameRef.current = null;
+      flushPendingDelta();
     });
   };
 
@@ -894,6 +931,7 @@ export function NoriChat({
       if (record.type === 'error') {
         const error = String(record.errorText ?? record.error ?? record.message ?? 'Nori is unavailable.');
         streamErrorRef.current = true;
+        flushPendingDelta();
         appendAssistant((message) => ({
           ...message,
           error,
@@ -907,10 +945,7 @@ export function NoriChat({
       const delta = deltaFromData(data);
       if (delta) {
         latestAssistantContentRef.current += delta;
-        appendAssistant((message) => ({
-          ...message,
-          content: `${message.content}${delta}`,
-        }));
+        queueAssistantDelta(delta);
       }
       return false;
     }
@@ -929,6 +964,7 @@ export function NoriChat({
     if (event === 'error') {
       const error = typeof data === 'string' ? data : String((data as Record<string, unknown>)?.message ?? 'Nori is unavailable.');
       streamErrorRef.current = true;
+      flushPendingDelta();
       appendAssistant((message) => ({
         ...message,
         error,
@@ -1045,6 +1081,7 @@ export function NoriChat({
       if (buffer.trim() && !streamDone) handleSseBlock(buffer);
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Nori is unavailable.';
+      flushPendingDelta();
       appendAssistant((assistant) => ({
         ...assistant,
         error: message,
@@ -1052,6 +1089,7 @@ export function NoriChat({
       }));
       streamErrorRef.current = true;
     } finally {
+      flushPendingDelta();
       clearTaskTimers();
       if (streamErrorRef.current) {
         setTaskPhase('failed');
@@ -1180,16 +1218,21 @@ export function NoriChat({
         ? 'verified'
         : agentIdentity.status;
 
-  const agentCard: AgentIdCardData = {
-    name: 'Nori',
-    signature: 'Nori DevRel Agent',
-    role: 'Developer Relations Agent',
-    agentIdentifier: taskDetails?.agentIdentifier ?? agentIdentity.agentIdentifier,
-    policyId: taskDetails?.policyId ?? agentIdentity.policyId,
-    network: 'Cardano · Preprod',
-    registryState,
-    assetHref: taskDetails?.explorerLinks?.agentAsset ?? agentIdentity.assetHref,
-  };
+  // Stable card data so the (GPU-heavy) ID card doesn't re-render on every
+  // streamed token — it only updates when task/identity details change.
+  const agentCard: AgentIdCardData = useMemo(
+    () => ({
+      name: 'Nori',
+      signature: 'Nori DevRel Agent',
+      role: 'Developer Relations Agent',
+      agentIdentifier: taskDetails?.agentIdentifier ?? agentIdentity.agentIdentifier,
+      policyId: taskDetails?.policyId ?? agentIdentity.policyId,
+      network: 'Cardano · Preprod',
+      registryState,
+      assetHref: taskDetails?.explorerLinks?.agentAsset ?? agentIdentity.assetHref,
+    }),
+    [taskDetails, agentIdentity, registryState],
+  );
 
   const isActive = messages.length > 0;
 
@@ -1286,7 +1329,7 @@ export function NoriChat({
 
                   {message.content ? (
                     <div className="nori-message-text">
-                      {message.role === 'assistant' ? renderMarkdown(message.content) : <p>{message.content}</p>}
+                      {message.role === 'assistant' ? <MessageBody content={message.content} /> : <p>{message.content}</p>}
                     </div>
                   ) : (
                     <div className="nori-typing">
