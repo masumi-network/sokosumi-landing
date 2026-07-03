@@ -132,11 +132,11 @@ export const AgentIdCard = memo(function AgentIdCard({
           Masumi Network
           <small>Agent Identity Card</small>
         </span>
-        <span className="nori-id-chip" aria-hidden="true" />
       </header>
 
       <div className="nori-id-body">
         <span className="nori-id-watermark" aria-hidden="true" />
+        <span className="nori-id-chip" aria-hidden="true" />
 
         <div className="nori-id-photo">
           <Image src={withBasePath('/assets/nori-pfp.png')} alt={`${data.name} portrait`} width={132} height={132} />
