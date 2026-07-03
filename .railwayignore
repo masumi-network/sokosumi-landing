@@ -1,0 +1,9 @@
+# Trim the railway up payload; these are regenerated or not needed at build
+node_modules
+.git
+.next
+.gstack
+*.tsbuildinfo
+# Regenerated during the docs build (scripts/fetch-readme.mjs)
+apps/dev/public/synced-images
+apps/dev/.cache

@@ -2016,7 +2016,6 @@ header a:has(.masumi-brand-mark) {
 /* cq units inside the card resolve against these wrappers
    (an element cannot be its own container) */
 .nori-hire-card,
-.nori-boot-card,
 .nori-session {
   container-type: inline-size;
 }
@@ -2713,181 +2712,7 @@ header a:has(.masumi-brand-mark) {
   color: var(--color-fd-foreground);
 }
 
-/* --- Boot overlay ------------------------------------------ */
-
-.nori-boot-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 70;
-  display: grid;
-  place-items: center;
-  padding: 24px;
-  background: rgba(10, 10, 10, 0.88);
-  backdrop-filter: blur(7px);
-  -webkit-backdrop-filter: blur(7px);
-  animation: nori-boot-fade-in 0.35s ease both;
-}
-
-.nori-boot-overlay[data-leaving='true'] {
-  animation: nori-boot-fade-out 0.5s ease both;
-}
-
-@keyframes nori-boot-fade-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes nori-boot-fade-out {
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-  }
-}
-
-.nori-boot-stage {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
-  width: min(620px, 100%);
-  min-width: 0;
-  max-width: 100%;
-}
-
-.nori-boot-stage > * {
-  min-width: 0;
-  max-width: 100%;
-}
-
-.nori-boot-kicker {
-  margin: 0;
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: #fa008c;
-  animation: nori-boot-rise 0.5s ease 0.1s both;
-}
-
-.nori-boot-card {
-  width: min(560px, 100%);
-  perspective: 1400px;
-}
-
-.nori-boot-card .nori-id-card {
-  animation: nori-id-flip-in 0.95s cubic-bezier(0.2, 0.85, 0.25, 1) 0.2s both;
-}
-
-@keyframes nori-id-flip-in {
-  from {
-    opacity: 0;
-    transform: perspective(1400px) rotateX(32deg) translateY(52px) scale(0.9);
-  }
-  60% {
-    opacity: 1;
-  }
-  to {
-    opacity: 1;
-    transform: perspective(1400px) rotateX(0deg) translateY(0) scale(1);
-  }
-}
-
-.nori-boot-steps {
-  display: flex;
-  flex-direction: column;
-  gap: 7px;
-  width: min(480px, 100%);
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.nori-boot-steps li {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  min-width: 0;
-  font-size: 13px;
-  color: rgba(255, 255, 255, 0.6);
-  animation: nori-boot-rise 0.45s ease both;
-}
-
-.nori-boot-steps li[data-status='active'] {
-  color: #fff;
-}
-
-.nori-boot-steps li[data-status='done'] {
-  color: #2ed57b;
-}
-
-.nori-boot-steps li[data-status='error'] {
-  color: #ff9db8;
-}
-
-.nori-boot-step-icon {
-  display: inline-flex;
-  flex: 0 0 auto;
-}
-
-.nori-boot-step-icon svg {
-  width: 15px;
-  height: 15px;
-}
-
-.nori-boot-steps li[data-status='active'] .nori-boot-step-icon svg {
-  animation: nori-spin 1s linear infinite;
-}
-
-.nori-boot-step-label {
-  font-weight: 650;
-  white-space: nowrap;
-}
-
-.nori-boot-step-meta {
-  margin-left: auto;
-  overflow: hidden;
-  max-width: 46%;
-  font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, monospace);
-  font-size: 10.5px;
-  color: rgba(255, 255, 255, 0.45);
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.nori-boot-footnote {
-  margin: 0;
-  font-size: 12px;
-  color: rgba(255, 255, 255, 0.55);
-  text-align: center;
-  animation: nori-boot-rise 0.5s ease 1.9s both;
-}
-
-@keyframes nori-boot-rise {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@media (max-width: 560px) {
-  .nori-boot-step-meta {
-    display: none;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .nori-boot-overlay,
-  .nori-boot-overlay *,
   .nori-id-card,
   .nori-id-card *,
   .nori-id-body,
@@ -2903,6 +2728,18 @@ header a:has(.masumi-brand-mark) {
 /* ============================================================
    Nori stage (/ask) — light editorial canvas per DESIGN.md
    ============================================================ */
+
+/* Shared entrance animation for the hire hero elements */
+@keyframes nori-boot-rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
 .masumi-ask-page {
   display: flex;

@@ -20,7 +20,6 @@ import {
   XCircle,
 } from 'lucide-react';
 import { AgentIdCard, type AgentIdCardData, type RegistryState } from '@/components/nori/agent-id-card';
-import { NoriBootOverlay, type BootStep } from '@/components/nori/boot-overlay';
 import { withBasePath } from '@/lib/base-path';
 
 export interface NoriPageContext {
@@ -163,10 +162,7 @@ const PAYMENT_POLL_MAX_ATTEMPTS = 80;
 const PAYMENT_POLL_FIRST_DELAY_MS = 1200;
 const PAYMENT_POLL_INTERVAL_MS = 5000;
 
-const BOOT_STORAGE_KEY = 'nori-boot-played';
-const BOOT_MIN_MS = 3200;
-const BOOT_MAX_MS = 9000;
-const BOOT_LEAVE_MS = 520;
+
 
 type TracePhase = Exclude<TaskPhase, 'quote' | 'failed'>;
 type ExplorerLinkItem = {
@@ -555,10 +551,8 @@ export function NoriChat({
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
   const [taskPhase, setTaskPhase] = useState<TaskPhase>('quote');
   const [taskDetails, setTaskDetails] = useState<NoriTaskDetails | null>(null);
-  const [bootState, setBootState] = useState<'idle' | 'active' | 'leaving'>('idle');
   const [agentIdentity, setAgentIdentity] = useState<AgentIdentityState>({ status: 'checking' });
   const [hireStamping, setHireStamping] = useState(false);
-  const bootStartRef = useRef(0);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const threadEndRef = useRef<HTMLDivElement>(null);
   const taskTimersRef = useRef<Array<ReturnType<typeof setTimeout>>>([]);
@@ -946,38 +940,8 @@ export function NoriChat({
     return false;
   };
 
-  const shouldPlayBoot = () => {
-    if (messages.length > 0) return false;
-    try {
-      if (window.localStorage.getItem(BOOT_STORAGE_KEY)) return false;
-    } catch {
-      // Storage unavailable: still play the sequence once per page load.
-    }
-    return !window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
-  };
-
-  const endBoot = () => {
-    setBootState('leaving');
-    try {
-      window.localStorage.setItem(BOOT_STORAGE_KEY, '1');
-    } catch {
-      // Ignore storage failures.
-    }
-    setTimeout(() => setBootState('idle'), BOOT_LEAVE_MS);
-  };
-
   const lastMessage = messages.at(-1);
   const hasAnswerStarted = lastMessage?.role === 'assistant' && lastMessage.content.length > 0;
-
-  useEffect(() => {
-    if (bootState !== 'active') return;
-    const shouldEnd = hasAnswerStarted || taskPhase === 'failed';
-    const elapsed = Date.now() - bootStartRef.current;
-    const delay = shouldEnd ? Math.max(0, BOOT_MIN_MS - elapsed) : Math.max(0, BOOT_MAX_MS - elapsed);
-    const timer = setTimeout(endBoot, delay);
-    return () => clearTimeout(timer);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [bootState, hasAnswerStarted, taskPhase]);
 
   // Tool descent + ink + lift-off takes ~1.05s (0.15s delay + 0.9s animation);
   // switch views just as the tool fades out.
@@ -995,12 +959,6 @@ export function NoriChat({
       setHireStamping(true);
       await new Promise((resolve) => setTimeout(resolve, STAMP_CEREMONY_MS));
       setHireStamping(false);
-    }
-
-    const playBoot = shouldPlayBoot();
-    if (playBoot) {
-      bootStartRef.current = Date.now();
-      setBootState('active');
     }
 
     const beginConversation = () => {
@@ -1021,7 +979,6 @@ export function NoriChat({
     ).startViewTransition?.bind(document);
     if (
       messages.length === 0 &&
-      !playBoot &&
       startViewTransition &&
       !window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
     ) {
@@ -1234,13 +1191,6 @@ export function NoriChat({
     assetHref: taskDetails?.explorerLinks?.agentAsset ?? agentIdentity.assetHref,
   };
 
-  const bootSteps: BootStep[] = traceEvents.slice(0, 4).map((event) => ({
-    key: event.phase,
-    label: event.label,
-    meta: safeTaskText(event.meta(taskDetails), ''),
-    status: getTraceStatus(event.phase),
-  }));
-
   const isActive = messages.length > 0;
 
   const composer = (variant: 'hire' | 'thread') => (
@@ -1272,14 +1222,6 @@ export function NoriChat({
 
   return (
     <section className="nori-stage fd-page" data-state={isActive ? 'active' : 'hire'} aria-label="Ask Nori">
-      <NoriBootOverlay
-        open={bootState !== 'idle'}
-        leaving={bootState === 'leaving'}
-        card={agentCard}
-        steps={bootSteps}
-        headline="Hiring Nori — opening a Masumi escrow"
-      />
-
       {!isActive ? (
         <div className="nori-hire">
           <p className="nori-hire-kicker">Masumi Docs · Live agent hire</p>
@@ -1310,7 +1252,7 @@ export function NoriChat({
       ) : (
         <div className="nori-console">
           <aside className="nori-session" aria-label="Nori identity">
-            <AgentIdCard data={agentCard} variant="panel" stamped={bootState === 'idle'} stampAnimated={false} />
+            <AgentIdCard data={agentCard} variant="panel" stamped stampAnimated={false} />
 
             {taskDetails?.errorNote && <p className="nori-payment-error">{taskDetails.errorNote}</p>}
 
