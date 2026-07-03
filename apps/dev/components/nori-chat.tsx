@@ -1,6 +1,7 @@
 'use client';
 
 import { FormEvent, ReactNode, useEffect, useMemo, useRef, useState } from 'react';
+import { flushSync } from 'react-dom';
 import Link from 'next/link';
 import {
   ArrowUp,
@@ -107,6 +108,15 @@ interface NoriAgentRegistryStatus {
   error?: string;
 }
 
+interface AgentIdentityState {
+  status: 'checking' | 'verified' | 'failed';
+  agentIdentifier?: string;
+  policyId?: string;
+  name?: string;
+  assetHref?: string;
+  error?: string;
+}
+
 interface NoriExplorerLinks {
   masumiExplorer?: string;
   transaction?: string;
@@ -184,12 +194,6 @@ const traceEvents: Array<{
     label: 'Payment requested',
     description: 'Nori quotes the job and returns a Masumi payment request.',
     meta: (task) => task?.paymentId ?? 'Awaiting payment event',
-  },
-  {
-    phase: 'usage',
-    label: 'Identity verified',
-    description: "Nori's on-chain registration is checked against the live Masumi registry.",
-    meta: (task) => task?.agentName ?? task?.agentStatus ?? 'Awaiting registry check',
   },
   {
     phase: 'locked',
@@ -552,6 +556,8 @@ export function NoriChat({
   const [taskPhase, setTaskPhase] = useState<TaskPhase>('quote');
   const [taskDetails, setTaskDetails] = useState<NoriTaskDetails | null>(null);
   const [bootState, setBootState] = useState<'idle' | 'active' | 'leaving'>('idle');
+  const [agentIdentity, setAgentIdentity] = useState<AgentIdentityState>({ status: 'checking' });
+  const [hireStamping, setHireStamping] = useState(false);
   const bootStartRef = useRef(0);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const threadEndRef = useRef<HTMLDivElement>(null);
@@ -596,6 +602,46 @@ export function NoriChat({
       threadEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
     }
   }, [messages.length]);
+
+  // Look Nori up in the live Masumi registry on page open; the ID card only
+  // gets its VERIFIED stamp once this real lookup has succeeded.
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const response = await fetch(withBasePath('/api/nori/identity'), { cache: 'no-store' });
+        const payload = (await response.json()) as {
+          ok?: boolean;
+          error?: string;
+          identity?: {
+            verified?: boolean;
+            agentIdentifier?: string;
+            policyId?: string;
+            name?: string;
+            error?: string;
+            explorerLinks?: NoriExplorerLinks;
+          };
+        };
+        if (cancelled) return;
+        if (response.ok && payload.ok && payload.identity?.verified) {
+          setAgentIdentity({
+            status: 'verified',
+            agentIdentifier: payload.identity.agentIdentifier,
+            policyId: payload.identity.policyId,
+            name: payload.identity.name,
+            assetHref: payload.identity.explorerLinks?.agentAsset,
+          });
+        } else {
+          setAgentIdentity({ status: 'failed', error: payload.identity?.error || payload.error });
+        }
+      } catch {
+        if (!cancelled) setAgentIdentity({ status: 'failed', error: 'Registry lookup failed.' });
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const appendAssistant = (updater: (message: Message) => Message) => {
     setMessages((current) => {
@@ -933,23 +979,56 @@ export function NoriChat({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [bootState, hasAnswerStarted, taskPhase]);
 
+  // Tool descent + ink + lift-off takes ~1.05s (0.15s delay + 0.9s animation);
+  // switch views just as the tool fades out.
+  const STAMP_CEREMONY_MS = 1000;
+
   const submitPrompt = async (prompt: string) => {
     const message = prompt.trim();
-    if (!message || isStreaming) return;
+    if (!message || isStreaming || hireStamping) return;
 
-    if (shouldPlayBoot()) {
+    const reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
+
+    // First question: stamp the hero card while it's still center stage, and
+    // only move to the console once the tool has lifted away.
+    if (messages.length === 0 && !reducedMotion && agentIdentity.status !== 'checking') {
+      setHireStamping(true);
+      await new Promise((resolve) => setTimeout(resolve, STAMP_CEREMONY_MS));
+      setHireStamping(false);
+    }
+
+    const playBoot = shouldPlayBoot();
+    if (playBoot) {
       bootStartRef.current = Date.now();
       setBootState('active');
     }
 
-    setInput('');
-    setIsStreaming(true);
-    startTaskTrace();
-    setMessages((current) => [
-      ...current,
-      { role: 'user', content: message },
-      { role: 'assistant', content: '', citations: [] },
-    ]);
+    const beginConversation = () => {
+      setInput('');
+      setIsStreaming(true);
+      startTaskTrace();
+      setMessages((current) => [
+        ...current,
+        { role: 'user', content: message },
+        { role: 'assistant', content: '', citations: [] },
+      ]);
+    };
+
+    // First question: morph the hero into the console — the browser animates
+    // the ID card flying from center stage into the session rail.
+    const startViewTransition = (
+      document as Document & { startViewTransition?: (callback: () => void) => unknown }
+    ).startViewTransition?.bind(document);
+    if (
+      messages.length === 0 &&
+      !playBoot &&
+      startViewTransition &&
+      !window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+    ) {
+      startViewTransition(() => flushSync(beginConversation));
+    } else {
+      beginConversation();
+    }
 
     try {
       const response = await fetch(withBasePath('/api/nori/chat'), {
@@ -1039,7 +1118,7 @@ export function NoriChat({
     void submitPrompt(input);
   };
 
-  const tracePhaseOrder: TracePhase[] = ['created', 'claimed', 'usage', 'locked', 'running', 'completed', 'settled'];
+  const tracePhaseOrder: TracePhase[] = ['created', 'claimed', 'locked', 'running', 'completed', 'settled'];
 
   const traceStepDone = (phase: TracePhase): boolean => {
     const rank = phaseRank[taskPhase];
@@ -1121,8 +1200,6 @@ export function NoriChat({
     const isResultSubmitted = taskPhase === 'settled' || paymentStatus === 'result submitted';
 
     switch (phase) {
-      case 'usage':
-        return explorerLinkItems.agentAsset ? [explorerLinkItems.agentAsset] : [];
       case 'locked':
         return [
           explorerLinkItems.contractAddress,
@@ -1137,21 +1214,27 @@ export function NoriChat({
     }
   };
 
-  // Nori's on-chain registration is her standing credential: the card presents
-  // it as verified unless a live registry check explicitly disproves it.
-  const registryState: RegistryState = taskDetails?.agentRegistryVerified === false ? 'failed' : 'verified';
+  // The card is stamped VERIFIED only after the live registry lookup returns;
+  // a live task check can still override it either way.
+  const registryState: RegistryState =
+    taskDetails?.agentRegistryVerified === false
+      ? 'failed'
+      : taskDetails?.agentRegistryVerified === true
+        ? 'verified'
+        : agentIdentity.status;
 
   const agentCard: AgentIdCardData = {
-    name: taskDetails?.agentName || 'Nori',
+    name: 'Nori',
+    signature: 'Nori DevRel Agent',
     role: 'Developer Relations Agent',
-    agentIdentifier: taskDetails?.agentIdentifier,
-    policyId: taskDetails?.policyId,
+    agentIdentifier: taskDetails?.agentIdentifier ?? agentIdentity.agentIdentifier,
+    policyId: taskDetails?.policyId ?? agentIdentity.policyId,
     network: 'Cardano · Preprod',
     registryState,
-    assetHref: taskDetails?.explorerLinks?.agentAsset,
+    assetHref: taskDetails?.explorerLinks?.agentAsset ?? agentIdentity.assetHref,
   };
 
-  const bootSteps: BootStep[] = traceEvents.slice(0, 5).map((event) => ({
+  const bootSteps: BootStep[] = traceEvents.slice(0, 4).map((event) => ({
     key: event.phase,
     label: event.label,
     meta: safeTaskText(event.meta(taskDetails), ''),
@@ -1161,7 +1244,11 @@ export function NoriChat({
   const isActive = messages.length > 0;
 
   const composer = (variant: 'hire' | 'thread') => (
-    <form className={`nori-composer nori-composer-${variant}`} data-busy={isStreaming ? 'true' : 'false'} onSubmit={handleSubmit}>
+    <form
+      className={`nori-composer nori-composer-${variant}`}
+      data-busy={isStreaming || hireStamping ? 'true' : 'false'}
+      onSubmit={handleSubmit}
+    >
       <textarea
         ref={inputRef}
         value={input}
@@ -1174,11 +1261,11 @@ export function NoriChat({
         }}
         placeholder={variant === 'hire' ? 'Ask Nori anything about Masumi...' : 'Ask a follow-up...'}
         rows={1}
-        disabled={isStreaming}
+        disabled={isStreaming || hireStamping}
         aria-label="Message Nori"
       />
-      <button type="submit" disabled={!input.trim() || isStreaming} aria-label="Send message">
-        {isStreaming ? <Loader2 aria-hidden="true" /> : <ArrowUp aria-hidden="true" />}
+      <button type="submit" disabled={!input.trim() || isStreaming || hireStamping} aria-label="Send message">
+        {isStreaming || hireStamping ? <Loader2 aria-hidden="true" /> : <ArrowUp aria-hidden="true" />}
       </button>
     </form>
   );
@@ -1203,7 +1290,7 @@ export function NoriChat({
           </p>
 
           <div className="nori-hire-card">
-            <AgentIdCard data={agentCard} variant="boot" />
+            <AgentIdCard data={agentCard} variant="boot" stamped={hireStamping} />
           </div>
 
           {composer('hire')}
@@ -1222,6 +1309,27 @@ export function NoriChat({
         </div>
       ) : (
         <div className="nori-console">
+          <aside className="nori-session" aria-label="Nori identity">
+            <AgentIdCard data={agentCard} variant="panel" stamped={bootState === 'idle'} stampAnimated={false} />
+
+            {taskDetails?.errorNote && <p className="nori-payment-error">{taskDetails.errorNote}</p>}
+
+            {initialPage && (
+              <div className="nori-context-card">
+                <div>
+                  <p className="nori-card-label">Current page context</p>
+                  <strong>{initialPage.title || initialPage.path}</strong>
+                  <span>{initialPage.path}</span>
+                </div>
+                {initialPage.markdownUrl && (
+                  <a href={initialPage.markdownUrl} target="_blank" rel="noreferrer">
+                    View Markdown <ExternalLink aria-hidden="true" />
+                  </a>
+                )}
+              </div>
+            )}
+          </aside>
+
           <main className="nori-thread-col" aria-label="Conversation with Nori">
             <div className="nori-thread" aria-live="polite">
               {messages.map((message, index) => (
@@ -1285,11 +1393,7 @@ export function NoriChat({
             {composer('thread')}
           </main>
 
-          <aside className="nori-session" aria-label="Masumi payment trace">
-            <AgentIdCard data={agentCard} variant="panel" />
-
-            {taskDetails?.errorNote && <p className="nori-payment-error">{taskDetails.errorNote}</p>}
-
+          <aside className="nori-trace-rail" aria-label="Masumi payment trace">
             <div className="nori-session-panel">
               <div className="nori-session-header">
                 <span className="nori-session-title">Payment trace</span>
@@ -1341,21 +1445,6 @@ export function NoriChat({
                 on-chain &mdash; the same lifecycle every Masumi agent uses in production.
               </p>
             </div>
-
-            {initialPage && (
-              <div className="nori-context-card">
-                <div>
-                  <p className="nori-card-label">Current page context</p>
-                  <strong>{initialPage.title || initialPage.path}</strong>
-                  <span>{initialPage.path}</span>
-                </div>
-                {initialPage.markdownUrl && (
-                  <a href={initialPage.markdownUrl} target="_blank" rel="noreferrer">
-                    View Markdown <ExternalLink aria-hidden="true" />
-                  </a>
-                )}
-              </div>
-            )}
           </aside>
         </div>
       )}

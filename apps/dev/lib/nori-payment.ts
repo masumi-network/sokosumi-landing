@@ -258,6 +258,85 @@ function recordFromUnknown(value: unknown) {
   return value && typeof value === 'object' ? (value as Record<string, unknown>) : {};
 }
 
+export interface NoriAgentIdentity {
+  verified: boolean;
+  agentIdentifier?: string;
+  name?: string;
+  status?: string;
+  apiBaseUrl?: string;
+  policyId?: string;
+  smartContractAddress?: string;
+  network: string;
+  explorerLinks?: NoriExplorerLinks;
+  error?: string;
+}
+
+let identityCache: { value: NoriAgentIdentity; expiresAt: number } | null = null;
+
+function urlHost(value: string) {
+  try {
+    return new URL(value).host.toLowerCase();
+  } catch {
+    return '';
+  }
+}
+
+/**
+ * Looks Nori up in the live Masumi payment-service registry so the docs can
+ * present her verified on-chain identity before any task is started.
+ * The registry asset is matched by the NORI_AGENT_URL host, falling back to
+ * the agent name.
+ */
+export async function lookupNoriAgentIdentity(): Promise<NoriAgentIdentity> {
+  if (identityCache && identityCache.expiresAt > Date.now()) return identityCache.value;
+
+  const config = getPaymentConfig();
+  const params = new URLSearchParams({ network: config.network });
+  const payload = await paymentRequest(`/registry/?${params.toString()}`, { method: 'GET' });
+  const data = recordFromUnknown(payload);
+  const assets = (Array.isArray(data.Assets) ? data.Assets : []).map((asset) => recordFromUnknown(asset));
+
+  const noriHost = urlHost(process.env.NORI_AGENT_URL ?? '');
+  const match =
+    (noriHost ? assets.find((asset) => urlHost(stringValue(asset.apiBaseUrl)) === noriHost) : undefined) ??
+    assets.find((asset) => stringValue(asset.name).toLowerCase().includes('nori'));
+
+  let identity: NoriAgentIdentity;
+  if (!match) {
+    identity = {
+      verified: false,
+      network: config.network,
+      error: 'Nori was not found in the Masumi payment-service registry.',
+    };
+  } else {
+    const agentIdentifier = stringValue(match.agentIdentifier) || undefined;
+    const paymentSource = recordFromUnknown(match.PaymentSource);
+    const smartContractAddress =
+      stringValue(match.smartContractAddress) || stringValue(paymentSource.smartContractAddress) || undefined;
+    identity = {
+      verified: true,
+      agentIdentifier,
+      name: stringValue(match.name) || undefined,
+      status: stringValue(match.status) || stringValue(match.state) || undefined,
+      apiBaseUrl: stringValue(match.apiBaseUrl) || undefined,
+      policyId: stringValue(match.agentPolicyId) || stringValue(match.policyId) || stringValue(paymentSource.policyId) || undefined,
+      smartContractAddress,
+      network: config.network,
+      explorerLinks: buildExplorerLinks({
+        network: config.network,
+        agentIdentifier,
+        smartContractAddress,
+      }),
+    };
+  }
+
+  identityCache = {
+    value: identity,
+    expiresAt: Date.now() + (identity.verified ? 5 * 60 * 1000 : 30 * 1000),
+  };
+  return identity;
+}
+
 function findStoredSession(input: { sessionId?: string; taskId?: string; blockchainIdentifier?: string }) {
   const store = sessionStore();
 

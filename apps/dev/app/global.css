@@ -2021,10 +2021,28 @@ header a:has(.masumi-brand-mark) {
   container-type: inline-size;
 }
 
+/* First-question morph: the ID card flies from the hero into the rail */
+.nori-hire-card .nori-id-card,
+.nori-session .nori-id-card {
+  view-transition-name: nori-agent-card;
+}
+
+::view-transition-group(nori-agent-card) {
+  animation-duration: 0.55s;
+  animation-timing-function: cubic-bezier(0.6, 0, 0.3, 1);
+}
+
+::view-transition-old(nori-agent-card),
+::view-transition-new(nori-agent-card) {
+  height: 100%;
+  object-fit: cover;
+}
+
 /* Physical hover tilt (driven by pointer position, see useCardTilt).
    Transform engages only on hover; a constant ease-out transition chases
    the pointer, which is what makes it feel springy and physical. */
 .nori-id-tilt {
+  position: relative;
   perspective: 800px;
   min-width: 0;
 }
@@ -2071,6 +2089,59 @@ header a:has(.masumi-brand-mark) {
 .nori-id-card[data-variant='panel'] {
   width: 100%;
   margin-bottom: 16px;
+}
+
+/* Below ~400px the standard legibility floors would outgrow the true ID-1
+   ratio. The ratio always wins: the floors step down just enough for the
+   full document (MRZ included) to fit. */
+@container (max-width: 400px) {
+  .nori-id-issuer {
+    font-size: max(2cqw, 7px);
+  }
+
+  .nori-id-issuer small {
+    font-size: max(1.6cqw, 5.5px);
+  }
+
+  .nori-id-network {
+    font-size: max(1.7cqw, 6px);
+  }
+
+  .nori-id-field dt {
+    font-size: max(1.4cqw, 5px);
+  }
+
+  .nori-id-field dd {
+    font-size: max(2.1cqw, 7.5px);
+  }
+
+  .nori-id-field dd.nori-id-name {
+    font-size: max(3cqw, 10px);
+  }
+
+  .nori-id-mono {
+    font-size: max(1.9cqw, 7px);
+  }
+
+  .nori-id-sig-label {
+    font-size: max(1.4cqw, 5px);
+  }
+
+  .nori-id-script {
+    font-size: max(4.6cqw, 12px);
+  }
+
+  .nori-id-stamp strong {
+    font-size: max(2.6cqw, 8.5px);
+  }
+
+  .nori-id-stamp small {
+    font-size: max(1.4cqw, 5px);
+  }
+
+  .nori-id-mrz {
+    font-size: max(1.9cqw, 6.5px);
+  }
 }
 
 .nori-id-sheen {
@@ -2120,9 +2191,10 @@ header a:has(.masumi-brand-mark) {
   height: 5.4cqw;
 }
 
-.nori-id-emblem svg {
+.nori-id-emblem img {
   width: 100%;
   height: 100%;
+  object-fit: contain;
 }
 
 .nori-id-issuer {
@@ -2210,11 +2282,10 @@ header a:has(.masumi-brand-mark) {
   flex: 1;
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
-  grid-template-rows: minmax(0, 1fr) auto;
+  grid-template-rows: 1fr auto;
   gap: 1.2cqw 2.8cqw;
   align-items: start;
   padding: 2.2cqw 3cqw;
-  min-height: 0;
 }
 
 /* Masumi kanji emblem as the state watermark (like the Bundesadler) */
@@ -2344,8 +2415,18 @@ header a:has(.masumi-brand-mark) {
 
 .nori-id-mono[data-pending='true'] {
   color: var(--id-muted);
-  font-style: italic;
   font-family: inherit;
+}
+
+.nori-id-lookup {
+  display: inline-flex;
+  align-items: center;
+}
+
+.nori-id-lookup svg {
+  width: max(2.4cqw, 10px);
+  height: max(2.4cqw, 10px);
+  animation: nori-spin 1s linear infinite;
 }
 
 .nori-id-mono a {
@@ -2400,29 +2481,154 @@ header a:has(.masumi-brand-mark) {
 }
 
 .nori-id-stamp[data-state='verified'] {
-  animation: nori-stamp-in 0.55s cubic-bezier(0.2, 1.1, 0.3, 1) 0.55s both;
+  animation: nori-stamp-press 0.9s 0.15s both;
 }
 
 .nori-id-stamp[data-state='failed'] {
   color: rgba(179, 18, 60, 0.85);
-  animation: nori-stamp-in 0.55s cubic-bezier(0.2, 1.1, 0.3, 1) 0.3s both;
+  animation: nori-stamp-press 0.9s 0.15s both;
 }
 
-@keyframes nori-stamp-in {
-  0% {
+/* The card content takes the hit when the stamp lands */
+.nori-id-card[data-stamped='true'][data-stamp-static='false'] .nori-id-body {
+  animation: nori-stamp-thud 0.22s cubic-bezier(0.4, 0, 0.2, 1) 0.52s both;
+}
+
+/* Static ink: already stamped in a previous scene, no ceremony */
+.nori-id-card[data-stamp-static='true'] .nori-id-stamp {
+  animation: none;
+  opacity: 1;
+}
+
+/* Crashlytics-style stamping: the physical stamp tool descends onto the
+   card, the ink appears at the moment of impact (~42%), the tool lifts
+   away and the ink stays. */
+@keyframes nori-stamp-press {
+  0%,
+  41% {
     opacity: 0;
-    transform: rotate(-18deg) scale(2.4);
+    transform: rotate(-12deg) scale(1.07);
   }
-  55% {
+  44% {
     opacity: 1;
-    transform: rotate(-11deg) scale(0.95);
+    transform: rotate(-12.5deg) scale(1.07);
   }
-  75% {
-    transform: rotate(-12.5deg) scale(1.04);
+  54% {
+    transform: rotate(-12deg) scale(0.96); /* pressed into the card */
+  }
+  64% {
+    transform: rotate(-12deg) scale(1);
   }
   100% {
     opacity: 1;
     transform: rotate(-12deg) scale(1);
+  }
+}
+
+/* The stamp tool: fades in above the card, drops with an expo ease,
+   holds while the ink transfers, lifts away and vanishes. */
+.nori-id-stamp-rig {
+  position: absolute;
+  right: 0.9cqw;
+  bottom: 8.2cqw;
+  z-index: 6;
+  width: 30cqw;
+  height: 30cqw;
+  transform: rotate(-12deg);
+  transform-style: preserve-3d;
+  pointer-events: none;
+}
+
+.nori-id-stamp-tool {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  animation: nori-stamp-tool 0.9s 0.15s both;
+  will-change: transform;
+}
+
+/* The tool travels through real Z-space (the card wrapper supplies an
+   800px perspective): it approaches the camera large and leaning back,
+   plunges onto the card plane, then pulls back up toward the viewer. */
+@keyframes nori-stamp-tool {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, -20cqw, 160px) rotateX(18deg);
+    filter: blur(1px) drop-shadow(0 1.4cqw 1.6cqw rgba(0, 0, 0, 0.3));
+    animation-timing-function: cubic-bezier(0.87, 0, 0.13, 1); /* easeInOutExpo descent */
+  }
+  8% {
+    opacity: 1;
+  }
+  42% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) rotateX(0deg);
+    filter: blur(0) drop-shadow(0 0.3cqw 0.5cqw rgba(0, 0, 0, 0.35));
+    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  47% {
+    transform: translate3d(0, 0.6cqw, -6px) rotateX(0deg); /* press into the surface */
+    filter: blur(0) drop-shadow(0 0.15cqw 0.3cqw rgba(0, 0, 0, 0.4));
+  }
+  58% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) rotateX(0deg);
+    filter: blur(0) drop-shadow(0 0.3cqw 0.5cqw rgba(0, 0, 0, 0.35));
+    animation-timing-function: cubic-bezier(0.5, 0, 0.75, 0); /* lift accelerates away */
+  }
+  92%,
+  100% {
+    opacity: 0;
+    transform: translate3d(0, -24cqw, 200px) rotateX(15deg);
+    filter: blur(1.2px) drop-shadow(0 1.8cqw 1.8cqw rgba(0, 0, 0, 0.2));
+  }
+}
+
+/* Contact shadow on the card that sharpens as the tool approaches */
+.nori-id-stamp-shadow {
+  position: absolute;
+  left: 6%;
+  right: 6%;
+  bottom: -1.6cqw;
+  height: 5cqw;
+  border-radius: 1.5cqw;
+  background: rgba(0, 0, 0, 0.32);
+  filter: blur(0.9cqw);
+  animation: nori-stamp-tool-shadow 0.9s 0.15s both;
+}
+
+@keyframes nori-stamp-tool-shadow {
+  0% {
+    opacity: 0;
+    transform: scale(1.7);
+    animation-timing-function: cubic-bezier(0.87, 0, 0.13, 1);
+  }
+  8% {
+    opacity: 0.15;
+  }
+  42%,
+  56% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  78%,
+  100% {
+    opacity: 0;
+    transform: scale(1.5);
+  }
+}
+
+@keyframes nori-stamp-thud {
+  0%,
+  100% {
+    transform: none;
+  }
+  30% {
+    transform: translateY(0.35cqw) rotate(0.2deg);
+  }
+  65% {
+    transform: translateY(-0.12cqw);
   }
 }
 
@@ -2438,6 +2644,7 @@ header a:has(.masumi-brand-mark) {
   gap: 0.2cqw;
   min-width: 0;
   text-align: left;
+  margin-top: 1cqw;
   padding-right: 24cqw; /* keep clear of the stamp */
 }
 
@@ -2682,8 +2889,14 @@ header a:has(.masumi-brand-mark) {
   .nori-boot-overlay,
   .nori-boot-overlay *,
   .nori-id-card,
-  .nori-id-card * {
+  .nori-id-card *,
+  .nori-id-body,
+  .nori-id-stamp {
     animation: none !important;
+  }
+
+  .nori-id-stamp-rig {
+    display: none;
   }
 }
 
@@ -2925,12 +3138,12 @@ header a:has(.masumi-brand-mark) {
 
 .nori-console {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 384px;
-  gap: 32px;
+  grid-template-columns: 340px minmax(0, 1fr) 340px;
+  gap: 26px;
   align-items: start;
-  width: min(1240px, 100%);
+  width: min(1400px, 100%);
   margin: 0 auto;
-  padding: 30px 24px 48px;
+  padding: 30px 16px 48px;
 }
 
 .nori-thread-col {
@@ -3278,6 +3491,26 @@ header a:has(.masumi-brand-mark) {
 
 /* --- Responsive ---------------------------------------------- */
 
+.nori-trace-rail {
+  position: sticky;
+  top: 84px;
+  min-width: 0;
+}
+
+@media (max-width: 1180px) {
+  .nori-console {
+    grid-template-columns: minmax(0, 1fr) 340px;
+  }
+
+  .nori-session {
+    grid-column: 1 / -1;
+    position: static;
+    display: grid;
+    grid-template-columns: minmax(260px, 340px) minmax(0, 1fr);
+    align-items: start;
+  }
+}
+
 @media (max-width: 1020px) {
   .nori-console {
     grid-template-columns: minmax(0, 1fr);
@@ -3286,7 +3519,13 @@ header a:has(.masumi-brand-mark) {
 
   .nori-session {
     position: static;
+    display: flex;
     order: 2;
+  }
+
+  .nori-trace-rail {
+    position: static;
+    order: 3;
   }
 
   .nori-thread-col {

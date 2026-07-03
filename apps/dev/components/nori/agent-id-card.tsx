@@ -1,14 +1,15 @@
 'use client';
 
-import { PointerEvent as ReactPointerEvent, useEffect, useRef, useState } from 'react';
+import { PointerEvent as ReactPointerEvent, useRef } from 'react';
 import Image from 'next/image';
-import { ExternalLink } from 'lucide-react';
+import { ExternalLink, Loader2 } from 'lucide-react';
 import { withBasePath } from '@/lib/base-path';
 
 export type RegistryState = 'idle' | 'checking' | 'verified' | 'failed';
 
 export interface AgentIdCardData {
   name: string;
+  signature?: string;
   role: string;
   agentIdentifier?: string;
   policyId?: string;
@@ -32,31 +33,6 @@ function mrzLines(data: AgentIdCardData) {
   const source = data.agentIdentifier || data.policyId || '';
   const line2 = source ? mrzSanitize(source) : mrzSanitize(`MASUMI<NETWORK<AGENT<REGISTRY`);
   return [line1, line2];
-}
-
-/** Reveals `value` character-by-character whenever it changes. */
-function useTypeOn(value: string, charsPerTick = 2, tickMs = 16) {
-  const [shown, setShown] = useState(value);
-  const previousRef = useRef(value);
-
-  useEffect(() => {
-    if (value === previousRef.current) return;
-    previousRef.current = value;
-    if (!value) {
-      setShown('');
-      return;
-    }
-    let index = 0;
-    setShown('');
-    const timer = setInterval(() => {
-      index += charsPerTick;
-      setShown(value.slice(0, index));
-      if (index >= value.length) clearInterval(timer);
-    }, tickMs);
-    return () => clearInterval(timer);
-  }, [value, charsPerTick, tickMs]);
-
-  return shown;
 }
 
 /**
@@ -102,14 +78,21 @@ function truncateMiddle(value: string, max = 26) {
 export function AgentIdCard({
   data,
   variant = 'panel',
+  stamped = false,
+  stampAnimated = true,
 }: {
   data: AgentIdCardData;
   variant?: 'boot' | 'panel';
+  /** The stamp only lands once the parent says so (after the visitor engages Nori). */
+  stamped?: boolean;
+  /** When false the ink is simply present — no tool descent, no thud. */
+  stampAnimated?: boolean;
 }) {
-  const agentId = useTypeOn(data.agentIdentifier ? truncateMiddle(data.agentIdentifier, 30) : '');
-  const cardNo = data.policyId ? data.policyId.slice(0, 12).toUpperCase() : '';
+  const agentId = data.agentIdentifier ? truncateMiddle(data.agentIdentifier, 17) : '';
+  const checking = data.registryState === 'checking';
   const [line1, line2] = mrzLines(data);
   const tilt = useCardTilt();
+  const showStamp = stamped && (data.registryState === 'verified' || data.registryState === 'failed');
   const stampState = data.registryState === 'failed' ? 'failed' : 'verified';
 
   return (
@@ -120,29 +103,25 @@ export function AgentIdCard({
       onPointerMove={tilt.onPointerMove}
       onPointerLeave={tilt.onPointerLeave}
     >
-    <figure className="nori-id-card" data-variant={variant} data-registry={data.registryState}>
+    <figure
+      className="nori-id-card"
+      data-variant={variant}
+      data-registry={data.registryState}
+      data-stamped={showStamp ? 'true' : 'false'}
+      data-stamp-static={showStamp && !stampAnimated ? 'true' : 'false'}
+    >
       <div className="nori-id-sheen" aria-hidden="true" />
       <span className="nori-id-glare" aria-hidden="true" />
 
       <header className="nori-id-header">
         <span className="nori-id-emblem" aria-hidden="true">
-          <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="24" cy="24" r="24" fill="#fa008c" />
-            <path
-              d="M14.5 30.5v-4a9.5 9.5 0 0 1 19 0v4"
-              stroke="#fff"
-              strokeWidth="5.5"
-              strokeLinecap="round"
-              fill="none"
-            />
-          </svg>
+          <Image src={withBasePath('/assets/favicon.png')} alt="" width={48} height={48} />
         </span>
         <span className="nori-id-issuer">
           Masumi Network
           <small>Agent Identity Card</small>
         </span>
         <span className="nori-id-chip" aria-hidden="true" />
-        <span className="nori-id-network">{data.network}</span>
       </header>
 
       <div className="nori-id-body">
@@ -164,8 +143,21 @@ export function AgentIdCard({
               <dd>MSM</dd>
             </div>
             <div className="nori-id-field">
-              <dt>Card No./Karten-Nr.</dt>
-              <dd className="nori-id-mono">{cardNo || '············'}</dd>
+              <dt>Agent ID/Agenten-Nr.</dt>
+              <dd className="nori-id-mono" data-pending={agentId ? 'false' : 'true'}>
+                {checking && !agentId ? (
+                  <span className="nori-id-lookup" role="status" aria-label="Looking up agent identifier">
+                    <Loader2 aria-hidden="true" />
+                  </span>
+                ) : (
+                  agentId || '·············'
+                )}
+                {data.assetHref && agentId && (
+                  <a href={data.assetHref} target="_blank" rel="noreferrer" aria-label="View agent asset on Cardano explorer">
+                    <ExternalLink aria-hidden="true" />
+                  </a>
+                )}
+              </dd>
             </div>
           </div>
 
@@ -179,42 +171,32 @@ export function AgentIdCard({
             <dd>{data.role}</dd>
           </div>
 
-          <div className="nori-id-field">
-            <dt>3. Agent ID on-chain/Identifiant</dt>
-            <dd className="nori-id-mono" data-pending={agentId ? 'false' : 'true'}>
-              {agentId || '···· ···· ···· ····'}
-              {data.assetHref && agentId && (
-                <a href={data.assetHref} target="_blank" rel="noreferrer" aria-label="View agent asset on Cardano explorer">
-                  <ExternalLink aria-hidden="true" />
-                </a>
-              )}
-            </dd>
-          </div>
-
           <div className="nori-id-doc-row nori-id-doc-row-2">
             <div className="nori-id-field">
-              <dt>4. Network/Réseau</dt>
+              <dt>3. Network/Réseau</dt>
               <dd>{data.network}</dd>
             </div>
             <div className="nori-id-field">
-              <dt>5. Authority/Autorité</dt>
+              <dt>4. Authority/Autorité</dt>
               <dd>Masumi Registry</dd>
             </div>
           </div>
         </dl>
 
         <div className="nori-id-signature">
-          <span className="nori-id-sig-label">6. Signature of bearer/Unterschrift</span>
+          <span className="nori-id-sig-label">5. Signature of bearer/Unterschrift</span>
           <span className="nori-id-script" aria-hidden="true">
-            {data.name}
+            {data.signature ?? data.name}
           </span>
         </div>
 
-        <span className="nori-id-stamp" data-state={stampState} aria-label={stampState === 'verified' ? 'Verified by Masumi Registry' : 'Registry verification failed'}>
-          <strong>{stampState === 'verified' ? 'Verified' : 'Unverified'}</strong>
-          <small>Masumi Registry</small>
-          <small className="nori-id-stamp-sub">On-chain</small>
-        </span>
+        {showStamp && (
+          <span className="nori-id-stamp" data-state={stampState} aria-label={stampState === 'verified' ? 'Verified by Masumi Registry' : 'Registry verification failed'}>
+            <strong>{stampState === 'verified' ? 'Verified' : 'Unverified'}</strong>
+            <small>Masumi Registry</small>
+            <small className="nori-id-stamp-sub">On-chain</small>
+          </span>
+        )}
       </div>
 
       <figcaption className="nori-id-mrz" aria-label="Machine readable zone">
@@ -222,6 +204,46 @@ export function AgentIdCard({
         <span>{line2}</span>
       </figcaption>
     </figure>
+
+    {showStamp && stampAnimated && (
+    <span className="nori-id-stamp-rig" aria-hidden="true">
+      <span className="nori-id-stamp-shadow" />
+      <svg className="nori-id-stamp-tool" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="nori-stamp-knob" cx="0.42" cy="0.32" r="0.78">
+            <stop offset="0%" stopColor="#7a6070" />
+            <stop offset="55%" stopColor="#43303c" />
+            <stop offset="100%" stopColor="#251a21" />
+          </radialGradient>
+          <linearGradient id="nori-stamp-stem" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stopColor="#241a20" />
+            <stop offset="42%" stopColor="#5c4652" />
+            <stop offset="60%" stopColor="#4a3841" />
+            <stop offset="100%" stopColor="#1d141a" />
+          </linearGradient>
+          <linearGradient id="nori-stamp-basetop" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#5a4650" />
+            <stop offset="100%" stopColor="#382933" />
+          </linearGradient>
+          <linearGradient id="nori-stamp-basefront" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#2c2028" />
+            <stop offset="100%" stopColor="#171014" />
+          </linearGradient>
+        </defs>
+        {/* base: rectangular block seen from above — top face */}
+        <rect x="14" y="64" width="92" height="30" rx="6" fill="url(#nori-stamp-basetop)" />
+        {/* base: shallow front face (the rubber is hidden underneath) */}
+        <rect x="14" y="88" width="92" height="17" rx="5" fill="url(#nori-stamp-basefront)" />
+        {/* stem contact shadow on the top face */}
+        <ellipse cx="60" cy="68" rx="14" ry="4" fill="rgba(0, 0, 0, 0.28)" />
+        {/* stem, foreshortened (we look down its axis) */}
+        <path d="M52 38h16v27c0 2.5-3.5 4-8 4s-8-1.5-8-4V38z" fill="url(#nori-stamp-stem)" />
+        {/* knob: closest to the camera, reads large */}
+        <circle cx="60" cy="25" r="21" fill="url(#nori-stamp-knob)" />
+        <ellipse cx="53" cy="17" rx="8" ry="6" fill="rgba(255, 255, 255, 0.16)" />
+      </svg>
+    </span>
+    )}
     </div>
   );
 }
