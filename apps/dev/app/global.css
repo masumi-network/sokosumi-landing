@@ -2890,37 +2890,39 @@ header a:has(.masumi-brand-mark) {
   color: var(--stage-danger);
 }
 
-/* Payment trace as a dark terminal inset */
+/* Payment trace as a light status inset */
 
 .nori-stage .nori-trace-list {
   margin: 0;
   padding: 16px 14px;
+  border: 1px solid var(--stage-hairline);
   border-radius: 9px;
-  background: var(--stage-terminal);
+  background: #f8f8f9;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
 }
 
 .nori-stage .nori-trace-item:not(:last-child)::after {
-  background: rgba(255, 255, 255, 0.14);
+  background: rgba(0, 0, 0, 0.1);
 }
 
 .nori-stage .nori-trace-marker {
   position: relative;
   isolation: isolate;
-  border-color: rgba(255, 255, 255, 0.22);
-  background: transparent;
-  color: rgba(231, 231, 233, 0.45);
+  border-color: rgba(0, 0, 0, 0.18);
+  background: #ffffff;
+  color: rgba(0, 0, 0, 0.36);
 }
 
 .nori-stage .nori-trace-item[data-status='done'] .nori-trace-marker {
-  border-color: rgba(46, 213, 123, 0.6);
-  background: rgba(46, 213, 123, 0.12);
-  color: #2ed57b;
+  border-color: rgba(22, 163, 74, 0.45);
+  background: rgba(22, 163, 74, 0.08);
+  color: var(--stage-green);
 }
 
 .nori-stage .nori-trace-item[data-status='active'] .nori-trace-marker {
-  border-color: var(--stage-pink);
-  background: rgba(250, 0, 140, 0.14);
-  color: #ff77c2;
+  border-color: rgba(250, 0, 140, 0.5);
+  background: rgba(250, 0, 140, 0.08);
+  color: var(--stage-pink);
 }
 
 .nori-stage .nori-trace-item[data-status='active'] .nori-trace-marker::after {
@@ -2935,28 +2937,28 @@ header a:has(.masumi-brand-mark) {
 }
 
 .nori-stage .nori-trace-item[data-status='error'] .nori-trace-marker {
-  border-color: rgba(255, 107, 107, 0.6);
-  background: rgba(255, 107, 107, 0.12);
-  color: #ff6b6b;
+  border-color: rgba(220, 38, 38, 0.45);
+  background: rgba(220, 38, 38, 0.08);
+  color: var(--stage-danger);
 }
 
 .nori-stage .nori-trace-copy strong {
-  color: var(--stage-terminal-text);
+  color: var(--stage-ink);
 }
 
 .nori-stage .nori-trace-copy > span {
-  color: var(--stage-terminal-muted);
+  color: var(--stage-muted);
 }
 
 .nori-stage .nori-trace-copy code {
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: rgba(255, 255, 255, 0.06);
-  color: var(--stage-terminal-text);
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  background: rgba(255, 255, 255, 0.7);
+  color: var(--stage-ink);
 }
 
 .nori-stage .nori-trace-links a {
-  border-color: rgba(255, 255, 255, 0.14);
-  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(0, 0, 0, 0.08);
+  background: #ffffff;
 }
 
 .nori-stage .nori-trace-links a:hover {
@@ -2965,18 +2967,18 @@ header a:has(.masumi-brand-mark) {
 }
 
 .nori-stage .nori-explorer-link-copy strong {
-  color: var(--stage-terminal-text);
+  color: var(--stage-ink);
 }
 
 .nori-stage .nori-explorer-link-copy span,
 .nori-stage .nori-explorer-link-copy small {
-  color: var(--stage-terminal-muted);
+  color: var(--stage-muted);
 }
 
 .nori-stage .nori-explorer-link-copy code {
-  border-color: rgba(255, 255, 255, 0.12);
-  background: rgba(255, 255, 255, 0.06);
-  color: var(--stage-terminal-text);
+  border-color: rgba(0, 0, 0, 0.08);
+  background: rgba(255, 255, 255, 0.7);
+  color: var(--stage-ink);
 }
 
 .nori-session-footnote {
