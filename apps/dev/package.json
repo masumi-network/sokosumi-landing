@@ -7,7 +7,7 @@
     "generate:sokosumi": "node scripts/sokosumi/generate-openapi.mjs && node scripts/sokosumi/generate-cli-docs.mjs && node scripts/sokosumi/generate-mcp-docs.mjs",
     "predev": "node scripts/sokosumi/ensure-api-docs.mjs",
     "dev": "next dev -p 3004",
-    "start": "next start -p 3004",
+    "start": "next start -p ${PORT:-3004}",
     "postinstall": "fumadocs-mdx",
     "fetch-readme": "node scripts/fetch-readme.mjs",
     "generate-llms-txt": "tsx scripts/generate-llms-txt.ts"
