@@ -672,6 +672,7 @@ const NoriPaymentTrace = memo(function NoriPaymentTrace({
           {traceEvents.map((event) => {
             const status = getTraceStatus(event.phase);
             const links = traceExplorerLinks(event.phase);
+            const meta = event.meta(taskDetails).trim();
             return (
               <li key={event.phase} className="nori-trace-item" data-status={status}>
                 <span className="nori-trace-marker" aria-hidden="true">
@@ -680,7 +681,7 @@ const NoriPaymentTrace = memo(function NoriPaymentTrace({
                 <span className="nori-trace-copy">
                   <strong>{event.label}</strong>
                   <span>{event.description}</span>
-                  <code>{event.meta(taskDetails)}</code>
+                  {meta && <code>{meta}</code>}
                   {links.length > 0 && (
                     <span className="nori-trace-links" aria-label={`${event.label} explorer links`}>
                       {links.map((item) => {
