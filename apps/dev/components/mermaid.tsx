@@ -1,14 +1,12 @@
 'use client';
 
 import { useEffect, useId, useRef, useState } from 'react';
-import { useTheme } from 'next-themes';
 
 export function Mermaid({ chart }: { chart: string }) {
   const id = useId();
   const [svg, setSvg] = useState('');
   const containerRef = useRef<HTMLDivElement>(null);
   const currentChartRef = useRef<string>(null);
-  const { resolvedTheme } = useTheme();
 
   useEffect(() => {
     if (currentChartRef.current === chart || !containerRef.current) return;
@@ -25,7 +23,7 @@ export function Mermaid({ chart }: { chart: string }) {
           securityLevel: 'loose',
           fontFamily: 'inherit',
           themeCSS: 'margin: 1.5rem auto 0;',
-          theme: resolvedTheme === 'dark' ? 'dark' : 'default',
+          theme: 'default',
         });
 
         const { svg, bindFunctions } = await mermaid.render(
@@ -41,7 +39,7 @@ export function Mermaid({ chart }: { chart: string }) {
     }
 
     void renderChart();
-  }, [chart, id, resolvedTheme]);
+  }, [chart, id]);
 
   return <div ref={containerRef} dangerouslySetInnerHTML={{ __html: svg }} />;
 }

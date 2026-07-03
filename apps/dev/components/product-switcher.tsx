@@ -118,14 +118,7 @@ export function ProductSwitcher({ className = '' }: { className?: string }) {
           alt="Masumi Logo"
           width={130}
           height={50}
-          className="masumi-brand-logo dark:hidden"
-        />
-        <Image
-          src={withBasePath('/assets/masumi_logo_dark.png')}
-          alt="Masumi Logo"
-          width={130}
-          height={50}
-          className="masumi-brand-logo hidden dark:block"
+          className="masumi-brand-logo"
         />
         <span className="masumi-brand-badge">dev</span>
         <span className="masumi-brand-caret" data-open={open ? 'true' : 'false'} aria-hidden="true">

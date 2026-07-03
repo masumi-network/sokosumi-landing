@@ -186,9 +186,9 @@ function parseAttributes(attributesString) {
 }
 function convertHtmlToJsx(content) {
     var updatedContent = content;
-    // Convert <picture> elements with dark mode variants
+    // Convert <picture> elements by keeping the light/default image only.
     var pictureRegex = /<picture[^>]*>\s*<source[^>]*media=\"\s*\(\s*prefers-color-scheme:\s*dark\s*\)\"[^>]*srcset=\"([^\"]+)\"[^>]*>\s*<img([^>]+)>\s*<\/picture>/gis;
-    updatedContent = updatedContent.replace(pictureRegex, function (match, darkSrc, imgTag) {
+    updatedContent = updatedContent.replace(pictureRegex, function (match, _darkSrc, imgTag) {
         var imgAttributes = parseAttributes(imgTag);
         var lightSrc = imgAttributes.src;
         var altText = imgAttributes.alt || '';
@@ -204,16 +204,11 @@ function convertHtmlToJsx(content) {
             return "".concat(key, "=\"").concat(value, "\"");
         })
             .join(' ');
-        // Note the use of template literals for className to combine existing and new classes
-        return "<div>\n      <ImageZoom src=\"".concat(lightSrc, "\" alt=\"").concat(altText, "\" width={1200} height={800} className={`").concat(existingClass, " w-full h-auto block dark:hidden`} ").concat(sharedAttrs, " />\n      <ImageZoom src=\"").concat(darkSrc, "\" alt=\"").concat(altText, "\" width={1200} height={800} className={`").concat(existingClass, " w-full h-auto hidden dark:block`} ").concat(sharedAttrs, " />\n    </div>");
+        return "<ImageZoom src=\"".concat(lightSrc, "\" alt=\"").concat(altText, "\" width={1200} height={800} className={`").concat(existingClass, " w-full h-auto`} ").concat(sharedAttrs, " />");
     });
     // Convert standalone <img> tags
     var imgRegex = /<img([^>]+)>/gi;
     updatedContent = updatedContent.replace(imgRegex, function (match, attributesString) {
-        // If the img tag is inside a div that we just created, skip it.
-        if (match.includes('dark:hidden') || match.includes('hidden dark:block')) {
-            return match;
-        }
         var attributes = parseAttributes(attributesString);
         var isGif = attributes.src && attributes.src.toLowerCase().endsWith('.gif');
         var Component = isGif ? 'img' : 'ImageZoom';

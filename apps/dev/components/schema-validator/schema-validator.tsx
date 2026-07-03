@@ -1,7 +1,7 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 export const EXAMPLES = [
     {
@@ -229,41 +229,13 @@ const SchemaPlayground = dynamic(
 );
 
 export const SchemaValidator = () => {
-  // Detect theme from the app (single source of truth)
-  const [theme, setTheme] = useState<'light' | 'dark'>(() => {
-    if (typeof document !== 'undefined') {
-      return document.documentElement.classList.contains('dark') ? 'dark' : 'light';
-    }
-    return 'light';
-  });
-
-  useEffect(() => {
-    // Watch for theme changes on the document element
-    const checkTheme = () => {
-      const isDark = document.documentElement.classList.contains('dark');
-      setTheme(isDark ? 'dark' : 'light');
-    };
-
-    checkTheme();
-
-    const observer = new MutationObserver(checkTheme);
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ['class'],
-    });
-
-    return () => {
-      observer.disconnect();
-    };
-  }, []);
-
   return (
     <SchemaPlayground 
       examples={EXAMPLES}
       initialSchema={EXAMPLES[0].value}
       onSchemaChange={() => {}}
       className="not-prose"
-      theme={theme}
+      theme="light"
     />
   );
 };

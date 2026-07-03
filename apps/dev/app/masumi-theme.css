@@ -32,47 +32,8 @@
   --color-fd-ring: hsl(345, 70%, 52%);           /* Masumi brand focus ring */
 }
 
-.dark {
-  /* Primary Colors - Lighter Masumi brand pink/red/orange for dark mode */
-  --color-fd-primary: hsl(345, 70%, 62%);        /* Lighter coral pink-red-orange for dark mode */
-  --color-fd-primary-foreground: hsl(0, 0%, 100%);
-  
-  /* Background Colors - Rich dark neutral */
-  --color-fd-background: hsl(220, 15%, 9%);      /* Deep charcoal with slight blue tint */
-  --color-fd-foreground: hsl(220, 8%, 95%);      /* Off-white text */
-  
-  /* Card/Surface Colors - Slightly elevated dark surface */
-  --color-fd-card: hsl(220, 15%, 11%);           /* Slightly lighter than background */
-  --color-fd-card-foreground: hsl(220, 8%, 95%);
-  
-  /* Popover Colors */
-  --color-fd-popover: hsl(220, 15%, 11%);
-  --color-fd-popover-foreground: hsl(220, 8%, 95%);
-  
-  /* Secondary Colors - Elevated dark surface */
-  --color-fd-secondary: hsl(220, 12%, 16%);      /* Elevated dark gray */
-  --color-fd-secondary-foreground: hsl(220, 8%, 85%);
-  
-  /* Muted Colors - Subtle dark gray */
-  --color-fd-muted: hsl(220, 12%, 14%);          /* Dark muted gray */
-  --color-fd-muted-foreground: hsl(220, 8%, 65%);
-  
-  /* Accent Colors - Lighter Masumi brand pink/red/orange for dark mode */
-  --color-fd-accent: hsl(345, 70%, 62%);         /* Lighter coral pink-red-orange accent */
-  --color-fd-accent-foreground: hsl(0, 0%, 100%);
-  
-  /* Border Colors - Subtle dark borders */
-  --color-fd-border: hsl(220, 12%, 20%);         /* Subtle dark border */
-  --color-fd-ring: hsl(345, 70%, 62%);           /* Masumi brand focus ring */
-}
-
 /* Sidebar specific colors */
 #nd-sidebar {
   --color-fd-secondary: hsl(220, 10%, 98%);
   --color-fd-muted: hsl(220, 10%, 98%);
-}
-
-.dark #nd-sidebar {
-  --color-fd-secondary: hsl(220, 15%, 11%);
-  --color-fd-muted: hsl(220, 15%, 11%);
 }

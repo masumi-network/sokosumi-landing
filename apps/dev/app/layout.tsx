@@ -21,7 +21,7 @@ export const metadata: Metadata = {
 
 export default function Layout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className={inter.className} suppressHydrationWarning>
+    <html lang="en" className={inter.className}>
       <head>
         <Script
           defer
@@ -33,7 +33,7 @@ export default function Layout({ children }: { children: ReactNode }) {
         </Script>
       </head>
       <body className="flex flex-col min-h-screen">
-        <RootProvider>
+        <RootProvider theme={{ enabled: false }}>
           {children}
         </RootProvider>
         <SiteFooter />
@@ -42,12 +42,7 @@ export default function Layout({ children }: { children: ReactNode }) {
           <img 
             src={withBasePath('/assets/masumi-kanji-black.png')} 
             alt="Masumi Kanji" 
-            className="h-[40px] w-auto dark:hidden"
-          />
-          <img 
-            src={withBasePath('/assets/masumi-kanji-white.png')} 
-            alt="Masumi Kanji" 
-            className="h-[40px] w-auto hidden dark:block"
+            className="h-[40px] w-auto"
           />
         </div>
       </body>

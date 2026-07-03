@@ -251,9 +251,9 @@ function convertHtmlToJsx(content) {
     return part.replace(/\{/g, '\\{').replace(/\}/g, '\\}');
   }).join('');
 
-  // Convert <picture> elements with dark mode variants
+  // Convert <picture> elements by keeping the light/default image only.
   const pictureRegex = /<picture[^>]*>\s*<source[^>]*media=\"\s*\(\s*prefers-color-scheme:\s*dark\s*\)\"[^>]*srcset=\"([^\"]+)\"[^>]*>\s*<img([^>]+)>\s*<\/picture>/gis;
-  updatedContent = updatedContent.replace(pictureRegex, (match, darkSrc, imgTag) => {
+  updatedContent = updatedContent.replace(pictureRegex, (match, _darkSrc, imgTag) => {
     const imgAttributes = parseAttributes(imgTag);
     const lightSrc = imgAttributes.src;
     const altText = imgAttributes.alt || '';
@@ -265,21 +265,12 @@ function convertHtmlToJsx(content) {
       .map(([key, value]) => `${key}=\"${value}\"`)
       .join(' ');
 
-    // Note the use of template literals for className to combine existing and new classes
-    return `<div>
-      <ImageZoom src=\"${lightSrc}\" alt=\"${altText}\" width={1200} height={800} className={\`${existingClass} w-full h-auto block dark:hidden\`} ${sharedAttrs} />
-      <ImageZoom src=\"${darkSrc}\" alt=\"${altText}\" width={1200} height={800} className={\`${existingClass} w-full h-auto hidden dark:block\`} ${sharedAttrs} />
-    </div>`;
+    return `<ImageZoom src=\"${lightSrc}\" alt=\"${altText}\" width={1200} height={800} className={\`${existingClass} w-full h-auto\`} ${sharedAttrs} />`;
   });
 
   // Convert standalone <img> tags
   const imgRegex = /<img([^>]+)>/gi;
   updatedContent = updatedContent.replace(imgRegex, (match, attributesString) => {
-    // If the img tag is inside a div that we just created, skip it.
-    if (match.includes('dark:hidden') || match.includes('hidden dark:block')) {
-        return match;
-    }
-
     const attributes = parseAttributes(attributesString);
     const isGif = attributes.src && attributes.src.toLowerCase().endsWith('.gif');
     const Component = isGif ? 'img' : 'ImageZoom';

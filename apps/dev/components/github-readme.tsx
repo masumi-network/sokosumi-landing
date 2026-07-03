@@ -55,9 +55,9 @@ export function GitHubReadme({ owner, repo, branch = 'main' }: GitHubReadmeProps
 
   if (error) {
     return (
-      <div className="border border-red-200 rounded-lg p-4 bg-red-50 dark:bg-red-950 dark:border-red-800">
-        <p className="text-red-600 dark:text-red-400">Error loading README: {error}</p>
-        <p className="text-sm text-red-500 dark:text-red-500 mt-2">
+      <div className="border border-red-200 rounded-lg p-4 bg-red-50">
+        <p className="text-red-600">Error loading README: {error}</p>
+        <p className="text-sm text-red-500 mt-2">
           <a 
             href={`https://github.com/${owner}/${repo}`}
             target="_blank"
@@ -84,7 +84,7 @@ export function GitHubReadme({ owner, repo, branch = 'main' }: GitHubReadmeProps
           View on GitHub →
         </a>
       </div>
-      <div className="prose dark:prose-invert max-w-none">
+      <div className="prose max-w-none">
         <pre className="whitespace-pre-wrap font-sans text-sm leading-relaxed">
           {content}
         </pre>

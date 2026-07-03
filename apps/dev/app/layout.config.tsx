@@ -18,6 +18,9 @@ export const baseOptions: BaseLayoutProps = {
       </span>
     ),
   },
+  themeSwitch: {
+    enabled: false,
+  },
   // see https://fumadocs.dev/docs/ui/navigation/links
   links: [],
   githubUrl: 'https://github.com/masumi-network',
