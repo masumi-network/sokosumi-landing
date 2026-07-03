@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Nori Prototype - Conversation Trace</title>
+    <link rel="stylesheet" href="/nori-layout-prototypes/styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="/documentation" aria-label="Masumi Documentation">
+        <img src="/assets/masumi_logo_dark.png" alt="Masumi" />
+      </a>
+      <nav class="mode-switch" aria-label="Documentation mode">
+        <a href="/ask" class="active"><span>Ask Nori</span></a>
+        <a href="/documentation"><span>Browse</span></a>
+      </nav>
+      <nav class="prototype-nav" aria-label="Prototype variants">
+        <a href="/nori-layout-prototypes/index.html">Overview</a>
+        <a href="/nori-layout-prototypes/console.html">Console</a>
+        <a href="/nori-layout-prototypes/trace-first.html">Trace First</a>
+        <a href="/nori-layout-prototypes/docked-trace.html">Docked Trace</a>
+        <a class="current" href="/nori-layout-prototypes/conversation-trace.html">Conversation Trace</a>
+      </nav>
+    </header>
+
+    <main class="page">
+      <p class="variant-kicker">Variant 4</p>
+      <h1 class="prototype-title">Payment trace inside the conversation</h1>
+
+      <section class="hero-card" aria-label="Ask Nori">
+        <div class="hero-content">
+          <div class="profile-row">
+            <div class="avatar-frame">
+              <img src="/assets/nori-pfp.png" alt="Nori profile" />
+            </div>
+            <div class="hero-copy">
+              <h1>Ask Nori</h1>
+              <p>Nori answers from the docs while Masumi task events appear directly in the chat, so the response and payment lifecycle read as one story.</p>
+            </div>
+          </div>
+
+          <div class="prompt-strip" aria-label="Example prompts">
+            <button class="prompt-chip" type="button" data-prompt="register"><span class="dot"></span>Register an agent</button>
+            <button class="prompt-chip" type="button" data-prompt="escrow"><span class="dot"></span>Escrow payments</button>
+            <button class="prompt-chip" type="button" data-prompt="collaborate"><span class="dot"></span>Agent collaboration</button>
+            <button class="prompt-chip" type="button" data-prompt="api"><span class="dot"></span>API reference</button>
+          </div>
+
+          <form class="ask-box" data-demo-form>
+            <textarea data-nori-input rows="1" aria-label="Message Nori" placeholder="Ask Nori anything about Masumi..."></textarea>
+            <button type="submit" aria-label="Send">↑</button>
+          </form>
+        </div>
+      </section>
+
+      <div class="conversation-layout" style="margin-top: 18px;">
+        <section class="panel conversation-panel" aria-label="Nori conversation with Masumi trace">
+          <p class="card-label">Conversation</p>
+          <div class="conversation-stream" data-demo-output>
+            <article class="message user">
+              <div class="message-bubble">How does a Masumi agent get paid after answering a request?</div>
+            </article>
+
+            <article class="message nori">
+              <span class="chat-avatar" aria-hidden="true">
+                <img src="/assets/nori-pfp.png" alt="" />
+              </span>
+              <div class="message-bubble">
+                <span class="answer-label">Nori answer</span>
+                I can answer that. I will also show the Masumi job and payment lifecycle that would happen around this answer, so the docs response and settlement flow stay connected.
+                <div class="source-row">
+                  <span class="source-pill">Payments</span>
+                  <span class="source-pill">Agentic Service API</span>
+                </div>
+              </div>
+            </article>
+
+            <article class="inline-trace-event done" data-track="registry" aria-label="Masumi trace event: registry checked">
+              <span class="trace-marker">1</span>
+              <div class="event-copy">
+                <div class="event-topline">
+                  <span class="event-title">
+                    <span class="event-kind kind-registry">Masumi registry</span>
+                    <strong>Checking the registry</strong>
+                  </span>
+                  <span class="event-status">Done</span>
+                </div>
+                <p>The docs server verifies that Nori is a registered agent and resolves the service endpoint for the job.</p>
+                <div class="event-meta-grid">
+                  <span><small>Network</small><code>preprod</code></span>
+                  <span><small>Agent NFT</small><code>policy: 7f8c...nori</code></span>
+                  <span><small>Endpoint</small><code>/api/nori/chat</code></span>
+                </div>
+              </div>
+            </article>
+
+            <article class="inline-trace-event done" data-track="task" aria-label="Masumi trace event: Nori availability checked">
+              <span class="trace-marker">2</span>
+              <div class="event-copy">
+                <div class="event-topline">
+                  <span class="event-title">
+                    <span class="event-kind kind-task">Task orchestration</span>
+                    <strong>Checking Nori availability</strong>
+                  </span>
+                  <span class="event-status">Done</span>
+                </div>
+                <p>The service checks that Nori can accept the docs request and has the right capability for a grounded answer.</p>
+                <div class="event-meta-grid">
+                  <span><small>Capability</small><code>docs_qa</code></span>
+                  <span><small>Queue</small><code>available</code></span>
+                  <span><small>Timeout</small><code>90s</code></span>
+                </div>
+              </div>
+            </article>
+
+            <article class="inline-trace-event done" data-track="task" aria-label="Masumi trace event: job placed">
+              <span class="trace-marker">3</span>
+              <div class="event-copy">
+                <div class="event-topline">
+                  <span class="event-title">
+                    <span class="event-kind kind-task">Task orchestration</span>
+                    <strong>Placing and starting the job</strong>
+                  </span>
+                  <span class="event-status">Done</span>
+                </div>
+                <p>The user question becomes a job with an input hash, expected result schema, and Nori as the selected worker.</p>
+                <div class="event-meta-grid">
+                  <span><small>Task</small><code>task_9d24</code></span>
+                  <span><small>Input hash</small><code>sha256:91b...</code></span>
+                  <span><small>Worker</small><code>nori-docs</code></span>
+                </div>
+              </div>
+            </article>
+
+            <article class="inline-trace-event active" data-track="payment" aria-label="Masumi trace event: payment request noticed">
+              <span class="trace-marker">4</span>
+              <div class="event-copy">
+                <div class="event-topline">
+                  <span class="event-title">
+                    <span class="event-kind kind-payment">Masumi payment</span>
+                    <strong>Noticing the payment request</strong>
+                  </span>
+                  <span class="event-status">Active</span>
+                </div>
+                <p>The docs backend creates a preprod purchase for the job. In production, this is the point where the requester funds the payment.</p>
+                <div class="event-meta-grid">
+                  <span><small>Purchase</small><code>preprod-4821</code></span>
+                  <span><small>Visitor</small><code>0.00 tUSDM</code></span>
+                  <span><small>Status</small><code>created</code></span>
+                </div>
+              </div>
+            </article>
+
+            <article class="message nori">
+              <span class="chat-avatar" aria-hidden="true">
+                <img src="/assets/nori-pfp.png" alt="" />
+              </span>
+              <div class="message-bubble">
+                <span class="answer-label">Nori answer</span>
+                Short version: Masumi separates the work from the settlement. The agent receives a job, returns a verifiable result, and the payment service moves the purchase through escrow and settlement. For this docs demo, the visitor pays 0.00 tUSDM while the backend funds the real preprod trace.
+                <div class="source-row">
+                  <span class="source-pill">Payments</span>
+                  <span class="source-pill">Refunds and disputes</span>
+                  <span class="source-pill">Agentic Service API</span>
+                </div>
+              </div>
+            </article>
+
+            <article class="inline-trace-event planned" data-track="payment" aria-label="Masumi trace event: funds will lock">
+              <span class="trace-marker">5</span>
+              <div class="event-copy">
+                <div class="event-topline">
+                  <span class="event-title">
+                    <span class="event-kind kind-payment">Masumi payment</span>
+                    <strong>Funds lock in escrow</strong>
+                  </span>
+                  <span class="event-status">Planned</span>
+                </div>
+                <p>The purchase is funded and locked at the payment contract while Nori's result is validated.</p>
+                <div class="event-meta-grid">
+                  <span><small>Status</small><code>locked</code></span>
+                  <span><small>Script</small><code>addr_test1...</code></span>
+                  <span><small>Amount</small><code>demo funded</code></span>
+                </div>
+              </div>
+            </article>
+
+            <article class="inline-trace-event planned" data-track="answer" aria-label="Masumi trace event: result will be submitted">
+              <span class="trace-marker">6</span>
+              <div class="event-copy">
+                <div class="event-topline">
+                  <span class="event-title">
+                    <span class="event-kind kind-answer">Nori result</span>
+                    <strong>Result proof is submitted</strong>
+                  </span>
+                  <span class="event-status">Planned</span>
+                </div>
+                <p>Nori submits answer metadata, citations, and a result hash so the payment can be tied back to the completed job.</p>
+                <div class="event-meta-grid">
+                  <span><small>Result</small><code>sha256:answer...</code></span>
+                  <span><small>Citations</small><code>3 docs pages</code></span>
+                  <span><small>State</small><code>ready</code></span>
+                </div>
+              </div>
+            </article>
+
+            <article class="inline-trace-event planned" data-track="payment" aria-label="Masumi trace event: payment will settle">
+              <span class="trace-marker">7</span>
+              <div class="event-copy">
+                <div class="event-topline">
+                  <span class="event-title">
+                    <span class="event-kind kind-payment">Masumi payment</span>
+                    <strong>Payment settles to the agent</strong>
+                  </span>
+                  <span class="event-status">Planned</span>
+                </div>
+                <p>The payment service observes the final chain state and links the explorer transaction back into this conversation.</p>
+                <div class="event-meta-grid">
+                  <span><small>Status</small><code>settled</code></span>
+                  <span><small>Explorer</small><code>cardanoscan</code></span>
+                  <span><small>Agent paid</small><code>true</code></span>
+                </div>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <aside class="panel conversation-summary" aria-label="Conversation trace summary">
+          <p class="card-label">Trace legend</p>
+          <h2>Nori task</h2>
+          <div class="conversation-summary-list">
+            <div>
+              <span>Current state</span>
+              <strong>Payment request noticed</strong>
+            </div>
+            <div>
+              <span>Nori answer</span>
+              <strong>Shown as chat bubbles with avatar</strong>
+            </div>
+            <div>
+              <span>Masumi payment</span>
+              <strong>Shown as cyan workflow cards</strong>
+            </div>
+            <div>
+              <span>Task orchestration</span>
+              <strong>Shown as purple workflow cards</strong>
+            </div>
+            <div>
+              <span>Future steps</span>
+              <strong>Previewed as planned events</strong>
+            </div>
+            <div>
+              <span>Visitor charge</span>
+              <strong>0.00 tUSDM</strong>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </main>
+
+    <script src="/nori-layout-prototypes/prototype.js"></script>
+  </body>
+</html>

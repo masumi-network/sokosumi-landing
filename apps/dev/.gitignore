@@ -1,0 +1,40 @@
+# deps
+/node_modules
+
+# generated content
+.contentlayer
+.content-collections
+.source
+content/docs/api-reference/(generated)/
+**/_*.mdx
+# synced images from repos
+public/synced-images/
+# llms.txt should be served via route, not static file
+public/llms.txt
+# cache directory for generated content
+.cache/
+
+# test & build
+/coverage
+/.next/
+/out/
+/build
+*.tsbuildinfo
+
+# misc
+.DS_Store
+*.pem
+/.pnp
+.pnp.js
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# others
+.env*.local
+.vercel
+next-env.d.ts
+# auto-generated README content fetched from GitHub
+content/docs/mips/index.mdx
+content/docs/n8n-node/index.mdx
+.gstack/

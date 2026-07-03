@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Nori Prototype - Console Layout</title>
+    <link rel="stylesheet" href="/nori-layout-prototypes/styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="/documentation" aria-label="Masumi Documentation">
+        <img src="/assets/masumi_logo_dark.png" alt="Masumi" />
+      </a>
+      <nav class="mode-switch" aria-label="Documentation mode">
+        <a href="/ask" class="active"><span>Ask Nori</span></a>
+        <a href="/documentation"><span>Browse</span></a>
+      </nav>
+      <nav class="prototype-nav" aria-label="Prototype variants">
+        <a href="/nori-layout-prototypes/index.html">Overview</a>
+        <a class="current" href="/nori-layout-prototypes/console.html">Console</a>
+        <a href="/nori-layout-prototypes/trace-first.html">Trace First</a>
+        <a href="/nori-layout-prototypes/docked-trace.html">Docked Trace</a>
+        <a href="/nori-layout-prototypes/conversation-trace.html">Conversation Trace</a>
+      </nav>
+    </header>
+
+    <main class="page">
+      <p class="variant-kicker">Variant 1</p>
+      <h1 class="prototype-title">Console layout</h1>
+
+      <div class="grid-console">
+        <section class="main-stack" aria-label="Nori chat console">
+          <div class="hero-card">
+            <div class="hero-content">
+              <div class="profile-row">
+                <div class="avatar-frame">
+                  <img src="/assets/nori-pfp.png" alt="Nori profile" />
+                </div>
+                <div class="hero-copy">
+                  <h1>Ask Nori</h1>
+                  <p>Nori answers from the Masumi docs and starts a live preprod task trace so the user can see registration, purchase, lock, result, and settlement in one flow.</p>
+                </div>
+              </div>
+
+              <div class="prompt-strip" aria-label="Example prompts">
+                <button class="prompt-chip" type="button" data-prompt="register"><span class="dot"></span>Register an agent</button>
+                <button class="prompt-chip" type="button" data-prompt="escrow"><span class="dot"></span>Escrow payments</button>
+                <button class="prompt-chip" type="button" data-prompt="collaborate"><span class="dot"></span>Agent collaboration</button>
+                <button class="prompt-chip" type="button" data-prompt="api"><span class="dot"></span>API reference</button>
+              </div>
+
+              <form class="ask-box" data-demo-form>
+                <textarea data-nori-input rows="1" aria-label="Message Nori" placeholder="Ask Nori anything about Masumi..."></textarea>
+                <button type="submit" aria-label="Send">↑</button>
+              </form>
+            </div>
+          </div>
+
+          <section class="panel" aria-label="Nori answer stream">
+            <p class="card-label">Nori answer</p>
+            <div class="chat-list" data-demo-output>
+              <article class="message user">
+                <div class="message-bubble">How do I register an agent and receive payment for its work?</div>
+              </article>
+              <article class="message">
+                <div class="message-bubble">
+                  Register the agent identity, expose your Agentic Service API, then create a purchase flow that locks funds until the result is submitted. Nori would cite the docs while the trace on the right shows the live Masumi lifecycle.
+                  <div class="source-row">
+                    <span class="source-pill">Agent Identity</span>
+                    <span class="source-pill">Payments</span>
+                    <span class="source-pill">Agentic Service API</span>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </section>
+        </section>
+
+        <aside class="trace-panel sticky" aria-label="Masumi payment trace">
+          <div class="trace-head">
+            <div>
+              <p class="card-label">Live Masumi docs payment trace</p>
+              <h2>Nori docs task</h2>
+            </div>
+            <span class="network-pill">Preprod</span>
+          </div>
+
+          <div class="amount-card">
+            <span>Demo payment</span>
+            <strong>Docs server pays</strong>
+            <small>The visitor pays 0.00 tUSDM. The docs backend funds a real preprod purchase so the trace is inspectable.</small>
+          </div>
+
+          <ol class="trace-list">
+            <li class="trace-item done">
+              <span class="trace-marker">1</span>
+              <span class="trace-copy">
+                <strong>Nori registered</strong>
+                <span>Agent identity is discoverable through the registry.</span>
+                <code>policy: 7f8c...nori</code>
+              </span>
+            </li>
+            <li class="trace-item done">
+              <span class="trace-marker">2</span>
+              <span class="trace-copy">
+                <strong>Purchase created</strong>
+                <span>Docs request maps to a Masumi payment request.</span>
+                <code>purchase: preprod-4821</code>
+              </span>
+            </li>
+            <li class="trace-item active">
+              <span class="trace-marker">3</span>
+              <span class="trace-copy">
+                <strong>Funds locked</strong>
+                <span>The service can work while escrow protects both sides.</span>
+                <code>script: addr_test1...</code>
+              </span>
+            </li>
+            <li class="trace-item">
+              <span class="trace-marker">4</span>
+              <span class="trace-copy">
+                <strong>Result submitted</strong>
+                <span>Nori response hash is attached to the purchase.</span>
+                <code>waiting for answer</code>
+              </span>
+            </li>
+            <li class="trace-item">
+              <span class="trace-marker">5</span>
+              <span class="trace-copy">
+                <strong>Settlement</strong>
+                <span>Payment service observes the final transaction state.</span>
+                <code>pending</code>
+              </span>
+            </li>
+          </ol>
+        </aside>
+      </div>
+    </main>
+
+    <script src="/nori-layout-prototypes/prototype.js"></script>
+  </body>
+</html>

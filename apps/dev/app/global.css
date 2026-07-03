@@ -1,0 +1,3166 @@
+@import 'tailwindcss';
+@import './masumi-theme.css';
+@import 'fumadocs-ui/css/preset.css';
+@import 'fumadocs-openapi/css/preset.css';
+
+/* Ensure Tailwind scans external schema validator classes (including dark variants). */
+@source "../node_modules/masumi-schema-validator-component/dist/index.mjs";
+@source "../node_modules/masumi-schema-validator-component/dist/index.js";
+
+/* Define missing fumadocs diff utility classes for Tailwind v4 */
+@utility bg-fd-diff-remove {
+  background-color: hsl(0, 100%, 97%);
+  @variant dark {
+    background-color: hsl(0, 65%, 15%);
+  }
+}
+
+@utility text-fd-diff-remove-symbol {
+  color: hsl(0, 100%, 50%);
+  @variant dark {
+    color: hsl(0, 100%, 70%);
+  }
+}
+
+@utility bg-fd-diff-add {
+  background-color: hsl(142, 76%, 96%);
+  @variant dark {
+    background-color: hsl(142, 70%, 20%);
+  }
+}
+
+@utility text-fd-diff-add-symbol {
+  color: hsl(142, 70%, 45%);
+  @variant dark {
+    color: hsl(142, 70%, 65%);
+  }
+}
+
+/* Fix search field hover - only border, not full background */
+.hover\:bg-fd-accent:hover {
+  background-color: transparent !important;
+  border-color: hsl(345, 70%, 52%) !important; /* Masumi brand pink/red/orange border */
+}
+
+.hover\:text-fd-accent-foreground:hover {
+  color: inherit !important; /* Keep original text color */
+}
+
+/* Fix dropdown menu selected item icon color in light theme */
+[data-state="open"] [data-highlighted] svg,
+[aria-selected="true"] svg,
+.bg-fd-accent svg {
+  color: hsl(220, 13%, 9%) !important; /* Dark color for light theme */
+}
+
+.dark [data-state="open"] [data-highlighted] svg,
+.dark [aria-selected="true"] svg,
+.dark .bg-fd-accent svg {
+  color: hsl(0, 0%, 100%) !important; /* White for dark theme */
+}
+
+/* Clean sidebar background */
+#nd-sidebar {
+  background: hsl(220, 8%, 98%) !important; /* Light neutral sidebar */
+}
+
+.dark #nd-sidebar {
+  background: var(--color-fd-background) !important; /* Match navbar background */
+}
+
+/* Masumi brand accent for links and interactive text in dark mode */
+.dark a:not([class*="bg-"]):not([class*="text-fd-muted"]) {
+  color: hsl(345, 70%, 65%) !important; /* Lighter coral pink-red-orange for better readability */
+}
+
+.dark a:not([class*="bg-"]):not([class*="text-fd-muted"]):hover {
+  color: hsl(345, 70%, 75%) !important; /* Even lighter on hover */
+}
+
+/* Active/selected items in dark mode */
+.dark [data-active="true"],
+.dark [aria-selected="true"]:not([class*="bg-"]) {
+  color: hsl(345, 70%, 65%) !important;
+}
+
+/* Code syntax highlighting - use Masumi brand accent in dark mode */
+.dark .hljs-keyword,
+.dark .hljs-built_in {
+  color: hsl(345, 70%, 65%) !important;
+}
+
+/* Light mode links - Masumi brand accent (only apply when not in dark mode) */
+:not(.dark) a:not([class*="bg-"]):not([class*="text-fd-muted"]) {
+  color: hsl(345, 70%, 52%) !important;
+}
+
+:not(.dark) a:not([class*="bg-"]):not([class*="text-fd-muted"]):hover {
+  color: hsl(345, 70%, 47%) !important;
+}
+
+/* Fix search result highlighting - use subtle background instead of solid accent */
+.bg-fd-accent[data-highlighted],
+.bg-fd-accent[aria-selected="true"],
+[data-highlighted].bg-fd-accent,
+[aria-selected="true"].bg-fd-accent {
+  background-color: hsl(345, 70%, 96%) !important; /* Very light tint of brand color */
+  color: hsl(220, 13%, 9%) !important; /* Dark text for readability */
+}
+
+.dark .bg-fd-accent[data-highlighted],
+.dark .bg-fd-accent[aria-selected="true"],
+.dark [data-highlighted].bg-fd-accent,
+.dark [aria-selected="true"].bg-fd-accent {
+  background-color: hsl(345, 50%, 20%) !important; /* Subtle dark tint for dark mode */
+  color: hsl(220, 8%, 95%) !important; /* Light text */
+}
+
+/* Also handle general highlighted/selected states for search */
+[data-state="open"] [data-highlighted]:not(.bg-fd-accent),
+[data-state="open"] [aria-selected="true"]:not(.bg-fd-accent) {
+  background-color: hsl(345, 70%, 96%) !important;
+  color: hsl(220, 13%, 9%) !important;
+}
+
+.dark [data-state="open"] [data-highlighted]:not(.bg-fd-accent),
+.dark [data-state="open"] [aria-selected="true"]:not(.bg-fd-accent) {
+  background-color: hsl(345, 50%, 20%) !important;
+  color: hsl(220, 8%, 95%) !important;
+}
+
+/* Keep accent text color for selected items, but with subtle background */
+.bg-fd-accent[data-highlighted] svg,
+.bg-fd-accent[aria-selected="true"] svg,
+[data-highlighted].bg-fd-accent svg,
+[aria-selected="true"].bg-fd-accent svg {
+  color: hsl(345, 70%, 52%) !important;
+}
+
+.dark .bg-fd-accent[data-highlighted] svg,
+.dark .bg-fd-accent[aria-selected="true"] svg,
+.dark [data-highlighted].bg-fd-accent svg,
+.dark [aria-selected="true"].bg-fd-accent svg {
+  color: hsl(345, 70%, 65%) !important;
+}
+
+/* Masumi two-mode docs shell */
+.masumi-brand-mark {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+  line-height: 0;
+}
+
+header a:has(.masumi-brand-mark) {
+  flex: 0 0 auto;
+  min-width: max-content;
+}
+
+.masumi-brand-logo {
+  width: clamp(116px, 10vw, 136px);
+  height: auto;
+}
+
+.masumi-mode-rail {
+  padding: 8px 0;
+  border-bottom: 1px solid var(--color-fd-border);
+  background: var(--color-fd-background);
+}
+
+.masumi-mode-rail-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: var(--fd-layout-width, 1400px);
+  margin: 0 auto;
+  padding: 0 16px;
+  overflow-x: auto;
+}
+
+.masumi-mode-switcher {
+  --mode-active-index: 0;
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: center;
+  width: min(212px, calc(100vw - 24px));
+  min-width: 0;
+  padding: 3px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-fd-muted) 78%, transparent);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  overflow: hidden;
+}
+
+.masumi-mode-switcher--nav {
+  flex: 0 0 clamp(188px, 16vw, 216px);
+  width: clamp(188px, 16vw, 216px);
+  margin-left: clamp(16px, 1.6vw, 24px);
+}
+
+.masumi-mode-switcher[data-mode='browse'] {
+  --mode-active-index: 1;
+}
+
+.masumi-mode-switcher::before {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  top: 3px;
+  bottom: 3px;
+  left: 3px;
+  width: calc((100% - 6px) / 2);
+  border-radius: 999px;
+  background: linear-gradient(135deg, hsl(345, 88%, 58%), hsl(334, 88%, 64%));
+  box-shadow: 0 8px 18px rgba(226, 35, 96, 0.2);
+  transform: translateX(calc(var(--mode-active-index) * 100%));
+  transition:
+    transform 260ms cubic-bezier(0.22, 1, 0.36, 1),
+    background 180ms ease,
+    box-shadow 180ms ease;
+  will-change: transform;
+}
+
+.dark .masumi-mode-switcher {
+  border-color: rgba(255, 255, 255, 0.1);
+  background: color-mix(in srgb, var(--color-fd-card) 82%, transparent);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.dark .masumi-mode-switcher::before {
+  box-shadow: 0 10px 24px rgba(250, 0, 140, 0.3);
+}
+
+.masumi-mode-link {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  gap: 6px;
+  min-height: 28px;
+  padding: 0 8px;
+  overflow: hidden;
+  border-radius: 999px;
+  color: var(--color-fd-muted-foreground) !important;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+  text-decoration: none !important;
+  transition: color 180ms ease;
+  white-space: nowrap;
+}
+
+.masumi-mode-switcher a.masumi-mode-link {
+  color: var(--color-fd-muted-foreground) !important;
+}
+
+.dark .masumi-mode-switcher a.masumi-mode-link {
+  color: color-mix(in srgb, var(--color-fd-muted-foreground) 88%, white) !important;
+}
+
+.masumi-mode-link svg {
+  width: 13px;
+  height: 13px;
+  flex: 0 0 auto;
+  transition: color 180ms ease, transform 180ms ease;
+}
+
+.masumi-mode-link span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.masumi-mode-switcher a.masumi-mode-link:hover {
+  color: var(--color-fd-foreground) !important;
+}
+
+.masumi-mode-switcher a.masumi-mode-link[data-active='true'] {
+  color: #fff !important;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.16);
+}
+
+.masumi-mode-link[data-active='true'] svg {
+  transform: translateY(-0.5px);
+}
+
+.masumi-mode-link:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--color-fd-primary) 70%, white);
+  outline-offset: -2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .masumi-mode-switcher::before,
+  .masumi-mode-link,
+  .masumi-mode-link svg {
+    transition: none;
+  }
+}
+
+.masumi-standalone-layout {
+  min-height: calc(100dvh - 58px);
+  background:
+    linear-gradient(180deg, rgba(250, 0, 140, 0.05), transparent 220px),
+    var(--color-fd-background);
+}
+
+.masumi-standalone-notebook-layout {
+  --fd-sidebar-width: 0px !important;
+  --fd-toc-width: 0px !important;
+}
+
+.masumi-standalone-notebook-layout [data-sidebar-placeholder] {
+  display: none !important;
+}
+
+.masumi-standalone-main {
+  grid-area: main;
+  flex: 1;
+  width: 100%;
+}
+
+#nd-home-layout.masumi-standalone-layout #nd-nav nav {
+  position: relative;
+}
+
+#nd-home-layout.masumi-standalone-layout #nd-nav [data-search-full] {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(24rem, calc(100vw - 32rem));
+  min-width: 240px;
+  max-width: 24rem;
+  border-radius: 0.75rem;
+  transform: translate(-50%, -50%);
+}
+
+.masumi-ask-page {
+  min-height: calc(100dvh - 114px);
+}
+
+.nori-shell {
+  width: min(1180px, 100%);
+  min-width: 0;
+  margin: 0 auto;
+  padding: 42px 24px 72px;
+}
+
+.nori-message-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #fa008c, #ff9f6e);
+  color: #fff;
+}
+
+.nori-message-avatar svg {
+  width: 18px;
+  height: 18px;
+}
+
+.nori-message-avatar-image {
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  object-fit: cover;
+}
+
+.nori-kicker,
+.nori-card-label,
+.agents-kicker,
+.agents-panel-label {
+  margin: 0 0 8px;
+  color: var(--color-fd-muted-foreground);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.nori-intro-card {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 20px;
+  align-items: stretch;
+  min-height: 0;
+  margin-bottom: 26px;
+  padding: 22px;
+  overflow: hidden;
+  border: 1px solid var(--color-fd-border);
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--color-fd-primary) 9%, transparent), transparent 62%),
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--color-fd-primary) 12%, var(--color-fd-card)),
+      var(--color-fd-card) 48%,
+      color-mix(in srgb, #ff9f6e 10%, var(--color-fd-card))
+    );
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 24px 80px rgba(0, 0, 0, 0.08);
+}
+
+.nori-intro-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--color-fd-border) 48%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--color-fd-border) 48%, transparent) 1px, transparent 1px),
+    radial-gradient(
+      circle at 1px 1px,
+      color-mix(in srgb, var(--color-fd-foreground) 18%, transparent) 1px,
+      transparent 0
+    );
+  background-size: 56px 56px, 56px 56px, 14px 14px;
+  opacity: 0.34;
+}
+
+.dark .nori-intro-card {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 24px 80px rgba(0, 0, 0, 0.25);
+}
+
+.dark .nori-intro-card::before {
+  opacity: 0.22;
+}
+
+.nori-intro-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-width: 0;
+}
+
+.nori-profile-row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  min-width: 0;
+}
+
+.nori-profile-frame {
+  position: relative;
+  flex: 0 0 auto;
+  width: 148px;
+  height: 148px;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--color-fd-primary) 28%, var(--color-fd-border));
+  border-radius: 8px;
+  background: var(--color-fd-muted);
+  box-shadow: 0 18px 52px color-mix(in srgb, var(--color-fd-primary) 18%, transparent);
+}
+
+.nori-profile-frame::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.nori-profile-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.nori-doc-header {
+  max-width: 760px;
+  min-width: 0;
+}
+
+.nori-doc-header h1 {
+  margin: 0 0 12px;
+  color: var(--color-fd-foreground);
+  font-size: 48px;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1.04;
+}
+
+.nori-doc-header > p:last-child {
+  margin: 0;
+  color: var(--color-fd-muted-foreground);
+  font-size: 16px;
+  line-height: 1.75;
+}
+
+.nori-task-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  gap: 24px;
+  align-items: start;
+}
+
+.nori-main-stack {
+  display: grid;
+  min-width: 0;
+  gap: 18px;
+}
+
+.nori-sokosumi-callout {
+  margin: 0;
+  border-radius: 8px;
+  box-shadow: none;
+}
+
+.nori-context-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-width: 0;
+  padding: 14px 16px;
+  border: 1px solid var(--color-fd-border);
+  border-radius: 8px;
+  background: var(--color-fd-card);
+}
+
+.nori-context-card > div {
+  display: grid;
+  min-width: 0;
+  gap: 3px;
+}
+
+.nori-context-card span,
+.nori-context-card a {
+  color: var(--color-fd-muted-foreground);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.nori-context-card strong {
+  overflow: hidden;
+  color: var(--color-fd-foreground);
+  font-size: 14px;
+  line-height: 1.35;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nori-context-card a {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  width: fit-content;
+  color: var(--color-fd-primary) !important;
+  font-weight: 600;
+  text-decoration: none !important;
+}
+
+.nori-context-card a svg {
+  width: 13px;
+  height: 13px;
+}
+
+.nori-task-panel,
+.nori-payment-card {
+  min-width: 0;
+  border: 1px solid var(--color-fd-border);
+  border-radius: 8px;
+  background: var(--color-fd-card);
+}
+
+.nori-task-panel {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.nori-panel-header,
+.nori-payment-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.nori-panel-header {
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--color-fd-border);
+}
+
+.nori-panel-header h2,
+.nori-payment-header h2 {
+  margin: 0;
+  color: var(--color-fd-foreground);
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.nori-task-status,
+.nori-payment-network {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex: 0 0 auto;
+  min-height: 28px;
+  padding: 0 10px;
+  border: 1px solid var(--color-fd-border);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-fd-muted) 70%, transparent);
+  color: var(--color-fd-muted-foreground);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.nori-task-status svg {
+  width: 13px;
+  height: 13px;
+}
+
+.nori-task-status[data-phase='created'],
+.nori-task-status[data-phase='claimed'],
+.nori-task-status[data-phase='usage'],
+.nori-task-status[data-phase='locked'],
+.nori-task-status[data-phase='running'],
+.nori-task-status[data-phase='completed'] {
+  border-color: color-mix(in srgb, var(--color-fd-primary) 40%, var(--color-fd-border));
+  background: color-mix(in srgb, var(--color-fd-primary) 12%, var(--color-fd-card));
+  color: var(--color-fd-primary);
+}
+
+.nori-task-status[data-phase='settled'] {
+  border-color: color-mix(in srgb, var(--color-fd-success) 45%, var(--color-fd-border));
+  background: color-mix(in srgb, var(--color-fd-success) 12%, var(--color-fd-card));
+  color: var(--color-fd-success);
+}
+
+.nori-task-status[data-phase='failed'] {
+  border-color: color-mix(in srgb, var(--color-fd-error) 45%, var(--color-fd-border));
+  background: color-mix(in srgb, var(--color-fd-error) 12%, var(--color-fd-card));
+  color: var(--color-fd-error);
+}
+
+.nori-empty-state {
+  padding: 20px;
+}
+
+.nori-empty-state p {
+  max-width: 640px;
+  margin: 0 0 16px;
+  color: var(--color-fd-muted-foreground);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.nori-prompt-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  width: min(620px, 100%);
+}
+
+.nori-prompt-grid button,
+.agents-hero-actions a,
+.agents-copy-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 40px;
+  border-radius: 8px;
+  border: 1px solid var(--color-fd-border);
+  background: var(--color-fd-card);
+  color: var(--color-fd-foreground);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1;
+  text-decoration: none !important;
+  transition: border-color 180ms ease, color 180ms ease, background-color 180ms ease, box-shadow 180ms ease;
+}
+
+.nori-prompt-grid button {
+  justify-content: flex-start;
+  padding: 0 16px;
+  background: color-mix(in srgb, var(--color-fd-muted) 42%, transparent);
+}
+
+.nori-prompt-grid button:hover,
+.agents-copy-button:hover {
+  border-color: var(--color-fd-primary);
+  color: var(--color-fd-primary);
+  box-shadow: 0 8px 22px rgba(250, 0, 140, 0.1);
+}
+
+.nori-prompt-grid svg,
+.agents-copy-button svg {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 auto;
+}
+
+.nori-message-list {
+  display: grid;
+  gap: 18px;
+  padding: 20px;
+}
+
+.nori-message {
+  display: flex;
+  gap: 14px;
+  min-width: 0;
+}
+
+.nori-message[data-role='user'] {
+  flex-direction: row-reverse;
+}
+
+.nori-message-avatar {
+  width: 34px;
+  height: 34px;
+}
+
+.nori-message[data-role='user'] .nori-message-avatar {
+  background: var(--color-fd-foreground);
+  color: var(--color-fd-background);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.dark .nori-message[data-role='user'] .nori-message-avatar {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.nori-message-body {
+  min-width: 0;
+  max-width: min(720px, 100%);
+}
+
+.nori-message[data-role='user'] .nori-message-body {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.nori-message-text {
+  color: var(--color-fd-foreground);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.nori-message[data-role='user'] .nori-message-text {
+  max-width: 560px;
+  padding: 11px 14px;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--color-fd-muted) 55%, transparent);
+  color: var(--color-fd-foreground);
+}
+
+.nori-message[data-error='true'] .nori-message-text {
+  padding: 14px 16px;
+  border: 1px solid color-mix(in srgb, var(--color-fd-primary) 40%, var(--color-fd-border));
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--color-fd-primary) 8%, var(--color-fd-card));
+}
+
+.nori-message-text p {
+  margin: 0;
+}
+
+.nori-message-text p + p,
+.nori-message-text p + ul,
+.nori-message-text p + ol,
+.nori-message-text ul + p,
+.nori-message-text ol + p,
+.nori-message-text pre + p,
+.nori-message-text blockquote + p {
+  margin-top: 12px;
+}
+
+.nori-message-text h2,
+.nori-message-text h3,
+.nori-message-text h4 {
+  margin: 18px 0 8px;
+  color: var(--color-fd-foreground);
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+.nori-message-text h2:first-child,
+.nori-message-text h3:first-child,
+.nori-message-text h4:first-child {
+  margin-top: 0;
+}
+
+.nori-message-text h2 {
+  font-size: 18px;
+}
+
+.nori-message-text h3 {
+  font-size: 16px;
+}
+
+.nori-message-text h4 {
+  font-size: 14px;
+}
+
+.nori-message-text ul,
+.nori-message-text ol {
+  display: grid;
+  gap: 6px;
+  margin: 10px 0 0;
+  padding-left: 22px;
+}
+
+.nori-message-text ul {
+  list-style: disc;
+}
+
+.nori-message-text ol {
+  list-style: decimal;
+}
+
+.nori-message-text li {
+  padding-left: 2px;
+}
+
+.nori-message-text code {
+  padding: 2px 5px;
+  border: 1px solid color-mix(in srgb, var(--color-fd-border) 75%, transparent);
+  border-radius: 5px;
+  background: color-mix(in srgb, var(--color-fd-muted) 55%, transparent);
+  color: var(--color-fd-foreground);
+  font-size: 0.92em;
+}
+
+.nori-message-text pre {
+  overflow-x: auto;
+  margin: 12px 0 0;
+  padding: 13px 14px;
+  border: 1px solid var(--color-fd-border);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--color-fd-muted) 45%, var(--color-fd-background));
+}
+
+.nori-message-text pre code {
+  display: block;
+  min-width: max-content;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  line-height: 1.65;
+  white-space: pre;
+}
+
+.nori-message-text blockquote {
+  margin: 12px 0 0;
+  padding: 8px 12px;
+  border-left: 3px solid var(--color-fd-primary);
+  color: var(--color-fd-muted-foreground);
+  background: color-mix(in srgb, var(--color-fd-muted) 32%, transparent);
+}
+
+.nori-message-text a {
+  color: var(--color-fd-primary);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.nori-typing {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 12px 16px;
+  border: 1px solid var(--color-fd-border);
+  border-radius: 8px;
+  background: var(--color-fd-card);
+  color: var(--color-fd-muted-foreground);
+  font-size: 14px;
+}
+
+.nori-typing svg,
+.nori-input-wrap button svg,
+.nori-trace-item[data-status='active'] .nori-trace-marker svg {
+  width: 16px;
+  height: 16px;
+  animation: nori-spin 1s linear infinite;
+}
+
+.nori-citations {
+  margin-top: 16px;
+}
+
+.nori-citations > span {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--color-fd-muted-foreground);
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.nori-citations > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.nori-citation {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  max-width: 320px;
+  padding: 9px 12px;
+  border: 1px solid var(--color-fd-border);
+  border-radius: 8px;
+  background: var(--color-fd-card);
+  color: var(--color-fd-foreground) !important;
+  text-decoration: none !important;
+}
+
+.nori-citation:hover {
+  border-color: var(--color-fd-primary);
+  color: var(--color-fd-primary) !important;
+}
+
+.nori-citation svg {
+  width: 15px;
+  height: 15px;
+  flex: 0 0 auto;
+}
+
+.nori-citation span {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.nori-citation strong,
+.nori-citation small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nori-citation strong {
+  font-size: 13px;
+}
+
+.nori-citation small {
+  color: var(--color-fd-muted-foreground);
+  font-size: 11px;
+}
+
+.nori-copy-answer {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 14px;
+  padding: 6px 10px;
+  border: 1px solid var(--color-fd-border);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--color-fd-muted-foreground);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.nori-copy-answer svg {
+  width: 14px;
+  height: 14px;
+}
+
+.nori-input-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 20px 20px;
+  padding: 10px 10px 10px 14px;
+  border: 1px solid var(--color-fd-border);
+  border-radius: 8px;
+  background: var(--color-fd-background);
+}
+
+.nori-input-wrap > svg {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+  color: var(--color-fd-muted-foreground);
+}
+
+.nori-input-wrap textarea {
+  flex: 1;
+  min-height: 34px;
+  max-height: 160px;
+  padding: 7px 0;
+  resize: none;
+  border: 0;
+  border-radius: 0;
+  outline: none;
+  background: transparent;
+  color: var(--color-fd-foreground);
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.nori-input-wrap:focus-within {
+  border-color: var(--color-fd-primary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-fd-primary) 12%, transparent);
+}
+
+.nori-input-wrap button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--color-fd-primary);
+  color: #fff;
+}
+
+.nori-input-wrap button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.nori-input-wrap button:not(:disabled) svg {
+  animation: none;
+}
+
+.nori-hero-input {
+  margin: 24px 0 0;
+  padding: 12px 12px 12px 16px;
+  border-color: color-mix(in srgb, var(--color-fd-primary) 20%, var(--color-fd-border));
+  background: color-mix(in srgb, var(--color-fd-background) 78%, transparent);
+  box-shadow: 0 18px 46px color-mix(in srgb, var(--color-fd-primary) 12%, transparent);
+  backdrop-filter: blur(18px);
+}
+
+.nori-hero-input textarea {
+  min-height: 40px;
+  padding: 9px 0;
+  font-size: 15px;
+}
+
+.nori-hero-input button {
+  width: 40px;
+  height: 40px;
+}
+
+.nori-task-aside {
+  position: sticky;
+  top: 82px;
+  min-width: 0;
+}
+
+.nori-payment-card {
+  padding: 18px;
+}
+
+.nori-payment-header {
+  margin-bottom: 16px;
+}
+
+.nori-payment-network {
+  color: var(--color-fd-primary);
+}
+
+.nori-payment-amount {
+  display: grid;
+  gap: 6px;
+  padding: 16px;
+  border: 1px solid var(--color-fd-border);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--color-fd-muted) 45%, transparent);
+}
+
+.nori-payment-amount span,
+.nori-payment-amount small {
+  color: var(--color-fd-muted-foreground);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.nori-payment-amount strong {
+  color: var(--color-fd-foreground);
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.nori-payment-meter {
+  height: 8px;
+  margin: 14px 0;
+  overflow: hidden;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-fd-muted) 70%, transparent);
+}
+
+.nori-payment-meter span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  background: #fa008c;
+  opacity: 0.86;
+}
+
+.nori-payment-facts {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  margin: 0 0 18px;
+}
+
+.nori-payment-facts div {
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid var(--color-fd-border);
+  border-radius: 8px;
+}
+
+.nori-payment-facts dt {
+  margin-bottom: 3px;
+  color: var(--color-fd-muted-foreground);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.nori-payment-facts dd {
+  overflow: hidden;
+  margin: 0;
+  color: var(--color-fd-foreground);
+  font-size: 16px;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nori-trace-links {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.nori-trace-links a {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: flex-start;
+  gap: 10px;
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid var(--color-fd-border);
+  border-radius: 8px;
+  color: var(--color-fd-foreground) !important;
+  font-size: 12px;
+  line-height: 1.35;
+  text-decoration: none !important;
+}
+
+.nori-trace-links a:hover {
+  border-color: var(--color-fd-primary);
+  color: var(--color-fd-primary) !important;
+}
+
+.nori-trace-links svg {
+  margin-top: 2px;
+  width: 14px;
+  height: 14px;
+  flex: 0 0 auto;
+}
+
+.nori-explorer-link-copy {
+  display: grid;
+  min-width: 0;
+  gap: 3px;
+}
+
+.nori-explorer-link-copy strong {
+  color: var(--color-fd-foreground);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.nori-explorer-link-copy span,
+.nori-explorer-link-copy small {
+  color: var(--color-fd-muted-foreground);
+  font-size: 11px;
+}
+
+.nori-explorer-link-copy code {
+  display: block;
+  max-width: 100%;
+  padding: 0;
+  background: transparent;
+  color: var(--color-fd-primary);
+  font-size: 11px;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+  white-space: normal;
+  word-break: break-word;
+}
+
+.nori-explorer-link-copy small {
+  display: block;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+.nori-trace-list {
+  display: grid;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.nori-trace-item {
+  position: relative;
+  display: grid;
+  grid-template-columns: 26px minmax(0, 1fr);
+  gap: 10px;
+  min-width: 0;
+  padding-bottom: 16px;
+}
+
+.nori-trace-item:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 26px;
+  bottom: 0;
+  left: 12px;
+  width: 1px;
+  background: var(--color-fd-border);
+}
+
+.nori-trace-marker {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border: 1px solid var(--color-fd-border);
+  border-radius: 999px;
+  background: var(--color-fd-card);
+  color: var(--color-fd-muted-foreground);
+}
+
+.nori-trace-marker svg {
+  width: 14px;
+  height: 14px;
+}
+
+.nori-trace-item[data-status='done'] .nori-trace-marker {
+  border-color: color-mix(in srgb, var(--color-fd-success) 45%, var(--color-fd-border));
+  background: color-mix(in srgb, var(--color-fd-success) 12%, var(--color-fd-card));
+  color: var(--color-fd-success);
+}
+
+.nori-trace-item[data-status='active'] .nori-trace-marker {
+  border-color: color-mix(in srgb, var(--color-fd-primary) 45%, var(--color-fd-border));
+  background: color-mix(in srgb, var(--color-fd-primary) 12%, var(--color-fd-card));
+  color: var(--color-fd-primary);
+}
+
+.nori-trace-item[data-status='error'] .nori-trace-marker {
+  border-color: color-mix(in srgb, var(--color-fd-error) 45%, var(--color-fd-border));
+  background: color-mix(in srgb, var(--color-fd-error) 12%, var(--color-fd-card));
+  color: var(--color-fd-error);
+}
+
+.nori-trace-copy {
+  display: grid;
+  min-width: 0;
+  gap: 4px;
+}
+
+.nori-trace-copy strong {
+  color: var(--color-fd-foreground);
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.nori-trace-copy span {
+  color: var(--color-fd-muted-foreground);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.nori-trace-copy code {
+  overflow: hidden;
+  width: fit-content;
+  max-width: 100%;
+  padding: 2px 5px;
+  border: 1px solid var(--color-fd-border);
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--color-fd-muted) 45%, transparent);
+  color: var(--color-fd-muted-foreground);
+  font-size: 11px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nori-trace-copy .nori-explorer-link-copy code {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--color-fd-primary);
+  font-size: 11px;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+  text-overflow: clip;
+  white-space: normal;
+  word-break: break-word;
+}
+
+.nori-payment-links {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+  padding-top: 2px;
+}
+
+.nori-payment-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 36px;
+  padding: 0 10px;
+  border: 1px solid var(--color-fd-border);
+  border-radius: 8px;
+  color: var(--color-fd-foreground) !important;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none !important;
+}
+
+.nori-payment-links a:hover {
+  border-color: var(--color-fd-primary);
+  color: var(--color-fd-primary) !important;
+}
+
+.nori-payment-links svg {
+  width: 15px;
+  height: 15px;
+}
+
+@keyframes nori-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.masumi-agents-page {
+  padding: 48px 24px 72px;
+}
+
+.agents-shell {
+  width: min(1120px, 100%);
+  margin: 0 auto;
+}
+
+.agents-hero {
+  max-width: 780px;
+  margin-bottom: 28px;
+}
+
+.agents-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--color-fd-primary);
+}
+
+.dark .agents-kicker {
+  color: hsl(345, 70%, 65%);
+}
+
+.agents-kicker svg {
+  width: 16px;
+  height: 16px;
+}
+
+.agents-hero h1 {
+  margin: 0 0 16px;
+  color: var(--color-fd-foreground);
+  font-size: 48px;
+  font-weight: 760;
+  line-height: 1.08;
+}
+
+.agents-hero p {
+  max-width: 720px;
+  margin: 0;
+  color: var(--color-fd-muted-foreground);
+  font-size: 17px;
+  line-height: 1.7;
+}
+
+.agents-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.agents-hero-actions a,
+.agents-copy-button {
+  padding: 0 16px;
+}
+
+.agents-hero-actions a:first-child {
+  border-color: var(--color-fd-primary);
+  background: var(--color-fd-primary);
+  color: #fff !important;
+  -webkit-text-fill-color: #fff;
+}
+
+.agents-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin: 32px 0;
+}
+
+.agents-stat-grid div,
+.agents-panel,
+.agents-endpoint-card {
+  border: 1px solid var(--color-fd-border);
+  border-radius: 8px;
+  background: var(--color-fd-card);
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.04);
+}
+
+.agents-stat-grid div {
+  display: grid;
+  gap: 4px;
+  padding: 18px;
+}
+
+.agents-stat-grid strong {
+  color: var(--color-fd-foreground);
+  font-size: 24px;
+  line-height: 1.1;
+}
+
+.agents-stat-grid span {
+  color: var(--color-fd-muted-foreground);
+  font-size: 13px;
+}
+
+.agents-endpoint-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.agents-endpoint-card {
+  display: flex;
+  gap: 16px;
+  padding: 18px;
+}
+
+.agents-endpoint-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--color-fd-primary) 10%, var(--color-fd-card));
+  color: var(--color-fd-primary);
+  flex: 0 0 auto;
+}
+
+.dark .agents-endpoint-icon {
+  color: hsl(345, 70%, 70%);
+}
+
+.agents-endpoint-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.agents-endpoint-content {
+  min-width: 0;
+}
+
+.agents-endpoint-content h3,
+.agents-panel h2 {
+  margin: 0 0 6px;
+  color: var(--color-fd-foreground);
+  font-size: 18px;
+  font-weight: 740;
+  line-height: 1.25;
+}
+
+.agents-endpoint-content p,
+.agents-panel p {
+  margin: 0;
+  color: var(--color-fd-muted-foreground);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.agents-url-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.agents-url-row code {
+  display: block;
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 9px 10px;
+  border-radius: 6px;
+  background: #111;
+  color: #f5f5f5;
+  font-size: 12px;
+}
+
+.agents-copy-button {
+  min-height: 36px;
+  cursor: pointer;
+}
+
+.agents-link-list {
+  display: grid;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.agents-link-list a,
+.agents-panel-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+  color: var(--color-fd-primary) !important;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none !important;
+}
+
+.agents-link-list svg,
+.agents-panel-link svg {
+  width: 14px;
+  height: 14px;
+}
+
+.agents-two-column {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(280px, 0.7fr);
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.agents-panel {
+  padding: 20px;
+}
+
+.agents-page-list {
+  display: grid;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.agents-page-list a {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(160px, 0.65fr);
+  gap: 12px;
+  align-items: center;
+  padding: 12px;
+  border: 1px solid var(--color-fd-border);
+  border-radius: 8px;
+  color: var(--color-fd-foreground) !important;
+  text-decoration: none !important;
+}
+
+.agents-page-list a:hover {
+  border-color: var(--color-fd-primary);
+}
+
+.agents-page-list span {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+
+.agents-page-list strong,
+.agents-page-list small,
+.agents-page-list code {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.agents-page-list strong {
+  font-size: 14px;
+}
+
+.agents-page-list small {
+  color: var(--color-fd-muted-foreground);
+  font-size: 12px;
+}
+
+.agents-page-list code {
+  color: var(--color-fd-muted-foreground);
+  font-size: 12px;
+}
+
+.agents-panel-link {
+  margin-top: 18px;
+}
+
+@media (max-width: 1320px) {
+  .masumi-brand-logo {
+    width: clamp(108px, 12vw, 124px);
+  }
+
+  .masumi-mode-switcher--nav {
+    grid-template-columns: repeat(2, 38px);
+    flex-basis: 82px;
+    width: 82px;
+    margin-left: 14px;
+  }
+
+  .masumi-mode-switcher--nav .masumi-mode-link {
+    gap: 0;
+    padding: 0;
+  }
+
+  .masumi-mode-switcher--nav .masumi-mode-link span {
+    display: none;
+  }
+}
+
+@media (max-width: 980px) {
+  .masumi-mode-rail-inner {
+    justify-content: flex-start;
+  }
+
+  .nori-task-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .nori-intro-card {
+    grid-template-columns: 1fr;
+  }
+
+  .nori-task-aside {
+    position: static;
+  }
+
+  .agents-endpoint-grid,
+  .agents-two-column {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .masumi-brand-logo {
+    width: clamp(94px, 28vw, 108px);
+  }
+
+  .masumi-mode-switcher--nav {
+    grid-template-columns: repeat(2, 32px);
+    flex-basis: auto;
+    width: 70px;
+    margin-left: 10px;
+  }
+
+  .masumi-mode-link {
+    min-height: 26px;
+    padding: 0;
+    gap: 0;
+  }
+
+  .masumi-mode-switcher--nav .masumi-mode-link span {
+    display: none;
+  }
+
+  .masumi-mode-link svg {
+    width: 12px;
+    height: 12px;
+  }
+
+  .nori-shell {
+    padding: 30px 16px 52px;
+  }
+
+  .nori-intro-card {
+    gap: 16px;
+    min-height: 0;
+    margin-bottom: 22px;
+    padding: 16px;
+  }
+
+  .nori-profile-row {
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .nori-profile-frame {
+    width: 82px;
+    height: 82px;
+  }
+
+  .nori-doc-header h1 {
+    font-size: 34px;
+  }
+
+  .nori-doc-header > p:last-child {
+    font-size: 14px;
+    line-height: 1.55;
+  }
+
+  .nori-prompt-grid,
+  .agents-stat-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .nori-panel-header,
+  .nori-payment-header,
+  .nori-context-card {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .nori-empty-state {
+    padding: 16px;
+  }
+
+  .nori-prompt-grid button {
+    min-height: 38px;
+  }
+
+  .nori-message-list {
+    padding: 16px;
+  }
+
+  .nori-input-wrap {
+    margin: 0 16px 16px;
+  }
+
+  .nori-hero-input {
+    margin: 16px 0 0;
+  }
+
+  .nori-payment-facts {
+    grid-template-columns: 1fr;
+  }
+
+  .agents-hero h1 {
+    font-size: 34px;
+  }
+
+  .agents-endpoint-card {
+    flex-direction: column;
+  }
+
+  .agents-url-row {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .agents-copy-button {
+    width: 100%;
+  }
+
+  .agents-page-list a {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ============================================================
+   Nori Agent Identity Card + cinematic hire (boot) sequence
+   Real ID-1 card ratio (85.6 x 54 mm ~ 1.586:1), proportionally
+   scaled via container query units so it renders like a physical
+   card at any size.
+   ============================================================ */
+
+.nori-id-card {
+  --id-ink: #2a1a21;
+  --id-muted: #7d6a72;
+  --id-accent: #fa008c;
+  --id-accent-2: hsl(345, 70%, 48%);
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  aspect-ratio: 85.6 / 54;
+  width: 100%;
+  margin: 0;
+  border: 1px solid rgba(0, 0, 0, 0.14);
+  /* Real ID-1 corner radius: 3.18mm of 85.6mm width */
+  border-radius: 3.7cqw;
+  color: var(--id-ink);
+  text-align: left;
+  /* Polymer body + fine guilloche security linework */
+  background:
+    repeating-radial-gradient(circle at 118% -30%, rgba(250, 0, 140, 0.05) 0 1px, transparent 1px 6px),
+    repeating-radial-gradient(circle at -18% 128%, rgba(255, 159, 110, 0.06) 0 1px, transparent 1px 6px),
+    repeating-radial-gradient(circle at 50% 220%, rgba(250, 0, 140, 0.03) 0 1px, transparent 1px 9px),
+    repeating-linear-gradient(115deg, rgba(250, 0, 140, 0.018) 0 1px, transparent 1px 5px),
+    linear-gradient(120deg, #fffbfc, #fdf0f6 46%, #fdf6f0);
+  /* Physical edge + contact shadow + soft key light */
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.9),
+    inset 0 -1px 1px rgba(0, 0, 0, 0.07),
+    inset 1px 0 1px rgba(255, 255, 255, 0.35),
+    0 1px 2px rgba(0, 0, 0, 0.14),
+    0 10px 20px -6px rgba(0, 0, 0, 0.22),
+    0 24px 44px -14px rgba(0, 0, 0, 0.14);
+}
+
+/* Polymer grain + directional light falloff */
+.nori-id-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  border-radius: inherit;
+  background:
+    linear-gradient(155deg, rgba(255, 255, 255, 0.32), transparent 38%, rgba(0, 0, 0, 0.035) 88%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+  background-size: auto, 140px 140px;
+  mix-blend-mode: multiply;
+  opacity: 0.16;
+}
+
+.nori-id-card[data-variant='boot'] {
+  width: min(560px, 100%);
+  max-width: 100%;
+  min-width: 0;
+}
+
+/* cq units inside the card resolve against these wrappers
+   (an element cannot be its own container) */
+.nori-hire-card,
+.nori-boot-card,
+.nori-session {
+  container-type: inline-size;
+}
+
+/* Physical hover tilt (driven by pointer position, see useCardTilt).
+   Transform engages only on hover; a constant ease-out transition chases
+   the pointer, which is what makes it feel springy and physical. */
+.nori-id-tilt {
+  perspective: 800px;
+  min-width: 0;
+}
+
+.nori-id-tilt .nori-id-card {
+  transition: transform 150ms ease-out;
+}
+
+.nori-id-tilt:hover .nori-id-card {
+  transform: rotateX(var(--x-rotation, 0deg)) rotateY(var(--y-rotation, 0deg)) scale(1.05);
+}
+
+/* Light reflection that follows the pointer */
+.nori-id-glare {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  border-radius: inherit;
+  background: radial-gradient(
+    at var(--glare-x, 50%) var(--glare-y, 50%),
+    rgba(255, 255, 255, 0.28) 20%,
+    transparent 80%
+  );
+  opacity: 0;
+  transition: opacity 150ms ease-out;
+}
+
+.nori-id-tilt:hover .nori-id-glare {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nori-id-tilt:hover .nori-id-card {
+    transform: none;
+    transition: none;
+  }
+
+  .nori-id-glare {
+    display: none;
+  }
+}
+
+.nori-id-card[data-variant='panel'] {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.nori-id-sheen {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background: linear-gradient(
+    112deg,
+    transparent 32%,
+    rgba(255, 255, 255, 0.5) 46%,
+    rgba(255, 150, 120, 0.2) 52%,
+    transparent 64%
+  );
+  transform: translateX(-120%);
+}
+
+.nori-id-card[data-variant='boot'] .nori-id-sheen {
+  animation: nori-id-sheen 1.6s cubic-bezier(0.3, 0.6, 0.2, 1) 0.85s both;
+}
+
+.nori-id-card[data-registry='verified'] .nori-id-sheen {
+  animation: nori-id-sheen 1.4s cubic-bezier(0.3, 0.6, 0.2, 1) both;
+}
+
+@keyframes nori-id-sheen {
+  from {
+    transform: translateX(-120%);
+  }
+  to {
+    transform: translateX(120%);
+  }
+}
+
+.nori-id-header {
+  display: flex;
+  align-items: center;
+  gap: 2.2cqw;
+  padding: 2.4cqw 3cqw 2cqw;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.nori-id-emblem {
+  display: inline-flex;
+  flex: 0 0 auto;
+  width: 5.4cqw;
+  height: 5.4cqw;
+}
+
+.nori-id-emblem svg {
+  width: 100%;
+  height: 100%;
+}
+
+.nori-id-issuer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3cqw;
+  font-size: max(2cqw, 8px);
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  background: linear-gradient(90deg, var(--id-accent), var(--id-accent-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  white-space: nowrap;
+}
+
+.nori-id-issuer small {
+  font-size: max(1.6cqw, 6.5px);
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  color: var(--id-muted);
+  -webkit-text-fill-color: var(--id-muted);
+}
+
+.nori-id-chip {
+  position: relative;
+  display: inline-flex;
+  width: 7.4cqw;
+  height: 5.6cqw;
+  margin-left: auto;
+  overflow: hidden;
+  border-radius: 1.1cqw;
+  border: 1px solid rgba(130, 92, 18, 0.6);
+  background:
+    linear-gradient(135deg, #f6dc93, #d9a53f 48%, #eec96a 72%, #f6e0a1);
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.55),
+    inset 0 -1px 1px rgba(90, 62, 10, 0.35),
+    0 1px 1px rgba(0, 0, 0, 0.15);
+}
+
+/* Etched EMV contact pads */
+.nori-id-chip::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(rgba(120, 84, 16, 0.55), rgba(120, 84, 16, 0.55)) 50% 0 / 1px 100% no-repeat,
+    linear-gradient(rgba(120, 84, 16, 0.55), rgba(120, 84, 16, 0.55)) 0 31% / 100% 1px no-repeat,
+    linear-gradient(rgba(120, 84, 16, 0.55), rgba(120, 84, 16, 0.55)) 0 69% / 100% 1px no-repeat;
+}
+
+.nori-id-chip::after {
+  content: '';
+  position: absolute;
+  top: 31%;
+  bottom: 31%;
+  left: 28%;
+  right: 28%;
+  border: 1px solid rgba(120, 84, 16, 0.55);
+  border-radius: 0.7cqw;
+  background: linear-gradient(135deg, #f2d489, #e0b34f);
+}
+
+.nori-id-chip svg {
+  display: none;
+}
+
+.nori-id-network {
+  padding: 0.8cqw 1.7cqw;
+  border: 1px solid rgba(250, 0, 140, 0.28);
+  border-radius: 999px;
+  background: rgba(250, 0, 140, 0.06);
+  font-size: max(1.7cqw, 7px);
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #b4005f;
+  white-space: nowrap;
+}
+
+.nori-id-body {
+  position: relative;
+  flex: 1;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr) auto;
+  gap: 1.2cqw 2.8cqw;
+  align-items: start;
+  padding: 2.2cqw 3cqw;
+  min-height: 0;
+}
+
+/* Masumi kanji emblem as the state watermark (like the Bundesadler) */
+.nori-id-watermark {
+  position: absolute;
+  top: 48%;
+  right: 6cqw;
+  z-index: 0;
+  width: 30cqw;
+  height: 34cqw;
+  transform: translateY(-50%);
+  background: url('/assets/masumi-kanji-black.png') center / contain no-repeat;
+  opacity: 0.055;
+  pointer-events: none;
+}
+
+.nori-id-photo {
+  position: relative;
+  z-index: 1;
+  grid-row: 1 / 3;
+  width: 16.5cqw;
+  height: 21cqw;
+  overflow: hidden;
+  border-radius: 1.4cqw;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  background: #fff;
+}
+
+.nori-id-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.nori-id-photo img {
+  filter: saturate(0.88) contrast(1.04);
+}
+
+.nori-id-photo-holo {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 78% 82%, rgba(160, 255, 220, 0.35), transparent 42%),
+    linear-gradient(135deg, rgba(120, 200, 255, 0.14), transparent 45%, rgba(255, 130, 200, 0.16));
+  mix-blend-mode: screen;
+}
+
+/* Inner bevel so the photo reads as laser-printed into the card */
+.nori-id-photo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  box-shadow:
+    inset 0 1px 2px rgba(0, 0, 0, 0.22),
+    inset 0 -1px 1px rgba(255, 255, 255, 0.35);
+}
+
+.nori-id-fields {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1.3cqw;
+  align-content: start;
+  margin: 0;
+  min-width: 0;
+}
+
+.nori-id-doc-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.6fr;
+  gap: 2cqw;
+}
+
+.nori-id-doc-row-2 {
+  grid-template-columns: 1fr 1.3fr;
+}
+
+.nori-id-field {
+  min-width: 0;
+}
+
+.nori-id-field dt {
+  margin: 0 0 0.3cqw;
+  font-size: max(1.4cqw, 6px);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-align: left;
+  text-transform: uppercase;
+  color: var(--id-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.nori-id-field dd {
+  display: flex;
+  align-items: center;
+  gap: 1cqw;
+  flex-wrap: wrap;
+  margin: 0;
+  font-size: max(2.1cqw, 8.5px);
+  font-weight: 650;
+  line-height: 1.25;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.nori-id-field dd.nori-id-name {
+  font-size: max(3cqw, 12px);
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.nori-id-mono {
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+  font-size: max(1.9cqw, 8px);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  word-break: break-all;
+}
+
+.nori-id-mono[data-pending='true'] {
+  color: var(--id-muted);
+  font-style: italic;
+  font-family: inherit;
+}
+
+.nori-id-mono a {
+  display: inline-flex;
+  align-items: center;
+  color: var(--id-accent) !important;
+}
+
+.nori-id-mono a svg {
+  width: 2.1cqw;
+  height: 2.1cqw;
+}
+
+.nori-id-stamp {
+  position: absolute;
+  right: 3.2cqw;
+  bottom: 2.6cqw;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2cqw;
+  padding: 1.1cqw 2.2cqw;
+  border: 0.42cqw solid currentColor;
+  border-radius: 1.4cqw;
+  outline: 0.16cqw solid currentColor;
+  outline-offset: 0.55cqw;
+  transform: rotate(-12deg);
+  color: rgba(214, 24, 121, 0.82);
+  mix-blend-mode: multiply;
+  text-transform: uppercase;
+  text-align: center;
+  pointer-events: none;
+}
+
+.nori-id-stamp strong {
+  font-size: max(2.6cqw, 10px);
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  line-height: 1;
+}
+
+.nori-id-stamp small {
+  font-size: max(1.4cqw, 6px);
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  line-height: 1.25;
+}
+
+.nori-id-stamp-sub {
+  opacity: 0.75;
+}
+
+.nori-id-stamp[data-state='verified'] {
+  animation: nori-stamp-in 0.55s cubic-bezier(0.2, 1.1, 0.3, 1) 0.55s both;
+}
+
+.nori-id-stamp[data-state='failed'] {
+  color: rgba(179, 18, 60, 0.85);
+  animation: nori-stamp-in 0.55s cubic-bezier(0.2, 1.1, 0.3, 1) 0.3s both;
+}
+
+@keyframes nori-stamp-in {
+  0% {
+    opacity: 0;
+    transform: rotate(-18deg) scale(2.4);
+  }
+  55% {
+    opacity: 1;
+    transform: rotate(-11deg) scale(0.95);
+  }
+  75% {
+    transform: rotate(-12.5deg) scale(1.04);
+  }
+  100% {
+    opacity: 1;
+    transform: rotate(-12deg) scale(1);
+  }
+}
+
+/* Signature block (like field 10 on the German passport) */
+.nori-id-signature {
+  position: relative;
+  z-index: 1;
+  grid-column: 2;
+  align-self: end;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.2cqw;
+  min-width: 0;
+  text-align: left;
+  padding-right: 24cqw; /* keep clear of the stamp */
+}
+
+.nori-id-sig-label {
+  font-size: max(1.4cqw, 6px);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--id-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.nori-id-script {
+  font-family: 'Snell Roundhand', 'Segoe Script', 'Savoye LET', 'Apple Chancery', cursive;
+  font-size: max(4.6cqw, 15px);
+  font-weight: 400;
+  line-height: 1;
+  color: rgba(42, 26, 33, 0.85);
+  transform: rotate(-3deg);
+  padding-left: 2cqw;
+}
+
+.nori-id-mrz {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4cqw;
+  margin: 0;
+  margin-top: auto;
+  padding: 1.6cqw 3cqw 1.9cqw;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.04);
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+  font-size: max(1.9cqw, 7.5px);
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: rgba(0, 0, 0, 0.65);
+  white-space: nowrap;
+  overflow: hidden;
+  min-width: 0;
+}
+
+.nori-id-mrz span {
+  display: block;
+  overflow: hidden;
+  min-width: 0;
+}
+
+.dark .nori-id-card {
+  border-color: rgba(0, 0, 0, 0.12);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.65),
+    0 10px 28px rgba(0, 0, 0, 0.35);
+}
+
+.nori-payment-error {
+  margin: 0 0 14px;
+  padding: 10px 12px;
+  border: 1px solid color-mix(in srgb, #e11d48 35%, transparent);
+  border-radius: 8px;
+  background: color-mix(in srgb, #e11d48 8%, transparent);
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--color-fd-foreground);
+}
+
+/* --- Boot overlay ------------------------------------------ */
+
+.nori-boot-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(10, 10, 10, 0.88);
+  backdrop-filter: blur(7px);
+  -webkit-backdrop-filter: blur(7px);
+  animation: nori-boot-fade-in 0.35s ease both;
+}
+
+.nori-boot-overlay[data-leaving='true'] {
+  animation: nori-boot-fade-out 0.5s ease both;
+}
+
+@keyframes nori-boot-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes nori-boot-fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.nori-boot-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: min(620px, 100%);
+  min-width: 0;
+  max-width: 100%;
+}
+
+.nori-boot-stage > * {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.nori-boot-kicker {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #fa008c;
+  animation: nori-boot-rise 0.5s ease 0.1s both;
+}
+
+.nori-boot-card {
+  width: min(560px, 100%);
+  perspective: 1400px;
+}
+
+.nori-boot-card .nori-id-card {
+  animation: nori-id-flip-in 0.95s cubic-bezier(0.2, 0.85, 0.25, 1) 0.2s both;
+}
+
+@keyframes nori-id-flip-in {
+  from {
+    opacity: 0;
+    transform: perspective(1400px) rotateX(32deg) translateY(52px) scale(0.9);
+  }
+  60% {
+    opacity: 1;
+  }
+  to {
+    opacity: 1;
+    transform: perspective(1400px) rotateX(0deg) translateY(0) scale(1);
+  }
+}
+
+.nori-boot-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  width: min(480px, 100%);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.nori-boot-steps li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.6);
+  animation: nori-boot-rise 0.45s ease both;
+}
+
+.nori-boot-steps li[data-status='active'] {
+  color: #fff;
+}
+
+.nori-boot-steps li[data-status='done'] {
+  color: #2ed57b;
+}
+
+.nori-boot-steps li[data-status='error'] {
+  color: #ff9db8;
+}
+
+.nori-boot-step-icon {
+  display: inline-flex;
+  flex: 0 0 auto;
+}
+
+.nori-boot-step-icon svg {
+  width: 15px;
+  height: 15px;
+}
+
+.nori-boot-steps li[data-status='active'] .nori-boot-step-icon svg {
+  animation: nori-spin 1s linear infinite;
+}
+
+.nori-boot-step-label {
+  font-weight: 650;
+  white-space: nowrap;
+}
+
+.nori-boot-step-meta {
+  margin-left: auto;
+  overflow: hidden;
+  max-width: 46%;
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+  font-size: 10.5px;
+  color: rgba(255, 255, 255, 0.45);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nori-boot-footnote {
+  margin: 0;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.55);
+  text-align: center;
+  animation: nori-boot-rise 0.5s ease 1.9s both;
+}
+
+@keyframes nori-boot-rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 560px) {
+  .nori-boot-step-meta {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nori-boot-overlay,
+  .nori-boot-overlay *,
+  .nori-id-card,
+  .nori-id-card * {
+    animation: none !important;
+  }
+}
+
+/* ============================================================
+   Nori stage (/ask) — light editorial canvas per DESIGN.md
+   ============================================================ */
+
+.masumi-ask-page {
+  display: flex;
+  flex-direction: column;
+  background: #f5f5f5;
+}
+
+.nori-stage {
+  --stage-ink: #000;
+  --stage-muted: #666666;
+  --stage-faint: #9a9a9a;
+  --stage-hairline: rgba(0, 0, 0, 0.05);
+  --stage-line: rgba(0, 0, 0, 0.12);
+  --stage-pink: #fa008c;
+  --stage-terminal: #0a0a0a;
+  --stage-terminal-text: #e7e7e9;
+  --stage-terminal-muted: rgba(231, 231, 233, 0.55);
+  --stage-green: #16a34a;
+  --stage-danger: #dc2626;
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  color: var(--stage-ink);
+}
+
+@keyframes nori-wt-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(250, 0, 140, 0.45);
+  }
+  50% {
+    box-shadow: 0 0 0 7px rgba(250, 0, 140, 0);
+  }
+}
+
+/* --- Hire state --------------------------------------------- */
+
+.nori-stage[data-state='hire'] {
+  justify-content: center;
+}
+
+.nori-hire {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  width: min(720px, 100%);
+  margin: 0 auto;
+  padding: 28px 24px 36px;
+  text-align: center;
+}
+
+.nori-hire-kicker {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--stage-pink);
+  animation: nori-boot-rise 0.3s ease both;
+}
+
+.nori-hire-title {
+  margin: 0;
+  font-size: clamp(30px, 3.4vw, 40px);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+  color: var(--stage-ink);
+  animation: nori-boot-rise 0.3s ease 0.06s both;
+}
+
+.nori-hire-sub {
+  margin: 0;
+  max-width: 620px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--stage-muted);
+  animation: nori-boot-rise 0.3s ease 0.12s both;
+}
+
+.nori-hire-card {
+  width: min(440px, 100%, 64dvh);
+  margin: 10px 0 6px;
+  animation: nori-boot-rise 0.4s cubic-bezier(0.4, 0, 0.2, 1) 0.18s both;
+}
+
+.nori-hire-prompts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  width: min(560px, 100%);
+  animation: nori-boot-rise 0.3s ease 0.3s both;
+}
+
+.nori-hire-prompts button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 11px 16px;
+  white-space: nowrap;
+  border: 1px solid var(--stage-line);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--stage-ink);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color 0.15s cubic-bezier(0.4, 0, 0.2, 1), background 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nori-hire-prompts button:hover {
+  border-color: var(--stage-pink);
+  background: rgba(250, 0, 140, 0.04);
+}
+
+.nori-hire-prompts button svg {
+  flex: 0 0 auto;
+  width: 15px;
+  height: 15px;
+  color: var(--stage-pink);
+}
+
+
+
+/* Short viewports: compress the hero so card, composer, and prompts all fit */
+@media (max-height: 760px) {
+  .nori-hire {
+    gap: 9px;
+    padding: 14px 24px 20px;
+  }
+
+  .nori-hire-title {
+    font-size: clamp(24px, 2.8vw, 30px);
+  }
+
+  .nori-hire-sub {
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  .nori-hire-card {
+    width: min(380px, 100%, 50dvh);
+    margin: 6px 0 4px;
+  }
+
+  .nori-hire-prompts button {
+    padding: 8px 14px;
+    font-size: 12.5px;
+  }
+}
+
+/* --- Composer ------------------------------------------------ */
+
+.nori-composer {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  width: 100%;
+  padding: 9px 9px 9px 18px;
+  border: 1px solid var(--stage-line);
+  border-radius: 13px;
+  background: #ffffff;
+  transition: border-color 0.15s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nori-composer:focus-within {
+  border-color: var(--stage-pink);
+  box-shadow: 0 0 0 3px rgba(250, 0, 140, 0.06);
+}
+
+.nori-composer-hire {
+  width: min(560px, 100%);
+  animation: nori-boot-rise 0.3s ease 0.24s both;
+}
+
+.nori-composer textarea {
+  flex: 1;
+  min-width: 0;
+  max-height: 140px;
+  padding: 8px 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  resize: none;
+  color: var(--stage-ink);
+  font-size: 14.5px;
+  font-family: inherit;
+  line-height: 1.5;
+}
+
+.nori-composer textarea::placeholder {
+  color: var(--stage-faint);
+}
+
+.nori-composer button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 38px;
+  height: 38px;
+  border: none;
+  border-radius: 999px;
+  background: var(--stage-ink);
+  color: #fff;
+  cursor: pointer;
+  transition: opacity 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nori-composer button:not(:disabled):hover {
+  opacity: 0.82;
+}
+
+.nori-composer button:disabled {
+  opacity: 0.25;
+  cursor: default;
+}
+
+.nori-composer button svg {
+  width: 17px;
+  height: 17px;
+}
+
+.nori-composer[data-busy='true'] button svg {
+  animation: nori-spin 1s linear infinite;
+}
+
+/* --- Console (active state) ---------------------------------- */
+
+.nori-console {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 384px;
+  gap: 32px;
+  align-items: start;
+  width: min(1240px, 100%);
+  margin: 0 auto;
+  padding: 30px 24px 48px;
+}
+
+.nori-thread-col {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-height: calc(100dvh - 200px);
+}
+
+.nori-thread {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+}
+
+.nori-msg {
+  min-width: 0;
+  animation: nori-boot-rise 0.25s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+.nori-msg[data-role='user'] {
+  align-self: flex-end;
+  max-width: 78%;
+  padding: 12px 18px;
+  border-radius: 16px 16px 4px 16px;
+  background: var(--stage-terminal);
+}
+
+.nori-msg[data-role='assistant'] {
+  align-self: stretch;
+  max-width: 860px;
+}
+
+.nori-msg-label {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+  margin: 0 0 8px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--stage-ink);
+}
+
+.nori-msg-label > span {
+  color: var(--stage-faint);
+}
+
+.nori-msg-label::before {
+  content: '';
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: var(--stage-pink);
+  align-self: center;
+}
+
+.nori-msg-label small {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  color: var(--stage-faint);
+}
+
+.nori-msg[data-error='true'] .nori-msg-label small {
+  color: var(--stage-danger);
+}
+
+/* Light-canvas overrides for shared message/citation styles */
+
+.nori-stage .nori-message-text {
+  color: #1a1a1a;
+}
+
+.nori-msg[data-role='user'] .nori-message-text p {
+  margin: 0;
+  color: var(--stage-terminal-text);
+  font-size: 14.5px;
+  line-height: 1.55;
+}
+
+.nori-stage .nori-message-text h2,
+.nori-stage .nori-message-text h3,
+.nori-stage .nori-message-text h4 {
+  color: var(--stage-ink);
+  font-weight: 500;
+}
+
+.nori-stage .nori-message-text code {
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.07);
+  color: var(--stage-ink);
+}
+
+.nori-stage .nori-message-text pre {
+  background: var(--stage-terminal);
+  border: 1px solid var(--stage-terminal);
+  border-radius: 13px;
+}
+
+.nori-stage .nori-message-text pre code {
+  background: transparent;
+  border: none;
+  color: var(--stage-terminal-text);
+}
+
+.nori-stage .nori-message-text blockquote {
+  border-left-color: var(--stage-pink);
+  background: rgba(0, 0, 0, 0.03);
+  color: var(--stage-muted);
+}
+
+.nori-msg[data-error='true'] .nori-message-text {
+  color: var(--stage-danger);
+}
+
+.nori-stage .nori-typing {
+  border-color: var(--stage-hairline);
+  background: #ffffff;
+  color: var(--stage-muted);
+}
+
+.nori-stage .nori-citations > span {
+  color: var(--stage-faint);
+}
+
+.nori-stage .nori-citation {
+  border-color: var(--stage-hairline);
+  background: #ffffff;
+  color: var(--stage-ink) !important;
+}
+
+.nori-stage .nori-citation:hover {
+  color: var(--stage-pink) !important;
+}
+
+.nori-stage .nori-citation:hover {
+  border-color: var(--stage-pink);
+  background: rgba(250, 0, 140, 0.03);
+}
+
+.nori-stage .nori-citation strong {
+  color: var(--stage-ink);
+}
+
+.nori-stage .nori-citation small {
+  color: var(--stage-faint);
+}
+
+.nori-stage .nori-citation svg {
+  color: var(--stage-pink);
+}
+
+.nori-stage .nori-copy-answer {
+  border: 1px solid var(--stage-line);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--stage-muted);
+}
+
+.nori-stage .nori-copy-answer:hover {
+  border-color: var(--stage-ink);
+  color: var(--stage-ink);
+}
+
+/* --- Session rail -------------------------------------------- */
+
+.nori-session {
+  position: sticky;
+  top: 84px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+}
+
+.nori-session .nori-id-card {
+  margin-bottom: 0;
+  animation: nori-boot-rise 0.3s ease backwards;
+}
+
+.nori-session-panel {
+  padding: 16px;
+  border: 1px solid var(--stage-hairline);
+  border-radius: 13px;
+  background: #ffffff;
+}
+
+.nori-session-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.nori-session-title {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--stage-pink);
+}
+
+.nori-stage .nori-task-status {
+  border: 1px solid var(--stage-line);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--stage-muted);
+}
+
+.nori-stage .nori-task-status[data-phase='created'],
+.nori-stage .nori-task-status[data-phase='claimed'],
+.nori-stage .nori-task-status[data-phase='usage'],
+.nori-stage .nori-task-status[data-phase='locked'],
+.nori-stage .nori-task-status[data-phase='running'],
+.nori-stage .nori-task-status[data-phase='completed'] {
+  border-color: rgba(250, 0, 140, 0.4);
+  background: rgba(250, 0, 140, 0.05);
+  color: var(--stage-pink);
+}
+
+.nori-stage .nori-task-status[data-phase='settled'] {
+  border-color: rgba(22, 163, 74, 0.4);
+  background: rgba(22, 163, 74, 0.06);
+  color: var(--stage-green);
+}
+
+.nori-stage .nori-task-status[data-phase='failed'] {
+  border-color: rgba(220, 38, 38, 0.35);
+  background: rgba(220, 38, 38, 0.05);
+  color: var(--stage-danger);
+}
+
+/* Payment trace as a dark terminal inset */
+
+.nori-stage .nori-trace-list {
+  margin: 0;
+  padding: 16px 14px;
+  border-radius: 9px;
+  background: var(--stage-terminal);
+}
+
+.nori-stage .nori-trace-item:not(:last-child)::after {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.nori-stage .nori-trace-marker {
+  border-color: rgba(255, 255, 255, 0.22);
+  background: transparent;
+  color: rgba(231, 231, 233, 0.45);
+}
+
+.nori-stage .nori-trace-item[data-status='done'] .nori-trace-marker {
+  border-color: rgba(46, 213, 123, 0.6);
+  background: rgba(46, 213, 123, 0.12);
+  color: #2ed57b;
+}
+
+.nori-stage .nori-trace-item[data-status='active'] .nori-trace-marker {
+  border-color: var(--stage-pink);
+  background: rgba(250, 0, 140, 0.14);
+  color: #ff77c2;
+  animation: nori-wt-pulse 1.6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.nori-stage .nori-trace-item[data-status='error'] .nori-trace-marker {
+  border-color: rgba(255, 107, 107, 0.6);
+  background: rgba(255, 107, 107, 0.12);
+  color: #ff6b6b;
+}
+
+.nori-stage .nori-trace-copy strong {
+  color: var(--stage-terminal-text);
+}
+
+.nori-stage .nori-trace-copy > span {
+  color: var(--stage-terminal-muted);
+}
+
+.nori-stage .nori-trace-copy code {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--stage-terminal-text);
+}
+
+.nori-stage .nori-trace-links a {
+  border-color: rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.nori-stage .nori-trace-links a:hover {
+  border-color: rgba(250, 0, 140, 0.6);
+  background: rgba(250, 0, 140, 0.1);
+}
+
+.nori-stage .nori-explorer-link-copy strong {
+  color: var(--stage-terminal-text);
+}
+
+.nori-stage .nori-explorer-link-copy span,
+.nori-stage .nori-explorer-link-copy small {
+  color: var(--stage-terminal-muted);
+}
+
+.nori-stage .nori-explorer-link-copy code {
+  border-color: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--stage-terminal-text);
+}
+
+.nori-session-footnote {
+  margin: 14px 0 0;
+  font-size: 11.5px;
+  line-height: 1.6;
+  color: var(--stage-faint);
+}
+
+.nori-stage .nori-payment-error {
+  margin: 0;
+  border-color: rgba(220, 38, 38, 0.3);
+  background: rgba(220, 38, 38, 0.05);
+  color: #b91c1c;
+}
+
+.nori-stage .nori-context-card {
+  border-color: var(--stage-hairline);
+  background: #ffffff;
+}
+
+.nori-stage .nori-context-card strong {
+  color: var(--stage-ink);
+}
+
+.nori-stage .nori-context-card span {
+  color: var(--stage-faint);
+}
+
+.nori-stage .nori-card-label {
+  color: var(--stage-faint);
+}
+
+/* --- Responsive ---------------------------------------------- */
+
+@media (max-width: 1020px) {
+  .nori-console {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+  }
+
+  .nori-session {
+    position: static;
+    order: 2;
+  }
+
+  .nori-thread-col {
+    order: 1;
+    min-height: 0;
+  }
+}
+
+@media (max-width: 560px) {
+  .nori-hire {
+    padding: 36px 18px 56px;
+  }
+
+  .nori-console {
+    padding: 20px 16px 36px;
+  }
+
+  .nori-msg[data-role='user'] {
+    max-width: 92%;
+  }
+}
+
+.nori-composer-thread {
+  position: sticky;
+  bottom: 18px;
+  z-index: 5;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nori-hire *,
+  .nori-msg,
+  .nori-session .nori-id-card,
+  .nori-stage .nori-trace-item[data-status='active'] .nori-trace-marker {
+    animation: none !important;
+  }
+}

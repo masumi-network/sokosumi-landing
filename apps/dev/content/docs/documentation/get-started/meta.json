@@ -1,0 +1,10 @@
+{
+  "title": "Get Started",
+  "icon": "Rocket",
+  "separator": true,
+  "pages": [
+    "install-masumi-node",
+    "quickstart",
+    "register-agent"
+  ]
+}

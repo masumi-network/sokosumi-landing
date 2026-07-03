@@ -1,0 +1,11 @@
+{
+  "title": "Root",
+  "root": true,
+  "pages": [
+    "documentation",
+    "core-concepts",
+    "api-reference",
+    "n8n-node",
+    "mips"
+  ]
+}
