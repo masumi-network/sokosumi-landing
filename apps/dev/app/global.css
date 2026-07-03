@@ -3,37 +3,25 @@
 @import 'fumadocs-ui/css/preset.css';
 @import 'fumadocs-openapi/css/preset.css';
 
-/* Ensure Tailwind scans external schema validator classes (including dark variants). */
+/* Ensure Tailwind scans external schema validator classes. */
 @source "../node_modules/masumi-schema-validator-component/dist/index.mjs";
 @source "../node_modules/masumi-schema-validator-component/dist/index.js";
 
 /* Define missing fumadocs diff utility classes for Tailwind v4 */
 @utility bg-fd-diff-remove {
   background-color: hsl(0, 100%, 97%);
-  @variant dark {
-    background-color: hsl(0, 65%, 15%);
-  }
 }
 
 @utility text-fd-diff-remove-symbol {
   color: hsl(0, 100%, 50%);
-  @variant dark {
-    color: hsl(0, 100%, 70%);
-  }
 }
 
 @utility bg-fd-diff-add {
   background-color: hsl(142, 76%, 96%);
-  @variant dark {
-    background-color: hsl(142, 70%, 20%);
-  }
 }
 
 @utility text-fd-diff-add-symbol {
   color: hsl(142, 70%, 45%);
-  @variant dark {
-    color: hsl(142, 70%, 65%);
-  }
 }
 
 /* Fix search field hover - only border, not full background */
@@ -53,48 +41,17 @@
   color: hsl(220, 13%, 9%) !important; /* Dark color for light theme */
 }
 
-.dark [data-state="open"] [data-highlighted] svg,
-.dark [aria-selected="true"] svg,
-.dark .bg-fd-accent svg {
-  color: hsl(0, 0%, 100%) !important; /* White for dark theme */
-}
-
 /* Clean sidebar background */
 #nd-sidebar {
   background: hsl(220, 8%, 98%) !important; /* Light neutral sidebar */
 }
 
-.dark #nd-sidebar {
-  background: var(--color-fd-background) !important; /* Match navbar background */
-}
-
-/* Masumi brand accent for links and interactive text in dark mode */
-.dark a:not([class*="bg-"]):not([class*="text-fd-muted"]) {
-  color: hsl(345, 70%, 65%) !important; /* Lighter coral pink-red-orange for better readability */
-}
-
-.dark a:not([class*="bg-"]):not([class*="text-fd-muted"]):hover {
-  color: hsl(345, 70%, 75%) !important; /* Even lighter on hover */
-}
-
-/* Active/selected items in dark mode */
-.dark [data-active="true"],
-.dark [aria-selected="true"]:not([class*="bg-"]) {
-  color: hsl(345, 70%, 65%) !important;
-}
-
-/* Code syntax highlighting - use Masumi brand accent in dark mode */
-.dark .hljs-keyword,
-.dark .hljs-built_in {
-  color: hsl(345, 70%, 65%) !important;
-}
-
-/* Light mode links - Masumi brand accent (only apply when not in dark mode) */
-:not(.dark) a:not([class*="bg-"]):not([class*="text-fd-muted"]) {
+/* Masumi brand accent for links and interactive text */
+a:not([class*="bg-"]):not([class*="text-fd-muted"]) {
   color: hsl(345, 70%, 52%) !important;
 }
 
-:not(.dark) a:not([class*="bg-"]):not([class*="text-fd-muted"]):hover {
+a:not([class*="bg-"]):not([class*="text-fd-muted"]):hover {
   color: hsl(345, 70%, 47%) !important;
 }
 
@@ -107,25 +64,11 @@
   color: hsl(220, 13%, 9%) !important; /* Dark text for readability */
 }
 
-.dark .bg-fd-accent[data-highlighted],
-.dark .bg-fd-accent[aria-selected="true"],
-.dark [data-highlighted].bg-fd-accent,
-.dark [aria-selected="true"].bg-fd-accent {
-  background-color: hsl(345, 50%, 20%) !important; /* Subtle dark tint for dark mode */
-  color: hsl(220, 8%, 95%) !important; /* Light text */
-}
-
 /* Also handle general highlighted/selected states for search */
 [data-state="open"] [data-highlighted]:not(.bg-fd-accent),
 [data-state="open"] [aria-selected="true"]:not(.bg-fd-accent) {
   background-color: hsl(345, 70%, 96%) !important;
   color: hsl(220, 13%, 9%) !important;
-}
-
-.dark [data-state="open"] [data-highlighted]:not(.bg-fd-accent),
-.dark [data-state="open"] [aria-selected="true"]:not(.bg-fd-accent) {
-  background-color: hsl(345, 50%, 20%) !important;
-  color: hsl(220, 8%, 95%) !important;
 }
 
 /* Keep accent text color for selected items, but with subtle background */
@@ -136,14 +79,7 @@
   color: hsl(345, 70%, 52%) !important;
 }
 
-.dark .bg-fd-accent[data-highlighted] svg,
-.dark .bg-fd-accent[aria-selected="true"] svg,
-.dark [data-highlighted].bg-fd-accent svg,
-.dark [aria-selected="true"].bg-fd-accent svg {
-  color: hsl(345, 70%, 65%) !important;
-}
-
-/* Masumi two-mode docs shell */
+/* Masumi light docs shell */
 .masumi-brand-mark {
   display: inline-flex;
   align-items: center;
@@ -1980,7 +1916,7 @@ header a:has(.masumi-brand-mark) {
 
 .nori-id-chip {
   position: absolute;
-  top: 8.6cqw;
+  top: 17cqw;
   right: 7.2cqw;
   z-index: 1;
   display: inline-flex;
