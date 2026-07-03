@@ -723,6 +723,7 @@ export function NoriChat({
   const paymentPollTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const activePaymentSessionRef = useRef<string | null>(null);
   const hasLivePaymentRef = useRef(false);
+  const pendingPaymentEventRef = useRef<NoriPaymentEvent | null>(null);
   const streamErrorRef = useRef(false);
   const latestAssistantContentRef = useRef('');
   const submittedResultSessionsRef = useRef<Set<string>>(new Set());
@@ -822,6 +823,7 @@ export function NoriChat({
     clearPaymentPoll();
     streamErrorRef.current = false;
     hasLivePaymentRef.current = false;
+    pendingPaymentEventRef.current = null;
     activePaymentSessionRef.current = null;
     latestAssistantContentRef.current = '';
     submittedResultSessionsRef.current.clear();
@@ -907,7 +909,6 @@ export function NoriChat({
     }));
 
     if (status === 'failed' || status === 'configuration_missing') {
-      streamErrorRef.current = true;
       setTaskPhase('failed');
       return;
     }
@@ -923,7 +924,7 @@ export function NoriChat({
       return;
     }
 
-    setTaskPhase((current) => (phaseRank[current] < phaseRank.locked ? 'locked' : current));
+    setTaskPhase((current) => (phaseRank[current] < phaseRank.claimed ? 'claimed' : current));
   };
 
   const pollPaymentStatus = async (sessionId: string, attempt = 0): Promise<void> => {
@@ -950,19 +951,39 @@ export function NoriChat({
           }
         } catch (error) {
           const message = error instanceof Error ? error.message : 'Payment status lookup failed.';
-    setTaskDetails((current) => ({
-      ...(current ?? buildPendingTask()),
-      paymentStatus: 'Status unavailable',
-      errorNote: message,
-    }));
+          setTaskDetails((current) => ({
+            ...(current ?? buildPendingTask()),
+            paymentStatus: 'Status unavailable',
+            errorNote: message,
+          }));
         }
       },
       attempt === 0 ? PAYMENT_POLL_FIRST_DELAY_MS : PAYMENT_POLL_INTERVAL_MS,
     );
   };
 
+  const recordPaymentRequest = (paymentEvent: NoriPaymentEvent) => {
+    hasLivePaymentRef.current = true;
+    pendingPaymentEventRef.current = paymentEvent;
+
+    const paymentId = stringValue(paymentEvent.masumiPayment.id) || undefined;
+    const blockchainIdentifier = stringValue(paymentEvent.masumiPayment.blockchainIdentifier);
+
+    setTaskDetails((current) => ({
+      ...(current ?? buildPendingTask()),
+      taskId: paymentEvent.taskId ?? current?.taskId ?? 'task_nori_live',
+      eventId: paymentEvent.eventId ?? current?.eventId ?? 'evt_live',
+      blockchainIdentifier: blockchainIdentifier || current?.blockchainIdentifier || '',
+      paymentId: paymentId ?? current?.paymentId,
+      agentIdentifier: stringValue(paymentEvent.masumiPayment.agentIdentifier) || current?.agentIdentifier,
+      paymentStatus: 'Payment requested',
+    }));
+    setTaskPhase((current) => (phaseRank[current] < phaseRank.claimed ? 'claimed' : current));
+  };
+
   const completeNoriPayment = async (paymentEvent: NoriPaymentEvent) => {
     hasLivePaymentRef.current = true;
+    pendingPaymentEventRef.current = null;
     clearTaskTimers();
 
     const paymentId = stringValue(paymentEvent.masumiPayment.id) || undefined;
@@ -998,7 +1019,6 @@ export function NoriChat({
       }
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Payment completion failed.';
-      streamErrorRef.current = true;
       setTaskDetails((current) => ({
         ...(current ?? buildPendingTask()),
         paymentStatus: 'Completion failed',
@@ -1021,7 +1041,7 @@ export function NoriChat({
 
     const paymentEvent = paymentEventFromData(data, event);
     if (paymentEvent) {
-      void completeNoriPayment(paymentEvent);
+      recordPaymentRequest(paymentEvent);
       return false;
     }
 
@@ -1194,20 +1214,21 @@ export function NoriChat({
     } finally {
       flushPendingDelta();
       clearTaskTimers();
+      const pendingPaymentEvent = pendingPaymentEventRef.current;
       if (streamErrorRef.current) {
         setTaskPhase('failed');
-      } else if (hasLivePaymentRef.current) {
-        setTaskPhase((current) => (phaseRank[current] < phaseRank.completed ? 'completed' : current));
-      } else {
+      } else if (!hasLivePaymentRef.current) {
         setTaskDetails((current) => ({
           ...(current ?? buildPendingTask()),
-          paymentStatus: 'No live payment event',
-          errorNote: 'Nori answered, but no Masumi payment request was returned.',
+          paymentStatus: 'Awaiting payment event',
         }));
-        setTaskPhase('failed');
       }
       setIsStreaming(false);
       inputRef.current?.focus();
+
+      if (!streamErrorRef.current && pendingPaymentEvent) {
+        window.setTimeout(() => void completeNoriPayment(pendingPaymentEvent), 0);
+      }
     }
   };
 

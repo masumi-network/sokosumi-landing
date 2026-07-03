@@ -10,6 +10,7 @@ export default function StandaloneLayout({ children }: { children: ReactNode }) 
       nav={{ ...baseOptions.nav, mode: 'top' }}
       tree={masumiSource.pageTree}
       tabMode="navbar"
+      sidebar={{ tabs: false }}
       containerProps={{
         className: 'masumi-standalone-layout masumi-standalone-notebook-layout',
       }}
