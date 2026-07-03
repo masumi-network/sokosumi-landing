@@ -154,8 +154,8 @@ export default function Header({ product = "sokosumi", topBanner }: { product?: 
             </nav>
           ) : product === "masumi" ? (
             <nav className="hidden lg:flex items-center h-[74px]">
-              <Link href="https://docs.masumi.network" target="_blank" rel="noopener noreferrer" className="text-[14px] font-normal text-black hover:text-black/60 transition-colors px-[15px] h-full flex items-center">
-                Docs
+              <Link href="/dev" className="text-[14px] font-normal text-black hover:text-black/60 transition-colors px-[15px] h-full flex items-center">
+                Dev Portal
               </Link>
               <Link href="/explorer" className="text-[14px] font-normal text-black hover:text-black/60 transition-colors px-[15px] h-full flex items-center">
                 Explorer
@@ -190,7 +190,7 @@ export default function Header({ product = "sokosumi", topBanner }: { product?: 
                 </Link>
               </>
             ) : product === "masumi" ? (
-              <Link href="https://docs.masumi.network" target="_blank" rel="noopener noreferrer"
+              <Link href="/dev"
                 className="hidden lg:block bg-black text-white text-[14px] font-normal px-6 py-2.5 rounded-full hover:bg-black/85 transition-colors">
                 Open Documentation
               </Link>
@@ -234,8 +234,8 @@ export default function Header({ product = "sokosumi", topBanner }: { product?: 
               </>
             ) : product === "masumi" ? (
               <>
-                <Link href="https://docs.masumi.network" target="_blank" rel="noopener noreferrer" onClick={() => setMobileMenuOpen(false)} className="text-[18px] text-black py-3 border-b border-black/[0.06]">
-                  Docs
+                <Link href="/dev" onClick={() => setMobileMenuOpen(false)} className="text-[18px] text-black py-3 border-b border-black/[0.06]">
+                  Dev Portal
                 </Link>
                 <Link href="/explorer" onClick={() => setMobileMenuOpen(false)} className="text-[18px] text-black py-3 border-b border-black/[0.06]">
                   Explorer
@@ -249,7 +249,7 @@ export default function Header({ product = "sokosumi", topBanner }: { product?: 
                 <Link href="https://discord.com/invite/aj4QfnTS92" target="_blank" rel="noopener noreferrer" onClick={() => setMobileMenuOpen(false)} className="text-[18px] text-black py-3 border-b border-black/[0.06]">
                   Discord
                 </Link>
-                <Link href="https://docs.masumi.network" target="_blank" rel="noopener noreferrer" onClick={() => setMobileMenuOpen(false)}
+                <Link href="/dev" onClick={() => setMobileMenuOpen(false)}
                   className="mt-6 bg-black text-white text-[14px] font-normal px-6 py-3 rounded-full text-center">
                   Open Documentation
                 </Link>

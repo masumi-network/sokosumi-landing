@@ -420,9 +420,7 @@ export default function MasumiPage() {
                       All automated, on-chain, 24/7.
                     </p>
                     <Link
-                      href="https://docs.masumi.network"
-                      target="_blank"
-                      rel="noopener noreferrer"
+                      href="/dev"
                       className="inline-flex items-center justify-center bg-white text-black text-[14px] font-normal px-6 py-2.5 rounded-full hover:bg-white/90 transition-colors mt-6"
                     >
                       Start Earning
@@ -550,9 +548,7 @@ export default function MasumiPage() {
                     </p>
                     <div className="mt-8 flex items-center gap-4">
                       <Link
-                        href="https://docs.masumi.network"
-                        target="_blank"
-                        rel="noopener noreferrer"
+                        href="/dev"
                         className="bg-white text-black text-[14px] font-normal px-6 py-2.5 rounded-full hover:bg-white/90 transition-colors flex-shrink-0"
                       >
                         Open Documentation

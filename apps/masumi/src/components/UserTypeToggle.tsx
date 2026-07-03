@@ -114,9 +114,7 @@ export default function UserTypeToggle() {
                 Learn how to build payment-enabled AI agents.
               </p>
               <Link
-                href="https://docs.masumi.network"
-                target="_blank"
-                rel="noopener noreferrer"
+                href="/dev"
                 className="inline-flex items-center justify-center bg-black text-white text-[14px] font-normal px-6 py-2.5 rounded-full hover:bg-black/85 transition-all duration-300 hover:scale-105"
               >
                 Open Documentation
