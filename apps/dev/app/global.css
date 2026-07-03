@@ -161,7 +161,7 @@ header a:has(.masumi-brand-mark) {
   height: auto;
 }
 
-/* Product switcher dropdown (Masumi / Sokosumi / portal home) */
+/* Brand mark = product dropdown (logo + dev badge + caret), like masumi.network */
 .masumi-product-switcher {
   position: relative;
   display: inline-flex;
@@ -169,64 +169,75 @@ header a:has(.masumi-brand-mark) {
   flex: 0 0 auto;
 }
 
-.masumi-product-switcher--nav {
-  margin-left: clamp(8px, 0.8vw, 14px);
-}
-
-.masumi-product-trigger {
+.masumi-brand-trigger {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 5px 10px;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 8px;
-  background: color-mix(in srgb, var(--color-fd-muted) 60%, transparent);
-  color: var(--color-fd-foreground);
-  font-size: 13px;
-  font-weight: 600;
-  line-height: 1;
+  gap: 7px;
   cursor: pointer;
-  transition: background-color 0.15s ease, border-color 0.15s ease;
+  line-height: 0;
+  border-radius: 8px;
 }
 
-.masumi-product-trigger:hover {
-  background: color-mix(in srgb, var(--color-fd-muted) 90%, transparent);
-  border-color: rgba(0, 0, 0, 0.16);
+.masumi-brand-trigger:focus-visible {
+  outline: 2px solid var(--color-fd-primary);
+  outline-offset: 4px;
 }
 
-.dark .masumi-product-trigger {
-  border-color: rgba(255, 255, 255, 0.12);
+.masumi-brand-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 7px 3px;
+  border-radius: 999px;
+  background: var(--color-fd-foreground);
+  color: var(--color-fd-background);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1.2;
+  text-transform: lowercase;
+  transform: translateY(1px);
 }
 
-.dark .masumi-product-trigger:hover {
-  border-color: rgba(255, 255, 255, 0.22);
-}
-
-.masumi-product-trigger svg {
-  width: 13px;
-  height: 13px;
+.masumi-brand-caret {
+  display: inline-flex;
+  align-items: center;
   color: var(--color-fd-muted-foreground);
+  transform: translateY(1px);
+  transition: transform 0.15s ease;
+}
+
+.masumi-brand-caret[data-open='true'] {
+  transform: translateY(1px) rotate(180deg);
 }
 
 .masumi-product-menu {
   position: absolute;
-  top: calc(100% + 6px);
-  left: 0;
+  top: calc(100% + 10px);
+  left: -6px;
   z-index: 60;
-  min-width: 240px;
-  padding: 4px;
+  min-width: 264px;
+  padding: 10px 6px 6px;
   border: 1px solid var(--color-fd-border);
-  border-radius: 12px;
+  border-radius: 16px;
   background: var(--color-fd-popover, var(--color-fd-background));
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.14);
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.14), 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.masumi-product-menu-heading {
+  padding: 0 12px 8px;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-fd-muted-foreground);
 }
 
 .masumi-product-item {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 8px 10px;
-  border-radius: 8px;
+  gap: 12px;
+  padding: 9px 10px;
+  border-radius: 10px;
   color: var(--color-fd-foreground);
   text-decoration: none;
 }
@@ -239,38 +250,66 @@ header a:has(.masumi-brand-mark) {
   background: color-mix(in srgb, var(--color-fd-muted) 60%, transparent);
 }
 
-.masumi-product-item-icon {
-  width: 16px;
-  height: 16px;
+.masumi-product-tile {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
   flex: 0 0 auto;
-  color: var(--color-fd-muted-foreground);
+  border-radius: 9px;
+}
+
+.masumi-product-tile img {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+}
+
+.masumi-product-tile--masumi {
+  background: #fa008c;
+}
+
+.masumi-product-tile--sokosumi {
+  background: #7c3aed;
 }
 
 .masumi-product-item-text {
   display: flex;
   flex-direction: column;
-  gap: 1px;
+  gap: 2px;
   min-width: 0;
 }
 
 .masumi-product-item-label {
-  font-size: 13px;
-  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13.5px;
+  font-weight: 650;
   line-height: 1.2;
+}
+
+.masumi-product-active-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 1px 7px 2px;
+  border-radius: 999px;
+  background: color-mix(in srgb, #22c55e 16%, transparent);
+  color: #15803d;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.dark .masumi-product-active-badge {
+  color: #4ade80;
 }
 
 .masumi-product-item-description {
   font-size: 11.5px;
   line-height: 1.3;
   color: var(--color-fd-muted-foreground);
-}
-
-.masumi-product-item-check {
-  width: 14px;
-  height: 14px;
-  margin-left: auto;
-  flex: 0 0 auto;
-  color: var(--color-fd-primary);
 }
 
 .masumi-mode-rail {
@@ -1747,11 +1786,6 @@ header a:has(.masumi-brand-mark) {
     width: clamp(108px, 12vw, 124px);
   }
 
-  .masumi-product-trigger {
-    padding: 5px 8px;
-    font-size: 12px;
-  }
-
   .masumi-mode-switcher--nav {
     grid-template-columns: repeat(2, 38px);
     flex-basis: 82px;
@@ -1797,17 +1831,13 @@ header a:has(.masumi-brand-mark) {
     width: clamp(94px, 28vw, 108px);
   }
 
-  .masumi-product-switcher--nav {
-    margin-left: 6px;
-  }
-
-  .masumi-product-trigger {
-    padding: 4px 7px;
-    font-size: 11px;
+  .masumi-brand-badge {
+    padding: 1px 6px 2px;
+    font-size: 9.5px;
   }
 
   .masumi-product-menu {
-    min-width: 210px;
+    min-width: 236px;
   }
 
   .masumi-mode-switcher--nav {
