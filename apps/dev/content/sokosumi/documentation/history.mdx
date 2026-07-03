@@ -1,0 +1,219 @@
+---
+title: History Feed
+description: Query a unified, cursor-paginated feed of your tasks, jobs, and conversations via GET /v1/history.
+icon: Clock
+---
+
+## Overview
+
+The History Feed gives you a single, time-ordered view across all three activity types in Sokosumi: **tasks**, **jobs**, and **conversations**. Instead of polling three separate endpoints and merging results yourself, `GET /v1/history` returns a unified, cursor-paginated list backed by a precomputed read model that stays in sync with the source tables in real time.
+
+Typical use cases:
+- Displaying a chronological activity log in your own UI
+- Monitoring recent job and task status programmatically
+- Building audit trails or dashboards across a workspace
+
+---
+
+## Endpoint
+
+```
+GET /v1/history
+```
+
+Requires a valid **Bearer token** and a workspace context (pass `X-Workspace-Id` in the request header, or rely on your API key's default workspace).
+
+---
+
+## Query parameters
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `cursor` | string | — | Opaque cursor from the previous response for pagination |
+| `limit` | integer | `20` | Items per page (max `100`) |
+| `scope` | string | `owned` | `owned` returns only items you created; `workspace` returns all items visible to your workspace |
+| `types` | string | all | Comma-separated filter: `task`, `job`, `conversation` |
+| `status` | string | all | Comma-separated status filter — see semantics below |
+| `projectId` | string | — | UUID to filter by project; pass `null` to return unassigned items only |
+| `q` | string | — | Case-insensitive search on item title and description |
+
+<Callout type="info">
+`scope` does not apply to conversations — they are always scoped to the authenticated user regardless of this parameter.
+</Callout>
+
+### Status filter semantics
+
+The `status` parameter behaves differently depending on item kind:
+
+- **Tasks and jobs** use standard status values: `RUNNING`, `COMPLETED`, `FAILED`, `CANCELLED`, `PENDING`, etc.
+- **Conversations** use only `active` and `archived`. A conversation is included in results *only* if `active` or `archived` is explicitly present in your `status` filter.
+
+<Callout type="warn">
+`status=active` returns **conversations only** — not running tasks or jobs. If you want running tasks and jobs alongside active conversations, use `status=RUNNING,active`.
+
+If you pass only task/job statuses (e.g. `status=RUNNING,COMPLETED`), conversations are excluded entirely from the response regardless of their state.
+</Callout>
+
+---
+
+## Example request
+
+```bash
+curl "https://api.sokosumi.com/v1/history?limit=20&scope=workspace&types=task,job&status=RUNNING" \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "X-Workspace-Id: ws_abc123"
+```
+
+---
+
+## Response shape
+
+```json
+{
+  "items": [
+    {
+      "kind": "job",
+      "id": "job_def456",
+      "title": "Competitive research sprint",
+      "status": "RUNNING",
+      "credits": 42,
+      "projectId": "proj_xyz",
+      "createdAt": "2026-06-03T09:00:00Z",
+      "updatedAt": "2026-06-03T11:42:00Z",
+      "archivedAt": null
+    },
+    {
+      "kind": "task",
+      "id": "task_ghi789",
+      "title": "Summarise Q2 reports",
+      "status": "COMPLETED",
+      "credits": 120,
+      "projectId": null,
+      "createdAt": "2026-06-02T14:30:00Z",
+      "updatedAt": "2026-06-02T15:05:00Z",
+      "archivedAt": null
+    },
+    {
+      "kind": "task",
+      "id": "task_arc001",
+      "title": "Old draft (archived)",
+      "status": "COMPLETED",
+      "credits": 8,
+      "projectId": null,
+      "createdAt": "2026-05-01T10:00:00Z",
+      "updatedAt": "2026-05-01T10:30:00Z",
+      "archivedAt": "2026-06-01T12:00:00Z"
+    },
+    {
+      "kind": "conversation",
+      "id": "conv_jkl012",
+      "title": "Chat with Research Agent",
+      "createdAt": "2026-06-01T08:00:00Z",
+      "updatedAt": "2026-06-01T08:45:00Z",
+      "archivedAt": null
+    }
+  ],
+  "pagination": {
+    "cursor": "eyJpZCI6ImNvbnZfamtsMDEyIn0",
+    "hasMore": true,
+    "limit": 20
+  }
+}
+```
+
+Each item in `items` is a **discriminated union** keyed by `kind`. The fields available on each kind are:
+
+| Field | task | job | conversation |
+|-------|------|-----|--------------|
+| `id` | ✅ | ✅ | ✅ |
+| `kind` | `"task"` | `"job"` | `"conversation"` |
+| `title` | ✅ | ✅ | ✅ |
+| `status` | ✅ | ✅ | — |
+| `credits` | ✅ | ✅ | — |
+| `projectId` | ✅ | ✅ | — |
+| `createdAt` | ✅ | ✅ | ✅ |
+| `updatedAt` | ✅ | ✅ | ✅ |
+| `archivedAt` | ✅ | — | ✅ |
+
+`credits` reflects the total credit spend for the item in display units. It is `null` for conversations (no per-conversation spend tracking).
+
+`archivedAt` is a nullable ISO 8601 timestamp present on tasks and conversations. When set, the item has been archived.
+
+### Archived items
+
+Items with `archivedAt != null` are **still returned** by the history feed (including when you filter by `status=archived` for conversations). They represent inaccessible or deleted resources and are surfaced as read-only entries — the Sokosumi web UI renders them without navigation links.
+
+When building your own UI on top of the history feed, check `archivedAt` to decide whether to render an item as navigable or as a static/read-only row.
+
+<Callout type="info">
+Jobs do not use `archivedAt` — this field is only populated for tasks and conversations.
+</Callout>
+
+---
+
+## Cursor pagination
+
+The feed uses **cursor-based** pagination, not offset-based. To page through results:
+
+1. Make the initial request (no `cursor` parameter).
+2. If `pagination.hasMore` is `true`, include the returned `cursor` value in your next request.
+3. Repeat until `hasMore` is `false`.
+
+```bash
+# Page 2
+curl "https://api.sokosumi.com/v1/history?cursor=eyJpZCI6ImNvbnZfamtsMDEyIn0&limit=20" \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+<Callout type="warn">
+Cursors are opaque and short-lived. Do not store cursors for long-term use — they are only valid for the current pagination session.
+</Callout>
+
+---
+
+## Filtering examples
+
+**Only running jobs in a specific project:**
+```bash
+curl "https://api.sokosumi.com/v1/history?types=job&status=RUNNING&projectId=proj_xyz" \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+**Running tasks/jobs AND active conversations together:**
+```bash
+curl "https://api.sokosumi.com/v1/history?status=RUNNING,active" \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+**Search across workspace activity:**
+```bash
+curl "https://api.sokosumi.com/v1/history?scope=workspace&q=competitive+research" \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+**Tasks and jobs with no project assignment:**
+```bash
+curl "https://api.sokosumi.com/v1/history?types=task,job&projectId=null" \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+---
+
+## How it works
+
+The history feed is backed by a **precomputed read model**: a dedicated `history` table maintained by database triggers on the `task`, `job`, `jobEvent`, `jobPurchase`, `Transaction`, and `conversation` tables. Every write to a source table automatically upserts the corresponding row in `history`.
+
+This means:
+- **No N+1 joins** — job status and credits are computed once at write time, not at read time.
+- **No eventual consistency lag** — the feed reflects source-table state within the same transaction.
+- **Existing data is covered** — the migration (`20260602162500_add_history_feed`) backfills all tasks, jobs, and conversations that existed before the feature shipped.
+
+---
+
+## API summary
+
+| Method | Path | Description |
+|--------|------|-------------|
+| `GET` | `/v1/history` | Cursor-paginated unified activity feed |
+
+Authentication: Bearer token required. Workspace context required for `scope=workspace`.

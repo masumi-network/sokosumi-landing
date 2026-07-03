@@ -1,0 +1,22 @@
+{
+  "title": "Admin",
+  "pages": [
+    "addAdminOrganizationMember",
+    "assignAdminOrganizationMemberSeat",
+    "createAdminInvoice",
+    "getAdminInvoice",
+    "getAdminOrganizationBySlug",
+    "getAdminTask",
+    "listAdminInvoices",
+    "listAdminOrganizationMembers",
+    "listAdminOrganizations",
+    "listAdminTasks",
+    "listAdminUsers",
+    "markAdminInvoicePaid",
+    "removeAdminOrganizationMember",
+    "searchAdminOrganizations",
+    "searchAdminUsers",
+    "unassignAdminOrganizationMemberSeat",
+    "updateAdminOrganizationMemberRole"
+  ]
+}

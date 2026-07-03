@@ -10,6 +10,8 @@ export const paymentOpenApiSpecUrl =
 export const registryOpenApiSpecUrl =
   'https://raw.githubusercontent.com/masumi-network/masumi-registry-service/refs/heads/main/src/utils/swagger-generator/openapi-docs.json';
 
+export const sokosumiOpenApiSpecUrl = 'https://api.sokosumi.com/v1/openapi.json';
+
 function resolveIcon(icon: string | undefined) {
   if (!icon) return;
   if (icon in icons) return createElement(icons[icon as keyof typeof icons]);
@@ -60,5 +62,5 @@ export function getPageByUrlSegments(slug: string[]) {
 
 // OpenAPI configuration for generated docs
 export const openapi = createOpenAPI({
-  input: [paymentOpenApiSpecUrl, registryOpenApiSpecUrl],
+  input: [paymentOpenApiSpecUrl, registryOpenApiSpecUrl, sokosumiOpenApiSpecUrl],
 });

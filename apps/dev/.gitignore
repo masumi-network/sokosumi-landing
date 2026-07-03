@@ -7,6 +7,13 @@
 .source
 content/masumi/api-reference/(generated)/
 **/_*.mdx
+# Sokosumi generated content (OpenAPI + fetched READMEs)
+content/sokosumi/api-reference/*/**/*.mdx
+# allow categories API docs to be committed (GET /categories)
+!content/sokosumi/api-reference/categories/**/*.mdx
+content/sokosumi/mcp/*.mdx
+content/sokosumi/mcp/images/
+content/sokosumi/cli_docs/images/
 # synced images from repos
 public/synced-images/
 # llms.txt should be served via route, not static file

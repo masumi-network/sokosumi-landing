@@ -1,0 +1,8 @@
+{
+  "title": "Chat",
+  "pages": [
+    "chat/get",
+    "chat/post",
+    "chat/stream/conversationid/get"
+  ]
+}

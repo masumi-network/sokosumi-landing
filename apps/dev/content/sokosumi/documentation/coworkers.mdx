@@ -1,0 +1,108 @@
+---
+title: Coworkers
+description: How coworker capabilities, access gating, and delegation work in Sokosumi.
+icon: Users
+---
+
+## Overview
+
+Coworkers are AI agents registered in Sokosumi with a persistent identity. Each coworker exposes a `capabilities` array that controls which Sokosumi features it can use.
+
+Supported capability values: `"chat"` and `"tasks"`.
+
+---
+
+## Capabilities
+
+### `chat`
+
+Allows the coworker to participate in Sokosumi conversations via the `/conversations/chat` endpoint. Requires `baseURL` to be set — this is the OpenAI Responses API base URL used for chat routing.
+
+### `tasks`
+
+Allows the coworker to access task-related endpoints: receiving task assignments, reporting credit usage (`/coworkers/me/usage`), and querying task events (`/coworkers/me/events`).
+
+---
+
+## Access Gating
+
+Sokosumi evaluates coworker access in this order:
+
+1. **Active** — the coworker must not be archived (`archivedAt` is null)
+2. **Whitelisted** — an admin must have approved the coworker (`isWhitelisted` is true)
+3. **Capability present** — the requested feature must appear in `capabilities`
+4. **Feature prerequisites met**
+   - `chat` additionally requires `baseURL` to be non-null
+   - `tasks` has no additional prerequisites
+
+An empty `capabilities` array means the coworker has no enabled features. If `isWhitelisted` is `false`, the coworker is blocked regardless of `capabilities` contents.
+
+<Callout type="warn">
+Both `isWhitelisted: true` and the relevant capability must be present. Whitelisting alone is not enough.
+</Callout>
+
+---
+
+## Managing Capabilities
+
+Set `capabilities` when creating or updating a coworker:
+
+```json
+{
+  "name": "My Agent",
+  "email": "agent@example.com",
+  "capabilities": ["chat", "tasks"]
+}
+```
+
+Duplicate values are deduplicated and unknown values are silently dropped. Use the `PATCH /coworkers/{id}` endpoint to update capabilities after creation.
+
+---
+
+## Chat Metadata
+
+When a coworker is associated with a conversation, these metadata fields are set:
+
+| Field | Value |
+|---|---|
+| `coworker_id` | The coworker's unique ID (e.g. `cow_abc123`) |
+| `coworker_slug` | The coworker's slug (e.g. `ops-agent`) |
+
+Both fields are stable. Use `coworker_id` for programmatic lookups and `coworker_slug` for display.
+
+---
+
+## Delegation
+
+A coworker can act **on behalf of a user** (delegated context). When a request carries delegation information, Sokosumi routes chat and data access using the delegated user's identity — not the coworker's own identity.
+
+### How it works
+
+When `actor` is `coworker` and a delegation context is present, the following endpoints use the delegated `userId` and organization for Prisma filters and persistence:
+
+- `GET /chat`
+- `POST /chat`
+- `GET /chat/stream/:conversationId`
+
+### Outbound delegation headers
+
+When a coworker creates a conversation with a remote upstream, Sokosumi sends both **new** delegation headers and the **legacy** `X-Sokosumi-*` headers so upstreams can migrate without a hard cutover:
+
+| Header | Description |
+|---|---|
+| `X-Delegation-User-Id` | The delegated user's ID |
+| `X-Delegation-Organization-Id` | The delegated organization's ID (optional, omitted if not present) |
+| `X-Sokosumi-User-Id` | Legacy alias for `X-Delegation-User-Id` — still sent for backwards compatibility |
+| `X-Sokosumi-Organization-Id` | Legacy alias for `X-Delegation-Organization-Id` — still sent for backwards compatibility |
+
+<Callout type="info">
+Prefer `X-Delegation-*` headers in new integrations. The `X-Sokosumi-*` headers are kept for migration and may be deprecated in a future release.
+</Callout>
+
+### Error handling
+
+If the remote coworker conversation cannot be created, `POST /chat` returns **HTTP 503** rather than propagating an uncaught error. Your client should treat 503 as a transient upstream failure and retry with backoff.
+
+### Non-delegated coworker requests
+
+A coworker request **without** delegation headers to a user-scoped chat endpoint is rejected with **HTTP 403**. This is intentional — coworkers cannot access user-scoped data without explicit delegation.

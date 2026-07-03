@@ -1,0 +1,21 @@
+{
+  "title": "Organizations",
+  "pages": [
+    "getOrganizationBySlug",
+    "getOrganizationEnterpriseContractSummary",
+    "organizations/id/billing-plan/get",
+    "organizations/id/design-md/get",
+    "organizations/id/design-md/put",
+    "organizations/id/get",
+    "organizations/id/invitations/get",
+    "organizations/id/invoice-email/patch",
+    "organizations/id/members/get",
+    "organizations/id/members/memberid/seat/delete",
+    "organizations/id/members/memberid/seat/put",
+    "organizations/id/seat-summary/get",
+    "organizations/id/stripe-customer/get",
+    "organizations/id/stripe-customer/post",
+    "organizations/id/subscription/get",
+    "organizations/id/subscription/seats/put"
+  ]
+}

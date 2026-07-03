@@ -1,0 +1,9 @@
+{
+  "title": "Notifications",
+  "pages": [
+    "notifications/get",
+    "notifications/id/read/patch",
+    "notifications/read-all/patch",
+    "notifications/unread-count/get"
+  ]
+}

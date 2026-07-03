@@ -2197,7 +2197,8 @@ header a:has(.masumi-brand-mark) {
   width: 30cqw;
   height: 34cqw;
   transform: translateY(-50%);
-  background: url('/assets/masumi-kanji-black.png') center / contain no-repeat;
+  /* Note: CSS url() is not basePath-aware; the portal is served under /dev */
+  background: url('/dev/assets/masumi-kanji-black.png') center / contain no-repeat;
   opacity: 0.055;
   pointer-events: none;
 }

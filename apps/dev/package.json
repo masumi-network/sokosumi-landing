@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build": "fumadocs-mdx && node scripts/generate-openapi.mjs && node scripts/fetch-readme.mjs && next build",
+    "build": "fumadocs-mdx && node scripts/generate-openapi.mjs && node scripts/fetch-readme.mjs && npm run generate:sokosumi && next build",
+    "generate:sokosumi": "node scripts/sokosumi/generate-openapi.mjs && node scripts/sokosumi/generate-cli-docs.mjs && node scripts/sokosumi/generate-mcp-docs.mjs",
+    "predev": "node scripts/sokosumi/ensure-api-docs.mjs",
     "dev": "next dev -p 3004",
     "start": "next start -p 3004",
     "postinstall": "fumadocs-mdx",

@@ -3,6 +3,12 @@
   "icon": "BookOpen",
   "root": true,
   "pages": [
-    "index"
+    "index",
+    "projects",
+    "history",
+    "coworkers",
+    "image-generation",
+    "organization",
+    "hermes"
   ]
 }

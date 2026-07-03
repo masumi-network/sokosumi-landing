@@ -1,0 +1,62 @@
+---
+title: Image Generation
+description: Enable image generation and reasoning steps in model conversations (`image_generation` on POST /conversations).
+icon: Image
+---
+
+## Overview
+
+Model conversations in Sokosumi support image generation. When `image_generation` is enabled on a conversation, the flag persists across all messages in that session so image-generation capability is consistently available.
+
+<Callout type="warn">
+Image generation is available for **model chats only**. Coworker conversations do not support the `image_generation` flag.
+</Callout>
+
+---
+
+## Enabling Image Generation
+
+Pass `image_generation: true` when creating a conversation:
+
+```json
+POST /conversations
+{
+  "model": "openrouter/<model-slug>",
+  "image_generation": true
+}
+```
+
+The flag is stored on the conversation object and applied to all subsequent turns in that session. Omitting it (or setting it to `false`) disables image generation for the conversation.
+
+Image generation requires an OpenRouter model that supports image output. Check the [OpenRouter model catalog](https://openrouter.ai/models) and filter by image generation capability.
+
+---
+
+## Reasoning Steps
+
+For model conversations (not coworker chats), Sokosumi surfaces reasoning steps when the underlying model emits them. Streaming reasoning tokens appear in real time in the chat UI.
+
+### ReAct `thought` extraction
+
+When a model uses ReAct-style JSON payloads, Sokosumi extracts the `thought` field and displays it as a readable reasoning label:
+
+```json
+{
+  "thought": "I need to find the latest images matching this description...",
+  "action": "generate_image",
+  "action_input": "a photorealistic mountain landscape at dusk"
+}
+```
+
+If the `thought` field is present in the parsed JSON, it is used as the step display text. If parsing fails or the field is absent, the raw prefix text is shown instead.
+
+### Buffer flush limit
+
+To prevent unbounded memory usage and stalled output, Sokosumi flushes any pending ReAct envelope text when it exceeds **16,384 characters** and the payload is still incomplete. Partial content is delivered and processing continues — reasoning delivery is never blocked by oversized or malformed ReAct buffers.
+
+---
+
+## Notes
+
+- Reasoning step visibility for non-coworker model chats shipped in [sokosumi#2915](https://github.com/masumi-network/sokosumi/pull/2915) (2026-05-05).
+- If your model emits reasoning steps but they are not appearing, confirm the conversation was created without `coworker_id` — coworker-associated conversations have separate reasoning rendering logic.

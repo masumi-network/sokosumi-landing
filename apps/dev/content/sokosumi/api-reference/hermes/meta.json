@@ -1,0 +1,32 @@
+{
+  "title": "Hermes",
+  "pages": [
+    "hermes/chat/post",
+    "hermes/me/inbox/seen/post",
+    "hermes/me/instance/confirmations/confirmationid/approve/post",
+    "hermes/me/instance/confirmations/confirmationid/reject/post",
+    "hermes/me/instance/delete",
+    "hermes/me/instance/get",
+    "hermes/me/instance/integrations/finalize/post",
+    "hermes/me/instance/integrations/get",
+    "hermes/me/instance/integrations/initiate/post",
+    "hermes/me/instance/integrations/provider/delete",
+    "hermes/me/instance/onboard/post",
+    "hermes/me/instance/onboarding-progress/get",
+    "hermes/me/instance/patch",
+    "hermes/me/instance/post",
+    "hermes/me/instance/schedules/get",
+    "hermes/me/instance/schedules/scheduleid/patch",
+    "hermes/me/instance/skills/catalog/curated/get",
+    "hermes/me/instance/skills/catalog/detail/get",
+    "hermes/me/instance/skills/catalog/get",
+    "hermes/me/instance/skills/catalog/search/get",
+    "hermes/me/instance/skills/get",
+    "hermes/me/instance/skills/post",
+    "hermes/me/instance/skills/preinstalled/get",
+    "hermes/me/instance/skills/slug/delete",
+    "hermes/me/messages/get",
+    "hermes/me/secrets/post",
+    "hermes/me/unread-count/get"
+  ]
+}

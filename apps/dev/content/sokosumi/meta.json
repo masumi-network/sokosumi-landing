@@ -2,6 +2,9 @@
   "title": "Root",
   "root": true,
   "pages": [
-    "documentation"
+    "documentation",
+    "api-reference",
+    "cli_docs",
+    "mcp"
   ]
 }

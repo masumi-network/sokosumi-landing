@@ -1,0 +1,28 @@
+{
+  "title": "Users",
+  "pages": [
+    "users/id/credits/get",
+    "users/id/design-md/get",
+    "users/id/design-md/put",
+    "users/id/get",
+    "users/id/members/get",
+    "users/id/notices/noticeid/acknowledge/post",
+    "users/id/notices/pending/get",
+    "users/id/oauth-consents/consentid/delete",
+    "users/id/onboarding/get",
+    "users/id/onboarding/post",
+    "users/id/organizations/get",
+    "users/id/organizations/organizationid/credits/get",
+    "users/id/organizations/organizationid/member/get",
+    "users/id/preferences/get",
+    "users/id/preferences/patch",
+    "users/id/preferred-organization/put",
+    "users/id/stripe-customer/get",
+    "users/id/stripe-customer/post",
+    "users/id/subscription/get",
+    "users/id/uploads/get",
+    "users/id/uploads/post",
+    "users/id/utm-attribution/post",
+    "users/registered/get"
+  ]
+}
