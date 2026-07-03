@@ -1851,23 +1851,6 @@ header a:has(.masumi-brand-mark) {
   container-type: inline-size;
 }
 
-/* First-question morph: the ID card flies from the hero into the rail */
-.nori-hire-card .nori-id-card,
-.nori-session .nori-id-card {
-  view-transition-name: nori-agent-card;
-}
-
-::view-transition-group(nori-agent-card) {
-  animation-duration: 0.55s;
-  animation-timing-function: cubic-bezier(0.6, 0, 0.3, 1);
-}
-
-::view-transition-old(nori-agent-card),
-::view-transition-new(nori-agent-card) {
-  height: 100%;
-  object-fit: cover;
-}
-
 /* Physical hover tilt (driven by pointer position, see useCardTilt).
    Transform engages only on hover; a constant ease-out transition chases
    the pointer, which is what makes it feel springy and physical. */

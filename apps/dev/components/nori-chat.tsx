@@ -1,7 +1,6 @@
 'use client';
 
 import { FormEvent, ReactNode, memo, useEffect, useMemo, useRef, useState } from 'react';
-import { flushSync } from 'react-dom';
 import Link from 'next/link';
 import {
   ArrowUp,
@@ -153,8 +152,6 @@ const PAYMENT_POLL_MAX_ATTEMPTS = 80;
 const PAYMENT_POLL_FIRST_DELAY_MS = 1200;
 const PAYMENT_POLL_INTERVAL_MS = 5000;
 const STREAM_FLUSH_INTERVAL_MS = 80;
-
-
 
 type TracePhase = Exclude<TaskPhase, 'quote' | 'failed'>;
 type ExplorerLinkItem = {
@@ -1127,20 +1124,7 @@ export function NoriChat({
       ]);
     };
 
-    // First question: morph the hero into the console — the browser animates
-    // the ID card flying from center stage into the session rail.
-    const startViewTransition = (
-      document as Document & { startViewTransition?: (callback: () => void) => unknown }
-    ).startViewTransition?.bind(document);
-    if (
-      messages.length === 0 &&
-      startViewTransition &&
-      !window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
-    ) {
-      startViewTransition(() => flushSync(beginConversation));
-    } else {
-      beginConversation();
-    }
+    beginConversation();
 
     try {
       const response = await fetch(withBasePath('/api/nori/chat'), {

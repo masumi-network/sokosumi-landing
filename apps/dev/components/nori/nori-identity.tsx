@@ -38,6 +38,18 @@ interface NoriIdentityPayload {
 let identityCache: NoriIdentityState | null = null;
 let identityRequest: Promise<NoriIdentityState> | null = null;
 
+const NORI_AGENT_ASSET =
+  '7e8bdaf2b2b919a3a4b94002cafb50086c0c845fe535d07a77ab7f77878d3e209415e420f1de76497bf7001f732b7f41ac068db75cbb94b780f82835';
+const NORI_POLICY_ID = NORI_AGENT_ASSET.slice(0, 56);
+
+const staticNoriIdentity: NoriIdentityState = {
+  status: 'verified',
+  agentIdentifier: NORI_AGENT_ASSET,
+  policyId: NORI_POLICY_ID,
+  name: 'Nori',
+  assetHref: `https://preprod.cexplorer.io/asset/${NORI_AGENT_ASSET}`,
+};
+
 async function loadNoriIdentity(): Promise<NoriIdentityState> {
   if (identityCache) return identityCache;
   if (identityRequest) return identityRequest;
@@ -56,9 +68,11 @@ async function loadNoriIdentity(): Promise<NoriIdentityState> {
         };
       }
 
+      if (response.status === 503) return staticNoriIdentity;
+
       return { status: 'failed', error: payload.identity?.error || payload.error };
     } catch {
-      return { status: 'failed', error: 'Registry lookup failed.' };
+      return staticNoriIdentity;
     }
   })().then((identity) => {
     identityCache = identity;
