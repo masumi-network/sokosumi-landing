@@ -6,6 +6,7 @@ import stripMarkdown from 'strip-markdown';
 import type { Page } from 'fumadocs-core/source';
 import { readFile } from 'fs/promises';
 import { llmTextCache, fileReadCache } from './cache';
+import { portalUrl } from './base-path';
 
 // Shared remark processor instance (reusable, more memory efficient)
 let sharedProcessor: any = null;
@@ -68,7 +69,7 @@ export async function getLLMText(page: Page): Promise<string> {
   const cleanedText = cleanText(processed.value as string);
 
   const result = `# ${page.data.title}
-URL: ${page.url}
+URL: ${portalUrl}${page.url}
 
 ${page.data.description}
 
