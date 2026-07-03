@@ -211,10 +211,9 @@ header a:has(.masumi-brand-mark) {
 }
 
 .masumi-product-menu {
-  position: absolute;
-  top: calc(100% + 10px);
-  left: -6px;
-  z-index: 60;
+  /* Rendered in a portal on <body>; top/left set inline from the trigger rect */
+  position: fixed;
+  z-index: 200;
   min-width: 264px;
   padding: 10px 6px 6px;
   border: 1px solid var(--color-fd-border);

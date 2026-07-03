@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import type { KeyboardEvent, MouseEvent } from 'react';
 import {
   productFromPathname,
@@ -35,6 +36,10 @@ export function ProductSwitcher({ className = '' }: { className?: string }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
+  // The menu is rendered in a portal (fixed position) so it can't be trapped
+  // beneath the sidebar by the header's stacking context.
+  const [menuPosition, setMenuPosition] = useState<{ top: number; left: number } | null>(null);
   const activeProduct = productFromPathname(pathname);
 
   // Remember the last visited product so "Browse" can return to it
@@ -48,8 +53,16 @@ export function ProductSwitcher({ className = '' }: { className?: string }) {
 
   useEffect(() => {
     if (!open) return;
+
+    const updatePosition = () => {
+      const rect = containerRef.current?.getBoundingClientRect();
+      if (rect) setMenuPosition({ top: rect.bottom + 10, left: Math.max(rect.left - 6, 8) });
+    };
+    updatePosition();
+
     const handlePointerDown = (event: PointerEvent) => {
-      if (!containerRef.current?.contains(event.target as Node)) {
+      const target = event.target as Node;
+      if (!containerRef.current?.contains(target) && !menuRef.current?.contains(target)) {
         setOpen(false);
       }
     };
@@ -58,9 +71,13 @@ export function ProductSwitcher({ className = '' }: { className?: string }) {
     };
     document.addEventListener('pointerdown', handlePointerDown);
     document.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('resize', updatePosition);
+    window.addEventListener('scroll', updatePosition, true);
     return () => {
       document.removeEventListener('pointerdown', handlePointerDown);
       document.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('resize', updatePosition);
+      window.removeEventListener('scroll', updatePosition, true);
     };
   }, [open]);
 
@@ -107,8 +124,13 @@ export function ProductSwitcher({ className = '' }: { className?: string }) {
           </svg>
         </span>
       </span>
-      {open && (
-        <div className="masumi-product-menu" role="menu">
+      {open && menuPosition && createPortal(
+        <div
+          ref={menuRef}
+          className="masumi-product-menu"
+          role="menu"
+          style={{ top: menuPosition.top, left: menuPosition.left }}
+        >
           <div className="masumi-product-menu-heading">Documentation</div>
           {entries.map((entry) => {
             const isActive = entry.id === activeProduct;
@@ -137,7 +159,8 @@ export function ProductSwitcher({ className = '' }: { className?: string }) {
               </Link>
             );
           })}
-        </div>
+        </div>,
+        document.body,
       )}
     </div>
   );
