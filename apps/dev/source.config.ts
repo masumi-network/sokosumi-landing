@@ -15,7 +15,18 @@ const extendedFrontmatterSchema = frontmatterSchema.extend({
 
 // You can customise Zod schemas for frontmatter and `meta.json` here
 // see https://fumadocs.vercel.app/docs/mdx/collections#define-docs
-export const docs = defineDocs({
+export const masumiDocs = defineDocs({
+  dir: 'content/masumi',
+  docs: {
+    schema: extendedFrontmatterSchema,
+  },
+  meta: {
+    schema: metaSchema,
+  },
+});
+
+export const sokosumiDocs = defineDocs({
+  dir: 'content/sokosumi',
   docs: {
     schema: extendedFrontmatterSchema,
   },

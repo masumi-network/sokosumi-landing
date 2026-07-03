@@ -9,13 +9,13 @@ import { Bot, BookOpen } from 'lucide-react';
 const modes = [
   {
     id: 'ask',
-    href: '/ask',
+    href: '/',
     label: 'Ask Nori',
     icon: Bot,
   },
   {
     id: 'browse',
-    href: '/documentation',
+    href: '/masumi/documentation',
     label: 'Browse',
     icon: BookOpen,
   },
@@ -25,7 +25,7 @@ type ModeId = (typeof modes)[number]['id'];
 type Mode = (typeof modes)[number];
 
 function getActiveMode(pathname: string | null) {
-  if (pathname?.startsWith('/ask')) return 'ask';
+  if (!pathname || pathname === '/' || pathname.startsWith('/ask')) return 'ask';
   return 'browse';
 }
 

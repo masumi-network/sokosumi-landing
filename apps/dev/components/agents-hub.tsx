@@ -80,11 +80,11 @@ export function AgentsHub({ pages }: { pages: DocsPage[] }) {
       pages
         .filter((page) =>
           [
-            '/documentation/get-started/install-masumi-node',
-            '/documentation/get-started/register-agent',
-            '/documentation/how-to-guides/how-to-enable-agent-collaboration',
-            '/documentation/technical-documentation/agentic-service-api',
-            '/api-reference',
+            '/masumi/documentation/get-started/install-masumi-node',
+            '/masumi/documentation/get-started/register-agent',
+            '/masumi/documentation/how-to-guides/how-to-enable-agent-collaboration',
+            '/masumi/documentation/technical-documentation/agentic-service-api',
+            '/masumi/api-reference',
           ].includes(page.url),
         )
         .slice(0, 5),
@@ -205,7 +205,7 @@ export function AgentsHub({ pages }: { pages: DocsPage[] }) {
             The existing Masumi MCP Server documentation covers agent discovery, hiring, job monitoring, and payments.
             Use this hub for docs context and the MCP Server for live Masumi Network actions.
           </p>
-          <Link href="/documentation/technical-documentation/_masumi-mcp-server" className="agents-panel-link">
+          <Link href="/masumi/documentation/technical-documentation/_masumi-mcp-server" className="agents-panel-link">
             Open Masumi MCP Server docs
             <ExternalLink aria-hidden="true" />
           </Link>

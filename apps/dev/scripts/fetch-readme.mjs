@@ -25,7 +25,7 @@ const REPOS = [
   {
     owner: 'masumi-network',
     repo: 'masumi-mcp-server',
-    outputPath: './content/docs/documentation/technical-documentation/_masumi-mcp-server.mdx',
+    outputPath: './content/masumi/documentation/technical-documentation/_masumi-mcp-server.mdx',
     isTabContent: false,
     customTitle: 'Masumi MCP Server',
     customIcon: 'Server'
@@ -34,14 +34,14 @@ const REPOS = [
   {
     owner: 'masumi-network',
     repo: 'masumi-improvement-proposals',
-    outputPath: './content/docs/mips/index.mdx',
+    outputPath: './content/masumi/mips/index.mdx',
     isTabContent: false
   },
   {
     owner: 'masumi-network',
     repo: 'masumi-improvement-proposals',
     filePath: 'MIPs/MIP-001/MIP-001.md',
-    outputPath: './content/docs/mips/_mip-001.mdx',
+    outputPath: './content/masumi/mips/_mip-001.mdx',
     isTabContent: false,
     customTitle: 'MIP-001: Masumi Improvement Proposal (MIP) Process'
   },
@@ -49,7 +49,7 @@ const REPOS = [
     owner: 'masumi-network',
     repo: 'masumi-improvement-proposals',
     filePath: 'MIPs/MIP-002/MIP-002.md',
-    outputPath: './content/docs/mips/_mip-002.mdx',
+    outputPath: './content/masumi/mips/_mip-002.mdx',
     isTabContent: false,
     customTitle: 'MIP-002: On-Chain Metadata Standard for Registered Agentic Services'
   },
@@ -57,7 +57,7 @@ const REPOS = [
     owner: 'masumi-network',
     repo: 'masumi-improvement-proposals',
     filePath: 'MIPs/MIP-003/MIP-003.md',
-    outputPath: './content/docs/mips/_mip-003.mdx',
+    outputPath: './content/masumi/mips/_mip-003.mdx',
     isTabContent: false,
     customTitle: 'MIP-003: Agentic Service API Standard'
   },
@@ -65,7 +65,7 @@ const REPOS = [
     owner: 'masumi-network',
     repo: 'masumi-improvement-proposals',
     filePath: 'MIPs/MIP-003/MIP-003-Attachement-01.md',
-    outputPath: './content/docs/mips/_mip-003-attachment-01.mdx',
+    outputPath: './content/masumi/mips/_mip-003-attachment-01.mdx',
     isTabContent: false,
     customTitle: 'MIP-003 Attachment 01: Input Validation Schema Format'
   },
@@ -73,7 +73,7 @@ const REPOS = [
     owner: 'masumi-network',
     repo: 'masumi-improvement-proposals',
     filePath: 'MIPs/MIP-004/MIP-004.md',
-    outputPath: './content/docs/mips/_mip-004.mdx',
+    outputPath: './content/masumi/mips/_mip-004.mdx',
     isTabContent: false,
     customTitle: 'MIP-004: A Hashing Standard for Input and Output Data Integrity'
   },
@@ -82,7 +82,7 @@ const REPOS = [
     repo: 'pip-masumi',
     branch: 'main',
     filePath: 'QUICKSTART.md',
-    outputPath: './content/docs/documentation/how-to-guides/_quickstart.mdx',
+    outputPath: './content/masumi/documentation/how-to-guides/_quickstart.mdx',
     isTabContent: false,
     customTitle: 'Build an Agent',
     customIcon: 'Bot',
@@ -92,7 +92,7 @@ const REPOS = [
   {
     owner: 'masumi-network',
     repo: 'n8n-nodes-masumi-payment',
-    outputPath: './content/docs/n8n-node/index.mdx',
+    outputPath: './content/masumi/n8n-node/index.mdx',
     isTabContent: false,
     customTitle: 'N8N Node',
     customIcon: 'Workflow',
@@ -213,14 +213,14 @@ function parseAttributes(attributesString) {
 
 function transformMipsLinks(content) {
   // Transform MIPs links from GitHub format to local page format
-  // Example: MIPs/MIP-001/MIP-001.md -> mips/_mip-001
-  return content.replace(/\[([^\]]*)\]\(MIPs\/MIP-(\d+)\/MIP-\d+\.md\)/g, '[$1](mips/_mip-$2)');
+  // Example: MIPs/MIP-001/MIP-001.md -> /masumi/mips/_mip-001
+  return content.replace(/\[([^\]]*)\]\(MIPs\/MIP-(\d+)\/MIP-\d+\.md\)/g, '[$1](/masumi/mips/_mip-$2)');
 }
 
 function transformMip003AttachmentLinks(content) {
   // Transform MIP-003 attachment links from GitHub format to local page format
-  // Example: ./MIP-003-Attachement-01.md -> /mips/_mip-003-attachment-01
-  return content.replace(/\[([^\]]*)\]\(\.\/MIP-003-Attachement-01\.md\)/g, '[$1](/mips/_mip-003-attachment-01)');
+  // Example: ./MIP-003-Attachement-01.md -> /masumi/mips/_mip-003-attachment-01
+  return content.replace(/\[([^\]]*)\]\(\.\/MIP-003-Attachement-01\.md\)/g, '[$1](/masumi/mips/_mip-003-attachment-01)');
 }
 
 function convertHtmlToJsx(content) {
@@ -367,7 +367,7 @@ async function generateReadmePages() {
     if (outputPath.includes('_quickstart.mdx')) {
       contentWithTransformedLinks = contentWithTransformedLinks.replace(
         /\[full documentation\]\(https:\/\/docs\.masumi\.network\)/g,
-        '[full documentation](/documentation/how-to-guides/human-in-the-loop)'
+        '[full documentation](/masumi/documentation/how-to-guides/human-in-the-loop)'
       );
     }
 
@@ -493,7 +493,7 @@ ${imports.join('\n')}
 async function writeStaticPages() {
   const staticPages = [
     {
-      outputPath: './content/docs/documentation/get-started/_agentic-service-wrapper.mdx',
+      outputPath: './content/masumi/documentation/get-started/_agentic-service-wrapper.mdx',
       content: `---
 title: "Railway Deployment"
 description: Deploy Masumi Payment Service using Railway templates

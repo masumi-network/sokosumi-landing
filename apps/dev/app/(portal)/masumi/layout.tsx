@@ -1,20 +1,17 @@
 import { DocsLayout } from 'fumadocs-ui/layouts/notebook';
-import type { ReactNode } from 'react';
 import { baseOptions } from '@/app/layout.config';
 import { masumiSource } from '@/lib/source';
+import type { ReactNode } from 'react';
 
-export default function StandaloneLayout({ children }: { children: ReactNode }) {
+export default function Layout({ children }: { children: ReactNode }) {
   return (
     <DocsLayout
       {...baseOptions}
       nav={{ ...baseOptions.nav, mode: 'top' }}
       tree={masumiSource.pageTree}
       tabMode="navbar"
-      containerProps={{
-        className: 'masumi-standalone-layout masumi-standalone-notebook-layout',
-      }}
     >
-      <div className="masumi-standalone-main">{children}</div>
+      {children}
     </DocsLayout>
   );
 }

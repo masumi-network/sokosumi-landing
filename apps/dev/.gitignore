@@ -5,7 +5,7 @@
 .contentlayer
 .content-collections
 .source
-content/docs/api-reference/(generated)/
+content/masumi/api-reference/(generated)/
 **/_*.mdx
 # synced images from repos
 public/synced-images/
@@ -35,6 +35,6 @@ yarn-error.log*
 .vercel
 next-env.d.ts
 # auto-generated README content fetched from GitHub
-content/docs/mips/index.mdx
-content/docs/n8n-node/index.mdx
+content/masumi/mips/index.mdx
+content/masumi/n8n-node/index.mdx
 .gstack/

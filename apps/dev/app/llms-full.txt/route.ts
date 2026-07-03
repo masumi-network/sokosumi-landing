@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { readFile, writeFile, mkdir } from 'fs/promises';
 import { join } from 'path';
-import { source } from '@/lib/source';
+import { getAllPages } from '@/lib/source';
 import { portalUrl } from '@/lib/base-path';
 import { getLLMText } from '@/lib/get-llm-text';
 
@@ -16,7 +16,7 @@ const CORS_HEADERS = {
 };
 
 async function generateFullCorpus(): Promise<string> {
-  const pages = source.getPages();
+  const pages = getAllPages();
   const MAX_CONCURRENT = 10;
   const scanned: string[] = [];
 
@@ -27,9 +27,9 @@ async function generateFullCorpus(): Promise<string> {
   }
 
   return [
-    '# Masumi Network Documentation - Full Corpus',
+    '# Masumi Developer Portal - Full Corpus',
     '',
-    'This file contains the complete Masumi Network documentation for LLM consumption.',
+    'This file contains the complete Masumi and Sokosumi documentation for LLM consumption.',
     `Generated on: ${new Date().toISOString()}`,
     `Website: ${portalUrl}`,
     '',

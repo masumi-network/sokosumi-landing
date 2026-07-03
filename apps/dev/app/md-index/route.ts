@@ -1,4 +1,4 @@
-import { source } from '@/lib/source';
+import { getAllPages } from '@/lib/source';
 import { portalUrl } from '@/lib/base-path';
 import { NextResponse } from 'next/server';
 
@@ -15,13 +15,14 @@ const CORS_HEADERS = {
  */
 export async function GET() {
   try {
-    const pages = source.getPages();
+    const pages = getAllPages();
     const baseUrl = portalUrl;
 
-    // Group pages by their top-level section
+    // Group pages by "<product> <section>", e.g. "masumi core-concepts"
     const pagesBySection = new Map<string, typeof pages>();
     pages.forEach((page) => {
-      const section = page.url.split('/')[1] || 'root';
+      const [, product, sectionName] = page.url.split('/');
+      const section = [product, sectionName].filter(Boolean).join(' ') || 'root';
       if (!pagesBySection.has(section)) {
         pagesBySection.set(section, []);
       }
@@ -30,9 +31,9 @@ export async function GET() {
 
     // Build the markdown index
     const sections: string[] = [
-      '# Masumi Documentation - Markdown Index',
+      '# Masumi Developer Portal - Markdown Index',
       '',
-      '**Welcome to the Masumi Documentation Markdown Index!**',
+      '**Welcome to the Masumi Developer Portal Markdown Index (Masumi + Sokosumi docs)!**',
       '',
       'This page provides a complete guide to all available documentation pages in markdown format.',
       'Each page can be accessed by appending `.md` to any documentation URL.',
@@ -45,11 +46,11 @@ export async function GET() {
       '```',
       '',
       '**Examples:**',
-      `- HTML: ${baseUrl}/documentation/get-started/installation`,
-      `- Markdown: ${baseUrl}/documentation/get-started/installation.md`,
+      `- HTML: ${baseUrl}/masumi/documentation/get-started/installation`,
+      `- Markdown: ${baseUrl}/masumi/documentation/get-started/installation.md`,
       '',
-      `- HTML: ${baseUrl}/api-reference/payment-service/post-registry`,
-      `- Markdown: ${baseUrl}/api-reference/payment-service/post-registry.md`,
+      `- HTML: ${baseUrl}/masumi/api-reference/payment-service/post-registry`,
+      `- Markdown: ${baseUrl}/masumi/api-reference/payment-service/post-registry.md`,
       '',
       '## Available Documentation Pages',
       '',

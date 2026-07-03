@@ -6,10 +6,10 @@ async function generateLLMsTxt() {
   
   try {
     // Dynamic import to handle potential MDX import issues
-    const { source } = await import('../lib/source');
+    const { getAllPages } = await import('../lib/source');
     const { getLLMText } = await import('../lib/get-llm-text');
     
-    const pages = source.getPages();
+    const pages = getAllPages();
     const MAX_CONCURRENT = 10;
     
     console.log(`Processing ${pages.length} pages...`);
@@ -39,7 +39,7 @@ async function generateLLMsTxt() {
       '',
       'This file contains the complete Masumi Network documentation for LLM consumption.',
       `Generated on: ${new Date().toISOString()}`,
-      'Website: https://docs.masumi.network',
+      'Website: https://www.masumi.network/dev',
       '',
       '## About Masumi Network',
       'Masumi Network enables Agent-to-Agent Payments and unlocks the Agentic Economy through decentralized AI agent interactions.',
@@ -50,18 +50,18 @@ async function generateLLMsTxt() {
       '',
       '### URL Pattern:',
       '```',
-      'https://docs.masumi.network/<any-path>.md',
+      'https://www.masumi.network/dev/<any-path>.md',
       '```',
       '',
       '### Examples:',
-      '- https://docs.masumi.network/documentation/getting-started.md',
-      '- https://docs.masumi.network/api/payment-service.md',
-      '- https://docs.masumi.network/guides/agent-integration.md',
+      '- https://www.masumi.network/dev/masumi/documentation/getting-started.md',
+      '- https://www.masumi.network/dev/masumi/api-reference.md',
+      '- https://www.masumi.network/dev/masumi/core-concepts/agent-to-agent-payments.md',
       '',
       '### Markdown Index:',
       'For a complete list of all available markdown pages, visit:',
-      '- https://docs.masumi.network/md-index',
-      '- https://docs.masumi.network/md-index.md',
+      '- https://www.masumi.network/dev/md-index',
+      '- https://www.masumi.network/dev/md-index.md',
       '',
       '### Benefits:',
       '- Clean markdown without HTML/JSX',

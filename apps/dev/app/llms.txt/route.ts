@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { source } from '@/lib/source';
+import { getAllPages } from '@/lib/source';
 import { portalUrl } from '@/lib/base-path';
 
 // In-memory cache for the generated content (persists across requests)
@@ -15,12 +15,14 @@ const CORS_HEADERS = {
 };
 
 async function generateLLMsTxtContent(): Promise<string> {
-  const pages = source.getPages();
+  const pages = getAllPages();
   const baseUrl = portalUrl;
   const pagesBySection = new Map<string, typeof pages>();
 
   for (const page of pages) {
-    const section = page.url.split('/')[1] || 'documentation';
+    // Group by "<product> <section>", e.g. "masumi core-concepts"
+    const [, product, sectionName] = page.url.split('/');
+    const section = [product, sectionName].filter(Boolean).join(' ') || 'documentation';
     const sectionPages = pagesBySection.get(section) ?? [];
     sectionPages.push(page);
     pagesBySection.set(section, sectionPages);

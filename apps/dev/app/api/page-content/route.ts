@@ -12,6 +12,10 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Path parameter is required' }, { status: 400 });
     }
 
+    if (path.includes('..')) {
+      return NextResponse.json({ error: 'Invalid path' }, { status: 400 });
+    }
+
     // Check cache first
     const cacheKey = `page-content:${path}`;
     const cached = apiResponseCache.get(cacheKey);
@@ -36,8 +40,9 @@ export async function GET(request: NextRequest) {
       filePath = 'index.mdx';
     }
     
-    // Construct the full file path
-    const contentDir = join(process.cwd(), 'content', 'docs');
+    // Construct the full file path. URL paths start with the product segment
+    // (/masumi/..., /sokosumi/...) which matches the content folder layout.
+    const contentDir = join(process.cwd(), 'content');
     
     // Try different possible paths in order of preference
     const possiblePaths = [];

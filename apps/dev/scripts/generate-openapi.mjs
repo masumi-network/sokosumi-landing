@@ -45,7 +45,7 @@ async function processDirectory(dirPath, basePath, tempPath, parentEndpoint = ''
 }
 
 async function reorganizeGeneratedFiles() {
-  const generatedPath = './content/docs/api-reference/(generated)';
+  const generatedPath = './content/masumi/api-reference/(generated)';
   
   // Process both services
   for (const service of ['payment-service', 'registry-service']) {
@@ -69,8 +69,8 @@ async function reorganizeGeneratedFiles() {
 }
 
 async function createMetaJsonFiles() {
-  const generatedPath = './content/docs/api-reference/(generated)';
-  const apiReferencePath = './content/docs/api-reference';
+  const generatedPath = './content/masumi/api-reference/(generated)';
+  const apiReferencePath = './content/masumi/api-reference';
   
   // Get files from both services to create flat structure in main meta.json
   const paymentServicePath = path.join(generatedPath, 'payment-service');
@@ -210,7 +210,7 @@ async function generateServiceDocs(specUrl, outputPath, serviceName) {
 
 export async function generateDocs() {
   console.log('🧹 Cleaning generated directories...');
-  await rimraf('./content/docs/api-reference/(generated)');
+  await rimraf('./content/masumi/api-reference/(generated)');
 
   console.log('🔄 Generating OpenAPI documentation...');
   
@@ -218,12 +218,12 @@ export async function generateDocs() {
   await Promise.all([
     generateServiceDocs(
       paymentSpecUrl,
-      './content/docs/api-reference/(generated)/payment-service',
+      './content/masumi/api-reference/(generated)/payment-service',
       'Payment Service'
     ),
     generateServiceDocs(
       registrySpecUrl,
-      './content/docs/api-reference/(generated)/registry-service',
+      './content/masumi/api-reference/(generated)/registry-service',
       'Registry Service'
     ),
   ]);

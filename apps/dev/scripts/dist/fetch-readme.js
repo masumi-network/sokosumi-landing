@@ -41,19 +41,19 @@ var REPOS = [
         owner: 'masumi-network',
         repo: 'agentic-service-wrapper',
         branch: 'docs-prepare',
-        outputPath: './content/docs/documentation/get-started/_agentic-service-wrapper.mdx',
+        outputPath: './content/masumi/documentation/get-started/_agentic-service-wrapper.mdx',
         isTabContent: true
     },
     {
         owner: 'masumi-network',
         repo: 'masumi-mcp-server',
-        outputPath: './content/docs/documentation/technical-documentation/_masumi-mcp-server.mdx',
+        outputPath: './content/masumi/documentation/technical-documentation/_masumi-mcp-server.mdx',
         isTabContent: false
     },
     {
         owner: 'masumi-network',
         repo: 'crewai-masumi-quickstart-template',
-        outputPath: './content/docs/documentation/how-to-guides/_crewai-quickstart.mdx',
+        outputPath: './content/masumi/documentation/how-to-guides/_crewai-quickstart.mdx',
         isTabContent: true
     }
 ];

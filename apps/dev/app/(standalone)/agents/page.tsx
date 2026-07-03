@@ -7,5 +7,5 @@ export const metadata: Metadata = {
 };
 
 export default function AgentsPage() {
-  redirect('/documentation');
+  redirect('/masumi/documentation');
 }

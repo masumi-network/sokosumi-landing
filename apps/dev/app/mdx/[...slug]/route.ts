@@ -1,4 +1,4 @@
-import { source } from '@/lib/source';
+import { getPageByUrlSegments } from '@/lib/source';
 import { getLLMText } from '@/lib/get-llm-text';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -15,7 +15,7 @@ export async function GET(
 ) {
   try {
     const { slug } = await params;
-    const page = source.getPage(slug);
+    const page = getPageByUrlSegments(slug);
     
     if (!page) {
       return new NextResponse('Page not found', {
@@ -67,7 +67,7 @@ export async function HEAD(
 ) {
   try {
     const { slug } = await params;
-    const page = source.getPage(slug);
+    const page = getPageByUrlSegments(slug);
     if (!page) {
       return new NextResponse(null, {
         status: 404,

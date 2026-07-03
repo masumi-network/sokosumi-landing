@@ -29,6 +29,28 @@ const config = {
   },
   // Enable compression to reduce memory usage
   compress: true,
+  async redirects() {
+    // Old docs URLs (pre-portal) live at the root; Masumi docs now live under /masumi.
+    const legacySections = [
+      'documentation',
+      'core-concepts',
+      'api-reference',
+      'n8n-node',
+      'mips',
+    ];
+    return legacySections.flatMap((section) => [
+      {
+        source: `/${section}`,
+        destination: `/masumi/${section}`,
+        permanent: true,
+      },
+      {
+        source: `/${section}/:path*`,
+        destination: `/masumi/${section}/:path*`,
+        permanent: true,
+      },
+    ]);
+  },
   async headers() {
     return [
       {

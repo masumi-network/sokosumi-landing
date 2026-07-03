@@ -29,7 +29,7 @@ export function PageActions({ content, title, url, pathname, loading = false, er
     }
   };
 
-  const markdownPath = `${pathname.replace(/\/$/, '') || '/documentation'}.md`;
+  const markdownPath = `${pathname.replace(/\/$/, '') || '/masumi/documentation'}.md`;
   const markdownUrl =
     typeof window !== 'undefined' ? `${window.location.origin}${withBasePath(markdownPath)}` : `${portalUrl}${markdownPath}`;
 
@@ -57,7 +57,7 @@ export function PageActions({ content, title, url, pathname, loading = false, er
       markdownUrl,
     });
 
-    window.location.href = withBasePath(`/ask?${params.toString()}`);
+    window.location.href = withBasePath(`/?${params.toString()}`);
   };
 
   const getAgentContext = () => {
