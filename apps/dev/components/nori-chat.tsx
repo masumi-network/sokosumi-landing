@@ -161,6 +161,7 @@ const phaseRank: Record<TaskPhase, number> = {
 const PAYMENT_POLL_MAX_ATTEMPTS = 80;
 const PAYMENT_POLL_FIRST_DELAY_MS = 1200;
 const PAYMENT_POLL_INTERVAL_MS = 5000;
+const STREAM_FLUSH_INTERVAL_MS = 80;
 
 
 
@@ -544,6 +545,207 @@ const MessageBody = memo(function MessageBody({ content }: { content: string }) 
   return <>{renderMarkdown(content)}</>;
 });
 
+const NoriSessionRail = memo(function NoriSessionRail({
+  agentCard,
+  taskDetails,
+  initialPage,
+}: {
+  agentCard: AgentIdCardData;
+  taskDetails: NoriTaskDetails | null;
+  initialPage?: NoriPageContext;
+}) {
+  return (
+    <aside className="nori-session" aria-label="Nori identity">
+      <AgentIdCard data={agentCard} variant="panel" stamped stampAnimated={false} />
+
+      {taskDetails?.errorNote && <p className="nori-payment-error">{taskDetails.errorNote}</p>}
+
+      {initialPage && (
+        <div className="nori-context-card">
+          <div>
+            <p className="nori-card-label">Current page context</p>
+            <strong>{initialPage.title || initialPage.path}</strong>
+            <span>{initialPage.path}</span>
+          </div>
+          {initialPage.markdownUrl && (
+            <a href={initialPage.markdownUrl} target="_blank" rel="noreferrer">
+              View Markdown <ExternalLink aria-hidden="true" />
+            </a>
+          )}
+        </div>
+      )}
+    </aside>
+  );
+});
+
+const NoriPaymentTrace = memo(function NoriPaymentTrace({
+  taskPhase,
+  taskDetails,
+  hasAnswerStarted,
+  isStreaming,
+  hasLastMessageError,
+}: {
+  taskPhase: TaskPhase;
+  taskDetails: NoriTaskDetails | null;
+  hasAnswerStarted: boolean;
+  isStreaming: boolean;
+  hasLastMessageError: boolean;
+}) {
+  const tracePhaseOrder: TracePhase[] = ['created', 'claimed', 'locked', 'running', 'completed', 'settled'];
+
+  const traceStepDone = (phase: TracePhase): boolean => {
+    const rank = phaseRank[taskPhase];
+    switch (phase) {
+      case 'created':
+        return taskPhase !== 'quote';
+      case 'claimed':
+        return Boolean(taskDetails?.paymentId || taskDetails?.blockchainIdentifier);
+      case 'usage':
+        return (
+          taskDetails?.agentRegistryVerified === true ||
+          (rank >= phaseRank.completed && taskPhase !== 'failed' && taskDetails?.agentRegistryVerified !== false)
+        );
+      case 'locked':
+        return rank >= phaseRank.locked && taskPhase !== 'failed';
+      case 'running':
+        return hasAnswerStarted && !isStreaming && !hasLastMessageError;
+      case 'completed':
+        return rank >= phaseRank.completed && taskPhase !== 'failed';
+      case 'settled':
+        return taskPhase === 'settled';
+    }
+  };
+
+  const getTraceStatus = (phase: TracePhase): TraceStatus => {
+    if (traceStepDone(phase)) return 'done';
+
+    const firstIncomplete = tracePhaseOrder.find((candidate) => !traceStepDone(candidate));
+    if (taskPhase === 'failed') {
+      return phase === firstIncomplete ? 'error' : 'pending';
+    }
+
+    const inFlight = isStreaming || (taskPhase !== 'quote' && taskPhase !== 'settled');
+    return phase === firstIncomplete && inFlight ? 'active' : 'pending';
+  };
+
+  const taskStatusLabel =
+    taskPhase === 'failed' ? 'Unavailable' : taskPhase === 'quote' ? 'Ready' : taskPhase === 'settled' ? 'Settled' : 'In progress';
+
+  const explorerLinkItems = {
+    masumiExplorer: taskDetails?.explorerLinks?.masumiExplorer
+      ? {
+          href: taskDetails.explorerLinks.masumiExplorer,
+          label: 'Masumi Explorer',
+          detail: 'Payment-service state',
+          identifier: 'Open explorer',
+          icon: ExternalLink,
+        }
+      : null,
+    transaction: taskDetails?.explorerLinks?.transaction
+      ? {
+          href: taskDetails.explorerLinks.transaction,
+          label: 'Cardano transaction',
+          detail: taskPhase === 'settled' ? 'Result submission transaction' : 'Payment transaction',
+          identifier: taskDetails.txHash || explorerIdentifier(taskDetails.explorerLinks.transaction),
+          icon: ReceiptText,
+        }
+      : null,
+    agentAsset: taskDetails?.explorerLinks?.agentAsset
+      ? {
+          href: taskDetails.explorerLinks.agentAsset,
+          label: 'Cardano agent asset',
+          detail: 'Registered Nori agent asset',
+          identifier: explorerIdentifier(taskDetails.explorerLinks.agentAsset),
+          icon: ShieldCheck,
+        }
+      : null,
+    contractAddress: taskDetails?.explorerLinks?.contractAddress
+      ? {
+          href: taskDetails.explorerLinks.contractAddress,
+          label: 'Cardano escrow contract',
+          detail: 'Payment script address',
+          identifier: explorerIdentifier(taskDetails.explorerLinks.contractAddress),
+          icon: WalletCards,
+        }
+      : null,
+  } satisfies Record<string, ExplorerLinkItem | null>;
+
+  const traceExplorerLinks = (phase: TracePhase): ExplorerLinkItem[] => {
+    const paymentStatus = taskDetails?.paymentStatus?.toLowerCase() ?? '';
+    const isResultSubmitted = taskPhase === 'settled' || paymentStatus === 'result submitted';
+
+    switch (phase) {
+      case 'locked':
+        return [
+          explorerLinkItems.contractAddress,
+          !isResultSubmitted ? explorerLinkItems.transaction : null,
+        ].filter((item): item is ExplorerLinkItem => Boolean(item));
+      case 'completed':
+        return explorerLinkItems.masumiExplorer ? [explorerLinkItems.masumiExplorer] : [];
+      case 'settled':
+        return explorerLinkItems.transaction && isResultSubmitted ? [explorerLinkItems.transaction] : [];
+      default:
+        return [];
+    }
+  };
+
+  return (
+    <aside className="nori-trace-rail" aria-label="Masumi payment trace">
+      <div className="nori-session-panel">
+        <div className="nori-session-header">
+          <span className="nori-session-title">Payment trace</span>
+          <span className="nori-task-status" data-phase={taskPhase}>
+            <Clock3 aria-hidden="true" />
+            {taskStatusLabel}
+          </span>
+        </div>
+
+        <ol className="nori-trace-list" aria-live="polite">
+          {traceEvents.map((event) => {
+            const status = getTraceStatus(event.phase);
+            const links = traceExplorerLinks(event.phase);
+            return (
+              <li key={event.phase} className="nori-trace-item" data-status={status}>
+                <span className="nori-trace-marker" aria-hidden="true">
+                  {status === 'done' ? <Check /> : status === 'error' ? <XCircle /> : status === 'active' ? <Loader2 /> : <Circle />}
+                </span>
+                <span className="nori-trace-copy">
+                  <strong>{event.label}</strong>
+                  <span>{event.description}</span>
+                  <code>{event.meta(taskDetails)}</code>
+                  {links.length > 0 && (
+                    <span className="nori-trace-links" aria-label={`${event.label} explorer links`}>
+                      {links.map((item) => {
+                        const Icon = item.icon;
+                        return (
+                          <a key={item.href} href={item.href} target="_blank" rel="noreferrer" title={item.href}>
+                            <Icon aria-hidden="true" />
+                            <span className="nori-explorer-link-copy">
+                              <strong>{item.label}</strong>
+                              <span>{item.detail}</span>
+                              <code>{item.href}</code>
+                              <small>{item.identifier}</small>
+                            </span>
+                          </a>
+                        );
+                      })}
+                    </span>
+                  )}
+                </span>
+              </li>
+            );
+          })}
+        </ol>
+
+        <p className="nori-session-footnote">
+          Nori quotes each job, the docs treasury locks the funds in escrow, and the result hash settles
+          on-chain &mdash; the same lifecycle every Masumi agent uses in production.
+        </p>
+      </div>
+    </aside>
+  );
+});
+
 export function NoriChat({
   initialPrompt = '',
   initialPage,
@@ -568,6 +770,8 @@ export function NoriChat({
   const streamErrorRef = useRef(false);
   const latestAssistantContentRef = useRef('');
   const submittedResultSessionsRef = useRef<Set<string>>(new Set());
+  const pendingDeltaRef = useRef('');
+  const deltaFlushTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const history = useMemo(
     () =>
@@ -593,8 +797,9 @@ export function NoriChat({
     () => () => {
       clearTaskTimers();
       clearPaymentPoll();
-      if (deltaFrameRef.current !== null) {
-        window.cancelAnimationFrame(deltaFrameRef.current);
+      if (deltaFlushTimerRef.current !== null) {
+        clearTimeout(deltaFlushTimerRef.current);
+        deltaFlushTimerRef.current = null;
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -658,16 +863,10 @@ export function NoriChat({
     });
   };
 
-  // Streamed text arrives many times per second; committing every token to
-  // React state re-renders the whole console and makes the page animations
-  // stutter. Buffer deltas and flush at most once per animation frame.
-  const pendingDeltaRef = useRef('');
-  const deltaFrameRef = useRef<number | null>(null);
-
   const flushPendingDelta = () => {
-    if (deltaFrameRef.current !== null) {
-      window.cancelAnimationFrame(deltaFrameRef.current);
-      deltaFrameRef.current = null;
+    if (deltaFlushTimerRef.current !== null) {
+      clearTimeout(deltaFlushTimerRef.current);
+      deltaFlushTimerRef.current = null;
     }
     const chunk = pendingDeltaRef.current;
     pendingDeltaRef.current = '';
@@ -678,11 +877,11 @@ export function NoriChat({
 
   const queueAssistantDelta = (delta: string) => {
     pendingDeltaRef.current += delta;
-    if (deltaFrameRef.current !== null) return;
-    deltaFrameRef.current = window.requestAnimationFrame(() => {
-      deltaFrameRef.current = null;
+    if (deltaFlushTimerRef.current !== null) return;
+    deltaFlushTimerRef.current = setTimeout(() => {
+      deltaFlushTimerRef.current = null;
       flushPendingDelta();
-    });
+    }, STREAM_FLUSH_INTERVAL_MS);
   };
 
   const copyAnswer = async (message: Message, index: number) => {
@@ -978,6 +1177,7 @@ export function NoriChat({
 
   const lastMessage = messages.at(-1);
   const hasAnswerStarted = lastMessage?.role === 'assistant' && lastMessage.content.length > 0;
+  const hasLastMessageError = Boolean(lastMessage?.error);
 
   // Tool descent + ink + lift-off takes ~1.05s (0.15s delay + 0.9s animation);
   // switch views just as the tool fades out.
@@ -1113,102 +1313,6 @@ export function NoriChat({
     void submitPrompt(input);
   };
 
-  const tracePhaseOrder: TracePhase[] = ['created', 'claimed', 'locked', 'running', 'completed', 'settled'];
-
-  const traceStepDone = (phase: TracePhase): boolean => {
-    const rank = phaseRank[taskPhase];
-    switch (phase) {
-      case 'created':
-        return taskPhase !== 'quote';
-      case 'claimed':
-        return Boolean(taskDetails?.paymentId || taskDetails?.blockchainIdentifier);
-      case 'usage':
-        return (
-          taskDetails?.agentRegistryVerified === true ||
-          (rank >= phaseRank.completed && taskPhase !== 'failed' && taskDetails?.agentRegistryVerified !== false)
-        );
-      case 'locked':
-        return rank >= phaseRank.locked && taskPhase !== 'failed';
-      case 'running':
-        return hasAnswerStarted && !isStreaming && !lastMessage?.error;
-      case 'completed':
-        return rank >= phaseRank.completed && taskPhase !== 'failed';
-      case 'settled':
-        return taskPhase === 'settled';
-    }
-  };
-
-  const getTraceStatus = (phase: TracePhase): TraceStatus => {
-    if (traceStepDone(phase)) return 'done';
-
-    const firstIncomplete = tracePhaseOrder.find((candidate) => !traceStepDone(candidate));
-    if (taskPhase === 'failed') {
-      return phase === firstIncomplete ? 'error' : 'pending';
-    }
-
-    const inFlight = isStreaming || (taskPhase !== 'quote' && taskPhase !== 'settled');
-    return phase === firstIncomplete && inFlight ? 'active' : 'pending';
-  };
-
-  const taskStatusLabel = taskPhase === 'failed' ? 'Unavailable' : taskPhase === 'quote' ? 'Ready' : taskPhase === 'settled' ? 'Settled' : 'In progress';
-  const explorerLinkItems = {
-    masumiExplorer: taskDetails?.explorerLinks?.masumiExplorer
-      ? {
-          href: taskDetails.explorerLinks.masumiExplorer,
-          label: 'Masumi Explorer',
-          detail: 'Payment-service state',
-          identifier: 'Open explorer',
-          icon: ExternalLink,
-        }
-      : null,
-    transaction: taskDetails?.explorerLinks?.transaction
-      ? {
-          href: taskDetails.explorerLinks.transaction,
-          label: 'Cardano transaction',
-          detail: taskPhase === 'settled' ? 'Result submission transaction' : 'Payment transaction',
-          identifier: taskDetails.txHash || explorerIdentifier(taskDetails.explorerLinks.transaction),
-          icon: ReceiptText,
-        }
-      : null,
-    agentAsset: taskDetails?.explorerLinks?.agentAsset
-      ? {
-          href: taskDetails.explorerLinks.agentAsset,
-          label: 'Cardano agent asset',
-          detail: 'Registered Nori agent asset',
-          identifier: explorerIdentifier(taskDetails.explorerLinks.agentAsset),
-          icon: ShieldCheck,
-        }
-      : null,
-    contractAddress: taskDetails?.explorerLinks?.contractAddress
-      ? {
-          href: taskDetails.explorerLinks.contractAddress,
-          label: 'Cardano escrow contract',
-          detail: 'Payment script address',
-          identifier: explorerIdentifier(taskDetails.explorerLinks.contractAddress),
-          icon: WalletCards,
-        }
-      : null,
-  } satisfies Record<string, ExplorerLinkItem | null>;
-
-  const traceExplorerLinks = (phase: TracePhase): ExplorerLinkItem[] => {
-    const paymentStatus = taskDetails?.paymentStatus?.toLowerCase() ?? '';
-    const isResultSubmitted = taskPhase === 'settled' || paymentStatus === 'result submitted';
-
-    switch (phase) {
-      case 'locked':
-        return [
-          explorerLinkItems.contractAddress,
-          !isResultSubmitted ? explorerLinkItems.transaction : null,
-        ].filter((item): item is ExplorerLinkItem => Boolean(item));
-      case 'completed':
-        return explorerLinkItems.masumiExplorer ? [explorerLinkItems.masumiExplorer] : [];
-      case 'settled':
-        return explorerLinkItems.transaction && isResultSubmitted ? [explorerLinkItems.transaction] : [];
-      default:
-        return [];
-    }
-  };
-
   // The card is stamped VERIFIED only after the live registry lookup returns;
   // a live task check can still override it either way.
   const registryState: RegistryState =
@@ -1301,26 +1405,7 @@ export function NoriChat({
         </div>
       ) : (
         <div className="nori-console">
-          <aside className="nori-session" aria-label="Nori identity">
-            <AgentIdCard data={agentCard} variant="panel" stamped stampAnimated={false} />
-
-            {taskDetails?.errorNote && <p className="nori-payment-error">{taskDetails.errorNote}</p>}
-
-            {initialPage && (
-              <div className="nori-context-card">
-                <div>
-                  <p className="nori-card-label">Current page context</p>
-                  <strong>{initialPage.title || initialPage.path}</strong>
-                  <span>{initialPage.path}</span>
-                </div>
-                {initialPage.markdownUrl && (
-                  <a href={initialPage.markdownUrl} target="_blank" rel="noreferrer">
-                    View Markdown <ExternalLink aria-hidden="true" />
-                  </a>
-                )}
-              </div>
-            )}
-          </aside>
+          <NoriSessionRail agentCard={agentCard} taskDetails={taskDetails} initialPage={initialPage} />
 
           <main className="nori-thread-col" aria-label="Conversation with Nori">
             <div className="nori-thread" aria-live="polite">
@@ -1385,59 +1470,13 @@ export function NoriChat({
             {composer('thread')}
           </main>
 
-          <aside className="nori-trace-rail" aria-label="Masumi payment trace">
-            <div className="nori-session-panel">
-              <div className="nori-session-header">
-                <span className="nori-session-title">Payment trace</span>
-                <span className="nori-task-status" data-phase={taskPhase}>
-                  <Clock3 aria-hidden="true" />
-                  {taskStatusLabel}
-                </span>
-              </div>
-
-              <ol className="nori-trace-list" aria-live="polite">
-                {traceEvents.map((event) => {
-                  const status = getTraceStatus(event.phase);
-                  const links = traceExplorerLinks(event.phase);
-                  return (
-                    <li key={event.phase} className="nori-trace-item" data-status={status}>
-                      <span className="nori-trace-marker" aria-hidden="true">
-                        {status === 'done' ? <Check /> : status === 'error' ? <XCircle /> : status === 'active' ? <Loader2 /> : <Circle />}
-                      </span>
-                      <span className="nori-trace-copy">
-                        <strong>{event.label}</strong>
-                        <span>{event.description}</span>
-                        <code>{event.meta(taskDetails)}</code>
-                        {links.length > 0 && (
-                          <span className="nori-trace-links" aria-label={`${event.label} explorer links`}>
-                            {links.map((item) => {
-                              const Icon = item.icon;
-                              return (
-                                <a key={item.href} href={item.href} target="_blank" rel="noreferrer" title={item.href}>
-                                  <Icon aria-hidden="true" />
-                                  <span className="nori-explorer-link-copy">
-                                    <strong>{item.label}</strong>
-                                    <span>{item.detail}</span>
-                                    <code>{item.href}</code>
-                                    <small>{item.identifier}</small>
-                                  </span>
-                                </a>
-                              );
-                            })}
-                          </span>
-                        )}
-                      </span>
-                    </li>
-                  );
-                })}
-              </ol>
-
-              <p className="nori-session-footnote">
-                Nori quotes each job, the docs treasury locks the funds in escrow, and the result hash settles
-                on-chain &mdash; the same lifecycle every Masumi agent uses in production.
-              </p>
-            </div>
-          </aside>
+          <NoriPaymentTrace
+            taskPhase={taskPhase}
+            taskDetails={taskDetails}
+            hasAnswerStarted={Boolean(hasAnswerStarted)}
+            isStreaming={isStreaming}
+            hasLastMessageError={hasLastMessageError}
+          />
         </div>
       )}
     </section>
