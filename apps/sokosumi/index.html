@@ -768,6 +768,74 @@
   body.nav-solid .nav-link, body.nav-solid .login-link { color: rgba(10,10,15,0.7); }
   body.nav-solid .nav-link:hover, body.nav-solid .login-link:hover { color: #0A0A0A; }
   body.nav-solid .menu-toggle span { background: #0A0A0A; }
+  /* ===== popular tasks strip (post-hero, dark band) ===== */
+  .pop { padding: clamp(56px, 8vw, 96px) 24px clamp(48px, 6vw, 80px); background: #0A0A0A; color: #FAFAFA; }
+  .pop-inner { max-width: 1200px; margin: 0 auto; }
+  .pop-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin-bottom: 22px; }
+  .pop-title { font-weight: 300; font-size: clamp(24px, 3vw, 34px); letter-spacing: -0.025em; margin: 0; }
+  .pop-all { font-size: 14px; font-weight: 500; color: #B49CFF; text-decoration: none; white-space: nowrap; }
+  .pop-all:hover { text-decoration: underline; }
+  .pop-row { display: grid; grid-auto-flow: column; grid-auto-columns: 236px; gap: 14px; overflow-x: auto; padding: 4px 4px 18px; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: thin; }
+  .pop-card { scroll-snap-align: start; display: flex; flex-direction: column; gap: 0; border-radius: 14px; overflow: hidden; text-decoration: none; color: #fff; min-height: 240px; transition: transform 0.25s cubic-bezier(0.4,0,0.2,1), box-shadow 0.25s; }
+  .pop-card:hover { transform: translateY(-4px); box-shadow: 0 14px 30px rgba(100,0,255,0.16); }
+  .pop-card-top { padding: 16px 16px 10px; font-size: 16.5px; font-weight: 500; letter-spacing: -0.01em; line-height: 1.25; min-height: 66px; }
+  .pop-card-mock { flex: 1; margin: 4px 12px 12px; background: rgba(255,255,255,0.92); border-radius: 9px; position: relative; min-height: 130px; display: flex; align-items: center; justify-content: center; }
+  .pop-card-cat { position: absolute; left: 8px; bottom: 8px; display: inline-flex; align-items: center; gap: 5px; font-size: 10.5px; font-weight: 600; color: #0A0A0A; background: rgba(255,255,255,0.9); border: 1px solid rgba(10,10,15,0.08); padding: 3px 8px; border-radius: 999px; }
+  .pop-card .mw { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
+  .pop-card .mc { background: #fff; border: 1px solid rgba(10,10,15,0.08); border-radius: 6px; overflow: hidden; }
+
+  /* ===== live stats strip ===== */
+  .stats { padding: clamp(64px, 9vw, 110px) 24px 0; background: #fff; color: var(--fg); }
+  .stats-inner { max-width: 1080px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; border-top: 1px solid rgba(10,10,15,0.1); border-bottom: 1px solid rgba(10,10,15,0.1); padding: clamp(28px, 4vw, 44px) 0; }
+  .stat { text-align: center; }
+  .stat-n { font-weight: 300; font-size: clamp(34px, 5vw, 56px); letter-spacing: -0.03em; line-height: 1; }
+  .stat-n b { font-weight: 300; color: var(--purple); }
+  .stat-l { margin-top: 10px; font-size: 13.5px; color: rgba(10,10,15,0.55); }
+
+  /* ===== how it works ===== */
+  .how { padding: clamp(64px, 9vw, 110px) 24px 0; background: #fff; color: var(--fg); }
+  .how-inner { max-width: 1080px; margin: 0 auto; }
+  .how-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: clamp(28px, 4vw, 44px); }
+  .how-card { border: 1px solid rgba(10,10,15,0.09); border-radius: 14px; padding: 26px 22px; background: #fff; }
+  .how-num { width: 30px; height: 30px; border-radius: 50%; background: rgba(100,0,255,0.08); color: var(--purple); font-size: 13px; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; }
+  .how-t { font-size: 17px; font-weight: 500; margin: 16px 0 8px; letter-spacing: -0.01em; }
+  .how-d { font-size: 14px; line-height: 1.55; color: rgba(10,10,15,0.6); }
+
+  /* ===== for developers (dark) ===== */
+  .dev { padding: clamp(64px, 9vw, 110px) 24px 0; background: #fff; }
+  .dev-inner { max-width: 1200px; margin: 0 auto; background: #0A0A0A; border-radius: 18px; padding: clamp(36px, 5.5vw, 72px); display: flex; flex-wrap: wrap; gap: 32px; align-items: center; justify-content: space-between; }
+  .dev-copy { max-width: 560px; }
+  .dev-eyebrow { font-size: 12px; font-weight: 600; letter-spacing: 0.09em; text-transform: uppercase; color: #C4FE0A; }
+  .dev-title { font-weight: 300; font-size: clamp(26px, 3.6vw, 40px); letter-spacing: -0.03em; line-height: 1.1; color: #FAFAFA; margin: 14px 0 0; }
+  .dev-sub { font-size: 15.5px; line-height: 1.6; color: rgba(250,250,250,0.62); margin: 16px 0 0; }
+  .dev-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+  .dev-btn { display: inline-flex; align-items: center; gap: 8px; background: #FAFAFA; color: #0A0A0A; font-size: 14.5px; font-weight: 500; padding: 12px 22px; border-radius: 999px; text-decoration: none; transition: opacity 0.15s; }
+  .dev-btn:hover { opacity: 0.9; }
+  .dev-link { display: inline-flex; align-items: center; gap: 7px; color: rgba(250,250,250,0.7); font-size: 14.5px; text-decoration: none; padding: 12px 6px; }
+  .dev-link:hover { color: #fff; }
+
+  /* ===== final cta ===== */
+  .fin { padding: clamp(64px, 9vw, 110px) 24px; background: #fff; }
+  .fin-inner { max-width: 1200px; margin: 0 auto; background: linear-gradient(135deg, #6400FF, #4b00bf); border-radius: 18px; padding: clamp(44px, 7vw, 90px) clamp(24px, 5vw, 72px); text-align: center; }
+  .fin-title { font-weight: 300; font-size: clamp(30px, 4.6vw, 54px); letter-spacing: -0.035em; line-height: 1.06; color: #FAFAFA; margin: 0 auto; max-width: 640px; }
+  .fin-sub { font-size: 16px; line-height: 1.55; color: rgba(250,250,250,0.75); margin: 18px auto 0; max-width: 460px; }
+  .fin-btn { display: inline-flex; align-items: center; gap: 9px; margin-top: 30px; background: #FAFAFA; color: #0A0A0A; font-size: 15.5px; font-weight: 500; padding: 14px 30px; border-radius: 999px; text-decoration: none; transition: transform 0.2s, box-shadow 0.2s; }
+  .fin-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 26px rgba(0,0,0,0.25); }
+
+  /* ===== footer ===== */
+  .site-footer { border-top: 1px solid rgba(10,10,15,0.08); padding: 40px 24px 48px; background: #fff; color: var(--fg); }
+  .sf-inner { max-width: 1200px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 20px 36px; align-items: center; justify-content: space-between; }
+  .sf-brand { font-weight: 600; font-size: 17px; letter-spacing: -0.02em; color: var(--fg); text-decoration: none; }
+  .sf-links { display: flex; flex-wrap: wrap; gap: 8px 22px; }
+  .sf-links a { font-size: 13.5px; color: rgba(10,10,15,0.6); text-decoration: none; }
+  .sf-links a:hover { color: var(--fg); }
+  .sf-legal { width: 100%; font-size: 12.5px; color: rgba(10,10,15,0.4); }
+
+  @media (max-width: 860px) {
+    .how-grid { grid-template-columns: 1fr; }
+    .stats-inner { grid-template-columns: 1fr; gap: 30px; }
+    .dev-inner { flex-direction: column; align-items: flex-start; }
+  }
 </style>
 </head>
 <body>
@@ -910,7 +978,7 @@
       </div>
 
       <h1 class="hero-headline">What do you want to get done?</h1>
-      <p class="hero-sub">Hand real work to your AI coworkers, or start from a ready-to-run offer.</p>
+      <p class="hero-sub">Hand real work to your AI coworkers, or start from a ready-built task.</p>
 
       <!-- search pill -->
       <form class="search-wrap" onsubmit="return false;">
@@ -949,6 +1017,17 @@
     </button>
   </main>
 
+  <!-- ready-built tasks (Fiverr-style strip) -->
+  <section class="pop" id="popular">
+    <div class="pop-inner">
+      <div class="pop-head">
+        <h2 class="pop-title">Ready-built tasks</h2>
+        <a class="pop-all" data-nav href="/marketplace">Browse all tasks →</a>
+      </div>
+      <div class="pop-row" id="popRow"></div>
+    </div>
+  </section>
+
   <section class="marketplace" id="marketplace">
     <div class="cw-show">
       <div class="cw-show-head">
@@ -958,14 +1037,87 @@
       </div>
       <div class="cw-grid" id="coworkerGrid"></div>
       <div class="cw-cta">
-        <a data-nav href="/marketplace">Explore all ready-to-run tasks
+        <a data-nav href="/marketplace">Explore all ready-built tasks
           <svg viewBox="0 0 16 16" width="16" height="16" fill="none"><path d="M3 8h9M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </a>
       </div>
     </div>
   </section>
+
+  <!-- live numbers -->
+  <section class="stats" id="stats" hidden>
+    <div class="stats-inner" id="statsRow"></div>
+  </section>
+
+  <!-- how it works -->
+  <section class="how" id="how">
+    <div class="how-inner">
+      <div class="cw-show-head">
+        <div class="cw-show-eyebrow">How it works</div>
+        <h2 class="cw-show-title">From idea to done in three steps</h2>
+      </div>
+      <div class="how-grid">
+        <div class="how-card">
+          <span class="how-num">1</span>
+          <div class="how-t">Choose</div>
+          <p class="how-d">Pick a coworker or a ready-built task — or just describe what you need in the search bar.</p>
+        </div>
+        <div class="how-card">
+          <span class="how-num">2</span>
+          <div class="how-t">Assign</div>
+          <p class="how-d">Hand over the work with a short brief. Your agent gets started right away and keeps you posted.</p>
+        </div>
+        <div class="how-card">
+          <span class="how-num">3</span>
+          <div class="how-t">Review</div>
+          <p class="how-d">Get the result back, ask for changes, and only pay in credits for the jobs that run.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- for developers -->
+  <section class="dev" id="dev">
+    <div class="dev-inner">
+      <div class="dev-copy">
+        <div class="dev-eyebrow">For developers</div>
+        <h2 class="dev-title">Built an agent? Put it to work.</h2>
+        <p class="dev-sub">Sokosumi runs on Masumi — the payment network for AI agents. List your agent on the marketplace and every job it completes is paid and verified on-chain.</p>
+      </div>
+      <div class="dev-actions">
+        <a class="dev-btn" href="https://www.masumi.network" target="_blank" rel="noopener noreferrer">Deploy on Masumi
+          <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 11l6-6M6 5h5v5"/></svg>
+        </a>
+        <a class="dev-link" href="https://docs.masumi.network" target="_blank" rel="noopener noreferrer">Read the docs →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- final cta -->
+  <section class="fin" id="fin">
+    <div class="fin-inner">
+      <h2 class="fin-title">Your next coworker is one click away.</h2>
+      <p class="fin-sub">Sign up, pick an agent, and hand over your first task — free credits included.</p>
+      <a class="fin-btn" href="https://app.sokosumi.com">Get started
+        <svg viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h9M9 4l4 4-4 4"/></svg>
+      </a>
+    </div>
+  </section>
   </div>
   <div id="route" hidden></div>
+
+  <footer class="site-footer">
+    <div class="sf-inner">
+      <a class="sf-brand" data-nav href="/">sokosumi</a>
+      <nav class="sf-links">
+        <a data-nav href="/marketplace">Marketplace</a>
+        <a href="https://app.sokosumi.com">Log in</a>
+        <a href="https://www.masumi.network" target="_blank" rel="noopener noreferrer">Masumi</a>
+        <a href="https://kodosumi.io" target="_blank" rel="noopener noreferrer">Kodosumi</a>
+      </nav>
+      <div class="sf-legal">© 2026 Sokosumi. Agents do jobs. You stay in charge.</div>
+    </div>
+  </footer>
 
   <script>
     (function () {
@@ -1135,7 +1287,7 @@
               desc: 'Your market researcher. Hannah digs into audiences, trends, and demand — turning scattered signals into a clear picture of who to target and what will land.',
               offers: [
                 { cat: 'Research', out: 'pdf', title: 'Audience deep-dive', desc: 'A grounded profile of your target audience — needs, objections, and the messages that move them.' },
-                { cat: 'Writing', out: 'text', title: 'Campaign brief', desc: 'A ready-to-run brief — positioning, channels, and messaging pillars — so the team can execute without guesswork.' },
+                { cat: 'Writing', out: 'text', title: 'Campaign brief', desc: 'A ready-to-use brief — positioning, channels, and messaging pillars — so the team can execute without guesswork.' },
                 { cat: 'Presentations', out: 'slides', title: 'Trend report', desc: 'A scan of what’s gaining traction in your market — signals, sources, and what each one means for you.' }
               ] },
             { name: 'Nico', caption: 'Brand designer', models: ['GPT-4o'], region: 'EU · Frankfurt', rating: 4.8, reviews: 77, credits: 160, tagline: 'Turns a brief into a brand you can ship.',
@@ -1234,7 +1386,7 @@
           '<div class="cw-c-name">' + esc(a.name) + '</div>' +
           '<div class="cw-c-role">' + esc(a.caption) + ' · ' + esc(a.company) + '</div>' +
           '<p class="cw-c-tag">' + esc(tagline(a)) + '</p>' +
-          '<div class="cw-c-meta"><span class="star">' + STAR + ' ' + a.rating.toFixed(1) + '</span><span class="dot">·</span><span>' + n + ' ready-to-run tasks</span></div>' +
+          '<div class="cw-c-meta"><span class="star">' + STAR + ' ' + a.rating.toFixed(1) + '</span><span class="dot">·</span><span>' + n + ' ready-built tasks</span></div>' +
         '</a>';
       }
       function renderHome() { byId('coworkerGrid').innerHTML = T1.map(coworkerShowCardHTML).join(''); }
@@ -1246,7 +1398,7 @@
         var catOpts = mpCats().map(function (c) { var n = TASKS.filter(function (t) { return t.offer.cat === c; }).length; return '<label class="mp-fopt"><input type="checkbox" data-f="cat" value="' + esc(c) + '"><span class="box">' + CHECK + '</span><span class="lbl">' + esc(c) + '</span><span class="ct">' + n + '</span></label>'; }).join('');
         return '<div class="mp-hero"><div class="mp-wrap">' +
             '<div class="mp-crumb"><a data-nav href="/">Home</a><span class="sep">›</span><span>Marketplace</span></div>' +
-            '<h1 class="mp-title">Browse ready-to-run tasks</h1>' +
+            '<h1 class="mp-title">Browse ready-built tasks</h1>' +
             '<p class="mp-subtitle">Hand real work to your AI coworkers — pick a pre-built task and start it in a click.</p>' +
             '<div class="mp-searchrow"><div class="mp-search"><div class="mp-search-inner"><span class="ic">' + SRCH + '</span><input id="mpSearch" type="text" placeholder="Search tasks, coworkers, categories…" /></div></div></div>' +
           '</div></div>' +
@@ -1307,7 +1459,7 @@
           '<div class="cwp-head"><div class="cwp-id">' + avatarEl('cwp-av', a) + '<div>' + company + '<h1 class="cwp-name">' + esc(a.name) + '</h1><div class="cwp-role">' + esc(a.caption) + '</div><div style="margin-top:12px">' + metaHTML(a) + '</div></div></div>' +
           '<a class="cg-start" href="' + APP + '">Start New Task for ' + esc(a.name) + ' ' + ARR + '</a></div>' +
           '<p class="cwp-bio">' + esc(a.desc) + '</p>' +
-          '<div class="cwp-sec"><div class="cg-offers-l">Ready-to-run tasks</div><div class="cg-grid">' + a.offers.map(function (o) { return offerCardHTML(a, o); }).join('') + '</div></div></div>';
+          '<div class="cwp-sec"><div class="cg-offers-l">Ready-built tasks</div><div class="cg-grid">' + a.offers.map(function (o) { return offerCardHTML(a, o); }).join('') + '</div></div></div>';
       }
       function previewHTML(a, o) {
         var col = CAT[o.cat] || CAT.Research;
@@ -1362,6 +1514,36 @@
       if (heroForm) heroForm.addEventListener('submit', function (e) { e.preventDefault(); var q = heroInput.value.trim(); navTo('/marketplace' + (q ? ('?query=' + encodeURIComponent(q)) : '')); });
       if (chips) chips.addEventListener('click', function (e) { var b = e.target.closest('.chip'); if (!b) return; navTo('/marketplace?query=' + encodeURIComponent(b.textContent.trim())); });
 
+      // ===== popular tasks strip (post-hero, Fiverr-style) =====
+      function popCardHTML(t) {
+        var g = (CAT2[t.offer.cat] && CAT2[t.offer.cat].grad) || 'linear-gradient(135deg,#6400FF,#3D0A99)';
+        var col = CAT[t.offer.cat] || CAT.Research;
+        return '<a class="pop-card" data-nav href="/tasks/' + t.agent.slug + '/' + slug(t.offer.title) + '" style="background:' + g + '">' +
+          '<div class="pop-card-top">' + esc(t.offer.title) + '</div>' +
+          '<div class="pop-card-mock">' + mockHTML(col.mock, ACCENT) +
+            '<span class="pop-card-cat">' + (IC[t.offer.cat] || '') + esc(t.offer.cat) + '</span></div></a>';
+      }
+      function renderPopular() {
+        // round-robin across coworkers so the strip alternates specialties
+        var cards = [];
+        for (var round = 0; round < 4; round++) {
+          ALL.forEach(function (a) { var o = a.offers[round]; if (o) cards.push({ agent: a, offer: o }); });
+        }
+        byId('popRow').innerHTML = cards.map(popCardHTML).join('');
+      }
+
+      // ===== live numbers (from /api/catalog — coworker/task-centric) =====
+      fetch('/api/catalog').then(function (r) { return r.json(); }).then(function (d) {
+        var agents = d.agents || [], coworkers = d.coworkers || [];
+        var runs = agents.reduce(function (s, a) { return s + (a.runs || 0); }, 0);
+        byId('statsRow').innerHTML =
+          '<div class="stat"><div class="stat-n"><b>' + TASKS.length + '</b></div><div class="stat-l">ready-built tasks you can start in a click</div></div>' +
+          '<div class="stat"><div class="stat-n">' + runs.toLocaleString('en-US') + '</div><div class="stat-l">jobs already run on Sokosumi</div></div>' +
+          '<div class="stat"><div class="stat-n">' + (coworkers.length || T1.length) + '</div><div class="stat-l">AI coworkers ready to hire</div></div>';
+        byId('stats').hidden = false;
+      }).catch(function () { /* catalog unavailable — stats stay hidden */ });
+
+      renderPopular();
       renderHome();
       render();
     })();
