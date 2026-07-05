@@ -148,8 +148,20 @@ export default function Header({ product = "sokosumi", topBanner }: { product?: 
 
           {product === "sokosumi" ? (
             <nav className="hidden lg:flex items-center h-[74px]">
-              <Link href="/press" className="text-[14px] font-normal text-black hover:text-black/60 transition-colors px-[15px] h-full flex items-center">
-                Press
+              <Link href="/marketplace" className="text-[14px] font-normal text-black hover:text-black/60 transition-colors px-[15px] h-full flex items-center">
+                Marketplace
+              </Link>
+              <Link href="/tasks" className="text-[14px] font-normal text-black hover:text-black/60 transition-colors px-[15px] h-full flex items-center">
+                Tasks
+              </Link>
+              <Link href="/pricing" className="text-[14px] font-normal text-black hover:text-black/60 transition-colors px-[15px] h-full flex items-center">
+                Pricing
+              </Link>
+              <Link href="/faq" className="text-[14px] font-normal text-black hover:text-black/60 transition-colors px-[15px] h-full flex items-center">
+                FAQ
+              </Link>
+              <Link href="/about" className="text-[14px] font-normal text-black hover:text-black/60 transition-colors px-[15px] h-full flex items-center">
+                About
               </Link>
             </nav>
           ) : product === "masumi" ? (
@@ -189,7 +201,7 @@ export default function Header({ product = "sokosumi", topBanner }: { product?: 
                 </Link>
                 <Link href="https://app.sokosumi.com"
                   className="hidden lg:block bg-black text-white text-[14px] font-normal px-6 py-2 rounded-full hover:bg-black/85 transition-colors">
-                  Get started
+                  Sign up
                 </Link>
               </>
             ) : product === "masumi" ? (
@@ -224,15 +236,27 @@ export default function Header({ product = "sokosumi", topBanner }: { product?: 
           <nav className="relative flex flex-col px-6 pt-8 gap-1">
             {product === "sokosumi" ? (
               <>
-                <Link href="/press" onClick={() => setMobileMenuOpen(false)} className="text-[18px] text-black py-3 border-b border-black/[0.06]">
-                  Press
+                <Link href="/marketplace" onClick={() => setMobileMenuOpen(false)} className="text-[18px] text-black py-3 border-b border-black/[0.06]">
+                  Marketplace
+                </Link>
+                <Link href="/tasks" onClick={() => setMobileMenuOpen(false)} className="text-[18px] text-black py-3 border-b border-black/[0.06]">
+                  Tasks
+                </Link>
+                <Link href="/pricing" onClick={() => setMobileMenuOpen(false)} className="text-[18px] text-black py-3 border-b border-black/[0.06]">
+                  Pricing
+                </Link>
+                <Link href="/faq" onClick={() => setMobileMenuOpen(false)} className="text-[18px] text-black py-3 border-b border-black/[0.06]">
+                  FAQ
+                </Link>
+                <Link href="/about" onClick={() => setMobileMenuOpen(false)} className="text-[18px] text-black py-3 border-b border-black/[0.06]">
+                  About
                 </Link>
                 <Link href="https://app.sokosumi.com" onClick={() => setMobileMenuOpen(false)} className="text-[18px] text-black py-3 border-b border-black/[0.06]">
                   Log in
                 </Link>
                 <Link href="https://app.sokosumi.com" onClick={() => setMobileMenuOpen(false)}
                   className="mt-6 bg-black text-white text-[14px] font-normal px-6 py-3 rounded-full text-center">
-                  Get started
+                  Sign up
                 </Link>
               </>
             ) : product === "masumi" ? (
