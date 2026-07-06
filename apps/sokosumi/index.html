@@ -3,54 +3,269 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Sokosumi</title>
+    <title>Sokosumi — The only AI tool for marketing you'll ever need</title>
+    <meta name="description" content="Sokosumi is the marketplace where marketing teams hire specialized AI agents for real marketing work." />
+    <!-- WIP redesign — keep out of the index until launch -->
     <meta name="robots" content="noindex" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
     <style>
       :root {
-        --ink: #0e0e0f;
-        --accent: #6400ff;
+        --ink: #0a0a0a;
+        --purple: #6400ff;
+        --on-purple: #fafafa;
+        --font: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
       }
       * { margin: 0; box-sizing: border-box; }
       html, body { height: 100%; }
       body {
+        font-family: var(--font);
+        color: #fff;
+        background: var(--ink);
+        -webkit-font-smoothing: antialiased;
+      }
+
+      /* ===== hero ===== */
+      .hero {
+        position: relative;
+        min-height: 100svh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+      .hero__video {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: 0;
+      }
+      .hero__scrim {
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        background:
+          radial-gradient(90% 70% at 50% 55%, rgba(5, 2, 12, 0.55), rgba(5, 2, 12, 0.25) 70%),
+          linear-gradient(to bottom, rgba(5, 2, 12, 0.55), rgba(5, 2, 12, 0.1) 30%, rgba(5, 2, 12, 0.45) 100%);
+      }
+
+      /* ===== nav ===== */
+      .nav {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 26px clamp(20px, 4vw, 48px);
+      }
+      .nav__mark img {
+        height: 20px;
+        width: auto;
+        display: block;
+        filter: brightness(0) invert(1); /* black wordmark → white on video */
+      }
+      .nav__actions { display: flex; align-items: center; gap: 22px; }
+      .nav__login {
+        color: rgba(255, 255, 255, 0.85);
+        font-size: 14.5px;
+        text-decoration: none;
+        transition: color 0.15s;
+      }
+      .nav__login:hover { color: #fff; }
+      .nav__signup {
+        background: var(--purple);
+        color: var(--on-purple);
+        font-size: 14.5px;
+        font-weight: 500;
+        text-decoration: none;
+        padding: 10px 22px;
+        border-radius: 999px;
+        transition: transform 0.2s, box-shadow 0.2s;
+      }
+      .nav__signup:hover { transform: translateY(-1px); box-shadow: 0 8px 22px rgba(100, 0, 255, 0.45); }
+
+      /* ===== center content ===== */
+      .hero__inner {
+        position: relative;
+        z-index: 2;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 24px 20px 96px;
+      }
+      .hero__title {
+        font-weight: 300;
+        font-size: clamp(2.4rem, 6.4vw, 4.6rem);
+        line-height: 1.06;
+        letter-spacing: -0.035em;
+        max-width: 17ch;
+        text-wrap: balance;
+        text-shadow: 0 2px 24px rgba(0, 0, 0, 0.35);
+      }
+
+      .search {
+        margin-top: clamp(28px, 4.5vw, 44px);
+        width: min(640px, 100%);
+        display: flex;
+        align-items: stretch;
+        background: #fff;
+        border-radius: 999px;
+        padding: 6px;
+        box-shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
+      }
+      .search__icon {
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        padding-left: 18px;
+        color: rgba(10, 10, 10, 0.45);
+      }
+      .search input {
+        flex: 1;
+        min-width: 0;
+        border: 0;
+        outline: none;
+        background: transparent;
+        font: 400 16.5px var(--font);
+        color: var(--ink);
+        padding: 14px 14px;
+      }
+      .search input::placeholder { color: rgba(10, 10, 10, 0.42); }
+      .search button {
+        flex-shrink: 0;
+        border: 0;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: var(--purple);
+        color: var(--on-purple);
+        font: 500 15px var(--font);
+        padding: 0 26px;
+        border-radius: 999px;
+        transition: background 0.15s;
+      }
+      .search button:hover { background: #5502d6; }
+      .search input:focus-visible { outline: none; }
+      .search:focus-within { box-shadow: 0 18px 50px rgba(0, 0, 0, 0.35), 0 0 0 3px rgba(100, 0, 255, 0.45); }
+
+      /* video pause/play (a11y for motion) */
+      .vid-toggle {
+        position: absolute;
+        z-index: 2;
+        right: 22px;
+        bottom: 22px;
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        border: 1px solid rgba(255, 255, 255, 0.35);
+        background: rgba(10, 10, 10, 0.35);
+        color: #fff;
         display: flex;
         align-items: center;
         justify-content: center;
-        min-height: 100vh;
-        background: #fff;
-        color: var(--ink);
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Helvetica, Arial, sans-serif;
-        -webkit-font-smoothing: antialiased;
-        text-align: center;
-        padding: 24px;
+        cursor: pointer;
+        backdrop-filter: blur(6px);
+        transition: background 0.15s;
       }
-      .wrap { max-width: 480px; }
-      .mark {
-        display: inline-block;
-        width: 12px;
-        height: 12px;
-        border-radius: 50%;
-        background: var(--accent);
-        margin-bottom: 28px;
+      .vid-toggle:hover { background: rgba(10, 10, 10, 0.6); }
+      .vid-toggle svg { width: 15px; height: 15px; }
+
+      :focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+
+      @media (max-width: 560px) {
+        .search button span { display: none; }  /* icon-only submit on small screens */
+        .search button { padding: 0 18px; }
+        .nav__login { display: none; }
       }
-      h1 {
-        font-size: clamp(28px, 6vw, 44px);
-        font-weight: 600;
-        letter-spacing: -0.02em;
-      }
-      p {
-        margin-top: 14px;
-        font-size: 16px;
-        line-height: 1.6;
-        color: rgba(14, 14, 15, 0.55);
+      @media (prefers-reduced-motion: reduce) {
+        .nav__signup, .search button { transition: none; }
       }
     </style>
   </head>
   <body>
-    <div class="wrap">
-      <span class="mark" aria-hidden="true"></span>
-      <h1>Sokosumi</h1>
-      <p>Something new is on the way.</p>
-    </div>
+    <main class="hero">
+      <video
+        class="hero__video"
+        id="bgVideo"
+        muted
+        loop
+        playsinline
+        autoplay
+        preload="auto"
+        poster="/assets/hero-poster.jpg"
+        aria-hidden="true"
+      >
+        <source src="/assets/hero-bg.mp4" type="video/mp4" />
+      </video>
+      <div class="hero__scrim" aria-hidden="true"></div>
+
+      <nav class="nav" aria-label="Main">
+        <a class="nav__mark" href="/" aria-label="Sokosumi">
+          <img src="/assets/sokosumi-wordmark.svg" alt="Sokosumi" width="160" height="21" />
+        </a>
+        <div class="nav__actions">
+          <a class="nav__login" href="https://app.sokosumi.com/signin">Log in</a>
+          <a class="nav__signup" href="https://app.sokosumi.com">Sign up</a>
+        </div>
+      </nav>
+
+      <div class="hero__inner">
+        <h1 class="hero__title">The only AI tool for marketing you&rsquo;ll ever need.</h1>
+
+        <form class="search" action="https://app.sokosumi.com" method="get" role="search">
+          <span class="search__icon" aria-hidden="true">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none">
+              <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2" />
+              <path d="M20.5 20.5 16.2 16.2" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            </svg>
+          </span>
+          <input type="text" name="q" placeholder="What do you want to get done?" aria-label="Search marketing tasks and agents" autocomplete="off" />
+          <button type="submit">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M4 12h15M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            <span>Search</span>
+          </button>
+        </form>
+      </div>
+
+      <button class="vid-toggle" id="vidToggle" type="button" aria-label="Pause background video" aria-pressed="false">
+        <svg id="vidIcon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <rect x="6" y="5" width="4" height="14" rx="1" />
+          <rect x="14" y="5" width="4" height="14" rx="1" />
+        </svg>
+      </button>
+    </main>
+
+    <script>
+      (function () {
+        var video = document.getElementById("bgVideo");
+        var toggle = document.getElementById("vidToggle");
+        var icon = document.getElementById("vidIcon");
+        var PAUSE = '<rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/>';
+        var PLAY = '<path d="M8 5v14l11-7z"/>';
+        var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+        function setState(playing) {
+          icon.innerHTML = playing ? PAUSE : PLAY;
+          toggle.setAttribute("aria-pressed", String(!playing));
+          toggle.setAttribute("aria-label", playing ? "Pause background video" : "Play background video");
+        }
+        if (reduce) { video.pause(); setState(false); }
+        else { video.play().catch(function () { setState(false); }); }
+
+        toggle.addEventListener("click", function () {
+          if (video.paused) { video.play(); setState(true); }
+          else { video.pause(); setState(false); }
+        });
+      })();
+    </script>
   </body>
 </html>
