@@ -22,6 +22,8 @@ const AI_STREAM_HEADERS = {
   'x-vercel-ai-ui-message-stream': 'v1',
 };
 
+const NORI_UPSTREAM_MAX_ATTEMPTS = 2;
+
 type ChatRole = 'user' | 'assistant' | 'system';
 
 interface HistoryMessage {
@@ -570,6 +572,54 @@ function safeHost(value: string) {
   }
 }
 
+function wait(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+async function fetchNoriUpstream(
+  ctx: NoriRequestContext,
+  agentUrl: string,
+  headers: Record<string, string>,
+  body: string,
+) {
+  let lastError: unknown;
+
+  for (let attempt = 1; attempt <= NORI_UPSTREAM_MAX_ATTEMPTS; attempt += 1) {
+    try {
+      const response = await fetch(agentUrl, {
+        method: 'POST',
+        headers,
+        body,
+      });
+
+      if (response.status >= 500 && attempt < NORI_UPSTREAM_MAX_ATTEMPTS) {
+        const detail = await response.text().catch(() => '');
+        logNoriEvent(ctx, 'warn', 'chat_upstream_retry', {
+          attempt,
+          status: response.status,
+          detail: detail.slice(0, 500),
+        });
+        await wait(300);
+        continue;
+      }
+
+      return response;
+    } catch (error) {
+      lastError = error;
+      logNoriEvent(ctx, attempt < NORI_UPSTREAM_MAX_ATTEMPTS ? 'warn' : 'error', 'chat_upstream_retry', {
+        attempt,
+        willRetry: attempt < NORI_UPSTREAM_MAX_ATTEMPTS,
+        error: errorDetails(error),
+      });
+
+      if (attempt >= NORI_UPSTREAM_MAX_ATTEMPTS) throw error;
+      await wait(300);
+    }
+  }
+
+  throw lastError;
+}
+
 export async function POST(request: NextRequest) {
   const ctx = createNoriRequestContext(request, 'nori.chat');
   let body: unknown;
@@ -626,11 +676,12 @@ export async function POST(request: NextRequest) {
       noriAgentHost: safeHost(agentUrl),
     });
 
-    const upstream = await fetch(agentUrl, {
-      method: 'POST',
+    const upstream = await fetchNoriUpstream(
+      ctx,
+      agentUrl,
       headers,
-      body: JSON.stringify(createSokosumiChatPayload(payload, message, docsContext)),
-    });
+      JSON.stringify(createSokosumiChatPayload(payload, message, docsContext)),
+    );
 
     const contentType = upstream.headers.get('content-type') ?? '';
     logNoriEvent(ctx, upstream.ok ? 'info' : 'warn', 'chat_upstream_response', {
