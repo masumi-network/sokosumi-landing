@@ -17,7 +17,7 @@ const entries = [
   {
     id: 'nori',
     href: '/',
-    label: 'Ask Nori',
+    label: 'ask Nori',
     description: 'Chat with the docs AI agent',
     tileClass: 'masumi-product-tile--nori',
     tileIcon: '/assets/nori-pfp.png',

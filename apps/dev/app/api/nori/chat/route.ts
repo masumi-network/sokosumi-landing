@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { canonicalDocsUrl, portalUrl } from '@/lib/base-path';
+import { getAllPages } from '@/lib/source';
 
 export const dynamic = 'force-dynamic';
 
@@ -77,9 +79,80 @@ function isTerminalSseBlock(block: string) {
   }
 }
 
-function closeOnTerminalEvent(body: ReadableStream<Uint8Array>) {
+function normalizeCitation(citation: Citation): Citation {
+  const normalized: Citation = { ...citation };
+
+  if (citation.url) {
+    normalized.url = canonicalDocsUrl(citation.url);
+  }
+
+  if (citation.path) {
+    const canonicalUrl = canonicalDocsUrl(citation.path);
+    if (/^https?:\/\//.test(canonicalUrl)) {
+      normalized.url ??= canonicalUrl;
+    } else {
+      normalized.path = canonicalUrl;
+    }
+  }
+
+  return normalized;
+}
+
+function normalizeNoriStreamData(data: unknown, eventName?: string): unknown {
+  if (!data || typeof data !== 'object' || Array.isArray(data)) return data;
+
+  const record = data as Record<string, unknown>;
+
+  if (record.type === 'data-citation' && record.data && typeof record.data === 'object') {
+    return {
+      ...record,
+      data: normalizeCitation(record.data as Citation),
+    };
+  }
+
+  if (eventName === 'citation') {
+    return normalizeCitation(record as Citation);
+  }
+
+  if (Array.isArray(record.citations)) {
+    return {
+      ...record,
+      citations: record.citations.map((item) =>
+        item && typeof item === 'object' ? normalizeCitation(item as Citation) : item,
+      ),
+    };
+  }
+
+  return data;
+}
+
+function normalizeSseBlock(block: string) {
+  const data = sseBlockData(block);
+  if (!data || data === '[DONE]') return `${block}\n\n`;
+
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(data);
+  } catch {
+    return `${block}\n\n`;
+  }
+
+  const eventName = block
+    .split(/\n/)
+    .find((line) => line.startsWith('event:'))
+    ?.slice(6)
+    .trim();
+  const normalized = normalizeNoriStreamData(parsed, eventName);
+  if (normalized === parsed) return `${block}\n\n`;
+
+  const passthroughLines = block.split(/\n/).filter((line) => !line.startsWith('data:'));
+  return `${[...passthroughLines, `data: ${JSON.stringify(normalized)}`].join('\n')}\n\n`;
+}
+
+function normalizeAndCloseOnTerminalEvent(body: ReadableStream<Uint8Array>) {
   const reader = body.getReader();
   const decoder = new TextDecoder();
+  const encoder = new TextEncoder();
   let buffer = '';
 
   return new ReadableStream<Uint8Array>({
@@ -89,18 +162,26 @@ function closeOnTerminalEvent(body: ReadableStream<Uint8Array>) {
           const { done, value } = await reader.read();
           if (done) break;
 
-          controller.enqueue(value);
           buffer += decoder.decode(value, { stream: true });
           const blocks = buffer.split(/\n\n/);
           buffer = blocks.at(-1) ?? '';
 
-          if (blocks.slice(0, -1).some(isTerminalSseBlock)) {
+          let shouldClose = false;
+          for (const block of blocks.slice(0, -1)) {
+            controller.enqueue(encoder.encode(normalizeSseBlock(block)));
+            if (isTerminalSseBlock(block)) shouldClose = true;
+          }
+
+          if (shouldClose) {
             await reader.cancel().catch(() => undefined);
             break;
           }
         }
 
         buffer += decoder.decode();
+        if (buffer.trim()) {
+          controller.enqueue(encoder.encode(normalizeSseBlock(buffer)));
+        }
         controller.close();
       } catch (error) {
         controller.error(error);
@@ -213,7 +294,11 @@ function normalizeIncomingMessages(value: unknown): Array<ReturnType<typeof toSo
     .filter((item): item is ReturnType<typeof toSokosumiMessage> => Boolean(item));
 }
 
-function createSokosumiChatPayload(payload: Record<string, unknown>, message: string) {
+function createSokosumiChatPayload(
+  payload: Record<string, unknown>,
+  message: string,
+  docsContext = createNoriDocsContext(),
+) {
   const history = normalizeHistory(payload.history);
   const incomingMessages = normalizeIncomingMessages(payload.messages);
   const messages =
@@ -228,10 +313,12 @@ function createSokosumiChatPayload(payload: Record<string, unknown>, message: st
     agentId: 'nori',
     coworker: 'nori',
     coworker_slug: 'nori',
-    source: 'masumi-docs',
+    source: 'masumi-dev-portal',
     surface: 'docs',
     credits: 0.25,
     messages: history,
+    docsContext,
+    docs_context: docsContext,
     ...(payload.page && typeof payload.page === 'object' ? { page: payload.page } : {}),
   };
 
@@ -242,12 +329,43 @@ function createSokosumiChatPayload(payload: Record<string, unknown>, message: st
     input: message,
     prompt: message,
     history,
+    docsContext,
+    docs_context: docsContext,
     ...(payload.page && typeof payload.page === 'object' ? { page: payload.page } : {}),
     metadata,
     agentId: 'nori',
     surface: 'docs',
     ...(typeof payload.conversationId === 'string' ? { conversationId: payload.conversationId } : {}),
     ...(typeof payload.model === 'string' ? { model: payload.model } : {}),
+  };
+}
+
+function createNoriDocsContext() {
+  const pages = getAllPages();
+
+  return {
+    name: 'Masumi Developer Portal',
+    canonicalBaseUrl: portalUrl,
+    products: ['masumi', 'sokosumi'],
+    pageCount: pages.length,
+    machineReadable: {
+      conciseIndexUrl: `${portalUrl}/llms.txt`,
+      fullCorpusUrl: `${portalUrl}/llms-full.txt`,
+      markdownIndexUrl: `${portalUrl}/md-index`,
+      perPageMarkdownPattern: `${portalUrl}/<path>.md`,
+    },
+    requiredFreshPages: [
+      `${portalUrl}/sokosumi/documentation/coworkers`,
+      `${portalUrl}/sokosumi/documentation/pysokosumi`,
+      `${portalUrl}/masumi/documentation/get-started/masumi-as-a-service`,
+    ],
+    requiredFreshMarkdown: [
+      `${portalUrl}/sokosumi/documentation/coworkers.md`,
+      `${portalUrl}/sokosumi/documentation/pysokosumi.md`,
+      `${portalUrl}/masumi/documentation/get-started/masumi-as-a-service.md`,
+    ],
+    citationPolicy:
+      `Return human-facing documentation citations under ${portalUrl}/masumi/... or ${portalUrl}/sokosumi/... only.`,
   };
 }
 
@@ -280,10 +398,13 @@ function answerFromRecord(record: Record<string, unknown>, fallback: unknown): s
 }
 
 function pathFromSource(source: string) {
-  if (/^https?:\/\//.test(source)) return { url: source };
+  const canonicalUrl = canonicalDocsUrl(source);
+  if (/^https?:\/\//.test(canonicalUrl)) return { url: canonicalUrl };
 
   const normalized = source
+    .replace(/^apps\/dev\//, '')
     .replace(/^content\/docs\//, '')
+    .replace(/^content\//, '')
     .replace(/\.(mdx|md)$/i, '')
     .replace(/\/index$/i, '');
 
@@ -292,10 +413,11 @@ function pathFromSource(source: string) {
 }
 
 function pushCitation(citations: Citation[], seen: Set<string>, citation: Citation) {
-  const key = citation.url || citation.path || `${citation.title ?? ''}:${citation.section ?? ''}`;
+  const normalizedCitation = normalizeCitation(citation);
+  const key = normalizedCitation.url || normalizedCitation.path || `${normalizedCitation.title ?? ''}:${normalizedCitation.section ?? ''}`;
   if (!key || seen.has(key)) return;
   seen.add(key);
-  citations.push(citation);
+  citations.push(normalizedCitation);
 }
 
 function collectToolCitations(value: unknown, citations: Citation[], seen: Set<string>) {
@@ -451,11 +573,17 @@ export async function POST(request: NextRequest) {
     headers.Authorization = `Bearer ${noriApiKey}`;
   }
 
+  const docsContext = createNoriDocsContext();
+  headers['X-Nori-Docs-Base-Url'] = docsContext.canonicalBaseUrl;
+  headers['X-Nori-Docs-Index-Url'] = docsContext.machineReadable.conciseIndexUrl;
+  headers['X-Nori-Docs-Full-Corpus-Url'] = docsContext.machineReadable.fullCorpusUrl;
+  headers['X-Nori-Docs-Markdown-Index-Url'] = docsContext.machineReadable.markdownIndexUrl;
+
   try {
     const upstream = await fetch(agentUrl, {
       method: 'POST',
       headers,
-      body: JSON.stringify(createSokosumiChatPayload(payload, message)),
+      body: JSON.stringify(createSokosumiChatPayload(payload, message, docsContext)),
     });
 
     const contentType = upstream.headers.get('content-type') ?? '';
@@ -473,7 +601,7 @@ export async function POST(request: NextRequest) {
       const upstreamAiStream = upstream.headers.get('x-vercel-ai-ui-message-stream');
       if (upstreamAiStream) streamHeaders.set('x-vercel-ai-ui-message-stream', upstreamAiStream);
 
-      return new NextResponse(closeOnTerminalEvent(upstream.body), {
+      return new NextResponse(normalizeAndCloseOnTerminalEvent(upstream.body), {
         status: 200,
         headers: streamHeaders,
       });

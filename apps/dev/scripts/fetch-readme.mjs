@@ -223,6 +223,25 @@ function transformMip003AttachmentLinks(content) {
   return content.replace(/\[([^\]]*)\]\(\.\/MIP-003-Attachement-01\.md\)/g, '[$1](/masumi/mips/_mip-003-attachment-01)');
 }
 
+function canonicalizeLegacyDocsLinks(content) {
+  return content
+    .replace(/https:\/\/docs\.masumi\.network\/ask(?=$|[\s)"'<])/g, 'https://www.masumi.network/dev')
+    .replace(
+      /https:\/\/docs\.masumi\.network(?=\/(?:documentation|core-concepts|api-reference|n8n-node|mips)(?:[/?#.)"'<]|\b))/g,
+      'https://www.masumi.network/dev/masumi',
+    )
+    .replace(/https:\/\/docs\.masumi\.network(?=$|[\s)"'<])/g, 'https://www.masumi.network/dev/masumi')
+    .replace(
+      /https:\/\/docs\.sokosumi\.com(?=\/(?:documentation|api-reference|cli_docs|mcp)(?:[/?#.)"'<]|\b))/g,
+      'https://www.masumi.network/dev/sokosumi',
+    )
+    .replace(/https:\/\/docs\.sokosumi\.com(?=$|[\s)"'<])/g, 'https://www.masumi.network/dev/sokosumi')
+    .replace(
+      /(https:\/\/www\.masumi\.network\/dev\/(?:masumi|sokosumi)\/[^\s)"'<#?]+)\.md\b/g,
+      '$1',
+    );
+}
+
 function convertHtmlToJsx(content) {
   let updatedContent = content;
 
@@ -361,6 +380,8 @@ async function generateReadmePages() {
         '[full documentation](/masumi/documentation/how-to-guides/human-in-the-loop)'
       );
     }
+
+    contentWithTransformedLinks = canonicalizeLegacyDocsLinks(contentWithTransformedLinks);
 
     // Convert HTML attributes to JSX
     console.log(`🔄 Converting HTML to JSX for ${owner}/${repo}...`);

@@ -11,7 +11,7 @@ import { existsSync, readdirSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const root = join(fileURLToPath(new URL('.', import.meta.url)), '..');
+const root = join(fileURLToPath(new URL('.', import.meta.url)), '..', '..');
 const projectsDir = join(root, 'content/sokosumi/api-reference/projects');
 
 /** True if any .mdx exists under dir (nested, e.g. projects/projects/get.mdx). */

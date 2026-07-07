@@ -3,6 +3,7 @@
   "pages": [
     "addAdminOrganizationMember",
     "assignAdminOrganizationMemberSeat",
+    "createAdminFreeCreditGrant",
     "createAdminInvoice",
     "getAdminInvoice",
     "getAdminOrganizationBySlug",

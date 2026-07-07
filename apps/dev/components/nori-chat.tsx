@@ -19,7 +19,7 @@ import {
   XCircle,
 } from 'lucide-react';
 import { NoriIdentityCard, NoriIdentityRail } from '@/components/nori/nori-identity';
-import { withBasePath } from '@/lib/base-path';
+import { canonicalDocsUrl, withBasePath } from '@/lib/base-path';
 
 export interface NoriPageContext {
   path: string;
@@ -418,13 +418,13 @@ function parseMarkdownBlocks(content: string): MarkdownBlock[] {
 }
 
 function safeHref(value: string) {
-  const href = value.trim();
+  const href = canonicalDocsUrl(value.trim());
   if (/^(https?:\/\/|\/|#)/.test(href)) return href;
   return '#';
 }
 
 function isLlmsFallbackCitation(citation: Citation) {
-  const href = citation.url || citation.path || '';
+  const href = canonicalDocsUrl(citation.url || citation.path || '');
   return /\/llms(?:-full)?\.txt(?:$|[?#])/.test(href);
 }
 
@@ -1339,7 +1339,7 @@ export function NoriChat({
                       <span>Sources</span>
                       <div>
                         {message.citations.filter((citation) => !isLlmsFallbackCitation(citation)).map((citation, citationIndex) => {
-                          const href = citation.url || citation.path || '#';
+                          const href = safeHref(citation.url || citation.path || '#');
                           return (
                             <Link
                               key={`${href}-${citationIndex}`}

@@ -15,6 +15,7 @@ export function CustomDocsPage({ children, toc, full }: CustomDocsPageProps) {
     <DocsPage 
       toc={toc} 
       full={full}
+      className="masumi-docs-page"
       tableOfContent={{
         header: (
           <div className="mb-4">

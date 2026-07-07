@@ -10,6 +10,9 @@ export default function Layout({ children }: { children: ReactNode }) {
       nav={{ ...baseOptions.nav, mode: 'top' }}
       tree={masumiSource.pageTree}
       tabMode="navbar"
+      containerProps={{
+        className: 'masumi-docs-layout',
+      }}
     >
       {children}
     </DocsLayout>

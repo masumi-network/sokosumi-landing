@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { readFile, writeFile, mkdir } from 'fs/promises';
+import { writeFile, mkdir } from 'fs/promises';
 import { join } from 'path';
 import { getAllPages } from '@/lib/source';
 import { portalUrl } from '@/lib/base-path';
@@ -61,28 +61,12 @@ export async function GET() {
       });
     }
 
-    const filePath = join(process.cwd(), '.cache', 'llms-full.txt');
-    try {
-      const fileContent = await readFile(filePath, 'utf-8');
-      cachedContent = fileContent;
-      cacheTimestamp = now;
-
-      return new NextResponse(fileContent, {
-        status: 200,
-        headers: {
-          'Content-Type': 'text/plain; charset=utf-8',
-          'Cache-Control': 'public, max-age=86400, s-maxage=604800, stale-while-revalidate=2592000',
-          ...CORS_HEADERS,
-        },
-      });
-    } catch {
-      console.log('Generating llms-full.txt on-demand...');
-    }
-
+    console.log('Generating llms-full.txt on-demand...');
     const content = await generateFullCorpus();
     cachedContent = content;
     cacheTimestamp = now;
 
+    const filePath = join(process.cwd(), '.cache', 'llms-full.txt');
     mkdir(join(process.cwd(), '.cache'), { recursive: true })
       .then(() => writeFile(filePath, content, 'utf-8'))
       .catch((err) => {

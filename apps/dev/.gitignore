@@ -8,6 +8,7 @@
 content/masumi/api-reference/(generated)/
 **/_*.mdx
 # Sokosumi generated content (OpenAPI + fetched READMEs)
+content/sokosumi/openapi.json
 content/sokosumi/api-reference/*/**/*.mdx
 # allow categories API docs to be committed (GET /categories)
 !content/sokosumi/api-reference/categories/**/*.mdx

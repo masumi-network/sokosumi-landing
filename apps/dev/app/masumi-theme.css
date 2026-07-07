@@ -1,7 +1,7 @@
 @theme {
-  /* Primary Colors - Masumi brand pink/red/orange */
-  --color-fd-primary: hsl(345, 70%, 52%);        /* Vibrant coral pink-red-orange */
-  --color-fd-primary-foreground: hsl(0, 0%, 100%);
+  /* Primary Colors - Masumi Iris Flower */
+  --color-fd-primary: #ff51ff;
+  --color-fd-primary-foreground: hsl(220, 13%, 9%);
   
   /* Background Colors - Clean neutral whites */
   --color-fd-background: hsl(0, 0%, 100%);       /* Pure white */
@@ -23,13 +23,13 @@
   --color-fd-muted: hsl(220, 8%, 98%);           /* Almost white with slight gray */
   --color-fd-muted-foreground: hsl(220, 8%, 45%);
   
-  /* Accent Colors - Masumi brand pink/red/orange */
-  --color-fd-accent: hsl(345, 70%, 52%);         /* Vibrant coral pink-red-orange accent */
-  --color-fd-accent-foreground: hsl(0, 0%, 100%);
+  /* Accent Colors - Masumi Iris Flower */
+  --color-fd-accent: #ff51ff;
+  --color-fd-accent-foreground: hsl(220, 13%, 9%);
   
   /* Border Colors - Subtle neutral borders */
   --color-fd-border: hsl(220, 13%, 90%);         /* Light neutral border */
-  --color-fd-ring: hsl(345, 70%, 52%);           /* Masumi brand focus ring */
+  --color-fd-ring: #ff51ff;                      /* Masumi brand focus ring */
 }
 
 /* Sidebar specific colors */

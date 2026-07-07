@@ -7,6 +7,7 @@
     "conversations/id/messages/get",
     "conversations/id/messages/post",
     "conversations/id/patch",
+    "conversations/id/warmup/get",
     "conversations/post"
   ]
 }

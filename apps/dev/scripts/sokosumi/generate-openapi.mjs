@@ -1,7 +1,10 @@
 import { generateFiles } from 'fumadocs-openapi';
 import { createOpenAPI } from 'fumadocs-openapi/server';
-import { writeFileSync, readFileSync, readdirSync, statSync } from 'fs';
+import { mkdirSync, writeFileSync, readFileSync, readdirSync, statSync } from 'fs';
 import { join } from 'path';
+
+const specUrl = 'https://api.sokosumi.com/v1/openapi.json';
+const specSnapshotPath = './content/sokosumi/openapi.json';
 
 /**
  * Recursively find all .mdx files and convert to page paths
@@ -188,12 +191,22 @@ function generateMetaFiles(outputDir) {
 async function generateOpenAPI() {
   try {
     console.log('🚀 Generating Sokosumi API documentation...');
-    console.log('📥 Fetching spec from: https://api.sokosumi.com/v1/openapi.json');
+    console.log(`📥 Fetching spec from: ${specUrl}`);
 
     const outputDir = './content/sokosumi/api-reference';
+    const response = await fetch(specUrl, { cache: 'no-store' });
+    if (!response.ok) {
+      throw new Error(`Failed to fetch ${specUrl}: ${response.status} ${response.statusText}`);
+    }
+
+    const spec = await response.json();
+    mkdirSync('./content/sokosumi', { recursive: true });
+    writeFileSync(specSnapshotPath, JSON.stringify(spec, null, 2));
 
     const input = createOpenAPI({
-      input: ['https://api.sokosumi.com/v1/openapi.json'],
+      input: async () => ({
+        [specUrl]: specSnapshotPath,
+      }),
     });
 
     await generateFiles({

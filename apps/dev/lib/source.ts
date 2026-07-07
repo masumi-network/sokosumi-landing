@@ -3,6 +3,7 @@ import { loader } from 'fumadocs-core/source';
 import { createOpenAPI, openapiPlugin } from 'fumadocs-openapi/server';
 import { icons } from 'lucide-react';
 import { createElement } from 'react';
+import { existsSync } from 'fs';
 
 export const paymentOpenApiSpecUrl =
   'https://raw.githubusercontent.com/masumi-network/masumi-payment-service/5fccf58b0f30873085b59ee540c67b4ae8433cd0/src/utils/generator/swagger-generator/openapi-docs.json';
@@ -11,6 +12,7 @@ export const registryOpenApiSpecUrl =
   'https://raw.githubusercontent.com/masumi-network/masumi-registry-service/refs/heads/main/src/utils/swagger-generator/openapi-docs.json';
 
 export const sokosumiOpenApiSpecUrl = 'https://api.sokosumi.com/v1/openapi.json';
+export const sokosumiOpenApiSpecFile = './content/sokosumi/openapi.json';
 
 function resolveIcon(icon: string | undefined) {
   if (!icon) return;
@@ -62,5 +64,11 @@ export function getPageByUrlSegments(slug: string[]) {
 
 // OpenAPI configuration for generated docs
 export const openapi = createOpenAPI({
-  input: [paymentOpenApiSpecUrl, registryOpenApiSpecUrl, sokosumiOpenApiSpecUrl],
+  input: async () => ({
+    [paymentOpenApiSpecUrl]: paymentOpenApiSpecUrl,
+    [registryOpenApiSpecUrl]: registryOpenApiSpecUrl,
+    [sokosumiOpenApiSpecUrl]: existsSync(sokosumiOpenApiSpecFile)
+      ? sokosumiOpenApiSpecFile
+      : sokosumiOpenApiSpecUrl,
+  }),
 });

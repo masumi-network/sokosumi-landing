@@ -27,7 +27,7 @@
 /* Fix search field hover - only border, not full background */
 .hover\:bg-fd-accent:hover {
   background-color: transparent !important;
-  border-color: hsl(345, 70%, 52%) !important; /* Masumi brand pink/red/orange border */
+  border-color: #ff51ff !important; /* Masumi Iris Flower border */
 }
 
 .hover\:text-fd-accent-foreground:hover {
@@ -47,12 +47,12 @@
 }
 
 /* Masumi brand accent for links and interactive text */
-a:not([class*="bg-"]):not([class*="text-fd-muted"]) {
-  color: hsl(345, 70%, 52%) !important;
+a:not(:has(.masumi-brand-mark)):not([class*="masumi-product-item"]):not([class*="bg-"]):not([class*="text-fd-muted"]) {
+  color: #ff51ff !important;
 }
 
-a:not([class*="bg-"]):not([class*="text-fd-muted"]):hover {
-  color: hsl(345, 70%, 47%) !important;
+a:not(:has(.masumi-brand-mark)):not([class*="masumi-product-item"]):not([class*="bg-"]):not([class*="text-fd-muted"]):hover {
+  color: #b800b8 !important;
 }
 
 /* Fix search result highlighting - use subtle background instead of solid accent */
@@ -60,14 +60,14 @@ a:not([class*="bg-"]):not([class*="text-fd-muted"]):hover {
 .bg-fd-accent[aria-selected="true"],
 [data-highlighted].bg-fd-accent,
 [aria-selected="true"].bg-fd-accent {
-  background-color: hsl(345, 70%, 96%) !important; /* Very light tint of brand color */
+  background-color: rgba(255, 81, 255, 0.12) !important; /* Very light tint of brand color */
   color: hsl(220, 13%, 9%) !important; /* Dark text for readability */
 }
 
 /* Also handle general highlighted/selected states for search */
 [data-state="open"] [data-highlighted]:not(.bg-fd-accent),
 [data-state="open"] [aria-selected="true"]:not(.bg-fd-accent) {
-  background-color: hsl(345, 70%, 96%) !important;
+  background-color: rgba(255, 81, 255, 0.12) !important;
   color: hsl(220, 13%, 9%) !important;
 }
 
@@ -76,7 +76,7 @@ a:not([class*="bg-"]):not([class*="text-fd-muted"]):hover {
 .bg-fd-accent[aria-selected="true"] svg,
 [data-highlighted].bg-fd-accent svg,
 [aria-selected="true"].bg-fd-accent svg {
-  color: hsl(345, 70%, 52%) !important;
+  color: #ff51ff !important;
 }
 
 /* Masumi light docs shell */
@@ -87,9 +87,16 @@ a:not([class*="bg-"]):not([class*="text-fd-muted"]):hover {
   line-height: 0;
 }
 
-header a:has(.masumi-brand-mark) {
+header a:has(.masumi-brand-mark),
+header a:has(.masumi-brand-mark):not([class*="bg-"]):not([class*="text-fd-muted"]) {
   flex: 0 0 auto;
   min-width: max-content;
+  color: var(--color-fd-foreground) !important;
+}
+
+header a:has(.masumi-brand-mark):hover,
+header a:has(.masumi-brand-mark):not([class*="bg-"]):not([class*="text-fd-muted"]):hover {
+  color: var(--color-fd-foreground) !important;
 }
 
 .masumi-brand-logo {
@@ -103,6 +110,7 @@ header a:has(.masumi-brand-mark) {
   display: inline-flex;
   align-items: center;
   flex: 0 0 auto;
+  color: var(--color-fd-foreground) !important;
 }
 
 .masumi-brand-trigger {
@@ -112,6 +120,7 @@ header a:has(.masumi-brand-mark) {
   cursor: pointer;
   line-height: 0;
   border-radius: 8px;
+  color: var(--color-fd-foreground) !important;
 }
 
 .masumi-brand-trigger:focus-visible {
@@ -177,6 +186,11 @@ header a:has(.masumi-brand-mark) {
   text-decoration: none;
 }
 
+.masumi-product-menu a.masumi-product-item,
+.masumi-product-menu a.masumi-product-item:hover {
+  color: var(--color-fd-foreground) !important;
+}
+
 .masumi-product-item:hover {
   background: color-mix(in srgb, var(--color-fd-muted) 85%, transparent);
 }
@@ -202,7 +216,7 @@ header a:has(.masumi-brand-mark) {
 }
 
 .masumi-product-tile--masumi {
-  background: #fa008c;
+  background: #ff51ff;
 }
 
 .masumi-product-tile--nori {
@@ -258,7 +272,7 @@ header a:has(.masumi-brand-mark) {
 .masumi-standalone-layout {
   min-height: calc(100dvh - 58px);
   background:
-    linear-gradient(180deg, rgba(250, 0, 140, 0.05), transparent 220px),
+    linear-gradient(180deg, rgba(255, 81, 255, 0.08), transparent 220px),
     var(--color-fd-background);
 }
 
@@ -275,6 +289,343 @@ header a:has(.masumi-brand-mark) {
   grid-area: main;
   flex: 1;
   width: 100%;
+}
+
+/* Docs shell: align Fumadocs pages with the Nori and landing surfaces. */
+.masumi-docs-layout {
+  --docs-bg: #f5f5f5;
+  --docs-surface: #ffffff;
+  --docs-ink: #000000;
+  --docs-text: #333333;
+  --docs-muted: #666666;
+  --docs-faint: #9a9a9a;
+  --docs-hairline: rgba(0, 0, 0, 0.06);
+  --docs-line: rgba(0, 0, 0, 0.12);
+  --docs-pink: #ff51ff;
+  --docs-pink-hover: #b800b8;
+  --docs-terminal: #0a0a0a;
+  --docs-terminal-text: #e7e7e9;
+  background: var(--docs-bg);
+  color: var(--docs-ink);
+}
+
+.masumi-docs-layout #nd-subnav {
+  border-bottom: 1px solid var(--docs-hairline);
+  background: rgba(245, 245, 245, 0.88) !important;
+  backdrop-filter: blur(16px);
+}
+
+.masumi-docs-layout #nd-subnav > header,
+.masumi-docs-layout #nd-subnav [class*='border-b'] {
+  border-color: var(--docs-hairline) !important;
+  background: rgba(245, 245, 245, 0.82) !important;
+}
+
+.masumi-docs-layout #nd-subnav nav a:not(:has(.masumi-brand-mark)),
+.masumi-docs-layout #nd-toc a,
+.masumi-docs-layout #nd-sidebar a,
+.masumi-docs-layout #nd-sidebar-mobile a {
+  color: var(--docs-muted) !important;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-decoration: none !important;
+}
+
+.masumi-docs-layout #nd-subnav nav a:not(:has(.masumi-brand-mark)):hover,
+.masumi-docs-layout #nd-toc a:hover,
+.masumi-docs-layout #nd-sidebar a:hover,
+.masumi-docs-layout #nd-sidebar-mobile a:hover {
+  color: var(--docs-ink) !important;
+}
+
+.masumi-docs-layout #nd-subnav nav a[aria-current='page'],
+.masumi-docs-layout #nd-subnav nav a[data-active='true'],
+.masumi-docs-layout #nd-toc a[data-active='true'],
+.masumi-docs-layout #nd-sidebar a[data-active='true'],
+.masumi-docs-layout #nd-sidebar-mobile a[data-active='true'] {
+  color: var(--docs-pink) !important;
+}
+
+.masumi-docs-layout [data-search-full],
+.masumi-docs-layout button[aria-label='Search'] {
+  border-color: var(--docs-line) !important;
+  border-radius: 13px !important;
+  background: var(--docs-surface) !important;
+  color: var(--docs-muted) !important;
+  box-shadow: none !important;
+}
+
+.masumi-docs-layout [data-search-full]:hover,
+.masumi-docs-layout button[aria-label='Search']:hover {
+  border-color: var(--docs-pink) !important;
+  background: var(--docs-surface) !important;
+}
+
+.masumi-docs-layout #nd-sidebar,
+.masumi-docs-layout #nd-sidebar-mobile {
+  border-color: var(--docs-hairline) !important;
+  background: var(--docs-bg) !important;
+}
+
+#nd-page.masumi-docs-page {
+  gap: 12px;
+  padding-top: 52px;
+  padding-bottom: 84px;
+  color: var(--docs-ink);
+}
+
+#nd-page.masumi-docs-page > * {
+  max-width: 820px !important;
+}
+
+#nd-page.masumi-docs-page[data-full='true'] > * {
+  max-width: 1168px !important;
+}
+
+.masumi-docs-banner {
+  margin-bottom: 16px;
+}
+
+.masumi-docs-banner img,
+.masumi-docs-body img,
+.masumi-docs-body video {
+  overflow: hidden;
+  border: 1px solid var(--docs-hairline);
+  border-radius: 8px !important;
+  background: var(--docs-surface);
+}
+
+.masumi-docs-title {
+  max-width: 760px !important;
+  margin: 0;
+  color: var(--docs-ink);
+  font-size: 48px !important;
+  font-weight: 300 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.08 !important;
+}
+
+.masumi-docs-description {
+  max-width: 700px !important;
+  margin: 2px 0 28px !important;
+  color: var(--docs-muted) !important;
+  font-size: 16px !important;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.6 !important;
+}
+
+.masumi-docs-body {
+  color: var(--docs-text);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.72;
+}
+
+.masumi-docs-body :where(p, ul, ol) {
+  color: var(--docs-text);
+}
+
+.masumi-docs-body :where(p) {
+  margin: 0 0 1.15em;
+}
+
+.masumi-docs-body :where(h2) {
+  margin-top: 2.1em;
+  margin-bottom: 0.65em;
+  color: var(--docs-ink);
+  font-size: 32px;
+  font-weight: 300;
+  letter-spacing: 0;
+  line-height: 1.16;
+}
+
+.masumi-docs-body :where(h3) {
+  margin-top: 1.65em;
+  margin-bottom: 0.55em;
+  color: var(--docs-ink);
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.28;
+}
+
+.masumi-docs-body :where(h4) {
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+  color: var(--docs-ink);
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.35;
+}
+
+.masumi-docs-body :where(strong) {
+  color: var(--docs-ink);
+  font-weight: 600;
+}
+
+.masumi-docs-body :where(a) {
+  color: var(--docs-pink) !important;
+  font-weight: 500;
+  text-decoration: underline !important;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+.masumi-docs-body :where(a:hover) {
+  color: var(--docs-pink-hover) !important;
+}
+
+#nd-page.masumi-docs-page .masumi-docs-body h2 a,
+#nd-page.masumi-docs-page .masumi-docs-body h3 a,
+#nd-page.masumi-docs-page .masumi-docs-body h4 a {
+  color: inherit !important;
+  font-weight: inherit;
+  text-decoration: none !important;
+}
+
+#nd-page.masumi-docs-page .masumi-docs-body h2 a:hover,
+#nd-page.masumi-docs-page .masumi-docs-body h3 a:hover,
+#nd-page.masumi-docs-page .masumi-docs-body h4 a:hover {
+  color: inherit !important;
+}
+
+.masumi-docs-body :where(ul, ol) {
+  display: grid;
+  gap: 0.45em;
+  margin: 1em 0 1.25em;
+  padding-left: 1.45em;
+}
+
+.masumi-docs-body :where(li) {
+  margin: 0;
+  padding-left: 0.15em;
+}
+
+.masumi-docs-body :where(blockquote) {
+  margin: 1.5em 0;
+  padding: 0.8em 1em;
+  border-left: 3px solid var(--docs-pink);
+  border-radius: 0 8px 8px 0;
+  background: rgba(0, 0, 0, 0.03);
+  color: var(--docs-muted);
+  font-style: normal;
+}
+
+.masumi-docs-body :where(code) {
+  border: 1px solid var(--docs-hairline);
+  border-radius: 5px;
+  background: rgba(0, 0, 0, 0.045);
+  color: var(--docs-ink);
+  font-size: 0.9em;
+}
+
+.masumi-docs-body :where(pre) {
+  margin: 1.45em 0;
+  padding: 18px 20px;
+  border: 1px solid var(--docs-terminal);
+  border-radius: 13px;
+  background: var(--docs-terminal);
+  color: var(--docs-terminal-text);
+  box-shadow: none;
+}
+
+.masumi-docs-body :where(pre code) {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.masumi-docs-body :where(table) {
+  overflow: hidden;
+  border: 1px solid var(--docs-hairline);
+  border-radius: 8px;
+  background: var(--docs-surface);
+  font-size: 14px;
+}
+
+.masumi-docs-body :where(th) {
+  background: rgba(0, 0, 0, 0.035);
+  color: var(--docs-ink);
+  font-weight: 600;
+}
+
+.masumi-docs-body :where(th, td) {
+  border-color: var(--docs-hairline) !important;
+}
+
+.masumi-docs-body :where(hr) {
+  border-color: var(--docs-hairline);
+}
+
+.masumi-docs-body :where(.not-prose [class*='border'], [class*='border-fd-border']) {
+  border-color: var(--docs-hairline) !important;
+}
+
+.masumi-docs-body :where(.not-prose [class*='rounded'], [class*='rounded-lg'], [class*='rounded-xl']) {
+  border-radius: 8px !important;
+}
+
+.masumi-docs-body :where(.not-prose [class*='bg-fd-card'], .not-prose [class*='bg-fd-muted'], [class*='bg-fd-card']) {
+  background-color: var(--docs-surface) !important;
+}
+
+.masumi-docs-body :where(.not-prose a) {
+  color: var(--docs-ink) !important;
+  text-decoration: none !important;
+}
+
+.masumi-docs-body :where(.not-prose a:hover) {
+  color: var(--docs-pink) !important;
+}
+
+.masumi-docs-layout #nd-toc {
+  color: var(--docs-muted);
+}
+
+.masumi-docs-layout #nd-toc h3 {
+  color: var(--docs-faint) !important;
+  font-size: 11px !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.masumi-docs-layout #nd-page footer {
+  border-color: var(--docs-hairline) !important;
+}
+
+@media (max-width: 720px) {
+  #nd-page.masumi-docs-page {
+    padding-top: 36px;
+    padding-bottom: 64px;
+  }
+
+  .masumi-docs-title {
+    font-size: 38px !important;
+    line-height: 1.1 !important;
+  }
+
+  .masumi-docs-description,
+  .masumi-docs-body {
+    font-size: 15.5px !important;
+  }
+
+  .masumi-docs-body :where(h2) {
+    font-size: 28px;
+  }
+
+  .masumi-docs-body :where(h3) {
+    font-size: 20px;
+  }
+
+  .masumi-docs-body :where(pre) {
+    padding: 16px;
+  }
 }
 
 #nd-home-layout.masumi-standalone-layout #nd-nav nav {
@@ -309,7 +660,7 @@ header a:has(.masumi-brand-mark) {
   justify-content: center;
   flex: 0 0 auto;
   border-radius: 999px;
-  background: linear-gradient(135deg, #fa008c, #ff9f6e);
+  background: linear-gradient(135deg, #ff51ff, #ff6400);
   color: #fff;
 }
 
@@ -356,7 +707,7 @@ header a:has(.masumi-brand-mark) {
       135deg,
       color-mix(in srgb, var(--color-fd-primary) 12%, var(--color-fd-card)),
       var(--color-fd-card) 48%,
-      color-mix(in srgb, #ff9f6e 10%, var(--color-fd-card))
+      color-mix(in srgb, #ff6400 10%, var(--color-fd-card))
     );
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 24px 80px rgba(0, 0, 0, 0.08);
 }
@@ -638,7 +989,7 @@ header a:has(.masumi-brand-mark) {
 .agents-copy-button:hover {
   border-color: var(--color-fd-primary);
   color: var(--color-fd-primary);
-  box-shadow: 0 8px 22px rgba(250, 0, 140, 0.1);
+  box-shadow: 0 8px 22px rgba(255, 81, 255, 0.14);
 }
 
 .nori-prompt-grid svg,
@@ -1048,7 +1399,7 @@ header a:has(.masumi-brand-mark) {
   width: 100%;
   height: 100%;
   border-radius: inherit;
-  background: #fa008c;
+  background: #ff51ff;
   opacity: 0.86;
 }
 
@@ -1701,8 +2052,8 @@ header a:has(.masumi-brand-mark) {
 .nori-id-card {
   --id-ink: #2a1a21;
   --id-muted: #7d6a72;
-  --id-accent: #fa008c;
-  --id-accent-2: hsl(345, 70%, 48%);
+  --id-accent: #ff51ff;
+  --id-accent-2: #ff6400;
   position: relative;
   isolation: isolate;
   contain: paint;
@@ -1719,10 +2070,10 @@ header a:has(.masumi-brand-mark) {
   text-align: left;
   /* Polymer body + fine guilloche security linework */
   background:
-    repeating-radial-gradient(circle at 118% -30%, rgba(250, 0, 140, 0.05) 0 1px, transparent 1px 6px),
-    repeating-radial-gradient(circle at -18% 128%, rgba(255, 159, 110, 0.06) 0 1px, transparent 1px 6px),
-    repeating-radial-gradient(circle at 50% 220%, rgba(250, 0, 140, 0.03) 0 1px, transparent 1px 9px),
-    repeating-linear-gradient(115deg, rgba(250, 0, 140, 0.018) 0 1px, transparent 1px 5px),
+    repeating-radial-gradient(circle at 118% -30%, rgba(255, 81, 255, 0.06) 0 1px, transparent 1px 6px),
+    repeating-radial-gradient(circle at -18% 128%, rgba(255, 100, 0, 0.06) 0 1px, transparent 1px 6px),
+    repeating-radial-gradient(circle at 50% 220%, rgba(255, 81, 255, 0.04) 0 1px, transparent 1px 9px),
+    repeating-linear-gradient(115deg, rgba(255, 81, 255, 0.022) 0 1px, transparent 1px 5px),
     linear-gradient(120deg, #fffbfc, #fdf0f6 46%, #fdf6f0);
   /* Physical edge + contact shadow + soft key light */
   box-shadow:
@@ -1938,9 +2289,9 @@ header a:has(.masumi-brand-mark) {
 
 .nori-id-network {
   padding: 0.8cqw 1.7cqw;
-  border: 1px solid rgba(250, 0, 140, 0.28);
+  border: 1px solid rgba(255, 81, 255, 0.35);
   border-radius: 999px;
-  background: rgba(250, 0, 140, 0.06);
+  background: rgba(255, 81, 255, 0.1);
   font-size: 1.7cqw;
   font-weight: 800;
   letter-spacing: 0.12em;
@@ -2419,7 +2770,7 @@ header a:has(.masumi-brand-mark) {
   --stage-faint: #9a9a9a;
   --stage-hairline: rgba(0, 0, 0, 0.05);
   --stage-line: rgba(0, 0, 0, 0.12);
-  --stage-pink: #fa008c;
+  --stage-pink: #ff51ff;
   --stage-terminal: #0a0a0a;
   --stage-terminal-text: #e7e7e9;
   --stage-terminal-muted: rgba(231, 231, 233, 0.55);
@@ -2524,7 +2875,7 @@ header a:has(.masumi-brand-mark) {
 
 .nori-hire-prompts button:hover {
   border-color: var(--stage-pink);
-  background: rgba(250, 0, 140, 0.04);
+  background: rgba(255, 81, 255, 0.08);
 }
 
 .nori-hire-prompts button svg {
@@ -2579,7 +2930,7 @@ header a:has(.masumi-brand-mark) {
 
 .nori-composer:focus-within {
   border-color: var(--stage-pink);
-  box-shadow: 0 0 0 3px rgba(250, 0, 140, 0.06);
+  box-shadow: 0 0 0 3px rgba(255, 81, 255, 0.08);
 }
 
 .nori-composer-hire {
@@ -2793,7 +3144,7 @@ header a:has(.masumi-brand-mark) {
 
 .nori-stage .nori-citation:hover {
   border-color: var(--stage-pink);
-  background: rgba(250, 0, 140, 0.03);
+  background: rgba(255, 81, 255, 0.06);
 }
 
 .nori-stage .nori-citation strong {
@@ -2873,8 +3224,8 @@ header a:has(.masumi-brand-mark) {
 .nori-stage .nori-task-status[data-phase='locked'],
 .nori-stage .nori-task-status[data-phase='running'],
 .nori-stage .nori-task-status[data-phase='completed'] {
-  border-color: rgba(250, 0, 140, 0.4);
-  background: rgba(250, 0, 140, 0.05);
+  border-color: rgba(255, 81, 255, 0.45);
+  background: rgba(255, 81, 255, 0.08);
   color: var(--stage-pink);
 }
 
@@ -2920,8 +3271,8 @@ header a:has(.masumi-brand-mark) {
 }
 
 .nori-stage .nori-trace-item[data-status='active'] .nori-trace-marker {
-  border-color: rgba(250, 0, 140, 0.5);
-  background: rgba(250, 0, 140, 0.08);
+  border-color: rgba(255, 81, 255, 0.5);
+  background: rgba(255, 81, 255, 0.1);
   color: var(--stage-pink);
 }
 
@@ -2930,7 +3281,7 @@ header a:has(.masumi-brand-mark) {
   position: absolute;
   inset: -1px;
   z-index: -1;
-  border: 1px solid rgba(250, 0, 140, 0.5);
+  border: 1px solid rgba(255, 81, 255, 0.5);
   border-radius: inherit;
   animation: nori-wt-pulse 1.6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
   will-change: opacity, transform;
@@ -2962,8 +3313,8 @@ header a:has(.masumi-brand-mark) {
 }
 
 .nori-stage .nori-trace-links a:hover {
-  border-color: rgba(250, 0, 140, 0.6);
-  background: rgba(250, 0, 140, 0.1);
+  border-color: rgba(255, 81, 255, 0.6);
+  background: rgba(255, 81, 255, 0.12);
 }
 
 .nori-stage .nori-explorer-link-copy strong {

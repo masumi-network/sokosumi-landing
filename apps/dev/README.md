@@ -32,6 +32,11 @@ on local dev and standalone deployments.
   - `content/sokosumi/cli_docs`, `content/sokosumi/mcp` — fetched READMEs (`scripts/sokosumi/*.mjs`)
 - **Legacy URL redirects**: old root paths (`/dev/documentation`, `/dev/core-concepts`, …)
   301 to `/dev/masumi/*` (see `next.config.mjs`).
+- **Nori docs corpus**: the chat proxy sends Nori the canonical corpus entry
+  points (`https://www.masumi.network/dev/llms.txt`, `/llms-full.txt`, and
+  `/md-index`) on every request. Citation links from old docs domains, local
+  paths, and source files are normalized to `https://www.masumi.network/dev/...`
+  before they render in the chat UI.
 
 ## Local development
 

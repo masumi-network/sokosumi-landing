@@ -40,7 +40,7 @@ export async function ProductDocsPage({
   return (
     <CustomDocsPage toc={page.data.toc} full={page.data.full}>
       {page.data.banner && (
-        <div className=" flex justify-center">
+        <div className="masumi-docs-banner flex justify-center">
           <img
             src={withBasePath(page.data.banner)}
             alt="Page banner"
@@ -48,9 +48,9 @@ export async function ProductDocsPage({
           />
         </div>
       )}
-      <DocsTitle>{page.data.title}</DocsTitle>
-      <DocsDescription>{page.data.description}</DocsDescription>
-      <DocsBody>
+      <DocsTitle className="masumi-docs-title">{page.data.title}</DocsTitle>
+      <DocsDescription className="masumi-docs-description">{page.data.description}</DocsDescription>
+      <DocsBody className="masumi-docs-body">
         <MDXContent
           components={getMDXComponents({
             // this allows you to link to other pages with relative file paths
