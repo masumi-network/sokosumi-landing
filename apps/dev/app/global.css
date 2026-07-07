@@ -305,6 +305,7 @@ header a:has(.masumi-brand-mark):not([class*="bg-"]):not([class*="text-fd-muted"
   --docs-pink-hover: #b800b8;
   --docs-terminal: #0a0a0a;
   --docs-terminal-text: #e7e7e9;
+  --docs-terminal-muted: #9ca3af;
   background: var(--docs-bg);
   color: var(--docs-ink);
 }
@@ -530,6 +531,7 @@ header a:has(.masumi-brand-mark):not([class*="bg-"]):not([class*="text-fd-muted"
   background: var(--docs-terminal);
   color: var(--docs-terminal-text);
   box-shadow: none;
+  overflow-x: auto;
 }
 
 .masumi-docs-body :where(pre code) {
@@ -538,6 +540,18 @@ header a:has(.masumi-brand-mark):not([class*="bg-"]):not([class*="text-fd-muted"
   color: inherit;
   font-size: 13px;
   line-height: 1.7;
+}
+
+.masumi-docs-body :where(pre code, pre code span, pre code [style]) {
+  color: var(--docs-terminal-text) !important;
+}
+
+.masumi-docs-body :where(pre [data-line], pre .line) {
+  color: inherit !important;
+}
+
+.masumi-docs-body :where(pre [data-line]::before, pre .line::before) {
+  color: var(--docs-terminal-muted) !important;
 }
 
 .masumi-docs-body :where(table) {
