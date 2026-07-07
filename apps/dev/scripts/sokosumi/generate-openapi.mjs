@@ -1,6 +1,6 @@
 import { generateFiles } from 'fumadocs-openapi';
 import { createOpenAPI } from 'fumadocs-openapi/server';
-import { mkdirSync, writeFileSync, readFileSync, readdirSync, statSync } from 'fs';
+import { mkdirSync, rmSync, writeFileSync, readFileSync, readdirSync, statSync } from 'fs';
 import { join } from 'path';
 
 const specUrl = 'https://api.sokosumi.com/v1/openapi.json';
@@ -27,6 +27,24 @@ function getAllMdxPages(dir, baseDir = dir) {
   }
   
   return pages.sort();
+}
+
+/**
+ * Remove previously generated tag folders before regenerating. Fumadocs writes
+ * files for current operations but does not delete pages for operations that
+ * disappeared from the live schema, which leaves stale routes that fail builds.
+ */
+function cleanGeneratedOutput(outputDir) {
+  mkdirSync(outputDir, { recursive: true });
+
+  for (const entry of readdirSync(outputDir)) {
+    const fullPath = join(outputDir, entry);
+    const stat = statSync(fullPath);
+
+    if (stat.isDirectory() || entry === 'meta.json') {
+      rmSync(fullPath, { recursive: true, force: true });
+    }
+  }
 }
 
 /**
@@ -202,6 +220,7 @@ async function generateOpenAPI() {
     const spec = await response.json();
     mkdirSync('./content/sokosumi', { recursive: true });
     writeFileSync(specSnapshotPath, JSON.stringify(spec, null, 2));
+    cleanGeneratedOutput(outputDir);
 
     const input = createOpenAPI({
       input: async () => ({

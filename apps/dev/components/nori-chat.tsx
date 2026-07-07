@@ -1208,10 +1208,6 @@ export function NoriChat({
         buffer = blocks.rest;
       }
 
-      if (streamDone) {
-        await reader.cancel().catch(() => undefined);
-      }
-
       buffer += decoder.decode();
       if (buffer.trim() && !streamDone) handleSseBlock(buffer);
     } catch (error) {

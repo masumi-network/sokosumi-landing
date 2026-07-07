@@ -1,6 +1,7 @@
 {
   "title": "Users",
   "pages": [
+    "users/id/billing-details/get",
     "users/id/credits/get",
     "users/id/design-md/get",
     "users/id/design-md/put",
