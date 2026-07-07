@@ -157,6 +157,9 @@ export default function Header({ product = "sokosumi", topBanner }: { product?: 
               <Link href="/dev" className="text-[14px] font-normal text-black hover:text-black/60 transition-colors px-[15px] h-full flex items-center">
                 Dev Portal
               </Link>
+              <Link href="/x402" className="text-[14px] font-normal text-black hover:text-black/60 transition-colors px-[15px] h-full flex items-center">
+                x402
+              </Link>
               <Link href="/explorer" className="text-[14px] font-normal text-black hover:text-black/60 transition-colors px-[15px] h-full flex items-center">
                 Explorer
               </Link>
@@ -236,6 +239,9 @@ export default function Header({ product = "sokosumi", topBanner }: { product?: 
               <>
                 <Link href="/dev" onClick={() => setMobileMenuOpen(false)} className="text-[18px] text-black py-3 border-b border-black/[0.06]">
                   Dev Portal
+                </Link>
+                <Link href="/x402" onClick={() => setMobileMenuOpen(false)} className="text-[18px] text-black py-3 border-b border-black/[0.06]">
+                  x402
                 </Link>
                 <Link href="/explorer" onClick={() => setMobileMenuOpen(false)} className="text-[18px] text-black py-3 border-b border-black/[0.06]">
                   Explorer
