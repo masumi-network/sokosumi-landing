@@ -25,6 +25,7 @@ const AI_STREAM_HEADERS = {
 const NORI_UPSTREAM_MAX_ATTEMPTS = 2;
 
 type ChatRole = 'user' | 'assistant' | 'system';
+type NoriDocsContext = ReturnType<typeof createNoriDocsContext>;
 
 interface HistoryMessage {
   role: Exclude<ChatRole, 'system'>;
@@ -89,6 +90,35 @@ function isTerminalSseBlock(block: string) {
   } catch {
     return false;
   }
+}
+
+function parsedSseJsonData(block: string): unknown {
+  const data = sseBlockData(block);
+  if (!data || data === '[DONE]') return data;
+
+  try {
+    return JSON.parse(data) as unknown;
+  } catch {
+    return undefined;
+  }
+}
+
+function isCitationSseBlock(block: string) {
+  const parsed = parsedSseJsonData(block);
+  if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
+    const record = parsed as Record<string, unknown>;
+    if (record.type === 'data-citation') return true;
+  }
+
+  return block
+    .split(/\n/)
+    .some((line) => line.startsWith('event:') && line.slice(6).trim() === 'citation');
+}
+
+function shouldInjectCitationsBeforeBlock(block: string) {
+  const parsed = parsedSseJsonData(block);
+  if (parsed === '[DONE]') return true;
+  return Boolean(parsed && typeof parsed === 'object' && !Array.isArray(parsed) && (parsed as Record<string, unknown>).type === 'finish');
 }
 
 function normalizeCitation(citation: Citation): Citation {
@@ -161,11 +191,40 @@ function normalizeSseBlock(block: string) {
   return `${[...passthroughLines, `data: ${JSON.stringify(normalized)}`].join('\n')}\n\n`;
 }
 
-function normalizeAndCloseOnTerminalEvent(body: ReadableStream<Uint8Array>, ctx: NoriRequestContext) {
+function createPriorityDocsCitations(message: string, docsContext: NoriDocsContext): Citation[] {
+  if (!needsFreshSokosumiDocsGuidance(message)) return [];
+
+  const baseUrl = docsContext.canonicalBaseUrl;
+  return [
+    {
+      title: 'Coworkers',
+      url: `${baseUrl}/sokosumi/documentation/coworkers`,
+    },
+    {
+      title: 'Pi Sokosumi',
+      url: `${baseUrl}/sokosumi/documentation/pysokosumi`,
+    },
+    {
+      title: 'Coworker API reference',
+      url: `${baseUrl}/sokosumi/api-reference/coworkers`,
+    },
+  ];
+}
+
+function priorityCitationBlocks(citations: Citation[]) {
+  return citations.map((citation) => dataSse({ type: 'data-citation', data: normalizeCitation(citation) })).join('');
+}
+
+function normalizeAndCloseOnTerminalEvent(
+  body: ReadableStream<Uint8Array>,
+  ctx: NoriRequestContext,
+  priorityCitations: Citation[] = [],
+) {
   const reader = body.getReader();
   const decoder = new TextDecoder();
   const encoder = new TextEncoder();
   let buffer = '';
+  let emittedPriorityCitations = false;
 
   return new ReadableStream<Uint8Array>({
     async start(controller) {
@@ -180,6 +239,15 @@ function normalizeAndCloseOnTerminalEvent(body: ReadableStream<Uint8Array>, ctx:
 
           let shouldClose = false;
           for (const block of blocks.slice(0, -1)) {
+            if (priorityCitations.length > 0 && isCitationSseBlock(block)) continue;
+            if (
+              priorityCitations.length > 0 &&
+              !emittedPriorityCitations &&
+              shouldInjectCitationsBeforeBlock(block)
+            ) {
+              controller.enqueue(encoder.encode(priorityCitationBlocks(priorityCitations)));
+              emittedPriorityCitations = true;
+            }
             controller.enqueue(encoder.encode(normalizeSseBlock(block)));
             if (isTerminalSseBlock(block)) {
               shouldClose = true;
@@ -195,7 +263,18 @@ function normalizeAndCloseOnTerminalEvent(body: ReadableStream<Uint8Array>, ctx:
 
         buffer += decoder.decode();
         if (buffer.trim()) {
-          controller.enqueue(encoder.encode(normalizeSseBlock(buffer)));
+          const suppressBuffer = priorityCitations.length > 0 && isCitationSseBlock(buffer);
+          if (
+            priorityCitations.length > 0 &&
+            !emittedPriorityCitations &&
+            (suppressBuffer || shouldInjectCitationsBeforeBlock(buffer))
+          ) {
+            controller.enqueue(encoder.encode(priorityCitationBlocks(priorityCitations)));
+            emittedPriorityCitations = true;
+          }
+          if (!suppressBuffer) {
+            controller.enqueue(encoder.encode(normalizeSseBlock(buffer)));
+          }
         }
         controller.close();
       } catch (error) {
@@ -311,11 +390,49 @@ function normalizeIncomingMessages(value: unknown): Array<ReturnType<typeof toSo
     .filter((item): item is ReturnType<typeof toSokosumiMessage> => Boolean(item));
 }
 
+function needsFreshSokosumiDocsGuidance(message: string) {
+  return /\b(coworker|co-worker|coworkers|co-workers|pysokosumi|py sokosumi|pi sokosumi|pi-sokosumi)\b/i.test(message);
+}
+
+function createFreshSokosumiDocsGuidance(message: string, docsContext: NoriDocsContext) {
+  if (!needsFreshSokosumiDocsGuidance(message)) return '';
+
+  const baseUrl = docsContext.canonicalBaseUrl;
+  return [
+    'Developer portal freshness note for Nori. Do not quote this block directly.',
+    `Use the current DevHub docs under ${baseUrl}; do not cite docs.masumi.network, docs.sokosumi.com, or Railway preview URLs.`,
+    '',
+    'For questions about creating, registering, connecting, or running Sokosumi coworkers:',
+    `- Primary guide: ${baseUrl}/sokosumi/documentation/coworkers`,
+    `- Pi Sokosumi guide: ${baseUrl}/sokosumi/documentation/pysokosumi`,
+    `- API reference: ${baseUrl}/sokosumi/api-reference/coworkers`,
+    '',
+    'Authoritative coworker flow:',
+    '1. Create the coworker profile in Sokosumi with an admin API key or `sokosumi coworkers register`.',
+    '2. Set `capabilities` to `chat`, `tasks`, or both. Chat coworkers need an OpenAI Responses-compatible `baseURL`; task coworkers need a worker process.',
+    '3. Whitelist the coworker with `PATCH /coworkers/{id}/whitelist`.',
+    '4. Create a dedicated coworker API key with `POST /coworkers/{id}/api-keys` and run the agent with `SOKOSUMI_COWORKER_API_KEY`.',
+    '5. Verify the runtime token with `GET /coworkers/me`.',
+    '6. Task coworkers poll `GET /coworkers/me/events`, create task events, and report billable usage with `POST /coworkers/me/usage`.',
+    '',
+    'Pi Sokosumi/PySokosumi note: teams may say PySokosumi, but the current public helper is the TypeScript package `@masumi-network/pi-sokosumi`, installed from `github:masumi-network/pi-sokosumi` until it is published to npm.',
+  ].join('\n');
+}
+
+function withFreshDocsGuidance(message: string, docsContext: NoriDocsContext) {
+  const guidance = createFreshSokosumiDocsGuidance(message, docsContext);
+  if (!guidance) return message;
+
+  return `${guidance}\n\nUser question:\n${message}`;
+}
+
 function createSokosumiChatPayload(
   payload: Record<string, unknown>,
   message: string,
   docsContext = createNoriDocsContext(),
 ) {
+  const freshDocsGuidance = createFreshSokosumiDocsGuidance(message, docsContext);
+  const routedMessage = freshDocsGuidance ? withFreshDocsGuidance(message, docsContext) : message;
   const history = normalizeHistory(payload.history);
   const incomingMessages = normalizeIncomingMessages(payload.messages);
   const messages =
@@ -336,15 +453,16 @@ function createSokosumiChatPayload(
     messages: history,
     docsContext,
     docs_context: docsContext,
+    freshDocsGuidance,
     ...(payload.page && typeof payload.page === 'object' ? { page: payload.page } : {}),
   };
 
   return {
     messages,
-    message,
+    message: routedMessage,
     userId: typeof payload.userId === 'string' ? payload.userId : 'docs-user',
-    input: message,
-    prompt: message,
+    input: routedMessage,
+    prompt: routedMessage,
     history,
     docsContext,
     docs_context: docsContext,
@@ -374,11 +492,25 @@ function createNoriDocsContext() {
     requiredFreshPages: [
       `${portalUrl}/sokosumi/documentation/coworkers`,
       `${portalUrl}/sokosumi/documentation/pysokosumi`,
+      `${portalUrl}/sokosumi/api-reference/coworkers`,
+      `${portalUrl}/sokosumi/api-reference/coworkers/coworkers/post`,
+      `${portalUrl}/sokosumi/api-reference/coworkers/coworkers/id/whitelist/patch`,
+      `${portalUrl}/sokosumi/api-reference/coworkers/coworkers/id/api-keys/post`,
+      `${portalUrl}/sokosumi/api-reference/coworkers/coworkers/me/get`,
+      `${portalUrl}/sokosumi/api-reference/coworkers/coworkers/me/events/get`,
+      `${portalUrl}/sokosumi/api-reference/coworkers/coworkers/me/usage/post`,
       `${portalUrl}/masumi/documentation/get-started/masumi-as-a-service`,
     ],
     requiredFreshMarkdown: [
       `${portalUrl}/sokosumi/documentation/coworkers.md`,
       `${portalUrl}/sokosumi/documentation/pysokosumi.md`,
+      `${portalUrl}/sokosumi/api-reference/coworkers.md`,
+      `${portalUrl}/sokosumi/api-reference/coworkers/coworkers/post.md`,
+      `${portalUrl}/sokosumi/api-reference/coworkers/coworkers/id/whitelist/patch.md`,
+      `${portalUrl}/sokosumi/api-reference/coworkers/coworkers/id/api-keys/post.md`,
+      `${portalUrl}/sokosumi/api-reference/coworkers/coworkers/me/get.md`,
+      `${portalUrl}/sokosumi/api-reference/coworkers/coworkers/me/events/get.md`,
+      `${portalUrl}/sokosumi/api-reference/coworkers/coworkers/me/usage/post.md`,
       `${portalUrl}/masumi/documentation/get-started/masumi-as-a-service.md`,
     ],
     citationPolicy:
@@ -656,6 +788,7 @@ export async function POST(request: NextRequest) {
   }
 
   const docsContext = createNoriDocsContext();
+  const priorityCitations = createPriorityDocsCitations(message, docsContext);
   headers['X-Nori-Docs-Base-Url'] = docsContext.canonicalBaseUrl;
   headers['X-Nori-Docs-Index-Url'] = docsContext.machineReadable.conciseIndexUrl;
   headers['X-Nori-Docs-Full-Corpus-Url'] = docsContext.machineReadable.fullCorpusUrl;
@@ -666,6 +799,7 @@ export async function POST(request: NextRequest) {
       messageLength: message.length,
       hasHistory: Array.isArray(payload.history) && payload.history.length > 0,
       hasMessages: Array.isArray(payload.messages) && payload.messages.length > 0,
+      hasPriorityDocsContext: priorityCitations.length > 0,
       page:
         payload.page && typeof payload.page === 'object'
           ? {
@@ -708,7 +842,7 @@ export async function POST(request: NextRequest) {
       const upstreamAiStream = upstream.headers.get('x-vercel-ai-ui-message-stream');
       if (upstreamAiStream) streamHeaders.set('x-vercel-ai-ui-message-stream', upstreamAiStream);
 
-      return new NextResponse(normalizeAndCloseOnTerminalEvent(upstream.body, ctx), {
+      return new NextResponse(normalizeAndCloseOnTerminalEvent(upstream.body, ctx, priorityCitations), {
         status: 200,
         headers: streamHeaders,
       });
@@ -717,11 +851,13 @@ export async function POST(request: NextRequest) {
     const data = await jsonOrText(upstream);
     const record = data && typeof data === 'object' ? (data as Record<string, unknown>) : {};
     const answer = answerFromRecord(record, data);
-    const citations = citationsFromRecord(record);
+    const upstreamCitations = citationsFromRecord(record);
+    const citations = priorityCitations.length > 0 ? priorityCitations : upstreamCitations;
     const paymentEvent = paymentEventFromValue(record);
     logNoriEvent(ctx, 'info', 'chat_json_response', {
       hasAnswer: Boolean(answer),
       citationCount: citations.length,
+      upstreamCitationCount: upstreamCitations.length,
       hasPaymentEvent: Boolean(paymentEvent),
     });
 
