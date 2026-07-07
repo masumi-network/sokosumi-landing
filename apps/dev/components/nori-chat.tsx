@@ -98,6 +98,13 @@ interface NoriPaymentSession {
   explorerLinks?: NoriExplorerLinks;
 }
 
+interface NoriApiPayload {
+  ok?: boolean;
+  error?: string;
+  requestId?: string;
+  details?: unknown;
+}
+
 interface NoriAgentRegistryStatus {
   verified?: boolean;
   name?: string;
@@ -212,6 +219,45 @@ function parseData(data: string) {
   } catch {
     return data;
   }
+}
+
+async function readNoriApiPayload<T extends NoriApiPayload>(response: Response): Promise<T> {
+  const requestId = response.headers.get('x-nori-request-id') ?? undefined;
+  const contentType = response.headers.get('content-type') ?? '';
+
+  if (contentType.includes('application/json')) {
+    try {
+      const payload = (await response.json()) as T;
+      return {
+        ...payload,
+        requestId: payload.requestId ?? requestId,
+      };
+    } catch {
+      return {
+        ok: false,
+        error: 'Nori API returned invalid JSON.',
+        requestId,
+      } as T;
+    }
+  }
+
+  const text = await response.text().catch(() => '');
+  return {
+    ok: false,
+    error: text || `Nori API returned HTTP ${response.status}.`,
+    requestId,
+  } as T;
+}
+
+function withNoriRequestId(message: string, requestId?: string) {
+  if (!requestId || message.includes(requestId)) return message;
+  return `${message} Nori request id: ${requestId}.`;
+}
+
+function noriApiErrorMessage(response: Response, payload: NoriApiPayload, fallback: string) {
+  const base = payload.error || fallback;
+  const withStatus = response.ok ? base : `${base} (HTTP ${response.status})`;
+  return withNoriRequestId(withStatus, payload.requestId ?? response.headers.get('x-nori-request-id') ?? undefined);
 }
 
 function deltaFromData(data: unknown) {
@@ -876,10 +922,10 @@ export function NoriChat({
           resultHash,
         }),
       });
-      const payload = (await response.json()) as { ok?: boolean; session?: NoriPaymentSession; error?: string };
+      const payload = await readNoriApiPayload<NoriApiPayload & { session?: NoriPaymentSession }>(response);
 
       if (!response.ok || !payload.ok || !payload.session) {
-        throw new Error(payload.error || `Payment result submission failed with status ${response.status}`);
+        throw new Error(noriApiErrorMessage(response, payload, 'Payment result submission failed.'));
       }
 
       applyPaymentSession(payload.session);
@@ -950,10 +996,10 @@ export function NoriChat({
           const response = await fetch(withBasePath(`/api/nori/payment/status?${params.toString()}`), {
             cache: 'no-store',
           });
-          const payload = (await response.json()) as { ok?: boolean; session?: NoriPaymentSession; error?: string };
+          const payload = await readNoriApiPayload<NoriApiPayload & { session?: NoriPaymentSession }>(response);
 
           if (!response.ok || !payload.ok || !payload.session) {
-            throw new Error(payload.error || `Payment status failed with status ${response.status}`);
+            throw new Error(noriApiErrorMessage(response, payload, 'Payment status lookup failed.'));
           }
 
           applyPaymentSession(payload.session);
@@ -1018,10 +1064,10 @@ export function NoriChat({
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(paymentEvent),
       });
-      const payload = (await response.json()) as { ok?: boolean; session?: NoriPaymentSession; error?: string };
+      const payload = await readNoriApiPayload<NoriApiPayload & { session?: NoriPaymentSession }>(response);
 
       if (!response.ok || !payload.ok || !payload.session) {
-        throw new Error(payload.error || `Payment completion failed with status ${response.status}`);
+        throw new Error(noriApiErrorMessage(response, payload, 'Payment completion failed.'));
       }
 
       applyPaymentSession(payload.session);
@@ -1076,7 +1122,10 @@ export function NoriChat({
       }
 
       if (record.type === 'error') {
-        const error = String(record.errorText ?? record.error ?? record.message ?? 'Nori is unavailable.');
+        const error = withNoriRequestId(
+          String(record.errorText ?? record.error ?? record.message ?? 'Nori is unavailable.'),
+          typeof record.requestId === 'string' ? record.requestId : undefined,
+        );
         streamErrorRef.current = true;
         flushPendingDelta();
         appendAssistant((message) => ({
@@ -1109,7 +1158,11 @@ export function NoriChat({
     }
 
     if (event === 'error') {
-      const error = typeof data === 'string' ? data : String((data as Record<string, unknown>)?.message ?? 'Nori is unavailable.');
+      const record = data && typeof data === 'object' ? (data as Record<string, unknown>) : {};
+      const error = withNoriRequestId(
+        typeof data === 'string' ? data : String(record.message ?? record.error ?? 'Nori is unavailable.'),
+        typeof record.requestId === 'string' ? record.requestId : undefined,
+      );
       streamErrorRef.current = true;
       flushPendingDelta();
       appendAssistant((message) => ({
@@ -1171,8 +1224,8 @@ export function NoriChat({
 
       const contentType = response.headers.get('content-type') ?? '';
       if (!response.ok && !contentType.includes('text/event-stream')) {
-        const text = await response.text();
-        throw new Error(text || `Nori request failed with status ${response.status}`);
+        const payload = await readNoriApiPayload<NoriApiPayload>(response);
+        throw new Error(noriApiErrorMessage(response, payload, 'Nori request failed.'));
       }
 
       if (!response.body) {

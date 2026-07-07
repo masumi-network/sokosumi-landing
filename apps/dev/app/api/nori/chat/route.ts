@@ -1,5 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { canonicalDocsUrl, portalUrl } from '@/lib/base-path';
+import {
+  createNoriRequestContext,
+  errorDetails,
+  logNoriEvent,
+  type NoriRequestContext,
+  withNoriRequestHeaders,
+} from '@/lib/nori-observability';
 import { getAllPages } from '@/lib/source';
 
 export const dynamic = 'force-dynamic';
@@ -40,8 +47,11 @@ function dataSse(data: unknown) {
   return `data: ${JSON.stringify(data)}\n\n`;
 }
 
-function streamAiEvents(events: unknown[], status = 200) {
+function streamAiEvents(events: unknown[], status = 200, requestId?: string) {
   const encoder = new TextEncoder();
+  const headers = new Headers(AI_STREAM_HEADERS);
+  if (requestId) headers.set('x-nori-request-id', requestId);
+
   return new NextResponse(
     new ReadableStream({
       start(controller) {
@@ -53,7 +63,7 @@ function streamAiEvents(events: unknown[], status = 200) {
     }),
     {
       status,
-      headers: AI_STREAM_HEADERS,
+      headers,
     },
   );
 }
@@ -149,7 +159,7 @@ function normalizeSseBlock(block: string) {
   return `${[...passthroughLines, `data: ${JSON.stringify(normalized)}`].join('\n')}\n\n`;
 }
 
-function normalizeAndCloseOnTerminalEvent(body: ReadableStream<Uint8Array>) {
+function normalizeAndCloseOnTerminalEvent(body: ReadableStream<Uint8Array>, ctx: NoriRequestContext) {
   const reader = body.getReader();
   const decoder = new TextDecoder();
   const encoder = new TextEncoder();
@@ -169,7 +179,10 @@ function normalizeAndCloseOnTerminalEvent(body: ReadableStream<Uint8Array>) {
           let shouldClose = false;
           for (const block of blocks.slice(0, -1)) {
             controller.enqueue(encoder.encode(normalizeSseBlock(block)));
-            if (isTerminalSseBlock(block)) shouldClose = true;
+            if (isTerminalSseBlock(block)) {
+              shouldClose = true;
+              logNoriEvent(ctx, 'info', 'chat_stream_terminal');
+            }
           }
 
           if (shouldClose) {
@@ -184,6 +197,7 @@ function normalizeAndCloseOnTerminalEvent(body: ReadableStream<Uint8Array>) {
         }
         controller.close();
       } catch (error) {
+        logNoriEvent(ctx, 'error', 'chat_stream_failed', { error: errorDetails(error) });
         controller.error(error);
       }
     },
@@ -193,14 +207,15 @@ function normalizeAndCloseOnTerminalEvent(body: ReadableStream<Uint8Array>) {
   });
 }
 
-function errorStream(message: string, status = 200) {
+function errorStream(message: string, status = 200, requestId?: string) {
   return streamAiEvents(
     [
-      { type: 'error', errorText: message },
+      { type: 'error', errorText: message, requestId },
       { type: 'finish' },
       '[DONE]',
     ],
     status,
+    requestId,
   );
 }
 
@@ -527,7 +542,12 @@ function paymentEventFromValue(value: unknown, depth = 0): PaymentEvent | null {
   return null;
 }
 
-function streamJsonAnswer(answer: string, citations: Citation[], paymentEvent: PaymentEvent | null) {
+function streamJsonAnswer(
+  answer: string,
+  citations: Citation[],
+  paymentEvent: PaymentEvent | null,
+  requestId?: string,
+) {
   const messageId = 'response-message';
   const events: unknown[] = [
     { type: 'text-start', id: messageId },
@@ -539,28 +559,40 @@ function streamJsonAnswer(answer: string, citations: Citation[], paymentEvent: P
     '[DONE]',
   ];
 
-  return streamAiEvents(events);
+  return streamAiEvents(events, 200, requestId);
+}
+
+function safeHost(value: string) {
+  try {
+    return new URL(value).host;
+  } catch {
+    return 'invalid-url';
+  }
 }
 
 export async function POST(request: NextRequest) {
+  const ctx = createNoriRequestContext(request, 'nori.chat');
   let body: unknown;
 
   try {
     body = await request.json();
   } catch {
-    return errorStream('Invalid JSON request body.', 400);
+    logNoriEvent(ctx, 'warn', 'chat_invalid_json');
+    return errorStream('Invalid JSON request body.', 400, ctx.requestId);
   }
 
   const payload = body && typeof body === 'object' ? (body as Record<string, unknown>) : {};
   const message = typeof payload.message === 'string' ? payload.message.trim() : lastMessageText(payload.messages);
 
   if (!message) {
-    return errorStream('Message is required.', 400);
+    logNoriEvent(ctx, 'warn', 'chat_missing_message');
+    return errorStream('Message is required.', 400, ctx.requestId);
   }
 
   const agentUrl = process.env.NORI_AGENT_URL;
   if (!agentUrl) {
-    return errorStream('Nori is not connected yet. Set NORI_AGENT_URL to enable live docs answers.');
+    logNoriEvent(ctx, 'error', 'chat_missing_agent_url');
+    return errorStream('Nori is not connected yet. Set NORI_AGENT_URL to enable live docs answers.', 200, ctx.requestId);
   }
 
   const headers: Record<string, string> = {
@@ -580,6 +612,20 @@ export async function POST(request: NextRequest) {
   headers['X-Nori-Docs-Markdown-Index-Url'] = docsContext.machineReadable.markdownIndexUrl;
 
   try {
+    logNoriEvent(ctx, 'info', 'chat_request_started', {
+      messageLength: message.length,
+      hasHistory: Array.isArray(payload.history) && payload.history.length > 0,
+      hasMessages: Array.isArray(payload.messages) && payload.messages.length > 0,
+      page:
+        payload.page && typeof payload.page === 'object'
+          ? {
+              path: (payload.page as Record<string, unknown>).path,
+              title: (payload.page as Record<string, unknown>).title,
+            }
+          : undefined,
+      noriAgentHost: safeHost(agentUrl),
+    });
+
     const upstream = await fetch(agentUrl, {
       method: 'POST',
       headers,
@@ -587,21 +633,31 @@ export async function POST(request: NextRequest) {
     });
 
     const contentType = upstream.headers.get('content-type') ?? '';
+    logNoriEvent(ctx, upstream.ok ? 'info' : 'warn', 'chat_upstream_response', {
+      status: upstream.status,
+      contentType,
+    });
 
     if (!upstream.ok) {
       const detail = await upstream.text().catch(() => '');
+      logNoriEvent(ctx, 'warn', 'chat_upstream_error_body', {
+        status: upstream.status,
+        detail: detail.slice(0, 500),
+      });
       return errorStream(
         `Nori backend returned ${upstream.status}${detail ? `: ${detail.slice(0, 300)}` : ''}`,
         200,
+        ctx.requestId,
       );
     }
 
     if (contentType.includes('text/event-stream') && upstream.body) {
       const streamHeaders = new Headers(AI_STREAM_HEADERS);
+      withNoriRequestHeaders(streamHeaders, ctx);
       const upstreamAiStream = upstream.headers.get('x-vercel-ai-ui-message-stream');
       if (upstreamAiStream) streamHeaders.set('x-vercel-ai-ui-message-stream', upstreamAiStream);
 
-      return new NextResponse(normalizeAndCloseOnTerminalEvent(upstream.body), {
+      return new NextResponse(normalizeAndCloseOnTerminalEvent(upstream.body, ctx), {
         status: 200,
         headers: streamHeaders,
       });
@@ -612,10 +668,16 @@ export async function POST(request: NextRequest) {
     const answer = answerFromRecord(record, data);
     const citations = citationsFromRecord(record);
     const paymentEvent = paymentEventFromValue(record);
+    logNoriEvent(ctx, 'info', 'chat_json_response', {
+      hasAnswer: Boolean(answer),
+      citationCount: citations.length,
+      hasPaymentEvent: Boolean(paymentEvent),
+    });
 
-    return streamJsonAnswer(answer, citations, paymentEvent);
+    return streamJsonAnswer(answer, citations, paymentEvent, ctx.requestId);
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Nori backend request failed.';
-    return errorStream(message);
+    logNoriEvent(ctx, 'error', 'chat_request_failed', { error: errorDetails(error) });
+    return errorStream(`${message} (Nori request ${ctx.requestId})`, 200, ctx.requestId);
   }
 }

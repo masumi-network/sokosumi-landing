@@ -1,17 +1,32 @@
-import { NextResponse } from 'next/server';
-import { NoriPaymentError, lookupNoriAgentIdentity } from '@/lib/nori-payment';
+import { NextRequest, NextResponse } from 'next/server';
+import { lookupNoriAgentIdentity } from '@/lib/nori-payment';
+import {
+  createNoriRequestContext,
+  logNoriEvent,
+  noriJsonErrorResponse,
+  withNoriRequestHeaders,
+} from '@/lib/nori-observability';
 
 export const dynamic = 'force-dynamic';
 
-export async function GET() {
+export async function GET(request: NextRequest) {
+  const ctx = createNoriRequestContext(request, 'nori.identity');
+
   try {
+    logNoriEvent(ctx, 'info', 'identity_lookup_started');
     const identity = await lookupNoriAgentIdentity();
-    return NextResponse.json({ ok: true, identity });
+    logNoriEvent(ctx, 'info', 'identity_lookup_succeeded', {
+      verified: identity.verified,
+      agentIdentifier: identity.agentIdentifier,
+      status: identity.status,
+      network: identity.network,
+      error: identity.error,
+    });
+    return NextResponse.json(
+      { ok: true, identity, requestId: ctx.requestId },
+      { headers: withNoriRequestHeaders(new Headers(), ctx) },
+    );
   } catch (error) {
-    if (error instanceof NoriPaymentError) {
-      return NextResponse.json({ ok: false, error: error.message, details: error.details }, { status: error.status });
-    }
-    const message = error instanceof Error ? error.message : 'Nori identity lookup failed.';
-    return NextResponse.json({ ok: false, error: message }, { status: 500 });
+    return noriJsonErrorResponse(ctx, error, 'Nori identity lookup failed.');
   }
 }
