@@ -3841,6 +3841,17 @@ body:has(.devhub-subheader[data-docs-nav='true']) .masumi-docs-layout {
   touch-action: pan-y;
 }
 
+.dev-flow .dev-flow-rf-node,
+.dev-flow .dev-flow-rf-node *,
+.dev-flow-node,
+.dev-flow-node *,
+.dev-flow-nori-node,
+.dev-flow-nori-node *,
+.dev-flow-core-node,
+.dev-flow-core-node * {
+  touch-action: pan-y;
+}
+
 .dev-flow .react-flow__edge-path {
   filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.75));
 }
@@ -4132,7 +4143,15 @@ body:has(.devhub-subheader[data-docs-nav='true']) .masumi-docs-layout {
 @media (hover: none), (pointer: coarse), (max-width: 720px) {
   .dev-flow .react-flow__pane,
   .dev-flow .react-flow__renderer,
-  .dev-flow .react-flow__viewport {
+  .dev-flow .react-flow__viewport,
+  .dev-flow .dev-flow-rf-node,
+  .dev-flow .dev-flow-rf-node *,
+  .dev-flow-node,
+  .dev-flow-node *,
+  .dev-flow-nori-node,
+  .dev-flow-nori-node *,
+  .dev-flow-core-node,
+  .dev-flow-core-node * {
     touch-action: pan-y !important;
   }
 

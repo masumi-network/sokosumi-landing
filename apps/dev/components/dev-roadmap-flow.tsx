@@ -216,9 +216,10 @@ function RoadmapNode({ data }: NodeProps<RoadmapFlowNode>) {
   return (
     <Link
       href={data.href}
-      className="dev-flow-node"
+      className="dev-flow-node nodrag nopan"
       data-tone={data.tone}
       data-parent={data.parent ? 'true' : 'false'}
+      draggable={false}
     >
       <RoadmapHandles />
       <span className="dev-flow-node-top">
@@ -249,7 +250,7 @@ function RoadmapNode({ data }: NodeProps<RoadmapFlowNode>) {
 
 function NoriNode({ data }: NodeProps<RoadmapFlowNode>) {
   return (
-    <Link href="/ask" className="dev-flow-nori-node">
+    <Link href="/ask" className="dev-flow-nori-node nodrag nopan" draggable={false}>
       <RoadmapHandles />
       <span className="dev-flow-node-top">
         <span className="dev-flow-node-index">NORI</span>
@@ -271,7 +272,7 @@ function NoriNode({ data }: NodeProps<RoadmapFlowNode>) {
 
 function CoreNode({ data }: NodeProps<RoadmapFlowNode>) {
   return (
-    <Link href={data.href} className="dev-flow-core-node" aria-current="page">
+    <Link href={data.href} className="dev-flow-core-node nodrag nopan" aria-current="page" draggable={false}>
       <RoadmapHandles />
       <span className="dev-flow-node-top">
         <span className="dev-flow-node-index">00</span>
@@ -362,6 +363,7 @@ function makeNode(
     data,
     draggable: false,
     selectable: false,
+    className: 'dev-flow-rf-node nodrag nopan',
     style: { width },
   };
 }
