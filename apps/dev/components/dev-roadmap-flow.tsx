@@ -30,7 +30,7 @@ import {
   type Node,
   type NodeProps,
 } from '@xyflow/react';
-import { AgentIdCard, type AgentIdCardData } from '@/components/nori/agent-id-card';
+import { AgentIdCard, type AgentIdCardData, type AgentIdCardTiltMode } from '@/components/nori/agent-id-card';
 
 type RoadmapTone = 'sokosumi' | 'masumi' | 'agents' | 'utility';
 type RoadmapNodeKind = 'roadmap' | 'nori' | 'core';
@@ -45,6 +45,7 @@ interface RoadmapNodeData extends Record<string, unknown> {
   icon?: LucideIcon;
   tone: RoadmapTone;
   parent?: boolean;
+  tiltMode?: AgentIdCardTiltMode;
 }
 
 type RoadmapFlowNode = Node<RoadmapNodeData, RoadmapNodeKind>;
@@ -246,7 +247,7 @@ function RoadmapNode({ data }: NodeProps<RoadmapFlowNode>) {
   );
 }
 
-function NoriNode() {
+function NoriNode({ data }: NodeProps<RoadmapFlowNode>) {
   return (
     <Link href="/ask" className="dev-flow-nori-node">
       <RoadmapHandles />
@@ -261,7 +262,7 @@ function NoriNode() {
           stamped
           stampAnimated={false}
           registrySheen={false}
-          interactiveTilt
+          interactiveTilt={data.tiltMode}
         />
       </span>
     </Link>
@@ -433,6 +434,7 @@ export function DevRoadmapFlow() {
         eyebrow: 'Ask Nori',
         indexLabel: 'NORI',
         tone: 'masumi',
+        tiltMode: compact ? 'device' : 'pointer',
       }, compact ? width : 380),
       makeNode('core', 'core', positions.core, {
         title: 'Build, pay, hire, verify.',

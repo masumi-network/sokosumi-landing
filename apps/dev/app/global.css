@@ -2407,6 +2407,11 @@ body:has(.devhub-subheader[data-docs-nav='true']) .masumi-docs-layout {
   will-change: transform;
 }
 
+.nori-id-tilt[data-tilt='device'] .nori-id-card {
+  transform: rotateX(var(--x-rotation, 0deg)) rotateY(var(--y-rotation, 0deg));
+  will-change: transform;
+}
+
 /* Light reflection that follows the pointer */
 .nori-id-glare {
   position: absolute;
@@ -2427,8 +2432,13 @@ body:has(.devhub-subheader[data-docs-nav='true']) .masumi-docs-layout {
   opacity: 1;
 }
 
+.nori-id-tilt[data-tilt='device'] .nori-id-glare {
+  opacity: var(--glare-opacity, 0.08);
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .nori-id-tilt[data-tilt='enabled']:hover .nori-id-card {
+  .nori-id-tilt[data-tilt='enabled']:hover .nori-id-card,
+  .nori-id-tilt[data-tilt='device'] .nori-id-card {
     transform: none;
     transition: none;
   }
@@ -3825,6 +3835,12 @@ body:has(.devhub-subheader[data-docs-nav='true']) .masumi-docs-layout {
   cursor: default;
 }
 
+.dev-flow .react-flow__pane,
+.dev-flow .react-flow__renderer,
+.dev-flow .react-flow__viewport {
+  touch-action: pan-y;
+}
+
 .dev-flow .react-flow__edge-path {
   filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.75));
 }
@@ -4110,5 +4126,44 @@ body:has(.devhub-subheader[data-docs-nav='true']) .masumi-docs-layout {
 
   .dev-flow-core-copy strong {
     font-size: 22px;
+  }
+}
+
+@media (hover: none), (pointer: coarse), (max-width: 720px) {
+  .dev-flow .react-flow__pane,
+  .dev-flow .react-flow__renderer,
+  .dev-flow .react-flow__viewport {
+    touch-action: pan-y !important;
+  }
+
+  .dev-flow-node,
+  .dev-flow-nori-node,
+  .dev-flow-core-node {
+    transition: none;
+  }
+
+  .dev-flow-node:hover,
+  .dev-flow-nori-node:hover,
+  .dev-flow-core-node:hover {
+    border-color: rgba(0, 0, 0, 0.04);
+    box-shadow: none;
+    transform: none;
+  }
+
+  .dev-flow-node[data-parent='true']:hover,
+  .dev-flow-core-node:hover {
+    border-color: color-mix(in srgb, var(--node-accent) 16%, rgba(0, 0, 0, 0.04));
+  }
+
+  .dev-flow-nori-node:hover {
+    border-color: rgba(0, 0, 0, 0.04);
+  }
+
+  .dev-flow .nori-id-tilt[data-tilt='enabled']:hover .nori-id-card {
+    transform: none;
+  }
+
+  .dev-flow .nori-id-tilt[data-tilt='enabled']:hover .nori-id-glare {
+    opacity: 0;
   }
 }

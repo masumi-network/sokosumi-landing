@@ -1,6 +1,6 @@
 'use client';
 
-import { PointerEvent as ReactPointerEvent, memo, useRef } from 'react';
+import { PointerEvent as ReactPointerEvent, memo, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { ExternalLink, Loader2 } from 'lucide-react';
 import { withBasePath } from '@/lib/base-path';
@@ -18,7 +18,14 @@ export interface AgentIdCardData {
   assetHref?: string;
 }
 
+export type AgentIdCardTiltMode = 'pointer' | 'device' | false;
+
 const MRZ_WIDTH = 44;
+const MAX_DEVICE_ROTATION = 10;
+
+type DeviceOrientationEventConstructorWithPermission = typeof DeviceOrientationEvent & {
+  requestPermission?: () => Promise<PermissionState>;
+};
 
 function mrzSanitize(value: string) {
   return value
@@ -35,16 +42,102 @@ function mrzLines(data: AgentIdCardData) {
   return [line1, line2];
 }
 
-/**
- * Pointer-tracking tilt so the card behaves like a physical object in hand.
- * Technique from https://github.com/frontendfyi/css-3d-card-perspective-animation:
- * the bounding rect is cached on enter (measuring per-move reads the already
- * tilted card and wobbles), and a constant ease-out transition chases the
- * pointer for a springy, physical feel.
- */
-function useCardTilt() {
+function clamp(value: number, min: number, max: number) {
+  return Math.min(Math.max(value, min), max);
+}
+
+function resolveTiltMode(interactiveTilt: boolean | AgentIdCardTiltMode | undefined, variant: 'boot' | 'panel'): AgentIdCardTiltMode {
+  if (interactiveTilt === 'pointer' || interactiveTilt === 'device' || interactiveTilt === false) return interactiveTilt;
+  if (interactiveTilt === true) return 'pointer';
+  return variant === 'boot' ? 'pointer' : false;
+}
+
+function useCardTilt(mode: AgentIdCardTiltMode) {
   const ref = useRef<HTMLDivElement>(null);
   const boundingRef = useRef<DOMRect | null>(null);
+
+  useEffect(() => {
+    if (mode !== 'device') return;
+
+    const el = ref.current;
+    if (!el) return;
+
+    let active = true;
+    let listenerAdded = false;
+    let permissionRequested = false;
+    let baselineBeta: number | null = null;
+    let baselineGamma: number | null = null;
+
+    const resetTilt = () => {
+      el.style.removeProperty('--x-rotation');
+      el.style.removeProperty('--y-rotation');
+      el.style.removeProperty('--glare-x');
+      el.style.removeProperty('--glare-y');
+      el.style.removeProperty('--glare-opacity');
+    };
+
+    const handleOrientation = (event: DeviceOrientationEvent) => {
+      if (!active || window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) {
+        resetTilt();
+        return;
+      }
+
+      if (typeof event.beta !== 'number' || typeof event.gamma !== 'number') return;
+
+      baselineBeta ??= event.beta;
+      baselineGamma ??= event.gamma;
+
+      const xRotation = clamp((baselineBeta - event.beta) * 0.42, -MAX_DEVICE_ROTATION, MAX_DEVICE_ROTATION);
+      const yRotation = clamp((event.gamma - baselineGamma) * 0.42, -MAX_DEVICE_ROTATION, MAX_DEVICE_ROTATION);
+      const intensity = clamp((Math.abs(xRotation) + Math.abs(yRotation)) / (MAX_DEVICE_ROTATION * 2), 0, 1);
+
+      el.style.setProperty('--x-rotation', `${xRotation.toFixed(2)}deg`);
+      el.style.setProperty('--y-rotation', `${yRotation.toFixed(2)}deg`);
+      el.style.setProperty('--glare-x', `${clamp(50 + yRotation * 3, 18, 82).toFixed(1)}%`);
+      el.style.setProperty('--glare-y', `${clamp(50 - xRotation * 3, 18, 82).toFixed(1)}%`);
+      el.style.setProperty('--glare-opacity', `${(0.08 + intensity * 0.2).toFixed(2)}`);
+    };
+
+    const addDeviceListener = () => {
+      if (listenerAdded) return;
+      listenerAdded = true;
+      window.addEventListener('deviceorientation', handleOrientation, { passive: true });
+    };
+
+    const orientationEvent = window.DeviceOrientationEvent as DeviceOrientationEventConstructorWithPermission | undefined;
+    const requestPermission = orientationEvent?.requestPermission;
+
+    if (typeof requestPermission === 'function') {
+      const requestAccess = () => {
+        if (permissionRequested) return;
+        permissionRequested = true;
+        requestPermission.call(orientationEvent)
+          .then((state) => {
+            if (active && state === 'granted') addDeviceListener();
+          })
+          .catch(resetTilt);
+      };
+
+      document.addEventListener('pointerdown', requestAccess, { once: true, passive: true });
+      document.addEventListener('touchstart', requestAccess, { once: true, passive: true });
+
+      return () => {
+        active = false;
+        document.removeEventListener('pointerdown', requestAccess);
+        document.removeEventListener('touchstart', requestAccess);
+        window.removeEventListener('deviceorientation', handleOrientation);
+        resetTilt();
+      };
+    }
+
+    addDeviceListener();
+
+    return () => {
+      active = false;
+      window.removeEventListener('deviceorientation', handleOrientation);
+      resetTilt();
+    };
+  }, [mode]);
 
   const onPointerEnter = (event: ReactPointerEvent<HTMLDivElement>) => {
     boundingRef.current = event.currentTarget.getBoundingClientRect();
@@ -93,14 +186,14 @@ export const AgentIdCard = memo(function AgentIdCard({
   stampAnimated?: boolean;
   /** Whether verified registry state should trigger the reflective card sweep. */
   registrySheen?: boolean;
-  /** Pointer-following tilt is kept for the hero card, but disabled in the sticky rail. */
-  interactiveTilt?: boolean;
+  /** Pointer tilt is for desktop; device tilt lets mobile cards react to phone motion. */
+  interactiveTilt?: boolean | AgentIdCardTiltMode;
 }) {
   const agentId = data.agentIdentifier ? truncateMiddle(data.agentIdentifier, 17) : '';
   const checking = data.registryState === 'checking';
   const [line1, line2] = mrzLines(data);
-  const tilt = useCardTilt();
-  const tiltEnabled = interactiveTilt ?? variant === 'boot';
+  const tiltMode = resolveTiltMode(interactiveTilt, variant);
+  const tilt = useCardTilt(tiltMode);
   const showStamp = stamped && (data.registryState === 'verified' || data.registryState === 'failed');
   const stampState = data.registryState === 'failed' ? 'failed' : 'verified';
 
@@ -108,10 +201,10 @@ export const AgentIdCard = memo(function AgentIdCard({
     <div
       ref={tilt.ref}
       className="nori-id-tilt"
-      data-tilt={tiltEnabled ? 'enabled' : 'disabled'}
-      onPointerEnter={tiltEnabled ? tilt.onPointerEnter : undefined}
-      onPointerMove={tiltEnabled ? tilt.onPointerMove : undefined}
-      onPointerLeave={tiltEnabled ? tilt.onPointerLeave : undefined}
+      data-tilt={tiltMode === 'pointer' ? 'enabled' : tiltMode === 'device' ? 'device' : 'disabled'}
+      onPointerEnter={tiltMode === 'pointer' ? tilt.onPointerEnter : undefined}
+      onPointerMove={tiltMode === 'pointer' ? tilt.onPointerMove : undefined}
+      onPointerLeave={tiltMode === 'pointer' ? tilt.onPointerLeave : undefined}
     >
     <figure
       className="nori-id-card"
