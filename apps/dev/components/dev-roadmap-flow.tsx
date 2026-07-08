@@ -1,6 +1,12 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import {
+  type PointerEvent as ReactPointerEvent,
+  type TouchEvent as ReactTouchEvent,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import Link from 'next/link';
 import type { LucideIcon } from 'lucide-react';
 import {
@@ -210,6 +216,16 @@ function RoadmapHandles() {
   );
 }
 
+function stopTouchGraphGesture(event: ReactTouchEvent<HTMLElement>) {
+  event.stopPropagation();
+}
+
+function stopPointerGraphGesture(event: ReactPointerEvent<HTMLElement>) {
+  if (event.pointerType === 'touch') {
+    event.stopPropagation();
+  }
+}
+
 function RoadmapNode({ data }: NodeProps<RoadmapFlowNode>) {
   const Icon = data.icon ?? FileText;
 
@@ -220,6 +236,10 @@ function RoadmapNode({ data }: NodeProps<RoadmapFlowNode>) {
       data-tone={data.tone}
       data-parent={data.parent ? 'true' : 'false'}
       draggable={false}
+      onPointerDownCapture={stopPointerGraphGesture}
+      onPointerMoveCapture={stopPointerGraphGesture}
+      onTouchStartCapture={stopTouchGraphGesture}
+      onTouchMoveCapture={stopTouchGraphGesture}
     >
       <RoadmapHandles />
       <span className="dev-flow-node-top">
@@ -250,7 +270,15 @@ function RoadmapNode({ data }: NodeProps<RoadmapFlowNode>) {
 
 function NoriNode({ data }: NodeProps<RoadmapFlowNode>) {
   return (
-    <Link href="/ask" className="dev-flow-nori-node nodrag nopan" draggable={false}>
+    <Link
+      href="/ask"
+      className="dev-flow-nori-node nodrag nopan"
+      draggable={false}
+      onPointerDownCapture={stopPointerGraphGesture}
+      onPointerMoveCapture={stopPointerGraphGesture}
+      onTouchStartCapture={stopTouchGraphGesture}
+      onTouchMoveCapture={stopTouchGraphGesture}
+    >
       <RoadmapHandles />
       <span className="dev-flow-node-top">
         <span className="dev-flow-node-index">NORI</span>
@@ -272,7 +300,16 @@ function NoriNode({ data }: NodeProps<RoadmapFlowNode>) {
 
 function CoreNode({ data }: NodeProps<RoadmapFlowNode>) {
   return (
-    <Link href={data.href} className="dev-flow-core-node nodrag nopan" aria-current="page" draggable={false}>
+    <Link
+      href={data.href}
+      className="dev-flow-core-node nodrag nopan"
+      aria-current="page"
+      draggable={false}
+      onPointerDownCapture={stopPointerGraphGesture}
+      onPointerMoveCapture={stopPointerGraphGesture}
+      onTouchStartCapture={stopTouchGraphGesture}
+      onTouchMoveCapture={stopTouchGraphGesture}
+    >
       <RoadmapHandles />
       <span className="dev-flow-node-top">
         <span className="dev-flow-node-index">00</span>
@@ -436,7 +473,7 @@ export function DevRoadmapFlow() {
         eyebrow: 'Ask Nori',
         indexLabel: 'NORI',
         tone: 'masumi',
-        tiltMode: compact ? 'device' : 'pointer',
+        tiltMode: false,
       }, compact ? width : 380),
       makeNode('core', 'core', positions.core, {
         title: 'Build, pay, hire, verify.',
