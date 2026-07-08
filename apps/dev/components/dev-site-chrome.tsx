@@ -100,7 +100,7 @@ export function DevSiteChrome() {
         product="masumi"
         siteRootHref={siteOrigin}
         assetBaseUrl={siteOrigin}
-        documentationHref="/"
+        documentationHref="/dev"
       />
       <nav className="devhub-subheader" aria-label="Developer hub navigation" data-docs-nav={docsLinks ? 'true' : 'false'}>
         <div className="devhub-subheader-inner">

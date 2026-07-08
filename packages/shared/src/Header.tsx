@@ -215,10 +215,10 @@ export default function Header({
                 </Link>
               </>
             ) : product === "masumi" ? (
-              <Link href={documentationHref}
+              <a href={documentationHref}
                 className="hidden lg:block bg-black text-white text-[14px] font-normal px-6 py-2.5 rounded-full hover:bg-black/85 transition-colors">
                 Open Documentation
-              </Link>
+              </a>
             ) : (
               <Link href="https://docs.kodosumi.io" target="_blank" rel="noopener noreferrer"
                 className="hidden lg:block bg-black text-white text-[14px] font-normal px-6 py-2.5 rounded-full hover:bg-black/85 transition-colors">
@@ -274,10 +274,10 @@ export default function Header({
                 <Link href="https://discord.com/invite/aj4QfnTS92" target="_blank" rel="noopener noreferrer" onClick={() => setMobileMenuOpen(false)} className="text-[18px] text-black py-3 border-b border-black/[0.06]">
                   Discord
                 </Link>
-                <Link href={documentationHref} onClick={() => setMobileMenuOpen(false)}
+                <a href={documentationHref} onClick={() => setMobileMenuOpen(false)}
                   className="mt-6 bg-black text-white text-[14px] font-normal px-6 py-3 rounded-full text-center">
                   Open Documentation
-                </Link>
+                </a>
               </>
             ) : (
               <>

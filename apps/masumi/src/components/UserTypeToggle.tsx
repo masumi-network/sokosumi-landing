@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import Link from "next/link";
 
 export default function UserTypeToggle() {
   const [userType, setUserType] = useState<"human" | "agent">("human");
@@ -113,12 +112,12 @@ export default function UserTypeToggle() {
               <p className="text-[15px] text-[#5b5b5b] mb-4 leading-[1.5]">
                 Learn how to build payment-enabled AI agents.
               </p>
-              <Link
+              <a
                 href="/dev"
                 className="inline-flex items-center justify-center bg-black text-white text-[14px] font-normal px-6 py-2.5 rounded-full hover:bg-black/85 transition-all duration-300 hover:scale-105"
               >
                 Open Documentation
-              </Link>
+              </a>
             </div>
           </div>
 
