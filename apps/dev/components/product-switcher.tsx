@@ -15,8 +15,16 @@ import { withBasePath } from '@/lib/base-path';
 
 const entries = [
   {
+    id: 'map',
+    href: '/map',
+    label: 'dev map',
+    description: 'Experimental visual entrypoint',
+    tileClass: 'masumi-product-tile--roadmap',
+    tileIcon: '/assets/masumi-kanji-white.png',
+  },
+  {
     id: 'nori',
-    href: '/',
+    href: '/ask',
     label: 'ask Nori',
     description: 'Chat with the docs AI agent',
     tileClass: 'masumi-product-tile--nori',
@@ -48,9 +56,14 @@ export function ProductSwitcher({ className = '' }: { className?: string }) {
   // The menu is rendered in a portal (fixed position) so it can't be trapped
   // beneath the sidebar by the header's stacking context.
   const [menuPosition, setMenuPosition] = useState<{ top: number; left: number } | null>(null);
-  const activeProduct = productFromPathname(pathname);
-  // Outside the docs (portal root / ask page) the Ask Nori entry is active.
-  const activeId = activeProduct ?? 'nori';
+  const normalizedPathname = pathname?.replace(/^\/dev(?=\/|$)/, '') ?? pathname;
+  const activeProduct = productFromPathname(normalizedPathname);
+  const activeId =
+    normalizedPathname === '/' || normalizedPathname === '/map' || normalizedPathname === '/roadmap'
+      ? 'map'
+      : normalizedPathname === '/ask'
+        ? 'nori'
+        : activeProduct ?? 'map';
 
   // Remember the last visited product
   useEffect(() => {

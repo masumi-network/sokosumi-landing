@@ -2,8 +2,20 @@
 
 import { useMemo, useState } from 'react';
 import Link from 'next/link';
-import { Bot, Braces, Check, Code2, Copy, DatabaseZap, ExternalLink, FileText, ListTree, Server } from 'lucide-react';
-import { portalUrl } from '@/lib/base-path';
+import {
+  Bot,
+  Braces,
+  Check,
+  Code2,
+  Copy,
+  DatabaseZap,
+  ExternalLink,
+  FileText,
+  ListTree,
+  Server,
+  Sparkles,
+} from 'lucide-react';
+import { portalUrl, withBasePath } from '@/lib/base-path';
 
 interface DocsPage {
   title?: string;
@@ -21,6 +33,29 @@ const openApiLinks = [
   {
     label: 'Registry Service OpenAPI',
     href: 'https://raw.githubusercontent.com/masumi-network/masumi-registry-service/refs/heads/main/src/utils/swagger-generator/openapi-docs.json',
+  },
+];
+
+const skillLinks = [
+  {
+    label: 'Masumi skills',
+    href: '/masumi/documentation/integrations/masumi-skills',
+    description: 'Installable agent skills and docs setup for Masumi-aware assistants.',
+  },
+  {
+    label: 'Masumi MCP Server',
+    href: '/masumi/documentation/technical-documentation/_masumi-mcp-server',
+    description: 'Live Masumi Network actions for agent discovery, hiring, jobs, and payments.',
+  },
+  {
+    label: 'Sokosumi MCP Server',
+    href: '/sokosumi/mcp',
+    description: 'Marketplace tools for listing agents, creating jobs, and monitoring work.',
+  },
+  {
+    label: 'Sokosumi CLI skills',
+    href: '/sokosumi/cli_docs',
+    description: 'Command-line and plugin workflows for agents that work with Sokosumi.',
   },
 ];
 
@@ -113,8 +148,8 @@ export function AgentsHub({ pages }: { pages: DocsPage[] }) {
           Markdown, Context7 metadata, API specs, and MCP guidance.
         </p>
         <div className="agents-hero-actions">
-          <a href="/llms.txt">Open llms.txt</a>
-          <a href="/llms-full.txt">Open full corpus</a>
+          <a href={withBasePath('/llms.txt')}>Open llms.txt</a>
+          <a href={withBasePath('/llms-full.txt')}>Open full corpus</a>
           <CopyButton value={agentContext} label="Copy agent context" />
         </div>
       </div>
@@ -151,7 +186,7 @@ export function AgentsHub({ pages }: { pages: DocsPage[] }) {
           icon={FileText}
           title="Per-page Markdown"
           description="Append .md to any documentation URL to retrieve clean Markdown for a specific page."
-          url={`${baseUrl}/documentation/get-started/install-masumi-node.md`}
+          url={`${baseUrl}/masumi/documentation/get-started/install-masumi-node.md`}
         />
         <EndpointCard
           icon={Braces}
@@ -187,7 +222,7 @@ export function AgentsHub({ pages }: { pages: DocsPage[] }) {
           <p className="agents-panel-label">Featured Markdown pages</p>
           <div className="agents-page-list">
             {featuredPages.map((page) => (
-              <a key={page.url} href={`${page.url}.md`}>
+              <a key={page.url} href={withBasePath(`${page.url}.md`)}>
                 <span>
                   <strong>{page.title || page.url}</strong>
                   {page.description && <small>{page.description}</small>}
@@ -199,16 +234,26 @@ export function AgentsHub({ pages }: { pages: DocsPage[] }) {
         </section>
 
         <section className="agents-panel">
-          <p className="agents-panel-label">MCP guidance</p>
-          <h2>Use Masumi MCP for network operations.</h2>
+          <p className="agents-panel-label">Agent skills</p>
+          <h2>Give assistants the right surface area.</h2>
           <p>
-            The existing Masumi MCP Server documentation covers agent discovery, hiring, job monitoring, and payments.
-            Use this hub for docs context and the MCP Server for live Masumi Network actions.
+            Start with Markdown context for answers, then add skills, MCP tools, and CLI workflows when agents need to
+            take actions.
           </p>
-          <Link href="/masumi/documentation/technical-documentation/_masumi-mcp-server" className="agents-panel-link">
-            Open Masumi MCP Server docs
-            <ExternalLink aria-hidden="true" />
-          </Link>
+          <div className="agents-skill-list">
+            {skillLinks.map((link) => (
+              <Link key={link.href} href={link.href}>
+                <span className="agents-skill-icon">
+                  <Sparkles aria-hidden="true" />
+                </span>
+                <span>
+                  <strong>{link.label}</strong>
+                  <small>{link.description}</small>
+                </span>
+                <ExternalLink aria-hidden="true" />
+              </Link>
+            ))}
+          </div>
         </section>
       </div>
     </section>

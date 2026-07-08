@@ -57,7 +57,7 @@ export function PageActions({ content, title, url, pathname, loading = false, er
       markdownUrl,
     });
 
-    window.location.href = withBasePath(`/?${params.toString()}`);
+    window.location.href = withBasePath(`/ask?${params.toString()}`);
   };
 
   const getAgentContext = () => {

@@ -21,6 +21,7 @@ const config = {
     root: path.resolve(__dirname, '../..'),
   },
   output: 'standalone', // Required for Docker deployment
+  transpilePackages: ['@summation/shared'],
   reactStrictMode: true,
   // Optimize memory usage
   experimental: {
