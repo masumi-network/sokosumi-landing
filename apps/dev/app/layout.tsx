@@ -5,6 +5,7 @@ import type { ReactNode } from 'react';
 import type { Metadata } from 'next';
 import Script from 'next/script';
 import { SiteFooter } from '@/components/site-footer';
+import { DevSiteChrome } from '@/components/dev-site-chrome';
 import { withBasePath } from '@/lib/base-path';
 
 const inter = Inter({
@@ -34,6 +35,7 @@ export default function Layout({ children }: { children: ReactNode }) {
       </head>
       <body className="flex flex-col min-h-screen">
         <RootProvider theme={{ enabled: false }}>
+          <DevSiteChrome />
           {children}
         </RootProvider>
         <SiteFooter />

@@ -14,6 +14,8 @@
   },
   "dependencies": {
     "@theguild/remark-mermaid": "^0.3.0",
+    "@summation/shared": "*",
+    "@xyflow/react": "^12.11.2",
     "fumadocs-core": "16.6.6",
     "fumadocs-mdx": "14.2.8",
     "fumadocs-openapi": "10.3.12",
@@ -33,7 +35,6 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "4.2.1",
-    "vite": "^6.0.0",
     "@types/mdx": "^2.0.13",
     "@types/node": "25.2.3",
     "@types/react": "^19.2.14",
@@ -43,6 +44,7 @@
     "tailwindcss": "4.2.1",
     "ts-node": "^10.9.2",
     "tsx": "^4.19.2",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "vite": "^6.0.0"
   }
 }

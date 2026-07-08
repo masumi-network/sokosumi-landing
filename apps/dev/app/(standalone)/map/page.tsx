@@ -6,6 +6,6 @@ export const metadata: Metadata = {
   description: 'Visual entrypoint for Masumi, Sokosumi, Ask Nori, and agent-ready documentation.',
 };
 
-export default function DevHubHomePage() {
+export default function MapPage() {
   return <DevMapPage />;
 }

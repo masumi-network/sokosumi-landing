@@ -1,7 +1,10 @@
 @import 'tailwindcss';
+@import '@xyflow/react/dist/style.css';
 @import './masumi-theme.css';
 @import 'fumadocs-ui/css/preset.css';
 @import 'fumadocs-openapi/css/preset.css';
+
+@source "../../../packages/shared/src";
 
 /* Ensure Tailwind scans external schema validator classes. */
 @source "../node_modules/masumi-schema-validator-component/dist/index.mjs";
@@ -47,11 +50,11 @@
 }
 
 /* Masumi brand accent for links and interactive text */
-a:not(:has(.masumi-brand-mark)):not([class*="masumi-product-item"]):not([class*="bg-"]):not([class*="text-fd-muted"]) {
+a:not(:where(.summation-site-header *, .summation-site-mobile-menu *, .devhub-subheader *)):not(:has(.masumi-brand-mark)):not([class*="masumi-product-item"]):not([class*="bg-"]):not([class*="text-fd-muted"]) {
   color: #ff51ff !important;
 }
 
-a:not(:has(.masumi-brand-mark)):not([class*="masumi-product-item"]):not([class*="bg-"]):not([class*="text-fd-muted"]):hover {
+a:not(:where(.summation-site-header *, .summation-site-mobile-menu *, .devhub-subheader *)):not(:has(.masumi-brand-mark)):not([class*="masumi-product-item"]):not([class*="bg-"]):not([class*="text-fd-muted"]):hover {
   color: #b800b8 !important;
 }
 
@@ -80,6 +83,14 @@ a:not(:has(.masumi-brand-mark)):not([class*="masumi-product-item"]):not([class*=
 }
 
 /* Masumi light docs shell */
+:root {
+  --dev-site-header-height: 110px;
+  --devhub-subheader-height: 48px;
+  --devhub-docs-subnav-height: 40px;
+  --dev-site-chrome-height: calc(var(--dev-site-header-height) + var(--devhub-subheader-height));
+  --dev-site-docs-chrome-height: calc(var(--dev-site-chrome-height) + var(--devhub-docs-subnav-height));
+}
+
 .masumi-brand-mark {
   display: inline-flex;
   align-items: center;
@@ -235,6 +246,10 @@ header a:has(.masumi-brand-mark):not([class*="bg-"]):not([class*="text-fd-muted"
   background: #7c3aed;
 }
 
+.masumi-product-tile--roadmap {
+  background: #111827;
+}
+
 .masumi-product-item-text {
   display: flex;
   flex-direction: column;
@@ -269,11 +284,175 @@ header a:has(.masumi-brand-mark):not([class*="bg-"]):not([class*="text-fd-muted"
   color: var(--color-fd-muted-foreground);
 }
 
+.devhub-subheader {
+  position: fixed;
+  top: var(--dev-site-header-height);
+  left: 0;
+  right: 0;
+  z-index: 39;
+  height: var(--devhub-subheader-height);
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  background: rgba(245, 245, 245, 0.92);
+  backdrop-filter: blur(12px);
+}
+
+.devhub-subheader[data-docs-nav='true'] {
+  height: calc(var(--devhub-subheader-height) + var(--devhub-docs-subnav-height));
+}
+
+.devhub-subheader-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  width: min(1440px, 100%);
+  height: var(--devhub-subheader-height);
+  margin: 0 auto;
+  padding: 0 48px;
+}
+
+.devhub-subheader-title {
+  flex: 0 0 auto;
+  color: #000 !important;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1;
+  text-decoration: none !important;
+}
+
+.devhub-subheader-links {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.devhub-subheader-links::-webkit-scrollbar {
+  display: none;
+}
+
+.devhub-subheader-link {
+  flex: 0 0 auto;
+  min-height: 30px;
+  padding: 7px 12px;
+  border-radius: 999px;
+  color: rgba(0, 0, 0, 0.62) !important;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.2;
+  text-decoration: none !important;
+  transition: background-color 160ms ease, color 160ms ease;
+}
+
+.devhub-subheader-link:hover,
+.devhub-subheader-link[data-active='true'] {
+  background: #ffffff;
+  color: #000 !important;
+}
+
+.devhub-docs-subnav {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: min(1440px, 100%);
+  height: var(--devhub-docs-subnav-height);
+  margin: 0 auto;
+  padding: 0 48px;
+  overflow-x: auto;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  scrollbar-width: none;
+}
+
+.devhub-docs-subnav::-webkit-scrollbar {
+  display: none;
+}
+
+.devhub-docs-subnav-link {
+  flex: 0 0 auto;
+  padding: 6px 11px;
+  border-radius: 999px;
+  color: rgba(0, 0, 0, 0.58) !important;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.2;
+  text-decoration: none !important;
+  transition: background-color 160ms ease, color 160ms ease;
+}
+
+.devhub-docs-subnav-link:hover,
+.devhub-docs-subnav-link[data-active='true'] {
+  background: rgba(255, 255, 255, 0.88);
+  color: #000 !important;
+}
+
+@media (max-width: 720px) {
+  .devhub-subheader-inner {
+    align-items: stretch;
+    flex-direction: column;
+    justify-content: center;
+    gap: 3px;
+    padding: 5px 16px;
+  }
+
+  .devhub-subheader-title {
+    font-size: 11px;
+  }
+
+  .devhub-subheader-link {
+    min-height: 25px;
+    padding: 5px 9px;
+    font-size: 12px;
+  }
+
+  .devhub-docs-subnav {
+    padding: 0 16px;
+  }
+
+  .devhub-docs-subnav-link {
+    padding: 5px 9px;
+    font-size: 12px;
+  }
+}
+
 .masumi-standalone-layout {
-  min-height: calc(100dvh - 58px);
-  background:
-    linear-gradient(180deg, rgba(255, 81, 255, 0.08), transparent 220px),
-    var(--color-fd-background);
+  --docs-bg: #f5f5f5;
+  --docs-surface: #ffffff;
+  --docs-ink: #000000;
+  --docs-text: #333333;
+  --docs-muted: #666666;
+  --docs-faint: #9a9a9a;
+  --docs-hairline: rgba(0, 0, 0, 0.06);
+  --docs-line: rgba(0, 0, 0, 0.12);
+  --docs-pink: #ff51ff;
+  --docs-pink-hover: #b800b8;
+  margin-top: var(--dev-site-chrome-height);
+  min-height: calc(100dvh - var(--dev-site-chrome-height));
+  background: var(--docs-bg);
+}
+
+body:has(.devhub-subheader[data-docs-nav='true']) .masumi-standalone-layout,
+body:has(.devhub-subheader[data-docs-nav='true']) .masumi-docs-layout {
+  margin-top: var(--dev-site-docs-chrome-height);
+  min-height: calc(100dvh - var(--dev-site-docs-chrome-height));
+}
+
+@media (max-width: 1180px) {
+  .devhub-subheader[data-docs-nav='true'] {
+    height: var(--devhub-subheader-height);
+  }
+
+  .devhub-docs-subnav {
+    display: none;
+  }
+
+  body:has(.devhub-subheader[data-docs-nav='true']) .masumi-standalone-layout,
+  body:has(.devhub-subheader[data-docs-nav='true']) .masumi-docs-layout {
+    margin-top: var(--dev-site-chrome-height);
+    min-height: calc(100dvh - var(--dev-site-chrome-height));
+  }
 }
 
 .masumi-standalone-notebook-layout {
@@ -285,10 +464,23 @@ header a:has(.masumi-brand-mark):not([class*="bg-"]):not([class*="text-fd-muted"
   display: none !important;
 }
 
+:is(.masumi-standalone-notebook-layout, .masumi-docs-layout) #nd-subnav {
+  display: none !important;
+}
+
+:is(.masumi-standalone-notebook-layout, .masumi-docs-layout) #nd-subnav [data-header-body] {
+  width: min(1180px, 100%);
+  margin: 0 auto;
+  border-bottom: 0 !important;
+  background: transparent !important;
+}
+
 .masumi-standalone-main {
   grid-area: main;
   flex: 1;
   width: 100%;
+  min-height: calc(100dvh - var(--dev-site-chrome-height));
+  background: var(--docs-bg);
 }
 
 /* Docs shell: align Fumadocs pages with the Nori and landing surfaces. */
@@ -306,20 +498,20 @@ header a:has(.masumi-brand-mark):not([class*="bg-"]):not([class*="text-fd-muted"
   --docs-terminal: #0a0a0a;
   --docs-terminal-text: #e7e7e9;
   --docs-terminal-muted: #9ca3af;
+  margin-top: var(--dev-site-chrome-height);
+  min-height: calc(100dvh - var(--dev-site-chrome-height));
   background: var(--docs-bg);
   color: var(--docs-ink);
-}
-
-.masumi-docs-layout #nd-subnav {
-  border-bottom: 1px solid var(--docs-hairline);
-  background: rgba(245, 245, 245, 0.88) !important;
-  backdrop-filter: blur(16px);
 }
 
 .masumi-docs-layout #nd-subnav > header,
 .masumi-docs-layout #nd-subnav [class*='border-b'] {
   border-color: var(--docs-hairline) !important;
-  background: rgba(245, 245, 245, 0.82) !important;
+  background: transparent !important;
+}
+
+.masumi-docs-layout #nd-subnav > :not([data-header-body]) {
+  display: none !important;
 }
 
 .masumi-docs-layout #nd-subnav nav a:not(:has(.masumi-brand-mark)),
@@ -348,8 +540,8 @@ header a:has(.masumi-brand-mark):not([class*="bg-"]):not([class*="text-fd-muted"
   color: var(--docs-pink) !important;
 }
 
-.masumi-docs-layout [data-search-full],
-.masumi-docs-layout button[aria-label='Search'] {
+:is(.masumi-standalone-notebook-layout, .masumi-docs-layout) [data-search-full],
+:is(.masumi-standalone-notebook-layout, .masumi-docs-layout) button[aria-label='Search'] {
   border-color: var(--docs-line) !important;
   border-radius: 13px !important;
   background: var(--docs-surface) !important;
@@ -357,8 +549,8 @@ header a:has(.masumi-brand-mark):not([class*="bg-"]):not([class*="text-fd-muted"
   box-shadow: none !important;
 }
 
-.masumi-docs-layout [data-search-full]:hover,
-.masumi-docs-layout button[aria-label='Search']:hover {
+:is(.masumi-standalone-notebook-layout, .masumi-docs-layout) [data-search-full]:hover,
+:is(.masumi-standalone-notebook-layout, .masumi-docs-layout) button[aria-label='Search']:hover {
   border-color: var(--docs-pink) !important;
   background: var(--docs-surface) !important;
 }
@@ -658,7 +850,12 @@ header a:has(.masumi-brand-mark):not([class*="bg-"]):not([class*="text-fd-muted"
 }
 
 .masumi-ask-page {
-  min-height: calc(100dvh - 114px);
+  min-height: calc(100dvh - var(--dev-site-chrome-height));
+  width: 100vw;
+  margin-left: calc((100% - 100vw) / 2);
+  background:
+    linear-gradient(180deg, rgba(255, 81, 255, 0.08), transparent 220px),
+    var(--color-fd-background);
 }
 
 .nori-shell {
@@ -1928,6 +2125,65 @@ header a:has(.masumi-brand-mark):not([class*="bg-"]):not([class*="text-fd-muted"
   margin-top: 18px;
 }
 
+.agents-skill-list {
+  display: grid;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.agents-skill-list a {
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr) 16px;
+  gap: 12px;
+  align-items: center;
+  min-height: 72px;
+  padding: 12px;
+  border: 1px solid var(--color-fd-border);
+  border-radius: 8px;
+  color: var(--color-fd-foreground) !important;
+  text-decoration: none !important;
+}
+
+.agents-skill-list a:hover {
+  border-color: var(--color-fd-primary);
+  background: color-mix(in srgb, var(--color-fd-primary) 6%, transparent);
+}
+
+.agents-skill-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--color-fd-primary) 12%, transparent);
+  color: var(--color-fd-primary);
+}
+
+.agents-skill-icon svg,
+.agents-skill-list a > svg {
+  width: 16px;
+  height: 16px;
+}
+
+.agents-skill-list a span:nth-child(2) {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.agents-skill-list strong {
+  color: var(--color-fd-foreground);
+  font-size: 14px;
+  line-height: 1.25;
+}
+
+.agents-skill-list small {
+  color: var(--color-fd-muted-foreground);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
 @media (max-width: 1320px) {
   .masumi-brand-logo {
     width: clamp(108px, 12vw, 124px);
@@ -2053,6 +2309,14 @@ header a:has(.masumi-brand-mark):not([class*="bg-"]):not([class*="text-fd-muted"
 
   .agents-page-list a {
     grid-template-columns: 1fr;
+  }
+
+  .agents-skill-list a {
+    grid-template-columns: 34px minmax(0, 1fr);
+  }
+
+  .agents-skill-list a > svg {
+    display: none;
   }
 }
 
@@ -3449,5 +3713,402 @@ header a:has(.masumi-brand-mark):not([class*="bg-"]):not([class*="text-fd-muted"
   .nori-session .nori-id-card,
   .nori-stage .nori-trace-item[data-status='active'] .nori-trace-marker {
     animation: none !important;
+  }
+}
+
+ /* ============================================================
+   Dev Hub Map powered by React Flow
+   ============================================================ */
+
+.dev-roadmap-page {
+  --flow-bg: #f5f5f5;
+  --flow-surface: #ffffff;
+  --flow-ink: #000000;
+  --flow-text: #000000;
+  --flow-muted: #666666;
+  --flow-faint: #999999;
+  --flow-hairline: rgba(0, 0, 0, 0.08);
+  --flow-line: rgba(0, 0, 0, 0.18);
+  --flow-purple: #6400ff;
+  --flow-pink: #fa008c;
+  --flow-orange: #ff6400;
+  --flow-plum: #460a23;
+  min-height: calc(100dvh - var(--dev-site-chrome-height));
+  width: 100vw;
+  margin-left: calc((100% - 100vw) / 2);
+  padding: 90px 24px 96px;
+  background: var(--flow-bg);
+  color: var(--flow-ink);
+  font-family: inherit;
+}
+
+.dev-roadmap-page a,
+.dev-roadmap-page a:hover {
+  color: inherit !important;
+  text-decoration: none !important;
+}
+
+.dev-flow-page {
+  width: min(1240px, 100%);
+  margin: 0 auto;
+}
+
+.dev-flow-header {
+  display: grid;
+  justify-items: center;
+  gap: 22px;
+  max-width: 760px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.dev-flow-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+  min-height: 38px;
+  margin: 0;
+  padding: 0 18px;
+  border: 1px solid rgba(250, 0, 140, 0.22);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.5);
+  color: var(--flow-muted);
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1;
+  text-transform: none;
+}
+
+.dev-flow-kicker svg {
+  width: 14px;
+  height: 14px;
+  color: var(--flow-pink);
+}
+
+.dev-flow-header h1 {
+  margin: 0;
+  color: var(--flow-ink);
+  font-size: clamp(58px, 6vw, 92px);
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.05;
+}
+
+.dev-flow-header p:last-child {
+  max-width: 610px;
+  margin: 0;
+  color: var(--flow-muted);
+  font-size: 21px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.32;
+}
+
+.dev-flow-shell {
+  height: 1880px;
+  margin-top: 74px;
+  overflow: hidden;
+  background: transparent;
+}
+
+.dev-flow {
+  background: transparent;
+}
+
+.dev-flow .react-flow__pane {
+  cursor: default;
+}
+
+.dev-flow .react-flow__pane:active {
+  cursor: default;
+}
+
+.dev-flow .react-flow__edge-path {
+  filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.75));
+}
+
+.dev-flow .react-flow__node,
+.dev-flow .react-flow__node a {
+  pointer-events: auto !important;
+}
+
+.dev-flow-handle {
+  width: 8px !important;
+  height: 8px !important;
+  border: 1px solid var(--flow-surface) !important;
+  background: var(--node-accent, var(--flow-pink)) !important;
+  opacity: 0.82;
+  pointer-events: none;
+}
+
+.dev-flow-node,
+.dev-flow-nori-node,
+.dev-flow-core-node {
+  --node-accent: var(--flow-pink);
+  --node-soft: color-mix(in srgb, var(--node-accent) 8%, #ffffff);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  width: 100%;
+  min-height: 158px;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  border-radius: 0;
+  background: var(--flow-surface);
+  color: var(--flow-ink) !important;
+  font-family: inherit;
+  box-shadow: none;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
+}
+
+.dev-flow-node:hover,
+.dev-flow-nori-node:hover,
+.dev-flow-core-node:hover {
+  border-color: rgba(0, 0, 0, 0.12);
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.07);
+  transform: translateY(-2px);
+}
+
+.dev-flow-node {
+  gap: 16px;
+  padding: 22px 22px 18px;
+}
+
+.dev-flow-node[data-parent='true'] {
+  min-height: 182px;
+  padding: 24px 24px 18px;
+  border-color: color-mix(in srgb, var(--node-accent) 16%, rgba(0, 0, 0, 0.04));
+}
+
+.dev-flow-node[data-tone='sokosumi'] {
+  --node-accent: var(--flow-purple);
+}
+
+.dev-flow-node[data-tone='masumi'] {
+  --node-accent: var(--flow-pink);
+}
+
+.dev-flow-node[data-tone='agents'] {
+  --node-accent: var(--flow-orange);
+}
+
+.dev-flow-node[data-tone='utility'] {
+  --node-accent: var(--flow-plum);
+  --node-soft: rgba(0, 0, 0, 0.045);
+}
+
+.dev-flow-node-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 12px;
+}
+
+.dev-flow-node-index {
+  color: var(--node-accent);
+  font-family: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 1;
+}
+
+.dev-flow-node-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--node-accent);
+  opacity: 0.5;
+}
+
+.dev-flow-node-copy {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+}
+
+.dev-flow-node-copy small,
+.dev-flow-core-copy small {
+  color: var(--flow-faint);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.2;
+  text-transform: none;
+}
+
+.dev-flow-node-copy strong {
+  color: var(--flow-ink);
+  font-size: 17px;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.25;
+}
+
+.dev-flow-node[data-parent='true'] .dev-flow-node-copy strong {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.dev-flow-node-copy span {
+  color: #919191;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.dev-flow-node-mini {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr) 20px;
+  align-items: center;
+  gap: 10px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.dev-flow-node-mini-icon,
+.dev-flow-node-mini-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--node-accent);
+}
+
+.dev-flow-node-mini-icon {
+  width: 28px;
+  height: 28px;
+  background: var(--node-soft);
+}
+
+.dev-flow-node-mini-icon svg,
+.dev-flow-node-mini-action svg,
+.dev-flow-core-mini svg {
+  width: 14px;
+  height: 14px;
+}
+
+.dev-flow-node-mini-track {
+  display: flex;
+  gap: 4px;
+}
+
+.dev-flow-node-mini-track span {
+  display: block;
+  flex: 1;
+  height: 3px;
+  background: var(--node-accent);
+  opacity: 0.2;
+}
+
+.dev-flow-node-mini-track span:first-child,
+.dev-flow-node-mini-track span:nth-child(2) {
+  opacity: 1;
+}
+
+.dev-flow-nori-node {
+  --node-accent: var(--flow-pink);
+  gap: 14px;
+  min-height: 250px;
+  padding: 16px;
+}
+
+.dev-flow-nori-card,
+.dev-flow-nori-card .nori-id-card {
+  display: block;
+  width: 100%;
+  margin: 0;
+}
+
+.dev-flow-core-node {
+  --node-accent: var(--flow-pink);
+  gap: 18px;
+  min-height: 194px;
+  padding: 24px 24px 18px;
+  border-color: color-mix(in srgb, var(--flow-pink) 18%, rgba(0, 0, 0, 0.04));
+  text-align: left;
+}
+
+.dev-flow-core-copy {
+  display: grid;
+  gap: 8px;
+}
+
+.dev-flow-core-copy small {
+  color: var(--flow-pink);
+}
+
+.dev-flow-core-copy strong {
+  max-width: 230px;
+  color: var(--flow-ink);
+  font-size: 24px;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.16;
+}
+
+.dev-flow-core-mini {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.dev-flow-core-mini span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-width: 0;
+  min-height: 28px;
+  background: rgba(250, 0, 140, 0.08);
+  color: var(--flow-pink);
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+@media (max-width: 980px) {
+  .dev-flow-shell {
+    height: 3920px;
+  }
+}
+
+@media (max-width: 720px) {
+  .dev-roadmap-page {
+    padding: 58px 16px 72px;
+  }
+
+  .dev-flow-header h1 {
+    font-size: 46px;
+    line-height: 1.08;
+  }
+
+  .dev-flow-header p:last-child {
+    font-size: 17px;
+    line-height: 1.42;
+  }
+
+  .dev-flow-shell {
+    height: 3920px;
+    margin-top: 28px;
+  }
+
+  .dev-flow-node-copy strong {
+    font-size: 17px;
+  }
+
+  .dev-flow-node[data-parent='true'] .dev-flow-node-copy strong {
+    font-size: 19px;
+  }
+
+  .dev-flow-core-node {
+    padding: 22px 20px 18px;
+  }
+
+  .dev-flow-core-copy strong {
+    font-size: 22px;
   }
 }

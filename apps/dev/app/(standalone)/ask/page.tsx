@@ -1,19 +1,37 @@
-import { redirect } from 'next/navigation';
+import type { Metadata } from 'next';
+import { NoriChat, type NoriPageContext } from '@/components/nori-chat';
+
+export const metadata: Metadata = {
+  title: 'Ask Nori | Masumi Developer Portal',
+  description: 'Ask Nori questions about the Masumi and Sokosumi documentation.',
+};
 
 type SearchValue = string | string[] | undefined;
 
-// The Ask Nori chat moved to the portal root. Keep /ask working for old links.
-export default async function AskRedirect({
+function first(value: SearchValue) {
+  return Array.isArray(value) ? value[0] : value;
+}
+
+export default async function AskPage({
   searchParams,
 }: {
   searchParams: Promise<Record<string, SearchValue>>;
 }) {
   const params = await searchParams;
-  const query = new URLSearchParams();
-  for (const [key, value] of Object.entries(params)) {
-    const first = Array.isArray(value) ? value[0] : value;
-    if (first !== undefined) query.set(key, first);
-  }
-  const suffix = query.size > 0 ? `?${query.toString()}` : '';
-  redirect(`/${suffix}`);
+  const pagePath = first(params.pagePath);
+  const pageTitle = first(params.pageTitle);
+  const markdownUrl = first(params.markdownUrl);
+  const page: NoriPageContext | undefined = pagePath
+    ? {
+        path: pagePath,
+        title: pageTitle,
+        markdownUrl,
+      }
+    : undefined;
+
+  return (
+    <div className="masumi-ask-page">
+      <NoriChat initialPrompt={first(params.q)} initialPage={page} />
+    </div>
+  );
 }

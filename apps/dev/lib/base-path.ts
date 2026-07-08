@@ -87,7 +87,7 @@ function canonicalPathFromAbsoluteUrl(url: URL): string | null {
 
   if (host === 'docs.masumi.network') {
     if (path === '/' || path === '') return basePath || '/dev';
-    if (path === '/ask') return basePath || '/dev';
+    if (path === '/ask') return `${basePath}/ask`;
     return appendSearchAndHash(`${basePath}/masumi${path}`, url.search, url.hash);
   }
 
