@@ -40,7 +40,7 @@ export default function Layout({ children }: { children: ReactNode }) {
         </RootProvider>
         <SiteFooter />
         {/* Fixed Kanji on the right */}
-        <div className="fixed right-4 top-1/2 -translate-y-1/2 z-50  pointer-events-none">
+        <div className="masumi-floating-kanji fixed right-4 top-1/2 -translate-y-1/2 z-50  pointer-events-none">
           <img 
             src={withBasePath('/assets/masumi-kanji-black.png')} 
             alt="Masumi Kanji" 

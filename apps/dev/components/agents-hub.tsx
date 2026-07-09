@@ -3,6 +3,8 @@
 import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import {
+  ArrowRight,
+  BookOpen,
   Bot,
   Braces,
   Check,
@@ -59,6 +61,8 @@ const skillLinks = [
   },
 ];
 
+const surfaceSteps = ['llms.txt', 'full corpus', 'page.md', 'MCP tools', 'OpenAPI'];
+
 function CopyButton({ value, label = 'Copy' }: { value: string; label?: string }) {
   const [copied, setCopied] = useState(false);
 
@@ -80,12 +84,14 @@ function CopyButton({ value, label = 'Copy' }: { value: string; label?: string }
 
 function EndpointCard({
   icon: Icon,
+  index,
   title,
   description,
   url,
   children,
 }: {
   icon: typeof FileText;
+  index: string;
   title: string;
   description: string;
   url: string;
@@ -93,8 +99,11 @@ function EndpointCard({
 }) {
   return (
     <article className="agents-endpoint-card">
-      <div className="agents-endpoint-icon">
-        <Icon aria-hidden="true" />
+      <div className="agents-endpoint-top">
+        <span className="agents-endpoint-index">{index}</span>
+        <span className="agents-endpoint-icon">
+          <Icon aria-hidden="true" />
+        </span>
       </div>
       <div className="agents-endpoint-content">
         <h3>{title}</h3>
@@ -137,31 +146,77 @@ export function AgentsHub({ pages }: { pages: DocsPage[] }) {
 
   return (
     <section className="agents-shell">
-      <div className="agents-hero">
+      <section className="agents-hero" aria-labelledby="agents-title">
+        <img
+          className="agents-hero-kanji"
+          src={withBasePath('/assets/masumi-kanji-black.png')}
+          alt=""
+          aria-hidden="true"
+        />
         <p className="agents-kicker">
           <Bot aria-hidden="true" />
-          Machine-readable mode
+          Agent-ready documentation
         </p>
-        <h1>Masumi docs for humans and agents.</h1>
-        <p>
-          The same documentation corpus is available as rendered pages, concise LLM indexes, full-corpus text, per-page
-          Markdown, Context7 metadata, API specs, and MCP guidance.
+        <h1 id="agents-title">Masumi docs that agents can read, index, and act on.</h1>
+        <p className="agents-hero-copy">
+          One source of truth for builders and autonomous systems: rendered docs, LLM indexes, Markdown pages,
+          Context7 metadata, OpenAPI specs, MCP guidance, and agent skills.
         </p>
         <div className="agents-hero-actions">
-          <a href={withBasePath('/llms.txt')}>Open llms.txt</a>
+          <a className="agents-primary-action" href={withBasePath('/llms.txt')}>
+            Open llms.txt
+            <ArrowRight aria-hidden="true" />
+          </a>
           <a href={withBasePath('/llms-full.txt')}>Open full corpus</a>
           <CopyButton value={agentContext} label="Copy agent context" />
         </div>
-      </div>
+      </section>
 
-      <div className="agents-stat-grid">
+      <section className="agents-command-band" aria-label="Agent context quick start">
+        <div className="agents-command-copy">
+          <p className="agents-panel-label">Context path</p>
+          <h2>Start with text. Add tools when the agent needs to move money or call services.</h2>
+          <p>
+            Give an assistant the concise index for orientation, pull exact Markdown pages for citation, then attach MCP
+            and OpenAPI surfaces for action.
+          </p>
+        </div>
+        <div className="agents-command-preview" aria-label="Example agent context commands">
+          <div className="agents-command-window">
+            <div className="agents-command-dots" aria-hidden="true">
+              <span />
+              <span />
+              <span />
+            </div>
+            <p>
+              <span>$</span> curl {baseUrl}/llms.txt
+            </p>
+            <p>
+              <span>$</span> curl {baseUrl}/masumi/api-reference.md
+            </p>
+            <p>
+              <span>$</span> use masumi mcp for jobs, agents, payments
+            </p>
+          </div>
+        </div>
+        <div className="agents-surface-flow" aria-label="Machine-readable route map">
+          {surfaceSteps.map((step, index) => (
+            <div key={step} className="agents-surface-node">
+              <span>{String(index + 1).padStart(2, '0')}</span>
+              <strong>{step}</strong>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <div className="agents-stat-grid" aria-label="Developer portal coverage">
         <div>
           <strong>{pages.length}</strong>
           <span>Docs pages indexed</span>
         </div>
         <div>
-          <strong>3</strong>
-          <span>Primary machine formats</span>
+          <strong>5</strong>
+          <span>Agent-readable surfaces</span>
         </div>
         <div>
           <strong>CORS</strong>
@@ -169,57 +224,75 @@ export function AgentsHub({ pages }: { pages: DocsPage[] }) {
         </div>
       </div>
 
-      <div className="agents-endpoint-grid">
-        <EndpointCard
-          icon={ListTree}
-          title="llms.txt"
-          description="Concise overview for system prompts, agent bootstrapping, and docs discovery."
-          url={`${baseUrl}/llms.txt`}
-        />
-        <EndpointCard
-          icon={DatabaseZap}
-          title="llms-full.txt"
-          description="Complete concatenated corpus for deep context, retrieval ingestion, or offline indexing."
-          url={`${baseUrl}/llms-full.txt`}
-        />
-        <EndpointCard
-          icon={FileText}
-          title="Per-page Markdown"
-          description="Append .md to any documentation URL to retrieve clean Markdown for a specific page."
-          url={`${baseUrl}/masumi/documentation/get-started/install-masumi-node.md`}
-        />
-        <EndpointCard
-          icon={Braces}
-          title="Markdown index"
-          description="A complete generated inventory of all page Markdown URLs."
-          url={`${baseUrl}/md-index`}
-        />
-        <EndpointCard
-          icon={Server}
-          title="Context7"
-          description="Public Context7 metadata for assistant tools that support Context7 libraries."
-          url="https://context7.com/masumi-network/masumi-docs"
-        />
-        <EndpointCard
-          icon={Code2}
-          title="OpenAPI specs"
-          description="Machine-readable service specifications for SDK generation, inspection, and API-aware agents."
-          url={openApiLinks[0].href}
-        >
-          <div className="agents-link-list">
-            {openApiLinks.map((link) => (
-              <a key={link.href} href={link.href} target="_blank" rel="noreferrer">
-                {link.label}
-                <ExternalLink aria-hidden="true" />
-              </a>
-            ))}
-          </div>
-        </EndpointCard>
-      </div>
+      <section className="agents-section" aria-labelledby="agents-surfaces-title">
+        <div className="agents-section-header">
+          <p className="agents-panel-label">Machine surfaces</p>
+          <h2 id="agents-surfaces-title">Point an agent at a single URL.</h2>
+          <p>Each surface is generated from the same corpus, so answers and actions stay aligned with the docs.</p>
+        </div>
+
+        <div className="agents-endpoint-grid">
+          <EndpointCard
+            index="01"
+            icon={ListTree}
+            title="llms.txt"
+            description="Concise overview for system prompts, agent bootstrapping, and docs discovery."
+            url={`${baseUrl}/llms.txt`}
+          />
+          <EndpointCard
+            index="02"
+            icon={DatabaseZap}
+            title="llms-full.txt"
+            description="Complete concatenated corpus for deep context, retrieval ingestion, or offline indexing."
+            url={`${baseUrl}/llms-full.txt`}
+          />
+          <EndpointCard
+            index="03"
+            icon={FileText}
+            title="Per-page Markdown"
+            description="Append .md to any documentation URL to retrieve clean Markdown for a specific page."
+            url={`${baseUrl}/masumi/documentation/get-started/install-masumi-node.md`}
+          />
+          <EndpointCard
+            index="04"
+            icon={Braces}
+            title="Markdown index"
+            description="A complete generated inventory of all page Markdown URLs."
+            url={`${baseUrl}/md-index`}
+          />
+          <EndpointCard
+            index="05"
+            icon={Server}
+            title="Context7"
+            description="Public Context7 metadata for assistant tools that support Context7 libraries."
+            url="https://context7.com/masumi-network/masumi-docs"
+          />
+          <EndpointCard
+            index="06"
+            icon={Code2}
+            title="OpenAPI specs"
+            description="Machine-readable service specifications for SDK generation, inspection, and API-aware agents."
+            url={openApiLinks[0].href}
+          >
+            <div className="agents-link-list">
+              {openApiLinks.map((link) => (
+                <a key={link.href} href={link.href} target="_blank" rel="noreferrer">
+                  {link.label}
+                  <ExternalLink aria-hidden="true" />
+                </a>
+              ))}
+            </div>
+          </EndpointCard>
+        </div>
+      </section>
 
       <div className="agents-two-column">
         <section className="agents-panel">
           <p className="agents-panel-label">Featured Markdown pages</p>
+          <h2>
+            <BookOpen aria-hidden="true" />
+            High-signal entrypoints
+          </h2>
           <div className="agents-page-list">
             {featuredPages.map((page) => (
               <a key={page.url} href={withBasePath(`${page.url}.md`)}>
