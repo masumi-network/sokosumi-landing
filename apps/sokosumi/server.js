@@ -6,19 +6,24 @@
 //   node server.js --once   → fetch + write data/catalog.json once, then exit
 //
 // Config via env (never hardcode the key in this file):
-//   SOKOSUMI_CORE_URL   default: mainnet preview
-//   SOKOSUMI_CORE_KEY   required for live refresh (Bearer token)
+//   SOKOSUMI_CORE_URL   default: mainnet public API (https://api.sokosumi.com)
+//   SOKOSUMI_CORE_KEY   required for live refresh — a *user* API key (Bearer token).
+//                       List endpoints authenticate as actor "user"; a coworker
+//                       key (prefix "coworker_") is scoped to one coworker and
+//                       can't list the catalog, so don't use one here.
 //   CATALOG_REFRESH_MS  default: 600000 (10 min)
 const http = require("http");
 const fs = require("fs");
 const path = require("path");
+const vm = require("vm");
+const render = require("./render");
 
 const port = process.env.PORT || 3000;
 const root = __dirname;
 const dataDir = path.join(root, "data");
 const cacheFile = path.join(dataDir, "catalog.json");
 
-const CORE_URL = process.env.SOKOSUMI_CORE_URL || "https://sokosumi-core-mainnet-7w905wrs2.preview.sokosumi.com";
+const CORE_URL = process.env.SOKOSUMI_CORE_URL || "https://api.sokosumi.com";
 const CORE_KEY = process.env.SOKOSUMI_CORE_KEY || "";
 const REFRESH_MS = Number(process.env.CATALOG_REFRESH_MS) || 10 * 60 * 1000;
 
@@ -55,6 +60,35 @@ async function coreGet(p) {
   return res.json();
 }
 
+// Turn a coworker's raw metadata.offers into the shape the pages render, with a
+// stable, unique slug per offer (derived from the title).
+function mapOffers(metadata) {
+  const raw = (metadata && metadata.offers) || [];
+  const seen = new Set();
+  return raw
+    .filter((o) => o && o.title)
+    .map((o) => {
+      let slug = render.slugify(o.title);
+      let s = slug, i = 2;
+      while (seen.has(s)) s = `${slug}-${i++}`;
+      seen.add(s);
+      return {
+        slug: s,
+        title: o.title,
+        description: o.description || "",
+        category: o.category || "",
+        deliverable: o.deliverable || "",
+        prompt: o.prompt || "",
+        outputs: (o.outputs || []).filter(Boolean).map((out) => ({
+          type: out.type || "text",
+          url: out.url || null,
+          label: out.label || null,
+          text: out.text || null,
+        })),
+      };
+    });
+}
+
 // Map the raw Core payloads down to exactly what the landing page renders.
 function transform(coworkersRaw, agentsRaw) {
   const coworkers = (coworkersRaw || [])
@@ -70,6 +104,11 @@ function transform(coworkersRaw, agentsRaw) {
       image: c.image || null,
       description: c.description || "",
       capabilities: c.capabilities || [],
+      profile: {
+        llm: c.metadata?.profile?.llm || [],
+        hosting: c.metadata?.profile?.hosting || "",
+      },
+      offers: mapOffers(c.metadata),
     }));
 
   const agents = (agentsRaw || []).map((a) => ({
@@ -108,6 +147,53 @@ function transform(coworkersRaw, agentsRaw) {
   return { fetchedAt: new Date().toISOString(), coworkers, agents, categories };
 }
 
+// ── curated-task fallback ────────────────────────────────────────────────
+// Until the live API offers are wired up, the sub-pages fall back to the same
+// curated tasks the homepage uses (assets/tasks.js). Live API offers always win.
+const OUTPUT_BY_LABEL = { "PDF report": "pdf", Document: "doc", Slides: "slides", Code: "text", Sheet: "sheet" };
+let curatedBySlug = {};
+function loadCurated() {
+  try {
+    const src = fs.readFileSync(path.join(root, "assets", "tasks.js"), "utf8");
+    const sandbox = { window: {} };
+    vm.runInNewContext(src, sandbox, { timeout: 500 });
+    const tasks = sandbox.window.SOKOSUMI_TASKS || [];
+    const map = {};
+    for (const t of tasks) {
+      (map[t.coworkerSlug] = map[t.coworkerSlug] || []).push({
+        slug: t.slug || render.slugify(t.title),
+        title: t.title,
+        description: t.short || "",
+        category: t.category || "",
+        deliverable: "",
+        prompt: "",
+        outputs: [{ type: OUTPUT_BY_LABEL[t.output] || "text", url: null, label: t.output || null, text: null }],
+      });
+    }
+    curatedBySlug = map;
+  } catch (e) {
+    console.error("[curated] failed to load assets/tasks.js:", e.message);
+    curatedBySlug = {};
+  }
+}
+loadCurated();
+
+// Attach curated offers to any coworker the API hasn't given offers for yet.
+function withFallbackOffers(cat) {
+  for (const c of cat.coworkers || []) {
+    if (!c.offers || !c.offers.length) c.offers = curatedBySlug[c.slug] || [];
+  }
+  return cat;
+}
+withFallbackOffers(catalog);
+
+function findCoworker(slug) {
+  return (catalog.coworkers || []).find((c) => c.slug === slug) || null;
+}
+function findOffer(coworker, offerSlug) {
+  return (coworker.offers || []).find((o) => o.slug === offerSlug) || null;
+}
+
 async function refresh() {
   if (!CORE_KEY) {
     console.log("[catalog] SOKOSUMI_CORE_KEY not set — serving cached data only");
@@ -118,7 +204,7 @@ async function refresh() {
       coreGet("/v1/coworkers?scope=all"),
       coreGet("/v1/agents?limit=100"),
     ]);
-    catalog = transform(cw.data, ag.data);
+    catalog = withFallbackOffers(transform(cw.data, ag.data));
     fs.mkdirSync(dataDir, { recursive: true });
     fs.writeFileSync(cacheFile, JSON.stringify(catalog));
     console.log(`[catalog] refreshed: ${catalog.coworkers.length} coworkers, ${catalog.agents.length} agents @ ${catalog.fetchedAt}`);
@@ -159,7 +245,49 @@ if (process.argv.includes("--once")) {
         return res.end(JSON.stringify(catalog));
       }
 
+      if (urlPath === "/robots.txt") {
+        res.writeHead(200, { "Content-Type": "text/plain; charset=utf-8" });
+        return res.end(render.renderRobots());
+      }
+
+      if (urlPath === "/sitemap.xml") {
+        res.writeHead(200, { "Content-Type": "application/xml; charset=utf-8", "Cache-Control": "public, max-age=600" });
+        return res.end(render.renderSitemap(catalog));
+      }
+
       if (urlPath === "/" || urlPath === "/index.html") return serveIndex(res);
+
+      // ── server-rendered coworker + pre-built task pages ──────────────────
+      const clean = urlPath.replace(/\/+$/, "") || "/";
+      const seg = clean.split("/").filter(Boolean).map((s) => decodeURIComponent(s));
+      const sendHtml = (html, code) => {
+        res.writeHead(code || 200, { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "public, max-age=120" });
+        res.end(html);
+      };
+
+      // /tasks (filterable browse page; ?category= & ?q= pre-select filters)
+      if (seg[0] === "tasks" && seg.length === 1) {
+        const q = (req.url || "").split("?")[1] || "";
+        const params = new URLSearchParams(q);
+        return sendHtml(render.renderTasksBrowse(catalog, { category: params.get("category") || "", q: params.get("q") || "" }));
+      }
+
+      if (seg[0] === "coworkers") {
+        // /coworkers
+        if (seg.length === 1) return sendHtml(render.renderCoworkersIndex(catalog));
+        // /coworkers/{slug}
+        if (seg.length === 2) {
+          const cw = findCoworker(seg[1]);
+          return cw ? sendHtml(render.renderCoworkerPage(catalog, cw)) : sendHtml(render.renderNotFound("That coworker isn't listed yet."), 404);
+        }
+        // /coworkers/{slug}/tasks/{offerSlug}
+        if (seg.length === 4 && seg[2] === "tasks") {
+          const cw = findCoworker(seg[1]);
+          const offer = cw && findOffer(cw, seg[3]);
+          return offer ? sendHtml(render.renderTaskPage(catalog, cw, offer)) : sendHtml(render.renderNotFound("That pre-built task isn't available."), 404);
+        }
+        return sendHtml(render.renderNotFound(), 404);
+      }
 
       const file = resolveFile(urlPath);
       if (!file) return serveIndex(res); // SPA-style fallback for unknown routes
