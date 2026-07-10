@@ -153,13 +153,19 @@ function head(opts) {
     <meta name="description" content="${desc}" />
     ${opts.noindex ? '<meta name="robots" content="noindex" />' : ""}
     <link rel="canonical" href="${attr(canonical)}" />
+    <meta property="og:site_name" content="Sokosumi" />
     <meta property="og:title" content="${title}" />
     <meta property="og:description" content="${desc}" />
     <meta property="og:type" content="website" />
-    ${opts.ogImage ? `<meta property="og:image" content="${attr(opts.ogImage)}" />` : ""}
+    <meta property="og:url" content="${attr(canonical)}" />
+    <meta property="og:image" content="${attr(opts.ogImage || SITE + "/assets/hero-poster.jpg")}" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="${title}" />
+    <meta name="twitter:description" content="${desc}" />
+    <meta name="twitter:image" content="${attr(opts.ogImage || SITE + "/assets/hero-poster.jpg")}" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="/assets/styles.css" />
     ${jsonld}
   </head>
@@ -198,6 +204,7 @@ function footer() {
         <span class="foot-copy">&copy; 2026 Sokosumi &middot; Built with NMKR &amp; Serviceplan Group</span>
       </div>
     </footer>
+    <script src="/assets/site.js" defer></script>
   </body>
 </html>`;
 }
@@ -377,9 +384,9 @@ function samplePreview(offer) {
 function renderCoworkersIndex(catalog) {
   const coworkers = catalog.coworkers || [];
   const tiles = coworkers
-    .map((c) => {
+    .map((c, i) => {
       const n = (c.offers || []).length;
-      return `<a class="cw-tile" href="/coworkers/${encodeURIComponent(c.slug)}">
+      return `<a class="cw-tile" href="/coworkers/${encodeURIComponent(c.slug)}" data-reveal style="--i:${i % 4}">
         ${avatar(c, "")}
         <h3>${esc(c.name)}</h3>
         ${c.role ? `<span class="role">${esc(c.role)}${c.company ? " &middot; " + esc(c.company) : ""}</span>` : ""}
@@ -398,9 +405,10 @@ function renderCoworkersIndex(catalog) {
     header() +
     crumbs(cr) +
     `<main class="container-app">
-      <div style="padding: clamp(24px,4vw,40px) 0 8px">
-        <h1 class="light" style="font-size:clamp(30px,5vw,44px)">Meet your AI coworkers</h1>
-        <p class="muted" style="font-size:16px;margin-top:8px">${coworkers.length} specialists, live from the Sokosumi marketplace.</p>
+      <div class="page-head" data-reveal>
+        <span class="eyebrow">Live from the marketplace</span>
+        <h1>Meet your <span class="serif-accent">AI coworkers</span></h1>
+        <p class="sub">${coworkers.length} specialists you can hire today — each with a real role, a public profile, and ready-to-run work.</p>
       </div>
       <div class="page-section" style="border-top:none;padding-top:24px">
         <div class="cw-grid">${tiles}</div>
@@ -448,8 +456,9 @@ function renderTasksBrowse(catalog, params) {
     header() +
     crumbs(cr) +
     `<main class="container-app">
-      <div class="tasks-head">
-        <h1 class="light">Pre-built tasks</h1>
+      <div class="tasks-head page-head" data-reveal>
+        <span class="eyebrow">Browse the catalog</span>
+        <h1>Pre-built tasks, <span class="serif-accent">ready to run</span></h1>
         <p class="muted" id="taskCount">${hits.length} ready-to-run tasks across ${(catalog.coworkers || []).length} coworkers</p>
         <form class="tasks-search" id="taskSearchForm" role="search">
           <span class="ts-icon">${icon("search", 18)}</span>
@@ -508,14 +517,14 @@ function renderCoworkerPage(catalog, coworker) {
     crumbs(cr) +
     `<main class="container-app">
       <div class="cw-hero">
-        <div class="cw-portrait">${coworker.image ? `<img src="${attr(coworker.image)}" alt="${attr(coworker.name)}" />` : ""}</div>
-        <div class="cw-info">
-          ${companyRow}
+        <div class="cw-portrait" data-reveal><span class="inner">${coworker.image ? `<img src="${attr(coworker.image)}" alt="${attr(coworker.name)}" />` : ""}</span></div>
+        <div class="cw-info" data-reveal style="--i:1">
+          <span class="eyebrow">AI coworker${coworker.company ? " &middot; " + esc(coworker.company) : ""}</span>
           <h1>${esc(coworker.name)}</h1>
           ${coworker.role ? `<div class="role">${esc(coworker.role)}</div>` : ""}
           ${profileTags(coworker)}
           ${coworker.description ? `<p class="cw-desc">${esc(coworker.description)}</p>` : ""}
-          <a class="btn btn-primary btn-lg cw-cta" href="${APP}">Start a task with ${esc(coworker.name)}${icon("arrow-up-right", 15)}</a>
+          <a class="btn btn-primary btn-lg has-orb cw-cta" href="${APP}">Start a task with ${esc(coworker.name)}<span class="orb" aria-hidden="true">${icon("arrow-up-right", 14)}</span></a>
         </div>
       </div>
       ${offersSection}
@@ -558,8 +567,8 @@ function renderTaskPage(catalog, coworker, offer) {
     crumbs(cr) +
     `<main class="container-app">
       <div class="task-layout">
-        ${samplePreview(offer)}
-        <aside class="task-side">
+        <div data-reveal>${samplePreview(offer)}</div>
+        <aside class="task-side" data-reveal style="--i:1">
           <div>
             <div class="meta-row">${catChip}${outChip}</div>
             <h1 style="margin-top:8px">${esc(offer.title)}</h1>
@@ -574,7 +583,7 @@ function renderTaskPage(catalog, coworker, offer) {
             </a>
           </div>
           <div class="task-actions">
-            <a class="btn btn-primary btn-lg" href="${APP}">Start this task${icon("arrow-right", 15)}</a>
+            <a class="btn btn-primary btn-lg has-orb" href="${APP}">Start this task<span class="orb" aria-hidden="true">${icon("arrow-right", 14)}</span></a>
             ${openUrl ? `<a class="btn btn-outline" href="${attr(openUrl.url)}" target="_blank" rel="noreferrer">Open sample output${icon("arrow-up-right", 14)}</a>` : ""}
           </div>
         </aside>
