@@ -293,7 +293,7 @@ const fallbackStandards: StackLogo[] = [
   { name: "x402", logo: "/images/x402-logo.svg", href: "/x402" },
 ];
 
-type CmsPartner = {
+type CmsStackLogo = {
   name: string;
   href?: string | null;
   type: "framework" | "standard" | "network";
@@ -304,11 +304,11 @@ async function getStackPartners(): Promise<{
   frameworks: StackLogo[];
   standards: StackLogo[];
 }> {
-  const res = await cmsFetch<{ docs: CmsPartner[] }>(
-    "/partners?where[site][equals]=masumi&limit=100&sort=order&depth=1",
+  const res = await cmsFetch<{ docs: CmsStackLogo[] }>(
+    "/stack-logos?where[site][equals]=masumi&limit=100&sort=order&depth=1",
   );
   const docs = (res?.docs ?? []).filter((d) => d.logo?.url);
-  const toLogo = (d: CmsPartner): StackLogo => ({
+  const toLogo = (d: CmsStackLogo): StackLogo => ({
     name: d.name,
     logo: cmsFileUrl(d.logo?.url),
     href: d.href || undefined,
