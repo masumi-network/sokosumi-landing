@@ -8,12 +8,20 @@
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
+import "./load-env.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
 
 const BLOCKFROST_BASE = "https://cardano-mainnet.blockfrost.io/api/v0";
-const BLOCKFROST_KEY = "mainnetETlxBHnzbvUa1yCD398EUu7FJpwdMbAM";
+const BLOCKFROST_KEY =
+  process.env.BLOCKFROST_STATS_KEY || process.env.BLOCKFROST_MAINNET_KEY;
+if (!BLOCKFROST_KEY) {
+  console.error(
+    "Missing BLOCKFROST_STATS_KEY (or BLOCKFROST_MAINNET_KEY) — set it in the environment or apps/masumi/.env.local",
+  );
+  process.exit(1);
+}
 const ADDRESS = "addr1wx7j4kmg2cs7yf92uat3ed4a3u97kr7axxr4avaz0lhwdsq87ujx7";
 const POLICY_ID = "ad6424e3ce9e47bbd8364984bd731b41de591f1d11f6d7d43d0da9b9";
 const USDM_PREFIX = "c48cbb3d5e57ed56e276bc45f99ab39abe94e6cd7ac39fb402";
