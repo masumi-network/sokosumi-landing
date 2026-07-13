@@ -54,7 +54,7 @@ async function generateLLMsTxt() {
       '```',
       '',
       '### Examples:',
-      '- https://www.masumi.network/dev/masumi/documentation/getting-started.md',
+      '- https://www.masumi.network/dev/masumi/documentation/get-started/install-masumi-node.md',
       '- https://www.masumi.network/dev/masumi/api-reference.md',
       '- https://www.masumi.network/dev/masumi/core-concepts/agent-to-agent-payments.md',
       '',

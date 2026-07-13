@@ -5,6 +5,7 @@
     "assignAdminOrganizationMemberSeat",
     "createAdminFreeCreditGrant",
     "createAdminInvoice",
+    "deleteAdminInvoice",
     "getAdminInvoice",
     "getAdminOrganizationBySlug",
     "getAdminTask",

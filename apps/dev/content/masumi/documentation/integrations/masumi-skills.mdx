@@ -1,6 +1,6 @@
 ---
 title: Masumi Skills
-description: AI coding assistant skill for the complete Masumi ecosystem (payments, registry, marketplace, and runtime)
+description: AI coding assistant skill for Masumi payments, registry, identity, and marketplace integration
 icon: Wand
 ---
 
@@ -10,7 +10,7 @@ import { Tabs, Tab } from 'fumadocs-ui/components/tabs';
 
 The **Masumi Skill** is a context-aware guide for AI coding assistants (Claude Code, Cursor, Windsurf, and others) that provides comprehensive, token-efficient documentation for the entire Masumi ecosystem.
 
-Once installed, your AI assistant automatically loads the relevant reference material as you work on payments, registry, marketplace integration, or runtime deployment, without you needing to paste docs manually.
+Once installed, your AI assistant automatically loads the relevant reference material as you work on payments, registry, identity, or marketplace integration, without you needing to paste docs manually.
 
 ## Installation
 
@@ -35,7 +35,7 @@ The skill entry point is also available directly at [masumi.network/skill.md](ht
 
 ## What's Included
 
-Version 2.0 ships with **8 comprehensive reference guides** covering the complete Sumi ecosystem:
+Version 2.0 includes **six reference guides** covering Masumi and Sokosumi integration:
 
 <Cards>
   <Card
@@ -68,11 +68,6 @@ Version 2.0 ships with **8 comprehensive reference guides** covering the complet
     description="Agent listing, job management, and MCP integration"
     href="https://github.com/masumi-network/masumi-skills/blob/main/skill/references/sokosumi-marketplace.md"
   />
-  <Card
-    title="Kodosumi Runtime"
-    description="Scalable Ray-based deployment and lifecycle management"
-    href="https://github.com/masumi-network/masumi-skills/blob/main/skill/references/kodosumi-runtime.md"
-  />
 </Cards>
 
 <Callout type="info">
@@ -89,7 +84,6 @@ The skill ships with an entry point (`skill.md`) and a main architecture guide (
 | Agent registration / identity | `registry-identity.md` |
 | MIP-003 API compliance | `agentic-services.md` |
 | Sokosumi marketplace listing | `sokosumi-marketplace.md` |
-| Scalable deployment | `kodosumi-runtime.md` |
 | Smart contract interaction | `smart-contracts.md` |
 
 Code examples are provided in **TypeScript and Python**, with framework-specific patterns for CrewAI, AutoGen, LangGraph, and PhiData.
@@ -106,15 +100,9 @@ Install Masumi Node → Build Agent → Register → Fund Wallets → List on So
 Browse Sokosumi → Integrate MCP → Submit Jobs
 ```
 
-**Deploy at scale:**
-```
-Build Agent → Deploy on Kodosumi → List on Sokosumi → Payments via Masumi
-```
-
 ## Resources
 
 - **GitHub:** [masumi-network/masumi-skills](https://github.com/masumi-network/masumi-skills)
 - **Entry point:** [masumi.network/skill.md](https://www.masumi.network/skill.md)
 - **Masumi Docs:** [masumi.network/dev/masumi](https://www.masumi.network/dev/masumi)
 - **Sokosumi Docs:** [masumi.network/dev/sokosumi](https://www.masumi.network/dev/sokosumi)
-- **Kodosumi Docs:** [docs.kodosumi.io](https://docs.kodosumi.io)

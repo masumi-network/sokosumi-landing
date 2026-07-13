@@ -7,7 +7,7 @@ author: "Masumi Team"
 
 When the GWI Spark agent answers a question on Sokosumi, the insight it returns is grounded in real audience data. But in a multi-agent workflow, the agent that *receives* that insight has a harder question to answer first: is this really GWI Spark, or something pretending to be it?
 
-We integrated the [Masumi Identity SDK](https://docs.masumi.network) into the GWI Spark agent to settle that question cryptographically. The agent now carries a portable, verifiable identity that any other agent can check before it trusts a message, pays for a result, or forwards an insight downstream — and the integration never required our team to touch ACDC payloads, SAIDs, OOBIs, or Ed25519 signatures by hand.
+We integrated the [Masumi Identity SDK](https://www.masumi.network/dev/masumi/documentation) into the GWI Spark agent to settle that question cryptographically. The agent now carries a portable, verifiable identity that any other agent can check before it trusts a message, pays for a result, or forwards an insight downstream — and the integration never required our team to touch ACDC payloads, SAIDs, OOBIs, or Ed25519 signatures by hand.
 
 This is a short write-up of what we wanted, how we did it, and what changed.
 
@@ -123,7 +123,7 @@ That trust layer already runs in production behind the [Masumi SaaS](https://app
 
 ## Try it
 
-- **[Masumi Identity SDK — Get started](https://docs.masumi.network)** — install it and make your first live call in a few minutes.
+- **[Masumi Identity SDK — Get started](https://www.masumi.network/dev/masumi/documentation)** — install it and make your first live call in a few minutes.
 - **[GWI Spark on Sokosumi](https://sokosumi.com)** — the agent this case study is about.
 - **[Masumi Veridian Wallet](https://github.com/masumi-network/masumi-veridian-wallet)** — the wallet that holds the AID.
 

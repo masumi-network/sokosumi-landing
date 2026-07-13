@@ -88,6 +88,34 @@ const REPOS = [
     customIcon: 'Bot',
     preserveImports: true
   },
+  // Agentic service wrapper integrations
+  {
+    owner: 'masumi-network',
+    repo: 'agentic-service-wrapper',
+    branch: 'crewai',
+    filePath: 'readme.md',
+    outputPath: './content/masumi/documentation/integrations/agentic-service-wrapper/_crewai.mdx',
+    isTabContent: false,
+    customTitle: 'CrewAI'
+  },
+  {
+    owner: 'masumi-network',
+    repo: 'agentic-service-wrapper',
+    branch: 'langchain',
+    filePath: 'readme.md',
+    outputPath: './content/masumi/documentation/integrations/agentic-service-wrapper/_langchain.mdx',
+    isTabContent: false,
+    customTitle: 'LangChain'
+  },
+  {
+    owner: 'masumi-network',
+    repo: 'agentic-service-wrapper',
+    branch: 'n8n',
+    filePath: 'readme.md',
+    outputPath: './content/masumi/documentation/integrations/agentic-service-wrapper/_n8n.mdx',
+    isTabContent: false,
+    customTitle: 'n8n'
+  },
   // n8n node
   {
     owner: 'masumi-network',
@@ -187,11 +215,22 @@ async function syncImages(readmeContent, owner, repo, branch = 'main') {
       // Fetch and save the image
       console.log(`📸 Fetching image: ${githubUrl}`);
       const success = await fetchImage(githubUrl, localPath);
-      
-      if (success) {
+
+      let imageAvailable = success;
+      if (!imageAvailable) {
+        try {
+          await fs.access(localPath);
+          imageAvailable = true;
+          console.log(`♻️ Reusing previously synced image: ${fileName}`);
+        } catch {
+          // No remote or previously synced image is available.
+        }
+      }
+
+      if (imageAvailable) {
         // Replace the path in content - use global replace to catch all occurrences
         updatedContent = updatedContent.replaceAll(imagePath, publicPath);
-        console.log(`✅ Synced image: ${fileName}`);
+        if (success) console.log(`✅ Synced image: ${fileName}`);
       } else {
         console.log(`❌ Failed to sync image: ${fileName}`);
       }
@@ -230,12 +269,12 @@ function canonicalizeLegacyDocsLinks(content) {
       /https:\/\/docs\.masumi\.network(?=\/(?:documentation|core-concepts|api-reference|n8n-node|mips)(?:[/?#.)"'<]|\b))/g,
       'https://www.masumi.network/dev/masumi',
     )
-    .replace(/https:\/\/docs\.masumi\.network(?=$|[\s)"'<])/g, 'https://www.masumi.network/dev/masumi')
+    .replace(/https:\/\/docs\.masumi\.network\/?(?=$|[\s)"'<])/g, 'https://www.masumi.network/dev/masumi')
     .replace(
       /https:\/\/docs\.sokosumi\.com(?=\/(?:documentation|api-reference|cli_docs|mcp)(?:[/?#.)"'<]|\b))/g,
       'https://www.masumi.network/dev/sokosumi',
     )
-    .replace(/https:\/\/docs\.sokosumi\.com(?=$|[\s)"'<])/g, 'https://www.masumi.network/dev/sokosumi')
+    .replace(/https:\/\/docs\.sokosumi\.com\/?(?=$|[\s)"'<])/g, 'https://www.masumi.network/dev/sokosumi')
     .replace(
       /(https:\/\/www\.masumi\.network\/dev\/(?:masumi|sokosumi)\/[^\s)"'<#?]+)\.md\b/g,
       '$1',

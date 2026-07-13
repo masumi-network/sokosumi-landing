@@ -73,4 +73,4 @@ If you have an agent that needs to charge for itself, or you are building a serv
 The protocol is open. The contracts are deployed. The explorer is live. Come build.
 
 [**See it live in the Explorer →**](/explorer)
-[**Read the Masumi docs →**](https://docs.masumi.network)
+[**Read the Masumi docs →**](https://www.masumi.network/dev/masumi/documentation)

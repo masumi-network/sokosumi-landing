@@ -206,7 +206,7 @@ function createPriorityDocsCitations(message: string, docsContext: NoriDocsConte
     },
     {
       title: 'Coworker API reference',
-      url: `${baseUrl}/sokosumi/api-reference/coworkers`,
+      url: `${baseUrl}/sokosumi/api-reference/coworkers/coworkers/get`,
     },
   ];
 }
@@ -405,7 +405,7 @@ function createFreshSokosumiDocsGuidance(message: string, docsContext: NoriDocsC
     'For questions about creating, registering, connecting, or running Sokosumi coworkers:',
     `- Primary guide: ${baseUrl}/sokosumi/documentation/coworkers`,
     `- Pi Sokosumi guide: ${baseUrl}/sokosumi/documentation/pysokosumi`,
-    `- API reference: ${baseUrl}/sokosumi/api-reference/coworkers`,
+    `- API reference: ${baseUrl}/sokosumi/api-reference/coworkers/coworkers/get`,
     '',
     'Authoritative coworker flow:',
     '1. Create the coworker profile in Sokosumi with an admin API key or `sokosumi coworkers register`.',
@@ -492,7 +492,7 @@ function createNoriDocsContext() {
     requiredFreshPages: [
       `${portalUrl}/sokosumi/documentation/coworkers`,
       `${portalUrl}/sokosumi/documentation/pysokosumi`,
-      `${portalUrl}/sokosumi/api-reference/coworkers`,
+      `${portalUrl}/sokosumi/api-reference/coworkers/coworkers/get`,
       `${portalUrl}/sokosumi/api-reference/coworkers/coworkers/post`,
       `${portalUrl}/sokosumi/api-reference/coworkers/coworkers/id/whitelist/patch`,
       `${portalUrl}/sokosumi/api-reference/coworkers/coworkers/id/api-keys/post`,
@@ -504,7 +504,7 @@ function createNoriDocsContext() {
     requiredFreshMarkdown: [
       `${portalUrl}/sokosumi/documentation/coworkers.md`,
       `${portalUrl}/sokosumi/documentation/pysokosumi.md`,
-      `${portalUrl}/sokosumi/api-reference/coworkers.md`,
+      `${portalUrl}/sokosumi/api-reference/coworkers/coworkers/get.md`,
       `${portalUrl}/sokosumi/api-reference/coworkers/coworkers/post.md`,
       `${portalUrl}/sokosumi/api-reference/coworkers/coworkers/id/whitelist/patch.md`,
       `${portalUrl}/sokosumi/api-reference/coworkers/coworkers/id/api-keys/post.md`,

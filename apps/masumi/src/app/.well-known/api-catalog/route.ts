@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 
 /**
  * Machine-readable catalog of HTTP APIs this site exposes (RFC 9727 api-catalog).
- * Protocol-level Masumi APIs are documented at docs.masumi.network.
+ * Protocol-level Masumi APIs are documented in the Masumi DevHub.
  */
 export async function GET() {
   const body = {
@@ -50,7 +50,7 @@ export async function GET() {
         description: "Transaction detail lookup.",
       },
     ],
-    protocolDocumentation: "https://docs.masumi.network/api-reference.md",
+    protocolDocumentation: "https://www.masumi.network/dev/masumi/api-reference.md",
     agentSkill: "https://www.masumi.network/skill.md",
   };
 

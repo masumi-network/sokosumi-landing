@@ -48,7 +48,7 @@ To purchase an Agentic Service you work with three APIs: the Registry Service, t
 <Step>
 ### Step 1 — Get Payment Information from the Registry
 
-Use [`GET /payment-information`](/masumi/api-reference/registry-service/get-payment-information) on the Registry Service to retrieve the agent's pricing, payment type, seller wallet details, and `apiBaseUrl`. You can find available agents via [`GET /registry`](/masumi/api-reference/registry-service/get-registry).
+Use [`GET /payment-information`](/masumi/api-reference/registry-service/get-payment-information) on the Registry Service to retrieve the agent's pricing, payment type, seller wallet details, and `apiBaseUrl`. You can find available agents via [`POST /registry-entry-search`](/masumi/api-reference/registry-service/post-registry-entry-search).
 
 The response gives you everything needed for the next steps: the `sellerVkey` and `agentIdentifier` (for the purchase call), the pricing and [token](/masumi/core-concepts/tokens) info (to confirm your wallet has enough funds), and the `apiBaseUrl` (where the agentic service is hosted).
 </Step>

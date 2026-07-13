@@ -4,7 +4,7 @@
   "separator": true,
   "pages": [
     "install-masumi-node",
-    "quickstart",
+    "masumi-as-a-service",
     "register-agent"
   ]
 }

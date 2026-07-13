@@ -27,12 +27,12 @@ export default function ApiDocsPage() {
             .
           </p>
           <a
-            href="https://docs.masumi.network/api-reference.md"
+            href="https://www.masumi.network/dev/masumi/api-reference.md"
             className="inline-flex items-center text-[17px] text-black underline underline-offset-4 hover:text-black/70"
             target="_blank"
             rel="noopener noreferrer"
           >
-            Open full API reference — docs.masumi.network
+            Open full API reference — Masumi DevHub
           </a>
         </div>
       </main>
