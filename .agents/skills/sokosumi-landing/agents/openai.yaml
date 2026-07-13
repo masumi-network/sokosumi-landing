@@ -1,0 +1,4 @@
+interface:
+  display_name: "Sokosumi Landing"
+  short_description: "Maintain this repo and its documentation links"
+  default_prompt: "Use $sokosumi-landing to update the Sokosumi landing pages safely."
