@@ -2,8 +2,12 @@
 
 import { useState, useRef, useEffect } from "react";
 
-export default function UserTypeToggle() {
-  const [userType, setUserType] = useState<"human" | "agent">("human");
+export default function UserTypeToggle({
+  initialUserType = "human",
+}: {
+  initialUserType?: "human" | "agent";
+}) {
+  const [userType, setUserType] = useState<"human" | "agent">(initialUserType);
   const [copied, setCopied] = useState(false);
   const copyTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const isMountedRef = useRef(true);
