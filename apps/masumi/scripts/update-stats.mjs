@@ -52,16 +52,27 @@ async function paginateCount(basePath) {
   return total;
 }
 
-async function getAllTxHashes() {
-  const all = [];
+// Walk newest-first and stop as soon as we hit an already-processed hash.
+// Steady state this costs 1 Blockfrost call instead of re-paginating the
+// full history (~220 calls) every run.
+async function getNewTxHashes(processedSet) {
+  const fresh = [];
   for (let page = 1; page <= 300; page++) {
-    const txs = await bf(`/addresses/${ADDRESS}/transactions?count=100&page=${page}&order=asc`);
+    const txs = await bf(`/addresses/${ADDRESS}/transactions?count=100&page=${page}&order=desc`);
     if (!txs || !Array.isArray(txs) || txs.length === 0) break;
-    all.push(...txs.map((t) => t.tx_hash));
+    let sawKnown = false;
+    for (const t of txs) {
+      if (processedSet.has(t.tx_hash)) {
+        sawKnown = true;
+      } else {
+        fresh.push(t.tx_hash);
+      }
+    }
+    if (sawKnown) break;
     if (txs.length < 100) break;
     await sleep(150);
   }
-  return all;
+  return fresh.reverse(); // oldest first, same order as before
 }
 
 function readVolumeCache() {
@@ -98,11 +109,9 @@ async function calculateVolume() {
   const cache = readVolumeCache();
   console.log(`  Cache has ${cache.processedCount || 0} processed txs`);
 
-  const allHashes = await getAllTxHashes();
-  console.log(`  Found ${allHashes.length} total tx hashes`);
-
   const processedSet = new Set(cache.processedTxHashes);
-  const newHashes = allHashes.filter((h) => !processedSet.has(h));
+  const newHashes = await getNewTxHashes(processedSet);
+  console.log(`  Found ${newHashes.length} new tx hashes`);
 
   if (newHashes.length === 0) {
     console.log("  No new transactions to process");

@@ -1,5 +1,23 @@
 import type { Metadata } from "next";
 import { Header, Footer } from "@summation/shared";
+import { hasData, getDb } from "@/lib/explorer-db";
+
+// Refresh hourly so the transaction count stays current.
+export const revalidate = 3600;
+
+function liveTxCount(): string {
+  try {
+    if (hasData("mainnet")) {
+      const n = (
+        getDb("mainnet").prepare("SELECT COUNT(*) as c FROM transactions").get() as { c: number }
+      ).c;
+      if (n > 0) return (Math.floor(n / 1000) * 1000).toLocaleString("en-US");
+    }
+  } catch {
+    /* explorer DB not synced yet — use the fallback below */
+  }
+  return "22,000";
+}
 
 export const metadata: Metadata = {
   title: "Press",
@@ -38,7 +56,7 @@ export default function PressPage() {
                   Built on Cardano, Masumi enables a new economy where AI agents can discover, hire, and pay other agents to complete complex tasks. Every transaction is recorded on-chain, creating a transparent and verifiable record of agent-to-agent commerce.
                 </p>
                 <p>
-                  The network has processed over 22,000 on-chain transactions and supports a growing ecosystem of registered agents across multiple domains including research, content generation, data analysis, and more.
+                  The network has processed over {liveTxCount()} on-chain transactions and supports a growing ecosystem of registered agents across multiple domains including research, content generation, data analysis, and more.
                 </p>
               </div>
             </section>

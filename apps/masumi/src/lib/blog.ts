@@ -1,12 +1,4 @@
-import fs from "fs";
-import path from "path";
-import matter from "gray-matter";
-import { unified } from "unified";
-import remarkParse from "remark-parse";
-import remarkRehype from "remark-rehype";
-import rehypeStringify from "rehype-stringify";
-
-const contentDir = path.join(process.cwd(), "content");
+import { cmsFetch } from "./cms";
 
 const categories = ["announcements", "articles", "press-releases"] as const;
 export type Category = (typeof categories)[number];
@@ -24,39 +16,42 @@ export type Post = PostMeta & {
   htmlContent: string;
 };
 
-function readPostMeta(filePath: string, category: Category): PostMeta {
-  const raw = fs.readFileSync(filePath, "utf-8");
-  const { data } = matter(raw);
-  const slug = path.basename(filePath, ".md");
+type CmsPost = {
+  title: string;
+  description: string;
+  date: string;
+  author: string;
+  category: Category;
+  slug: string;
+  contentHtml?: string;
+};
+
+type CmsList = { docs: CmsPost[] };
+
+function toMeta(doc: CmsPost): PostMeta {
   return {
-    title: data.title ?? "",
-    description: data.description ?? "",
-    date: data.date ?? "",
-    author: data.author ?? "",
-    category,
-    slug,
+    title: doc.title,
+    description: doc.description,
+    date: (doc.date || "").slice(0, 10),
+    author: doc.author,
+    category: doc.category,
+    slug: doc.slug,
   };
 }
 
-export function getAllPosts(): PostMeta[] {
-  const posts: PostMeta[] = [];
-  for (const category of categories) {
-    const dir = path.join(contentDir, category);
-    if (!fs.existsSync(dir)) continue;
-    const files = fs.readdirSync(dir).filter((f) => f.endsWith(".md"));
-    for (const file of files) {
-      posts.push(readPostMeta(path.join(dir, file), category));
-    }
-  }
-  return posts.sort((a, b) => (a.date > b.date ? -1 : 1));
+export async function getAllPosts(): Promise<PostMeta[]> {
+  const res = await cmsFetch<CmsList>(
+    "/posts?where[site][equals]=masumi&limit=100&sort=-date&depth=0",
+  );
+  return (res?.docs ?? []).map(toMeta);
 }
 
-export function getPostsByCategory(category: Category): PostMeta[] {
-  return getAllPosts().filter((p) => p.category === category);
+export async function getPostsByCategory(category: Category): Promise<PostMeta[]> {
+  return (await getAllPosts()).filter((p) => p.category === category);
 }
 
-export function getCategories(): { name: Category; count: number }[] {
-  const all = getAllPosts();
+export async function getCategories(): Promise<{ name: Category; count: number }[]> {
+  const all = await getAllPosts();
   return categories.map((name) => ({
     name,
     count: all.filter((p) => p.category === name).length,
@@ -64,25 +59,10 @@ export function getCategories(): { name: Category; count: number }[] {
 }
 
 export async function getPostBySlug(slug: string): Promise<Post | null> {
-  for (const category of categories) {
-    const filePath = path.join(contentDir, category, `${slug}.md`);
-    if (!fs.existsSync(filePath)) continue;
-    const raw = fs.readFileSync(filePath, "utf-8");
-    const { data, content } = matter(raw);
-    const result = await unified()
-      .use(remarkParse)
-      .use(remarkRehype)
-      .use(rehypeStringify)
-      .process(content);
-    return {
-      title: data.title ?? "",
-      description: data.description ?? "",
-      date: data.date ?? "",
-      author: data.author ?? "",
-      category,
-      slug,
-      htmlContent: String(result),
-    };
-  }
-  return null;
+  const res = await cmsFetch<CmsList>(
+    `/posts?where[slug][equals]=${encodeURIComponent(slug)}&limit=1&depth=0`,
+  );
+  const doc = res?.docs?.[0];
+  if (!doc) return null;
+  return { ...toMeta(doc), htmlContent: doc.contentHtml ?? "" };
 }

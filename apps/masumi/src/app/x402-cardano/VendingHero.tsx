@@ -303,6 +303,15 @@ export default function VendingHero() {
   // with completed steps drifting up and fading out (a focal window).
   const winRef = useRef<HTMLDivElement>(null);
   const stepsRef = useRef<HTMLDivElement>(null);
+
+  // stops the confirm-polling loop if the user navigates away mid-payment
+  const aliveRef = useRef(true);
+  useEffect(() => {
+    aliveRef.current = true;
+    return () => {
+      aliveRef.current = false;
+    };
+  }, []);
   const [stepsY, setStepsY] = useState(0);
   const [winH, setWinH] = useState(0); // lg window height; adapts to the focused step (0 = mobile/auto)
   const [focusIndex, setFocusIndex] = useState(0); // which step the window is parked on
@@ -491,6 +500,7 @@ export default function VendingHero() {
         // ~24 polls × 6s ≈ 144s — comfortably past the 120s maxTimeoutSeconds,
         // and ~3 checks per ~20s Cardano block (not a flood).
         for (let n = 1; n <= 24; n++) {
+          if (!aliveRef.current) return; // component unmounted — stop polling
           let c: { found?: boolean; confirmations?: number; blockHeight?: number; error?: string } = { found: false };
           try {
             const cr = await fetch(`/api/x402/confirm?hash=${settledHash}`, { cache: "no-store" });

@@ -6,6 +6,7 @@ import AgentNetworkGraph from "@/components/AgentNetworkGraph";
 import MasumiStats from "@/components/MasumiStats";
 import VolumeTide from "@/components/VolumeTide";
 import UserTypeToggle from "@/components/UserTypeToggle";
+import { cmsFetch, cmsFileUrl } from "@/lib/cms";
 
 export const metadata: Metadata = {
   title: "Masumi | Agents Pay Agents",
@@ -273,7 +274,11 @@ const features = [
   },
 ];
 
-const frameworks = [
+type StackLogo = { name: string; logo: string; href?: string };
+
+// Fallbacks if the CMS is unreachable; the live lists are edited in the
+// CMS "Partners" collection.
+const fallbackFrameworks: StackLogo[] = [
   { name: "LangChain", logo: "/images/langchain.svg" },
   { name: "CrewAI", logo: "/images/crewai.svg" },
   { name: "AutoGen", logo: "/images/autogen.svg" },
@@ -282,14 +287,42 @@ const frameworks = [
   { name: "OpenAI Agents SDK", logo: "/images/openai-sdk.svg" },
 ];
 
-const standards = [
+const fallbackStandards: StackLogo[] = [
   { name: "A2A", logo: "/images/a2a-logo.svg", href: "https://a2a-protocol.org" },
   { name: "AP2", logo: "/images/ap2-logo.svg", href: "https://ap2-protocol.org" },
   { name: "x402", logo: "/images/x402-logo.svg", href: "/x402-cardano" },
 ];
 
+type CmsPartner = {
+  name: string;
+  href?: string | null;
+  type: "framework" | "standard" | "network";
+  logo?: { url?: string } | null;
+};
 
-export default function MasumiPage() {
+async function getStackPartners(): Promise<{
+  frameworks: StackLogo[];
+  standards: StackLogo[];
+}> {
+  const res = await cmsFetch<{ docs: CmsPartner[] }>(
+    "/partners?where[site][equals]=masumi&limit=100&sort=order&depth=1",
+  );
+  const docs = (res?.docs ?? []).filter((d) => d.logo?.url);
+  const toLogo = (d: CmsPartner): StackLogo => ({
+    name: d.name,
+    logo: cmsFileUrl(d.logo?.url),
+    href: d.href || undefined,
+  });
+  const frameworks = docs.filter((d) => d.type === "framework").map(toLogo);
+  const standards = docs.filter((d) => d.type === "standard").map(toLogo);
+  if (frameworks.length === 0 && standards.length === 0) {
+    return { frameworks: fallbackFrameworks, standards: fallbackStandards };
+  }
+  return { frameworks, standards };
+}
+
+export default async function MasumiPage() {
+  const { frameworks, standards } = await getStackPartners();
   return (
     <>
       <Header product="masumi" />
@@ -468,19 +501,15 @@ export default function MasumiPage() {
                         />
                         <div>
                           <span className="text-[14px] font-medium text-black block leading-tight">{item.name}</span>
-                          {"isStandard" in item && (() => {
-                            const href = (item as unknown as typeof standards[0]).href;
-                            const isInternal = href.startsWith("/");
-                            return (
-                              <a
-                                href={href}
-                                {...(isInternal ? {} : { target: "_blank", rel: "noopener noreferrer" })}
-                                className="text-[11px] text-[#FA008C]"
-                              >
-                                Learn more about {item.name} →
-                              </a>
-                            );
-                          })()}
+                          {"isStandard" in item && item.href && (
+                            <a
+                              href={item.href}
+                              {...(item.href.startsWith("/") ? {} : { target: "_blank", rel: "noopener noreferrer" })}
+                              className="text-[11px] text-[#FA008C]"
+                            >
+                              Learn more about {item.name} →
+                            </a>
+                          )}
                         </div>
                       </div>
                     ))}

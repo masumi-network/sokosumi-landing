@@ -69,6 +69,11 @@ export type ConfirmResult =
   | { found: false; error?: "upstream"; status?: number }
   | { found: true; blockHeight: number; block: string; tipHeight: number; confirmations: number };
 
+// The chain tip moves ~every 20s, so one cached height serves every
+// concurrent confirm poll instead of re-fetching /blocks/latest per call.
+let tipCache: { height: number; at: number } | null = null;
+const TIP_TTL_MS = 15_000;
+
 // Poll the chain for inclusion: Blockfrost only indexes a tx once it lands in a
 // block, so a 404 means "submitted but not yet confirmed". When it's found we
 // derive confirmations from the current tip height.
@@ -90,11 +95,21 @@ export async function getConfirmations(txHash: string): Promise<ConfirmResult> {
   if (!blockHeight) return { found: false };
 
   let tipHeight = blockHeight;
-  try {
-    const tipRes = await fetch(`${BLOCKFROST}/blocks/latest`, { headers, cache: "no-store" });
-    if (tipRes.ok) tipHeight = ((await tipRes.json()) as { height?: number }).height ?? blockHeight;
-  } catch {
-    /* fall back to the tx's own block height */
+  if (tipCache && Date.now() - tipCache.at < TIP_TTL_MS) {
+    tipHeight = tipCache.height;
+  } else {
+    try {
+      const tipRes = await fetch(`${BLOCKFROST}/blocks/latest`, { headers, cache: "no-store" });
+      if (tipRes.ok) {
+        const h = ((await tipRes.json()) as { height?: number }).height;
+        if (h) {
+          tipHeight = h;
+          tipCache = { height: h, at: Date.now() };
+        }
+      }
+    } catch {
+      /* fall back to the tx's own block height */
+    }
   }
 
   // Inclusive convention: the including block counts as confirmation #1. The

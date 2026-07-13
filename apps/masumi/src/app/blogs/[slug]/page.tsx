@@ -17,7 +17,12 @@ const categoryLabels: Record<Category, string> = {
 };
 
 export async function generateStaticParams() {
-  return getAllPosts().map((post) => ({ slug: post.slug }));
+  try {
+    return (await getAllPosts()).map((post) => ({ slug: post.slug }));
+  } catch {
+    // CMS unreachable at build time — pages render on demand instead.
+    return [];
+  }
 }
 
 export async function generateMetadata({

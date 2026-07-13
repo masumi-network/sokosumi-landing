@@ -12,10 +12,6 @@ const nextConfig: NextConfig = {
     return config;
   },
   serverExternalPackages: ["better-sqlite3", "@emurgo/cardano-serialization-lib-nodejs"],
-  outputFileTracingIncludes: {
-    "/blogs": ["./content/**/*.md"],
-    "/blogs/[slug]": ["./content/**/*.md"],
-  },
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "avatars.githubusercontent.com" },

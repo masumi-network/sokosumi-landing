@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Header, Footer } from "@summation/shared";
 import Creator from "./Creator";
 import { getRecent, type SavedExtraction } from "./lib/extractions-db";
+import { cmsFetch } from "@/lib/cms";
 
 export const dynamic = "force-dynamic";
 
@@ -81,60 +82,32 @@ const JSON_LD_APP = {
   },
 };
 
-const JSON_LD_FAQ = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: [
-    {
+// FAQ content is edited in the CMS ("FAQs" collection, page = design-md).
+// The visible accordion and the FAQPage structured data are generated from
+// the same records so they can't drift apart.
+type CmsFaq = { question: string; answerHtml?: string };
+
+async function getFaqs(): Promise<CmsFaq[]> {
+  const res = await cmsFetch<{ docs: CmsFaq[] }>(
+    "/faqs?where[page][equals]=design-md&limit=50&sort=order&depth=0",
+  );
+  return res?.docs ?? [];
+}
+
+const stripHtml = (html: string) =>
+  html.replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim();
+
+function buildFaqJsonLd(faqs: CmsFaq[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((f) => ({
       "@type": "Question",
-      name: "What is a DESIGN.md file?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "DESIGN.md is an open spec from Google Labs that captures a brand's visual identity in a single, machine-readable Markdown file. It combines YAML design tokens (colors, typography, spacing, components) with human-readable rationale, so AI coding agents like Claude Code, Cursor, and Copilot can produce on-brand UI consistently.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "How does the generator work?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Paste a website URL. The tool fetches the page, extracts a structured signal (CSS variables, Tailwind classes, Google Fonts, hero elements, logo candidates), then runs it through an AI model that produces a brand-distinctive DESIGN.md following the canonical 8-section spec.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "Is it free?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Yes. No signup, no credits. Built and hosted by Masumi.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "Which AI coding agents can read DESIGN.md?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Claude Code, Cursor, GitHub Copilot, Aider, Continue, and any agent that reads Markdown files in your repository. Drop the DESIGN.md at the root of your project and the agent picks it up as persistent style context.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "Can I edit the generated file before downloading?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Yes. The editor lets you tweak colors, fonts, and tokens visually with live preview. Download the .md when you're happy with it, or copy the markdown to your clipboard.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "Does it follow the official DESIGN.md spec?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Yes — sections appear in canonical order (Overview → Colors → Typography → Layout → Elevation & Depth → Shapes → Components → Do's and Don'ts), token references use {colors.primary} syntax, and dimensions use spec-allowed units. Extensions like layout, elevation, and logo are accepted under the spec's 'unknown content' rule.",
-      },
-    },
-  ],
-};
+      name: f.question,
+      acceptedAnswer: { "@type": "Answer", text: stripHtml(f.answerHtml ?? "") },
+    })),
+  };
+}
 
 const EXAMPLE_SITES = [
   { label: "Stripe", url: "https://stripe.com" },
@@ -143,24 +116,27 @@ const EXAMPLE_SITES = [
   { label: "Notion", url: "https://www.notion.so" },
 ];
 
-export default function Page() {
+export default async function Page() {
+  const faqs = await getFaqs();
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD_APP) }}
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD_FAQ) }}
-      />
+      {faqs.length > 0 && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(buildFaqJsonLd(faqs)) }}
+        />
+      )}
       <Header product="masumi" />
       <main className="pt-[130px] md:pt-[140px] pb-20">
         <div className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12">
           <ToolHeader />
           <Creator examples={EXAMPLE_SITES} />
           <RecentGallery />
-          <BelowFold />
+          <BelowFold faqs={faqs} />
         </div>
       </main>
       <Footer product="masumi" />
@@ -199,11 +175,11 @@ function ToolHeader() {
   );
 }
 
-function BelowFold() {
+function BelowFold({ faqs }: { faqs: CmsFaq[] }) {
   return (
     <div className="mt-32 md:mt-40 max-w-[820px]">
       <Explainer />
-      <FAQ />
+      <FAQ items={faqs} />
     </div>
   );
 }
@@ -348,65 +324,8 @@ function Step({
   );
 }
 
-function FAQ() {
-  const items = [
-    {
-      q: "What is a DESIGN.md file?",
-      a: (
-        <>
-          DESIGN.md is an{" "}
-          <Link
-            href="https://github.com/google-labs-code/design.md"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline underline-offset-2 hover:text-black"
-          >
-            open spec from Google Labs
-          </Link>{" "}
-          that captures a brand&apos;s visual identity in a single,
-          machine-readable Markdown file. It combines YAML design tokens
-          with human-readable rationale, so AI coding agents produce on-brand
-          UI consistently across sessions.
-        </>
-      ),
-    },
-    {
-      q: "How does the generator work?",
-      a: "Paste a URL. We fetch the page, extract a structured signal (CSS variables, Tailwind classes, Google Fonts, hero selectors, logo candidates), then run it through an AI model that produces a brand-distinctive DESIGN.md.",
-    },
-    {
-      q: "Is it free?",
-      a: "Yes. No signup, no credits. Built and hosted by Masumi as a free tool for the design system community.",
-    },
-    {
-      q: "Which AI agents can read DESIGN.md?",
-      a: "Claude Code, Cursor, GitHub Copilot, Aider, Continue — any agent that reads Markdown files in your repository. Drop the DESIGN.md at the root of your project and the agent picks it up as persistent style context.",
-    },
-    {
-      q: "Can I edit the file before downloading?",
-      a: "Yes. The editor lets you tweak colors, fonts, and tokens visually with live preview. Download the .md when you're satisfied, or copy the markdown to your clipboard.",
-    },
-    {
-      q: "Does it follow the official DESIGN.md spec?",
-      a: "Yes — sections appear in canonical spec order (Overview → Colors → Typography → Layout → Elevation & Depth → Shapes → Components → Do's and Don'ts), token references use {colors.primary} syntax, and dimensions use spec-allowed units. Extensions like layout, elevation, and logo fields are accepted under the spec's 'unknown content' rule.",
-    },
-    {
-      q: "Why is this on Masumi?",
-      a: (
-        <>
-          Masumi is the payment network for AI agents. We care about the tools
-          that make agents better collaborators — and DESIGN.md is one of them.{" "}
-          <Link
-            href="/"
-            className="underline underline-offset-2 hover:text-black"
-          >
-            Learn more about Masumi →
-          </Link>
-        </>
-      ),
-    },
-  ];
-
+function FAQ({ items }: { items: CmsFaq[] }) {
+  if (items.length === 0) return null;
   return (
     <section className="mt-20 md:mt-28">
       <p className="text-[11px] text-[#999] uppercase tracking-[0.18em] mb-3 font-mono">
@@ -423,15 +342,16 @@ function FAQ() {
           >
             <summary className="flex items-center justify-between cursor-pointer list-none">
               <span className="text-[16px] md:text-[18px] text-black pr-4">
-                {it.q}
+                {it.question}
               </span>
               <span className="text-[20px] text-[#999] group-open:rotate-45 transition-transform shrink-0">
                 +
               </span>
             </summary>
-            <div className="mt-4 text-[15px] text-[#5b5b5b] leading-[1.65] max-w-[680px]">
-              {it.a}
-            </div>
+            <div
+              className="mt-4 text-[15px] text-[#5b5b5b] leading-[1.65] max-w-[680px] [&_a]:underline [&_a]:underline-offset-2 [&_a:hover]:text-black [&_p+p]:mt-3"
+              dangerouslySetInnerHTML={{ __html: it.answerHtml ?? "" }}
+            />
           </details>
         ))}
       </div>
