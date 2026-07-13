@@ -1,0 +1,12 @@
+{
+  "title": "Enterprise-contracts",
+  "pages": [
+    "enterprise/contracts/get",
+    "enterprise/contracts/id/activate/post",
+    "enterprise/contracts/id/cancel/post",
+    "enterprise/contracts/id/get",
+    "enterprise/contracts/id/patch",
+    "enterprise/contracts/id/periods/preview/get",
+    "enterprise/contracts/post"
+  ]
+}

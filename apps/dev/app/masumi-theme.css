@@ -1,0 +1,39 @@
+@theme {
+  /* Primary Colors - Masumi Iris Flower */
+  --color-fd-primary: #ff51ff;
+  --color-fd-primary-foreground: hsl(220, 13%, 9%);
+  
+  /* Background Colors - Clean neutral whites */
+  --color-fd-background: hsl(0, 0%, 100%);       /* Pure white */
+  --color-fd-foreground: hsl(220, 13%, 9%);      /* Near-black with slight blue tint */
+  
+  /* Card/Surface Colors - Subtle neutral gray */
+  --color-fd-card: hsl(0, 0%, 100%);             /* Pure white */
+  --color-fd-card-foreground: hsl(220, 13%, 9%);
+  
+  /* Popover Colors */
+  --color-fd-popover: hsl(0, 0%, 100%);
+  --color-fd-popover-foreground: hsl(220, 13%, 9%);
+  
+  /* Secondary Colors - Light neutral gray */
+  --color-fd-secondary: hsl(220, 10%, 96%);      /* Very light neutral gray */
+  --color-fd-secondary-foreground: hsl(220, 13%, 20%);
+  
+  /* Muted Colors - Subtle gray */
+  --color-fd-muted: hsl(220, 8%, 98%);           /* Almost white with slight gray */
+  --color-fd-muted-foreground: hsl(220, 8%, 45%);
+  
+  /* Accent Colors - Masumi Iris Flower */
+  --color-fd-accent: #ff51ff;
+  --color-fd-accent-foreground: hsl(220, 13%, 9%);
+  
+  /* Border Colors - Subtle neutral borders */
+  --color-fd-border: hsl(220, 13%, 90%);         /* Light neutral border */
+  --color-fd-ring: #ff51ff;                      /* Masumi brand focus ring */
+}
+
+/* Sidebar specific colors */
+#nd-sidebar {
+  --color-fd-secondary: hsl(220, 10%, 98%);
+  --color-fd-muted: hsl(220, 10%, 98%);
+}

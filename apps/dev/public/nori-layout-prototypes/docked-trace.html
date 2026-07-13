@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Nori Prototype - Docked Trace</title>
+    <link rel="stylesheet" href="/nori-layout-prototypes/styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="/documentation" aria-label="Masumi Documentation">
+        <img src="/assets/masumi_logo_dark.png" alt="Masumi" />
+      </a>
+      <nav class="mode-switch" aria-label="Documentation mode">
+        <a href="/ask" class="active"><span>Ask Nori</span></a>
+        <a href="/documentation"><span>Browse</span></a>
+      </nav>
+      <nav class="prototype-nav" aria-label="Prototype variants">
+        <a href="/nori-layout-prototypes/index.html">Overview</a>
+        <a href="/nori-layout-prototypes/console.html">Console</a>
+        <a href="/nori-layout-prototypes/trace-first.html">Trace First</a>
+        <a class="current" href="/nori-layout-prototypes/docked-trace.html">Docked Trace</a>
+        <a href="/nori-layout-prototypes/conversation-trace.html">Conversation Trace</a>
+      </nav>
+    </header>
+
+    <main class="page">
+      <p class="variant-kicker">Variant 3</p>
+      <h1 class="prototype-title">Chat-first with trace dock</h1>
+
+      <div class="dock-layout">
+        <section class="main-stack" aria-label="Nori chat">
+          <div class="hero-card">
+            <div class="hero-content">
+              <div class="profile-row">
+                <div class="avatar-frame">
+                  <img src="/assets/nori-pfp.png" alt="Nori profile" />
+                </div>
+                <div class="hero-copy">
+                  <h1>Ask Nori</h1>
+                  <p>A quieter start for users who just want an answer. The trace dock stays close enough to show the Masumi payment lifecycle once a task is running.</p>
+                </div>
+              </div>
+
+              <div class="prompt-strip" aria-label="Example prompts">
+                <button class="prompt-chip" type="button" data-prompt="register"><span class="dot"></span>Register an agent</button>
+                <button class="prompt-chip" type="button" data-prompt="escrow"><span class="dot"></span>Escrow payments</button>
+                <button class="prompt-chip" type="button" data-prompt="collaborate"><span class="dot"></span>Agent collaboration</button>
+                <button class="prompt-chip" type="button" data-prompt="api"><span class="dot"></span>API reference</button>
+              </div>
+
+              <form class="ask-box" data-demo-form>
+                <textarea data-nori-input rows="1" aria-label="Message Nori" placeholder="Ask Nori anything about Masumi..."></textarea>
+                <button type="submit" aria-label="Send">↑</button>
+              </form>
+            </div>
+          </div>
+
+          <section class="panel" aria-label="Nori answer stream">
+            <p class="card-label">Conversation</p>
+            <div class="chat-list" data-demo-output>
+              <article class="message user">
+                <div class="message-bubble">How would Nori answer a docs question and prove payment happened?</div>
+              </article>
+              <article class="message">
+                <div class="message-bubble">
+                  Nori reads the docs, answers with citations, and submits a result that can be tied back to a Masumi purchase. The dock shows each payment state without taking over the page.
+                  <div class="source-row">
+                    <span class="source-pill">Agent API</span>
+                    <span class="source-pill">Decision Logging</span>
+                    <span class="source-pill">Payments</span>
+                  </div>
+                </div>
+              </article>
+              <article class="message">
+                <div class="message-bubble">
+                  This layout works best if the trace starts compact and expands when there are explorer links, errors, or detailed metadata to inspect.
+                </div>
+              </article>
+            </div>
+          </section>
+        </section>
+
+        <aside class="dock-panel" aria-label="Payment trace dock">
+          <div class="trace-head">
+            <div>
+              <p class="card-label">Payment trace</p>
+              <h2>Nori task running</h2>
+            </div>
+            <span class="network-pill">Preprod</span>
+          </div>
+
+          <div class="dock-summary">
+            <div class="metric">
+              <span>Status</span>
+              <strong>Funds locked</strong>
+            </div>
+            <div class="metric">
+              <span>Charge</span>
+              <strong>0.00 tUSDM</strong>
+            </div>
+          </div>
+
+          <div class="compact-steps">
+            <div class="compact-step">
+              <span class="trace-marker">1</span>
+              <div>
+                <strong>Registry verified</strong>
+                <span>Nori identity resolved</span>
+              </div>
+            </div>
+            <div class="compact-step">
+              <span class="trace-marker">2</span>
+              <div>
+                <strong>Purchase created</strong>
+                <span>Request sent to payment service</span>
+              </div>
+            </div>
+            <div class="compact-step">
+              <span class="trace-marker">3</span>
+              <div>
+                <strong>Escrow active</strong>
+                <span>Script address funded</span>
+              </div>
+            </div>
+            <div class="compact-step">
+              <span class="trace-marker">4</span>
+              <div>
+                <strong>Result pending</strong>
+                <span>Nori answer in progress</span>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </main>
+
+    <script src="/nori-layout-prototypes/prototype.js"></script>
+  </body>
+</html>

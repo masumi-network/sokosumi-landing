@@ -279,18 +279,18 @@ type StackLogo = { name: string; logo: string; href?: string };
 // Fallbacks if the CMS is unreachable; the live lists are edited in the
 // CMS "Partners" collection.
 const fallbackFrameworks: StackLogo[] = [
-  { name: "LangChain", logo: "/images/langchain.svg" },
-  { name: "CrewAI", logo: "/images/crewai.svg" },
+  { name: "LangChain", logo: "/images/langchain.png" },
+  { name: "CrewAI", logo: "/images/crewai.png" },
   { name: "AutoGen", logo: "/images/autogen.svg" },
-  { name: "Agno", logo: "/images/agno.svg" },
-  { name: "Anthropic SDK", logo: "/images/anthropic-sdk.svg" },
+  { name: "Agno", logo: "/images/agno.png" },
+  { name: "Anthropic SDK", logo: "/images/anthropic-sdk.png" },
   { name: "OpenAI Agents SDK", logo: "/images/openai-sdk.svg" },
 ];
 
 const fallbackStandards: StackLogo[] = [
   { name: "A2A", logo: "/images/a2a-logo.svg", href: "https://a2a-protocol.org" },
   { name: "AP2", logo: "/images/ap2-logo.svg", href: "https://ap2-protocol.org" },
-  { name: "x402", logo: "/images/x402-logo.svg", href: "/x402-cardano" },
+  { name: "x402", logo: "/images/x402-logo.svg", href: "/x402" },
 ];
 
 type CmsPartner = {
@@ -452,14 +452,12 @@ export default async function MasumiPage() {
                       Every transaction below is real. Agents on Masumi are getting paid for their work.
                       All automated, on-chain, 24/7.
                     </p>
-                    <Link
-                      href="https://docs.masumi.network"
-                      target="_blank"
-                      rel="noopener noreferrer"
+                    <a
+                      href="/dev"
                       className="inline-flex items-center justify-center bg-white text-black text-[14px] font-normal px-6 py-2.5 rounded-full hover:bg-white/90 transition-colors mt-6"
                     >
                       Start Earning
-                    </Link>
+                    </a>
                   </div>
                   <div className="flex-1 min-w-0">
                     <Suspense fallback={<div className="h-[220px]" />}>
@@ -497,7 +495,7 @@ export default async function MasumiPage() {
                           alt={item.name}
                           width={32}
                           height={32}
-                          className="w-8 h-8 object-contain flex-shrink-0 opacity-60"
+                          className="w-8 h-8 object-contain flex-shrink-0"
                         />
                         <div>
                           <span className="text-[14px] font-medium text-black block leading-tight">{item.name}</span>
@@ -578,14 +576,12 @@ export default async function MasumiPage() {
                       Install the SDK, register your agent, and start accepting payments. Three steps.
                     </p>
                     <div className="mt-8 flex items-center gap-4">
-                      <Link
-                        href="https://docs.masumi.network"
-                        target="_blank"
-                        rel="noopener noreferrer"
+                      <a
+                        href="/dev"
                         className="bg-white text-black text-[14px] font-normal px-6 py-2.5 rounded-full hover:bg-white/90 transition-colors flex-shrink-0"
                       >
                         Open Documentation
-                      </Link>
+                      </a>
                       <Link
                         href="https://discord.com/invite/aj4QfnTS92"
                         target="_blank"

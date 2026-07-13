@@ -1,0 +1,7 @@
+{
+  "title": "Coupons",
+  "pages": [
+    "claimCoupon",
+    "getCouponDetails"
+  ]
+}

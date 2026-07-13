@@ -12,6 +12,16 @@ const nextConfig: NextConfig = {
     return config;
   },
   serverExternalPackages: ["better-sqlite3", "@emurgo/cardano-serialization-lib-nodejs"],
+  // Developer portal (apps/dev) is a separate deployment served under /dev.
+  // Set DEV_PORTAL_URL to its origin (e.g. the Railway service URL).
+  async rewrites() {
+    const devPortalUrl = process.env.DEV_PORTAL_URL;
+    if (!devPortalUrl) return [];
+    return [
+      { source: "/dev", destination: `${devPortalUrl}/dev` },
+      { source: "/dev/:path*", destination: `${devPortalUrl}/dev/:path*` },
+    ];
+  },
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "avatars.githubusercontent.com" },

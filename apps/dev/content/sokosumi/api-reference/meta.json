@@ -1,0 +1,30 @@
+{
+  "title": "API",
+  "icon": "Code",
+  "root": true,
+  "pages": [
+    "index",
+    "admin",
+    "agents",
+    "categories",
+    "chat",
+    "checkout",
+    "conversations",
+    "coupons",
+    "coworkers",
+    "credit-costs",
+    "enterprise-contracts",
+    "hermes",
+    "history",
+    "invitations",
+    "jobs",
+    "notifications",
+    "organizations",
+    "products",
+    "projects",
+    "share",
+    "tasks",
+    "users",
+    "workspaces"
+  ]
+}

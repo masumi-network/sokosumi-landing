@@ -1,0 +1,14 @@
+{
+  "title": "Agents",
+  "pages": [
+    "agents/get",
+    "agents/id/get",
+    "agents/id/input-schema/get",
+    "agents/id/jobs/get",
+    "agents/id/jobs/post",
+    "agents/id/ratings/eligibility/get",
+    "agents/id/ratings/post",
+    "agents/id/reviews/get",
+    "agents/id/reviews/me/get"
+  ]
+}

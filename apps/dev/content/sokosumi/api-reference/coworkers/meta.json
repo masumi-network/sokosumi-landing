@@ -1,0 +1,18 @@
+{
+  "title": "Coworkers",
+  "pages": [
+    "coworkers/get",
+    "coworkers/id/api-keys/get",
+    "coworkers/id/api-keys/keyid/delete",
+    "coworkers/id/api-keys/keyid/patch",
+    "coworkers/id/api-keys/post",
+    "coworkers/id/delete",
+    "coworkers/id/get",
+    "coworkers/id/patch",
+    "coworkers/id/whitelist/patch",
+    "coworkers/me/events/get",
+    "coworkers/me/get",
+    "coworkers/me/usage/post",
+    "coworkers/post"
+  ]
+}

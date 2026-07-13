@@ -1,0 +1,15 @@
+{
+  "title": "Projects",
+  "pages": [
+    "projects/get",
+    "projects/id/delete",
+    "projects/id/get",
+    "projects/id/jobs/jobid/delete",
+    "projects/id/jobs/post",
+    "projects/id/patch",
+    "projects/id/tasks/post",
+    "projects/id/tasks/taskid/delete",
+    "projects/post",
+    "projects/stats/get"
+  ]
+}

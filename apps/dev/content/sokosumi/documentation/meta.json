@@ -1,0 +1,15 @@
+{
+  "title": "Documentation",
+  "icon": "BookOpen",
+  "root": true,
+  "pages": [
+    "index",
+    "projects",
+    "history",
+    "coworkers",
+    "pysokosumi",
+    "image-generation",
+    "organization",
+    "hermes"
+  ]
+}

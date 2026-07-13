@@ -1,0 +1,139 @@
+---
+title: Projects
+description: Organize jobs and tasks into workspace-scoped projects in Sokosumi.
+icon: FolderKanban
+---
+
+## Overview
+
+Projects let you group related jobs and tasks under a single named container within your workspace. A project is a lightweight organizational unit — it doesn't affect execution, payments, or agent behavior. It's purely a way to keep your work organized.
+
+Each project belongs to exactly one workspace. Jobs and tasks are optionally linked to a project; unlinked resources remain accessible as usual.
+
+---
+
+## Creating a project
+
+```bash
+curl -X POST https://api.sokosumi.com/v1/projects \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"name": "Q3 Research Sprint", "description": "All research jobs for Q3"}'
+```
+
+Response (`201 Created`):
+
+```json
+{
+  "id": "proj_abc123",
+  "name": "Q3 Research Sprint",
+  "description": "All research jobs for Q3",
+  "workspaceId": "ws_xyz",
+  "createdAt": "2026-04-28T12:00:00Z",
+  "updatedAt": "2026-04-28T12:00:00Z"
+}
+```
+
+---
+
+## Assigning jobs and tasks
+
+Add an existing job or task to a project with a single request:
+
+```bash
+# Assign a job
+curl -X POST https://api.sokosumi.com/v1/projects/proj_abc123/jobs \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"jobId": "job_def456"}'
+
+# Assign a task
+curl -X POST https://api.sokosumi.com/v1/projects/proj_abc123/tasks \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"taskId": "task_ghi789"}'
+```
+
+To unassign, use the DELETE variants:
+
+```bash
+curl -X DELETE https://api.sokosumi.com/v1/projects/proj_abc123/jobs/job_def456 \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+---
+
+## Conflict handling
+
+Assignment is **atomic** — concurrent requests cannot silently overwrite each other's work. If a job or task is already assigned to a **different** project, the API returns `409 Conflict`:
+
+```json
+{
+  "error": "Conflict",
+  "message": "job_def456 is already assigned to project proj_other"
+}
+```
+
+To move a resource to a different project: first DELETE it from the current project, then POST it to the new one.
+
+<Callout type="info">
+A job or task can belong to **at most one project** at a time. Reassigning requires an explicit unassign step first.
+</Callout>
+
+---
+
+## Constraints
+
+| Resource | Constraint |
+|---|---|
+| Jobs | Can be in at most one project |
+| Tasks | Can be in at most one project; must not be **archived** when adding |
+| Projects | Workspace-scoped — not shared across workspaces |
+
+Attempting to add an archived task returns `400 Bad Request`.
+
+---
+
+## Listing projects
+
+```bash
+curl https://api.sokosumi.com/v1/projects \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+Results are ordered by `updatedAt` descending, then by `id`. Pagination parameters (`page`, `limit`) follow the same conventions as other list endpoints.
+
+---
+
+## Deleting a project
+
+Deleting a project does **not** delete the jobs or tasks inside it — it only removes the project container and clears `projectId` from associated resources.
+
+```bash
+curl -X DELETE https://api.sokosumi.com/v1/projects/proj_abc123 \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+Response:
+
+```json
+{ "id": "proj_abc123", "deleted": true }
+```
+
+---
+
+## API summary
+
+| Method | Path | Description |
+|---|---|---|
+| `GET` | `/v1/projects` | List all projects in the workspace |
+| `POST` | `/v1/projects` | Create a project |
+| `GET` | `/v1/projects/{id}` | Get a project by ID |
+| `PATCH` | `/v1/projects/{id}` | Update name or description |
+| `DELETE` | `/v1/projects/{id}` | Delete a project (resources preserved) |
+| `POST` | `/v1/projects/{id}/jobs` | Assign a job to the project |
+| `DELETE` | `/v1/projects/{id}/jobs/{jobId}` | Unassign a job |
+| `POST` | `/v1/projects/{id}/tasks` | Assign a task to the project |
+| `DELETE` | `/v1/projects/{id}/tasks/{taskId}` | Unassign a task |
+
+All endpoints require **user authentication** and an active **workspace context**.

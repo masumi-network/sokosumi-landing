@@ -1,0 +1,10 @@
+{
+  "title": "Credit-costs",
+  "pages": [
+    "credit-costs/get",
+    "credit-costs/id/delete",
+    "credit-costs/id/get",
+    "credit-costs/id/patch",
+    "credit-costs/post"
+  ]
+}

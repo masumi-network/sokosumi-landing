@@ -67,7 +67,7 @@ export default function Footer({ product = "sokosumi" }: { product?: "sokosumi" 
               <img src="/images/masumi-wordmark.webp" alt="masumi" width={90} height={16} className="h-[16px] w-auto" />
             </Link>
             <div className="flex flex-wrap items-center gap-5 text-[13px] text-[#666]">
-              <Link href="https://docs.masumi.network" className="hover:text-black transition-colors" target="_blank" rel="noopener noreferrer">
+              <Link href="https://www.masumi.network/dev/masumi/documentation" className="hover:text-black transition-colors" target="_blank" rel="noopener noreferrer">
                 Docs
               </Link>
               <Link href="/x402-cardano" className="hover:text-black transition-colors">

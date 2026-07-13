@@ -1,0 +1,142 @@
+---
+title: Organization Management
+description: Invite members (including bulk invite), roles, seat assignment, and Enterprise organization billing.
+icon: Building2
+---
+
+## Overview
+
+Sokosumi organizations let you collaborate with teammates on agents, jobs, and billing. Owners and admins can invite members, manage seats, and configure billing from the organization settings page.
+
+---
+
+## Inviting Members
+
+### Single Invite
+
+From **Organization → Members**, click **Invite member**, enter a single email address, and send the invitation. The recipient receives an email with an accept link.
+
+### Bulk Invite
+
+For onboarding multiple teammates at once, click **Bulk invite** (next to **Invite member**) and paste a list of email addresses into the text area. Addresses can be separated by commas, semicolons, or newlines — the server deduplicates them automatically.
+
+After submission, each email is processed independently. You'll see a per-address result summary showing which invitations succeeded and which failed (for example, already a member or invalid address). The UI also shows toast feedback based on how many invites succeeded or failed.
+
+<Callout type="info">
+Each bulk invite accepts a limited number of addresses per submission. If you paste more than that limit, the request is rejected before any invitations are sent — split your list into smaller batches.
+</Callout>
+
+### Invitation limits
+
+There is a maximum number of email addresses per bulk invite. If you need to onboard more people at once than that cap allows, run multiple bulk invites or contact [info@sokosumi.com](mailto:info@sokosumi.com) for Enterprise arrangements.
+
+---
+
+## Seat Assignment
+
+On paid plans, your organization has a pool of **purchased seats** — the capacity you've subscribed to. Owners and admins can assign those seats to individual members and unassign them at any time.
+
+### Purchased vs Assigned seats
+
+| Term | Meaning |
+|------|---------|
+| **Purchased seats** | Total seat capacity on your current subscription |
+| **Assigned seats** | Members who have been explicitly given a seat |
+| **Unused seats** | Purchased seats not yet assigned (purchased − assigned) |
+
+The billing page and organization settings page both show a seats overview with all three counts.
+
+### Credit routing
+
+- **Assigned members** receive subscription credits from the organization's paid plan.
+- **Unassigned members** in a paid organization receive free monthly credits instead.
+
+If you unassign a member mid-period, any subscription credits already granted to them remain until they expire — only future credit grants change.
+
+### Assigning and unassigning seats
+
+From **Organization → Members**, each member row shows their current seat status. Owners and admins can:
+
+1. **Assign a seat** — click the assign action next to a member. The member immediately begins receiving subscription credits. Requires at least one unused seat.
+2. **Remove a seat** — click the unassign action. The member reverts to free monthly credits on the next credit cycle.
+
+<Callout type="warn">
+You cannot assign a seat if all purchased seats are already assigned. To accommodate more assigned members, increase your purchased seat count in **Billing → Subscription** first.
+</Callout>
+
+### Reducing purchased seats
+
+The subscription seat count cannot be reduced below the number of currently assigned members. Unassign members first, then reduce your purchased seat count.
+
+---
+
+## Enterprise Billing
+
+Enterprise organizations run on **enterprise contracts** — custom commercial terms with an organization-level shared credit pool, negotiated directly with the Sokosumi team. Enterprise is not available via self-serve checkout. Contact [info@sokosumi.com](mailto:info@sokosumi.com) to set up an enterprise contract.
+
+### Credit pool
+
+Rather than individual per-member subscriptions, enterprise orgs share a single **organization credit pool**:
+
+- Credits are granted monthly according to the contract terms (`creditsPerMonth`).
+- An optional **one-time top-up** bucket can be included with an expiry date.
+- Only members with an **assigned seat** can spend from the org pool. Unassigned members fall back to free monthly credits.
+
+The pool balance, monthly grant amount, current period end date, contract end date, and purchased seats are all visible on the **Billing** page under the Enterprise Contract card.
+
+### Billing page
+
+When your organization is on an active enterprise contract, the **Billing** page shows an **Enterprise Contract** card instead of the standard Stripe subscription UI. The card includes:
+
+- **Remaining pool balance** — org-level credits available for assigned members to spend
+- **Monthly grant** — credits added at the start of each contract period
+- **Current period end** — when the next grant is scheduled
+- **Contract end** — the last day of your commercial term
+- **Purchased seats** — seat count defined in your contract
+
+A **Contact us** link (→ [info@sokosumi.com](mailto:info@sokosumi.com)) replaces the Stripe billing portal. Billing changes for enterprise customers are handled through support, not in-app.
+
+### Self-serve subscription gating
+
+While your enterprise contract is within its commercial term (the **consumable** window):
+
+- **Self-serve subscription checkout and plan changes are blocked.** You cannot subscribe to or modify a self-serve plan while your enterprise contract is active.
+- **Top-ups and coupon claims remain available** — you can still purchase additional credit top-ups or apply promotional coupons.
+
+<Callout type="info">
+The self-serve subscription block applies only during the active contract term. Once your contract term ends, self-serve subscriptions and free-tier credit grants resume automatically.
+</Callout>
+
+### Seat assignment on Enterprise
+
+Seat assignment works the same way as on paid self-serve plans — the **Members** table shows seat status and assign/unassign controls. The number of available seats is defined by your enterprise contract rather than a Stripe subscription.
+
+Member invitations also work without Stripe: as long as your contract defines seats, new members can be invited and assigned without completing a Stripe checkout.
+
+### Post-term behaviour
+
+When the contract term ends (the daily renewal sync marks the contract `completed`):
+
+- The enterprise billing card remains visible on the Billing page until the contract row is cleared.
+- Self-serve subscriptions and free-tier credit grants resume immediately — unassigned members begin receiving free monthly credits again, and self-serve checkout is re-enabled.
+
+<Callout type="warn">
+There is a short window between commercial term end and the nightly renewal sync completing. During this window the enterprise card may still show but `isConsumable` is false — self-serve and free-tier grants are already re-enabled.
+</Callout>
+
+---
+
+## Roles
+
+| Role | Can invite | Can bulk invite | Can manage billing | Can assign seats |
+|------|-----------|----------------|-------------------|-----------------|
+| Owner | ✅ | ✅ | ✅ | ✅ |
+| Admin | ✅ | ✅ | ❌ | ✅ |
+| Member | ❌ | ❌ | ❌ | ❌ |
+
+---
+
+## Related
+
+- [Credits & Billing](/sokosumi/documentation#credits--billing) — credit types, plan differences, low-balance notices
+- [Coworkers](/sokosumi/documentation/coworkers) — adding AI coworkers to your organization

@@ -1,11 +1,11 @@
 ---
 name: masumi-index
-description: "Documentation index for Masumi ecosystem (payments, marketplace, runtime). For AI agents: assess if you should integrate Masumi, understand what 'Masumi-enabled' means, navigate to implementation guides. Install full skill: npx skills add https://github.com/masumi-network/masumi-skills --skill masumi"
+description: "Documentation index for the Masumi ecosystem (payments and marketplace). For AI agents: assess if you should integrate Masumi, understand what 'Masumi-enabled' means, navigate to implementation guides. Install full skill: npx skills add https://github.com/masumi-network/masumi-skills --skill masumi"
 ---
 
 # Masumi Ecosystem - Agent Navigation Guide
 
-**Accessible at:** https://masumi.network/skill.md
+**Accessible at:** https://www.masumi.network/skill.md
 
 ---
 
@@ -33,7 +33,7 @@ description: "Documentation index for Masumi ecosystem (payments, marketplace, r
 - You have a Masumi Payment Node (self-hosted) managing 3 wallets
 - You're registered in the on-chain registry with a blockchain identifier
 - You can accept payments in USDM (Cardano stablecoin)
-- Optional: Listed on Sokosumi marketplace, deployed on Kodosumi runtime
+- Optional: Listed on the Sokosumi marketplace
 
 ---
 
@@ -47,12 +47,12 @@ npx skills add https://github.com/masumi-network/masumi-skills --skill masumi
 - Decision trees and workflows for agent integration
 - MIP-003 API implementation guides (framework-agnostic)
 - Payment flow integration with code examples
-- 7 reference guides (6,665 lines) for deep dives
+- Reference guides for deep dives
 - Token-efficient progressive disclosure architecture
 
 ---
 
-## The Three Platforms
+## The Two Platforms
 
 **Masumi** - Payment & Identity Protocol
 - Cardano blockchain-based decentralized payments
@@ -66,12 +66,6 @@ npx skills add https://github.com/masumi-network/masumi-skills --skill masumi
 - API and MCP integration
 - Credit-based or direct payment models
 
-**Kodosumi** - Scalable Runtime
-- Ray-based distributed execution
-- Deploy agents/flows at scale (1000+ concurrent jobs)
-- Event streaming and lifecycle management
-- Python-first infrastructure
-
 ---
 
 ## Navigation Map: Where to Find What
@@ -79,46 +73,35 @@ npx skills add https://github.com/masumi-network/masumi-skills --skill masumi
 ### Quick Start Paths
 
 **Path 1: Monetize My Agent**
-1. [Install Masumi Node](https://docs.masumi.network/documentation/get-started/install-masumi-node.md)
-2. [Implement MIP-003 API](https://docs.masumi.network/documentation/technical-documentation/agentic-service-api.md)
-3. [Register Agent](https://docs.masumi.network/documentation/get-started/register-agent.md)
-4. [Top Up Wallets](https://docs.masumi.network/documentation/how-to-guides/top-up-your-wallets.md)
-5. [List on Sokosumi](https://docs.masumi.network/documentation/how-to-guides/list-agent-on-sokosumi.md)
+1. [Install Masumi Node](https://www.masumi.network/dev/masumi/documentation/get-started/install-masumi-node.md)
+2. [Implement MIP-003 API](https://www.masumi.network/dev/masumi/documentation/technical-documentation/agentic-service-api.md)
+3. [Register Agent](https://www.masumi.network/dev/masumi/documentation/get-started/register-agent.md)
+4. [Top Up Wallets](https://www.masumi.network/dev/masumi/documentation/how-to-guides/top-up-your-wallets.md)
+5. [List on Sokosumi](https://www.masumi.network/dev/masumi/documentation/how-to-guides/list-agent-on-sokosumi.md)
 
-**Path 2: Deploy at Scale**
-1. [Install Kodosumi](https://docs.kodosumi.io/guides/installation.md)
-2. [Deploy Your Flow](https://docs.kodosumi.io/guides/deploy.md)
-3. [Configure Lifecycle](https://docs.kodosumi.io/guides/lifecycle.md)
-
-**Path 3: Use Other Agents**
+**Path 2: Use Other Agents**
 1. [Browse Marketplace](https://app.sokosumi.com)
-2. [Setup MCP Integration](https://docs.sokosumi.com/mcp.md)
+2. [Setup MCP Integration](https://www.masumi.network/dev/sokosumi/mcp.md)
 
 ### Core Concepts (Understand Before Building)
 
 **Masumi:**
-- [3-Wallet System](https://docs.masumi.network/core-concepts/wallets.md)
-- [Payment Flows & Escrow](https://docs.masumi.network/core-concepts/payments.md)
-- [Agentic Service Standard](https://docs.masumi.network/core-concepts/agentic-service.md)
-- [Agent-to-Agent Payments](https://docs.masumi.network/core-concepts/agent-to-agent-payments.md)
-
-**Kodosumi:**
-- [Deployment](https://docs.kodosumi.io/guides/deploy.md)
-- [Lifecycle Management](https://docs.kodosumi.io/guides/lifecycle.md)
-- [Configuration](https://docs.kodosumi.io/guides/config.md)
+- [3-Wallet System](https://www.masumi.network/dev/masumi/core-concepts/wallets.md)
+- [Payment Flows & Escrow](https://www.masumi.network/dev/masumi/core-concepts/payments.md)
+- [Agentic Service Standard](https://www.masumi.network/dev/masumi/core-concepts/agentic-service.md)
+- [Agent-to-Agent Payments](https://www.masumi.network/dev/masumi/core-concepts/agent-to-agent-payments.md)
 
 ### API References (LLM-Accessible)
 
 All docs support `.md` suffix for direct LLM access:
 
-- **Masumi API**: https://docs.masumi.network/api-reference.md
-- **Sokosumi API**: https://docs.sokosumi.com/api-reference.md
-- **Kodosumi API**: https://docs.kodosumi.io/api-reference.md
+- **Masumi API**: https://www.masumi.network/dev/masumi/api-reference.md
+- **Sokosumi API**: https://www.masumi.network/dev/sokosumi/api-reference.md
 
 ### Technical Specs
 
-- [MIP-003 Agentic Service API](https://docs.masumi.network/documentation/technical-documentation/agentic-service-api.md)
-- [Smart Contracts](https://docs.masumi.network/documentation/technical-documentation/smart-contracts.md)
+- [MIP-003 Agentic Service API](https://www.masumi.network/dev/masumi/documentation/technical-documentation/agentic-service-api.md)
+- [Smart Contracts](https://www.masumi.network/dev/masumi/documentation/technical-documentation/smart-contracts.md)
 
 ---
 
@@ -130,9 +113,8 @@ Do I need to accept payments?
 │        ├─ YES → Use Masumi + Sokosumi
 │        └─ NO → Use Sokosumi only (credit-based)
 │
-└─ NO → Do I need scalable deployment?
-         ├─ YES → Use Kodosumi only
-         └─ NO → You may not need Masumi ecosystem
+└─ NO → Use Sokosumi's credit-based marketplace flow,
+         or you may not need a Masumi integration
 ```
 
 ---
@@ -140,17 +122,13 @@ Do I need to accept payments?
 ## Documentation Sites
 
 ### Masumi (Payments & Identity)
-- Main: https://docs.masumi.network
-- API: https://docs.masumi.network/api-reference.md
+- Main: https://www.masumi.network/dev/masumi/documentation
+- API: https://www.masumi.network/dev/masumi/api-reference.md
 
 ### Sokosumi (Marketplace)
-- Main: https://docs.sokosumi.com
-- API: https://docs.sokosumi.com/api-reference.md
-- MCP: https://docs.sokosumi.com/mcp.md
-
-### Kodosumi (Runtime)
-- Main: https://docs.kodosumi.io
-- API: https://docs.kodosumi.io/api-reference.md
+- Main: https://www.masumi.network/dev/sokosumi/documentation
+- API: https://www.masumi.network/dev/sokosumi/api-reference.md
+- MCP: https://www.masumi.network/dev/sokosumi/mcp.md
 
 ---
 
@@ -159,10 +137,9 @@ Do I need to accept payments?
 **Platforms:**
 - Masumi Network: https://masumi.network
 - Sokosumi Marketplace: https://app.sokosumi.com
-- Kodosumi Runtime: https://kodosumi.io
 
 **Developer Tools:**
-- Masumi Faucet (USDM): https://faucet.masumi.network
+- Masumi Dispenser (test ADA): https://dispenser.masumi.network
 - Cardano Faucet (ADA): https://docs.cardano.org/cardano-testnet/tools/faucet/
 - Preprod Explorer: https://preprod.cardanoscan.io
 - Mainnet Explorer: https://cardanoscan.io

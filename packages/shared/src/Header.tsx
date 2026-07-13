@@ -55,7 +55,32 @@ const MASUMI_SOKOSUMI_BANNER = (
   </a>
 );
 
-export default function Header({ product = "sokosumi", topBanner }: { product?: "sokosumi" | "masumi" | "kodosumi"; topBanner?: ReactNode }) {
+type HeaderProps = {
+  product?: "sokosumi" | "masumi" | "kodosumi";
+  topBanner?: ReactNode;
+  siteRootHref?: string;
+  documentationHref?: string;
+  assetBaseUrl?: string;
+};
+
+function joinHref(base: string, path: string) {
+  if (!base) return path;
+  if (path === "/") return base;
+  return `${base.replace(/\/$/, "")}${path}`;
+}
+
+function assetSrc(base: string, path: string) {
+  if (!base) return path;
+  return `${base.replace(/\/$/, "")}${path}`;
+}
+
+export default function Header({
+  product = "sokosumi",
+  topBanner,
+  siteRootHref = "",
+  documentationHref = "/dev",
+  assetBaseUrl = "",
+}: HeaderProps) {
   const [showProducts, setShowProducts] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -79,7 +104,7 @@ export default function Header({ product = "sokosumi", topBanner }: { product?: 
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-50">
+      <header className="summation-site-header fixed top-0 left-0 right-0 z-50">
         {banner}
         <div
           className="flex justify-center"
@@ -102,8 +127,8 @@ export default function Header({ product = "sokosumi", topBanner }: { product?: 
                   <img src="/images/sokosumi-wordmark.svg" alt="sokosumi" width={100} height={18} className="h-[18px] w-auto block" />
                 </Link>
               ) : product === "masumi" ? (
-                <Link href="/">
-                  <img src="/images/masumi-wordmark.webp" alt="masumi" width={100} height={18} className="h-[18px] w-auto block" fetchPriority="high" />
+                <Link href={joinHref(siteRootHref, "/")}>
+                  <img src={assetSrc(assetBaseUrl, "/images/masumi-wordmark.webp")} alt="masumi" width={100} height={18} className="h-[18px] w-auto block" fetchPriority="high" />
                 </Link>
               ) : (
                 <Link href="/">
@@ -148,34 +173,19 @@ export default function Header({ product = "sokosumi", topBanner }: { product?: 
 
           {product === "sokosumi" ? (
             <nav className="hidden lg:flex items-center h-[74px]">
-              <Link href="/marketplace" className="text-[14px] font-normal text-black hover:text-black/60 transition-colors px-[15px] h-full flex items-center">
-                Marketplace
-              </Link>
-              <Link href="/tasks" className="text-[14px] font-normal text-black hover:text-black/60 transition-colors px-[15px] h-full flex items-center">
-                Tasks
-              </Link>
-              <Link href="/pricing" className="text-[14px] font-normal text-black hover:text-black/60 transition-colors px-[15px] h-full flex items-center">
-                Pricing
-              </Link>
-              <Link href="/faq" className="text-[14px] font-normal text-black hover:text-black/60 transition-colors px-[15px] h-full flex items-center">
-                FAQ
-              </Link>
-              <Link href="/about" className="text-[14px] font-normal text-black hover:text-black/60 transition-colors px-[15px] h-full flex items-center">
-                About
+              <Link href="/press" className="text-[14px] font-normal text-black hover:text-black/60 transition-colors px-[15px] h-full flex items-center">
+                Press
               </Link>
             </nav>
           ) : product === "masumi" ? (
             <nav className="hidden lg:flex items-center h-[74px]">
-              <Link href="https://docs.masumi.network" target="_blank" rel="noopener noreferrer" className="text-[14px] font-normal text-black hover:text-black/60 transition-colors px-[15px] h-full flex items-center">
-                Docs
-              </Link>
-              <Link href="/x402-cardano" className="text-[14px] font-normal text-black hover:text-black/60 transition-colors px-[15px] h-full flex items-center">
+              <Link href={joinHref(siteRootHref, "/x402")} className="text-[14px] font-normal text-black hover:text-black/60 transition-colors px-[15px] h-full flex items-center">
                 x402
               </Link>
-              <Link href="/explorer" className="text-[14px] font-normal text-black hover:text-black/60 transition-colors px-[15px] h-full flex items-center">
+              <Link href={joinHref(siteRootHref, "/explorer")} className="text-[14px] font-normal text-black hover:text-black/60 transition-colors px-[15px] h-full flex items-center">
                 Explorer
               </Link>
-              <Link href="/blogs" className="text-[14px] font-normal text-black hover:text-black/60 transition-colors px-[15px] h-full flex items-center">
+              <Link href={joinHref(siteRootHref, "/blogs")} className="text-[14px] font-normal text-black hover:text-black/60 transition-colors px-[15px] h-full flex items-center">
                 Blog
               </Link>
               <Link href="https://github.com/masumi-network" target="_blank" rel="noopener noreferrer" className="text-[14px] font-normal text-black hover:text-black/60 transition-colors px-[15px] h-full flex items-center">
@@ -201,14 +211,14 @@ export default function Header({ product = "sokosumi", topBanner }: { product?: 
                 </Link>
                 <Link href="https://app.sokosumi.com"
                   className="hidden lg:block bg-black text-white text-[14px] font-normal px-6 py-2 rounded-full hover:bg-black/85 transition-colors">
-                  Sign up
+                  Get started
                 </Link>
               </>
             ) : product === "masumi" ? (
-              <Link href="https://docs.masumi.network" target="_blank" rel="noopener noreferrer"
+              <a href={documentationHref}
                 className="hidden lg:block bg-black text-white text-[14px] font-normal px-6 py-2.5 rounded-full hover:bg-black/85 transition-colors">
                 Open Documentation
-              </Link>
+              </a>
             ) : (
               <Link href="https://docs.kodosumi.io" target="_blank" rel="noopener noreferrer"
                 className="hidden lg:block bg-black text-white text-[14px] font-normal px-6 py-2.5 rounded-full hover:bg-black/85 transition-colors">
@@ -231,46 +241,31 @@ export default function Header({ product = "sokosumi", topBanner }: { product?: 
 
       {/* Mobile menu overlay */}
       {mobileMenuOpen && (
-        <div className="fixed inset-0 z-40 lg:hidden" style={{ top: banner ? 110 : 74 }}>
+        <div className="summation-site-mobile-menu fixed inset-0 z-40 lg:hidden" style={{ top: banner ? 110 : 74 }}>
           <div className="absolute inset-0 bg-[#F5F5F5]" />
           <nav className="relative flex flex-col px-6 pt-8 gap-1">
             {product === "sokosumi" ? (
               <>
-                <Link href="/marketplace" onClick={() => setMobileMenuOpen(false)} className="text-[18px] text-black py-3 border-b border-black/[0.06]">
-                  Marketplace
-                </Link>
-                <Link href="/tasks" onClick={() => setMobileMenuOpen(false)} className="text-[18px] text-black py-3 border-b border-black/[0.06]">
-                  Tasks
-                </Link>
-                <Link href="/pricing" onClick={() => setMobileMenuOpen(false)} className="text-[18px] text-black py-3 border-b border-black/[0.06]">
-                  Pricing
-                </Link>
-                <Link href="/faq" onClick={() => setMobileMenuOpen(false)} className="text-[18px] text-black py-3 border-b border-black/[0.06]">
-                  FAQ
-                </Link>
-                <Link href="/about" onClick={() => setMobileMenuOpen(false)} className="text-[18px] text-black py-3 border-b border-black/[0.06]">
-                  About
+                <Link href="/press" onClick={() => setMobileMenuOpen(false)} className="text-[18px] text-black py-3 border-b border-black/[0.06]">
+                  Press
                 </Link>
                 <Link href="https://app.sokosumi.com" onClick={() => setMobileMenuOpen(false)} className="text-[18px] text-black py-3 border-b border-black/[0.06]">
                   Log in
                 </Link>
                 <Link href="https://app.sokosumi.com" onClick={() => setMobileMenuOpen(false)}
                   className="mt-6 bg-black text-white text-[14px] font-normal px-6 py-3 rounded-full text-center">
-                  Sign up
+                  Get started
                 </Link>
               </>
             ) : product === "masumi" ? (
               <>
-                <Link href="https://docs.masumi.network" target="_blank" rel="noopener noreferrer" onClick={() => setMobileMenuOpen(false)} className="text-[18px] text-black py-3 border-b border-black/[0.06]">
-                  Docs
-                </Link>
-                <Link href="/x402-cardano" onClick={() => setMobileMenuOpen(false)} className="text-[18px] text-black py-3 border-b border-black/[0.06]">
+                <Link href={joinHref(siteRootHref, "/x402")} onClick={() => setMobileMenuOpen(false)} className="text-[18px] text-black py-3 border-b border-black/[0.06]">
                   x402
                 </Link>
-                <Link href="/explorer" onClick={() => setMobileMenuOpen(false)} className="text-[18px] text-black py-3 border-b border-black/[0.06]">
+                <Link href={joinHref(siteRootHref, "/explorer")} onClick={() => setMobileMenuOpen(false)} className="text-[18px] text-black py-3 border-b border-black/[0.06]">
                   Explorer
                 </Link>
-                <Link href="/blogs" onClick={() => setMobileMenuOpen(false)} className="text-[18px] text-black py-3 border-b border-black/[0.06]">
+                <Link href={joinHref(siteRootHref, "/blogs")} onClick={() => setMobileMenuOpen(false)} className="text-[18px] text-black py-3 border-b border-black/[0.06]">
                   Blog
                 </Link>
                 <Link href="https://github.com/masumi-network" target="_blank" rel="noopener noreferrer" onClick={() => setMobileMenuOpen(false)} className="text-[18px] text-black py-3 border-b border-black/[0.06]">
@@ -279,10 +274,10 @@ export default function Header({ product = "sokosumi", topBanner }: { product?: 
                 <Link href="https://discord.com/invite/aj4QfnTS92" target="_blank" rel="noopener noreferrer" onClick={() => setMobileMenuOpen(false)} className="text-[18px] text-black py-3 border-b border-black/[0.06]">
                   Discord
                 </Link>
-                <Link href="https://docs.masumi.network" target="_blank" rel="noopener noreferrer" onClick={() => setMobileMenuOpen(false)}
+                <a href={documentationHref} onClick={() => setMobileMenuOpen(false)}
                   className="mt-6 bg-black text-white text-[14px] font-normal px-6 py-3 rounded-full text-center">
                   Open Documentation
-                </Link>
+                </a>
               </>
             ) : (
               <>

@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Nori Layout Prototypes</title>
+    <link rel="stylesheet" href="/nori-layout-prototypes/styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="/documentation" aria-label="Masumi Documentation">
+        <img src="/assets/masumi_logo_dark.png" alt="Masumi" />
+      </a>
+      <nav class="mode-switch" aria-label="Documentation mode">
+        <a href="/ask" class="active"><span>Ask Nori</span></a>
+        <a href="/documentation"><span>Browse</span></a>
+      </nav>
+      <nav class="prototype-nav" aria-label="Prototype variants">
+        <a class="current" href="/nori-layout-prototypes/index.html">Overview</a>
+        <a href="/nori-layout-prototypes/console.html">Console</a>
+        <a href="/nori-layout-prototypes/trace-first.html">Trace First</a>
+        <a href="/nori-layout-prototypes/docked-trace.html">Docked Trace</a>
+        <a href="/nori-layout-prototypes/conversation-trace.html">Conversation Trace</a>
+      </nav>
+    </header>
+
+    <main class="page">
+      <p class="variant-kicker">Nori page layout study</p>
+      <h1 class="prototype-title">Four directions for combining docs answers with the Masumi payment flow.</h1>
+
+      <div class="trace-first-grid">
+        <a class="panel" href="/nori-layout-prototypes/console.html" style="text-decoration: none;">
+          <p class="card-label">Variant 1</p>
+          <h2>Console layout</h2>
+          <p class="message-bubble" style="margin-top: 14px;">Chat and prompt starters stay on the left. The payment trace is always visible as a sticky right rail.</p>
+        </a>
+
+        <a class="panel" href="/nori-layout-prototypes/trace-first.html" style="text-decoration: none;">
+          <p class="card-label">Variant 2</p>
+          <h2>Trace first</h2>
+          <p class="message-bubble" style="margin-top: 14px;">The payment flow is the primary educational object. Chat and docs context sit underneath it.</p>
+        </a>
+
+        <a class="panel" href="/nori-layout-prototypes/docked-trace.html" style="text-decoration: none;">
+          <p class="card-label">Variant 3</p>
+          <h2>Docked trace</h2>
+          <p class="message-bubble" style="margin-top: 14px;">The page starts chat-first. A compact payment trace dock follows the conversation state.</p>
+        </a>
+
+        <a class="panel" href="/nori-layout-prototypes/conversation-trace.html" style="text-decoration: none;">
+          <p class="card-label">Variant 4</p>
+          <h2>Conversation trace</h2>
+          <p class="message-bubble" style="margin-top: 14px;">Masumi lifecycle events appear between Nori messages, so the trace becomes part of the conversation itself.</p>
+        </a>
+      </div>
+    </main>
+  </body>
+</html>

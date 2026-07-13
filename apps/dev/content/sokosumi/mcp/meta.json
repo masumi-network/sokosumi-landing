@@ -1,0 +1,9 @@
+{
+  "title": "MCP",
+  "pages": [
+    "index",
+    "debugging"
+  ],
+  "root": true,
+  "icon": "Network"
+}

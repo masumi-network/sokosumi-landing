@@ -1,0 +1,50 @@
+{
+  "name": "@summation/dev-portal",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "fumadocs-mdx && node scripts/generate-openapi.mjs && node scripts/fetch-readme.mjs && npm run generate:sokosumi && next build",
+    "generate:sokosumi": "node scripts/sokosumi/generate-openapi.mjs && node scripts/sokosumi/generate-cli-docs.mjs && node scripts/sokosumi/generate-mcp-docs.mjs",
+    "predev": "node scripts/sokosumi/ensure-api-docs.mjs",
+    "dev": "next dev -p 3004",
+    "start": "next start -p ${PORT:-3004}",
+    "postinstall": "fumadocs-mdx",
+    "fetch-readme": "node scripts/fetch-readme.mjs",
+    "generate-llms-txt": "tsx scripts/generate-llms-txt.ts"
+  },
+  "dependencies": {
+    "@theguild/remark-mermaid": "^0.3.0",
+    "@summation/shared": "*",
+    "@xyflow/react": "^12.11.2",
+    "fumadocs-core": "16.6.6",
+    "fumadocs-mdx": "14.2.8",
+    "fumadocs-openapi": "10.3.12",
+    "fumadocs-ui": "16.6.6",
+    "lru-cache": "^11.1.0",
+    "lucide-react": "^0.525.0",
+    "masumi-schema-validator-component": "^1.2.0",
+    "mermaid": "^11.8.1",
+    "next": "16.1.6",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "remark": "^15.0.1",
+    "remark-gfm": "^4.0.1",
+    "remark-mdx": "^3.1.0",
+    "remark-stringify": "^11.0.0",
+    "strip-markdown": "^6.0.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "4.2.1",
+    "@types/mdx": "^2.0.13",
+    "@types/node": "25.2.3",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "postcss": "^8.5.5",
+    "rimraf": "^6.0.1",
+    "tailwindcss": "4.2.1",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.19.2",
+    "typescript": "^5.8.3",
+    "vite": "^6.0.0"
+  }
+}

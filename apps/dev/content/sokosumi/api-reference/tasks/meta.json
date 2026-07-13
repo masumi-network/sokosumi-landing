@@ -1,0 +1,24 @@
+{
+  "title": "Tasks",
+  "pages": [
+    "tasks/get",
+    "tasks/id/delete",
+    "tasks/id/events/get",
+    "tasks/id/events/post",
+    "tasks/id/get",
+    "tasks/id/jobs/get",
+    "tasks/id/jobs/post",
+    "tasks/id/links/get",
+    "tasks/id/links/linkid/delete",
+    "tasks/id/links/linkid/patch",
+    "tasks/id/links/post",
+    "tasks/id/patch",
+    "tasks/id/schedule/delete",
+    "tasks/id/schedule/put",
+    "tasks/id/share/delete",
+    "tasks/id/share/put",
+    "tasks/id/workspace/get",
+    "tasks/id/workspace/put",
+    "tasks/post"
+  ]
+}

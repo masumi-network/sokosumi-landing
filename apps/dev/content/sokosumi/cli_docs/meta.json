@@ -1,0 +1,8 @@
+{
+  "title": "Sokosumi CLI",
+  "icon": "FileTerminal",
+  "root": true,
+  "pages": [
+    "index"
+  ]
+}

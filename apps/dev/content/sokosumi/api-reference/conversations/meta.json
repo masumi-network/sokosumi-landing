@@ -1,0 +1,13 @@
+{
+  "title": "Conversations",
+  "pages": [
+    "conversations/get",
+    "conversations/id/archive/patch",
+    "conversations/id/get",
+    "conversations/id/messages/get",
+    "conversations/id/messages/post",
+    "conversations/id/patch",
+    "conversations/id/warmup/get",
+    "conversations/post"
+  ]
+}
