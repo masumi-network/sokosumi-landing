@@ -274,11 +274,11 @@ const features = [
 ];
 
 const frameworks = [
-  { name: "LangChain", logo: "/images/langchain.svg" },
-  { name: "CrewAI", logo: "/images/crewai.svg" },
+  { name: "LangChain", logo: "/images/langchain.png" },
+  { name: "CrewAI", logo: "/images/crewai.png" },
   { name: "AutoGen", logo: "/images/autogen.svg" },
-  { name: "Agno", logo: "/images/agno.svg" },
-  { name: "Anthropic SDK", logo: "/images/anthropic-sdk.svg" },
+  { name: "Agno", logo: "/images/agno.png" },
+  { name: "Anthropic SDK", logo: "/images/anthropic-sdk.png" },
   { name: "OpenAI Agents SDK", logo: "/images/openai-sdk.svg" },
 ];
 
@@ -462,7 +462,7 @@ export default function MasumiPage() {
                           alt={item.name}
                           width={32}
                           height={32}
-                          className="w-8 h-8 object-contain flex-shrink-0 opacity-60"
+                          className="w-8 h-8 object-contain flex-shrink-0"
                         />
                         <div>
                           <span className="text-[14px] font-medium text-black block leading-tight">{item.name}</span>
