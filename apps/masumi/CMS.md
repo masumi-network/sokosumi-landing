@@ -44,11 +44,29 @@ is code — change requests go to engineering.
 ### Landing page (page builder)
 1. **Pages → Create new** — or open *"Example landing page (duplicate me)"*
    and use **Duplicate** to start from a working template.
-2. Build the page by stacking blocks in the `layout` field:
-   **Hero** (headline + CTAs), **Feature grid**, **Rich text**, **Logo
-   strip**, **FAQ**, **Comparison table** (columns + rows; cell values
-   `yes` → check, `no` → empty circle, anything else shows as text; mark
-   your column as highlighted), **CTA band**. Drag to reorder.
+2. Build the page by stacking blocks in the `layout` field. Drag to reorder:
+   - **Hero** — headline, optional eyebrow/subheading, primary + secondary CTA.
+   - **Feature grid** — heading + cards (title, text), 3 per row.
+   - **Rich text** — free-form editor content.
+   - **Logo strip** — optional heading + row of logo images.
+   - **FAQ** — question/answer accordion.
+   - **Comparison table** — columns + rows; cell values `yes` → check,
+     `no` → empty circle, anything else shows as text; mark your column
+     as highlighted.
+   - **CTA band** — black banner with heading, subheading, one CTA.
+   - **Stats** — big number row; 2–5 items with `value` + `label`.
+   - **Steps** — numbered cards (01, 02, …); 2–6 items with title + text,
+     optional heading/subheading.
+   - **Testimonials** — 1–6 quote cards with name, optional role and
+     avatar image (initial monogram if no avatar).
+   - **Media + text** — image beside heading + text; pick the media side
+     (left/right), optional CTA.
+   - **Checklist** — check-marked list; optional heading + intro.
+   - **Pricing** — 1–4 plan cards (name, price, optional per/description,
+     feature list, CTA); mark one plan as highlighted.
+   - **Video** — paste a YouTube or Vimeo URL → responsive embed;
+     optional heading + caption. Unrecognized URLs render as a plain link.
+   - **Image** — full-width figure with optional caption.
 3. The slug is the URL: slug `agents-for-agencies` →
    `masumi.network/agents-for-agencies`. Publish when ready; the page is
    picked up by the sitemap automatically.
@@ -67,8 +85,8 @@ is code — change requests go to engineering.
    **industries** (adds it to `/use-cases/industries/<industry>`). Both are
    shared taxonomies — reuse existing entries instead of creating near
    duplicates; only create a new one if it genuinely doesn't exist yet.
-3. Build the body with the same `layout` blocks as landing pages (hero,
-   feature grid, rich text, FAQ, comparison table, CTA band).
+3. Build the body with the same `layout` blocks as landing pages (full
+   block list under "Landing page" above).
 4. Optionally list `relatedAgents` (agent slugs) — they show as a "Works with
    these agents" section. Publish → live at `/use-cases/<slug>` within ~5 min;
    the hub, industry pages, and sitemap update automatically.
