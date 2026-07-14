@@ -2,6 +2,13 @@ import type { MetadataRoute } from "next";
 import { getAllPosts } from "@/lib/blog";
 import { getAllTerms } from "@/lib/glossary";
 import { cmsFetch } from "@/lib/cms";
+import {
+  getAllUseCases,
+  getAllGuides,
+  getAllReleases,
+  getAllComparisons,
+  industriesOf,
+} from "@/lib/content";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = "https://masumi.network";
@@ -47,5 +54,81 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }));
 
-  return [...staticRoutes, ...blogRoutes, ...glossaryRoutes, ...pageRoutes];
+  const [useCases, guides, releases, comparisons] = await Promise.all([
+    getAllUseCases(),
+    getAllGuides(),
+    getAllReleases(),
+    getAllComparisons(),
+  ]);
+
+  const industrySlugs = [
+    ...new Set(
+      useCases.flatMap((uc) => industriesOf(uc).map((ind) => ind.slug)),
+    ),
+  ];
+
+  const useCaseRoutes: MetadataRoute.Sitemap = [
+    ...(useCases.length > 0
+      ? [{ url: `${baseUrl}/use-cases`, lastModified: new Date(), changeFrequency: "weekly" as const, priority: 0.7 }]
+      : []),
+    ...useCases.map((uc) => ({
+      url: `${baseUrl}/use-cases/${uc.slug}`,
+      lastModified: uc.updatedAt ? new Date(uc.updatedAt) : new Date(),
+      changeFrequency: "weekly" as const,
+      priority: 0.6,
+    })),
+    ...industrySlugs.map((slug) => ({
+      url: `${baseUrl}/use-cases/industries/${slug}`,
+      lastModified: new Date(),
+      changeFrequency: "weekly" as const,
+      priority: 0.6,
+    })),
+  ];
+
+  const guideRoutes: MetadataRoute.Sitemap = [
+    ...(guides.length > 0
+      ? [{ url: `${baseUrl}/guides`, lastModified: new Date(), changeFrequency: "weekly" as const, priority: 0.7 }]
+      : []),
+    ...guides.map((g) => ({
+      url: `${baseUrl}/guides/${g.slug}`,
+      lastModified: g.updatedAt ? new Date(g.updatedAt) : new Date(),
+      changeFrequency: "monthly" as const,
+      priority: 0.6,
+    })),
+  ];
+
+  const releaseRoutes: MetadataRoute.Sitemap = [
+    ...(releases.length > 0
+      ? [{ url: `${baseUrl}/releases`, lastModified: new Date(), changeFrequency: "weekly" as const, priority: 0.6 }]
+      : []),
+    ...releases.map((r) => ({
+      url: `${baseUrl}/releases/${r.slug}`,
+      lastModified: r.updatedAt ? new Date(r.updatedAt) : new Date(r.date),
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+    })),
+  ];
+
+  const comparisonRoutes: MetadataRoute.Sitemap = [
+    ...(comparisons.length > 0
+      ? [{ url: `${baseUrl}/compare`, lastModified: new Date(), changeFrequency: "weekly" as const, priority: 0.7 }]
+      : []),
+    ...comparisons.map((c) => ({
+      url: `${baseUrl}/compare/${c.slug}`,
+      lastModified: c.updatedAt ? new Date(c.updatedAt) : new Date(),
+      changeFrequency: "monthly" as const,
+      priority: 0.6,
+    })),
+  ];
+
+  return [
+    ...staticRoutes,
+    ...blogRoutes,
+    ...glossaryRoutes,
+    ...pageRoutes,
+    ...useCaseRoutes,
+    ...guideRoutes,
+    ...releaseRoutes,
+    ...comparisonRoutes,
+  ];
 }

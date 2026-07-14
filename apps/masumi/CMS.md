@@ -14,9 +14,20 @@ never requires a deploy: the site re-fetches content every ~5 minutes.
 | `posts` | Blog posts | `/blogs`, `/blogs/<slug>` |
 | `pages` | Block-based landing pages | `/<slug>` (any free URL) |
 | `glossary` | Agentic-payments glossary terms | `/glossary`, `/glossary/<slug>` |
+| `use-cases` | Block-based use-case landing pages | `/use-cases`, `/use-cases/<slug>`, `/use-cases/industries/<slug>` |
+| `industries` | Industry taxonomy (shared across sites) | `/use-cases` "By industry" links + industry hub pages |
+| `use-case-categories` | Use-case taxonomy (shared across sites) | groups the `/use-cases` hub |
+| `guides` | Step-by-step guides | `/guides`, `/guides/<slug>` |
+| `releases` | Changelog / release notes | `/releases`, `/releases/<slug>` |
+| `comparisons` | Competitor comparison pages | `/compare`, `/compare/<slug>` |
 | `faqs` | DESIGN.md tool FAQ (+ its Google FAQ markup) | `/tools/design-md` |
 | `stack-logos` | "Connects to your stack" logos | homepage |
 | `media` | Uploaded images/files | referenced by the above |
+
+Note: slugs are unique **per site** (a masumi page and a sokosumi page can
+share a slug). `industries` and `use-case-categories` are **shared
+taxonomies** — they have no `site` field and are reused by every site, so
+edit their names/descriptions with all sites in mind.
 
 Everything else on the site (homepage sections, explorer, x402 pages, legal)
 is code — change requests go to engineering.
@@ -48,6 +59,42 @@ is code — change requests go to engineering.
    `definition` is the full explanation.
 2. Link 2–3 `related` terms — they render as chips and strengthen internal
    linking (good for SEO).
+
+### Use case
+1. **Use cases → Create new.** Fill title and description (the description is
+   the card teaser and the SEO meta description).
+2. Pick one or more **categories** (groups the use case on `/use-cases`) and
+   **industries** (adds it to `/use-cases/industries/<industry>`). Both are
+   shared taxonomies — reuse existing entries instead of creating near
+   duplicates; only create a new one if it genuinely doesn't exist yet.
+3. Build the body with the same `layout` blocks as landing pages (hero,
+   feature grid, rich text, FAQ, comparison table, CTA band).
+4. Optionally list `relatedAgents` (agent slugs) — they show as a "Works with
+   these agents" section. Publish → live at `/use-cases/<slug>` within ~5 min;
+   the hub, industry pages, and sitemap update automatically.
+
+### Guide
+1. **Guides → Create new.** Fill title, description, pick a **category**
+   (`getting-started`, `integrations`, `workflows`, `advanced`) and set
+   `order` — guides are listed per category, lowest order first.
+2. Write the body in the editor (rendered like a blog post).
+3. Link 2–3 `related` guides — they render as chips at the end of the page.
+   Publish → live at `/guides/<slug>`.
+
+### Release
+1. **Releases → Create new.** Fill title, description, `date`, and optionally
+   a `version` (renders as a badge, e.g. `v1.4.0`).
+2. Add `highlights` bullets, each tagged `new`, `improved`, or `fixed` —
+   the tags are color-coded on `/releases`.
+3. The body (optional) holds the full release notes for `/releases/<slug>`.
+   The `/releases` timeline sorts by `date`, newest first.
+
+### Comparison
+1. **Comparisons → Create new.** Fill title, description, the `competitor`
+   name, and upload a `competitorLogo` (shown on the `/compare` cards).
+2. Build the page with `layout` blocks — a **Comparison table** block with
+   your column marked as highlighted is the usual centerpiece.
+3. Publish → live at `/compare/<slug>` and listed on `/compare`.
 
 ### FAQ / stack logos
 Edit the records directly; order is controlled by the `order` field. The
@@ -121,8 +168,10 @@ curl -X POST "https://payload-production-6f43.up.railway.app/api/media" \
 
 `apps/masumi/src/lib/cms.ts` fetches the REST API with a 5-minute cache
 (ISR). Loaders: `lib/blog.ts` (posts), `lib/glossary.ts` (glossary),
-`getStackPartners()` in `app/page.tsx` (logos), `getFaqs()` in the
-design-md page, and the catch-all route `app/[...slug]/page.tsx` (pages).
+`lib/content.ts` (use cases, industries, categories, guides, releases,
+comparisons), `getStackPartners()` in `app/page.tsx` (logos), `getFaqs()`
+in the design-md page, and the catch-all route `app/[...slug]/page.tsx`
+(pages).
 If the CMS is unreachable the site keeps serving its cached version;
 the homepage logos additionally have hardcoded fallbacks.
 

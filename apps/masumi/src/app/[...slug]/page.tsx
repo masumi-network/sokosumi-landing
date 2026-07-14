@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { Header, Footer } from "@summation/shared";
 import { cmsFetch } from "@/lib/cms";
 import { RenderBlocks, type PageBlock } from "@/components/CmsBlocks";
+import { Breadcrumbs, type Crumb } from "@/components/Breadcrumbs";
 
 // CMS-built landing pages: any page published in the CMS "Pages" collection
 // (site = masumi) renders here at /<slug>. Real routes always win over this
@@ -12,6 +13,7 @@ type CmsPage = {
   title: string;
   slug: string;
   description: string;
+  parent?: { title: string; slug: string } | string | number | null;
   layout: PageBlock[];
 };
 
@@ -62,10 +64,22 @@ export default async function CmsPageRoute({
   const page = await getPage(slug.join("/"));
   if (!page) notFound();
 
+  const parent =
+    page.parent && typeof page.parent === "object" ? page.parent : null;
+  const crumbs: Crumb[] = [
+    ...(parent ? [{ label: parent.title, href: `/${parent.slug}` }] : []),
+    { label: page.title },
+  ];
+
   return (
     <>
       <Header product="masumi" />
-      <main className="pb-24">
+      <main className="relative pb-24">
+        <div className="absolute top-[110px] left-0 right-0 z-10">
+          <div className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12">
+            <Breadcrumbs items={crumbs} />
+          </div>
+        </div>
         <RenderBlocks blocks={page.layout} />
       </main>
       <Footer product="masumi" />
