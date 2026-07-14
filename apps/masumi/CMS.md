@@ -35,7 +35,9 @@ is code — change requests go to engineering.
    and use **Duplicate** to start from a working template.
 2. Build the page by stacking blocks in the `layout` field:
    **Hero** (headline + CTAs), **Feature grid**, **Rich text**, **Logo
-   strip**, **FAQ**, **CTA band**. Drag to reorder.
+   strip**, **FAQ**, **Comparison table** (columns + rows; cell values
+   `yes` → check, `no` → empty circle, anything else shows as text; mark
+   your column as highlighted), **CTA band**. Drag to reorder.
 3. The slug is the URL: slug `agents-for-agencies` →
    `masumi.network/agents-for-agencies`. Publish when ready; the page is
    picked up by the sitemap automatically.

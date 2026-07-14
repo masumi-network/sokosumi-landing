@@ -31,6 +31,12 @@ export type PageBlock =
       items?: { question: string; answer: string }[];
     }
   | {
+      blockType: "comparisonTable";
+      heading?: string;
+      columns?: { label: string; highlight?: boolean }[];
+      rows?: { label: string; note?: string; cells?: { value: string }[] }[];
+    }
+  | {
       blockType: "ctaBand";
       heading: string;
       subheading?: string;
@@ -172,6 +178,76 @@ function FaqBlock(b: Extract<PageBlock, { blockType: "faq" }>) {
   );
 }
 
+function ComparisonCell({ value, pink }: { value: string; pink?: boolean }) {
+  const v = value.trim().toLowerCase();
+  if (v === "no") {
+    return <span className="inline-flex w-[18px] h-[18px] rounded-full border-[1.5px] border-black/[0.15]" aria-hidden />;
+  }
+  if (v === "yes") {
+    return (
+      <span
+        className="inline-flex items-center justify-center w-[18px] h-[18px] rounded-full text-white text-[10px]"
+        style={{ background: pink ? "#FA008C" : "#0a0a0a" }}
+        aria-hidden
+      >
+        ✓
+      </span>
+    );
+  }
+  return <span className={`text-[12px] md:text-[13px] text-center leading-tight ${pink ? "text-[#FA008C] font-medium" : "text-[#666]"}`}>{value}</span>;
+}
+
+function ComparisonTableBlock(b: Extract<PageBlock, { blockType: "comparisonTable" }>) {
+  const columns = b.columns ?? [];
+  const rows = b.rows ?? [];
+  if (columns.length === 0 || rows.length === 0) return null;
+  const gridCols = { gridTemplateColumns: `1.4fr repeat(${columns.length}, 1fr)` };
+  return (
+    <section className="py-16">
+      <FadeIn className={container}>
+        {b.heading && (
+          <h2 className="text-[28px] md:text-[40px] font-normal tracking-[-0.4px] leading-[1.2] text-black mb-10">
+            {b.heading}
+          </h2>
+        )}
+        <div className="border border-black/[0.04] bg-white overflow-hidden max-w-[980px]">
+          <div className="grid items-center" style={gridCols}>
+            <div className="p-3 md:p-6" />
+            {columns.map((col, i) => (
+              <div
+                key={i}
+                className={`px-1.5 py-4 md:p-6 border-l border-black/[0.04] text-center ${col.highlight ? "bg-[#FA008C]/[0.05]" : ""}`}
+              >
+                <span className={`text-[12px] md:text-[13px] font-medium ${col.highlight ? "text-[#FA008C]" : "text-black"}`}>
+                  {col.label}
+                </span>
+              </div>
+            ))}
+          </div>
+          {rows.map((row, ri) => (
+            <div key={ri} className="grid items-center border-t border-black/[0.04]" style={gridCols}>
+              <div className="p-3 md:p-6 min-w-0">
+                <p className="text-[13px] md:text-[14px] font-medium text-black">{row.label}</p>
+                {row.note && (
+                  <p className="mt-1 text-[12px] md:text-[13px] text-[#8a8a8a] leading-[1.5] max-w-[440px]">{row.note}</p>
+                )}
+              </div>
+              {columns.map((col, ci) => (
+                <div
+                  key={ci}
+                  className={`px-1.5 py-4 md:p-6 border-l border-black/[0.04] flex items-center justify-center ${col.highlight ? "bg-[#FA008C]/[0.03]" : ""}`}
+                >
+                  <ComparisonCell value={row.cells?.[ci]?.value ?? ""} pink={col.highlight} />
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
+      </FadeIn>
+    </section>
+  );
+}
+
 function CtaBandBlock(b: Extract<PageBlock, { blockType: "ctaBand" }>) {
   return (
     <section className="py-16">
@@ -210,6 +286,8 @@ export function RenderBlocks({ blocks }: { blocks: PageBlock[] }) {
             return <LogoStripBlock key={i} {...block} />;
           case "faq":
             return <FaqBlock key={i} {...block} />;
+          case "comparisonTable":
+            return <ComparisonTableBlock key={i} {...block} />;
           case "ctaBand":
             return <CtaBandBlock key={i} {...block} />;
           default:
