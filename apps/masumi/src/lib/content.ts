@@ -1,4 +1,4 @@
-import { cmsFetch } from "./cms";
+import { cmsFetch, isDraftModeEnabled } from "./cms";
 import type { PageBlock } from "@/components/CmsBlocks";
 
 // Loaders for the programmatic-SEO content collections: use cases, guides,
@@ -60,6 +60,7 @@ export async function getAllUseCases(): Promise<UseCase[]> {
 export async function getUseCaseBySlug(slug: string): Promise<UseCase | null> {
   const res = await cmsFetch<{ docs: UseCase[] }>(
     `/use-cases?where[slug][equals]=${encodeURIComponent(slug)}${SITE}&limit=1&depth=1`,
+    { draft: await isDraftModeEnabled() },
   );
   return res?.docs?.[0] ?? null;
 }
@@ -135,6 +136,7 @@ export async function getAllGuides(): Promise<Guide[]> {
 export async function getGuideBySlug(slug: string): Promise<Guide | null> {
   const res = await cmsFetch<{ docs: Guide[] }>(
     `/guides?where[slug][equals]=${encodeURIComponent(slug)}${SITE}&limit=1&depth=1`,
+    { draft: await isDraftModeEnabled() },
   );
   return res?.docs?.[0] ?? null;
 }
@@ -176,6 +178,7 @@ export async function getAllReleases(): Promise<Release[]> {
 export async function getReleaseBySlug(slug: string): Promise<Release | null> {
   const res = await cmsFetch<{ docs: Release[] }>(
     `/releases?where[slug][equals]=${encodeURIComponent(slug)}${SITE}&limit=1`,
+    { draft: await isDraftModeEnabled() },
   );
   return res?.docs?.[0] ?? null;
 }
@@ -208,6 +211,7 @@ export async function getAllComparisons(): Promise<Comparison[]> {
 export async function getComparisonBySlug(slug: string): Promise<Comparison | null> {
   const res = await cmsFetch<{ docs: Comparison[] }>(
     `/comparisons?where[slug][equals]=${encodeURIComponent(slug)}${SITE}&limit=1&depth=1`,
+    { draft: await isDraftModeEnabled() },
   );
   return res?.docs?.[0] ?? null;
 }

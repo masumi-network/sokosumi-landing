@@ -1,4 +1,4 @@
-import { cmsFetch } from "./cms";
+import { cmsFetch, isDraftModeEnabled } from "./cms";
 
 export type GlossaryTerm = {
   term: string;
@@ -18,6 +18,7 @@ export async function getAllTerms(): Promise<GlossaryTerm[]> {
 export async function getTermBySlug(slug: string): Promise<GlossaryTerm | null> {
   const res = await cmsFetch<{ docs: GlossaryTerm[] }>(
     `/glossary?where[slug][equals]=${encodeURIComponent(slug)}&where[site][equals]=masumi&limit=1&depth=1`,
+    { draft: await isDraftModeEnabled() },
   );
   return res?.docs?.[0] ?? null;
 }

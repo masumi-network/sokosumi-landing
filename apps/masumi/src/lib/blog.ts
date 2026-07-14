@@ -1,4 +1,4 @@
-import { cmsFetch } from "./cms";
+import { cmsFetch, isDraftModeEnabled } from "./cms";
 
 const categories = ["announcements", "articles", "press-releases"] as const;
 export type Category = (typeof categories)[number];
@@ -61,6 +61,7 @@ export async function getCategories(): Promise<{ name: Category; count: number }
 export async function getPostBySlug(slug: string): Promise<Post | null> {
   const res = await cmsFetch<CmsList>(
     `/posts?where[slug][equals]=${encodeURIComponent(slug)}&limit=1&depth=0`,
+    { draft: await isDraftModeEnabled() },
   );
   const doc = res?.docs?.[0];
   if (!doc) return null;

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import CookieConsent from "@/components/CookieConsent";
+import DraftBanner from "@/components/DraftBanner";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 
 const GA_ID = "G-ESDVDX948Q";
@@ -53,6 +54,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.variable} antialiased`} suppressHydrationWarning>
         {children}
+        <DraftBanner />
         <CookieConsent />
         <GoogleAnalytics id={GA_ID} />
       </body>

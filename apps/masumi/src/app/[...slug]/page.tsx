@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Header, Footer } from "@summation/shared";
-import { cmsFetch } from "@/lib/cms";
+import { cmsFetch, isDraftModeEnabled } from "@/lib/cms";
 import { RenderBlocks, type PageBlock } from "@/components/CmsBlocks";
 import { Breadcrumbs, type Crumb } from "@/components/Breadcrumbs";
 
@@ -20,6 +20,7 @@ type CmsPage = {
 async function getPage(slug: string): Promise<CmsPage | null> {
   const res = await cmsFetch<{ docs: CmsPage[] }>(
     `/pages?where[slug][equals]=${encodeURIComponent(slug)}&where[site][equals]=masumi&limit=1&depth=1`,
+    { draft: await isDraftModeEnabled() },
   );
   return res?.docs?.[0] ?? null;
 }
