@@ -73,6 +73,18 @@ export default function Footer({ product = "sokosumi" }: { product?: "sokosumi" 
               <Link href="/x402-cardano" className="hover:text-black transition-colors">
                 x402
               </Link>
+              <Link href="/use-cases" className="hover:text-black transition-colors">
+                Use cases
+              </Link>
+              <Link href="/guides" className="hover:text-black transition-colors">
+                Guides
+              </Link>
+              <Link href="/releases" className="hover:text-black transition-colors">
+                Releases
+              </Link>
+              <Link href="/compare" className="hover:text-black transition-colors">
+                Compare
+              </Link>
               <Link href="/blogs" className="hover:text-black transition-colors">
                 Blog
               </Link>

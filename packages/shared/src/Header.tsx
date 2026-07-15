@@ -185,6 +185,9 @@ export default function Header({
               <Link href={joinHref(siteRootHref, "/explorer")} className="text-[14px] font-normal text-black hover:text-black/60 transition-colors px-[15px] h-full flex items-center">
                 Explorer
               </Link>
+              <Link href={joinHref(siteRootHref, "/use-cases")} className="text-[14px] font-normal text-black hover:text-black/60 transition-colors px-[15px] h-full flex items-center">
+                Use cases
+              </Link>
               <Link href={joinHref(siteRootHref, "/blogs")} className="text-[14px] font-normal text-black hover:text-black/60 transition-colors px-[15px] h-full flex items-center">
                 Blog
               </Link>
@@ -264,6 +267,18 @@ export default function Header({
                 </Link>
                 <Link href={joinHref(siteRootHref, "/explorer")} onClick={() => setMobileMenuOpen(false)} className="text-[18px] text-black py-3 border-b border-black/[0.06]">
                   Explorer
+                </Link>
+                <Link href={joinHref(siteRootHref, "/use-cases")} onClick={() => setMobileMenuOpen(false)} className="text-[18px] text-black py-3 border-b border-black/[0.06]">
+                  Use cases
+                </Link>
+                <Link href={joinHref(siteRootHref, "/guides")} onClick={() => setMobileMenuOpen(false)} className="text-[18px] text-black py-3 border-b border-black/[0.06]">
+                  Guides
+                </Link>
+                <Link href={joinHref(siteRootHref, "/releases")} onClick={() => setMobileMenuOpen(false)} className="text-[18px] text-black py-3 border-b border-black/[0.06]">
+                  Releases
+                </Link>
+                <Link href={joinHref(siteRootHref, "/compare")} onClick={() => setMobileMenuOpen(false)} className="text-[18px] text-black py-3 border-b border-black/[0.06]">
+                  Compare
                 </Link>
                 <Link href={joinHref(siteRootHref, "/blogs")} onClick={() => setMobileMenuOpen(false)} className="text-[18px] text-black py-3 border-b border-black/[0.06]">
                   Blog
