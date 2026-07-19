@@ -119,6 +119,40 @@ Edit the records directly; order is controlled by the `order` field. The
 design-md FAQ also feeds the page's Google structured data — one source,
 no drift.
 
+## Choosing the right block
+
+| Block | Use it for | Don't use it for |
+|---|---|---|
+| **Hero** | The one message + action this page exists for. Always first. | Multiple CTAs with different goals — pick one primary. |
+| **Feature grid** | 3–6 parallel benefits or proof points, one idea per card. | Narrative or anything needing more than 2 sentences per item. |
+| **Rich text** | "How it works", context, stories — anything that reads top-to-bottom. | Lists of parallel items (use the grid) or tables. |
+| **Comparison table** | "Us vs. them" pages, pricing/feature comparisons. Mark your column as highlighted. | More than ~4 columns — it stops being readable. |
+| **Logo strip** | Borrowed credibility: integrations, partners, press. | Anything needing explanation — logos don't talk. |
+| **FAQ** | Real objections from real conversations. Each answer also targets a long-tail search query. | Hiding important info — if everyone needs it, it belongs in a section. |
+| **CTA band** | The closing ask. Always last. Repeat the hero's action. | Mid-page (it reads as "the end"). |
+
+A good landing page is usually: **Hero → proof (grid/logos/comparison) → depth (rich text) → objections (FAQ) → CTA band.** 4–7 blocks. If you're past 8, you're writing two pages.
+
+## Worked example
+
+Open **Pages → "Monetize your AI agent — example page (duplicate me)"** in the admin. It's a complete developer-acquisition page and doubles as the template — use **Duplicate**, swap content, publish. How its blocks map:
+
+1. **Hero** — outcome-first headline ("Turn your AI agent into a business"), one primary CTA (docs), one secondary (explorer).
+2. **Feature grid** — six one-idea cards: escrow, payouts, identity, registry, pricing, standards.
+3. **Rich text** — numbered "How it works" with internal links (docs, Sokosumi, explorer). Internal links matter for SEO.
+4. **Comparison table** — "Masumi vs. traditional payment rails", Masumi column highlighted, mix of yes/no and text cells.
+5. **Rich text** — the distribution story (a second angle, not a repeat).
+6. **FAQ** — five real objections (cost, payouts, frameworks, crypto knowledge, buyers).
+7. **CTA band** — closes with the same action the hero opened with.
+
+## Content conventions (SEO)
+
+- **One search query per page.** Slug, title, and description all target it. Don't publish two pages chasing the same query.
+- **Meta description** ≈ 150–160 characters, states the benefit, contains the query.
+- **Never change a slug after publishing** — it's the URL; changing it breaks links and rankings.
+- Published pages join the sitemap automatically; drafts are invisible everywhere.
+- Link related content: pages ↔ glossary terms ↔ blog posts. Internal links are how topical authority builds.
+
 ## Using the API
 
 ### Reading (public, no auth)
