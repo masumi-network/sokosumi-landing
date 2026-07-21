@@ -2,6 +2,8 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { devAuthEnabled, getCurrentLearnUser, oauthConfigured, safeReturnTo } from "@/lib/learn-auth";
 
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
 export const metadata = { title: "Sign in to Learn" };
 
 export default async function LoginPage({ searchParams }: { searchParams: Promise<{ returnTo?: string; error?: string; reason?: string }> }) {

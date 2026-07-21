@@ -2,6 +2,8 @@ import { requireLearnUser } from "@/lib/learn-auth";
 import { getBuilderProgress, getCredentialForUser } from "@/lib/learn-db";
 import { BuilderPath } from "./builder-client";
 
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
 export const metadata = { title: "Masumi Builder path" };
 
 export default async function BuilderPage() {

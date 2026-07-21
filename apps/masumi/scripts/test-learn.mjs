@@ -189,7 +189,12 @@ async function login(jar, code, returnTo = "/learn/dashboard") {
   const callback = await request(jar, `/api/learn/auth/callback?state=${encodeURIComponent(state)}&code=${encodeURIComponent(code)}`);
   assert.equal(callback.status, 307);
   assert.equal(callback.headers.get("cache-control"), "no-store");
-  assert.equal(new URL(callback.headers.get("location")).pathname, returnTo === "/learn" || returnTo.startsWith("/learn/") ? returnTo : "/learn/course");
+  const expectedReturn = returnTo === "/learn" || returnTo === "/learn/"
+    ? "/learn/dashboard"
+    : returnTo.startsWith("/learn/")
+      ? returnTo
+      : "/learn/dashboard";
+  assert.equal(new URL(callback.headers.get("location")).pathname, expectedReturn);
   assert.ok(jar.get("masumi_learn_session"));
   const tokenRequest = oauthRequests.at(-1);
   assert.equal(tokenRequest.client_secret, "test-secret");

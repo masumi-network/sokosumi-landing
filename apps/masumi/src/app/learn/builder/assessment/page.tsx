@@ -4,6 +4,8 @@ import { getBuilderProgress } from "@/lib/learn-db";
 import { builderAssessment, BUILDER_PASSING_SCORE, builderSteps } from "../../builder-data";
 import { BuilderAssessment } from "../builder-client";
 
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
 export const metadata = { title: "Builder assessment" };
 
 export default async function BuilderAssessmentPage() {

@@ -4,6 +4,8 @@ import { getBuilderProgress, getCredentialForUser, getProgress } from "@/lib/lea
 import { units } from "../course-data";
 import { MintCredentialButton, RefreshMintStatusButton, TrackedConversionLink } from "../learner-actions";
 
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
 export const metadata = { title: "My learning" };
 
 export default async function DashboardPage() {

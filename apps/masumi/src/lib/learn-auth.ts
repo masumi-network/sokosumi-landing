@@ -21,7 +21,10 @@ export const LEARN_OAUTH_COOKIE = "masumi_learn_oauth_state";
 
 function base64url(bytes: Buffer) { return bytes.toString("base64url"); }
 export function hashToken(token: string) { return createHash("sha256").update(token).digest("hex"); }
-export function safeReturnTo(value: string | null | undefined) { return value === "/learn" || value?.startsWith("/learn/") ? value : "/learn/course"; }
+export function safeReturnTo(value: string | null | undefined) {
+  if (value === "/learn" || value === "/learn/") return "/learn/dashboard";
+  return value?.startsWith("/learn/") ? value : "/learn/dashboard";
+}
 
 export function learnPublicUrl(pathname: string, requestUrl: string) {
   const configuredCallback = process.env.SOKOSUMI_OAUTH_REDIRECT_URI;
