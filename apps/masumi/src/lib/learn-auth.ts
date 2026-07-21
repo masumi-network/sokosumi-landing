@@ -103,6 +103,10 @@ export async function finishOAuth(input: { state: string; code: string; cookieSt
     throw new Error(`OAuth token exchange failed (${tokenResponse.status})`);
   }
   if (!tokens.access_token) throw new Error("OAuth token response did not include an access token");
+  // Temporary diagnostics: log token response shape without secrets.
+  console.log("[learn-oauth] token response keys", Object.keys(tokens));
+  console.log("[learn-oauth] token response (redacted)", redactOAuthPayload(tokens));
+
   const profileResponse = await fetch(process.env.SOKOSUMI_OAUTH_USERINFO_URL!, {
     headers: { authorization: `${tokens.token_type || "Bearer"} ${tokens.access_token}`, accept: "application/json" },
     cache: "no-store",
@@ -110,15 +114,90 @@ export async function finishOAuth(input: { state: string; code: string; cookieSt
   });
   if (!profileResponse.ok) throw new Error(`OAuth user-info request failed (${profileResponse.status})`);
   const profile = await profileResponse.json() as Record<string, unknown>;
-  const subject = String(profile.sub || profile.id || "");
+  console.log("[learn-oauth] userinfo status", profileResponse.status);
+  console.log("[learn-oauth] userinfo raw JSON", JSON.stringify(profile, null, 2));
+  console.log("[learn-oauth] userinfo keys", Object.keys(profile));
+
+  const subject = firstString(profile, ["sub", "id", "user_id", "userId", "uid"]);
   if (!subject) throw new Error("Sokosumi profile has no stable subject identifier");
-  const user = upsertLearnUser({
+
+  const mapped = {
     subject,
-    displayName: typeof profile.name === "string" ? profile.name : typeof profile.displayName === "string" ? profile.displayName : null,
-    email: typeof profile.email === "string" ? profile.email : null,
-    avatarUrl: typeof profile.picture === "string" ? profile.picture : typeof profile.avatarUrl === "string" ? profile.avatarUrl : null,
-  });
+    displayName: pickDisplayName(profile),
+    email: firstString(profile, ["email", "email_address", "mail", "preferred_email"]),
+    avatarUrl: firstString(profile, ["picture", "avatarUrl", "avatar_url", "avatar", "image", "photo"]),
+  };
+  console.log("[learn-oauth] mapped learner profile", mapped);
+
+  const user = upsertLearnUser(mapped);
   return { user, returnTo: saved.return_to, session: createLearnSession(user.id) };
+}
+
+function firstString(source: Record<string, unknown>, keys: string[]): string | null {
+  for (const key of keys) {
+    const value = source[key];
+    if (typeof value === "string" && value.trim()) return value.trim();
+  }
+  // Nested common containers from some providers
+  for (const containerKey of ["user", "profile", "data", "attributes"]) {
+    const container = source[containerKey];
+    if (container && typeof container === "object" && !Array.isArray(container)) {
+      const nested: string | null = firstString(container as Record<string, unknown>, keys);
+      if (nested) return nested;
+    }
+  }
+  return null;
+}
+
+function pickDisplayName(profile: Record<string, unknown>) {
+  const direct = firstString(profile, [
+    "name",
+    "displayName",
+    "display_name",
+    "full_name",
+    "fullName",
+    "preferred_username",
+    "preferredUsername",
+    "username",
+    "user_name",
+    "nickname",
+    "given_name",
+    "givenName",
+    "first_name",
+    "firstName",
+  ]);
+  if (direct) {
+    const family = firstString(profile, ["family_name", "familyName", "last_name", "lastName", "surname"]);
+    // If we only got a given name and family exists, combine them once.
+    if (family && (profile.given_name === direct || profile.givenName === direct || profile.first_name === direct || profile.firstName === direct)) {
+      return `${direct} ${family}`;
+    }
+    return direct;
+  }
+  const given = firstString(profile, ["given_name", "givenName", "first_name", "firstName"]);
+  const family = firstString(profile, ["family_name", "familyName", "last_name", "lastName", "surname"]);
+  if (given && family) return `${given} ${family}`;
+  return given || family;
+}
+
+function redactOAuthPayload(payload: Record<string, unknown>) {
+  const secretKeys = new Set([
+    "access_token",
+    "refresh_token",
+    "id_token",
+    "client_secret",
+    "code",
+    "code_verifier",
+  ]);
+  const redacted: Record<string, unknown> = {};
+  for (const [key, value] of Object.entries(payload)) {
+    if (secretKeys.has(key)) {
+      redacted[key] = typeof value === "string" ? `[redacted ${value.length} chars]` : "[redacted]";
+      continue;
+    }
+    redacted[key] = value;
+  }
+  return redacted;
 }
 
 export function createLearnSession(userId: string) {

@@ -32,7 +32,7 @@ export function LearnAccountNav() {
     );
   }
 
-  const name = user.displayName || user.email?.split("@")[0] || "learner";
+  const name = (user.displayName && user.displayName.trim()) || user.email?.split("@")[0] || "learner";
   return (
     <div className="ml-1 flex shrink-0 items-center gap-1.5 border-l border-black/10 pl-2 sm:gap-2">
       <Link
