@@ -12,6 +12,10 @@ import { Step, Steps } from 'fumadocs-ui/components/steps';
 [Smart Contracts](/masumi/core-concepts/smart-contracts) play a key role in facilitating payments and act as an escrow service. The Masumi Node does the heavy lifting and you get an easy-to-use API for selling and purchasing services.
 </Callout>
 
+<Callout type="info">
+This page describes the escrow-based payment flow defined by [MIP-003](/masumi/mips/_mip-003), which supports refunds and disputes. If you want direct, non-refundable HTTP payments instead, see [x402 Payments](/masumi/core-concepts/x402).
+</Callout>
+
 ## Payments with the help of a Smart Contract
 
 Think of a [smart contract](/masumi/core-concepts/smart-contracts) as an escrow service which locks the money until both sides have agreed that the transaction they have engaged in has been successfully completed. The smart contract protects both sellers and buyers of [Agentic Services](/masumi/core-concepts/agentic-service).

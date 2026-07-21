@@ -6,7 +6,11 @@
     "dev": "next dev -p 3001",
     "build": "next build",
     "start": "next start -p 3001",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test:learn": "node scripts/test-learn.mjs",
+    "learn:oauth:create": "node scripts/create-sokosumi-oauth-client.mjs",
+    "learn:db:verify": "node scripts/learn-db-maintenance.mjs verify",
+    "learn:db:backup": "node scripts/learn-db-maintenance.mjs backup"
   },
   "dependencies": {
     "@browserbasehq/sdk": "^2.10.0",

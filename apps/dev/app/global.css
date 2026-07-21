@@ -4259,13 +4259,17 @@ body:has(.devhub-subheader[data-docs-nav='true']) .masumi-docs-layout {
 .dev-flow-node *,
 .dev-flow-nori-node,
 .dev-flow-nori-node *,
-.dev-flow-core-node,
-.dev-flow-core-node * {
+.dev-flow-decision-node,
+.dev-flow-decision-node * {
   touch-action: pan-y;
 }
 
 .dev-flow .react-flow__edge-path {
   filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.75));
+}
+
+.dev-flow .react-flow__edge[role='button'] .react-flow__edge-textwrapper {
+  cursor: pointer;
 }
 
 .dev-flow .react-flow__node,
@@ -4284,7 +4288,7 @@ body:has(.devhub-subheader[data-docs-nav='true']) .masumi-docs-layout {
 
 .dev-flow-node,
 .dev-flow-nori-node,
-.dev-flow-core-node {
+.dev-flow-decision-node {
   --node-accent: var(--flow-pink);
   --node-soft: color-mix(in srgb, var(--node-accent) 8%, #ffffff);
   display: flex;
@@ -4292,7 +4296,7 @@ body:has(.devhub-subheader[data-docs-nav='true']) .masumi-docs-layout {
   justify-content: space-between;
   position: relative;
   width: 100%;
-  min-height: 158px;
+  min-height: 112px;
   border: 1px solid rgba(0, 0, 0, 0.04);
   border-radius: 0;
   background: var(--flow-surface);
@@ -4303,13 +4307,13 @@ body:has(.devhub-subheader[data-docs-nav='true']) .masumi-docs-layout {
 }
 
 .dev-flow-node {
-  gap: 16px;
-  padding: 22px 22px 18px;
+  gap: 10px;
+  padding: 14px 14px 12px;
 }
 
 .dev-flow-node[data-parent='true'] {
-  min-height: 182px;
-  padding: 24px 24px 18px;
+  min-height: 128px;
+  padding: 16px 16px 12px;
   border-color: color-mix(in srgb, var(--node-accent) 16%, rgba(0, 0, 0, 0.04));
 }
 
@@ -4340,15 +4344,15 @@ body:has(.devhub-subheader[data-docs-nav='true']) .masumi-docs-layout {
 .dev-flow-node-index {
   color: var(--node-accent);
   font-family: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 600;
   letter-spacing: 0;
   line-height: 1;
 }
 
 .dev-flow-node-dot {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
   border-radius: 999px;
   background: var(--node-accent);
   opacity: 0.5;
@@ -4356,14 +4360,13 @@ body:has(.devhub-subheader[data-docs-nav='true']) .masumi-docs-layout {
 
 .dev-flow-node-copy {
   display: grid;
-  gap: 8px;
+  gap: 5px;
   min-width: 0;
 }
 
-.dev-flow-node-copy small,
-.dev-flow-core-copy small {
+.dev-flow-node-copy small {
   color: var(--flow-faint);
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 500;
   letter-spacing: 0;
   line-height: 1.2;
@@ -4372,29 +4375,29 @@ body:has(.devhub-subheader[data-docs-nav='true']) .masumi-docs-layout {
 
 .dev-flow-node-copy strong {
   color: var(--flow-ink);
-  font-size: 17px;
+  font-size: 14px;
   font-weight: 500;
   letter-spacing: 0;
   line-height: 1.25;
 }
 
 .dev-flow-node[data-parent='true'] .dev-flow-node-copy strong {
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 500;
 }
 
 .dev-flow-node-copy span {
   color: #919191;
-  font-size: 13px;
-  line-height: 1.5;
+  font-size: 11.5px;
+  line-height: 1.45;
 }
 
 .dev-flow-node-mini {
   display: grid;
-  grid-template-columns: 28px minmax(0, 1fr) 20px;
+  grid-template-columns: 22px minmax(0, 1fr) 18px;
   align-items: center;
-  gap: 10px;
-  padding-top: 14px;
+  gap: 8px;
+  padding-top: 10px;
   border-top: 1px solid rgba(0, 0, 0, 0.04);
 }
 
@@ -4407,16 +4410,15 @@ body:has(.devhub-subheader[data-docs-nav='true']) .masumi-docs-layout {
 }
 
 .dev-flow-node-mini-icon {
-  width: 28px;
-  height: 28px;
+  width: 22px;
+  height: 22px;
   background: var(--node-soft);
 }
 
 .dev-flow-node-mini-icon svg,
-.dev-flow-node-mini-action svg,
-.dev-flow-core-mini svg {
-  width: 14px;
-  height: 14px;
+.dev-flow-node-mini-action svg {
+  width: 12px;
+  height: 12px;
 }
 
 .dev-flow-node-mini-track {
@@ -4439,9 +4441,9 @@ body:has(.devhub-subheader[data-docs-nav='true']) .masumi-docs-layout {
 
 .dev-flow-nori-node {
   --node-accent: var(--flow-pink);
-  gap: 14px;
-  min-height: 250px;
-  padding: 16px;
+  gap: 10px;
+  min-height: 210px;
+  padding: 12px;
 }
 
 .dev-flow-nori-card,
@@ -4451,70 +4453,91 @@ body:has(.devhub-subheader[data-docs-nav='true']) .masumi-docs-layout {
   margin: 0;
 }
 
-.dev-flow-core-node {
-  --node-accent: var(--flow-pink);
-  gap: 18px;
-  min-height: 194px;
-  padding: 24px 24px 18px;
-  border-color: color-mix(in srgb, var(--flow-pink) 18%, rgba(0, 0, 0, 0.04));
-  text-align: left;
+.dev-flow-decision-node {
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 0;
+  padding: 8px 14px;
+  border-style: dashed;
+  border-color: color-mix(in srgb, var(--node-accent) 46%, rgba(0, 0, 0, 0.04));
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--node-accent) 4%, var(--flow-surface));
+  cursor: default;
+  text-align: center;
 }
 
-.dev-flow-core-copy {
-  display: grid;
-  gap: 8px;
-}
-
-.dev-flow-core-copy small {
-  color: var(--flow-pink);
-}
-
-.dev-flow-core-copy strong {
-  max-width: 230px;
+.dev-flow-decision-node strong {
   color: var(--flow-ink);
-  font-size: 24px;
+  font-size: 12.5px;
   font-weight: 500;
-  letter-spacing: 0;
-  line-height: 1.16;
+  line-height: 1.25;
+  text-wrap: balance;
 }
 
-.dev-flow-core-mini {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 6px;
-  padding-top: 14px;
-  border-top: 1px solid rgba(0, 0, 0, 0.04);
+.dev-flow-decision-node .dev-flow-handle {
+  opacity: 0;
 }
 
-.dev-flow-core-mini span {
+.dev-flow-decision-toggle {
+  cursor: pointer;
+  appearance: none;
+  font: inherit;
+}
+
+.dev-flow-decision-toggle:hover {
+  border-style: solid;
+  background: color-mix(in srgb, var(--node-accent) 8%, var(--flow-surface));
+}
+
+.dev-flow-decision-toggle[data-expanded='true'] {
+  border-style: solid;
+}
+
+.dev-flow-decision-chevron {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 4px;
-  min-width: 0;
-  min-height: 28px;
-  background: rgba(250, 0, 140, 0.08);
-  color: var(--flow-pink);
-  font-size: 10px;
-  font-weight: 500;
-  line-height: 1;
-  white-space: nowrap;
+  flex: none;
+  color: var(--node-accent);
+  transition: transform 0.18s ease;
 }
 
-.dev-flow-node:hover,
-.dev-flow-nori-node:hover,
-.dev-flow-core-node:hover {
-  box-shadow: none;
-  transform: none;
+.dev-flow-decision-chevron svg {
+  width: 13px;
+  height: 13px;
+}
+
+.dev-flow-decision-chevron[data-expanded='true'] {
+  transform: rotate(180deg);
+}
+
+.dev-flow-decision-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--node-accent) 10%, #ffffff);
+  color: var(--node-accent);
+}
+
+.dev-flow-decision-badge svg {
+  width: 11px;
+  height: 11px;
 }
 
 .dev-flow-node:hover,
 .dev-flow-nori-node:hover {
+  box-shadow: none;
+  transform: none;
   border-color: rgba(0, 0, 0, 0.04);
 }
 
-.dev-flow-node[data-parent='true']:hover,
-.dev-flow-core-node:hover {
+.dev-flow-node[data-parent='true']:hover {
   border-color: color-mix(in srgb, var(--node-accent) 16%, rgba(0, 0, 0, 0.04));
 }
 
@@ -4528,7 +4551,7 @@ body:has(.devhub-subheader[data-docs-nav='true']) .masumi-docs-layout {
 
 @media (max-width: 980px) {
   .dev-flow-shell {
-    height: 3920px;
+    height: 5000px;
   }
 }
 
@@ -4548,24 +4571,16 @@ body:has(.devhub-subheader[data-docs-nav='true']) .masumi-docs-layout {
   }
 
   .dev-flow-shell {
-    height: 3920px;
+    height: 5000px;
     margin-top: 28px;
   }
 
   .dev-flow-node-copy strong {
-    font-size: 17px;
+    font-size: 14px;
   }
 
   .dev-flow-node[data-parent='true'] .dev-flow-node-copy strong {
-    font-size: 19px;
-  }
-
-  .dev-flow-core-node {
-    padding: 22px 20px 18px;
-  }
-
-  .dev-flow-core-copy strong {
-    font-size: 22px;
+    font-size: 16px;
   }
 }
 
@@ -4579,8 +4594,8 @@ body:has(.devhub-subheader[data-docs-nav='true']) .masumi-docs-layout {
   .dev-flow-node *,
   .dev-flow-nori-node,
   .dev-flow-nori-node *,
-  .dev-flow-core-node,
-  .dev-flow-core-node * {
+  .dev-flow-decision-node,
+  .dev-flow-decision-node * {
     touch-action: pan-y !important;
   }
 

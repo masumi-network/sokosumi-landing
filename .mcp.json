@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "citadel": {
+      "type": "http",
+      "url": "https://citadel-archive-production.up.railway.app/mcp/",
+      "headers": {
+        "Authorization": "Bearer ${CITADEL_MCP_ACCESS_TOKEN}"
+      }
+    }
+  }
+}
