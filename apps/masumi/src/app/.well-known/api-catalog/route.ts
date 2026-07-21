@@ -52,6 +52,8 @@ export async function GET() {
     ],
     protocolDocumentation: "https://www.masumi.network/dev/masumi/api-reference.md",
     agentSkill: "https://www.masumi.network/skill.md",
+    learn: "https://www.masumi.network/learn",
+    knowledgeBase: "https://www.masumi.network/learn/library",
   };
 
   return NextResponse.json(body, {

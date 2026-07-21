@@ -119,9 +119,7 @@ await new Promise((resolve) => portServer.close(resolve));
 const baseUrl = `http://localhost:${appPort}`;
 const mockUrl = `http://127.0.0.1:${mockPort}`;
 const nextBin = path.join(path.dirname(require.resolve("next/package.json")), "dist", "bin", "next");
-const app = spawn(process.execPath, [nextBin, "dev", "-p", String(appPort)], {
-  cwd: appRoot,
-  env: {
+const appEnv = {
     ...process.env,
     MASUMI_LEARN_DB_PATH: dbPath,
     SOKOSUMI_OAUTH_CLIENT_ID: "test-client",
@@ -143,13 +141,40 @@ const app = spawn(process.execPath, [nextBin, "dev", "-p", String(appPort)], {
     MASUMI_LEARN_BUILDER_VERIFY_TOKEN: "test-builder-token",
     MASUMI_LEARN_REVIEW_TOKEN: "test-review-token",
     MASUMI_LEARN_ADMIN_TOKEN: "test-admin-token",
-  },
-  stdio: ["ignore", "pipe", "pipe"],
-});
+};
 
+let app;
 let appOutput = "";
-app.stdout.on("data", (chunk) => { appOutput += chunk; });
-app.stderr.on("data", (chunk) => { appOutput += chunk; });
+function startApp(extraEnv = {}) {
+  appOutput = "";
+  app = spawn(process.execPath, [nextBin, "dev", "-p", String(appPort)], {
+    cwd: appRoot,
+    env: { ...appEnv, ...extraEnv },
+    stdio: ["ignore", "pipe", "pipe"],
+  });
+  app.stdout.on("data", (chunk) => { appOutput += chunk; });
+  app.stderr.on("data", (chunk) => { appOutput += chunk; });
+}
+startApp();
+
+async function stopApp() {
+  if (app.exitCode == null) {
+    app.kill("SIGTERM");
+    await Promise.race([
+      new Promise((resolve) => app.once("exit", resolve)),
+      new Promise((resolve) => setTimeout(resolve, 5_000)),
+    ]);
+    if (app.exitCode == null) app.kill("SIGKILL");
+  }
+}
+
+// The logout route reads SOKOSUMI_OAUTH_LOGOUT_VIA_PROVIDER from the server's own
+// environment, so opt-in provider logout needs a server restart with the flag set.
+async function restartApp(extraEnv = {}) {
+  await stopApp();
+  startApp(extraEnv);
+  await waitForApp();
+}
 
 const cookieJar = () => new Map();
 function cookieHeader(jar) { return [...jar].map(([name, value]) => `${name}=${value}`).join("; "); }
@@ -173,6 +198,19 @@ async function request(jar, pathname, options = {}) {
   const response = await fetch(`${baseUrl}${pathname}`, { ...options, headers, redirect: "manual" });
   absorbCookies(jar, response.headers);
   return response;
+}
+
+// Gated pages either respond 307 immediately or stream a 200 shell that carries
+// a NEXT_REDIRECT instruction to /learn/login (Next.js streams past loading.tsx).
+async function assertLoginRedirect(jar, pathname) {
+  const response = await request(jar, pathname);
+  if (response.status === 307) {
+    assert.match(response.headers.get("location"), /^\/learn\/login\?returnTo=/);
+    return;
+  }
+  assert.equal(response.status, 200);
+  const body = await response.text();
+  assert.match(body, /\/learn\/login\?returnTo=[^"\\]+;307;/);
 }
 
 async function json(response) {
@@ -250,12 +288,8 @@ try {
   assert.deepEqual(credentialSchema.properties.credentialType.enum, ["fundamentals", "builder"]);
   assert.equal(credentialSchema.required.includes("metadataHash"), true);
   assert.doesNotMatch(JSON.stringify(credentialSchema), /email|oauth|wallet|subject/i);
-  const protectedQuiz = await request(anonymous, "/learn/course/agentic-economy/quiz");
-  assert.equal(protectedQuiz.status, 307);
-  assert.match(protectedQuiz.headers.get("location"), /^\/learn\/login\?returnTo=/);
-  const protectedAssessment = await request(anonymous, "/learn/course/assessment");
-  assert.equal(protectedAssessment.status, 307);
-  assert.match(protectedAssessment.headers.get("location"), /^\/learn\/login\?returnTo=/);
+  await assertLoginRedirect(anonymous, "/learn/course/agentic-economy/quiz");
+  await assertLoginRedirect(anonymous, "/learn/course/assessment");
   assert.equal((await request(anonymous, "/api/learn/progress")).status, 401);
 
   const invalidJar = cookieJar();
@@ -538,7 +572,7 @@ try {
   assert.ok(!logoutLearner.has("masumi_learn_session"));
   assert.equal((await request(logoutLearner, "/api/learn/session")).status, 401);
 
-  process.env.SOKOSUMI_OAUTH_LOGOUT_VIA_PROVIDER = "true";
+  await restartApp({ SOKOSUMI_OAUTH_LOGOUT_VIA_PROVIDER: "true" });
   const providerLogoutLearner = cookieJar();
   await login(providerLogoutLearner, "provider-logout-learner", "/learn/course");
   const providerLogout = await request(providerLogoutLearner, "/api/learn/auth/logout", { method: "POST", body: "" });
@@ -549,19 +583,11 @@ try {
   assert.equal(providerLogoutLocation.searchParams.get("post_logout_redirect_uri"), `${baseUrl}/learn`);
   assert.ok(providerLogoutLocation.searchParams.get("state"));
   assert.ok(!providerLogoutLearner.has("masumi_learn_session"));
-  delete process.env.SOKOSUMI_OAUTH_LOGOUT_VIA_PROVIDER;
   db.close();
 
   console.log("Masumi Learn integration tests passed: OAuth/PKCE, sessions/logout/operational invalidation, isolation, migration, Fundamentals and Builder grading, proof verification/manual review, concurrent issuance, supersession, privacy-thresholded funnel reporting, health/readiness, credential schema/mint payload, database verification/backup, multi-credential mint reconciliation, export, deletion, and revocation.");
 } finally {
-  if (app.exitCode == null) {
-    app.kill("SIGTERM");
-    await Promise.race([
-      new Promise((resolve) => app.once("exit", resolve)),
-      new Promise((resolve) => setTimeout(resolve, 5_000)),
-    ]);
-    if (app.exitCode == null) app.kill("SIGKILL");
-  }
+  await stopApp();
   await new Promise((resolve) => mockServer.close(resolve));
   await rm(tempRoot, { recursive: true, force: true });
 }

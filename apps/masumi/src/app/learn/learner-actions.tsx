@@ -7,7 +7,7 @@ export function TrackedLink({ href, event, params = {}, className, children }: {
 }
 
 export function TrackedConversionLink({ href, event, params = {}, children }: { href: string; event: string; params?: Record<string, string | number>; children: React.ReactNode }) {
-  return <a href={href} onClick={() => { if (typeof window.gtag === "function") window.gtag("event", event, params); }} className="rounded-2xl border border-black/10 bg-white p-5 transition hover:border-[#FA008C]/50"><span className="block text-xs uppercase tracking-[0.16em] text-[#A50045]">Next step</span><strong className="mt-2 block font-medium">{children}</strong></a>;
+  return <a href={href} onClick={() => { if (typeof window.gtag === "function") window.gtag("event", event, params); }} className="border border-black/[0.04] bg-white p-6 transition-[border-color,transform] duration-300 hover:border-black/10 hover:-translate-y-1"><span className="flex items-center justify-between"><span className="text-[11px] font-mono uppercase tracking-wide text-[#FA008C]">Next step</span><span className="w-2 h-2 rounded-full bg-[#FA008C] opacity-50" /></span><strong className="mt-2 block text-[17px] font-medium leading-snug text-black">{children}</strong></a>;
 }
 
 export function MintCredentialButton({ credentialId }: { credentialId?: string }) {
@@ -21,7 +21,7 @@ export function MintCredentialButton({ credentialId }: { credentialId?: string }
     if (!response.ok) { setState("error"); setMessage(data.error || "Minting is unavailable"); return; }
     window.location.reload();
   }
-  return <div><label className="mb-3 flex gap-2 text-xs leading-5 text-white/60"><input type="checkbox" checked={acknowledged} onChange={(event) => setAcknowledged(event.target.checked)} className="mt-1" /><span>I understand the credential ID/hash and course facts will become a permanent public chain record.</span></label><button onClick={mint} disabled={state === "loading" || !acknowledged} className="w-full rounded-full border border-white/25 px-5 py-3 text-sm disabled:opacity-50">{state === "loading" ? "Starting mint…" : "Mint on Cardano"}</button>{state === "error" && <p role="alert" className="mt-2 text-xs leading-5 text-amber-200">{message}</p>}</div>;
+  return <div><label className="mb-3 flex gap-2 text-[13px] leading-5 tracking-[0.02em] text-[#f5f5f5]/70"><input type="checkbox" checked={acknowledged} onChange={(event) => setAcknowledged(event.target.checked)} className="mt-1" /><span>I understand the credential ID/hash and course facts will become a permanent public chain record.</span></label><button onClick={mint} disabled={state === "loading" || !acknowledged} className="w-full rounded-full bg-[#6400FF] px-6 py-2.5 text-[14px] font-medium tracking-[0.01em] text-white transition-colors duration-200 hover:bg-[#5200d0] disabled:opacity-50">{state === "loading" ? "Starting mint…" : "Mint on Cardano"}</button>{state === "error" && <p role="alert" className="mt-2 text-[13px] leading-5 tracking-[0.02em] text-[#ff6400]">{message}</p>}</div>;
 }
 
 export function RefreshMintStatusButton({ credentialId }: { credentialId?: string }) {
@@ -34,7 +34,7 @@ export function RefreshMintStatusButton({ credentialId }: { credentialId?: strin
     if (!response.ok) { setState("error"); setMessage(data.error || "Unable to refresh mint status"); return; }
     window.location.reload();
   }
-  return <div><button onClick={refresh} disabled={state === "loading"} className="w-full rounded-full border border-white/25 px-5 py-3 text-sm disabled:opacity-50">{state === "loading" ? "Checking…" : "Refresh mint status"}</button>{state === "error" && <p role="alert" className="mt-2 text-xs leading-5 text-amber-200">{message}</p>}</div>;
+  return <div><button onClick={refresh} disabled={state === "loading"} className="w-full rounded-full border border-white/25 px-6 py-2.5 text-[14px] font-medium tracking-[0.01em] transition-colors duration-200 hover:bg-white/10 disabled:opacity-50">{state === "loading" ? "Checking…" : "Refresh mint status"}</button>{state === "error" && <p role="alert" className="mt-2 text-[13px] leading-5 tracking-[0.02em] text-[#ff6400]">{message}</p>}</div>;
 }
 
 export function CopyCertificateLinkButton({ path }: { path: string }) {
@@ -43,7 +43,7 @@ export function CopyCertificateLinkButton({ path }: { path: string }) {
     await navigator.clipboard.writeText(new URL(path, window.location.origin).toString());
     setCopied(true);
   }
-  return <button onClick={copy} className="rounded-full border border-black/15 px-5 py-3 text-sm" aria-live="polite">{copied ? "Link copied ✓" : "Copy verification link"}</button>;
+  return <button onClick={copy} className="rounded-full border border-[#bbbbbb] bg-white px-6 py-2.5 text-[14px] font-medium tracking-[0.01em] text-black transition-colors duration-200 hover:bg-[#f5f5f5]" aria-live="polite">{copied ? "Link copied ✓" : "Copy verification link"}</button>;
 }
 
 export function DeleteLearnAccountButton() {
@@ -56,6 +56,6 @@ export function DeleteLearnAccountButton() {
     if (!response.ok) { const data = await response.json(); setError(data.error || "Unable to delete account"); setLoading(false); return; }
     window.location.assign("/learn");
   }
-  if (!confirming) return <button onClick={() => setConfirming(true)} className="mt-4 rounded-full border border-red-300 px-5 py-3 text-sm text-red-800">Delete my Learn account</button>;
-  return <div className="mt-4 rounded-2xl bg-red-50 p-4"><p className="text-sm font-medium text-red-900">Permanently delete Learn progress and Builder proof and revoke all credentials?</p><div className="mt-3 flex gap-2"><button onClick={remove} disabled={loading} className="rounded-full bg-red-700 px-4 py-2 text-sm text-white disabled:opacity-50">{loading ? "Deleting…" : "Yes, delete"}</button><button onClick={() => setConfirming(false)} className="rounded-full border border-black/15 px-4 py-2 text-sm">Cancel</button></div>{error && <p role="alert" className="mt-2 text-xs text-red-800">{error}</p>}</div>;
+  if (!confirming) return <button onClick={() => setConfirming(true)} className="mt-4 rounded-full border border-[#bbbbbb] bg-white px-6 py-2.5 text-[14px] font-medium tracking-[0.01em] text-[#fa140a] transition-colors duration-200 hover:bg-[#f5f5f5]">Delete my Learn account</button>;
+  return <div className="mt-4 bg-[#ffcac5] p-4 text-[#5a0a00]"><p className="text-[14px] font-medium tracking-[0.01em]">Permanently delete Learn progress and revoke all credentials?</p><div className="mt-3 flex gap-2"><button onClick={remove} disabled={loading} className="rounded-full bg-[#fa140a] px-6 py-2.5 text-[14px] font-medium tracking-[0.01em] text-white transition-colors duration-200 disabled:opacity-50">{loading ? "Deleting…" : "Yes, delete"}</button><button onClick={() => setConfirming(false)} className="rounded-full border border-[#bbbbbb] bg-white px-6 py-2.5 text-[14px] font-medium tracking-[0.01em] text-black transition-colors duration-200 hover:bg-[#f5f5f5]">Cancel</button></div>{error && <p role="alert" className="mt-2 text-[13px] tracking-[0.02em] text-[#5a0a00]">{error}</p>}</div>;
 }

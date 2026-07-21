@@ -22,6 +22,27 @@ const nextConfig: NextConfig = {
       { source: "/dev/:path*", destination: `${devPortalUrl}/dev/:path*` },
     ];
   },
+  // Legacy Masumi Learn routes moved under /learn/course and /learn/library.
+  async redirects() {
+    const unitSlugs = ["agentic-economy", "masumi-fundamentals", "blockchain-basics", "trust-and-payments"];
+    return [
+      { source: "/learn/start", destination: "/learn", permanent: true },
+      { source: "/learn/completion", destination: "/learn/course", permanent: true },
+      { source: "/learn/concepts", destination: "/learn/library#concepts", permanent: true },
+      { source: "/learn/glossary", destination: "/learn/library#glossary", permanent: true },
+      { source: "/learn/deep-dives", destination: "/learn/library#deep-dives", permanent: true },
+      { source: "/learn/patterns", destination: "/learn/library#patterns", permanent: true },
+      { source: "/learn/concepts/:slug", destination: "/learn/library/:slug", permanent: true },
+      { source: "/learn/dashboard", destination: "/learn/course", permanent: true },
+      { source: "/learn/assessment", destination: "/learn/course/assessment", permanent: true },
+      { source: "/learn/builder", destination: "/learn/course", permanent: true },
+      { source: "/learn/builder/assessment", destination: "/learn/course", permanent: true },
+      ...unitSlugs.flatMap((slug) => [
+        { source: `/learn/${slug}`, destination: `/learn/course/${slug}`, permanent: true },
+        { source: `/learn/${slug}/quiz`, destination: `/learn/course/${slug}/quiz`, permanent: true },
+      ]),
+    ];
+  },
   outputFileTracingIncludes: {
     "/blogs": ["./content/**/*.md"],
     "/blogs/[slug]": ["./content/**/*.md"],

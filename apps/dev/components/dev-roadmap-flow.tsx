@@ -23,6 +23,7 @@ import {
   Cloud,
   CreditCard,
   FileText,
+  GraduationCap,
   Handshake,
   Network,
   Rocket,
@@ -139,6 +140,14 @@ const roadmapNodeData: RoadmapNodeData[] = [
     eyebrow: 'Theory',
     description: 'Escrow, identity, registry, wallets, and tokens explained.',
     icon: Brain,
+    tone: 'masumi',
+  },
+  {
+    title: 'Masumi Learn',
+    href: 'https://www.masumi.network/learn',
+    eyebrow: 'Certification',
+    description: 'Free ~65-minute fundamentals course with a verifiable certificate.',
+    icon: GraduationCap,
     tone: 'masumi',
   },
   {
@@ -286,6 +295,7 @@ const nodeIds = [
   'masumi',
   'learn-choice',
   'core-concepts',
+  'masumi-learn',
   'build-choice',
   'build-agent',
   'pay-choice',
@@ -510,6 +520,7 @@ const desktopPositions: Record<string, { x: number; y: number }> = {
   masumi: { x: 696, y: 360 },
   'learn-choice': { x: 636, y: 585 },
   'core-concepts': { x: 596, y: 680 },
+  'masumi-learn': { x: 596, y: 870 },
   'build-choice': { x: 856, y: 585 },
   'build-agent': { x: 816, y: 680 },
   'pay-choice': { x: 694, y: 905 },
@@ -536,7 +547,7 @@ const sectionNodes: Record<SectionKey, string[]> = {
   market: ['coworkers', 'pi-sokosumi', 'sokosumi-mcp'],
   protocol: ['learn-choice', 'build-choice'],
   agent: ['skills', 'llms', 'api-reference', 'cli', 'wallets', 'payment-flow'],
-  learn: ['core-concepts'],
+  learn: ['core-concepts', 'masumi-learn'],
   build: ['build-agent', 'pay-choice'],
   pay: ['mip003', 'x402', 'host-choice'],
   host: ['self-host', 'maas', 'register-agent'],
@@ -568,7 +579,8 @@ function makeDesktopPositions(expanded: Record<SectionKey, boolean>) {
   if (expanded.protocol) {
     if (expanded.learn) {
       positions['core-concepts'] = { x: 596, y: 680 };
-      y = Math.max(y, 800);
+      positions['masumi-learn'] = { x: 596, y: 870 };
+      y = Math.max(y, 990);
     }
     if (expanded.build) {
       positions['build-agent'] = { x: 816, y: 680 };
@@ -576,15 +588,16 @@ function makeDesktopPositions(expanded: Record<SectionKey, boolean>) {
       y = Math.max(y, 949);
     }
     if (expanded.build && expanded.pay) {
-      positions.mip003 = { x: 596, y: 1000 };
-      positions.x402 = { x: 816, y: 1000 };
-      positions['host-choice'] = { x: 694, y: 1225 };
-      y = 1269;
+      const payOffset = expanded.learn ? 60 : 0;
+      positions.mip003 = { x: 596, y: 1000 + payOffset };
+      positions.x402 = { x: 816, y: 1000 + payOffset };
+      positions['host-choice'] = { x: 694, y: 1225 + payOffset };
+      y = 1269 + payOffset;
       if (expanded.host) {
-        positions['self-host'] = { x: 596, y: 1320 };
-        positions.maas = { x: 816, y: 1320 };
-        positions['register-agent'] = { x: 706, y: 1545 };
-        y = 1695;
+        positions['self-host'] = { x: 596, y: 1320 + payOffset };
+        positions.maas = { x: 816, y: 1320 + payOffset };
+        positions['register-agent'] = { x: 706, y: 1545 + payOffset };
+        y = 1695 + payOffset;
       }
     }
   }
@@ -670,6 +683,7 @@ function makeDesktopEdges(expanded: Record<SectionKey, boolean>, onToggle: (key:
     { id: 'masumi-learn-choice', source: 'masumi', sourceHandle: 'b-source', target: 'learn-choice', style: branch, ...nativeBranchLabel('Learn', '#fa008c', 'learn', expanded.learn, () => onToggle('learn')) },
     { id: 'masumi-build-choice', source: 'masumi', sourceHandle: 'b-source', target: 'build-choice', style: branch, ...nativeBranchLabel('Build', '#fa008c', 'build', expanded.build, () => onToggle('build')) },
     { id: 'learn-choice-concepts', source: 'learn-choice', target: 'core-concepts', targetHandle: 't-target', style: choice },
+    { id: 'concepts-masumi-learn', source: 'core-concepts', sourceHandle: 'b-source', target: 'masumi-learn', targetHandle: 't-target', style: branch },
     { id: 'build-choice-agent', source: 'build-choice', target: 'build-agent', targetHandle: 't-target', style: choice },
     { id: 'build-agent-pay-choice', source: 'build-agent', sourceHandle: 'b-source', target: 'pay-choice', targetHandle: 't-target', style: branch },
     { id: 'pay-choice-mip003', source: 'pay-choice', sourceHandle: 'l-source', target: 'mip003', targetHandle: 't-target', style: choice },
@@ -722,7 +736,7 @@ function makeCompactEdges(
     : [];
   const groups = [
     ['sokosumi', 'coworkers', 'pi-sokosumi', 'sokosumi-mcp'],
-    ['learn-choice', 'core-concepts'],
+    ['learn-choice', 'core-concepts', 'masumi-learn'],
     ['build-choice', 'build-agent', 'pay-choice', 'mip003', 'x402', 'host-choice', 'self-host', 'maas', 'register-agent'],
     ['agents', 'skills', 'llms', 'api-reference', 'cli', 'wallets', 'payment-flow'],
   ];

@@ -23,10 +23,10 @@ export function LearnAccountNav() {
     };
   }, []);
 
-  if (user === undefined) return <div className="h-9 w-28 shrink-0" aria-hidden="true" />;
+  if (user === undefined) return <div className="h-[30px] w-24 shrink-0" aria-hidden="true" />;
   if (!user) {
     return (
-      <Link href="/learn/login" className="mx-1 shrink-0 rounded-full bg-black px-4 py-2 text-xs font-medium text-white">
+      <Link href="/learn/login" className="ml-1 shrink-0 rounded-full bg-[#6400FF] px-4 py-[7px] text-[13px] font-medium leading-[1.2] text-white transition-colors duration-200 hover:bg-[#5200d0]">
         Sign in
       </Link>
     );
@@ -34,22 +34,16 @@ export function LearnAccountNav() {
 
   const name = (user.displayName && user.displayName.trim()) || user.email?.split("@")[0] || "learner";
   return (
-    <div className="ml-1 flex shrink-0 items-center gap-1.5 border-l border-black/10 pl-2 sm:gap-2">
-      <Link
-        href="/learn/dashboard"
-        className="hidden rounded-full px-3 py-2 text-xs font-medium text-black/65 hover:bg-black/5 sm:inline"
-      >
-        My learning
-      </Link>
+    <div className="ml-1 flex shrink-0 items-center gap-1.5 border-l border-black/10 pl-2.5">
       <Link
         href="/learn/account"
-        className="max-w-36 truncate rounded-full bg-black/[0.04] px-3 py-2 text-xs font-medium text-black/75 hover:bg-black/10 sm:max-w-44"
+        className="hidden max-w-36 truncate rounded-full px-3 py-[7px] text-[13px] leading-[1.2] text-black/[0.62] transition-colors duration-200 hover:bg-white hover:text-black sm:block sm:max-w-44"
         title={`Account for ${name}`}
       >
         Hello, {name}
       </Link>
       <form action="/api/learn/auth/logout" method="post" className="contents">
-        <button type="submit" className="rounded-full border border-black/15 px-3 py-2 text-xs font-medium hover:border-black/35 sm:px-4">
+        <button type="submit" className="rounded-full border border-[#bbbbbb] bg-white px-3.5 py-[6px] text-[13px] font-medium leading-[1.2] text-black transition-colors duration-200 hover:bg-[#f5f5f5]">
           Log out
         </button>
       </form>
