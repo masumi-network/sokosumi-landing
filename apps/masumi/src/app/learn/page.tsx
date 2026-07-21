@@ -8,13 +8,20 @@ export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 export const metadata = { title: "Learn", description: "Learn the mental models behind the Masumi agent economy, then move from concepts to your first integration." };
 
-export default async function LearnPage() {
+export default async function LearnPage({ searchParams }: { searchParams: Promise<{ signedOut?: string }> }) {
+  const params = await searchParams;
   const user = await getCurrentLearnUser();
   const progress = user ? getProgress(user.id) : null;
   const name = user ? user.displayName || user.email?.split("@")[0] || "learner" : null;
   const next = progress ? units.find((unit) => !progress.passedQuizzes.includes(unit.slug)) : null;
+  const signedOut = !user && params.signedOut === "1";
 
   return <>
+    {signedOut && (
+      <section className="mb-8 rounded-3xl border border-emerald-200 bg-emerald-50 px-5 py-4 text-sm text-emerald-900 sm:px-6" role="status">
+        You are signed out of Masumi Learn on this device. Your course progress stays on your Sokosumi-linked account for the next sign-in.
+      </section>
+    )}
     {user && (
       <section className="mb-8 rounded-3xl border border-black/10 bg-white p-5 shadow-sm sm:flex sm:items-center sm:justify-between sm:gap-6 sm:p-6">
         <div>

@@ -48,8 +48,8 @@ export function LearnAccountNav() {
       >
         Hello, {name}
       </Link>
-      <form action="/api/learn/auth/logout" method="post">
-        <button className="rounded-full border border-black/15 px-3 py-2 text-xs font-medium hover:border-black/35 sm:px-4">
+      <form action="/api/learn/auth/logout" method="post" className="contents">
+        <button type="submit" className="rounded-full border border-black/15 px-3 py-2 text-xs font-medium hover:border-black/35 sm:px-4">
           Log out
         </button>
       </form>

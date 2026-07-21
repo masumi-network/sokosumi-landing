@@ -132,10 +132,13 @@ export default async function LearnAccountPage() {
           Logging out ends this browser session and asks Sokosumi to end the provider session before returning to Learn. Revoking the OAuth grant is a separate provider-side action. If you lose account access, support must verify recovery through Sokosumi; Learn never uses email alone to reassign progress or credentials.
         </p>
         <form action="/api/learn/auth/logout" method="post">
-          <button className="mt-4 rounded-full border border-black/15 px-5 py-3 text-sm hover:border-black/35">
-            Log out of Learn and Sokosumi
+          <button type="submit" className="mt-4 rounded-full border border-black/15 px-5 py-3 text-sm hover:border-black/35">
+            Log out of Learn
           </button>
         </form>
+        <p className="mt-3 text-xs leading-5 text-black/45">
+          This ends your Masumi Learn session on this device. Revoking access in Sokosumi is a separate provider-side action if you want to disconnect the OAuth grant entirely.
+        </p>
       </section>
 
       <section className="mt-5 rounded-3xl border border-red-200 bg-white p-7 shadow-sm sm:p-10">

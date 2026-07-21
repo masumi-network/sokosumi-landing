@@ -512,12 +512,25 @@ try {
   assert.equal(logout.status, 303);
   assert.equal(logout.headers.get("cache-control"), "no-store");
   const logoutLocation = new URL(logout.headers.get("location"));
-  assert.equal(logoutLocation.href.startsWith(`${mockUrl}/end-session?`), true);
-  assert.equal(logoutLocation.searchParams.get("client_id"), "test-client");
-  assert.equal(logoutLocation.searchParams.get("post_logout_redirect_uri"), `${baseUrl}/learn`);
-  assert.ok(logoutLocation.searchParams.get("state"));
+  // Local session logout is the default: Sokosumi end-session requires id_token_hint,
+  // which Learn intentionally never stores.
+  assert.equal(logoutLocation.origin + logoutLocation.pathname, `${baseUrl}/learn`);
+  assert.equal(logoutLocation.searchParams.get("signedOut"), "1");
   assert.ok(!logoutLearner.has("masumi_learn_session"));
   assert.equal((await request(logoutLearner, "/api/learn/session")).status, 401);
+
+  process.env.SOKOSUMI_OAUTH_LOGOUT_VIA_PROVIDER = "true";
+  const providerLogoutLearner = cookieJar();
+  await login(providerLogoutLearner, "provider-logout-learner", "/learn/dashboard");
+  const providerLogout = await request(providerLogoutLearner, "/api/learn/auth/logout", { method: "POST", body: "" });
+  assert.equal(providerLogout.status, 303);
+  const providerLogoutLocation = new URL(providerLogout.headers.get("location"));
+  assert.equal(providerLogoutLocation.href.startsWith(`${mockUrl}/end-session?`), true);
+  assert.equal(providerLogoutLocation.searchParams.get("client_id"), "test-client");
+  assert.equal(providerLogoutLocation.searchParams.get("post_logout_redirect_uri"), `${baseUrl}/learn`);
+  assert.ok(providerLogoutLocation.searchParams.get("state"));
+  assert.ok(!providerLogoutLearner.has("masumi_learn_session"));
+  delete process.env.SOKOSUMI_OAUTH_LOGOUT_VIA_PROVIDER;
   db.close();
 
   console.log("Masumi Learn integration tests passed: OAuth/PKCE, sessions/logout/operational invalidation, isolation, migration, Fundamentals and Builder grading, proof verification/manual review, concurrent issuance, supersession, privacy-thresholded funnel reporting, health/readiness, credential schema/mint payload, database verification/backup, multi-credential mint reconciliation, export, deletion, and revocation.");
