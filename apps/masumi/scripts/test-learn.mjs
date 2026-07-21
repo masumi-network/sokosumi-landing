@@ -61,8 +61,23 @@ const mockServer = createServer(async (request, response) => {
   }
   if (url.pathname === "/userinfo") {
     const code = String(request.headers.authorization || "").replace("Bearer access:", "");
+    // Mirror production: openid userinfo returns only the stable subject.
     response.writeHead(200, { "content-type": "application/json" });
-    response.end(JSON.stringify({ sub: `subject:${code}`, name: `Learner ${code}`, email: `${code}@example.test` }));
+    response.end(JSON.stringify({ sub: `subject:${code}` }));
+    return;
+  }
+  if (url.pathname === "/v1/users/me") {
+    const code = String(request.headers.authorization || "").replace("Bearer access:", "");
+    response.writeHead(200, { "content-type": "application/json" });
+    response.end(JSON.stringify({
+      data: {
+        id: `subject:${code}`,
+        name: `Learner ${code}`,
+        email: `${code}@example.test`,
+        image: `https://example.test/avatar/${code}.png`,
+        role: "user",
+      },
+    }));
     return;
   }
   if (url.pathname === "/mint" && request.method === "POST") {
@@ -114,6 +129,7 @@ const app = spawn(process.execPath, [nextBin, "dev", "-p", String(appPort)], {
     SOKOSUMI_OAUTH_AUTHORIZE_URL: `${mockUrl}/authorize`,
     SOKOSUMI_OAUTH_TOKEN_URL: `${mockUrl}/token`,
     SOKOSUMI_OAUTH_USERINFO_URL: `${mockUrl}/userinfo`,
+    SOKOSUMI_API_ORIGIN: mockUrl,
     SOKOSUMI_OAUTH_REDIRECT_URI: `${baseUrl}/api/learn/auth/callback`,
     SOKOSUMI_OAUTH_END_SESSION_URL: `${mockUrl}/end-session`,
     SOKOSUMI_OAUTH_POST_LOGOUT_REDIRECT_URI: `${baseUrl}/learn`,
@@ -174,7 +190,7 @@ async function waitForApp() {
   throw new Error(`Next.js did not become ready:\n${appOutput}`);
 }
 
-async function login(jar, code, returnTo = "/learn/dashboard") {
+async function login(jar, code, returnTo = "/learn/course") {
   const start = await request(jar, `/api/learn/auth/start?returnTo=${encodeURIComponent(returnTo)}`);
   assert.equal(start.status, 307);
   const authorization = new URL(start.headers.get("location"));
@@ -190,10 +206,10 @@ async function login(jar, code, returnTo = "/learn/dashboard") {
   assert.equal(callback.status, 307);
   assert.equal(callback.headers.get("cache-control"), "no-store");
   const expectedReturn = returnTo === "/learn" || returnTo === "/learn/"
-    ? "/learn/dashboard"
+    ? "/learn/course"
     : returnTo.startsWith("/learn/")
       ? returnTo
-      : "/learn/dashboard";
+      : "/learn/course";
   assert.equal(new URL(callback.headers.get("location")).pathname, expectedReturn);
   assert.ok(jar.get("masumi_learn_session"));
   const tokenRequest = oauthRequests.at(-1);
@@ -218,7 +234,7 @@ const builderAssessmentAnswers = { bq1: 1, bq2: 2, bq3: 1, bq4: 1, bq5: 1 };
 try {
   await waitForApp();
   const anonymous = cookieJar();
-  for (const route of ["/learn/start", "/learn/concepts", "/learn/concepts/sumi-ecosystem", "/learn/concepts/utxo", "/learn/concepts/x402", "/learn/glossary", "/learn/deep-dives", "/learn/patterns"]) {
+  for (const route of ["/learn", "/learn/library", "/learn/library/sumi-ecosystem", "/learn/library/utxo", "/learn/library/x402", "/learn/course", "/learn/course/agentic-economy"]) {
     assert.equal((await request(anonymous, route)).status, 200);
   }
   const publicHealth = await json(await request(anonymous, "/api/learn/health"));
@@ -234,9 +250,12 @@ try {
   assert.deepEqual(credentialSchema.properties.credentialType.enum, ["fundamentals", "builder"]);
   assert.equal(credentialSchema.required.includes("metadataHash"), true);
   assert.doesNotMatch(JSON.stringify(credentialSchema), /email|oauth|wallet|subject/i);
-  const protectedPage = await request(anonymous, "/learn/course");
-  assert.equal(protectedPage.status, 307);
-  assert.match(protectedPage.headers.get("location"), /^\/learn\/login\?returnTo=/);
+  const protectedQuiz = await request(anonymous, "/learn/course/agentic-economy/quiz");
+  assert.equal(protectedQuiz.status, 307);
+  assert.match(protectedQuiz.headers.get("location"), /^\/learn\/login\?returnTo=/);
+  const protectedAssessment = await request(anonymous, "/learn/course/assessment");
+  assert.equal(protectedAssessment.status, 307);
+  assert.match(protectedAssessment.headers.get("location"), /^\/learn\/login\?returnTo=/);
   assert.equal((await request(anonymous, "/api/learn/progress")).status, 401);
 
   const invalidJar = cookieJar();
@@ -268,7 +287,7 @@ try {
 
   const learnerA = cookieJar();
   await login(learnerA, "learner-a", "//evil.example/steal");
-  assert.equal((await request(learnerA, "/learn/dashboard")).status, 200);
+  assert.equal((await request(learnerA, "/learn/course")).status, 200);
   const crossOrigin = await request(learnerA, "/api/learn/progress", { method: "POST", body: JSON.stringify({ action: "complete_lesson", unit: "agentic-economy" }), headers: { origin: "https://evil.example", "content-type": "application/json" } });
   assert.equal(crossOrigin.status, 403);
   const crossSite = await request(learnerA, "/api/learn/progress", { method: "POST", body: JSON.stringify({ action: "complete_lesson", unit: "agentic-economy" }), headers: { origin: baseUrl, "sec-fetch-site": "cross-site", "content-type": "application/json" } });
@@ -521,7 +540,7 @@ try {
 
   process.env.SOKOSUMI_OAUTH_LOGOUT_VIA_PROVIDER = "true";
   const providerLogoutLearner = cookieJar();
-  await login(providerLogoutLearner, "provider-logout-learner", "/learn/dashboard");
+  await login(providerLogoutLearner, "provider-logout-learner", "/learn/course");
   const providerLogout = await request(providerLogoutLearner, "/api/learn/auth/logout", { method: "POST", body: "" });
   assert.equal(providerLogout.status, 303);
   const providerLogoutLocation = new URL(providerLogout.headers.get("location"));

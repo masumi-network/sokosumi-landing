@@ -22,8 +22,8 @@ export const LEARN_OAUTH_COOKIE = "masumi_learn_oauth_state";
 function base64url(bytes: Buffer) { return bytes.toString("base64url"); }
 export function hashToken(token: string) { return createHash("sha256").update(token).digest("hex"); }
 export function safeReturnTo(value: string | null | undefined) {
-  if (value === "/learn" || value === "/learn/") return "/learn/dashboard";
-  return value?.startsWith("/learn/") ? value : "/learn/dashboard";
+  if (value === "/learn" || value === "/learn/") return "/learn/course";
+  return value?.startsWith("/learn/") ? value : "/learn/course";
 }
 
 export function learnPublicUrl(pathname: string, requestUrl: string) {
@@ -103,20 +103,31 @@ export async function finishOAuth(input: { state: string; code: string; cookieSt
     throw new Error(`OAuth token exchange failed (${tokenResponse.status})`);
   }
   if (!tokens.access_token) throw new Error("OAuth token response did not include an access token");
-  // Temporary diagnostics: log token response shape without secrets.
+  const tokenPayload = tokens as { access_token: string; token_type?: string; id_token?: string; error?: string };
   console.log("[learn-oauth] token response keys", Object.keys(tokens));
   console.log("[learn-oauth] token response (redacted)", redactOAuthPayload(tokens));
 
+  const authHeader = `${tokenPayload.token_type || "Bearer"} ${tokenPayload.access_token}`;
   const profileResponse = await fetch(process.env.SOKOSUMI_OAUTH_USERINFO_URL!, {
-    headers: { authorization: `${tokens.token_type || "Bearer"} ${tokens.access_token}`, accept: "application/json" },
+    headers: { authorization: authHeader, accept: "application/json" },
     cache: "no-store",
     signal: learnOutboundSignal(),
   });
   if (!profileResponse.ok) throw new Error(`OAuth user-info request failed (${profileResponse.status})`);
-  const profile = await profileResponse.json() as Record<string, unknown>;
+  const userinfo = await profileResponse.json() as Record<string, unknown>;
   console.log("[learn-oauth] userinfo status", profileResponse.status);
-  console.log("[learn-oauth] userinfo raw JSON", JSON.stringify(profile, null, 2));
-  console.log("[learn-oauth] userinfo keys", Object.keys(profile));
+  console.log("[learn-oauth] userinfo raw JSON", JSON.stringify(userinfo, null, 2));
+
+  // Sokosumi's openid userinfo currently returns only `sub`. Prefer claims from
+  // the ID token and the authenticated Users API for display name/email/image.
+  const idTokenClaims = decodeJwtPayload(tokenPayload.id_token);
+  if (idTokenClaims) console.log("[learn-oauth] id_token claims (no signature verify)", JSON.stringify(idTokenClaims, null, 2));
+
+  const usersMe = await fetchSokosumiUsersMe(authHeader);
+  if (usersMe) console.log("[learn-oauth] GET /v1/users/me", JSON.stringify(usersMe, null, 2));
+
+  const profile = mergeProfileSources(userinfo, idTokenClaims, usersMe);
+  console.log("[learn-oauth] merged profile sources", JSON.stringify(profile, null, 2));
 
   const subject = firstString(profile, ["sub", "id", "user_id", "userId", "uid"]);
   if (!subject) throw new Error("Sokosumi profile has no stable subject identifier");
@@ -131,6 +142,70 @@ export async function finishOAuth(input: { state: string; code: string; cookieSt
 
   const user = upsertLearnUser(mapped);
   return { user, returnTo: saved.return_to, session: createLearnSession(user.id) };
+}
+
+function sokosumiApiOrigin() {
+  const configured = process.env.SOKOSUMI_API_ORIGIN || process.env.SOKOSUMI_OAUTH_USERINFO_URL || "https://api.sokosumi.com";
+  try {
+    return new URL(configured).origin;
+  } catch {
+    return "https://api.sokosumi.com";
+  }
+}
+
+async function fetchSokosumiUsersMe(authorization: string) {
+  const url = `${sokosumiApiOrigin()}/v1/users/me`;
+  try {
+    const response = await fetch(url, {
+      headers: { authorization, accept: "application/json" },
+      cache: "no-store",
+      signal: learnOutboundSignal(),
+    });
+    const body = await response.json().catch(() => null) as Record<string, unknown> | null;
+    console.log("[learn-oauth] users/me status", response.status);
+    if (!response.ok) {
+      console.warn("[learn-oauth] users/me failed", { status: response.status, body: body && redactOAuthPayload(body) });
+      return null;
+    }
+    if (body && typeof body === "object") {
+      const data = body.data;
+      if (data && typeof data === "object" && !Array.isArray(data)) return data as Record<string, unknown>;
+      return body;
+    }
+    return null;
+  } catch (error) {
+    console.warn("[learn-oauth] users/me request error", error instanceof Error ? error.message : "unknown");
+    return null;
+  }
+}
+
+/** Decode JWT payload without verifying the signature. Used only to read OIDC claims we already received from Sokosumi's token endpoint. */
+function decodeJwtPayload(token: string | undefined): Record<string, unknown> | null {
+  if (!token || typeof token !== "string") return null;
+  const parts = token.split(".");
+  if (parts.length < 2) return null;
+  try {
+    const normalized = parts[1].replace(/-/g, "+").replace(/_/g, "/");
+    const padded = normalized + "=".repeat((4 - (normalized.length % 4)) % 4);
+    const json = Buffer.from(padded, "base64").toString("utf8");
+    const payload = JSON.parse(json) as unknown;
+    return payload && typeof payload === "object" && !Array.isArray(payload) ? payload as Record<string, unknown> : null;
+  } catch {
+    return null;
+  }
+}
+
+function mergeProfileSources(...sources: Array<Record<string, unknown> | null | undefined>) {
+  const merged: Record<string, unknown> = {};
+  for (const source of sources) {
+    if (!source) continue;
+    for (const [key, value] of Object.entries(source)) {
+      if (value == null || value === "") continue;
+      // Prefer the first non-empty value so userinfo/id_token win over later sources when set.
+      if (merged[key] == null || merged[key] === "") merged[key] = value;
+    }
+  }
+  return merged;
 }
 
 function firstString(source: Record<string, unknown>, keys: string[]): string | null {
