@@ -1,12 +1,49 @@
 import { timingSafeEqual } from "crypto";
 import type { NextRequest } from "next/server";
 
+/**
+ * Public site origin for CSRF same-origin checks.
+ * Behind Railway (or any reverse proxy), request.nextUrl.origin can be the
+ * internal service host, while browsers send the public https origin.
+ */
+export function publicRequestOrigin(request: NextRequest) {
+  for (const candidate of [
+    process.env.SOKOSUMI_OAUTH_REDIRECT_URI,
+    process.env.SOKOSUMI_OAUTH_POST_LOGOUT_REDIRECT_URI,
+    process.env.MASUMI_PUBLIC_ORIGIN,
+  ]) {
+    if (!candidate) continue;
+    try {
+      return new URL(candidate).origin;
+    } catch {
+      // ignore malformed config and fall through
+    }
+  }
+
+  const forwardedHost = request.headers.get("x-forwarded-host")?.split(",")[0]?.trim();
+  const host = forwardedHost || request.headers.get("host");
+  if (host) {
+    const proto = request.headers.get("x-forwarded-proto")?.split(",")[0]?.trim()
+      || (process.env.NODE_ENV === "production" ? "https" : request.nextUrl.protocol.replace(":", "") || "http");
+    return `${proto}://${host}`;
+  }
+
+  return request.nextUrl.origin;
+}
+
 export function isSameOrigin(request: NextRequest) {
   const fetchSite = request.headers.get("sec-fetch-site");
   if (fetchSite && fetchSite !== "same-origin" && fetchSite !== "none") return false;
+
   const origin = request.headers.get("origin");
   if (!origin) return true;
-  try { return new URL(origin).origin === request.nextUrl.origin; } catch { return false; }
+
+  try {
+    const allowed = new Set([publicRequestOrigin(request), request.nextUrl.origin]);
+    return allowed.has(new URL(origin).origin);
+  } catch {
+    return false;
+  }
 }
 
 export function bearerAccess(request: NextRequest, environmentVariable: string) {
