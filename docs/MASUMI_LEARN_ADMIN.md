@@ -1,6 +1,8 @@
 # Masumi Learn admin analytics
 
-The Masumi Learn analytics dashboard at `/learn/admin` is private to explicitly approved internal operators. It displays aggregate course and funnel metrics only. It must not expose learner rows, names, email addresses, OAuth subjects, raw answers, individual timelines, or privileged credentials.
+The Masumi Learn analytics dashboard at `/learn/admin` is private to explicitly approved internal operators. Its main report displays aggregate course and funnel metrics only. It must not expose learner rows, names, email addresses, OAuth subjects, raw answers, individual timelines, or privileged credentials.
+
+The separate `/learn/admin/participants` surface is an identified learner-administration view for the same approved operators. It may display Learn profile names, email addresses, registration/activity dates, and individual current-version progress. It must never display OAuth subjects, session tokens, raw answers, transaction hashes, private proof payloads, or privileged credentials. Participant-list requests are audited separately as `admin_participant_list_access` events, and responses are private, non-cacheable, and paginated.
 
 ## Access model
 
@@ -44,6 +46,8 @@ Course views and quickstart/publishing handoffs are copied into `learn_analytics
 Version filters are populated from versions actually present in the Learn database, plus the current application versions. Historical versions remain selectable even after a new release; unknown versions are rejected rather than silently returning misleading zeros.
 
 Access to this internal dashboard does not authorize collection or display of learner-level analytics.
+
+The participant view is the explicit exception for already-collected Learn account and progress data. Use it only for learner support and course operations; do not export, redistribute, or use it for unrelated employee monitoring.
 
 ## Production smoke test
 
