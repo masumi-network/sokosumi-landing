@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { bearerAccess } from "@/lib/learn-api";
 import { oauthConfigured, oauthEndSessionConfigured } from "@/lib/learn-auth";
+import { learnDashboardAllowlistConfigured } from "@/lib/learn-admin";
 import { BUILDER_COURSE_VERSION, COURSE_VERSION, getLearnDb } from "@/lib/learn-db";
 
 export const runtime = "nodejs";
@@ -24,6 +25,7 @@ export function GET(request: NextRequest) {
         builderVerifier: configured("MASUMI_LEARN_BUILDER_VERIFY_URL", "MASUMI_LEARN_BUILDER_VERIFY_TOKEN"),
         reviewQueue: configured("MASUMI_LEARN_REVIEW_TOKEN"),
         aggregateReport: configured("MASUMI_LEARN_REPORT_TOKEN"),
+        adminDashboard: learnDashboardAllowlistConfigured(),
         operations: configured("MASUMI_LEARN_ADMIN_TOKEN"),
       };
       response.readiness = { checks, launchConfigured: Object.values(checks).every(Boolean) };

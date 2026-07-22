@@ -1,21 +1,25 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import type { LearnUnit, QuizQuestion } from "./course-data";
+import { recordLearnAggregateEvent } from "./learner-actions";
 
 type Progress = { completedLessons: string[]; passedQuizzes: string[]; quizScores: Record<string, number>; assessmentScore?: number; completedAt?: string };
 type PublicQuestion = Omit<QuizQuestion, "answer">;
 type UnitSummary = Pick<LearnUnit, "slug" | "number" | "title" | "summary" | "duration">;
 type LessonUnit = Omit<LearnUnit, "quiz">;
 
-function track(event: string, params: Record<string, string | number> = {}) { if (typeof window.gtag === "function") window.gtag("event", event, params); }
+function track(event: string, params: Record<string, string | number> = {}) {
+  if (typeof window.gtag === "function") window.gtag("event", event, params);
+  recordLearnAggregateEvent(event);
+}
 
 function useProgress(enabled = true) {
   const [progress, setProgress] = useState<Progress | null>(null);
   const [error, setError] = useState("");
   const [migrationNotice, setMigrationNotice] = useState("");
-  async function load() {
+  const load = useCallback(async () => {
     if (!enabled) return;
     try {
       const legacy = localStorage.getItem("masumi-learn-progress-v1");
@@ -32,8 +36,8 @@ function useProgress(enabled = true) {
     const response = await fetch("/api/learn/progress", { cache: "no-store" });
     if (!response.ok) { setError("Unable to load progress"); return; }
     setProgress(await response.json());
-  }
-  useEffect(() => { queueMicrotask(() => void load()); }, []);
+  }, [enabled]);
+  useEffect(() => { queueMicrotask(() => void load()); }, [load]);
   return { progress, setProgress, error, migrationNotice };
 }
 

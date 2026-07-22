@@ -137,6 +137,7 @@ const appEnv = {
     MASUMI_LEARN_MINT_NETWORK: "preprod",
     MASUMI_LEARN_REPORT_TOKEN: "test-report-token",
     MASUMI_LEARN_REPORT_MIN_COHORT: "1",
+    MASUMI_LEARN_DASHBOARD_ALLOWLIST: "subject:subject:learner-a",
     MASUMI_LEARN_BUILDER_VERIFY_URL: `${mockUrl}/builder-verify`,
     MASUMI_LEARN_BUILDER_VERIFY_TOKEN: "test-builder-token",
     MASUMI_LEARN_REVIEW_TOKEN: "test-review-token",
@@ -147,7 +148,7 @@ let app;
 let appOutput = "";
 function startApp(extraEnv = {}) {
   appOutput = "";
-  app = spawn(process.execPath, [nextBin, "dev", "-p", String(appPort)], {
+  app = spawn(process.execPath, [nextBin, "dev", "--webpack", "-p", String(appPort)], {
     cwd: appRoot,
     env: { ...appEnv, ...extraEnv },
     stdio: ["ignore", "pipe", "pipe"],
@@ -322,10 +323,17 @@ try {
   const learnerA = cookieJar();
   await login(learnerA, "learner-a", "//evil.example/steal");
   assert.equal((await request(learnerA, "/learn/course")).status, 200);
+  assert.deepEqual(await json(await request(learnerA, "/api/learn/session")), { user: { authenticated: true, canAccessAdmin: true } });
+  assert.doesNotMatch(appOutput, /Learner learner-a|learner-a@example\.test|subject:learner-a/);
   const crossOrigin = await request(learnerA, "/api/learn/progress", { method: "POST", body: JSON.stringify({ action: "complete_lesson", unit: "agentic-economy" }), headers: { origin: "https://evil.example", "content-type": "application/json" } });
   assert.equal(crossOrigin.status, 403);
   const crossSite = await request(learnerA, "/api/learn/progress", { method: "POST", body: JSON.stringify({ action: "complete_lesson", unit: "agentic-economy" }), headers: { origin: baseUrl, "sec-fetch-site": "cross-site", "content-type": "application/json" } });
   assert.equal(crossSite.status, 403);
+  assert.equal((await postJson(anonymous, "/api/learn/analytics", { event: "not-a-learn-event" })).status, 400);
+  assert.equal((await request(anonymous, "/api/learn/analytics", { method: "POST", body: JSON.stringify({ event: "learn_course_view" }), headers: { origin: "https://evil.example", "content-type": "application/json" } })).status, 403);
+  for (const event of ["learn_course_view", "learn_course_view", "learn_quickstart_start", "learn_docs_conversion", "learn_publish_conversion"]) {
+    assert.equal((await postJson(anonymous, "/api/learn/analytics", { event })).status, 204);
+  }
 
   const db = new Database(dbPath);
   const migratedLegacySession = db.prepare("SELECT absolute_expires_at FROM learn_sessions WHERE token_hash='legacy-session-hash'").get();
@@ -371,6 +379,7 @@ try {
 
   const learnerB = cookieJar();
   await login(learnerB, "learner-b");
+  assert.deepEqual(await json(await request(learnerB, "/api/learn/session")), { user: { authenticated: true, canAccessAdmin: false } });
   const progressB = await json(await request(learnerB, "/api/learn/progress"));
   assert.deepEqual(progressB.completedLessons, []);
   assert.deepEqual(progressB.quizAttempts, []);
@@ -378,6 +387,12 @@ try {
   const learnerAId = db.prepare("SELECT user_id FROM learn_sessions WHERE token_hash=?").pluck().get(sessionHash);
   const oldCredentialId = "superseded-test-credential";
   const timestamp = new Date().toISOString();
+  db.prepare("INSERT INTO learn_unit_progress (user_id, course_version, unit_slug, lesson_completed_at, quiz_best_score, quiz_passed_at, quiz_attempts, updated_at) VALUES (?, 'fundamentals-v0', 'legacy-unit', ?, 100, ?, 1, ?)")
+    .run(learnerAId, timestamp, timestamp, timestamp);
+  db.prepare("INSERT INTO learn_quiz_attempts (id, user_id, course_version, unit_slug, score, passed, created_at) VALUES ('legacy-quiz-attempt', ?, 'fundamentals-v0', 'legacy-unit', 100, 1, ?)")
+    .run(learnerAId, timestamp);
+  db.prepare("INSERT INTO learn_builder_steps (user_id, course_version, step_key, completed_at) VALUES (?, 'builder-v0', 'legacy-step', ?)")
+    .run(learnerAId, timestamp);
   db.prepare("INSERT INTO learn_credentials (id, user_id, course_version, score, status, issued_at, tx_hash, asset_id, metadata_hash, updated_at) VALUES (?, ?, 'fundamentals-v0', 100, 'minted', ?, 'old-tx', 'old-asset', 'old-hash', ?)")
     .run(oldCredentialId, learnerAId, timestamp, timestamp);
 
@@ -508,6 +523,120 @@ try {
   assert.equal(Number.isInteger(builderReport.funnel.timeToFirstVerifiedPreprodProof.medianMinutes), true);
   assert.equal(builderReport.questions.find(({ questionId }) => questionId === "bq1").courseVersion, "builder-v1");
   assert.equal(builderReport.questions.find(({ questionId }) => questionId === "u1q1").courseVersion, "fundamentals-v1");
+
+  await restartApp({ MASUMI_LEARN_REPORT_MIN_COHORT: "5", MASUMI_LEARN_DASHBOARD_ALLOWLIST: "" });
+  assert.equal((await request(learnerA, "/api/learn/dashboard/report")).status, 404);
+  await restartApp({ MASUMI_LEARN_REPORT_MIN_COHORT: "5", MASUMI_LEARN_DASHBOARD_ALLOWLIST: "subject:subject:learner-a,not-prefixed" });
+  assert.equal((await request(learnerA, "/api/learn/dashboard/report")).status, 404);
+  await restartApp({ MASUMI_LEARN_REPORT_MIN_COHORT: "5", MASUMI_LEARN_DASHBOARD_ALLOWLIST: "subject:subject:learner" });
+  assert.equal((await request(learnerA, "/api/learn/dashboard/report")).status, 404);
+  await restartApp({ MASUMI_LEARN_REPORT_MIN_COHORT: "5", MASUMI_LEARN_DASHBOARD_ALLOWLIST: `subject:subject:nobody\nuser:${learnerAId}` });
+  assert.deepEqual(await json(await request(learnerA, "/api/learn/session")), { user: { authenticated: true, canAccessAdmin: true } });
+  assert.deepEqual(await json(await request(learnerB, "/api/learn/session")), { user: { authenticated: true, canAccessAdmin: false } });
+  const anonymousAdminPage = await request(anonymous, "/learn/admin");
+  const nonAdminPage = await request(learnerB, "/learn/admin");
+  // The parent Learn loading boundary starts streaming before notFound() resolves,
+  // so Next preserves a 200 transport status while rendering its generic 404 shell.
+  assert.equal(anonymousAdminPage.status, nonAdminPage.status);
+  const anonymousAdminHtml = await anonymousAdminPage.text();
+  const nonAdminHtml = await nonAdminPage.text();
+  assert.match(anonymousAdminHtml, /404|This page could not be found/);
+  assert.match(nonAdminHtml, /404|This page could not be found/);
+  assert.doesNotMatch(anonymousAdminHtml, /Admin analytics|test-report-token|learner-a@example\.test|subject:learner-a/);
+  assert.doesNotMatch(nonAdminHtml, /Admin analytics|test-report-token|learner-a@example\.test|subject:learner-a/);
+
+  const anonymousDashboardApi = await request(anonymous, "/api/learn/dashboard/report");
+  const nonAdminDashboardApi = await request(learnerB, "/api/learn/dashboard/report");
+  assert.equal(anonymousDashboardApi.status, 404);
+  assert.equal(nonAdminDashboardApi.status, 404);
+  assert.deepEqual(await json(anonymousDashboardApi), { error: "Not found" });
+  assert.deepEqual(await json(nonAdminDashboardApi), { error: "Not found" });
+
+  const adminPage = await request(learnerA, "/learn/admin");
+  assert.equal(adminPage.status, 200);
+  assert.match(adminPage.headers.get("cache-control") || "", /private|no-store/);
+  const adminHtml = await adminPage.text();
+  assert.match(adminHtml, /Admin analytics/);
+  assert.match(adminHtml, /Learn operations/);
+  assert.doesNotMatch(adminHtml, /test-report-token|Learner learner-a|learner-a@example\.test|subject:learner-a|subject:subject:learner-a/);
+
+  const dashboardAuditCountBefore = db.prepare("SELECT COUNT(*) FROM learn_audit_events WHERE event_type='admin_dashboard_access'").pluck().get();
+  const today = new Date().toISOString().slice(0, 10);
+  const todayEnd = new Date(`${today}T00:00:00.000Z`);
+  todayEnd.setUTCDate(todayEnd.getUTCDate() + 1);
+  const tomorrow = todayEnd.toISOString().slice(0, 10);
+  const filteredDashboardResponse = await request(learnerA, `/api/learn/dashboard/report?from=${today}&to=${today}&courseVersion=fundamentals-v1&builderVersion=builder-v1`);
+  assert.equal(filteredDashboardResponse.status, 200);
+  assert.match(filteredDashboardResponse.headers.get("cache-control") || "", /private, no-store/);
+  assert.match(filteredDashboardResponse.headers.get("vary") || "", /Cookie/i);
+  const filteredDashboard = await json(filteredDashboardResponse);
+  assert.deepEqual(filteredDashboard.filters, {
+    from: `${today}T00:00:00.000Z`,
+    to: `${tomorrow}T00:00:00.000Z`,
+    courseVersion: "fundamentals-v1",
+    builderCourseVersion: "builder-v1",
+  });
+  assert.equal(filteredDashboard.funnel.quizAttempts, 5);
+  assert.equal(filteredDashboard.funnel.builderAssessmentAttempts, 2);
+  assert.equal(filteredDashboard.handoffs.courseViews.count, 2);
+  assert.equal(filteredDashboard.handoffs.quickstartStarts.count, 2);
+  assert.equal(filteredDashboard.handoffs.sokosumiPublishing.count, 1);
+  assert.equal(filteredDashboard.handoffs.courseViews.source, "consent-aware aggregate");
+  assert.equal(filteredDashboard.privacy.minimumQuestionAttempts, 5);
+  assert.equal(filteredDashboard.funnel.timeToFirstVerifiedPreprodProof.suppressed, true);
+  assert.equal(filteredDashboard.funnel.timeToFirstVerifiedPreprodProof.cohortSize, null);
+  assert.equal(filteredDashboard.funnel.timeToFirstVerifiedPreprodProof.medianMinutes, null);
+  assert.deepEqual(filteredDashboard.questions, []);
+  assert.ok(filteredDashboard.availableVersions.fundamentals.includes("fundamentals-v0"));
+  assert.ok(filteredDashboard.availableVersions.builder.includes("builder-v0"));
+  const filteredDashboardPayload = JSON.stringify(filteredDashboard);
+  assert.doesNotMatch(filteredDashboardPayload, /test-report-token|Learner learner-a|learner-a@example\.test|subject:learner-a|subject:subject:learner-a|providerSubject|displayName|attemptedAt/);
+
+  const dashboardAuditCountAfter = db.prepare("SELECT COUNT(*) FROM learn_audit_events WHERE event_type='admin_dashboard_access'").pluck().get();
+  assert.equal(dashboardAuditCountAfter, dashboardAuditCountBefore + 1);
+  const dashboardAudit = db.prepare("SELECT user_id, entity_id, detail_json FROM learn_audit_events WHERE event_type='admin_dashboard_access' ORDER BY created_at DESC LIMIT 1").get();
+  assert.equal(dashboardAudit.user_id, learnerAId);
+  assert.equal(dashboardAudit.entity_id, null);
+  assert.deepEqual(JSON.parse(dashboardAudit.detail_json), {
+    surface: "report",
+    from: today,
+    to: today,
+    courseVersion: "fundamentals-v1",
+    builderCourseVersion: "builder-v1",
+  });
+  assert.doesNotMatch(dashboardAudit.detail_json, /test-report-token|learner-a|example\.test|subject:|allowlist|"funnel"|"questions"/i);
+
+  const historicalDashboardResponse = await request(learnerA, "/api/learn/dashboard/report?courseVersion=fundamentals-v0&builderVersion=builder-v0");
+  assert.equal(historicalDashboardResponse.status, 200);
+  const historicalDashboard = await json(historicalDashboardResponse);
+  assert.equal(historicalDashboard.courseVersion, "fundamentals-v0");
+  assert.equal(historicalDashboard.builderCourseVersion, "builder-v0");
+  assert.equal(historicalDashboard.funnel.quizAttempts, 1);
+  assert.equal(historicalDashboard.funnel.quizPasses, 1);
+  assert.equal(historicalDashboard.funnel.builderActiveLearners, 1);
+
+  const emptyDashboardResponse = await request(learnerA, "/api/learn/dashboard/report?from=2099-01-01&to=2099-01-01&courseVersion=fundamentals-v1&builderVersion=builder-v1");
+  assert.equal(emptyDashboardResponse.status, 200);
+  const emptyDashboard = await json(emptyDashboardResponse);
+  assert.equal(Object.values(emptyDashboard.funnel).filter((value) => typeof value === "number").every((value) => value === 0), true);
+  assert.equal(emptyDashboard.funnel.timeToFirstVerifiedPreprodProof.suppressed, true);
+  assert.equal(emptyDashboard.funnel.timeToFirstVerifiedPreprodProof.cohortSize, null);
+  assert.deepEqual(emptyDashboard.units, []);
+  assert.deepEqual(emptyDashboard.questions, []);
+  assert.deepEqual(emptyDashboard.credentials, []);
+
+  const invalidDashboardAuditCount = db.prepare("SELECT COUNT(*) FROM learn_audit_events WHERE event_type='admin_dashboard_access'").pluck().get();
+  for (const invalidQuery of [
+    "from=2026-02-30&to=2026-03-01",
+    "from=2026-03-02&to=2026-03-01",
+    "from=2024-01-01&to=2025-01-02",
+    "courseVersion=fundamentals-does-not-exist",
+    "builderVersion=builder-does-not-exist",
+  ]) {
+    assert.equal((await request(learnerA, `/api/learn/dashboard/report?${invalidQuery}`)).status, 400);
+  }
+  assert.equal(db.prepare("SELECT COUNT(*) FROM learn_audit_events WHERE event_type='admin_dashboard_access'").pluck().get(), invalidDashboardAuditCount);
+
   const cascadedRevocation = await json(await request(anonymous, "/api/learn/admin", { method: "POST", headers: { authorization: "Bearer test-admin-token" }, body: JSON.stringify({ action: "revoke_credential", credentialId, reason: "policy_violation" }) }));
   assert.equal(cascadedRevocation.credential.status, "revoked");
   assert.deepEqual(cascadedRevocation.cascadedCredentials, [builderCredentialId]);
@@ -517,6 +646,8 @@ try {
   assert.ok(!quizColumns.some((name) => name.includes("answer")));
   const builderAssessmentColumns = db.prepare("PRAGMA table_info(learn_builder_assessment_attempts)").all().map(({ name }) => name);
   assert.ok(!builderAssessmentColumns.some((name) => name.includes("answer")));
+  const analyticsColumns = db.prepare("PRAGMA table_info(learn_analytics_daily)").all().map(({ name }) => name);
+  assert.deepEqual(analyticsColumns, ["day", "course_version", "event_name", "event_count", "updated_at"]);
   const auditDetails = db.prepare("SELECT detail_json FROM learn_audit_events").all().map(({ detail_json }) => detail_json).join(" ");
   assert.doesNotMatch(auditDetails, /answers/i);
 
@@ -585,7 +716,7 @@ try {
   assert.ok(!providerLogoutLearner.has("masumi_learn_session"));
   db.close();
 
-  console.log("Masumi Learn integration tests passed: OAuth/PKCE, sessions/logout/operational invalidation, isolation, migration, Fundamentals and Builder grading, proof verification/manual review, concurrent issuance, supersession, privacy-thresholded funnel reporting, health/readiness, credential schema/mint payload, database verification/backup, multi-credential mint reconciliation, export, deletion, and revocation.");
+  console.log("Masumi Learn integration tests passed: OAuth/PKCE, profile-safe sessions/logout/operational invalidation, isolation, migration, Fundamentals and Builder grading, proof verification/manual review, concurrent issuance, supersession, fail-closed dashboard authorization, historical-version filters, consent-aware aggregate funnel events, privacy-thresholded reporting, health/readiness, credential schema/mint payload, database verification/backup, multi-credential mint reconciliation, export, deletion, and revocation.");
 } finally {
   await stopApp();
   await new Promise((resolve) => mockServer.close(resolve));

@@ -104,9 +104,6 @@ export async function finishOAuth(input: { state: string; code: string; cookieSt
   }
   if (!tokens.access_token) throw new Error("OAuth token response did not include an access token");
   const tokenPayload = tokens as { access_token: string; token_type?: string; id_token?: string; error?: string };
-  console.log("[learn-oauth] token response keys", Object.keys(tokens));
-  console.log("[learn-oauth] token response (redacted)", redactOAuthPayload(tokens));
-
   const authHeader = `${tokenPayload.token_type || "Bearer"} ${tokenPayload.access_token}`;
   const profileResponse = await fetch(process.env.SOKOSUMI_OAUTH_USERINFO_URL!, {
     headers: { authorization: authHeader, accept: "application/json" },
@@ -115,19 +112,11 @@ export async function finishOAuth(input: { state: string; code: string; cookieSt
   });
   if (!profileResponse.ok) throw new Error(`OAuth user-info request failed (${profileResponse.status})`);
   const userinfo = await profileResponse.json() as Record<string, unknown>;
-  console.log("[learn-oauth] userinfo status", profileResponse.status);
-  console.log("[learn-oauth] userinfo raw JSON", JSON.stringify(userinfo, null, 2));
-
   // Sokosumi's openid userinfo currently returns only `sub`. Prefer claims from
   // the ID token and the authenticated Users API for display name/email/image.
   const idTokenClaims = decodeJwtPayload(tokenPayload.id_token);
-  if (idTokenClaims) console.log("[learn-oauth] id_token claims (no signature verify)", JSON.stringify(idTokenClaims, null, 2));
-
   const usersMe = await fetchSokosumiUsersMe(authHeader);
-  if (usersMe) console.log("[learn-oauth] GET /v1/users/me", JSON.stringify(usersMe, null, 2));
-
   const profile = mergeProfileSources(userinfo, idTokenClaims, usersMe);
-  console.log("[learn-oauth] merged profile sources", JSON.stringify(profile, null, 2));
 
   const subject = firstString(profile, ["sub", "id", "user_id", "userId", "uid"]);
   if (!subject) throw new Error("Sokosumi profile has no stable subject identifier");
@@ -138,8 +127,6 @@ export async function finishOAuth(input: { state: string; code: string; cookieSt
     email: firstString(profile, ["email", "email_address", "mail", "preferred_email"]),
     avatarUrl: firstString(profile, ["picture", "avatarUrl", "avatar_url", "avatar", "image", "photo"]),
   };
-  console.log("[learn-oauth] mapped learner profile", mapped);
-
   const user = upsertLearnUser(mapped);
   return { user, returnTo: saved.return_to, session: createLearnSession(user.id) };
 }
@@ -162,9 +149,8 @@ async function fetchSokosumiUsersMe(authorization: string) {
       signal: learnOutboundSignal(),
     });
     const body = await response.json().catch(() => null) as Record<string, unknown> | null;
-    console.log("[learn-oauth] users/me status", response.status);
     if (!response.ok) {
-      console.warn("[learn-oauth] users/me failed", { status: response.status, body: body && redactOAuthPayload(body) });
+      console.warn("[learn-oauth] users/me failed", { status: response.status });
       return null;
     }
     if (body && typeof body === "object") {
@@ -253,26 +239,6 @@ function pickDisplayName(profile: Record<string, unknown>) {
   const family = firstString(profile, ["family_name", "familyName", "last_name", "lastName", "surname"]);
   if (given && family) return `${given} ${family}`;
   return given || family;
-}
-
-function redactOAuthPayload(payload: Record<string, unknown>) {
-  const secretKeys = new Set([
-    "access_token",
-    "refresh_token",
-    "id_token",
-    "client_secret",
-    "code",
-    "code_verifier",
-  ]);
-  const redacted: Record<string, unknown> = {};
-  for (const [key, value] of Object.entries(payload)) {
-    if (secretKeys.has(key)) {
-      redacted[key] = typeof value === "string" ? `[redacted ${value.length} chars]` : "[redacted]";
-      continue;
-    }
-    redacted[key] = value;
-  }
-  return redacted;
 }
 
 export function createLearnSession(userId: string) {

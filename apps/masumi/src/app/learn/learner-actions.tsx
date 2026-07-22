@@ -1,13 +1,49 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useConsent } from "@/components/CookieConsent";
+
+const aggregateEvents = new Set([
+  "learn_course_view",
+  "learn_quickstart_start",
+  "learn_docs_conversion",
+  "learn_publish_conversion",
+]);
+
+export function recordLearnAggregateEvent(event: string) {
+  if (!aggregateEvents.has(event) || window.localStorage.getItem("masumi-cookie-consent") !== "accepted") return;
+  void fetch("/api/learn/analytics", {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ event }),
+    credentials: "omit",
+    cache: "no-store",
+    keepalive: true,
+  }).catch(() => {});
+}
+
+function trackLearnEvent(event: string, params: Record<string, string | number>) {
+  if (typeof window.gtag === "function") window.gtag("event", event, params);
+  recordLearnAggregateEvent(event);
+}
+
+export function LearnCourseViewTracker() {
+  const consent = useConsent();
+  const recorded = useRef(false);
+  useEffect(() => {
+    if (consent !== "accepted" || recorded.current) return;
+    recorded.current = true;
+    recordLearnAggregateEvent("learn_course_view");
+  }, [consent]);
+  return null;
+}
 
 export function TrackedLink({ href, event, params = {}, className, children }: { href: string; event: string; params?: Record<string, string | number>; className?: string; children: React.ReactNode }) {
-  return <a href={href} onClick={() => { if (typeof window.gtag === "function") window.gtag("event", event, params); }} className={className}>{children}</a>;
+  return <a href={href} onClick={() => trackLearnEvent(event, params)} className={className}>{children}</a>;
 }
 
 export function TrackedConversionLink({ href, event, params = {}, children }: { href: string; event: string; params?: Record<string, string | number>; children: React.ReactNode }) {
-  return <a href={href} onClick={() => { if (typeof window.gtag === "function") window.gtag("event", event, params); }} className="border border-black/[0.04] bg-white p-6 transition-[border-color,transform] duration-300 hover:border-black/10 hover:-translate-y-1"><span className="flex items-center justify-between"><span className="text-[11px] font-mono uppercase tracking-wide text-[#FA008C]">Next step</span><span className="w-2 h-2 rounded-full bg-[#FA008C] opacity-50" /></span><strong className="mt-2 block text-[17px] font-medium leading-snug text-black">{children}</strong></a>;
+  return <a href={href} onClick={() => trackLearnEvent(event, params)} className="border border-black/[0.04] bg-white p-6 transition-[border-color,transform] duration-300 hover:border-black/10 hover:-translate-y-1"><span className="flex items-center justify-between"><span className="text-[11px] font-mono uppercase tracking-wide text-[#FA008C]">Next step</span><span className="w-2 h-2 rounded-full bg-[#FA008C] opacity-50" /></span><strong className="mt-2 block text-[17px] font-medium leading-snug text-black">{children}</strong></a>;
 }
 
 export function MintCredentialButton({ credentialId }: { credentialId?: string }) {
