@@ -22,13 +22,29 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.deployment.sha || github.sha }}
+          ref: ${{ github.event_name == 'deployment_status' && 'main' || github.sha }}
+
+      - name: Ignore stale deployment status events
+        id: deployment_gate
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          DEPLOYMENT_SHA: ${{ github.event.deployment.sha || '' }}
+        run: |
+          current_sha="$(git rev-parse HEAD)"
+          if [[ "$EVENT_NAME" != "deployment_status" || "$DEPLOYMENT_SHA" == "$current_sha" ]]; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "run=false" >> "$GITHUB_OUTPUT"
+            echo "Skipping stale deployment $DEPLOYMENT_SHA; current main is $current_sha."
+          fi
 
       - uses: actions/setup-node@v4
+        if: steps.deployment_gate.outputs.run == 'true'
         with:
           node-version: 22
 
       - name: Exercise Nori through the canonical public path
+        if: steps.deployment_gate.outputs.run == 'true'
         env:
           NORI_E2E_BASE_URL: https://www.masumi.network
           NORI_E2E_EXPECT_COMMIT_SHA: ${{ github.event_name == 'deployment_status' && github.event.deployment.sha || '' }}
