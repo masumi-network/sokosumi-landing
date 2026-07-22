@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { devAuthEnabled, getCurrentLearnUser, oauthConfigured, safeReturnTo } from "@/lib/learn-auth";
@@ -14,7 +15,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
   const loginHref = `/api/learn/auth/start?returnTo=${encodeURIComponent(returnTo)}`;
   const devHref = `/api/learn/auth/dev?returnTo=${encodeURIComponent(returnTo)}`;
   return <div className="mx-auto max-w-xl border border-black/[0.04] bg-white p-8 text-center sm:p-12">
-    <div className="mx-auto flex h-16 w-16 items-center justify-center bg-[#6400FF] text-2xl text-white">S</div>
+    <Image src="/images/sokosumi-logo.png" alt="Sokosumi" width={64} height={64} className="mx-auto h-16 w-16" priority />
     <p className="mt-7 text-[13px] uppercase tracking-[0.02em] text-[#FA008C]">Masumi Learn account</p>
     <h1 className="mt-3 text-[28px] font-normal leading-[1.2] tracking-[-0.4px] md:text-[40px]">Continue with Sokosumi</h1>
     <p className="mt-4 text-[16px] leading-[24px] text-[#5b5b5b]">Your Sokosumi account keeps course progress, assessment results, and credentials connected across devices.</p>
