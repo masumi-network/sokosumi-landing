@@ -4,6 +4,13 @@ import path from "path";
 
 export const COURSE_VERSION = "fundamentals-v1";
 export const BUILDER_COURSE_VERSION = "builder-v1";
+export const LEARN_AGGREGATE_EVENTS = [
+  "learn_course_view",
+  "learn_quickstart_start",
+  "learn_docs_conversion",
+  "learn_publish_conversion",
+] as const;
+export type LearnAggregateEvent = typeof LEARN_AGGREGATE_EVENTS[number];
 
 let learnDb: Database.Database | null = null;
 
@@ -62,6 +69,11 @@ export type BuilderProgress = {
   assessmentAttempts: Array<{ id: string; score: number; passed: boolean; attemptedAt: string }>;
   assessmentScore?: number;
   credential: LearnCredential | null;
+};
+
+export type LearnAvailableVersions = {
+  fundamentals: string[];
+  builder: string[];
 };
 
 function ensureColumn(db: Database.Database, table: string, column: string, definition: string) {
@@ -139,6 +151,24 @@ export function getLearnDb() {
       updated_at TEXT NOT NULL,
       PRIMARY KEY (course_version, context, question_id)
     );
+    CREATE TABLE IF NOT EXISTS learn_question_stats_daily (
+      day TEXT NOT NULL,
+      course_version TEXT NOT NULL,
+      context TEXT NOT NULL,
+      question_id TEXT NOT NULL,
+      attempts INTEGER NOT NULL DEFAULT 0,
+      correct_count INTEGER NOT NULL DEFAULT 0,
+      updated_at TEXT NOT NULL,
+      PRIMARY KEY (day, course_version, context, question_id)
+    );
+    CREATE TABLE IF NOT EXISTS learn_analytics_daily (
+      day TEXT NOT NULL,
+      course_version TEXT NOT NULL,
+      event_name TEXT NOT NULL,
+      event_count INTEGER NOT NULL DEFAULT 0,
+      updated_at TEXT NOT NULL,
+      PRIMARY KEY (day, course_version, event_name)
+    );
     CREATE TABLE IF NOT EXISTS learn_credentials (
       id TEXT PRIMARY KEY,
       user_id TEXT NOT NULL REFERENCES learn_users(id) ON DELETE CASCADE,
@@ -196,12 +226,23 @@ export function getLearnDb() {
       passed INTEGER NOT NULL,
       created_at TEXT NOT NULL
     );
+    CREATE INDEX IF NOT EXISTS idx_learn_users_created ON learn_users(created_at);
+    CREATE INDEX IF NOT EXISTS idx_learn_progress_version_updated ON learn_unit_progress(course_version, updated_at);
+    CREATE INDEX IF NOT EXISTS idx_learn_quiz_version_created ON learn_quiz_attempts(course_version, created_at);
+    CREATE INDEX IF NOT EXISTS idx_learn_assessment_version_created ON learn_assessment_attempts(course_version, created_at);
+    CREATE INDEX IF NOT EXISTS idx_learn_question_daily_version_day ON learn_question_stats_daily(course_version, day);
+    CREATE INDEX IF NOT EXISTS idx_learn_analytics_version_day ON learn_analytics_daily(course_version, day);
+    CREATE INDEX IF NOT EXISTS idx_learn_builder_steps_version_created ON learn_builder_steps(course_version, completed_at);
+    CREATE INDEX IF NOT EXISTS idx_learn_builder_submissions_version_status_updated ON learn_builder_submissions(course_version, status, updated_at);
+    CREATE INDEX IF NOT EXISTS idx_learn_builder_assessment_version_created ON learn_builder_assessment_attempts(course_version, created_at);
+    CREATE INDEX IF NOT EXISTS idx_learn_audit_type_created ON learn_audit_events(event_type, created_at);
   `);
   ensureColumn(db, "learn_credentials", "credential_type", "TEXT NOT NULL DEFAULT 'fundamentals'");
   ensureColumn(db, "learn_credentials", "superseded_by", "TEXT");
   ensureColumn(db, "learn_credentials", "network", "TEXT");
   ensureColumn(db, "learn_credentials", "explorer_url", "TEXT");
   ensureColumn(db, "learn_sessions", "absolute_expires_at", "TEXT");
+  db.exec("CREATE INDEX IF NOT EXISTS idx_learn_credentials_version_type_status_issued ON learn_credentials(course_version, credential_type, status, issued_at)");
   const legacySessions = db.prepare("SELECT token_hash, created_at FROM learn_sessions WHERE absolute_expires_at IS NULL").all() as Array<{ token_hash: string; created_at: string }>;
   const migrateSession = db.prepare("UPDATE learn_sessions SET absolute_expires_at=? WHERE token_hash=?");
   for (const session of legacySessions) migrateSession.run(new Date(Date.parse(session.created_at) + 30 * 24 * 60 * 60_000).toISOString(), session.token_hash);
@@ -332,45 +373,137 @@ export function recordAssessment(userId: string, score: number, passed: boolean)
 
 export function recordQuestionOutcomes(context: string, outcomes: Array<{ questionId: string; correct: boolean }>, courseVersion = COURSE_VERSION) {
   const now = new Date().toISOString();
+  const day = now.slice(0, 10);
   const statement = getLearnDb().prepare(`INSERT INTO learn_question_stats (course_version, context, question_id, attempts, correct_count, updated_at)
     VALUES (?, ?, ?, 1, ?, ?) ON CONFLICT(course_version, context, question_id) DO UPDATE SET
       attempts=attempts+1, correct_count=correct_count+excluded.correct_count, updated_at=excluded.updated_at`);
+  const dailyStatement = getLearnDb().prepare(`INSERT INTO learn_question_stats_daily (day, course_version, context, question_id, attempts, correct_count, updated_at)
+    VALUES (?, ?, ?, ?, 1, ?, ?) ON CONFLICT(day, course_version, context, question_id) DO UPDATE SET
+      attempts=attempts+1, correct_count=correct_count+excluded.correct_count, updated_at=excluded.updated_at`);
   getLearnDb().transaction(() => {
-    for (const outcome of outcomes) statement.run(courseVersion, context, outcome.questionId, outcome.correct ? 1 : 0, now);
+    for (const outcome of outcomes) {
+      statement.run(courseVersion, context, outcome.questionId, outcome.correct ? 1 : 0, now);
+      dailyStatement.run(day, courseVersion, context, outcome.questionId, outcome.correct ? 1 : 0, now);
+    }
   })();
 }
 
-export function getLearnAggregateReport(minQuestionAttempts = 5) {
+export function recordLearnAggregateEvent(event: LearnAggregateEvent, courseVersion = COURSE_VERSION, occurredAt = new Date()) {
+  const now = occurredAt.toISOString();
+  getLearnDb().prepare(`INSERT INTO learn_analytics_daily (day, course_version, event_name, event_count, updated_at)
+    VALUES (?, ?, ?, 1, ?) ON CONFLICT(day, course_version, event_name) DO UPDATE SET
+      event_count=event_count+1, updated_at=excluded.updated_at`)
+    .run(now.slice(0, 10), courseVersion, event, now);
+}
+
+export type LearnAggregateReportOptions = {
+  minimumCohort?: number;
+  from?: string;
+  to?: string;
+  courseVersion?: string;
+  builderCourseVersion?: string;
+};
+
+function reportRange(column: string, from?: string, to?: string) {
+  return {
+    sql: `${from ? ` AND ${column} >= ?` : ""}${to ? ` AND ${column} < ?` : ""}`,
+    values: [...(from ? [from] : []), ...(to ? [to] : [])],
+  };
+}
+
+export function getLearnAggregateReport(input: number | LearnAggregateReportOptions = 5) {
   const db = getLearnDb();
-  const learners = Number(db.prepare("SELECT COUNT(*) FROM learn_users WHERE provider_subject NOT LIKE 'deleted:%'").pluck().get());
-  const activeLearners = Number(db.prepare("SELECT COUNT(DISTINCT user_id) FROM learn_unit_progress WHERE course_version=?").pluck().get(COURSE_VERSION));
-  const completedLearners = Number(db.prepare("SELECT COUNT(DISTINCT user_id) FROM learn_assessment_attempts WHERE course_version=? AND passed=1").pluck().get(COURSE_VERSION));
-  const quiz = db.prepare("SELECT COUNT(*) attempts, COALESCE(SUM(passed), 0) passes FROM learn_quiz_attempts WHERE course_version=?").get(COURSE_VERSION) as { attempts: number; passes: number };
-  const assessment = db.prepare("SELECT COUNT(*) attempts, COALESCE(SUM(passed), 0) passes FROM learn_assessment_attempts WHERE course_version=?").get(COURSE_VERSION) as { attempts: number; passes: number };
-  const builderActiveLearners = Number(db.prepare("SELECT COUNT(DISTINCT user_id) FROM learn_builder_steps WHERE course_version=?").pluck().get(BUILDER_COURSE_VERSION));
-  const verifiedBuilderProofs = Number(db.prepare("SELECT COUNT(DISTINCT user_id) FROM learn_builder_submissions WHERE course_version=? AND status='verified'").pluck().get(BUILDER_COURSE_VERSION));
-  const builderAssessment = db.prepare("SELECT COUNT(*) attempts, COALESCE(SUM(passed), 0) passes FROM learn_builder_assessment_attempts WHERE course_version=?").get(BUILDER_COURSE_VERSION) as { attempts: number; passes: number };
-  const validFundamentalsCredentials = Number(db.prepare("SELECT COUNT(*) FROM learn_credentials WHERE credential_type='fundamentals' AND status NOT IN ('revoked', 'superseded')").pluck().get());
-  const validBuilderCredentials = Number(db.prepare("SELECT COUNT(*) FROM learn_credentials WHERE credential_type='builder' AND status NOT IN ('revoked', 'superseded')").pluck().get());
+  const options = typeof input === "number" ? { minimumCohort: input } : input;
+  const minimumCohort = Math.max(1, Math.min(100, Math.floor(options.minimumCohort ?? 5)));
+  const courseVersion = options.courseVersion ?? COURSE_VERSION;
+  const builderCourseVersion = options.builderCourseVersion ?? BUILDER_COURSE_VERSION;
+  const from = options.from;
+  const to = options.to;
+  const usersRange = reportRange("created_at", from, to);
+  const progressRange = reportRange("updated_at", from, to);
+  const attemptRange = reportRange("created_at", from, to);
+  const proofRange = reportRange("updated_at", from, to);
+  const issuedRange = reportRange("issued_at", from, to);
+
+  const learners = Number(db.prepare(`SELECT COUNT(*) FROM learn_users WHERE provider_subject NOT LIKE 'deleted:%'${usersRange.sql}`).pluck().get(...usersRange.values));
+  const activeLearners = Number(db.prepare(`SELECT COUNT(DISTINCT user_id) FROM learn_unit_progress WHERE course_version=?${progressRange.sql}`).pluck().get(courseVersion, ...progressRange.values));
+  const completedLearners = Number(db.prepare(`SELECT COUNT(DISTINCT user_id) FROM learn_assessment_attempts WHERE course_version=? AND passed=1${attemptRange.sql}`).pluck().get(courseVersion, ...attemptRange.values));
+  const quiz = db.prepare(`SELECT COUNT(*) attempts, COALESCE(SUM(passed), 0) passes FROM learn_quiz_attempts WHERE course_version=?${attemptRange.sql}`).get(courseVersion, ...attemptRange.values) as { attempts: number; passes: number };
+  const assessment = db.prepare(`SELECT COUNT(*) attempts, COALESCE(SUM(passed), 0) passes FROM learn_assessment_attempts WHERE course_version=?${attemptRange.sql}`).get(courseVersion, ...attemptRange.values) as { attempts: number; passes: number };
+  const builderStepsRange = reportRange("completed_at", from, to);
+  const builderActiveLearners = Number(db.prepare(`SELECT COUNT(DISTINCT user_id) FROM learn_builder_steps WHERE course_version=?${builderStepsRange.sql}`).pluck().get(builderCourseVersion, ...builderStepsRange.values));
+  const verifiedBuilderProofs = Number(db.prepare(`SELECT COUNT(DISTINCT user_id) FROM learn_builder_submissions WHERE course_version=? AND status='verified'${proofRange.sql}`).pluck().get(builderCourseVersion, ...proofRange.values));
+  const builderAssessment = db.prepare(`SELECT COUNT(*) attempts, COALESCE(SUM(passed), 0) passes FROM learn_builder_assessment_attempts WHERE course_version=?${attemptRange.sql}`).get(builderCourseVersion, ...attemptRange.values) as { attempts: number; passes: number };
+  const validFundamentalsCredentials = Number(db.prepare(`SELECT COUNT(*) FROM learn_credentials WHERE credential_type='fundamentals' AND course_version=? AND status NOT IN ('revoked', 'superseded')${issuedRange.sql}`).pluck().get(courseVersion, ...issuedRange.values));
+  const validBuilderCredentials = Number(db.prepare(`SELECT COUNT(*) FROM learn_credentials WHERE credential_type='builder' AND course_version=? AND status NOT IN ('revoked', 'superseded')${issuedRange.sql}`).pluck().get(builderCourseVersion, ...issuedRange.values));
   const proofTimingRows = db.prepare(`SELECT u.created_at accountCreatedAt, MIN(s.updated_at) verifiedAt
     FROM learn_users u JOIN learn_builder_submissions s ON s.user_id=u.id
-    WHERE s.course_version=? AND s.status='verified' AND u.provider_subject NOT LIKE 'deleted:%'
-    GROUP BY u.id`).all(BUILDER_COURSE_VERSION) as Array<{ accountCreatedAt: string; verifiedAt: string }>;
+    WHERE s.course_version=? AND s.status='verified' AND u.provider_subject NOT LIKE 'deleted:%'${reportRange("s.updated_at", from, to).sql}
+    GROUP BY u.id`).all(builderCourseVersion, ...reportRange("s.updated_at", from, to).values) as Array<{ accountCreatedAt: string; verifiedAt: string }>;
   const proofMinutes = proofTimingRows.map((row) => Math.max(0, Math.round((Date.parse(row.verifiedAt) - Date.parse(row.accountCreatedAt)) / 60_000))).sort((a, b) => a - b);
   const medianProofMinutes = proofMinutes.length % 2
     ? proofMinutes[Math.floor(proofMinutes.length / 2)]
     : proofMinutes.length ? Math.round((proofMinutes[proofMinutes.length / 2 - 1] + proofMinutes[proofMinutes.length / 2]) / 2) : null;
-  const units = db.prepare(`SELECT unit_slug unitSlug, COUNT(DISTINCT CASE WHEN lesson_completed_at IS NOT NULL THEN user_id END) lessonCompletions,
-    COUNT(DISTINCT CASE WHEN quiz_passed_at IS NOT NULL THEN user_id END) quizPassers, COALESCE(SUM(quiz_attempts), 0) quizAttempts
-    FROM learn_unit_progress WHERE course_version=? GROUP BY unit_slug ORDER BY unit_slug`).all(COURSE_VERSION);
-  const questions = db.prepare(`SELECT course_version courseVersion, context, question_id questionId, attempts, correct_count correctCount,
-    attempts-correct_count incorrectCount, ROUND((attempts-correct_count)*100.0/attempts, 1) failureRate
-    FROM learn_question_stats WHERE course_version IN (?, ?) AND attempts>=? ORDER BY course_version, failureRate DESC, attempts DESC, question_id`).all(COURSE_VERSION, BUILDER_COURSE_VERSION, minQuestionAttempts);
-  const credentials = db.prepare("SELECT credential_type credentialType, status, COUNT(*) count FROM learn_credentials GROUP BY credential_type, status ORDER BY credential_type, status").all();
+  const lessonRange = reportRange("lesson_completed_at", from, to);
+  const passRange = reportRange("quiz_passed_at", from, to);
+  const lessonRows = db.prepare(`SELECT unit_slug unitSlug, COUNT(DISTINCT user_id) count FROM learn_unit_progress WHERE course_version=? AND lesson_completed_at IS NOT NULL${lessonRange.sql} GROUP BY unit_slug`).all(courseVersion, ...lessonRange.values) as Array<{ unitSlug: string; count: number }>;
+  const passRows = db.prepare(`SELECT unit_slug unitSlug, COUNT(DISTINCT user_id) count FROM learn_unit_progress WHERE course_version=? AND quiz_passed_at IS NOT NULL${passRange.sql} GROUP BY unit_slug`).all(courseVersion, ...passRange.values) as Array<{ unitSlug: string; count: number }>;
+  const unitAttemptRows = db.prepare(`SELECT unit_slug unitSlug, COUNT(*) count FROM learn_quiz_attempts WHERE course_version=?${attemptRange.sql} GROUP BY unit_slug`).all(courseVersion, ...attemptRange.values) as Array<{ unitSlug: string; count: number }>;
+  const unitSlugs = new Set([...lessonRows, ...passRows, ...unitAttemptRows].map((row) => row.unitSlug));
+  const units = [...unitSlugs].sort().map((unitSlug) => ({
+    unitSlug,
+    lessonCompletions: lessonRows.find((row) => row.unitSlug === unitSlug)?.count ?? 0,
+    quizPassers: passRows.find((row) => row.unitSlug === unitSlug)?.count ?? 0,
+    quizAttempts: unitAttemptRows.find((row) => row.unitSlug === unitSlug)?.count ?? 0,
+  }));
+
+  const dailyQuestionRange = { from: from?.slice(0, 10), to: to?.slice(0, 10) };
+  const hasDateFilter = Boolean(from || to);
+  const questionRangeSql = `${dailyQuestionRange.from ? " AND day >= ?" : ""}${dailyQuestionRange.to ? " AND day < ?" : ""}`;
+  const questionRangeValues = [...(dailyQuestionRange.from ? [dailyQuestionRange.from] : []), ...(dailyQuestionRange.to ? [dailyQuestionRange.to] : [])];
+  const questions = hasDateFilter
+    ? db.prepare(`SELECT course_version courseVersion, context, question_id questionId, SUM(attempts) attempts, SUM(correct_count) correctCount,
+        SUM(attempts)-SUM(correct_count) incorrectCount, ROUND((SUM(attempts)-SUM(correct_count))*100.0/SUM(attempts), 1) failureRate
+        FROM learn_question_stats_daily WHERE course_version IN (?, ?)${questionRangeSql}
+        GROUP BY course_version, context, question_id HAVING SUM(attempts)>=?
+        ORDER BY course_version, failureRate DESC, attempts DESC, question_id`).all(courseVersion, builderCourseVersion, ...questionRangeValues, minimumCohort)
+    : db.prepare(`SELECT course_version courseVersion, context, question_id questionId, attempts, correct_count correctCount,
+        attempts-correct_count incorrectCount, ROUND((attempts-correct_count)*100.0/attempts, 1) failureRate
+        FROM learn_question_stats WHERE course_version IN (?, ?) AND attempts>=? ORDER BY course_version, failureRate DESC, attempts DESC, question_id`).all(courseVersion, builderCourseVersion, minimumCohort);
+  const credentials = db.prepare(`SELECT credential_type credentialType, status, COUNT(*) count FROM learn_credentials
+    WHERE ((credential_type='fundamentals' AND course_version=?) OR (credential_type='builder' AND course_version=?))${issuedRange.sql}
+    GROUP BY credential_type, status ORDER BY credential_type, status`).all(courseVersion, builderCourseVersion, ...issuedRange.values);
+  const questionMetricsFrom = db.prepare("SELECT MIN(day) FROM learn_question_stats_daily WHERE course_version IN (?, ?)").pluck().get(courseVersion, builderCourseVersion) as string | null;
+  const analyticsFrom = db.prepare("SELECT MIN(day) FROM learn_analytics_daily WHERE course_version=?").pluck().get(courseVersion) as string | null;
+  const analyticsDayRange = {
+    sql: `${from ? " AND day >= ?" : ""}${to ? " AND day < ?" : ""}`,
+    values: [...(from ? [from.slice(0, 10)] : []), ...(to ? [to.slice(0, 10)] : [])],
+  };
+  const analyticsRows = db.prepare(`SELECT event_name eventName, SUM(event_count) count FROM learn_analytics_daily
+    WHERE course_version=?${analyticsDayRange.sql} GROUP BY event_name`)
+    .all(courseVersion, ...analyticsDayRange.values) as Array<{ eventName: LearnAggregateEvent; count: number }>;
+  const analyticsCount = (...events: LearnAggregateEvent[]) => analyticsRows
+    .filter((row) => events.includes(row.eventName))
+    .reduce((total, row) => total + Number(row.count), 0);
+  const proofSuppressed = proofMinutes.length < minimumCohort;
   return {
     generatedAt: new Date().toISOString(),
-    courseVersion: COURSE_VERSION,
-    privacy: { aggregateOnly: true, minimumQuestionAttempts: minQuestionAttempts, minimumTimingCohort: minQuestionAttempts },
+    courseVersion,
+    builderCourseVersion,
+    filters: { from: from ?? null, to: to ?? null, courseVersion, builderCourseVersion },
+    availableVersions: getLearnAvailableVersions(),
+    privacy: { aggregateOnly: true, minimumQuestionAttempts: minimumCohort, minimumTimingCohort: minimumCohort },
+    coverage: {
+      questionMetrics: hasDateFilter ? "daily" : "lifetime",
+      questionMetricsFrom,
+      historicalQuestionBackfillAvailable: false,
+      analyticsFrom,
+    },
+    handoffs: {
+      courseViews: { status: "available", source: "consent-aware aggregate", count: analyticsCount("learn_course_view") },
+      quickstartStarts: { status: "available", source: "consent-aware aggregate", count: analyticsCount("learn_quickstart_start", "learn_docs_conversion") },
+      sokosumiPublishing: { status: "available", source: "consent-aware aggregate", count: analyticsCount("learn_publish_conversion") },
+    },
     funnel: {
       learners,
       activeLearners,
@@ -389,14 +522,40 @@ export function getLearnAggregateReport(minQuestionAttempts = 5) {
       fundamentalsToBuilderConversionRate: validFundamentalsCredentials ? Math.round(validBuilderCredentials / validFundamentalsCredentials * 1000) / 10 : 0,
       timeToFirstVerifiedPreprodProof: {
         definition: "account_created_to_first_verified_proof_minutes",
-        cohortSize: proofMinutes.length,
-        medianMinutes: proofMinutes.length >= minQuestionAttempts ? medianProofMinutes : null,
-        suppressed: proofMinutes.length < minQuestionAttempts,
+        cohortSize: proofSuppressed ? null : proofMinutes.length,
+        medianMinutes: proofSuppressed ? null : medianProofMinutes,
+        suppressed: proofSuppressed,
       },
     },
     units,
     questions,
     credentials,
+  };
+}
+
+export function getLearnAvailableVersions(): LearnAvailableVersions {
+  const db = getLearnDb();
+  const fundamentals = db.prepare(`
+    SELECT course_version FROM learn_unit_progress
+    UNION SELECT course_version FROM learn_quiz_attempts
+    UNION SELECT course_version FROM learn_assessment_attempts
+    UNION SELECT course_version FROM learn_question_stats WHERE context NOT LIKE 'builder%'
+    UNION SELECT course_version FROM learn_question_stats_daily WHERE context NOT LIKE 'builder%'
+    UNION SELECT course_version FROM learn_credentials WHERE credential_type='fundamentals'
+    ORDER BY course_version
+  `).pluck().all() as string[];
+  const builder = db.prepare(`
+    SELECT course_version FROM learn_builder_steps
+    UNION SELECT course_version FROM learn_builder_submissions
+    UNION SELECT course_version FROM learn_builder_assessment_attempts
+    UNION SELECT course_version FROM learn_question_stats WHERE context LIKE 'builder%'
+    UNION SELECT course_version FROM learn_question_stats_daily WHERE context LIKE 'builder%'
+    UNION SELECT course_version FROM learn_credentials WHERE credential_type='builder'
+    ORDER BY course_version
+  `).pluck().all() as string[];
+  return {
+    fundamentals: [...new Set([COURSE_VERSION, ...fundamentals])],
+    builder: [...new Set([BUILDER_COURSE_VERSION, ...builder])],
   };
 }
 
