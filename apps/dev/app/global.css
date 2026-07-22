@@ -4259,6 +4259,8 @@ body:has(.devhub-subheader[data-docs-nav='true']) .masumi-docs-layout {
 .dev-flow-node *,
 .dev-flow-nori-node,
 .dev-flow-nori-node *,
+.dev-flow-reveal-node,
+.dev-flow-reveal-node *,
 .dev-flow-decision-node,
 .dev-flow-decision-node * {
   touch-action: pan-y;
@@ -4288,6 +4290,7 @@ body:has(.devhub-subheader[data-docs-nav='true']) .masumi-docs-layout {
 
 .dev-flow-node,
 .dev-flow-nori-node,
+.dev-flow-reveal-node,
 .dev-flow-decision-node {
   --node-accent: var(--flow-pink);
   --node-soft: color-mix(in srgb, var(--node-accent) 8%, #ffffff);
@@ -4453,25 +4456,111 @@ body:has(.devhub-subheader[data-docs-nav='true']) .masumi-docs-layout {
   margin: 0;
 }
 
+.dev-flow-reveal-node {
+  --node-accent: var(--flow-pink);
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr) 18px;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+  width: 100%;
+  min-height: 42px;
+  padding: 7px 9px;
+  appearance: none;
+  border: 1px solid color-mix(in srgb, var(--node-accent) 22%, rgba(0, 0, 0, 0.08));
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--node-accent) 5%, var(--flow-surface));
+  color: var(--flow-ink);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+  text-align: left;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  transition: border-color 160ms ease, background-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+}
+
+.dev-flow-reveal-node[data-tone='sokosumi'] {
+  --node-accent: var(--flow-purple);
+}
+
+.dev-flow-reveal-node[data-tone='agents'] {
+  --node-accent: var(--flow-orange);
+}
+
+.dev-flow-reveal-node:hover {
+  border-color: color-mix(in srgb, var(--node-accent) 48%, rgba(0, 0, 0, 0.08));
+  background: color-mix(in srgb, var(--node-accent) 9%, var(--flow-surface));
+  box-shadow: 0 9px 24px color-mix(in srgb, var(--node-accent) 12%, transparent);
+  transform: translateY(-1px);
+}
+
+.dev-flow-reveal-node:focus-visible {
+  outline: 2px solid var(--node-accent);
+  outline-offset: 3px;
+}
+
+.dev-flow-reveal-node[data-expanded='true'] {
+  border-color: color-mix(in srgb, var(--node-accent) 55%, rgba(0, 0, 0, 0.08));
+  background: color-mix(in srgb, var(--node-accent) 12%, var(--flow-surface));
+}
+
+.dev-flow-reveal-icon,
+.dev-flow-reveal-chevron {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--node-accent);
+}
+
+.dev-flow-reveal-icon {
+  width: 20px;
+  height: 20px;
+  border-radius: 5px;
+  background: color-mix(in srgb, var(--node-accent) 12%, #ffffff);
+}
+
+.dev-flow-reveal-icon svg,
+.dev-flow-reveal-chevron svg {
+  width: 12px;
+  height: 12px;
+}
+
+.dev-flow-reveal-chevron {
+  transition: transform 180ms ease;
+}
+
+.dev-flow-reveal-node[data-expanded='true'] .dev-flow-reveal-chevron {
+  transform: rotate(180deg);
+}
+
+.dev-flow-reveal-node .dev-flow-handle {
+  opacity: 0;
+}
+
 .dev-flow-decision-node {
   flex-direction: row;
   align-items: center;
-  justify-content: center;
-  gap: 7px;
-  min-height: 0;
-  padding: 8px 14px;
-  border-style: dashed;
-  border-color: color-mix(in srgb, var(--node-accent) 46%, rgba(0, 0, 0, 0.04));
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--node-accent) 4%, var(--flow-surface));
+  justify-content: flex-start;
+  gap: 8px;
+  min-height: 42px;
+  padding: 7px 10px;
+  border-style: solid;
+  border-color: color-mix(in srgb, var(--node-accent) 22%, rgba(0, 0, 0, 0.08));
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--node-accent) 5%, var(--flow-surface));
   cursor: default;
-  text-align: center;
+  text-align: left;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  transition: border-color 160ms ease, background-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
 }
 
 .dev-flow-decision-node strong {
+  flex: 1;
   color: var(--flow-ink);
-  font-size: 12.5px;
-  font-weight: 500;
+  font-size: 12px;
+  font-weight: 600;
   line-height: 1.25;
   text-wrap: balance;
 }
@@ -4487,8 +4576,15 @@ body:has(.devhub-subheader[data-docs-nav='true']) .masumi-docs-layout {
 }
 
 .dev-flow-decision-toggle:hover {
-  border-style: solid;
+  border-color: color-mix(in srgb, var(--node-accent) 48%, rgba(0, 0, 0, 0.08));
   background: color-mix(in srgb, var(--node-accent) 8%, var(--flow-surface));
+  box-shadow: 0 9px 24px color-mix(in srgb, var(--node-accent) 10%, transparent);
+  transform: translateY(-1px);
+}
+
+.dev-flow-decision-toggle:focus-visible {
+  outline: 2px solid var(--node-accent);
+  outline-offset: 3px;
 }
 
 .dev-flow-decision-toggle[data-expanded='true'] {
@@ -4518,9 +4614,9 @@ body:has(.devhub-subheader[data-docs-nav='true']) .masumi-docs-layout {
   align-items: center;
   justify-content: center;
   flex: none;
-  width: 18px;
-  height: 18px;
-  border-radius: 999px;
+  width: 20px;
+  height: 20px;
+  border-radius: 5px;
   background: color-mix(in srgb, var(--node-accent) 10%, #ffffff);
   color: var(--node-accent);
 }
@@ -4594,6 +4690,8 @@ body:has(.devhub-subheader[data-docs-nav='true']) .masumi-docs-layout {
   .dev-flow-node *,
   .dev-flow-nori-node,
   .dev-flow-nori-node *,
+  .dev-flow-reveal-node,
+  .dev-flow-reveal-node *,
   .dev-flow-decision-node,
   .dev-flow-decision-node * {
     touch-action: pan-y !important;

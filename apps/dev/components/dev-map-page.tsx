@@ -12,10 +12,8 @@ export function DevMapPage() {
           </p>
           <h1 id="dev-map-title">Dev Hub Map</h1>
           <p>
-            Short routes into Ask Nori, Sokosumi operations, Masumi payments, and agent-ready docs.
-            Click a decision to reveal its paths: learn the theory or build right away, how agents
-            get paid (MIP-003 with refunds vs x402 without), and how to run Masumi (self-hosted vs
-            Masumi as a Service).
+            Choose a path through the Masumi ecosystem: explore the marketplace, learn the
+            fundamentals, equip your agent, or build with the protocol.
           </p>
         </header>
 
