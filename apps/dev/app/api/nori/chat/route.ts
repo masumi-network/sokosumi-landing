@@ -24,7 +24,11 @@ const AI_STREAM_HEADERS = {
 };
 
 const NORI_UPSTREAM_MAX_ATTEMPTS = 2;
-const NORI_UPSTREAM_DEADLINE_MS = 55_000;
+// The Nori runtime allows a model call to run for 120 seconds. Keep this
+// bridge open slightly longer so a valid long answer is not aborted first.
+const NORI_UPSTREAM_DEADLINE_MS = 130_000;
+const NORI_STREAM_KEEPALIVE_MS = 10_000;
+const NORI_RESPONSE_MESSAGE_ID = 'response-message';
 
 type ChatRole = 'user' | 'assistant' | 'system';
 type NoriDocsContext = ReturnType<typeof createNoriDocsContext>;
@@ -679,24 +683,24 @@ function paymentEventFromValue(value: unknown, depth = 0): PaymentEvent | null {
   return null;
 }
 
-function streamJsonAnswer(
+function jsonAnswerEvents(
   answer: string,
   citations: Citation[],
   paymentEvent: PaymentEvent | null,
-  requestId?: string,
 ) {
-  const messageId = 'response-message';
-  const events: unknown[] = [
-    { type: 'text-start', id: messageId },
+  return [
+    { type: 'text-start', id: NORI_RESPONSE_MESSAGE_ID },
     ...(paymentEvent ? [{ type: 'data-payment', data: paymentEvent }] : []),
-    { type: 'text-delta', id: messageId, delta: answer || 'Nori returned an empty answer.' },
-    { type: 'text-end', id: messageId },
+    {
+      type: 'text-delta',
+      id: NORI_RESPONSE_MESSAGE_ID,
+      delta: answer || 'Nori returned an empty answer.',
+    },
+    { type: 'text-end', id: NORI_RESPONSE_MESSAGE_ID },
     ...citations.map((citation) => ({ type: 'data-citation', data: citation })),
     { type: 'finish' },
     '[DONE]',
   ];
-
-  return streamAiEvents(events, 200, requestId);
 }
 
 function safeHost(value: string) {
@@ -727,19 +731,21 @@ async function fetchNoriUpstream(
   agentUrl: string,
   headers: Record<string, string>,
   body: string,
+  signal: AbortSignal,
 ) {
   let lastError: unknown;
   const deadline = Date.now() + NORI_UPSTREAM_DEADLINE_MS;
 
   for (let attempt = 1; attempt <= NORI_UPSTREAM_MAX_ATTEMPTS; attempt += 1) {
     try {
+      signal.throwIfAborted();
       const remainingMs = deadline - Date.now();
       if (remainingMs <= 0) throw new Error('Nori upstream deadline exceeded.');
       const response = await fetch(agentUrl, {
         method: 'POST',
         headers,
         body,
-        signal: AbortSignal.timeout(remainingMs),
+        signal: AbortSignal.any([signal, AbortSignal.timeout(remainingMs)]),
       });
 
       if (response.status >= 500 && attempt < NORI_UPSTREAM_MAX_ATTEMPTS) {
@@ -756,6 +762,7 @@ async function fetchNoriUpstream(
 
       return response;
     } catch (error) {
+      if (signal.aborted) throw error;
       lastError = error;
       logNoriEvent(ctx, attempt < NORI_UPSTREAM_MAX_ATTEMPTS ? 'warn' : 'error', 'chat_upstream_retry', {
         attempt,
@@ -770,6 +777,167 @@ async function fetchNoriUpstream(
   }
 
   throw lastError;
+}
+
+function streamNoriUpstreamResponse({
+  ctx,
+  agentUrl,
+  headers,
+  body,
+  priorityCitations,
+  requestSignal,
+}: {
+  ctx: NoriRequestContext;
+  agentUrl: string;
+  headers: Record<string, string>;
+  body: string;
+  priorityCitations: Citation[];
+  requestSignal: AbortSignal;
+}) {
+  const encoder = new TextEncoder();
+  const responseHeaders = new Headers(AI_STREAM_HEADERS);
+  withNoriRequestHeaders(responseHeaders, ctx);
+  let cancelled = false;
+  let upstreamReader: ReadableStreamDefaultReader<Uint8Array> | undefined;
+  const downstreamAbort = new AbortController();
+  const upstreamSignal = AbortSignal.any([requestSignal, downstreamAbort.signal]);
+
+  const stream = new ReadableStream<Uint8Array>({
+    start(controller) {
+      const enqueue = (chunk: string | Uint8Array) => {
+        if (cancelled) return false;
+        try {
+          controller.enqueue(typeof chunk === 'string' ? encoder.encode(chunk) : chunk);
+          return true;
+        } catch (error) {
+          cancelled = true;
+          downstreamAbort.abort(error);
+          return false;
+        }
+      };
+      const enqueueEvent = (event: unknown) => enqueue(dataSse(event));
+
+      // Flush response headers immediately. Nori currently returns JSON only
+      // after the model finishes, which can exceed the public first-byte limit.
+      enqueue(': nori-open\n\n');
+      logNoriEvent(ctx, 'info', 'chat_stream_opened');
+
+      const keepalive = setInterval(() => {
+        enqueue(`: nori-keepalive ${Date.now()}\n\n`);
+      }, NORI_STREAM_KEEPALIVE_MS);
+
+      void (async () => {
+        try {
+          const upstream = await fetchNoriUpstream(ctx, agentUrl, headers, body, upstreamSignal);
+          const contentType = upstream.headers.get('content-type') ?? '';
+          logNoriEvent(ctx, upstream.ok ? 'info' : 'warn', 'chat_upstream_response', {
+            status: upstream.status,
+            contentType,
+          });
+
+          if (!upstream.ok) {
+            const detail = await upstream.text().catch(() => '');
+            logNoriEvent(ctx, 'warn', 'chat_upstream_error_body', {
+              status: upstream.status,
+              detail: detail.slice(0, 500),
+            });
+            enqueueEvent({
+              type: 'error',
+              errorText: `Nori backend returned ${upstream.status}${detail ? `: ${detail.slice(0, 300)}` : ''}`,
+              requestId: ctx.requestId,
+            });
+            enqueueEvent({ type: 'finish' });
+            enqueueEvent('[DONE]');
+            return;
+          }
+
+          if (contentType.includes('text/event-stream') && upstream.body) {
+            const upstreamStreamVersion = upstream.headers.get('x-vercel-ai-ui-message-stream');
+            if (upstreamStreamVersion && upstreamStreamVersion !== 'v1') {
+              await upstream.body.cancel();
+              logNoriEvent(ctx, 'error', 'chat_upstream_stream_version_mismatch', {
+                upstreamStreamVersion,
+                supportedStreamVersion: 'v1',
+              });
+              enqueueEvent({
+                type: 'error',
+                errorText: `Nori returned an unsupported stream version (Nori request ${ctx.requestId})`,
+                requestId: ctx.requestId,
+              });
+              enqueueEvent({ type: 'finish' });
+              enqueueEvent('[DONE]');
+              return;
+            }
+
+            upstreamReader = normalizeAndCloseOnTerminalEvent(
+              upstream.body,
+              ctx,
+              priorityCitations,
+            ).getReader();
+            while (!cancelled) {
+              const { done, value } = await upstreamReader.read();
+              if (done) break;
+              enqueue(value);
+            }
+            return;
+          }
+
+          const data = await jsonOrText(upstream);
+          const record = data && typeof data === 'object' ? (data as Record<string, unknown>) : {};
+          const answer = answerFromRecord(record, data);
+          const upstreamCitations = citationsFromRecord(record);
+          const citations = priorityCitations.length > 0 ? priorityCitations : upstreamCitations;
+          const paymentEvent = paymentEventFromValue(record);
+          logNoriEvent(ctx, 'info', 'chat_json_response', {
+            hasAnswer: Boolean(answer),
+            citationCount: citations.length,
+            upstreamCitationCount: upstreamCitations.length,
+            hasPaymentEvent: Boolean(paymentEvent),
+          });
+
+          for (const event of jsonAnswerEvents(answer, citations, paymentEvent)) {
+            enqueueEvent(event);
+          }
+        } catch (error) {
+          if (cancelled || upstreamSignal.aborted) {
+            logNoriEvent(ctx, 'info', 'chat_request_cancelled', {
+              error: errorDetails(error),
+            });
+            return;
+          }
+
+          const message = error instanceof Error ? error.message : 'Nori backend request failed.';
+          logNoriEvent(ctx, 'error', 'chat_request_failed', { error: errorDetails(error) });
+          enqueueEvent({
+            type: 'error',
+            errorText: `${message} (Nori request ${ctx.requestId})`,
+            requestId: ctx.requestId,
+          });
+          enqueueEvent({ type: 'finish' });
+          enqueueEvent('[DONE]');
+        } finally {
+          clearInterval(keepalive);
+          if (!cancelled) {
+            try {
+              controller.close();
+            } catch {
+              cancelled = true;
+            }
+          }
+        }
+      })();
+    },
+    cancel(reason) {
+      cancelled = true;
+      downstreamAbort.abort(reason);
+      return upstreamReader?.cancel(reason);
+    },
+  });
+
+  return new NextResponse(stream, {
+    status: 200,
+    headers: responseHeaders,
+  });
 }
 
 export async function POST(request: NextRequest) {
@@ -820,77 +988,27 @@ export async function POST(request: NextRequest) {
   headers['X-Nori-Docs-Full-Corpus-Url'] = docsContext.machineReadable.fullCorpusUrl;
   headers['X-Nori-Docs-Markdown-Index-Url'] = docsContext.machineReadable.markdownIndexUrl;
 
-  try {
-    logNoriEvent(ctx, 'info', 'chat_request_started', {
-      messageLength: message.length,
-      hasHistory: Array.isArray(payload.history) && payload.history.length > 0,
-      hasMessages: Array.isArray(payload.messages) && payload.messages.length > 0,
-      hasPriorityDocsContext: priorityCitations.length > 0,
-      page:
-        payload.page && typeof payload.page === 'object'
-          ? {
-              path: (payload.page as Record<string, unknown>).path,
-              title: (payload.page as Record<string, unknown>).title,
-            }
-          : undefined,
-      noriAgentHost: safeHost(agentUrl),
-    });
+  logNoriEvent(ctx, 'info', 'chat_request_started', {
+    messageLength: message.length,
+    hasHistory: Array.isArray(payload.history) && payload.history.length > 0,
+    hasMessages: Array.isArray(payload.messages) && payload.messages.length > 0,
+    hasPriorityDocsContext: priorityCitations.length > 0,
+    page:
+      payload.page && typeof payload.page === 'object'
+        ? {
+            path: (payload.page as Record<string, unknown>).path,
+            title: (payload.page as Record<string, unknown>).title,
+          }
+        : undefined,
+    noriAgentHost: safeHost(agentUrl),
+  });
 
-    const upstream = await fetchNoriUpstream(
-      ctx,
-      agentUrl,
-      headers,
-      JSON.stringify(createSokosumiChatPayload(payload, message, docsContext, noriUserId)),
-    );
-
-    const contentType = upstream.headers.get('content-type') ?? '';
-    logNoriEvent(ctx, upstream.ok ? 'info' : 'warn', 'chat_upstream_response', {
-      status: upstream.status,
-      contentType,
-    });
-
-    if (!upstream.ok) {
-      const detail = await upstream.text().catch(() => '');
-      logNoriEvent(ctx, 'warn', 'chat_upstream_error_body', {
-        status: upstream.status,
-        detail: detail.slice(0, 500),
-      });
-      return errorStream(
-        `Nori backend returned ${upstream.status}${detail ? `: ${detail.slice(0, 300)}` : ''}`,
-        200,
-        ctx.requestId,
-      );
-    }
-
-    if (contentType.includes('text/event-stream') && upstream.body) {
-      const streamHeaders = new Headers(AI_STREAM_HEADERS);
-      withNoriRequestHeaders(streamHeaders, ctx);
-      const upstreamAiStream = upstream.headers.get('x-vercel-ai-ui-message-stream');
-      if (upstreamAiStream) streamHeaders.set('x-vercel-ai-ui-message-stream', upstreamAiStream);
-
-      return new NextResponse(normalizeAndCloseOnTerminalEvent(upstream.body, ctx, priorityCitations), {
-        status: 200,
-        headers: streamHeaders,
-      });
-    }
-
-    const data = await jsonOrText(upstream);
-    const record = data && typeof data === 'object' ? (data as Record<string, unknown>) : {};
-    const answer = answerFromRecord(record, data);
-    const upstreamCitations = citationsFromRecord(record);
-    const citations = priorityCitations.length > 0 ? priorityCitations : upstreamCitations;
-    const paymentEvent = paymentEventFromValue(record);
-    logNoriEvent(ctx, 'info', 'chat_json_response', {
-      hasAnswer: Boolean(answer),
-      citationCount: citations.length,
-      upstreamCitationCount: upstreamCitations.length,
-      hasPaymentEvent: Boolean(paymentEvent),
-    });
-
-    return streamJsonAnswer(answer, citations, paymentEvent, ctx.requestId);
-  } catch (error) {
-    const message = error instanceof Error ? error.message : 'Nori backend request failed.';
-    logNoriEvent(ctx, 'error', 'chat_request_failed', { error: errorDetails(error) });
-    return errorStream(`${message} (Nori request ${ctx.requestId})`, 200, ctx.requestId);
-  }
+  return streamNoriUpstreamResponse({
+    ctx,
+    agentUrl,
+    headers,
+    body: JSON.stringify(createSokosumiChatPayload(payload, message, docsContext, noriUserId)),
+    priorityCitations,
+    requestSignal: request.signal,
+  });
 }

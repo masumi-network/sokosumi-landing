@@ -6,7 +6,7 @@ const chatUrl = new URL('/dev/api/nori/chat', baseUrl);
 const healthUrl = new URL('/dev/api/nori/health', baseUrl);
 const identityUrl = new URL('/dev/api/nori/identity', baseUrl);
 const expectedCommitSha = (process.env.NORI_E2E_EXPECT_COMMIT_SHA || '').trim();
-const requestTimeoutMs = positiveInteger(process.env.NORI_E2E_REQUEST_TIMEOUT_MS, 60_000);
+const requestTimeoutMs = positiveInteger(process.env.NORI_E2E_REQUEST_TIMEOUT_MS, 150_000);
 const rolloutTimeoutMs = positiveInteger(process.env.NORI_E2E_ROLLOUT_TIMEOUT_MS, 180_000);
 const runId = randomUUID().replaceAll('-', '').slice(0, 16).toUpperCase();
 const conversationId = `nori-e2e-${runId.toLowerCase()}`;
@@ -35,6 +35,56 @@ assert.match(
   followUp.answer,
   new RegExp(followUpMarker),
   'Follow-up reply did not contain its unique marker.',
+);
+
+const longMarker = `NORI_E2E_LONG_${runId}`;
+const longPrompt = [
+  'Deployment length canary. This is a deterministic transcription test.',
+  'Do not call tools. Output only the requested rows: no heading, explanation, bullets, code fence, ellipsis, or summary.',
+  'Write exactly 140 newline-separated rows.',
+  'For each integer N from 1 through 140 inclusive, write exactly:',
+  'ROW NNN masumi escrow payment agent task verify settle receipt status complete',
+  'Replace NNN with N zero-padded to three digits. Start at ROW 001. Do not skip, duplicate, merge, or abbreviate rows.',
+  `After ROW 140, write ${longMarker} on its own line.`,
+  'The marker must be the final non-whitespace text.',
+].join(' ');
+const long = await callNori('response-allowance', {
+  message: longPrompt,
+  conversationId,
+  history: [
+    { role: 'user', content: firstPrompt },
+    { role: 'assistant', content: first.answer },
+  ],
+});
+const normalizedLongAnswer = long.answer.replaceAll('\r\n', '\n').trim();
+assert.ok(
+  normalizedLongAnswer.endsWith(`\n${longMarker}`),
+  `Long reply did not finish with its unique marker. Tail: ${normalizedLongAnswer.slice(-300)}`,
+);
+assert.equal(
+  normalizedLongAnswer.split(longMarker).length - 1,
+  1,
+  'Long reply did not contain exactly one final marker.',
+);
+const longRows = [
+  ...normalizedLongAnswer.matchAll(
+    /^ROW (\d{3}) masumi escrow payment agent task verify settle receipt status complete$/gm,
+  ),
+].map((match) => Number(match[1]));
+assert.ok(longRows.length >= 130, `Long reply contained only ${longRows.length} valid canary rows.`);
+assert.equal(longRows[0], 1, 'Long reply did not start with ROW 001.');
+assert.equal(longRows.at(-1), 140, 'Long reply did not reach ROW 140.');
+assert.equal(new Set(longRows).size, longRows.length, 'Long reply duplicated one or more canary rows.');
+assert.ok(
+  longRows.every((value, index) => index === 0 || value > longRows[index - 1]),
+  'Long reply canary rows were out of order.',
+);
+const longLexicalUnits = normalizedLongAnswer.split(/\s+/).length;
+assert.ok(longLexicalUnits >= 1_500, `Long reply contained only ${longLexicalUnits} lexical units.`);
+assert.ok(normalizedLongAnswer.length >= 8_000, `Long reply contained only ${normalizedLongAnswer.length} characters.`);
+assert.ok(
+  long.headersMs < 15_000,
+  `Long reply stream took ${long.headersMs} ms to open; keepalives may not be flushing.`,
 );
 
 const docsMarker = `NORI_E2E_DOCS_${runId}`;
@@ -76,6 +126,7 @@ console.log(
     cases: [
       summarize(first),
       summarize(followUp),
+      summarize(long),
       summarize(docs),
       { name: 'registry-identity', verified: true },
     ],
@@ -112,6 +163,7 @@ function commitMatches(actual) {
 
 async function callNori(name, payload) {
   const requestId = `nori-e2e-${name}-${randomUUID()}`;
+  const startedAt = Date.now();
   const response = await fetch(chatUrl, {
     method: 'POST',
     headers: {
@@ -122,7 +174,9 @@ async function callNori(name, payload) {
     body: JSON.stringify(payload),
     signal: AbortSignal.timeout(requestTimeoutMs),
   });
+  const headersMs = Date.now() - startedAt;
   const raw = await response.text();
+  const totalMs = Date.now() - startedAt;
 
   assert.equal(response.status, 200, `${name}: chat returned HTTP ${response.status}: ${raw.slice(0, 500)}`);
   assert.match(
@@ -154,6 +208,8 @@ async function callNori(name, payload) {
     requestId,
     answer: parsed.answer,
     citations: parsed.citations,
+    headersMs,
+    totalMs,
     durationHeader: response.headers.get('server-timing'),
   };
 }
@@ -230,5 +286,7 @@ function summarize(result) {
     requestId: result.requestId,
     answerLength: result.answer.length,
     citationCount: result.citations.length,
+    headersMs: result.headersMs,
+    totalMs: result.totalMs,
   };
 }
