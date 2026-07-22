@@ -787,6 +787,7 @@ export function NoriChat({
   const submittedResultSessionsRef = useRef<Set<string>>(new Set());
   const pendingDeltaRef = useRef('');
   const deltaFlushTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const conversationIdRef = useRef('');
 
   const history = useMemo(
     () =>
@@ -1212,12 +1213,14 @@ export function NoriChat({
     beginConversation();
 
     try {
+      conversationIdRef.current ||= crypto.randomUUID();
       const response = await fetch(withBasePath('/api/nori/chat'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           message,
           history,
+          conversationId: conversationIdRef.current,
           page: initialPage,
         }),
       });

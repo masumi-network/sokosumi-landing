@@ -5,7 +5,8 @@ for both products plus the Nori docs assistant:
 
 | Path | What |
 | --- | --- |
-| `/dev` | Ask Nori (portal home, chat over all docs) |
+| `/dev` | Visual map of the developer portal |
+| `/dev/ask` | Ask Nori (chat over all docs) |
 | `/dev/masumi/*` | Masumi docs (Documentation, Core Concepts, API Reference, N8N Node, MIPs) |
 | `/dev/sokosumi/*` | Sokosumi docs (Documentation, API Reference, CLI, MCP) |
 | `/dev/llms.txt`, `/dev/llms-full.txt`, `/dev/md-index` | Machine-readable indexes across both products |
@@ -60,6 +61,29 @@ COWORKERS_API_KEY=
 
 Optional: `NEXT_PUBLIC_SITE_URL` (defaults to `https://www.masumi.network`) is
 used to build absolute URLs in `llms.txt`, `robots.txt`, etc.
+
+`NORI_AGENT_IDENTIFIER` can be set to Nori's registry asset ID for an exact
+identity lookup. Without it, the portal follows the paginated registry and
+matches the host in `NORI_AGENT_URL`.
+
+`NORI_RATE_LIMIT_SECRET` optionally supplies a dedicated HMAC secret for the
+privacy-safe `X-Real-IP` quota key sent to Nori. When it is unset, the existing
+Nori API key is used as the HMAC secret.
+
+## Nori production checks
+
+Run the real-model suite against the canonical public path:
+
+```bash
+npm -w @summation/dev-portal run test:nori:e2e
+```
+
+The suite makes a fresh request, an actual multi-turn follow-up, and a
+docs-grounded request. It parses the complete SSE stream, rejects embedded
+error events even when the HTTP response is 200, checks no-store caching and
+request correlation, and verifies Nori's live Masumi registry identity. The
+`Nori production E2E` GitHub workflow runs it after terminal production
+deployment events, nightly, and on manual dispatch.
 
 ## Deployment
 

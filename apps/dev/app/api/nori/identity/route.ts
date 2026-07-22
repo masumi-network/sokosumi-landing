@@ -22,10 +22,9 @@ export async function GET(request: NextRequest) {
       network: identity.network,
       error: identity.error,
     });
-    return NextResponse.json(
-      { ok: true, identity, requestId: ctx.requestId },
-      { headers: withNoriRequestHeaders(new Headers(), ctx) },
-    );
+    const headers = withNoriRequestHeaders(new Headers(), ctx);
+    headers.set('Cache-Control', 'private, no-store, no-cache, max-age=0, must-revalidate');
+    return NextResponse.json({ ok: true, identity, requestId: ctx.requestId }, { headers });
   } catch (error) {
     return noriJsonErrorResponse(ctx, error, 'Nori identity lookup failed.');
   }

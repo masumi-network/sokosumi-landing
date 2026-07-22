@@ -94,6 +94,16 @@ const config = {
           },
         ],
       },
+      {
+        // Nori chat, identity, and payment responses are user/session-specific.
+        source: '/api/nori/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'private, no-store, no-cache, max-age=0, must-revalidate, no-transform',
+          },
+        ],
+      },
     ];
   },
 };

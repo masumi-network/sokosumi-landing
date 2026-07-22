@@ -1,3 +1,4 @@
+import { createHmac } from 'node:crypto';
 import { NextRequest, NextResponse } from 'next/server';
 import { canonicalDocsUrl, portalUrl } from '@/lib/base-path';
 import {
@@ -23,6 +24,7 @@ const AI_STREAM_HEADERS = {
 };
 
 const NORI_UPSTREAM_MAX_ATTEMPTS = 2;
+const NORI_UPSTREAM_DEADLINE_MS = 55_000;
 
 type ChatRole = 'user' | 'assistant' | 'system';
 type NoriDocsContext = ReturnType<typeof createNoriDocsContext>;
@@ -430,6 +432,7 @@ function createSokosumiChatPayload(
   payload: Record<string, unknown>,
   message: string,
   docsContext = createNoriDocsContext(),
+  userId = 'docs-user',
 ) {
   const freshDocsGuidance = createFreshSokosumiDocsGuidance(message, docsContext);
   const routedMessage = freshDocsGuidance ? withFreshDocsGuidance(message, docsContext) : message;
@@ -460,7 +463,7 @@ function createSokosumiChatPayload(
   return {
     messages,
     message: routedMessage,
-    userId: typeof payload.userId === 'string' ? payload.userId : 'docs-user',
+    userId,
     input: routedMessage,
     prompt: routedMessage,
     history,
@@ -708,6 +711,17 @@ function wait(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+function createNoriRateLimitUserId(request: NextRequest, secret: string) {
+  // Railway sets X-Real-IP at its edge. Do not accept caller-controlled
+  // conversation IDs or forwarded-for values as quota identities.
+  const realIp = request.headers.get('x-real-ip')?.trim() || 'unattributed';
+  const digest = createHmac('sha256', secret || 'nori-public-rate-limit')
+    .update(realIp)
+    .digest('hex')
+    .slice(0, 32);
+  return `docs-${digest}`;
+}
+
 async function fetchNoriUpstream(
   ctx: NoriRequestContext,
   agentUrl: string,
@@ -715,13 +729,17 @@ async function fetchNoriUpstream(
   body: string,
 ) {
   let lastError: unknown;
+  const deadline = Date.now() + NORI_UPSTREAM_DEADLINE_MS;
 
   for (let attempt = 1; attempt <= NORI_UPSTREAM_MAX_ATTEMPTS; attempt += 1) {
     try {
+      const remainingMs = deadline - Date.now();
+      if (remainingMs <= 0) throw new Error('Nori upstream deadline exceeded.');
       const response = await fetch(agentUrl, {
         method: 'POST',
         headers,
         body,
+        signal: AbortSignal.timeout(remainingMs),
       });
 
       if (response.status >= 500 && attempt < NORI_UPSTREAM_MAX_ATTEMPTS) {
@@ -731,7 +749,8 @@ async function fetchNoriUpstream(
           status: response.status,
           detail: detail.slice(0, 500),
         });
-        await wait(300);
+        const retryDelayMs = Math.min(300, Math.max(0, deadline - Date.now()));
+        if (retryDelayMs > 0) await wait(retryDelayMs);
         continue;
       }
 
@@ -745,7 +764,8 @@ async function fetchNoriUpstream(
       });
 
       if (attempt >= NORI_UPSTREAM_MAX_ATTEMPTS) throw error;
-      await wait(300);
+      const retryDelayMs = Math.min(300, Math.max(0, deadline - Date.now()));
+      if (retryDelayMs > 0) await wait(retryDelayMs);
     }
   }
 
@@ -783,6 +803,12 @@ export async function POST(request: NextRequest) {
   };
 
   const noriApiKey = process.env.COWORKERS_API_KEY || process.env.NORI_AGENT_API_KEY;
+  const noriUserId = createNoriRateLimitUserId(
+    request,
+    process.env.NORI_RATE_LIMIT_SECRET || noriApiKey || '',
+  );
+  headers['X-Nori-Request-Id'] = ctx.requestId;
+  headers['X-User-Id'] = noriUserId;
   if (noriApiKey) {
     headers.Authorization = `Bearer ${noriApiKey}`;
   }
@@ -814,7 +840,7 @@ export async function POST(request: NextRequest) {
       ctx,
       agentUrl,
       headers,
-      JSON.stringify(createSokosumiChatPayload(payload, message, docsContext)),
+      JSON.stringify(createSokosumiChatPayload(payload, message, docsContext, noriUserId)),
     );
 
     const contentType = upstream.headers.get('content-type') ?? '';

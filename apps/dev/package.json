@@ -10,7 +10,8 @@
     "start": "next start -p ${PORT:-3004}",
     "postinstall": "fumadocs-mdx",
     "fetch-readme": "node scripts/fetch-readme.mjs",
-    "generate-llms-txt": "tsx scripts/generate-llms-txt.ts"
+    "generate-llms-txt": "tsx scripts/generate-llms-txt.ts",
+    "test:nori:e2e": "node scripts/test-nori-e2e.mjs"
   },
   "dependencies": {
     "@theguild/remark-mermaid": "^0.3.0",

@@ -1,0 +1,35 @@
+name: Nori production E2E
+
+on:
+  deployment_status:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 6 * * *'
+
+permissions:
+  contents: read
+
+jobs:
+  live-nori:
+    if: >-
+      github.event_name != 'deployment_status' ||
+      (
+        github.event.deployment.environment == 'sumi-landing-pages / production' &&
+        (github.event.deployment_status.state == 'success' || github.event.deployment_status.state == 'failure')
+      )
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.deployment.sha || github.sha }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Exercise Nori through the canonical public path
+        env:
+          NORI_E2E_BASE_URL: https://www.masumi.network
+          NORI_E2E_EXPECT_COMMIT_SHA: ${{ github.event_name == 'deployment_status' && github.event.deployment.sha || '' }}
+        run: node apps/dev/scripts/test-nori-e2e.mjs
