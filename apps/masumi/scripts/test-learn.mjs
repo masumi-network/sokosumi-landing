@@ -552,13 +552,63 @@ try {
   assert.deepEqual(await json(anonymousDashboardApi), { error: "Not found" });
   assert.deepEqual(await json(nonAdminDashboardApi), { error: "Not found" });
 
+  const anonymousParticipantsApi = await request(anonymous, "/api/learn/dashboard/participants");
+  const nonAdminParticipantsApi = await request(learnerB, "/api/learn/dashboard/participants");
+  assert.equal(anonymousParticipantsApi.status, 404);
+  assert.equal(nonAdminParticipantsApi.status, 404);
+  assert.deepEqual(await json(anonymousParticipantsApi), { error: "Not found" });
+  assert.deepEqual(await json(nonAdminParticipantsApi), { error: "Not found" });
+
+  const anonymousParticipantsPage = await request(anonymous, "/learn/admin/participants");
+  const nonAdminParticipantsPage = await request(learnerB, "/learn/admin/participants");
+  const anonymousParticipantsHtml = await anonymousParticipantsPage.text();
+  const nonAdminParticipantsHtml = await nonAdminParticipantsPage.text();
+  assert.match(anonymousParticipantsHtml, /404|This page could not be found/);
+  assert.match(nonAdminParticipantsHtml, /404|This page could not be found/);
+  assert.doesNotMatch(anonymousParticipantsHtml, /All registered learners|Learner learner-a|Learner learner-b|learner-a@example\.test|learner-b@example\.test/);
+  assert.doesNotMatch(nonAdminParticipantsHtml, /All registered learners|Learner learner-a|Learner learner-b|learner-a@example\.test|learner-b@example\.test/);
+
   const adminPage = await request(learnerA, "/learn/admin");
   assert.equal(adminPage.status, 200);
   assert.match(adminPage.headers.get("cache-control") || "", /private|no-store/);
   const adminHtml = await adminPage.text();
   assert.match(adminHtml, /Admin analytics/);
   assert.match(adminHtml, /Learn operations/);
+  assert.match(adminHtml, /Participants/);
   assert.doesNotMatch(adminHtml, /test-report-token|Learner learner-a|learner-a@example\.test|subject:learner-a|subject:subject:learner-a/);
+
+  const participantPage = await request(learnerA, "/learn/admin/participants");
+  assert.equal(participantPage.status, 200);
+  const participantPageHtml = await participantPage.text();
+  assert.match(participantPageHtml, /Participants|Restricted learner administration/);
+  assert.doesNotMatch(participantPageHtml, /test-report-token|subject:learner-a|subject:learner-b/);
+
+  const participantAuditCountBefore = db.prepare("SELECT COUNT(*) FROM learn_audit_events WHERE event_type='admin_participant_list_access'").pluck().get();
+  const participantResponse = await request(learnerA, "/api/learn/dashboard/participants?limit=25&offset=0");
+  assert.equal(participantResponse.status, 200);
+  assert.match(participantResponse.headers.get("cache-control") || "", /private, no-store/);
+  assert.match(participantResponse.headers.get("vary") || "", /Cookie/i);
+  assert.match(participantResponse.headers.get("x-robots-tag") || "", /noindex/);
+  const participantReport = await json(participantResponse);
+  assert.equal(participantReport.total >= 2, true);
+  assert.equal(participantReport.limit, 25);
+  assert.equal(participantReport.offset, 0);
+  const participantA = participantReport.participants.find(({ email }) => email === "learner-a@example.test");
+  const participantB = participantReport.participants.find(({ email }) => email === "learner-b@example.test");
+  assert.equal(participantA.displayName, "Learner learner-a");
+  assert.equal(participantB.displayName, "Learner learner-b");
+  assert.equal(participantA.quizAttempts > 0, true);
+  assert.equal(participantA.assessmentAttempts > 0, true);
+  assert.equal(typeof participantA.lessonsCompleted, "number");
+  assert.equal(typeof participantA.lastActiveAt, "string");
+  const participantPayload = JSON.stringify(participantReport);
+  assert.doesNotMatch(participantPayload, /providerSubject|subject:learner|test-report-token|transactionHash|rawAnswer|session/i);
+  assert.equal(db.prepare("SELECT COUNT(*) FROM learn_audit_events WHERE event_type='admin_participant_list_access'").pluck().get(), participantAuditCountBefore + 1);
+  const participantAudit = db.prepare("SELECT user_id, detail_json FROM learn_audit_events WHERE event_type='admin_participant_list_access' ORDER BY created_at DESC LIMIT 1").get();
+  assert.equal(participantAudit.user_id, learnerAId);
+  assert.deepEqual(JSON.parse(participantAudit.detail_json), { surface: "participants", limit: 25, offset: 0 });
+  assert.doesNotMatch(participantAudit.detail_json, /learner|example\.test|subject:|email/i);
+  assert.equal((await request(learnerA, "/api/learn/dashboard/participants?limit=0&offset=0")).status, 400);
 
   const dashboardAuditCountBefore = db.prepare("SELECT COUNT(*) FROM learn_audit_events WHERE event_type='admin_dashboard_access'").pluck().get();
   const today = new Date().toISOString().slice(0, 10);

@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { FormEvent, useCallback, useEffect, useMemo, useState } from "react";
 
 type UnitMetric = { unitSlug: string; lessonCompletions: number; quizPassers: number; quizAttempts: number };
@@ -138,6 +139,7 @@ export function AdminDashboard() {
     report.funnel.builderActiveLearners || report.credentials.some((item) => item.count) ||
     Object.values(report.handoffs ?? {}).some((item) => item.count)
   ));
+  const isAllTime = !appliedFilters.from && !appliedFilters.to;
 
   return (
     <div className="min-w-0" aria-busy={loading}>
@@ -148,9 +150,12 @@ export function AdminDashboard() {
             <h1 className="text-[40px] font-normal leading-[1.15] tracking-[-0.8px] md:text-[56px]">Admin analytics</h1>
             <p className="mt-3 max-w-2xl text-[16px] leading-6 text-[#5b5b5b]">Aggregate course and credential signals for operating Masumi Learn. No learner identities or answer-level records appear here.</p>
           </div>
-          <button type="button" onClick={() => void load(appliedFilters)} disabled={loading} className="w-fit rounded-full bg-[#6400FF] px-6 py-2.5 text-[14px] font-medium tracking-[0.01em] text-white transition-colors hover:bg-[#5200d0] disabled:cursor-wait disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#6400FF]">
-            {loading ? "Refreshing…" : "Refresh report"}
-          </button>
+          <div className="flex flex-wrap gap-2">
+            <Link href="/learn/admin/participants" className="rounded-full border border-[#bbbbbb] bg-white px-5 py-2.5 text-[14px] font-medium hover:bg-[#f5f5f5] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#6400FF]">Participants</Link>
+            <button type="button" onClick={() => void load(appliedFilters)} disabled={loading} className="w-fit rounded-full bg-[#6400FF] px-6 py-2.5 text-[14px] font-medium tracking-[0.01em] text-white transition-colors hover:bg-[#5200d0] disabled:cursor-wait disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#6400FF]">
+              {loading ? "Refreshing…" : "Refresh report"}
+            </button>
+          </div>
         </div>
       </header>
 
@@ -160,7 +165,7 @@ export function AdminDashboard() {
             <h2 id="filters-title" className="text-[17px] font-medium">Report window</h2>
             <p className="mt-1 text-[13px] leading-5 text-[#5b5b5b]">Dates are inclusive. Leave fields empty for all available activity.</p>
           </div>
-          {report && <p className="text-[12px] leading-5 text-[#5b5b5b]" aria-live="polite">Generated {dateTime(report.generatedAt)}</p>}
+          {report && <div className="flex flex-wrap items-center gap-2 text-[12px] leading-5 text-[#5b5b5b]" aria-live="polite">{isAllTime && <span className="rounded-full bg-[#FA008C]/10 px-2.5 py-0.5 font-medium text-[#9d0058]">All time</span>}<span>Generated {dateTime(report.generatedAt)}</span></div>}
         </div>
         <form onSubmit={apply} className="mt-5 grid min-w-0 gap-4 sm:grid-cols-2 lg:grid-cols-[1fr_1fr_1fr_1fr_auto] lg:items-end">
           <Field label="From"><input type="date" value={from} max={to || undefined} onChange={(event) => setFrom(event.target.value)} className="min-w-0 max-w-full rounded-lg border border-black/15 bg-white px-3 py-2.5 text-[14px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#6400FF]" /></Field>
