@@ -342,7 +342,7 @@ export default async function MasumiPage() {
                 className="w-[24px] select-none"
               />
             </div>
-            <Link href="/x402-cardano" className="x402-badge mx-6 mb-7 transition-colors hover:border-[#FA008C]/50 hover:bg-[#FA008C]/[0.08]">
+            <Link href="/x402" className="x402-badge mx-6 mb-7 transition-colors hover:border-[#FA008C]/50 hover:bg-[#FA008C]/[0.08]">
               <span className="vch">
                 <svg viewBox="0 0 24 24">
                   <path d="M5 12.5l4.5 4.5L19 7" />

@@ -26,6 +26,8 @@ const nextConfig: NextConfig = {
   async redirects() {
     const unitSlugs = ["agentic-economy", "masumi-fundamentals", "blockchain-basics", "trust-and-payments"];
     return [
+      // The x402 page originally lived at /x402-cardano on the relaunch branch.
+      { source: "/x402-cardano", destination: "/x402", permanent: true },
       { source: "/learn/start", destination: "/learn", permanent: true },
       { source: "/learn/completion", destination: "/learn/course", permanent: true },
       { source: "/learn/concepts", destination: "/learn/library#concepts", permanent: true },
