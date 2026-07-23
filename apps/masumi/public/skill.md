@@ -132,6 +132,14 @@ Do I need to accept payments?
 
 ---
 
+## Masumi Learn (Free Certification)
+
+- **Course**: https://www.masumi.network/learn — free ~65-minute Masumi Fundamentals course (agentic economy, Masumi fundamentals, blockchain basics, trust & payment lifecycle) ending in a verifiable certificate (75% pass, optional Cardano on-chain mint)
+- **Knowledge Base**: https://www.masumi.network/learn/library — public, no-login reference (concepts, deep dives, patterns, glossary)
+- **Verify a certificate**: https://www.masumi.network/learn/verify/{id}
+
+---
+
 ## Key Resources
 
 **Platforms:**

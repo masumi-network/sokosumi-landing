@@ -95,6 +95,8 @@ interface PaymentConfig {
   network: string;
 }
 
+const REGISTRY_LOOKUP_MAX_PAGES = 100;
+
 const globalForNoriPayments = globalThis as typeof globalThis & {
   __masumiDocsNoriPaymentSessions?: Map<string, NoriPaymentSession>;
 };
@@ -213,21 +215,56 @@ async function paymentRequest(path: string, init: { method?: string; body?: unkn
   return unwrapPayload(payload);
 }
 
+async function findRegistryAsset(input: {
+  network: string;
+  smartContractAddress?: string;
+  matches: (asset: Record<string, unknown>) => boolean;
+}) {
+  const seenCursors = new Set<string>();
+  let cursorId = '';
+
+  for (let page = 0; page < REGISTRY_LOOKUP_MAX_PAGES; page += 1) {
+    const params = new URLSearchParams({ network: input.network });
+    if (input.smartContractAddress) {
+      params.set('filterSmartContractAddress', input.smartContractAddress);
+    }
+    if (cursorId) params.set('cursorId', cursorId);
+
+    const payload = await paymentRequest(`/registry/?${params.toString()}`, { method: 'GET' });
+    const data = recordFromUnknown(payload);
+    const assets = (Array.isArray(data.Assets) ? data.Assets : []).map((asset) => recordFromUnknown(asset));
+    const match = assets.find(input.matches);
+    if (match) return match;
+    if (assets.length === 0) return undefined;
+
+    const nextCursor = stringValue(assets.at(-1)?.id);
+    if (!nextCursor) {
+      throw new NoriPaymentError('Masumi registry returned a non-empty page without a cursor.', 502);
+    }
+    if (seenCursors.has(nextCursor)) {
+      throw new NoriPaymentError(`Masumi registry repeated cursor ${nextCursor}.`, 502);
+    }
+    seenCursors.add(nextCursor);
+    cursorId = nextCursor;
+  }
+
+  throw new NoriPaymentError(
+    `Masumi registry lookup exceeded ${REGISTRY_LOOKUP_MAX_PAGES} pages before reaching the end.`,
+    502,
+  );
+}
+
 async function verifyAgentRegistration(input: {
   agentIdentifier: string;
   network: string;
   smartContractAddress?: string;
 }): Promise<NoriAgentRegistryStatus> {
-  const params = new URLSearchParams({ network: input.network });
-  if (input.smartContractAddress) params.set('filterSmartContractAddress', input.smartContractAddress);
-
   try {
-    const payload = await paymentRequest(`/registry/?${params.toString()}`, { method: 'GET' });
-    const data = recordFromUnknown(payload);
-    const assets = Array.isArray(data.Assets) ? data.Assets : [];
-    const match = assets
-      .map((asset) => recordFromUnknown(asset))
-      .find((asset) => stringValue(asset.agentIdentifier) === input.agentIdentifier);
+    const match = await findRegistryAsset({
+      network: input.network,
+      smartContractAddress: input.smartContractAddress,
+      matches: (asset) => stringValue(asset.agentIdentifier) === input.agentIdentifier,
+    });
 
     if (!match) {
       return {
@@ -291,15 +328,20 @@ export async function lookupNoriAgentIdentity(): Promise<NoriAgentIdentity> {
   if (identityCache && identityCache.expiresAt > Date.now()) return identityCache.value;
 
   const config = getPaymentConfig();
-  const params = new URLSearchParams({ network: config.network });
-  const payload = await paymentRequest(`/registry/?${params.toString()}`, { method: 'GET' });
-  const data = recordFromUnknown(payload);
-  const assets = (Array.isArray(data.Assets) ? data.Assets : []).map((asset) => recordFromUnknown(asset));
-
+  const configuredAgentIdentifier = stringValue(
+    process.env.NORI_AGENT_IDENTIFIER || process.env.MASUMI_AGENT_IDENTIFIER,
+  );
   const noriHost = urlHost(process.env.NORI_AGENT_URL ?? '');
-  const match =
-    (noriHost ? assets.find((asset) => urlHost(stringValue(asset.apiBaseUrl)) === noriHost) : undefined) ??
-    assets.find((asset) => stringValue(asset.name).toLowerCase().includes('nori'));
+  const matchesNori = configuredAgentIdentifier
+    ? (asset: Record<string, unknown>) =>
+        stringValue(asset.agentIdentifier) === configuredAgentIdentifier
+    : noriHost
+      ? (asset: Record<string, unknown>) => urlHost(stringValue(asset.apiBaseUrl)) === noriHost
+      : (asset: Record<string, unknown>) => stringValue(asset.name).toLowerCase().includes('nori');
+  const match = await findRegistryAsset({
+    network: config.network,
+    matches: matchesNori,
+  });
 
   let identity: NoriAgentIdentity;
   if (!match) {

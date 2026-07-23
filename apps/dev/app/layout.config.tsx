@@ -22,6 +22,12 @@ export const baseOptions: BaseLayoutProps = {
     enabled: false,
   },
   // see https://fumadocs.dev/docs/ui/navigation/links
-  links: [],
+  links: [
+    {
+      text: 'Learn',
+      url: 'https://www.masumi.network/learn',
+      external: true,
+    },
+  ],
   githubUrl: 'https://github.com/masumi-network',
 };

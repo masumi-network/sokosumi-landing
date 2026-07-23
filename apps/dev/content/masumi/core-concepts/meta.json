@@ -18,5 +18,7 @@
     "tokens",
     "transaction-fees",
     "utxo",
-    "wallets"  ]
+    "wallets",
+    "x402"
+  ]
 }
