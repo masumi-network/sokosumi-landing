@@ -231,6 +231,7 @@ function normalizeAndCloseOnTerminalEvent(
   const encoder = new TextEncoder();
   let buffer = '';
   let emittedPriorityCitations = false;
+  let sawPaymentEvent = false;
 
   return new ReadableStream<Uint8Array>({
     async start(controller) {
@@ -245,6 +246,11 @@ function normalizeAndCloseOnTerminalEvent(
 
           let shouldClose = false;
           for (const block of blocks.slice(0, -1)) {
+            const parsed = parsedSseJsonData(block);
+            if (!sawPaymentEvent && paymentEventFromValue(parsed)) {
+              sawPaymentEvent = true;
+              logNoriEvent(ctx, 'info', 'chat_payment_event_received');
+            }
             if (priorityCitations.length > 0 && isCitationSseBlock(block)) continue;
             if (
               priorityCitations.length > 0 &&
@@ -257,7 +263,10 @@ function normalizeAndCloseOnTerminalEvent(
             controller.enqueue(encoder.encode(normalizeSseBlock(block)));
             if (isTerminalSseBlock(block)) {
               shouldClose = true;
-              logNoriEvent(ctx, 'info', 'chat_stream_terminal');
+              logNoriEvent(ctx, 'info', 'chat_stream_terminal', { sawPaymentEvent });
+              if (!sawPaymentEvent) {
+                logNoriEvent(ctx, 'warn', 'chat_payment_event_missing');
+              }
             }
           }
 
@@ -269,6 +278,11 @@ function normalizeAndCloseOnTerminalEvent(
 
         buffer += decoder.decode();
         if (buffer.trim()) {
+          const parsed = parsedSseJsonData(buffer);
+          if (!sawPaymentEvent && paymentEventFromValue(parsed)) {
+            sawPaymentEvent = true;
+            logNoriEvent(ctx, 'info', 'chat_payment_event_received');
+          }
           const suppressBuffer = priorityCitations.length > 0 && isCitationSseBlock(buffer);
           if (
             priorityCitations.length > 0 &&
@@ -894,6 +908,9 @@ function streamNoriUpstreamResponse({
             upstreamCitationCount: upstreamCitations.length,
             hasPaymentEvent: Boolean(paymentEvent),
           });
+          if (!paymentEvent) {
+            logNoriEvent(ctx, 'warn', 'chat_payment_event_missing');
+          }
 
           for (const event of jsonAnswerEvents(answer, citations, paymentEvent)) {
             enqueueEvent(event);

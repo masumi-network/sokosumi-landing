@@ -11,7 +11,9 @@
     "postinstall": "fumadocs-mdx",
     "fetch-readme": "node scripts/fetch-readme.mjs",
     "generate-llms-txt": "tsx scripts/generate-llms-txt.ts",
-    "test:nori:e2e": "node scripts/test-nori-e2e.mjs"
+    "test:nori": "node --import tsx --test lib/nori-payment-client.test.ts lib/nori-payment.test.ts",
+    "test:nori:e2e": "node scripts/test-nori-e2e.mjs",
+    "test:nori:payment:e2e": "node scripts/test-nori-payment-e2e.mjs"
   },
   "dependencies": {
     "@theguild/remark-mermaid": "^0.3.0",

@@ -93,17 +93,26 @@ interface PaymentConfig {
   apiUrl: string;
   apiKey: string;
   network: string;
+  requestTimeoutMs: number;
 }
 
 const REGISTRY_LOOKUP_MAX_PAGES = 100;
+const DEFAULT_PAYMENT_REQUEST_TIMEOUT_MS = 20_000;
+const MAX_PAYMENT_REQUEST_TIMEOUT_MS = 120_000;
 
 const globalForNoriPayments = globalThis as typeof globalThis & {
   __masumiDocsNoriPaymentSessions?: Map<string, NoriPaymentSession>;
+  __masumiDocsNoriPaymentCompletions?: Map<string, Promise<NoriPaymentSession>>;
 };
 
 function sessionStore() {
   globalForNoriPayments.__masumiDocsNoriPaymentSessions ??= new Map<string, NoriPaymentSession>();
   return globalForNoriPayments.__masumiDocsNoriPaymentSessions;
+}
+
+function completionStore() {
+  globalForNoriPayments.__masumiDocsNoriPaymentCompletions ??= new Map<string, Promise<NoriPaymentSession>>();
+  return globalForNoriPayments.__masumiDocsNoriPaymentCompletions;
 }
 
 function now() {
@@ -129,6 +138,12 @@ function normalizeApiUrl(value: string) {
   return `${trimmed}/api/v1`;
 }
 
+function paymentRequestTimeoutMs() {
+  const configured = Number.parseInt(process.env.MASUMI_PAYMENT_REQUEST_TIMEOUT_MS ?? '', 10);
+  if (!Number.isFinite(configured) || configured <= 0) return DEFAULT_PAYMENT_REQUEST_TIMEOUT_MS;
+  return Math.min(configured, MAX_PAYMENT_REQUEST_TIMEOUT_MS);
+}
+
 function getPaymentConfig(): PaymentConfig {
   const apiUrl = process.env.MASUMI_PAYMENT_API_URL;
   const apiKey = process.env.MASUMI_PAYMENT_API_KEY;
@@ -144,6 +159,7 @@ function getPaymentConfig(): PaymentConfig {
     apiUrl: normalizeApiUrl(apiUrl),
     apiKey,
     network: process.env.MASUMI_NETWORK || 'Preprod',
+    requestTimeoutMs: paymentRequestTimeoutMs(),
   };
 }
 
@@ -185,16 +201,31 @@ function unwrapPayload(payload: unknown) {
 
 async function paymentRequest(path: string, init: { method?: string; body?: unknown }) {
   const config = getPaymentConfig();
-  const response = await fetch(`${config.apiUrl}${path}`, {
-    method: init.method ?? 'GET',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      token: config.apiKey,
-    },
-    body: init.body === undefined ? undefined : JSON.stringify(init.body),
-    cache: 'no-store',
-  });
+  let response: Response;
+
+  try {
+    response = await fetch(`${config.apiUrl}${path}`, {
+      method: init.method ?? 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        token: config.apiKey,
+      },
+      body: init.body === undefined ? undefined : JSON.stringify(init.body),
+      cache: 'no-store',
+      signal: AbortSignal.timeout(config.requestTimeoutMs),
+    });
+  } catch (error) {
+    const timedOut =
+      error instanceof Error && (error.name === 'TimeoutError' || error.name === 'AbortError');
+    throw new NoriPaymentError(
+      timedOut
+        ? `Masumi payment service timed out after ${config.requestTimeoutMs}ms.`
+        : 'Masumi payment service could not be reached.',
+      timedOut ? 504 : 502,
+      error instanceof Error ? { name: error.name, message: error.message } : undefined,
+    );
+  }
 
   const payload = await parsePaymentResponse(response);
 
@@ -283,6 +314,7 @@ async function verifyAgentRegistration(input: {
       agentIdentifier: stringValue(match.agentIdentifier) || undefined,
     };
   } catch (error) {
+    if (error instanceof NoriPaymentError) throw error;
     return {
       verified: false,
       source: 'payment-service-registry',
@@ -387,9 +419,17 @@ function findStoredSession(input: { sessionId?: string; taskId?: string; blockch
     if (direct) return direct;
   }
 
-  for (const session of store.values()) {
-    if (input.blockchainIdentifier && session.blockchainIdentifier === input.blockchainIdentifier) return session;
-    if (input.taskId && session.taskId === input.taskId) return session;
+  if (input.blockchainIdentifier) {
+    for (const session of store.values()) {
+      if (session.blockchainIdentifier === input.blockchainIdentifier) return session;
+    }
+    return null;
+  }
+
+  if (input.taskId) {
+    for (const session of store.values()) {
+      if (session.taskId === input.taskId) return session;
+    }
   }
 
   return null;
@@ -397,32 +437,64 @@ function findStoredSession(input: { sessionId?: string; taskId?: string; blockch
 
 function mapPurchaseStatus(purchase: Record<string, unknown>): NoriPaymentStatus {
   const nextAction = recordFromUnknown(purchase.NextAction);
+  const currentTransaction = recordFromUnknown(purchase.CurrentTransaction);
   const onChainState = stringValue(purchase.onChainState);
   const requestedAction = stringValue(nextAction.requestedAction);
   const errorType = stringValue(nextAction.errorType);
+  const transactionStatus = stringValue(currentTransaction.status);
 
   if (errorType) return 'failed';
+  if (onChainState === 'FundsOrDatumInvalid') return 'failed';
+  if (['RefundRequested', 'Disputed', 'RefundWithdrawn', 'DisputedWithdrawn'].includes(onChainState)) return 'failed';
+  if (transactionStatus === 'FailedViaTimeout' || transactionStatus === 'RolledBack') return 'failed';
   if (onChainState === 'ResultSubmitted') return 'result_submitted';
+  if (onChainState === 'Withdrawn') return 'result_submitted';
   if (onChainState === 'FundsLocked') return 'funds_locked';
   if (requestedAction.includes('FundsLocking')) return 'funds_locking';
   return 'purchase_created';
+}
+
+function purchaseFailureNote(purchase: Record<string, unknown>) {
+  const nextAction = recordFromUnknown(purchase.NextAction);
+  const currentTransaction = recordFromUnknown(purchase.CurrentTransaction);
+  const errorType = stringValue(nextAction.errorType);
+  const errorNote = stringValue(nextAction.errorNote);
+  const onChainState = stringValue(purchase.onChainState);
+  const transactionStatus = stringValue(currentTransaction.status);
+
+  if (errorNote) return errorNote;
+  if (errorType === 'InsufficientFunds') {
+    return 'The Nori purchasing wallet has insufficient funds for this payment. Top up its Preprod ADA and requested token balance before retrying.';
+  }
+  if (errorType) return `Masumi payment service reported ${errorType}.`;
+  if (onChainState === 'FundsOrDatumInvalid') {
+    return 'The funds or payment datum did not match the requested purchase.';
+  }
+  if (transactionStatus === 'FailedViaTimeout' || transactionStatus === 'RolledBack') {
+    return `The Cardano transaction ended with status ${transactionStatus}.`;
+  }
+  if (['RefundRequested', 'Disputed', 'RefundWithdrawn', 'DisputedWithdrawn'].includes(onChainState)) {
+    return `The purchase entered terminal state ${onChainState}.`;
+  }
+  return '';
 }
 
 function applyPurchaseToSession(session: NoriPaymentSession, purchaseValue: unknown): NoriPaymentSession {
   const purchase = recordFromUnknown(purchaseValue);
   const nextAction = recordFromUnknown(purchase.NextAction);
   const currentTransaction = recordFromUnknown(purchase.CurrentTransaction);
+  const status = mapPurchaseStatus(purchase);
   const txHash = stringValue(currentTransaction.txHash) || stringValue(currentTransaction.hash) || session.txHash;
   const resultHash = stringValue(purchase.resultHash) || stringValue(nextAction.resultHash) || session.resultHash;
   const updated: NoriPaymentSession = {
     ...session,
     purchase: purchaseValue,
     purchaseId: stringValue(purchase.id) || stringValue(purchase.purchaseId) || session.purchaseId,
-    status: mapPurchaseStatus(purchase),
+    status,
     onChainState: stringValue(purchase.onChainState) || session.onChainState,
     requestedAction: stringValue(nextAction.requestedAction) || session.requestedAction,
-    errorType: stringValue(nextAction.errorType) || session.errorType,
-    errorNote: stringValue(nextAction.errorNote) || session.errorNote,
+    errorType: status === 'failed' ? stringValue(nextAction.errorType) || session.errorType : undefined,
+    errorNote: status === 'failed' ? purchaseFailureNote(purchase) || session.errorNote : undefined,
     txHash,
     resultHash,
     explorerLinks: buildExplorerLinks({
@@ -438,10 +510,9 @@ function applyPurchaseToSession(session: NoriPaymentSession, purchaseValue: unkn
   return updated;
 }
 
-export async function completeNoriPayment(input: CompletePaymentInput) {
+async function completeNoriPaymentOnce(input: CompletePaymentInput, blockchainIdentifier: string) {
   const payment = input.masumiPayment;
   const config = getPaymentConfig();
-  const blockchainIdentifier = requireString(payment.blockchainIdentifier, 'blockchainIdentifier');
   const network = stringValue(payment.PaymentSource?.network) || config.network;
   const agentIdentifier = requireString(payment.agentIdentifier, 'agentIdentifier');
   const smartContractAddress = stringValue(payment.PaymentSource?.smartContractAddress) || undefined;
@@ -482,10 +553,19 @@ export async function completeNoriPayment(input: CompletePaymentInput) {
     }),
   };
 
-  const purchase = await paymentRequest('/purchase', {
-    method: 'POST',
-    body,
-  });
+  let purchase: unknown;
+  try {
+    purchase = await paymentRequest('/purchase/resolve-blockchain-identifier', {
+      method: 'POST',
+      body: { blockchainIdentifier, network },
+    });
+  } catch (error) {
+    if (!(error instanceof NoriPaymentError) || error.status !== 404) throw error;
+    purchase = await paymentRequest('/purchase/', {
+      method: 'POST',
+      body,
+    });
+  }
 
   const createdAt = now();
   const session: NoriPaymentSession = {
@@ -512,6 +592,23 @@ export async function completeNoriPayment(input: CompletePaymentInput) {
 
   sessionStore().set(session.sessionId, session);
   return applyPurchaseToSession(session, purchase);
+}
+
+export function completeNoriPayment(input: CompletePaymentInput): Promise<NoriPaymentSession> {
+  const blockchainIdentifier = requireString(input.masumiPayment.blockchainIdentifier, 'blockchainIdentifier');
+  const existing = findStoredSession({ blockchainIdentifier });
+  if (existing?.purchaseId) return Promise.resolve(existing);
+
+  const inFlight = completionStore().get(blockchainIdentifier);
+  if (inFlight) return inFlight;
+
+  const completion = completeNoriPaymentOnce(input, blockchainIdentifier).finally(() => {
+    if (completionStore().get(blockchainIdentifier) === completion) {
+      completionStore().delete(blockchainIdentifier);
+    }
+  });
+  completionStore().set(blockchainIdentifier, completion);
+  return completion;
 }
 
 export async function submitNoriPaymentResult(input: {

@@ -49,3 +49,9 @@ jobs:
           NORI_E2E_BASE_URL: https://www.masumi.network
           NORI_E2E_EXPECT_COMMIT_SHA: ${{ github.event_name == 'deployment_status' && github.event.deployment.sha || '' }}
         run: node apps/dev/scripts/test-nori-e2e.mjs
+
+      - name: Settle a real Nori payment on Preprod
+        if: steps.deployment_gate.outputs.run == 'true'
+        env:
+          NORI_E2E_BASE_URL: https://www.masumi.network
+        run: node apps/dev/scripts/test-nori-payment-e2e.mjs
