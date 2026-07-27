@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Header, Footer, FadeIn } from "@summation/shared";
+import { Header, Footer } from "@summation/shared";
 import { getAllPosts, getPostBySlug, type Category } from "@/lib/blog";
 
 const categoryColors: Record<Category, string> = {
@@ -57,28 +57,26 @@ export default async function BlogPostPage({
       <Header product="masumi" />
       <main className="pt-[160px] pb-24">
         <div className="max-w-[720px] mx-auto px-4 md:px-8">
-          <FadeIn>
-            <Link
-              href="/blogs"
-              className="inline-flex items-center gap-1.5 text-[13px] text-[#999] hover:text-black transition-colors mb-8"
+          <Link
+            href="/blogs"
+            className="inline-flex items-center gap-1.5 text-[13px] text-[#999] hover:text-black transition-colors mb-8"
+          >
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             >
-              <svg
-                width="14"
-                height="14"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M19 12H5M12 19l-7-7 7-7" />
-              </svg>
-              Back to Blog
-            </Link>
-          </FadeIn>
+              <path d="M19 12H5M12 19l-7-7 7-7" />
+            </svg>
+            Back to Blog
+          </Link>
 
-          <FadeIn delay={50}>
+          <div>
             <span
               className="text-[11px] font-medium px-2.5 py-1 rounded-full inline-block mb-4"
               style={{
@@ -102,14 +100,12 @@ export default async function BlogPostPage({
                 })}
               </span>
             </div>
-          </FadeIn>
+          </div>
 
-          <FadeIn delay={100}>
-            <div
-              className="prose"
-              dangerouslySetInnerHTML={{ __html: post.htmlContent }}
-            />
-          </FadeIn>
+          <div
+            className="prose"
+            dangerouslySetInnerHTML={{ __html: post.htmlContent }}
+          />
         </div>
       </main>
       <Footer product="masumi" />
