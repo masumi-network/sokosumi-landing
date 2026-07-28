@@ -81,6 +81,38 @@ function assetSrc(base: string, path: string) {
   return `${base.replace(/\/$/, "")}${path}`;
 }
 
+function getMasumiDevHubMenuItems(
+  documentationHref: string,
+): NonNullable<HeaderProps["documentationMenuItems"]> {
+  return [
+    {
+      href: joinHref(documentationHref, "/map"),
+      label: "Map",
+      description: "Choose a path through the Masumi ecosystem.",
+    },
+    {
+      href: joinHref(documentationHref, "/ask"),
+      label: "Ask Nori",
+      description: "Ask questions across Masumi and Sokosumi.",
+    },
+    {
+      href: joinHref(documentationHref, "/masumi/documentation"),
+      label: "Masumi documentation",
+      description: "Identity, registry, wallets, payments, and APIs.",
+    },
+    {
+      href: joinHref(documentationHref, "/sokosumi/documentation"),
+      label: "Sokosumi documentation",
+      description: "Agents, coworkers, tasks, jobs, and organizations.",
+    },
+    {
+      href: joinHref(documentationHref, "/agents"),
+      label: "Agents",
+      description: "Machine-readable docs, indexes, skills, and MCP.",
+    },
+  ];
+}
+
 export default function Header({
   product = "sokosumi",
   topBanner,
@@ -94,7 +126,14 @@ export default function Header({
   const [showDocumentationMenu, setShowDocumentationMenu] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const documentationTriggerRef = useRef<HTMLAnchorElement>(null);
-  const openDocumentationHref = documentationCtaHref ?? documentationHref;
+  const resolvedDocumentationMenuItems =
+    documentationMenuItems ??
+    (product === "masumi" ? getMasumiDevHubMenuItems(documentationHref) : undefined);
+  const openDocumentationHref =
+    documentationCtaHref ??
+    (product === "masumi"
+      ? joinHref(documentationHref, "/masumi/documentation")
+      : documentationHref);
 
   // Masumi pages show the Sokosumi cross-promo banner by default; an explicit
   // topBanner prop (including null) overrides it.
@@ -134,8 +173,8 @@ export default function Header({
           className="flex justify-center"
           style={{
             height: 74,
-            backgroundColor: documentationMenuItems?.length ? "#F4F4F4" : "rgba(244,244,244,0.85)",
-            backdropFilter: documentationMenuItems?.length ? undefined : "blur(12px)",
+            backgroundColor: resolvedDocumentationMenuItems?.length ? "#F4F4F4" : "rgba(244,244,244,0.85)",
+            backdropFilter: resolvedDocumentationMenuItems?.length ? undefined : "blur(12px)",
           }}
         >
         <div className="w-full max-w-[1440px] flex items-center justify-between px-6 lg:px-12">
@@ -219,12 +258,12 @@ export default function Header({
                       ? "border-black"
                       : "border-transparent hover:border-black/20 hover:text-black/60"
                   }`}
-                  aria-expanded={documentationMenuItems?.length ? showDocumentationMenu : undefined}
-                  aria-controls={documentationMenuItems?.length ? "summation-devhub-menu" : undefined}
+                  aria-expanded={resolvedDocumentationMenuItems?.length ? showDocumentationMenu : undefined}
+                  aria-controls={resolvedDocumentationMenuItems?.length ? "summation-devhub-menu" : undefined}
                   onClick={() => setShowDocumentationMenu(false)}
                 >
                   Dev Hub
-                  {documentationMenuItems?.length ? (
+                  {resolvedDocumentationMenuItems?.length ? (
                     <svg
                       width="8"
                       height="5"
@@ -238,7 +277,7 @@ export default function Header({
                   ) : null}
                 </a>
 
-                {documentationMenuItems?.length && showDocumentationMenu ? (
+                {resolvedDocumentationMenuItems?.length && showDocumentationMenu ? (
                   <div
                     id="summation-devhub-menu"
                     className="fixed left-0 right-0 border-b border-black/[0.08] bg-[#F4F4F4]"
@@ -255,7 +294,7 @@ export default function Header({
                         className="grid grid-cols-5 gap-px border border-black/[0.08] bg-black/[0.08]"
                         aria-label="Developer Hub destinations"
                       >
-                        {documentationMenuItems.map((item) => (
+                        {resolvedDocumentationMenuItems.map((item) => (
                           <Link
                             key={item.href}
                             href={item.href}
@@ -367,9 +406,9 @@ export default function Header({
                 <a href={documentationHref} onClick={() => setMobileMenuOpen(false)} className="text-[18px] text-black py-3 border-b border-black/[0.06]">
                   Dev Hub
                 </a>
-                {documentationMenuItems?.length ? (
+                {resolvedDocumentationMenuItems?.length ? (
                   <div className="mb-3 ml-3 flex flex-col border-l border-black/[0.08] pl-4">
-                    {documentationMenuItems.map((item) => (
+                    {resolvedDocumentationMenuItems.map((item) => (
                       <Link
                         key={item.href}
                         href={item.href}
