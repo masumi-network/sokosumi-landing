@@ -245,19 +245,11 @@ export default function Header({
                     style={{ top: banner ? 110 : 74 }}
                   >
                     <div className="mx-auto w-full max-w-[1440px] px-6 py-5 lg:px-12">
-                      <div className="mb-4 flex items-end justify-between gap-6">
+                      <div className="mb-4">
                         <div>
                           <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-black/45">Developer Hub</p>
                           <p className="mt-1 text-[15px] text-black/70">Explore the ecosystem, ask Nori, or open the documentation.</p>
                         </div>
-                        <a
-                          href={documentationHref}
-                          className="flex shrink-0 items-center gap-2 text-[13px] font-medium text-black transition-colors hover:text-black/55"
-                          onClick={() => setShowDocumentationMenu(false)}
-                        >
-                          Dev Hub overview
-                          <span aria-hidden="true">→</span>
-                        </a>
                       </div>
                       <nav
                         className="grid grid-cols-5 gap-px border border-black/[0.08] bg-black/[0.08]"
