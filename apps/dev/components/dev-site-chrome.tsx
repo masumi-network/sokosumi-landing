@@ -9,26 +9,31 @@ const devHubLinks = [
   {
     href: '/map',
     label: 'Map',
+    description: 'Choose a path through the Masumi ecosystem.',
     match: (path: string) => path === '/' || path === '/map' || path === '/roadmap',
   },
   {
     href: '/ask',
     label: 'Ask Nori',
+    description: 'Ask questions across Masumi and Sokosumi.',
     match: (path: string) => path === '/ask',
   },
   {
     href: '/masumi/documentation',
     label: 'Masumi documentation',
+    description: 'Identity, registry, wallets, payments, and APIs.',
     match: (path: string) => path.startsWith('/masumi'),
   },
   {
     href: '/sokosumi/documentation',
     label: 'Sokosumi documentation',
+    description: 'Agents, coworkers, tasks, jobs, and organizations.',
     match: (path: string) => path.startsWith('/sokosumi'),
   },
   {
     href: '/agents',
     label: 'Agents',
+    description: 'Machine-readable docs, indexes, skills, and MCP.',
     match: (path: string) => path === '/agents',
   },
 ] as const;
@@ -93,6 +98,12 @@ export function DevSiteChrome() {
     : normalizedPath.startsWith('/sokosumi')
       ? docsSectionLinks.sokosumi
       : null;
+  const documentationMenuItems = devHubLinks.map((item) => ({
+    href: item.href,
+    label: item.label,
+    description: item.description,
+    active: item.match(normalizedPath),
+  }));
 
   return (
     <>
@@ -101,33 +112,15 @@ export function DevSiteChrome() {
         siteRootHref={siteOrigin}
         assetBaseUrl={siteOrigin}
         documentationHref="/dev"
+        documentationCtaHref="/dev/masumi/documentation"
+        documentationMenuItems={documentationMenuItems}
       />
-      <nav className="devhub-subheader" aria-label="Developer hub navigation" data-docs-nav={docsLinks ? 'true' : 'false'}>
-        <div className="devhub-subheader-inner">
-          <Link href="/" className="devhub-subheader-title">
-            DevHub
-          </Link>
-          <div className="devhub-subheader-links">
-            {devHubLinks.map((item) => {
-              const isActive = item.match(normalizedPath);
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className="devhub-subheader-link"
-                  aria-current={isActive ? 'page' : undefined}
-                  data-active={isActive ? 'true' : 'false'}
-                >
-                  {item.label}
-                </Link>
-              );
-            })}
-          </div>
-        </div>
-        {docsLinks && (
-          <div className="devhub-docs-subnav" aria-label="Documentation sections">
+      {docsLinks && (
+        <nav className="devhub-docs-context" aria-label="Documentation sections">
+          <div className="devhub-docs-subnav">
             {docsLinks.map((item) => {
               const isActive = item.match(normalizedPath);
+
               return (
                 <Link
                   key={item.href}
@@ -141,8 +134,8 @@ export function DevSiteChrome() {
               );
             })}
           </div>
-        )}
-      </nav>
+        </nav>
+      )}
     </>
   );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, type ReactNode } from "react";
+import { useState, useEffect, useRef, type FocusEvent, type KeyboardEvent, type ReactNode } from "react";
 import Link from "next/link";
 import { SokosumiIcon } from "./SummationLogo";
 
@@ -60,6 +60,13 @@ type HeaderProps = {
   topBanner?: ReactNode;
   siteRootHref?: string;
   documentationHref?: string;
+  documentationCtaHref?: string;
+  documentationMenuItems?: ReadonlyArray<{
+    href: string;
+    label: string;
+    description: string;
+    active?: boolean;
+  }>;
   assetBaseUrl?: string;
 };
 
@@ -79,10 +86,15 @@ export default function Header({
   topBanner,
   siteRootHref = "",
   documentationHref = "https://www.masumi.network/dev",
+  documentationCtaHref,
+  documentationMenuItems,
   assetBaseUrl = "",
 }: HeaderProps) {
   const [showProducts, setShowProducts] = useState(false);
+  const [showDocumentationMenu, setShowDocumentationMenu] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const documentationTriggerRef = useRef<HTMLAnchorElement>(null);
+  const openDocumentationHref = documentationCtaHref ?? documentationHref;
 
   // Masumi pages show the Sokosumi cross-promo banner by default; an explicit
   // topBanner prop (including null) overrides it.
@@ -102,6 +114,18 @@ export default function Header({
     return () => { document.body.style.overflow = ""; };
   }, [mobileMenuOpen]);
 
+  const closeDocumentationMenuOnBlur = (event: FocusEvent<HTMLDivElement>) => {
+    if (!event.currentTarget.contains(event.relatedTarget)) {
+      setShowDocumentationMenu(false);
+    }
+  };
+
+  const handleDocumentationMenuKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    if (event.key !== "Escape") return;
+    documentationTriggerRef.current?.focus();
+    setShowDocumentationMenu(false);
+  };
+
   return (
     <>
       <header className="summation-site-header fixed top-0 left-0 right-0 z-50">
@@ -110,8 +134,8 @@ export default function Header({
           className="flex justify-center"
           style={{
             height: 74,
-            backgroundColor: "rgba(244,244,244,0.85)",
-            backdropFilter: "blur(12px)",
+            backgroundColor: documentationMenuItems?.length ? "#F4F4F4" : "rgba(244,244,244,0.85)",
+            backdropFilter: documentationMenuItems?.length ? undefined : "blur(12px)",
           }}
         >
         <div className="w-full max-w-[1440px] flex items-center justify-between px-6 lg:px-12">
@@ -179,9 +203,79 @@ export default function Header({
             </nav>
           ) : product === "masumi" ? (
             <nav className="hidden lg:flex items-center h-[74px]">
-              <a href={documentationHref} className="text-[14px] font-normal text-black hover:text-black/60 transition-colors px-[15px] h-full flex items-center">
-                Dev Hub
-              </a>
+              <div
+                className="relative flex h-full items-center"
+                onMouseEnter={() => setShowDocumentationMenu(true)}
+                onMouseLeave={() => setShowDocumentationMenu(false)}
+                onFocusCapture={() => setShowDocumentationMenu(true)}
+                onBlurCapture={closeDocumentationMenuOnBlur}
+                onKeyDown={handleDocumentationMenuKeyDown}
+              >
+                <a
+                  ref={documentationTriggerRef}
+                  href={documentationHref}
+                  className={`flex h-full items-center gap-1.5 border-b-2 px-[15px] text-[14px] font-normal text-black transition-colors ${
+                    showDocumentationMenu
+                      ? "border-black"
+                      : "border-transparent hover:border-black/20 hover:text-black/60"
+                  }`}
+                  aria-expanded={documentationMenuItems?.length ? showDocumentationMenu : undefined}
+                  aria-controls={documentationMenuItems?.length ? "summation-devhub-menu" : undefined}
+                  onClick={() => setShowDocumentationMenu(false)}
+                >
+                  Dev Hub
+                  {documentationMenuItems?.length ? (
+                    <svg
+                      width="8"
+                      height="5"
+                      viewBox="0 0 8 5"
+                      fill="none"
+                      aria-hidden="true"
+                      className={`transition-transform ${showDocumentationMenu ? "rotate-180" : ""}`}
+                    >
+                      <path d="M1 1l3 3 3-3" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  ) : null}
+                </a>
+
+                {documentationMenuItems?.length && showDocumentationMenu ? (
+                  <div
+                    id="summation-devhub-menu"
+                    className="fixed left-0 right-0 border-b border-black/[0.08] bg-[#F4F4F4]"
+                    style={{ top: banner ? 110 : 74 }}
+                  >
+                    <div className="mx-auto w-full max-w-[1440px] px-6 py-5 lg:px-12">
+                      <div className="mb-4">
+                        <div>
+                          <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-black/45">Developer Hub</p>
+                          <p className="mt-1 text-[15px] text-black/70">Explore the ecosystem, ask Nori, or open the documentation.</p>
+                        </div>
+                      </div>
+                      <nav
+                        className="grid grid-cols-5 gap-px border border-black/[0.08] bg-black/[0.08]"
+                        aria-label="Developer Hub destinations"
+                      >
+                        {documentationMenuItems.map((item) => (
+                          <Link
+                            key={item.href}
+                            href={item.href}
+                            aria-current={item.active ? "page" : undefined}
+                            data-active={item.active ? "true" : "false"}
+                            onClick={() => setShowDocumentationMenu(false)}
+                            className="group relative min-h-[112px] bg-[#F4F4F4] p-4 text-black transition-colors before:absolute before:inset-x-0 before:top-0 before:h-0.5 before:scale-x-0 before:bg-[#FF51FF] before:transition-transform hover:bg-white data-[active=true]:bg-white data-[active=true]:before:scale-x-100"
+                          >
+                            <span className="flex items-center justify-between gap-3 text-[14px] font-medium">
+                              {item.label}
+                              <span aria-hidden="true" className="text-black/35 transition-transform group-hover:translate-x-0.5 group-hover:text-black/65">→</span>
+                            </span>
+                            <span className="mt-1.5 block text-[12px] leading-5 text-black/55">{item.description}</span>
+                          </Link>
+                        ))}
+                      </nav>
+                    </div>
+                  </div>
+                ) : null}
+              </div>
               <Link href={joinHref(siteRootHref, "/x402")} className="text-[14px] font-normal text-black hover:text-black/60 transition-colors px-[15px] h-full flex items-center">
                 x402
               </Link>
@@ -221,7 +315,7 @@ export default function Header({
                 </Link>
               </>
             ) : product === "masumi" ? (
-              <a href={documentationHref}
+              <a href={openDocumentationHref}
                 className="hidden lg:block bg-black text-white text-[14px] font-normal px-6 py-2.5 rounded-full hover:bg-black/85 transition-colors">
                 Open Documentation
               </a>
@@ -234,6 +328,8 @@ export default function Header({
             <button
               className="lg:hidden flex flex-col gap-1.5 p-2"
               aria-label="Menu"
+              aria-expanded={mobileMenuOpen}
+              aria-controls="summation-site-mobile-menu"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             >
               <span className={`w-5 h-[1.5px] bg-black transition-transform duration-200 ${mobileMenuOpen ? "translate-y-[3.5px] rotate-45" : ""}`} />
@@ -247,9 +343,12 @@ export default function Header({
 
       {/* Mobile menu overlay */}
       {mobileMenuOpen && (
-        <div className="summation-site-mobile-menu fixed inset-0 z-40 lg:hidden" style={{ top: banner ? 110 : 74 }}>
-          <div className="absolute inset-0 bg-[#F5F5F5]" />
-          <nav className="relative flex flex-col px-6 pt-8 gap-1">
+        <div
+          id="summation-site-mobile-menu"
+          className="summation-site-mobile-menu fixed inset-0 z-40 overflow-y-auto bg-[#F5F5F5] lg:hidden"
+          style={{ top: banner ? 110 : 74 }}
+        >
+          <nav className="relative flex flex-col gap-1 px-6 pb-10 pt-8">
             {product === "sokosumi" ? (
               <>
                 <Link href="/press" onClick={() => setMobileMenuOpen(false)} className="text-[18px] text-black py-3 border-b border-black/[0.06]">
@@ -268,6 +367,22 @@ export default function Header({
                 <a href={documentationHref} onClick={() => setMobileMenuOpen(false)} className="text-[18px] text-black py-3 border-b border-black/[0.06]">
                   Dev Hub
                 </a>
+                {documentationMenuItems?.length ? (
+                  <div className="mb-3 ml-3 flex flex-col border-l border-black/[0.08] pl-4">
+                    {documentationMenuItems.map((item) => (
+                      <Link
+                        key={item.href}
+                        href={item.href}
+                        aria-current={item.active ? "page" : undefined}
+                        data-active={item.active ? "true" : "false"}
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="py-2.5 text-[15px] text-black/65 transition-colors hover:text-black data-[active=true]:font-medium data-[active=true]:text-black"
+                      >
+                        {item.label}
+                      </Link>
+                    ))}
+                  </div>
+                ) : null}
                 <Link href={joinHref(siteRootHref, "/x402")} onClick={() => setMobileMenuOpen(false)} className="text-[18px] text-black py-3 border-b border-black/[0.06]">
                   x402
                 </Link>
@@ -295,7 +410,7 @@ export default function Header({
                 <Link href="https://discord.com/invite/aj4QfnTS92" target="_blank" rel="noopener noreferrer" onClick={() => setMobileMenuOpen(false)} className="text-[18px] text-black py-3 border-b border-black/[0.06]">
                   Discord
                 </Link>
-                <a href={documentationHref} onClick={() => setMobileMenuOpen(false)}
+                <a href={openDocumentationHref} onClick={() => setMobileMenuOpen(false)}
                   className="mt-6 bg-black text-white text-[14px] font-normal px-6 py-3 rounded-full text-center">
                   Open Documentation
                 </a>

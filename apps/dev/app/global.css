@@ -50,11 +50,11 @@
 }
 
 /* Masumi brand accent for links and interactive text */
-a:not(:where(.summation-site-header *, .summation-site-mobile-menu *, .devhub-subheader *)):not(:has(.masumi-brand-mark)):not([class*="masumi-product-item"]):not([class*="bg-"]):not([class*="text-fd-muted"]) {
+a:not(:where(.summation-site-header *, .summation-site-mobile-menu *, .devhub-docs-context *)):not(:has(.masumi-brand-mark)):not([class*="masumi-product-item"]):not([class*="bg-"]):not([class*="text-fd-muted"]) {
   color: #ff51ff !important;
 }
 
-a:not(:where(.summation-site-header *, .summation-site-mobile-menu *, .devhub-subheader *)):not(:has(.masumi-brand-mark)):not([class*="masumi-product-item"]):not([class*="bg-"]):not([class*="text-fd-muted"]):hover {
+a:not(:where(.summation-site-header *, .summation-site-mobile-menu *, .devhub-docs-context *)):not(:has(.masumi-brand-mark)):not([class*="masumi-product-item"]):not([class*="bg-"]):not([class*="text-fd-muted"]):hover {
   color: #b800b8 !important;
 }
 
@@ -85,10 +85,9 @@ a:not(:where(.summation-site-header *, .summation-site-mobile-menu *, .devhub-su
 /* Masumi light docs shell */
 :root {
   --dev-site-header-height: 110px;
-  --devhub-subheader-height: 48px;
   --devhub-docs-subnav-height: 40px;
-  --dev-site-chrome-height: calc(var(--dev-site-header-height) + var(--devhub-subheader-height));
-  --dev-site-docs-chrome-height: calc(var(--dev-site-chrome-height) + var(--devhub-docs-subnav-height));
+  --dev-site-chrome-height: var(--dev-site-header-height);
+  --dev-site-docs-chrome-height: calc(var(--dev-site-header-height) + var(--devhub-docs-subnav-height));
 }
 
 .masumi-brand-mark {
@@ -284,73 +283,17 @@ header a:has(.masumi-brand-mark):not([class*="bg-"]):not([class*="text-fd-muted"
   color: var(--color-fd-muted-foreground);
 }
 
-.devhub-subheader {
+.devhub-docs-context {
   position: fixed;
   top: var(--dev-site-header-height);
   left: 0;
   right: 0;
   z-index: 39;
-  height: var(--devhub-subheader-height);
+  height: var(--devhub-docs-subnav-height);
   border-top: 1px solid rgba(0, 0, 0, 0.05);
   border-bottom: 1px solid rgba(0, 0, 0, 0.08);
   background: rgba(245, 245, 245, 0.92);
   backdrop-filter: blur(12px);
-}
-
-.devhub-subheader[data-docs-nav='true'] {
-  height: calc(var(--devhub-subheader-height) + var(--devhub-docs-subnav-height));
-}
-
-.devhub-subheader-inner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-  width: min(1440px, 100%);
-  height: var(--devhub-subheader-height);
-  margin: 0 auto;
-  padding: 0 48px;
-}
-
-.devhub-subheader-title {
-  flex: 0 0 auto;
-  color: #000 !important;
-  font-size: 13px;
-  font-weight: 500;
-  line-height: 1;
-  text-decoration: none !important;
-}
-
-.devhub-subheader-links {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  min-width: 0;
-  overflow-x: auto;
-  scrollbar-width: none;
-}
-
-.devhub-subheader-links::-webkit-scrollbar {
-  display: none;
-}
-
-.devhub-subheader-link {
-  flex: 0 0 auto;
-  min-height: 30px;
-  padding: 7px 12px;
-  border-radius: 999px;
-  color: rgba(0, 0, 0, 0.62) !important;
-  font-size: 13px;
-  font-weight: 400;
-  line-height: 1.2;
-  text-decoration: none !important;
-  transition: background-color 160ms ease, color 160ms ease;
-}
-
-.devhub-subheader-link:hover,
-.devhub-subheader-link[data-active='true'] {
-  background: #ffffff;
-  color: #000 !important;
 }
 
 .devhub-docs-subnav {
@@ -362,7 +305,6 @@ header a:has(.masumi-brand-mark):not([class*="bg-"]):not([class*="text-fd-muted"
   margin: 0 auto;
   padding: 0 48px;
   overflow-x: auto;
-  border-top: 1px solid rgba(0, 0, 0, 0.06);
   scrollbar-width: none;
 }
 
@@ -389,24 +331,6 @@ header a:has(.masumi-brand-mark):not([class*="bg-"]):not([class*="text-fd-muted"
 }
 
 @media (max-width: 720px) {
-  .devhub-subheader-inner {
-    align-items: stretch;
-    flex-direction: column;
-    justify-content: center;
-    gap: 3px;
-    padding: 5px 16px;
-  }
-
-  .devhub-subheader-title {
-    font-size: 11px;
-  }
-
-  .devhub-subheader-link {
-    min-height: 25px;
-    padding: 5px 9px;
-    font-size: 12px;
-  }
-
   .devhub-docs-subnav {
     padding: 0 16px;
   }
@@ -433,26 +357,10 @@ header a:has(.masumi-brand-mark):not([class*="bg-"]):not([class*="text-fd-muted"
   background: var(--docs-bg);
 }
 
-body:has(.devhub-subheader[data-docs-nav='true']) .masumi-standalone-layout,
-body:has(.devhub-subheader[data-docs-nav='true']) .masumi-docs-layout {
+body:has(.devhub-docs-context) .masumi-standalone-layout,
+body:has(.devhub-docs-context) .masumi-docs-layout {
   margin-top: var(--dev-site-docs-chrome-height);
   min-height: calc(100dvh - var(--dev-site-docs-chrome-height));
-}
-
-@media (max-width: 1180px) {
-  .devhub-subheader[data-docs-nav='true'] {
-    height: var(--devhub-subheader-height);
-  }
-
-  .devhub-docs-subnav {
-    display: none;
-  }
-
-  body:has(.devhub-subheader[data-docs-nav='true']) .masumi-standalone-layout,
-  body:has(.devhub-subheader[data-docs-nav='true']) .masumi-docs-layout {
-    margin-top: var(--dev-site-chrome-height);
-    min-height: calc(100dvh - var(--dev-site-chrome-height));
-  }
 }
 
 .masumi-standalone-notebook-layout {
