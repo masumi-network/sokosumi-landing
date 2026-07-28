@@ -55,18 +55,21 @@ const MASUMI_SOKOSUMI_BANNER = (
   </a>
 );
 
+type DocumentationMenuItem = {
+  href: string;
+  label: string;
+  description: string;
+  active?: boolean;
+  forceDocumentNavigation?: boolean;
+};
+
 type HeaderProps = {
   product?: "sokosumi" | "masumi" | "kodosumi";
   topBanner?: ReactNode;
   siteRootHref?: string;
   documentationHref?: string;
   documentationCtaHref?: string;
-  documentationMenuItems?: ReadonlyArray<{
-    href: string;
-    label: string;
-    description: string;
-    active?: boolean;
-  }>;
+  documentationMenuItems?: ReadonlyArray<DocumentationMenuItem>;
   assetBaseUrl?: string;
 };
 
@@ -81,6 +84,56 @@ function assetSrc(base: string, path: string) {
   return `${base.replace(/\/$/, "")}${path}`;
 }
 
+function DocumentationMenuLink({
+  item,
+  className,
+  onClick,
+  children,
+}: {
+  item: DocumentationMenuItem;
+  className: string;
+  onClick: () => void;
+  children: ReactNode;
+}) {
+  const commonProps = {
+    className,
+    "aria-current": item.active ? ("page" as const) : undefined,
+    "data-active": item.active ? "true" : "false",
+  };
+
+  if (item.forceDocumentNavigation) {
+    return (
+      <a
+        href={item.href}
+        onClick={(event) => {
+          if (
+            event.defaultPrevented ||
+            event.button !== 0 ||
+            event.metaKey ||
+            event.ctrlKey ||
+            event.shiftKey ||
+            event.altKey
+          ) {
+            return;
+          }
+
+          event.preventDefault();
+          window.location.assign(item.href);
+        }}
+        {...commonProps}
+      >
+        {children}
+      </a>
+    );
+  }
+
+  return (
+    <Link href={item.href} onClick={onClick} {...commonProps}>
+      {children}
+    </Link>
+  );
+}
+
 function getMasumiDevHubMenuItems(
   documentationHref: string,
 ): NonNullable<HeaderProps["documentationMenuItems"]> {
@@ -89,26 +142,31 @@ function getMasumiDevHubMenuItems(
       href: joinHref(documentationHref, "/map"),
       label: "Map",
       description: "Choose a path through the Masumi ecosystem.",
+      forceDocumentNavigation: true,
     },
     {
       href: joinHref(documentationHref, "/ask"),
       label: "Ask Nori",
       description: "Ask questions across Masumi and Sokosumi.",
+      forceDocumentNavigation: true,
     },
     {
       href: joinHref(documentationHref, "/masumi/documentation"),
       label: "Masumi documentation",
       description: "Identity, registry, wallets, payments, and APIs.",
+      forceDocumentNavigation: true,
     },
     {
       href: joinHref(documentationHref, "/sokosumi/documentation"),
       label: "Sokosumi documentation",
       description: "Agents, coworkers, tasks, jobs, and organizations.",
+      forceDocumentNavigation: true,
     },
     {
       href: joinHref(documentationHref, "/agents"),
       label: "Agents",
       description: "Machine-readable docs, indexes, skills, and MCP.",
+      forceDocumentNavigation: true,
     },
   ];
 }
@@ -295,11 +353,9 @@ export default function Header({
                         aria-label="Developer Hub destinations"
                       >
                         {resolvedDocumentationMenuItems.map((item) => (
-                          <Link
+                          <DocumentationMenuLink
                             key={item.href}
-                            href={item.href}
-                            aria-current={item.active ? "page" : undefined}
-                            data-active={item.active ? "true" : "false"}
+                            item={item}
                             onClick={() => setShowDocumentationMenu(false)}
                             className="group relative min-h-[112px] bg-[#F4F4F4] p-4 text-black transition-colors before:absolute before:inset-x-0 before:top-0 before:h-0.5 before:scale-x-0 before:bg-[#FF51FF] before:transition-transform hover:bg-white data-[active=true]:bg-white data-[active=true]:before:scale-x-100"
                           >
@@ -308,7 +364,7 @@ export default function Header({
                               <span aria-hidden="true" className="text-black/35 transition-transform group-hover:translate-x-0.5 group-hover:text-black/65">→</span>
                             </span>
                             <span className="mt-1.5 block text-[12px] leading-5 text-black/55">{item.description}</span>
-                          </Link>
+                          </DocumentationMenuLink>
                         ))}
                       </nav>
                     </div>
@@ -409,16 +465,14 @@ export default function Header({
                 {resolvedDocumentationMenuItems?.length ? (
                   <div className="mb-3 ml-3 flex flex-col border-l border-black/[0.08] pl-4">
                     {resolvedDocumentationMenuItems.map((item) => (
-                      <Link
+                      <DocumentationMenuLink
                         key={item.href}
-                        href={item.href}
-                        aria-current={item.active ? "page" : undefined}
-                        data-active={item.active ? "true" : "false"}
+                        item={item}
                         onClick={() => setMobileMenuOpen(false)}
                         className="py-2.5 text-[15px] text-black/65 transition-colors hover:text-black data-[active=true]:font-medium data-[active=true]:text-black"
                       >
                         {item.label}
-                      </Link>
+                      </DocumentationMenuLink>
                     ))}
                   </div>
                 ) : null}
