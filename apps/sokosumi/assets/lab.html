@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>Intro section lab</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --primary: #6400ff;
+        --fg: #0a0a0a;
+        --muted: #6b6b6b;
+        --border: rgba(10, 10, 10, 0.07);
+        --card: #fff;
+        --bg: #fafafa;
+        --ease: cubic-bezier(0.16, 1, 0.3, 1);
+        --sans: "Geist", system-ui, sans-serif;
+        --mono: "Geist Mono", monospace;
+        --r: 22px;
+      }
+      * { margin: 0; box-sizing: border-box; }
+      body { font-family: var(--sans); background: var(--bg); color: var(--fg); -webkit-font-smoothing: antialiased; }
+      .wrap { max-width: 1160px; margin: 0 auto; padding: 0 28px; }
+      .lab-bar {
+        position: sticky; top: 0; z-index: 5; background: #0a0a0a; color: #fff;
+        font-family: var(--mono); font-size: 12px; letter-spacing: 0.08em; padding: 10px 0; text-align: center;
+      }
+      .opt-label {
+        margin: 90px 0 46px; display: flex; align-items: center; gap: 14px;
+      }
+      .opt-label span { font-family: var(--mono); font-size: 12px; letter-spacing: 0.12em; color: #fff; background: var(--primary); border-radius: 999px; padding: 7px 16px; }
+      .opt-label small { font-size: 13px; color: var(--muted); }
+      .opt-label::after { content: ""; flex: 1; height: 1px; background: var(--border); }
+      section.demo { padding: 30px 0 110px; }
+
+      .head { text-align: center; max-width: 640px; margin: 0 auto 56px; }
+      .head h2 { font-size: clamp(30px, 4.4vw, 46px); font-weight: 500; letter-spacing: -0.03em; line-height: 1.08; text-wrap: balance; }
+      .head h2 em { font-style: normal; color: var(--primary); }
+      .head p { margin-top: 16px; font-size: 16.5px; line-height: 1.55; color: var(--muted); text-wrap: balance; }
+
+      /* ============ OPTION A: roster mix ============ */
+      .roster { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+      @media (max-width: 860px) { .roster { grid-template-columns: 1fr 1fr; } }
+      .seat {
+        background: var(--card); border: 1px solid var(--border); border-radius: var(--r);
+        padding: 22px; display: flex; align-items: center; gap: 16px;
+        transition: transform 0.45s var(--ease), box-shadow 0.45s var(--ease), border-color 0.45s var(--ease);
+      }
+      .seat:hover { transform: translateY(-3px); box-shadow: 0 22px 44px -30px rgba(10, 10, 10, 0.25); }
+      .seat .face {
+        width: 64px; height: 64px; border-radius: 20px; flex-shrink: 0; overflow: hidden;
+        display: flex; align-items: center; justify-content: center;
+        background: #ededed; color: #9a9a9a; font-size: 20px; font-weight: 500;
+      }
+      .seat .face img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.16); }
+      .seat .who { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+      .seat .who strong { font-size: 16.5px; font-weight: 550; letter-spacing: -0.01em; }
+      .seat .who small { font-size: 13px; color: var(--muted); }
+      .seat .tag {
+        margin-left: auto; flex-shrink: 0; font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.07em;
+        padding: 5px 11px; border-radius: 999px; border: 1px solid var(--border); color: var(--muted); background: #f4f4f4;
+      }
+      .seat.ai { border-color: rgba(100, 0, 255, 0.22); }
+      .seat.ai .tag { background: rgba(100, 0, 255, 0.08); border-color: rgba(100, 0, 255, 0.18); color: var(--primary); }
+      .roster-note { margin-top: 30px; text-align: center; font-size: 14px; color: var(--muted); }
+      .roster-note a { color: var(--primary); text-decoration: none; font-weight: 500; }
+
+      /* ============ OPTION B: dossier ============ */
+      .dossier { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 44px; align-items: stretch; max-width: 1020px; margin: 0 auto; }
+      @media (max-width: 900px) { .dossier { grid-template-columns: 1fr; } }
+      .dossier-photo {
+        border-radius: 28px; overflow: hidden; background: #eee; border: 1px solid var(--border);
+        box-shadow: 0 30px 70px -40px rgba(10, 10, 10, 0.35); min-height: 420px; position: relative;
+      }
+      .dossier-photo img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.12); display: block; position: absolute; inset: 0; }
+      .dossier-info { display: flex; flex-direction: column; gap: 0; padding: 6px 0; }
+      .dossier-tabs { display: flex; gap: 8px; margin-bottom: 30px; }
+      .dossier-tabs button {
+        font-family: var(--sans); font-size: 13.5px; font-weight: 500; padding: 9px 18px; border-radius: 999px;
+        border: 1px solid var(--border); background: #fff; color: var(--muted); cursor: pointer;
+        transition: all 0.3s var(--ease);
+      }
+      .dossier-tabs button.on { background: var(--fg); color: #fff; border-color: var(--fg); }
+      .dossier-info h3 { font-size: 34px; font-weight: 550; letter-spacing: -0.02em; }
+      .dossier-info .role { font-family: var(--mono); font-size: 13px; letter-spacing: 0.06em; color: var(--primary); margin-top: 6px; }
+      .dossier-info .bio { margin-top: 16px; font-size: 15.5px; line-height: 1.6; color: var(--muted); max-width: 46ch; }
+      .dossier-meta { margin-top: 28px; border-top: 1px solid var(--border); }
+      .dossier-meta .row { display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 13px 0; border-bottom: 1px solid var(--border); }
+      .dossier-meta .row b { font-size: 13.5px; font-weight: 500; color: var(--muted); flex-shrink: 0; }
+      .dossier-meta .row div { display: flex; gap: 7px; flex-wrap: wrap; justify-content: flex-end; }
+      .chip { font-size: 12.5px; padding: 5px 12px; border-radius: 999px; background: #f3f0fa; color: #3d2a66; }
+      .chip.plain { background: #f4f4f4; color: var(--muted); }
+      .dossier-cta { margin-top: 30px; display: flex; align-items: center; gap: 18px; }
+      .btn-dark {
+        display: inline-flex; align-items: center; gap: 10px; background: var(--fg); color: #fff; text-decoration: none;
+        font-size: 14.5px; font-weight: 500; padding: 8px 8px 8px 22px; border-radius: 999px;
+      }
+      .btn-dark .orb { width: 30px; height: 30px; border-radius: 999px; background: var(--primary); display: flex; align-items: center; justify-content: center; }
+      .link-quiet { font-size: 14px; color: var(--muted); text-decoration: none; }
+
+      /* ============ OPTION C: full roster strip ============ */
+      .strip-wrap { overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); display: flex; flex-direction: column; gap: 18px; }
+      .strip { display: flex; gap: 18px; width: max-content; animation: slide 46s linear infinite; }
+      .strip.rev { animation: slide-rev 52s linear infinite; }
+      .strip-wrap:hover .strip { animation-play-state: paused; }
+      @keyframes slide { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+      @keyframes slide-rev { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+      .pcard {
+        width: 205px; flex-shrink: 0; background: var(--card); border: 1px solid var(--border); border-radius: var(--r);
+        padding: 10px 10px 16px; text-align: center; transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease);
+        text-decoration: none; color: inherit; display: block;
+      }
+      .pcard:hover { transform: translateY(-4px); box-shadow: 0 24px 44px -30px rgba(10, 10, 10, 0.28); }
+      .pcard .ph { border-radius: 16px; overflow: hidden; aspect-ratio: 1; background: #eee; }
+      .pcard .ph img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.16); display: block; }
+      .pcard strong { display: block; margin-top: 12px; font-size: 15.5px; font-weight: 550; }
+      .pcard small { font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; color: var(--muted); }
+      .strip-cta { margin-top: 40px; text-align: center; }
+      @media (prefers-reduced-motion: reduce) { .strip { animation: none; } }
+    </style>
+  </head>
+  <body>
+    <div class="lab-bar">INTRO SECTION LAB · 3 OPTIONS · NOT LINKED FROM THE SITE</div>
+
+    <div class="wrap">
+      <div class="opt-label" id="a"><span>OPTION A</span><small>Roster mix: AI coworkers visibly join your real team</small></div>
+    </div>
+    <section class="demo">
+      <div class="wrap">
+        <div class="head">
+          <h2>Meet the newest members of <em>your marketing team</em></h2>
+          <p>AI coworkers take a seat next to the people you already have, and take real work off their plate.</p>
+        </div>
+        <div class="roster" id="rosterGrid"></div>
+        <p class="roster-note">Your team stays in charge. The AI seats scale with the workload. <a href="/coworkers">Meet all 13 coworkers</a></p>
+      </div>
+    </section>
+
+    <div class="wrap">
+      <div class="opt-label" id="b"><span>OPTION B</span><small>Dossier: one specialist in focus, switchable</small></div>
+    </div>
+    <section class="demo">
+      <div class="wrap">
+        <div class="head">
+          <h2>Hire specialists, <em>not prompts</em></h2>
+          <p>Every coworker has a real role, a public profile, and work they can start today.</p>
+        </div>
+        <div class="dossier">
+          <div class="dossier-photo"><img id="dosImg" alt="" /></div>
+          <div class="dossier-info">
+            <div class="dossier-tabs" id="dosTabs"></div>
+            <h3 id="dosName"></h3>
+            <div class="role" id="dosRole"></div>
+            <p class="bio" id="dosBio"></p>
+            <div class="dossier-meta">
+              <div class="row"><b>Runs tasks like</b><div id="dosTasks"></div></div>
+              <div class="row"><b>Works with</b><div id="dosTeam"></div></div>
+              <div class="row"><b>Delivers</b><div><span class="chip plain">PDF</span><span class="chip plain">Slides</span><span class="chip plain">Dashboards</span></div></div>
+            </div>
+            <div class="dossier-cta">
+              <a class="btn-dark" id="dosLink" href="#">View full profile
+                <span class="orb"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
+              </a>
+              <a class="link-quiet" href="/coworkers">All 13 coworkers</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="wrap">
+      <div class="opt-label" id="c"><span>OPTION C</span><small>Full roster: the whole marketplace, moving</small></div>
+    </div>
+    <section class="demo">
+      <div class="wrap">
+        <div class="head">
+          <h2><em>13 specialists.</em> One team.</h2>
+          <p>Researchers, strategists, writers, and builders, live on the marketplace right now.</p>
+        </div>
+      </div>
+      <div class="strip-wrap">
+        <div class="strip" id="stripTop"></div>
+        <div class="strip rev" id="stripBottom"></div>
+      </div>
+      <div class="strip-cta wrap">
+        <a class="btn-dark" href="/coworkers">Meet all coworkers
+          <span class="orb"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
+        </a>
+      </div>
+    </section>
+
+    <script>
+      var esc = function (s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); };
+
+      fetch("/api/catalog").then(function (r) { return r.json(); }).then(function (d) {
+        var all = d.coworkers || [];
+        var by = {};
+        all.forEach(function (c) { by[c.slug] = c; });
+        var trio = ["hannah", "elena", "alex"].map(function (s) { return by[s]; }).filter(Boolean);
+
+        /* ---- OPTION A: interleave humans + AI ---- */
+        var humans = [
+          { name: "Lena", role: "Head of Marketing" },
+          { name: "Jonas", role: "Performance Lead" },
+          { name: "Mara", role: "Brand Manager" }
+        ];
+        var seats = [];
+        for (var i = 0; i < 3; i++) {
+          seats.push({ h: humans[i] });
+          if (trio[i]) seats.push({ ai: trio[i] });
+        }
+        document.getElementById("rosterGrid").innerHTML = seats.map(function (s) {
+          if (s.h) {
+            return '<div class="seat"><span class="face">' + esc(s.h.name[0]) + '</span>' +
+              '<span class="who"><strong>' + esc(s.h.name) + '</strong><small>' + esc(s.h.role) + '</small></span>' +
+              '<span class="tag">YOUR TEAM</span></div>';
+          }
+          return '<div class="seat ai"><span class="face"><img src="' + esc(s.ai.image) + '" alt="' + esc(s.ai.name) + '" /></span>' +
+            '<span class="who"><strong>' + esc(s.ai.name) + '</strong><small>' + esc(s.ai.role) + '</small></span>' +
+            '<span class="tag">AI COWORKER</span></div>';
+        }).join("");
+
+        /* ---- OPTION B: dossier with tabs ---- */
+        var bios = {
+          hannah: "Hannah digs into markets before you move: competitor scans, audience reads, and sourced deep-dives with receipts.",
+          elena: "Elena turns a goal into a plan, splits it into work packages, and briefs the right specialists to get it done.",
+          alex: "Alex builds the technical side: live dashboards, prototypes, and the tools your campaign runs on."
+        };
+        var tabs = document.getElementById("dosTabs");
+        function showDossier(slug) {
+          var c = by[slug]; if (!c) return;
+          document.getElementById("dosImg").src = c.image;
+          document.getElementById("dosName").textContent = c.name;
+          document.getElementById("dosRole").textContent = (c.role || "Specialist").toUpperCase();
+          document.getElementById("dosBio").textContent = bios[slug] || "";
+          document.getElementById("dosLink").href = "/coworkers/" + slug;
+          var offers = (c.offers || []).slice(0, 3);
+          document.getElementById("dosTasks").innerHTML = offers.length
+            ? offers.map(function (o) { return '<span class="chip">' + esc(o.title.length > 26 ? o.title.slice(0, 25) + "…" : o.title) + "</span>"; }).join("")
+            : '<span class="chip">Custom briefings</span>';
+          document.getElementById("dosTeam").innerHTML = trio.filter(function (t) { return t.slug !== slug; })
+            .map(function (t) { return '<span class="chip plain">' + esc(t.name) + "</span>"; }).join("");
+          [].forEach.call(tabs.children, function (b) { b.classList.toggle("on", b.dataset.slug === slug); });
+        }
+        tabs.innerHTML = trio.map(function (c) { return '<button data-slug="' + esc(c.slug) + '">' + esc(c.name) + "</button>"; }).join("");
+        tabs.addEventListener("click", function (e) { if (e.target.dataset.slug) showDossier(e.target.dataset.slug); });
+        showDossier("elena");
+
+        /* ---- OPTION C: two-row roster strip ---- */
+        var card = function (c) {
+          return '<a class="pcard" href="/coworkers/' + esc(c.slug) + '"><span class="ph"><img src="' + esc(c.image) + '" alt="" loading="lazy" /></span>' +
+            "<strong>" + esc(c.name) + "</strong><small>" + esc((c.role || "").toUpperCase()) + "</small></a>";
+        };
+        var withImg = all.filter(function (c) { return c.image; });
+        var half = Math.ceil(withImg.length / 2);
+        var top = withImg.slice(0, half), bottom = withImg.slice(half);
+        document.getElementById("stripTop").innerHTML = top.map(card).join("") + top.map(card).join("");
+        document.getElementById("stripBottom").innerHTML = bottom.map(card).join("") + bottom.map(card).join("");
+      });
+    </script>
+  </body>
+</html>
