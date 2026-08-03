@@ -398,7 +398,7 @@ function renderCoworkersIndex(catalog) {
   return (
     head({
       title: "AI coworkers on Sokosumi",
-      description: "Browse every AI coworker on Sokosumi — marketing specialists you can hire to run real work.",
+      description: "Browse every AI coworker on Sokosumi: marketing specialists you can hire to run real work.",
       path: "/coworkers",
       breadcrumb: cr,
     }) +
@@ -408,7 +408,7 @@ function renderCoworkersIndex(catalog) {
       <div class="page-head" data-reveal>
         <span class="eyebrow">Live from the marketplace</span>
         <h1>Meet your <span class="serif-accent">AI coworkers</span></h1>
-        <p class="sub">${coworkers.length} specialists you can hire today — each with a real role, a public profile, and ready-to-run work.</p>
+        <p class="sub">${coworkers.length} specialists you can hire today, each with a real role, a public profile, and ready-to-run work.</p>
       </div>
       <div class="page-section" style="border-top:none;padding-top:24px">
         <div class="cw-grid">${tiles}</div>
@@ -448,7 +448,7 @@ function renderTasksBrowse(catalog, params) {
   const cr = [{ label: "Home", href: "/" }, { label: "Pre-built tasks" }];
   return (
     head({
-      title: "Pre-built tasks — Sokosumi",
+      title: "Pre-built tasks | Sokosumi",
       description: "Browse ready-to-run pre-built tasks from Sokosumi's AI coworkers. Filter by category and open any task to see a sample output.",
       path: "/tasks",
       breadcrumb: cr,
@@ -486,7 +486,7 @@ function renderCoworkerPage(catalog, coworker) {
   const offersSection = offers.length
     ? `<section class="page-section" id="tasks">
         <h2>Pre-built tasks</h2>
-        <p class="sub">Ready-to-run work ${esc(coworker.name)} can pick up today — open one to see what you get.</p>
+        <p class="sub">Ready-to-run work ${esc(coworker.name)} can pick up today. Open one to see what you get.</p>
         <div class="offers-grid">${offers.map((o) => offerCard(coworker, o)).join("")}</div>
       </section>`
     : `<section class="page-section" id="tasks">
@@ -497,7 +497,7 @@ function renderCoworkerPage(catalog, coworker) {
   const cr = [{ label: "Home", href: "/" }, { label: "Coworkers", href: "/coworkers" }, { label: coworker.name }];
   return (
     head({
-      title: `${coworker.name} — ${coworker.role || "AI coworker"} on Sokosumi`,
+      title: `${coworker.name} | ${coworker.role || "AI coworker"} on Sokosumi`,
       description: (coworker.description || `Hire ${coworker.name}, an AI coworker on Sokosumi.`).slice(0, 155),
       path: `/coworkers/${coworker.slug}`,
       ogImage: coworker.image || undefined,
@@ -549,7 +549,7 @@ function renderTaskPage(catalog, coworker, offer) {
   ];
   return (
     head({
-      title: `${offer.title} — ${coworker.name} on Sokosumi`,
+      title: `${offer.title} | ${coworker.name} on Sokosumi`,
       description: (offer.description || `${offer.title}, a pre-built task run by ${coworker.name} on Sokosumi.`).slice(0, 155),
       path: `/coworkers/${coworker.slug}/tasks/${offer.slug}`,
       breadcrumb: cr,
@@ -595,7 +595,7 @@ function renderTaskPage(catalog, coworker, offer) {
 
 function renderNotFound(message) {
   return (
-    head({ title: "Not found — Sokosumi", description: "", path: "/404", noindex: true }) +
+    head({ title: "Not found | Sokosumi", description: "", path: "/404", noindex: true }) +
     header() +
     `<main class="container-app"><div class="notice">
       <h1>We couldn't find that</h1>

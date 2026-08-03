@@ -251,9 +251,9 @@ footer.site { border-top: 1px solid var(--border); padding: 32px 0 44px; margin-
 .btn-lg.has-orb { padding-right: 8px; }
 
 [data-reveal] {
-  opacity: 0; transform: translateY(22px); filter: blur(4px);
-  transition: opacity 0.85s var(--ease), transform 0.85s var(--ease), filter 0.85s var(--ease);
-  transition-delay: calc(var(--i, 0) * 80ms);
+  opacity: 0; transform: translateY(18px); filter: blur(3px);
+  transition: opacity 0.55s var(--ease), transform 0.55s var(--ease), filter 0.55s var(--ease);
+  transition-delay: calc(min(var(--i, 0), 4) * 60ms);
 }
 [data-reveal].in { opacity: 1; transform: none; filter: none; }
 @media (prefers-reduced-motion: reduce) {
