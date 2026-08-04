@@ -295,12 +295,12 @@
       }
       .hiw-core::before { content: none; }
       .hiw-core > * { position: relative; }
-      @media (min-width: 900px) { .hiw-core { grid-template-columns: 1fr 56px 1.12fr 56px 1fr; gap: 0; } }
-      .hiw-col { display: flex; flex-direction: column; gap: 18px; min-width: 0; }
+      @media (min-width: 900px) { .hiw-core { grid-template-columns: 1fr 56px 1fr 56px 1fr; gap: 0; } }
+      .hiw-col { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
       .hiw-step { font-family: var(--sans); font-size: 12.5px; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; color: rgba(255, 255, 255, 0.5); }
-      .hiw-cap { font-size: 13.5px; line-height: 1.6; color: rgba(255, 255, 255, 0.55); margin-top: auto; padding-top: 10px; }
+      .hiw-cap { font-size: 13.5px; line-height: 1.6; color: rgba(255, 255, 255, 0.55); margin: 0; padding-top: 2px; }
 
-      .hiw-link { display: flex; align-items: flex-start; justify-content: center; padding-top: 44px; }
+      .hiw-link { display: flex; align-items: center; justify-content: center; }
       .hiw-orb {
         width: 34px; height: 34px; border-radius: 999px; background: transparent;
         border: 1px solid var(--hairline-dark); color: rgba(255, 255, 255, 0.7);
@@ -309,60 +309,75 @@
       }
       @media (min-width: 900px) { .hiw-orb { transform: none; margin: 0; } }
 
-      /* the briefing rendered as the actual ticket you write */
+      /* one dark ticket, shown three times as it moves through the pipeline:
+         New briefing → Delegated → Done. All three cards share this skin and
+         stretch to equal height so heads, rows, and feet line up. */
       .ticket {
-        background: #fff; color: var(--foreground); border-radius: var(--r-lg);
-        overflow: hidden; text-align: left; box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+        flex: 1; display: flex; flex-direction: column;
+        background: rgba(255, 255, 255, 0.04); color: #fff;
+        border: 1px solid var(--hairline-dark); border-radius: var(--r-lg);
+        overflow: hidden; text-align: left;
       }
       .ticket-head {
         display: flex; align-items: center; justify-content: space-between; gap: 12px;
-        padding: 11px 16px; border-bottom: 1px solid var(--border);
+        padding: 11px 16px; border-bottom: 1px solid var(--hairline-dark);
       }
-      .ticket-id { font-size: 11.5px; font-weight: 500; letter-spacing: 0.06em; color: var(--muted-foreground); }
+      .ticket-id { font-size: 11.5px; font-weight: 500; letter-spacing: 0.06em; color: rgba(255, 255, 255, 0.5); }
       .ticket-status {
         font-size: 11px; font-weight: 500; letter-spacing: 0.02em;
-        color: var(--primary); background: var(--primary-soft);
         border-radius: var(--r-sm); padding: 3px 8px;
+        color: #c9a8ff; background: rgba(122, 60, 255, 0.22);
       }
+      .ticket-status.is-active { color: rgba(255, 255, 255, 0.8); background: rgba(255, 255, 255, 0.1); }
+      .ticket-status.is-done { color: var(--ink); background: #fff; }
       .ticket-body { padding: 15px 16px 16px; }
-      .ticket-title { font-size: 16.5px; font-weight: 500; letter-spacing: -0.01em; margin: 0 0 7px; }
-      .ticket-desc { font-size: 13.5px; line-height: 1.55; color: var(--muted-foreground); margin: 0; }
-      .ticket-meta { border-top: 1px solid var(--border); padding: 6px 0; }
+      .ticket-title { font-size: 16px; font-weight: 500; letter-spacing: -0.01em; margin: 0 0 7px; color: #fff; }
+      .ticket-desc { font-size: 13.5px; line-height: 1.55; color: rgba(255, 255, 255, 0.6); margin: 0; }
+      .ticket-meta { border-top: 1px solid var(--hairline-dark); padding: 6px 0; }
       .ticket-meta-row { display: flex; align-items: center; gap: 12px; padding: 7px 16px; min-width: 0; }
       .ticket-label {
         flex-shrink: 0; width: 86px; font-size: 11px; font-weight: 500;
-        letter-spacing: 0.05em; text-transform: uppercase; color: rgba(15, 14, 13, 0.4);
+        letter-spacing: 0.05em; text-transform: uppercase; color: rgba(255, 255, 255, 0.4);
       }
       .ticket-value {
-        display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: var(--foreground);
+        display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: rgba(255, 255, 255, 0.85);
         white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
       }
-      .ticket-value svg { color: var(--muted-foreground); flex-shrink: 0; }
+      .ticket-value svg { color: rgba(255, 255, 255, 0.55); flex-shrink: 0; }
       .ticket-ava {
         width: 22px; height: 22px; border-radius: 999px; flex-shrink: 0; overflow: hidden;
         background: var(--primary); color: #fff; font-size: 10px; font-weight: 500;
         display: inline-flex; align-items: center; justify-content: center;
       }
       .ticket-ava img { width: 100%; height: 100%; object-fit: cover; display: block; transform: scale(1.14); }
+      .ticket-rows { flex: 1; display: flex; flex-direction: column; }
+      .ticket-rows .hiw-row { flex: 1; }
       .ticket-foot {
+        margin-top: auto;
         display: flex; align-items: center; justify-content: space-between; gap: 12px;
-        padding: 11px 12px 11px 16px; border-top: 1px solid var(--border); background: var(--background);
+        padding: 11px 12px 11px 16px; border-top: 1px solid var(--hairline-dark);
+        background: rgba(255, 255, 255, 0.02);
       }
-      .ticket-eta { font-size: 12px; color: var(--muted-foreground); }
+      .ticket-eta { font-size: 12px; color: rgba(255, 255, 255, 0.5); }
       .ticket-send {
         display: inline-flex; align-items: center; gap: 7px; flex-shrink: 0;
         font-size: 12.5px; font-weight: 500; color: #fff;
         background: var(--primary); border-radius: var(--r-md); padding: 7px 12px;
       }
+      .ticket-done {
+        display: inline-flex; align-items: center; gap: 7px; flex-shrink: 0;
+        font-size: 12.5px; font-weight: 500; color: #fff;
+        background: transparent; border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: var(--r-md); padding: 6px 12px;
+      }
 
-      .hiw-lead { display: flex; align-items: center; gap: 12px; }
-      .hiw-who { display: flex; flex-direction: column; line-height: 1.3; }
-      .hiw-who strong { font-size: 15px; font-weight: 500; color: #fff; }
-      .hiw-who small { font-size: 13px; color: rgba(255, 255, 255, 0.55); }
-      .hiw-tray { border: 1px solid var(--hairline-dark); border-radius: var(--r-lg); overflow: hidden; background: rgba(255, 255, 255, 0.04); box-shadow: none; }
-      .hiw-row { display: flex; align-items: center; gap: 11px; padding: 13px 16px; min-width: 0; }
+      .hiw-lead { display: flex; align-items: center; gap: 11px; padding: 12px 16px; border-bottom: 1px solid var(--hairline-dark); }
+      .hiw-who { display: flex; flex-direction: column; line-height: 1.35; min-width: 0; }
+      .hiw-who strong { font-size: 13.5px; font-weight: 500; color: #fff; }
+      .hiw-who small { font-size: 12.5px; color: rgba(255, 255, 255, 0.55); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+      .hiw-row { display: flex; align-items: center; gap: 11px; padding: 12px 16px; min-width: 0; }
       .hiw-row + .hiw-row { border-top: 1px solid var(--hairline-dark); }
-      .hiw-row-name { font-size: 14px; font-weight: 400; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+      .hiw-row-name { font-size: 13.5px; font-weight: 400; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
       .hiw-tag {
         margin-left: auto; flex-shrink: 0; font-size: 11px; letter-spacing: 0.02em;
         padding: 3px 9px; border-radius: var(--r-sm);
@@ -370,22 +385,15 @@
         color: rgba(255, 255, 255, 0.55);
       }
       .hiw-ava {
-        width: 40px; height: 40px; border-radius: 999px; flex-shrink: 0; overflow: hidden;
-        background: var(--primary); color: #fff; font-size: 15px; font-weight: 500;
+        width: 30px; height: 30px; border-radius: 999px; flex-shrink: 0; overflow: hidden;
+        background: var(--primary); color: #fff; font-size: 12px; font-weight: 500;
         display: inline-flex; align-items: center; justify-content: center;
-        box-shadow: 0 0 0 1.5px rgba(255, 255, 255, 0.35);
       }
-      .hiw-ava.sm { width: 26px; height: 26px; font-size: 11px; box-shadow: 0 0 0 1.5px rgba(255, 255, 255, 0.25); }
+      .hiw-ava.sm { width: 24px; height: 24px; font-size: 10px; }
       .hiw-ava img { width: 100%; height: 100%; object-fit: cover; display: block; transform: scale(1.14); }
 
       .hiw-file-icon { color: rgba(255, 255, 255, 0.7); display: inline-flex; flex-shrink: 0; }
       .hiw-file-type { margin-left: auto; flex-shrink: 0; font-size: 11px; letter-spacing: 0.05em; color: rgba(255, 255, 255, 0.5); }
-      .hiw-done {
-        display: inline-flex; align-items: center; gap: 7px; align-self: flex-start;
-        font-size: 12.5px; font-weight: 500; color: #fff;
-        background: transparent; border: 1px solid rgba(255, 255, 255, 0.3);
-        border-radius: var(--r-md); padding: 6px 12px;
-      }
 
       /* ===== trust band ===== */
       .trust-band { background: var(--muted); padding: clamp(90px, 10vw, 150px) 0; margin-top: 0; }
@@ -638,28 +646,37 @@
 
             <div class="hiw-link" aria-hidden="true"><span class="hiw-orb"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span></div>
 
-            <!-- 02 · the delegation -->
+            <!-- 02 · the same ticket, delegated -->
             <div class="hiw-col" data-reveal style="--i: 2">
               <span class="hiw-step">Split &amp; delegated</span>
-              <div class="hiw-lead">
-                <span class="hiw-ava" data-cw-ava="elena">E</span>
-                <span class="hiw-who"><strong>Elena</strong><small>splits the brief into work packages</small></span>
-              </div>
-              <div class="hiw-tray">
-                <div class="hiw-row">
-                  <span class="hiw-ava sm" data-cw-ava="hannah">H</span>
-                  <span class="hiw-row-name">Audience research</span>
-                  <span class="hiw-tag" style="--c: var(--chart-1)">Research</span>
+              <div class="ticket">
+                <div class="ticket-head">
+                  <span class="ticket-id">BRF-214</span>
+                  <span class="ticket-status is-active">Delegated</span>
                 </div>
-                <div class="hiw-row">
-                  <span class="hiw-ava sm" data-cw-ava="pheme-beta">P</span>
-                  <span class="hiw-row-name">Social rollout</span>
-                  <span class="hiw-tag" style="--c: var(--chart-2)">Social</span>
+                <div class="hiw-lead">
+                  <span class="hiw-ava" data-cw-ava="elena">E</span>
+                  <span class="hiw-who"><strong>Elena</strong><small>splits the brief into work packages</small></span>
                 </div>
-                <div class="hiw-row">
-                  <span class="hiw-ava sm" data-cw-ava="alex">A</span>
-                  <span class="hiw-row-name">Campaign dashboard</span>
-                  <span class="hiw-tag" style="--c: var(--chart-3)">Coding</span>
+                <div class="ticket-rows">
+                  <div class="hiw-row">
+                    <span class="hiw-ava sm" data-cw-ava="hannah">H</span>
+                    <span class="hiw-row-name">Audience research</span>
+                    <span class="hiw-tag">Research</span>
+                  </div>
+                  <div class="hiw-row">
+                    <span class="hiw-ava sm" data-cw-ava="pheme-beta">P</span>
+                    <span class="hiw-row-name">Social rollout</span>
+                    <span class="hiw-tag">Social</span>
+                  </div>
+                  <div class="hiw-row">
+                    <span class="hiw-ava sm" data-cw-ava="alex">A</span>
+                    <span class="hiw-row-name">Campaign dashboard</span>
+                    <span class="hiw-tag">Coding</span>
+                  </div>
+                </div>
+                <div class="ticket-foot">
+                  <span class="ticket-eta">3 work packages, running in parallel</span>
                 </div>
               </div>
               <p class="hiw-cap">Each package goes to the right specialist, and they work in parallel.</p>
@@ -667,10 +684,15 @@
 
             <div class="hiw-link" aria-hidden="true"><span class="hiw-orb"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span></div>
 
-            <!-- 03 · the deliverables -->
+            <!-- 03 · the same ticket, closed with files attached -->
             <div class="hiw-col" data-reveal style="--i: 3">
               <span class="hiw-step">Files back</span>
-              <div class="hiw-tray">
+              <div class="ticket">
+                <div class="ticket-head">
+                  <span class="ticket-id">BRF-214</span>
+                  <span class="ticket-status is-done">Done</span>
+                </div>
+                <div class="ticket-rows">
                 <div class="hiw-row">
                   <span class="hiw-file-icon" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v6h6"/></svg></span>
                   <span class="hiw-row-name">Audience report</span>
@@ -686,11 +708,15 @@
                   <span class="hiw-row-name">Live dashboard</span>
                   <span class="hiw-file-type">Web</span>
                 </div>
+                </div>
+                <div class="ticket-foot">
+                  <span class="ticket-eta">3 deliverables attached</span>
+                  <span class="ticket-done">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+                    Ready to review
+                  </span>
+                </div>
               </div>
-              <span class="hiw-done">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
-                Ready to review
-              </span>
               <p class="hiw-cap">Finished work, not chat. Every task shows a real sample before you run it.</p>
             </div>
           </div>
