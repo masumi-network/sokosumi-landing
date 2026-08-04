@@ -26,38 +26,40 @@
   </head>
   <body>
     <header>
-      <h1>Hero background lab: test.mp4</h1>
+      <h1 id="labTitle">Hero background lab</h1>
       <p>The same clip under five treatments. Each frame is the live landing page, so the motion is real. Click a heading to open that variant full-screen.</p>
+      <p id="clipSwitch" style="margin-top: 10px; font-size: 13px;"></p>
     </header>
 
-    <div class="v">
-      <h2><a href="/?vid=test" target="_blank">1 · Cinematic (current treatment)</a></h2>
-      <p>The existing scrim: dark left-to-right and top/bottom gradients, colors of the clip shining through. Closest to Harvey's own hero.</p>
-      <iframe src="/?vid=test" title="Cinematic" loading="lazy"></iframe>
-    </div>
+    <div id="variants"></div>
 
-    <div class="v">
-      <h2><a href="/?vid=test&amp;bg=ink" target="_blank">2 · Ink wash</a></h2>
-      <p>Flat, heavy dark overlay. The clip becomes a faint texture; maximum text focus, most minimal.</p>
-      <iframe src="/?vid=test&amp;bg=ink" title="Ink wash" loading="lazy"></iframe>
-    </div>
+    <script>
+      var CLIPS = ["test", "hhhtest"];
+      var vid = new URLSearchParams(location.search).get("vid") || CLIPS[0];
+      document.getElementById("labTitle").textContent = "Hero background lab: " + vid + ".mp4";
+      document.getElementById("clipSwitch").innerHTML =
+        "Clip: " +
+        CLIPS.map(function (c) {
+          return c === vid
+            ? "<strong>" + c + ".mp4</strong>"
+            : '<a href="?vid=' + c + '">' + c + ".mp4</a>";
+        }).join(" · ");
 
-    <div class="v">
-      <h2><a href="/?vid=test&amp;bg=mono" target="_blank">3 · Monochrome</a></h2>
-      <p>Grayscale with the cinematic scrim. Matches the grayscale Serviceplan photo and the ink chapters; the whole page becomes one palette.</p>
-      <iframe src="/?vid=test&amp;bg=mono" title="Monochrome" loading="lazy"></iframe>
-    </div>
-
-    <div class="v">
-      <h2><a href="/?vid=test&amp;bg=duo" target="_blank">4 · Purple duotone</a></h2>
-      <p>Grayscale clip washed in Wisteria purple. The strongest brand statement, and the most color.</p>
-      <iframe src="/?vid=test&amp;bg=duo" title="Purple duotone" loading="lazy"></iframe>
-    </div>
-
-    <div class="v">
-      <h2><a href="/?vid=test&amp;bg=blur" target="_blank">5 · Frosted</a></h2>
-      <p>Heavy blur turns the clip into slow-moving ambient color. Abstract, calm, no legibility fight at all.</p>
-      <iframe src="/?vid=test&amp;bg=blur" title="Frosted" loading="lazy"></iframe>
-    </div>
+      var VARIANTS = [
+        { q: "", name: "1 · Cinematic (current treatment)", desc: "The existing scrim: dark left-to-right and top/bottom gradients, colors of the clip shining through. Closest to Harvey's own hero." },
+        { q: "&bg=ink", name: "2 · Ink wash", desc: "Flat, heavy dark overlay. The clip becomes a faint texture; maximum text focus, most minimal." },
+        { q: "&bg=mono", name: "3 · Monochrome", desc: "Grayscale with the cinematic scrim, 'Marketing' in purple. Matches the grayscale photography and ink chapters." },
+        { q: "&bg=duo", name: "4 · Purple duotone", desc: "Grayscale clip washed in Wisteria purple. The strongest brand statement, and the most color." },
+        { q: "&bg=blur", name: "5 · Frosted", desc: "Heavy blur turns the clip into slow-moving ambient color. Abstract, calm, no legibility fight at all." },
+      ];
+      document.getElementById("variants").innerHTML = VARIANTS.map(function (v) {
+        var url = "/?vid=" + encodeURIComponent(vid) + v.q;
+        return (
+          '<div class="v"><h2><a href="' + url + '" target="_blank">' + v.name + "</a></h2>" +
+          "<p>" + v.desc + "</p>" +
+          '<iframe src="' + url + '" title="' + v.name + '" loading="lazy"></iframe></div>'
+        );
+      }).join("");
+    </script>
   </body>
 </html>
