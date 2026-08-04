@@ -122,7 +122,10 @@
       .island-nav {
         position: fixed; top: 0; left: 0; right: 0; transform: none; z-index: 50;
         display: flex; align-items: center; gap: clamp(20px, 3.4vw, 44px);
-        height: 64px; padding: 0 clamp(24px, 4vw, 56px); border-radius: 0;
+        height: 64px; border-radius: 0;
+        /* keep the bar full-bleed, but pin its content to the same 1240px
+           grid every section sits on */
+        padding: 0 max(clamp(24px, 4vw, 56px), calc((100% - 1240px) / 2 + clamp(24px, 4vw, 56px)));
         background: transparent; border-bottom: 1px solid transparent;
         width: auto; max-width: none;
         transition: background-color 0.4s var(--ease), border-color 0.4s var(--ease);
@@ -173,7 +176,7 @@
       .hero-title {
         font-family: var(--serif); font-weight: 300;
         font-size: clamp(2.9rem, 6.4vw, 5.6rem); line-height: 1.05; letter-spacing: -0.03em;
-        max-width: 14ch; text-wrap: balance; margin: 0 0 26px;
+        max-width: 20ch; text-wrap: balance; margin: 0 0 26px;
       }
       .hero-title .serif-accent { font-size: 1em; letter-spacing: inherit; }
       .hero-sub {
@@ -208,13 +211,21 @@
       }
       .pill:hover { background: rgba(255, 255, 255, 0.12); color: #fff; border-color: rgba(255, 255, 255, 0.5); }
 
-      /* trusted-by wall at the hero's base */
-      .hero-logos { position: relative; z-index: 1; padding: 26px 0 30px; display: flex; flex-direction: column; align-items: center; gap: 18px; border-top: 1px solid rgba(255, 255, 255, 0.14); }
-      .hero-logos .hl-label { font-family: var(--sans); font-size: 12px; letter-spacing: 0.02em; text-transform: none; color: rgba(255, 255, 255, 0.55); }
+      /* trusted-by wall at the hero's base, on the page grid: label left, logos right */
+      .hero-logos { position: relative; z-index: 1; border-top: 1px solid rgba(255, 255, 255, 0.14); }
+      .hl-inner {
+        max-width: 1240px; margin: 0 auto; padding: 24px clamp(24px, 4vw, 56px) 26px;
+        display: flex; align-items: center; gap: clamp(28px, 4vw, 56px);
+      }
+      .hero-logos .hl-label { flex-shrink: 0; font-family: var(--sans); font-size: 12px; letter-spacing: 0.02em; text-transform: none; color: rgba(255, 255, 255, 0.55); }
       .hl-marquee {
-        width: min(1000px, 94vw); overflow: hidden;
+        flex: 1; min-width: 0; overflow: hidden;
         -webkit-mask-image: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent);
         mask-image: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent);
+      }
+      @media (max-width: 680px) {
+        .hl-inner { flex-direction: column; align-items: flex-start; gap: 16px; }
+        .hl-marquee { width: 100%; }
       }
       .hl-track { display: flex; align-items: center; gap: clamp(44px, 6vw, 80px); width: max-content; animation: marquee 40s linear infinite; padding-right: clamp(44px, 6vw, 80px); }
       .hl-marquee:hover .hl-track { animation-play-state: paused; }
@@ -451,7 +462,7 @@
         position: relative; overflow: visible; text-align: left;
         margin-top: clamp(96px, 11vw, 160px); padding: 0;
         background: transparent; color: var(--foreground);
-        display: block;
+        display: block; border-top: 1px solid var(--border);
       }
       .cta-band::before, .cta-band::after { content: none; }
       .cta-band h2 {
@@ -462,7 +473,6 @@
       .cta-band p { font-size: 16px; color: var(--muted-foreground); }
       .cta-inner {
         max-width: 1240px; margin: 0 auto; padding: clamp(70px, 8vw, 110px) clamp(24px, 4vw, 56px);
-        border-top: 1px solid var(--border);
         display: grid; grid-template-columns: 1fr; gap: 18px 48px; align-items: center;
       }
       @media (min-width: 860px) {
@@ -566,6 +576,7 @@
 
       <!-- social proof: client brands (same set the Serviceplan/Sokosumi site uses) -->
       <div class="hero-logos" data-reveal style="--i: 5">
+        <div class="hl-inner">
         <span class="hl-label">Trusted by teams at</span>
         <div class="hl-marquee">
           <div class="hl-track">
@@ -582,6 +593,7 @@
             <img src="/assets/logos/tdk.svg" alt="" aria-hidden="true" />
             <img src="/assets/logos/stroer.svg" alt="" aria-hidden="true" />
           </div>
+        </div>
         </div>
         <button id="vidToggle" class="vid-toggle" aria-label="Pause background video">❚❚</button>
       </div>
