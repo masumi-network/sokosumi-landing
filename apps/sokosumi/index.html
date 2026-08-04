@@ -334,13 +334,8 @@
         padding: 11px 16px; border-bottom: 1px solid var(--hairline-dark);
       }
       .ticket-id { font-size: 11.5px; font-weight: 500; letter-spacing: 0.06em; color: rgba(255, 255, 255, 0.5); }
-      .ticket-status {
-        font-size: 11px; font-weight: 500; letter-spacing: 0.02em;
-        border-radius: var(--r-sm); padding: 3px 8px;
-        color: #c9a8ff; background: rgba(122, 60, 255, 0.22);
-      }
-      .ticket-status.is-active { color: rgba(255, 255, 255, 0.8); background: rgba(255, 255, 255, 0.1); }
-      .ticket-status.is-done { color: var(--ink); background: #fff; }
+      .ticket-status { font-size: 11.5px; font-weight: 500; letter-spacing: 0.06em; color: rgba(255, 255, 255, 0.5); }
+      .ticket-status.is-done { color: #fff; }
       .ticket-body { padding: 15px 16px 16px; }
       .ticket-title { font-size: 16px; font-weight: 500; letter-spacing: -0.01em; margin: 0 0 7px; color: #fff; }
       .ticket-desc { font-size: 13.5px; line-height: 1.55; color: rgba(255, 255, 255, 0.6); margin: 0; }
@@ -357,29 +352,27 @@
       .ticket-value svg { color: rgba(255, 255, 255, 0.55); flex-shrink: 0; }
       .ticket-ava {
         width: 22px; height: 22px; border-radius: 999px; flex-shrink: 0; overflow: hidden;
-        background: var(--primary); color: #fff; font-size: 10px; font-weight: 500;
+        background: rgba(255, 255, 255, 0.14); color: #fff; font-size: 10px; font-weight: 500;
         display: inline-flex; align-items: center; justify-content: center;
       }
       .ticket-ava img { width: 100%; height: 100%; object-fit: cover; display: block; transform: scale(1.14); }
+      /* keep the dark chapter monochrome: portraits render grayscale here */
+      #how .ticket-ava img, #how .hiw-ava img { filter: grayscale(1); }
       .ticket-rows { flex: 1; display: flex; flex-direction: column; }
       .ticket-rows .hiw-row { flex: 1; }
       .ticket-foot {
         margin-top: auto;
-        display: flex; align-items: center; justify-content: space-between; gap: 12px;
-        padding: 11px 12px 11px 16px; border-top: 1px solid var(--hairline-dark);
-        background: rgba(255, 255, 255, 0.02);
+        display: flex; align-items: center; justify-content: flex-end; gap: 12px;
+        padding: 11px 12px; border-top: 1px solid var(--hairline-dark);
       }
-      .ticket-eta { font-size: 12px; color: rgba(255, 255, 255, 0.5); }
       .ticket-send {
         display: inline-flex; align-items: center; gap: 7px; flex-shrink: 0;
-        font-size: 12.5px; font-weight: 500; color: #fff;
-        background: var(--primary); border-radius: var(--r-md); padding: 7px 12px;
+        font-size: 12.5px; font-weight: 500; color: var(--ink);
+        background: #fff; border-radius: var(--r-md); padding: 7px 12px;
       }
       .ticket-done {
         display: inline-flex; align-items: center; gap: 7px; flex-shrink: 0;
-        font-size: 12.5px; font-weight: 500; color: #fff;
-        background: transparent; border: 1px solid rgba(255, 255, 255, 0.3);
-        border-radius: var(--r-md); padding: 6px 12px;
+        font-size: 12.5px; font-weight: 500; color: #fff; padding: 7px 4px;
       }
 
       .hiw-lead { display: flex; align-items: center; gap: 11px; padding: 12px 16px; border-bottom: 1px solid var(--hairline-dark); }
@@ -389,15 +382,10 @@
       .hiw-row { display: flex; align-items: center; gap: 11px; padding: 12px 16px; min-width: 0; }
       .hiw-row + .hiw-row { border-top: 1px solid var(--hairline-dark); }
       .hiw-row-name { font-size: 13.5px; font-weight: 400; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-      .hiw-tag {
-        margin-left: auto; flex-shrink: 0; font-size: 11px; letter-spacing: 0.02em;
-        padding: 3px 9px; border-radius: var(--r-sm);
-        background: transparent; border: 1px solid var(--hairline-dark);
-        color: rgba(255, 255, 255, 0.55);
-      }
+      .hiw-tag { margin-left: auto; flex-shrink: 0; font-size: 11px; letter-spacing: 0.05em; color: rgba(255, 255, 255, 0.5); }
       .hiw-ava {
         width: 30px; height: 30px; border-radius: 999px; flex-shrink: 0; overflow: hidden;
-        background: var(--primary); color: #fff; font-size: 12px; font-weight: 500;
+        background: rgba(255, 255, 255, 0.14); color: #fff; font-size: 12px; font-weight: 500;
         display: inline-flex; align-items: center; justify-content: center;
       }
       .hiw-ava.sm { width: 24px; height: 24px; font-size: 10px; }
@@ -649,7 +637,6 @@
                   </div>
                 </div>
                 <div class="ticket-foot">
-                  <span class="ticket-eta">Written in plain language</span>
                   <span class="ticket-send">Send briefing <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
                 </div>
               </div>
@@ -687,9 +674,6 @@
                     <span class="hiw-tag">Coding</span>
                   </div>
                 </div>
-                <div class="ticket-foot">
-                  <span class="ticket-eta">3 work packages, running in parallel</span>
-                </div>
               </div>
               <p class="hiw-cap">Each package goes to the right specialist, and they work in parallel.</p>
             </div>
@@ -722,7 +706,6 @@
                 </div>
                 </div>
                 <div class="ticket-foot">
-                  <span class="ticket-eta">3 deliverables attached</span>
                   <span class="ticket-done">
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
                     Ready to review
