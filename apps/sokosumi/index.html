@@ -28,14 +28,14 @@
     <link rel="preload" as="image" href="/assets/hero-poster.jpg" fetchpriority="high" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
 
     <!-- Design system: see DESIGN.md — brand tokens from the Sokosumi product,
          composition per the project taste skills (.agents/skills). -->
     <style>
-      /* Harvey-inspired restyle: ink + paper monochrome, upright serif display
-         (Newsreader as the HarveySerif stand-in), neutral grotesk everywhere
-         else, hairline borders, rectangular 6px buttons, restrained motion.
+      /* Harvey-inspired restyle: ink + paper monochrome, hairline borders,
+         rectangular 6px buttons, restrained motion. Display type is Inter Light
+         (brand font, per DESIGN.md) at Harvey's editorial scale.
          Purple survives only as a micro-accent. Structure/components unchanged. */
       :root {
         --background: #fafaf9;
@@ -59,9 +59,9 @@
         --r-xl: 8px;
         --r-2xl: 10px;
         --ease: cubic-bezier(0.16, 1, 0.3, 1);
-        --sans: "Geist", -apple-system, system-ui, sans-serif;
-        --serif: "Newsreader", Georgia, serif;
-        --mono: "Geist", -apple-system, system-ui, sans-serif;
+        --sans: "Inter", -apple-system, system-ui, sans-serif;
+        --serif: "Inter", -apple-system, system-ui, sans-serif;
+        --mono: "Inter", -apple-system, system-ui, sans-serif;
       }
       * { margin: 0; box-sizing: border-box; }
       html { scroll-behavior: smooth; }
@@ -75,7 +75,7 @@
       button { font-family: inherit; }
       .container-app { max-width: 1240px; margin: 0 auto; padding: 0 clamp(24px, 4vw, 56px); }
       .muted { color: var(--muted-foreground); }
-      .serif-accent { font-family: var(--serif); font-style: normal; font-weight: 400; letter-spacing: 0; }
+      .serif-accent { font-family: var(--serif); font-style: normal; font-weight: inherit; letter-spacing: inherit; }
 
       /* ===== scroll reveals: quiet fade + rise, no blur ===== */
       [data-reveal] {
@@ -171,9 +171,9 @@
       .hero-social .avatars img:first-child { margin-left: 0; }
       .hero-social .count { font-size: 13px; font-weight: 400; letter-spacing: 0; color: rgba(255, 255, 255, 0.75); }
       .hero-title {
-        font-family: var(--serif); font-weight: 400;
-        font-size: clamp(3rem, 7vw, 6.2rem); line-height: 1.03; letter-spacing: -0.015em;
-        max-width: 13ch; text-wrap: balance; margin: 0 0 26px;
+        font-family: var(--serif); font-weight: 300;
+        font-size: clamp(2.9rem, 6.4vw, 5.6rem); line-height: 1.05; letter-spacing: -0.03em;
+        max-width: 14ch; text-wrap: balance; margin: 0 0 26px;
       }
       .hero-title .serif-accent { font-size: 1em; letter-spacing: inherit; }
       .hero-sub {
@@ -225,7 +225,7 @@
       .hl-track img:hover { opacity: 0.9; }
 
       .vid-toggle {
-        position: absolute; right: 20px; bottom: 96px; z-index: 2;
+        position: absolute; right: 20px; top: -52px; z-index: 2;
         width: 36px; height: 36px; border-radius: var(--r-md); border: 1px solid rgba(255, 255, 255, 0.25);
         background: rgba(0, 0, 0, 0.35); color: #fff; cursor: pointer;
         display: flex; align-items: center; justify-content: center; font-size: 10px;
@@ -237,8 +237,8 @@
       section.block { padding: clamp(96px, 11vw, 160px) 0 0; }
       .section-head { max-width: 760px; margin: 0 0 clamp(44px, 6vw, 68px); text-align: left; display: flex; flex-direction: column; gap: 16px; align-items: flex-start; }
       .section-head h2 {
-        font-family: var(--serif); font-weight: 400;
-        font-size: clamp(32px, 3.8vw, 52px); line-height: 1.08; letter-spacing: -0.01em; text-wrap: balance;
+        font-family: var(--serif); font-weight: 300;
+        font-size: clamp(30px, 3.5vw, 48px); line-height: 1.1; letter-spacing: -0.025em; text-wrap: balance;
       }
       .section-head p { font-size: 16.5px; line-height: 1.6; color: var(--muted-foreground); max-width: 54ch; }
 
@@ -309,17 +309,50 @@
       }
       @media (min-width: 900px) { .hiw-orb { transform: none; margin: 0; } }
 
-      .hiw-quote {
-        font-family: var(--serif); font-style: normal; font-weight: 400;
-        font-size: clamp(21px, 2.1vw, 27px); line-height: 1.35; letter-spacing: -0.005em;
-        color: #fff; text-wrap: pretty;
-        border-left: 1px solid rgba(255, 255, 255, 0.35); padding-left: 20px; margin: 2px 0;
+      /* the briefing rendered as the actual ticket you write */
+      .ticket {
+        background: #fff; color: var(--foreground); border-radius: var(--r-lg);
+        overflow: hidden; text-align: left; box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
       }
-      .hiw-sent { display: flex; align-items: center; gap: 12px; padding-left: 21px; }
-      .hiw-you { font-size: 12px; letter-spacing: 0.04em; text-transform: uppercase; color: rgba(255, 255, 255, 0.55); }
-      .hiw-send {
-        width: 28px; height: 28px; border-radius: 999px; background: var(--primary); color: #fff;
-        display: inline-flex; align-items: center; justify-content: center; box-shadow: none;
+      .ticket-head {
+        display: flex; align-items: center; justify-content: space-between; gap: 12px;
+        padding: 11px 16px; border-bottom: 1px solid var(--border);
+      }
+      .ticket-id { font-size: 11.5px; font-weight: 500; letter-spacing: 0.06em; color: var(--muted-foreground); }
+      .ticket-status {
+        font-size: 11px; font-weight: 500; letter-spacing: 0.02em;
+        color: var(--primary); background: var(--primary-soft);
+        border-radius: var(--r-sm); padding: 3px 8px;
+      }
+      .ticket-body { padding: 15px 16px 16px; }
+      .ticket-title { font-size: 16.5px; font-weight: 500; letter-spacing: -0.01em; margin: 0 0 7px; }
+      .ticket-desc { font-size: 13.5px; line-height: 1.55; color: var(--muted-foreground); margin: 0; }
+      .ticket-meta { border-top: 1px solid var(--border); padding: 6px 0; }
+      .ticket-meta-row { display: flex; align-items: center; gap: 12px; padding: 7px 16px; min-width: 0; }
+      .ticket-label {
+        flex-shrink: 0; width: 86px; font-size: 11px; font-weight: 500;
+        letter-spacing: 0.05em; text-transform: uppercase; color: rgba(15, 14, 13, 0.4);
+      }
+      .ticket-value {
+        display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: var(--foreground);
+        white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      }
+      .ticket-value svg { color: var(--muted-foreground); flex-shrink: 0; }
+      .ticket-ava {
+        width: 22px; height: 22px; border-radius: 999px; flex-shrink: 0; overflow: hidden;
+        background: var(--primary); color: #fff; font-size: 10px; font-weight: 500;
+        display: inline-flex; align-items: center; justify-content: center;
+      }
+      .ticket-ava img { width: 100%; height: 100%; object-fit: cover; display: block; transform: scale(1.14); }
+      .ticket-foot {
+        display: flex; align-items: center; justify-content: space-between; gap: 12px;
+        padding: 11px 12px 11px 16px; border-top: 1px solid var(--border); background: var(--background);
+      }
+      .ticket-eta { font-size: 12px; color: var(--muted-foreground); }
+      .ticket-send {
+        display: inline-flex; align-items: center; gap: 7px; flex-shrink: 0;
+        font-size: 12.5px; font-weight: 500; color: #fff;
+        background: var(--primary); border-radius: var(--r-md); padding: 7px 12px;
       }
 
       .hiw-lead { display: flex; align-items: center; gap: 12px; }
@@ -364,7 +397,7 @@
       .trust-media:hover img { transform: scale(1.03); }
       .trust-copy { display: flex; flex-direction: column; align-items: flex-start; gap: 20px; }
       .trust-logo { height: 22px; width: auto; }
-      .trust-headline { font-family: var(--serif); font-size: clamp(28px, 3.2vw, 42px); font-weight: 400; line-height: 1.12; letter-spacing: -0.01em; text-wrap: balance; }
+      .trust-headline { font-family: var(--serif); font-size: clamp(26px, 3vw, 38px); font-weight: 300; line-height: 1.15; letter-spacing: -0.02em; text-wrap: balance; }
       .trust-copy p { font-size: 16px; line-height: 1.65; max-width: 46ch; }
 
       /* ===== categories: flat mosaic ===== */
@@ -393,14 +426,14 @@
       }
       .cat-tile .cat-count { font-size: 12.5px; letter-spacing: 0.02em; color: var(--muted-foreground); }
       .cat-tile .cat-info { display: flex; flex-direction: column; gap: 6px; }
-      .cat-tile h3 { font-family: var(--serif); font-size: 22px; font-weight: 400; letter-spacing: -0.005em; display: flex; align-items: center; gap: 8px; }
+      .cat-tile h3 { font-family: var(--sans); font-size: 18px; font-weight: 500; letter-spacing: -0.01em; display: flex; align-items: center; gap: 8px; }
       .cat-tile h3 .go { opacity: 0; transform: translate(-4px, 4px); transition: opacity 0.3s var(--ease), transform 0.3s var(--ease); color: var(--foreground); display: inline-flex; }
       .cat-tile:hover h3 .go { opacity: 1; transform: none; }
       .cat-tile p {
         font-size: 14px; line-height: 1.55; color: var(--muted-foreground);
         display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden;
       }
-      .cat-tile.b-big h3 { font-size: 27px; }
+      .cat-tile.b-big h3 { font-size: 21px; }
       .cat-tile.b-big p { font-size: 15px; max-width: 44ch; -webkit-line-clamp: 2; }
       .cat-tile.s4 p { -webkit-line-clamp: 2; }
       .cat-cta { text-align: left; margin-top: clamp(32px, 4vw, 44px); }
@@ -414,8 +447,8 @@
       }
       .cta-band::before, .cta-band::after { content: none; }
       .cta-band h2 {
-        font-family: var(--serif); font-weight: 400;
-        font-size: clamp(32px, 3.8vw, 52px); letter-spacing: -0.01em; line-height: 1.1;
+        font-family: var(--serif); font-weight: 300;
+        font-size: clamp(30px, 3.5vw, 48px); letter-spacing: -0.025em; line-height: 1.1;
         max-width: 22ch; text-wrap: balance;
       }
       .cta-band p { font-size: 16px; color: var(--muted-foreground); }
@@ -542,9 +575,8 @@
             <img src="/assets/logos/stroer.svg" alt="" aria-hidden="true" />
           </div>
         </div>
+        <button id="vidToggle" class="vid-toggle" aria-label="Pause background video">❚❚</button>
       </div>
-
-      <button id="vidToggle" class="vid-toggle" aria-label="Pause background video">❚❚</button>
     </header>
 
     <!-- ===== AI COWORKERS — asymmetric podium (live from /api/catalog) ===== -->
@@ -574,15 +606,34 @@
 
         <div class="hiw-shell" data-reveal>
           <div class="hiw-core">
-            <!-- 01 · the briefing -->
+            <!-- 01 · the briefing, as the ticket you actually write -->
             <div class="hiw-col" data-reveal style="--i: 1">
               <span class="hiw-step">Your briefing</span>
-              <blockquote class="hiw-quote">Launch our summer product line: research the audience, define the positioning, draft the creative.</blockquote>
-              <div class="hiw-sent">
-                <span class="hiw-send" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
-                <span class="hiw-you">Sent to Elena</span>
+              <div class="ticket">
+                <div class="ticket-head">
+                  <span class="ticket-id">BRF-214</span>
+                  <span class="ticket-status">New briefing</span>
+                </div>
+                <div class="ticket-body">
+                  <h3 class="ticket-title">Summer product line launch</h3>
+                  <p class="ticket-desc">Research the audience, define the positioning, draft the creative for the July campaign.</p>
+                </div>
+                <div class="ticket-meta">
+                  <div class="ticket-meta-row">
+                    <span class="ticket-label">Assignee</span>
+                    <span class="ticket-value"><span class="ticket-ava" data-cw-ava="elena">E</span> Elena, lead strategist</span>
+                  </div>
+                  <div class="ticket-meta-row">
+                    <span class="ticket-label">Attachment</span>
+                    <span class="ticket-value"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg> brand-guide.pdf</span>
+                  </div>
+                </div>
+                <div class="ticket-foot">
+                  <span class="ticket-eta">Written in plain language</span>
+                  <span class="ticket-send">Send briefing <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
+                </div>
               </div>
-              <p class="hiw-cap">Plain language, straight to your lead coworker. No forms, no setup.</p>
+              <p class="hiw-cap">One ticket, no forms, no setup. Your lead coworker takes it from there.</p>
             </div>
 
             <div class="hiw-link" aria-hidden="true"><span class="hiw-orb"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span></div>
