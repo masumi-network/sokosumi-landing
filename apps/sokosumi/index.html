@@ -394,6 +394,32 @@
       .hiw-file-icon { color: rgba(255, 255, 255, 0.7); display: inline-flex; flex-shrink: 0; }
       .hiw-file-type { margin-left: auto; flex-shrink: 0; font-size: 11px; letter-spacing: 0.05em; color: rgba(255, 255, 255, 0.5); }
 
+      /* ===== product screenshots: large framed shots (placeholders for now) ===== */
+      .shots { display: flex; flex-direction: column; gap: clamp(24px, 3.5vw, 40px); }
+      .shot { margin: 0; }
+      .shot-frame {
+        position: relative; border: 1px solid var(--border); border-radius: var(--r-lg);
+        overflow: hidden; background: var(--card);
+      }
+      .shot-bar {
+        position: relative; display: flex; align-items: center; gap: 6px;
+        padding: 11px 14px; border-bottom: 1px solid var(--border); background: var(--background);
+      }
+      .shot-bar span { width: 9px; height: 9px; border-radius: 999px; background: var(--border); }
+      .shot-bar i {
+        position: absolute; left: 50%; transform: translateX(-50%);
+        font-style: normal; font-size: 11.5px; letter-spacing: 0.02em; color: var(--muted-foreground);
+      }
+      .shot-canvas {
+        aspect-ratio: 16 / 9; display: flex; align-items: center; justify-content: center;
+        background: var(--muted);
+      }
+      .shot-pair .shot-canvas { aspect-ratio: 4 / 3; }
+      .shot-canvas span { font-size: 13px; letter-spacing: 0.02em; color: var(--muted-foreground); }
+      .shot figcaption { margin-top: 12px; font-size: 13.5px; color: var(--muted-foreground); }
+      .shot-pair { display: grid; gap: clamp(24px, 3.5vw, 40px); grid-template-columns: 1fr; }
+      @media (min-width: 860px) { .shot-pair { grid-template-columns: 1fr 1fr; } }
+
       /* ===== trust band ===== */
       .trust-band { background: var(--muted); padding: clamp(90px, 10vw, 150px) 0; margin-top: 0; }
       .trust-inner { display: grid; gap: clamp(36px, 5vw, 72px); grid-template-columns: 1fr; align-items: center; }
@@ -407,42 +433,27 @@
       .trust-headline { font-family: var(--serif); font-size: clamp(26px, 3vw, 38px); font-weight: 300; line-height: 1.15; letter-spacing: -0.02em; text-wrap: balance; }
       .trust-copy p { font-size: 16px; line-height: 1.65; max-width: 46ch; }
 
-      /* ===== categories: flat mosaic ===== */
-      .cat-bento { display: grid; gap: 12px; grid-template-columns: 1fr; }
-      @media (min-width: 780px) { .cat-bento { grid-template-columns: repeat(12, 1fr); grid-auto-rows: 168px; } }
-      .cat-tile {
-        position: relative; display: flex; flex-direction: column; justify-content: space-between; gap: 14px;
-        padding: 24px; border-radius: var(--r-lg); overflow: hidden;
-        background: var(--card); border: 1px solid var(--border);
-        transition: border-color 0.3s var(--ease), transform 0.3s var(--ease);
-        min-height: 150px;
+      /* ===== categories: quiet index rows on the hairline grid ===== */
+      .cat-list { border-top: 1px solid var(--border); }
+      .cat-row {
+        display: grid; grid-template-columns: minmax(150px, 230px) 1fr auto;
+        gap: 10px clamp(24px, 4vw, 64px); align-items: baseline;
+        padding: 22px 0; border-bottom: 1px solid var(--border);
       }
-      .cat-tile:hover { border-color: rgba(15, 14, 13, 0.4); transform: translateY(-2px); box-shadow: none; }
-      .cat-tile .glow { display: none; }
-      @media (min-width: 780px) {
-        .cat-tile.s3 { grid-column: span 3; }
-        .cat-tile.s4 { grid-column: span 4; }
-        .cat-tile.s6 { grid-column: span 6; }
-        .cat-tile.s12 { grid-column: span 12; }
-        .cat-tile.b-big { padding: 30px; }
+      .cat-row h3 { font-family: var(--sans); font-size: 17px; font-weight: 500; letter-spacing: -0.01em; }
+      .cat-row p { font-size: 15px; line-height: 1.55; color: var(--muted-foreground); max-width: 60ch; }
+      .cat-go {
+        display: inline-flex; align-items: center; gap: 8px; white-space: nowrap;
+        font-size: 13px; color: var(--muted-foreground);
+        transition: color 0.25s var(--ease);
       }
-      .cat-tile .cat-top { display: flex; align-items: center; justify-content: space-between; }
-      .cat-tile .cat-icon {
-        width: 38px; height: 38px; border-radius: 0; display: flex; align-items: center; justify-content: center;
-        background: transparent; border: none; color: var(--foreground);
+      .cat-go svg { transition: transform 0.3s var(--ease); }
+      .cat-row:hover .cat-go { color: var(--foreground); }
+      .cat-row:hover .cat-go svg { transform: translate(2px, -2px); }
+      @media (max-width: 720px) {
+        .cat-row { grid-template-columns: 1fr auto; }
+        .cat-row p { grid-column: 1 / -1; grid-row: 2; }
       }
-      .cat-tile .cat-count { font-size: 12.5px; letter-spacing: 0.02em; color: var(--muted-foreground); }
-      .cat-tile .cat-info { display: flex; flex-direction: column; gap: 6px; }
-      .cat-tile h3 { font-family: var(--sans); font-size: 18px; font-weight: 500; letter-spacing: -0.01em; display: flex; align-items: center; gap: 8px; }
-      .cat-tile h3 .go { opacity: 0; transform: translate(-4px, 4px); transition: opacity 0.3s var(--ease), transform 0.3s var(--ease); color: var(--foreground); display: inline-flex; }
-      .cat-tile:hover h3 .go { opacity: 1; transform: none; }
-      .cat-tile p {
-        font-size: 14px; line-height: 1.55; color: var(--muted-foreground);
-        display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden;
-      }
-      .cat-tile.b-big h3 { font-size: 21px; }
-      .cat-tile.b-big p { font-size: 15px; max-width: 44ch; -webkit-line-clamp: 2; }
-      .cat-tile.s4 p { -webkit-line-clamp: 2; }
       .cat-cta { text-align: left; margin-top: clamp(32px, 4vw, 44px); }
 
       /* ===== CTA band: serif statement + button on one line ===== */
@@ -719,6 +730,42 @@
       </div>
     </section>
 
+    <!-- ===== PRODUCT — large screenshots (placeholder frames; swap the
+         .shot-canvas contents for real <img> captures when ready) ===== -->
+    <section class="block" id="product">
+      <div class="container-app">
+        <div class="section-head" data-reveal>
+          <h2>A look inside <span class="serif-accent">Sokosumi</span></h2>
+          <p>Briefings, coworkers, and finished files, all in one workspace.</p>
+        </div>
+        <div class="shots">
+          <figure class="shot" data-reveal>
+            <div class="shot-frame">
+              <div class="shot-bar" aria-hidden="true"><span></span><span></span><span></span><i>app.sokosumi.com</i></div>
+              <div class="shot-canvas"><span>Screenshot: the task board</span></div>
+            </div>
+            <figcaption>The task board, where every briefing lives from sent to done.</figcaption>
+          </figure>
+          <div class="shot-pair">
+            <figure class="shot" data-reveal style="--i: 1">
+              <div class="shot-frame">
+                <div class="shot-bar" aria-hidden="true"><span></span><span></span><span></span><i>app.sokosumi.com</i></div>
+                <div class="shot-canvas"><span>Screenshot: a coworker profile</span></div>
+              </div>
+              <figcaption>Every coworker has a profile with pre-built tasks and samples.</figcaption>
+            </figure>
+            <figure class="shot" data-reveal style="--i: 2">
+              <div class="shot-frame">
+                <div class="shot-bar" aria-hidden="true"><span></span><span></span><span></span><i>app.sokosumi.com</i></div>
+                <div class="shot-canvas"><span>Screenshot: a finished task</span></div>
+              </div>
+              <figcaption>Finished tasks come back as files you can use right away.</figcaption>
+            </figure>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- ===== BUILT BY SERVICEPLAN GROUP ===== -->
     <section class="trust-band">
       <div class="container-app">
@@ -745,7 +792,7 @@
           <h2>Find the right task, <span class="serif-accent">fast</span></h2>
           <p>Every pre-built task is organized by what you're trying to get done.</p>
         </div>
-        <div class="cat-bento" id="categoryGrid"></div>
+        <div class="cat-list" id="categoryGrid"></div>
         <div class="cat-cta" data-reveal>
           <a class="btn btn-outline btn-lg" href="/tasks">
             Browse all tasks
@@ -865,10 +912,6 @@
         function categoryMeta(cat) {
           return CATEGORY_META[cat] || { icon: "file-text", chart: 0, blurb: "Specialist tasks, ready to run." };
         }
-        function chartColor(n) {
-          return n ? "var(--chart-" + n + ")" : "var(--primary)";
-        }
-
         /* hero search + chips → /tasks browse page */
         var form = document.getElementById("heroSearch");
         form.addEventListener("submit", function (e) {
@@ -925,17 +968,7 @@
         /* ---------- the introduction trio (Serviceplan), Elena centered ---------- */
         var INTRO_SLUGS = ["hannah", "elena", "alex"];
 
-        /* task categories → gapless bento (built from live offers) */
-        /* Width-span sequence over a 12-col grid: every row sums to 12 for ANY
-           category count, so the mosaic never has holes. */
-        function spanSeq(n) {
-          var tail = { 1: [12], 2: [6, 6], 3: [4, 4, 4], 4: [3, 3, 3, 3], 5: [4, 4, 4, 6, 6] };
-          var head = [6, 3, 3, 4, 4, 4];
-          if (n <= 0) return [];
-          if (n < 6) return tail[n];
-          if (n === 6) return head;
-          return head.concat(spanSeq(n - 6));
-        }
+        /* task categories → quiet index rows (built from live offers) */
         function renderCategories(coworkers) {
           var counts = {};
           coworkers.forEach(function (c) {
@@ -946,28 +979,22 @@
           var el = document.getElementById("categoryGrid");
           if (!el) return;
           var names = Object.keys(counts).sort(function (a, b) { return counts[b] - counts[a]; });
-          var spans = spanSeq(names.length);
           el.innerHTML = names
-            .map(function (name, i) {
+            .map(function (name) {
               var cm = categoryMeta(name);
-              var color = chartColor(cm.chart);
               var n = counts[name];
-              var span = spans[i] || 4;
-              var cls = "s" + span + (span >= 6 ? " b-big" : "");
               return (
-                '<a class="cat-tile ' + cls + '" href="/tasks?category=' + encodeURIComponent(name) + '" style="--tile-c:' + color + '" data-reveal data-i="' + i + '">' +
-                '<span class="glow" aria-hidden="true"></span>' +
-                '<div class="cat-top"><span class="cat-icon">' + icon(cm.icon, 19) + "</span>" +
-                '<span class="cat-count">' + n + (n === 1 ? " task" : " tasks") + "</span></div>" +
-                '<div class="cat-info"><h3>' + esc(name) + '<span class="go">' + icon("arrow-up-right", 16) + "</span></h3>" +
-                (cm.blurb ? "<p>" + esc(cm.blurb) + "</p>" : "") +
-                "</div></a>"
+                '<a class="cat-row" href="/tasks?category=' + encodeURIComponent(name) + '" data-reveal>' +
+                "<h3>" + esc(name) + "</h3>" +
+                (cm.blurb ? "<p>" + esc(cm.blurb) + "</p>" : "<p></p>") +
+                '<span class="cat-go">' + n + (n === 1 ? " task" : " tasks") + icon("arrow-up-right", 15) + "</span>" +
+                "</a>"
               );
             })
             .join("");
-          [].slice.call(el.querySelectorAll("[data-reveal]")).forEach(function (tile, i) {
-            tile.style.setProperty("--i", String(i % 4));
-            io ? io.observe(tile) : markIn(tile);
+          [].slice.call(el.querySelectorAll("[data-reveal]")).forEach(function (row, i) {
+            row.style.setProperty("--i", String(i % 4));
+            io ? io.observe(row) : markIn(row);
           });
         }
 
