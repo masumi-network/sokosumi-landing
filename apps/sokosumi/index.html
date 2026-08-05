@@ -507,6 +507,20 @@
         .org-root { justify-content: flex-start; margin-bottom: 28px; }
       }
 
+      /* ===== CEO quote ===== */
+      .quote-grid { display: grid; gap: clamp(36px, 5vw, 72px); grid-template-columns: 1fr; align-items: center; }
+      @media (min-width: 880px) { .quote-grid { grid-template-columns: 1.15fr 1fr; } }
+      .quote-text {
+        font-family: var(--serif); font-weight: 300;
+        font-size: clamp(22px, 2.6vw, 34px); line-height: 1.35; letter-spacing: -0.015em;
+        text-wrap: pretty; margin: 0;
+      }
+      .quote-attr { margin-top: 26px; display: flex; flex-direction: column; line-height: 1.45; }
+      .quote-attr strong { font-size: 14.5px; font-weight: 500; }
+      .quote-attr small { font-size: 13px; color: var(--muted-foreground); }
+      .quote-media { border-radius: var(--r-lg); overflow: hidden; aspect-ratio: 3 / 2; }
+      .quote-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
       /* ===== CTA band: serif statement + button on one line ===== */
       .cta-band {
         position: relative; overflow: visible; text-align: left;
@@ -960,6 +974,26 @@
       {"@type":"Question","name":"How much does it cost?","acceptedAnswer":{"@type":"Answer","text":"Creating an account is free. Tasks run on credits, so you only pay for the work your coworkers actually do. Current task pricing is shown in the app."}}
     ]}
     </script>
+
+    <!-- ===== CEO QUOTE ===== -->
+    <section class="block" id="quote">
+      <div class="container-app">
+        <figure class="quote-grid" style="margin: 0">
+          <div data-reveal>
+            <blockquote class="quote-text" style="margin: 0">
+              &ldquo;Sokosumi complements and connects our established agency offerings. Agentic services enable interaction, and with it the thread that ties together all of our AI applications and services.&rdquo;
+            </blockquote>
+            <figcaption class="quote-attr">
+              <strong>Florian Haller</strong>
+              <small>CEO, Serviceplan Group</small>
+            </figcaption>
+          </div>
+          <div class="quote-media" data-reveal style="--i: 1">
+            <img src="/assets/florian-haller.jpg" alt="Florian Haller, CEO of Serviceplan Group, on stage" width="1600" height="900" loading="lazy" decoding="async" />
+          </div>
+        </figure>
+      </div>
+    </section>
 
     <!-- ===== CTA ===== -->
     <section class="cta-band">
