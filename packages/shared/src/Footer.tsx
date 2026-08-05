@@ -133,6 +133,7 @@ export default function Footer({ product = "sokosumi" }: { product?: "sokosumi" 
               <a href="https://www.serviceplan.com" target="_blank" rel="noopener noreferrer" className="hover:opacity-70 transition-opacity">
                 <img src="/images/serviceplan-group.webp" alt="Serviceplan Group" width={120} height={60} className="h-[60px] w-auto -my-[20px] opacity-40 hover:opacity-70 transition-opacity" />
               </a>
+              <img src="/images/ai-badge.svg" alt="AI" width={20} height={20} className="h-[20px] w-auto opacity-40" />
             </div>
           </div>
         </div>
