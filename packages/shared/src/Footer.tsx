@@ -63,12 +63,9 @@ export default function Footer({ product = "sokosumi" }: { product?: "sokosumi" 
       <footer className="pt-16 pb-10">
         <div className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12">
           <div className="border-t border-black/[0.06] pt-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-            <div className="flex items-center gap-2.5">
-              <Link href="/">
-                <img src="/images/masumi-wordmark.webp" alt="masumi" width={90} height={16} className="h-[16px] w-auto" />
-              </Link>
-              <img src="/images/ai-badge.svg" alt="AI" width={18} height={18} className="h-[18px] w-auto" />
-            </div>
+            <Link href="/">
+              <img src="/images/masumi-wordmark.webp" alt="masumi" width={90} height={16} className="h-[16px] w-auto" />
+            </Link>
             <div className="flex flex-wrap items-center gap-5 text-[13px] text-[#666]">
               <Link href="https://www.masumi.network/dev/masumi/documentation" className="hover:text-black transition-colors" target="_blank" rel="noopener noreferrer">
                 Docs

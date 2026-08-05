@@ -447,8 +447,11 @@
       .shot-info p { font-size: 14.5px; line-height: 1.6; color: var(--muted-foreground); max-width: 70ch; }
       .shot-count { flex-shrink: 0; font-size: 12.5px; letter-spacing: 0.04em; color: var(--muted-foreground); font-variant-numeric: tabular-nums; }
 
-      /* ===== trust band ===== */
-      .trust-band { background: var(--muted); padding: clamp(90px, 10vw, 150px) 0; margin-top: clamp(96px, 11vw, 160px); }
+      /* ===== trust band =====
+         Background system: paper is the base everywhere; ink is reserved for
+         the two story chapters (hero, briefing); grey only ever appears on
+         component surfaces (cards, screenshot canvases), never as a band. */
+      .trust-band { background: var(--background); padding: clamp(96px, 11vw, 160px) 0 0; margin-top: 0; }
       .trust-inner { display: grid; gap: clamp(36px, 5vw, 72px); grid-template-columns: 1fr; align-items: center; }
       @media (min-width: 880px) { .trust-inner { grid-template-columns: 1.08fr 1fr; } }
       .trust-media { padding: 0; border-radius: 0; background: transparent; border: none; box-shadow: none; }
@@ -562,8 +565,6 @@
       .foot-built img { height: 14px; width: auto; display: block; opacity: 0.4; transition: opacity 0.25s var(--ease); }
       .foot-built img.sp { height: 60px; margin: -20px 0; }
       .foot-built a:hover img { opacity: 0.7; }
-      .foot-brand { display: inline-flex; align-items: center; gap: 10px; }
-      .foot-brand .foot-ai { height: 18px; width: auto; display: block; }
       .foot-mark { height: 15px; width: auto; display: block; }
       .foot-copy { margin: 0; font-size: 12px; letter-spacing: 0; color: var(--muted-foreground); }
 
@@ -1012,12 +1013,9 @@
     <footer class="site">
       <div class="container-app">
         <div class="foot-top">
-          <span class="foot-brand">
-            <a href="/" aria-label="Sokosumi">
-              <img class="foot-mark" src="/assets/sokosumi-wordmark.svg" alt="Sokosumi" width="121" height="16" />
-            </a>
-            <img class="foot-ai" src="/assets/ai-badge.svg" alt="AI" width="18" height="18" />
-          </span>
+          <a href="/" aria-label="Sokosumi">
+            <img class="foot-mark" src="/assets/sokosumi-wordmark.svg" alt="Sokosumi" width="121" height="16" />
+          </a>
           <nav class="foot-links" aria-label="Footer">
             <a href="/coworkers">Coworkers</a>
             <a href="/tasks">Pre-built tasks</a>
