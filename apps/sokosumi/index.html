@@ -160,14 +160,11 @@
           linear-gradient(to bottom, rgba(10, 9, 8, 0.6), rgba(10, 9, 8, 0.25) 34%, rgba(10, 9, 8, 0.82) 100%);
       }
 
-      .hero-title .hl-word { color: var(--primary); }
-
       /* hero background lab: try treatments via ?bg=ink|color|duo|blur (+ ?vid=test);
          the default is now the monochrome treatment */
       .hero.bg-ink video { opacity: 0.45; }
       .hero.bg-ink .scrim { background: rgba(10, 9, 8, 0.6); }
       .hero.bg-color video { filter: none; }
-      .hero.bg-color .hero-title .hl-word { color: inherit; }
       .hero.bg-duo video { filter: grayscale(1) contrast(1.1) brightness(0.92); opacity: 0.9; }
       .hero.bg-duo .scrim {
         background:
@@ -575,7 +572,7 @@
         </div>
 
         <h1 class="hero-title" data-reveal style="--i: 1">
-          AI Coworkers for <span class="hl-word">Marketing</span>
+          AI Coworkers for Marketing
         </h1>
 
         <p class="hero-sub" data-reveal style="--i: 2">
