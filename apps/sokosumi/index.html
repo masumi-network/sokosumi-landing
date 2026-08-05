@@ -406,7 +406,10 @@
       .hiw-file-icon { color: rgba(255, 255, 255, 0.7); display: inline-flex; flex-shrink: 0; }
       .hiw-file-type { margin-left: auto; flex-shrink: 0; font-size: 11px; letter-spacing: 0.05em; color: rgba(255, 255, 255, 0.5); }
 
-      /* ===== product screenshots: one big frame, arrows cycle the shots ===== */
+      /* ===== product screenshots: big shot with the next one peeking right,
+             arrows slide the track ===== */
+      .shot-stage { position: relative; }
+      .shot-viewport { overflow: hidden; }
       .shot-frame {
         position: relative; border: 1px solid var(--border); border-radius: var(--r-lg);
         overflow: hidden; background: var(--card);
@@ -420,9 +423,9 @@
         position: absolute; left: 50%; transform: translateX(-50%);
         font-style: normal; font-size: 11.5px; letter-spacing: 0.02em; color: var(--muted-foreground);
       }
-      .shot-track { display: flex; transition: transform 0.55s var(--ease); }
+      .shot-track { display: flex; gap: 24px; transition: transform 0.6s var(--ease); }
       @media (prefers-reduced-motion: reduce) { .shot-track { transition: none; } }
-      .shot-slide { flex: 0 0 100%; min-width: 0; }
+      .shot-slide { flex: 0 0 88%; min-width: 0; }
       .shot-canvas {
         aspect-ratio: 16 / 9; display: flex; align-items: center; justify-content: center;
         background: var(--muted);
@@ -437,6 +440,7 @@
         transition: border-color 0.25s var(--ease), background-color 0.25s var(--ease);
       }
       .shot-nav:hover { border-color: rgba(15, 14, 13, 0.45); background: #fff; }
+      .shot-nav[disabled] { opacity: 0.35; pointer-events: none; }
       .shot-nav.prev { left: 16px; }
       .shot-nav.next { right: 16px; }
       .shot-info { display: flex; align-items: baseline; justify-content: space-between; gap: 24px; margin-top: 14px; }
@@ -762,17 +766,27 @@
           <p>Briefings, coworkers, and finished files, all in one workspace.</p>
         </div>
         <div class="shot-carousel" data-reveal>
-          <div class="shot-frame">
-            <div class="shot-bar" aria-hidden="true"><span></span><span></span><span></span><i>app.sokosumi.com</i></div>
-            <div class="shot-track" id="shotTrack">
-              <div class="shot-slide" data-caption="The task board, where every briefing lives from sent to done.">
-                <div class="shot-canvas"><span>Screenshot: the task board</span></div>
-              </div>
-              <div class="shot-slide" data-caption="Every coworker has a profile with pre-built tasks and samples.">
-                <div class="shot-canvas"><span>Screenshot: a coworker profile</span></div>
-              </div>
-              <div class="shot-slide" data-caption="Finished tasks come back as files you can use right away.">
-                <div class="shot-canvas"><span>Screenshot: a finished task</span></div>
+          <div class="shot-stage">
+            <div class="shot-viewport">
+              <div class="shot-track" id="shotTrack">
+                <div class="shot-slide" data-caption="The task board, where every briefing lives from sent to done.">
+                  <div class="shot-frame">
+                    <div class="shot-bar" aria-hidden="true"><span></span><span></span><span></span><i>app.sokosumi.com</i></div>
+                    <div class="shot-canvas"><span>Screenshot: the task board</span></div>
+                  </div>
+                </div>
+                <div class="shot-slide" data-caption="Every coworker has a profile with pre-built tasks and samples.">
+                  <div class="shot-frame">
+                    <div class="shot-bar" aria-hidden="true"><span></span><span></span><span></span><i>app.sokosumi.com</i></div>
+                    <div class="shot-canvas"><span>Screenshot: a coworker profile</span></div>
+                  </div>
+                </div>
+                <div class="shot-slide" data-caption="Finished tasks come back as files you can use right away.">
+                  <div class="shot-frame">
+                    <div class="shot-bar" aria-hidden="true"><span></span><span></span><span></span><i>app.sokosumi.com</i></div>
+                    <div class="shot-canvas"><span>Screenshot: a finished task</span></div>
+                  </div>
+                </div>
               </div>
             </div>
             <button type="button" class="shot-nav prev" id="shotPrev" aria-label="Previous screenshot"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button>
@@ -967,19 +981,25 @@
           else { video.pause(); setState(false); }
         });
 
-        /* ---------- product screenshot carousel ---------- */
+        /* ---------- product screenshot carousel: next shot peeks right ---------- */
         var shotTrack = document.getElementById("shotTrack");
         if (shotTrack) {
           var shotSlides = [].slice.call(shotTrack.children);
+          var shotPrev = document.getElementById("shotPrev");
+          var shotNext = document.getElementById("shotNext");
           var shotIndex = 0;
           var goShot = function (delta) {
-            shotIndex = (shotIndex + delta + shotSlides.length) % shotSlides.length;
-            shotTrack.style.transform = "translateX(-" + shotIndex * 100 + "%)";
+            shotIndex = Math.max(0, Math.min(shotSlides.length - 1, shotIndex + delta));
+            var step = shotSlides[0].offsetWidth + 24;
+            shotTrack.style.transform = "translateX(-" + shotIndex * step + "px)";
             document.getElementById("shotCaption").textContent = shotSlides[shotIndex].getAttribute("data-caption");
             document.getElementById("shotCount").textContent = (shotIndex + 1) + " / " + shotSlides.length;
+            shotPrev.disabled = shotIndex === 0;
+            shotNext.disabled = shotIndex === shotSlides.length - 1;
           };
-          document.getElementById("shotPrev").addEventListener("click", function () { goShot(-1); });
-          document.getElementById("shotNext").addEventListener("click", function () { goShot(1); });
+          shotPrev.addEventListener("click", function () { goShot(-1); });
+          shotNext.addEventListener("click", function () { goShot(1); });
+          window.addEventListener("resize", function () { goShot(0); });
           goShot(0);
         }
 
