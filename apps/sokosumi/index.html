@@ -506,13 +506,26 @@
         .cta-inner .btn { grid-column: 2; grid-row: 1 / 3; }
       }
 
-      footer.site { border-top: 1px solid var(--border); padding: 40px 0 48px; background: var(--background); }
-      .foot-row { display: flex; flex-wrap: wrap; gap: 18px 32px; align-items: center; justify-content: space-between; }
-      .foot-links { display: flex; flex-wrap: wrap; gap: 8px 26px; }
-      .foot-links a { font-size: 14px; color: var(--muted-foreground); transition: color 0.25s var(--ease); }
-      .foot-links a:hover { color: var(--foreground); }
+      /* footer: ported from the masumi.network footer, adapted to sokosumi */
+      footer.site { padding: 64px 0 40px; background: var(--background); }
+      .foot-top {
+        border-top: 1px solid var(--border); padding-top: 40px;
+        display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px 32px;
+      }
+      .foot-links { display: flex; flex-wrap: wrap; gap: 8px 20px; }
+      .foot-links a, .foot-secondary a { font-size: 13px; color: var(--muted-foreground); transition: color 0.25s var(--ease); }
+      .foot-links a:hover, .foot-secondary a:hover { color: var(--foreground); }
+      .foot-secondary { margin-top: 24px; display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px 20px; }
+      .foot-bottom {
+        margin-top: 32px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+        gap: 16px 32px; font-size: 12px; color: var(--muted-foreground);
+      }
+      .foot-built { display: flex; align-items: center; gap: 16px; }
+      .foot-built img { height: 14px; width: auto; display: block; opacity: 0.4; transition: opacity 0.25s var(--ease); }
+      .foot-built img.sp { height: 60px; margin: -20px 0; }
+      .foot-built a:hover img { opacity: 0.7; }
       .foot-mark { height: 15px; width: auto; display: block; }
-      .foot-copy { font-size: 12.5px; letter-spacing: 0; color: var(--muted-foreground); }
+      .foot-copy { margin: 0; font-size: 12px; letter-spacing: 0; color: var(--muted-foreground); }
 
       @media (max-width: 560px) {
         .hero-search-inner { flex-direction: column; align-items: stretch; padding: 12px; gap: 10px; }
@@ -893,15 +906,33 @@
     </section>
 
     <footer class="site">
-      <div class="container-app foot-row">
-        <img class="foot-mark" src="/assets/sokosumi-wordmark.svg" alt="Sokosumi" width="121" height="16" />
-        <nav class="foot-links" aria-label="Footer">
-          <a href="/coworkers">Coworkers</a>
-          <a href="/tasks">Tasks</a>
-          <a href="https://app.sokosumi.com">Sign up</a>
-          <a href="https://www.masumi.network">Masumi</a>
-        </nav>
-        <span class="foot-copy">© 2026 Sokosumi · Built with NMKR &amp; Serviceplan Group</span>
+      <div class="container-app">
+        <div class="foot-top">
+          <a href="/" aria-label="Sokosumi">
+            <img class="foot-mark" src="/assets/sokosumi-wordmark.svg" alt="Sokosumi" width="121" height="16" />
+          </a>
+          <nav class="foot-links" aria-label="Footer">
+            <a href="/coworkers">Coworkers</a>
+            <a href="/tasks">Pre-built tasks</a>
+            <a href="https://app.sokosumi.com/signin">Log in</a>
+            <a href="https://app.sokosumi.com">Sign up</a>
+            <a href="https://linkedin.com/company/sokosumi/" target="_blank" rel="noreferrer">LinkedIn</a>
+            <a href="https://x.com/sokosumi" target="_blank" rel="noreferrer">X</a>
+          </nav>
+        </div>
+        <div class="foot-secondary">
+          <a href="https://masumi.network" target="_blank" rel="noreferrer">Masumi</a>
+          <a href="https://kodosumi.io" target="_blank" rel="noreferrer">Kodosumi</a>
+        </div>
+        <div class="foot-bottom">
+          <p class="foot-copy">© 2026 Sokosumi. All rights reserved.</p>
+          <div class="foot-built">
+            <span>Built by</span>
+            <a href="https://www.nmkr.io" target="_blank" rel="noreferrer"><img src="/assets/nmkr-logo.svg" alt="NMKR" width="50" height="14" /></a>
+            <span>&amp;</span>
+            <a href="https://www.serviceplan.com" target="_blank" rel="noreferrer"><img class="sp" src="/assets/serviceplan-group.webp" alt="Serviceplan Group" width="120" height="60" /></a>
+          </div>
+        </div>
       </div>
     </footer>
 
