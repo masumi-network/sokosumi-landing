@@ -448,7 +448,7 @@
       .shot-count { flex-shrink: 0; font-size: 12.5px; letter-spacing: 0.04em; color: var(--muted-foreground); font-variant-numeric: tabular-nums; }
 
       /* ===== trust band ===== */
-      .trust-band { background: var(--muted); padding: clamp(90px, 10vw, 150px) 0; margin-top: 0; }
+      .trust-band { background: var(--muted); padding: clamp(90px, 10vw, 150px) 0; margin-top: clamp(96px, 11vw, 160px); }
       .trust-inner { display: grid; gap: clamp(36px, 5vw, 72px); grid-template-columns: 1fr; align-items: center; }
       @media (min-width: 880px) { .trust-inner { grid-template-columns: 1.08fr 1fr; } }
       .trust-media { padding: 0; border-radius: 0; background: transparent; border: none; box-shadow: none; }
@@ -990,8 +990,13 @@
           var shotIndex = 0;
           var goShot = function (delta) {
             shotIndex = Math.max(0, Math.min(shotSlides.length - 1, shotIndex + delta));
-            var step = shotSlides[0].offsetWidth + 24;
-            shotTrack.style.transform = "translateX(-" + shotIndex * step + "px)";
+            var viewport = shotTrack.parentElement.offsetWidth;
+            var slideW = shotSlides[0].offsetWidth;
+            var step = slideW + 24;
+            /* first slide hugs the left, last hugs the right, middle slides
+               center - so the shot you came from stays peeking at the edge */
+            var adj = shotIndex === 0 ? 0 : shotIndex === shotSlides.length - 1 ? viewport - slideW : (viewport - slideW) / 2;
+            shotTrack.style.transform = "translateX(" + (adj - shotIndex * step) + "px)";
             document.getElementById("shotCaption").textContent = shotSlides[shotIndex].getAttribute("data-caption");
             document.getElementById("shotCount").textContent = (shotIndex + 1) + " / " + shotSlides.length;
             shotPrev.disabled = shotIndex === 0;
