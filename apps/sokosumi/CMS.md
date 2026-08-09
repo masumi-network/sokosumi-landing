@@ -48,6 +48,12 @@ Payload Jobs in the admin) pulls the product catalog from the site's
 Entries that disappear from the product are marked `active = false`, never
 deleted. Checking **lockSync** on any doc freezes it completely.
 
+**Slug policy:** a coworker's public slug always derives from its NAME, so
+URLs read like the breadcrumbs (`/coworkers/vulc`, not the product's
+internal `grok-coding-agent`). The product slug lives in the read-only
+`catalogSlug` field, which is what tasks join on — so you can edit the
+public slug freely in the admin, and old URLs 301-redirect automatically.
+
 Manual run (payload-cms repo): `npx tsx scripts/sync-sokosumi-catalog.ts`.
 
 ## Writing landing pages

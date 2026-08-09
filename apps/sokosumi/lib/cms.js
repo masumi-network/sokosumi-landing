@@ -119,6 +119,11 @@ const getCoworkers = (opts) =>
 const getCoworker = async (slug, opts) =>
   (await findAll("coworkers", { ...siteWhere({ slug }), limit: 1, depth: 1 }, opts))[0] || null;
 
+// Lookup by the product's internal slug (offers.agentSlug join key) — used
+// to 301 old URLs after a public slug diverges from the catalog slug.
+const getCoworkerByCatalogSlug = async (catalogSlug, opts) =>
+  (await findAll("coworkers", { ...siteWhere({ catalogSlug }), limit: 1, depth: 0 }, opts))[0] || null;
+
 const getOffers = (opts) =>
   findAll("offers", { ...siteWhere({ active: "true" }), limit: 500, depth: 0, sort: "order" }, opts);
 
@@ -173,6 +178,7 @@ module.exports = {
   getVendor,
   getCoworkers,
   getCoworker,
+  getCoworkerByCatalogSlug,
   getOffers,
   getOffersFor,
   getOffer,

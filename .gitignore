@@ -54,3 +54,7 @@ skills-lock.json
 # app data
 **/data/
 .gstack/
+
+# local hero-video experiments (20MB/59MB) — never commit
+apps/sokosumi/assets/hero-test.mp4
+apps/sokosumi/assets/hero-hhhtest.mp4

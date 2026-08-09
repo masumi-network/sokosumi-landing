@@ -42,7 +42,7 @@ async function index(ctx) {
 
   const curated = coworkers
     .filter((c) => c.kind === "coworker")
-    .map((c) => ({ ...c, taskCount: counts[c.slug] || 0 }))
+    .map((c) => ({ ...c, taskCount: counts[c.catalogSlug || c.slug] || 0 }))
     .sort((a, b) => b.taskCount - a.taskCount || (a.order || 100) - (b.order || 100) || a.name.localeCompare(b.name));
   const agents = coworkers.filter((c) => c.kind === "agent");
 
@@ -104,7 +104,7 @@ async function profile(ctx) {
   const opts = { draft: ctx.preview };
   const c = await cms.getCoworker(ctx.params.slug, opts);
   if (!c || c.active === false) return null;
-  const offers = c.kind === "coworker" ? await cms.getOffersFor(c.slug, opts) : [];
+  const offers = c.kind === "coworker" ? await cms.getOffersFor(c.catalogSlug || c.slug, opts) : [];
   const vn = vendorName(c);
   const vs = vendorSlug(c);
 

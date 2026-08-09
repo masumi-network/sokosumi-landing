@@ -114,15 +114,17 @@ async function sitemap() {
       safe(cms.getPages),
     ]);
 
-  const coworkerSlugs = new Set();
+  // Task URLs use the coworker's PUBLIC slug; offers join on catalogSlug.
+  const publicSlugByAgent = new Map();
   for (const c of coworkers) {
     if (c.active === false) continue;
-    coworkerSlugs.add(c.slug);
+    publicSlugByAgent.set(c.catalogSlug || c.slug, c.slug);
     urls.add(`/coworkers/${c.slug}`);
   }
   for (const o of offers) {
-    if (o.active === false || !coworkerSlugs.has(o.agentSlug)) continue;
-    urls.add(`/coworkers/${o.agentSlug}/tasks/${o.slug}`);
+    const pub = publicSlugByAgent.get(o.agentSlug);
+    if (o.active === false || !pub) continue;
+    urls.add(`/coworkers/${pub}/tasks/${o.slug}`);
   }
   for (const v of vendors) urls.add(`/vendors/${v.slug}`);
   const industriesWithUseCases = new Set();

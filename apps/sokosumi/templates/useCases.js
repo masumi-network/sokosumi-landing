@@ -125,7 +125,11 @@ async function detail(ctx) {
   let coworkerSection = "";
   if (relatedSlugs.length) {
     const coworkers = await cms.getCoworkers(opts);
-    const bySlug = new Map(coworkers.map((c) => [c.slug, c]));
+    const bySlug = new Map();
+    for (const c of coworkers) {
+      bySlug.set(c.slug, c);
+      if (c.catalogSlug) bySlug.set(c.catalogSlug, c);
+    }
     const matched = relatedSlugs.map((s) => bySlug.get(s)).filter(Boolean);
     if (matched.length) {
       const rows = matched

@@ -110,7 +110,10 @@ async function browse(ctx) {
   const [offers, coworkers] = await Promise.all([cms.getOffers(opts), cms.getCoworkers(opts)]);
 
   const bySlug = new Map();
-  for (const c of coworkers) bySlug.set(c.slug, c);
+  for (const c of coworkers) {
+    bySlug.set(c.slug, c);
+    if (c.catalogSlug) bySlug.set(c.catalogSlug, c);
+  }
 
   const hits = [];
   for (const o of offers) {
@@ -175,11 +178,10 @@ async function browse(ctx) {
 
 async function detail(ctx) {
   const opts = { draft: ctx.preview };
-  const [c, offer] = await Promise.all([
-    cms.getCoworker(ctx.params.slug, opts),
-    cms.getOffer(ctx.params.slug, ctx.params.offerSlug, opts),
-  ]);
+  const c = await cms.getCoworker(ctx.params.slug, opts);
   if (!c || c.active === false) return null;
+  // Offers join on the product's slug (catalogSlug), not the public one.
+  const offer = await cms.getOffer(c.catalogSlug || c.slug, ctx.params.offerSlug, opts);
   if (!offer || offer.active === false) return null;
 
   const outs = offerOutputs(offer);

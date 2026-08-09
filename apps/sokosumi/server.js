@@ -234,13 +234,33 @@ function hasPreviewCookie(req) {
 }
 
 // ── routing ──────────────────────────────────────────────────────────────
-// Each route: match(segments) → params or null, then handler(ctx) → html|null.
+// Each route: match(segments) → params or null, then handler(ctx) →
+// html string | { redirect } | null (404).
+const cms = require("./lib/cms");
+
+// Public coworker slugs follow the persona name; the product's internal
+// slug lives in catalogSlug. Old internal-slug URLs 301 to the public one.
+async function coworkerSlugRedirect(ctx, buildPath) {
+  const c = await cms.getCoworkerByCatalogSlug(ctx.params.slug, { draft: ctx.preview });
+  return c && c.slug !== ctx.params.slug ? { redirect: buildPath(c.slug) } : null;
+}
+
 const routes = [
   { m: (s) => s.length === 1 && s[0] === "coworkers" && {}, h: coworkersTpl.index },
-  { m: (s) => s.length === 2 && s[0] === "coworkers" && { slug: s[1] }, h: coworkersTpl.profile },
+  {
+    m: (s) => s.length === 2 && s[0] === "coworkers" && { slug: s[1] },
+    h: async (ctx) =>
+      (await coworkersTpl.profile(ctx)) ||
+      coworkerSlugRedirect(ctx, (slug) => `/coworkers/${encodeURIComponent(slug)}`),
+  },
   {
     m: (s) => s.length === 4 && s[0] === "coworkers" && s[2] === "tasks" && { slug: s[1], offerSlug: s[3] },
-    h: tasksTpl.detail,
+    h: async (ctx) =>
+      (await tasksTpl.detail(ctx)) ||
+      coworkerSlugRedirect(
+        ctx,
+        (slug) => `/coworkers/${encodeURIComponent(slug)}/tasks/${encodeURIComponent(ctx.params.offerSlug)}`,
+      ),
   },
   { m: (s) => s.length === 1 && s[0] === "tasks" && {}, h: tasksTpl.browse },
   { m: (s) => s.length === 1 && s[0] === "vendors" && {}, h: vendorsTpl.index },
@@ -375,8 +395,12 @@ if (process.argv.includes("--once")) {
           const params = r.m(seg);
           if (!params) continue;
           ctx.params = params;
-          const html = await r.h(ctx);
-          if (html) return sendHtml(html);
+          const out = await r.h(ctx);
+          if (out && out.redirect) {
+            res.writeHead(301, { Location: out.redirect, "Cache-Control": "public, max-age=3600" });
+            return res.end();
+          }
+          if (out) return sendHtml(out);
           return sendHtml(misc.notFound(), 404);
         }
 
