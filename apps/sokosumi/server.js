@@ -204,22 +204,46 @@ function withFallbackOffers(cat) {
 }
 withFallbackOffers(catalog);
 
+// Coworkers and agents refresh independently: /v1/agents is public while
+// /v1/coworkers needs a valid USER api key, and one failing must not freeze
+// the other (a bad key once pinned the whole catalog to a stale snapshot).
 async function refresh() {
   if (!CORE_KEY) {
     console.log("[catalog] SOKOSUMI_CORE_KEY not set — serving cached data only");
     return false;
   }
+  let cwRaw = null;
+  let agRaw = null;
   try {
-    const [cw, ag] = await Promise.all([coreGet("/v1/coworkers?scope=all"), coreGet("/v1/agents?limit=100")]);
-    catalog = withFallbackOffers(transform(cw.data, ag.data));
-    fs.mkdirSync(dataDir, { recursive: true });
-    fs.writeFileSync(cacheFile, JSON.stringify(catalog));
-    console.log(`[catalog] refreshed: ${catalog.coworkers.length} coworkers, ${catalog.agents.length} agents @ ${catalog.fetchedAt}`);
-    return true;
+    cwRaw = (await coreGet("/v1/coworkers?scope=all")).data;
   } catch (e) {
-    console.error("[catalog] refresh failed:", e.message);
-    return false;
+    console.error("[catalog] coworkers refresh failed:", e.message);
   }
+  try {
+    agRaw = (await coreGet("/v1/agents?limit=100")).data;
+  } catch (e) {
+    console.error("[catalog] agents refresh failed:", e.message);
+  }
+  if (!cwRaw && !agRaw) return false;
+
+  const fresh = transform(cwRaw || [], agRaw || []);
+  const now = fresh.fetchedAt;
+  catalog = withFallbackOffers({
+    fetchedAt: now,
+    coworkersFetchedAt: cwRaw ? now : catalog.coworkersFetchedAt || catalog.fetchedAt,
+    agentsFetchedAt: agRaw ? now : catalog.agentsFetchedAt || catalog.fetchedAt,
+    coworkers: cwRaw ? fresh.coworkers : catalog.coworkers,
+    agents: agRaw ? fresh.agents : catalog.agents,
+    categories: agRaw ? fresh.categories : catalog.categories,
+  });
+  fs.mkdirSync(dataDir, { recursive: true });
+  fs.writeFileSync(cacheFile, JSON.stringify(catalog));
+  console.log(
+    `[catalog] refreshed${cwRaw ? "" : " (coworkers STALE — check SOKOSUMI_CORE_KEY)"}: ` +
+      `${catalog.coworkers.length} coworkers @ ${catalog.coworkersFetchedAt}, ` +
+      `${catalog.agents.length} agents @ ${catalog.agentsFetchedAt}`,
+  );
+  return true;
 }
 
 // ── preview (draft) mode ─────────────────────────────────────────────────
