@@ -136,6 +136,8 @@
       .island-links a:hover { color: #fff; }
       .island-nav > div:last-child { margin-left: auto; }
       .island-nav .nav-login { color: rgba(255, 255, 255, 0.9); }
+      .island-nav:not(.scrolled) .nav-sales { color: #fff; border-color: rgba(255, 255, 255, 0.4); }
+      .island-nav:not(.scrolled) .nav-sales:hover { border-color: rgba(255, 255, 255, 0.75); }
       .island-nav .btn-sm { height: 36px; }
       .island-nav:not(.scrolled) .btn-primary { background: #fff; color: var(--ink); }
       .island-nav.scrolled {
@@ -183,7 +185,7 @@
       .hero-social .avatars { display: flex; }
       .hero-social .avatars img {
         width: 30px; height: 30px; border-radius: 999px; object-fit: cover;
-        box-shadow: 0 0 0 1.5px rgba(255, 255, 255, 0.85); background: var(--muted); margin-left: -9px; display: block;
+        background: var(--muted); margin-left: -9px; display: block;
       }
       .hero-social .avatars img:first-child { margin-left: 0; }
       .hero-social .count { font-size: 13px; font-weight: 400; letter-spacing: 0; color: rgba(255, 255, 255, 0.75); }
@@ -638,8 +640,9 @@
           <a href="/tasks">Pre-built tasks</a>
         </div>
         <div style="display: flex; gap: 8px; align-items: center;">
-          <a class="btn btn-sm btn-ghost nav-login" href="https://app.sokosumi.com/signin">Log in</a>
-          <a class="btn btn-sm btn-primary" href="https://app.sokosumi.com">Sign up</a>
+          <a class="btn btn-sm btn-ghost nav-login" href="https://app.sokosumi.com/signin">Log In</a>
+          <a class="btn btn-sm btn-outline nav-sales" href="mailto:support@serviceplan-agents.com?subject=Talk%20to%20Sales%20about%20Sokosumi">Talk to Sales</a>
+          <a class="btn btn-sm btn-primary" href="https://app.sokosumi.com">Sign Up</a>
         </div>
       </nav>
 
@@ -1051,7 +1054,6 @@
         </div>
         <div class="foot-secondary">
           <a href="https://masumi.network" target="_blank" rel="noreferrer">Masumi</a>
-          <a href="https://kodosumi.io" target="_blank" rel="noreferrer">Kodosumi</a>
         </div>
         <div class="foot-bottom">
           <p class="foot-copy">© 2026 Sokosumi. All rights reserved.</p>

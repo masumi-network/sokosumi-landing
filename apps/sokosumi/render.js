@@ -183,8 +183,9 @@ function header() {
           </nav>
         </div>
         <div class="actions">
-          <a class="btn btn-sm btn-ghost" href="${APP}/signin">Log in</a>
-          <a class="btn btn-sm btn-primary" href="${APP}">Sign up</a>
+          <a class="btn btn-sm btn-ghost" href="${APP}/signin">Log In</a>
+          <a class="btn btn-sm btn-outline" href="mailto:support@serviceplan-agents.com?subject=Talk%20to%20Sales%20about%20Sokosumi">Talk to Sales</a>
+          <a class="btn btn-sm btn-primary" href="${APP}">Sign Up</a>
         </div>
       </div>
     </header>`;
