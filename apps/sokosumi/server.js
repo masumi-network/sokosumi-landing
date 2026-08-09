@@ -204,7 +204,14 @@ function computeStats(agents, tasksTotal, previous) {
       console.error("[stats] could not persist floors:", e.message);
     }
   }
-  return { tasks: tasks || null, jobs: jobs || null, updatedAt: new Date().toISOString() };
+  // The site shows ONE number: tasks briefed on the platform plus agent
+  // jobs run for them. Both parts stay in the payload for transparency.
+  return {
+    tasks: tasks || null,
+    jobs: jobs || null,
+    total: (tasks || 0) + (jobs || 0) || null,
+    updatedAt: new Date().toISOString(),
+  };
 }
 
 // ── curated-task fallback for the landing page's catalog ─────────────────

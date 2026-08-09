@@ -1211,10 +1211,8 @@
                 .join("");
               var agentCount = (d.agents || []).length || coworkers.length;
               var st = d.stats || {};
-              var num = function (n) { return Number(n).toLocaleString("en-US"); };
               var line = agentCount + "+ AI specialists";
-              if (st.tasks) line += " · " + num(st.tasks) + " tasks run";
-              if (st.jobs) line += " · " + num(st.jobs) + " agent jobs";
+              if (st.total) line += " · " + Number(st.total).toLocaleString("en-US") + " tasks run";
               document.getElementById("heroCount").textContent = line;
               social.hidden = false;
               revealNow(social);
