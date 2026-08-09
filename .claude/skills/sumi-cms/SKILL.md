@@ -1,32 +1,43 @@
 ---
 name: sumi-cms
-description: Create and edit content on masumi.network via the Payload CMS — blog posts, block-based landing pages, glossary terms, FAQs, stack logos. Use when asked to write/publish/update a blog post, landing page, comparison page, or glossary entry for Masumi (and later Sokosumi), or to query CMS content over the REST API. Covers auth, block JSON shapes, Lexical rich text, media uploads, and publishing conventions.
+description: Create and edit content on masumi.network and sokosumi.com via the shared Payload CMS — blog posts, block-based landing pages, use cases, guides, releases, comparisons, glossary terms, FAQs. Use when asked to write/publish/update any content for Masumi or Sokosumi, or to query CMS content over the REST API. Covers auth, block JSON shapes, Lexical rich text, media uploads, the Sokosumi catalog sync, and publishing conventions.
 ---
 
-# Sumi CMS — content operations for masumi.network
+# Sumi CMS — content operations for masumi.network + sokosumi.com
 
-All editable content on masumi.network lives in a Payload CMS. Publishing is
-instant-ish: the site re-fetches every ~5 minutes. No deploys for content.
+All editable content on both sites lives in ONE Payload CMS. Publishing is
+instant-ish: the sites re-fetch every ~5 minutes. No deploys for content.
 
 - **API base:** `https://payload-production-6f43.up.railway.app/api`
 - **Admin panel (humans):** `https://payload-production-6f43.up.railway.app/admin`
-- **Editor guide:** `apps/masumi/CMS.md` in the sokosumi-landing repo (block
-  selection guide, worked example, SEO conventions — read it before writing content)
+- **Editor guides:** `apps/masumi/CMS.md` (Masumi) and `apps/sokosumi/CMS.md`
+  (Sokosumi page map + catalog-sync rules) in the sokosumi-landing repo —
+  read the relevant one before writing content.
 
 ## Collections → URLs
 
-| Collection | Renders at | Notes |
-|---|---|---|
-| `posts` | `/blogs/<slug>` | blog; category ∈ `articles` \| `announcements` \| `press-releases` |
-| `pages` | `/<slug>` | block-based landing pages (7 block types) |
-| `glossary` | `/glossary/<slug>` | term + shortDefinition + rich definition + related[] |
-| `faqs` | design-md tool page | question/answer, `page: "design-md"`, `order` |
-| `stack-logos` | homepage logo wall | name/logo(media)/href/type/order |
-| `media` | file uploads | serves at `/api/media/file/<filename>` |
+| Collection | Masumi URL | Sokosumi URL | Notes |
+|---|---|---|---|
+| `posts` | `/blogs/<slug>` | `/blog/<slug>` | category ∈ `articles` \| `announcements` \| `press-releases` |
+| `pages` | `/<slug>` | `/<slug>` | block-based landing pages (15 block types); soko slugs starting `product/` list on `/product` |
+| `use-cases` | — | `/use-cases/<slug>` | block-based; requires ≥1 `industries` rel |
+| `industries` | — | `/use-cases/industries/<slug>` | shared taxonomy (no site field) |
+| `guides` | — | `/guides/<slug>` | rich text; category select |
+| `releases` | — | `/releases/<slug>` | date, version, highlights (new/improved/fixed) |
+| `comparisons` | — | `/compare/<slug>` | block-based; hero → comparisonTable → verdict → faq → ctaBand |
+| `vendors` | — | `/vendors/<slug>` | ⚠ synced nightly from the product API |
+| `coworkers` | — | `/coworkers/<slug>` | ⚠ synced nightly; editorial fields: vendor, longBio, seoDescription, featured, order |
+| `offers` | — | `/coworkers/<agentSlug>/tasks/<slug>` | ⚠ synced (source=synced); manual cards allowed |
+| `glossary` | `/glossary/<slug>` | — | term + definition + related[] |
+| `faqs` | design-md tool page | — | question/answer, `page: "design-md"` |
+| `stack-logos` | homepage logo wall | — | name/logo/href/type/order |
+| `media` | file uploads | file uploads | serves at `/api/media/file/<filename>` |
 
-Every collection has a `site` select (`masumi` | `sokosumi` | `kodosumi`).
-**Always set it** (default `masumi`). Only masumi renders CMS content today;
-Sokosumi wiring is planned — don't create sokosumi content unless asked.
+Every site-scoped collection has a `site` select (`masumi` | `sokosumi` |
+`kodosumi`). **Always set it.** On ⚠-marked collections, NEVER hand-edit
+synced fields (the nightly `syncSokosumiCatalog` job overwrites them at
+03:20 UTC); set `lockSync` to freeze a doc, and know that vanished catalog
+entries get `active: false` rather than deletion.
 
 ## Reading (public, no auth)
 

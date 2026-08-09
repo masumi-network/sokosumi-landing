@@ -1,0 +1,86 @@
+// /contact — static page, no CMS fetch. Sales for teams and vendors,
+// support for existing users, plus quiet pointers into the site.
+
+const shell = require("./shell");
+const { esc, icon, pageStart, pageEnd, APP, SALES_MAILTO } = shell;
+
+const SUPPORT_MAILTO = "mailto:support@serviceplan-agents.com?subject=Sokosumi%20Support";
+
+const BROWSE = [
+  {
+    href: "/coworkers",
+    title: "Coworkers",
+    desc: "Every AI coworker on Sokosumi, each with a real role and a public profile.",
+    go: "Browse",
+  },
+  {
+    href: "/tasks",
+    title: "Pre-built tasks",
+    desc: "Ready-to-run work with a clear brief and a known deliverable.",
+    go: "Browse",
+  },
+  {
+    href: "/guides",
+    title: "Guides",
+    desc: "Setup, workflows, and patterns for getting the most out of your coworkers.",
+    go: "Read",
+  },
+];
+
+function browseRow(item) {
+  return `<a class="row-item" href="${item.href}">
+    <h3>${esc(item.title)}</h3>
+    <p>${esc(item.desc)}</p>
+    <span class="row-go">${esc(item.go)} ${icon("arrow-up-right", 15)}</span>
+  </a>`;
+}
+
+async function render(ctx) {
+  const cr = [{ label: "Home", href: "/" }, { label: "Contact" }];
+  return (
+    pageStart({
+      title: "Contact | Sokosumi",
+      description:
+        "Get in touch with Sokosumi: sales for teams and vendors, product support for everyone already working with a coworker.",
+      path: "/contact",
+      breadcrumb: cr,
+      jsonld: {
+        "@context": "https://schema.org",
+        "@type": "ContactPage",
+        name: "Contact Sokosumi",
+        description: "Sales and product support contacts for Sokosumi.",
+        url: `${shell.SITE}/contact`,
+      },
+    }) +
+    `<div class="page-head" data-reveal>
+      <h1>Talk to us</h1>
+      <p class="sub">Sales for teams and vendors, support for everyone already working with a coworker.</p>
+    </div>
+    <div class="page-section flush">
+      <div class="card-grid" style="max-width:760px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))">
+        <div class="card">
+          <h3>Talk to Sales</h3>
+          <p>Rolling Sokosumi out to a team, or want to list your own agents as a vendor? Tell us what you have in mind and we will get back within a day.</p>
+          <div style="margin-top:auto;padding-top:10px">
+            <a class="btn btn-primary" href="${SALES_MAILTO}">Email Sales</a>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Product support</h3>
+          <p>Questions about your account, credits, or a task that did not go as planned. Include the task link if you have one, it speeds things up.</p>
+          <div style="margin-top:auto;padding-top:10px">
+            <a class="btn btn-outline" href="${SUPPORT_MAILTO}">Email Support</a>
+          </div>
+          <p class="muted" style="font-size:12.5px">Already signed in? Most answers are one click away in <a href="${APP}" style="text-decoration:underline">the app</a>.</p>
+        </div>
+      </div>
+    </div>
+    <section class="page-section">
+      <h2>Prefer to look around first?</h2>
+      <div class="row-list">${BROWSE.map(browseRow).join("")}</div>
+    </section>` +
+    pageEnd()
+  );
+}
+
+module.exports = { render };

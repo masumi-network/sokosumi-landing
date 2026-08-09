@@ -1,0 +1,166 @@
+// /vendors (index) and /vendors/<slug> (detail) — the teams that build and
+// operate the coworkers and agents on the marketplace. CMS `vendors`
+// collection; coworkers are joined client-side by vendor slug.
+
+const shell = require("./shell");
+const cms = require("../lib/cms");
+const { esc, attr, icon, avatar, pageStart, pageEnd } = shell;
+
+function vendorSlugOf(c) {
+  return c.vendor && typeof c.vendor === "object" ? c.vendor.slug : null;
+}
+
+function countLabel(curated, agents) {
+  const total = curated + agents;
+  if (!total) return "View";
+  if (!agents) return `${total} coworker${total === 1 ? "" : "s"}`;
+  if (!curated) return `${total} agent${total === 1 ? "" : "s"}`;
+  return `${total} coworkers and agents`;
+}
+
+function vendorRow(v) {
+  const logoUrl = cms.mediaUrl(v.logo);
+  const logo = logoUrl
+    ? `<img src="${attr(logoUrl)}" alt="" loading="lazy" style="height:20px;width:auto;vertical-align:middle;margin-right:10px" />`
+    : "";
+  const total = v.curatedCount + v.agentCount;
+  const desc =
+    v.description ||
+    (total === 1 ? "1 specialist on Sokosumi." : `${total} coworkers and agents on Sokosumi.`);
+  return `<a class="row-item" href="/vendors/${encodeURIComponent(v.slug)}">
+    <span class="row-title">${logo}${esc(v.name)}</span>
+    <p>${esc(desc)}</p>
+    <span class="row-go">${esc(countLabel(v.curatedCount, v.agentCount))} ${icon("arrow-up-right", 15)}</span>
+  </a>`;
+}
+
+async function index(ctx) {
+  const opts = { draft: ctx.preview };
+  const [vendors, coworkers] = await Promise.all([cms.getVendors(opts), cms.getCoworkers(opts)]);
+
+  const rows = vendors
+    .map((v) => {
+      const mine = coworkers.filter((c) => vendorSlugOf(c) === v.slug);
+      return {
+        ...v,
+        curatedCount: mine.filter((c) => c.kind === "coworker").length,
+        agentCount: mine.filter((c) => c.kind === "agent").length,
+      };
+    })
+    .filter((v) => v.curatedCount + v.agentCount > 0 || v.description);
+
+  const cr = [{ label: "Home", href: "/" }, { label: "Vendors" }];
+  return (
+    pageStart({
+      title: "Vendors | Sokosumi",
+      description:
+        "The teams that build and operate the AI coworkers and agents on the Sokosumi marketplace.",
+      path: "/vendors",
+      breadcrumb: cr,
+    }) +
+    `<div class="page-head" data-reveal>
+      <h1>The vendors behind the coworkers</h1>
+      <p class="sub">Every coworker and agent on Sokosumi is built and operated by a vendor: a team that ships the agent, keeps it running, and stands behind its work.</p>
+    </div>` +
+    (rows.length
+      ? `<div class="page-section flush">
+          <div class="row-list">${rows.map(vendorRow).join("")}</div>
+        </div>`
+      : `<div class="page-section flush"><p class="muted">Vendor profiles are on the way. In the meantime, <a href="/coworkers" style="text-decoration:underline">meet the coworkers</a>.</p></div>`) +
+    pageEnd()
+  );
+}
+
+function tile(c, i) {
+  const img = c.image
+    ? `<span class="portrait"><img src="${attr(c.image)}" alt="${attr(c.name)}" loading="lazy" /></span>`
+    : `<span class="portrait"></span>`;
+  return `<a class="cw-tile" href="/coworkers/${encodeURIComponent(c.slug)}" data-reveal style="--i:${i % 4}">
+    ${img}
+    <h3>${esc(c.name)}</h3>
+    ${c.role ? `<span class="role">${esc(c.role)}</span>` : ""}
+    <span class="count">Meet the coworker</span>
+  </a>`;
+}
+
+function agentRow(c) {
+  return `<a class="row-item" href="/coworkers/${encodeURIComponent(c.slug)}">
+    <span style="display:flex;align-items:center;gap:12px">${avatar(c, "sm")}<span class="row-title">${esc(c.name)}</span></span>
+    <p>${esc((c.description || "").slice(0, 160))}</p>
+    <span class="row-go">View ${icon("arrow-up-right", 15)}</span>
+  </a>`;
+}
+
+async function detail(ctx) {
+  const opts = { draft: ctx.preview };
+  const [v, coworkers] = await Promise.all([
+    cms.getVendor(ctx.params.slug, opts),
+    cms.getCoworkers(opts),
+  ]);
+  if (!v) return null;
+
+  const mine = coworkers.filter((c) => vendorSlugOf(c) === v.slug);
+  const curated = mine.filter((c) => c.kind === "coworker");
+  const agents = mine.filter((c) => c.kind === "agent");
+
+  let website = "";
+  if (v.website) {
+    const href = /^https?:\/\//.test(v.website) ? v.website : `https://${v.website}`;
+    const label = v.website.replace(/^https?:\/\//, "").replace(/\/$/, "");
+    website = `<div class="meta-row"><a href="${attr(href)}" target="_blank" rel="noreferrer" style="text-decoration:underline">${esc(label)}</a></div>`;
+  }
+
+  const coworkersSection = curated.length
+    ? `<section class="page-section flush">
+        <h2>Coworkers</h2>
+        <p class="sub">Curated coworkers from ${esc(v.name)}, each with a real role and a public profile.</p>
+        <div class="cw-grid">${curated.map(tile).join("")}</div>
+      </section>`
+    : "";
+
+  const agentsSection = agents.length
+    ? `<section class="page-section${curated.length ? "" : " flush"}">
+        <h2>Marketplace agents</h2>
+        <p class="sub">${agents.length} specialist agent${agents.length === 1 ? "" : "s"} from ${esc(v.name)}, ready to run in the app.</p>
+        <div class="row-list">${agents.map(agentRow).join("")}</div>
+      </section>`
+    : "";
+
+  const empty =
+    !curated.length && !agents.length
+      ? `<div class="page-section flush"><p class="muted">${esc(v.name)} has no listings on Sokosumi yet. In the meantime, <a href="/coworkers" style="text-decoration:underline">meet the coworkers</a>.</p></div>`
+      : "";
+
+  const cr = [
+    { label: "Home", href: "/" },
+    { label: "Vendors", href: "/vendors" },
+    { label: v.name },
+  ];
+  return (
+    pageStart({
+      title: `${v.name} | Vendors on Sokosumi`,
+      description: (v.description || `${v.name} builds and operates AI coworkers and agents on Sokosumi.`).slice(0, 155),
+      path: `/vendors/${v.slug}`,
+      breadcrumb: cr,
+      jsonld: {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        name: v.name,
+        url: `${shell.SITE}/vendors/${v.slug}`,
+        description: v.description || undefined,
+      },
+    }) +
+    `<div class="page-head" data-reveal>
+      <span class="eyebrow">Vendor</span>
+      <h1>${esc(v.name)}</h1>
+      ${v.description ? `<p class="sub">${esc(v.description)}</p>` : ""}
+      ${website}
+    </div>
+    ${coworkersSection}
+    ${agentsSection}
+    ${empty}` +
+    pageEnd()
+  );
+}
+
+module.exports = { index, detail };

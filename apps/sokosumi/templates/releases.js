@@ -1,0 +1,137 @@
+// /releases (index) and /releases/<slug> (detail) — CMS `releases`
+// collection. A quiet timeline of product updates; contentHtml is
+// pre-rendered by the CMS at save time.
+
+const shell = require("./shell");
+const cms = require("../lib/cms");
+const { esc, icon, pageStart, pageEnd } = shell;
+
+function fmtDate(d) {
+  if (!d) return "";
+  const dt = new Date(d);
+  if (isNaN(dt.getTime())) return "";
+  return dt.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+}
+
+function fmtVersion(v) {
+  const s = String(v || "").trim();
+  if (!s) return "";
+  return /^v/i.test(s) ? s : `v${s}`;
+}
+
+function highlightTag(tag) {
+  return esc(String(tag || "").toUpperCase());
+}
+
+function releaseRow(r) {
+  const date = fmtDate(r.date);
+  const version = fmtVersion(r.version);
+  const when = `<div>
+    ${date ? `<div>${esc(date)}</div>` : ""}
+    ${version ? `<div class="tag-quiet" style="margin-top:4px">${esc(version)}</div>` : ""}
+  </div>`;
+
+  const highlights = (r.highlights || [])
+    .filter((h) => h && h.text)
+    .map(
+      (h) =>
+        `<p style="margin-top:8px"><span class="chip" style="margin-right:6px">${highlightTag(h.tag)}</span>${esc(h.text)}</p>`,
+    )
+    .join("");
+
+  const body = `<div>
+    <span class="row-title">${esc(r.title)}</span>
+    ${highlights}
+    ${r.description ? `<p style="margin-top:10px">${esc(r.description)}</p>` : ""}
+  </div>`;
+
+  if (r.contentHtml) {
+    return `<a class="row-item" href="/releases/${encodeURIComponent(r.slug)}">
+      ${when}
+      ${body}
+      <span class="row-go">Details ${icon("arrow-up-right", 15)}</span>
+    </a>`;
+  }
+  return `<div class="row-item">
+    ${when}
+    ${body}
+  </div>`;
+}
+
+async function index(ctx) {
+  const releases = await cms.getReleases({ draft: ctx.preview });
+
+  const cr = [{ label: "Home", href: "/" }, { label: "Releases" }];
+  return (
+    pageStart({
+      title: "Releases | Sokosumi",
+      description: "Every Sokosumi release: new capabilities, improvements, and fixes, in order.",
+      path: "/releases",
+      breadcrumb: cr,
+    }) +
+    `<div class="page-head" data-reveal>
+      <h1>What's new in Sokosumi</h1>
+      <p class="sub">New capabilities, improvements, and fixes, straight from the team.</p>
+    </div>` +
+    (releases.length
+      ? `<div class="page-section flush">
+          <div class="row-list">${releases.map(releaseRow).join("")}</div>
+        </div>`
+      : `<div class="page-section flush"><p class="muted">Release notes are on the way. In the meantime, <a href="/blog" style="text-decoration:underline">read the blog</a>.</p></div>`) +
+    pageEnd()
+  );
+}
+
+async function detail(ctx) {
+  const r = await cms.getRelease(ctx.params.slug, { draft: ctx.preview });
+  if (!r) return null;
+
+  const date = fmtDate(r.date);
+  const version = fmtVersion(r.version);
+  const eyebrow = [esc(date), esc(version)].filter(Boolean).join(" &middot; ");
+
+  const highlights = (r.highlights || []).filter((h) => h && h.text);
+  const highlightsSection = highlights.length
+    ? `<section class="page-section flush blk-checklist" data-reveal>
+        <h2>Highlights</h2>
+        <ul>${highlights
+          .map((h) => `<li><span class="chip">${highlightTag(h.tag)}</span><span>${esc(h.text)}</span></li>`)
+          .join("")}</ul>
+      </section>`
+    : "";
+
+  const proseSection = r.contentHtml
+    ? `<article class="page-section${highlights.length ? "" : " flush"}" data-reveal>
+        <div class="prose">${r.contentHtml}</div>
+      </article>`
+    : "";
+
+  const cr = [{ label: "Home", href: "/" }, { label: "Releases", href: "/releases" }, { label: r.title }];
+  return (
+    pageStart({
+      title: `${r.title} | Sokosumi releases`,
+      description: (r.description || "").slice(0, 155),
+      path: `/releases/${r.slug}`,
+      breadcrumb: cr,
+      jsonld: {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        headline: r.title,
+        description: r.description || undefined,
+        datePublished: r.date || undefined,
+        author: { "@type": "Organization", name: "Sokosumi" },
+        url: `${shell.SITE}/releases/${r.slug}`,
+      },
+    }) +
+    `<div class="page-head" data-reveal>
+      ${eyebrow ? `<span class="eyebrow">${eyebrow}</span>` : ""}
+      <h1>${esc(r.title)}</h1>
+      ${r.description ? `<p class="sub">${esc(r.description)}</p>` : ""}
+    </div>` +
+    highlightsSection +
+    proseSection +
+    pageEnd()
+  );
+}
+
+module.exports = { index, detail };

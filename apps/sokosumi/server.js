@@ -1,31 +1,48 @@
-// Zero-dependency static server for the Sokosumi landing page + a small
-// background service that polls the Sokosumi Core API, transforms the catalog,
-// caches it to disk, and serves it at /api/catalog.
+// Zero-dependency server for the Sokosumi site.
 //
-//   node server.js          → run the site + background refresh loop
+// Serves: the static landing page (index.html + /assets), /api/catalog (live
+// product catalog, cached to disk), and the server-rendered sub-pages, which
+// are CMS-backed (see lib/cms.js — same Payload instance as masumi.network).
+//
+//   node server.js          → run the site + background catalog refresh
 //   node server.js --once   → fetch + write data/catalog.json once, then exit
 //
-// Config via env (never hardcode the key in this file):
-//   SOKOSUMI_CORE_URL   default: mainnet public API (https://api.sokosumi.com)
-//   SOKOSUMI_CORE_KEY   required for live refresh — a *user* API key (Bearer token).
-//                       List endpoints authenticate as actor "user"; a coworker
-//                       key (prefix "coworker_") is scoped to one coworker and
-//                       can't list the catalog, so don't use one here.
+// Config via env (never hardcode keys in this file):
+//   SOKOSUMI_CORE_URL   default: https://api.sokosumi.com
+//   SOKOSUMI_CORE_KEY   user API key for the catalog refresh (Bearer token)
 //   CATALOG_REFRESH_MS  default: 600000 (10 min)
+//   CMS_URL             default: the shared payload instance
+//   PREVIEW_SECRET      enables /api/preview?secret=…&path=… draft mode
+//   CMS_PREVIEW_KEY     payload user API key used for draft fetches
 const http = require("http");
 const fs = require("fs");
 const path = require("path");
 const vm = require("vm");
-const render = require("./render");
+const crypto = require("crypto");
+
+const shell = require("./templates/shell");
+const misc = require("./templates/misc");
+const coworkersTpl = require("./templates/coworkers");
+const guidesTpl = require("./templates/guides");
+const tasksTpl = require("./templates/tasks");
+const vendorsTpl = require("./templates/vendors");
+const useCasesTpl = require("./templates/useCases");
+const blogTpl = require("./templates/blog");
+const releasesTpl = require("./templates/releases");
+const compareTpl = require("./templates/compare");
+const pagesTpl = require("./templates/pagesCms");
+const contactTpl = require("./templates/contact");
 
 const port = process.env.PORT || 3000;
 const root = __dirname;
 const dataDir = path.join(root, "data");
 const cacheFile = path.join(dataDir, "catalog.json");
+const seedFile = path.join(root, "catalog-seed.json");
 
 const CORE_URL = process.env.SOKOSUMI_CORE_URL || "https://api.sokosumi.com";
 const CORE_KEY = process.env.SOKOSUMI_CORE_KEY || "";
 const REFRESH_MS = Number(process.env.CATALOG_REFRESH_MS) || 10 * 60 * 1000;
+const PREVIEW_SECRET = process.env.PREVIEW_SECRET || "";
 
 const TYPES = {
   ".html": "text/html; charset=utf-8",
@@ -45,13 +62,18 @@ const TYPES = {
   ".ico": "image/x-icon",
 };
 
-// ── catalog cache ────────────────────────────────────────────────────────
+// ── catalog cache (landing page + nightly CMS sync source) ───────────────
 let catalog = { fetchedAt: null, coworkers: [], agents: [], categories: [] };
 try {
   catalog = JSON.parse(fs.readFileSync(cacheFile, "utf8"));
   console.log(`[catalog] loaded disk cache from ${catalog.fetchedAt}`);
 } catch {
-  /* no cache yet */
+  try {
+    catalog = JSON.parse(fs.readFileSync(seedFile, "utf8"));
+    console.log(`[catalog] no disk cache — loaded committed seed from ${catalog.fetchedAt}`);
+  } catch {
+    /* no cache, no seed */
+  }
 }
 
 async function coreGet(p) {
@@ -60,16 +82,16 @@ async function coreGet(p) {
   return res.json();
 }
 
-// Turn a coworker's raw metadata.offers into the shape the pages render, with a
-// stable, unique slug per offer (derived from the title).
+// Turn a coworker's raw metadata.offers into the shape the pages render.
 function mapOffers(metadata) {
   const raw = (metadata && metadata.offers) || [];
   const seen = new Set();
   return raw
     .filter((o) => o && o.title)
     .map((o) => {
-      let slug = render.slugify(o.title);
-      let s = slug, i = 2;
+      let slug = shell.slugify(o.title);
+      let s = slug,
+        i = 2;
       while (seen.has(s)) s = `${slug}-${i++}`;
       seen.add(s);
       return {
@@ -89,7 +111,6 @@ function mapOffers(metadata) {
     });
 }
 
-// Map the raw Core payloads down to exactly what the landing page renders.
 function transform(coworkersRaw, agentsRaw) {
   const coworkers = (coworkersRaw || [])
     .filter((c) => c.isWhitelisted)
@@ -132,7 +153,6 @@ function transform(coworkersRaw, agentsRaw) {
     })),
   }));
 
-  // De-duped category list (with counts + a colour) for the marketplace filter.
   const catMap = new Map();
   for (const a of agents) {
     for (const cat of a.categories) {
@@ -147,9 +167,7 @@ function transform(coworkersRaw, agentsRaw) {
   return { fetchedAt: new Date().toISOString(), coworkers, agents, categories };
 }
 
-// ── curated-task fallback ────────────────────────────────────────────────
-// Until the live API offers are wired up, the sub-pages fall back to the same
-// curated tasks the homepage uses (assets/tasks.js). Live API offers always win.
+// ── curated-task fallback for the landing page's catalog ─────────────────
 const OUTPUT_BY_LABEL = { "PDF report": "pdf", Document: "doc", Slides: "slides", Code: "text", Sheet: "sheet" };
 let curatedBySlug = {};
 function loadCurated() {
@@ -161,7 +179,7 @@ function loadCurated() {
     const map = {};
     for (const t of tasks) {
       (map[t.coworkerSlug] = map[t.coworkerSlug] || []).push({
-        slug: t.slug || render.slugify(t.title),
+        slug: t.slug || shell.slugify(t.title),
         title: t.title,
         description: t.short || "",
         category: t.category || "",
@@ -178,7 +196,6 @@ function loadCurated() {
 }
 loadCurated();
 
-// Attach curated offers to any coworker the API hasn't given offers for yet.
 function withFallbackOffers(cat) {
   for (const c of cat.coworkers || []) {
     if (!c.offers || !c.offers.length) c.offers = curatedBySlug[c.slug] || [];
@@ -187,23 +204,13 @@ function withFallbackOffers(cat) {
 }
 withFallbackOffers(catalog);
 
-function findCoworker(slug) {
-  return (catalog.coworkers || []).find((c) => c.slug === slug) || null;
-}
-function findOffer(coworker, offerSlug) {
-  return (coworker.offers || []).find((o) => o.slug === offerSlug) || null;
-}
-
 async function refresh() {
   if (!CORE_KEY) {
     console.log("[catalog] SOKOSUMI_CORE_KEY not set — serving cached data only");
     return false;
   }
   try {
-    const [cw, ag] = await Promise.all([
-      coreGet("/v1/coworkers?scope=all"),
-      coreGet("/v1/agents?limit=100"),
-    ]);
+    const [cw, ag] = await Promise.all([coreGet("/v1/coworkers?scope=all"), coreGet("/v1/agents?limit=100")]);
     catalog = withFallbackOffers(transform(cw.data, ag.data));
     fs.mkdirSync(dataDir, { recursive: true });
     fs.writeFileSync(cacheFile, JSON.stringify(catalog));
@@ -215,11 +222,54 @@ async function refresh() {
   }
 }
 
-// ── one-shot mode (generate/refresh the cache, then exit) ────────────────
+// ── preview (draft) mode ─────────────────────────────────────────────────
+const previewToken = PREVIEW_SECRET
+  ? crypto.createHmac("sha256", PREVIEW_SECRET).update("soko-preview").digest("hex")
+  : null;
+
+function hasPreviewCookie(req) {
+  if (!previewToken) return false;
+  const cookies = String(req.headers.cookie || "");
+  return cookies.split(/;\s*/).some((c) => c === `soko_preview=${previewToken}`);
+}
+
+// ── routing ──────────────────────────────────────────────────────────────
+// Each route: match(segments) → params or null, then handler(ctx) → html|null.
+const routes = [
+  { m: (s) => s.length === 1 && s[0] === "coworkers" && {}, h: coworkersTpl.index },
+  { m: (s) => s.length === 2 && s[0] === "coworkers" && { slug: s[1] }, h: coworkersTpl.profile },
+  {
+    m: (s) => s.length === 4 && s[0] === "coworkers" && s[2] === "tasks" && { slug: s[1], offerSlug: s[3] },
+    h: tasksTpl.detail,
+  },
+  { m: (s) => s.length === 1 && s[0] === "tasks" && {}, h: tasksTpl.browse },
+  { m: (s) => s.length === 1 && s[0] === "vendors" && {}, h: vendorsTpl.index },
+  { m: (s) => s.length === 2 && s[0] === "vendors" && { slug: s[1] }, h: vendorsTpl.detail },
+  { m: (s) => s.length === 1 && s[0] === "use-cases" && {}, h: useCasesTpl.hub },
+  {
+    m: (s) => s.length === 3 && s[0] === "use-cases" && s[1] === "industries" && { slug: s[2] },
+    h: useCasesTpl.industry,
+  },
+  { m: (s) => s.length === 2 && s[0] === "use-cases" && { slug: s[1] }, h: useCasesTpl.detail },
+  { m: (s) => s.length === 1 && s[0] === "guides" && {}, h: guidesTpl.index },
+  { m: (s) => s.length === 2 && s[0] === "guides" && { slug: s[1] }, h: guidesTpl.detail },
+  { m: (s) => s.length === 1 && s[0] === "blog" && {}, h: blogTpl.index },
+  { m: (s) => s.length === 2 && s[0] === "blog" && { slug: s[1] }, h: blogTpl.detail },
+  { m: (s) => s.length === 1 && s[0] === "releases" && {}, h: releasesTpl.index },
+  { m: (s) => s.length === 2 && s[0] === "releases" && { slug: s[1] }, h: releasesTpl.detail },
+  { m: (s) => s.length === 1 && s[0] === "compare" && {}, h: compareTpl.index },
+  { m: (s) => s.length === 2 && s[0] === "compare" && { slug: s[1] }, h: compareTpl.detail },
+  { m: (s) => s.length === 1 && s[0] === "product" && {}, h: pagesTpl.productHub },
+  { m: (s) => s.length === 1 && s[0] === "contact" && {}, h: contactTpl.render },
+  {
+    m: (s) => s.length === 1 && s[0] === "press" && {},
+    h: async (ctx) => (await pagesTpl.cmsPage({ ...ctx, params: { slug: "press" } })) || misc.press(),
+  },
+];
+
 if (process.argv.includes("--once")) {
   refresh().then((ok) => process.exit(ok ? 0 : 1));
 } else {
-  // ── static server + background polling ─────────────────────────────────
   function resolveFile(urlPath) {
     const resolved = path.normalize(path.join(root, urlPath));
     if (resolved !== root && !resolved.startsWith(root + path.sep)) return null;
@@ -237,89 +287,117 @@ if (process.argv.includes("--once")) {
   }
 
   http
-    .createServer((req, res) => {
-      const urlPath = decodeURIComponent((req.url || "/").split("?")[0]);
+    .createServer(async (req, res) => {
+      const [rawPath, rawQuery] = (req.url || "/").split("?");
+      const urlPath = decodeURIComponent(rawPath);
+      const query = Object.fromEntries(new URLSearchParams(rawQuery || ""));
 
-      if (urlPath === "/api/catalog") {
-        res.writeHead(200, { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "public, max-age=60" });
-        return res.end(JSON.stringify(catalog));
-      }
-
-      if (urlPath === "/robots.txt") {
-        res.writeHead(200, { "Content-Type": "text/plain; charset=utf-8" });
-        return res.end(render.renderRobots());
-      }
-
-      if (urlPath === "/sitemap.xml") {
-        res.writeHead(200, { "Content-Type": "application/xml; charset=utf-8", "Cache-Control": "public, max-age=600" });
-        return res.end(render.renderSitemap(catalog));
-      }
-
-      if (urlPath === "/" || urlPath === "/index.html") return serveIndex(res);
-
-      // ── server-rendered coworker + pre-built task pages ──────────────────
-      const clean = urlPath.replace(/\/+$/, "") || "/";
-      const seg = clean.split("/").filter(Boolean).map((s) => decodeURIComponent(s));
-      const sendHtml = (html, code) => {
-        res.writeHead(code || 200, { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "public, max-age=120" });
-        res.end(html);
-      };
-
-      // /tasks (filterable browse page; ?category= & ?q= pre-select filters)
-      if (seg[0] === "tasks" && seg.length === 1) {
-        const q = (req.url || "").split("?")[1] || "";
-        const params = new URLSearchParams(q);
-        return sendHtml(render.renderTasksBrowse(catalog, { category: params.get("category") || "", q: params.get("q") || "" }));
-      }
-
-      if (seg[0] === "coworkers") {
-        // /coworkers
-        if (seg.length === 1) return sendHtml(render.renderCoworkersIndex(catalog));
-        // /coworkers/{slug}
-        if (seg.length === 2) {
-          const cw = findCoworker(seg[1]);
-          return cw ? sendHtml(render.renderCoworkerPage(catalog, cw)) : sendHtml(render.renderNotFound("That coworker isn't listed yet."), 404);
+      try {
+        if (urlPath === "/api/catalog") {
+          res.writeHead(200, { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "public, max-age=60" });
+          return res.end(JSON.stringify(catalog));
         }
-        // /coworkers/{slug}/tasks/{offerSlug}
-        if (seg.length === 4 && seg[2] === "tasks") {
-          const cw = findCoworker(seg[1]);
-          const offer = cw && findOffer(cw, seg[3]);
-          return offer ? sendHtml(render.renderTaskPage(catalog, cw, offer)) : sendHtml(render.renderNotFound("That pre-built task isn't available."), 404);
-        }
-        return sendHtml(render.renderNotFound(), 404);
-      }
 
-      const file = resolveFile(urlPath);
-      if (!file) return serveIndex(res); // SPA-style fallback for unknown routes
-
-      const type = TYPES[path.extname(file.path).toLowerCase()] || "application/octet-stream";
-      const range = req.headers.range;
-
-      if (range) {
-        const match = /bytes=(\d*)-(\d*)/.exec(range);
-        if (match) {
-          const start = match[1] ? parseInt(match[1], 10) : 0;
-          const end = match[2] ? parseInt(match[2], 10) : file.size - 1;
-          if (start <= end && end < file.size) {
-            res.writeHead(206, {
-              "Content-Type": type,
-              "Content-Range": `bytes ${start}-${end}/${file.size}`,
-              "Accept-Ranges": "bytes",
-              "Content-Length": end - start + 1,
-            });
-            return fs.createReadStream(file.path, { start, end }).pipe(res);
+        // Draft preview: /api/preview?secret=…&path=/x sets the cookie and
+        // redirects; /api/exit-preview clears it.
+        if (urlPath === "/api/preview") {
+          if (!previewToken || query.secret !== PREVIEW_SECRET) {
+            res.writeHead(401, { "Content-Type": "text/plain" });
+            return res.end("Invalid preview secret");
           }
+          const to = query.path && query.path.startsWith("/") ? query.path : "/";
+          res.writeHead(302, {
+            Location: to,
+            "Set-Cookie": `soko_preview=${previewToken}; Path=/; HttpOnly; SameSite=Lax; Max-Age=7200`,
+          });
+          return res.end();
+        }
+        if (urlPath === "/api/exit-preview") {
+          res.writeHead(302, {
+            Location: "/",
+            "Set-Cookie": "soko_preview=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0",
+          });
+          return res.end();
+        }
+
+        if (urlPath === "/robots.txt") {
+          res.writeHead(200, { "Content-Type": "text/plain; charset=utf-8" });
+          return res.end(misc.robots());
+        }
+
+        if (urlPath === "/sitemap.xml") {
+          const xml = await misc.sitemap();
+          res.writeHead(200, { "Content-Type": "application/xml; charset=utf-8", "Cache-Control": "public, max-age=600" });
+          return res.end(xml);
+        }
+
+        if (urlPath === "/" || urlPath === "/index.html") return serveIndex(res);
+
+        const clean = urlPath.replace(/\/+$/, "") || "/";
+        const seg = clean.split("/").filter(Boolean);
+        const preview = hasPreviewCookie(req);
+        const sendHtml = (html, code) => {
+          res.writeHead(code || 200, {
+            "Content-Type": "text/html; charset=utf-8",
+            "Cache-Control": preview ? "no-store" : "public, max-age=120",
+          });
+          res.end(html);
+        };
+
+        // Static assets first (they all live under /assets or have extensions).
+        if (seg[0] === "assets" || path.extname(clean)) {
+          const file = resolveFile(urlPath);
+          if (!file) return sendHtml(misc.notFound(), 404);
+          const type = TYPES[path.extname(file.path).toLowerCase()] || "application/octet-stream";
+          const range = req.headers.range;
+          if (range) {
+            const match = /bytes=(\d*)-(\d*)/.exec(range);
+            if (match) {
+              const start = match[1] ? parseInt(match[1], 10) : 0;
+              const end = match[2] ? parseInt(match[2], 10) : file.size - 1;
+              if (start <= end && end < file.size) {
+                res.writeHead(206, {
+                  "Content-Type": type,
+                  "Content-Range": `bytes ${start}-${end}/${file.size}`,
+                  "Accept-Ranges": "bytes",
+                  "Content-Length": end - start + 1,
+                });
+                return fs.createReadStream(file.path, { start, end }).pipe(res);
+              }
+            }
+          }
+          res.writeHead(200, { "Content-Type": type, "Content-Length": file.size, "Accept-Ranges": "bytes" });
+          return fs.createReadStream(file.path).pipe(res);
+        }
+
+        const ctx = { params: {}, query, preview, catalog };
+        for (const r of routes) {
+          const params = r.m(seg);
+          if (!params) continue;
+          ctx.params = params;
+          const html = await r.h(ctx);
+          if (html) return sendHtml(html);
+          return sendHtml(misc.notFound(), 404);
+        }
+
+        // CMS landing-page catch-all (slugs may be nested, e.g. product/x).
+        const html = await pagesTpl.cmsPage({ ...ctx, params: { slug: seg.join("/") } });
+        if (html) return sendHtml(html);
+        return sendHtml(misc.notFound(), 404);
+      } catch (e) {
+        console.error(`[server] ${req.method} ${urlPath} failed:`, e);
+        try {
+          res.writeHead(500, { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-store" });
+          res.end(misc.serverError());
+        } catch {
+          /* headers already sent */
         }
       }
-
-      res.writeHead(200, { "Content-Type": type, "Content-Length": file.size, "Accept-Ranges": "bytes" });
-      fs.createReadStream(file.path).pipe(res);
     })
     .listen(port, () => {
-      console.log(`Sokosumi landing listening on :${port}`);
+      console.log(`Sokosumi site listening on :${port}`);
     });
 
-  // background refresh loop
   refresh();
   setInterval(refresh, REFRESH_MS);
 }
