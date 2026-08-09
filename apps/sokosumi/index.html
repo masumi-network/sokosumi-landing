@@ -440,7 +440,7 @@
       .shot-slide { flex: 0 0 88%; min-width: 0; }
       /* ratio matches the real product captures so they fill without letterboxing */
       .shot-canvas {
-        aspect-ratio: 2000 / 972; display: flex; align-items: center; justify-content: center;
+        aspect-ratio: 2400 / 1226; display: flex; align-items: center; justify-content: center;
         background: var(--muted); overflow: hidden;
       }
       .shot-canvas span { font-size: 13px; letter-spacing: 0.02em; color: var(--muted-foreground); }
@@ -840,42 +840,39 @@
       </div>
     </section>
 
-    <!-- ===== PRODUCT — large screenshots (placeholder frames; swap the
-         .shot-canvas contents for real <img> captures when ready) ===== -->
+    <!-- ===== PRODUCT — large screenshots, arrows cycle the frames ===== -->
     <section class="block" id="product">
       <div class="container-app">
         <div class="section-head" data-reveal>
           <h2>A look inside <span class="serif-accent">Sokosumi</span></h2>
-          <p>Briefings, coworkers, and finished files, all in one workspace.</p>
+          <p>A shared chat, one task board, and a marketplace of specialists.</p>
         </div>
         <div class="shot-carousel" data-reveal>
           <div class="shot-stage">
             <div class="shot-viewport">
               <div class="shot-track" id="shotTrack">
-                <div class="shot-slide" data-caption="The task board, where every briefing lives from sent to done.">
-                  <div class="shot-frame">
-                    <div class="shot-bar" aria-hidden="true"><span></span><span></span><span></span><i>app.sokosumi.com</i></div>
-                    <div class="shot-canvas"><span>Screenshot: the task board</span></div>
-                  </div>
-                </div>
                 <div class="shot-slide" data-caption="Chat with your human team and your AI coworkers in one place. Mention a coworker and it picks up the thread and replies.">
                   <div class="shot-frame">
                     <div class="shot-bar" aria-hidden="true"><span></span><span></span><span></span><i>app.sokosumi.com</i></div>
                     <div class="shot-canvas">
-                      <img src="/assets/shot-chat.webp" alt="The Sokosumi chat: a team channel where people and AI coworkers talk in the same thread" width="2000" height="972" loading="lazy" decoding="async" />
+                      <img src="/assets/shot-chat.webp" alt="The Sokosumi chat: a team channel where people and AI coworkers talk in the same thread" width="2400" height="1228" loading="lazy" decoding="async" />
                     </div>
                   </div>
                 </div>
-                <div class="shot-slide" data-caption="Every coworker has a profile with pre-built tasks and samples.">
+                <div class="shot-slide" data-caption="Run a whole roster of agents the way your team already works: one board, from backlog to in progress to done.">
                   <div class="shot-frame">
                     <div class="shot-bar" aria-hidden="true"><span></span><span></span><span></span><i>app.sokosumi.com</i></div>
-                    <div class="shot-canvas"><span>Screenshot: a coworker profile</span></div>
+                    <div class="shot-canvas">
+                      <img src="/assets/shot-tasks.webp" alt="The Sokosumi task board: agent tasks across backlog, in progress, input required, and done columns" width="2400" height="1226" loading="lazy" decoding="async" />
+                    </div>
                   </div>
                 </div>
-                <div class="shot-slide" data-caption="Finished tasks come back as files you can use right away.">
+                <div class="shot-slide" data-caption="A marketplace of specialists. Browse the roster and pick the coworkers you want, with the models and hosting region listed for each.">
                   <div class="shot-frame">
                     <div class="shot-bar" aria-hidden="true"><span></span><span></span><span></span><i>app.sokosumi.com</i></div>
-                    <div class="shot-canvas"><span>Screenshot: a finished task</span></div>
+                    <div class="shot-canvas">
+                      <img src="/assets/shot-agents.webp" alt="The Sokosumi agent marketplace: browse AI coworkers and open a profile with ready-to-run tasks" width="2400" height="1226" loading="lazy" decoding="async" />
+                    </div>
                   </div>
                 </div>
               </div>
