@@ -1210,7 +1210,12 @@
                 .map(function (c) { return '<img src="' + esc(c.image) + '" alt="" />'; })
                 .join("");
               var agentCount = (d.agents || []).length || coworkers.length;
-              document.getElementById("heroCount").textContent = agentCount + "+ AI specialists on Sokosumi";
+              var st = d.stats || {};
+              var num = function (n) { return Number(n).toLocaleString("en-US"); };
+              var line = agentCount + "+ AI specialists";
+              if (st.tasks) line += " · " + num(st.tasks) + " tasks run";
+              if (st.jobs) line += " · " + num(st.jobs) + " agent jobs";
+              document.getElementById("heroCount").textContent = line;
               social.hidden = false;
               revealNow(social);
             }

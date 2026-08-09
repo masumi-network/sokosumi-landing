@@ -38,6 +38,7 @@ const root = __dirname;
 const dataDir = path.join(root, "data");
 const cacheFile = path.join(dataDir, "catalog.json");
 const seedFile = path.join(root, "catalog-seed.json");
+const statsFile = path.join(dataDir, "stats-floor.json");
 
 const CORE_URL = process.env.SOKOSUMI_CORE_URL || "https://api.sokosumi.com";
 const CORE_KEY = process.env.SOKOSUMI_CORE_KEY || "";
@@ -167,6 +168,45 @@ function transform(coworkersRaw, agentsRaw) {
   return { fetchedAt: new Date().toISOString(), coworkers, agents, categories };
 }
 
+// ── platform stats (two numbers, one API request each) ───────────────────
+//   tasks — every task ever briefed on the platform, from
+//     /v1/admin/tasks meta.pagination.total. Needs an admin-scoped key; if
+//     the key lacks that scope the number is simply omitted (never faked).
+//   jobs  — the sum of every marketplace agent's public execution count.
+//     Verified global rather than org-scoped: one agent reports 249
+//     executions while this org's whole /v1/jobs feed holds 3 of them.
+//     Coworker-dispatched jobs are not exposed globally, so this figure can
+//     only understate activity, never overstate it.
+//
+// Both are monotonic. A partial API response must never make a public
+// counter tick backwards, so the highest value ever seen is persisted to
+// disk and used as a floor.
+function readFloors() {
+  try {
+    return JSON.parse(fs.readFileSync(statsFile, "utf8"));
+  } catch {
+    return {};
+  }
+}
+function computeStats(agents, tasksTotal, previous) {
+  const prev = previous || {};
+  const floors = readFloors();
+  const jobsRaw = (agents || []).reduce((n, a) => n + (Number(a.runs) || 0), 0);
+
+  const jobs = Math.max(jobsRaw, Number(floors.jobs) || 0, Number(prev.jobs) || 0);
+  const tasks = Math.max(Number(tasksTotal) || 0, Number(floors.tasks) || 0, Number(prev.tasks) || 0);
+
+  if (jobs > (Number(floors.jobs) || 0) || tasks > (Number(floors.tasks) || 0)) {
+    try {
+      fs.mkdirSync(dataDir, { recursive: true });
+      fs.writeFileSync(statsFile, JSON.stringify({ tasks, jobs, at: new Date().toISOString() }));
+    } catch (e) {
+      console.error("[stats] could not persist floors:", e.message);
+    }
+  }
+  return { tasks: tasks || null, jobs: jobs || null, updatedAt: new Date().toISOString() };
+}
+
 // ── curated-task fallback for the landing page's catalog ─────────────────
 const OUTPUT_BY_LABEL = { "PDF report": "pdf", Document: "doc", Slides: "slides", Code: "text", Sheet: "sheet" };
 let curatedBySlug = {};
@@ -214,6 +254,7 @@ async function refresh() {
   }
   let cwRaw = null;
   let agRaw = null;
+  let tasksTotal = null;
   try {
     cwRaw = (await coreGet("/v1/coworkers?scope=all")).data;
   } catch (e) {
@@ -224,24 +265,33 @@ async function refresh() {
   } catch (e) {
     console.error("[catalog] agents refresh failed:", e.message);
   }
+  try {
+    // Platform task total: one request, we only read the pagination count.
+    tasksTotal = (await coreGet("/v1/admin/tasks?limit=1")).meta?.pagination?.total ?? null;
+  } catch (e) {
+    console.error("[stats] task total unavailable (needs an admin-scoped key):", e.message);
+  }
   if (!cwRaw && !agRaw) return false;
 
   const fresh = transform(cwRaw || [], agRaw || []);
   const now = fresh.fetchedAt;
+  const agents = agRaw ? fresh.agents : catalog.agents;
   catalog = withFallbackOffers({
     fetchedAt: now,
     coworkersFetchedAt: cwRaw ? now : catalog.coworkersFetchedAt || catalog.fetchedAt,
     agentsFetchedAt: agRaw ? now : catalog.agentsFetchedAt || catalog.fetchedAt,
     coworkers: cwRaw ? fresh.coworkers : catalog.coworkers,
-    agents: agRaw ? fresh.agents : catalog.agents,
+    agents,
     categories: agRaw ? fresh.categories : catalog.categories,
+    stats: computeStats(agents, tasksTotal, catalog.stats),
   });
   fs.mkdirSync(dataDir, { recursive: true });
   fs.writeFileSync(cacheFile, JSON.stringify(catalog));
   console.log(
     `[catalog] refreshed${cwRaw ? "" : " (coworkers STALE — check SOKOSUMI_CORE_KEY)"}: ` +
       `${catalog.coworkers.length} coworkers @ ${catalog.coworkersFetchedAt}, ` +
-      `${catalog.agents.length} agents @ ${catalog.agentsFetchedAt}`,
+      `${catalog.agents.length} agents @ ${catalog.agentsFetchedAt}, ` +
+      `${catalog.stats.tasks ?? "?"} tasks / ${catalog.stats.jobs ?? "?"} jobs`,
   );
   return true;
 }
