@@ -471,24 +471,29 @@
       .trust-headline { font-family: var(--serif); font-size: clamp(26px, 3vw, 38px); font-weight: 300; line-height: 1.15; letter-spacing: -0.02em; text-wrap: balance; }
       .trust-copy p { font-size: 16px; line-height: 1.65; max-width: 46ch; }
 
-      /* ===== org chart: coworkers slot in under your real team ===== */
-      .org { max-width: 940px; }
+      /* ===== org chart: coworkers slot in under your real team =====
+         Connectors are drawn per column (never across the grid) so the rail
+         always meets each branch stem exactly, whatever the gap resolves to. */
+      .org { --org-gap: clamp(16px, 3vw, 36px); }
       .org-root { display: flex; justify-content: center; }
-      .org-root .org-card { min-width: 220px; }
+      .org-root .org-card { min-width: min(320px, 100%); }
       .org-stem { width: 1px; height: 32px; background: var(--border); margin: 0 auto; }
       .org-branches {
-        position: relative;
-        display: grid; grid-template-columns: repeat(3, 1fr); gap: 0 clamp(16px, 3vw, 36px);
-      }
-      .org-branches::before {
-        content: ""; position: absolute; top: 0; height: 1px; background: var(--border);
-        left: calc(100% / 6); right: calc(100% / 6);
+        display: grid; grid-template-columns: repeat(3, 1fr); gap: 0 var(--org-gap);
       }
       .org-branch { position: relative; padding-top: 32px; display: flex; flex-direction: column; }
+      /* vertical drop into each branch */
       .org-branch::before {
         content: ""; position: absolute; top: 0; left: 50%; width: 1px; height: 32px;
         background: var(--border);
       }
+      /* horizontal rail: each column draws its own half, overlapping the gap */
+      .org-branch::after {
+        content: ""; position: absolute; top: 0; height: 1px; background: var(--border);
+        left: calc(var(--org-gap) / -2); right: calc(var(--org-gap) / -2);
+      }
+      .org-branch:first-child::after { left: 50%; }
+      .org-branch:last-child::after { right: 50%; }
       .org-drop { width: 1px; height: 22px; background: var(--border); margin: 0 auto; }
       .org-card {
         display: flex; align-items: center; gap: 10px; padding: 10px 13px;
@@ -512,10 +517,11 @@
         color: var(--muted-foreground);
       }
       @media (max-width: 760px) {
-        .org-stem, .org-branches::before, .org-branch::before { display: none; }
+        .org-stem, .org-branch::before, .org-branch::after { display: none; }
         .org-branches { grid-template-columns: 1fr; gap: 28px; }
         .org-branch { padding-top: 0; }
         .org-root { justify-content: flex-start; margin-bottom: 28px; }
+        .org-root .org-card { min-width: 0; width: 100%; }
       }
 
       /* ===== CEO quote ===== */
