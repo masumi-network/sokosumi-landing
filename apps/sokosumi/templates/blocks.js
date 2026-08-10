@@ -91,23 +91,28 @@ const RENDER = {
         const cells = (r.cells || [])
           .map((cell, i) => {
             const v = String(cell.value || "").trim();
+            // The yes/no glyphs are visual only — the sr-only text is what a
+            // crawler or screen reader gets; before, "no" cells were literally
+            // empty and "yes" cells were an unlabeled icon.
             const inner =
               v.toLowerCase() === "yes"
-                ? `<span class="cmp-yes">${icon("check", 12)}</span>`
+                ? `<span class="cmp-yes">${icon("check", 12)}</span><span class="sr-only">Yes</span>`
                 : v.toLowerCase() === "no"
-                  ? `<span class="cmp-no"></span>`
+                  ? `<span class="cmp-no"></span><span class="sr-only">No</span>`
                   : esc(v);
             return `<td class="${cols[i] && cols[i].highlight ? "hl" : ""}">${inner}</td>`;
           })
           .join("");
-        return `<tr><td class="row-label">${esc(r.label)}${
+        // The row label is a header for its row, not data.
+        return `<tr><th scope="row" class="row-label">${esc(r.label)}${
           r.note ? `<span class="row-note">${esc(r.note)}</span>` : ""
-        }</td>${cells}</tr>`;
+        }</th>${cells}</tr>`;
       })
       .join("");
     return `<section class="blk" data-reveal>${blkHead(b)}
       <div class="cmp-table-wrap"><table class="cmp-table">
-        <thead><tr><th></th>${ths}</tr></thead>
+        ${b.heading ? `<caption class="sr-only">${esc(b.heading)}</caption>` : ""}
+        <thead><tr><td></td>${ths}</tr></thead>
         <tbody>${rows}</tbody>
       </table></div>
     </section>`;

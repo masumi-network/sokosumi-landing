@@ -77,7 +77,7 @@ async function detail(ctx) {
   const eyebrow = [label, fmtDate(p.date), p.author].filter(Boolean).map(esc).join(" · ");
 
   const coverBlock = `<div class="post-cover" data-reveal>
-      <img src="${attr(postImage(p))}" alt="${attr(cover ? p.title : "")}" loading="lazy" />
+      <img src="${attr(postImage(p))}" alt="${attr(cover ? p.title : "")}" width="1600" height="900" loading="eager" fetchpriority="high" decoding="async" />
     </div>`;
 
   const cr = [{ label: "Home", href: "/" }, { label: "Blog", href: "/blog" }, { label: p.title }];

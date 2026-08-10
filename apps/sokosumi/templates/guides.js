@@ -81,7 +81,7 @@ async function detail(ctx) {
   const related = (g.related || []).filter((r) => typeof r === "object" && r.slug);
   const coverUrl = cms.mediaUrl(g.coverImage);
   const cover = coverUrl
-    ? `<div class="post-cover" data-reveal><img src="${attr(coverUrl)}" alt="${attr(g.title)}" loading="lazy" /></div>`
+    ? `<div class="post-cover" data-reveal><img src="${attr(coverUrl)}" alt="${attr(g.title)}" width="1600" height="900" loading="eager" fetchpriority="high" decoding="async" /></div>`
     : "";
 
   const cr = [{ label: "Home", href: "/" }, { label: "Guides", href: "/guides" }, { label: g.title }];

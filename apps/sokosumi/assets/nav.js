@@ -28,17 +28,41 @@
   var GRACE_MS = 180;
   var timers = new WeakMap();
 
+  // The trigger advertises the panel via aria-controls/aria-haspopup; keep
+  // aria-expanded honest as the panel opens and closes.
+  function expose(d, isOpen) {
+    var trigger = d.querySelector("[aria-expanded]");
+    if (trigger) trigger.setAttribute("aria-expanded", isOpen ? "true" : "false");
+  }
+
+  // Portraits in the panel ship as data-src so a page view does not download
+  // a menu's worth of images; the first open swaps them in.
+  function hydrate(d) {
+    [].slice.call(d.querySelectorAll("img[data-src]")).forEach(function (img) {
+      img.src = img.getAttribute("data-src");
+      img.removeAttribute("data-src");
+    });
+  }
+
   function open(d) {
     clearTimeout(timers.get(d));
     drops.forEach(function (other) {
       if (other !== d) close(other, true);
     });
+    hydrate(d);
     d.classList.add("open");
+    expose(d, true);
   }
   function close(d, now) {
     clearTimeout(timers.get(d));
-    if (now) return d.classList.remove("open");
-    timers.set(d, setTimeout(function () { d.classList.remove("open"); }, GRACE_MS));
+    if (now) {
+      d.classList.remove("open");
+      return expose(d, false);
+    }
+    timers.set(d, setTimeout(function () {
+      d.classList.remove("open");
+      expose(d, false);
+    }, GRACE_MS));
   }
 
   drops.forEach(function (d) {

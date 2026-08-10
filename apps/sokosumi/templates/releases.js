@@ -101,7 +101,7 @@ async function detail(ctx) {
   const highlights = (r.highlights || []).filter((h) => h && h.text);
   const coverUrl = cms.mediaUrl(r.coverImage);
   const coverBlock = coverUrl
-    ? `<div class="post-cover" data-reveal><img src="${attr(coverUrl)}" alt="${attr(r.title)}" loading="lazy" /></div>`
+    ? `<div class="post-cover" data-reveal><img src="${attr(coverUrl)}" alt="${attr(r.title)}" width="1600" height="900" loading="eager" fetchpriority="high" decoding="async" /></div>`
     : "";
   const highlightsSection = highlights.length
     ? `<section class="page-section flush blk-checklist" data-reveal>

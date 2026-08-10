@@ -456,7 +456,12 @@ function agentsPanel() {
             (p) =>
               `<a class="nav-col-link has-face" href="/coworkers/${encodeURIComponent(p.slug)}">${
                 p.image
-                  ? `<span class="nav-face"><img src="${attr(p.image)}" alt="" loading="lazy" /></span>`
+                  // data-src, not src: these are full-size portraits painted
+                  // at 30px inside a closed menu. loading="lazy" does NOT stop
+                  // the fetch — the hidden panel still has geometry, so every
+                  // desktop page view pulled ~7 MB of avatars for a menu most
+                  // visitors never open. nav.js promotes them on first open.
+                  ? `<span class="nav-face"><img data-src="${attr(p.image)}" alt="" width="30" height="30" /></span>`
                   : `<span class="nav-face is-blank"></span>`
               }<span class="nav-face-text"><span>${esc(p.name)}</span>${
                 p.role ? `<small>${esc(p.role)}</small>` : ""
@@ -563,10 +568,17 @@ function navItems(currentPath) {
   const useCases = useCasesPanel();
   const product = productPanel();
 
+  // Each dropdown trigger needs to say that it controls a panel and whether
+  // that panel is open; nav.js keeps aria-expanded in sync as it opens and
+  // closes. Without these a screen reader announced three plain links and
+  // gave no way to know a menu existed.
+  let panelSeq = 0;
   const item = (href, label, panel, extraMatch) => {
     const current = isCurrent(href) || (extraMatch && isCurrent(extraMatch));
-    const trigger = `<a href="${href}"${current}>${label}${panel ? CHEV : ""}</a>`;
-    return panel ? `<div class="nav-drop">${trigger}${panel}</div>` : trigger;
+    if (!panel) return `<a href="${href}"${current}>${label}</a>`;
+    const panelId = `nav-panel-${++panelSeq}`;
+    const trigger = `<a href="${href}"${current} aria-haspopup="true" aria-expanded="false" aria-controls="${panelId}">${label}${CHEV}</a>`;
+    return `<div class="nav-drop">${trigger}${panel.replace("<div class=\"nav-panel", `<div id="${panelId}" class="nav-panel`)}</div>`;
   };
 
   // Three items only. Guides and Releases are reference material, not paths

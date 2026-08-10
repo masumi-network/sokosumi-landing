@@ -99,6 +99,11 @@
       @media (prefers-reduced-motion: reduce) {
         [data-reveal] { transition: none; opacity: 1; transform: none; }
       }
+      /* The headline is the LCP element. Holding it at opacity 0 until the
+         deferred script ran its observer delayed the largest paint by about
+         600ms — to animate in something that is already on screen at load.
+         The hero paints with the HTML; everything below it still animates. */
+      .hero [data-reveal] { opacity: 1; transform: none; }
 
       /* ===== buttons: flat rectangles ===== */
       .btn {
@@ -759,14 +764,9 @@
     <link rel="stylesheet" href="/assets/nav.css" />
   </head>
   <body>
-    <a class="skip-link" href="#coworkers">Skip to content</a>
+    <a class="skip-link" href="#main">Skip to content</a>
     <!-- ===== HERO — cinematic center ===== -->
-    <header class="hero">
-      <video id="bgVideo" muted loop playsinline autoplay preload="metadata" poster="/assets/hero-poster.jpg" aria-hidden="true">
-        <source src="/assets/hero-bg.mp4" type="video/mp4" />
-      </video>
-      <div class="scrim" aria-hidden="true"></div>
-
+    <header class="site-banner">
       <nav class="island-nav" aria-label="Primary">
         <a href="/" aria-label="Sokosumi">
           <img class="mark" src="/assets/sokosumi-wordmark.svg" alt="Sokosumi" width="144" height="17" />
@@ -790,6 +790,15 @@
           <button class="nav-burger" id="navBurger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobileNav"><span></span><span></span></button>
         </div>
       </nav>
+    </header>
+
+    <main id="main">
+    <div class="hero">
+      <video id="bgVideo" muted loop playsinline autoplay preload="metadata" poster="/assets/hero-poster.jpg" aria-hidden="true">
+        <source src="/assets/hero-bg.mp4" type="video/mp4" />
+      </video>
+      <div class="scrim" aria-hidden="true"></div>
+
 
       <div class="hero-inner">
         <div class="hero-social" id="heroSocial" data-reveal hidden>
@@ -798,7 +807,11 @@
         </div>
 
         <h1 class="hero-title" data-reveal style="--i: 1">
-          AI Coworkers for <span class="rotator" id="heroRotator" aria-hidden="true"><span class="rot-word is-active">Marketing<span class="hero-dot">.</span></span></span><span class="sr-only">Marketing.</span>
+          <!-- The rotator's first word is real text, so it needs no sr-only
+               twin: with one there, the h1's text content read
+               "AI Coworkers for Marketing.Marketing." to anything that does
+               not apply CSS — crawlers included. -->
+          AI Coworkers for <span class="rotator" id="heroRotator"><span class="rot-word is-active">Marketing<span class="hero-dot">.</span></span></span>
         </h1>
 
         <p class="hero-sub" data-reveal style="--i: 2">
@@ -839,7 +852,7 @@
         </div>
         <button id="vidToggle" class="vid-toggle" aria-label="Pause background video">❚❚</button>
       </div>
-    </header>
+    </div>
     <!-- same links templates/shell.js renders; both use /assets/nav.{css,js} -->
     <div class="mobile-nav" id="mobileNav" hidden>
       <a class="m-link" href="/coworkers">AI Coworkers<small>Named specialists you can hire</small></a>
@@ -1203,6 +1216,8 @@
         </div>
       </div>
     </section>
+
+    </main>
 
     <footer class="site">
       <div class="container-app">
@@ -1604,19 +1619,36 @@
    1106px measure) would push the whole headline onto two lines for every
    word, not just itself. */
           var WORDS = ["Marketing", "Sales", "Outreach", "Content", "Research", "Branding", "Social"];
-          el.innerHTML = WORDS.map(function (w, i) {
-            return (
-              '<span class="rot-word' + (i === 0 ? " is-active" : "") + '">' +
-              w + '<span class="hero-dot">.</span></span>'
-            );
-          }).join("");
-          var words = [].slice.call(el.children);
+
+          /* One word lives in the DOM at a time. Stacking all seven in the grid
+             cell reserved the slot for free, but it also made the h1's text
+             content read "AI Coworkers for Marketing.Sales.Outreach.Content.
+             Research.Branding.Social." to anything that reads the rendered
+             page — Google included. Measure the widest word instead and hold
+             the slot open with min-width, so nothing shifts and the heading
+             stays one phrase. */
+          var word = el.querySelector(".rot-word");
+          if (!word) return;
+          var probe = word.cloneNode(true);
+          probe.style.cssText = "position:absolute;visibility:hidden;white-space:nowrap;";
+          el.appendChild(probe);
+          var widest = 0;
+          WORDS.forEach(function (w) {
+            probe.firstChild.nodeValue = w;
+            widest = Math.max(widest, probe.getBoundingClientRect().width);
+          });
+          el.removeChild(probe);
+          el.style.minWidth = Math.ceil(widest) + "px";
+
           var i = 0;
           if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
           setInterval(function () {
-            words[i].classList.remove("is-active");
-            i = (i + 1) % words.length;
-            words[i].classList.add("is-active");
+            word.classList.remove("is-active");
+            setTimeout(function () {
+              i = (i + 1) % WORDS.length;
+              word.firstChild.nodeValue = WORDS[i];
+              word.classList.add("is-active");
+            }, 450);
           }, 2600);
         })();
 

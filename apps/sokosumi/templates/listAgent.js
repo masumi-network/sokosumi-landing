@@ -115,36 +115,61 @@ const CONFIRMATIONS = [
   "You take full responsibility for the compliance of your agent with applicable laws and regulations.",
 ];
 
+// Every control gets a real <label for> — or a <legend>, for the choice
+// groups, since one label cannot name several inputs. The surrounding hints
+// are attached with aria-describedby instead of being left as loose text.
+// Before this, 15 of the 24 controls announced as "edit text, blank".
 function field(f, v) {
+  const id = `f-${f.name}`;
   const val = attr(v[f.name] || "");
   const req = f.required ? " required" : "";
   const auto = f.autocomplete ? ` autocomplete="${f.autocomplete}"` : "";
-  let input;
+  const labelText = `${esc(f.label)}${f.required ? "" : ' <em class="opt">optional</em>'}`;
 
-  if (f.type === "textarea") {
-    input = `<textarea name="${f.name}" rows="${f.rows || 4}"${req}>${esc(v[f.name] || "")}</textarea>`;
-  } else if (f.type === "checkboxes" || f.type === "radio") {
+  const before = [];
+  const after = [];
+  if (f.intro) before.push(`<span class="field-hint" id="${id}-intro">${esc(f.intro)}</span>`);
+  if (f.bullets)
+    before.push(`<ul class="field-bullets" id="${id}-list">${f.bullets.map((b) => `<li>${esc(b)}</li>`).join("")}</ul>`);
+  if (f.help) after.push(`<span class="field-hint" id="${id}-help">${f.help}</span>`);
+  if (f.after) after.push(`<span class="field-hint" id="${id}-after">${esc(f.after)}</span>`);
+
+  const describedIds = [
+    f.intro && `${id}-intro`,
+    f.bullets && `${id}-list`,
+    f.help && `${id}-help`,
+    f.after && `${id}-after`,
+  ].filter(Boolean);
+  const describedBy = describedIds.length ? ` aria-describedby="${describedIds.join(" ")}"` : "";
+
+  if (f.type === "checkboxes" || f.type === "radio") {
     const kind = f.type === "radio" ? "radio" : "checkbox";
     const picked = String(v[f.name] || "").split("|");
-    input = `<div class="choice-set">${f.options
-      .map(
-        (o, i) =>
-          `<label class="choice"><input type="${kind}" name="${f.name}" value="${attr(o)}"${
-            picked.includes(o) ? " checked" : ""
-          }${f.type === "radio" && f.required ? " required" : ""} /><span>${esc(o)}</span></label>`,
-      )
-      .join("")}</div>`;
-  } else {
-    input = `<input name="${f.name}" type="${f.type}"${req}${auto} value="${val}" />`;
+    return `<fieldset class="field"${describedBy}>
+      <legend class="field-label">${labelText}</legend>
+      ${before.join("")}
+      <div class="choice-set">${f.options
+        .map(
+          (o, i) =>
+            `<label class="choice"><input type="${kind}" name="${f.name}" id="${id}-${i}" value="${attr(o)}"${
+              picked.includes(o) ? " checked" : ""
+            }${f.type === "radio" && f.required ? " required" : ""} /><span>${esc(o)}</span></label>`,
+        )
+        .join("")}</div>
+      ${after.join("")}
+    </fieldset>`;
   }
 
+  const input =
+    f.type === "textarea"
+      ? `<textarea name="${f.name}" id="${id}" rows="${f.rows || 4}"${req}${describedBy}>${esc(v[f.name] || "")}</textarea>`
+      : `<input name="${f.name}" id="${id}" type="${f.type}"${req}${auto}${describedBy} value="${val}" />`;
+
   return `<div class="field">
-    <span class="field-label">${esc(f.label)}${f.required ? "" : ' <em class="opt">optional</em>'}</span>
-    ${f.intro ? `<span class="field-hint">${esc(f.intro)}</span>` : ""}
-    ${f.bullets ? `<ul class="field-bullets">${f.bullets.map((b) => `<li>${esc(b)}</li>`).join("")}</ul>` : ""}
+    <label class="field-label" for="${id}">${labelText}</label>
+    ${before.join("")}
     ${input}
-    ${f.help ? `<span class="field-hint">${f.help}</span>` : ""}
-    ${f.after ? `<span class="field-hint">${esc(f.after)}</span>` : ""}
+    ${after.join("")}
   </div>`;
 }
 
