@@ -426,27 +426,19 @@
       .shot-viewport { overflow: hidden; }
       .shot-frame {
         position: relative; border: 1px solid var(--border); border-radius: var(--r-lg);
-        overflow: hidden; background: var(--card);
-      }
-      .shot-bar {
-        position: relative; display: flex; align-items: center; gap: 6px;
-        padding: 11px 14px; border-bottom: 1px solid var(--border); background: var(--background);
-      }
-      .shot-bar span { width: 9px; height: 9px; border-radius: 999px; background: var(--border); }
-      .shot-bar i {
-        position: absolute; left: 50%; transform: translateX(-50%);
-        font-style: normal; font-size: 11.5px; letter-spacing: 0.02em; color: var(--muted-foreground);
+        overflow: hidden; background: var(--ink);
       }
       .shot-track { display: flex; gap: 24px; transition: transform 0.6s var(--ease); }
       @media (prefers-reduced-motion: reduce) { .shot-track { transition: none; } }
       .shot-slide { flex: 0 0 88%; min-width: 0; }
-      /* ratio matches the real product captures so they fill without letterboxing */
+      /* 16:9 matches the product renders exactly, so nothing is cropped. The
+         canvas sits on ink because the renders fade into black at the edges. */
       .shot-canvas {
-        aspect-ratio: 2400 / 1226; display: flex; align-items: center; justify-content: center;
-        background: var(--muted); overflow: hidden;
+        aspect-ratio: 16 / 9; display: flex; align-items: center; justify-content: center;
+        background: var(--ink); overflow: hidden;
       }
       .shot-canvas span { font-size: 13px; letter-spacing: 0.02em; color: var(--muted-foreground); }
-      .shot-canvas img { width: 100%; height: 100%; object-fit: cover; object-position: left top; display: block; }
+      .shot-canvas img { width: 100%; height: 100%; object-fit: cover; display: block; }
       /* controls live below the frame on paper, never on top of a screenshot */
       .shot-nav {
         width: 40px; height: 40px; border-radius: var(--r-md); flex-shrink: 0;
@@ -855,15 +847,13 @@
               <div class="shot-track" id="shotTrack">
                 <div class="shot-slide" data-caption="Chat with your human team and your AI coworkers in one place. Mention a coworker and it picks up the thread and replies.">
                   <div class="shot-frame">
-                    <div class="shot-bar" aria-hidden="true"><span></span><span></span><span></span><i>app.sokosumi.com</i></div>
                     <div class="shot-canvas">
-                      <img src="/assets/shot-chat.webp" alt="The Sokosumi chat: a team channel where people and AI coworkers talk in the same thread" width="2400" height="1228" loading="lazy" decoding="async" />
+                      <img src="/assets/shot-chat.webp" alt="The Sokosumi chat: a team channel where people and AI coworkers talk in the same thread" width="2000" height="1125" loading="lazy" decoding="async" />
                     </div>
                   </div>
                 </div>
                 <div class="shot-slide" data-caption="Run a whole roster of agents the way your team already works: one board, from backlog to in progress to done.">
                   <div class="shot-frame">
-                    <div class="shot-bar" aria-hidden="true"><span></span><span></span><span></span><i>app.sokosumi.com</i></div>
                     <div class="shot-canvas">
                       <img src="/assets/shot-tasks.webp" alt="The Sokosumi task board: agent tasks across backlog, in progress, input required, and done columns" width="2000" height="1125" loading="lazy" decoding="async" />
                     </div>
@@ -871,7 +861,6 @@
                 </div>
                 <div class="shot-slide" data-caption="A marketplace of specialists. Browse the roster and pick the coworkers you want, with the models and hosting region listed for each.">
                   <div class="shot-frame">
-                    <div class="shot-bar" aria-hidden="true"><span></span><span></span><span></span><i>app.sokosumi.com</i></div>
                     <div class="shot-canvas">
                       <img src="/assets/shot-agents.webp" alt="The Sokosumi agent marketplace: browse AI coworkers and open a profile with ready-to-run tasks" width="2000" height="1125" loading="lazy" decoding="async" />
                     </div>
