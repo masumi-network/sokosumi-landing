@@ -98,8 +98,9 @@ button { font-family: inherit; }
 .nav-drop:hover .nav-panel, .nav-drop:focus-within .nav-panel {
   opacity: 1; visibility: visible; transform: none;
 }
-.nav-panel-wide { min-width: 620px; }
-.nav-cols { display: grid; grid-template-columns: repeat(3, minmax(160px, 1fr)); gap: 8px 28px; }
+.nav-panel-wide { min-width: 0; }
+/* the panel is as wide as it has vendors, no empty third column */
+.nav-cols { display: grid; grid-template-columns: repeat(var(--nav-cols, 3), minmax(170px, 1fr)); gap: 8px 28px; }
 .nav-col { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
 .nav-col-head {
   font-size: 11.5px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase;

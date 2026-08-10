@@ -153,8 +153,9 @@
       }
       .nav-panel::before { content: ""; position: absolute; inset: -16px 0 auto 0; height: 16px; }
       .nav-drop:hover .nav-panel, .nav-drop:focus-within .nav-panel { opacity: 1; visibility: visible; transform: none; }
-      .nav-panel-wide { min-width: 620px; }
-      .nav-cols { display: grid; grid-template-columns: repeat(3, minmax(160px, 1fr)); gap: 8px 28px; }
+      .nav-panel-wide { min-width: 0; }
+      /* the panel is as wide as it has vendors, no empty third column */
+      .nav-cols { display: grid; grid-template-columns: repeat(var(--nav-cols, 3), minmax(170px, 1fr)); gap: 8px 28px; }
       .nav-col { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
       .nav-col-head {
         font-size: 11.5px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase;
@@ -330,11 +331,32 @@
       .section-head p { font-size: 16.5px; line-height: 1.6; color: var(--muted-foreground); max-width: 54ch; }
 
       /* ===== coworker introduction ===== */
+      /* the discipline swaps out under a fixed-width slot so the line never jumps */
+      .rotator {
+        display: inline-grid; vertical-align: top; text-align: left;
+        overflow: hidden; transition: width 0.45s var(--ease);
+      }
+      .rot-word {
+        /* start, not stretch — otherwise each span fills the slot and measuring
+           it for the width transition just returns the slot back */
+        grid-area: 1 / 1; justify-self: start; white-space: nowrap;
+        opacity: 0; transform: translateY(0.24em);
+        transition: opacity 0.45s var(--ease), transform 0.45s var(--ease);
+      }
+      .rot-word.is-active { opacity: 1; transform: none; }
+      .hero-dot { color: var(--primary); }
+      @media (prefers-reduced-motion: reduce) { .rot-word { transition: none; } }
+
+      /* Serviceplan ships its own white artwork; whitening it like the rest of
+         the strip turns the red square in its mark into a blank block */
+      .hl-track img.is-brand { filter: none; opacity: 0.75; }
+
       .intro-grid {
         display: grid; gap: clamp(24px, 4vw, 40px); grid-template-columns: 1fr;
         max-width: 100%; margin: 0; align-items: end;
       }
-      @media (min-width: 640px) { .intro-grid { grid-template-columns: 1fr 1.18fr 1fr; } }
+      @media (min-width: 620px) { .intro-grid { grid-template-columns: repeat(3, 1fr); } }
+      @media (min-width: 1000px) { .intro-grid { grid-template-columns: repeat(5, 1fr); } }
       .intro-person { display: flex; flex-direction: column; align-items: flex-start; text-align: left; }
       .intro-person .shell { width: 100%; padding: 0; border-radius: 0; background: transparent; border: none; transition: none; }
       .intro-person .portrait {
@@ -343,8 +365,16 @@
       }
       .intro-person .portrait img { width: 100%; height: 100%; object-fit: cover; display: block; transform: scale(1.14); transition: transform 0.8s var(--ease); }
       .intro-person:hover .portrait img { transform: scale(1.19); }
-      .intro-person h3 { font-family: var(--serif); font-size: 24px; font-weight: 400; margin: 18px 0 3px; letter-spacing: -0.01em; }
-      .intro-person .role { font-size: 13px; letter-spacing: 0; color: var(--muted-foreground); }
+      .intro-person h3 { font-family: var(--serif); font-size: 21px; font-weight: 400; margin: 16px 0 3px; letter-spacing: -0.01em; }
+      .intro-person .role { font-size: 12.5px; letter-spacing: 0; color: var(--muted-foreground); }
+      .intro-person .blurb {
+        margin-top: 9px; font-size: 13px; line-height: 1.5; color: var(--muted-foreground);
+        display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden;
+      }
+      /* the roster is one vendor's team, so the section carries their mark */
+      /* this section sits on paper, so the dark artwork is used as-is */
+      .section-head .section-brand { height: 20px; width: auto; margin-top: 22px; display: block; opacity: 0.8; }
+      .band-dark .section-head .section-brand { filter: brightness(0) invert(1); }
 
       .intro-more-wrap { display: flex; justify-content: flex-start; margin-top: clamp(40px, 5vw, 56px); }
       .intro-more {
@@ -701,7 +731,7 @@
         </div>
 
         <h1 class="hero-title" data-reveal style="--i: 1">
-          AI Coworkers for Marketing
+          AI Coworkers for <span class="rotator" id="heroRotator"></span><span class="hero-dot">.</span>
         </h1>
 
         <p class="hero-sub" data-reveal style="--i: 2">
@@ -741,12 +771,14 @@
             <img src="/assets/logos/ard.svg" alt="ARD" />
             <img src="/assets/logos/tdk.svg" alt="TDK" />
             <img src="/assets/logos/stroer.svg" alt="Ströer" />
+            <img class="is-brand" src="/assets/serviceplan-logo-white.png" alt="Serviceplan Group" />
             <img class="logo-tall" src="/assets/logos/telekom.svg" alt="" aria-hidden="true" />
             <img src="/assets/logos/allianz.svg" alt="" aria-hidden="true" />
             <img src="/assets/logos/lufthansa.svg" alt="" aria-hidden="true" />
             <img src="/assets/logos/ard.svg" alt="" aria-hidden="true" />
             <img src="/assets/logos/tdk.svg" alt="" aria-hidden="true" />
             <img src="/assets/logos/stroer.svg" alt="" aria-hidden="true" />
+            <img class="is-brand" src="/assets/serviceplan-logo-white.png" alt="" aria-hidden="true" />
           </div>
         </div>
         </div>
@@ -760,7 +792,8 @@
         <div class="section-head" data-reveal>
           <span class="eyebrow">Live from the marketplace</span>
           <h2>These are your newest <span class="serif-accent">AI coworkers</span></h2>
-          <p>Specialists who join your team and get to work, with more arriving all the time.</p>
+          <p>Named specialists built and vetted by Serviceplan Group, each with a real role, the models they run on, and ready-to-run work. They join your team and get going, with more arriving all the time.</p>
+          <img class="section-brand" src="/assets/serviceplan-logo.png" alt="Serviceplan Group" width="166" height="24" loading="lazy" />
         </div>
         <div class="intro-grid" id="coworkerIntro">
           <p class="muted" id="cwSkeleton" style="text-align: center; font-size: 14px; grid-column: 1 / -1;">Loading coworkers…</p>
@@ -1243,7 +1276,7 @@
         }
 
         /* ---------- the introduction trio (Serviceplan), Elena centered ---------- */
-        var INTRO_SLUGS = ["hannah", "elena", "alex"];
+        var INTRO_SLUGS = ["elena", "alex", "hannah", "jamal", "maya"];
 
         /* ---------- nav dropdowns: top vendors + industries from the CMS ---------- */
         (function () {
@@ -1350,7 +1383,7 @@
             var trio = INTRO_SLUGS
               .map(function (s) { return bySlug[s]; })
               .filter(Boolean);
-            if (trio.length < 3) trio = coworkers.slice(0, 3);
+            if (trio.length < 3) trio = coworkers.slice(0, 5);
 
             var intro = document.getElementById("coworkerIntro");
             intro.innerHTML = trio
@@ -1362,6 +1395,7 @@
                   "</span></span>" +
                   "<h3>" + esc(c.name) + "</h3>" +
                   (c.role ? '<div class="role">' + esc(c.role) + "</div>" : "") +
+                  (c.description ? '<p class="blurb">' + esc(c.description) + "</p>" : "") +
                   "</a>"
                 );
               })
@@ -1385,7 +1419,7 @@
               if (extra > 0) stack += '<span class="more-count">+' + extra + "</span>";
               moreEl.innerHTML =
                 '<span class="stack">' + stack + "</span>" +
-                '<span class="label">Meet all ' + coworkers.length + " coworkers" +
+                '<span class="label">Meet all ' + (coworkers.length + (d.agents || []).length) + " AI Coworkers" +
                 '<span class="arrow">' + icon("arrow-up-right", 15) + "</span></span>";
               moreWrap.hidden = false;
               io ? io.observe(moreWrap) : markIn(moreWrap);
@@ -1394,6 +1428,33 @@
           .catch(function () {
             document.getElementById("cwSkeleton").textContent = "The live marketplace is unreachable right now.";
           });
+
+        /* hero: the discipline cycles, the rest of the line holds still. Every
+           word is stacked in the same grid cell, so the slot is as wide as the
+           longest one and nothing after it moves. */
+        (function () {
+          var el = document.getElementById("heroRotator");
+          if (!el) return;
+          var WORDS = ["Marketing", "Sales", "Outreach", "Content", "Research", "Campaigns", "Social"];
+          el.innerHTML = WORDS.map(function (w, i) {
+            return '<span class="rot-word' + (i === 0 ? " is-active" : "") + '">' + w + "</span>";
+          }).join("");
+          var words = [].slice.call(el.children);
+          /* the slot glides to the active word's width so the full stop follows
+             it instead of sitting after a gap */
+          var fit = function () { el.style.width = words[i].offsetWidth + "px"; };
+          var i = 0;
+          fit();
+          window.addEventListener("resize", fit);
+          if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+          if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+          setInterval(function () {
+            words[i].classList.remove("is-active");
+            i = (i + 1) % words.length;
+            words[i].classList.add("is-active");
+            fit();
+          }, 2600);
+        })();
 
         /* any [data-app] button → app */
         document.addEventListener("click", function (e) {

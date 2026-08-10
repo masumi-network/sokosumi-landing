@@ -212,7 +212,7 @@ function agentsPanel() {
     .join("");
   if (!cols) return "";
   return `<div class="nav-panel nav-panel-wide" role="group" aria-label="AI Coworkers">
-      <div class="nav-cols">${cols}</div>
+      <div class="nav-cols" style="--nav-cols:${NAV_MODEL.vendors.length}">${cols}</div>
       <div class="nav-panel-foot">
         <a href="/vendors">Show all vendors ${icon("arrow-up-right", 13)}</a>
         <a href="/coworkers">Show all coworkers ${icon("arrow-up-right", 13)}</a>

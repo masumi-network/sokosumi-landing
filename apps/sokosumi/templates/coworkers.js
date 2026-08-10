@@ -74,8 +74,8 @@ async function index(ctx) {
     </div>` +
     (agents.length
       ? `<div class="page-section">
-          <h2>More coworkers on the marketplace</h2>
-          <p class="sub">${agents.length} specialist coworkers from ${new Set(agents.map(vendorName).filter(Boolean)).size} vendors, ready to run in the app.</p>
+          <h2>Specialist Agents</h2>
+          <p class="sub">${agents.length} specialist agents from ${new Set(agents.map(vendorName).filter(Boolean)).size} vendors, ready to run in the app.</p>
           <div class="row-list">${agents.map(agentRow).join("")}</div>
         </div>`
       : "") +
