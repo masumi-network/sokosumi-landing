@@ -353,6 +353,7 @@ const cms = require("./lib/cms");
 const { buildNav } = require("./lib/nav");
 const leads = require("./lib/leads");
 const salesTpl = require("./templates/sales");
+const pricingTpl = require("./templates/pricing");
 
 // Public coworker slugs follow the persona name; the product's internal
 // slug lives in catalogSlug. Old internal-slug URLs 301 to the public one.
@@ -396,6 +397,7 @@ const routes = [
   { m: (s) => s.length === 1 && s[0] === "compare" && {}, h: compareTpl.index },
   { m: (s) => s.length === 2 && s[0] === "compare" && { slug: s[1] }, h: compareTpl.detail },
   { m: (s) => s.length === 1 && s[0] === "product" && {}, h: pagesTpl.productHub },
+  { m: (s) => s.length === 1 && s[0] === "pricing" && {}, h: pricingTpl.render },
   { m: (s) => s.length === 1 && s[0] === "contact" && {}, h: contactTpl.render },
   { m: (s) => s.length === 1 && s[0] === "talk-to-sales" && {}, h: salesTpl.render },
   {

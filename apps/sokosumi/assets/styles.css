@@ -555,6 +555,13 @@ a.card:hover .go { opacity: 1; transform: none; }
 .cmp-yes, .cmp-no { display: inline-flex; width: 20px; height: 20px; border-radius: 999px; align-items: center; justify-content: center; }
 .cmp-yes { background: var(--ink); color: #fff; }
 .cmp-no { border: 1px solid var(--border); }
+/* the live price list on /pricing: a two-column table, numbers right-aligned
+   and tabular so the credit figures line up as a column you can scan */
+.price-table { min-width: 0; }
+.price-table th.num, .price-table td.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.price-table td.num { font-weight: 500; }
+.price-table .row-label a { transition: color 0.2s var(--ease); }
+.price-table .row-label a:hover { color: var(--primary); }
 
 .blk-logos { display: flex; flex-wrap: wrap; align-items: center; gap: clamp(28px, 5vw, 64px); }
 .blk-logos img { height: 24px; width: auto; object-fit: contain; opacity: 0.55; filter: grayscale(1); transition: opacity 0.3s var(--ease); }

@@ -361,6 +361,7 @@ function navItems(currentPath) {
   return [
     item("/coworkers", "AI Coworkers", agents, "/vendors"),
     item("/use-cases", "Use cases", useCases),
+    item("/pricing", "Pricing", ""),
     item("/guides", "Guides", ""),
     item("/releases", "Releases", ""),
   ].join("\n            ");
@@ -373,6 +374,7 @@ const MOBILE_LINKS = [
   ["/vendors", "Vendors", "The teams behind them"],
   ["/tasks", "Template tasks", "Ready-to-run work"],
   ["/use-cases", "Use cases", "By job and by industry"],
+  ["/pricing", "Pricing", "Pay per task, no subscription"],
   ["/guides", "Guides", ""],
   ["/releases", "Releases", ""],
   ["/blog", "Blog", ""],
@@ -386,7 +388,7 @@ function mobileNav() {
   return `<div class="mobile-nav" id="mobileNav" hidden>
         ${links}
         <div class="m-actions">
-          <a class="btn btn-primary" href="${APP}">Sign Up Free</a>
+          <a class="btn btn-primary" href="${APP}">Sign Up</a>
           <a class="btn btn-outline" href="/talk-to-sales">Talk to Sales</a>
           <a class="btn btn-ghost" href="${APP}/signin">Log In</a>
         </div>
@@ -408,7 +410,7 @@ function header(currentPath) {
         <div class="actions">
           <a class="btn btn-sm btn-ghost" href="${APP}/signin">Log In</a>
           <a class="btn btn-sm btn-outline" href="/talk-to-sales">Talk to Sales</a>
-          <a class="btn btn-sm btn-primary" href="${APP}">Sign Up Free</a>
+          <a class="btn btn-sm btn-primary" href="${APP}">Sign Up</a>
           ${BURGER}
         </div>
       </div>
@@ -428,6 +430,7 @@ function footer() {
             <a href="/vendors">Vendors</a>
             <a href="/tasks">Template tasks</a>
             <a href="/use-cases">Use cases</a>
+            <a href="/pricing">Pricing</a>
             <a href="/guides">Guides</a>
             <a href="/releases">Releases</a>
             <a href="/blog">Blog</a>

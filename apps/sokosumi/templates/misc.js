@@ -95,6 +95,7 @@ async function sitemap() {
     "/tasks",
     "/vendors",
     "/use-cases",
+    "/pricing",
     "/guides",
     "/blog",
     "/releases",
