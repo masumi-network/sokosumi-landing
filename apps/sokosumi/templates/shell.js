@@ -178,9 +178,23 @@ function head(opts) {
 // Nav model (top vendors + industries) for the dropdown menus. It is the
 // same for every visitor, so a module-level cache is safe: the server calls
 // setNav() with the freshly built model before rendering.
-let NAV_MODEL = { vendors: [], industries: [] };
+let NAV_MODEL = { vendors: [], industries: [], faces: [] };
 function setNav(model) {
   if (model) NAV_MODEL = model;
+}
+
+// A few coworker portraits to warm up the ink CTA bands. Rotated by a seed so
+// the same band is not always the same three faces, but stable within a render.
+function ctaFaces(seed, count) {
+  const pool = NAV_MODEL.faces || [];
+  const n = Math.min(count || 4, pool.length);
+  if (!n) return "";
+  const start = Math.abs(seed || 0) % pool.length;
+  const picked = [];
+  for (let i = 0; i < n; i++) picked.push(pool[(start + i) % pool.length]);
+  return `<span class="cta-faces" aria-hidden="true">${picked
+    .map((c) => `<img src="${attr(c.image)}" alt="" loading="lazy" />`)
+    .join("")}</span>`;
 }
 
 const CHEV =
@@ -390,4 +404,5 @@ module.exports = {
   pageEnd,
   avatar,
   vendorLogo,
+  ctaFaces,
 };

@@ -348,7 +348,7 @@
         /* start, not stretch — otherwise each span fills the slot and measuring
            it for the width transition just returns the slot back */
         grid-area: 1 / 1; justify-self: start; white-space: nowrap;
-        opacity: 0; transform: translateY(0.24em);
+        opacity: 0; transform: translateY(0.12em);
         transition: opacity 0.45s var(--ease), transform 0.45s var(--ease);
       }
       .rot-word.is-active { opacity: 1; transform: none; }
@@ -370,8 +370,7 @@
         display: grid; gap: clamp(24px, 4vw, 40px); grid-template-columns: 1fr;
         max-width: 100%; margin: 0; align-items: end;
       }
-      @media (min-width: 620px) { .intro-grid { grid-template-columns: repeat(3, 1fr); } }
-      @media (min-width: 1000px) { .intro-grid { grid-template-columns: repeat(5, 1fr); } }
+      @media (min-width: 640px) { .intro-grid { grid-template-columns: repeat(3, 1fr); } }
       .intro-person { display: flex; flex-direction: column; align-items: flex-start; text-align: left; }
       .intro-person .shell { width: 100%; padding: 0; border-radius: 0; background: transparent; border: none; transition: none; }
       .intro-person .portrait {
@@ -645,13 +644,20 @@
         max-width: 22ch; text-wrap: balance;
       }
       .cta-band p { font-size: 16px; color: var(--muted-foreground); }
+      .cta-faces { display: inline-flex; align-items: center; }
+      .cta-faces img {
+        width: 40px; height: 40px; border-radius: 999px; object-fit: cover;
+        border: 2px solid var(--ink); margin-right: -12px; display: block;
+      }
+      .cta-faces img:last-child { margin-right: 0; }
       .cta-inner {
         max-width: 1240px; margin: 0 auto; padding: clamp(70px, 8vw, 110px) clamp(24px, 4vw, 56px);
         display: grid; grid-template-columns: 1fr; gap: 18px 48px; align-items: center;
       }
       @media (min-width: 860px) {
         .cta-inner { grid-template-columns: 1fr auto; }
-        .cta-inner .btn { grid-column: 2; grid-row: 1 / 3; }
+        .cta-inner .btn { grid-column: 2; grid-row: 1 / 4; }
+        .cta-inner .cta-faces { grid-column: 1; }
       }
       /* CTA as a dark band: inner padding does the spacing, button inverts */
       section.cta-band.band-dark { padding: 0; border-top: none; }
@@ -1136,6 +1142,7 @@
       <div class="cta-inner">
         <h2 data-reveal>Your next coworker is <span class="serif-accent">one click away</span>.</h2>
         <p data-reveal style="--i: 1">Sign up and hand over your first task today.</p>
+        <span class="cta-faces" id="ctaFaces" aria-hidden="true"></span>
         <a class="btn btn-primary btn-lg" href="https://app.sokosumi.com" data-reveal style="--i: 2">
           Sign up
           <span class="orb" aria-hidden="true">
@@ -1292,7 +1299,7 @@
         }
 
         /* ---------- the introduction trio (Serviceplan), Elena centered ---------- */
-        var INTRO_SLUGS = ["elena", "alex", "hannah", "jamal", "maya"];
+        var INTRO_SLUGS = ["hannah", "elena", "alex"];
 
         /* ---------- nav dropdowns: top vendors + industries from the CMS ---------- */
         (function () {
@@ -1399,7 +1406,7 @@
             var trio = INTRO_SLUGS
               .map(function (s) { return bySlug[s]; })
               .filter(Boolean);
-            if (trio.length < 3) trio = coworkers.slice(0, 5);
+            if (trio.length < 3) trio = coworkers.slice(0, 3);
 
             var intro = document.getElementById("coworkerIntro");
             intro.innerHTML = trio
@@ -1419,6 +1426,21 @@
             [].slice.call(intro.querySelectorAll("[data-reveal]")).forEach(function (el) {
               io ? io.observe(el) : markIn(el);
             });
+
+            /* warm up the closing CTA band with real faces */
+            var ctaFaces = document.getElementById("ctaFaces");
+            if (ctaFaces) {
+              /* the drawn portraits, not the statue avatars — same rule the
+                 server-rendered CTA bands use */
+              var withImg = coworkers.filter(function (c) { return c.image; });
+              var people = withImg.filter(function (c) {
+                return c.vendor && /serviceplan/i.test(c.vendor.name || "");
+              });
+              ctaFaces.innerHTML = (people.length >= 3 ? people : withImg)
+                .slice(0, 4)
+                .map(function (c) { return '<img src="' + esc(c.image) + '" alt="" loading="lazy" />'; })
+                .join("");
+            }
 
             /* "+ more" — a visual stack of the remaining coworkers' faces */
             var trioSlugs = {};
@@ -1461,24 +1483,29 @@
           /* the slot glides to the active word's width so the full stop follows
              it instead of sitting after a gap */
           var i = 0;
-          var fit = function (animate) {
-            if (animate) return void (el.style.width = words[i].offsetWidth + "px");
+          var widths = [];
+          /* Measure with the slot released. Reading offsetWidth while the slot
+             already has a narrower explicit width returns that width, so the
+             slot could never grow and the long words ("Marketing", "Campaigns")
+             stayed clipped to whatever the first word happened to measure. */
+          var measure = function () {
             var t = el.style.transition;
             el.style.transition = "none";
-            el.style.width = words[i].offsetWidth + "px";
-            void el.offsetWidth; // flush, so restoring the transition cannot animate this write
+            el.style.width = "auto";
+            widths = words.map(function (w) { return w.offsetWidth; });
+            el.style.width = widths[i] + "px";
+            void el.offsetWidth;
             el.style.transition = t;
           };
-          var snap = function () { fit(false); };
-          snap();
-          window.addEventListener("resize", snap);
-          if (document.fonts && document.fonts.ready) document.fonts.ready.then(snap);
+          measure();
+          window.addEventListener("resize", measure);
+          if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
           if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
           setInterval(function () {
             words[i].classList.remove("is-active");
             i = (i + 1) % words.length;
             words[i].classList.add("is-active");
-            fit(true);
+            el.style.width = widths[i] + "px";
           }, 2600);
         })();
 

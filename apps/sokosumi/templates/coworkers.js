@@ -4,7 +4,10 @@
 
 const shell = require("./shell");
 const cms = require("../lib/cms");
-const { esc, attr, icon, avatar, pageStart, pageEnd, APP } = shell;
+const { esc, attr, icon, avatar, vendorLogo, pageStart, pageEnd, APP } = shell;
+
+// The vendor that leads /coworkers. Serviceplan Group builds the curated roster.
+const FEATURED_VENDOR = "serviceplan-group";
 
 // Marketplace coworkers have their own page in the app, so the CTA deep-links
 // straight to it — a signed-out visitor gets /signin?returnUrl=… and lands back
@@ -56,6 +59,25 @@ async function index(ctx) {
     .sort((a, b) => b.taskCount - a.taskCount || (a.order || 100) - (b.order || 100) || a.name.localeCompare(b.name));
   const agents = coworkers.filter((c) => c.kind === "agent");
 
+  // Grouped by vendor, because "who built this" is the first thing a buyer
+  // asks. FEATURED_VENDOR leads; the rest follow by how many coworkers they
+  // have. Coworkers with no vendor go last under a plain heading rather than
+  // being dropped.
+  const byVendor = new Map();
+  for (const c of curated) {
+    const v = c.vendor && typeof c.vendor === "object" ? c.vendor : null;
+    const key = v ? v.slug : "";
+    if (!byVendor.has(key)) byVendor.set(key, { vendor: v, items: [] });
+    byVendor.get(key).items.push(c);
+  }
+  const groups = [...byVendor.values()].sort((a, b) => {
+    const af = a.vendor && a.vendor.slug === FEATURED_VENDOR;
+    const bf = b.vendor && b.vendor.slug === FEATURED_VENDOR;
+    if (af !== bf) return af ? -1 : 1;
+    if (!a.vendor !== !b.vendor) return a.vendor ? -1 : 1;
+    return b.items.length - a.items.length || (a.vendor ? a.vendor.name.localeCompare(b.vendor.name) : 0);
+  });
+
   const cr = [{ label: "Home", href: "/" }, { label: "Coworkers" }];
   return (
     pageStart({
@@ -69,9 +91,21 @@ async function index(ctx) {
       <h1>Meet your AI coworkers</h1>
       <p class="sub">${curated.length} specialists you can hire today, each with a real role, a public profile, and ready-to-run work. Synced daily from the live marketplace.</p>
     </div>
-    <div class="page-section flush">
-      <div class="cw-grid">${curated.map(tile).join("")}</div>
-    </div>` +
+    ${groups
+      .map(
+        (g, gi) => `<section class="page-section${gi === 0 ? " flush" : ""}">
+        <div class="vendor-head">
+          ${g.vendor ? vendorLogo(g.vendor, "sm") : ""}
+          <h2>${esc(g.vendor ? g.vendor.name : "Independent")}</h2>
+          ${gi === 0 && g.vendor ? '<span class="chip">Featured</span>' : ""}
+        </div>
+        <p class="sub">${g.items.length} coworker${g.items.length === 1 ? "" : "s"}${
+          g.vendor ? ` from ${esc(g.vendor.name)}` : " without a listed vendor"
+        }.</p>
+        <div class="cw-grid">${g.items.map(tile).join("")}</div>
+      </section>`,
+      )
+      .join("")}` +
     (agents.length
       ? `<div class="page-section">
           <h2>Specialist Agents</h2>

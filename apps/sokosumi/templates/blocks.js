@@ -7,7 +7,8 @@
 // contentHtml is CMS-rendered HTML from a locked editor and is inserted
 // as-is (same trust model as masumi.network).
 
-const { esc, attr, icon } = require("./shell");
+const shell = require("./shell");
+const { esc, attr, icon } = shell;
 const { mediaUrl } = require("../lib/cms");
 
 function ctaLink(label, href, cls) {
@@ -117,6 +118,7 @@ const RENDER = {
       <h2>${esc(b.heading)}</h2>
       ${b.subheading ? `<p>${esc(b.subheading)}</p>` : ""}
       ${ctaLink(b.ctaLabel, b.ctaHref, "btn-primary btn-lg")}
+      ${shell.ctaFaces((b.heading || "").length, 4)}
     </div></section>`;
   },
 

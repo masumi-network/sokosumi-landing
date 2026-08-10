@@ -10,6 +10,8 @@
 const cms = require("./cms");
 
 const TOP_VENDORS = 3;
+// Serviceplan Group leads the roster and the CTA faces.
+const FEATURED_VENDOR = "serviceplan-group";
 const PICKS_PER_VENDOR = 4;
 
 function vendorSlugOf(c) {
@@ -75,7 +77,24 @@ async function buildNav(opts) {
     .slice(0, 6)
     .map((i) => ({ name: i.name, slug: i.slug, count: counts[i.slug] || 0 }));
 
-  return { vendors: ranked, industries: shownIndustries };
+  // Portraits for the CTA bands. Curated coworkers only — marketplace listings
+  // are line icons that read as clip art at avatar size. The featured vendor's
+  // people lead, because the point of the faces is to look friendly and those
+  // are the drawn portraits rather than the statue avatars.
+  const portraits = coworkers
+    .filter((c) => c.kind === "coworker" && c.image)
+    .sort((a, b) => (a.order || 100) - (b.order || 100) || a.name.localeCompare(b.name));
+  // The featured vendor's roster is the set of drawn human portraits; the rest
+  // are statue avatars that read cold on an ink band. Use the people when there
+  // are enough of them, otherwise take whatever portraits exist.
+  const featured = portraits.filter((c) => vendorSlugOf(c) === FEATURED_VENDOR);
+  const faces = (featured.length >= 3 ? featured : portraits).map((c) => ({
+    name: c.name,
+    image: c.image,
+    slug: c.slug,
+  }));
+
+  return { vendors: ranked, industries: shownIndustries, faces };
 }
 
 module.exports = { buildNav };
