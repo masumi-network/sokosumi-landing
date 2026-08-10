@@ -1,3 +1,22 @@
+// Publishes the scrollbar width so `.full-bleed` can break out of the page
+// container to the exact viewport edge. 100vw would include the scrollbar and
+// push the band 7–8px past each side. Lives here rather than in site.js
+// because this file is the one both surfaces load.
+// Re-measured on load and on resize, not just once: at parse time the page is
+// often still short enough that no scrollbar exists yet, and a stale 0 would
+// let the band overshoot by the scrollbar's width. `html { overflow-x: clip }`
+// in styles.css makes any residual overshoot harmless either way.
+(function () {
+  var root = document.documentElement;
+  function measure() {
+    root.style.setProperty("--sbw", window.innerWidth - root.clientWidth + "px");
+  }
+  measure();
+  window.addEventListener("load", measure);
+  window.addEventListener("resize", measure, { passive: true });
+  if ("ResizeObserver" in window) new ResizeObserver(measure).observe(document.body);
+})();
+
 // Mobile drawer toggle, shared by the landing page and every sub-page.
 // The drawer markup is rendered server-side (templates/shell.js) and inline
 // on index.html; this only wires the button.

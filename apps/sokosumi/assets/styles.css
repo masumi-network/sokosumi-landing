@@ -21,7 +21,9 @@
   --sans: "Inter", -apple-system, system-ui, sans-serif;
 }
 * { margin: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+/* `clip` rather than `hidden`: it stops a full-bleed band from ever producing
+   a horizontal scrollbar without turning <html> into a scroll container. */
+html { scroll-behavior: smooth; overflow-x: clip; }
 body {
   font-family: var(--sans); font-size: 15px;
   background: var(--background); color: var(--foreground);
