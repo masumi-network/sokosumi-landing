@@ -53,14 +53,22 @@ function surfaceRow(s) {
 
 async function productHub(ctx) {
   const pages = await cms.getPages({ draft: ctx.preview });
+  // A reading order, not an alphabetical one: what a coworker is, how you
+  // brief it, where the work shows up, what you get back. Anything added
+  // later that is not in the list falls to the end.
+  const ORDER = ["product/ai-coworkers", "product/briefing", "product/task-board", "product/outputs"];
+  const rank = (p) => {
+    const i = ORDER.indexOf(p.slug);
+    return i === -1 ? ORDER.length : i;
+  };
   const productPages = pages
     .filter((p) => typeof p.slug === "string" && p.slug.startsWith("product/"))
-    .sort((a, b) => String(a.title || "").localeCompare(String(b.title || "")));
+    .sort((a, b) => rank(a) - rank(b) || String(a.title || "").localeCompare(String(b.title || "")));
 
   const cardsSection = productPages.length
-    ? `<div class="page-section flush">
+    ? `<section class="page-section flush" data-reveal>
       <div class="${shell.gridCls(productPages.length)}">${productPages.map(pageCard).join("")}</div>
-    </div>`
+    </section>`
     : "";
 
   const surfacesSection = `<section class="page-section">
@@ -86,7 +94,7 @@ async function productHub(ctx) {
     }) +
     `<div class="page-head" data-reveal>
       <h1>The Sokosumi product</h1>
-      <p class="sub">Deep dives into what your AI coworkers can do.</p>
+      <p class="sub">What an AI coworker is, how you brief one, where the work shows up, and what you get back.</p>
     </div>` +
     cardsSection +
     shotsSection +

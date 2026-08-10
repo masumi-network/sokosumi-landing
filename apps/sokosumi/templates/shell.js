@@ -420,6 +420,7 @@ function navItems(currentPath) {
   // into the product, and they live in the footer.
   return [
     item("/coworkers", "AI Coworkers", agents, "/vendors"),
+    item("/product", "Product", ""),
     item("/use-cases", "Use cases", useCases),
     item("/pricing", "Pricing", ""),
   ].join("\n            ");
@@ -431,6 +432,7 @@ const MOBILE_LINKS = [
   ["/coworkers", "AI Coworkers", "Named specialists you can hire"],
   ["/vendors", "Vendors", "The teams behind them"],
   ["/tasks", "Template tasks", "Ready-to-run work"],
+  ["/product", "Product", "How it works, end to end"],
   ["/use-cases", "Use cases", "By job and by industry"],
   ["/pricing", "Pricing", "Plans and credits per seat"],
 ];
@@ -483,6 +485,7 @@ function footer() {
             <a href="/coworkers">AI Coworkers</a>
             <a href="/vendors">Vendors</a>
             <a href="/tasks">Template tasks</a>
+            <a href="/product">Product</a>
             <a href="/use-cases">Use cases</a>
             <a href="/pricing">Pricing</a>
             <a href="/guides">Guides</a>
