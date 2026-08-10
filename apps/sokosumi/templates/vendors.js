@@ -161,7 +161,7 @@ async function detail(ctx) {
     ${empty}` +
     shell.ctaBand({
       heading: `Work with ${v.name} on Sokosumi`,
-      subheading: "Creating an account is free. You only spend credits on the work you actually run.",
+      subheading: "One account covers every vendor on the marketplace.",
       ctaLabel: "Start free",
       seed: v.name.length,
     }) +

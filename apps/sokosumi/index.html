@@ -643,14 +643,19 @@
         border: 2px solid var(--ink); margin-right: -12px; display: block;
       }
       .cta-faces img:last-child { margin-right: 0; }
+      /* copy left, action right — see assets/styles.css for why this is flex
+         and not a grid with a fixed row span */
       .cta-inner {
         max-width: 1240px; margin: 0 auto; padding: clamp(70px, 8vw, 110px) clamp(24px, 4vw, 56px);
-        display: grid; grid-template-columns: 1fr; gap: 18px 48px; align-items: center;
+        display: flex; flex-direction: column; align-items: flex-start; gap: 26px;
       }
+      .cta-copy { display: flex; flex-direction: column; align-items: flex-start; gap: 18px; min-width: 0; }
+      .cta-action { flex-shrink: 0; }
       @media (min-width: 860px) {
-        .cta-inner { grid-template-columns: 1fr auto; }
-        .cta-inner .btn { grid-column: 2; grid-row: 1 / 4; }
-        .cta-inner .cta-faces { grid-column: 1; }
+        .cta-inner { flex-direction: row; align-items: center; justify-content: space-between; gap: 48px; }
+        .cta-copy { flex: 1 1 auto; }
+        /* the note is wider than the button; align both to the same right edge */
+        .cta-band .cta-action { align-items: flex-end; text-align: right; }
       }
       /* CTA as a dark band: inner padding does the spacing, button inverts */
       section.cta-band.band-dark { padding: 0; border-top: none; }
@@ -763,7 +768,7 @@
           <a class="btn btn-lg hero-cta-sales" href="/talk-to-sales">Talk to Sales</a>
           <a class="btn btn-lg hero-cta-signup" href="https://app.sokosumi.com">Sign Up</a>
         </div>
-        <p class="hero-note" data-reveal style="--i: 3">Creating an account is free. You only spend credits on the work you actually run.<span class="no-card">*No Credit Card required</span></p>
+        <p class="hero-note" data-reveal style="--i: 3"><span class="no-card">*No Credit Card required</span></p>
 
       </div>
 
@@ -808,7 +813,6 @@
         <a class="btn btn-outline" href="/talk-to-sales">Talk to Sales</a>
         <a class="btn btn-ghost" href="https://app.sokosumi.com/signin">Log In</a>
       </div>
-      <p class="m-foot">Creating an account is free. You only spend credits on the work you run.</p>
     </div>
 
     <!-- ===== AI COWORKERS — asymmetric podium (live from /api/catalog) ===== -->
@@ -1105,7 +1109,7 @@
           </details>
           <details class="faq-item">
             <summary>How much does it cost?<span class="faq-x">+</span></summary>
-            <p class="faq-a">Creating an account is free. Tasks run on credits, so you only pay for the work your coworkers actually do. Current task pricing is shown in the app.</p>
+            <p class="faq-a">There is a free plan with 250 credits per seat. Paid plans start at €25 per month for 1,500 credits per seat, and Enterprise plans are tailored. See the pricing page for what each plan includes.</p>
           </details>
         </div>
       </div>
@@ -1116,7 +1120,7 @@
       {"@type":"Question","name":"How is this different from a chatbot?","acceptedAnswer":{"@type":"Answer","text":"Coworkers don't just answer. They run complete tasks: they come pre-specialized with curated, ready-to-run work, can split a brief into work packages and delegate to other coworkers, and hand back finished files instead of chat text. Every task shows a real sample output before you run it."}},
       {"@type":"Question","name":"Who builds and vets the coworkers?","acceptedAnswer":{"@type":"Answer","text":"Coworkers are designed and vetted by senior strategists at Serviceplan Group, one of the world's leading marketing agency groups, together with engineering partners. Each coworker has a public profile listing the models it runs on, like Claude and Mistral, and its hosting region."}},
       {"@type":"Question","name":"What do the template tasks cover?","acceptedAnswer":{"@type":"Answer","text":"Research, social, planning, writing, engineering, and prototyping: from competitive analyses and go-to-market plans to social dashboards and campaign strategies. Open any task to preview a real sample output, then run it with your own brief."}},
-      {"@type":"Question","name":"How much does it cost?","acceptedAnswer":{"@type":"Answer","text":"Creating an account is free. Tasks run on credits, so you only pay for the work your coworkers actually do. Current task pricing is shown in the app."}}
+      {"@type":"Question","name":"How much does it cost?","acceptedAnswer":{"@type":"Answer","text":"There is a free plan with 250 credits per seat. Paid plans start at €25 per month for 1,500 credits per seat, and Enterprise plans are tailored. See the pricing page for what each plan includes."}}
     ]}
     </script>
 
@@ -1143,9 +1147,11 @@
     <!-- ===== CTA ===== -->
     <section class="cta-band band-dark">
       <div class="cta-inner">
-        <h2 data-reveal>Your next coworker is <span class="serif-accent">one click away</span>.</h2>
-        <p data-reveal style="--i: 1">Sign up and hand over your first task today.</p>
-        <span class="cta-faces" id="ctaFaces" aria-hidden="true"></span>
+        <div class="cta-copy">
+          <h2 data-reveal>Your next coworker is <span class="serif-accent">one click away</span>.</h2>
+          <p data-reveal style="--i: 1">Sign up and hand over your first task today.</p>
+          <span class="cta-faces" id="ctaFaces" aria-hidden="true"></span>
+        </div>
         <div class="cta-action" data-reveal style="--i: 2">
           <a class="btn btn-primary btn-lg" href="https://app.sokosumi.com">
             Sign Up

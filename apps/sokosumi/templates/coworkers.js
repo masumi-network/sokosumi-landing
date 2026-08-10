@@ -115,7 +115,7 @@ async function index(ctx) {
       : "") +
     shell.ctaBand({
       heading: "Hire your first AI coworker",
-      subheading: "Creating an account is free. You only spend credits on the work you actually run.",
+      subheading: "One account, one balance, and every specialist on the marketplace.",
       ctaLabel: "Start free",
       seed: curated.length,
     }) +
@@ -206,7 +206,7 @@ async function profile(ctx) {
         ${profileStats(c)}
         ${c.description ? `<p class="cw-desc">${esc(c.description)}</p>` : ""}
         <a class="btn btn-primary btn-lg cw-cta" href="${attr(tryUrl(c))}">Try ${esc(c.name)} on Sokosumi</a>
-        <p class="cta-note">Creating an account is free. You only spend credits on the work you actually run.${shell.NO_CARD_LINE}</p>
+        ${shell.NO_CARD}
       </div>
     </div>
     ${longBio}

@@ -278,14 +278,20 @@ function ctaBand(b) {
   const heading = b.heading || "Put an AI coworker on it";
   const label = b.ctaLabel || "Start free";
   const href = b.ctaHref || APP;
+  // Two blocks, always: copy on the left, action on the right. The old markup
+  // put the heading, subheading, faces and button in one grid and positioned
+  // the button with an explicit row span, which only lined up when all three
+  // optional pieces happened to be present.
   return `<section class="blk blk-cta" data-reveal><div class="cta-inner">
-      <h2>${esc(heading)}</h2>
-      ${b.subheading ? `<p>${esc(b.subheading)}</p>` : ""}
+      <div class="cta-copy">
+        <h2>${esc(heading)}</h2>
+        ${b.subheading ? `<p>${esc(b.subheading)}</p>` : ""}
+        ${ctaFaces(b.seed != null ? b.seed : heading.length, 4)}
+      </div>
       <div class="cta-action">
         <a class="btn btn-primary btn-lg" href="${attr(href)}">${esc(label)}</a>
         ${isSignupHref(href) ? NO_CARD : ""}
       </div>
-      ${ctaFaces(b.seed != null ? b.seed : heading.length, 4)}
     </div></section>`;
 }
 
@@ -392,7 +398,6 @@ function mobileNav() {
           <a class="btn btn-outline" href="/talk-to-sales">Talk to Sales</a>
           <a class="btn btn-ghost" href="${APP}/signin">Log In</a>
         </div>
-        <p class="m-foot">Creating an account is free. You only spend credits on the work you run.</p>
       </div>`;
 }
 

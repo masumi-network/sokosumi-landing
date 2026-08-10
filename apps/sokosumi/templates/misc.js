@@ -75,7 +75,7 @@ function press() {
     </section>` +
     shell.ctaBand({
       heading: "See the product for yourself",
-      subheading: "Creating an account is free, and the whole marketplace is browsable before you spend a credit.",
+      subheading: "The whole marketplace is browsable before you spend a credit.",
       ctaLabel: "Start free",
       seed: 3,
     }) +

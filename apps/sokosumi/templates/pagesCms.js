@@ -93,7 +93,7 @@ async function productHub(ctx) {
     surfacesSection +
     shell.ctaBand({
       heading: "Start with one task",
-      subheading: "Creating an account is free. You only spend credits on the work you actually run.",
+      subheading: "Brief a coworker today and see what comes back.",
       ctaLabel: "Start free",
       seed: 7,
     }) +

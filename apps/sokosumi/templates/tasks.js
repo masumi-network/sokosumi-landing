@@ -238,13 +238,13 @@ async function detail(ctx) {
         <div class="task-actions">
           <a class="btn btn-primary btn-lg" href="${APP}">Try this task on Sokosumi</a>
           ${openUrl ? `<a class="btn btn-outline" href="${attr(openUrl.url)}" target="_blank" rel="noreferrer">Open sample output ${icon("arrow-up-right", 14)}</a>` : ""}
-          <p class="cta-note">Creating an account is free. You only spend credits on the work you actually run.${shell.NO_CARD_LINE}</p>
+          ${shell.NO_CARD}
         </div>
       </aside>
     </div>` +
     shell.ctaBand({
       heading: `Run "${offer.title}" with ${c.name}`,
-      subheading: "Creating an account is free. You only spend credits on the work you actually run.",
+      subheading: "Pick a template, add your brief, and collect the finished file.",
       ctaLabel: "Try this task free",
       seed: offer.title.length,
     }) +

@@ -54,7 +54,7 @@ async function index(ctx) {
       : `<div class="page-section flush"><p class="muted">Comparison pages are on the way. In the meantime, <a href="/coworkers" style="text-decoration:underline">meet the coworkers</a>.</p></div>`) +
     shell.ctaBand({
       heading: "The shortest comparison is a trial",
-      subheading: "Run one real task and judge the output. Creating an account is free.",
+      subheading: "Run one real task and judge the output for yourself.",
       ctaLabel: "Start free",
       seed: comparisons.length,
     }) +

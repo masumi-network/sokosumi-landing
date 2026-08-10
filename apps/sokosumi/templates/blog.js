@@ -115,7 +115,7 @@ async function detail(ctx) {
     </div>` +
     shell.ctaBand({
       heading: "See it for yourself",
-      subheading: "Creating an account is free. You only spend credits on the work you actually run.",
+      subheading: "Run one real task and judge the output for yourself.",
       ctaLabel: "Start free",
       seed: p.title.length,
     }) +

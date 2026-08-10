@@ -555,13 +555,42 @@ a.card:hover .go { opacity: 1; transform: none; }
 .cmp-yes, .cmp-no { display: inline-flex; width: 20px; height: 20px; border-radius: 999px; align-items: center; justify-content: center; }
 .cmp-yes { background: var(--ink); color: #fff; }
 .cmp-no { border: 1px solid var(--border); }
-/* the live price list on /pricing: a two-column table, numbers right-aligned
-   and tabular so the credit figures line up as a column you can scan */
-.price-table { min-width: 0; }
-.price-table th.num, .price-table td.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
-.price-table td.num { font-weight: 500; }
-.price-table .row-label a { transition: color 0.2s var(--ease); }
-.price-table .row-label a:hover { color: var(--primary); }
+/* ===== /pricing plan cards ===== */
+.plan-grid { display: grid; gap: 16px; grid-template-columns: 1fr; }
+@media (min-width: 680px) { .plan-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1100px) { .plan-grid { grid-template-columns: repeat(4, 1fr); } }
+/* Enterprise is priced differently and sits on its own row, full width */
+.plan-grid.enterprise { grid-template-columns: 1fr; margin-top: 16px; }
+
+.plan-card {
+  display: flex; flex-direction: column; gap: 14px; padding: 26px 24px;
+  background: var(--card); border: 1px solid var(--border); border-radius: var(--r-lg);
+}
+.plan-card.featured { border-color: var(--primary); }
+.plan-name { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-size: 17px; font-weight: 500; letter-spacing: -0.01em; }
+.plan-card.featured .chip { color: var(--primary); border-color: rgba(100, 0, 255, 0.35); }
+.plan-tagline { margin-top: 8px; font-size: 13.5px; line-height: 1.5; color: var(--muted-foreground); }
+.plan-price { display: flex; flex-direction: column; gap: 4px; }
+.plan-price .amount { font-weight: 300; font-size: clamp(34px, 3.4vw, 44px); line-height: 1; letter-spacing: -0.03em; }
+.plan-price .per { font-size: 13px; color: var(--muted-foreground); }
+.plan-credits { font-size: 14px; font-weight: 500; }
+.plan-includes { margin-top: 4px; font-size: 12.5px; font-weight: 500; color: var(--muted-foreground); }
+.plan-features { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+.plan-features li { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; line-height: 1.45; }
+.plan-features .icon { color: var(--primary); margin-top: 2px; }
+/* the button pins to the bottom so a card with fewer features still lines up */
+.plan-cta { margin-top: auto; width: 100%; }
+
+@media (min-width: 680px) {
+  .plan-grid.enterprise .plan-card {
+    display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 14px 48px; align-items: start;
+  }
+  .plan-grid.enterprise .plan-head { grid-column: 1; }
+  .plan-grid.enterprise .plan-price { grid-column: 1; }
+  .plan-grid.enterprise .plan-includes { grid-column: 2; grid-row: 1; margin-top: 0; }
+  .plan-grid.enterprise .plan-features { grid-column: 2; grid-row: 2 / 4; }
+  .plan-grid.enterprise .plan-cta { grid-column: 1; width: auto; justify-self: start; margin-top: 8px; }
+}
 
 .blk-logos { display: flex; flex-wrap: wrap; align-items: center; gap: clamp(28px, 5vw, 64px); }
 .blk-logos img { height: 24px; width: auto; object-fit: contain; opacity: 0.55; filter: grayscale(1); transition: opacity 0.3s var(--ease); }
@@ -606,14 +635,21 @@ a.card:hover .go { opacity: 1; transform: none; }
 
 /* dark CTA band (matches the landing's end-cap) */
 .blk-cta { background: var(--ink); color: #fff; margin-top: clamp(40px, 6vw, 80px); border-top: none !important; padding: 0; }
+/* Copy left, action right. Flex rather than a grid with an explicit row span:
+   the heading, subheading and faces are each optional, and a fixed span only
+   lined the button up when all of them happened to be present. */
 .blk-cta .cta-inner {
   max-width: 1240px; margin: 0 auto; padding: clamp(64px, 8vw, 100px) clamp(24px, 4vw, 56px);
-  display: grid; grid-template-columns: 1fr; gap: 18px 48px; align-items: center;
+  display: flex; flex-direction: column; align-items: flex-start; gap: 26px;
 }
+.blk-cta .cta-copy { display: flex; flex-direction: column; align-items: flex-start; gap: 18px; min-width: 0; }
+.blk-cta .cta-action { flex-shrink: 0; }
 @media (min-width: 860px) {
-  .blk-cta .cta-inner { grid-template-columns: 1fr auto; }
-  .blk-cta .cta-inner .btn { grid-column: 2; grid-row: 1 / 4; }
-  .blk-cta .cta-inner .cta-faces { grid-column: 1; }
+  .blk-cta .cta-inner { flex-direction: row; align-items: center; justify-content: space-between; gap: 48px; }
+  .blk-cta .cta-copy { flex: 1 1 auto; }
+  /* the note is wider than the button, so without this the button floats off
+     the right edge the note is setting */
+  .blk-cta .cta-action { align-items: flex-end; text-align: right; }
 }
 .blk-cta h2 { font-weight: 300; font-size: clamp(30px, 3.5vw, 48px); letter-spacing: -0.025em; line-height: 1.1; max-width: 22ch; text-wrap: balance; }
 .blk-cta p { font-size: 16px; color: rgba(255, 255, 255, 0.6); }

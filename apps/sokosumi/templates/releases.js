@@ -81,7 +81,7 @@ async function index(ctx) {
       : `<div class="page-section flush"><p class="muted">Release notes are on the way. In the meantime, <a href="/blog" style="text-decoration:underline">read the blog</a>.</p></div>`) +
     shell.ctaBand({
       heading: "Every release lands in your account",
-      subheading: "Nothing to install or upgrade. Creating an account is free.",
+      subheading: "Nothing to install and nothing to upgrade.",
       ctaLabel: "Start free",
       seed: releases.length,
     }) +
@@ -145,7 +145,7 @@ async function detail(ctx) {
     blocks.renderBlocks(r.sections) +
     shell.ctaBand({
       heading: "Try it in your account",
-      subheading: "Every release is already live. Creating an account is free.",
+      subheading: "Every release is already live in the product.",
       ctaLabel: "Start free",
       seed: r.title.length,
     }) +
