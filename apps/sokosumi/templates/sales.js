@@ -5,7 +5,7 @@
 const shell = require("./shell");
 const { esc, attr, icon, pageStart, pageEnd, APP } = shell;
 
-const CRUMBS = [{ label: "Home", href: "/" }, { label: "Talk to Sales" }];
+const CRUMBS = [{ label: "Home", href: "/" }, { label: "Contact", href: "/contact" }, { label: "Sales" }];
 
 function field(label, inner, hint) {
   return `<label class="field">
@@ -128,7 +128,7 @@ function render(ctx) {
       title: "Talk to Sales | Sokosumi",
       description:
         "Book a walkthrough of Sokosumi or ask us anything about putting AI coworkers to work in your marketing team.",
-      path: "/talk-to-sales",
+      path: shell.SALES_URL,
       breadcrumb: CRUMBS,
       jsonld: { "@context": "https://schema.org", "@type": "ContactPage", name: "Talk to Sales" },
     }) +

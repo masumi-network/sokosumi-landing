@@ -22,11 +22,12 @@ function vendorSlugOf(c) {
 }
 
 async function buildNav(opts) {
-  const [vendors, coworkers, industries, useCases] = await Promise.all([
+  const [vendors, coworkers, industries, useCases, pages] = await Promise.all([
     cms.getVendors(opts).catch(() => []),
     cms.getCoworkers(opts).catch(() => []),
     cms.getIndustries(opts).catch(() => []),
     cms.getUseCases(opts).catch(() => []),
+    cms.getPages(opts).catch(() => []),
   ]);
 
   const byVendor = new Map();
@@ -61,6 +62,7 @@ async function buildNav(opts) {
           name: c.name,
           slug: c.slug,
           role: c.role || "",
+          image: c.image || null,
         })),
       };
     })
@@ -112,7 +114,18 @@ async function buildNav(opts) {
     slug: c.slug,
   }));
 
-  return { vendors: ranked, industries: shownIndustries, popularUseCases: popular, faces };
+  // The product deep-dives, in the reading order the hub uses.
+  const PRODUCT_ORDER = ["product/ai-coworkers", "product/briefing", "product/task-board", "product/outputs"];
+  const productPages = pages
+    .filter((p) => typeof p.slug === "string" && p.slug.startsWith("product/"))
+    .sort((a, b) => {
+      const ai = PRODUCT_ORDER.indexOf(a.slug);
+      const bi = PRODUCT_ORDER.indexOf(b.slug);
+      return (ai === -1 ? 99 : ai) - (bi === -1 ? 99 : bi);
+    })
+    .map((p) => ({ title: p.title, slug: p.slug, description: p.description || "" }));
+
+  return { vendors: ranked, industries: shownIndustries, popularUseCases: popular, productPages, faces };
 }
 
 module.exports = { buildNav };

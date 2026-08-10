@@ -49,16 +49,12 @@ function useCaseCard(uc, crew) {
   </a>`;
 }
 
-// Industries read as a grid of destinations rather than a thin list: the
-// count is the point, so it gets the display weight.
-function industryCard(ind, count) {
-  return `<a class="ind-card" href="/use-cases/industries/${encodeURIComponent(ind.slug)}">
-    <span class="ind-count">${count || 0}</span>
-    <span class="ind-body">
-      <strong>${esc(ind.name)}</strong>
-      ${ind.description ? `<span>${esc(ind.description)}</span>` : ""}
-    </span>
-    <span class="ind-go">${icon("arrow-up-right", 15)}</span>
+// An industry is a lens on the same work, not a piece of work — so it reads
+// as a control rather than a card. When both were bordered white cards in a
+// grid, there was nothing to tell a reader which was which.
+function industryPill(ind, count) {
+  return `<a class="ind-pill" href="/use-cases/industries/${encodeURIComponent(ind.slug)}">
+    <span>${esc(ind.name)}</span>${count ? `<em>${count}</em>` : ""}
   </a>`;
 }
 
@@ -113,20 +109,15 @@ async function hub(ctx) {
   const shown = withCases.length ? withCases : industries;
 
   const industrySection = shown.length
-    ? `<div class="page-section flush">
-        <h2>Start with your industry</h2>
-        <p class="sub">The same coworkers, briefed for the way your market actually works.</p>
-        <div class="ind-grid">${shown.map((i) => industryCard(i, counts[i.slug] || 0)).join("")}</div>
+    ? `<div class="page-section flush filter-bar" data-reveal>
+        <p class="filter-label">Filter by industry</p>
+        <div class="ind-bar">${shown.map((i) => industryPill(i, counts[i.slug] || 0)).join("")}</div>
       </div>`
-    : `<div class="page-section flush"><p class="muted">Industry pages are on the way. In the meantime, <a href="/coworkers" style="text-decoration:underline">meet the coworkers</a>.</p></div>`;
+    : "";
 
-  const casesSection = `<section class="page-section">
-      <h2>All use cases</h2>
-      <p class="sub">${
-        useCases.length === 1
-          ? "One workflow, start to finished file."
-          : `${useCases.length} workflows, each one start to finished file.`
-      }</p>
+  const casesSection = `<section class="page-section flush">
+      <h2>${useCases.length === 1 ? "One workflow" : `${useCases.length} workflows`}</h2>
+      <p class="sub">Each one is a real job, start to finished file, with the coworker who leads it.</p>
       ${
         useCases.length
           ? `<div class="card-grid uc-grid">${useCases.map((uc) => useCaseCard(uc, crewOf(uc))).join("")}</div>`
@@ -182,9 +173,10 @@ async function industry(ctx) {
       breadcrumb: cr,
     }) +
     `<div class="page-head" data-reveal>
-      <span class="eyebrow">Industry</span>
+      <span class="eyebrow">Use cases for</span>
       <h1>${esc(ind.name)}</h1>
       ${ind.description ? `<p class="sub">${esc(ind.description)}</p>` : ""}
+      <p class="meta-row">${useCases.length} of the ${allCases.length} workflows on Sokosumi apply here. <a href="/use-cases" style="text-decoration:underline">See all use cases</a></p>
     </div>
     <div class="page-section flush">
       ${

@@ -8,7 +8,7 @@
 
 const shell = require("./shell");
 const leads = require("../lib/leads");
-const { esc, attr, icon, pageStart, pageEnd, APP, SALES_URL } = shell;
+const { esc, attr, icon, pageStart, pageEnd, APP, SALES_URL, SUPPORT_URL } = shell;
 
 const DEV_DOCS = "https://www.masumi.network/dev/sokosumi/documentation";
 
@@ -124,20 +124,20 @@ async function render(ctx) {
   const sent = get("sent") === "1";
   const error = get("error");
 
-  const cr = [{ label: "Home", href: "/" }, { label: "Support" }];
+  const cr = [{ label: "Home", href: "/" }, { label: "Contact", href: "/contact" }, { label: "Support" }];
   return (
     pageStart({
       title: "Support | Sokosumi",
       description:
         "Get help with Sokosumi: email product support, find the guides and release notes, or reach sales about a plan.",
-      path: "/support",
+      path: shell.SUPPORT_URL,
       breadcrumb: cr,
       jsonld: {
         "@context": "https://schema.org",
         "@type": "ContactPage",
         name: "Sokosumi support",
         description: "Product support for people already working with an AI coworker on Sokosumi.",
-        url: `${shell.SITE}/support`,
+        url: `${shell.SITE}${shell.SUPPORT_URL}`,
       },
     }) +
     (sent

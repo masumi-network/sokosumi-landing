@@ -7,7 +7,11 @@ const cms = require("../lib/cms");
 
 const APP = "https://app.sokosumi.com";
 const SITE = "https://sokosumi.com";
-const SALES_URL = "/talk-to-sales";
+// Contact is one section with two doors; /talk-to-sales and /support are
+// kept alive as 301s in server.js so old links and any printed material
+// still land in the right place.
+const SALES_URL = "/contact/sales";
+const SUPPORT_URL = "/contact/support";
 
 function esc(s) {
   return String(s == null ? "" : s).replace(/[&<>"']/g, (c) =>
@@ -341,9 +345,13 @@ function agentsPanel() {
         ${v.picks
           .map(
             (p) =>
-              `<a class="nav-col-link" href="/coworkers/${encodeURIComponent(p.slug)}"><span>${esc(p.name)}</span>${
+              `<a class="nav-col-link has-face" href="/coworkers/${encodeURIComponent(p.slug)}">${
+                p.image
+                  ? `<span class="nav-face"><img src="${attr(p.image)}" alt="" loading="lazy" /></span>`
+                  : `<span class="nav-face is-blank"></span>`
+              }<span class="nav-face-text"><span>${esc(p.name)}</span>${
                 p.role ? `<small>${esc(p.role)}</small>` : ""
-              }</a>`,
+              }</span></a>`,
           )
           .join("")}
       </div>`,
@@ -360,6 +368,38 @@ function agentsPanel() {
 }
 
 // The Use cases menu: pick an industry, or open the hub.
+// The Product menu: the deep-dives under /product, straight from the CMS,
+// so a page added there shows up here without a code change.
+function productPanel() {
+  const pages = NAV_MODEL.productPages || [];
+  if (!pages.length) return "";
+  const rows = pages
+    .map(
+      (p) =>
+        `<a class="nav-col-link" href="/${p.slug.split("/").map(encodeURIComponent).join("/")}"><span>${esc(
+          p.title,
+        )}</span>${p.description ? `<small>${esc(shell_truncate(p.description, 62))}</small>` : ""}</a>`,
+    )
+    .join("");
+  return `<div class="nav-panel" role="group" aria-label="Product">
+      <div class="nav-col">${rows}</div>
+      <div class="nav-panel-foot">
+        <a href="/product">Product overview ${icon("arrow-up-right", 13)}</a>
+        <a href="/pricing">Pricing ${icon("arrow-up-right", 13)}</a>
+      </div>
+    </div>`;
+}
+
+// A short label for the menu: the SEO description is a sentence, the menu
+// wants a phrase.
+function shell_truncate(s, n) {
+  const t = String(s || "").trim();
+  if (t.length <= n) return t;
+  const cut = t.slice(0, n + 1);
+  const at = cut.lastIndexOf(" ");
+  return cut.slice(0, at > 20 ? at : n).replace(/[\s,;:.–—-]+$/, "") + "\u2026";
+}
+
 // The Use cases menu: one column per industry, each showing the work that
 // industry actually runs, plus a "Most used" column for visitors who do not
 // think of their problem as belonging to a vertical. An industry name on its
@@ -412,6 +452,7 @@ function navItems(currentPath) {
 
   const agents = agentsPanel();
   const useCases = useCasesPanel();
+  const product = productPanel();
 
   const item = (href, label, panel, extraMatch) => {
     const current = isCurrent(href) || (extraMatch && isCurrent(extraMatch));
@@ -423,7 +464,7 @@ function navItems(currentPath) {
   // into the product, and they live in the footer.
   return [
     item("/coworkers", "AI Coworkers", agents, "/vendors"),
-    item("/product", "Product", ""),
+    item("/product", "Product", product),
     item("/use-cases", "Use cases", useCases),
     item("/pricing", "Pricing", ""),
   ].join("\n            ");
@@ -449,7 +490,7 @@ function mobileNav() {
         ${links}
         <div class="m-actions">
           <a class="btn btn-primary" href="${APP}">Sign Up</a>
-          <a class="btn btn-outline" href="/talk-to-sales">Talk to Sales</a>
+          <a class="btn btn-outline" href="${SALES_URL}">Talk to Sales</a>
           <a class="btn btn-ghost" href="${APP}/signin">Log In</a>
         </div>
       </div>`;
@@ -468,7 +509,7 @@ function header(currentPath) {
         </div>
         <div class="actions">
           <a class="btn btn-sm btn-ghost" href="${APP}/signin">Log In</a>
-          <a class="btn btn-sm btn-outline" href="/talk-to-sales">Talk to Sales</a>
+          <a class="btn btn-sm btn-outline" href="${SALES_URL}">Talk to Sales</a>
           <a class="btn btn-sm btn-primary" href="${APP}">Sign Up</a>
           ${BURGER}
         </div>
@@ -499,7 +540,7 @@ function footer() {
         <div class="foot-secondary">
           <a href="/compare">Compare</a>
           <a href="/contact">Contact</a>
-          <a href="/support">Support</a>
+          <a href="${SUPPORT_URL}">Support</a>
           <a href="https://www.masumi.network/dev/sokosumi/documentation" target="_blank" rel="noreferrer">Developers</a>
           <a href="/press">Press</a>
           <a href="https://linkedin.com/company/sokosumi/" target="_blank" rel="noreferrer">LinkedIn</a>
@@ -578,6 +619,7 @@ module.exports = {
   APP,
   SITE,
   SALES_URL,
+  SUPPORT_URL,
   setNav,
   esc,
   attr,

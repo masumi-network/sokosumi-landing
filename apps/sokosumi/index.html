@@ -178,6 +178,12 @@
       .nav-col-logo.invert img { filter: brightness(0); }
       .nav-col-link { display: flex; flex-direction: column; gap: 1px; padding: 7px 8px; border-radius: var(--r-sm); transition: background-color 0.2s var(--ease); }
       .nav-col-link:hover { background: var(--muted); }
+      .nav-col-link.has-face { flex-direction: row; align-items: center; gap: 10px; }
+      .nav-face { width: 30px; height: 30px; border-radius: 999px; overflow: hidden; flex-shrink: 0; background: var(--muted); display: block; }
+      .nav-face img { width: 100%; height: 100%; object-fit: cover; display: block; transform: scale(1.08); }
+      .nav-face.is-blank { border: 1px solid var(--border); }
+      .nav-face-text { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+
       .nav-col-link span { font-size: 14px; color: var(--foreground); }
       .nav-col-link small { font-size: 12px; color: var(--muted-foreground); }
       .nav-panel-foot { display: flex; flex-wrap: wrap; gap: 8px 24px; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); }
@@ -759,7 +765,9 @@
           <span class="nav-drop" id="navAgents">
             <a href="/coworkers">AI Coworkers<svg class="nav-chev" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></a>
           </span>
-          <a href="/product">Product</a>
+          <span class="nav-drop" id="navProduct">
+            <a href="/product">Product<svg class="nav-chev" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></a>
+          </span>
           <span class="nav-drop" id="navUseCases">
             <a href="/use-cases">Use cases<svg class="nav-chev" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></a>
           </span>
@@ -767,7 +775,7 @@
         </div>
         <div style="display: flex; gap: 8px; align-items: center;">
           <a class="btn btn-sm btn-ghost nav-login" href="https://app.sokosumi.com/signin">Log In</a>
-          <a class="btn btn-sm btn-outline nav-sales" href="/talk-to-sales">Talk to Sales</a>
+          <a class="btn btn-sm btn-outline nav-sales" href="/contact/sales">Talk to Sales</a>
           <a class="btn btn-sm btn-primary" href="https://app.sokosumi.com">Sign Up</a>
           <button class="nav-burger" id="navBurger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobileNav"><span></span><span></span></button>
         </div>
@@ -789,7 +797,7 @@
         </p>
 
         <div class="hero-cta" data-reveal style="--i: 3">
-          <a class="btn btn-lg hero-cta-sales" href="/talk-to-sales">Talk to Sales</a>
+          <a class="btn btn-lg hero-cta-sales" href="/contact/sales">Talk to Sales</a>
           <a class="btn btn-lg hero-cta-signup" href="https://app.sokosumi.com">Sign Up</a>
         </div>
         <p class="hero-note" data-reveal style="--i: 3"><span class="no-card">*No Credit Card required</span></p>
@@ -832,7 +840,7 @@
       <a class="m-link" href="/pricing">Pricing<small>Plans and credits per seat</small></a>
       <div class="m-actions">
         <a class="btn btn-primary" href="https://app.sokosumi.com">Sign Up</a>
-        <a class="btn btn-outline" href="/talk-to-sales">Talk to Sales</a>
+        <a class="btn btn-outline" href="/contact/sales">Talk to Sales</a>
         <a class="btn btn-ghost" href="https://app.sokosumi.com/signin">Log In</a>
       </div>
     </div>
@@ -1207,7 +1215,7 @@
         <div class="foot-secondary">
           <a href="/compare">Compare</a>
           <a href="/contact">Contact</a>
-            <a href="/support">Support</a>
+            <a href="/contact/support">Support</a>
             <a href="https://www.masumi.network/dev/sokosumi/documentation" target="_blank" rel="noreferrer">Developers</a>
           <a href="/press">Press</a>
           <a href="https://linkedin.com/company/sokosumi/" target="_blank" rel="noreferrer">LinkedIn</a>
@@ -1341,10 +1349,13 @@
                     var links = (v.picks || [])
                       .map(function (p) {
                         return (
-                          '<a class="nav-col-link" href="/coworkers/' + encodeURIComponent(p.slug) + '">' +
-                          "<span>" + esc(p.name) + "</span>" +
+                          '<a class="nav-col-link has-face" href="/coworkers/' + encodeURIComponent(p.slug) + '">' +
+                          (p.image
+                            ? '<span class="nav-face"><img src="' + esc(p.image) + '" alt="" loading="lazy" /></span>'
+                            : '<span class="nav-face is-blank"></span>') +
+                          '<span class="nav-face-text"><span>' + esc(p.name) + "</span>" +
                           (p.role ? "<small>" + esc(p.role) + "</small>" : "") +
-                          "</a>"
+                          "</span></a>"
                         );
                       })
                       .join("");
@@ -1369,6 +1380,35 @@
                       '<a href="/vendors">Show all vendors ' + ARROW + "</a>" +
                       '<a href="/coworkers">Show all coworkers ' + ARROW + "</a>" +
                     "</div></div>",
+                );
+              }
+
+              /* the product deep-dives, from the CMS via /api/nav */
+              var prod = document.getElementById("navProduct");
+              var productPages = n.productPages || [];
+              if (prod && productPages.length) {
+                function shortLabel(t, max) {
+                  t = String(t || "").trim();
+                  if (t.length <= max) return t;
+                  var cut = t.slice(0, max + 1), at = cut.lastIndexOf(" ");
+                  return cut.slice(0, at > 20 ? at : max).replace(/[\s,;:.–—-]+$/, "") + "\u2026";
+                }
+                prod.insertAdjacentHTML(
+                  "beforeend",
+                  '<div class="nav-panel" role="group" aria-label="Product"><div class="nav-col">' +
+                    productPages
+                      .map(function (p) {
+                        return (
+                          '<a class="nav-col-link" href="/' + p.slug.split("/").map(encodeURIComponent).join("/") + '">' +
+                          "<span>" + esc(p.title) + "</span>" +
+                          (p.description ? "<small>" + esc(shortLabel(p.description, 62)) + "</small>" : "") +
+                          "</a>"
+                        );
+                      })
+                      .join("") +
+                    "</div>" +
+                    '<div class="nav-panel-foot"><a href="/product">Product overview ' + ARROW + "</a>" +
+                    '<a href="/pricing">Pricing ' + ARROW + "</a></div></div>",
                 );
               }
 

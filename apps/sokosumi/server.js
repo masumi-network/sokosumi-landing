@@ -400,8 +400,11 @@ const routes = [
   { m: (s) => s.length === 1 && s[0] === "product" && {}, h: pagesTpl.productHub },
   { m: (s) => s.length === 1 && s[0] === "pricing" && {}, h: pricingTpl.render },
   { m: (s) => s.length === 1 && s[0] === "contact" && {}, h: contactTpl.render },
-  { m: (s) => s.length === 1 && s[0] === "support" && {}, h: supportTpl.render },
-  { m: (s) => s.length === 1 && s[0] === "talk-to-sales" && {}, h: salesTpl.render },
+  { m: (s) => s.length === 2 && s[0] === "contact" && s[1] === "sales" && {}, h: salesTpl.render },
+  { m: (s) => s.length === 2 && s[0] === "contact" && s[1] === "support" && {}, h: supportTpl.render },
+  // the routes these two used to live at, kept as permanent redirects
+  { m: (s) => s.length === 1 && s[0] === "talk-to-sales" && {}, h: () => ({ redirect: "/contact/sales" }) },
+  { m: (s) => s.length === 1 && s[0] === "support" && {}, h: () => ({ redirect: "/contact/support" }) },
   {
     m: (s) => s.length === 1 && s[0] === "press" && {},
     h: async (ctx) => (await pagesTpl.cmsPage({ ...ctx, params: { slug: "press" } })) || misc.press(),
@@ -477,7 +480,7 @@ if (process.argv.includes("--once")) {
             req.socket.remoteAddress ||
             "unknown";
           const back = (params) => {
-            res.writeHead(303, { Location: "/talk-to-sales?" + new URLSearchParams(params), "Cache-Control": "no-store" });
+            res.writeHead(303, { Location: "/contact/sales?" + new URLSearchParams(params), "Cache-Control": "no-store" });
             res.end();
           };
 
@@ -508,7 +511,7 @@ if (process.argv.includes("--once")) {
           if (tooBig) return back({ error: "That message is too long." });
 
           const body = Object.fromEntries(new URLSearchParams(raw));
-          const result = await leads.submitLead(body, body.source || "/talk-to-sales");
+          const result = await leads.submitLead(body, body.source || "/contact/sales");
           if (!result.ok) {
             // Silently accept honeypot hits so bots learn nothing.
             if (result.error === "spam") return back({ sent: "1" });
@@ -533,7 +536,7 @@ if (process.argv.includes("--once")) {
             req.socket.remoteAddress ||
             "unknown";
           const back = (params) => {
-            res.writeHead(303, { Location: "/support?" + new URLSearchParams(params), "Cache-Control": "no-store" });
+            res.writeHead(303, { Location: "/contact/support?" + new URLSearchParams(params), "Cache-Control": "no-store" });
             res.end();
           };
 
@@ -562,7 +565,7 @@ if (process.argv.includes("--once")) {
           if (tooBig) return back({ error: "That message is too long." });
 
           const body = Object.fromEntries(new URLSearchParams(raw));
-          const result = await leads.submitSupport(body, body.source || "/support");
+          const result = await leads.submitSupport(body, body.source || "/contact/support");
           if (!result.ok) {
             if (result.error === "spam") return back({ sent: "1" });
             return back({

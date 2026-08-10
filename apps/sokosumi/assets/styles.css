@@ -133,6 +133,17 @@ button { font-family: inherit; }
   transition: background-color 0.2s var(--ease);
 }
 .nav-col-link:hover { background: var(--muted); }
+/* a portrait next to each coworker in the menu — a name alone gives no sense
+   of who is on the other side of the link */
+.nav-col-link.has-face { flex-direction: row; align-items: center; gap: 10px; }
+.nav-face {
+  width: 30px; height: 30px; border-radius: 999px; overflow: hidden; flex-shrink: 0;
+  background: var(--muted); display: block;
+}
+.nav-face img { width: 100%; height: 100%; object-fit: cover; display: block; transform: scale(1.08); }
+.nav-face.is-blank { border: 1px solid var(--border); }
+.nav-face-text { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+
 .nav-col-link span { font-size: 14px; font-weight: 400; color: var(--foreground); }
 .nav-col-link small { font-size: 12px; color: var(--muted-foreground); }
 .nav-panel-foot {
@@ -240,26 +251,29 @@ main.page { min-height: 60vh; }
 .vendor-head .chip { align-self: center; }
 
 /* ===== use cases ===== */
-.ind-grid { display: grid; gap: 12px; grid-template-columns: 1fr; }
-@media (min-width: 700px) { .ind-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (min-width: 1040px) { .ind-grid { grid-template-columns: repeat(3, 1fr); } }
-.ind-card {
-  display: flex; align-items: flex-start; gap: 16px;
-  padding: 22px 20px; background: var(--card);
-  border: 1px solid var(--border); border-radius: var(--r-lg);
-  transition: border-color 0.25s var(--ease), transform 0.25s var(--ease);
+/* ===== industry filter =====
+   Industries are a lens on the same set of workflows, so they read as a row
+   of controls. They used to be bordered white cards in a grid, identical to
+   the use-case cards below them, and nothing told a reader which was which. */
+.filter-bar { padding-bottom: clamp(24px, 3vw, 34px); }
+.filter-label {
+  font-size: 11.5px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--muted-foreground); margin-bottom: 14px;
 }
-.ind-card:hover { border-color: rgba(15, 14, 13, 0.28); transform: translateY(-2px); }
-.ind-count {
-  flex-shrink: 0; min-width: 34px;
-  font-weight: 300; font-size: 30px; line-height: 1; letter-spacing: -0.03em;
-  font-variant-numeric: tabular-nums;
+.ind-bar { display: flex; flex-wrap: wrap; gap: 8px; }
+.ind-pill {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 8px 14px; border-radius: 999px;
+  border: 1px solid var(--border); background: transparent;
+  font-size: 14px; color: var(--foreground); white-space: nowrap;
+  transition: border-color 0.2s var(--ease), background-color 0.2s var(--ease);
 }
-.ind-body { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
-.ind-body strong { font-size: 15.5px; font-weight: 500; letter-spacing: -0.01em; }
-.ind-body span { font-size: 13.5px; line-height: 1.5; color: var(--muted-foreground); }
-.ind-go { margin-left: auto; color: var(--muted-foreground); opacity: 0; transform: translate(-4px, 4px); transition: opacity 0.3s var(--ease), transform 0.3s var(--ease); }
-.ind-card:hover .ind-go { opacity: 1; transform: none; }
+.ind-pill:hover { border-color: rgba(15, 14, 13, 0.4); background: var(--muted); }
+.ind-pill em {
+  font-style: normal; font-size: 12px; font-variant-numeric: tabular-nums;
+  color: var(--muted-foreground);
+}
+.ind-pill:hover em { color: var(--foreground); }
 
 @media (min-width: 760px) { .uc-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (min-width: 1100px) { .uc-grid { grid-template-columns: repeat(3, 1fr); } }
