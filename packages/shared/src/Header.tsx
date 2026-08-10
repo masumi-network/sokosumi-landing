@@ -43,6 +43,13 @@ const products = [
   },
 ];
 
+// The Masumi site does not mention Kodosumi. The Kodosumi site still needs its
+// own entry (it is the active product there), so this filters rather than
+// deleting the entry.
+function productsFor(product: "sokosumi" | "masumi" | "kodosumi") {
+  return product === "masumi" ? products.filter((p) => p.id !== "kodosumi") : products;
+}
+
 const MASUMI_SOKOSUMI_BANNER = (
   <a
     href="https://sokosumi.com"
@@ -267,7 +274,7 @@ export default function Header({
               <div className="absolute top-full left-0 pt-2">
                 <div className="bg-white rounded-xl shadow-xl border border-black/5 p-3 w-[280px]">
                   <p className="text-[10px] uppercase tracking-widest text-[#999] mb-2 px-2 font-medium">Products</p>
-                  {products.map((p) => (
+                  {productsFor(product).map((p) => (
                     <a
                       key={p.name}
                       href={p.href}

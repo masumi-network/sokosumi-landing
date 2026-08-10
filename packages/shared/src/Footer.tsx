@@ -118,9 +118,6 @@ export default function Footer({ product = "sokosumi" }: { product?: "sokosumi" 
             <a href="https://sokosumi.com" className="hover:text-black transition-colors" target="_blank" rel="noopener noreferrer">
               Sokosumi
             </a>
-            <a href="https://kodosumi.io" className="hover:text-black transition-colors" target="_blank" rel="noopener noreferrer">
-              Kodosumi
-            </a>
           </div>
           <div className="mt-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 text-[12px] text-[#666]">
             <p>&copy; {new Date().getFullYear()} Masumi. All rights reserved.</p>
