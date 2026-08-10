@@ -244,6 +244,10 @@
         max-width: 20ch; text-wrap: balance; margin: 0 0 26px;
       }
       .hero-title .serif-accent { font-size: 1em; letter-spacing: inherit; }
+      /* the rotating word owns its own line: otherwise a long one ("Campaigns")
+         wraps the headline while the short ones do not, and the whole hero
+         jumps a line every time it comes round */
+      .hero-title .hero-line { display: block; }
       .hero-sub {
         font-size: clamp(15.5px, 1.5vw, 17px); line-height: 1.6; color: rgba(255, 255, 255, 0.78);
         max-width: 52ch; text-wrap: pretty; margin: 0 0 36px;
@@ -335,6 +339,10 @@
       .rotator {
         display: inline-grid; vertical-align: top; text-align: left;
         overflow: hidden; transition: width 0.45s var(--ease);
+        /* the clip box is the 1.05 line box, which ends above the ink of a
+           descender — pad it down so the g in "Marketing" keeps its tail, and
+           pull the same amount back so the line box is unchanged */
+        padding-bottom: 0.16em; margin-bottom: -0.16em;
       }
       .rot-word {
         /* start, not stretch — otherwise each span fills the slot and measuring
@@ -345,7 +353,14 @@
       }
       .rot-word.is-active { opacity: 1; transform: none; }
       .hero-dot { color: var(--primary); }
-      @media (prefers-reduced-motion: reduce) { .rot-word { transition: none; } }
+      @media (prefers-reduced-motion: reduce) { .rot-word, .rotator { transition: none; } }
+      /* the word and its full stop are one unit: a break between them puts
+         the stop on its own line once the root font size is raised */
+      .hero-line-rot { white-space: nowrap; }
+      .sr-only {
+        position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+        overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; border: 0;
+      }
 
       /* Serviceplan ships its own white artwork; whitening it like the rest of
          the strip turns the red square in its mark into a blank block */
@@ -731,7 +746,8 @@
         </div>
 
         <h1 class="hero-title" data-reveal style="--i: 1">
-          AI Coworkers for <span class="rotator" id="heroRotator"></span><span class="hero-dot">.</span>
+          <span class="hero-line">AI Coworkers for</span>
+          <span class="hero-line hero-line-rot" aria-hidden="true"><span class="rotator" id="heroRotator"><span class="rot-word is-active">Marketing</span></span><span class="hero-dot">.</span></span><span class="sr-only">Marketing.</span>
         </h1>
 
         <p class="hero-sub" data-reveal style="--i: 2">
@@ -1435,6 +1451,8 @@
         (function () {
           var el = document.getElementById("heroRotator");
           if (!el) return;
+          /* the first word is in the HTML so the headline reads correctly with
+             no JavaScript and before this runs; the set below replaces it */
           var WORDS = ["Marketing", "Sales", "Outreach", "Content", "Research", "Campaigns", "Social"];
           el.innerHTML = WORDS.map(function (w, i) {
             return '<span class="rot-word' + (i === 0 ? " is-active" : "") + '">' + w + "</span>";
@@ -1442,17 +1460,25 @@
           var words = [].slice.call(el.children);
           /* the slot glides to the active word's width so the full stop follows
              it instead of sitting after a gap */
-          var fit = function () { el.style.width = words[i].offsetWidth + "px"; };
           var i = 0;
-          fit();
-          window.addEventListener("resize", fit);
-          if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+          var fit = function (animate) {
+            if (animate) return void (el.style.width = words[i].offsetWidth + "px");
+            var t = el.style.transition;
+            el.style.transition = "none";
+            el.style.width = words[i].offsetWidth + "px";
+            void el.offsetWidth; // flush, so restoring the transition cannot animate this write
+            el.style.transition = t;
+          };
+          var snap = function () { fit(false); };
+          snap();
+          window.addEventListener("resize", snap);
+          if (document.fonts && document.fonts.ready) document.fonts.ready.then(snap);
           if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
           setInterval(function () {
             words[i].classList.remove("is-active");
             i = (i + 1) % words.length;
             words[i].classList.add("is-active");
-            fit();
+            fit(true);
           }, 2600);
         })();
 
