@@ -140,6 +140,31 @@ button { font-family: inherit; }
   transition: color 0.2s var(--ease);
 }
 .nav-panel-foot a:hover { color: var(--foreground); }
+/* the Use cases panel: a section label above the industry columns, and a
+   final column of the most-used work for people who do not think in verticals */
+.nav-panel-label {
+  font-size: 11.5px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase;
+  color: var(--muted-foreground); margin: 0 0 12px 8px;
+}
+.nav-col-popular { border-left: 1px solid var(--border); padding-left: 20px; }
+.nav-col-popular .nav-col-head { color: var(--foreground); }
+/* The use-cases mega panel is wider than the bar item it hangs from, so
+   anchoring it to the trigger pushed it past the window edge. It is centred
+   on the page grid instead — it can then never overflow, at any width.
+   `top` is the 64px bar plus the 14px the other panels sit below it. */
+.nav-drop .nav-panel-wide { max-width: calc(100vw - 48px); }
+.nav-drop .nav-panel-mega {
+  position: fixed; top: 78px; left: 50%; right: auto; margin-top: 0;
+  width: max-content; max-width: min(1040px, calc(100vw - 48px));
+  transform: translate(-50%, -6px);
+}
+/* fixed-ceiling columns: with 1fr the grid resolves against the max-width and
+   the panel stretches to fill the window instead of sizing to its content */
+.nav-panel-mega .nav-cols { grid-template-columns: repeat(var(--nav-cols, 4), minmax(0, 216px)); }
+/* .site-nav a sets nowrap for the bar itself; inside a panel that stops the
+   use-case titles wrapping and they run into the next column */
+.nav-panel a, .nav-panel span { white-space: normal; }
+.nav-drop:hover .nav-panel-mega, .nav-drop:focus-within .nav-panel-mega { transform: translate(-50%, 0); }
 /* the collapse points and the mobile drawer live in nav.css, shared with the
    landing page so the two headers stay in step */
 

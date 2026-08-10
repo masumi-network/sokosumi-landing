@@ -13,6 +13,9 @@ const TOP_VENDORS = 3;
 // Serviceplan Group leads the roster and the CTA faces.
 const FEATURED_VENDOR = "serviceplan-group";
 const PICKS_PER_VENDOR = 4;
+const TOP_INDUSTRIES = 3;
+const PICKS_PER_INDUSTRY = 3;
+const POPULAR_USE_CASES = 5;
 
 function vendorSlugOf(c) {
   return c.vendor && typeof c.vendor === "object" ? c.vendor.slug : null;
@@ -66,16 +69,31 @@ async function buildNav(opts) {
     .slice(0, TOP_VENDORS);
 
   // Industries that actually have use cases, so the menu never dead-ends.
-  const counts = {};
+  // Each carries a few of its own use cases: an industry name alone tells a
+  // visitor nothing about whether the work they need is on the other side.
+  const byIndustry = new Map();
   for (const uc of useCases) {
     for (const ind of uc.industries || []) {
-      if (ind && typeof ind === "object" && ind.slug) counts[ind.slug] = (counts[ind.slug] || 0) + 1;
+      if (!ind || typeof ind !== "object" || !ind.slug) continue;
+      if (!byIndustry.has(ind.slug)) byIndustry.set(ind.slug, []);
+      byIndustry.get(ind.slug).push({ title: uc.title, slug: uc.slug });
     }
   }
-  const withCases = industries.filter((i) => counts[i.slug]);
+  const withCases = industries.filter((i) => (byIndustry.get(i.slug) || []).length);
   const shownIndustries = (withCases.length ? withCases : industries)
-    .slice(0, 6)
-    .map((i) => ({ name: i.name, slug: i.slug, count: counts[i.slug] || 0 }));
+    .map((i) => {
+      const picks = byIndustry.get(i.slug) || [];
+      return { name: i.name, slug: i.slug, count: picks.length, picks: picks.slice(0, PICKS_PER_INDUSTRY) };
+    })
+    .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name))
+    .slice(0, TOP_INDUSTRIES);
+
+  // The most-used use cases, for the menu's second half: someone who does not
+  // think of their problem as belonging to an industry still needs a way in.
+  const popular = [...useCases]
+    .sort((a, b) => (b.industries || []).length - (a.industries || []).length || String(a.title).localeCompare(String(b.title)))
+    .slice(0, POPULAR_USE_CASES)
+    .map((uc) => ({ title: uc.title, slug: uc.slug }));
 
   // Portraits for the CTA bands. Curated coworkers only — marketplace listings
   // are line icons that read as clip art at avatar size. The featured vendor's
@@ -94,7 +112,7 @@ async function buildNav(opts) {
     slug: c.slug,
   }));
 
-  return { vendors: ranked, industries: shownIndustries, faces };
+  return { vendors: ranked, industries: shownIndustries, popularUseCases: popular, faces };
 }
 
 module.exports = { buildNav };

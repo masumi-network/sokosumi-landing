@@ -182,7 +182,7 @@ function head(opts) {
 // Nav model (top vendors + industries) for the dropdown menus. It is the
 // same for every visitor, so a module-level cache is safe: the server calls
 // setNav() with the freshly built model before rendering.
-let NAV_MODEL = { vendors: [], industries: [], faces: [] };
+let NAV_MODEL = { vendors: [], industries: [], popularUseCases: [], faces: [] };
 function setNav(model) {
   if (model) NAV_MODEL = model;
 }
@@ -333,20 +333,48 @@ function agentsPanel() {
 }
 
 // The Use cases menu: pick an industry, or open the hub.
+// The Use cases menu: one column per industry, each showing the work that
+// industry actually runs, plus a "Most used" column for visitors who do not
+// think of their problem as belonging to a vertical. An industry name on its
+// own told nobody whether what they needed was behind it.
 function useCasesPanel() {
-  const rows = NAV_MODEL.industries
+  const industries = NAV_MODEL.industries || [];
+  const popular = NAV_MODEL.popularUseCases || [];
+  if (!industries.length && !popular.length) return "";
+
+  const cols = industries
     .map(
-      (i) =>
-        `<a class="nav-col-link" href="/use-cases/industries/${encodeURIComponent(i.slug)}"><span>${esc(i.name)}</span>${
-          i.count ? `<small>${i.count} use case${i.count > 1 ? "s" : ""}</small>` : ""
-        }</a>`,
+      (i) => `<div class="nav-col">
+        <a class="nav-col-head" href="/use-cases/industries/${encodeURIComponent(i.slug)}">${esc(i.name)}</a>
+        ${i.picks
+          .map(
+            (p) =>
+              `<a class="nav-col-link" href="/use-cases/${encodeURIComponent(p.slug)}"><span>${esc(p.title)}</span></a>`,
+          )
+          .join("")}
+      </div>`,
     )
     .join("");
-  if (!rows) return "";
-  return `<div class="nav-panel" role="group" aria-label="Use cases by industry">
-      <div class="nav-col">${rows}</div>
+
+  const popularCol = popular.length
+    ? `<div class="nav-col nav-col-popular">
+        <span class="nav-col-head">Most used</span>
+        ${popular
+          .map(
+            (p) =>
+              `<a class="nav-col-link" href="/use-cases/${encodeURIComponent(p.slug)}"><span>${esc(p.title)}</span></a>`,
+          )
+          .join("")}
+      </div>`
+    : "";
+
+  const total = industries.length + (popularCol ? 1 : 0);
+  return `<div class="nav-panel nav-panel-wide nav-panel-mega" role="group" aria-label="Use cases">
+      <p class="nav-panel-label">By industry</p>
+      <div class="nav-cols" style="--nav-cols:${total}">${cols}${popularCol}</div>
       <div class="nav-panel-foot">
         <a href="/use-cases">All use cases ${icon("arrow-up-right", 13)}</a>
+        <a href="/tasks">Browse template tasks ${icon("arrow-up-right", 13)}</a>
       </div>
     </div>`;
 }
@@ -364,12 +392,12 @@ function navItems(currentPath) {
     return panel ? `<div class="nav-drop">${trigger}${panel}</div>` : trigger;
   };
 
+  // Three items only. Guides and Releases are reference material, not paths
+  // into the product, and they live in the footer.
   return [
     item("/coworkers", "AI Coworkers", agents, "/vendors"),
     item("/use-cases", "Use cases", useCases),
     item("/pricing", "Pricing", ""),
-    item("/guides", "Guides", ""),
-    item("/releases", "Releases", ""),
   ].join("\n            ");
 }
 
@@ -380,10 +408,7 @@ const MOBILE_LINKS = [
   ["/vendors", "Vendors", "The teams behind them"],
   ["/tasks", "Template tasks", "Ready-to-run work"],
   ["/use-cases", "Use cases", "By job and by industry"],
-  ["/pricing", "Pricing", "Pay per task, no subscription"],
-  ["/guides", "Guides", ""],
-  ["/releases", "Releases", ""],
-  ["/blog", "Blog", ""],
+  ["/pricing", "Pricing", "Plans and credits per seat"],
 ];
 
 function mobileNav() {
