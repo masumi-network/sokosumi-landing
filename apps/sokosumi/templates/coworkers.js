@@ -206,7 +206,7 @@ async function profile(ctx) {
         ${profileStats(c)}
         ${c.description ? `<p class="cw-desc">${esc(c.description)}</p>` : ""}
         <a class="btn btn-primary btn-lg cw-cta" href="${attr(tryUrl(c))}">Try ${esc(c.name)} on Sokosumi</a>
-        <p class="cta-note">Creating an account is free. You only spend credits on the work you actually run.</p>
+        <p class="cta-note">Creating an account is free. You only spend credits on the work you actually run.${shell.NO_CARD_LINE}</p>
       </div>
     </div>
     ${longBio}

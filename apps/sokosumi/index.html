@@ -264,16 +264,11 @@
         font-size: 13px; line-height: 1.5; color: rgba(255, 255, 255, 0.68);
         max-width: 44ch; margin: 0 0 26px;
       }
-
-      .hero-chips { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-start; }
-      .pill {
-        display: inline-flex; align-items: center; border-radius: var(--r-md);
-        font-family: var(--sans); font-size: 13px; letter-spacing: 0; padding: 7px 14px;
-        background: transparent; color: rgba(255, 255, 255, 0.78);
-        border: 1px solid rgba(255, 255, 255, 0.28); cursor: pointer;
-        transition: background-color 0.25s var(--ease), color 0.25s var(--ease), border-color 0.25s var(--ease);
-      }
-      .pill:hover { background: rgba(255, 255, 255, 0.12); color: #fff; border-color: rgba(255, 255, 255, 0.5); }
+      /* the reassurance line under every signup button (never in the nav) */
+      .no-card { display: block; margin-top: 4px; font-size: 12px; line-height: 1.4; color: rgba(255, 255, 255, 0.5); }
+      .cta-action { display: flex; flex-direction: column; align-items: flex-start; gap: 0; }
+      /* two classes, so it outranks the band's own `p` rule (16px) */
+      .cta-band .no-card { margin-top: 10px; font-size: 12px; color: rgba(255, 255, 255, 0.5); }
 
       /* trusted-by wall at the hero's base, on the page grid: label left, logos right */
       .hero-logos { position: relative; z-index: 1; border-top: 1px solid rgba(255, 255, 255, 0.14); }
@@ -684,7 +679,6 @@
            width itself before the buttons can stretch into it */
         .hero-cta { flex-direction: column; align-items: stretch; align-self: stretch; max-width: 360px; }
         .hero-cta .btn { width: 100%; justify-content: center; }
-        .pill { padding: 12px 16px; }
       }
 
       /* ===== FAQ ===== */
@@ -744,7 +738,7 @@
         <div style="display: flex; gap: 8px; align-items: center;">
           <a class="btn btn-sm btn-ghost nav-login" href="https://app.sokosumi.com/signin">Log In</a>
           <a class="btn btn-sm btn-outline nav-sales" href="/talk-to-sales">Talk to Sales</a>
-          <a class="btn btn-sm btn-primary" href="https://app.sokosumi.com">Sign Up</a>
+          <a class="btn btn-sm btn-primary" href="https://app.sokosumi.com">Sign Up Free</a>
           <button class="nav-burger" id="navBurger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobileNav"><span></span><span></span></button>
         </div>
       </nav>
@@ -766,16 +760,10 @@
 
         <div class="hero-cta" data-reveal style="--i: 3">
           <a class="btn btn-lg hero-cta-sales" href="/talk-to-sales">Talk to Sales</a>
-          <a class="btn btn-lg hero-cta-signup" href="https://app.sokosumi.com">Sign Up</a>
+          <a class="btn btn-lg hero-cta-signup" href="https://app.sokosumi.com">Sign Up Free</a>
         </div>
-        <p class="hero-note" data-reveal style="--i: 3">Creating an account is free. You only spend credits on the work you actually run.</p>
+        <p class="hero-note" data-reveal style="--i: 3">Creating an account is free. You only spend credits on the work you actually run.<span class="no-card">*No Credit Card required</span></p>
 
-        <div class="hero-chips" id="heroChips" data-reveal style="--i: 4">
-          <button type="button" class="pill" data-cat="Research">Research</button>
-          <button type="button" class="pill" data-cat="Social">Social</button>
-          <button type="button" class="pill" data-cat="Planning">Planning</button>
-          <button type="button" class="pill" data-cat="Writing">Writing</button>
-        </div>
       </div>
 
       <!-- social proof: client brands (same set the Serviceplan/Sokosumi site uses) -->
@@ -814,7 +802,7 @@
       <a class="m-link" href="/releases">Releases</a>
       <a class="m-link" href="/blog">Blog</a>
       <div class="m-actions">
-        <a class="btn btn-primary" href="https://app.sokosumi.com">Sign Up</a>
+        <a class="btn btn-primary" href="https://app.sokosumi.com">Sign Up Free</a>
         <a class="btn btn-outline" href="/talk-to-sales">Talk to Sales</a>
         <a class="btn btn-ghost" href="https://app.sokosumi.com/signin">Log In</a>
       </div>
@@ -1156,12 +1144,15 @@
         <h2 data-reveal>Your next coworker is <span class="serif-accent">one click away</span>.</h2>
         <p data-reveal style="--i: 1">Sign up and hand over your first task today.</p>
         <span class="cta-faces" id="ctaFaces" aria-hidden="true"></span>
-        <a class="btn btn-primary btn-lg" href="https://app.sokosumi.com" data-reveal style="--i: 2">
-          Sign up
-          <span class="orb" aria-hidden="true">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-          </span>
-        </a>
+        <div class="cta-action" data-reveal style="--i: 2">
+          <a class="btn btn-primary btn-lg" href="https://app.sokosumi.com">
+            Sign Up Free
+            <span class="orb" aria-hidden="true">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </span>
+          </a>
+          <p class="no-card">*No Credit Card required</p>
+        </div>
       </div>
     </section>
 
@@ -1221,12 +1212,6 @@
           size = size || 14;
           return '<svg width="' + size + '" height="' + size + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + (ICON_PATHS[name] || "") + "</svg>";
         }
-
-        /* hero category chips → /tasks browse page */
-        document.getElementById("heroChips").addEventListener("click", function (e) {
-          var chip = e.target.closest("[data-cat]");
-          if (chip) location.href = "/tasks?category=" + encodeURIComponent(chip.getAttribute("data-cat"));
-        });
 
         /* video pause/play */
         var video = document.getElementById("bgVideo");

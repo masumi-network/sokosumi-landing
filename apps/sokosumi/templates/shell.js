@@ -260,6 +260,20 @@ function shotGallery(keys) {
 // Lives here rather than in blocks.js so templates that render no CMS blocks
 // can use it too; blocks.ctaBand() delegates to this so a CMS-authored band
 // and a hand-built one are the same markup.
+// Sits under any button that starts a signup. The nav is the one exception —
+// a bar of chrome is not the place for a reassurance line.
+const NO_CARD = `<p class="no-card">*No Credit Card required</p>`;
+// Same line, but as a span so it can sit inside an existing note paragraph
+// instead of becoming another item in a gapped flex column.
+const NO_CARD_LINE = `<span class="no-card">*No Credit Card required</span>`;
+
+// True when a CTA sends the visitor into the app, i.e. it is a signup. Bands
+// that link somewhere else on the site (the blog's "Browse the roster") get
+// no fine print, because nothing is being signed up for.
+function isSignupHref(href) {
+  return !href || href === APP || href.startsWith(APP + "/");
+}
+
 function ctaBand(b) {
   const heading = b.heading || "Put an AI coworker on it";
   const label = b.ctaLabel || "Start free";
@@ -267,7 +281,10 @@ function ctaBand(b) {
   return `<section class="blk blk-cta" data-reveal><div class="cta-inner">
       <h2>${esc(heading)}</h2>
       ${b.subheading ? `<p>${esc(b.subheading)}</p>` : ""}
-      <a class="btn btn-primary btn-lg" href="${attr(href)}">${esc(label)}</a>
+      <div class="cta-action">
+        <a class="btn btn-primary btn-lg" href="${attr(href)}">${esc(label)}</a>
+        ${isSignupHref(href) ? NO_CARD : ""}
+      </div>
       ${ctaFaces(b.seed != null ? b.seed : heading.length, 4)}
     </div></section>`;
 }
@@ -369,7 +386,7 @@ function mobileNav() {
   return `<div class="mobile-nav" id="mobileNav" hidden>
         ${links}
         <div class="m-actions">
-          <a class="btn btn-primary" href="${APP}">Sign Up</a>
+          <a class="btn btn-primary" href="${APP}">Sign Up Free</a>
           <a class="btn btn-outline" href="/talk-to-sales">Talk to Sales</a>
           <a class="btn btn-ghost" href="${APP}/signin">Log In</a>
         </div>
@@ -391,7 +408,7 @@ function header(currentPath) {
         <div class="actions">
           <a class="btn btn-sm btn-ghost" href="${APP}/signin">Log In</a>
           <a class="btn btn-sm btn-outline" href="/talk-to-sales">Talk to Sales</a>
-          <a class="btn btn-sm btn-primary" href="${APP}">Sign Up</a>
+          <a class="btn btn-sm btn-primary" href="${APP}">Sign Up Free</a>
           ${BURGER}
         </div>
       </div>
@@ -514,6 +531,8 @@ module.exports = {
   vendorLogo,
   ctaFaces,
   ctaBand,
+  NO_CARD,
+  NO_CARD_LINE,
   gridCls,
   SHOTS,
   shotFor,

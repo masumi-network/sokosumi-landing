@@ -71,6 +71,7 @@ function sentState() {
     <div class="form-actions" style="margin-top:8px">
       <a class="btn btn-primary" href="${APP}">Start a task in the app</a>
       <a class="btn btn-outline" href="/coworkers">Meet the coworkers</a>
+      ${shell.NO_CARD}
     </div>
   </div>
   <div class="page-section" data-reveal style="--i:1">
