@@ -342,8 +342,11 @@ function pageEnd() {
 
 function avatar(entity, cls) {
   const img = entity && entity.image;
+  // Marketplace listings are represented by a line-art icon, not a portrait,
+  // so it gets contained and inset instead of cropped to fill the circle.
+  const icon = entity && entity.kind === "agent" ? " is-icon" : "";
   if (img) {
-    return `<span class="avatar ${cls || ""}"><img src="${attr(img)}" alt="" loading="lazy" /></span>`;
+    return `<span class="avatar ${cls || ""}${icon}"><img src="${attr(img)}" alt="" loading="lazy" /></span>`;
   }
   const initial = esc((entity && entity.name ? entity.name : "?").charAt(0));
   return `<span class="avatar ${cls || ""}" style="background:var(--ink)">${initial}</span>`;

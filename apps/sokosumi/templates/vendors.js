@@ -66,7 +66,7 @@ async function index(ctx) {
 
 function tile(c, i) {
   const img = c.image
-    ? `<span class="portrait"><img src="${attr(c.image)}" alt="${attr(c.name)}" loading="lazy" /></span>`
+    ? `<span class="portrait${c.kind === "agent" ? " is-icon" : ""}"><img src="${attr(c.image)}" alt="${attr(c.name)}" loading="lazy" /></span>`
     : `<span class="portrait"></span>`;
   return `<a class="cw-tile" href="/coworkers/${encodeURIComponent(c.slug)}" data-reveal style="--i:${i % 4}">
     ${img}
