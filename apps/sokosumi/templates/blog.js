@@ -46,6 +46,7 @@ async function index(ctx) {
       description: "Articles, announcements, and press from the team behind your AI coworkers.",
       path: "/blog",
       breadcrumb: cr,
+      jsonld: shell.itemListLd("Sokosumi blog", "/blog", posts.map((p) => ({ name: p.title, path: `/blog/${p.slug}` }))),
     }) +
     `<div class="page-head" data-reveal>
       <h1>The Sokosumi blog</h1>
@@ -87,16 +88,24 @@ async function detail(ctx) {
       path: `/blog/${p.slug}`,
       breadcrumb: cr,
       ogImage: cover || undefined,
+      article: { published: p.date || undefined, modified: p.updatedAt || p.date || undefined },
       jsonld: {
         "@context": "https://schema.org",
         "@type": "BlogPosting",
+        "@id": `${shell.SITE}/blog/${p.slug}#article`,
         headline: p.title,
         description: p.description || undefined,
         datePublished: p.date || undefined,
-        author: p.author
+        dateModified: p.updatedAt || p.date || undefined,
+        // "The Sokosumi team" is a byline, not a person. Typing it as one
+        // asserts a human author Google cannot reconcile with anything.
+        author: p.author && !/team/i.test(p.author)
           ? { "@type": "Person", name: p.author }
-          : { "@type": "Organization", name: "Sokosumi" },
+          : { "@type": "Organization", "@id": `${shell.SITE}/#organization` },
+        publisher: { "@id": `${shell.SITE}/#organization` },
         image: cover || undefined,
+        mainEntityOfPage: { "@type": "WebPage", "@id": `${shell.SITE}/blog/${p.slug}` },
+        isPartOf: { "@id": `${shell.SITE}/#website` },
         url: `${shell.SITE}/blog/${p.slug}`,
       },
     }) +

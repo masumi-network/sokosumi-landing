@@ -9,6 +9,57 @@ const shell = require("./shell");
 const cms = require("../lib/cms");
 const { esc, attr, icon, pageStart, pageEnd, APP, SALES_URL } = shell;
 
+// The page publishes five priced tiers and carried no price markup at all.
+// Prices are read back off the same PLANS array the page renders, so the
+// markup cannot drift from what a visitor sees — the mismatch Google
+// penalises. "Free" becomes 0; "Custom" has no price and is left as an Offer
+// without one, which is the correct way to say "contact us".
+function planOffer(p) {
+  const amount = p.price === "Free" ? "0" : (p.price.match(/[\d.,]+/) || [null])[0];
+  return {
+    "@type": "Offer",
+    name: p.name,
+    description: p.tagline,
+    ...(amount
+      ? { price: amount.replace(/,/g, ""), priceCurrency: "EUR" }
+      : { availability: "https://schema.org/InStock" }),
+    ...(amount && amount !== "0"
+      ? { priceSpecification: {
+          "@type": "UnitPriceSpecification",
+          price: amount.replace(/,/g, ""),
+          priceCurrency: "EUR",
+          unitText: "seat",
+          billingDuration: 1,
+          billingIncrement: 1,
+          referenceQuantity: { "@type": "QuantitativeValue", value: 1, unitCode: "MON" },
+        } }
+      : {}),
+    url: `${shell.SITE}/pricing`,
+  };
+}
+
+function pricingLd() {
+  const all = [...PLANS, ENTERPRISE];
+  const priced = all.map(planOffer).filter((o) => o.price !== undefined);
+  return {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "@id": `${shell.SITE}/pricing#product`,
+    name: "Sokosumi",
+    description:
+      "AI coworkers with real roles that deliver finished marketing work, sold per seat with credits included.",
+    brand: { "@id": `${shell.SITE}/#organization` },
+    offers: {
+      "@type": "AggregateOffer",
+      offerCount: all.length,
+      lowPrice: "0",
+      highPrice: String(Math.max(...priced.map((o) => Number(o.price)))),
+      priceCurrency: "EUR",
+      offers: all.map(planOffer),
+    },
+  };
+}
+
 const PLANS = [
   {
     name: "Free",
@@ -122,6 +173,7 @@ async function render(ctx) {
         "Sokosumi plans: a free tier with 250 credits per seat, Starter at €25, Standard at €75, Pro at €200 per month, and a tailored Enterprise plan.",
       path: "/pricing",
       breadcrumb: cr,
+      jsonld: pricingLd(),
     }) +
     `<div class="page-head" data-reveal>
       <span class="eyebrow">Pricing</span>

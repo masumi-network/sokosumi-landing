@@ -50,6 +50,7 @@ async function index(ctx) {
         "The teams that build and operate the AI coworkers on the Sokosumi marketplace.",
       path: "/vendors",
       breadcrumb: cr,
+      jsonld: shell.itemListLd("Vendors on Sokosumi", "/vendors", rows.map((v) => ({ name: v.name, path: `/vendors/${v.slug}` }))),
     }) +
     `<div class="page-head" data-reveal>
       <h1>The vendors behind the coworkers</h1>
@@ -144,9 +145,14 @@ async function detail(ctx) {
       jsonld: {
         "@context": "https://schema.org",
         "@type": "Organization",
+        "@id": `${shell.SITE}/vendors/${v.slug}#org`,
         name: v.name,
-        url: `${shell.SITE}/vendors/${v.slug}`,
+        // `url` is the company's own homepage. Pointing it at their profile on
+        // this site claimed sokosumi.com/vendors/x IS their website.
+        url: v.website || undefined,
+        mainEntityOfPage: { "@type": "WebPage", "@id": `${shell.SITE}/vendors/${v.slug}` },
         description: v.description || undefined,
+        logo: v.logoLight || v.logoDark || undefined,
       },
     }) +
     `<div class="page-head" data-reveal>

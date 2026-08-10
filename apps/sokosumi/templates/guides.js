@@ -46,6 +46,7 @@ async function index(ctx) {
       description: "How to get the most out of your AI coworkers: setup, workflows, and advanced patterns.",
       path: "/guides",
       breadcrumb: cr,
+      jsonld: shell.itemListLd("Sokosumi guides", "/guides", guides.map((g) => ({ name: g.title, path: `/guides/${g.slug}` }))),
     }) +
     `<div class="page-head" data-reveal>
       <h1>Guides</h1>
@@ -90,13 +91,20 @@ async function detail(ctx) {
       description: (g.description || "").slice(0, 155),
       path: `/guides/${g.slug}`,
       breadcrumb: cr,
+      article: { published: g.publishedAt || g.createdAt || undefined, modified: g.updatedAt || undefined },
       jsonld: {
         "@context": "https://schema.org",
         "@type": "Article",
+        "@id": `${shell.SITE}/guides/${g.slug}#article`,
         headline: g.title,
         description: g.description || undefined,
+        datePublished: g.publishedAt || g.createdAt || undefined,
         dateModified: g.updatedAt || undefined,
-        author: { "@type": "Organization", name: "Sokosumi" },
+        author: { "@id": `${shell.SITE}/#organization` },
+        publisher: { "@id": `${shell.SITE}/#organization` },
+        image: coverUrl || undefined,
+        mainEntityOfPage: { "@type": "WebPage", "@id": `${shell.SITE}/guides/${g.slug}` },
+        isPartOf: { "@id": `${shell.SITE}/#website` },
         url: `${shell.SITE}/guides/${g.slug}`,
       },
     }) +

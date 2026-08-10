@@ -84,7 +84,20 @@ function press() {
 }
 
 function robots() {
-  return `User-agent: *\nAllow: /\n\nSitemap: ${SITE}/sitemap.xml\n`;
+  // The JSON endpoints exist to feed the landing page, not to be indexed —
+  // /api/catalog alone is 250 KB of duplicate content. The form confirmation
+  // and error states are the same page with a query string; letting them be
+  // crawled just splits signals across near-identical URLs.
+  return [
+    "User-agent: *",
+    "Allow: /",
+    "Disallow: /api/",
+    "Disallow: /*?sent=",
+    "Disallow: /*?error=",
+    "",
+    `Sitemap: ${SITE}/sitemap.xml`,
+    "",
+  ].join("\n");
 }
 
 // Sitemap from the CMS (every published doc) plus the static routes.

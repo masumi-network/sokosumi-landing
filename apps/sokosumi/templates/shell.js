@@ -6,7 +6,10 @@
 const cms = require("../lib/cms");
 
 const APP = "https://app.sokosumi.com";
-const SITE = "https://sokosumi.com";
+// The canonical origin. www, not the apex: sokosumi.com 301s to www, so
+// publishing the apex in canonicals and the sitemap points every one of them
+// at a redirect. Overridable so a staging deploy cannot advertise production.
+const SITE = process.env.SITE_URL || "https://www.sokosumi.com";
 // Contact is one section with two doors; /talk-to-sales and /support are
 // kept alive as 301s in server.js so old links and any printed material
 // still land in the right place.
@@ -140,16 +143,113 @@ function breadcrumbLd(items) {
 }
 
 // ---- shared chrome ----
+
+// The designed 1200x630 card. Everything that cannot supply a real share image
+// falls back to it.
+const OG_FALLBACK = { url: `${SITE}/assets/og-image.jpg`, width: 1200, height: 630 };
+
+// A share image has to survive Facebook, LinkedIn, X and Slack fetching it
+// from the open internet. Three things disqualify a candidate:
+//   * SVG — every major platform rejects it outright, so the card renders
+//     blank. 39 coworker pages were pointing at one.
+//   * a hostname only reachable from a dev environment.
+//   * a relative path, which a crawler on another origin cannot resolve.
+const DEV_HOST = /(?:^|\.)(?:localhost|127\.0\.0\.1|.*-dev\.)|\.internal(?:$|\/)/i;
+function shareImage(candidate) {
+  if (!candidate) return OG_FALLBACK;
+  const url = String(candidate.url || candidate);
+  if (!/^https?:\/\//i.test(url)) return OG_FALLBACK;
+  if (/\.svgs?(?:$|[?#])/i.test(url)) return OG_FALLBACK;
+  try {
+    if (DEV_HOST.test(new URL(url).hostname)) return OG_FALLBACK;
+  } catch {
+    return OG_FALLBACK;
+  }
+  return { url, width: candidate.width || null, height: candidate.height || null, alt: candidate.alt || null };
+}
+
+// Listing pages describe a collection; without this a crawler sees a page of
+// links and has to infer what it is a list OF. `items` is [{name, path}] in
+// the order they are rendered.
+function itemListLd(name, path, items) {
+  if (!items || !items.length) return null;
+  return {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "@id": `${SITE}${path}#list`,
+    name,
+    numberOfItems: items.length,
+    itemListOrder: "https://schema.org/ItemListOrderAscending",
+    itemListElement: items.map((it, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      name: it.name,
+      url: SITE + it.path,
+    })),
+  };
+}
+
+// Templates each build a standalone object with its own @context; inside an
+// @graph the context belongs to the document, not the node.
+function stripContext(node) {
+  if (!node || typeof node !== "object") return node;
+  const { "@context": _drop, ...rest } = node;
+  return rest;
+}
+
+const SOCIALS = [
+  "https://x.com/sokosumi",
+  "https://linkedin.com/company/sokosumi/",
+  "https://discord.com/invite/aj4QfnTS92",
+  "https://t.me/+igMz0AazR-cwMzJi",
+  "https://github.com/masumi-network",
+];
+
+const ORGANIZATION = {
+  "@type": "Organization",
+  "@id": `${SITE}/#organization`,
+  name: "Sokosumi",
+  legalName: "Plan.Net Germany GmbH & Co KG",
+  url: `${SITE}/`,
+  logo: { "@type": "ImageObject", url: `${SITE}/assets/sokosumi-wordmark.svg` },
+  image: `${SITE}/assets/og-image.jpg`,
+  vatID: "DE222163784",
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "Friedenstr. 24",
+    postalCode: "81671",
+    addressLocality: "Munich",
+    addressCountry: "DE",
+  },
+  parentOrganization: { "@type": "Organization", name: "Serviceplan Group", url: "https://www.serviceplan.com" },
+  sameAs: SOCIALS,
+};
+
+const WEBSITE = {
+  "@type": "WebSite",
+  "@id": `${SITE}/#website`,
+  name: "Sokosumi",
+  url: `${SITE}/`,
+  publisher: { "@id": `${SITE}/#organization` },
+  inLanguage: "en",
+};
+
 function head(opts) {
   const title = esc(opts.title);
   const desc = esc(opts.description || "");
   const canonical = SITE + opts.path;
-  const schemas = [];
-  if (opts.breadcrumb && opts.breadcrumb.length) schemas.push(breadcrumbLd(opts.breadcrumb));
-  if (opts.jsonld) schemas.push(opts.jsonld);
-  const jsonld = schemas
-    .map((s) => `<script type="application/ld+json">${JSON.stringify(s).replace(/</g, "\\u003c")}</script>`)
-    .join("\n    ");
+  const og = shareImage(opts.ogImage);
+  // Blog posts, guides and release notes are articles. og:type article unlocks
+  // the published/modified timestamps, which "website" silently discards.
+  const article = opts.article || null;
+  // One @graph per page rather than a pile of loose blocks, so the page's own
+  // entity can point at the organization and the site by @id instead of
+  // repeating them.
+  const graph = [ORGANIZATION, WEBSITE];
+  if (opts.breadcrumb && opts.breadcrumb.length) graph.push(breadcrumbLd(opts.breadcrumb));
+  if (opts.jsonld) graph.push(...(Array.isArray(opts.jsonld) ? opts.jsonld : [opts.jsonld]));
+  const doc = { "@context": "https://schema.org", "@graph": graph.map(stripContext) };
+  const jsonld = `<script type="application/ld+json">${JSON.stringify(doc).replace(/</g, "\\u003c")}</script>`;
   return `<!doctype html>
 <html lang="en">
   <head>
@@ -161,18 +261,27 @@ function head(opts) {
     <meta property="og:site_name" content="Sokosumi" />
     <meta property="og:title" content="${title}" />
     <meta property="og:description" content="${desc}" />
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content="${article ? "article" : "website"}" />
+    <meta property="og:locale" content="en_US" />
     <meta property="og:url" content="${attr(canonical)}" />
-    <meta property="og:image" content="${attr(opts.ogImage || SITE + "/assets/og-image.jpg")}" />
+    <meta property="og:image" content="${attr(og.url)}" />
+    ${og.width ? `<meta property="og:image:width" content="${og.width}" />` : ""}
+    ${og.height ? `<meta property="og:image:height" content="${og.height}" />` : ""}
+    <meta property="og:image:alt" content="${attr(og.alt || opts.title)}" />
+    ${article && article.published ? `<meta property="article:published_time" content="${attr(article.published)}" />` : ""}
+    ${article && article.modified ? `<meta property="article:modified_time" content="${attr(article.modified)}" />` : ""}
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="${title}" />
     <meta name="twitter:description" content="${desc}" />
-    <meta name="twitter:image" content="${attr(opts.ogImage || SITE + "/assets/og-image.jpg")}" />
-    <link rel="icon" href="/assets/favicon.png" type="image/png" sizes="32x32" />
+    <meta name="twitter:image" content="${attr(og.url)}" />
+    <meta name="twitter:image:alt" content="${attr(og.alt || opts.title)}" />
+    <link rel="icon" href="/assets/favicon.ico" sizes="32x32" />
+    <link rel="icon" href="/assets/favicon.png" type="image/png" sizes="48x48" />
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <link rel="manifest" href="/assets/site.webmanifest" />
+    <meta name="theme-color" content="#ffffff" />
+    <link rel="preload" href="/assets/fonts/inter-400-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="/assets/fonts.css" />
     <link rel="stylesheet" href="/assets/styles.css" />
     <link rel="stylesheet" href="/assets/nav.css" />
     <!-- reveals start at opacity 0 and are switched on by site.js; without JS
@@ -630,6 +739,7 @@ function vendorLogo(v, cls) {
 module.exports = {
   APP,
   SITE,
+  itemListLd,
   SALES_URL,
   SUPPORT_URL,
   setNav,

@@ -17,6 +17,7 @@
 const http = require("http");
 const fs = require("fs");
 const path = require("path");
+const zlib = require("zlib");
 const vm = require("vm");
 const crypto = require("crypto");
 
@@ -61,6 +62,9 @@ const TYPES = {
   ".woff": "font/woff",
   ".json": "application/json",
   ".ico": "image/x-icon",
+  ".webmanifest": "application/manifest+json",
+  ".xml": "application/xml; charset=utf-8",
+  ".txt": "text/plain; charset=utf-8",
 };
 
 // ── catalog cache (landing page + nightly CMS sync source) ───────────────
@@ -74,6 +78,28 @@ try {
     console.log(`[catalog] no disk cache — loaded committed seed from ${catalog.fetchedAt}`);
   } catch {
     /* no cache, no seed */
+  }
+}
+
+// /api/catalog is ~250 KB and the landing page asks for it on every view.
+// Serialising it per request burnt ~10 ms of event loop each time; it only
+// changes when refresh() replaces the catalog.
+let catalogJsonCache = null;
+function catalogJson() {
+  if (catalogJsonCache === null) catalogJsonCache = JSON.stringify(catalog);
+  return catalogJsonCache;
+}
+
+// Lets the legacy redirect map check a target exists before sending anyone
+// there — a 301 into a 404 is worse than a 301 to the hub. The coworker pages
+// are CMS-backed (catalog.coworkers is only the dozen curated personas), and
+// lib/cms serves this from memory, so it costs nothing on the 404 path.
+async function coworkerSlugs() {
+  try {
+    const list = await cms.getCoworkers();
+    return new Set(list.filter((c) => c.active !== false).map((c) => c.slug).filter(Boolean));
+  } catch {
+    return null; // CMS down: trust the slug rather than dumping everyone on the hub
   }
 }
 
@@ -324,6 +350,7 @@ async function refresh() {
     categories: agRaw ? fresh.categories : catalog.categories,
     stats: computeStats(agents, tasksTotal, catalog.stats),
   });
+  catalogJsonCache = null;
   fs.mkdirSync(dataDir, { recursive: true });
   fs.writeFileSync(cacheFile, JSON.stringify(catalog));
   console.log(
@@ -356,6 +383,7 @@ const salesTpl = require("./templates/sales");
 const pricingTpl = require("./templates/pricing");
 const supportTpl = require("./templates/support");
 const legalTpl = require("./templates/legal");
+const legacyRedirects = require("./lib/legacyRedirects");
 const listAgentTpl = require("./templates/listAgent");
 
 // Public coworker slugs follow the persona name; the product's internal
@@ -431,9 +459,28 @@ const routes = [
 if (process.argv.includes("--once")) {
   refresh().then((ok) => process.exit(ok ? 0 : 1));
 } else {
+  // Static files come out of assets/ and nowhere else. Resolving against the
+  // app root instead would hand out the entire source tree — every module, the
+  // catalog cache, package.json, and any .env sitting in the working copy that
+  // a `railway up` tarball happened to carry along.
+  const assetsDir = path.join(root, "assets");
+
+  // The handful of files a browser insists on finding at the root. Each is a
+  // real file in assets/, published one level up.
+  const ROOT_FILES = {
+    "/favicon.ico": "favicon.ico",
+    "/favicon.png": "favicon.png",
+    "/apple-touch-icon.png": "apple-touch-icon.png",
+    "/apple-touch-icon-precomposed.png": "apple-touch-icon.png",
+    "/site.webmanifest": "site.webmanifest",
+  };
+
   function resolveFile(urlPath) {
-    const resolved = path.normalize(path.join(root, urlPath));
-    if (resolved !== root && !resolved.startsWith(root + path.sep)) return null;
+    const named = ROOT_FILES[urlPath];
+    const resolved = named
+      ? path.join(assetsDir, named)
+      : path.normalize(path.join(root, urlPath));
+    if (!resolved.startsWith(assetsDir + path.sep)) return null;
     try {
       const stat = fs.statSync(resolved);
       return stat.isFile() ? { path: resolved, size: stat.size } : null;
@@ -442,29 +489,133 @@ if (process.argv.includes("--once")) {
     }
   }
 
-  function serveIndex(res) {
-    res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
-    res.end(fs.readFileSync(path.join(root, "index.html")));
+  // Sent on every response. None of these need a CDN or a reverse proxy, and
+  // without them the site scored zero on the basics.
+  const BASE_HEADERS = {
+    "X-Content-Type-Options": "nosniff",
+    "Referrer-Policy": "strict-origin-when-cross-origin",
+    "X-Frame-Options": "SAMEORIGIN",
+    "Permissions-Policy": "camera=(), microphone=(), geolocation=(), interest-cohort=()",
+  };
+
+  const COMPRESSIBLE = /^(?:text\/|application\/(?:json|xml|javascript|manifest))/;
+
+  // Which encoding the client asked for, best first. q=0 is a refusal, so an
+  // "identity;q=0, gzip" client still gets gzip and a "gzip;q=0" one does not.
+  function pickEncoding(req) {
+    const raw = String(req.headers["accept-encoding"] || "");
+    const accepted = new Map(
+      raw.split(",").map((part) => {
+        const [name, ...params] = part.trim().split(";");
+        const q = params.find((p) => p.trim().startsWith("q="));
+        return [name.toLowerCase(), q ? parseFloat(q.split("=")[1]) : 1];
+      }),
+    );
+    if (accepted.get("br") > 0) return "br";
+    if (accepted.get("gzip") > 0) return "gzip";
+    return null;
+  }
+
+  const compressors = { br: zlib.brotliCompressSync, gzip: zlib.gzipSync };
+
+  // The single exit point for every non-streamed response: applies the base
+  // headers, compresses when it is worth it, and honours HEAD.
+  function send(req, res, status, headers, body) {
+    const head = { ...BASE_HEADERS, ...headers };
+    let payload = Buffer.isBuffer(body) ? body : Buffer.from(body ?? "", "utf8");
+    const type = String(head["Content-Type"] || "");
+
+    // Below ~1 KB the header overhead cancels out the saving.
+    if (payload.length > 1024 && COMPRESSIBLE.test(type)) {
+      const enc = pickEncoding(req);
+      if (enc) {
+        payload = compressors[enc](payload);
+        head["Content-Encoding"] = enc;
+        head.Vary = head.Vary ? `${head.Vary}, Accept-Encoding` : "Accept-Encoding";
+      }
+    }
+    head["Content-Length"] = payload.length;
+    res.writeHead(status, head);
+    if (req.method === "HEAD") return res.end();
+    res.end(payload);
+  }
+
+  // X-Forwarded-For is a list the client can prepend to at will, so the
+  // leftmost entry is attacker-controlled and useless for rate limiting.
+  // Trust only the hops our own proxy appended: count from the right.
+  const TRUSTED_HOPS = Number(process.env.TRUSTED_PROXY_HOPS ?? 1);
+  function clientIp(req) {
+    const chain = String(req.headers["x-forwarded-for"] || "")
+      .split(",")
+      .map((s) => s.trim())
+      .filter(Boolean);
+    if (TRUSTED_HOPS > 0 && chain.length) {
+      return chain[Math.max(0, chain.length - TRUSTED_HOPS)];
+    }
+    return req.socket.remoteAddress || "unknown";
+  }
+
+  function serveIndex(req, res) {
+    const file = path.join(root, "index.html");
+    const stat = fs.statSync(file);
+    send(req, res, 200, {
+      "Content-Type": "text/html; charset=utf-8",
+      "Cache-Control": "public, max-age=300",
+      "Last-Modified": stat.mtime.toUTCString(),
+    }, fs.readFileSync(file));
   }
 
   http
     .createServer(async (req, res) => {
       const [rawPath, rawQuery] = (req.url || "/").split("?");
-      const urlPath = decodeURIComponent(rawPath);
+      // decodeURIComponent throws on a malformed escape ("/%zz"), and this
+      // runs before the try below — an uncaught throw here took the whole
+      // process down, so one bad link from a crawler was a site outage.
+      let urlPath;
+      try {
+        urlPath = decodeURIComponent(rawPath);
+      } catch {
+        return send(req, res, 400, { "Content-Type": "text/plain; charset=utf-8" }, "Bad Request");
+      }
+      // A NUL byte reaches fs.statSync and throws a TypeError the catch below
+      // turns into a 500 — an unauthenticated 5xx generator. It is simply not
+      // a valid path.
+      if (urlPath.includes("\0")) {
+        return send(req, res, 400, { "Content-Type": "text/plain; charset=utf-8" }, "Bad Request");
+      }
       const query = Object.fromEntries(new URLSearchParams(rawQuery || ""));
+
+      if (!["GET", "HEAD", "POST"].includes(req.method)) {
+        return send(req, res, 405, { Allow: "GET, HEAD, POST", "Content-Type": "text/plain; charset=utf-8" }, "Method Not Allowed");
+      }
+
+      // One URL per page. Duplicate slashes, a trailing slash and /index.html
+      // all used to serve a 200, which hands a crawler an unbounded set of
+      // URLs for the same content. Redirect them instead, keeping the query
+      // string so campaign attribution survives the hop.
+      const qs = rawQuery ? `?${rawQuery}` : "";
+      if (req.method !== "POST") {
+        let canonicalPath = urlPath.replace(/\/{2,}/g, "/");
+        if (canonicalPath.length > 1) canonicalPath = canonicalPath.replace(/\/+$/, "") || "/";
+        if (canonicalPath === "/index.html") canonicalPath = "/";
+        if (canonicalPath !== urlPath) {
+          return send(req, res, 301, {
+            Location: encodeURI(canonicalPath) + qs,
+            "Cache-Control": "public, max-age=3600",
+          }, "");
+        }
+      }
 
       try {
         if (urlPath === "/api/catalog") {
-          res.writeHead(200, { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "public, max-age=60" });
-          return res.end(JSON.stringify(catalog));
+          return send(req, res, 200, { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "public, max-age=60" }, catalogJson());
         }
 
         // Nav model for the landing page's dropdown menus (sub-pages render
         // it server-side). Same shape as templates/shell.js consumes.
         if (urlPath === "/api/nav") {
           const model = await buildNav({}).catch(() => ({ vendors: [], industries: [] }));
-          res.writeHead(200, { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "public, max-age=300" });
-          return res.end(JSON.stringify(model));
+          return send(req, res, 200, { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "public, max-age=300" }, JSON.stringify(model));
         }
 
         // Draft preview: /api/preview?secret=…&path=/x sets the cookie and
@@ -492,10 +643,7 @@ if (process.argv.includes("--once")) {
         // Talk-to-Sales submissions. Plain form POST so the page keeps
         // working without JavaScript; always redirects (post/redirect/get).
         if (urlPath === "/api/sales-inquiry" && req.method === "POST") {
-          const ip =
-            String(req.headers["x-forwarded-for"] || "").split(",")[0].trim() ||
-            req.socket.remoteAddress ||
-            "unknown";
+          const ip = clientIp(req);
           const back = (params) => {
             res.writeHead(303, { Location: "/contact/sales?" + new URLSearchParams(params), "Cache-Control": "no-store" });
             res.end();
@@ -548,10 +696,7 @@ if (process.argv.includes("--once")) {
         // Support requests. Same plain-form POST + redirect shape as sales,
         // so the page works with JavaScript disabled.
         if (urlPath === "/api/support-request" && req.method === "POST") {
-          const ip =
-            String(req.headers["x-forwarded-for"] || "").split(",")[0].trim() ||
-            req.socket.remoteAddress ||
-            "unknown";
+          const ip = clientIp(req);
           const back = (params) => {
             res.writeHead(303, { Location: "/contact/support?" + new URLSearchParams(params), "Cache-Control": "no-store" });
             res.end();
@@ -599,10 +744,7 @@ if (process.argv.includes("--once")) {
         // Agent listing submissions. Larger body than the other two forms
         // (the Terms of Use field alone can be long), so the cap is raised.
         if (urlPath === "/api/agent-listing" && req.method === "POST") {
-          const ip =
-            String(req.headers["x-forwarded-for"] || "").split(",")[0].trim() ||
-            req.socket.remoteAddress ||
-            "unknown";
+          const ip = clientIp(req);
           const back = (params) => {
             res.writeHead(303, {
               Location: "/list-your-agent?" + new URLSearchParams(params),
@@ -657,27 +799,24 @@ if (process.argv.includes("--once")) {
         }
 
         if (urlPath === "/robots.txt") {
-          res.writeHead(200, { "Content-Type": "text/plain; charset=utf-8" });
-          return res.end(misc.robots());
+          return send(req, res, 200, { "Content-Type": "text/plain; charset=utf-8", "Cache-Control": "public, max-age=3600" }, misc.robots());
         }
 
         if (urlPath === "/sitemap.xml") {
           const xml = await misc.sitemap();
-          res.writeHead(200, { "Content-Type": "application/xml; charset=utf-8", "Cache-Control": "public, max-age=600" });
-          return res.end(xml);
+          return send(req, res, 200, { "Content-Type": "application/xml; charset=utf-8", "Cache-Control": "public, max-age=600" }, xml);
         }
 
-        if (urlPath === "/" || urlPath === "/index.html") return serveIndex(res);
+        if (urlPath === "/") return serveIndex(req, res);
 
         const clean = urlPath.replace(/\/+$/, "") || "/";
         const seg = clean.split("/").filter(Boolean);
         const preview = hasPreviewCookie(req);
         const sendHtml = (html, code) => {
-          res.writeHead(code || 200, {
-            "Content-Type": "text/html; charset=utf-8",
-            "Cache-Control": preview ? "no-store" : "public, max-age=120",
-          });
-          res.end(html);
+          // A 404 must not sit in a shared cache for two minutes: the usual
+          // cause is content that is about to exist.
+          const cache = preview || code === 404 ? "no-store" : "public, max-age=120";
+          send(req, res, code || 200, { "Content-Type": "text/html; charset=utf-8", "Cache-Control": cache }, html);
         };
 
         // Static assets first (they all live under /assets or have extensions).
@@ -685,24 +824,60 @@ if (process.argv.includes("--once")) {
           const file = resolveFile(urlPath);
           if (!file) return sendHtml(misc.notFound(), 404);
           const type = TYPES[path.extname(file.path).toLowerCase()] || "application/octet-stream";
+          const stat = fs.statSync(file.path);
+          const etag = `"${stat.size.toString(16)}-${stat.mtimeMs.toString(16)}"`;
+          const lastModified = stat.mtime.toUTCString();
+          // Filenames here are not content-hashed, so a year of immutable
+          // caching would strand an updated stylesheet. A day, revalidated,
+          // gives repeat visits a 304 instead of a full refetch.
+          const cacheControl = "public, max-age=86400, stale-while-revalidate=604800";
+
+          const inm = req.headers["if-none-match"];
+          const ims = req.headers["if-modified-since"];
+          if (inm === etag || (!inm && ims && new Date(ims) >= new Date(lastModified.slice(0, 25)))) {
+            res.writeHead(304, { ...BASE_HEADERS, ETag: etag, "Cache-Control": cacheControl });
+            return res.end();
+          }
+
           const range = req.headers.range;
           if (range) {
+            // "bytes=-500" means the LAST 500 bytes. Treating the empty first
+            // group as 0 served the first 501 instead.
             const match = /bytes=(\d*)-(\d*)/.exec(range);
-            if (match) {
-              const start = match[1] ? parseInt(match[1], 10) : 0;
-              const end = match[2] ? parseInt(match[2], 10) : file.size - 1;
+            if (match && (match[1] || match[2])) {
+              const suffix = !match[1] && match[2];
+              const start = suffix
+                ? Math.max(0, file.size - parseInt(match[2], 10))
+                : parseInt(match[1], 10);
+              const end = suffix || !match[2] ? file.size - 1 : parseInt(match[2], 10);
               if (start <= end && end < file.size) {
                 res.writeHead(206, {
+                  ...BASE_HEADERS,
                   "Content-Type": type,
                   "Content-Range": `bytes ${start}-${end}/${file.size}`,
                   "Accept-Ranges": "bytes",
                   "Content-Length": end - start + 1,
+                  "Cache-Control": cacheControl,
+                  ETag: etag,
                 });
+                if (req.method === "HEAD") return res.end();
                 return fs.createReadStream(file.path, { start, end }).pipe(res);
               }
             }
           }
-          res.writeHead(200, { "Content-Type": type, "Content-Length": file.size, "Accept-Ranges": "bytes" });
+
+          const headers = {
+            "Content-Type": type,
+            "Accept-Ranges": "bytes",
+            "Cache-Control": cacheControl,
+            ETag: etag,
+            "Last-Modified": lastModified,
+          };
+          // Text assets go through send() so they get compressed; binaries
+          // (images, video, fonts) are already compressed and stream instead.
+          if (COMPRESSIBLE.test(type)) return send(req, res, 200, headers, fs.readFileSync(file.path));
+          res.writeHead(200, { ...BASE_HEADERS, ...headers, "Content-Length": file.size });
+          if (req.method === "HEAD") return res.end();
           return fs.createReadStream(file.path).pipe(res);
         }
 
@@ -717,8 +892,11 @@ if (process.argv.includes("--once")) {
           ctx.params = params;
           const out = await r.h(ctx);
           if (out && out.redirect) {
-            res.writeHead(301, { Location: out.redirect, "Cache-Control": "public, max-age=3600" });
-            return res.end();
+            // Keep utm_* and friends across the hop, or every redirected
+            // entry point lands in analytics as direct traffic.
+            const sep = out.redirect.includes("?") ? "&" : "?";
+            const to = rawQuery ? out.redirect + sep + rawQuery : out.redirect;
+            return send(req, res, out.status || 301, { Location: to, "Cache-Control": "public, max-age=3600" }, "");
           }
           if (out) return sendHtml(out);
           return sendHtml(misc.notFound(), 404);
@@ -727,12 +905,22 @@ if (process.argv.includes("--once")) {
         // CMS landing-page catch-all (slugs may be nested, e.g. product/x).
         const html = await pagesTpl.cmsPage({ ...ctx, params: { slug: seg.join("/") } });
         if (html) return sendHtml(html);
+
+        // Nothing here by that name — but the site this one replaces may have
+        // published it. Check the legacy map before giving up, so the indexed
+        // footprint survives the cutover.
+        const legacy = legacyRedirects.resolve(seg, await coworkerSlugs());
+        if (legacy) {
+          const sep = legacy.includes("?") ? "&" : "?";
+          const to = rawQuery ? legacy + sep + rawQuery : legacy;
+          return send(req, res, 301, { Location: to, "Cache-Control": "public, max-age=86400" }, "");
+        }
+
         return sendHtml(misc.notFound(), 404);
       } catch (e) {
         console.error(`[server] ${req.method} ${urlPath} failed:`, e);
         try {
-          res.writeHead(500, { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-store" });
-          res.end(misc.serverError());
+          send(req, res, 500, { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-store" }, misc.serverError());
         } catch {
           /* headers already sent */
         }

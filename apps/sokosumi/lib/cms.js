@@ -41,12 +41,39 @@ function persist() {
   }, 2000);
 }
 
+// A CMS that fails is survivable — the stale cache covers it. A CMS that
+// merely hangs is not: without a deadline every HTML route waits on it
+// forever, and the whole site stops responding while looking perfectly
+// healthy. Fail fast and let the stale-on-error path do its job.
+const FETCH_TIMEOUT_MS = Number(process.env.CMS_TIMEOUT_MS) || 4000;
+
 async function rawFetch(pathname, draft) {
   const headers = { accept: "application/json" };
   if (draft && CMS_PREVIEW_KEY) headers.authorization = `users API-Key ${CMS_PREVIEW_KEY}`;
-  const res = await fetch(CMS_URL + pathname, { headers });
+  const res = await fetch(CMS_URL + pathname, { headers, signal: AbortSignal.timeout(FETCH_TIMEOUT_MS) });
   if (!res.ok) throw new Error(`CMS ${pathname} → HTTP ${res.status}`);
   return res.json();
+}
+
+// One in-flight request per path. Without this, a burst of concurrent visitors
+// arriving just after a TTL expiry each opened their own round-trip to the CMS
+// and each waited for it.
+const inFlight = new Map();
+
+// The cache is keyed on the request path, and 404 handling queries the CMS for
+// whatever slug was asked for — so a crawler walking nonsense URLs could grow
+// it without limit, and it is mirrored to disk. Bound it, evicting whatever
+// was least recently used.
+const MAX_ENTRIES = Number(process.env.CMS_CACHE_MAX) || 500;
+function remember(pathname, entry) {
+  cache[pathname] = entry;
+  const keys = Object.keys(cache);
+  if (keys.length > MAX_ENTRIES) {
+    keys
+      .sort((a, b) => (cache[a].at || 0) - (cache[b].at || 0))
+      .slice(0, keys.length - MAX_ENTRIES)
+      .forEach((k) => delete cache[k]);
+  }
 }
 
 // Cached GET of a payload REST path. Draft requests skip the cache entirely.
@@ -59,18 +86,27 @@ async function cmsGet(pathname, opts) {
   const hit = cache[pathname];
   const now = Date.now();
   if (hit && now - hit.at < TTL_MS) return hit.data;
-  try {
-    const data = await rawFetch(pathname, false);
-    cache[pathname] = { at: now, data };
-    persist();
-    return data;
-  } catch (e) {
-    if (hit) {
-      console.error(`[cms] ${e.message} — serving stale data`);
-      return hit.data; // stale-on-error, unbounded
-    }
-    throw e;
-  }
+
+  const pending = inFlight.get(pathname);
+  if (pending) return pending;
+
+  const job = rawFetch(pathname, false)
+    .then((data) => {
+      remember(pathname, { at: Date.now(), data });
+      persist();
+      return data;
+    })
+    .catch((e) => {
+      if (hit) {
+        console.error(`[cms] ${e.message} — serving stale data`);
+        return hit.data;
+      }
+      throw e;
+    })
+    .finally(() => inFlight.delete(pathname));
+
+  inFlight.set(pathname, job);
+  return job;
 }
 
 // Build a payload REST query string. where is a nested object using payload's

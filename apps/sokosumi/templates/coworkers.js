@@ -86,6 +86,13 @@ async function index(ctx) {
         "Browse every AI coworker on Sokosumi: marketing specialists with real roles, public profiles, and ready-to-run work.",
       path: "/coworkers",
       breadcrumb: cr,
+      jsonld: shell.itemListLd(
+        "AI coworkers on Sokosumi",
+        "/coworkers",
+        // Both halves of the page: the curated roster and the marketplace
+        // agents listed below it.
+        [...groups.flatMap((g) => g.items), ...agents].map((c) => ({ name: c.name, path: `/coworkers/${c.slug}` })),
+      ),
     }) +
     `<div class="page-head" data-reveal>
       <h1>Meet your AI coworkers</h1>
@@ -129,6 +136,57 @@ function profileStats(c) {
   if (c.rating) stats.push(`<span><strong>${esc(Number(c.rating).toFixed(1))}</strong> rating${c.ratingCount ? ` (${esc(String(c.ratingCount))})` : ""}</span>`);
   if (c.credits) stats.push(`<span><strong>${esc(String(c.credits))}</strong> credits per run</span>`);
   return stats.length ? `<div class="cw-stats">${stats.join("")}</div>` : "";
+}
+
+// These pages were typed as schema:Person — which told Google that "Advanced
+// Web Research" is a human being who worksFor Serviceplan Group. They are
+// software you run for credits, so SoftwareApplication is the honest type.
+//
+// Only facts the page actually displays go in here: the run count and rating
+// come from profileStats() above, and nothing is asserted that a reader cannot
+// see. The credits price is deliberately NOT expressed as an Offer — schema
+// prices need an ISO-4217 currency and credits are not one, so stating a
+// number there would be inventing a price.
+function profileLd(c, vendorName, vendorSlug) {
+  const ld = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "@id": `${shell.SITE}/coworkers/${c.slug}#app`,
+    name: c.name,
+    applicationCategory: "BusinessApplication",
+    operatingSystem: "Web",
+    url: `${shell.SITE}/coworkers/${c.slug}`,
+    image: c.image || undefined,
+    description: c.description || undefined,
+    isPartOf: { "@id": `${shell.SITE}/#website` },
+  };
+  if (c.role) ld.alternateName = c.role;
+  if (vendorName) {
+    // @id, not url: the vendor's page on this site identifies the node, it is
+    // not a claim that sokosumi.com/vendors/x is the company's own website.
+    ld.provider = {
+      "@type": "Organization",
+      name: vendorName,
+      ...(vendorSlug ? { "@id": `${shell.SITE}/vendors/${vendorSlug}#org` } : {}),
+    };
+  }
+  if (c.rating && c.ratingCount) {
+    ld.aggregateRating = {
+      "@type": "AggregateRating",
+      ratingValue: Number(c.rating).toFixed(1),
+      ratingCount: Number(c.ratingCount),
+      bestRating: 5,
+      worstRating: 1,
+    };
+  }
+  if (c.runs) {
+    ld.interactionStatistic = {
+      "@type": "InteractionCounter",
+      interactionType: "https://schema.org/UseAction",
+      userInteractionCount: Number(c.runs),
+    };
+  }
+  return ld;
 }
 
 function profileTags(c) {
@@ -183,16 +241,7 @@ async function profile(ctx) {
       path: `/coworkers/${c.slug}`,
       ogImage: c.image || undefined,
       breadcrumb: cr,
-      jsonld: {
-        "@context": "https://schema.org",
-        "@type": "Person",
-        name: c.name,
-        jobTitle: c.role || undefined,
-        worksFor: vn ? { "@type": "Organization", name: vn } : undefined,
-        image: c.image || undefined,
-        description: c.description || undefined,
-        url: `${shell.SITE}/coworkers/${c.slug}`,
-      },
+      jsonld: profileLd(c, vn, vs),
     }) +
     `<div class="cw-hero">
       <div class="cw-portrait${c.kind === "agent" ? " is-icon" : ""}" data-reveal>${c.image ? `<img src="${attr(c.image)}" alt="${attr(c.name)}" />` : ""}</div>

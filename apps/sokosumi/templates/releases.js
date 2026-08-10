@@ -69,6 +69,7 @@ async function index(ctx) {
       description: "Every Sokosumi release: new capabilities, improvements, and fixes, in order.",
       path: "/releases",
       breadcrumb: cr,
+      jsonld: shell.itemListLd("Sokosumi releases", "/releases", releases.map((r) => ({ name: r.title, path: `/releases/${r.slug}` }))),
     }) +
     `<div class="page-head" data-reveal>
       <h1>What's new in Sokosumi</h1>
@@ -124,13 +125,20 @@ async function detail(ctx) {
       description: (r.description || "").slice(0, 155),
       path: `/releases/${r.slug}`,
       breadcrumb: cr,
+      article: { published: r.date || undefined, modified: r.updatedAt || r.date || undefined },
       jsonld: {
         "@context": "https://schema.org",
         "@type": "Article",
+        "@id": `${shell.SITE}/releases/${r.slug}#article`,
         headline: r.title,
         description: r.description || undefined,
         datePublished: r.date || undefined,
-        author: { "@type": "Organization", name: "Sokosumi" },
+        dateModified: r.updatedAt || r.date || undefined,
+        author: { "@id": `${shell.SITE}/#organization` },
+        publisher: { "@id": `${shell.SITE}/#organization` },
+        image: coverUrl || undefined,
+        mainEntityOfPage: { "@type": "WebPage", "@id": `${shell.SITE}/releases/${r.slug}` },
+        isPartOf: { "@id": `${shell.SITE}/#website` },
         url: `${shell.SITE}/releases/${r.slug}`,
       },
     }) +

@@ -148,6 +148,11 @@ async function browse(ctx) {
         "Browse ready-to-run template tasks from Sokosumi's AI coworkers. Filter by category and open any task to see a sample output.",
       path: "/tasks",
       breadcrumb: cr,
+      jsonld: shell.itemListLd(
+        "Template tasks on Sokosumi",
+        "/tasks",
+        hits.map(({ o, c }) => ({ name: o.title, path: `/coworkers/${c.slug}/tasks/${o.slug}` })),
+      ),
     }) +
     `<div class="page-head" data-reveal>
       <h1>Template tasks, ready to run</h1>
@@ -214,7 +219,7 @@ async function detail(ctx) {
         name: offer.title,
         description: offer.description || undefined,
         category: offer.category || undefined,
-        provider: { "@type": "Person", name: c.name, url: `${shell.SITE}/coworkers/${c.slug}` },
+        provider: { "@id": `${shell.SITE}/coworkers/${c.slug}#app` },
         url: `${shell.SITE}/coworkers/${c.slug}/tasks/${offer.slug}`,
       },
     }) +
