@@ -280,4 +280,6 @@ function faqJsonLd(faqs) {
   };
 }
 
-module.exports = { renderBlocks, collectFaqs, faqJsonLd };
+// ctaBand is exported on its own so hand-built pages (the use-case hub,
+// industry pages) can close with the same band a CMS page would.
+module.exports = { renderBlocks, collectFaqs, faqJsonLd, ctaBand: (b) => RENDER.ctaBand(b) };
