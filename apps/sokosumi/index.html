@@ -461,18 +461,18 @@
              arrows slide the track ===== */
       .shot-stage { position: relative; }
       .shot-viewport { overflow: hidden; }
-      .shot-frame {
-        position: relative; border: 1px solid var(--border); border-radius: var(--r-lg);
-        overflow: hidden; background: var(--ink);
-      }
+      /* no frame: the renders already read as objects, so a box around them
+         only draws a hard edge the eye has to cross */
+      .shot-frame { position: relative; border-radius: var(--r-lg); overflow: hidden; }
       .shot-track { display: flex; gap: 24px; transition: transform 0.6s var(--ease); }
       @media (prefers-reduced-motion: reduce) { .shot-track { transition: none; } }
       .shot-slide { flex: 0 0 88%; min-width: 0; }
       /* 16:9 matches the product renders exactly, so nothing is cropped. The
-         canvas sits on ink because the renders fade into black at the edges. */
+         renders carry their own dark falloff, so the canvas stays paper and a
+         soft mask dissolves the last few percent of each edge into the page. */
       .shot-canvas {
         aspect-ratio: 16 / 9; display: flex; align-items: center; justify-content: center;
-        background: var(--ink); overflow: hidden;
+        background: var(--background); overflow: hidden;
       }
       .shot-canvas span { font-size: 13px; letter-spacing: 0.02em; color: var(--muted-foreground); }
       .shot-canvas img { width: 100%; height: 100%; object-fit: cover; display: block; }
