@@ -171,6 +171,9 @@ const getPage = async (slug, opts) =>
 
 const getFaqs = (opts) => findAll("faqs", { ...siteWhere(), limit: 200, depth: 0 }, opts);
 
+const getTestimonials = (opts) =>
+  findAll("testimonials", { ...siteWhere({ active: "true" }), limit: 50, depth: 1, sort: "order" }, opts);
+
 module.exports = {
   CMS_URL,
   mediaUrl,
@@ -197,4 +200,5 @@ module.exports = {
   getPages,
   getPage,
   getFaqs,
+  getTestimonials,
 };

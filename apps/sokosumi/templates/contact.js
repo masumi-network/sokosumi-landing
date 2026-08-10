@@ -69,9 +69,9 @@ async function render(ctx) {
           <h3>Product support</h3>
           <p>Questions about your account, credits, or a task that did not go as planned. Include the task link if you have one, it speeds things up.</p>
           <div style="margin-top:auto;padding-top:10px">
-            <a class="btn btn-outline" href="${SUPPORT_MAILTO}">Email Support</a>
+            <a class="btn btn-outline" href="/support">Go to Support</a>
           </div>
-          <p class="muted" style="font-size:12.5px">Already signed in? Most answers are one click away in <a href="${APP}" style="text-decoration:underline">the app</a>.</p>
+          <p class="muted" style="font-size:12.5px">In a hurry? Write straight to <a href="${SUPPORT_MAILTO}" style="text-decoration:underline">support</a>, or open <a href="${APP}" style="text-decoration:underline">the app</a> — most answers are one click away there.</p>
         </div>
       </div>
     </div>

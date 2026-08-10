@@ -5,29 +5,44 @@
 const shell = require("./shell");
 const cms = require("../lib/cms");
 const blocks = require("./blocks");
-const { esc, icon, avatar, pageStart, pageEnd } = shell;
+const { esc, attr, icon, avatar, pageStart, pageEnd } = shell;
 
 // Populated industry relations only (depth 1 gives objects; ids are skipped).
 function industriesOf(uc) {
   return (uc.industries || []).filter((i) => i && typeof i === "object" && i.slug);
 }
 
-// A use case card carries the two things a reader actually wants: which
-// industry it is for, and who does the work. `crew` is the resolved coworker
-// docs behind relatedAgents; it is optional, so the card degrades to text.
+// The coworker who leads the work is what makes one use case recognisable
+// from another: the portraits are strongly coloured and no two are alike,
+// where eight cards of grey text are indistinguishable. The named curated
+// coworker is listed last in relatedAgents, so scan from the end and fall
+// back to any related listing with artwork.
+function leadOf(crew) {
+  const list = crew || [];
+  return [...list].reverse().find((c) => c.kind === "coworker" && c.image) || list.find((c) => c.image) || null;
+}
+
+// A use case card carries what a reader actually wants: which industry it is
+// for, who leads the work, and who else is on it. `crew` is the resolved
+// coworker docs behind relatedAgents; it is optional, so the card degrades
+// to text when nothing resolves.
 function useCaseCard(uc, crew) {
   const ind = industriesOf(uc)[0];
   const team = (crew || []).slice(0, 4);
-  const faces = team.length
-    ? `<span class="uc-crew">${team.map((c) => avatar(c, "xs")).join("")}<em>${esc(
-        team.length === 1 ? team[0].name : `${team.length} coworkers`,
-      )}</em></span>`
+  const lead = leadOf(crew);
+  const media = lead
+    ? `<span class="uc-lead${lead.kind === "agent" ? " is-icon" : ""}">
+        <img src="${attr(lead.image)}" alt="${attr(lead.name)}" loading="lazy" />
+        <em>${esc(lead.name)}</em>
+      </span>`
     : "";
-  return `<a class="card uc-card" href="/use-cases/${encodeURIComponent(uc.slug)}">
+  const others = team.length > 1 ? `${team.length - 1} more on it` : "Read the workflow";
+  return `<a class="card uc-card${media ? " has-lead" : ""}" href="/use-cases/${encodeURIComponent(uc.slug)}">
+    ${media}
     <span class="uc-eyebrow">${esc(ind ? ind.name : "Use case")}</span>
     <h3>${esc(uc.title)}</h3>
     <p>${esc(uc.description || "")}</p>
-    <div class="card-foot">${faces || `<span class="tag-quiet">Read the workflow</span>`}<span class="go">${icon(
+    <div class="card-foot"><span class="tag-quiet">${esc(others)}</span><span class="go">${icon(
       "arrow-up-right",
       15,
     )}</span></div>
@@ -82,10 +97,11 @@ function crewResolver(coworkers) {
 
 async function hub(ctx) {
   const opts = { draft: ctx.preview };
-  const [useCases, industries, coworkers] = await Promise.all([
+  const [useCases, industries, coworkers, testimonials] = await Promise.all([
     cms.getUseCases(opts),
     cms.getIndustries(opts),
     cms.getCoworkers(opts),
+    cms.getTestimonials(opts).catch(() => []),
   ]);
   const crewOf = crewResolver(coworkers);
 
@@ -134,6 +150,10 @@ async function hub(ctx) {
     industrySection +
     casesSection +
     (useCases.length ? howItRuns() : "") +
+    shell.testimonialsSection(testimonials, {
+      heading: "What it is like once they are running",
+      limit: 3,
+    }) +
     blocks.ctaBand({
       heading: "Put a coworker on one of these this week",
       subheading: "Create an account, pick the use case closest to your job, and hand over the first brief.",

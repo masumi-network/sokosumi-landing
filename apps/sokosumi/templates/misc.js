@@ -102,6 +102,7 @@ async function sitemap() {
     "/compare",
     "/product",
     "/contact",
+    "/support",
     "/press",
   ]);
   const safe = async (fn) => {

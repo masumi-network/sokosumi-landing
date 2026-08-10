@@ -17,6 +17,45 @@
   if ("ResizeObserver" in window) new ResizeObserver(measure).observe(document.body);
 })();
 
+// Dropdown menus. CSS :hover alone opens them, and still does without JS, but
+// it closes the instant the pointer leaves the trigger — so moving diagonally
+// towards a far column, or clipping the edge on the way down, snaps the panel
+// shut. This adds a short grace period on the way out and closes any sibling
+// on the way in, which is what makes the menus feel steady.
+(function () {
+  var drops = [].slice.call(document.querySelectorAll(".nav-drop"));
+  if (!drops.length) return;
+  var GRACE_MS = 180;
+  var timers = new WeakMap();
+
+  function open(d) {
+    clearTimeout(timers.get(d));
+    drops.forEach(function (other) {
+      if (other !== d) close(other, true);
+    });
+    d.classList.add("open");
+  }
+  function close(d, now) {
+    clearTimeout(timers.get(d));
+    if (now) return d.classList.remove("open");
+    timers.set(d, setTimeout(function () { d.classList.remove("open"); }, GRACE_MS));
+  }
+
+  drops.forEach(function (d) {
+    d.addEventListener("pointerenter", function () { open(d); });
+    d.addEventListener("pointerleave", function () { close(d); });
+    // keyboard users get the same panel without a pointer ever being involved
+    d.addEventListener("focusin", function () { open(d); });
+    d.addEventListener("focusout", function (e) {
+      if (!d.contains(e.relatedTarget)) close(d, true);
+    });
+  });
+
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") drops.forEach(function (d) { close(d, true); });
+  });
+})();
+
 // Mobile drawer toggle, shared by the landing page and every sub-page.
 // The drawer markup is rendered server-side (templates/shell.js) and inline
 // on index.html; this only wires the button.

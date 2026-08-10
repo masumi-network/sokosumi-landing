@@ -6,6 +6,7 @@
 // or inferred: no per-credit rate is published, so none is shown.
 
 const shell = require("./shell");
+const cms = require("../lib/cms");
 const { esc, attr, icon, pageStart, pageEnd, APP, SALES_URL } = shell;
 
 const PLANS = [
@@ -112,6 +113,7 @@ function planCard(p, i) {
 }
 
 async function render(ctx) {
+  const testimonials = await cms.getTestimonials({ draft: ctx.preview }).catch(() => []);
   const cr = [{ label: "Home", href: "/" }, { label: "Pricing" }];
   return (
     pageStart({
@@ -131,6 +133,11 @@ async function render(ctx) {
       <div class="plan-grid">${PLANS.map(planCard).join("")}</div>
       <div class="plan-grid enterprise">${planCard(ENTERPRISE, 0)}</div>
     </section>` +
+    shell.testimonialsSection(testimonials, {
+      heading: "Teams already on a plan",
+      sub: "What people say after putting the coworkers to work.",
+      limit: 3,
+    }) +
     shell.ctaBand({
       heading: "Start on the free plan",
       subheading: "250 credits per seat, no card, and every agent on the marketplace to try them on.",

@@ -354,6 +354,7 @@ const { buildNav } = require("./lib/nav");
 const leads = require("./lib/leads");
 const salesTpl = require("./templates/sales");
 const pricingTpl = require("./templates/pricing");
+const supportTpl = require("./templates/support");
 
 // Public coworker slugs follow the persona name; the product's internal
 // slug lives in catalogSlug. Old internal-slug URLs 301 to the public one.
@@ -399,6 +400,7 @@ const routes = [
   { m: (s) => s.length === 1 && s[0] === "product" && {}, h: pagesTpl.productHub },
   { m: (s) => s.length === 1 && s[0] === "pricing" && {}, h: pricingTpl.render },
   { m: (s) => s.length === 1 && s[0] === "contact" && {}, h: contactTpl.render },
+  { m: (s) => s.length === 1 && s[0] === "support" && {}, h: supportTpl.render },
   { m: (s) => s.length === 1 && s[0] === "talk-to-sales" && {}, h: salesTpl.render },
   {
     m: (s) => s.length === 1 && s[0] === "press" && {},
@@ -443,6 +445,20 @@ if (process.argv.includes("--once")) {
           const model = await buildNav({}).catch(() => ({ vendors: [], industries: [] }));
           res.writeHead(200, { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "public, max-age=300" });
           return res.end(JSON.stringify(model));
+        }
+
+        // Customer quotes for the landing page. The sub-pages render these
+        // server-side; the landing page is static and fetches them.
+        if (urlPath === "/api/testimonials") {
+          const list = await cms.getTestimonials({}).catch(() => []);
+          const out = list.slice(0, 6).map((t) => ({
+            quote: t.quote,
+            name: t.name,
+            role: t.role || "",
+            avatar: cms.mediaUrl(t.avatar),
+          }));
+          res.writeHead(200, { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "public, max-age=300" });
+          return res.end(JSON.stringify(out));
         }
 
         // Draft preview: /api/preview?secret=…&path=/x sets the cookie and

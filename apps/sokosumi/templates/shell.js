@@ -244,6 +244,30 @@ function shotFigure(shot, opts) {
     </figure>`;
 }
 
+// Customer quotes from the CMS testimonials collection. Rendered wherever
+// social proof earns its place rather than only inside one page's layout.
+function testimonialsSection(list, opts) {
+  const items = (list || []).slice(0, (opts && opts.limit) || 6);
+  if (!items.length) return "";
+  const o = opts || {};
+  return `<section class="page-section${o.flush ? " flush" : ""}" data-reveal>
+      ${o.heading ? `<h2>${esc(o.heading)}</h2>` : ""}
+      ${o.sub ? `<p class="sub">${esc(o.sub)}</p>` : ""}
+      <div class="blk-quote-grid">${items
+        .map((t) => {
+          const av = cms.mediaUrl(t.avatar);
+          return `<figure class="tq">
+            <blockquote>&ldquo;${esc(t.quote)}&rdquo;</blockquote>
+            <figcaption class="who">
+              ${av ? `<span class="avatar"><img src="${attr(av)}" alt="" loading="lazy" /></span>` : ""}
+              <span class="meta"><strong>${esc(t.name)}</strong>${t.role ? `<small>${esc(t.role)}</small>` : ""}</span>
+            </figcaption>
+          </figure>`;
+        })
+        .join("")}</div>
+    </section>`;
+}
+
 // Card grid class for a list whose length is known: one or two cards get a
 // capped track instead of sitting in a three-column grid with empty columns.
 function gridCls(n) {
@@ -469,6 +493,7 @@ function footer() {
         <div class="foot-secondary">
           <a href="/compare">Compare</a>
           <a href="/contact">Contact</a>
+          <a href="/support">Support</a>
           <a href="/press">Press</a>
           <a href="https://linkedin.com/company/sokosumi/" target="_blank" rel="noreferrer">LinkedIn</a>
           <a href="https://x.com/sokosumi" target="_blank" rel="noreferrer">X</a>
@@ -564,6 +589,7 @@ module.exports = {
   vendorLogo,
   ctaFaces,
   ctaBand,
+  testimonialsSection,
   NO_CARD,
   NO_CARD_LINE,
   gridCls,

@@ -87,8 +87,13 @@ button { font-family: inherit; }
 .site-header .btn-sm { height: 36px; }
 
 /* ===== dropdown menus (hover, plus focus-within for keyboards) ===== */
-.nav-drop { position: relative; display: flex; align-items: center; }
-.nav-drop > a { display: inline-flex; align-items: center; gap: 5px; }
+/* The trigger fills the bar's full height. It used to be a 17px-tall box in a
+   64px bar, which left dead space between it and the panel: crossing that gap
+   took the pointer out of .nav-drop and snapped the menu shut mid-move. */
+.nav-left { align-self: stretch; }
+.site-nav { height: 100%; }
+.nav-drop { position: relative; display: flex; align-items: center; height: 100%; }
+.nav-drop > a { display: inline-flex; align-items: center; gap: 5px; height: 100%; }
 .nav-chev { transition: transform 0.25s var(--ease); opacity: 0.6; }
 .nav-drop:hover .nav-chev, .nav-drop:focus-within .nav-chev { transform: rotate(180deg); opacity: 1; }
 .nav-panel {
@@ -101,7 +106,7 @@ button { font-family: inherit; }
 }
 /* keeps the pointer from falling through the gap between trigger and panel */
 .nav-panel::before { content: ""; position: absolute; inset: -16px 0 auto 0; height: 16px; }
-.nav-drop:hover .nav-panel, .nav-drop:focus-within .nav-panel {
+.nav-drop:hover .nav-panel, .nav-drop:focus-within .nav-panel, .nav-drop.open .nav-panel {
   opacity: 1; visibility: visible; transform: none;
 }
 .nav-panel-wide { min-width: 0; }
@@ -164,7 +169,8 @@ button { font-family: inherit; }
 /* .site-nav a sets nowrap for the bar itself; inside a panel that stops the
    use-case titles wrapping and they run into the next column */
 .nav-panel a, .nav-panel span { white-space: normal; }
-.nav-drop:hover .nav-panel-mega, .nav-drop:focus-within .nav-panel-mega { transform: translate(-50%, 0); }
+.nav-drop:hover .nav-panel-mega, .nav-drop:focus-within .nav-panel-mega,
+.nav-drop.open .nav-panel-mega { transform: translate(-50%, 0); }
 /* the collapse points and the mobile drawer live in nav.css, shared with the
    landing page so the two headers stay in step */
 
@@ -258,6 +264,25 @@ main.page { min-height: 60vh; }
 @media (min-width: 760px) { .uc-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (min-width: 1100px) { .uc-grid { grid-template-columns: repeat(3, 1fr); } }
 .uc-card { padding-top: 20px; }
+/* The lead coworker is the card's identity. The portraits are square with
+   strong flat backgrounds, so a wide crop of the top two-thirds keeps the
+   face and lets the colour do the distinguishing. */
+.uc-card.has-lead { padding-top: 0; }
+.uc-lead {
+  position: relative; display: block; margin: 0 -22px 6px;
+  border-radius: var(--r-lg) var(--r-lg) 0 0; overflow: hidden;
+  aspect-ratio: 5 / 3; background: var(--muted);
+}
+.uc-lead img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 22%; display: block; }
+/* marketplace listings are line icons, not portraits: contain and inset */
+.uc-lead.is-icon { background: var(--muted); }
+.uc-lead.is-icon img { object-fit: contain; padding: 18%; }
+.uc-lead em {
+  position: absolute; left: 12px; bottom: 12px; font-style: normal;
+  font-size: 12px; font-weight: 500; letter-spacing: 0.01em; color: #fff;
+  background: rgba(15, 14, 13, 0.62); border-radius: var(--r-sm); padding: 4px 9px;
+  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+}
 .uc-eyebrow {
   font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase;
   color: var(--muted-foreground); margin-bottom: 2px;
