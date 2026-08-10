@@ -155,10 +155,22 @@ function transform(coworkersRaw, agentsRaw) {
       offers: mapOffers(c.metadata),
     }));
 
+  // Most marketplace listings never set a portrait, so the product hands back
+  // one shared Sokosumi mark for them — 30 of 40 today. Preferring `image`
+  // therefore paints most of the catalog with the same red circle while each
+  // listing's own icon (Reddit, TikTok, a globe for SEO…) goes unused. Any
+  // image shared by three or more listings is treated as that default and the
+  // icon wins instead, so this keeps working if the product changes its mark.
+  const imageUses = new Map();
+  for (const a of agentsRaw || []) {
+    if (a.image) imageUses.set(a.image, (imageUses.get(a.image) || 0) + 1);
+  }
+  const isSharedDefault = (url) => Boolean(url) && (imageUses.get(url) || 0) >= 3;
+
   const agents = (agentsRaw || []).map((a) => ({
     id: a.id,
     name: a.name,
-    image: a.image || a.icon || null,
+    image: (isSharedDefault(a.image) ? a.icon || a.image : a.image) || a.icon || null,
     icon: a.icon || null,
     credits: a.credits ?? null,
     summary: a.summary || "",
