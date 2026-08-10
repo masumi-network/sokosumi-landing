@@ -112,6 +112,27 @@ function mapOffers(metadata) {
     });
 }
 
+// Vendor logo paths from /v1/coworkers are app-relative ("/images/logos/x.png").
+// Make them absolute so the CMS sync and the pages can use them directly.
+const APP_ORIGIN = process.env.SOKOSUMI_APP_URL || "https://app.sokosumi.com";
+function absLogo(u) {
+  if (!u) return null;
+  return /^https?:\/\//i.test(u) ? u : APP_ORIGIN + (u.startsWith("/") ? u : `/${u}`);
+}
+
+// The product's own vendor record. `logos.light` is dark artwork for light
+// backgrounds, `logos.dark` is the white version for dark ones.
+function mapVendor(v) {
+  if (!v || !v.name) return null;
+  return {
+    id: v.id || null,
+    name: v.name,
+    slug: v.slug || null,
+    logoLight: absLogo(v.logos?.light),
+    logoDark: absLogo(v.logos?.dark),
+  };
+}
+
 function transform(coworkersRaw, agentsRaw) {
   const coworkers = (coworkersRaw || [])
     .filter((c) => c.isWhitelisted)
@@ -126,6 +147,7 @@ function transform(coworkersRaw, agentsRaw) {
       image: c.image || null,
       description: c.description || "",
       capabilities: c.capabilities || [],
+      vendor: mapVendor(c.vendor),
       profile: {
         llm: c.metadata?.profile?.llm || [],
         hosting: c.metadata?.profile?.hosting || "",
@@ -145,6 +167,12 @@ function transform(coworkersRaw, agentsRaw) {
     ratingCount: a.metrics?.ratings?.total ?? 0,
     runs: a.metrics?.executions?.count ?? 0,
     author: a.author?.organization || a.author?.name || "",
+    // The maker's brand wordmark. White artwork on transparency, so it only
+    // reads on a dark chip. Per agent, not per organization: the org field is
+    // unreliable (Factor168 agents are filed under "HybridAI"), the image is not.
+    authorImage: a.author?.image || null,
+    authorName: a.author?.name || "",
+    authorOrg: a.author?.organization || "",
     legal: a.legal ? { privacy: a.legal.privacyPolicy || null, terms: a.legal.terms || null } : null,
     categories: (a.categories || []).map((cat) => ({
       name: cat.name,

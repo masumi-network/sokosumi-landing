@@ -174,6 +174,21 @@ main.page { min-height: 60vh; }
 .avatar.lg { width: 44px; height: 44px; }
 .avatar.sm { width: 26px; height: 26px; font-size: 11px; }
 
+/* ===== vendor wordmarks =====
+   Aspect ratios vary wildly, so height is fixed and width follows.
+   .invert flattens white-on-transparent marketplace artwork to ink so it
+   reads on paper — the mirror of .band-dark .trust-logo on the landing page. */
+.vendor-logo { display: inline-flex; align-items: center; flex-shrink: 0; }
+.vendor-logo img { height: 22px; width: auto; max-width: 190px; object-fit: contain; display: block; }
+.vendor-logo.sm { margin-right: 11px; vertical-align: middle; }
+.vendor-logo.sm img { height: 19px; max-width: 132px; }
+.vendor-logo.lg { margin-bottom: 18px; }
+.vendor-logo.lg img { height: 30px; max-width: 240px; }
+.vendor-logo.invert img { filter: brightness(0); }
+.vendor-list .row-item { grid-template-columns: minmax(150px, 330px) 1fr auto; }
+.vendor-list .row-title { display: inline-flex; align-items: center; }
+@media (max-width: 720px) { .vendor-list .row-item { grid-template-columns: 1fr auto; } }
+
 /* ===== quiet index rows (lists: guides, vendors, releases…) ===== */
 .row-list { border-top: 1px solid var(--border); }
 .row-item {
@@ -242,6 +257,7 @@ a.card:hover .go { opacity: 1; transform: none; }
 .cw-tags { display: flex; flex-wrap: wrap; gap: 8px; }
 .cw-desc { font-size: 15.5px; line-height: 1.65; color: var(--muted-foreground); text-wrap: pretty; }
 .cw-cta { margin-top: 8px; }
+.cta-note { margin-top: 10px; font-size: 12.5px; line-height: 1.5; color: var(--muted-foreground); max-width: 46ch; }
 .cw-stats { display: flex; flex-wrap: wrap; gap: 10px 28px; font-size: 13.5px; color: var(--muted-foreground); }
 .cw-stats strong { color: var(--foreground); font-weight: 500; }
 
@@ -304,6 +320,7 @@ a.card:hover .go { opacity: 1; transform: none; }
 .by-row .who { display: flex; flex-direction: column; line-height: 1.35; font-size: 14.5px; font-weight: 500; }
 .by-row .who small { font-size: 12.5px; font-weight: 400; color: var(--muted-foreground); }
 .task-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.task-actions .cta-note { flex-basis: 100%; margin-top: 2px; }
 .prompt-box { border: 1px solid var(--border); border-radius: var(--r-md); background: var(--card); }
 .prompt-box .label { font-size: 11.5px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted-foreground); padding: 12px 16px 0; }
 .prompt-box pre { font-family: var(--sans); font-size: 13px; line-height: 1.6; color: var(--muted-foreground); white-space: pre-wrap; padding: 8px 16px 14px; max-height: 220px; overflow: auto; }

@@ -60,7 +60,7 @@ async function render(ctx) {
       <div class="card-grid" style="max-width:760px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))">
         <div class="card">
           <h3>Talk to Sales</h3>
-          <p>Rolling Sokosumi out to a team, or want to list your own agents as a vendor? Tell us what you have in mind and we will get back within a day.</p>
+          <p>Rolling Sokosumi out to a team, or want to list your own coworkers as a vendor? Tell us what you have in mind and we will get back within a day.</p>
           <div style="margin-top:auto;padding-top:10px">
             <a class="btn btn-primary" href="${SALES_URL}">Talk to Sales</a>
           </div>

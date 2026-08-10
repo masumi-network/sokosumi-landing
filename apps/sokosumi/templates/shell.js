@@ -3,6 +3,8 @@
 // Design language matches the landing page (index.html): Inter, ink + paper,
 // hairlines, light display weights. Styles live in /assets/styles.css.
 
+const cms = require("../lib/cms");
+
 const APP = "https://app.sokosumi.com";
 const SITE = "https://sokosumi.com";
 const SALES_URL = "/talk-to-sales";
@@ -184,7 +186,7 @@ function setNav(model) {
 const CHEV =
   '<svg class="nav-chev" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>';
 
-// The AI Agents mega menu: the top vendors, a few of their agents each, and
+// The AI Coworkers mega menu: the top vendors, a few of their agents each, and
 // the two catch-all links.
 function agentsPanel() {
   const cols = NAV_MODEL.vendors
@@ -203,11 +205,11 @@ function agentsPanel() {
     )
     .join("");
   if (!cols) return "";
-  return `<div class="nav-panel nav-panel-wide" role="group" aria-label="AI agents">
+  return `<div class="nav-panel nav-panel-wide" role="group" aria-label="AI Coworkers">
       <div class="nav-cols">${cols}</div>
       <div class="nav-panel-foot">
         <a href="/vendors">Show all vendors ${icon("arrow-up-right", 13)}</a>
-        <a href="/coworkers">Show all agents ${icon("arrow-up-right", 13)}</a>
+        <a href="/coworkers">Show all coworkers ${icon("arrow-up-right", 13)}</a>
       </div>
     </div>`;
 }
@@ -245,7 +247,7 @@ function navItems(currentPath) {
   };
 
   return [
-    item("/coworkers", "AI Agents", agents, "/vendors"),
+    item("/coworkers", "AI Coworkers", agents, "/vendors"),
     item("/use-cases", "Use cases", useCases),
     item("/guides", "Guides", ""),
     item("/releases", "Releases", ""),
@@ -278,7 +280,7 @@ function footer() {
             <img class="foot-mark" src="/assets/sokosumi-wordmark.svg" alt="Sokosumi" width="121" height="16" />
           </a>
           <nav class="foot-links" aria-label="Footer">
-            <a href="/coworkers">AI Agents</a>
+            <a href="/coworkers">AI Coworkers</a>
             <a href="/vendors">Vendors</a>
             <a href="/tasks">Template tasks</a>
             <a href="/use-cases">Use cases</a>
@@ -341,6 +343,24 @@ function avatar(entity, cls) {
   return `<span class="avatar ${cls || ""}" style="background:var(--ink)">${initial}</span>`;
 }
 
+// A vendor wordmark. Two sources with opposite polarity: an editor's upload and
+// the product's own vendor artwork are dark on transparent, while the synced
+// marketplace wordmarks are white on transparent and would vanish on paper.
+// `.invert` flattens those to ink — the mirror of the landing page's
+// `.band-dark .trust-logo { filter: brightness(0) invert(1) }`.
+// Returns "" when there is no artwork: the vendor name always carries the page,
+// so a missing logo must leave no empty box behind.
+function vendorLogo(v, cls) {
+  if (!v) return "";
+  const uploaded = cms.mediaUrl(v.logo);
+  const url = uploaded || v.logoUrl || null;
+  if (!url) return "";
+  const invert = !uploaded && v.logoInvert ? " invert" : "";
+  return `<span class="vendor-logo ${cls || ""}${invert}"><img src="${attr(url)}" alt="${attr(
+    v.name || "",
+  )}" loading="lazy" /></span>`;
+}
+
 module.exports = {
   APP,
   SITE,
@@ -360,4 +380,5 @@ module.exports = {
   pageStart,
   pageEnd,
   avatar,
+  vendorLogo,
 };

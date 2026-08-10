@@ -39,7 +39,7 @@ const SURFACES = [
   {
     href: "/vendors",
     title: "Vendors",
-    text: "The teams behind the agents on the marketplace, with everything they ship in one place.",
+    text: "The teams behind the coworkers on the marketplace, with everything they ship in one place.",
   },
 ];
 

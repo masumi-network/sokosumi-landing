@@ -230,8 +230,9 @@ async function detail(ctx) {
           </a>
         </div>
         <div class="task-actions">
-          <a class="btn btn-primary btn-lg" href="${APP}">Start this task</a>
+          <a class="btn btn-primary btn-lg" href="${APP}">Try this task on Sokosumi</a>
           ${openUrl ? `<a class="btn btn-outline" href="${attr(openUrl.url)}" target="_blank" rel="noreferrer">Open sample output ${icon("arrow-up-right", 14)}</a>` : ""}
+          <p class="cta-note">Creating an account is free. You only spend credits on the work you actually run.</p>
         </div>
       </aside>
     </div>` +

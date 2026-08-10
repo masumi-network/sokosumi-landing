@@ -6,6 +6,16 @@ const shell = require("./shell");
 const cms = require("../lib/cms");
 const { esc, attr, icon, avatar, pageStart, pageEnd, APP } = shell;
 
+// Marketplace coworkers have their own page in the app, so the CTA deep-links
+// straight to it — a signed-out visitor gets /signin?returnUrl=… and lands back
+// there after signing up. Curated coworkers are a different product entity with
+// no such route, so they open the app itself.
+function tryUrl(c) {
+  return c && c.kind === "agent" && c.externalId
+    ? `${APP}/agents/${encodeURIComponent(c.externalId)}`
+    : APP;
+}
+
 function vendorName(cw) {
   return cw.vendor && typeof cw.vendor === "object" ? cw.vendor.name : null;
 }
@@ -64,8 +74,8 @@ async function index(ctx) {
     </div>` +
     (agents.length
       ? `<div class="page-section">
-          <h2>More agents on the marketplace</h2>
-          <p class="sub">${agents.length} specialist agents from ${new Set(agents.map(vendorName).filter(Boolean)).size} vendors, ready to run in the app.</p>
+          <h2>More coworkers on the marketplace</h2>
+          <p class="sub">${agents.length} specialist coworkers from ${new Set(agents.map(vendorName).filter(Boolean)).size} vendors, ready to run in the app.</p>
           <div class="row-list">${agents.map(agentRow).join("")}</div>
         </div>`
       : "") +
@@ -147,7 +157,7 @@ async function profile(ctx) {
     `<div class="cw-hero">
       <div class="cw-portrait" data-reveal>${c.image ? `<img src="${attr(c.image)}" alt="${attr(c.name)}" />` : ""}</div>
       <div class="cw-info" data-reveal style="--i:1">
-        <span class="eyebrow">${c.kind === "agent" ? "Marketplace agent" : "AI coworker"}${
+        <span class="eyebrow">${c.kind === "agent" ? "On the marketplace" : "Featured coworker"}${
           vn ? ` &middot; <a href="/vendors/${attr(vs || "")}">${esc(vn)}</a>` : ""
         }</span>
         <h1>${esc(c.name)}</h1>
@@ -155,7 +165,8 @@ async function profile(ctx) {
         ${profileTags(c)}
         ${profileStats(c)}
         ${c.description ? `<p class="cw-desc">${esc(c.description)}</p>` : ""}
-        <a class="btn btn-primary btn-lg cw-cta" href="${APP}">Start a task with ${esc(c.name)}</a>
+        <a class="btn btn-primary btn-lg cw-cta" href="${attr(tryUrl(c))}">Try ${esc(c.name)} on Sokosumi</a>
+        <p class="cta-note">Creating an account is free. You only spend credits on the work you actually run.</p>
       </div>
     </div>
     ${longBio}
