@@ -4,18 +4,18 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Sokosumi | Powerful AI marketing agents for your team</title>
-    <meta name="description" content="Hire AI coworkers and run pre-built marketing tasks on Sokosumi, the marketplace for real marketing work. Built by Serviceplan Group." />
+    <meta name="description" content="Hire AI coworkers and run template marketing tasks on Sokosumi, the marketplace for real marketing work. Built by Serviceplan Group." />
     <link rel="canonical" href="https://sokosumi.com/" />
 
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Sokosumi" />
     <meta property="og:title" content="Sokosumi | Powerful AI marketing agents for your team" />
-    <meta property="og:description" content="Hire AI coworkers and run pre-built marketing tasks on Sokosumi, the marketplace for real marketing work. Built by Serviceplan Group." />
+    <meta property="og:description" content="Hire AI coworkers and run template marketing tasks on Sokosumi, the marketplace for real marketing work. Built by Serviceplan Group." />
     <meta property="og:url" content="https://sokosumi.com/" />
     <meta property="og:image" content="https://sokosumi.com/assets/hero-poster.jpg" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Sokosumi | Powerful AI marketing agents for your team" />
-    <meta name="twitter:description" content="Hire AI coworkers and run pre-built marketing tasks on Sokosumi, the marketplace for real marketing work." />
+    <meta name="twitter:description" content="Hire AI coworkers and run template marketing tasks on Sokosumi, the marketplace for real marketing work." />
     <meta name="twitter:image" content="https://sokosumi.com/assets/hero-poster.jpg" />
 
     <script type="application/ld+json">
@@ -134,8 +134,41 @@
       }
       .island-nav .mark { height: 16px; width: auto; display: block; filter: brightness(0) invert(1); transition: filter 0.4s var(--ease); }
       .island-links { display: flex; align-items: center; gap: 26px; }
-      .island-links a { font-size: 14px; font-weight: 400; color: rgba(255, 255, 255, 0.8); transition: color 0.25s var(--ease); }
-      .island-links a:hover { color: #fff; }
+      .island-links > a, .island-links .nav-drop > a { font-size: 14px; font-weight: 400; color: rgba(255, 255, 255, 0.8); transition: color 0.25s var(--ease); }
+      .island-links > a:hover, .island-links .nav-drop > a:hover { color: #fff; }
+
+      /* ===== nav dropdowns (hover + focus-within), always on paper so they
+         stay legible over both the video hero and the scrolled bar ===== */
+      .nav-drop { position: relative; display: inline-flex; align-items: center; }
+      .nav-drop > a { display: inline-flex; align-items: center; gap: 5px; }
+      .nav-chev { transition: transform 0.25s var(--ease); opacity: 0.65; }
+      .nav-drop:hover .nav-chev, .nav-drop:focus-within .nav-chev { transform: rotate(180deg); opacity: 1; }
+      .nav-panel {
+        position: absolute; top: 100%; left: -18px; z-index: 60;
+        margin-top: 14px; padding: 18px; min-width: 260px;
+        background: var(--card); border: 1px solid var(--border); border-radius: var(--r-lg);
+        box-shadow: 0 20px 60px rgba(15, 14, 13, 0.18);
+        opacity: 0; visibility: hidden; transform: translateY(-6px);
+        transition: opacity 0.2s var(--ease), transform 0.2s var(--ease), visibility 0.2s;
+      }
+      .nav-panel::before { content: ""; position: absolute; inset: -16px 0 auto 0; height: 16px; }
+      .nav-drop:hover .nav-panel, .nav-drop:focus-within .nav-panel { opacity: 1; visibility: visible; transform: none; }
+      .nav-panel-wide { min-width: 620px; }
+      .nav-cols { display: grid; grid-template-columns: repeat(3, minmax(160px, 1fr)); gap: 8px 28px; }
+      .nav-col { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+      .nav-col-head {
+        font-size: 11.5px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase;
+        color: var(--muted-foreground); padding: 4px 8px; margin-bottom: 4px; transition: color 0.2s var(--ease);
+      }
+      .nav-col-head:hover { color: var(--foreground); }
+      .nav-col-link { display: flex; flex-direction: column; gap: 1px; padding: 7px 8px; border-radius: var(--r-sm); transition: background-color 0.2s var(--ease); }
+      .nav-col-link:hover { background: var(--muted); }
+      .nav-col-link span { font-size: 14px; color: var(--foreground); }
+      .nav-col-link small { font-size: 12px; color: var(--muted-foreground); }
+      .nav-panel-foot { display: flex; flex-wrap: wrap; gap: 8px 24px; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); }
+      .nav-panel-foot a { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--muted-foreground); padding: 0 8px; transition: color 0.2s var(--ease); }
+      .nav-panel-foot a:hover { color: var(--foreground); }
+      .nav-panel .icon { flex-shrink: 0; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
       .island-nav > div:last-child { margin-left: auto; }
       .island-nav .nav-login { color: rgba(255, 255, 255, 0.9); }
       .island-nav:not(.scrolled) .nav-sales { color: #fff; border-color: rgba(255, 255, 255, 0.4); }
@@ -149,8 +182,12 @@
         box-shadow: none;
       }
       .island-nav.scrolled .mark { filter: none; }
-      .island-nav.scrolled .island-links a { color: rgba(15, 14, 13, 0.62); }
-      .island-nav.scrolled .island-links a:hover { color: var(--foreground); }
+      .island-nav.scrolled .island-links > a,
+      .island-nav.scrolled .island-links .nav-drop > a { color: rgba(15, 14, 13, 0.62); }
+      .island-nav.scrolled .island-links > a:hover,
+      .island-nav.scrolled .island-links .nav-drop > a:hover { color: var(--foreground); }
+      /* panel contents keep their own ink colours in both nav states */
+      .island-nav .nav-panel a { color: inherit; }
       .island-nav.scrolled .nav-login { color: rgba(15, 14, 13, 0.66); }
       @media (max-width: 680px) { .island-links { display: none; } .island-nav { gap: 14px; } }
 
@@ -629,11 +666,14 @@
           <img class="mark" src="/assets/sokosumi-wordmark.svg" alt="Sokosumi" width="144" height="17" />
         </a>
         <div class="island-links">
-          <a href="/coworkers">Coworkers</a>
-          <a href="/tasks">Pre-built tasks</a>
-          <a href="/use-cases">Use cases</a>
+          <span class="nav-drop" id="navAgents">
+            <a href="/coworkers">AI Agents<svg class="nav-chev" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></a>
+          </span>
+          <span class="nav-drop" id="navUseCases">
+            <a href="/use-cases">Use cases<svg class="nav-chev" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></a>
+          </span>
           <a href="/guides">Guides</a>
-          <a href="/blog">Blog</a>
+          <a href="/releases">Releases</a>
         </div>
         <div style="display: flex; gap: 8px; align-items: center;">
           <a class="btn btn-sm btn-ghost nav-login" href="https://app.sokosumi.com/signin">Log In</a>
@@ -983,7 +1023,7 @@
             <p class="faq-a">Coworkers are designed and vetted by senior strategists at Serviceplan Group, one of the world's leading marketing agency groups, together with engineering partners. Each coworker has a public profile listing the models it runs on, like Claude and Mistral, and its hosting region.</p>
           </details>
           <details class="faq-item">
-            <summary>What do the pre-built tasks cover?<span class="faq-x">+</span></summary>
+            <summary>What do the template tasks cover?<span class="faq-x">+</span></summary>
             <p class="faq-a">Research, social, planning, writing, engineering, and prototyping: from competitive analyses and go-to-market plans to social dashboards and campaign strategies. Open any task to preview a real sample output, then run it with your own brief.</p>
           </details>
           <details class="faq-item">
@@ -998,7 +1038,7 @@
       {"@type":"Question","name":"What is Sokosumi?","acceptedAnswer":{"@type":"Answer","text":"Sokosumi is a marketplace for AI marketing agents, which we call coworkers. Each one is a named specialist with a real role, like research, social, planning, or writing. You brief them like a colleague and they deliver finished work: PDFs, documents, slide decks, and interactive dashboards."}},
       {"@type":"Question","name":"How is this different from a chatbot?","acceptedAnswer":{"@type":"Answer","text":"Coworkers don't just answer. They run complete tasks: they come pre-specialized with curated, ready-to-run work, can split a brief into work packages and delegate to other coworkers, and hand back finished files instead of chat text. Every task shows a real sample output before you run it."}},
       {"@type":"Question","name":"Who builds and vets the coworkers?","acceptedAnswer":{"@type":"Answer","text":"Coworkers are designed and vetted by senior strategists at Serviceplan Group, one of the world's leading marketing agency groups, together with engineering partners. Each coworker has a public profile listing the models it runs on, like Claude and Mistral, and its hosting region."}},
-      {"@type":"Question","name":"What do the pre-built tasks cover?","acceptedAnswer":{"@type":"Answer","text":"Research, social, planning, writing, engineering, and prototyping: from competitive analyses and go-to-market plans to social dashboards and campaign strategies. Open any task to preview a real sample output, then run it with your own brief."}},
+      {"@type":"Question","name":"What do the template tasks cover?","acceptedAnswer":{"@type":"Answer","text":"Research, social, planning, writing, engineering, and prototyping: from competitive analyses and go-to-market plans to social dashboards and campaign strategies. Open any task to preview a real sample output, then run it with your own brief."}},
       {"@type":"Question","name":"How much does it cost?","acceptedAnswer":{"@type":"Answer","text":"Creating an account is free. Tasks run on credits, so you only pay for the work your coworkers actually do. Current task pricing is shown in the app."}}
     ]}
     </script>
@@ -1044,13 +1084,13 @@
             <img class="foot-mark" src="/assets/sokosumi-wordmark.svg" alt="Sokosumi" width="121" height="16" />
           </a>
           <nav class="foot-links" aria-label="Footer">
-            <a href="/coworkers">Coworkers</a>
-            <a href="/tasks">Pre-built tasks</a>
+            <a href="/coworkers">AI Agents</a>
             <a href="/vendors">Vendors</a>
+            <a href="/tasks">Template tasks</a>
             <a href="/use-cases">Use cases</a>
             <a href="/guides">Guides</a>
-            <a href="/blog">Blog</a>
             <a href="/releases">Releases</a>
+            <a href="/blog">Blog</a>
           </nav>
         </div>
         <div class="foot-secondary">
@@ -1185,6 +1225,68 @@
 
         /* ---------- the introduction trio (Serviceplan), Elena centered ---------- */
         var INTRO_SLUGS = ["hannah", "elena", "alex"];
+
+        /* ---------- nav dropdowns: top vendors + industries from the CMS ---------- */
+        (function () {
+          var ARROW =
+            '<svg class="icon" width="13" height="13" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg>';
+          fetch("/api/nav")
+            .then(function (r) { return r.json(); })
+            .then(function (n) {
+              var agents = document.getElementById("navAgents");
+              if (agents && (n.vendors || []).length) {
+                var cols = n.vendors
+                  .map(function (v) {
+                    var links = (v.picks || [])
+                      .map(function (p) {
+                        return (
+                          '<a class="nav-col-link" href="/coworkers/' + encodeURIComponent(p.slug) + '">' +
+                          "<span>" + esc(p.name) + "</span>" +
+                          (p.role ? "<small>" + esc(p.role) + "</small>" : "") +
+                          "</a>"
+                        );
+                      })
+                      .join("");
+                    return (
+                      '<div class="nav-col"><a class="nav-col-head" href="/vendors/' +
+                      encodeURIComponent(v.slug) + '">' + esc(v.name) + "</a>" + links + "</div>"
+                    );
+                  })
+                  .join("");
+                agents.insertAdjacentHTML(
+                  "beforeend",
+                  '<div class="nav-panel nav-panel-wide" role="group" aria-label="AI agents">' +
+                    '<div class="nav-cols">' + cols + "</div>" +
+                    '<div class="nav-panel-foot">' +
+                      '<a href="/vendors">Show all vendors ' + ARROW + "</a>" +
+                      '<a href="/coworkers">Show all agents ' + ARROW + "</a>" +
+                    "</div></div>",
+                );
+              }
+
+              var uc = document.getElementById("navUseCases");
+              if (uc && (n.industries || []).length) {
+                var rows = n.industries
+                  .map(function (i) {
+                    return (
+                      '<a class="nav-col-link" href="/use-cases/industries/' + encodeURIComponent(i.slug) + '">' +
+                      "<span>" + esc(i.name) + "</span>" +
+                      (i.count ? "<small>" + i.count + " use case" + (i.count > 1 ? "s" : "") + "</small>" : "") +
+                      "</a>"
+                    );
+                  })
+                  .join("");
+                uc.insertAdjacentHTML(
+                  "beforeend",
+                  '<div class="nav-panel" role="group" aria-label="Use cases by industry">' +
+                    '<div class="nav-col">' + rows + "</div>" +
+                    '<div class="nav-panel-foot"><a href="/use-cases">All use cases ' + ARROW + "</a></div>" +
+                    "</div>",
+                );
+              }
+            })
+            .catch(function () { /* nav stays as plain links */ });
+        })();
 
         fetch("/api/catalog")
           .then(function (r) { return r.json(); })

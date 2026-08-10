@@ -33,7 +33,7 @@ const SURFACES = [
   },
   {
     href: "/tasks",
-    title: "Pre-built tasks",
+    title: "Template tasks",
     text: "Ready-to-run work with a fixed brief, a known output, and a sample you can open first.",
   },
   {

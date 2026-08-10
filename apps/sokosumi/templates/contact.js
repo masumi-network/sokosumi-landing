@@ -15,7 +15,7 @@ const BROWSE = [
   },
   {
     href: "/tasks",
-    title: "Pre-built tasks",
+    title: "Template tasks",
     desc: "Ready-to-run work with a clear brief and a known deliverable.",
     go: "Browse",
   },

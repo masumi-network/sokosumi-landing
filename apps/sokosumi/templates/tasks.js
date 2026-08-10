@@ -140,22 +140,22 @@ async function browse(ctx) {
   const getQ = (k) => (typeof q.get === "function" ? q.get(k) : q[k]) || "";
   const init = JSON.stringify({ category: getQ("category"), q: getQ("q") }).replace(/</g, "\\u003c");
 
-  const cr = [{ label: "Home", href: "/" }, { label: "Pre-built tasks" }];
+  const cr = [{ label: "Home", href: "/" }, { label: "Template tasks" }];
   return (
     pageStart({
-      title: "Pre-built tasks | Sokosumi",
+      title: "Template tasks | Sokosumi",
       description:
-        "Browse ready-to-run pre-built tasks from Sokosumi's AI coworkers. Filter by category and open any task to see a sample output.",
+        "Browse ready-to-run template tasks from Sokosumi's AI coworkers. Filter by category and open any task to see a sample output.",
       path: "/tasks",
       breadcrumb: cr,
     }) +
     `<div class="page-head" data-reveal>
-      <h1>Pre-built tasks, ready to run</h1>
+      <h1>Template tasks, ready to run</h1>
       <p class="sub">Every task is a fixed brief with a clear deliverable and a sample output you can inspect before you start. Pick one, add your details, and the coworker takes it from there.</p>
       <p class="muted" id="taskCount">${countLine}</p>
       <form class="tasks-search" id="taskSearchForm" role="search">
         <span class="ts-icon">${icon("search", 18)}</span>
-        <input id="taskSearch" type="text" placeholder="Search pre-built tasks…" aria-label="Search pre-built tasks" autocomplete="off" />
+        <input id="taskSearch" type="text" placeholder="Search template tasks…" aria-label="Search template tasks" autocomplete="off" />
       </form>
     </div>` +
     (hits.length
@@ -169,7 +169,7 @@ async function browse(ctx) {
           <script>window.__TASK_INIT__=${init};</script>
           <script src="/assets/tasks-filter.js"></script>
         </div>`
-      : `<div class="page-section flush"><p class="muted">Pre-built tasks are on the way. In the meantime, <a href="/coworkers" style="text-decoration:underline">meet the coworkers</a>.</p></div>`) +
+      : `<div class="page-section flush"><p class="muted">Template tasks are on the way. In the meantime, <a href="/coworkers" style="text-decoration:underline">meet the coworkers</a>.</p></div>`) +
     pageEnd()
   );
 }
@@ -199,7 +199,7 @@ async function detail(ctx) {
   return (
     pageStart({
       title: `${offer.title} | ${c.name} on Sokosumi`,
-      description: (offer.description || `${offer.title}, a pre-built task run by ${c.name} on Sokosumi.`).slice(0, 155),
+      description: (offer.description || `${offer.title}, a template task run by ${c.name} on Sokosumi.`).slice(0, 155),
       path: `/coworkers/${c.slug}/tasks/${offer.slug}`,
       breadcrumb: cr,
       jsonld: {

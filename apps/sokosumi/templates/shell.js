@@ -174,28 +174,92 @@ function head(opts) {
   <body>`;
 }
 
-const NAV = [
-  { href: "/coworkers", label: "Coworkers" },
-  { href: "/tasks", label: "Pre-built tasks" },
-  { href: "/use-cases", label: "Use cases" },
-  { href: "/guides", label: "Guides" },
-  { href: "/blog", label: "Blog" },
-];
+// Nav model (top vendors + industries) for the dropdown menus. It is the
+// same for every visitor, so a module-level cache is safe: the server calls
+// setNav() with the freshly built model before rendering.
+let NAV_MODEL = { vendors: [], industries: [] };
+function setNav(model) {
+  if (model) NAV_MODEL = model;
+}
+
+const CHEV =
+  '<svg class="nav-chev" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>';
+
+// The AI Agents mega menu: the top vendors, a few of their agents each, and
+// the two catch-all links.
+function agentsPanel() {
+  const cols = NAV_MODEL.vendors
+    .map(
+      (v) => `<div class="nav-col">
+        <a class="nav-col-head" href="/vendors/${encodeURIComponent(v.slug)}">${esc(v.name)}</a>
+        ${v.picks
+          .map(
+            (p) =>
+              `<a class="nav-col-link" href="/coworkers/${encodeURIComponent(p.slug)}"><span>${esc(p.name)}</span>${
+                p.role ? `<small>${esc(p.role)}</small>` : ""
+              }</a>`,
+          )
+          .join("")}
+      </div>`,
+    )
+    .join("");
+  if (!cols) return "";
+  return `<div class="nav-panel nav-panel-wide" role="group" aria-label="AI agents">
+      <div class="nav-cols">${cols}</div>
+      <div class="nav-panel-foot">
+        <a href="/vendors">Show all vendors ${icon("arrow-up-right", 13)}</a>
+        <a href="/coworkers">Show all agents ${icon("arrow-up-right", 13)}</a>
+      </div>
+    </div>`;
+}
+
+// The Use cases menu: pick an industry, or open the hub.
+function useCasesPanel() {
+  const rows = NAV_MODEL.industries
+    .map(
+      (i) =>
+        `<a class="nav-col-link" href="/use-cases/industries/${encodeURIComponent(i.slug)}"><span>${esc(i.name)}</span>${
+          i.count ? `<small>${i.count} use case${i.count > 1 ? "s" : ""}</small>` : ""
+        }</a>`,
+    )
+    .join("");
+  if (!rows) return "";
+  return `<div class="nav-panel" role="group" aria-label="Use cases by industry">
+      <div class="nav-col">${rows}</div>
+      <div class="nav-panel-foot">
+        <a href="/use-cases">All use cases ${icon("arrow-up-right", 13)}</a>
+      </div>
+    </div>`;
+}
+
+function navItems(currentPath) {
+  const isCurrent = (href) =>
+    currentPath === href || (currentPath && currentPath.startsWith(href + "/")) ? ' aria-current="page"' : "";
+
+  const agents = agentsPanel();
+  const useCases = useCasesPanel();
+
+  const item = (href, label, panel, extraMatch) => {
+    const current = isCurrent(href) || (extraMatch && isCurrent(extraMatch));
+    const trigger = `<a href="${href}"${current}>${label}${panel ? CHEV : ""}</a>`;
+    return panel ? `<div class="nav-drop">${trigger}${panel}</div>` : trigger;
+  };
+
+  return [
+    item("/coworkers", "AI Agents", agents, "/vendors"),
+    item("/use-cases", "Use cases", useCases),
+    item("/guides", "Guides", ""),
+    item("/releases", "Releases", ""),
+  ].join("\n            ");
+}
 
 function header(currentPath) {
-  const links = NAV.map((n) => {
-    const current =
-      currentPath === n.href || (currentPath && currentPath.startsWith(n.href + "/"))
-        ? ' aria-current="page"'
-        : "";
-    return `<a href="${n.href}"${current}>${n.label}</a>`;
-  }).join("\n            ");
   return `<header class="site-header">
       <div class="container-app bar">
         <div class="nav-left">
           <a href="/" aria-label="Sokosumi"><img class="mark" src="/assets/sokosumi-wordmark.svg" alt="Sokosumi" width="152" height="18" /></a>
           <nav class="site-nav" aria-label="Primary">
-            ${links}
+            ${navItems(currentPath)}
           </nav>
         </div>
         <div class="actions">
@@ -215,13 +279,13 @@ function footer() {
             <img class="foot-mark" src="/assets/sokosumi-wordmark.svg" alt="Sokosumi" width="121" height="16" />
           </a>
           <nav class="foot-links" aria-label="Footer">
-            <a href="/coworkers">Coworkers</a>
-            <a href="/tasks">Pre-built tasks</a>
+            <a href="/coworkers">AI Agents</a>
             <a href="/vendors">Vendors</a>
+            <a href="/tasks">Template tasks</a>
             <a href="/use-cases">Use cases</a>
             <a href="/guides">Guides</a>
-            <a href="/blog">Blog</a>
             <a href="/releases">Releases</a>
+            <a href="/blog">Blog</a>
           </nav>
         </div>
         <div class="foot-secondary">
@@ -282,6 +346,7 @@ module.exports = {
   APP,
   SITE,
   SALES_MAILTO,
+  setNav,
   esc,
   attr,
   slugify,

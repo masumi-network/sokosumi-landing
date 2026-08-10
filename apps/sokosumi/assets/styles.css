@@ -79,6 +79,51 @@ button { font-family: inherit; }
 .site-nav a { font-size: 14px; color: rgba(15, 14, 13, 0.62); transition: color 0.25s var(--ease); white-space: nowrap; }
 .site-nav a:hover, .site-nav a[aria-current] { color: var(--foreground); }
 .site-header .actions { margin-left: auto; display: flex; gap: 8px; align-items: center; }
+
+/* ===== dropdown menus (hover, plus focus-within for keyboards) ===== */
+.nav-drop { position: relative; display: flex; align-items: center; }
+.nav-drop > a { display: inline-flex; align-items: center; gap: 5px; }
+.nav-chev { transition: transform 0.25s var(--ease); opacity: 0.6; }
+.nav-drop:hover .nav-chev, .nav-drop:focus-within .nav-chev { transform: rotate(180deg); opacity: 1; }
+.nav-panel {
+  position: absolute; top: 100%; left: -18px; z-index: 60;
+  margin-top: 10px; padding: 18px; min-width: 260px;
+  background: var(--card); border: 1px solid var(--border); border-radius: var(--r-lg);
+  box-shadow: 0 18px 50px rgba(15, 14, 13, 0.1);
+  opacity: 0; visibility: hidden; transform: translateY(-6px);
+  transition: opacity 0.2s var(--ease), transform 0.2s var(--ease), visibility 0.2s;
+}
+/* keeps the pointer from falling through the gap between trigger and panel */
+.nav-panel::before { content: ""; position: absolute; inset: -12px 0 auto 0; height: 12px; }
+.nav-drop:hover .nav-panel, .nav-drop:focus-within .nav-panel {
+  opacity: 1; visibility: visible; transform: none;
+}
+.nav-panel-wide { min-width: 620px; }
+.nav-cols { display: grid; grid-template-columns: repeat(3, minmax(160px, 1fr)); gap: 8px 28px; }
+.nav-col { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.nav-col-head {
+  font-size: 11.5px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase;
+  color: var(--muted-foreground); padding: 4px 8px; margin-bottom: 4px;
+  transition: color 0.2s var(--ease);
+}
+.nav-col-head:hover { color: var(--foreground); }
+.nav-col-link {
+  display: flex; flex-direction: column; gap: 1px; padding: 7px 8px; border-radius: var(--r-sm);
+  transition: background-color 0.2s var(--ease);
+}
+.nav-col-link:hover { background: var(--muted); }
+.nav-col-link span { font-size: 14px; font-weight: 400; color: var(--foreground); }
+.nav-col-link small { font-size: 12px; color: var(--muted-foreground); }
+.nav-panel-foot {
+  display: flex; flex-wrap: wrap; gap: 8px 24px;
+  margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border);
+}
+.nav-panel-foot a {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 13px; color: var(--muted-foreground); padding: 0 8px;
+  transition: color 0.2s var(--ease);
+}
+.nav-panel-foot a:hover { color: var(--foreground); }
 @media (max-width: 900px) { .site-nav { display: none; } }
 @media (max-width: 560px) { .site-header .actions .btn-ghost, .site-header .actions .btn-outline { display: none; } }
 

@@ -318,6 +318,7 @@ function hasPreviewCookie(req) {
 // Each route: match(segments) → params or null, then handler(ctx) →
 // html string | { redirect } | null (404).
 const cms = require("./lib/cms");
+const { buildNav } = require("./lib/nav");
 
 // Public coworker slugs follow the persona name; the product's internal
 // slug lives in catalogSlug. Old internal-slug URLs 301 to the public one.
@@ -399,6 +400,14 @@ if (process.argv.includes("--once")) {
           return res.end(JSON.stringify(catalog));
         }
 
+        // Nav model for the landing page's dropdown menus (sub-pages render
+        // it server-side). Same shape as templates/shell.js consumes.
+        if (urlPath === "/api/nav") {
+          const model = await buildNav({}).catch(() => ({ vendors: [], industries: [] }));
+          res.writeHead(200, { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "public, max-age=300" });
+          return res.end(JSON.stringify(model));
+        }
+
         // Draft preview: /api/preview?secret=…&path=/x sets the cookie and
         // redirects; /api/exit-preview clears it.
         if (urlPath === "/api/preview") {
@@ -470,6 +479,10 @@ if (process.argv.includes("--once")) {
           res.writeHead(200, { "Content-Type": type, "Content-Length": file.size, "Accept-Ranges": "bytes" });
           return fs.createReadStream(file.path).pipe(res);
         }
+
+        // Dropdown menus need the nav model; it is identical for every
+        // visitor, so the shell caches it module-side.
+        shell.setNav(await buildNav({ draft: preview }).catch(() => null));
 
         const ctx = { params: {}, query, preview, catalog };
         for (const r of routes) {

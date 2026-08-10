@@ -54,7 +54,7 @@ async function hub(ctx) {
       ${
         useCases.length
           ? `<div class="card-grid">${useCases.map(useCaseCard).join("")}</div>`
-          : `<p class="muted">Use cases are on the way. In the meantime, <a href="/tasks" style="text-decoration:underline">browse the pre-built tasks</a>.</p>`
+          : `<p class="muted">Use cases are on the way. In the meantime, <a href="/tasks" style="text-decoration:underline">browse the template tasks</a>.</p>`
       }
     </section>`;
 
@@ -63,7 +63,7 @@ async function hub(ctx) {
     pageStart({
       title: "Use cases | Sokosumi",
       description:
-        "What teams get done with AI coworkers on Sokosumi, organized by industry: real workflows with the coworkers and pre-built tasks to run them.",
+        "What teams get done with AI coworkers on Sokosumi, organized by industry: real workflows with the coworkers and template tasks to run them.",
       path: "/use-cases",
       breadcrumb: cr,
     }) +
@@ -142,7 +142,7 @@ async function detail(ctx) {
         .join("");
       coworkerSection = `<section class="page-section">
         <h2>Coworkers for this</h2>
-        <p class="sub">Coworkers who already run this kind of work. Open a profile to see their pre-built tasks.</p>
+        <p class="sub">Coworkers who already run this kind of work. Open a profile to see their template tasks.</p>
         <div style="display:flex;flex-wrap:wrap;gap:16px 32px">${rows}</div>
       </section>`;
     }

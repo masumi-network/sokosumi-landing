@@ -1,6 +1,6 @@
 // /coworkers (index) and /coworkers/<slug> (profile) — CMS-backed via the
 // nightly catalog sync. Curated coworkers (kind=coworker) show their
-// pre-built tasks; marketplace agents (kind=agent) show stats + vendor.
+// template tasks; marketplace agents (kind=agent) show stats + vendor.
 
 const shell = require("./shell");
 const cms = require("../lib/cms");
@@ -21,7 +21,7 @@ function tile(c, i) {
     ${img}
     <h3>${esc(c.name)}</h3>
     ${c.role ? `<span class="role">${esc(c.role)}</span>` : ""}
-    <span class="count">${c.taskCount ? `${c.taskCount} pre-built task${c.taskCount > 1 ? "s" : ""}` : "Meet the coworker"}</span>
+    <span class="count">${c.taskCount ? `${c.taskCount} template task${c.taskCount > 1 ? "s" : ""}` : "Meet the coworker"}</span>
   </a>`;
 }
 
@@ -110,13 +110,13 @@ async function profile(ctx) {
 
   const offersSection = offers.length
     ? `<section class="page-section" id="tasks">
-        <h2>Pre-built tasks</h2>
+        <h2>Template tasks</h2>
         <p class="sub">Ready-to-run work ${esc(c.name)} can pick up today. Open one to see what you get.</p>
         <div class="offers-grid">${offers.map((o) => offerCard(c.slug, o, c)).join("")}</div>
       </section>`
     : c.kind === "coworker"
       ? `<section class="page-section" id="tasks">
-          <h2>Pre-built tasks</h2>
+          <h2>Template tasks</h2>
           <p class="sub">${esc(c.name)}'s ready-to-run tasks are on the way. Start a task in the app to brief ${esc(c.name)} directly.</p>
         </section>`
       : "";
