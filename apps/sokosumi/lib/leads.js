@@ -221,6 +221,119 @@ async function submitSupport(body, source) {
   return { ok: true, lead: v.lead };
 }
 
+// ── agent listing ────────────────────────────────────────────────────────
+// The Tally form's 18 fields, ported in templates/listAgent.js. Stored as a
+// support-kind inquiry with the whole submission in the message body: a
+// listing is a conversation with the team, not a structured record the site
+// needs to query.
+const LISTING_FIELDS = [
+  ["checklist", "Pre-listing checklist"],
+  ["preprodLink", "Preprod listing link"],
+  ["agentName", "Agent name"],
+  ["purpose", "Intended purpose"],
+  ["description", "Description"],
+  ["features", "Key features"],
+  ["limitations", "Known limitations"],
+  ["techStack", "Tech stack"],
+  ["riskClass", "EU AI Act classification"],
+  ["termsOfUse", "Terms of use"],
+  ["fullName", "Full name"],
+  ["email", "Email"],
+  ["phone", "Phone"],
+  ["address", "Address"],
+  ["company", "Company"],
+  ["taxId", "Tax identification number"],
+  ["registrationNumber", "Company registration number"],
+  ["basedInEu", "Based in the EU"],
+];
+
+// Every field on the original is required. The five that would make a
+// submission useless if wrong are checked properly; the rest only have to be
+// present, so a vendor is never blocked by our idea of a valid phone number.
+function validateListing(body) {
+  if (clean(body.website)) return { ok: false, error: "spam" };
+
+  const v = {};
+  for (const [name] of LISTING_FIELDS) {
+    const raw = body[name];
+    v[name] = Array.isArray(raw) ? raw.map(clean).join(", ") : clean(raw);
+  }
+  if (v.agentName.length < 2) return { ok: false, error: "Please add the name of the agent." };
+  if (!EMAIL_RE.test(v.email)) return { ok: false, error: "Please add a valid email address." };
+  if (v.fullName.length < 2) return { ok: false, error: "Please add your name." };
+  if (v.description.length < 10) return { ok: false, error: "Please add a description of the agent." };
+  if (!v.riskClass) return { ok: false, error: "Please classify the agent under the EU AI Act." };
+
+  const missing = LISTING_FIELDS.filter(([n]) => !v[n]).map(([, label]) => label);
+  if (missing.length) return { ok: false, error: `Still missing: ${missing.join(", ")}.` };
+
+  return { ok: true, listing: v };
+}
+
+function listingBody(v, source) {
+  const lines = LISTING_FIELDS.map(([name, label]) => `${label}:\n${v[name]}\n`);
+  return `New agent listing submission from sokosumi.com\n\nPage: ${source}\n\n${lines.join("\n")}`;
+}
+
+async function sendListingEmail(v, source) {
+  if (!RESEND_API_KEY) return false;
+  const res = await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: { "content-type": "application/json", authorization: `Bearer ${RESEND_API_KEY}` },
+    body: JSON.stringify({
+      from: NOTIFY_FROM,
+      to: [SUPPORT_TO],
+      reply_to: v.email,
+      subject: `Sokosumi agent listing: ${v.agentName}${v.company ? ` (${v.company})` : ""}`,
+      text: listingBody(v, source),
+    }),
+  });
+  if (!res.ok) {
+    const detail = await res.text().catch(() => "");
+    throw new Error(`Resend failed: HTTP ${res.status} ${detail.slice(0, 200)}`);
+  }
+  return true;
+}
+
+async function submitListing(body, source) {
+  const val = validateListing(body);
+  if (!val.ok) return val;
+  const v = val.listing;
+
+  const lead = {
+    name: v.fullName,
+    email: v.email,
+    company: v.company,
+    message: listingBody(v, source),
+    requestType: "reply",
+    taskLink: v.preprodLink,
+  };
+
+  let id = null;
+  try {
+    id = await storeLead(lead, source, "support");
+  } catch (e) {
+    console.error("[listing] store failed:", e.message);
+    try {
+      const sent = await sendListingEmail(v, source);
+      if (!sent) throw new Error("no email transport configured");
+      console.log("[listing] stored=false emailed=true");
+      return { ok: true };
+    } catch (mailErr) {
+      console.error("[listing] email fallback failed:", mailErr.message);
+      return { ok: false, error: `We could not record that right now. Please email ${SUPPORT_TO} directly.` };
+    }
+  }
+
+  try {
+    if (await sendListingEmail(v, source)) await markNotified(id);
+    else console.warn("[listing] RESEND_API_KEY not set — listing stored, no email sent");
+  } catch (e) {
+    console.error("[listing] email failed (listing is stored):", e.message);
+  }
+  return { ok: true };
+}
+
 // ── tiny in-memory rate limit (per IP, sliding hour) ─────────────────────
 const HITS = new Map();
 const WINDOW_MS = 60 * 60 * 1000;
@@ -239,4 +352,14 @@ function rateLimited(ip) {
   return false;
 }
 
-module.exports = { submitLead, submitSupport, rateLimited, validate, validateSupport, SUPPORT_TO };
+module.exports = {
+  submitLead,
+  submitSupport,
+  submitListing,
+  rateLimited,
+  validate,
+  validateSupport,
+  validateListing,
+  LISTING_FIELDS,
+  SUPPORT_TO,
+};

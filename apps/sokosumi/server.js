@@ -355,6 +355,8 @@ const leads = require("./lib/leads");
 const salesTpl = require("./templates/sales");
 const pricingTpl = require("./templates/pricing");
 const supportTpl = require("./templates/support");
+const legalTpl = require("./templates/legal");
+const listAgentTpl = require("./templates/listAgent");
 
 // Public coworker slugs follow the persona name; the product's internal
 // slug lives in catalogSlug. Old internal-slug URLs 301 to the public one.
@@ -405,6 +407,14 @@ const routes = [
   // the routes these two used to live at, kept as permanent redirects
   { m: (s) => s.length === 1 && s[0] === "talk-to-sales" && {}, h: () => ({ redirect: "/contact/sales" }) },
   { m: (s) => s.length === 1 && s[0] === "support" && {}, h: () => ({ redirect: "/contact/support" }) },
+  { m: (s) => s.length === 1 && s[0] === "list-your-agent" && {}, h: listAgentTpl.render },
+  { m: (s) => s.length === 1 && s[0] === "legal" && {}, h: legalTpl.index },
+  { m: (s) => s.length === 2 && s[0] === "legal" && { slug: s[1] }, h: legalTpl.detail },
+  // sokosumi.com publishes these at the root today, so those URLs keep working
+  {
+    m: (s) => s.length === 1 && legalTpl.isLegal(s[0]) && { slug: s[0] },
+    h: (ctx) => ({ redirect: `/legal/${ctx.params.slug}` }),
+  },
   {
     m: (s) => s.length === 1 && s[0] === "press" && {},
     h: async (ctx) => (await pagesTpl.cmsPage({ ...ctx, params: { slug: "press" } })) || misc.press(),
@@ -575,6 +585,66 @@ if (process.argv.includes("--once")) {
               taskLink: body.taskLink || "",
               message: body.message || "",
             });
+          }
+          return back({ sent: "1" });
+        }
+
+        // Agent listing submissions. Larger body than the other two forms
+        // (the Terms of Use field alone can be long), so the cap is raised.
+        if (urlPath === "/api/agent-listing" && req.method === "POST") {
+          const ip =
+            String(req.headers["x-forwarded-for"] || "").split(",")[0].trim() ||
+            req.socket.remoteAddress ||
+            "unknown";
+          const back = (params) => {
+            res.writeHead(303, {
+              Location: "/list-your-agent?" + new URLSearchParams(params),
+              "Cache-Control": "no-store",
+            });
+            res.end();
+          };
+
+          if (leads.rateLimited(ip)) {
+            return back({ error: "Too many requests just now. Please try again shortly." });
+          }
+
+          let raw = "";
+          let tooBig = false;
+          let seen = 0;
+          req.on("data", (chunk) => {
+            seen += chunk.length;
+            if (seen > 256 * 1024) {
+              tooBig = true;
+              raw = "";
+              if (seen > 2 * 1024 * 1024) req.destroy();
+              return;
+            }
+            raw += chunk;
+          });
+          await new Promise((resolve) => {
+            req.on("end", resolve);
+            req.on("close", resolve);
+            req.on("error", resolve);
+          });
+          if (tooBig) return back({ error: "That submission is too long." });
+
+          // the checklist is a checkbox group, so the same key repeats
+          const params = new URLSearchParams(raw);
+          const body = {};
+          for (const key of new Set(params.keys())) {
+            const all = params.getAll(key);
+            body[key] = all.length > 1 ? all : all[0];
+          }
+
+          const result = await leads.submitListing(body, "/list-your-agent");
+          if (!result.ok) {
+            if (result.error === "spam") return back({ sent: "1" });
+            const echo = { error: result.error };
+            for (const [name] of leads.LISTING_FIELDS) {
+              const v = body[name];
+              if (v) echo[name] = Array.isArray(v) ? v.join("|") : v;
+            }
+            return back(echo);
           }
           return back({ sent: "1" });
         }

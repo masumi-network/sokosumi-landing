@@ -104,6 +104,8 @@ async function sitemap() {
     "/contact",
     "/contact/sales",
     "/contact/support",
+    "/legal",
+    "/list-your-agent",
     "/press",
   ]);
   const safe = async (fn) => {
@@ -155,6 +157,7 @@ async function sitemap() {
   for (const r of releases) urls.add(`/releases/${r.slug}`);
   for (const c of comparisons) urls.add(`/compare/${c.slug}`);
   for (const p of pages) urls.add(`/${p.slug}`);
+  for (const slug of require("./legal").SLUGS) urls.add(`/legal/${slug}`);
 
   const body = [...urls].map((u) => `  <url><loc>${esc(SITE + u)}</loc></url>`).join("\n");
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${body}\n</urlset>\n`;

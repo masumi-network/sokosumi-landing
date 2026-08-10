@@ -543,9 +543,21 @@ function footer() {
           <a href="${SUPPORT_URL}">Support</a>
           <a href="https://www.masumi.network/dev/sokosumi/documentation" target="_blank" rel="noreferrer">Developers</a>
           <a href="/press">Press</a>
-          <a href="https://linkedin.com/company/sokosumi/" target="_blank" rel="noreferrer">LinkedIn</a>
-          <a href="https://x.com/sokosumi" target="_blank" rel="noreferrer">X</a>
           <a href="https://masumi.network" target="_blank" rel="noreferrer">Masumi</a>
+        </div>
+        <div class="foot-secondary foot-social">
+          <a href="https://discord.com/invite/aj4QfnTS92" target="_blank" rel="noreferrer">Discord</a>
+          <a href="https://x.com/sokosumi" target="_blank" rel="noreferrer">X</a>
+          <a href="https://github.com/masumi-network" target="_blank" rel="noreferrer">GitHub</a>
+          <a href="https://t.me/+igMz0AazR-cwMzJi" target="_blank" rel="noreferrer">Telegram</a>
+          <a href="https://linkedin.com/company/sokosumi/" target="_blank" rel="noreferrer">LinkedIn</a>
+        </div>
+        <div class="foot-secondary foot-legal">
+          <a href="/legal/terms-of-service">Terms</a>
+          <a href="/legal/privacy-policy">Privacy</a>
+          <a href="/legal/cookie-policy">Cookies</a>
+          <a href="/legal/imprint">Imprint</a>
+          <a href="/legal">All legal</a>
         </div>
         <div class="foot-bottom">
           <p class="foot-copy">&copy; ${new Date().getFullYear()} Sokosumi. All rights reserved.</p>
