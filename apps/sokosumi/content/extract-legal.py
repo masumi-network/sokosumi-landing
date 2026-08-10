@@ -224,9 +224,11 @@ def main(directory):
 
         w = words(body)
         exp = EXPECTED[slug]
-        ok = abs(w - exp) <= max(25, exp * 0.06)
+        # exact, deliberately. A percentage tolerance on an 8000-word contract
+        # is wide enough for two whole clauses to disappear without a warning.
+        ok = w == exp
         if not ok:
-            bad.append(f"{slug}: got {w}, expected ~{exp}")
+            bad.append(f"{slug}: got {w}, expected {exp} ({w - exp:+d})")
         out[slug] = {
             "slug": slug, "title": title, "html": body, "words": w,
             "headings": [html.unescape(re.sub(r"<[^>]+>", "", x)).strip()
@@ -234,12 +236,12 @@ def main(directory):
             "tables": body.count("<table>"), "lists": body.count("<ul>") + body.count("<ol>"),
             "panes": len(p.panes),
         }
-        print(f"{'OK ' if ok else '!! '}{slug:18} {w:6} words (expect ~{exp:5})  "
+        print(f"{'OK ' if ok else '!! '}{slug:18} {w:6} words (expect {exp:5})  "
               f"h2={len(out[slug]['headings']):2} tables={out[slug]['tables']} "
               f"lists={out[slug]['lists']} richtexts={out[slug]['panes'] or '-'}  title={title!r}")
 
     json.dump(out, open(f"{directory}/legal.json", "w"), ensure_ascii=False)
-    print("\n" + ("MISMATCHES: " + "; ".join(bad) if bad else "all six within tolerance of the source"))
+    print("\n" + ("MISMATCHES: " + "; ".join(bad) if bad else "all six match the source exactly"))
     return 1 if bad else 0
 
 

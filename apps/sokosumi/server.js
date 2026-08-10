@@ -415,6 +415,13 @@ const routes = [
     m: (s) => s.length === 1 && legalTpl.isLegal(s[0]) && { slug: s[0] },
     h: (ctx) => ({ redirect: `/legal/${ctx.params.slug}` }),
   },
+  // ...and the German locale, which the Terms link into: clause 2.4 sends the
+  // User to sokosumi.com/de/acceptable-use. That reference has to resolve after
+  // the cutover, and this site is English-only, so send it to the English text.
+  {
+    m: (s) => s.length === 2 && s[0] === "de" && legalTpl.isLegal(s[1]) && { slug: s[1] },
+    h: (ctx) => ({ redirect: `/legal/${ctx.params.slug}` }),
+  },
   {
     m: (s) => s.length === 1 && s[0] === "press" && {},
     h: async (ctx) => (await pagesTpl.cmsPage({ ...ctx, params: { slug: "press" } })) || misc.press(),
