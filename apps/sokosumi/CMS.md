@@ -256,10 +256,13 @@ Manual run (payload-cms repo): `npx tsx scripts/sync-sokosumi-catalog.ts`.
 Both dropdown menus are computed from the CMS; nothing in them is hardcoded
 except the four top-level labels.
 
-- **AI Coworkers menu** — one column per vendor, top 3 by weight (curated
-  coworkers count ten times an agent), three coworkers each. To get a coworker
-  in: set its `vendor`, keep the vendor `active`, and lower the coworker's
-  `order`.
+- **AI Coworkers menu** — one column per vendor, headed by the vendor's
+  wordmark (its name in text when it has none). **Curated coworkers only**
+  (`kind = coworker`): marketplace listings outnumber them ten to one and would
+  bury them. Top 3 vendors by how many curated coworkers they have, 4 each. To
+  get a coworker in: set `kind = coworker`, set its `vendor`, keep the vendor
+  `active`, and lower the coworker's `order`. A coworker with no vendor never
+  appears in the menu at all.
 - **Use cases menu** — one row per industry that has at least one published use
   case, up to six, in name order.
 
