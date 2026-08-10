@@ -253,22 +253,17 @@
         max-width: 52ch; text-wrap: pretty; margin: 0 0 36px;
       }
 
-      /* search: one flat white bar */
-      .hero-search {
-        width: min(600px, 100%); border-radius: var(--r-lg); padding: 0;
-        background: transparent; border: none; box-shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
-        margin-bottom: 22px;
+      /* hero actions: the same two the nav carries, in the nav's order so the
+         eye does not have to re-learn which one is primary */
+      .hero-cta { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 14px; }
+      .hero-cta-signup { background: #fff; color: var(--ink); }
+      .hero-cta-signup:hover { background: rgba(255, 255, 255, 0.88); }
+      .hero-cta-sales { background: transparent; color: #fff; border-color: rgba(255, 255, 255, 0.42); }
+      .hero-cta-sales:hover { border-color: rgba(255, 255, 255, 0.8); background: rgba(255, 255, 255, 0.08); }
+      .hero-note {
+        font-size: 13px; line-height: 1.5; color: rgba(255, 255, 255, 0.68);
+        max-width: 44ch; margin: 0 0 26px;
       }
-      .hero-search-inner {
-        display: flex; gap: 6px; align-items: center; background: #fff; border-radius: var(--r-lg);
-        padding: 6px 6px 6px 18px;
-      }
-      .hero-search input {
-        flex: 1; border: none; outline: none; font-family: inherit; font-size: 16px;
-        background: transparent; color: var(--foreground); min-width: 0;
-      }
-      .hero-search input::placeholder { color: rgba(15, 14, 13, 0.42); }
-      .hero-search-btn { height: 40px; padding: 0 20px; border-radius: var(--r-md); }
 
       .hero-chips { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-start; }
       .pill {
@@ -685,9 +680,10 @@
       .foot-copy { margin: 0; font-size: 12px; letter-spacing: 0; color: var(--muted-foreground); }
 
       @media (max-width: 560px) {
-        .hero-search-inner { flex-direction: column; align-items: stretch; padding: 12px; gap: 10px; }
-        .hero-search-inner input { padding: 4px 8px; }
-        .hero-search-btn { width: 100%; justify-content: center; }
+        /* .hero-inner is align-items:flex-start, so the row has to claim the
+           width itself before the buttons can stretch into it */
+        .hero-cta { flex-direction: column; align-items: stretch; align-self: stretch; max-width: 360px; }
+        .hero-cta .btn { width: 100%; justify-content: center; }
         .pill { padding: 12px 16px; }
       }
 
@@ -768,17 +764,11 @@
           research, social, planning, and writing, delivered as finished files.
         </p>
 
-        <form class="hero-search" id="heroSearch" role="search" action="/tasks" method="get" data-reveal style="--i: 3">
-          <div class="hero-search-inner">
-            <input id="q" name="q" type="text" placeholder="What do you want to get done?" aria-label="Search coworkers and tasks" />
-            <button type="submit" class="btn btn-primary hero-search-btn">
-              Search
-              <span class="orb" aria-hidden="true">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-              </span>
-            </button>
-          </div>
-        </form>
+        <div class="hero-cta" data-reveal style="--i: 3">
+          <a class="btn btn-lg hero-cta-sales" href="/talk-to-sales">Talk to Sales</a>
+          <a class="btn btn-lg hero-cta-signup" href="https://app.sokosumi.com">Sign Up</a>
+        </div>
+        <p class="hero-note" data-reveal style="--i: 3">Creating an account is free. You only spend credits on the work you actually run.</p>
 
         <div class="hero-chips" id="heroChips" data-reveal style="--i: 4">
           <button type="button" class="pill" data-cat="Research">Research</button>
@@ -1232,13 +1222,7 @@
           return '<svg width="' + size + '" height="' + size + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + (ICON_PATHS[name] || "") + "</svg>";
         }
 
-        /* hero search + chips → /tasks browse page */
-        var form = document.getElementById("heroSearch");
-        form.addEventListener("submit", function (e) {
-          e.preventDefault();
-          var q = (document.getElementById("q").value || "").trim();
-          location.href = "/tasks" + (q ? "?q=" + encodeURIComponent(q) : "");
-        });
+        /* hero category chips → /tasks browse page */
         document.getElementById("heroChips").addEventListener("click", function (e) {
           var chip = e.target.closest("[data-cat]");
           if (chip) location.href = "/tasks?category=" + encodeURIComponent(chip.getAttribute("data-cat"));
