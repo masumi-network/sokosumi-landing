@@ -244,28 +244,31 @@ function shotFigure(shot, opts) {
     </figure>`;
 }
 
-// Customer quotes from the CMS testimonials collection. Rendered wherever
-// social proof earns its place rather than only inside one page's layout.
-function testimonialsSection(list, opts) {
-  const items = (list || []).slice(0, (opts && opts.limit) || 6);
-  if (!items.length) return "";
+// One customer quote, large. A grid of them reads as filler and repeats the
+// same names on every page; a single quote given room reads as a statement.
+// `t` is a testimonials doc (or a populated relationship from a quote block).
+function quoteSection(t, opts) {
+  if (!t || !t.quote) return "";
   const o = opts || {};
-  return `<section class="page-section${o.flush ? " flush" : ""}" data-reveal>
-      ${o.heading ? `<h2>${esc(o.heading)}</h2>` : ""}
-      ${o.sub ? `<p class="sub">${esc(o.sub)}</p>` : ""}
-      <div class="blk-quote-grid">${items
-        .map((t) => {
-          const av = cms.mediaUrl(t.avatar);
-          return `<figure class="tq">
-            <blockquote>&ldquo;${esc(t.quote)}&rdquo;</blockquote>
-            <figcaption class="who">
-              ${av ? `<span class="avatar"><img src="${attr(av)}" alt="" loading="lazy" /></span>` : ""}
-              <span class="meta"><strong>${esc(t.name)}</strong>${t.role ? `<small>${esc(t.role)}</small>` : ""}</span>
-            </figcaption>
-          </figure>`;
-        })
-        .join("")}</div>
+  const av = cms.mediaUrl(t.avatar);
+  return `<section class="page-section${o.flush ? " flush" : ""} quote-section" data-reveal>
+      ${o.heading ? `<p class="quote-kicker">${esc(o.heading)}</p>` : ""}
+      <figure class="pull-quote">
+        <blockquote>&ldquo;${esc(t.quote)}&rdquo;</blockquote>
+        <figcaption>
+          ${av ? `<span class="pq-avatar"><img src="${attr(av)}" alt="" loading="lazy" /></span>` : ""}
+          <span class="pq-who"><strong>${esc(t.name)}</strong>${t.role ? `<small>${esc(t.role)}</small>` : ""}</span>
+        </figcaption>
+      </figure>
     </section>`;
+}
+
+// Deterministic pick for pages that are not editor-composed, so /pricing and
+// the use-cases hub do not both show the same person.
+function pickQuote(list, seed) {
+  const items = (list || []).filter((t) => t && t.quote);
+  if (!items.length) return null;
+  return items[Math.abs(seed || 0) % items.length];
 }
 
 // Card grid class for a list whose length is known: one or two cards get a
@@ -497,6 +500,7 @@ function footer() {
           <a href="/compare">Compare</a>
           <a href="/contact">Contact</a>
           <a href="/support">Support</a>
+          <a href="https://www.masumi.network/dev/sokosumi/documentation" target="_blank" rel="noreferrer">Developers</a>
           <a href="/press">Press</a>
           <a href="https://linkedin.com/company/sokosumi/" target="_blank" rel="noreferrer">LinkedIn</a>
           <a href="https://x.com/sokosumi" target="_blank" rel="noreferrer">X</a>
@@ -592,7 +596,8 @@ module.exports = {
   vendorLogo,
   ctaFaces,
   ctaBand,
-  testimonialsSection,
+  quoteSection,
+  pickQuote,
   NO_CARD,
   NO_CARD_LINE,
   gridCls,

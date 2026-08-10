@@ -447,20 +447,6 @@ if (process.argv.includes("--once")) {
           return res.end(JSON.stringify(model));
         }
 
-        // Customer quotes for the landing page. The sub-pages render these
-        // server-side; the landing page is static and fetches them.
-        if (urlPath === "/api/testimonials") {
-          const list = await cms.getTestimonials({}).catch(() => []);
-          const out = list.slice(0, 6).map((t) => ({
-            quote: t.quote,
-            name: t.name,
-            role: t.role || "",
-            avatar: cms.mediaUrl(t.avatar),
-          }));
-          res.writeHead(200, { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "public, max-age=300" });
-          return res.end(JSON.stringify(out));
-        }
-
         // Draft preview: /api/preview?secret=…&path=/x sets the cookie and
         // redirects; /api/exit-preview clears it.
         if (urlPath === "/api/preview") {
@@ -534,6 +520,57 @@ if (process.argv.includes("--once")) {
               teamSize: body.teamSize || "",
               message: body.message || "",
               requestType: body.requestType || "",
+            });
+          }
+          return back({ sent: "1" });
+        }
+
+        // Support requests. Same plain-form POST + redirect shape as sales,
+        // so the page works with JavaScript disabled.
+        if (urlPath === "/api/support-request" && req.method === "POST") {
+          const ip =
+            String(req.headers["x-forwarded-for"] || "").split(",")[0].trim() ||
+            req.socket.remoteAddress ||
+            "unknown";
+          const back = (params) => {
+            res.writeHead(303, { Location: "/support?" + new URLSearchParams(params), "Cache-Control": "no-store" });
+            res.end();
+          };
+
+          if (leads.rateLimited(ip)) {
+            return back({ error: "Too many requests just now. Please try again shortly." });
+          }
+
+          let raw = "";
+          let tooBig = false;
+          let seen = 0;
+          req.on("data", (chunk) => {
+            seen += chunk.length;
+            if (seen > 64 * 1024) {
+              tooBig = true;
+              raw = "";
+              if (seen > 1024 * 1024) req.destroy();
+              return;
+            }
+            raw += chunk;
+          });
+          await new Promise((resolve) => {
+            req.on("end", resolve);
+            req.on("close", resolve);
+            req.on("error", resolve);
+          });
+          if (tooBig) return back({ error: "That message is too long." });
+
+          const body = Object.fromEntries(new URLSearchParams(raw));
+          const result = await leads.submitSupport(body, body.source || "/support");
+          if (!result.ok) {
+            if (result.error === "spam") return back({ sent: "1" });
+            return back({
+              error: result.error,
+              name: body.name || "",
+              email: body.email || "",
+              taskLink: body.taskLink || "",
+              message: body.message || "",
             });
           }
           return back({ sent: "1" });

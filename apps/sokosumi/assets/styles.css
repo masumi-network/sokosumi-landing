@@ -538,14 +538,6 @@ a.card:hover .go { opacity: 1; transform: none; }
 .step h3 { margin-top: 8px; font-size: 16.5px; font-weight: 500; letter-spacing: -0.01em; }
 .step p { margin-top: 6px; font-size: 14px; line-height: 1.6; color: var(--muted-foreground); }
 
-.blk-quote-grid { display: grid; gap: 14px; grid-template-columns: 1fr; }
-@media (min-width: 860px) { .blk-quote-grid { grid-template-columns: repeat(2, 1fr); } }
-.tq { padding: 24px; background: var(--card); border: 1px solid var(--border); border-radius: var(--r-lg); display: flex; flex-direction: column; gap: 16px; }
-.tq blockquote { font-size: 16px; line-height: 1.6; letter-spacing: -0.005em; text-wrap: pretty; }
-.tq .who { display: flex; align-items: center; gap: 12px; margin-top: auto; }
-.tq .who .meta { display: flex; flex-direction: column; line-height: 1.35; }
-.tq .who strong { font-size: 13.5px; font-weight: 500; }
-.tq .who small { font-size: 12.5px; color: var(--muted-foreground); }
 
 .blk-media-text { display: grid; gap: clamp(28px, 5vw, 64px); grid-template-columns: 1fr; align-items: center; }
 @media (min-width: 860px) {
@@ -711,6 +703,30 @@ a.card:hover .go { opacity: 1; transform: none; }
   border: 2px solid var(--ink); margin-right: -12px; display: block;
 }
 .cta-faces img:last-child { margin-right: 0; }
+
+/* ===== one pull quote, given room =====
+   Replaces the old three-up grid: a single quote at display size reads as a
+   statement, where a wall of them reads as filler. */
+.quote-section { text-align: left; }
+.quote-kicker {
+  font-size: 11.5px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--muted-foreground); margin-bottom: 22px;
+}
+.pull-quote { margin: 0; max-width: 30ch; }
+.pull-quote blockquote {
+  margin: 0; font-weight: 300; letter-spacing: -0.02em;
+  font-size: clamp(24px, 3.2vw, 38px); line-height: 1.24; text-wrap: pretty;
+  max-width: 22ch;
+}
+.pull-quote figcaption { display: flex; align-items: center; gap: 14px; margin-top: clamp(24px, 3vw, 34px); }
+.pq-avatar { width: 46px; height: 46px; border-radius: 999px; overflow: hidden; flex-shrink: 0; background: var(--muted); }
+.pq-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.pq-who { display: flex; flex-direction: column; min-width: 0; }
+.pq-who strong { font-size: 14.5px; font-weight: 500; }
+.pq-who small { font-size: 13px; line-height: 1.45; color: var(--muted-foreground); }
+/* the quote wants the page's measure, not the prose measure */
+.pull-quote { max-width: 40ch; }
+@media (min-width: 900px) { .pull-quote blockquote { max-width: 20ch; } .pull-quote { max-width: none; } }
 
 /* ===== Talk to Sales form ===== */
 .lead-layout { display: grid; gap: clamp(32px, 5vw, 72px); grid-template-columns: 1fr; padding-bottom: clamp(40px, 6vw, 72px); align-items: start; }

@@ -162,6 +162,22 @@ public slug in the URL. A mismatch means the task never appears and has no URL.
 
 ---
 
+## Testimonials
+
+Quotes live in **Content → Testimonials**, not inside a page. Each has the
+quote, the person, their role, an optional portrait, an `order`, and an
+`active` checkbox that pulls it from the sites without deleting it.
+
+To put one on a page, add a **Quote** block and pick the person. It renders as
+a single large pull quote — one per page, by design. The old multi-quote grid
+is gone: it put the same five names on every page that used it, which reads as
+filler rather than proof.
+
+`/pricing` and the use-cases hub pick a quote automatically, and deliberately
+pick different ones. Anything you add to the collection is in that rotation.
+
+---
+
 ## Pictures in articles
 
 Posts, guides and releases are prose first, so they do not use the full block
@@ -204,7 +220,7 @@ reorder. Open with a Hero — those three collections render no heading of their
 | **Stats** | heading, 2–5 items (value*, label*) | Big numbers with proof behind them. | Numbers you cannot source. |
 | **FAQ** | heading, items (question*, answer*) | Real objections. Also generates Google FAQ structured data — the only block that does. | Padding a thin page. |
 | **Comparison table** | heading, columns, rows | Us-versus-them. Cells: `yes` → check, `no` → empty, anything else is text. | More than ~4 columns. |
-| **Testimonials** | heading, 1–6 quotes | A named quote with a role. | Anonymous filler. |
+| **Quote** | testimonial*, heading | One customer quote, at display size. Pick from **Content → Testimonials**; different pages should pick different people. | More than one — the block is deliberately singular. |
 | **Media + text** | image, heading, text, side, CTA | A screenshot next to its explanation. | Decorative images. |
 | **Logo strip** | heading, logos* | Customer or partner marks. | Fewer than four logos. |
 | **Pricing** | heading, 1–4 plans | Plan comparison; highlight one. | Anything not actually purchasable. |

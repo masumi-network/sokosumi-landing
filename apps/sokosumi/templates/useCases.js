@@ -150,10 +150,7 @@ async function hub(ctx) {
     industrySection +
     casesSection +
     (useCases.length ? howItRuns() : "") +
-    shell.testimonialsSection(testimonials, {
-      heading: "What it is like once they are running",
-      limit: 3,
-    }) +
+    shell.quoteSection(shell.pickQuote(testimonials, 3), { heading: "What it is like once they are running" }) +
     blocks.ctaBand({
       heading: "Put a coworker on one of these this week",
       subheading: "Create an account, pick the use case closest to your job, and hand over the first brief.",

@@ -133,11 +133,7 @@ async function render(ctx) {
       <div class="plan-grid">${PLANS.map(planCard).join("")}</div>
       <div class="plan-grid enterprise">${planCard(ENTERPRISE, 0)}</div>
     </section>` +
-    shell.testimonialsSection(testimonials, {
-      heading: "Teams already on a plan",
-      sub: "What people say after putting the coworkers to work.",
-      limit: 3,
-    }) +
+    shell.quoteSection(shell.pickQuote(testimonials, 0), { heading: "Teams already on a plan" }) +
     shell.ctaBand({
       heading: "Start on the free plan",
       subheading: "250 credits per seat, no card, and every agent on the marketplace to try them on.",

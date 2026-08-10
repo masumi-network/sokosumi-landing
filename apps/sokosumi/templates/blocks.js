@@ -147,24 +147,6 @@ const RENDER = {
     )}">${items}</div></section>`;
   },
 
-  testimonials(b) {
-    const items = (b.items || [])
-      .map((it) => {
-        const av = mediaUrl(it.avatar);
-        return `<figure class="tq">
-        <blockquote>&ldquo;${esc(it.quote)}&rdquo;</blockquote>
-        <figcaption class="who">
-          ${av ? `<span class="avatar"><img src="${attr(av)}" alt="" loading="lazy" /></span>` : ""}
-          <span class="meta"><strong>${esc(it.name)}</strong>${
-            it.role ? `<small>${esc(it.role)}</small>` : ""
-          }</span>
-        </figcaption>
-      </figure>`;
-      })
-      .join("");
-    return `<section class="blk" data-reveal>${blkHead(b)}<div class="blk-quote-grid">${items}</div></section>`;
-  },
-
   mediaText(b) {
     const img = mediaUrl(b.image);
     return `<section class="blk" data-reveal><div class="blk-media-text${
@@ -225,6 +207,14 @@ const RENDER = {
       )}" loading="lazy" allow="accelerometer; encrypted-media; picture-in-picture" allowfullscreen></iframe></div>
       ${b.caption ? `<p class="caption">${esc(b.caption)}</p>` : ""}
     </section>`;
+  },
+
+  // One quote, chosen in the CMS from the testimonials collection. depth 1
+  // populates the relationship; an id means the page was fetched shallower.
+  quote(b) {
+    const t = b.testimonial;
+    if (!t || typeof t !== "object") return "";
+    return shell.quoteSection(t, { heading: b.heading || "" });
   },
 
   image(b) {
