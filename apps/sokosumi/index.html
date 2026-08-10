@@ -505,6 +505,9 @@
 
       /* ===== trust band (dark) ===== */
       .band-dark .trust-logo { filter: brightness(0) invert(1); }
+      /* a brand that ships its own white artwork keeps it: forcing Serviceplan
+         to solid white turns the red square in its mark into a blank block */
+      .band-dark .trust-logo.is-brand { filter: none; }
       .trust-inner { display: grid; gap: clamp(36px, 5vw, 72px); grid-template-columns: 1fr; align-items: center; }
       @media (min-width: 880px) { .trust-inner { grid-template-columns: 1.08fr 1fr; } }
       .trust-media { padding: 0; border-radius: 0; background: transparent; border: none; box-shadow: none; }
@@ -947,10 +950,10 @@
             </div>
           </div>
           <div class="trust-copy" data-reveal style="--i: 1">
-            <img class="trust-logo" src="/assets/serviceplan-logo.png" alt="Serviceplan Group" width="166" height="24" />
+            <img class="trust-logo is-brand" src="/assets/serviceplan-logo-white.png" alt="Serviceplan Group" width="166" height="24" />
             <h2 class="trust-headline">Built by Serviceplan&nbsp;Group, one of the world's <span class="serif-accent">leading agency groups</span>.</h2>
             <p class="muted">Every coworker is designed and vetted by senior strategists at Serviceplan. Real agency craft, not generic prompts.</p>
-            <a class="btn btn-outline" href="https://www.serviceplan.com" target="_blank" rel="noreferrer">Visit Serviceplan.com</a>
+            <a class="btn btn-outline" href="https://www.serviceplan-agents.com/" target="_blank" rel="noreferrer">Visit Serviceplan Agents</a>
           </div>
         </div>
       </div>
