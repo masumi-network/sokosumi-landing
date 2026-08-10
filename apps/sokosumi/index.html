@@ -161,6 +161,15 @@
         color: var(--muted-foreground); padding: 4px 8px; margin-bottom: 4px; transition: color 0.2s var(--ease);
       }
       .nav-col-head:hover { color: var(--foreground); }
+      /* a wordmark replaces the vendor name in the column head; .invert flattens
+         white artwork to ink so it reads on the panel's white card */
+      /* text and wordmark heads share a height so the columns line up */
+      .nav-col-head { display: flex; align-items: center; min-height: 26px; }
+      .nav-col-head.has-logo { padding: 0 8px; margin-bottom: 6px; opacity: 0.78; transition: opacity 0.2s var(--ease); }
+      .nav-col-head.has-logo:hover { opacity: 1; }
+      .nav-col-logo { display: block; }
+      .nav-col-logo img { height: 17px; width: auto; max-width: 124px; object-fit: contain; display: block; }
+      .nav-col-logo.invert img { filter: brightness(0); }
       .nav-col-link { display: flex; flex-direction: column; gap: 1px; padding: 7px 8px; border-radius: var(--r-sm); transition: background-color 0.2s var(--ease); }
       .nav-col-link:hover { background: var(--muted); }
       .nav-col-link span { font-size: 14px; color: var(--foreground); }
@@ -1254,9 +1263,16 @@
                         );
                       })
                       .join("");
+                    /* the wordmark stands in for the name when we have one;
+                       .invert flattens white artwork to ink, as on /vendors */
+                    var head = v.logo
+                      ? '<span class="nav-col-logo' + (v.logo.invert ? " invert" : "") + '">' +
+                        '<img src="' + esc(v.logo.url) + '" alt="' + esc(v.name) + '" loading="lazy" /></span>'
+                      : esc(v.name);
                     return (
-                      '<div class="nav-col"><a class="nav-col-head" href="/vendors/' +
-                      encodeURIComponent(v.slug) + '">' + esc(v.name) + "</a>" + links + "</div>"
+                      '<div class="nav-col"><a class="nav-col-head' + (v.logo ? " has-logo" : "") +
+                      '" href="/vendors/' + encodeURIComponent(v.slug) + '">' + head + "</a>" +
+                      links + "</div>"
                     );
                   })
                   .join("");

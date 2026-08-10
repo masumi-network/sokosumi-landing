@@ -107,6 +107,15 @@ button { font-family: inherit; }
   transition: color 0.2s var(--ease);
 }
 .nav-col-head:hover { color: var(--foreground); }
+/* a wordmark replaces the vendor name in the column head; .invert flattens
+   white artwork to ink so it reads on the panel's white card */
+/* text and wordmark heads share a height so the columns line up */
+.nav-col-head { display: flex; align-items: center; min-height: 26px; }
+.nav-col-head.has-logo { padding: 0 8px; margin-bottom: 6px; opacity: 0.78; transition: opacity 0.2s var(--ease); }
+.nav-col-head.has-logo:hover { opacity: 1; }
+.nav-col-logo { display: block; }
+.nav-col-logo img { height: 17px; width: auto; max-width: 124px; object-fit: contain; display: block; }
+.nav-col-logo.invert img { filter: brightness(0); }
 .nav-col-link {
   display: flex; flex-direction: column; gap: 1px; padding: 7px 8px; border-radius: var(--r-sm);
   transition: background-color 0.2s var(--ease);
