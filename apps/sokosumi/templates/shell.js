@@ -5,8 +5,7 @@
 
 const APP = "https://app.sokosumi.com";
 const SITE = "https://sokosumi.com";
-const SALES_MAILTO =
-  "mailto:support@serviceplan-agents.com?subject=Talk%20to%20Sales%20about%20Sokosumi";
+const SALES_URL = "/talk-to-sales";
 
 function esc(s) {
   return String(s == null ? "" : s).replace(/[&<>"']/g, (c) =>
@@ -264,7 +263,7 @@ function header(currentPath) {
         </div>
         <div class="actions">
           <a class="btn btn-sm btn-ghost" href="${APP}/signin">Log In</a>
-          <a class="btn btn-sm btn-outline" href="${SALES_MAILTO}">Talk to Sales</a>
+          <a class="btn btn-sm btn-outline" href="/talk-to-sales">Talk to Sales</a>
           <a class="btn btn-sm btn-primary" href="${APP}">Sign Up</a>
         </div>
       </div>
@@ -345,7 +344,7 @@ function avatar(entity, cls) {
 module.exports = {
   APP,
   SITE,
-  SALES_MAILTO,
+  SALES_URL,
   setNav,
   esc,
   attr,

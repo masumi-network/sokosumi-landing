@@ -319,6 +319,8 @@ function hasPreviewCookie(req) {
 // html string | { redirect } | null (404).
 const cms = require("./lib/cms");
 const { buildNav } = require("./lib/nav");
+const leads = require("./lib/leads");
+const salesTpl = require("./templates/sales");
 
 // Public coworker slugs follow the persona name; the product's internal
 // slug lives in catalogSlug. Old internal-slug URLs 301 to the public one.
@@ -363,6 +365,7 @@ const routes = [
   { m: (s) => s.length === 2 && s[0] === "compare" && { slug: s[1] }, h: compareTpl.detail },
   { m: (s) => s.length === 1 && s[0] === "product" && {}, h: pagesTpl.productHub },
   { m: (s) => s.length === 1 && s[0] === "contact" && {}, h: contactTpl.render },
+  { m: (s) => s.length === 1 && s[0] === "talk-to-sales" && {}, h: salesTpl.render },
   {
     m: (s) => s.length === 1 && s[0] === "press" && {},
     h: async (ctx) => (await pagesTpl.cmsPage({ ...ctx, params: { slug: "press" } })) || misc.press(),
@@ -428,6 +431,62 @@ if (process.argv.includes("--once")) {
             "Set-Cookie": "soko_preview=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0",
           });
           return res.end();
+        }
+
+        // Talk-to-Sales submissions. Plain form POST so the page keeps
+        // working without JavaScript; always redirects (post/redirect/get).
+        if (urlPath === "/api/sales-inquiry" && req.method === "POST") {
+          const ip =
+            String(req.headers["x-forwarded-for"] || "").split(",")[0].trim() ||
+            req.socket.remoteAddress ||
+            "unknown";
+          const back = (params) => {
+            res.writeHead(303, { Location: "/talk-to-sales?" + new URLSearchParams(params), "Cache-Control": "no-store" });
+            res.end();
+          };
+
+          if (leads.rateLimited(ip)) {
+            return back({ error: "Too many requests just now. Please try again shortly." });
+          }
+
+          let raw = "";
+          let tooBig = false;
+          let seen = 0;
+          req.on("data", (chunk) => {
+            seen += chunk.length;
+            // Past 64 KB we stop keeping the body but keep draining, so the
+            // response socket stays usable and we can redirect with an error.
+            if (seen > 64 * 1024) {
+              tooBig = true;
+              raw = "";
+              if (seen > 1024 * 1024) req.destroy();
+              return;
+            }
+            raw += chunk;
+          });
+          await new Promise((resolve) => {
+            req.on("end", resolve);
+            req.on("close", resolve);
+            req.on("error", resolve);
+          });
+          if (tooBig) return back({ error: "That message is too long." });
+
+          const body = Object.fromEntries(new URLSearchParams(raw));
+          const result = await leads.submitLead(body, body.source || "/talk-to-sales");
+          if (!result.ok) {
+            // Silently accept honeypot hits so bots learn nothing.
+            if (result.error === "spam") return back({ sent: "1" });
+            return back({
+              error: result.error,
+              name: body.name || "",
+              email: body.email || "",
+              company: body.company || "",
+              teamSize: body.teamSize || "",
+              message: body.message || "",
+              requestType: body.requestType || "",
+            });
+          }
+          return back({ sent: "1" });
         }
 
         if (urlPath === "/robots.txt") {

@@ -2,7 +2,7 @@
 // support for existing users, plus quiet pointers into the site.
 
 const shell = require("./shell");
-const { esc, icon, pageStart, pageEnd, APP, SALES_MAILTO } = shell;
+const { esc, icon, pageStart, pageEnd, APP, SALES_URL } = shell;
 
 const SUPPORT_MAILTO = "mailto:support@serviceplan-agents.com?subject=Sokosumi%20Support";
 
@@ -62,7 +62,7 @@ async function render(ctx) {
           <h3>Talk to Sales</h3>
           <p>Rolling Sokosumi out to a team, or want to list your own agents as a vendor? Tell us what you have in mind and we will get back within a day.</p>
           <div style="margin-top:auto;padding-top:10px">
-            <a class="btn btn-primary" href="${SALES_MAILTO}">Email Sales</a>
+            <a class="btn btn-primary" href="${SALES_URL}">Talk to Sales</a>
           </div>
         </div>
         <div class="card">

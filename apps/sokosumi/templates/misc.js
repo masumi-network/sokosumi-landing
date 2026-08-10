@@ -3,7 +3,9 @@
 
 const shell = require("./shell");
 const cms = require("../lib/cms");
-const { esc, pageStart, pageEnd, SITE, SALES_MAILTO } = shell;
+const { esc, pageStart, pageEnd, SITE } = shell;
+
+const PRESS_MAILTO = "mailto:info@sokosumi.com?subject=Press%20inquiry";
 
 function notFound(message) {
   return (
@@ -58,10 +60,7 @@ function press() {
         <div class="card">
           <h3>Media inquiries</h3>
           <p>Interviews, comments, and background conversations with the Sokosumi team.</p>
-          <a class="btn btn-primary" style="margin-top:6px;align-self:flex-start" href="${SALES_MAILTO.replace(
-            "Talk%20to%20Sales%20about%20Sokosumi",
-            "Press%20inquiry",
-          )}">Email the team</a>
+          <a class="btn btn-primary" style="margin-top:6px;align-self:flex-start" href="${PRESS_MAILTO}">Email the team</a>
         </div>
         <div class="card">
           <h3>Facts</h3>

@@ -23,6 +23,7 @@ that powers masumi.network. Every Sokosumi doc has `site = sokosumi`.
 | `/<any-slug>` | catch-all landing pages (block builder) | `pages` |
 | `/press` | `pages` doc with slug `press`, else a static fallback | `pages` |
 | `/contact` | static template | — |
+| `/talk-to-sales` | static template; submissions land in `sales-inquiries` | — |
 
 Publishing a doc in the admin makes it live within ~5 minutes (the site
 caches CMS reads for 5 minutes and keeps serving the last good data if the
@@ -68,6 +69,23 @@ landing pages get a slug starting with `product/` so they appear on the
 Conventions: sentence-case headings, no em-dashes in copy, one CTA band at
 the end of a page, and a description on every doc (it is the meta
 description and the listing blurb).
+
+## Talk to Sales enquiries
+
+`/talk-to-sales` posts to the site's own `/api/sales-inquiry`, which writes a
+**sales-inquiries** doc and then emails the notification address. Storing
+comes first on purpose: if the mail provider is down the lead is still in the
+admin rather than lost.
+
+The collection holds contact details, so both reading *and* creating require
+authentication — the public cannot list it or post to it directly. The site
+writes with the API key of the `forms@sokosumi.com` user (`CMS_FORMS_KEY`).
+Work an enquiry by moving its **status** (new → contacted → qualified →
+closed); **notified** shows whether the email went out.
+
+Site env: `CMS_FORMS_KEY` (required to store), `RESEND_API_KEY` (enables the
+email; without it leads are stored silently), `SALES_NOTIFY_EMAIL` (default
+`info@sokosumi.com`), `SALES_FROM_EMAIL` (a Resend-verified sender).
 
 ## Draft preview
 
