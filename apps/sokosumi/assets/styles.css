@@ -789,9 +789,14 @@ a.card:hover .go { opacity: 1; transform: none; }
 .notice p { font-size: 15.5px; line-height: 1.6; color: var(--muted-foreground); }
 
 /* ===== footer (ported from the landing) ===== */
-footer.site { padding: 64px 0 40px; background: var(--background); margin-top: clamp(48px, 7vw, 96px); }
+/* the rule sits on the footer itself, so it spans the window rather than
+   stopping at the 1240px content grid */
+footer.site {
+  padding: 0 0 40px; background: var(--background);
+  border-top: 1px solid var(--border); margin-top: clamp(48px, 7vw, 96px);
+}
 .foot-top {
-  border-top: 1px solid var(--border); padding-top: 40px;
+  padding-top: 40px;
   display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px 32px;
 }
 .foot-links { display: flex; flex-wrap: wrap; gap: 8px 20px; }

@@ -226,12 +226,14 @@
 
       /* ===== hero: left-aligned serif statement over dark video ===== */
       .hero { position: relative; min-height: 100dvh; display: flex; flex-direction: column; overflow: hidden; background: var(--ink); }
-      .hero video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.85; filter: grayscale(1) contrast(1.06); }
+      .hero video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.62; filter: grayscale(1) contrast(1.08) brightness(0.82); }
+      /* the footage sits on ink and is pulled towards black on top of that:
+         the hero is a dark surface with movement in it, not a video with text */
       .hero .scrim {
         position: absolute; inset: 0;
         background:
-          linear-gradient(to right, rgba(10, 9, 8, 0.82), rgba(10, 9, 8, 0.35) 65%, rgba(10, 9, 8, 0.5)),
-          linear-gradient(to bottom, rgba(10, 9, 8, 0.6), rgba(10, 9, 8, 0.25) 34%, rgba(10, 9, 8, 0.82) 100%);
+          linear-gradient(to right, rgba(0, 0, 0, 0.88), rgba(0, 0, 0, 0.52) 65%, rgba(0, 0, 0, 0.66)),
+          linear-gradient(to bottom, rgba(0, 0, 0, 0.72), rgba(0, 0, 0, 0.42) 34%, rgba(0, 0, 0, 0.88) 100%);
       }
 
       /* hero background lab: try treatments via ?bg=ink|color|duo|blur (+ ?vid=test);
@@ -393,9 +395,11 @@
       .intro-person:hover .portrait img { transform: scale(1.19); }
       .intro-person h3 { font-family: var(--serif); font-size: 21px; font-weight: 400; margin: 16px 0 3px; letter-spacing: -0.01em; }
       .intro-person .role { font-size: 12.5px; letter-spacing: 0; color: var(--muted-foreground); }
+      /* no clamp: the blurb is shortened in JS so it is short enough to show
+         in full, rather than long text hidden behind an ellipsis */
       .intro-person .blurb {
         margin-top: 9px; font-size: 13px; line-height: 1.5; color: var(--muted-foreground);
-        display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden;
+        max-width: 34ch;
       }
       /* the roster is one vendor's team, so the section carries their mark */
       /* this section sits on paper, so the dark artwork is used as-is */
@@ -682,9 +686,11 @@
       .cta-band.band-dark .btn-primary { background: #fff; color: var(--ink); }
 
       /* footer: ported from the masumi.network footer, adapted to sokosumi */
-      footer.site { padding: 64px 0 40px; background: var(--background); }
+      /* the rule sits on the footer itself, so it spans the window rather than
+         stopping at the 1240px content grid */
+      footer.site { padding: 0 0 40px; background: var(--background); border-top: 1px solid var(--border); margin-top: 64px; }
       .foot-top {
-        border-top: 1px solid var(--border); padding-top: 40px;
+        padding-top: 40px;
         display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px 32px;
       }
       .foot-links { display: flex; flex-wrap: wrap; gap: 8px 20px; }
@@ -1319,7 +1325,7 @@
         }
 
         /* ---------- the introduction trio (Serviceplan), Elena centered ---------- */
-        var INTRO_SLUGS = ["hannah", "elena", "alex"];
+        var INTRO_SLUGS = ["hannah", "elena", "jamal"];
 
         /* ---------- nav dropdowns: top vendors + industries from the CMS ---------- */
         (function () {
@@ -1443,6 +1449,27 @@
               .filter(Boolean);
             if (trio.length < 3) trio = coworkers.slice(0, 3);
 
+            /* The card already carries the name and the role, so a bio that
+               opens "<Name> is a <Role> at <Company>," repeats what is right
+               above it. Strip that, then cut to one short line and a bit. */
+            function shortBlurb(text, name, max) {
+              var t = String(text || "").trim();
+              if (!t) return "";
+              var n = String(name || "").replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+              if (n) t = t.replace(new RegExp("^" + n + "\\s+is\\s+an?\\s+.{0,90}?(?:,\\s+|\\.\\s+)", "i"), "");
+              t = t.charAt(0).toUpperCase() + t.slice(1);
+              var m = /^(.+?[.!?])(\s|$)/.exec(t);
+              if (m && m[1].length <= max) return m[1];
+              if (t.length <= max) return t;
+              var cut = t.slice(0, max + 1);
+              /* a clause boundary reads as a finished thought; a word boundary
+                 leaves it hanging mid-phrase ("...how to stay pragmatic when") */
+              var clause = Math.max(cut.lastIndexOf(", "), cut.lastIndexOf(" — "), cut.lastIndexOf("; "));
+              if (clause > max * 0.5) return cut.slice(0, clause).replace(/[\s,;:.–—-]+$/, "");
+              var at = cut.lastIndexOf(" ");
+              return cut.slice(0, at > 40 ? at : max).replace(/[\s,;:.–—-]+$/, "") + "\u2026";
+            }
+
             var intro = document.getElementById("coworkerIntro");
             intro.innerHTML = trio
               .map(function (c, i) {
@@ -1453,7 +1480,7 @@
                   "</span></span>" +
                   "<h3>" + esc(c.name) + "</h3>" +
                   (c.role ? '<div class="role">' + esc(c.role) + "</div>" : "") +
-                  (c.description ? '<p class="blurb">' + esc(c.description) + "</p>" : "") +
+                  (c.description ? '<p class="blurb">' + esc(shortBlurb(c.description, c.name, 120)) + "</p>" : "") +
                   "</a>"
                 );
               })
