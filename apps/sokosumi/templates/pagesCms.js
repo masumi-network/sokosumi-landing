@@ -59,13 +59,21 @@ async function productHub(ctx) {
 
   const cardsSection = productPages.length
     ? `<div class="page-section flush">
-      <div class="card-grid">${productPages.map(pageCard).join("")}</div>
+      <div class="${shell.gridCls(productPages.length)}">${productPages.map(pageCard).join("")}</div>
     </div>`
     : "";
 
-  const surfacesSection = `<section class="page-section${productPages.length ? "" : " flush"}">
+  const surfacesSection = `<section class="page-section">
       <h2>Explore the platform</h2>
       <div class="row-list">${SURFACES.map(surfaceRow).join("")}</div>
+    </section>`;
+
+  // A product page with no picture of the product was the emptiest page on
+  // the site; these are the same four renders the landing page shows.
+  const shotsSection = `<section class="page-section${productPages.length ? "" : " flush"}" data-reveal>
+      <h2>What it looks like</h2>
+      <p class="sub">Four views of the same working day: the roster, the briefing bar, the task board, and the channel your coworkers answer in.</p>
+      ${shell.shotGallery()}
     </section>`;
 
   const cr = [{ label: "Home", href: "/" }, { label: "Product" }];
@@ -81,7 +89,14 @@ async function productHub(ctx) {
       <p class="sub">Deep dives into what your AI coworkers can do.</p>
     </div>` +
     cardsSection +
+    shotsSection +
     surfacesSection +
+    shell.ctaBand({
+      heading: "Start with one task",
+      subheading: "Creating an account is free. You only spend credits on the work you actually run.",
+      ctaLabel: "Start free",
+      seed: 7,
+    }) +
     pageEnd()
   );
 }

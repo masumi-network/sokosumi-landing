@@ -3,6 +3,7 @@
 
 const shell = require("./shell");
 const cms = require("../lib/cms");
+const blocks = require("./blocks");
 const { esc, attr, icon, pageStart, pageEnd } = shell;
 
 const CATEGORY_LABELS = {
@@ -18,17 +19,17 @@ function fmtDate(d) {
   return dt.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
 }
 
+// A post's own cover if the editor set one, otherwise a product render, so a
+// card is never a bare block of text next to one that has artwork.
+function postImage(p) {
+  return cms.mediaUrl(p.coverImage) || shell.shotFor(p.slug || p.title || "").src;
+}
+
 function postCard(p) {
-  const cover = cms.mediaUrl(p.coverImage);
   const label = CATEGORY_LABELS[p.category] || "Article";
   const meta = [label.toUpperCase(), fmtDate(p.date)].filter(Boolean).join(" · ");
-  const img = cover
-    ? `<div style="margin:-22px -22px 6px;border-radius:8px 8px 0 0;overflow:hidden;aspect-ratio:16/9;background:var(--muted)">
-        <img src="${attr(cover)}" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover" />
-      </div>`
-    : "";
-  return `<a class="card" href="/blog/${encodeURIComponent(p.slug)}">
-    ${img}
+  return `<a class="card has-media" href="/blog/${encodeURIComponent(p.slug)}">
+    <div class="card-media"><img src="${attr(postImage(p))}" alt="" loading="lazy" /></div>
     <span class="tag-quiet">${esc(meta)}</span>
     <h3>${esc(p.title)}</h3>
     ${p.description ? `<p>${esc(p.description)}</p>` : ""}
@@ -52,9 +53,16 @@ async function index(ctx) {
     </div>` +
     (posts.length
       ? `<div class="page-section flush" data-reveal>
-          <div class="card-grid">${posts.map(postCard).join("")}</div>
+          <div class="${shell.gridCls(posts.length)}">${posts.map(postCard).join("")}</div>
         </div>`
       : `<div class="page-section flush"><p class="muted">Posts are on the way. In the meantime, <a href="/guides" style="text-decoration:underline">read the guides</a>.</p></div>`) +
+    shell.ctaBand({
+      heading: "Meet the coworkers we write about",
+      subheading: "Every specialist on the marketplace has a public profile and work you can inspect first.",
+      ctaLabel: "Browse the roster",
+      ctaHref: "/coworkers",
+      seed: posts.length,
+    }) +
     pageEnd()
   );
 }
@@ -67,13 +75,9 @@ async function detail(ctx) {
   const label = CATEGORY_LABELS[p.category];
   const eyebrow = [label, fmtDate(p.date), p.author].filter(Boolean).map(esc).join(" · ");
 
-  const coverBlock = cover
-    ? `<div class="blk-image" data-reveal style="margin:0 0 clamp(28px, 4vw, 40px);max-width:820px">
-        <div class="img-frame" style="border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--border)">
-          <img src="${attr(cover)}" alt="${attr(p.title)}" />
-        </div>
-      </div>`
-    : "";
+  const coverBlock = `<div class="post-cover" data-reveal>
+      <img src="${attr(postImage(p))}" alt="${attr(cover ? p.title : "")}" loading="lazy" />
+    </div>`;
 
   const cr = [{ label: "Home", href: "/" }, { label: "Blog", href: "/blog" }, { label: p.title }];
   return (
@@ -105,9 +109,16 @@ async function detail(ctx) {
     <article class="page-section flush" data-reveal>
       <div class="prose">${p.contentHtml || ""}</div>
     </article>
+    ${blocks.renderBlocks(p.sections)}
     <div class="page-section">
       <a class="muted" href="/blog" style="display:inline-flex;align-items:center;gap:8px;font-size:14px">${icon("arrow-left", 15)} All posts</a>
     </div>` +
+    shell.ctaBand({
+      heading: "See it for yourself",
+      subheading: "Creating an account is free. You only spend credits on the work you actually run.",
+      ctaLabel: "Start free",
+      seed: p.title.length,
+    }) +
     pageEnd()
   );
 }

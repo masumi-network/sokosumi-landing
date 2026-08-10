@@ -143,7 +143,7 @@ const getUseCases = (opts) => findAll("use-cases", { ...siteWhere(), limit: 500,
 const getUseCase = async (slug, opts) =>
   (await findAll("use-cases", { ...siteWhere({ slug }), limit: 1, depth: 1 }, opts))[0] || null;
 
-const getGuides = (opts) => findAll("guides", { ...siteWhere(), limit: 500, depth: 0, sort: "order" }, opts);
+const getGuides = (opts) => findAll("guides", { ...siteWhere(), limit: 500, depth: 1, sort: "order" }, opts);
 
 const getGuide = async (slug, opts) =>
   (await findAll("guides", { ...siteWhere({ slug }), limit: 1, depth: 1 }, opts))[0] || null;
@@ -153,10 +153,10 @@ const getPosts = (opts) => findAll("posts", { ...siteWhere(), limit: 500, depth:
 const getPost = async (slug, opts) =>
   (await findAll("posts", { ...siteWhere({ slug }), limit: 1, depth: 1 }, opts))[0] || null;
 
-const getReleases = (opts) => findAll("releases", { ...siteWhere(), limit: 500, depth: 0, sort: "-date" }, opts);
+const getReleases = (opts) => findAll("releases", { ...siteWhere(), limit: 500, depth: 1, sort: "-date" }, opts);
 
 const getRelease = async (slug, opts) =>
-  (await findAll("releases", { ...siteWhere({ slug }), limit: 1, depth: 0 }, opts))[0] || null;
+  (await findAll("releases", { ...siteWhere({ slug }), limit: 1, depth: 1 }, opts))[0] || null;
 
 const getComparisons = (opts) =>
   findAll("comparisons", { ...siteWhere(), limit: 200, depth: 1, sort: "title" }, opts);

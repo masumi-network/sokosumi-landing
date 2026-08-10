@@ -99,15 +99,21 @@ Skip **categories** on Sokosumi — the field exists but nothing here reads it.
    (`getting-started`, `integrations`, `workflows`, `advanced`) and `order`.
 2. Write the body in the editor. Link 2–3 `related` guides — they render as
    chips at the end.
-3. Guides are sorted globally by `order`, then bucketed by category, so a
+3. Optional **`coverImage`** (sidebar) renders under the heading, and optional
+   **`sections`** blocks render after the body — see *Pictures in articles*.
+4. Guides are sorted globally by `order`, then bucketed by category, so a
    *section* moves up only when one guide inside it gets a lower `order`.
 
 ### Blog post
 1. **Posts → Create new.** Fill title, description, category, author, date, and
-   the body. Optionally a `coverImage` — posts are the only Sokosumi pages that
-   get their own social image.
-2. Live at `/blog/<slug>`. Note Masumi uses `/blogs/`, Sokosumi uses `/blog/`.
-3. The blog is linked from the footer only; there is no header nav item.
+   the body.
+2. **`coverImage`** (sidebar) is the lead image and the social preview. Leave it
+   empty and the page falls back to a product screenshot, so a post is never
+   text-only — but a real cover always beats the fallback.
+3. Optional **`sections`** blocks render after the body — see *Pictures in
+   articles*.
+4. Live at `/blog/<slug>`. Note Masumi uses `/blogs/`, Sokosumi uses `/blog/`.
+5. The blog is linked from the footer only; there is no header nav item.
 
 ### Release
 1. **Content → Releases → Create new.** Fill `title`, `description`, `date`, and
@@ -116,6 +122,9 @@ Skip **categories** on Sokosumi — the field exists but nothing here reads it.
 3. **Fill in the body.** A release with no body renders as plain text in the
    timeline rather than a link, while `/releases/<slug>` still exists — an
    orphan page nothing points to.
+4. Optional **`coverImage`** and **`sections`** blocks — a release note that
+   shows the thing it announces lands better than one that describes it. See
+   *Pictures in articles*.
 
 ### Comparison
 1. **Content → Comparisons → Create new.** Fill `title`, `description`, the
@@ -150,6 +159,33 @@ the same number of template tasks, so setting it to 1 usually changes nothing.
 Synced. Add a manual one only if a task exists outside the product catalog, and
 note the trap: **`agentSlug` must be the coworker's `catalogSlug`**, not the
 public slug in the URL. A mismatch means the task never appears and has no URL.
+
+---
+
+## Pictures in articles
+
+Posts, guides and releases are prose first, so they do not use the full block
+builder. They get two picture slots instead:
+
+- **`coverImage`** (sidebar) — the lead image at the top of the page, and on
+  `/blog` the image on the listing card. One per document.
+- **`sections`** (below the body) — a short block list rendered *after* the
+  prose: **Image**, **Media + text**, **Video**, **Checklist**, **CTA band**,
+  **Rich text**. Same editor as the page builder, fewer blocks: a blog post has
+  no business holding a pricing table.
+
+Upload artwork under **Media**. The four Sokosumi product screenshots are
+already there (roster, briefing bar, task board, chat) — reach for those when a
+post has no picture of its own.
+
+Two things to know:
+
+- Blog cards and blog headers **fall back to a product screenshot** when
+  `coverImage` is empty, so the page never looks broken. That is a safety net,
+  not a substitute — a post about a customer story should not be illustrated
+  with a screenshot of the task board.
+- A **CTA band inside `sections`** stacks on top of the one every page already
+  ends with. Only add one if you deliberately want a mid-page close.
 
 ---
 

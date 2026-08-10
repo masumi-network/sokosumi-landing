@@ -45,22 +45,24 @@ button { font-family: inherit; }
   [data-reveal] { transition: none; opacity: 1; transform: none; }
 }
 
-/* ===== buttons ===== */
+/* ===== buttons — same scale and states as the landing page ===== */
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-  height: 44px; padding: 0 20px; border-radius: var(--r-md);
-  font-size: 14px; font-weight: 500; letter-spacing: 0;
+  height: 40px; padding: 0 18px; border-radius: var(--r-md);
+  font-size: 14px; font-weight: 500; letter-spacing: 0; white-space: nowrap;
   border: 1px solid transparent; cursor: pointer;
   transition: background-color 0.25s var(--ease), border-color 0.25s var(--ease), color 0.25s var(--ease);
 }
+.btn:active { transform: translateY(1px); }
 .btn-primary { background: var(--ink); color: #fff; }
-.btn-primary:hover { background: #000; }
+.btn-primary:hover { background: #2b2926; }
 .btn-outline { background: transparent; color: var(--foreground); border-color: var(--border); }
 .btn-outline:hover { border-color: rgba(15, 14, 13, 0.4); }
-.btn-ghost { background: transparent; color: var(--foreground); }
-.btn-ghost:hover { color: rgba(15, 14, 13, 0.65); }
-.btn-sm { height: 36px; padding: 0 14px; font-size: 13.5px; }
-.btn-lg { height: 48px; padding: 0 24px; font-size: 15px; }
+.btn-ghost { background: transparent; color: var(--muted-foreground); }
+.btn-ghost:hover { color: var(--foreground); }
+.btn-sm { height: 34px; padding: 0 14px; font-size: 13px; }
+.btn-lg { height: 44px; padding: 0 22px; font-size: 14.5px; }
+.btn-lg.btn-outline { padding: 0 22px; }
 .btn .orb { display: none; }
 
 /* ===== header (paper bar on the 1240 grid, like the landing when scrolled) ===== */
@@ -79,6 +81,8 @@ button { font-family: inherit; }
 .site-nav a { font-size: 14px; color: rgba(15, 14, 13, 0.62); transition: color 0.25s var(--ease); white-space: nowrap; }
 .site-nav a:hover, .site-nav a[aria-current] { color: var(--foreground); }
 .site-header .actions { margin-left: auto; display: flex; gap: 8px; align-items: center; }
+/* the landing bumps its nav buttons a notch above .btn-sm; match it */
+.site-header .btn-sm { height: 36px; }
 
 /* ===== dropdown menus (hover, plus focus-within for keyboards) ===== */
 .nav-drop { position: relative; display: flex; align-items: center; }
@@ -87,14 +91,14 @@ button { font-family: inherit; }
 .nav-drop:hover .nav-chev, .nav-drop:focus-within .nav-chev { transform: rotate(180deg); opacity: 1; }
 .nav-panel {
   position: absolute; top: 100%; left: -18px; z-index: 60;
-  margin-top: 10px; padding: 18px; min-width: 260px;
+  margin-top: 14px; padding: 18px; min-width: 260px;
   background: var(--card); border: 1px solid var(--border); border-radius: var(--r-lg);
-  box-shadow: 0 18px 50px rgba(15, 14, 13, 0.1);
+  box-shadow: 0 20px 60px rgba(15, 14, 13, 0.18);
   opacity: 0; visibility: hidden; transform: translateY(-6px);
   transition: opacity 0.2s var(--ease), transform 0.2s var(--ease), visibility 0.2s;
 }
 /* keeps the pointer from falling through the gap between trigger and panel */
-.nav-panel::before { content: ""; position: absolute; inset: -12px 0 auto 0; height: 12px; }
+.nav-panel::before { content: ""; position: absolute; inset: -16px 0 auto 0; height: 16px; }
 .nav-drop:hover .nav-panel, .nav-drop:focus-within .nav-panel {
   opacity: 1; visibility: visible; transform: none;
 }
@@ -134,8 +138,8 @@ button { font-family: inherit; }
   transition: color 0.2s var(--ease);
 }
 .nav-panel-foot a:hover { color: var(--foreground); }
-@media (max-width: 900px) { .site-nav { display: none; } }
-@media (max-width: 560px) { .site-header .actions .btn-ghost, .site-header .actions .btn-outline { display: none; } }
+/* the collapse points and the mobile drawer live in nav.css, shared with the
+   landing page so the two headers stay in step */
 
 /* ===== breadcrumbs ===== */
 .crumbs { padding: 18px clamp(24px, 4vw, 56px) 0; font-size: 12.5px; color: var(--muted-foreground); }
@@ -272,6 +276,12 @@ main.page { min-height: 60vh; }
 .card-grid { display: grid; gap: 14px; grid-template-columns: 1fr; }
 @media (min-width: 680px) { .card-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (min-width: 1020px) { .card-grid { grid-template-columns: repeat(3, 1fr); } }
+/* A three-column track holding one card reads as a mistake. Collections that
+   know their length cap the track instead of leaving two empty columns. */
+@media (min-width: 680px) {
+  .card-grid.cols-1 { grid-template-columns: minmax(0, 620px); }
+  .card-grid.cols-2 { grid-template-columns: repeat(2, minmax(0, 420px)); }
+}
 .card {
   display: flex; flex-direction: column; gap: 10px; padding: 22px;
   background: var(--card); border: 1px solid var(--border); border-radius: var(--r-lg);
@@ -284,6 +294,17 @@ a.card:hover { border-color: rgba(15, 14, 13, 0.4); transform: translateY(-2px);
 .card .card-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
 .card .go { margin-left: auto; opacity: 0; transform: translate(-4px, 4px); transition: opacity 0.3s var(--ease), transform 0.3s var(--ease); display: inline-flex; }
 a.card:hover .go { opacity: 1; transform: none; }
+/* a card that leads with artwork: the image bleeds to the card's own edges */
+.card.has-media { padding-top: 0; }
+.card .card-media {
+  margin: 0 -22px 4px; border-radius: var(--r-lg) var(--r-lg) 0 0;
+  overflow: hidden; aspect-ratio: 16 / 9; background: var(--muted);
+}
+.card .card-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* article lead image, sized to the prose measure rather than the full grid */
+.post-cover { margin: 0 0 clamp(28px, 4vw, 44px); max-width: 860px; }
+.post-cover img { width: 100%; height: auto; display: block; border-radius: var(--r-lg); }
 
 /* ===== coworker tiles (index) ===== */
 .cw-grid { display: grid; gap: 14px; grid-template-columns: repeat(2, 1fr); }
@@ -537,6 +558,37 @@ a.card:hover .go { opacity: 1; transform: none; }
 .blk-video .caption, .blk-image .caption { margin-top: 12px; font-size: 13.5px; color: var(--muted-foreground); }
 .blk-image .img-frame { border-radius: var(--r-lg); overflow: hidden; border: 1px solid var(--border); }
 .blk-image img { width: 100%; height: auto; display: block; }
+
+/* ===== product screenshots =====
+   The renders carry their own falloff, so no frame or border: a box around
+   them only draws an edge the eye has to cross (same call as the landing). */
+.shot-fig { margin: 0; }
+.shot-fig img { width: 100%; height: auto; display: block; border-radius: var(--r-lg); }
+.shot-fig figcaption {
+  margin-top: 12px; font-size: 14px; line-height: 1.55;
+  color: var(--muted-foreground); max-width: 62ch;
+}
+.shot-fig.wide img { border-radius: var(--r-lg); }
+.shot-gallery { display: grid; gap: clamp(28px, 4vw, 48px); grid-template-columns: 1fr; }
+@media (min-width: 780px) { .shot-gallery { grid-template-columns: 1fr 1fr; } }
+
+/* a screenshot beside copy, for pages that open with an explanation */
+.shot-split { display: grid; gap: clamp(28px, 4vw, 56px); grid-template-columns: 1fr; align-items: center; }
+@media (min-width: 900px) { .shot-split { grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); } }
+.shot-split .copy h2 { font-weight: 300; font-size: clamp(24px, 2.8vw, 34px); letter-spacing: -0.02em; line-height: 1.15; }
+.shot-split .copy p { margin-top: 12px; font-size: 15.5px; line-height: 1.65; color: var(--muted-foreground); max-width: 46ch; }
+.shot-split .copy .btn { margin-top: 20px; }
+
+/* Breaks a section out of `main.container-app` to the viewport edge. `50%` is
+   half the container's content box, so the pull is exactly the distance to the
+   window edge; --sbw (set in site.js) keeps the scrollbar out of the sum, which
+   100vw alone would include. */
+.full-bleed, .blk-cta {
+  --vw: calc(100vw - var(--sbw, 0px));
+  width: var(--vw);
+  margin-left: calc(50% - var(--vw) / 2);
+  margin-right: calc(50% - var(--vw) / 2);
+}
 
 /* dark CTA band (matches the landing's end-cap) */
 .blk-cta { background: var(--ink); color: #fff; margin-top: clamp(40px, 6vw, 80px); border-top: none !important; padding: 0; }

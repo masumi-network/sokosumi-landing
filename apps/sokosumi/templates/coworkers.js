@@ -113,6 +113,12 @@ async function index(ctx) {
           <div class="row-list">${agents.map(agentRow).join("")}</div>
         </div>`
       : "") +
+    shell.ctaBand({
+      heading: "Hire your first AI coworker",
+      subheading: "Creating an account is free. You only spend credits on the work you actually run.",
+      ctaLabel: "Start free",
+      seed: curated.length,
+    }) +
     pageEnd()
   );
 }
@@ -205,6 +211,13 @@ async function profile(ctx) {
     </div>
     ${longBio}
     ${offersSection}` +
+    shell.ctaBand({
+      heading: `Put ${c.name} to work`,
+      subheading: "Sign up free, brief the task, and collect the finished file. Credits only go on work you run.",
+      ctaLabel: `Try ${c.name} free`,
+      ctaHref: tryUrl(c),
+      seed: c.name.length,
+    }) +
     pageEnd()
   );
 }

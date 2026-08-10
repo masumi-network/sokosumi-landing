@@ -60,6 +60,12 @@ async function index(ctx) {
           <div class="row-list vendor-list">${rows.map(vendorRow).join("")}</div>
         </div>`
       : `<div class="page-section flush"><p class="muted">Vendor profiles are on the way. In the meantime, <a href="/coworkers" style="text-decoration:underline">meet the coworkers</a>.</p></div>`) +
+    shell.ctaBand({
+      heading: "Hire from any of them, in one place",
+      subheading: "One account, one credit balance, every vendor on the marketplace. Signing up is free.",
+      ctaLabel: "Start free",
+      seed: rows.length,
+    }) +
     pageEnd()
   );
 }
@@ -153,6 +159,12 @@ async function detail(ctx) {
     ${coworkersSection}
     ${agentsSection}
     ${empty}` +
+    shell.ctaBand({
+      heading: `Work with ${v.name} on Sokosumi`,
+      subheading: "Creating an account is free. You only spend credits on the work you actually run.",
+      ctaLabel: "Start free",
+      seed: v.name.length,
+    }) +
     pageEnd()
   );
 }

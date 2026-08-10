@@ -35,12 +35,29 @@ async function index(ctx) {
     `<div class="page-head" data-reveal>
       <h1>How Sokosumi compares</h1>
       <p class="sub">Honest, side by side looks at Sokosumi and the tools you might be weighing it against.</p>
-    </div>` +
+    </div>
+    <section class="page-section flush" data-reveal>
+      <div class="shot-split">
+        <div class="copy">
+          <h2>What you are actually comparing</h2>
+          <p>Not a chat window and not a prompt library. Named coworkers with real roles, a task board your whole team can see, and finished files at the end of it.</p>
+          <a class="btn btn-outline" href="/coworkers">Meet the coworkers</a>
+        </div>
+        ${shell.shotFigure(shell.SHOTS.board, { caption: false })}
+      </div>
+    </section>` +
     (comparisons.length
-      ? `<div class="page-section flush">
-          <div class="card-grid">${comparisons.map(comparisonCard).join("")}</div>
+      ? `<div class="page-section">
+          <h2>Side by side</h2>
+          <div class="${shell.gridCls(comparisons.length)}" style="margin-top:22px">${comparisons.map(comparisonCard).join("")}</div>
         </div>`
       : `<div class="page-section flush"><p class="muted">Comparison pages are on the way. In the meantime, <a href="/coworkers" style="text-decoration:underline">meet the coworkers</a>.</p></div>`) +
+    shell.ctaBand({
+      heading: "The shortest comparison is a trial",
+      subheading: "Run one real task and judge the output. Creating an account is free.",
+      ctaLabel: "Start free",
+      seed: comparisons.length,
+    }) +
     pageEnd()
   );
 }

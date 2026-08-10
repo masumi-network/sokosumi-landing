@@ -1,0 +1,67 @@
+/* Mobile navigation, shared by the landing page and every sub-page. Below
+   900px the desktop link row is hidden on both surfaces, so without this the
+   only way out of a page on a phone was the footer. Loaded by index.html and
+   by templates/shell.js so the two headers can never drift apart again. */
+
+.nav-burger {
+  display: none;
+  width: 36px; height: 36px; flex-shrink: 0;
+  align-items: center; justify-content: center;
+  background: transparent; border: 1px solid var(--border); border-radius: var(--r-md);
+  color: inherit; cursor: pointer; padding: 0;
+  transition: border-color 0.25s var(--ease), background-color 0.25s var(--ease);
+}
+.nav-burger span {
+  display: block; width: 15px; height: 1.5px; background: currentColor; border-radius: 2px;
+  transition: transform 0.25s var(--ease), opacity 0.2s var(--ease);
+}
+.nav-burger span + span { margin-top: 4px; }
+.nav-burger[aria-expanded="true"] span:first-child { transform: translateY(2.75px) rotate(45deg); }
+.nav-burger[aria-expanded="true"] span:last-child { transform: translateY(-2.75px) rotate(-45deg); }
+
+/* over the video hero the bar is transparent, so the burger borrows the same
+   white treatment the nav links get */
+.island-nav:not(.scrolled) .nav-burger { color: #fff; border-color: rgba(255, 255, 255, 0.4); }
+
+/* Lives outside the header on purpose: the bar uses backdrop-filter, which
+   makes it a containing block for fixed descendants, so a drawer nested in it
+   would collapse to the bar's own 64px height. */
+.mobile-nav {
+  position: fixed; top: 64px; left: 0; right: 0; bottom: 0; z-index: 49;
+  background: var(--background);
+  border-top: 1px solid var(--border);
+  overflow-y: auto;
+  padding: 8px clamp(24px, 6vw, 40px) 40px;
+  display: flex; flex-direction: column;
+}
+.mobile-nav[hidden] { display: none; }
+.mobile-nav a.m-link {
+  display: flex; align-items: baseline; gap: 10px;
+  padding: 17px 0; border-bottom: 1px solid var(--border);
+  font-size: 19px; font-weight: 300; letter-spacing: -0.015em; color: var(--foreground);
+}
+.mobile-nav a.m-link small { font-size: 13px; font-weight: 400; color: var(--muted-foreground); }
+.mobile-nav .m-actions { display: flex; flex-direction: column; gap: 10px; margin-top: 28px; }
+.mobile-nav .m-actions .btn { width: 100%; height: 46px; font-size: 15px; }
+.mobile-nav .m-foot { margin-top: 28px; font-size: 13px; color: var(--muted-foreground); }
+
+@media (max-width: 900px) {
+  .nav-burger { display: inline-flex; }
+  /* one breakpoint for both headers — the landing used to keep its links to
+     680px, so the two navs collapsed at different widths */
+  .island-links, .site-nav { display: none; }
+  .island-nav { gap: 14px; }
+  .site-header .actions .btn-ghost, .island-nav .nav-login { display: none; }
+}
+@media (max-width: 560px) {
+  .site-header .actions .btn-outline, .island-nav .nav-sales { display: none; }
+}
+/* the drawer is paper, so the bar above it has to be too */
+.island-nav.nav-open {
+  background: rgba(250, 250, 249, 0.92);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  border-bottom-color: var(--border);
+}
+.island-nav.nav-open .mark { filter: none; }
+.island-nav.nav-open .nav-burger { color: var(--foreground); border-color: var(--border); }
+body.nav-locked { overflow: hidden; }

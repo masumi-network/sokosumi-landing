@@ -108,7 +108,8 @@ function render(ctx) {
           error,
         )}
         <aside class="lead-aside" data-reveal style="--i:1">
-          <h2 class="section-title" style="font-size:20px">What to expect</h2>
+          ${shell.shotFigure(shell.SHOTS.board, { caption: false })}
+          <h2 class="section-title" style="font-size:20px;margin-top:22px">What to expect</h2>
           <ul class="lead-list">
             <li>${icon("check", 15)}<span>A reply within one working day, from someone who knows the product.</span></li>
             <li>${icon("check", 15)}<span>A walkthrough against your own use case, not a generic demo.</span></li>

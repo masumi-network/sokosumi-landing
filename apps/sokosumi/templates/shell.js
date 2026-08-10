@@ -170,6 +170,10 @@ function head(opts) {
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="/assets/styles.css" />
+    <link rel="stylesheet" href="/assets/nav.css" />
+    <!-- reveals start at opacity 0 and are switched on by site.js; without JS
+         that would leave the page blank -->
+    <noscript><style>[data-reveal] { opacity: 1 !important; transform: none !important; }</style></noscript>
     ${jsonld}
   </head>
   <body>`;
@@ -195,6 +199,77 @@ function ctaFaces(seed, count) {
   return `<span class="cta-faces" aria-hidden="true">${picked
     .map((c) => `<img src="${attr(c.image)}" alt="" loading="lazy" />`)
     .join("")}</span>`;
+}
+
+// The four product renders the landing page carousel uses. Sub-pages reach
+// for these whenever a page would otherwise be a wall of text, and they are
+// the fallback artwork for CMS entries that have no image of their own.
+const SHOTS = {
+  roster: {
+    src: "/assets/shot-roster.webp",
+    alt: "The Sokosumi roster: five named AI coworkers from Serviceplan, with Elena's profile open beside them",
+    caption: "Your coworkers, in one roster. Each has a name, a role, the models it runs on, and the region it runs in.",
+  },
+  brief: {
+    src: "/assets/shot-brief.webp",
+    alt: "The Sokosumi briefing bar asking what you want to get done, with suggested campaign tasks below it",
+    caption: "Start from the work, not the tool. Say what you want done and Sokosumi points you at the coworkers who do it.",
+  },
+  board: {
+    src: "/assets/shot-board.webp",
+    alt: "The Sokosumi task board: running tasks with the coworkers assigned to each",
+    caption: "Watch it move. Every task shows who picked it up and where it stands, from running to input required to done.",
+  },
+  chat: {
+    src: "/assets/shot-chat2.webp",
+    alt: "The Sokosumi chat: a team channel where a coworker is mentioned and replies in the same thread",
+    caption: "Brief them like colleagues. Mention a coworker in the channel and it answers in the thread.",
+  },
+};
+const SHOT_KEYS = Object.keys(SHOTS);
+
+// Stable per-page pick, so the same page always shows the same shot but two
+// neighbouring pages do not show the same one.
+function shotFor(seed) {
+  const n = typeof seed === "string" ? seed.length + (seed.charCodeAt(0) || 0) : Number(seed) || 0;
+  return SHOTS[SHOT_KEYS[Math.abs(n) % SHOT_KEYS.length]];
+}
+
+function shotFigure(shot, opts) {
+  const o = opts || {};
+  if (!shot) return "";
+  return `<figure class="shot-fig${o.wide ? " wide" : ""}">
+      <img src="${attr(shot.src)}" alt="${attr(shot.alt)}" width="2400" height="1350" loading="lazy" decoding="async" />
+      ${o.caption === false ? "" : `<figcaption>${esc(shot.caption)}</figcaption>`}
+    </figure>`;
+}
+
+// Card grid class for a list whose length is known: one or two cards get a
+// capped track instead of sitting in a three-column grid with empty columns.
+function gridCls(n) {
+  return n >= 3 ? "card-grid" : `card-grid cols-${n}`;
+}
+
+// A gallery of every shot, for pages that are about the product itself.
+function shotGallery(keys) {
+  const list = (keys && keys.length ? keys : SHOT_KEYS).map((k) => SHOTS[k]).filter(Boolean);
+  return `<div class="shot-gallery">${list.map((s) => shotFigure(s)).join("")}</div>`;
+}
+
+// The ink end-cap every page closes with, same shape as the landing page's.
+// Lives here rather than in blocks.js so templates that render no CMS blocks
+// can use it too; blocks.ctaBand() delegates to this so a CMS-authored band
+// and a hand-built one are the same markup.
+function ctaBand(b) {
+  const heading = b.heading || "Put an AI coworker on it";
+  const label = b.ctaLabel || "Start free";
+  const href = b.ctaHref || APP;
+  return `<section class="blk blk-cta" data-reveal><div class="cta-inner">
+      <h2>${esc(heading)}</h2>
+      ${b.subheading ? `<p>${esc(b.subheading)}</p>` : ""}
+      <a class="btn btn-primary btn-lg" href="${attr(href)}">${esc(label)}</a>
+      ${ctaFaces(b.seed != null ? b.seed : heading.length, 4)}
+    </div></section>`;
 }
 
 const CHEV =
@@ -274,11 +349,41 @@ function navItems(currentPath) {
   ].join("\n            ");
 }
 
+// The drawer the burger opens below 900px. Same links as index.html's copy —
+// both surfaces share /assets/nav.css and /assets/nav.js.
+const MOBILE_LINKS = [
+  ["/coworkers", "AI Coworkers", "Named specialists you can hire"],
+  ["/vendors", "Vendors", "The teams behind them"],
+  ["/tasks", "Template tasks", "Ready-to-run work"],
+  ["/use-cases", "Use cases", "By job and by industry"],
+  ["/guides", "Guides", ""],
+  ["/releases", "Releases", ""],
+  ["/blog", "Blog", ""],
+];
+
+function mobileNav() {
+  const links = MOBILE_LINKS.map(
+    ([href, label, hint]) =>
+      `<a class="m-link" href="${href}">${esc(label)}${hint ? `<small>${esc(hint)}</small>` : ""}</a>`,
+  ).join("");
+  return `<div class="mobile-nav" id="mobileNav" hidden>
+        ${links}
+        <div class="m-actions">
+          <a class="btn btn-primary" href="${APP}">Sign Up</a>
+          <a class="btn btn-outline" href="/talk-to-sales">Talk to Sales</a>
+          <a class="btn btn-ghost" href="${APP}/signin">Log In</a>
+        </div>
+        <p class="m-foot">Creating an account is free. You only spend credits on the work you run.</p>
+      </div>`;
+}
+
+const BURGER = `<button class="nav-burger" id="navBurger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobileNav"><span></span><span></span></button>`;
+
 function header(currentPath) {
   return `<header class="site-header">
       <div class="container-app bar">
         <div class="nav-left">
-          <a href="/" aria-label="Sokosumi"><img class="mark" src="/assets/sokosumi-wordmark.svg" alt="Sokosumi" width="152" height="18" /></a>
+          <a href="/" aria-label="Sokosumi"><img class="mark" src="/assets/sokosumi-wordmark.svg" alt="Sokosumi" width="144" height="17" /></a>
           <nav class="site-nav" aria-label="Primary">
             ${navItems(currentPath)}
           </nav>
@@ -287,9 +392,11 @@ function header(currentPath) {
           <a class="btn btn-sm btn-ghost" href="${APP}/signin">Log In</a>
           <a class="btn btn-sm btn-outline" href="/talk-to-sales">Talk to Sales</a>
           <a class="btn btn-sm btn-primary" href="${APP}">Sign Up</a>
+          ${BURGER}
         </div>
       </div>
-    </header>`;
+    </header>
+    ${mobileNav()}`;
 }
 
 function footer() {
@@ -323,6 +430,7 @@ function footer() {
       </div>
     </footer>
     <script src="/assets/site.js" defer></script>
+    <script src="/assets/nav.js" defer></script>
   </body>
 </html>`;
 }
@@ -405,4 +513,10 @@ module.exports = {
   avatar,
   vendorLogo,
   ctaFaces,
+  ctaBand,
+  gridCls,
+  SHOTS,
+  shotFor,
+  shotFigure,
+  shotGallery,
 };

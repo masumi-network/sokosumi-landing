@@ -31,6 +31,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <!-- reveals start at opacity 0 and are switched on by script; without JS
+         that would leave the page blank -->
+    <noscript><style>[data-reveal] { opacity: 1 !important; transform: none !important; }</style></noscript>
 
     <!-- Design system: see DESIGN.md — brand tokens from the Sokosumi product,
          composition per the project taste skills (.agents/skills). -->
@@ -199,7 +202,8 @@
       /* panel contents keep their own ink colours in both nav states */
       .island-nav .nav-panel a { color: inherit; }
       .island-nav.scrolled .nav-login { color: rgba(15, 14, 13, 0.66); }
-      @media (max-width: 680px) { .island-links { display: none; } .island-nav { gap: 14px; } }
+      /* the collapse point and the mobile drawer live in /assets/nav.css,
+         shared with the sub-pages so both headers collapse at the same width */
 
       /* ===== hero: left-aligned serif statement over dark video ===== */
       .hero { position: relative; min-height: 100dvh; display: flex; flex-direction: column; overflow: hidden; background: var(--ink); }
@@ -713,6 +717,10 @@
       .band-dark .faq-item[open] summary .faq-x { background: #fff; color: var(--ink); border-color: #fff; }
       .band-dark .faq-item .faq-a { color: rgba(255, 255, 255, 0.6); }
     </style>
+    <!-- shared with every sub-page so the two headers cannot drift. Loaded
+         after the inline block on purpose: media queries add no specificity,
+         so the collapse rules have to come last to beat .island-links above. -->
+    <link rel="stylesheet" href="/assets/nav.css" />
   </head>
   <body>
     <a class="skip-link" href="#coworkers">Skip to content</a>
@@ -741,6 +749,7 @@
           <a class="btn btn-sm btn-ghost nav-login" href="https://app.sokosumi.com/signin">Log In</a>
           <a class="btn btn-sm btn-outline nav-sales" href="/talk-to-sales">Talk to Sales</a>
           <a class="btn btn-sm btn-primary" href="https://app.sokosumi.com">Sign Up</a>
+          <button class="nav-burger" id="navBurger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobileNav"><span></span><span></span></button>
         </div>
       </nav>
 
@@ -805,6 +814,22 @@
         <button id="vidToggle" class="vid-toggle" aria-label="Pause background video">❚❚</button>
       </div>
     </header>
+    <!-- same links templates/shell.js renders; both use /assets/nav.{css,js} -->
+    <div class="mobile-nav" id="mobileNav" hidden>
+      <a class="m-link" href="/coworkers">AI Coworkers<small>Named specialists you can hire</small></a>
+      <a class="m-link" href="/vendors">Vendors<small>The teams behind them</small></a>
+      <a class="m-link" href="/tasks">Template tasks<small>Ready-to-run work</small></a>
+      <a class="m-link" href="/use-cases">Use cases<small>By job and by industry</small></a>
+      <a class="m-link" href="/guides">Guides</a>
+      <a class="m-link" href="/releases">Releases</a>
+      <a class="m-link" href="/blog">Blog</a>
+      <div class="m-actions">
+        <a class="btn btn-primary" href="https://app.sokosumi.com">Sign Up</a>
+        <a class="btn btn-outline" href="/talk-to-sales">Talk to Sales</a>
+        <a class="btn btn-ghost" href="https://app.sokosumi.com/signin">Log In</a>
+      </div>
+      <p class="m-foot">Creating an account is free. You only spend credits on the work you run.</p>
+    </div>
 
     <!-- ===== AI COWORKERS — asymmetric podium (live from /api/catalog) ===== -->
     <section class="block" id="coworkers">
@@ -1500,5 +1525,6 @@
         });
       })();
     </script>
+    <script src="/assets/nav.js" defer></script>
   </body>
 </html>

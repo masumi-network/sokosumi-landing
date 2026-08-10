@@ -114,12 +114,7 @@ const RENDER = {
   },
 
   ctaBand(b) {
-    return `<section class="blk blk-cta" data-reveal><div class="cta-inner">
-      <h2>${esc(b.heading)}</h2>
-      ${b.subheading ? `<p>${esc(b.subheading)}</p>` : ""}
-      ${ctaLink(b.ctaLabel, b.ctaHref, "btn-primary btn-lg")}
-      ${shell.ctaFaces((b.heading || "").length, 4)}
-    </div></section>`;
+    return shell.ctaBand(b);
   },
 
   stats(b) {

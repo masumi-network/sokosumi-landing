@@ -4,7 +4,8 @@
 
 const shell = require("./shell");
 const cms = require("../lib/cms");
-const { esc, icon, pageStart, pageEnd } = shell;
+const blocks = require("./blocks");
+const { esc, attr, icon, pageStart, pageEnd } = shell;
 
 function fmtDate(d) {
   if (!d) return "";
@@ -78,6 +79,12 @@ async function index(ctx) {
           <div class="row-list">${releases.map(releaseRow).join("")}</div>
         </div>`
       : `<div class="page-section flush"><p class="muted">Release notes are on the way. In the meantime, <a href="/blog" style="text-decoration:underline">read the blog</a>.</p></div>`) +
+    shell.ctaBand({
+      heading: "Every release lands in your account",
+      subheading: "Nothing to install or upgrade. Creating an account is free.",
+      ctaLabel: "Start free",
+      seed: releases.length,
+    }) +
     pageEnd()
   );
 }
@@ -91,6 +98,10 @@ async function detail(ctx) {
   const eyebrow = [esc(date), esc(version)].filter(Boolean).join(" &middot; ");
 
   const highlights = (r.highlights || []).filter((h) => h && h.text);
+  const coverUrl = cms.mediaUrl(r.coverImage);
+  const coverBlock = coverUrl
+    ? `<div class="post-cover" data-reveal><img src="${attr(coverUrl)}" alt="${attr(r.title)}" loading="lazy" /></div>`
+    : "";
   const highlightsSection = highlights.length
     ? `<section class="page-section flush blk-checklist" data-reveal>
         <h2>Highlights</h2>
@@ -128,8 +139,16 @@ async function detail(ctx) {
       <h1>${esc(r.title)}</h1>
       ${r.description ? `<p class="sub">${esc(r.description)}</p>` : ""}
     </div>` +
+    coverBlock +
     highlightsSection +
     proseSection +
+    blocks.renderBlocks(r.sections) +
+    shell.ctaBand({
+      heading: "Try it in your account",
+      subheading: "Every release is already live. Creating an account is free.",
+      ctaLabel: "Start free",
+      seed: r.title.length,
+    }) +
     pageEnd()
   );
 }

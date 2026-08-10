@@ -1,3 +1,15 @@
+// Publishes the scrollbar width so `.full-bleed` can break out of the page
+// container to the exact viewport edge. 100vw would include the scrollbar and
+// push the band 7–8px past each side.
+(function () {
+  var root = document.documentElement;
+  function measure() {
+    root.style.setProperty("--sbw", window.innerWidth - root.clientWidth + "px");
+  }
+  measure();
+  window.addEventListener("resize", measure, { passive: true });
+})();
+
 // Shared sub-page behavior: staggered scroll reveals (IntersectionObserver,
 // transform/opacity only, honors prefers-reduced-motion).
 (function () {

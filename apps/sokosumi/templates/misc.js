@@ -67,7 +67,18 @@ function press() {
           <p>Sokosumi gives marketing teams AI coworkers with real roles that deliver finished files. It is built by Serviceplan Group, one of the world's leading agency groups, together with NMKR.</p>
         </div>
       </div>
-    </div>` +
+    </div>
+    <section class="page-section" data-reveal>
+      <h2>Product imagery</h2>
+      <p class="sub">Screenshots of the live product, free to use in coverage of Sokosumi. Please credit Sokosumi.</p>
+      ${shell.shotGallery()}
+    </section>` +
+    shell.ctaBand({
+      heading: "See the product for yourself",
+      subheading: "Creating an account is free, and the whole marketplace is browsable before you spend a credit.",
+      ctaLabel: "Start free",
+      seed: 3,
+    }) +
     pageEnd()
   );
 }

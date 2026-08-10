@@ -170,6 +170,12 @@ async function browse(ctx) {
           <script src="/assets/tasks-filter.js"></script>
         </div>`
       : `<div class="page-section flush"><p class="muted">Template tasks are on the way. In the meantime, <a href="/coworkers" style="text-decoration:underline">meet the coworkers</a>.</p></div>`) +
+    shell.ctaBand({
+      heading: "Run your first task today",
+      subheading: "Pick a template, add your brief, and get the finished file back. Signing up is free.",
+      ctaLabel: "Start free",
+      seed: hits.length,
+    }) +
     pageEnd()
   );
 }
@@ -236,6 +242,12 @@ async function detail(ctx) {
         </div>
       </aside>
     </div>` +
+    shell.ctaBand({
+      heading: `Run "${offer.title}" with ${c.name}`,
+      subheading: "Creating an account is free. You only spend credits on the work you actually run.",
+      ctaLabel: "Try this task free",
+      seed: offer.title.length,
+    }) +
     pageEnd()
   );
 }

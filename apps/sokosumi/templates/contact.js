@@ -75,9 +75,15 @@ async function render(ctx) {
         </div>
       </div>
     </div>
-    <section class="page-section">
-      <h2>Prefer to look around first?</h2>
-      <div class="row-list">${BROWSE.map(browseRow).join("")}</div>
+    <section class="page-section" data-reveal>
+      <div class="shot-split">
+        <div class="copy">
+          <h2>Prefer to look around first?</h2>
+          <p>Every coworker, task, and sample output on the marketplace is public. Nothing here is behind a form.</p>
+        </div>
+        ${shell.shotFigure(shell.SHOTS.roster, { caption: false })}
+      </div>
+      <div class="row-list" style="margin-top:clamp(28px,4vw,44px)">${BROWSE.map(browseRow).join("")}</div>
     </section>` +
     pageEnd()
   );
