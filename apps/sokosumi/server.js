@@ -558,6 +558,36 @@ const assetsDir = path.join(root, "assets");
     return req.socket.remoteAddress || "unknown";
   }
 
+  // Assets are cached hard (a day, plus a week of stale-while-revalidate), which
+  // is right for performance and wrong the moment a file changes in place: the
+  // browser keeps serving the old hero video, stylesheet or script without ever
+  // asking. Stamp every asset URL in the HTML with a hash of that file's size
+  // and mtime, so replacing a file changes its URL and the new one is fetched
+  // immediately, while unchanged files stay cached.
+  const assetVersions = new Map();
+  function assetVersion(rel) {
+    if (assetVersions.has(rel)) return assetVersions.get(rel);
+    let v = "";
+    try {
+      const st = fs.statSync(path.join(root, rel));
+      v = crypto.createHash("sha1").update(`${st.size}-${st.mtimeMs}`).digest("hex").slice(0, 8);
+    } catch {
+      /* referenced but missing — leave the URL alone */
+    }
+    assetVersions.set(rel, v);
+    return v;
+  }
+
+  // Only same-origin /assets/... references, and only those without a query
+  // already. Anything absolute or external is left untouched.
+  const ASSET_REF = /(["'(])(\/assets\/[A-Za-z0-9._\/-]+)(["')])/g;
+  function versionAssets(html) {
+    return html.replace(ASSET_REF, (m, open, url, close) => {
+      const v = assetVersion(url.slice(1));
+      return v ? `${open}${url}?v=${v}${close}` : m;
+    });
+  }
+
   function serveIndex(req, res) {
     const file = path.join(root, "index.html");
     const stat = fs.statSync(file);
@@ -565,7 +595,7 @@ const assetsDir = path.join(root, "assets");
       "Content-Type": "text/html; charset=utf-8",
       "Cache-Control": "public, max-age=300",
       "Last-Modified": stat.mtime.toUTCString(),
-    }, fs.readFileSync(file));
+    }, versionAssets(fs.readFileSync(file, "utf8")));
   }
 
   const handler = async (req, res) => {
@@ -818,7 +848,7 @@ const assetsDir = path.join(root, "assets");
           // A 404 must not sit in a shared cache for two minutes: the usual
           // cause is content that is about to exist.
           const cache = preview || code === 404 ? "no-store" : "public, max-age=120";
-          send(req, res, code || 200, { "Content-Type": "text/html; charset=utf-8", "Cache-Control": cache }, html);
+          send(req, res, code || 200, { "Content-Type": "text/html; charset=utf-8", "Cache-Control": cache }, versionAssets(html));
         };
 
         // Static assets first (they all live under /assets or have extensions).

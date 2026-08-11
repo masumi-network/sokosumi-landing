@@ -424,11 +424,10 @@
          slack falls at the end of the line, where nobody sees it. */
       .rotator {
         display: inline-grid; vertical-align: top; text-align: left;
-        overflow: hidden;
-        /* the clip box is the 1.05 line box, which ends above the ink of a
-           descender — pad it down so the g in "Marketing" keeps its tail, and
-           pull the same amount back so the line box is unchanged */
-        padding-bottom: 0.16em; margin-bottom: -0.16em;
+        /* No overflow:hidden. It clipped the word's soft shadow to the
+           container's rectangle, and that hard cut-off read as a faint grey
+           box around the word. Nothing needs clipping now that one span
+           cross-fades in place rather than several sliding through. */
       }
       .rot-word {
         /* start, not stretch — otherwise each span fills the slot and measuring
@@ -1357,6 +1356,15 @@
 
         /* video pause/play */
         var video = document.getElementById("bgVideo");
+        /* The footage runs faster than a backdrop should. Slowing playback
+           rather than re-timing the file keeps every frame intact — no
+           duplicated frames, no extra bytes — and stretches the 7.3s loop to
+           about 12s on screen. */
+        var HERO_RATE = 0.6;
+        function holdRate() { try { video.playbackRate = HERO_RATE; } catch (e) {} }
+        holdRate();
+        video.addEventListener("loadedmetadata", holdRate);
+        video.addEventListener("play", holdRate);
         var toggle = document.getElementById("vidToggle");
 
         /* hero background lab (see the .bg-* styles): ?vid=test&bg=ink|mono|duo|blur */
