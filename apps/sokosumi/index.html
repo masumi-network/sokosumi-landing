@@ -278,14 +278,20 @@
 
       /* ===== hero: left-aligned serif statement over dark video ===== */
       .hero { position: relative; min-height: 100dvh; display: flex; flex-direction: column; overflow: hidden; background: var(--ink); }
-      .hero video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.62; filter: grayscale(1) contrast(1.08) brightness(0.82); }
-      /* the footage sits on ink and is pulled towards black on top of that:
-         the hero is a dark surface with movement in it, not a video with text */
+      .hero video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.82; filter: grayscale(1) contrast(1.05) brightness(0.95); }
+      /* Shading at the edges, not over the whole frame. Two flat gradients used
+         to cover the entire hero, so even the lightest point sat at ~70% black
+         and the footage barely read. Now a vignette does the work: the middle
+         stays open, the edges carry the tint, and the picture is visible. */
       .hero .scrim {
         position: absolute; inset: 0;
         background:
-          linear-gradient(to right, rgba(0, 0, 0, 0.88), rgba(0, 0, 0, 0.52) 65%, rgba(0, 0, 0, 0.66)),
-          linear-gradient(to bottom, rgba(0, 0, 0, 0.72), rgba(0, 0, 0, 0.42) 34%, rgba(0, 0, 0, 0.88) 100%);
+          /* the vignette — transparent centre, tint rolling in at the edges */
+          radial-gradient(125% 105% at 50% 45%, transparent 34%, rgba(0, 0, 0, 0.34) 68%, rgba(0, 0, 0, 0.74) 100%),
+          /* just enough weight behind the left-aligned headline to keep it legible */
+          linear-gradient(to right, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.14) 52%, rgba(0, 0, 0, 0) 72%),
+          /* and a fade into the trust band below */
+          linear-gradient(to bottom, rgba(0, 0, 0, 0.28), rgba(0, 0, 0, 0) 30%, rgba(0, 0, 0, 0.62) 100%);
       }
 
       /* hero background lab: try treatments via ?bg=ink|color|duo|blur (+ ?vid=test);
@@ -307,7 +313,7 @@
         display: flex; flex-direction: column; align-items: flex-start; justify-content: center;
         text-align: left; padding: 130px clamp(24px, 4vw, 56px) 48px;
       }
-      .hero-social { display: flex; align-items: center; gap: 12px; margin-bottom: 28px; }
+      .hero-social { display: flex; align-items: center; gap: 12px; margin-bottom: 28px; text-shadow: 0 1px 14px rgba(0, 0, 0, 0.7); }
       .hero-social .avatars { display: flex; }
       .hero-social .avatars img {
         width: 30px; height: 30px; border-radius: 999px; object-fit: cover;
@@ -319,11 +325,15 @@
         font-family: var(--serif); font-weight: 300;
         font-size: clamp(2.9rem, 6.4vw, 5.6rem); line-height: 1.05; letter-spacing: -0.03em;
         max-width: 20ch; text-wrap: balance; margin: 0 0 26px;
+        /* carries the contrast where the video is brightest, so the scrim does
+           not have to darken the whole frame to keep the line readable */
+        text-shadow: 0 2px 30px rgba(0, 0, 0, 0.6), 0 1px 4px rgba(0, 0, 0, 0.4);
       }
       .hero-title .serif-accent { font-size: 1em; letter-spacing: inherit; }
       .hero-sub {
-        font-size: clamp(15.5px, 1.5vw, 17px); line-height: 1.6; color: rgba(255, 255, 255, 0.78);
+        font-size: clamp(15.5px, 1.5vw, 17px); line-height: 1.6; color: rgba(255, 255, 255, 0.88);
         max-width: 52ch; text-wrap: pretty; margin: 0 0 36px;
+        text-shadow: 0 1px 18px rgba(0, 0, 0, 0.7), 0 1px 3px rgba(0, 0, 0, 0.45);
       }
 
       /* hero actions: the same two the nav carries, in the nav's order so the
@@ -418,7 +428,10 @@
            it for the width transition just returns the slot back */
         grid-area: 1 / 1; justify-self: start; white-space: nowrap;
         opacity: 0; transform: translateY(0.12em);
-        transition: opacity 0.45s var(--ease), transform 0.45s var(--ease);
+        /* Deliberately quick: one span carries every word, so the out/in pair
+           is the only thing between two words. A long fade here reads as a
+           headline with a hole in it. */
+        transition: opacity 0.2s var(--ease), transform 0.2s var(--ease);
       }
       .rot-word.is-active { opacity: 1; transform: none; }
       .hero-dot { color: var(--primary); }
@@ -1680,11 +1693,12 @@
           if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
           setInterval(function () {
             word.classList.remove("is-active");
+            /* swap exactly at the trough of the 200ms fade, then fade back in */
             setTimeout(function () {
               i = (i + 1) % WORDS.length;
               word.firstChild.nodeValue = WORDS[i];
               word.classList.add("is-active");
-            }, 450);
+            }, 200);
           }, 2600);
         })();
 
