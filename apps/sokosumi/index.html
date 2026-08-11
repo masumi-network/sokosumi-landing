@@ -94,8 +94,12 @@
         --hairline-dark: rgba(255, 255, 255, 0.16);
         --primary: #6400ff;
         --primary-soft: rgba(100, 0, 255, 0.08);
-        /* brand hue, lifted for use on the dark hero — see .rot-word */
-        --primary-on-dark: hsl(264 100% 78%);
+        /* The purple the product itself uses on dark surfaces: this is the
+           `.dark` value of --primary in the app (apps/web/src/app/globals.css),
+           so the hero matches app.sokosumi.com rather than inventing a tint.
+           #6400FF is the light-surface accent and sits at luminance 0.10 — on
+           this hero it measures 1.5:1 and reads as muddy near-black. */
+        --primary-on-dark: hsla(270, 64%, 63%, 1);
         --chart-1: #0f0e0d;
         --chart-2: #0f0e0d;
         --chart-3: #0f0e0d;
@@ -442,7 +446,7 @@
          against this hero measures 1.5:1 on the dark areas — invisible. Same
          hue, lifted for a dark surface, plus a stronger halo than the white
          text needs because a saturated colour loses more against the video. */
-      .rot-word { color: var(--primary-on-dark); text-shadow: 0 2px 26px rgba(0, 0, 0, 0.85), 0 1px 4px rgba(0, 0, 0, 0.6); }
+      .rot-word { color: var(--primary-on-dark); text-shadow: 0 2px 22px rgba(0, 0, 0, 0.95), 0 2px 8px rgba(0, 0, 0, 0.8), 0 1px 3px rgba(0, 0, 0, 0.7); }
       .hero-dot { color: #fff; text-shadow: 0 2px 30px rgba(0, 0, 0, 0.6), 0 1px 4px rgba(0, 0, 0, 0.4); }
       @media (prefers-reduced-motion: reduce) { .rot-word { transition: none; } }
       .sr-only {
