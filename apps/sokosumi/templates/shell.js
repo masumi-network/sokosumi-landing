@@ -37,6 +37,11 @@ const ANALYTICS_HEAD = `<script>
           ad_user_data: _c.marketing ? 'granted' : 'denied',
           ad_personalization: _c.marketing ? 'granted' : 'denied'
         });
+        window.dataLayer.push({
+          event: 'consent_status',
+          consent_analytics: _c.analytics ? 'granted' : 'denied',
+          consent_marketing: _c.marketing ? 'granted' : 'denied'
+        });
       }
     } catch (_e) {}
     gtag('set', 'url_passthrough', true);

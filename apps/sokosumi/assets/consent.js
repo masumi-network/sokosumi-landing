@@ -88,10 +88,12 @@
       ad_user_data: choice.marketing ? "granted" : "denied",
       ad_personalization: choice.marketing ? "granted" : "denied",
     });
-    // A plain-language event GTM/GA can key off, and a signal any listening
-    // tag can use to (re)fire now that consent exists.
+    // The GTM container gates every conversion tag behind a `consent_status`
+    // event (its trigger groups require it). Fire it now that the visitor has
+    // chosen, so the tags they consented to can fire. Native Consent Mode
+    // (the gtag update above) still enforces per-category granularity.
     window.dataLayer.push({
-      event: "consent_update",
+      event: "consent_status",
       consent_analytics: choice.analytics ? "granted" : "denied",
       consent_marketing: choice.marketing ? "granted" : "denied",
     });
