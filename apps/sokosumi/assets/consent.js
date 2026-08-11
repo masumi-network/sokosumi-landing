@@ -199,6 +199,41 @@
     document.body.appendChild(root);
   }
 
+  // The banner's own styles, injected once. They used to live in
+  // assets/styles.css — but the landing page (index.html) is a separate design
+  // system that does NOT load styles.css, so there the banner rendered
+  // unstyled: position:static, stranded at the very bottom of the page,
+  // effectively invisible. The banner is a shared component loaded on every
+  // surface, so its styles travel with its JS. Every var below is defined in
+  // both design systems; the fallbacks are belt-and-braces.
+  function injectStyles() {
+    if (document.getElementById("cc-styles")) return;
+    var css =
+      ".cc-banner{position:fixed;left:0;right:0;bottom:0;z-index:1000;display:flex;justify-content:center;padding:clamp(12px,2vw,20px);animation:cc-rise .32s var(--ease,ease) both;}" +
+      "@keyframes cc-rise{from{transform:translateY(16px);opacity:0;}to{transform:none;opacity:1;}}" +
+      "@media (prefers-reduced-motion:reduce){.cc-banner{animation:none;}}" +
+      ".cc-inner{width:100%;max-width:680px;background:var(--card,#fff);border:1px solid var(--border,rgba(15,14,13,.12));border-radius:var(--r-lg,14px);box-shadow:0 12px 40px rgba(15,14,13,.14);padding:clamp(16px,2.4vw,22px);display:flex;flex-direction:column;gap:14px;}" +
+      ".cc-copy strong{display:block;font-size:15px;font-weight:500;margin-bottom:4px;}" +
+      ".cc-copy p{font-size:13.5px;line-height:1.6;color:var(--muted-foreground,#6b6b6b);margin:0;}" +
+      ".cc-copy a{color:var(--foreground,#0f0e0d);text-decoration:underline;}" +
+      ".cc-detail{display:flex;flex-direction:column;gap:12px;padding-top:2px;}" +
+      ".cc-detail[hidden]{display:none;}" +
+      ".cc-row{display:grid;grid-template-columns:20px 1fr;gap:12px;align-items:start;cursor:pointer;}" +
+      ".cc-row input{margin-top:3px;accent-color:var(--primary,#6400ff);width:16px;height:16px;}" +
+      ".cc-row input:disabled{opacity:.5;cursor:not-allowed;}" +
+      ".cc-row strong{display:block;font-size:13.5px;font-weight:500;}" +
+      ".cc-row small{display:block;font-size:12.5px;line-height:1.55;color:var(--muted-foreground,#6b6b6b);margin-top:2px;}" +
+      ".cc-actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center;}" +
+      ".cc-link{background:none;border:0;padding:6px 4px;font:inherit;font-size:13px;color:var(--muted-foreground,#6b6b6b);text-decoration:underline;cursor:pointer;margin-left:auto;}" +
+      ".cc-link:hover{color:var(--foreground,#0f0e0d);}" +
+      "@media (max-width:560px){.cc-actions .btn{flex:1;}.cc-link{margin-left:0;width:100%;text-align:center;}}";
+    var s = document.createElement("style");
+    s.id = "cc-styles";
+    s.textContent = css;
+    (document.head || document.documentElement).appendChild(s);
+  }
+  injectStyles();
+
   // --- public API + boot --------------------------------------------------
   window.SokosumiConsent = {
     open: function () {

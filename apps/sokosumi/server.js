@@ -823,14 +823,23 @@ if (process.argv.includes("--once")) {
         if (seg[0] === "assets" || path.extname(clean)) {
           const file = resolveFile(urlPath);
           if (!file) return sendHtml(misc.notFound(), 404);
-          const type = TYPES[path.extname(file.path).toLowerCase()] || "application/octet-stream";
+          const ext = path.extname(file.path).toLowerCase();
+          const type = TYPES[ext] || "application/octet-stream";
           const stat = fs.statSync(file.path);
           const etag = `"${stat.size.toString(16)}-${stat.mtimeMs.toString(16)}"`;
           const lastModified = stat.mtime.toUTCString();
-          // Filenames here are not content-hashed, so a year of immutable
-          // caching would strand an updated stylesheet. A day, revalidated,
-          // gives repeat visits a 304 instead of a full refetch.
-          const cacheControl = "public, max-age=86400, stale-while-revalidate=604800";
+          // The site's own JS/CSS are unhashed and get edited (the cookie
+          // banner lives in consent.js). Caching them hard once stranded a fix
+          // in every returning visitor's browser for a day. `no-cache` here
+          // does NOT mean "don't cache" — it means "revalidate every load",
+          // and because we send an ETag that revalidation is a tiny 304 when
+          // nothing changed, so a fix ships on the next navigation. Fonts,
+          // images, video and icons rarely change, so they keep the long,
+          // revalidate-in-background cache.
+          const isAppCode = ext === ".js" || ext === ".css";
+          const cacheControl = isAppCode
+            ? "public, no-cache"
+            : "public, max-age=86400, stale-while-revalidate=604800";
 
           const inm = req.headers["if-none-match"];
           const ims = req.headers["if-modified-since"];

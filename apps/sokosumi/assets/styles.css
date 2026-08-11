@@ -921,41 +921,5 @@ footer.site {
   overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
 }
 
-/* ===== cookie consent banner (assets/consent.js) ===== */
-.cc-banner {
-  position: fixed; left: 0; right: 0; bottom: 0; z-index: 1000;
-  display: flex; justify-content: center;
-  padding: clamp(12px, 2vw, 20px);
-  animation: cc-rise 0.32s var(--ease, ease) both;
-}
-@keyframes cc-rise { from { transform: translateY(16px); opacity: 0; } to { transform: none; opacity: 1; } }
-@media (prefers-reduced-motion: reduce) { .cc-banner { animation: none; } }
-.cc-inner {
-  width: 100%; max-width: 680px; background: var(--card);
-  border: 1px solid var(--border); border-radius: var(--r-lg);
-  box-shadow: 0 12px 40px rgba(15, 14, 13, 0.14);
-  padding: clamp(16px, 2.4vw, 22px);
-  display: flex; flex-direction: column; gap: 14px;
-}
-.cc-copy strong { display: block; font-size: 15px; font-weight: 500; margin-bottom: 4px; }
-.cc-copy p { font-size: 13.5px; line-height: 1.6; color: var(--muted-foreground); margin: 0; }
-.cc-copy a { color: var(--foreground); text-decoration: underline; }
-.cc-detail { display: flex; flex-direction: column; gap: 12px; padding-top: 2px; }
-/* the [hidden] attribute alone loses to display:flex; make the collapsed
-   state actually collapse */
-.cc-detail[hidden] { display: none; }
-.cc-row { display: grid; grid-template-columns: 20px 1fr; gap: 12px; align-items: start; cursor: pointer; }
-.cc-row input { margin-top: 3px; accent-color: var(--primary); width: 16px; height: 16px; }
-.cc-row input:disabled { opacity: 0.5; cursor: not-allowed; }
-.cc-row strong { display: block; font-size: 13.5px; font-weight: 500; }
-.cc-row small { display: block; font-size: 12.5px; line-height: 1.55; color: var(--muted-foreground); margin-top: 2px; }
-.cc-actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
-.cc-link {
-  background: none; border: 0; padding: 6px 4px; font: inherit; font-size: 13px;
-  color: var(--muted-foreground); text-decoration: underline; cursor: pointer; margin-left: auto;
-}
-.cc-link:hover { color: var(--foreground); }
-@media (max-width: 560px) {
-  .cc-actions .btn { flex: 1; }
-  .cc-link { margin-left: 0; width: 100%; text-align: center; }
-}
+/* The cookie-consent banner styles itself — assets/consent.js injects them so
+   the banner works on the landing page too, which does not load this file. */
