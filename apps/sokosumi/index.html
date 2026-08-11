@@ -1356,15 +1356,7 @@
 
         /* video pause/play */
         var video = document.getElementById("bgVideo");
-        /* The footage runs faster than a backdrop should. Slowing playback
-           rather than re-timing the file keeps every frame intact — no
-           duplicated frames, no extra bytes — and stretches the 7.3s loop to
-           about 12s on screen. */
-        var HERO_RATE = 0.6;
-        function holdRate() { try { video.playbackRate = HERO_RATE; } catch (e) {} }
-        holdRate();
-        video.addEventListener("loadedmetadata", holdRate);
-        video.addEventListener("play", holdRate);
+        /* Plays at the footage's own pace. */
         var toggle = document.getElementById("vidToggle");
 
         /* hero background lab (see the .bg-* styles): ?vid=test&bg=ink|mono|duo|blur */
