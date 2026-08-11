@@ -295,7 +295,7 @@
           /* the vignette — transparent centre, tint rolling in at the edges */
           radial-gradient(125% 105% at 50% 45%, transparent 34%, rgba(0, 0, 0, 0.34) 68%, rgba(0, 0, 0, 0.74) 100%),
           /* just enough weight behind the left-aligned headline to keep it legible */
-          linear-gradient(to right, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.14) 52%, rgba(0, 0, 0, 0) 72%),
+          linear-gradient(to right, rgba(0, 0, 0, 0.62), rgba(0, 0, 0, 0.2) 55%, rgba(0, 0, 0, 0) 80%),
           /* and a fade into the trust band below */
           linear-gradient(to bottom, rgba(0, 0, 0, 0.28), rgba(0, 0, 0, 0) 30%, rgba(0, 0, 0, 0.62) 100%);
       }
@@ -319,7 +319,7 @@
         display: flex; flex-direction: column; align-items: flex-start; justify-content: center;
         text-align: left; padding: 130px clamp(24px, 4vw, 56px) 48px;
       }
-      .hero-social { display: flex; align-items: center; gap: 12px; margin-bottom: 28px; text-shadow: 0 1px 14px rgba(0, 0, 0, 0.7); }
+      .hero-social { display: flex; align-items: center; gap: 12px; margin-bottom: 28px; text-shadow: 0 2px 22px rgba(0, 0, 0, 0.66); }
       .hero-social .avatars { display: flex; }
       .hero-social .avatars img {
         width: 30px; height: 30px; border-radius: 999px; object-fit: cover;
@@ -333,13 +333,14 @@
         max-width: 20ch; text-wrap: balance; margin: 0 0 26px;
         /* carries the contrast where the video is brightest, so the scrim does
            not have to darken the whole frame to keep the line readable */
-        text-shadow: 0 2px 30px rgba(0, 0, 0, 0.6), 0 1px 4px rgba(0, 0, 0, 0.4);
+        /* one wide, soft pass only — a tight second shadow reads as an outline */
+        text-shadow: 0 4px 44px rgba(0, 0, 0, 0.62);
       }
       .hero-title .serif-accent { font-size: 1em; letter-spacing: inherit; }
       .hero-sub {
         font-size: clamp(15.5px, 1.5vw, 17px); line-height: 1.6; color: rgba(255, 255, 255, 0.88);
         max-width: 52ch; text-wrap: pretty; margin: 0 0 36px;
-        text-shadow: 0 1px 18px rgba(0, 0, 0, 0.7), 0 1px 3px rgba(0, 0, 0, 0.45);
+        text-shadow: 0 2px 28px rgba(0, 0, 0, 0.66);
       }
 
       /* hero actions: the same two the nav carries, in the nav's order so the
@@ -446,8 +447,8 @@
          against this hero measures 1.5:1 on the dark areas — invisible. Same
          hue, lifted for a dark surface, plus a stronger halo than the white
          text needs because a saturated colour loses more against the video. */
-      .rot-word { color: var(--primary-on-dark); text-shadow: 0 2px 22px rgba(0, 0, 0, 0.95), 0 2px 8px rgba(0, 0, 0, 0.8), 0 1px 3px rgba(0, 0, 0, 0.7); }
-      .hero-dot { color: #fff; text-shadow: 0 2px 30px rgba(0, 0, 0, 0.6), 0 1px 4px rgba(0, 0, 0, 0.4); }
+      .rot-word { color: var(--primary-on-dark); text-shadow: 0 4px 44px rgba(0, 0, 0, 0.72); }
+      .hero-dot { color: #fff; text-shadow: 0 4px 44px rgba(0, 0, 0, 0.62); }
       @media (prefers-reduced-motion: reduce) { .rot-word { transition: none; } }
       .sr-only {
         position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
