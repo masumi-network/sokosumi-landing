@@ -456,14 +456,17 @@ const routes = [
   },
 ];
 
-if (process.argv.includes("--once")) {
-  refresh().then((ok) => process.exit(ok ? 0 : 1));
-} else {
-  // Static files come out of assets/ and nowhere else. Resolving against the
-  // app root instead would hand out the entire source tree — every module, the
-  // catalog cache, package.json, and any .env sitting in the working copy that
-  // a `railway up` tarball happened to carry along.
-  const assetsDir = path.join(root, "assets");
+// The request handler and its helpers are defined at module scope so a
+// serverless host (Vercel) can `require()` this file and call handler(req, res)
+// per request. The standalone HTTP listener and the background catalog refresh
+// live at the very bottom and run ONLY when this file is executed directly
+// (Railway, or `node server.js`) — never when it is imported.
+
+// Static files come out of assets/ and nowhere else. Resolving against the
+// app root instead would hand out the entire source tree — every module, the
+// catalog cache, package.json, and any .env sitting in the working copy that
+// a `railway up` tarball happened to carry along.
+const assetsDir = path.join(root, "assets");
 
   // The handful of files a browser insists on finding at the root. Each is a
   // real file in assets/, published one level up.
@@ -565,8 +568,7 @@ if (process.argv.includes("--once")) {
     }, fs.readFileSync(file));
   }
 
-  http
-    .createServer(async (req, res) => {
+  const handler = async (req, res) => {
       const [rawPath, rawQuery] = (req.url || "/").split("?");
       // decodeURIComponent throws on a malformed escape ("/%zz"), and this
       // runs before the try below — an uncaught throw here took the whole
@@ -934,11 +936,24 @@ if (process.argv.includes("--once")) {
           /* headers already sent */
         }
       }
-    })
-    .listen(port, () => {
-      console.log(`Sokosumi site listening on :${port}`);
-    });
+  };
 
+// ── run modes ────────────────────────────────────────────────────────────────
+if (process.argv.includes("--once")) {
+  // `node server.js --once`: refresh the catalog cache to disk once, then exit.
+  refresh().then((ok) => process.exit(ok ? 0 : 1));
+} else if (require.main === module) {
+  // Executed directly (Railway / local): a long-running server plus the
+  // background catalog refresh. A serverless host imports this file instead of
+  // running it, so neither of these fires there — the platform invokes the
+  // exported handler per request, and the catalog comes from the committed
+  // seed loaded at module init.
+  http.createServer(handler).listen(port, () => {
+    console.log(`Sokosumi site listening on :${port}`);
+  });
   refresh();
   setInterval(refresh, REFRESH_MS);
 }
+
+module.exports = handler;
+module.exports.handler = handler;
