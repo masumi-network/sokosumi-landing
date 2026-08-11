@@ -1565,10 +1565,7 @@
                 .map(function (c) { return '<img src="' + esc(c.image) + '" alt="" />'; })
                 .join("");
               var agentCount = (d.agents || []).length || coworkers.length;
-              var st = d.stats || {};
-              var line = agentCount + "+ AI specialists";
-              if (st.total) line += " · " + Number(st.total).toLocaleString("en-US") + " tasks run";
-              document.getElementById("heroCount").textContent = line;
+              document.getElementById("heroCount").textContent = agentCount + "+ Agents";
               social.hidden = false;
               revealNow(social);
             }
