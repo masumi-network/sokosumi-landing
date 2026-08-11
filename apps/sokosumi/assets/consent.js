@@ -29,7 +29,10 @@
     {
       key: "analytics",
       title: "Analytics",
-      body: "Anonymous usage measurement (Google Analytics) so we can see which pages help and which do not.",
+      // Not "anonymous": Google Analytics sets a persistent identifier, so the
+      // measurement is pseudonymous. The app says the same thing about its
+      // signed-in User-ID — keep the two claims consistent.
+      body: "Usage measurement with Google Analytics, using a pseudonymous ID so we can see which pages help and which do not.",
     },
     {
       key: "marketing",
@@ -55,7 +58,13 @@
     var m = document.cookie.match(/(?:^|; )sokosumi_consent=([^;]+)/);
     if (!m) return null;
     try {
-      return JSON.parse(decodeURIComponent(m[1]));
+      var parsed = JSON.parse(decodeURIComponent(m[1]));
+      // A choice recorded against an older schema is not a choice about the
+      // current categories — ask again. Mirrors readConsent() in the app
+      // (apps/web/src/lib/analytics/consent.ts); the two must agree because
+      // they read the same .sokosumi.com cookie.
+      if (parsed.v !== VERSION) return null;
+      return parsed;
     } catch (e) {
       return null;
     }
@@ -76,7 +85,10 @@
       "; Max-Age=" +
       MAX_AGE +
       "; Path=/; SameSite=Lax" +
-      cookieDomain();
+      cookieDomain() +
+      // Without Secure, a plain-HTTP response on the same domain could
+      // overwrite this with granted values and switch tracking on.
+      (location.protocol === "https:" ? "; Secure" : "");
     return value;
   }
 
