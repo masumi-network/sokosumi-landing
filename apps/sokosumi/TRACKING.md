@@ -74,7 +74,7 @@ instruments is the signup CTA:
 | Event           | Fires when…                          | How |
 |-----------------|--------------------------------------|-----|
 | `sign_up_click` `{location, plan?}` | a "Sign Up" CTA is clicked | `data-analytics="sign_up_click"` on the button (hero, nav, mobile nav, pricing plans, CTA band) |
-| `consent_update` `{consent_analytics, consent_marketing}` | cookie choice made | `assets/consent.js` |
+| `consent_status` `{consent_analytics, consent_marketing}` | cookie choice made | `assets/consent.js` |
 
 `sign_up_click` is the marketing-side *intent*; the actual account creation
 fires `sign_up` in the app. Together they are the top of the funnel:
