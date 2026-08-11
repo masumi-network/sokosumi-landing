@@ -3,6 +3,32 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Consent Mode default (deny) + GTM. Must run before anything else, and
+         must stay identical to templates/shell.js ANALYTICS_HEAD. See TRACKING.md. -->
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('consent', 'default', {
+        ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied',
+        analytics_storage: 'denied', functionality_storage: 'granted',
+        security_storage: 'granted', wait_for_update: 500
+      });
+      try {
+        var _m = document.cookie.match(/(?:^|; )sokosumi_consent=([^;]+)/);
+        if (_m) {
+          var _c = JSON.parse(decodeURIComponent(_m[1]));
+          gtag('consent', 'update', {
+            analytics_storage: _c.analytics ? 'granted' : 'denied',
+            ad_storage: _c.marketing ? 'granted' : 'denied',
+            ad_user_data: _c.marketing ? 'granted' : 'denied',
+            ad_personalization: _c.marketing ? 'granted' : 'denied'
+          });
+        }
+      } catch (_e) {}
+      gtag('set', 'url_passthrough', true);
+      gtag('set', 'ads_data_redaction', true);
+    </script>
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-N7GC8SFT');</script>
     <title>Sokosumi | Powerful AI Coworkers for your marketing team</title>
     <meta name="description" content="Hire AI coworkers and run template marketing tasks on Sokosumi, the marketplace for real marketing work. Built by Serviceplan Group." />
     <link rel="canonical" href="https://www.sokosumi.com/" />
@@ -764,6 +790,7 @@
     <link rel="stylesheet" href="/assets/nav.css" />
   </head>
   <body>
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N7GC8SFT" height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Manager"></iframe></noscript>
     <a class="skip-link" href="#main">Skip to content</a>
     <!-- ===== HERO — cinematic center ===== -->
     <header class="site-banner">
@@ -786,7 +813,7 @@
         <div style="display: flex; gap: 8px; align-items: center;">
           <a class="btn btn-sm btn-ghost nav-login" href="https://app.sokosumi.com/signin">Log In</a>
           <a class="btn btn-sm btn-outline nav-sales" href="/contact/sales">Talk to Sales</a>
-          <a class="btn btn-sm btn-primary" href="https://app.sokosumi.com">Sign Up</a>
+          <a class="btn btn-sm btn-primary" href="https://app.sokosumi.com" data-analytics="sign_up_click" data-analytics-location="nav">Sign Up</a>
           <button class="nav-burger" id="navBurger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobileNav"><span></span><span></span></button>
         </div>
       </nav>
@@ -821,7 +848,7 @@
 
         <div class="hero-cta" data-reveal style="--i: 3">
           <a class="btn btn-lg hero-cta-sales" href="/contact/sales">Talk to Sales</a>
-          <a class="btn btn-lg hero-cta-signup" href="https://app.sokosumi.com">Sign Up</a>
+          <a class="btn btn-lg hero-cta-signup" href="https://app.sokosumi.com" data-analytics="sign_up_click" data-analytics-location="hero">Sign Up</a>
         </div>
         <p class="hero-note" data-reveal style="--i: 3"><span class="no-card">*No Credit Card required</span></p>
 
@@ -862,7 +889,7 @@
       <a class="m-link" href="/use-cases">Use cases<small>By job and by industry</small></a>
       <a class="m-link" href="/pricing">Pricing<small>Plans and credits per seat</small></a>
       <div class="m-actions">
-        <a class="btn btn-primary" href="https://app.sokosumi.com">Sign Up</a>
+        <a class="btn btn-primary" href="https://app.sokosumi.com" data-analytics="sign_up_click" data-analytics-location="mobile_nav">Sign Up</a>
         <a class="btn btn-outline" href="/contact/sales">Talk to Sales</a>
         <a class="btn btn-ghost" href="https://app.sokosumi.com/signin">Log In</a>
       </div>
@@ -1206,7 +1233,7 @@
           <span class="cta-faces" id="ctaFaces" aria-hidden="true"></span>
         </div>
         <div class="cta-action" data-reveal style="--i: 2">
-          <a class="btn btn-primary btn-lg" href="https://app.sokosumi.com">
+          <a class="btn btn-primary btn-lg" href="https://app.sokosumi.com" data-analytics="sign_up_click" data-analytics-location="cta_band">
             Sign Up
             <span class="orb" aria-hidden="true">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
@@ -1258,6 +1285,7 @@
           <a href="/legal/cookie-policy">Cookies</a>
           <a href="/legal/imprint">Imprint</a>
           <a href="/legal">All legal</a>
+          <a href="#" data-cc-open>Cookie settings</a>
         </div>
         <div class="foot-bottom">
           <p class="foot-copy">© 2026 Sokosumi. All rights reserved.</p>
@@ -1659,5 +1687,7 @@
       })();
     </script>
     <script src="/assets/nav.js" defer></script>
+    <script src="/assets/consent.js" defer></script>
+    <script src="/assets/track.js" defer></script>
   </body>
 </html>

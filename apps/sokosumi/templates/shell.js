@@ -6,6 +6,45 @@
 const cms = require("../lib/cms");
 
 const APP = "https://app.sokosumi.com";
+
+// Analytics: one GTM container (GTM-N7GC8SFT) and one GA4 property
+// (G-G4BW0XC76M) span this marketing site AND app.sokosumi.com. See
+// TRACKING.md for the whole design. These IDs are public — they ship in every
+// page's HTML — so keeping them in source is fine.
+const GTM_ID = "GTM-N7GC8SFT";
+
+// Runs in <head> BEFORE the GTM loader. Establishes Google Consent Mode v2 in
+// its denied-by-default state (Basic Consent Mode: no analytics/ads leave the
+// browser until the visitor opts in), then re-applies a stored choice so a
+// returning visitor is not blocked for a frame. assets/consent.js draws the
+// banner and flips the state on a choice. This snippet is mirrored in the app
+// (apps/web) — keep the two in sync.
+const ANALYTICS_HEAD = `<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('consent', 'default', {
+      ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied',
+      analytics_storage: 'denied', functionality_storage: 'granted',
+      security_storage: 'granted', wait_for_update: 500
+    });
+    try {
+      var _m = document.cookie.match(/(?:^|; )sokosumi_consent=([^;]+)/);
+      if (_m) {
+        var _c = JSON.parse(decodeURIComponent(_m[1]));
+        gtag('consent', 'update', {
+          analytics_storage: _c.analytics ? 'granted' : 'denied',
+          ad_storage: _c.marketing ? 'granted' : 'denied',
+          ad_user_data: _c.marketing ? 'granted' : 'denied',
+          ad_personalization: _c.marketing ? 'granted' : 'denied'
+        });
+      }
+    } catch (_e) {}
+    gtag('set', 'url_passthrough', true);
+    gtag('set', 'ads_data_redaction', true);
+  </script>
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','${GTM_ID}');</script>`;
+
+const GTM_NOSCRIPT = `<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=${GTM_ID}" height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Manager"></iframe></noscript>`;
 // The canonical origin. www, not the apex: sokosumi.com 301s to www, so
 // publishing the apex in canonicals and the sitemap points every one of them
 // at a redirect. Overridable so a staging deploy cannot advertise production.
@@ -255,6 +294,7 @@ function head(opts) {
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    ${ANALYTICS_HEAD}
     <title>${title}</title>
     <meta name="description" content="${desc}" />
     ${opts.noindex ? '<meta name="robots" content="noindex" />' : `<link rel="canonical" href="${attr(canonical)}" />`}
@@ -289,7 +329,8 @@ function head(opts) {
     <noscript><style>[data-reveal] { opacity: 1 !important; transform: none !important; }</style></noscript>
     ${jsonld}
   </head>
-  <body>`;
+  <body>
+    ${GTM_NOSCRIPT}`;
 }
 
 // Nav model (top vendors + industries) for the dropdown menus. It is the
@@ -429,7 +470,7 @@ function ctaBand(b) {
         ${ctaFaces(b.seed != null ? b.seed : heading.length, 4)}
       </div>
       <div class="cta-action">
-        <a class="btn btn-primary btn-lg" href="${attr(href)}">${esc(label)}</a>
+        <a class="btn btn-primary btn-lg" href="${attr(href)}"${isSignupHref(href) ? ' data-analytics="sign_up_click" data-analytics-location="cta_band"' : ""}>${esc(label)}</a>
         ${isSignupHref(href) ? NO_CARD : ""}
       </div>
     </div></section>`;
@@ -610,7 +651,7 @@ function mobileNav() {
   return `<div class="mobile-nav" id="mobileNav" hidden>
         ${links}
         <div class="m-actions">
-          <a class="btn btn-primary" href="${APP}">Sign Up</a>
+          <a class="btn btn-primary" href="${APP}" data-analytics="sign_up_click" data-analytics-location="mobile_nav">Sign Up</a>
           <a class="btn btn-outline" href="${SALES_URL}">Talk to Sales</a>
           <a class="btn btn-ghost" href="${APP}/signin">Log In</a>
         </div>
@@ -631,7 +672,7 @@ function header(currentPath) {
         <div class="actions">
           <a class="btn btn-sm btn-ghost" href="${APP}/signin">Log In</a>
           <a class="btn btn-sm btn-outline" href="${SALES_URL}">Talk to Sales</a>
-          <a class="btn btn-sm btn-primary" href="${APP}">Sign Up</a>
+          <a class="btn btn-sm btn-primary" href="${APP}" data-analytics="sign_up_click" data-analytics-location="nav">Sign Up</a>
           ${BURGER}
         </div>
       </div>
@@ -679,6 +720,7 @@ function footer() {
           <a href="/legal/cookie-policy">Cookies</a>
           <a href="/legal/imprint">Imprint</a>
           <a href="/legal">All legal</a>
+          <a href="#" data-cc-open>Cookie settings</a>
         </div>
         <div class="foot-bottom">
           <p class="foot-copy">&copy; ${new Date().getFullYear()} Sokosumi. All rights reserved.</p>
@@ -687,6 +729,8 @@ function footer() {
     </footer>
     <script src="/assets/site.js" defer></script>
     <script src="/assets/nav.js" defer></script>
+    <script src="/assets/consent.js" defer></script>
+    <script src="/assets/track.js" defer></script>
   </body>
 </html>`;
 }

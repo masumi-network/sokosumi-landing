@@ -159,7 +159,7 @@ function planCard(p, i) {
     </div>
     ${p.credits ? `<div class="plan-credits">${esc(p.credits)}</div>` : ""}
     ${featureList(p)}
-    <a class="btn ${p.ctaLabel === "Contact us" ? "btn-outline" : "btn-primary"} plan-cta" href="${attr(p.ctaHref)}">${esc(p.ctaLabel)}</a>
+    <a class="btn ${p.ctaLabel === "Contact us" ? "btn-outline" : "btn-primary"} plan-cta" href="${attr(p.ctaHref)}"${p.ctaHref === APP ? ` data-analytics="sign_up_click" data-analytics-location="pricing" data-analytics-plan="${attr(p.name)}"` : ""}>${esc(p.ctaLabel)}</a>
   </div>`;
 }
 
