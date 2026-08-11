@@ -1,11 +1,11 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": null,
-  "buildCommand": null,
-  "outputDirectory": null,
+  "buildCommand": "mkdir -p public && printf 'ok' > public/_health.txt",
+  "outputDirectory": "public",
   "functions": {
     "api/index.js": {
-      "includeFiles": "{index.html,catalog-seed.json,assets/**,data/**}",
+      "includeFiles": "{index.html,catalog-seed.json,assets/**}",
       "maxDuration": 15
     }
   },

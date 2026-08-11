@@ -1,0 +1,11 @@
+# The two large hero test clips are gitignored and unreferenced — never ship
+# them (76 MB between them). The real hero video is assets/hero-bg.mp4.
+assets/hero-test.mp4
+assets/hero-hhhtest.mp4
+
+# Local-only / build cruft
+node_modules
+.env
+.env.local
+.git
+data
