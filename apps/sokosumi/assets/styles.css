@@ -14,6 +14,9 @@
   --hairline-dark: rgba(255, 255, 255, 0.16);
   --primary: #6400ff;
   --primary-soft: rgba(100, 0, 255, 0.08);
+  /* #6400ff is a light-surface accent — luminance 0.10, so it goes muddy on
+     ink. This is the app's own dark-theme purple, for the dark bands. */
+  --primary-on-dark: hsla(270, 64%, 63%, 1);
   --r-sm: 4px;
   --r-md: 6px;
   --r-lg: 8px;
@@ -923,3 +926,53 @@ footer.site {
 
 /* The cookie-consent banner styles itself — assets/consent.js injects them so
    the banner works on the landing page too, which does not load this file. */
+
+
+/* ===== accent =====================================================
+   Purple earns its place in four roles and stays out of everything else:
+   the eyebrow that opens a section, the arrow on a row you can follow,
+   the focus ring, and text selection. Everything else stays ink on paper —
+   the accent only reads as an accent while it is rare. */
+
+/* the small label above a heading — the one mark on nearly every page */
+.page-head .eyebrow,
+.cw-info .eyebrow,
+.blk-hero .eyebrow,
+.uc-eyebrow { color: var(--primary); }
+
+/* on the dark bands the same role needs the lifted tone */
+.band-dark .eyebrow,
+.blk-cta .eyebrow { color: var(--primary-on-dark); }
+
+/* where you are: the nav item for the section you are in */
+.site-nav a[aria-current] { color: var(--primary); }
+
+/* where you can go: the arrow on a row, and a link in body copy */
+.row-item:hover .row-go { color: var(--primary); }
+a.card:hover { border-color: rgba(100, 0, 255, 0.45); }
+.prose a { text-decoration-color: rgba(100, 0, 255, 0.4); }
+.prose a:hover { color: var(--primary); text-decoration-color: var(--primary); }
+.legal-nav a[aria-current] { color: var(--primary); border-color: rgba(100, 0, 255, 0.45); }
+
+/* the uppercase kicker above a block, where a page uses one */
+.kicker { color: var(--primary); }
+
+/* the two remaining "this one is live" states: a task card under the pointer
+   (DESIGN.md specifies hover border-primary here) and the filter you picked */
+.offer-card:hover { border-color: rgba(100, 0, 255, 0.45); }
+.fchip.active { background: var(--primary); border-color: var(--primary); color: #fff; }
+
+/* a blog post's own tag, the one coloured mark on the index */
+.tag-quiet { color: var(--primary); }
+
+/* focus was not styled at all — a visible ring is the accessibility
+   baseline, and the accent is exactly what it is for */
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+.band-dark :focus-visible,
+.blk-cta :focus-visible { outline-color: var(--primary-on-dark); }
+
+::selection { background: rgba(100, 0, 255, 0.18); }
