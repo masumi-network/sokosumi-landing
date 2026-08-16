@@ -277,6 +277,62 @@ main.page { min-height: 60vh; }
 /* the vendor's one-line CMS description, between the head and the count */
 .vendor-desc { font-size: 14.5px; line-height: 1.6; color: var(--muted-foreground); max-width: 60ch; margin-bottom: 6px; }
 
+/* ===== vendor pages (/vendors, /vendors/<slug>) ===== */
+/* the computed facts row in the hero — counts derived from the catalog, so
+   the line is always true without editing (reuses the .cw-stats look) */
+.vendor-facts { margin-top: 20px; }
+
+/* a curated coworker as a colleague, not a link: portrait, role, what it
+   does, and its chips. Builds on .card, so hover/border/go come for free. */
+.vcw-card { gap: 12px; }
+.vcw-head { display: flex; align-items: center; gap: 14px; }
+.vcw-face {
+  width: 56px; height: 56px; border-radius: var(--r-md); overflow: hidden;
+  background: var(--muted); flex-shrink: 0;
+}
+.vcw-face img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.vcw-id { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.vcw-id .role { font-size: 13px; color: var(--muted-foreground); }
+.vcw-card p {
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+  font-size: 14px;
+}
+.vcw-foot { margin-top: auto; padding-top: 4px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+
+/* what the vendor's coworkers can do: one column per offer category, on the
+   .uc-steps/.stat pattern — a rule, a quiet label with the count, the tasks */
+.cap-grid { display: grid; gap: 22px 28px; grid-template-columns: 1fr; }
+@media (min-width: 680px) { .cap-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1020px) { .cap-grid { grid-template-columns: repeat(3, 1fr); } }
+.cap-col { border-top: 1px solid var(--foreground); padding-top: 14px; display: flex; flex-direction: column; align-items: flex-start; }
+.cap-label {
+  font-size: 11.5px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--muted-foreground); margin-bottom: 8px;
+  display: flex; align-items: baseline; gap: 8px;
+}
+.cap-label em { font-style: normal; font-variant-numeric: tabular-nums; opacity: 0.7; }
+.cap-task { display: block; padding: 5px 0; font-size: 14px; line-height: 1.45; transition: color 0.2s var(--ease); }
+.cap-task small { font-size: 12px; color: var(--muted-foreground); margin-left: 6px; white-space: nowrap; }
+.cap-task:hover { color: var(--primary); }
+.cap-more { margin-top: 5px; font-size: 12.5px; color: var(--muted-foreground); }
+.cap-browse {
+  display: inline-flex; align-items: center; gap: 8px; margin-top: 28px;
+  font-size: 13.5px; color: var(--muted-foreground); transition: color 0.25s var(--ease);
+}
+.cap-browse:hover { color: var(--primary); }
+
+/* models + hosting, aggregated across the vendor's coworkers */
+.stack-rows { display: flex; flex-direction: column; gap: 14px; max-width: 720px; }
+.stack-row { display: flex; align-items: baseline; gap: 10px 16px; flex-wrap: wrap; }
+.stack-label {
+  font-size: 11.5px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--muted-foreground); min-width: 72px;
+}
+.stack-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+
+/* run count / rating / credits under a marketplace agent's description */
+.row-stats { display: block; margin-top: 6px; font-size: 12.5px; color: var(--muted-foreground); font-variant-numeric: tabular-nums; }
+
 /* ===== agent vs coworker explainer (/coworkers) =====
    Two columns on the .stat/.uc-steps pattern: a rule, a quiet uppercase
    label, a short paragraph. Neither column is styled as the better one. */
