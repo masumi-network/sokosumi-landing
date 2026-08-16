@@ -500,7 +500,7 @@ function agentsPanel() {
         ${v.picks
           .map(
             (p) =>
-              `<a class="nav-col-link has-face" href="/coworkers/${encodeURIComponent(p.slug)}">${
+              `<a class="nav-col-link has-face" href="/ai-coworkers/${encodeURIComponent(p.slug)}">${
                 p.image
                   // data-src, not src: these are full-size portraits painted
                   // at 30px inside a closed menu. loading="lazy" does NOT stop
@@ -528,7 +528,7 @@ function agentsPanel() {
       </div>
       <div class="nav-panel-foot">
         <a href="/vendors">Show all vendors ${icon("arrow-up-right", 13)}</a>
-        <a class="nav-foot-accent" href="/coworkers">Show all coworkers ${icon("arrow-up-right", 13)}</a>
+        <a class="nav-foot-accent" href="/ai-coworkers">Show all coworkers ${icon("arrow-up-right", 13)}</a>
       </div>
     </div>`;
 }
@@ -641,7 +641,7 @@ function navItems(currentPath) {
   // Three items only. Guides and Releases are reference material, not paths
   // into the product, and they live in the footer.
   return [
-    item("/coworkers", "AI Coworkers", agents, "/vendors"),
+    item("/ai-coworkers", "AI Coworkers", agents, "/vendors"),
     item("/product", "Product", product),
     item("/use-cases", "Use cases", useCases),
     item("/pricing", "Pricing", ""),
@@ -651,7 +651,7 @@ function navItems(currentPath) {
 // The drawer the burger opens below 900px. Same links as index.html's copy —
 // both surfaces share /assets/nav.css and /assets/nav.js.
 const MOBILE_LINKS = [
-  ["/coworkers", "AI Coworkers", "Named specialists you can hire"],
+  ["/ai-coworkers", "AI Coworkers", "Named specialists you can hire"],
   ["/vendors", "Vendors", "The teams behind them"],
   ["/tasks", "Template tasks", "Ready-to-run work"],
   ["/product", "Product", "How it works, end to end"],
@@ -704,7 +704,7 @@ function footer() {
             <img class="foot-mark" src="/assets/sokosumi-wordmark.svg" alt="Sokosumi" width="121" height="16" />
           </a>
           <nav class="foot-links" aria-label="Footer">
-            <a href="/coworkers">AI Coworkers</a>
+            <a href="/ai-coworkers">AI Coworkers</a>
             <a href="/vendors">Vendors</a>
             <a href="/tasks">Template tasks</a>
             <a href="/product">Product</a>

@@ -104,7 +104,7 @@ function robots() {
 async function sitemap() {
   const urls = new Set([
     "/",
-    "/coworkers",
+    "/ai-coworkers",
     "/tasks",
     "/vendors",
     "/use-cases",
@@ -147,12 +147,12 @@ async function sitemap() {
   for (const c of coworkers) {
     if (c.active === false) continue;
     publicSlugByAgent.set(c.catalogSlug || c.slug, c.slug);
-    urls.add(`/coworkers/${c.slug}`);
+    urls.add(`/ai-coworkers/${c.slug}`);
   }
   for (const o of offers) {
     const pub = publicSlugByAgent.get(o.agentSlug);
     if (o.active === false || !pub) continue;
-    urls.add(`/coworkers/${pub}/tasks/${o.slug}`);
+    urls.add(`/ai-coworkers/${pub}/tasks/${o.slug}`);
   }
   for (const v of vendors) urls.add(`/vendors/${v.slug}`);
   const industriesWithUseCases = new Set();

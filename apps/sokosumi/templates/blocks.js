@@ -11,9 +11,18 @@ const shell = require("./shell");
 const { esc, attr, icon } = shell;
 const { mediaUrl } = require("../lib/cms");
 
+// CMS documents still link to routes this site has since renamed. Rewrite
+// them at render time so internal links point straight at the live URL
+// instead of bouncing through the 301.
+function renamedHref(href) {
+  if (href === "/coworkers") return "/ai-coworkers";
+  if (typeof href === "string" && href.startsWith("/coworkers/")) return "/ai-coworkers" + href.slice("/coworkers".length);
+  return href;
+}
+
 function ctaLink(label, href, cls) {
   if (!label || !href) return "";
-  return `<a class="btn ${cls || "btn-primary"}" href="${attr(href)}">${esc(label)}</a>`;
+  return `<a class="btn ${cls || "btn-primary"}" href="${attr(renamedHref(href))}">${esc(label)}</a>`;
 }
 
 function blkHead(block) {

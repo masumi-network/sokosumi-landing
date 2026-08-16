@@ -394,21 +394,27 @@ async function coworkerSlugRedirect(ctx, buildPath) {
 }
 
 const routes = [
-  { m: (s) => s.length === 1 && s[0] === "coworkers" && {}, h: coworkersTpl.index },
+  { m: (s) => s.length === 1 && s[0] === "ai-coworkers" && {}, h: coworkersTpl.index },
   {
-    m: (s) => s.length === 2 && s[0] === "coworkers" && { slug: s[1] },
+    m: (s) => s.length === 2 && s[0] === "ai-coworkers" && { slug: s[1] },
     h: async (ctx) =>
       (await coworkersTpl.profile(ctx)) ||
-      coworkerSlugRedirect(ctx, (slug) => `/coworkers/${encodeURIComponent(slug)}`),
+      coworkerSlugRedirect(ctx, (slug) => `/ai-coworkers/${encodeURIComponent(slug)}`),
   },
   {
-    m: (s) => s.length === 4 && s[0] === "coworkers" && s[2] === "tasks" && { slug: s[1], offerSlug: s[3] },
+    m: (s) => s.length === 4 && s[0] === "ai-coworkers" && s[2] === "tasks" && { slug: s[1], offerSlug: s[3] },
     h: async (ctx) =>
       (await tasksTpl.detail(ctx)) ||
       coworkerSlugRedirect(
         ctx,
-        (slug) => `/coworkers/${encodeURIComponent(slug)}/tasks/${encodeURIComponent(ctx.params.offerSlug)}`,
+        (slug) => `/ai-coworkers/${encodeURIComponent(slug)}/tasks/${encodeURIComponent(ctx.params.offerSlug)}`,
       ),
+  },
+  // These pages lived at /coworkers/* until the 2026-08 SEO rename. Permanent
+  // redirect so old links and the indexed footprint carry over in one hop.
+  {
+    m: (s) => s[0] === "coworkers" && { rest: s.slice(1) },
+    h: (ctx) => ({ redirect: ["/ai-coworkers", ...ctx.params.rest].join("/") }),
   },
   { m: (s) => s.length === 1 && s[0] === "tasks" && {}, h: tasksTpl.browse },
   { m: (s) => s.length === 1 && s[0] === "vendors" && {}, h: vendorsTpl.index },

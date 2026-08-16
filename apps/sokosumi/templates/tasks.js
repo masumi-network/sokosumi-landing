@@ -1,4 +1,4 @@
-// /tasks (browse) and /coworkers/<slug>/tasks/<offerSlug> (detail) — CMS
+// /tasks (browse) and /ai-coworkers/<slug>/tasks/<offerSlug> (detail) — CMS
 // `offers` joined with `coworkers` by agentSlug. Every card is server-
 // rendered; the browse page filters client-side via /assets/tasks-filter.js
 // (category chips + search), so ?category= and ?q= never change the
@@ -115,7 +115,7 @@ function samplePreview(offer) {
 
 function taskCard(offer, coworker) {
   const om = outputMeta(offer.output);
-  const href = `/coworkers/${encodeURIComponent(coworker.slug)}/tasks/${encodeURIComponent(offer.slug)}`;
+  const href = `/ai-coworkers/${encodeURIComponent(coworker.slug)}/tasks/${encodeURIComponent(offer.slug)}`;
   const searchText = [offer.title, offer.description, offer.category, coworker.name, coworker.role]
     .filter(Boolean)
     .join(" ")
@@ -174,7 +174,7 @@ async function browse(ctx) {
       jsonld: shell.itemListLd(
         "Template tasks on Sokosumi",
         "/tasks",
-        hits.map(({ o, c }) => ({ name: o.title, path: `/coworkers/${c.slug}/tasks/${o.slug}` })),
+        hits.map(({ o, c }) => ({ name: o.title, path: `/ai-coworkers/${c.slug}/tasks/${o.slug}` })),
       ),
     }) +
     `<div class="page-head" data-reveal>
@@ -197,7 +197,7 @@ async function browse(ctx) {
           <script>window.__TASK_INIT__=${init};</script>
           <script src="/assets/tasks-filter.js"></script>
         </div>`
-      : `<div class="page-section flush"><p class="muted">Template tasks are on the way. In the meantime, <a href="/coworkers" style="text-decoration:underline">meet the coworkers</a>.</p></div>`) +
+      : `<div class="page-section flush"><p class="muted">Template tasks are on the way. In the meantime, <a href="/ai-coworkers" style="text-decoration:underline">meet the coworkers</a>.</p></div>`) +
     shell.ctaBand({
       heading: "Run your first task today",
       subheading: "Pick a template, add your brief, and get the finished file back. Signing up is free.",
@@ -249,7 +249,7 @@ function whatYouGet(offer, c, om, outs) {
   </div>`;
 }
 
-// ---- /coworkers/<slug>/tasks/<offerSlug> (detail) ----
+// ---- /ai-coworkers/<slug>/tasks/<offerSlug> (detail) ----
 
 async function detail(ctx) {
   const opts = { draft: ctx.preview };
@@ -268,15 +268,15 @@ async function detail(ctx) {
 
   const cr = [
     { label: "Home", href: "/" },
-    { label: "Coworkers", href: "/coworkers" },
+    { label: "AI Coworkers", href: "/ai-coworkers" },
   ];
   if (vn) cr.push(vs ? { label: vn, href: `/vendors/${encodeURIComponent(vs)}` } : { label: vn });
-  cr.push({ label: c.name, href: `/coworkers/${c.slug}` }, { label: offer.title });
+  cr.push({ label: c.name, href: `/ai-coworkers/${c.slug}` }, { label: offer.title });
   return (
     pageStart({
       title: `${offer.title} | ${c.name} on Sokosumi`,
       description: (offer.description || `${offer.title}, a template task run by ${c.name} on Sokosumi.`).slice(0, 155),
-      path: `/coworkers/${c.slug}/tasks/${offer.slug}`,
+      path: `/ai-coworkers/${c.slug}/tasks/${offer.slug}`,
       breadcrumb: cr,
       jsonld: {
         "@context": "https://schema.org",
@@ -284,8 +284,8 @@ async function detail(ctx) {
         name: offer.title,
         description: offer.description || undefined,
         category: offer.category || undefined,
-        provider: { "@id": `${shell.SITE}/coworkers/${c.slug}#app` },
-        url: `${shell.SITE}/coworkers/${c.slug}/tasks/${offer.slug}`,
+        provider: { "@id": `${shell.SITE}/ai-coworkers/${c.slug}#app` },
+        url: `${shell.SITE}/ai-coworkers/${c.slug}/tasks/${offer.slug}`,
       },
     }) +
     `<div class="task-layout">
@@ -299,7 +299,7 @@ async function detail(ctx) {
         ${whatYouGet(offer, c, om, outs)}
         <div>
           <div class="kicker" style="margin-bottom:8px">Delivered by</div>
-          <a class="by-row" href="/coworkers/${encodeURIComponent(c.slug)}">
+          <a class="by-row" href="/ai-coworkers/${encodeURIComponent(c.slug)}">
             ${avatar(c, "")}
             <span class="who">${esc(c.name)}${whoSmall ? `<small>${whoSmall}</small>` : ""}</span>
           </a>

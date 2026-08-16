@@ -114,7 +114,7 @@ async function index(ctx) {
       ? `<div class="page-section flush">
           <div class="row-list vendor-list">${rows.map(vendorRow).join("")}</div>
         </div>`
-      : `<div class="page-section flush"><p class="muted">Vendor profiles are on the way. In the meantime, <a href="/coworkers" style="text-decoration:underline">meet the coworkers</a>.</p></div>`) +
+      : `<div class="page-section flush"><p class="muted">Vendor profiles are on the way. In the meantime, <a href="/ai-coworkers" style="text-decoration:underline">meet the coworkers</a>.</p></div>`) +
     shell.ctaBand({
       heading: "Hire from any of them, in one place",
       subheading: "One account, one credit balance, every vendor on the marketplace. Signing up is free.",
@@ -137,7 +137,7 @@ function coworkerCard(c, taskCount, i) {
   const face = c.image
     ? `<span class="vcw-face"><img src="${attr(c.image)}" alt="${attr(c.name)}" loading="lazy" /></span>`
     : `<span class="vcw-face"></span>`;
-  return `<a class="card vcw-card" href="/coworkers/${encodeURIComponent(c.slug)}" data-reveal style="--i:${i % 3}">
+  return `<a class="card vcw-card" href="/ai-coworkers/${encodeURIComponent(c.slug)}" data-reveal style="--i:${i % 3}">
     <span class="vcw-head">
       ${face}
       <span class="vcw-id"><h3>${esc(c.name)}</h3>${c.role ? `<span class="role">${esc(c.role)}</span>` : ""}</span>
@@ -156,7 +156,7 @@ function capabilityCol(category, offers, ownerOf, i) {
     .map((o) => {
       const owner = ownerOf(o);
       if (!owner) return "";
-      const href = `/coworkers/${encodeURIComponent(owner.slug)}/tasks/${encodeURIComponent(o.slug)}`;
+      const href = `/ai-coworkers/${encodeURIComponent(owner.slug)}/tasks/${encodeURIComponent(o.slug)}`;
       return `<a class="cap-task" href="${attr(href)}">${esc(o.title)} <small>${esc(owner.name)}</small></a>`;
     })
     .join("");
@@ -169,10 +169,11 @@ function capabilityCol(category, offers, ownerOf, i) {
 
 function agentRow(c) {
   const stats = [];
-  if (c.runs) stats.push(`${Number(c.runs).toLocaleString("en-US")} runs`);
+  const runCount = Number(c.runs);
+  if (Number.isFinite(runCount) && runCount > 0) stats.push(`${runCount.toLocaleString("en-US")} runs`);
   if (c.rating && c.ratingCount) stats.push(`rated ${Number(c.rating).toFixed(1)}/5`);
   if (c.credits) stats.push(`${c.credits} credits per run`);
-  return `<a class="row-item" href="/coworkers/${encodeURIComponent(c.slug)}">
+  return `<a class="row-item" href="/ai-coworkers/${encodeURIComponent(c.slug)}">
     <span style="display:flex;align-items:center;gap:12px">${avatar(c, "sm")}<span class="row-title">${esc(c.name)}</span></span>
     <p>${esc(truncate(c.description || "", 160))}${stats.length ? `<span class="row-stats">${esc(stats.join(" · "))}</span>` : ""}</p>
     <span class="row-go">View ${icon("arrow-up-right", 15)}</span>
@@ -253,8 +254,8 @@ async function detail(ctx) {
   const cats = [...catMap.entries()].sort((a, b) => b[1].length - a[1].length || a[0].localeCompare(b[0]));
   const capabilitiesSection = cats.length
     ? `<section class="page-section${flush()}">
-        <h2>What ${esc(v.name)}&rsquo;s AI coworkers can do</h2>
-        <p class="sub">${myOffers.length} ready-to-run template task${myOffers.length === 1 ? "" : "s"} across ${cats.length} categor${cats.length === 1 ? "y" : "ies"}. Open one to see the brief, the deliverable, and a sample of the output.</p>
+        <h2>What ${esc(v.name)}&rsquo;s listings can do</h2>
+        <p class="sub">${myOffers.length} ready-to-run template task${myOffers.length === 1 ? "" : "s"} across ${cats.length} categor${cats.length === 1 ? "y" : "ies"}. Open one to see the deliverable and a sample of the output.</p>
         <div class="cap-grid">${cats.map(([cat, list], i) => capabilityCol(cat, list, (o) => byKey.get(o.agentSlug), i)).join("")}</div>
         <a class="cap-browse" href="/tasks">Browse all template tasks ${icon("arrow-up-right", 14)}</a>
       </section>`
@@ -271,7 +272,7 @@ async function detail(ctx) {
   const stackSection = stackRows.length
     ? `<section class="page-section${flush()}">
         <h2>Models and hosting, stated up front</h2>
-        <p class="sub">Every ${esc(v.name)} AI coworker names the model it runs on and the region it is hosted in — before you spend a credit.</p>
+        <p class="sub">The ${models.length && regions.length ? "models and hosting regions" : models.length ? "models" : "hosting regions"} on file for ${esc(v.name)}&rsquo;s listings — visible before you spend a credit.</p>
         <div class="stack-rows">${stackRows.join("")}</div>
       </section>`
     : "";
@@ -286,7 +287,7 @@ async function detail(ctx) {
 
   const empty =
     !curated.length && !agents.length
-      ? `<div class="page-section flush"><p class="muted">${esc(v.name)} has no listings on Sokosumi yet. In the meantime, <a href="/coworkers" style="text-decoration:underline">meet the coworkers</a>.</p></div>`
+      ? `<div class="page-section flush"><p class="muted">${esc(v.name)} has no listings on Sokosumi yet. In the meantime, <a href="/ai-coworkers" style="text-decoration:underline">meet the coworkers</a>.</p></div>`
       : "";
 
   // ── head ──
@@ -324,7 +325,7 @@ async function detail(ctx) {
   const listLd = shell.itemListLd(
     `AI coworkers and agents from ${v.name}`,
     `/vendors/${v.slug}`,
-    [...curated, ...agents].map((c) => ({ name: c.name, path: `/coworkers/${c.slug}` })),
+    [...curated, ...agents].map((c) => ({ name: c.name, path: `/ai-coworkers/${c.slug}` })),
   );
   if (listLd) jsonld.push(listLd);
 

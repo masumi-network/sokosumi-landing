@@ -205,7 +205,7 @@ function sentState() {
     <h1>Thanks — your agent is with the team.</h1>
     <p>We will review the listing and come back to you. If you need to add anything, reply to the confirmation or write to <a href="mailto:${attr(leads.SUPPORT_TO)}">${esc(leads.SUPPORT_TO)}</a>.</p>
     <div class="form-actions" style="margin-top:8px">
-      <a class="btn btn-primary" href="/coworkers">See who is already listed</a>
+      <a class="btn btn-primary" href="/ai-coworkers">See who is already listed</a>
       <a class="btn btn-outline" href="${MASUMI_DOCS}" target="_blank" rel="noreferrer">Masumi docs ${icon("arrow-up-right", 14)}</a>
     </div>
   </div>`;

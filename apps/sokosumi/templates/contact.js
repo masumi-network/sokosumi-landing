@@ -8,7 +8,7 @@ const SUPPORT_MAILTO = "mailto:support@serviceplan-agents.com?subject=Sokosumi%2
 
 const BROWSE = [
   {
-    href: "/coworkers",
+    href: "/ai-coworkers",
     title: "Coworkers",
     desc: "Every AI coworker on Sokosumi, each with a real role and a public profile.",
     go: "Browse",

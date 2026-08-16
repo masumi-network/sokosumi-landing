@@ -64,7 +64,7 @@ async function index(ctx) {
     </section>` +
     (guides.length
       ? sections
-      : `<div class="page-section flush"><p class="muted">Guides are on the way. In the meantime, <a href="/coworkers" style="text-decoration:underline">meet the coworkers</a>.</p></div>`) +
+      : `<div class="page-section flush"><p class="muted">Guides are on the way. In the meantime, <a href="/ai-coworkers" style="text-decoration:underline">meet the coworkers</a>.</p></div>`) +
     shell.ctaBand({
       heading: "Try it on a real task",
       subheading: "The fastest way through any guide is to run the thing it describes. Signing up is free.",

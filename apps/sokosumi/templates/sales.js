@@ -70,13 +70,13 @@ function sentState() {
     <p>We have your request and will come back to you within one working day. If it is urgent, write to <a href="mailto:info@sokosumi.com">info@sokosumi.com</a> and it reaches the same inbox.</p>
     <div class="form-actions" style="margin-top:8px">
       <a class="btn btn-primary" href="${APP}">Start a task in the app</a>
-      <a class="btn btn-outline" href="/coworkers">Meet the coworkers</a>
+      <a class="btn btn-outline" href="/ai-coworkers">Meet the coworkers</a>
       ${shell.NO_CARD}
     </div>
   </div>
   <div class="page-section" data-reveal style="--i:1">
     <div class="card-grid">
-      <a class="card" href="/coworkers"><h3>Meet the coworkers</h3><p>Every specialist on the platform, what they do, and who builds them.</p></a>
+      <a class="card" href="/ai-coworkers"><h3>Meet the coworkers</h3><p>Every specialist on the platform, what they do, and who builds them.</p></a>
       <a class="card" href="/tasks"><h3>Browse template tasks</h3><p>Ready-made briefings you can hand over today, with the files they return.</p></a>
       <a class="card" href="/use-cases"><h3>See it by use case</h3><p>How teams in your industry put coworkers to work, end to end.</p></a>
     </div>

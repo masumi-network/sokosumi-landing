@@ -1,4 +1,4 @@
-// /coworkers (index) and /coworkers/<slug> (profile) — CMS-backed via the
+// /ai-coworkers (index) and /ai-coworkers/<slug> (profile) — CMS-backed via the
 // nightly catalog sync. Curated coworkers (kind=coworker) show their
 // template tasks; marketplace agents (kind=agent) show stats + vendor.
 
@@ -6,7 +6,7 @@ const shell = require("./shell");
 const cms = require("../lib/cms");
 const { esc, attr, icon, avatar, vendorLogo, pageStart, pageEnd, APP } = shell;
 
-// The vendor that leads /coworkers. Serviceplan Group builds the curated roster.
+// The vendor that leads /ai-coworkers. Serviceplan Group builds the curated roster.
 const FEATURED_VENDOR = "serviceplan-group";
 
 // Marketplace coworkers have their own page in the app, so the CTA deep-links
@@ -30,7 +30,7 @@ function tile(c, i) {
   const img = c.image
     ? `<span class="portrait${c.kind === "agent" ? " is-icon" : ""}"><img src="${attr(c.image)}" alt="${attr(c.name)}" loading="lazy" /></span>`
     : `<span class="portrait"></span>`;
-  return `<a class="cw-tile" href="/coworkers/${encodeURIComponent(c.slug)}" data-reveal style="--i:${i % 4}">
+  return `<a class="cw-tile" href="/ai-coworkers/${encodeURIComponent(c.slug)}" data-reveal style="--i:${i % 4}">
     ${img}
     <h3>${esc(c.name)}</h3>
     ${c.role ? `<span class="role">${esc(c.role)}</span>` : ""}
@@ -40,7 +40,7 @@ function tile(c, i) {
 
 function agentRow(c) {
   const vn = vendorName(c);
-  return `<a class="row-item" href="/coworkers/${encodeURIComponent(c.slug)}">
+  return `<a class="row-item" href="/ai-coworkers/${encodeURIComponent(c.slug)}">
     <span style="display:flex;align-items:center;gap:12px">${avatar(c, "sm")}<span class="row-title">${esc(c.name)}</span></span>
     <p>${esc((c.description || "").slice(0, 160))}</p>
     <span class="row-go">${vn ? esc(vn) : "View"} ${icon("arrow-up-right", 15)}</span>
@@ -89,20 +89,20 @@ async function index(ctx) {
     return b.items.length - a.items.length || (a.vendor ? a.vendor.name.localeCompare(b.vendor.name) : 0);
   });
 
-  const cr = [{ label: "Home", href: "/" }, { label: "Coworkers" }];
+  const cr = [{ label: "Home", href: "/" }, { label: "AI Coworkers" }];
   return (
     pageStart({
       title: "AI coworkers on Sokosumi",
       description:
         "Browse every AI coworker on Sokosumi: marketing specialists with real roles, public profiles, and ready-to-run work.",
-      path: "/coworkers",
+      path: "/ai-coworkers",
       breadcrumb: cr,
       jsonld: shell.itemListLd(
         "AI coworkers on Sokosumi",
-        "/coworkers",
+        "/ai-coworkers",
         // Both halves of the page: the curated roster and the marketplace
         // agents listed below it.
-        [...groups.flatMap((g) => g.items), ...agents].map((c) => ({ name: c.name, path: `/coworkers/${c.slug}` })),
+        [...groups.flatMap((g) => g.items), ...agents].map((c) => ({ name: c.name, path: `/ai-coworkers/${c.slug}` })),
       ),
     }) +
     `<div class="page-head" data-reveal>
@@ -181,11 +181,11 @@ function profileLd(c, vendorName, vendorSlug) {
   const ld = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    "@id": `${shell.SITE}/coworkers/${c.slug}#app`,
+    "@id": `${shell.SITE}/ai-coworkers/${c.slug}#app`,
     name: c.name,
     applicationCategory: "BusinessApplication",
     operatingSystem: "Web",
-    url: `${shell.SITE}/coworkers/${c.slug}`,
+    url: `${shell.SITE}/ai-coworkers/${c.slug}`,
     image: c.image || undefined,
     description: c.description || undefined,
     isPartOf: { "@id": `${shell.SITE}/#website` },
@@ -229,7 +229,7 @@ function profileTags(c) {
 
 function offerCard(agentSlug, o, coworker) {
   const om = shell.outputMeta(o.output);
-  const href = `/coworkers/${encodeURIComponent(agentSlug)}/tasks/${encodeURIComponent(o.slug)}`;
+  const href = `/ai-coworkers/${encodeURIComponent(agentSlug)}/tasks/${encodeURIComponent(o.slug)}`;
   return `<a class="offer-card" href="${attr(href)}" data-out="${attr(o.output || "text")}">
     <div class="offer-meta"><span>${esc(o.category || "Task")}</span><span class="offer-type" data-out="${attr(o.output || "text")}">${icon(om.icon, 12)}${esc(om.label)}</span></div>
     <div class="offer-title">${esc(o.title)}</div>
@@ -263,14 +263,14 @@ async function profile(ctx) {
     ? `<section class="page-section"><div class="prose">${c.longBioHtml}</div></section>`
     : "";
 
-  const cr = [{ label: "Home", href: "/" }, { label: "Coworkers", href: "/coworkers" }];
+  const cr = [{ label: "Home", href: "/" }, { label: "AI Coworkers", href: "/ai-coworkers" }];
   if (vn) cr.push(vs ? { label: vn, href: `/vendors/${encodeURIComponent(vs)}` } : { label: vn });
   cr.push({ label: c.name });
   return (
     pageStart({
       title: `${c.name} | ${c.role || "AI coworker"} on Sokosumi`,
       description: shell.truncate(c.seoDescription || c.description || `Hire ${c.name}, an AI coworker on Sokosumi.`),
-      path: `/coworkers/${c.slug}`,
+      path: `/ai-coworkers/${c.slug}`,
       ogImage: c.image || undefined,
       breadcrumb: cr,
       jsonld: profileLd(c, vn, vs),

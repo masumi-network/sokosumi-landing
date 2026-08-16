@@ -849,7 +849,7 @@
         </a>
         <div class="island-links">
           <span class="nav-drop" id="navAgents">
-            <a href="/coworkers">AI Coworkers<svg class="nav-chev" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></a>
+            <a href="/ai-coworkers">AI Coworkers<svg class="nav-chev" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></a>
           </span>
           <span class="nav-drop" id="navProduct">
             <a href="/product">Product<svg class="nav-chev" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></a>
@@ -931,7 +931,7 @@
     </div>
     <!-- same links templates/shell.js renders; both use /assets/nav.{css,js} -->
     <div class="mobile-nav" id="mobileNav" hidden>
-      <a class="m-link" href="/coworkers">AI Coworkers<small>Named specialists you can hire</small></a>
+      <a class="m-link" href="/ai-coworkers">AI Coworkers<small>Named specialists you can hire</small></a>
       <a class="m-link" href="/vendors">Vendors<small>The teams behind them</small></a>
       <a class="m-link" href="/tasks">Template tasks<small>Ready-to-run work</small></a>
       <a class="m-link" href="/product">Product<small>How it works, end to end</small></a>
@@ -956,7 +956,7 @@
           <p class="muted" id="cwSkeleton" style="text-align: center; font-size: 14px; grid-column: 1 / -1;">Loading coworkers…</p>
         </div>
         <div class="intro-more-wrap" id="coworkerMoreWrap" data-reveal hidden>
-          <a class="intro-more" id="coworkerMore" href="/coworkers"></a>
+          <a class="intro-more" id="coworkerMore" href="/ai-coworkers"></a>
         </div>
       </div>
     </section>
@@ -1301,7 +1301,7 @@
             <img class="foot-mark" src="/assets/sokosumi-wordmark.svg" alt="Sokosumi" width="121" height="16" />
           </a>
           <nav class="foot-links" aria-label="Footer">
-            <a href="/coworkers">AI Coworkers</a>
+            <a href="/ai-coworkers">AI Coworkers</a>
             <a href="/vendors">Vendors</a>
             <a href="/tasks">Template tasks</a>
             <a href="/product">Product</a>
@@ -1475,7 +1475,7 @@
                     var links = (v.picks || [])
                       .map(function (p) {
                         return (
-                          '<a class="nav-col-link has-face" href="/coworkers/' + encodeURIComponent(p.slug) + '">' +
+                          '<a class="nav-col-link has-face" href="/ai-coworkers/' + encodeURIComponent(p.slug) + '">' +
                           (p.image
                             ? '<span class="nav-face"><img src="' + esc(p.image) + '" alt="" loading="lazy" /></span>'
                             : '<span class="nav-face is-blank"></span>') +
@@ -1510,7 +1510,7 @@
                     "</div>" +
                     '<div class="nav-panel-foot">' +
                       '<a href="/vendors">Show all vendors ' + ARROW + "</a>" +
-                      '<a class="nav-foot-accent" href="/coworkers">Show all coworkers ' + ARROW + "</a>" +
+                      '<a class="nav-foot-accent" href="/ai-coworkers">Show all coworkers ' + ARROW + "</a>" +
                     "</div></div>",
                 );
                 exposePanel(agents, "nav-panel-1");
@@ -1667,7 +1667,7 @@
             intro.innerHTML = trio
               .map(function (c, i) {
                 return (
-                  '<a class="intro-person" href="/coworkers/' + encodeURIComponent(c.slug) + '" data-reveal style="--i:' + i + '">' +
+                  '<a class="intro-person" href="/ai-coworkers/' + encodeURIComponent(c.slug) + '" data-reveal style="--i:' + i + '">' +
                   '<span class="shell"><span class="portrait" style="display:block">' +
                   (c.image ? '<img src="' + esc(c.image) + '" alt="' + esc(c.name) + '" loading="lazy" />' : "") +
                   "</span></span>" +

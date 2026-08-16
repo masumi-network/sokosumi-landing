@@ -135,7 +135,7 @@
           <p>AI coworkers take a seat next to the people you already have, and take real work off their plate.</p>
         </div>
         <div class="roster" id="rosterGrid"></div>
-        <p class="roster-note">Your team stays in charge. The AI seats scale with the workload. <a href="/coworkers">Meet all 13 coworkers</a></p>
+        <p class="roster-note">Your team stays in charge. The AI seats scale with the workload. <a href="/ai-coworkers">Meet all 13 coworkers</a></p>
       </div>
     </section>
 
@@ -164,7 +164,7 @@
               <a class="btn-dark" id="dosLink" href="#">View full profile
                 <span class="orb"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
               </a>
-              <a class="link-quiet" href="/coworkers">All 13 coworkers</a>
+              <a class="link-quiet" href="/ai-coworkers">All 13 coworkers</a>
             </div>
           </div>
         </div>
@@ -186,7 +186,7 @@
         <div class="strip rev" id="stripBottom"></div>
       </div>
       <div class="strip-cta wrap">
-        <a class="btn-dark" href="/coworkers">Meet all coworkers
+        <a class="btn-dark" href="/ai-coworkers">Meet all coworkers
           <span class="orb"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
         </a>
       </div>
@@ -236,7 +236,7 @@
           document.getElementById("dosName").textContent = c.name;
           document.getElementById("dosRole").textContent = (c.role || "Specialist").toUpperCase();
           document.getElementById("dosBio").textContent = bios[slug] || "";
-          document.getElementById("dosLink").href = "/coworkers/" + slug;
+          document.getElementById("dosLink").href = "/ai-coworkers/" + slug;
           var offers = (c.offers || []).slice(0, 3);
           document.getElementById("dosTasks").innerHTML = offers.length
             ? offers.map(function (o) { return '<span class="chip">' + esc(o.title.length > 26 ? o.title.slice(0, 25) + "…" : o.title) + "</span>"; }).join("")
@@ -251,7 +251,7 @@
 
         /* ---- OPTION C: two-row roster strip ---- */
         var card = function (c) {
-          return '<a class="pcard" href="/coworkers/' + esc(c.slug) + '"><span class="ph"><img src="' + esc(c.image) + '" alt="" loading="lazy" /></span>' +
+          return '<a class="pcard" href="/ai-coworkers/' + esc(c.slug) + '"><span class="ph"><img src="' + esc(c.image) + '" alt="" loading="lazy" /></span>' +
             "<strong>" + esc(c.name) + "</strong><small>" + esc((c.role || "").toUpperCase()) + "</small></a>";
         };
         var withImg = all.filter(function (c) { return c.image; });

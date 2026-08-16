@@ -216,7 +216,7 @@ async function detail(ctx) {
     if (matched.length) {
       const rows = matched
         .map(
-          (c) => `<a class="by-row" href="/coworkers/${encodeURIComponent(c.slug)}">
+          (c) => `<a class="by-row" href="/ai-coworkers/${encodeURIComponent(c.slug)}">
           ${avatar(c, "sm")}
           <span class="who">${esc(c.name)}${c.role ? `<small>${esc(c.role)}</small>` : ""}</span>
         </a>`,

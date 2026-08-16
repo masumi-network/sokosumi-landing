@@ -41,7 +41,7 @@ async function index(ctx) {
         <div class="copy">
           <h2>What you are actually comparing</h2>
           <p>Not a chat window and not a prompt library. Named coworkers with real roles, a task board your whole team can see, and finished files at the end of it.</p>
-          <a class="btn btn-outline" href="/coworkers">Meet the coworkers</a>
+          <a class="btn btn-outline" href="/ai-coworkers">Meet the coworkers</a>
         </div>
         ${shell.shotFigure(shell.SHOTS.board, { caption: false })}
       </div>
@@ -51,7 +51,7 @@ async function index(ctx) {
           <h2>Side by side</h2>
           <div class="${shell.gridCls(comparisons.length)}" style="margin-top:22px">${comparisons.map(comparisonCard).join("")}</div>
         </div>`
-      : `<div class="page-section flush"><p class="muted">Comparison pages are on the way. In the meantime, <a href="/coworkers" style="text-decoration:underline">meet the coworkers</a>.</p></div>`) +
+      : `<div class="page-section flush"><p class="muted">Comparison pages are on the way. In the meantime, <a href="/ai-coworkers" style="text-decoration:underline">meet the coworkers</a>.</p></div>`) +
     shell.ctaBand({
       heading: "The shortest comparison is a trial",
       subheading: "Run one real task and judge the output for yourself.",

@@ -16,8 +16,8 @@ not CMS docs. Everything else below is yours.
 | URL | Source | Collection |
 |---|---|---|
 | `/` | static `index.html` | — |
-| `/coworkers`, `/coworkers/<slug>` | synced catalog | `coworkers` |
-| `/coworkers/<slug>/tasks/<slug>` | synced catalog | `offers` |
+| `/ai-coworkers`, `/ai-coworkers/<slug>` | synced catalog | `coworkers` |
+| `/ai-coworkers/<slug>/tasks/<slug>` | synced catalog | `offers` |
 | `/tasks` | synced catalog | `offers` (+ `coworkers`) |
 | `/vendors`, `/vendors/<slug>` | synced catalog | `vendors` |
 | `/use-cases` → `/use-cases/industries/<slug>` → `/use-cases/<slug>` | editorial | `industries`, `use-cases` |
@@ -87,9 +87,10 @@ Skip **categories** on Sokosumi — the field exists but nothing here reads it.
    `sokosumi.com/agents-for-agencies`. A slug may contain slashes for nesting:
    `product/automation` → `/product/automation`, and anything under `product/`
    is listed on the `/product` hub.
-3. **Reserved slugs.** `coworkers`, `tasks`, `vendors`, `use-cases`, `guides`,
-   `blog`, `releases`, `compare`, `product`, `contact`, `talk-to-sales` belong
-   to code routes — a page with one of those slugs never renders. `press` is
+3. **Reserved slugs.** `ai-coworkers`, `coworkers` (301s to `/ai-coworkers`),
+   `tasks`, `vendors`, `use-cases`, `guides`, `blog`, `releases`, `compare`,
+   `product`, `contact`, `talk-to-sales` belong to code routes — a page with
+   one of those slugs never renders. `press` is
    the deliberate exception: a page with slug `press` replaces the built-in one.
 4. `/product` is not linked from anywhere on the site yet. If you publish under
    `product/`, link to it yourself from a block.
@@ -294,7 +295,7 @@ Entries that disappear from the product are marked `active = false`, never
 deleted. Ticking **lockSync** on a doc freezes it completely.
 
 **Slug policy:** a coworker's public slug always derives from its NAME, so URLs
-read like the breadcrumbs (`/coworkers/vulc`, not the product's internal
+read like the breadcrumbs (`/ai-coworkers/vulc`, not the product's internal
 `grok-coding-agent`). The product slug lives in the read-only `catalogSlug`,
 which is what tasks join on — so you can edit the public slug freely and old
 URLs 301 automatically.

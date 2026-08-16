@@ -37,7 +37,7 @@ const DELISTED = new Set(["page-content-identifier-beta", "x-analyst-for-busines
 
 // Single old paths with a single new home.
 const EXACT = {
-  "/agents": "/coworkers",
+  "/agents": "/ai-coworkers",
   "/ai-solutions": "/product",
   "/agentic-solutions": "/product",
   "/sign-up": `${APP_ORIGIN}/sign-up`,
@@ -52,7 +52,7 @@ const EXACT = {
 // Prefixes whose children all collapse onto one hub. The old agent categories
 // and press-coverage entries have no per-item equivalent here yet.
 const PREFIX = {
-  category: "/coworkers",
+  category: "/ai-coworkers",
   "press-coverage": "/press",
   // Only one of the old posts was carried over, and it lives at a new slug,
   // so per-post redirects would land on a 404. Send readers to the index.
@@ -79,12 +79,12 @@ function resolve(segments, known) {
   if (hub && segments.length >= 1) return hub;
 
   if (segments[0] === "ai-agents") {
-    if (segments.length === 1) return "/coworkers";
+    if (segments.length === 1) return "/ai-coworkers";
     const old = segments[1];
-    if (DELISTED.has(old)) return "/coworkers";
+    if (DELISTED.has(old)) return "/ai-coworkers";
     const slug = RENAMED[old] || old;
-    if (known && !known.has(slug)) return "/coworkers";
-    return `/coworkers/${slug}`;
+    if (known && !known.has(slug)) return "/ai-coworkers";
+    return `/ai-coworkers/${slug}`;
   }
 
   return null;

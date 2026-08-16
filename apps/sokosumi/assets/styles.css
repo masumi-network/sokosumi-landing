@@ -345,7 +345,7 @@ main.page { min-height: 60vh; }
 /* run count / rating / credits under a marketplace agent's description */
 .row-stats { display: block; margin-top: 6px; font-size: 12.5px; color: var(--muted-foreground); font-variant-numeric: tabular-nums; }
 
-/* ===== agent vs coworker explainer (/coworkers) =====
+/* ===== agent vs coworker explainer (/ai-coworkers) =====
    Two columns on the .stat/.uc-steps pattern: a rule, a quiet uppercase
    label, a short paragraph. Neither column is styled as the better one. */
 .duo-grid { display: grid; gap: 20px; grid-template-columns: 1fr; max-width: 920px; }

@@ -61,7 +61,7 @@ async function index(ctx) {
       heading: "Meet the coworkers we write about",
       subheading: "Every specialist on the marketplace has a public profile and work you can inspect first.",
       ctaLabel: "Browse the roster",
-      ctaHref: "/coworkers",
+      ctaHref: "/ai-coworkers",
       seed: posts.length,
     }) +
     pageEnd()

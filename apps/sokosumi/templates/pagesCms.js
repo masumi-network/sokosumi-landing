@@ -27,7 +27,7 @@ function pageCard(p) {
 
 const SURFACES = [
   {
-    href: "/coworkers",
+    href: "/ai-coworkers",
     title: "Coworkers",
     text: "Named specialists with real roles, public profiles, and work you can inspect before you hire.",
   },
