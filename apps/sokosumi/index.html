@@ -184,10 +184,9 @@
          every sub-page — see the <link> at the end of this style block. */
 
       /* ===== hero: left-aligned serif statement over a drifting product shot ===== */
-      /* The header is a solid sticky bar on every page, homepage included, so
-         it occupies 64px of layout above the hero. Subtracting it keeps the
-         hero exactly one screen tall instead of one screen plus a bar. */
-      .hero { position: relative; min-height: calc(100dvh - 64px); display: flex; flex-direction: column; overflow: hidden; background: var(--ink); }
+      /* The homepage header is a fixed transparent overlay, so it takes no
+         layout space above the hero — the hero is a full screen on its own. */
+      .hero { position: relative; min-height: 100dvh; display: flex; flex-direction: column; overflow: hidden; background: var(--ink); }
 
       /* Default treatment: a product screenshot in a slow Ken Burns drift under a
          dark scrim. The shot is LIGHT UI, so unlike the video it is dimmed hard
