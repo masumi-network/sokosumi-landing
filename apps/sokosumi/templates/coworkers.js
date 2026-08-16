@@ -227,7 +227,7 @@ function profileTags(c) {
   return tags.length ? `<div class="cw-tags">${tags.join("")}</div>` : "";
 }
 
-function offerCard(agentSlug, o, coworker) {
+function offerCard(agentSlug, o) {
   const om = shell.outputMeta(o.output);
   const href = `/ai-coworkers/${encodeURIComponent(agentSlug)}/tasks/${encodeURIComponent(o.slug)}`;
   return `<a class="offer-card" href="${attr(href)}" data-out="${attr(o.output || "text")}">
@@ -250,7 +250,7 @@ async function profile(ctx) {
     ? `<section class="page-section" id="tasks">
         <h2>Template tasks</h2>
         <p class="sub">Ready-to-run work ${esc(c.name)} can pick up today. Open one to see what you get.</p>
-        <div class="offers-grid">${offers.map((o) => offerCard(c.slug, o, c)).join("")}</div>
+        <div class="offers-grid">${offers.map((o) => offerCard(c.slug, o)).join("")}</div>
       </section>`
     : c.kind === "coworker"
       ? `<section class="page-section" id="tasks">

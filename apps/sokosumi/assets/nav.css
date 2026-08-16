@@ -69,7 +69,7 @@
 .nav-drop { position: relative; display: flex; align-items: center; height: 100%; }
 .nav-drop > a { display: inline-flex; align-items: center; gap: 5px; height: 100%; }
 .nav-chev { transition: transform 0.25s var(--ease); opacity: 0.6; }
-.nav-drop:hover .nav-chev, .nav-drop:focus-within .nav-chev { transform: rotate(180deg); opacity: 1; }
+.nav-drop:hover:not(.dismissed) .nav-chev, .nav-drop:focus-within:not(.dismissed) .nav-chev { transform: rotate(180deg); opacity: 1; }
 /* One box for every menu. The panel is a fixed-size surface the content lays
    out INSIDE of — content count never drives geometry, so hovering across the
    bar never resizes the menu. Centred on the viewport (its `top` is the 64px
@@ -86,7 +86,13 @@
 }
 /* keeps the pointer from falling through the gap between trigger and panel */
 .nav-panel::before { content: ""; position: absolute; inset: -16px 0 auto 0; height: 16px; }
-.nav-drop:hover .nav-panel, .nav-drop:focus-within .nav-panel, .nav-drop.open .nav-panel {
+/* :hover/:focus-within are the no-JS fallbacks; `.open` is what nav.js
+   drives. `.dismissed` (set by nav.js on Escape) beats both pseudo-classes,
+   otherwise a panel Escape just "closed" would stay visible while the
+   pointer hovers it or focus sits on its trigger. */
+.nav-drop:hover:not(.dismissed) .nav-panel,
+.nav-drop:focus-within:not(.dismissed) .nav-panel,
+.nav-drop.open .nav-panel {
   opacity: 1; visibility: visible; transform: translate(-50%, 0);
 }
 /* Inside the box: an intro rail on the left that says what the section is,

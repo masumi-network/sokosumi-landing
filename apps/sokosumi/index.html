@@ -174,6 +174,9 @@
       }
       .skip-link:focus { top: 16px; }
       :focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; border-radius: 2px; }
+      /* #6400ff is 2.74:1 on the ink bands — below the 3:1 non-text floor.
+         Same override the shared stylesheet applies (assets/styles.css). */
+      .band-dark :focus-visible { outline-color: var(--primary-on-dark); }
 
       /* ===== nav =====
          The header's styles (including its transparent-over-hero overlay
@@ -1199,7 +1202,6 @@
 
     <script>
       (function () {
-        var APP = "https://app.sokosumi.com";
         function esc(s) {
           return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) {
             return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c];
@@ -1466,11 +1468,6 @@
             }, 200);
           }, 2600);
         })();
-
-        /* any [data-app] button → app */
-        document.addEventListener("click", function (e) {
-          if (e.target.closest && e.target.closest("[data-app]")) location.href = APP;
-        });
       })();
     </script>
     <script src="/assets/nav.js" defer></script>

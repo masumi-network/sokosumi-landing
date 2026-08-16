@@ -59,14 +59,14 @@ async function render(ctx) {
     <div class="page-section flush">
       <div class="card-grid" style="max-width:760px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))">
         <div class="card">
-          <h3>Talk to Sales</h3>
+          <h2>Talk to Sales</h2>
           <p>Rolling Sokosumi out to a team, or want to list your own coworkers as a vendor? Tell us what you have in mind and we will get back within a day.</p>
           <div style="margin-top:auto;padding-top:10px">
             <a class="btn btn-primary" href="${SALES_URL}">Talk to Sales</a>
           </div>
         </div>
         <div class="card">
-          <h3>Product support</h3>
+          <h2>Product support</h2>
           <p>Questions about your account, credits, or a task that did not go as planned. Include the task link if you have one, it speeds things up.</p>
           <div style="margin-top:auto;padding-top:10px">
             <a class="btn btn-outline" href="${shell.SUPPORT_URL}">Go to Support</a>
