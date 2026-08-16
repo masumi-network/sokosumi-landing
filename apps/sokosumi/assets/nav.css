@@ -268,3 +268,57 @@
 .site-header.is-overlay.nav-open .mark { filter: none; }
 .site-header.is-overlay.nav-open .nav-burger { color: var(--foreground); border-color: var(--border); }
 body.nav-locked { overflow: hidden; }
+
+/* ===== the footer ===== */
+/* Same deal as the header above: markup comes from ONE place —
+   templates/shell.js footerHtml() — rendered server-side on sub-pages and
+   injected into index.html by server.js, and this file is the ONE place its
+   styles live (styles.css and index.html's inline block both point here).
+   The hairline sits on the footer itself so it spans the window rather than
+   stopping at the 1240px content grid. */
+footer.site {
+  padding: 0 0 40px; background: var(--background);
+  border-top: 1px solid var(--border); margin-top: clamp(48px, 7vw, 96px);
+}
+
+/* brand on the left, the four labelled columns on the right */
+.foot-grid {
+  padding-top: 48px;
+  display: flex; flex-wrap: wrap; justify-content: space-between; gap: 40px 64px;
+}
+.foot-brand { display: flex; flex-direction: column; gap: 16px; max-width: 300px; }
+.foot-mark { height: 15px; width: auto; display: block; }
+.foot-tag { margin: 0; font-size: 13px; line-height: 1.65; color: var(--muted-foreground); }
+
+.foot-cols { display: grid; grid-template-columns: repeat(4, minmax(120px, auto)); gap: 32px 56px; }
+.foot-h {
+  margin: 0 0 14px; font-size: 12px; font-weight: 500;
+  letter-spacing: 0.08em; text-transform: uppercase; color: var(--foreground);
+}
+.foot-col ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.foot-col a { font-size: 13px; color: var(--muted-foreground); transition: color 0.25s var(--ease); }
+.foot-col a:hover { color: var(--foreground); }
+
+/* the disclosure + social row, separated from the columns by a hairline */
+.foot-meta {
+  margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--border);
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px 32px;
+}
+.foot-ai { display: flex; align-items: center; gap: 10px; }
+.foot-ai img { width: 32px; height: 32px; display: block; }
+.foot-ai p { margin: 0; font-size: 12.5px; color: var(--muted-foreground); }
+.foot-social { display: flex; flex-wrap: wrap; gap: 8px 20px; }
+.foot-social a, .foot-legal a { font-size: 13px; color: var(--muted-foreground); transition: color 0.25s var(--ease); }
+.foot-social a:hover, .foot-legal a:hover { color: var(--foreground); }
+
+/* copyright left, legal right */
+.foot-bottom {
+  margin-top: 24px;
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 32px;
+}
+.foot-legal { display: flex; flex-wrap: wrap; gap: 8px 18px; }
+.foot-copy { margin: 0; font-size: 12px; color: var(--muted-foreground); }
+
+@media (max-width: 640px) {
+  .foot-cols { grid-template-columns: repeat(2, minmax(130px, 1fr)); width: 100%; }
+}

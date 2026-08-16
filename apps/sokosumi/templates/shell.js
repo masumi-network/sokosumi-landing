@@ -740,53 +740,90 @@ function header(currentPath, opts) {
     ${mobileNav()}`;
 }
 
-function footer() {
+// The footer markup, shared the same way as header(): sub-pages get it from
+// footer() below, the homepage gets this exact markup injected by server.js
+// (serveIndex) in place of index.html's <!--SSR:FOOTER--> placeholder, so the
+// two surfaces cannot drift. Styles live in /assets/nav.css — the one chrome
+// stylesheet both surfaces load.
+function footerHtml() {
   return `<footer class="site">
       <div class="container-app">
-        <div class="foot-top">
-          <a href="/" aria-label="Sokosumi">
-            <img class="foot-mark" src="/assets/sokosumi-wordmark.svg" alt="Sokosumi" width="121" height="16" />
-          </a>
-          <nav class="foot-links" aria-label="Footer">
-            <a href="/ai-coworkers">AI Coworkers</a>
-            <a href="/vendors">Vendors</a>
-            <a href="/tasks">Template tasks</a>
-            <a href="/product">Product</a>
-            <a href="/use-cases">Use cases</a>
-            <a href="/pricing">Pricing</a>
-            <a href="/guides">Guides</a>
-            <a href="/releases">Releases</a>
-            <a href="/blog">Blog</a>
+        <div class="foot-grid">
+          <div class="foot-brand">
+            <a href="/" aria-label="Sokosumi">
+              <img class="foot-mark" src="/assets/sokosumi-wordmark.svg" alt="Sokosumi" width="121" height="16" />
+            </a>
+            <p class="foot-tag">The marketplace where you hire AI coworkers for real marketing work &mdash; research, social, planning, and writing, delivered as finished files.</p>
+          </div>
+          <nav class="foot-cols" aria-label="Footer">
+            <div class="foot-col">
+              <h2 class="foot-h">Marketplace</h2>
+              <ul>
+                <li><a href="/ai-coworkers">AI Coworkers</a></li>
+                <li><a href="/vendors">Vendors</a></li>
+                <li><a href="/tasks">Template tasks</a></li>
+                <li><a href="/list-your-agent">List your agent</a></li>
+              </ul>
+            </div>
+            <div class="foot-col">
+              <h2 class="foot-h">Product</h2>
+              <ul>
+                <li><a href="/product">How it works</a></li>
+                <li><a href="/use-cases">Use cases</a></li>
+                <li><a href="/pricing">Pricing</a></li>
+                <li><a href="/compare">Compare</a></li>
+              </ul>
+            </div>
+            <div class="foot-col">
+              <h2 class="foot-h">Resources</h2>
+              <ul>
+                <li><a href="/guides">Guides</a></li>
+                <li><a href="/blog">Blog</a></li>
+                <li><a href="/releases">Releases</a></li>
+                <li><a href="https://www.masumi.network/dev/sokosumi/documentation" target="_blank" rel="noreferrer">Developers</a></li>
+              </ul>
+            </div>
+            <div class="foot-col">
+              <h2 class="foot-h">Company</h2>
+              <ul>
+                <li><a href="/contact">Contact</a></li>
+                <li><a href="${SUPPORT_URL}">Support</a></li>
+                <li><a href="/press">Press</a></li>
+                <li><a href="https://masumi.network" target="_blank" rel="noreferrer">Masumi</a></li>
+              </ul>
+            </div>
           </nav>
         </div>
-        <div class="foot-secondary">
-          <a href="/compare">Compare</a>
-          <a href="/contact">Contact</a>
-          <a href="${SUPPORT_URL}">Support</a>
-          <a href="https://www.masumi.network/dev/sokosumi/documentation" target="_blank" rel="noreferrer">Developers</a>
-          <a href="/press">Press</a>
-          <a href="https://masumi.network" target="_blank" rel="noreferrer">Masumi</a>
-        </div>
-        <div class="foot-secondary foot-social">
-          <a href="https://discord.com/invite/aj4QfnTS92" target="_blank" rel="noreferrer">Discord</a>
-          <a href="https://x.com/sokosumi" target="_blank" rel="noreferrer">X</a>
-          <a href="https://github.com/masumi-network" target="_blank" rel="noreferrer">GitHub</a>
-          <a href="https://t.me/+igMz0AazR-cwMzJi" target="_blank" rel="noreferrer">Telegram</a>
-          <a href="https://linkedin.com/company/sokosumi/" target="_blank" rel="noreferrer">LinkedIn</a>
-        </div>
-        <div class="foot-secondary foot-legal">
-          <a href="/legal/terms-of-service">Terms</a>
-          <a href="/legal/privacy-policy">Privacy</a>
-          <a href="/legal/cookie-policy">Cookies</a>
-          <a href="/legal/imprint">Imprint</a>
-          <a href="/legal">All legal</a>
-          <a href="#" data-cc-open>Cookie settings</a>
+        <div class="foot-meta">
+          <div class="foot-ai">
+            <img src="/assets/ai-generated.png" alt="AI-generated content mark" width="32" height="32" loading="lazy" />
+            <p>Some of the content on this site is AI generated.</p>
+          </div>
+          <nav class="foot-social" aria-label="Social">
+            <a href="https://discord.com/invite/aj4QfnTS92" target="_blank" rel="noreferrer">Discord</a>
+            <a href="https://x.com/sokosumi" target="_blank" rel="noreferrer">X</a>
+            <a href="https://github.com/masumi-network" target="_blank" rel="noreferrer">GitHub</a>
+            <a href="https://t.me/+igMz0AazR-cwMzJi" target="_blank" rel="noreferrer">Telegram</a>
+            <a href="https://linkedin.com/company/sokosumi/" target="_blank" rel="noreferrer">LinkedIn</a>
+          </nav>
         </div>
         <div class="foot-bottom">
           <p class="foot-copy">&copy; ${new Date().getFullYear()} Sokosumi. All rights reserved.</p>
+          <nav class="foot-legal" aria-label="Legal">
+            <a href="/legal/terms-of-service">Terms</a>
+            <a href="/legal/privacy-policy">Privacy</a>
+            <a href="/legal/cookie-policy">Cookies</a>
+            <a href="/legal/imprint">Imprint</a>
+            <a href="/legal">All legal</a>
+            <a href="#" data-cc-open>Cookie settings</a>
+          </nav>
         </div>
       </div>
-    </footer>
+    </footer>`;
+}
+
+function footer() {
+  return `${footerHtml()}
     <script src="/assets/site.js" defer></script>
     <script src="/assets/nav.js" defer></script>
     <script src="/assets/consent.js" defer></script>
@@ -872,6 +909,7 @@ module.exports = {
   head,
   header,
   footer,
+  footerHtml,
   crumbs,
   pageStart,
   pageEnd,

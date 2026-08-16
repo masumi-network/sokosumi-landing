@@ -59,67 +59,81 @@ export default function Footer({ product = "sokosumi" }: { product?: "sokosumi" 
   }
 
   if (product === "masumi") {
+    const linkCls = "text-[13px] text-[#666] hover:text-black transition-colors";
+    const headingCls = "text-[11px] font-medium uppercase tracking-[0.08em] text-black mb-4";
+    const listCls = "flex flex-col gap-2.5";
     return (
       <footer className="pt-16 pb-10">
         <div className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12">
-          <div className="border-t border-black/[0.06] pt-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-            <Link href="/">
-              <img src="/images/masumi-wordmark.webp" alt="masumi" width={90} height={16} className="h-[16px] w-auto" />
-            </Link>
+          <div className="border-t border-black/[0.06] pt-12 flex flex-col lg:flex-row lg:justify-between gap-12 lg:gap-20">
+            <div className="max-w-[280px]">
+              <Link href="/">
+                <img src="/images/masumi-wordmark.webp" alt="masumi" width={90} height={16} className="h-[16px] w-auto" />
+              </Link>
+              <p className="mt-4 text-[13px] leading-relaxed text-[#666]">
+                The payment network for AI agents. Escrow payments, verified identities, and a public registry &mdash; all on-chain.
+              </p>
+            </div>
+            <nav aria-label="Footer" className="grid grid-cols-2 md:grid-cols-4 gap-10 md:gap-14">
+              <div>
+                <h3 className={headingCls}>Protocol</h3>
+                <ul className={listCls}>
+                  <li><Link href="/x402" className={linkCls}>x402</Link></li>
+                  <li><Link href="/explorer" className={linkCls}>Explorer</Link></li>
+                  <li><Link href="/use-cases" className={linkCls}>Use cases</Link></li>
+                  <li><Link href="/compare" className={linkCls}>Compare</Link></li>
+                </ul>
+              </div>
+              <div>
+                <h3 className={headingCls}>Developers</h3>
+                <ul className={listCls}>
+                  <li><Link href="https://www.masumi.network/dev/masumi/documentation" className={linkCls} target="_blank" rel="noopener noreferrer">Docs</Link></li>
+                  <li><Link href="/docs/api" className={linkCls}>API Reference</Link></li>
+                  <li><Link href="/tools/design-md" className={linkCls}>DESIGN.md Tool</Link></li>
+                  <li><Link href="https://github.com/masumi-network" className={linkCls} target="_blank" rel="noopener noreferrer">GitHub</Link></li>
+                </ul>
+              </div>
+              <div>
+                <h3 className={headingCls}>Resources</h3>
+                <ul className={listCls}>
+                  <li><Link href="/guides" className={linkCls}>Guides</Link></li>
+                  <li><Link href="/blogs" className={linkCls}>Blog</Link></li>
+                  <li><Link href="/releases" className={linkCls}>Releases</Link></li>
+                  <li><Link href="/glossary" className={linkCls}>Glossary</Link></li>
+                </ul>
+              </div>
+              <div>
+                <h3 className={headingCls}>Company</h3>
+                <ul className={listCls}>
+                  <li><Link href="/contact" className={linkCls}>Contact</Link></li>
+                  <li><Link href="/press" className={linkCls}>Press</Link></li>
+                  <li><a href="https://sokosumi.com" className={linkCls} target="_blank" rel="noopener noreferrer">Sokosumi</a></li>
+                  <li><a href="https://kodosumi.io" className={linkCls} target="_blank" rel="noopener noreferrer">Kodosumi</a></li>
+                </ul>
+              </div>
+            </nav>
+          </div>
+          <div className="mt-12 border-t border-black/[0.06] pt-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <img src="/images/ai-generated.png" alt="AI-generated content mark" width={32} height={32} loading="lazy" className="h-8 w-8" />
+              <p className="text-[12px] text-[#666]">Some content on this site is AI generated.</p>
+            </div>
             <div className="flex flex-wrap items-center gap-5 text-[13px] text-[#666]">
-              <Link href="https://www.masumi.network/dev/masumi/documentation" className="hover:text-black transition-colors" target="_blank" rel="noopener noreferrer">
-                Docs
-              </Link>
-              <Link href="/x402" className="hover:text-black transition-colors">
-                x402
-              </Link>
-              <Link href="/use-cases" className="hover:text-black transition-colors">
-                Use cases
-              </Link>
-              <Link href="/guides" className="hover:text-black transition-colors">
-                Guides
-              </Link>
-              <Link href="/releases" className="hover:text-black transition-colors">
-                Releases
-              </Link>
-              <Link href="/compare" className="hover:text-black transition-colors">
-                Compare
-              </Link>
-              <Link href="/blogs" className="hover:text-black transition-colors">
-                Blog
-              </Link>
-              <Link href="/glossary" className="hover:text-black transition-colors">
-                Glossary
-              </Link>
-              <Link href="/tools/design-md" className="hover:text-black transition-colors">
-                DESIGN.md Tool
-              </Link>
-              <Link href="https://github.com/masumi-network" className="hover:text-black transition-colors" target="_blank" rel="noopener noreferrer">
-                GitHub
-              </Link>
               <Link href="https://discord.com/invite/aj4QfnTS92" className="hover:text-black transition-colors" target="_blank" rel="noopener noreferrer">
                 Discord
               </Link>
               <Link href="https://x.com/MasumiNetwork" className="hover:text-black transition-colors" target="_blank" rel="noopener noreferrer">
                 X
               </Link>
+              <Link href="/privacy" className="hover:text-black transition-colors">
+                Privacy Policy
+              </Link>
+              <Link href="/imprint" className="hover:text-black transition-colors">
+                Imprint
+              </Link>
             </div>
           </div>
-          <div className="mt-6 flex flex-wrap items-center justify-end gap-5 text-[13px] text-[#666]">
-            <Link href="/privacy" className="hover:text-black transition-colors">
-              Privacy Policy
-            </Link>
-            <Link href="/press" className="hover:text-black transition-colors">
-              Press
-            </Link>
-            <Link href="/imprint" className="hover:text-black transition-colors">
-              Imprint
-            </Link>
-            <a href="https://sokosumi.com" className="hover:text-black transition-colors" target="_blank" rel="noopener noreferrer">
-              Sokosumi
-            </a>
-          </div>
-          <div className="mt-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 text-[12px] text-[#666]">
+          <div className="mt-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 text-[12px] text-[#666]">
             <p>&copy; {new Date().getFullYear()} Masumi. All rights reserved.</p>
             <div className="flex items-center gap-4">
               <span>Built by</span>

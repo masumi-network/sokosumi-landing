@@ -635,7 +635,8 @@ const assetsDir = path.join(root, "assets");
     shell.setNav(await buildNav({ draft: hasPreviewCookie(req) }).catch(() => null));
     const html = fs
       .readFileSync(file, "utf8")
-      .replace("<!--SSR:HEADER-->", shell.header("/", { overlay: true }));
+      .replace("<!--SSR:HEADER-->", shell.header("/", { overlay: true }))
+      .replace("<!--SSR:FOOTER-->", shell.footerHtml());
     send(req, res, 200, {
       "Content-Type": "text/html; charset=utf-8",
       "Cache-Control": "public, max-age=300",

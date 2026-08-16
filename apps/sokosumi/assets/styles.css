@@ -948,27 +948,10 @@ fieldset.field > legend + * { clear: both; }
 .notice h1 { font-weight: 300; font-size: clamp(30px, 4vw, 44px); letter-spacing: -0.02em; }
 .notice p { font-size: 15.5px; line-height: 1.6; color: var(--muted-foreground); }
 
-/* ===== footer (ported from the landing) ===== */
-/* the rule sits on the footer itself, so it spans the window rather than
-   stopping at the 1240px content grid */
-footer.site {
-  padding: 0 0 40px; background: var(--background);
-  border-top: 1px solid var(--border); margin-top: clamp(48px, 7vw, 96px);
-}
-.foot-top {
-  padding-top: 40px;
-  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px 32px;
-}
-.foot-links { display: flex; flex-wrap: wrap; gap: 8px 20px; }
-.foot-links a, .foot-secondary a { font-size: 13px; color: var(--muted-foreground); transition: color 0.25s var(--ease); }
-.foot-links a:hover, .foot-secondary a:hover { color: var(--foreground); }
-.foot-secondary { margin-top: 24px; display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px 20px; }
-.foot-bottom {
-  margin-top: 32px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
-  gap: 16px 32px; font-size: 12px; color: var(--muted-foreground);
-}
-.foot-mark { height: 15px; width: auto; display: block; }
-.foot-copy { margin: 0; font-size: 12px; color: var(--muted-foreground); }
+/* ===== footer =====
+   Markup comes from templates/shell.js footerHtml() on every surface, and the
+   styles live in /assets/nav.css with the rest of the shared chrome (the
+   homepage does not load this file, so rules here would drift). */
 
 .sr-only {
   position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;

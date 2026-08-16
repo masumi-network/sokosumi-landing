@@ -670,27 +670,9 @@
       .cta-band.band-dark p { color: rgba(255, 255, 255, 0.6); }
       .cta-band.band-dark .btn-primary { background: #fff; color: var(--ink); }
 
-      /* footer: ported from the masumi.network footer, adapted to sokosumi */
-      /* the rule sits on the footer itself, so it spans the window rather than
-         stopping at the 1240px content grid */
-      footer.site { padding: 0 0 40px; background: var(--background); border-top: 1px solid var(--border); margin-top: 64px; }
-      .foot-top {
-        padding-top: 40px;
-        display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px 32px;
-      }
-      .foot-links { display: flex; flex-wrap: wrap; gap: 8px 20px; }
-      .foot-links a, .foot-secondary a { font-size: 13px; color: var(--muted-foreground); transition: color 0.25s var(--ease); }
-      .foot-links a:hover, .foot-secondary a:hover { color: var(--foreground); }
-      .foot-secondary { margin-top: 24px; display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px 20px; }
-      .foot-social a, .foot-legal a { color: var(--muted-foreground); }
-      .foot-social { margin-top: 12px; }
-      .foot-legal { margin-top: 12px; }
-      .foot-bottom {
-        margin-top: 32px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
-        gap: 16px 32px; font-size: 12px; color: var(--muted-foreground);
-      }
-      .foot-mark { height: 15px; width: auto; display: block; }
-      .foot-copy { margin: 0; font-size: 12px; letter-spacing: 0; color: var(--muted-foreground); }
+      /* footer: markup is injected from templates/shell.js (SSR:FOOTER below)
+         and its styles live in /assets/nav.css with the rest of the shared
+         chrome, so this file carries no footer rules of its own */
 
       @media (max-width: 560px) {
         /* .hero-inner is align-items:flex-start, so the row has to claim the
@@ -1152,52 +1134,11 @@
 
     </main>
 
-    <footer class="site">
-      <div class="container-app">
-        <div class="foot-top">
-          <a href="/" aria-label="Sokosumi">
-            <img class="foot-mark" src="/assets/sokosumi-wordmark.svg" alt="Sokosumi" width="121" height="16" />
-          </a>
-          <nav class="foot-links" aria-label="Footer">
-            <a href="/ai-coworkers">AI Coworkers</a>
-            <a href="/vendors">Vendors</a>
-            <a href="/tasks">Template tasks</a>
-            <a href="/product">Product</a>
-            <a href="/use-cases">Use cases</a>
-            <a href="/pricing">Pricing</a>
-            <a href="/guides">Guides</a>
-            <a href="/releases">Releases</a>
-            <a href="/blog">Blog</a>
-          </nav>
-        </div>
-        <div class="foot-secondary">
-          <a href="/compare">Compare</a>
-          <a href="/contact">Contact</a>
-          <a href="/contact/support">Support</a>
-          <a href="https://www.masumi.network/dev/sokosumi/documentation" target="_blank" rel="noreferrer">Developers</a>
-          <a href="/press">Press</a>
-          <a href="https://masumi.network" target="_blank" rel="noreferrer">Masumi</a>
-        </div>
-        <div class="foot-secondary foot-social">
-          <a href="https://discord.com/invite/aj4QfnTS92" target="_blank" rel="noreferrer">Discord</a>
-          <a href="https://x.com/sokosumi" target="_blank" rel="noreferrer">X</a>
-          <a href="https://github.com/masumi-network" target="_blank" rel="noreferrer">GitHub</a>
-          <a href="https://t.me/+igMz0AazR-cwMzJi" target="_blank" rel="noreferrer">Telegram</a>
-          <a href="https://linkedin.com/company/sokosumi/" target="_blank" rel="noreferrer">LinkedIn</a>
-        </div>
-        <div class="foot-secondary foot-legal">
-          <a href="/legal/terms-of-service">Terms</a>
-          <a href="/legal/privacy-policy">Privacy</a>
-          <a href="/legal/cookie-policy">Cookies</a>
-          <a href="/legal/imprint">Imprint</a>
-          <a href="/legal">All legal</a>
-          <a href="#" data-cc-open>Cookie settings</a>
-        </div>
-        <div class="foot-bottom">
-          <p class="foot-copy">© 2026 Sokosumi. All rights reserved.</p>
-        </div>
-      </div>
-    </footer>
+    <!-- The footer, like the header above, comes from ONE place —
+         templates/shell.js footerHtml() — injected here by server.js in
+         place of this placeholder. Do not hand-write a footer in this
+         file. Styles live in /assets/nav.css, shared with every sub-page. -->
+    <!--SSR:FOOTER-->
 
     <script>
       (function () {
