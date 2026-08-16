@@ -604,52 +604,39 @@ function shell_truncate(s, n) {
   return cut.slice(0, at > 20 ? at : n).replace(/[\s,;:.–—-]+$/, "") + "\u2026";
 }
 
-// The Use cases menu: one column per industry, each showing the work that
-// industry actually runs. The "Most used" list sits in the intro rail for
-// visitors who do not think of their problem as belonging to a vertical.
+// The Use cases menu: six jobs, each with the face of the coworker who leads
+// it, and nothing else. The old panel was the industry × use-case matrix —
+// three industry columns of picks plus a "most used" strip, ~16 links of
+// pure text for eight pages. A visitor scanning a menu picks the WORK, not
+// a vertical; the industry taxonomy lives on /use-cases where the filter
+// bar has room for it, and the panel's left foot link goes straight there.
 function useCasesPanel() {
-  const industries = NAV_MODEL.industries || [];
-  const popular = NAV_MODEL.popularUseCases || [];
-  if (!industries.length && !popular.length) return "";
+  const jobs = (NAV_MODEL.popularUseCases || []).slice(0, 6);
+  if (!jobs.length) return "";
 
-  const ucLink = (p) =>
-    `<a class="nav-col-link" href="/use-cases/${encodeURIComponent(p.slug)}"><span>${esc(p.title)}</span></a>`;
-
-  const cols = industries
+  const rows = jobs
     .map(
-      (i) => `<div class="nav-col">
-        <a class="nav-col-head" href="/use-cases/industries/${encodeURIComponent(i.slug)}">${esc(i.name)}</a>
-        ${i.picks.map(ucLink).join("")}
-      </div>`,
+      (p) =>
+        `<a class="nav-col-link has-face" href="/use-cases/${encodeURIComponent(p.slug)}">${
+          p.image
+            ? `<span class="nav-face"><img data-src="${attr(p.image)}" alt="" width="30" height="30" /></span>`
+            : `<span class="nav-face is-blank"></span>`
+        }<span class="nav-face-text"><span>${esc(p.title)}</span></span></a>`,
     )
     .join("");
-
-  // Only the most-used work the industry columns do not already show — with
-  // today's data that is usually nothing, and the strip simply stays away
-  // instead of repeating five links that are already on screen.
-  const shown = new Set(industries.flatMap((i) => i.picks.map((p) => p.slug)));
-  const extras = popular.filter((p) => !shown.has(p.slug)).slice(0, 4);
-  const popularStrip = extras.length
-    ? `<div class="nav-strip"><span class="nav-strip-label">Most used</span>${extras.map(ucLink).join("")}</div>`
-    : "";
 
   return `<div class="nav-panel" role="group" aria-label="Use cases">
       <div class="nav-panel-body">
         <div class="nav-intro">
           <p class="nav-intro-label">Use cases</p>
-          <p class="nav-intro-desc">The work teams hand to AI coworkers, organised by industry. Start from one instead of a blank brief.</p>
-          ${
-            /* No good use-case imagery exists yet: the bare visual is the
-               deliberate placeholder texture until real artwork lands. */
-            navVisual()
-          }
+          <p class="nav-intro-desc">Real jobs, start to finished file. Pick one and the coworkers behind it already know the brief.</p>
+          <div class="nav-visual nav-visual-shot nav-visual-brief" aria-hidden="true"><img data-src="/assets/shot-brief.webp" alt="" width="2400" height="1350" /></div>
         </div>
-        <div class="nav-cols">${cols}</div>
+        <div class="nav-jobs">${rows}</div>
       </div>
-      ${popularStrip}
       <div class="nav-panel-foot">
-        <a href="/use-cases">All use cases ${icon("arrow-up-right", 13)}</a>
-        <a class="nav-foot-accent" href="/tasks">Browse template tasks ${icon("arrow-up-right", 13)}</a>
+        <a href="/use-cases#industries">Browse by industry ${icon("arrow-up-right", 13)}</a>
+        <a class="nav-foot-accent" href="/use-cases">All use cases ${icon("arrow-up-right", 13)}</a>
       </div>
     </div>`;
 }

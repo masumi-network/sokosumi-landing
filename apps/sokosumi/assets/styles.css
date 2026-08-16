@@ -301,6 +301,75 @@ main.page { min-height: 60vh; }
 .uc-steps .n { font-size: 12px; letter-spacing: 0.08em; color: var(--muted-foreground); font-variant-numeric: tabular-nums; }
 .uc-steps strong { font-size: 16px; font-weight: 500; letter-spacing: -0.01em; }
 .uc-steps li > span:last-child { font-size: 14px; line-height: 1.55; color: var(--muted-foreground); }
+
+/* ===== use-case detail: outcome hero with the lead coworker =====
+   Copy left, the coworker who leads the work right — the coworker is the
+   named product of a use-case page, the way a HubSpot use-case hero names
+   the Hub. Without a lead portrait the hero is simply full-width copy. */
+.uc-hero.has-lead { display: grid; gap: clamp(28px, 5vw, 56px); align-items: center; }
+@media (min-width: 920px) { .uc-hero.has-lead { grid-template-columns: minmax(0, 1fr) minmax(230px, 300px); } }
+.uc-hero .no-card { margin-top: 10px; }
+.uc-hero-lead { display: flex; flex-direction: column; gap: 14px; max-width: 300px; }
+@media (max-width: 919.9px) { .uc-hero-lead { display: none; } }
+.uc-lead-card {
+  display: block; overflow: hidden;
+  background: var(--card); border: 1px solid var(--border); border-radius: var(--r-lg);
+  transition: border-color 0.25s var(--ease);
+}
+.uc-lead-card:hover { border-color: rgba(15, 14, 13, 0.4); }
+.uc-lead-card img {
+  display: block; width: 100%; aspect-ratio: 1 / 1.04;
+  object-fit: cover; object-position: 50% 18%; background: var(--muted);
+}
+.uc-lead-card.is-icon img { object-fit: contain; padding: 16%; }
+.uc-lead-who { display: flex; flex-direction: column; gap: 1px; padding: 12px 16px; border-top: 1px solid var(--border); }
+.uc-lead-who strong { font-size: 14.5px; font-weight: 500; letter-spacing: -0.01em; }
+.uc-lead-who small { font-size: 12.5px; color: var(--muted-foreground); }
+.uc-lead-crew { display: flex; align-items: center; gap: 12px; font-size: 13px; color: var(--muted-foreground); }
+.uc-lead-crew .avatar { border-color: var(--background); }
+
+/* ===== use-case detail: the numbered chapters =====
+   The steps block, promoted from three small cards to the spine of the
+   page: a big purple numeral, a display-size title, room to breathe. */
+.chapters { list-style: none; margin: 0; padding: 0; }
+.chapter {
+  display: grid; grid-template-columns: minmax(56px, 92px) minmax(0, 1fr);
+  gap: 10px clamp(20px, 4vw, 48px);
+  padding: clamp(26px, 4vw, 42px) 0;
+  border-top: 1px solid var(--foreground);
+}
+.ch-num {
+  font-weight: 300; font-size: clamp(28px, 3.4vw, 44px); line-height: 1;
+  letter-spacing: -0.02em; color: var(--primary); font-variant-numeric: tabular-nums;
+}
+.chapter h3 {
+  font-weight: 300; font-size: clamp(21px, 2.6vw, 30px);
+  letter-spacing: -0.02em; line-height: 1.15; max-width: 26ch; text-wrap: balance;
+}
+.chapter p { margin-top: 10px; font-size: 15.5px; line-height: 1.65; color: var(--muted-foreground); max-width: 58ch; }
+@media (max-width: 640px) { .chapter { grid-template-columns: 1fr; gap: 8px; } }
+
+/* ===== use-case detail: the team and their tasks =====
+   Named coworkers with the template tasks behind the workflow — the proof
+   this site can honestly make: real work a visitor can open and run. */
+.uc-team { display: grid; gap: 14px; grid-template-columns: 1fr; }
+@media (min-width: 760px) { .uc-team { grid-template-columns: repeat(2, 1fr); } }
+.uc-mate {
+  display: flex; flex-direction: column; gap: 12px; padding: 18px;
+  background: var(--card); border: 1px solid var(--border); border-radius: var(--r-lg);
+}
+.uc-mate-tasks { display: flex; flex-direction: column; gap: 7px; border-top: 1px solid var(--border); padding-top: 12px; }
+.uc-mate-tasks a {
+  display: flex; align-items: baseline; gap: 8px;
+  font-size: 13.5px; line-height: 1.45; color: var(--muted-foreground);
+  transition: color 0.25s var(--ease);
+}
+.uc-mate-tasks a:hover { color: var(--foreground); }
+.uc-mate-tasks .icon { position: relative; top: 1px; color: var(--primary); }
+
+/* the nav panel's "Browse by industry" link lands on the hub's filter bar */
+.filter-bar { scroll-margin-top: 84px; }
+
 .vendor-list .row-item { grid-template-columns: minmax(150px, 330px) 1fr auto; }
 .vendor-list .row-title { display: inline-flex; align-items: center; }
 @media (max-width: 720px) { .vendor-list .row-item { grid-template-columns: 1fr auto; } }
