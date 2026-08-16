@@ -627,15 +627,16 @@ const assetsDir = path.join(root, "assets");
   async function serveIndex(req, res) {
     const file = path.join(root, "index.html");
     const stat = fs.statSync(file);
-    // The homepage carries the SAME header as every sub-page: shell.header()
-    // is the single source of truth, injected here in place of index.html's
-    // <!--SSR:HEADER--> placeholder. `overlay: true` is the one difference —
-    // transparent over the dark video hero, flipping to the standard paper
-    // bar on scroll (assets/nav.js + assets/nav.css).
+    // The homepage carries the SAME header as every sub-page, in the same
+    // state: shell.header() is the single source of truth, injected here in
+    // place of index.html's <!--SSR:HEADER--> placeholder. The transparent
+    // overlay treatment was removed on request — the bar reading differently
+    // on the homepage was the thing people kept noticing. The .is-overlay
+    // styles stay in nav.css so it can be switched back with one argument.
     shell.setNav(await buildNav({ draft: hasPreviewCookie(req) }).catch(() => null));
     const html = fs
       .readFileSync(file, "utf8")
-      .replace("<!--SSR:HEADER-->", shell.header("/", { overlay: true }))
+      .replace("<!--SSR:HEADER-->", shell.header("/"))
       .replace("<!--SSR:FOOTER-->", shell.footerHtml());
     send(req, res, 200, {
       "Content-Type": "text/html; charset=utf-8",
