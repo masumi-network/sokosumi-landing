@@ -1,13 +1,14 @@
 // /pricing — the subscription plans, exactly as the product's own plan
-// picker lists them: a monthly price, credits per seat, and what each tier
-// adds over the one below it.
+// picker lists them: a monthly price and the credits a seat gets. The tiers
+// differ only by price and credits here, so the page compares those and
+// nothing else.
 //
 // PLANS is the single source of truth for this page. Nothing here is derived
 // or inferred: no per-credit rate is published, so none is shown.
 
 const shell = require("./shell");
 const cms = require("../lib/cms");
-const { esc, attr, icon, pageStart, pageEnd, APP, SALES_URL } = shell;
+const { esc, attr, pageStart, pageEnd, APP, SALES_URL } = shell;
 
 // The page publishes five priced tiers and carried no price markup at all.
 // Prices are read back off the same PLANS array the page renders, so the
@@ -66,15 +67,6 @@ const PLANS = [
     tagline: "Getting started to work with Marketing Agents.",
     price: "Free",
     credits: "250 credits per seat",
-    includesLabel: "Free includes:",
-    features: [
-      "Limited Access to 1 Agentic Coworker",
-      "Email and WhatsApp Access to Agents",
-      "Latest Generation of Claude Models",
-      "Access to 100+ Marketing Agents",
-    ],
-    ctaLabel: "Sign Up",
-    ctaHref: APP,
   },
   {
     name: "Starter",
@@ -82,15 +74,6 @@ const PLANS = [
     price: "€25",
     per: "per month",
     credits: "1,500 credits per seat",
-    includesLabel: "Everything in Free, plus:",
-    features: [
-      "Access to our Research Coworker",
-      "Ability to buy more Credits on Demand",
-      "Read & Create Office Documents",
-      "Integrate with Microsoft 365",
-    ],
-    ctaLabel: "Choose plan",
-    ctaHref: APP,
   },
   {
     name: "Standard",
@@ -98,14 +81,6 @@ const PLANS = [
     price: "€75",
     per: "per month",
     credits: "5,000 credits per seat",
-    includesLabel: "Everything in Starter, plus:",
-    features: [
-      "Access to our Coding Coworker",
-      "Over 3x more Credits for Agents",
-      "Schedule recurring Coworker tasks",
-    ],
-    ctaLabel: "Choose plan",
-    ctaHref: APP,
     featured: true,
   },
   {
@@ -114,14 +89,6 @@ const PLANS = [
     price: "€200",
     per: "per month",
     credits: "15,000 credits per seat",
-    includesLabel: "Everything in Standard, plus:",
-    features: [
-      "Massive Amount of Credits for Agents",
-      "Custom Templates for Output Files",
-      "Early Access to new Agents & Features",
-    ],
-    ctaLabel: "Choose plan",
-    ctaHref: APP,
   },
 ];
 
@@ -130,23 +97,11 @@ const ENTERPRISE = {
   tagline: "Custom plan for organizations with tailored seats, credits, and support.",
   price: "Custom",
   per: "per month",
-  includesLabel: "Enterprise includes:",
-  features: [
-    "Tailored plan for your organization",
-    "Custom seat and credit allocation",
-    "Support-managed plan changes",
-  ],
-  ctaLabel: "Contact us",
-  ctaHref: SALES_URL,
 };
 
-function featureList(p) {
-  return `<div class="plan-includes">${esc(p.includesLabel)}</div>
-    <ul class="plan-features">${p.features
-      .map((f) => `<li>${icon("check", 15)}<span>${esc(f)}</span></li>`)
-      .join("")}</ul>`;
-}
-
+// One card, one comparison: what it costs and how many credits a seat gets.
+// No per-plan feature lists and no per-card button — the page carries a single
+// CTA underneath, so the cards stay a price table rather than five choices.
 function planCard(p, i) {
   return `<div class="plan-card${p.featured ? " featured" : ""}" data-reveal style="--i:${i % 4}">
     <div class="plan-head">
@@ -158,8 +113,6 @@ function planCard(p, i) {
       <span class="per">${esc(p.per || "per month")}</span>
     </div>
     ${p.credits ? `<div class="plan-credits">${esc(p.credits)}</div>` : ""}
-    ${featureList(p)}
-    <a class="btn ${p.ctaLabel === "Contact us" ? "btn-outline" : "btn-primary"} plan-cta" href="${attr(p.ctaHref)}"${p.ctaHref === APP ? ` data-analytics="sign_up_click" data-analytics-location="pricing" data-analytics-plan="${attr(p.name)}"` : ""}>${esc(p.ctaLabel)}</a>
   </div>`;
 }
 
@@ -184,12 +137,13 @@ async function render(ctx) {
     <section class="page-section flush" data-reveal>
       <div class="plan-grid">${PLANS.map(planCard).join("")}</div>
       <div class="plan-grid enterprise">${planCard(ENTERPRISE, 0)}</div>
+      <p class="plan-note muted" data-reveal>Need tailored seats, credits, or support? <a href="${attr(SALES_URL)}">Talk to sales</a>.</p>
     </section>` +
     shell.quoteSection(shell.pickQuote(testimonials, 0), { heading: "Teams already on a plan" }) +
     shell.ctaBand({
-      heading: "Start on the free plan",
+      heading: "Get started on the free plan",
       subheading: "250 credits per seat, no card, and every agent on the marketplace to try them on.",
-      ctaLabel: "Sign Up",
+      ctaLabel: "Get started",
       ctaHref: APP,
       seed: 5,
     }) +
