@@ -36,9 +36,16 @@
   }
 
   // Portraits in the panel ship as data-src so a page view does not download
-  // a menu's worth of images; the first open swaps them in.
+  // a menu's worth of images; the first open swaps them in. An image that
+  // fails is removed so what stays on screen is the styled fallback surface
+  // (the muted .nav-face circle, the .nav-visual placeholder texture) rather
+  // than a broken-image icon.
   function hydrate(d) {
     [].slice.call(d.querySelectorAll("img[data-src]")).forEach(function (img) {
+      img.addEventListener("error", function () {
+        var face = img.closest(".nav-visual-face");
+        (face || img).remove();
+      });
       img.src = img.getAttribute("data-src");
       img.removeAttribute("data-src");
     });

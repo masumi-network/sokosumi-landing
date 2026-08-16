@@ -39,11 +39,17 @@
   backdrop-filter: none; -webkit-backdrop-filter: none;
   transition: background-color 0.4s var(--ease), border-color 0.4s var(--ease);
 }
-/* white chrome over the dark video */
+/* White chrome over the dark video — bar-level links only (the plain items
+   and the dropdown triggers). A bare `.site-nav a` would also catch every
+   anchor INSIDE the dropdown panels, which are always a white card: vendor
+   heads and the panel footer links went white-on-white on the homepage. */
 .site-header.is-overlay:not(.scrolled) .mark { filter: brightness(0) invert(1); }
-.site-header.is-overlay:not(.scrolled) .site-nav a { color: rgba(255, 255, 255, 0.8); }
-.site-header.is-overlay:not(.scrolled) .site-nav a:hover,
-.site-header.is-overlay:not(.scrolled) .site-nav a[aria-current] { color: #fff; }
+.site-header.is-overlay:not(.scrolled) .site-nav > a,
+.site-header.is-overlay:not(.scrolled) .site-nav .nav-drop > a { color: rgba(255, 255, 255, 0.8); }
+.site-header.is-overlay:not(.scrolled) .site-nav > a:hover,
+.site-header.is-overlay:not(.scrolled) .site-nav > a[aria-current],
+.site-header.is-overlay:not(.scrolled) .site-nav .nav-drop > a:hover,
+.site-header.is-overlay:not(.scrolled) .site-nav .nav-drop > a[aria-current] { color: #fff; }
 .site-header.is-overlay:not(.scrolled) .actions .btn-ghost { color: rgba(255, 255, 255, 0.9); }
 .site-header.is-overlay:not(.scrolled) .actions .btn-ghost:hover { color: #fff; }
 .site-header.is-overlay:not(.scrolled) .actions .btn-outline { color: #fff; border-color: rgba(255, 255, 255, 0.4); }
@@ -103,6 +109,36 @@
 .nav-intro { display: flex; flex-direction: column; gap: 10px; padding: 4px 28px 4px 0; border-right: 1px solid var(--border); min-width: 0; }
 .nav-intro-label { font-size: 11.5px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; color: var(--primary); padding: 0 8px; }
 .nav-intro-desc { font-size: 13.5px; line-height: 1.55; color: var(--muted-foreground); padding: 0 8px; text-wrap: pretty; }
+/* The rail's picture, pinned to the bottom so every panel's rail fills the
+   same space. The base is a finished surface on its own — a soft primary
+   tint with a dot grid — which is both the deliberate placeholder (Use
+   cases, until real artwork exists) and what remains if an image inside a
+   variant is missing or fails to load. Fixed height on purpose: the visual
+   must never drive the 880x356 panel geometry. */
+.nav-visual {
+  position: relative; overflow: hidden; flex-shrink: 0;
+  margin: auto 8px 2px; height: 116px;
+  border: 1px solid var(--border); border-radius: var(--r-md);
+  background-color: rgba(100, 0, 255, 0.04);
+  background-image: radial-gradient(rgba(100, 0, 255, 0.14) 1px, transparent 1.4px);
+  background-size: 12px 12px; background-position: -3px -3px;
+}
+/* AI Coworkers: the same drawn portraits the menu's links carry, clustered */
+.nav-visual-people { display: flex; align-items: center; justify-content: center; }
+.nav-visual-face {
+  width: 54px; height: 54px; border-radius: 999px; overflow: hidden; flex-shrink: 0;
+  background: var(--muted); border: 2px solid var(--card);
+  box-shadow: 0 1px 4px rgba(15, 14, 13, 0.14);
+}
+.nav-visual-face + .nav-visual-face { margin-left: -12px; }
+.nav-visual-face img { width: 100%; height: 100%; object-fit: cover; display: block; }
+/* Product: a zoomed detail of the task-board render, not the whole shot —
+   at rail size the full frame reads as white mush */
+.nav-visual-shot img {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; object-position: 38% 22%; display: block;
+  transform: scale(2.1); transform-origin: 38% 22%;
+}
 /* a full-width strip above the foot — the most-used work as a wrapping row of
    links, so it never dictates the panel's height the way a column would */
 .nav-strip { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 6px; margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--border); }
