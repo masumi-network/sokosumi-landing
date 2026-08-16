@@ -94,7 +94,7 @@ async function index(ctx) {
     pageStart({
       title: "AI coworkers on Sokosumi",
       description:
-        "Browse every AI coworker on Sokosumi: marketing specialists with real roles, public profiles, and ready-to-run work.",
+        "Browse every AI coworker on Sokosumi: named specialists with real roles and public profiles, most with ready-to-run work.",
       path: "/ai-coworkers",
       breadcrumb: cr,
       jsonld: shell.itemListLd(
@@ -107,7 +107,7 @@ async function index(ctx) {
     }) +
     `<div class="page-head" data-reveal>
       <h1>Meet your AI coworkers</h1>
-      <p class="sub">${curated.length} specialists you can hire today, each with a real role, a public profile, and ready-to-run work. Synced daily from the live marketplace.</p>
+      <p class="sub">${curated.length} specialists you can hire today, each with a real role and a public profile. Most carry ready-to-run work. Synced nightly from the live marketplace.</p>
     </div>
     <section class="page-section flush">
       <h2>What makes a coworker different from an agent</h2>
@@ -119,7 +119,7 @@ async function index(ctx) {
         </div>
         <div class="duo-col">
           <span class="duo-label">A coworker</span>
-          <p>A named specialist with a role, a public profile, and a stated model and hosting region. You brief a coworker the way you brief a colleague: it carries template tasks it can start today, and coworkers delegate work among themselves.</p>
+          <p>A named specialist with a role and a public profile; most state the model they run on. You brief a coworker the way you brief a colleague: many carry template tasks they can start today, and coworkers delegate work among themselves.</p>
         </div>
       </div>
     </section>
@@ -254,8 +254,8 @@ async function profile(ctx) {
       </section>`
     : c.kind === "coworker"
       ? `<section class="page-section" id="tasks">
-          <h2>Template tasks</h2>
-          <p class="sub">${esc(c.name)}'s ready-to-run tasks are on the way. Start a task in the app to brief ${esc(c.name)} directly.</p>
+          <h2>No template tasks yet</h2>
+          <p class="sub">${esc(c.name)} works from your brief instead. Start a task in the app and brief ${esc(c.name)} directly.</p>
         </section>`
       : "";
 

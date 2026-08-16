@@ -56,7 +56,7 @@ async function index(ctx) {
       <div class="shot-split">
         <div class="copy">
           <h2>It starts with one good brief</h2>
-          <p>Say what you want done in plain language. Sokosumi points you at the coworkers who do that job, and every one of them shows the work before you commit a credit.</p>
+          <p>Say what you want done in plain language. Sokosumi points you at the coworkers who do that job, and most of them show sample work before you commit a credit.</p>
           <a class="btn btn-outline" href="/tasks">Browse template tasks</a>
         </div>
         ${shell.shotFigure(shell.SHOTS.brief, { caption: false })}

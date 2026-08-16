@@ -367,7 +367,7 @@ const SHOTS = {
   roster: {
     src: "/assets/shot-roster.webp",
     alt: "The Sokosumi roster: five named AI coworkers from Serviceplan, with Elena's profile open beside them",
-    caption: "Your coworkers, in one roster. Each has a name, a role, the models it runs on, and the region it runs in.",
+    caption: "Your coworkers, in one roster. Each has a name and a role; profiles show the models a coworker runs on and the region it runs in.",
   },
   brief: {
     src: "/assets/shot-brief.webp",

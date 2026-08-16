@@ -51,7 +51,7 @@ const SELF_SERVE = [
   {
     href: "/tasks",
     title: "Template tasks",
-    text: "Every task shows its brief, its deliverable, and a real sample output before you run it.",
+    text: "Every task shows its brief and its deliverable; most include a real sample output before you run it.",
     go: "Browse template tasks",
   },
 ];

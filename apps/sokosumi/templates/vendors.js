@@ -107,7 +107,7 @@ async function index(ctx) {
     }) +
     `<div class="page-head" data-reveal>
       <h1>The vendors behind the AI coworkers</h1>
-      <p class="sub">Every AI coworker and agent on Sokosumi is built and operated by a vendor: a team that ships it, keeps it running, and stands behind its work. Pick a vendor to see who they ship, what those coworkers can do, and the models they run on.</p>
+      <p class="sub">Every AI coworker and agent on Sokosumi is built and operated by a vendor: a team that ships it, keeps it running, and stands behind its work. Pick a vendor to see who they ship, what their listings can do, and the models and hosting on file.</p>
       ${facts.length ? `<div class="cw-stats vendor-facts">${facts.join("")}</div>` : ""}
     </div>` +
     (rows.length
@@ -240,7 +240,7 @@ async function detail(ctx) {
   const coworkersSection = curated.length
     ? `<section class="page-section${flush()}">
         <h2>AI coworkers from ${esc(v.name)}</h2>
-        <p class="sub">Named specialists with real roles and public profiles. Brief them like colleagues; they carry ready-to-run work.</p>
+        <p class="sub">Named specialists with real roles and public profiles. Brief them like colleagues; most carry ready-to-run work.</p>
         <div class="${shell.gridCls(curated.length)}">${curated.map((c, i) => coworkerCard(c, taskCountOf(c), i)).join("")}</div>
       </section>`
     : "";
@@ -255,7 +255,7 @@ async function detail(ctx) {
   const capabilitiesSection = cats.length
     ? `<section class="page-section${flush()}">
         <h2>What ${esc(v.name)}&rsquo;s listings can do</h2>
-        <p class="sub">${myOffers.length} ready-to-run template task${myOffers.length === 1 ? "" : "s"} across ${cats.length} categor${cats.length === 1 ? "y" : "ies"}. Open one to see the deliverable and a sample of the output.</p>
+        <p class="sub">${myOffers.length} ready-to-run template task${myOffers.length === 1 ? "" : "s"} across ${cats.length} categor${cats.length === 1 ? "y" : "ies"}. Open one to see the deliverable; most include a sample of the output.</p>
         <div class="cap-grid">${cats.map(([cat, list], i) => capabilityCol(cat, list, (o) => byKey.get(o.agentSlug), i)).join("")}</div>
         <a class="cap-browse" href="/tasks">Browse all template tasks ${icon("arrow-up-right", 14)}</a>
       </section>`
@@ -331,11 +331,15 @@ async function detail(ctx) {
 
   // ctaBand escapes its heading, so this is plain text (curly apostrophe
   // included) — entities here would render literally.
+  //
+  // A vendor with nothing listed cannot be hired, so the empty case does not
+  // sell the vendor — it points at the coworkers you actually can hire.
+  const hasListings = curated.length > 0 || agents.length > 0;
   const ctaHeading = curated.length
     ? `Put ${v.name}’s AI coworkers to work`
     : agents.length
       ? `Run ${v.name}’s AI agents on Sokosumi`
-      : `Work with ${v.name} on Sokosumi`;
+      : "Meet the AI coworkers on Sokosumi";
 
   const cr = [
     { label: "Home", href: "/" },
@@ -353,7 +357,7 @@ async function detail(ctx) {
     `<div class="page-head" data-reveal>
       <span class="eyebrow">Vendor on Sokosumi</span>
       ${vendorLogo(v, "lg")}
-      <h1>${esc(v.name)}${kindsH ? ` ${kindsH}` : ""}</h1>
+      <h1>${esc(v.name)} ${kindsH || "on Sokosumi"}</h1>
       ${sub ? `<p class="sub">${esc(sub)}</p>` : ""}
       ${facts.length ? `<div class="cw-stats vendor-facts">${facts.join("")}</div>` : ""}
       ${website}
@@ -366,7 +370,8 @@ async function detail(ctx) {
     shell.ctaBand({
       heading: ctaHeading,
       subheading: "One free account covers every vendor on the marketplace. Credits only go on work you run.",
-      ctaLabel: "Start free",
+      ctaLabel: hasListings ? "Start free" : "Browse AI coworkers",
+      ctaHref: hasListings ? undefined : "/ai-coworkers",
       seed: v.name.length,
     }) +
     pageEnd()

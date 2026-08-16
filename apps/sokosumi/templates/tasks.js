@@ -168,7 +168,7 @@ async function browse(ctx) {
     pageStart({
       title: "Template tasks | Sokosumi",
       description:
-        "Browse ready-to-run template tasks from Sokosumi's AI coworkers. Filter by category and open any task to see a sample output.",
+        "Browse ready-to-run template tasks from Sokosumi's AI coworkers. Filter by category and open any task to see its brief and deliverable.",
       path: "/tasks",
       breadcrumb: cr,
       jsonld: shell.itemListLd(
@@ -179,7 +179,7 @@ async function browse(ctx) {
     }) +
     `<div class="page-head" data-reveal>
       <h1>Template tasks, ready to run</h1>
-      <p class="sub">Every task is a fixed brief with a clear deliverable and a sample output you can inspect before you start. Pick one, add your details, and the coworker takes it from there.</p>
+      <p class="sub">Every task is a fixed brief with a clear deliverable, and most include a sample output you can inspect before you start. Pick one, add your details, and the coworker takes it from there.</p>
       <p class="muted" id="taskCount">${countLine}</p>
       <form class="tasks-search" id="taskSearchForm" role="search">
         <span class="ts-icon">${icon("search", 18)}</span>
