@@ -200,20 +200,31 @@
       .nav-drop > a { display: inline-flex; align-items: center; gap: 5px; height: 100%; }
       .nav-chev { transition: transform 0.25s var(--ease); opacity: 0.65; }
       .nav-drop:hover .nav-chev, .nav-drop:focus-within .nav-chev { transform: rotate(180deg); opacity: 1; }
+      /* one fixed-size box for every menu — see assets/styles.css for why */
       .nav-panel {
-        position: absolute; top: 100%; left: -18px; z-index: 60;
-        margin-top: 14px; padding: 18px; min-width: 260px;
+        position: fixed; top: 78px; left: 50%; z-index: 60;
+        width: min(880px, calc(100vw - 48px)); min-height: 356px;
+        display: flex; flex-direction: column;
+        padding: 22px 24px 18px;
         background: var(--card); border: 1px solid var(--border); border-radius: var(--r-lg);
         box-shadow: 0 20px 60px rgba(15, 14, 13, 0.18);
-        opacity: 0; visibility: hidden; transform: translateY(-6px);
+        opacity: 0; visibility: hidden; transform: translate(-50%, -6px);
         transition: opacity 0.2s var(--ease), transform 0.2s var(--ease), visibility 0.2s;
       }
       .nav-panel::before { content: ""; position: absolute; inset: -16px 0 auto 0; height: 16px; }
-      .nav-drop:hover .nav-panel, .nav-drop:focus-within .nav-panel, .nav-drop.open .nav-panel { opacity: 1; visibility: visible; transform: none; }
-      .nav-panel-wide { min-width: 0; }
-      /* the panel is as wide as it has vendors, no empty third column */
-      .nav-cols { display: grid; grid-template-columns: repeat(var(--nav-cols, 3), minmax(170px, 1fr)); gap: 8px 28px; }
-      .nav-col { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+      .nav-drop:hover .nav-panel, .nav-drop:focus-within .nav-panel, .nav-drop.open .nav-panel { opacity: 1; visibility: visible; transform: translate(-50%, 0); }
+      /* intro rail on the left, content grid on the right, foot pinned low */
+      .nav-panel-body { flex: 1; display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: 28px; align-items: stretch; }
+      .nav-intro { display: flex; flex-direction: column; gap: 10px; padding: 4px 28px 4px 0; border-right: 1px solid var(--border); min-width: 0; }
+      .nav-intro-label { font-size: 11.5px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; color: var(--primary); padding: 0 8px; }
+      .nav-intro-desc { font-size: 13.5px; line-height: 1.55; color: var(--muted-foreground); padding: 0 8px; text-wrap: pretty; }
+      .nav-strip { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 6px; margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--border); }
+      .nav-strip-label { font-size: 11.5px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted-foreground); padding: 0 8px; margin-right: 6px; }
+      .nav-cols { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); align-content: start; }
+      .nav-col { display: flex; flex-direction: column; gap: 2px; min-width: 0; padding: 0 20px; }
+      .nav-col:first-child { padding-left: 0; }
+      .nav-col:last-child { padding-right: 0; }
+      .nav-col + .nav-col { border-left: 1px solid var(--border); }
       .nav-col-head {
         font-size: 11.5px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase;
         color: var(--muted-foreground); padding: 4px 8px; margin-bottom: 4px; transition: color 0.2s var(--ease);
@@ -238,26 +249,21 @@
 
       .nav-col-link span { font-size: 14px; color: var(--foreground); }
       .nav-col-link small { font-size: 12px; color: var(--muted-foreground); }
-      .nav-panel-foot { display: flex; flex-wrap: wrap; gap: 8px 24px; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); }
+      /* Product items: quiet name on top, the explanation carries the line */
+      .nav-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px 12px; align-content: start; }
+      .nav-grid .nav-col-link { padding: 10px 12px; gap: 3px; }
+      .nav-grid .nav-col-link span {
+        font-size: 12.5px; font-weight: 500; letter-spacing: 0.02em;
+        color: var(--muted-foreground); transition: color 0.2s var(--ease);
+      }
+      .nav-grid .nav-col-link small { font-size: 13.5px; color: var(--foreground); line-height: 1.45; }
+      .nav-grid .nav-col-link:hover span { color: var(--foreground); }
+      .nav-panel-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 24px; margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--border); }
       .nav-panel-foot a { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--muted-foreground); padding: 0 8px; transition: color 0.2s var(--ease); }
       .nav-panel-foot a:hover { color: var(--foreground); }
-      .nav-panel-label {
-        font-size: 11.5px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase;
-        color: var(--muted-foreground); margin: 0 0 12px 8px;
-      }
-      .nav-col-popular { border-left: 1px solid var(--border); padding-left: 20px; }
-      .nav-col-popular .nav-col-head { color: var(--foreground); }
-      .nav-drop .nav-panel-wide { max-width: calc(100vw - 48px); }
-      /* centred on the page grid — see assets/styles.css */
-      .nav-drop .nav-panel-mega {
-        position: fixed; top: 78px; left: 50%; right: auto; margin-top: 0;
-        width: max-content; max-width: min(1040px, calc(100vw - 48px));
-        transform: translate(-50%, -6px);
-      }
-      .nav-panel-mega .nav-cols { grid-template-columns: repeat(var(--nav-cols, 4), minmax(0, 216px)); }
+      .nav-panel-foot .nav-foot-accent { color: var(--primary); }
+      .nav-panel-foot .nav-foot-accent:hover { color: var(--primary); opacity: 0.75; }
       .nav-panel a, .nav-panel span { white-space: normal; }
-      .nav-drop:hover .nav-panel-mega, .nav-drop:focus-within .nav-panel-mega,
-      .nav-drop.open .nav-panel-mega { transform: translate(-50%, 0); }
       .nav-panel .icon { flex-shrink: 0; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
       .island-nav > div:last-child { margin-left: auto; }
       .island-nav .nav-login { color: rgba(255, 255, 255, 0.9); }
@@ -276,8 +282,10 @@
       .island-nav.scrolled .island-links .nav-drop > a { color: rgba(15, 14, 13, 0.62); }
       .island-nav.scrolled .island-links > a:hover,
       .island-nav.scrolled .island-links .nav-drop > a:hover { color: var(--foreground); }
-      /* panel contents keep their own ink colours in both nav states */
-      .island-nav .nav-panel a { color: inherit; }
+      /* panel contents keep their own ink colours in both nav states; the
+         container resets the inheritance context, but stays off the anchors
+         so .nav-panel-foot / .nav-foot-accent colours apply as on sub-pages */
+      .island-nav .nav-panel { color: var(--foreground); }
       .island-nav.scrolled .nav-login { color: rgba(15, 14, 13, 0.66); }
       /* the collapse point and the mobile drawer live in /assets/nav.css,
          shared with the sub-pages so both headers collapse at the same width */
@@ -1445,6 +1453,18 @@
         (function () {
           var ARROW =
             '<svg class="icon" width="13" height="13" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg>';
+          /* same trigger semantics templates/shell.js renders server-side:
+             the link advertises the panel it controls; nav.js keeps
+             aria-expanded in sync as menus open and close */
+          function exposePanel(drop, panelId) {
+            var trigger = drop.querySelector("a");
+            var panel = drop.querySelector(".nav-panel");
+            if (!trigger || !panel) return;
+            panel.id = panelId;
+            trigger.setAttribute("aria-haspopup", "true");
+            trigger.setAttribute("aria-expanded", "false");
+            trigger.setAttribute("aria-controls", panelId);
+          }
           fetch("/api/nav")
             .then(function (r) { return r.json(); })
             .then(function (n) {
@@ -1480,13 +1500,20 @@
                   .join("");
                 agents.insertAdjacentHTML(
                   "beforeend",
-                  '<div class="nav-panel nav-panel-wide" role="group" aria-label="AI Coworkers">' +
-                    '<div class="nav-cols">' + cols + "</div>" +
+                  '<div class="nav-panel" role="group" aria-label="AI Coworkers">' +
+                    '<div class="nav-panel-body">' +
+                      '<div class="nav-intro">' +
+                        '<p class="nav-intro-label">AI Coworkers</p>' +
+                        '<p class="nav-intro-desc">Specialist AI agents with a name, a role and a vendor behind them. Brief one like a colleague and get finished work back.</p>' +
+                      "</div>" +
+                      '<div class="nav-cols">' + cols + "</div>" +
+                    "</div>" +
                     '<div class="nav-panel-foot">' +
                       '<a href="/vendors">Show all vendors ' + ARROW + "</a>" +
-                      '<a href="/coworkers">Show all coworkers ' + ARROW + "</a>" +
+                      '<a class="nav-foot-accent" href="/coworkers">Show all coworkers ' + ARROW + "</a>" +
                     "</div></div>",
                 );
+                exposePanel(agents, "nav-panel-1");
               }
 
               /* the product deep-dives, from the CMS via /api/nav */
@@ -1501,21 +1528,29 @@
                 }
                 prod.insertAdjacentHTML(
                   "beforeend",
-                  '<div class="nav-panel" role="group" aria-label="Product"><div class="nav-col">' +
-                    productPages
-                      .map(function (p) {
-                        return (
-                          '<a class="nav-col-link" href="/' + p.slug.split("/").map(encodeURIComponent).join("/") + '">' +
-                          "<span>" + esc(p.title) + "</span>" +
-                          (p.description ? "<small>" + esc(shortLabel(p.description, 62)) + "</small>" : "") +
-                          "</a>"
-                        );
-                      })
-                      .join("") +
+                  '<div class="nav-panel" role="group" aria-label="Product">' +
+                    '<div class="nav-panel-body">' +
+                      '<div class="nav-intro">' +
+                        '<p class="nav-intro-label">Product</p>' +
+                        '<p class="nav-intro-desc">How work moves through Sokosumi: brief a coworker, follow it on the task board, collect the output.</p>' +
+                      "</div>" +
+                      '<div class="nav-grid">' +
+                        productPages
+                          .map(function (p) {
+                            return (
+                              '<a class="nav-col-link" href="/' + p.slug.split("/").map(encodeURIComponent).join("/") + '">' +
+                              "<span>" + esc(p.title) + "</span>" +
+                              (p.description ? "<small>" + esc(shortLabel(p.description, 62)) + "</small>" : "") +
+                              "</a>"
+                            );
+                          })
+                          .join("") +
+                      "</div>" +
                     "</div>" +
                     '<div class="nav-panel-foot"><a href="/product">Product overview ' + ARROW + "</a>" +
-                    '<a href="/pricing">Pricing ' + ARROW + "</a></div></div>",
+                    '<a class="nav-foot-accent" href="/pricing">Pricing ' + ARROW + "</a></div></div>",
                 );
+                exposePanel(prod, "nav-panel-2");
               }
 
               /* same panel templates/shell.js renders: a column per industry
@@ -1538,20 +1573,32 @@
                     );
                   })
                   .join("");
-                var popCol = popular.length
-                  ? '<div class="nav-col nav-col-popular"><span class="nav-col-head">Most used</span>' +
-                    popular.map(ucLink).join("") + "</div>"
+                /* only the most-used work the industry columns do not already
+                   show — same dedupe templates/shell.js applies */
+                var shown = {};
+                (n.industries || []).forEach(function (i) {
+                  (i.picks || []).forEach(function (p) { shown[p.slug] = true; });
+                });
+                var extras = popular.filter(function (p) { return !shown[p.slug]; }).slice(0, 4);
+                var popStrip = extras.length
+                  ? '<div class="nav-strip"><span class="nav-strip-label">Most used</span>' + extras.map(ucLink).join("") + "</div>"
                   : "";
-                var ucTotal = (n.industries || []).length + (popCol ? 1 : 0);
                 uc.insertAdjacentHTML(
                   "beforeend",
-                  '<div class="nav-panel nav-panel-wide nav-panel-mega" role="group" aria-label="Use cases">' +
-                    '<p class="nav-panel-label">By industry</p>' +
-                    '<div class="nav-cols" style="--nav-cols:' + ucTotal + '">' + ucCols + popCol + "</div>" +
+                  '<div class="nav-panel" role="group" aria-label="Use cases">' +
+                    '<div class="nav-panel-body">' +
+                      '<div class="nav-intro">' +
+                        '<p class="nav-intro-label">Use cases</p>' +
+                        '<p class="nav-intro-desc">The work teams hand to AI coworkers, organised by industry. Start from one instead of a blank brief.</p>' +
+                      "</div>" +
+                      '<div class="nav-cols">' + ucCols + "</div>" +
+                    "</div>" +
+                    popStrip +
                     '<div class="nav-panel-foot"><a href="/use-cases">All use cases ' + ARROW + "</a>" +
-                    '<a href="/tasks">Browse template tasks ' + ARROW + "</a></div>" +
+                    '<a class="nav-foot-accent" href="/tasks">Browse template tasks ' + ARROW + "</a></div>" +
                     "</div>",
                 );
+                exposePanel(uc, "nav-panel-3");
               }
             })
             .catch(function () { /* nav stays as plain links */ });

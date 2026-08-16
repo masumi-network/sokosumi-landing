@@ -518,11 +518,17 @@ function agentsPanel() {
     )
     .join("");
   if (!cols) return "";
-  return `<div class="nav-panel nav-panel-wide" role="group" aria-label="AI Coworkers">
-      <div class="nav-cols" style="--nav-cols:${NAV_MODEL.vendors.length}">${cols}</div>
+  return `<div class="nav-panel" role="group" aria-label="AI Coworkers">
+      <div class="nav-panel-body">
+        <div class="nav-intro">
+          <p class="nav-intro-label">AI Coworkers</p>
+          <p class="nav-intro-desc">Specialist AI agents with a name, a role and a vendor behind them. Brief one like a colleague and get finished work back.</p>
+        </div>
+        <div class="nav-cols">${cols}</div>
+      </div>
       <div class="nav-panel-foot">
         <a href="/vendors">Show all vendors ${icon("arrow-up-right", 13)}</a>
-        <a href="/coworkers">Show all coworkers ${icon("arrow-up-right", 13)}</a>
+        <a class="nav-foot-accent" href="/coworkers">Show all coworkers ${icon("arrow-up-right", 13)}</a>
       </div>
     </div>`;
 }
@@ -542,10 +548,16 @@ function productPanel() {
     )
     .join("");
   return `<div class="nav-panel" role="group" aria-label="Product">
-      <div class="nav-col">${rows}</div>
+      <div class="nav-panel-body">
+        <div class="nav-intro">
+          <p class="nav-intro-label">Product</p>
+          <p class="nav-intro-desc">How work moves through Sokosumi: brief a coworker, follow it on the task board, collect the output.</p>
+        </div>
+        <div class="nav-grid">${rows}</div>
+      </div>
       <div class="nav-panel-foot">
         <a href="/product">Product overview ${icon("arrow-up-right", 13)}</a>
-        <a href="/pricing">Pricing ${icon("arrow-up-right", 13)}</a>
+        <a class="nav-foot-accent" href="/pricing">Pricing ${icon("arrow-up-right", 13)}</a>
       </div>
     </div>`;
 }
@@ -561,47 +573,46 @@ function shell_truncate(s, n) {
 }
 
 // The Use cases menu: one column per industry, each showing the work that
-// industry actually runs, plus a "Most used" column for visitors who do not
-// think of their problem as belonging to a vertical. An industry name on its
-// own told nobody whether what they needed was behind it.
+// industry actually runs. The "Most used" list sits in the intro rail for
+// visitors who do not think of their problem as belonging to a vertical.
 function useCasesPanel() {
   const industries = NAV_MODEL.industries || [];
   const popular = NAV_MODEL.popularUseCases || [];
   if (!industries.length && !popular.length) return "";
 
+  const ucLink = (p) =>
+    `<a class="nav-col-link" href="/use-cases/${encodeURIComponent(p.slug)}"><span>${esc(p.title)}</span></a>`;
+
   const cols = industries
     .map(
       (i) => `<div class="nav-col">
         <a class="nav-col-head" href="/use-cases/industries/${encodeURIComponent(i.slug)}">${esc(i.name)}</a>
-        ${i.picks
-          .map(
-            (p) =>
-              `<a class="nav-col-link" href="/use-cases/${encodeURIComponent(p.slug)}"><span>${esc(p.title)}</span></a>`,
-          )
-          .join("")}
+        ${i.picks.map(ucLink).join("")}
       </div>`,
     )
     .join("");
 
-  const popularCol = popular.length
-    ? `<div class="nav-col nav-col-popular">
-        <span class="nav-col-head">Most used</span>
-        ${popular
-          .map(
-            (p) =>
-              `<a class="nav-col-link" href="/use-cases/${encodeURIComponent(p.slug)}"><span>${esc(p.title)}</span></a>`,
-          )
-          .join("")}
-      </div>`
+  // Only the most-used work the industry columns do not already show — with
+  // today's data that is usually nothing, and the strip simply stays away
+  // instead of repeating five links that are already on screen.
+  const shown = new Set(industries.flatMap((i) => i.picks.map((p) => p.slug)));
+  const extras = popular.filter((p) => !shown.has(p.slug)).slice(0, 4);
+  const popularStrip = extras.length
+    ? `<div class="nav-strip"><span class="nav-strip-label">Most used</span>${extras.map(ucLink).join("")}</div>`
     : "";
 
-  const total = industries.length + (popularCol ? 1 : 0);
-  return `<div class="nav-panel nav-panel-wide nav-panel-mega" role="group" aria-label="Use cases">
-      <p class="nav-panel-label">By industry</p>
-      <div class="nav-cols" style="--nav-cols:${total}">${cols}${popularCol}</div>
+  return `<div class="nav-panel" role="group" aria-label="Use cases">
+      <div class="nav-panel-body">
+        <div class="nav-intro">
+          <p class="nav-intro-label">Use cases</p>
+          <p class="nav-intro-desc">The work teams hand to AI coworkers, organised by industry. Start from one instead of a blank brief.</p>
+        </div>
+        <div class="nav-cols">${cols}</div>
+      </div>
+      ${popularStrip}
       <div class="nav-panel-foot">
         <a href="/use-cases">All use cases ${icon("arrow-up-right", 13)}</a>
-        <a href="/tasks">Browse template tasks ${icon("arrow-up-right", 13)}</a>
+        <a class="nav-foot-accent" href="/tasks">Browse template tasks ${icon("arrow-up-right", 13)}</a>
       </div>
     </div>`;
 }
