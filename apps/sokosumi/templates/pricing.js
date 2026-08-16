@@ -99,20 +99,27 @@ const ENTERPRISE = {
   per: "per month",
 };
 
-// One card, one comparison: what it costs and how many credits a seat gets.
-// No per-plan feature lists and no per-card button — the page carries a single
-// CTA underneath, so the cards stay a price table rather than five choices.
-function planCard(p, i) {
-  return `<div class="plan-card${p.featured ? " featured" : ""}" data-reveal style="--i:${i % 4}">
+// One row, one comparison: what it costs and how many credits a seat gets.
+// With no per-plan feature lists and no per-card button, five boxes had
+// nothing to hold — so the plans take the site's quiet index-row treatment
+// (.row-item) instead: name and tagline on the left, the credits figure in a
+// column you can scan down, the price flush right. Enterprise is simply the
+// fifth row; its credits are custom like its price.
+function planRow(p, i) {
+  const m = p.credits ? p.credits.match(/^([\d,]+)\s+(.+)$/) : null;
+  const credits = m
+    ? `<span class="num">${esc(m[1])}</span><span class="unit">${esc(m[2])}</span>`
+    : `<span class="num">Tailored</span><span class="unit">credits per seat</span>`;
+  return `<div class="plan-row${p.featured ? " featured" : ""}" data-reveal style="--i:${i}">
     <div class="plan-head">
       <div class="plan-name">${esc(p.name)}${p.featured ? '<span class="chip">Most popular</span>' : ""}</div>
       <p class="plan-tagline">${esc(p.tagline)}</p>
     </div>
+    <div class="plan-credits">${credits}</div>
     <div class="plan-price">
       <span class="amount">${esc(p.price)}</span>
       <span class="per">${esc(p.per || "per month")}</span>
     </div>
-    ${p.credits ? `<div class="plan-credits">${esc(p.credits)}</div>` : ""}
   </div>`;
 }
 
@@ -135,8 +142,7 @@ async function render(ctx) {
     </div>
 
     <section class="page-section flush" data-reveal>
-      <div class="plan-grid">${PLANS.map(planCard).join("")}</div>
-      <div class="plan-grid enterprise">${planCard(ENTERPRISE, 0)}</div>
+      <div class="plan-list">${[...PLANS, ENTERPRISE].map(planRow).join("")}</div>
       <p class="plan-note muted" data-reveal>Need tailored seats, credits, or support? <a href="${attr(SALES_URL)}">Talk to sales</a>.</p>
     </section>` +
     shell.quoteSection(shell.pickQuote(testimonials, 0), { heading: "Teams already on a plan" }) +
