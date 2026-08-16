@@ -199,14 +199,15 @@ async function detail(ctx) {
   const om = outputMeta(offer.output || outs[0].type);
   const openUrl = outs.find((o) => o && o.url);
   const vn = c.vendor && typeof c.vendor === "object" ? c.vendor.name : null;
+  const vs = c.vendor && typeof c.vendor === "object" ? c.vendor.slug : null;
   const whoSmall = [c.role, vn].filter(Boolean).map(esc).join(" &middot; ");
 
   const cr = [
     { label: "Home", href: "/" },
     { label: "Coworkers", href: "/coworkers" },
-    { label: c.name, href: `/coworkers/${c.slug}` },
-    { label: offer.title },
   ];
+  if (vn) cr.push(vs ? { label: vn, href: `/vendors/${encodeURIComponent(vs)}` } : { label: vn });
+  cr.push({ label: c.name, href: `/coworkers/${c.slug}` }, { label: offer.title });
   return (
     pageStart({
       title: `${offer.title} | ${c.name} on Sokosumi`,

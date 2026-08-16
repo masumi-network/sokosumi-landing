@@ -164,7 +164,7 @@
       .btn .orb { display: none; }
       .btn-lg.btn-outline { padding: 0 22px; }
 
-      .eyebrow { font-size: 13px; font-weight: 400; letter-spacing: 0; text-transform: none; color: var(--muted-foreground); }
+      .eyebrow { font-size: 13px; font-weight: 400; letter-spacing: 0; text-transform: none; color: var(--primary); }
 
       /* a11y */
       .skip-link {
@@ -460,7 +460,11 @@
 
       .intro-grid {
         display: grid; gap: clamp(24px, 4vw, 40px); grid-template-columns: 1fr;
-        max-width: 100%; margin: 0; align-items: end;
+        max-width: 100%; margin: 0;
+        /* top-aligned: portraits and headings line up no matter how many
+           lines a blurb takes (or whether a coworker has one at all) —
+           with align-items: end a longer blurb shoved its portrait up */
+        align-items: start;
       }
       @media (min-width: 640px) { .intro-grid { grid-template-columns: repeat(3, 1fr); } }
       .intro-person { display: flex; flex-direction: column; align-items: flex-start; text-align: left; }
@@ -473,17 +477,19 @@
       .intro-person:hover .portrait img { transform: scale(1.19); }
       .intro-person h3 { font-family: var(--serif); font-size: 21px; font-weight: 400; margin: 16px 0 3px; letter-spacing: -0.01em; }
       .intro-person .role { font-size: 12.5px; letter-spacing: 0; color: var(--muted-foreground); }
-      /* no clamp: the blurb is shortened in JS so it is short enough to show
-         in full, rather than long text hidden behind an ellipsis */
       .intro-person .blurb {
         margin-top: 9px; font-size: 13px; line-height: 1.5; color: var(--muted-foreground);
         max-width: 34ch;
+        /* exactly three lines at every column width. The JS shortens the
+           text so it usually fits, but a character count cannot predict
+           rendered line count: measured at mid widths (~190-200px and
+           ~240-260px columns) the same texts wrapped 5/5/4 and 4/4/3.
+           The clamp caps the count; the min-height reserves it when a
+           synced bio comes up short. */
+        display: -webkit-box; -webkit-box-orient: vertical;
+        -webkit-line-clamp: 3; overflow: hidden;
+        min-height: 4.5em;
       }
-      /* the roster is one vendor's team, so the section carries their mark */
-      /* this section sits on paper, so the dark artwork is used as-is */
-      .section-head .section-brand { height: 20px; width: auto; margin-top: 22px; display: block; opacity: 0.8; }
-      .band-dark .section-head .section-brand { filter: brightness(0) invert(1); }
-
       .intro-more-wrap { display: flex; justify-content: flex-start; margin-top: clamp(40px, 5vw, 56px); }
       .intro-more {
         display: inline-flex; align-items: center; gap: 14px;
@@ -492,7 +498,7 @@
         font-size: 14px; font-weight: 500;
         transition: border-color 0.3s var(--ease);
       }
-      .intro-more:hover { border-color: rgba(15, 14, 13, 0.4); box-shadow: none; transform: none; }
+      .intro-more:hover { border-color: var(--primary); box-shadow: none; transform: none; }
       .intro-more .stack { display: flex; }
       .intro-more .stack img,
       .intro-more .stack .more-count {
@@ -520,7 +526,8 @@
       .hiw-core > * { position: relative; }
       @media (min-width: 900px) { .hiw-core { grid-template-columns: 1fr 56px 1fr 56px 1fr; gap: 0; } }
       .hiw-col { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
-      .hiw-step { font-family: var(--sans); font-size: 12.5px; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; color: rgba(255, 255, 255, 0.5); }
+      /* --primary-on-dark, never --primary: #6400ff is near-invisible on ink */
+      .hiw-step { font-family: var(--sans); font-size: 12.5px; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; color: var(--primary-on-dark); }
       .hiw-cap { font-size: 13.5px; line-height: 1.6; color: rgba(255, 255, 255, 0.55); margin: 0; padding-top: 2px; }
 
       .hiw-link { display: flex; align-items: center; justify-content: center; }
@@ -699,8 +706,8 @@
       .org-who small { font-size: 12px; color: var(--muted-foreground); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
       .org-tag {
         margin-left: auto; flex-shrink: 0; font-size: 10.5px; letter-spacing: 0.05em;
-        padding: 2px 7px; border: 1px solid var(--border); border-radius: var(--r-sm);
-        color: var(--muted-foreground);
+        padding: 2px 7px; border: 1px solid transparent; border-radius: var(--r-sm);
+        color: var(--primary); background: var(--primary-soft);
       }
       @media (max-width: 760px) {
         .org-stem, .org-branch::before, .org-branch::after { display: none; }
@@ -935,8 +942,7 @@
         <div class="section-head" data-reveal>
           <span class="eyebrow">Live from the marketplace</span>
           <h2>These are your newest <span class="serif-accent">AI coworkers</span></h2>
-          <p>Named specialists built and vetted by Serviceplan Group, each with a real role, the models they run on, and ready-to-run work. They join your team and get going, with more arriving all the time.</p>
-          <img class="section-brand" src="/assets/serviceplan-logo.png" alt="Serviceplan Group" width="166" height="24" loading="lazy" />
+          <p>Named specialists from a growing set of vetted vendors, each with a real role and a public profile. Most arrive with ready-to-run tasks and list the models they run on. They join your team and get going, with more arriving all the time.</p>
         </div>
         <div class="intro-grid" id="coworkerIntro">
           <p class="muted" id="cwSkeleton" style="text-align: center; font-size: 14px; grid-column: 1 / -1;">Loading coworkers…</p>
@@ -1073,10 +1079,10 @@
           <div class="shot-stage">
             <div class="shot-viewport">
               <div class="shot-track" id="shotTrack">
-                <div class="shot-slide" data-caption="Your coworkers, in one roster. Each has a name, a role, the models it runs on, and the region it runs in.">
+                <div class="shot-slide" data-caption="Your coworkers, in one roster. Each has a name and a role; profiles show the models a coworker runs on and the region it runs in.">
                   <div class="shot-frame">
                     <div class="shot-canvas">
-                      <img src="/assets/shot-roster.webp" alt="The Sokosumi roster: five named AI coworkers from Serviceplan, with Elena's profile open beside them" width="2400" height="1350" loading="lazy" decoding="async" />
+                      <img src="/assets/shot-roster.webp" alt="The Sokosumi roster: five named AI coworkers, with Elena's profile open beside them" width="2400" height="1350" loading="lazy" decoding="async" />
                     </div>
                   </div>
                 </div>
@@ -1128,7 +1134,7 @@
           <div class="trust-copy" data-reveal style="--i: 1">
             <img class="trust-logo is-brand" src="/assets/serviceplan-logo-white.png" alt="Serviceplan Group" width="166" height="24" />
             <h2 class="trust-headline">Built by Serviceplan&nbsp;Group, one of the world's <span class="serif-accent">leading agency groups</span>.</h2>
-            <p class="muted">Every coworker is designed and vetted by senior strategists at Serviceplan. Real agency craft, not generic prompts.</p>
+            <p class="muted">Sokosumi is built and run by Serviceplan Group, whose senior strategists design coworkers for the roster themselves. Real agency craft, not generic prompts.</p>
             <a class="btn btn-outline" href="https://www.serviceplan-agents.com/" target="_blank" rel="noreferrer">Visit Serviceplan Agents</a>
           </div>
         </div>
@@ -1432,7 +1438,7 @@
           requestAnimationFrame(function () { requestAnimationFrame(function () { markIn(el); }); });
         }
 
-        /* ---------- the introduction trio (Serviceplan), Elena centered ---------- */
+        /* ---------- the introduction trio, Elena centered ---------- */
         var INTRO_SLUGS = ["hannah", "elena", "jamal"];
 
         /* ---------- nav dropdowns: top vendors + industries from the CMS ---------- */
@@ -1588,7 +1594,9 @@
 
             /* The card already carries the name and the role, so a bio that
                opens "<Name> is a <Role> at <Company>," repeats what is right
-               above it. Strip that, then cut to one short line and a bit. */
+               above it. Strip that, then cut to roughly what three lines hold
+               at the rendered column width; the CSS line clamp is what
+               actually guarantees the three-line cap. */
             function shortBlurb(text, name, max) {
               var t = String(text || "").trim();
               if (!t) return "";
@@ -1602,9 +1610,10 @@
               /* a clause boundary reads as a finished thought; a word boundary
                  leaves it hanging mid-phrase ("...how to stay pragmatic when") */
               var clause = Math.max(cut.lastIndexOf(", "), cut.lastIndexOf(" — "), cut.lastIndexOf("; "));
-              if (clause > max * 0.5) return cut.slice(0, clause).replace(/[\s,;:.–—-]+$/, "");
+              if (clause > max * 0.75) return cut.slice(0, clause).replace(/[\s,;:.–—-]+$/, "");
               var at = cut.lastIndexOf(" ");
-              return cut.slice(0, at > 40 ? at : max).replace(/[\s,;:.–—-]+$/, "") + "\u2026";
+              /* drop a dangling function word so a cut never ends "...to …" */
+              return cut.slice(0, at > 40 ? at : max).replace(/\s+(?:a|an|the|to|of|and|or|with|for|in|on|at|as)$/i, "").replace(/[\s,;:.–—-]+$/, "") + "\u2026";
             }
 
             var intro = document.getElementById("coworkerIntro");
@@ -1617,7 +1626,7 @@
                   "</span></span>" +
                   "<h3>" + esc(c.name) + "</h3>" +
                   (c.role ? '<div class="role">' + esc(c.role) + "</div>" : "") +
-                  (c.description ? '<p class="blurb">' + esc(shortBlurb(c.description, c.name, 120)) + "</p>" : "") +
+                  (c.description ? '<p class="blurb">' + esc(shortBlurb(c.description, c.name, 125)) + "</p>" : "") +
                   "</a>"
                 );
               })

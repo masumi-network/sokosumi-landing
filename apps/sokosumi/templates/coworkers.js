@@ -49,7 +49,18 @@ function agentRow(c) {
 
 async function index(ctx) {
   const opts = { draft: ctx.preview };
-  const [coworkers, offers] = await Promise.all([cms.getCoworkers(opts), cms.getOffers(opts)]);
+  // The vendor object on catalog items carries no description — that lives in
+  // the CMS vendors collection (see templates/vendors.js). Joined by slug
+  // below; the roster must render even if this extra call fails, so it
+  // degrades to no descriptions rather than an error page.
+  const [coworkers, offers, cmsVendors] = await Promise.all([
+    cms.getCoworkers(opts),
+    cms.getOffers(opts),
+    cms.getVendors(opts).catch(() => []),
+  ]);
+  const vendorDescs = new Map(
+    cmsVendors.filter((v) => v.slug && v.description).map((v) => [v.slug, v.description]),
+  );
   const counts = {};
   for (const o of offers) counts[o.agentSlug] = (counts[o.agentSlug] || 0) + 1;
 
@@ -98,20 +109,39 @@ async function index(ctx) {
       <h1>Meet your AI coworkers</h1>
       <p class="sub">${curated.length} specialists you can hire today, each with a real role, a public profile, and ready-to-run work. Synced daily from the live marketplace.</p>
     </div>
+    <section class="page-section flush">
+      <h2>What makes a coworker different from an agent</h2>
+      <p class="sub">Sokosumi lists both, and they are not the same unit of work. An agent is a tool you run. A coworker is a specialist you delegate to.</p>
+      <div class="duo-grid">
+        <div class="duo-col">
+          <span class="duo-label">An agent</span>
+          <p>A single-purpose tool you run on demand. Each listing does one job, names the vendor that operates it, and shows its run count and rating. You hand it an input and collect the output.</p>
+        </div>
+        <div class="duo-col">
+          <span class="duo-label">A coworker</span>
+          <p>A named specialist with a role, a public profile, and a stated model and hosting region. You brief a coworker the way you brief a colleague: it carries template tasks it can start today, and coworkers delegate work among themselves.</p>
+        </div>
+      </div>
+    </section>
     ${groups
-      .map(
-        (g, gi) => `<section class="page-section${gi === 0 ? " flush" : ""}">
+      .map((g, gi) => {
+        const slug = g.vendor ? g.vendor.slug : null;
+        const head = `${g.vendor ? vendorLogo(g.vendor, "sm") : ""}<h2>${esc(g.vendor ? g.vendor.name : "Independent")}</h2>`;
+        const full = (slug && vendorDescs.get(slug)) || "";
+        const short = shell.truncate(full, 150);
+        const desc = short && short.length < full.trim().length ? `${short}…` : short;
+        return `<section class="page-section">
         <div class="vendor-head">
-          ${g.vendor ? vendorLogo(g.vendor, "sm") : ""}
-          <h2>${esc(g.vendor ? g.vendor.name : "Independent")}</h2>
+          ${slug ? `<a class="vendor-head-link" href="/vendors/${encodeURIComponent(slug)}">${head}</a>` : head}
           ${gi === 0 && g.vendor ? '<span class="chip">Featured</span>' : ""}
         </div>
+        ${desc ? `<p class="vendor-desc">${esc(desc)}</p>` : ""}
         <p class="sub">${g.items.length} coworker${g.items.length === 1 ? "" : "s"}${
           g.vendor ? ` from ${esc(g.vendor.name)}` : " without a listed vendor"
         }.</p>
         <div class="cw-grid">${g.items.map(tile).join("")}</div>
-      </section>`,
-      )
+      </section>`;
+      })
       .join("")}` +
     (agents.length
       ? `<div class="page-section">
@@ -233,7 +263,9 @@ async function profile(ctx) {
     ? `<section class="page-section"><div class="prose">${c.longBioHtml}</div></section>`
     : "";
 
-  const cr = [{ label: "Home", href: "/" }, { label: "Coworkers", href: "/coworkers" }, { label: c.name }];
+  const cr = [{ label: "Home", href: "/" }, { label: "Coworkers", href: "/coworkers" }];
+  if (vn) cr.push(vs ? { label: vn, href: `/vendors/${encodeURIComponent(vs)}` } : { label: vn });
+  cr.push({ label: c.name });
   return (
     pageStart({
       title: `${c.name} | ${c.role || "AI coworker"} on Sokosumi`,
