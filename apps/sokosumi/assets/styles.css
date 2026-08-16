@@ -781,11 +781,11 @@ a.card:hover .go { opacity: 1; transform: none; }
   font-size: 11.5px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase;
   color: var(--muted-foreground); margin-bottom: 22px;
 }
-.pull-quote { margin: 0; max-width: 30ch; }
+.pull-quote { margin: 0; }
 .pull-quote blockquote {
   margin: 0; font-weight: 300; letter-spacing: -0.02em;
   font-size: clamp(24px, 3.2vw, 38px); line-height: 1.24; text-wrap: pretty;
-  max-width: 22ch;
+  max-width: 30ch;
 }
 .pull-quote figcaption { display: flex; align-items: center; gap: 14px; margin-top: clamp(24px, 3vw, 34px); }
 .pq-avatar { width: 46px; height: 46px; border-radius: 999px; overflow: hidden; flex-shrink: 0; background: var(--muted); }
@@ -793,9 +793,26 @@ a.card:hover .go { opacity: 1; transform: none; }
 .pq-who { display: flex; flex-direction: column; min-width: 0; }
 .pq-who strong { font-size: 14.5px; font-weight: 500; }
 .pq-who small { font-size: 13px; line-height: 1.45; color: var(--muted-foreground); }
-/* the quote wants the page's measure, not the prose measure */
-.pull-quote { max-width: 40ch; }
-@media (min-width: 900px) { .pull-quote blockquote { max-width: 20ch; } .pull-quote { max-width: none; } }
+/* Desktop: a full-width band. The kicker and attribution become a left rail
+   (same shape as the nav panels' intro rail) and the quote fills the rest of
+   the row behind a hairline, scaled up so the section reads as a deliberate
+   statement across the whole container instead of a narrow column with two
+   thirds of the row empty. */
+@media (min-width: 900px) {
+  .quote-section {
+    display: grid; grid-template-columns: 236px minmax(0, 1fr);
+    grid-template-rows: auto 1fr; column-gap: clamp(36px, 4.5vw, 64px);
+  }
+  .pull-quote { display: contents; }
+  .quote-kicker { grid-area: 1 / 1; margin: 0; padding-right: 24px; }
+  .pull-quote blockquote {
+    grid-area: 1 / 2 / 3 / 3; max-width: none;
+    font-size: clamp(30px, 3.3vw, 44px);
+    border-left: 1px solid var(--border); padding-left: clamp(36px, 4.5vw, 64px);
+    margin-left: calc(-1 * clamp(36px, 4.5vw, 64px));
+  }
+  .pull-quote figcaption { grid-area: 2 / 1; align-self: end; margin: 28px 24px 0 0; }
+}
 
 /* ===== agent listing form ===== */
 .list-form { max-width: 720px; }

@@ -484,6 +484,36 @@ function ctaBand(b) {
 const CHEV =
   '<svg class="nav-chev" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>';
 
+// The picture at the bottom of each panel's intro rail. The base .nav-visual
+// is a finished-looking tinted dot-grid panel on its own, so a rail whose
+// imagery is missing (or whose <img> fails and is removed by nav.js) degrades
+// to a deliberate texture, never a broken image. Decorative throughout, so
+// aria-hidden; images ship as data-src and are hydrated by nav.js on first
+// open, exactly like the coworker faces, so a page view costs nothing.
+function navVisual(variant, inner) {
+  return `<div class="nav-visual${variant ? ` nav-visual-${variant}` : ""}" aria-hidden="true">${inner || ""}</div>`;
+}
+
+// A few coworker portraits for the AI Coworkers rail — the same drawn faces
+// the CTA bands use, which are the imagery this menu is actually about.
+function navVisualFaces() {
+  const pool = (NAV_MODEL.faces || []).slice(0, 4);
+  return navVisual(
+    "people",
+    pool
+      .map(
+        (c) =>
+          `<span class="nav-visual-face"><img data-src="${attr(c.image)}" alt="" width="56" height="56" /></span>`,
+      )
+      .join(""),
+  );
+}
+
+// A zoomed crop of a product render for the Product rail.
+function navVisualShot(src) {
+  return navVisual("shot", `<img data-src="${attr(src)}" alt="" width="2400" height="1350" />`);
+}
+
 // The AI Coworkers mega menu: the top vendors with their wordmark, a few
 // curated coworkers each, and the two catch-all links.
 function agentsPanel() {
@@ -523,6 +553,7 @@ function agentsPanel() {
         <div class="nav-intro">
           <p class="nav-intro-label">AI Coworkers</p>
           <p class="nav-intro-desc">Specialist AI agents with a name, a role and a vendor behind them. Brief one like a colleague and get finished work back.</p>
+          ${navVisualFaces()}
         </div>
         <div class="nav-cols">${cols}</div>
       </div>
@@ -552,6 +583,7 @@ function productPanel() {
         <div class="nav-intro">
           <p class="nav-intro-label">Product</p>
           <p class="nav-intro-desc">How work moves through Sokosumi: brief a coworker, follow it on the task board, collect the output.</p>
+          ${navVisualShot("/assets/shot-board.webp")}
         </div>
         <div class="nav-grid">${rows}</div>
       </div>
@@ -606,6 +638,11 @@ function useCasesPanel() {
         <div class="nav-intro">
           <p class="nav-intro-label">Use cases</p>
           <p class="nav-intro-desc">The work teams hand to AI coworkers, organised by industry. Start from one instead of a blank brief.</p>
+          ${
+            /* No good use-case imagery exists yet: the bare visual is the
+               deliberate placeholder texture until real artwork lands. */
+            navVisual()
+          }
         </div>
         <div class="nav-cols">${cols}</div>
       </div>
