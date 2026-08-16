@@ -30,24 +30,43 @@ function officeViewerUrl(url, type) {
   return "https://view.officeapps.live.com/op/embed.aspx?src=" + encodeURIComponent(src);
 }
 
+// Remote samples (IPFS pins, the Office viewer) can take seconds, and a bare
+// lazy iframe looks like a hung panel until then. Each img/iframe embed gets a
+// veil on top: the asset's own load event lifts it (an inline handler, so it
+// needs no external JS and cannot break the CSS-only tabs), and a delayed CSS
+// animation lifts it anyway after 15s if the load never fires — a dead pin or
+// a blocked viewer must not spin forever. With JS off, a <noscript> rule in
+// samplePreview() hides the veil outright and the embed shows as before.
+const LIFT_VEIL = ` onload="this.parentElement.removeAttribute('data-loading')"`;
+function withVeil(inner) {
+  return `<div class="embed-wrap" data-loading>
+    <div class="embed-loading" aria-hidden="true"><span class="embed-spinner"></span><span>Loading the sample&hellip;</span></div>
+    ${inner}
+  </div>`;
+}
+
 // Render a single output into the preview panel.
 function embedOutput(output, title) {
   const type = output.type || "text";
   const url = output.url;
   const text = output.text;
   if (url && type === "image") {
-    return `<img class="embed-image" src="${attr(url)}" alt="${attr(title)}" loading="lazy" />`;
+    return withVeil(
+      `<img class="embed-image" src="${attr(url)}" alt="${attr(title)}" loading="lazy"${LIFT_VEIL} onerror="this.parentElement.removeAttribute('data-loading')" />`,
+    );
   }
   if (type === "html" && (text || url)) {
     const s = text ? ` srcdoc="${attr(text)}"` : ` src="${attr(url)}"`;
-    return `<iframe class="embed-frame" title="${attr(title)}" sandbox="allow-scripts" loading="lazy"${s}></iframe>`;
+    return withVeil(
+      `<iframe class="embed-frame" title="${attr(title)}" sandbox="allow-scripts" loading="lazy"${LIFT_VEIL}${s}></iframe>`,
+    );
   }
   if (url) {
     const src =
       type in OFFICE_EXT || isOfficeFile(url)
         ? officeViewerUrl(url, type)
         : url + "#toolbar=0&navpanes=0&scrollbar=0&view=FitH";
-    return `<iframe class="embed-frame" title="${attr(title)}" src="${attr(src)}" loading="lazy"></iframe>`;
+    return withVeil(`<iframe class="embed-frame" title="${attr(title)}" src="${attr(src)}" loading="lazy"${LIFT_VEIL}></iframe>`);
   }
   if (text) {
     return `<div class="embed-doc-scroll"><article class="task-doc">
@@ -58,11 +77,15 @@ function embedOutput(output, title) {
   return `<div class="embed-empty">${icon("file-text", 28)}<span>The sample output is generated when you run this task.</span></div>`;
 }
 
+// Without JS the veil's inline lift never runs; hide the veil so the embed
+// (which renders fine on its own) is never covered.
+const VEIL_NOSCRIPT = `<noscript><style>.embed-loading{display:none}</style></noscript>`;
+
 // Preview shell — one output fills the frame; multiple outputs get CSS-only tabs.
 function samplePreview(offer) {
   const outs = offerOutputs(offer);
   if (outs.length <= 1) {
-    return `<div class="task-preview">${embedOutput(outs[0], offer.title)}</div>`;
+    return `<div class="task-preview">${VEIL_NOSCRIPT}${embedOutput(outs[0], offer.title)}</div>`;
   }
   const gid = "out";
   const rules = outs
@@ -83,7 +106,7 @@ function samplePreview(offer) {
     .join("");
   const panels = outs.map((o) => `<div class="embed-panel">${embedOutput(o, offer.title)}</div>`).join("");
   return `<div class="task-preview has-tabs">
-    <style>.embed-panels>.embed-panel{display:none}${rules}</style>
+    ${VEIL_NOSCRIPT}<style>.embed-panels>.embed-panel{display:none}${rules}</style>
     ${radios}<div class="embed-tabs">${tabs}</div><div class="embed-panels">${panels}</div>
   </div>`;
 }
@@ -98,7 +121,7 @@ function taskCard(offer, coworker) {
     .join(" ")
     .toLowerCase();
   return `<a class="offer-card task-hit" href="${attr(href)}" data-cat="${attr(offer.category || "")}" data-out="${attr(offer.output || "text")}" data-text="${attr(searchText)}">
-    <div class="offer-meta"><span>${esc(offer.category || "Task")}</span><span class="dot"></span><span>${esc(om.label)}</span></div>
+    <div class="offer-meta"><span>${esc(offer.category || "Task")}</span><span class="offer-type" data-out="${attr(offer.output || "text")}">${icon(om.icon, 12)}${esc(om.label)}</span></div>
     <div class="offer-title">${esc(offer.title)}</div>
     ${offer.description ? `<div class="offer-desc">${esc(offer.description)}</div>` : ""}
     <div class="offer-foot">${avatar(coworker, "sm")}<span>${esc(coworker.name)}</span><span class="go">${icon("arrow-up-right", 15)}</span></div>
@@ -185,6 +208,47 @@ async function browse(ctx) {
   );
 }
 
+// ---- "What you get" (detail sidebar) ----
+// The CMS `deliverable` is a short phrase at best and empty on many offers,
+// so this section never leans on it alone: it is composed from what every
+// offer reliably has — the output type, the sample outputs rendered on this
+// page, and the coworker who runs it. Nothing here claims more than the data
+// states. `longDeliverable` is a proposed editorial CMS field; the moment it
+// exists it becomes the lead paragraph with no markup change.
+const OUTPUT_PHRASE = {
+  pdf: "a finished PDF, ready to share or print",
+  doc: "an editable document file",
+  slides: "a slide deck",
+  sheet: "a spreadsheet",
+  image: "an image file",
+  text: "a written text deliverable",
+  html: "a working web page that runs in your browser",
+};
+
+function whatYouGet(offer, c, om, outs) {
+  const lead = offer.longDeliverable || offer.deliverable || "";
+  const samples = outs.filter((o) => o && (o.url || o.text));
+  const labels = samples.map((o) => o.label).filter(Boolean);
+  const many = samples.length > 1;
+  const sampleLine = samples.length
+    ? `${many ? "Real samples" : "A real sample"}${labels.length ? ` — ${labels.map(esc).join(", ")} —` : ""} ${
+        many ? "are" : "is"
+      } on this page, so you can inspect the output before you run the task.`
+    : "The sample output appears on this page after the task's first run.";
+  const facts = [
+    `<li>${icon(om.icon, 15)}<span>Delivered as ${OUTPUT_PHRASE[offer.output] || OUTPUT_PHRASE[outs[0].type] || OUTPUT_PHRASE.text}.</span></li>`,
+    `<li>${icon("search", 15)}<span>${sampleLine}</span></li>`,
+    `<li>${icon("check", 15)}<span>A fixed brief run by ${esc(c.name)}${
+      c.role ? `, ${esc(c.role)}` : ""
+    } — add your details and collect the finished file from your task board.</span></li>`,
+  ];
+  return `<div class="deliverable wyg">
+    <div class="label">What you get</div>
+    ${lead ? `<p class="wyg-lead">${esc(lead)}</p>` : ""}
+    <ul class="wyg-facts">${facts.join("")}</ul>
+  </div>`;
+}
+
 // ---- /coworkers/<slug>/tasks/<offerSlug> (detail) ----
 
 async function detail(ctx) {
@@ -228,12 +292,11 @@ async function detail(ctx) {
       <div data-reveal>${samplePreview(offer)}</div>
       <aside class="task-side" data-reveal style="--i:1">
         <div>
-          <div class="meta-row">${offer.category ? `<span class="kicker">${esc(offer.category)}</span>` : ""}<span class="chip">${icon(om.icon, 13)}${esc(om.label)}</span></div>
+          <div class="meta-row">${offer.category ? `<span class="kicker">${esc(offer.category)}</span>` : ""}<span class="offer-type" data-out="${attr(offer.output || outs[0].type || "text")}">${icon(om.icon, 13)}${esc(om.label)}</span></div>
           <h1 style="margin-top:8px">${esc(offer.title)}</h1>
         </div>
         ${offer.description ? `<p class="lede">${esc(offer.description)}</p>` : ""}
-        ${offer.deliverable ? `<div class="deliverable"><div class="label">What you get</div><p>${esc(offer.deliverable)}</p></div>` : ""}
-        ${offer.prompt ? `<div class="prompt-box"><div class="label">The briefing template</div><pre>${esc(offer.prompt)}</pre></div>` : ""}
+        ${whatYouGet(offer, c, om, outs)}
         <div>
           <div class="kicker" style="margin-bottom:8px">Delivered by</div>
           <a class="by-row" href="/coworkers/${encodeURIComponent(c.slug)}">
