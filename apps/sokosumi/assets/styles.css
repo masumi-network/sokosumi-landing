@@ -869,9 +869,8 @@ a.card:hover .go { opacity: 1; transform: none; }
 .legal-doc .prose th, .legal-doc .prose td { padding: 10px 14px; text-align: left; border: 1px solid var(--border); vertical-align: top; }
 .legal-doc .prose th { font-weight: 500; background: var(--muted); }
 
-.foot-social a, .foot-legal a { color: var(--muted-foreground); }
-.foot-social { margin-top: 12px; }
-.foot-legal { margin-top: 12px; }
+/* .foot-social / .foot-legal rules moved to nav.css — the footer is shared
+   chrome and index.html does not load this sheet. */
 
 /* ===== Talk to Sales form ===== */
 .lead-layout { display: grid; gap: clamp(32px, 5vw, 72px); grid-template-columns: 1fr; padding-bottom: clamp(40px, 6vw, 72px); align-items: start; }
