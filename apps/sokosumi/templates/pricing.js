@@ -118,7 +118,7 @@ function planRow(p, i) {
     <div class="plan-credits">${credits}</div>
     <div class="plan-price">
       <span class="amount">${esc(p.price)}</span>
-      <span class="per">${esc(p.per || "per month")}</span>
+      ${p.per ? `<span class="per">${esc(p.per)}</span>` : ""}
     </div>
   </div>`;
 }
