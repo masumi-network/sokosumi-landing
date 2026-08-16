@@ -83,6 +83,11 @@ async function index(ctx) {
   );
 }
 
+// No data-reveal on the document body below: this article IS the page.
+// Starting a whole legal document at opacity 0 means nothing is readable
+// until the deferred site.js has run its observer, which reads as a slow
+// load on a document people open to read immediately. Same reasoning as the
+// .page-head exemption in assets/styles.css.
 async function detail(ctx) {
   const slug = ctx.params.slug;
   if (!isLegal(slug)) return null;
@@ -107,7 +112,7 @@ async function detail(ctx) {
       ${BLURB[slug] ? `<p class="sub">${esc(BLURB[slug])}</p>` : ""}
     </div>
     ${related(slug)}
-    <article class="page-section flush legal-doc" data-reveal>
+    <article class="page-section flush legal-doc">
       <div class="prose">${doc.html}</div>
     </article>` +
     pageEnd()

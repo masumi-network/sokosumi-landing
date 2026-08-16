@@ -668,7 +668,10 @@ function navItems(currentPath) {
   // gave no way to know a menu existed.
   let panelSeq = 0;
   const item = (href, label, panel, extraMatch) => {
-    const current = isCurrent(href) || (extraMatch && isCurrent(extraMatch));
+    // Both branches must yield a string: `extraMatch && …` is undefined when
+    // there is no extraMatch, and interpolating that emits a literal
+    // "undefined" into the tag (<a href="/pricing"undefined>).
+    const current = isCurrent(href) || (extraMatch ? isCurrent(extraMatch) : "");
     if (!panel) return `<a href="${href}"${current}>${label}</a>`;
     const panelId = `nav-panel-${++panelSeq}`;
     const trigger = `<a href="${href}"${current} aria-haspopup="true" aria-expanded="false" aria-controls="${panelId}">${label}${CHEV}</a>`;
