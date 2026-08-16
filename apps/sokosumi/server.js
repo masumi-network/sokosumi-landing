@@ -226,6 +226,35 @@ function transform(coworkersRaw, agentsRaw) {
   return { fetchedAt: new Date().toISOString(), coworkers, agents, categories };
 }
 
+// Editorial three-line card text lives in the CMS (coworkers.seoDescription,
+// written to fill the homepage card exactly). The product API knows nothing
+// about it, so it is joined onto the catalog here as `blurb` — a separate
+// field, because `description` (the full bio) feeds other surfaces. The CMS
+// must never be able to break the catalog: on failure the coworkers simply
+// ship without blurbs and the page falls back to truncating the bio.
+//
+// Join key: the catalog slug is the product's internal slug. Once a public
+// CMS slug diverges from it, the CMS record keeps the product slug in
+// catalogSlug (see coworkerSlugRedirect / cms.getCoworkerByCatalogSlug);
+// until then the two are the same value in `slug`. So match catalogSlug
+// first, then slug.
+async function attachBlurbs(coworkers) {
+  if (!coworkers || !coworkers.length) return;
+  const cmsCw = await cms.getCoworkers().catch(() => []);
+  const byCatalogSlug = new Map();
+  const byPublicSlug = new Map();
+  for (const c of cmsCw) {
+    const text = typeof c.seoDescription === "string" ? c.seoDescription.trim() : "";
+    if (!text) continue;
+    if (c.catalogSlug) byCatalogSlug.set(c.catalogSlug, text);
+    if (c.slug) byPublicSlug.set(c.slug, text);
+  }
+  for (const c of coworkers) {
+    const blurb = byCatalogSlug.get(c.slug) || byPublicSlug.get(c.slug);
+    if (blurb) c.blurb = blurb;
+  }
+}
+
 // ── platform stats (two numbers, one API request each) ───────────────────
 //   tasks — every task ever briefed on the platform, from
 //     /v1/admin/tasks meta.pagination.total. Needs an admin-scoped key; if
@@ -339,6 +368,7 @@ async function refresh() {
   if (!cwRaw && !agRaw) return false;
 
   const fresh = transform(cwRaw || [], agRaw || []);
+  await attachBlurbs(fresh.coworkers);
   const now = fresh.fetchedAt;
   const agents = agRaw ? fresh.agents : catalog.agents;
   catalog = withFallbackOffers({
@@ -997,6 +1027,14 @@ if (process.argv.includes("--once")) {
   // seed loaded at module init.
   http.createServer(handler).listen(port, () => {
     console.log(`Sokosumi site listening on :${port}`);
+  });
+  // The disk/seed catalog predates the CMS blurb join, and when the product
+  // key is missing or its API is down refresh() never replaces it. Attach the
+  // CMS blurbs to whatever we booted with, so the homepage is not blurbless
+  // just because the product API is unreachable. If refresh() wins the race
+  // and swaps the catalog first, this mutates the discarded array — harmless.
+  attachBlurbs(catalog.coworkers).then(() => {
+    catalogJsonCache = null;
   });
   refresh();
   setInterval(refresh, REFRESH_MS);

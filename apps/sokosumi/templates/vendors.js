@@ -142,7 +142,15 @@ function coworkerCard(c, taskCount, i) {
       ${face}
       <span class="vcw-id"><h3>${esc(c.name)}</h3>${c.role ? `<span class="role">${esc(c.role)}</span>` : ""}</span>
     </span>
-    ${c.description ? `<p>${esc(truncate(c.description, 170))}</p>` : ""}
+    ${
+      /* seoDescription is the purpose-written short blurb (complete sentence,
+         card-sized) — verbatim when present; truncating the bio is the fallback */
+      c.seoDescription
+        ? `<p>${esc(c.seoDescription)}</p>`
+        : c.description
+          ? `<p>${esc(truncate(c.description, 170))}</p>`
+          : ""
+    }
     <span class="vcw-foot">${chips.join("")}<span class="go">${icon("arrow-up-right", 15)}</span></span>
   </a>`;
 }

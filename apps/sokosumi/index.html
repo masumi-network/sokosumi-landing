@@ -381,12 +381,11 @@
       .intro-person .blurb {
         margin-top: 9px; font-size: 13px; line-height: 1.5; color: var(--muted-foreground);
         max-width: 34ch;
-        /* exactly three lines at every column width. The JS shortens the
-           text so it usually fits, but a character count cannot predict
-           rendered line count: measured at mid widths (~190-200px and
-           ~240-260px columns) the same texts wrapped 5/5/4 and 4/4/3.
-           The clamp caps the count; the min-height reserves it when a
-           synced bio comes up short. */
+        /* exactly three lines at every column width. The text is editorial
+           (catalog `blurb`, written to fill three lines); only coworkers
+           without one fall back to a JS-truncated bio. The clamp is the
+           hard cap for anything over-long; the min-height reserves the
+           space when a text comes up short. */
         display: -webkit-box; -webkit-box-orient: vertical;
         -webkit-line-clamp: 3; overflow: hidden;
         min-height: 4.5em;
@@ -1366,6 +1365,11 @@
             var intro = document.getElementById("coworkerIntro");
             intro.innerHTML = trio
               .map(function (c, i) {
+                /* c.blurb is editorial text from the CMS, written to fill the
+                   card's three lines exactly — render it verbatim. Truncating
+                   the bio is only the fallback for coworkers that have no
+                   blurb yet; the CSS clamp stays as the hard cap either way. */
+                var blurb = String(c.blurb || "").trim() || shortBlurb(c.description, c.name, 125);
                 return (
                   '<a class="intro-person" href="/ai-coworkers/' + encodeURIComponent(c.slug) + '" data-reveal style="--i:' + i + '">' +
                   '<span class="shell"><span class="portrait" style="display:block">' +
@@ -1373,7 +1377,7 @@
                   "</span></span>" +
                   "<h3>" + esc(c.name) + "</h3>" +
                   (c.role ? '<div class="role">' + esc(c.role) + "</div>" : "") +
-                  (c.description ? '<p class="blurb">' + esc(shortBlurb(c.description, c.name, 125)) + "</p>" : "") +
+                  (blurb ? '<p class="blurb">' + esc(blurb) + "</p>" : "") +
                   "</a>"
                 );
               })
