@@ -230,8 +230,8 @@ function profileTags(c) {
 function offerCard(agentSlug, o, coworker) {
   const om = shell.outputMeta(o.output);
   const href = `/coworkers/${encodeURIComponent(agentSlug)}/tasks/${encodeURIComponent(o.slug)}`;
-  return `<a class="offer-card" href="${attr(href)}">
-    <div class="offer-meta"><span>${esc(o.category || "Task")}</span><span class="dot"></span><span>${esc(om.label)}</span></div>
+  return `<a class="offer-card" href="${attr(href)}" data-out="${attr(o.output || "text")}">
+    <div class="offer-meta"><span>${esc(o.category || "Task")}</span><span class="offer-type" data-out="${attr(o.output || "text")}">${icon(om.icon, 12)}${esc(om.label)}</span></div>
     <div class="offer-title">${esc(o.title)}</div>
     ${o.description ? `<div class="offer-desc">${esc(o.description)}</div>` : ""}
     <div class="offer-foot"><span>View task</span><span class="go">${icon("arrow-up-right", 15)}</span></div>

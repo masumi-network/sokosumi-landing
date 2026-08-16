@@ -475,7 +475,24 @@ a.card:hover .go { opacity: 1; transform: none; }
 }
 .offer-card:hover { border-color: rgba(15, 14, 13, 0.4); transform: translateY(-2px); }
 .offer-meta { display: flex; align-items: center; gap: 10px; font-size: 11.5px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted-foreground); }
-.offer-meta .dot { width: 3px; height: 3px; border-radius: 999px; background: var(--border); }
+/* the output-type badge: per-type icon + label with one quiet tint each, so a
+   wall of cards scans by what a task produces without turning into a rainbow.
+   Hues are kept near-ink (low chroma, ≤10% alpha grounds); text is the only
+   saturated-ish part and stays AA on the card white. */
+.offer-type {
+  display: inline-flex; align-items: center; gap: 6px; margin-left: auto;
+  font-size: 10.5px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 4px 9px; border-radius: var(--r-sm);
+  background: var(--muted); color: var(--muted-foreground); white-space: nowrap;
+}
+.offer-type[data-out="html"] { background: rgba(100, 0, 255, 0.07); color: #5b21c9; }
+.offer-type[data-out="pdf"] { background: rgba(178, 60, 44, 0.08); color: #96473a; }
+.offer-type[data-out="doc"] { background: rgba(43, 84, 156, 0.08); color: #3d5d99; }
+.offer-type[data-out="slides"] { background: rgba(176, 116, 24, 0.1); color: #8a651f; }
+.offer-type[data-out="image"] { background: rgba(26, 122, 103, 0.09); color: #2a6f60; }
+.offer-type[data-out="sheet"] { background: rgba(38, 125, 66, 0.09); color: #34694a; }
+/* on the task detail page the badge sits beside the kicker, not card-right */
+.task-side .offer-type { margin-left: 0; font-size: 11px; }
 .offer-title { font-size: 16px; font-weight: 500; letter-spacing: -0.01em; line-height: 1.35; }
 .offer-desc {
   font-size: 13.5px; line-height: 1.55; color: var(--muted-foreground);
@@ -518,18 +535,53 @@ a.card:hover .go { opacity: 1; transform: none; }
 .deliverable { border: 1px solid var(--border); border-radius: var(--r-md); padding: 14px 16px; background: var(--card); }
 .deliverable .label { font-size: 11.5px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted-foreground); margin-bottom: 6px; }
 .deliverable p { font-size: 14px; line-height: 1.55; }
+/* the composed "What you get" panel: an optional editorial lead (deliverable
+   today, longDeliverable when the CMS grows it) over three fact rows that are
+   always present, so the panel holds up when the lead is empty */
+.wyg .label { margin-bottom: 10px; }
+.wyg-lead { padding-bottom: 12px; margin-bottom: 12px; border-bottom: 1px solid var(--border); }
+.wyg-facts { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.wyg-facts li { display: flex; gap: 10px; font-size: 13.5px; line-height: 1.55; color: rgba(15, 14, 13, 0.75); }
+.wyg-facts .icon { margin-top: 2px; color: var(--muted-foreground); }
 .by-row { display: inline-flex; align-items: center; gap: 12px; transition: opacity 0.25s var(--ease); }
 .by-row:hover { opacity: 0.75; }
 .by-row .who { display: flex; flex-direction: column; line-height: 1.35; font-size: 14.5px; font-weight: 500; }
 .by-row .who small { font-size: 12.5px; font-weight: 400; color: var(--muted-foreground); }
 .task-actions { display: flex; flex-wrap: wrap; gap: 10px; }
 .task-actions .cta-note { flex-basis: 100%; margin-top: 2px; }
-.prompt-box { border: 1px solid var(--border); border-radius: var(--r-md); background: var(--card); }
-.prompt-box .label { font-size: 11.5px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted-foreground); padding: 12px 16px 0; }
-.prompt-box pre { font-family: var(--sans); font-size: 13px; line-height: 1.6; color: var(--muted-foreground); white-space: pre-wrap; padding: 8px 16px 14px; max-height: 220px; overflow: auto; }
 
 /* ===== sample preview embeds ===== */
 .task-preview { border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden; background: var(--card); }
+/* loading veil for remote samples (IPFS pins, the Office viewer): sits on top
+   of the embed while [data-loading] is set. The asset's load event lifts it;
+   if that event never fires (dead pin, blocked viewer) a 15s delayed keyframe
+   lifts it anyway, so nothing spins forever. templates/tasks.js adds a
+   <noscript> rule hiding it when JS is off. */
+.embed-wrap { position: relative; }
+.embed-wrap[data-loading] { min-height: 320px; }
+.embed-loading {
+  position: absolute; inset: 0; z-index: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 12px; padding: 24px;
+  background: var(--card); color: var(--muted-foreground); font-size: 13px; text-align: center;
+  opacity: 0; visibility: hidden; pointer-events: none;
+  transition: opacity 0.35s var(--ease), visibility 0.35s;
+}
+.embed-wrap[data-loading] .embed-loading {
+  opacity: 1; visibility: visible;
+  animation: embed-veil-timeout 0s linear 15s forwards;
+}
+@keyframes embed-veil-timeout { to { opacity: 0; visibility: hidden; } }
+.embed-spinner {
+  width: 22px; height: 22px; border-radius: 999px;
+  border: 2px solid var(--border); border-top-color: var(--primary);
+  animation: embed-spin 0.8s linear infinite;
+}
+@keyframes embed-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) {
+  /* no spin — the veil becomes a static "Loading the sample…" notice; the
+     delayed timeout keyframe stays, because it is a state change, not motion */
+  .embed-spinner { animation: none; }
+}
 .embed-frame { display: block; width: 100%; height: min(72vh, 640px); border: none; background: #fff; }
 .embed-image { display: block; width: 100%; height: auto; }
 .embed-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; min-height: 320px; color: var(--muted-foreground); font-size: 14px; padding: 24px; text-align: center; }
