@@ -109,7 +109,7 @@ async function hub(ctx) {
   const shown = withCases.length ? withCases : industries;
 
   const industrySection = shown.length
-    ? `<div class="page-section flush filter-bar" data-reveal>
+    ? `<div class="page-section flush filter-bar" id="industries" data-reveal>
         <p class="filter-label">Filter by industry</p>
         <div class="ind-bar">${shown.map((i) => industryPill(i, counts[i.slug] || 0)).join("")}</div>
       </div>`
@@ -195,49 +195,178 @@ async function industry(ctx) {
   );
 }
 
+// ── detail page ──────────────────────────────────────────────────────────
+// The converting shape (HubSpot/Stripe/Vercel use-case pages, adapted to
+// ink-on-paper): an outcome-led hero with the lead coworker beside it and
+// two CTAs, the steps block promoted to substantial numbered chapters, the
+// team behind the work with their ready-to-run tasks as the honest proof,
+// then FAQ, related work, and the single closing band. Every section below
+// renders nothing at all when its data is missing.
+
+// The hero the block wrote, made outcome-led: industry in the eyebrow, both
+// CTAs always present (the block's own when set, the site defaults when
+// not), and the lead coworker's portrait as the visual — the coworker IS
+// the product here, the way HubSpot's hero names Marketing Hub.
+function heroSection(doc, blk, inds, crew, lead) {
+  const b = blk || {};
+  const base = b.eyebrow || "Use case";
+  const eyebrow = base === "Use case" && inds[0] ? `Use case · ${esc(inds[0].name)}` : esc(base);
+  const heading = b.heading || doc.title;
+  const sub = b.subheading || doc.description || "";
+
+  const btn = (label, href, cls, analytics) =>
+    `<a class="btn ${cls} btn-lg" href="${attr(href)}"${analytics ? ` data-analytics="sign_up_click" data-analytics-location="use_case_hero"` : ""}>${esc(label)}</a>`;
+  const primaryHref = b.ctaHref || shell.APP;
+  const ctas =
+    btn(b.ctaLabel || "Get started", primaryHref, "btn-primary", primaryHref.startsWith(shell.APP)) +
+    btn(b.secondaryCtaLabel || "Talk to sales", b.secondaryCtaHref || shell.SALES_URL, "btn-outline");
+
+  let rail = "";
+  if (lead && lead.image) {
+    const others = crew.filter((c) => c !== lead && c.image).slice(0, 3);
+    rail = `<aside class="uc-hero-lead">
+      <a class="uc-lead-card${lead.kind === "agent" ? " is-icon" : ""}" href="/ai-coworkers/${encodeURIComponent(lead.slug)}">
+        <img src="${attr(lead.image)}" alt="${attr(lead.name)}" />
+        <span class="uc-lead-who"><strong>Led by ${esc(lead.name)}</strong>${lead.role ? `<small>${esc(lead.role)}</small>` : ""}</span>
+      </a>
+      ${
+        others.length
+          ? `<div class="uc-lead-crew"><span class="uc-crew">${others
+              .map((c) => avatar(c, "sm"))
+              .join("")}</span><span>with ${others.length} more coworker${others.length === 1 ? "" : "s"} on the job</span></div>`
+          : ""
+      }
+    </aside>`;
+  }
+
+  return `<section class="blk blk-hero uc-hero${rail ? " has-lead" : ""}" data-reveal>
+    <div class="uc-hero-copy">
+      <span class="eyebrow">${eyebrow}</span>
+      <h1>${esc(heading)}</h1>
+      ${sub ? `<p class="sub">${esc(sub)}</p>` : ""}
+      <div class="cta-row">${ctas}</div>
+      ${primaryHref.startsWith(shell.APP) ? shell.NO_CARD : ""}
+    </div>
+    ${rail}
+  </section>`;
+}
+
+// The steps block, promoted from three small cards to the numbered spine of
+// the page — one substantial chapter per step, HubSpot's "1. 2. 3." pattern
+// in Sokosumi's language. Other collections keep the compact rendering in
+// blocks.js.
+function chapterSteps(b) {
+  const items = b.items || [];
+  if (!items.length) return "";
+  const head =
+    b.heading || b.subheading
+      ? `<div class="blk-head">${b.heading ? `<h2>${esc(b.heading)}</h2>` : ""}${
+          b.subheading ? `<p class="sub">${esc(b.subheading)}</p>` : ""
+        }</div>`
+      : "";
+  return `<section class="blk blk-chapters" data-reveal>${head}
+    <ol class="chapters">${items
+      .map(
+        (it, i) => `<li class="chapter">
+        <span class="ch-num" aria-hidden="true">${String(i + 1).padStart(2, "0")}</span>
+        <div class="ch-body"><h3>${esc(it.title)}</h3><p>${esc(it.text)}</p></div>
+      </li>`,
+      )
+      .join("")}</ol>
+  </section>`;
+}
+
+// The team is the proof this site can honestly make today: named coworkers
+// with real template tasks a visitor can open and run. Absent crew, absent
+// section.
+function teamSection(crew, offers) {
+  if (!crew.length) return "";
+  const byAgent = new Map();
+  for (const o of offers || []) {
+    if (!byAgent.has(o.agentSlug)) byAgent.set(o.agentSlug, []);
+    byAgent.get(o.agentSlug).push(o);
+  }
+  const cards = crew
+    .map((c) => {
+      const tasks = (byAgent.get(c.catalogSlug) || byAgent.get(c.slug) || []).slice(0, 2);
+      return `<div class="uc-mate">
+      <a class="by-row" href="/ai-coworkers/${encodeURIComponent(c.slug)}">
+        ${avatar(c, "lg")}
+        <span class="who">${esc(c.name)}${c.role ? `<small>${esc(c.role)}</small>` : ""}</span>
+      </a>
+      ${
+        tasks.length
+          ? `<div class="uc-mate-tasks">${tasks
+              .map(
+                (t) =>
+                  `<a href="/ai-coworkers/${encodeURIComponent(c.slug)}/tasks/${encodeURIComponent(t.slug)}">${icon(
+                    "arrow-up-right",
+                    12,
+                  )}<span>${esc(t.title)}</span></a>`,
+              )
+              .join("")}</div>`
+          : ""
+      }
+    </div>`;
+    })
+    .join("");
+  return `<section class="page-section" data-reveal>
+    <h2>The coworkers who run it</h2>
+    <p class="sub">Each one comes with template tasks behind this workflow, ready to brief. Open a task to see the deliverable before you start.</p>
+    <div class="uc-team">${cards}</div>
+  </section>`;
+}
+
+// Related work in the same industries — the "keep reading" HubSpot closes
+// with, built from data that already exists on every doc.
+function relatedSection(doc, inds, allCases, crewOf) {
+  const mine = new Set(inds.map((i) => i.slug));
+  const related = allCases
+    .filter((uc) => uc.slug !== doc.slug && industriesOf(uc).some((i) => mine.has(i.slug)))
+    .slice(0, 3);
+  if (!related.length) return "";
+  return `<section class="page-section" data-reveal>
+    <h2>Related use cases</h2>
+    <div class="card-grid uc-grid">${related.map((uc) => useCaseCard(uc, crewOf(uc))).join("")}</div>
+  </section>`;
+}
+
 async function detail(ctx) {
   const opts = { draft: ctx.preview };
   const doc = await cms.getUseCase(ctx.params.slug, opts);
   if (!doc) return null;
 
-  const layout = doc.layout || [];
   const inds = industriesOf(doc);
-  const relatedSlugs = (doc.relatedAgents || []).map((r) => r && r.agentSlug).filter(Boolean);
+  const [coworkers, offers, allCases] = await Promise.all([
+    cms.getCoworkers(opts).catch(() => []),
+    cms.getOffers(opts).catch(() => []),
+    cms.getUseCases(opts).catch(() => []),
+  ]);
+  const crewOf = crewResolver(coworkers);
+  const crew = crewOf(doc);
+  const lead = leadOf(crew);
 
-  let coworkerSection = "";
-  if (relatedSlugs.length) {
-    const coworkers = await cms.getCoworkers(opts);
-    const bySlug = new Map();
-    for (const c of coworkers) {
-      bySlug.set(c.slug, c);
-      if (c.catalogSlug) bySlug.set(c.catalogSlug, c);
-    }
-    const matched = relatedSlugs.map((s) => bySlug.get(s)).filter(Boolean);
-    if (matched.length) {
-      const rows = matched
-        .map(
-          (c) => `<a class="by-row" href="/ai-coworkers/${encodeURIComponent(c.slug)}">
-          ${avatar(c, "sm")}
-          <span class="who">${esc(c.name)}${c.role ? `<small>${esc(c.role)}</small>` : ""}</span>
-        </a>`,
-        )
-        .join("");
-      coworkerSection = `<section class="page-section">
-        <h2>Coworkers for this</h2>
-        <p class="sub">Coworkers who already run this kind of work. Open a profile to see their template tasks.</p>
-        <div style="display:flex;flex-wrap:wrap;gap:16px 32px">${rows}</div>
-      </section>`;
-    }
-  }
+  // Split the layout into the pieces the page re-orders around its own
+  // sections: the opening hero, the closing band, and the FAQ (which reads
+  // best after the team, as the last objection before the close). Whatever
+  // an editor composed in between renders in their order — steps promoted
+  // to chapters, everything else exactly as on any CMS page.
+  const layout = [...(doc.layout || [])];
+  const heroBlock = layout[0] && layout[0].blockType === "hero" ? layout.shift() : null;
+  const bandBlock = layout.length && layout[layout.length - 1].blockType === "ctaBand" ? layout.pop() : null;
+  const faqIdx = layout.findIndex((b) => b.blockType === "faq");
+  const faqBlock = faqIdx >= 0 ? layout.splice(faqIdx, 1)[0] : null;
 
-  // Block layouts open with their own hero, so no page-head here. Fall back
-  // to a plain head when a doc has no layout yet.
-  const body = layout.length
-    ? blocks.renderBlocks(layout)
-    : `<div class="page-head" data-reveal>
-        <h1>${esc(doc.title)}</h1>
-        ${doc.description ? `<p class="sub">${esc(doc.description)}</p>` : ""}
-      </div>`;
+  const middle = layout
+    .map((b) => (b.blockType === "steps" ? chapterSteps(b) : blocks.renderBlocks([b])))
+    .join("\n");
+
+  const band = blocks.ctaBand(
+    bandBlock || {
+      heading: "Put a coworker on this",
+      subheading: "Create an account, pick this use case, and hand over the first brief.",
+    },
+  );
 
   const cr = [{ label: "Home", href: "/" }, { label: "Use cases", href: "/use-cases" }];
   if (inds.length) {
@@ -251,10 +380,14 @@ async function detail(ctx) {
       description: (doc.description || "").slice(0, 155),
       path: `/use-cases/${doc.slug}`,
       breadcrumb: cr,
-      jsonld: blocks.faqJsonLd(blocks.collectFaqs(layout)) || undefined,
+      jsonld: blocks.faqJsonLd(blocks.collectFaqs(doc.layout)) || undefined,
     }) +
-    body +
-    coworkerSection +
+    heroSection(doc, heroBlock, inds, crew, lead) +
+    middle +
+    teamSection(crew, offers) +
+    (faqBlock ? blocks.renderBlocks([faqBlock]) : "") +
+    relatedSection(doc, inds, allCases, crewOf) +
+    band +
     pageEnd()
   );
 }

@@ -15,7 +15,8 @@ const FEATURED_VENDOR = "serviceplan-group";
 const PICKS_PER_VENDOR = 4;
 const TOP_INDUSTRIES = 3;
 const PICKS_PER_INDUSTRY = 3;
-const POPULAR_USE_CASES = 5;
+// Six jobs is the whole Use cases menu: two columns of three face+title rows.
+const POPULAR_USE_CASES = 6;
 
 function vendorSlugOf(c) {
   return c.vendor && typeof c.vendor === "object" ? c.vendor.slug : null;
@@ -90,12 +91,27 @@ async function buildNav(opts) {
     .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name))
     .slice(0, TOP_INDUSTRIES);
 
-  // The most-used use cases, for the menu's second half: someone who does not
-  // think of their problem as belonging to an industry still needs a way in.
+  // The jobs list that IS the Use cases menu: each use case with the face of
+  // the coworker who leads it (the named curated coworker sits last in
+  // relatedAgents, same convention as templates/useCases.js). Most
+  // cross-industry work first, so the menu leads with the jobs the widest
+  // audience recognises; the industry taxonomy lives on /use-cases where a
+  // filter bar has room for it.
+  const coworkerBySlug = new Map();
+  for (const c of coworkers) {
+    coworkerBySlug.set(c.slug, c);
+    if (c.catalogSlug) coworkerBySlug.set(c.catalogSlug, c);
+  }
+  const leadImageOf = (uc) => {
+    const crew = (uc.relatedAgents || []).map((r) => r && coworkerBySlug.get(r.agentSlug)).filter(Boolean);
+    const lead =
+      [...crew].reverse().find((c) => c.kind === "coworker" && c.image) || crew.find((c) => c.image) || null;
+    return lead ? lead.image : null;
+  };
   const popular = [...useCases]
     .sort((a, b) => (b.industries || []).length - (a.industries || []).length || String(a.title).localeCompare(String(b.title)))
     .slice(0, POPULAR_USE_CASES)
-    .map((uc) => ({ title: uc.title, slug: uc.slug }));
+    .map((uc) => ({ title: uc.title, slug: uc.slug, image: leadImageOf(uc) }));
 
   // Portraits for the CTA bands. Curated coworkers only — marketplace listings
   // are line icons that read as clip art at avatar size. The featured vendor's

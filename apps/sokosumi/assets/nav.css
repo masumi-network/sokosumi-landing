@@ -139,6 +139,14 @@
   object-fit: cover; object-position: 38% 22%; display: block;
   transform: scale(2.1); transform-origin: 38% 22%;
 }
+/* Use cases: the briefing-bar render, cropped to the bar itself — the shot
+   crop below is tuned for the task board and lands this one on white */
+.nav-visual-brief img { object-position: 50% 30%; transform: scale(1.75); transform-origin: 50% 30%; }
+/* The Use cases panel: one grid of jobs, two columns of three — the face of
+   the coworker who leads each job plus its title, and nothing else */
+.nav-jobs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px 16px; align-content: start; }
+.nav-jobs .nav-col-link { padding: 10px 12px; }
+.nav-jobs .nav-face { width: 34px; height: 34px; }
 /* a full-width strip above the foot — the most-used work as a wrapping row of
    links, so it never dictates the panel's height the way a column would */
 .nav-strip { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 6px; margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--border); }

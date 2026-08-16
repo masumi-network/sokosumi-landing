@@ -62,12 +62,29 @@ Publishing shows up within about five minutes. The sitemap updates itself.
    *The first industry you pick wins the breadcrumb and the card eyebrow*, so
    pick the primary one first.
 3. Add **relatedAgents** — one row per coworker, using the coworker's slug (or
-   its `catalogSlug`). These render as the faces on the card and as a
-   "Coworkers for this" section on the page. A slug that matches nothing is
-   dropped silently, so check the coworker's URL.
-4. Build the body in **layout** with the blocks below. Open with a Hero: a
-   use-case page with a layout has no automatic page heading.
+   its `catalogSlug`). These drive most of the page's automatic sections: the
+   faces on the card, the portrait beside the hero, and "The coworkers who run
+   it" with each coworker's template tasks. **Put the named curated coworker
+   LAST** — the last coworker with a portrait becomes the face of the use case,
+   in the hero, on the cards, and in the nav menu. A slug that matches nothing
+   is dropped silently, so check the coworker's URL.
+4. Build the body in **layout** with the blocks below. Open with a Hero and
+   **fill both CTAs** — a use-case hero always shows two buttons, and an empty
+   secondary falls back to "Talk to sales". The recommended layout is
+   Hero → Steps → Checklist → FAQ → CTA band; add a **Stats** block only when
+   you have real numbers and a **Quote** when a testimonial fits the story.
 5. Publish → live at `/use-cases/<slug>`.
+
+Use-case pages re-arrange a few things on their own, so don't fight them:
+
+- **Steps render as full-width numbered chapters** (big purple numeral, large
+  title), not the compact three-up cards other pages get. 3–4 steps with a
+  sentence or two each is the sweet spot.
+- **The FAQ always renders after "The coworkers who run it"**, wherever you
+  drag it — last objection before the close.
+- **"The coworkers who run it" and "Related use cases" are automatic**, built
+  from relatedAgents and the shared industries. No block adds them, no block
+  removes them; they disappear only when there is nothing to show.
 
 Skip **categories** on Sokosumi — the field exists but nothing here reads it.
 
@@ -216,7 +233,7 @@ reorder. Open with a Hero — those three collections render no heading of their
 | **Hero** | eyebrow, heading*, subheading, two CTAs | The one message and action the page exists for. Always first. | Two CTAs with different goals — pick one primary. |
 | **Rich text** | content* | Narrative that reads top to bottom. | Parallel items — use a grid. |
 | **Feature grid** | heading, items (title*, text*) | 3–6 parallel benefits, one idea each. | Anything needing more than two sentences per item. |
-| **Steps** | heading, subheading, 2–6 items | A sequence. Numbered 01, 02 … automatically. | Unordered lists. |
+| **Steps** | heading, subheading, 2–6 items | A sequence. Numbered 01, 02 … automatically. On use-case pages each step renders as a full-width numbered chapter. | Unordered lists. |
 | **Checklist** | heading, intro, 2+ items | "What you get" — scannable outcomes. | Long explanations. |
 | **Stats** | heading, 2–5 items (value*, label*) | Big numbers with proof behind them. | Numbers you cannot source. |
 | **FAQ** | heading, items (question*, answer*) | Real objections. Also generates Google FAQ structured data — the only block that does. | Padding a thin page. |
@@ -316,8 +333,10 @@ except the four top-level labels.
   get a coworker in: set `kind = coworker`, set its `vendor`, keep the vendor
   `active`, and lower the coworker's `order`. A coworker with no vendor never
   appears in the menu at all.
-- **Use cases menu** — one row per industry that has at least one published use
-  case, up to six, in name order.
+- **Use cases menu** — the six most cross-industry use cases, each with the
+  portrait of the coworker who leads it (the last coworker with artwork in
+  relatedAgents). Tagging a use case with more industries moves it up; the
+  industry taxonomy itself lives on `/use-cases`, not in the menu.
 
 The homepage menu is built in the browser from `/api/nav` and can lag the
 sub-page menus by a few minutes. Preview mode affects sub-page menus only.
