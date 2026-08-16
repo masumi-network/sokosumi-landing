@@ -50,6 +50,7 @@
       if (other !== d) close(other, true);
     });
     hydrate(d);
+    d.classList.remove("dismissed");
     d.classList.add("open");
     expose(d, true);
   }
@@ -68,15 +69,36 @@
   drops.forEach(function (d) {
     d.addEventListener("pointerenter", function () { open(d); });
     d.addEventListener("pointerleave", function () { close(d); });
-    // keyboard users get the same panel without a pointer ever being involved
-    d.addEventListener("focusin", function () { open(d); });
+    // keyboard users get the same panel without a pointer ever being involved.
+    // `.dismissed` marks a drop Escape just closed while focus went back to
+    // its trigger — that focus move re-fires focusin, which must not reopen.
+    d.addEventListener("focusin", function () {
+      if (d.classList.contains("dismissed")) return;
+      open(d);
+    });
     d.addEventListener("focusout", function (e) {
-      if (!d.contains(e.relatedTarget)) close(d, true);
+      if (!d.contains(e.relatedTarget)) {
+        d.classList.remove("dismissed");
+        close(d, true);
+      }
     });
   });
 
+  // Escape dismisses for real: `.open` goes, but the CSS :focus-within rule
+  // would keep the panel visible while focus is anywhere inside the drop —
+  // `.dismissed` suppresses that rule (see nav.css) and focus returns to the
+  // trigger, so aria-expanded="false" and what is on screen finally agree.
   document.addEventListener("keydown", function (e) {
-    if (e.key === "Escape") drops.forEach(function (d) { close(d, true); });
+    if (e.key !== "Escape") return;
+    drops.forEach(function (d) {
+      var hadFocus = d.contains(document.activeElement);
+      if (hadFocus || d.classList.contains("open")) d.classList.add("dismissed");
+      close(d, true);
+      if (hadFocus) {
+        var trigger = d.querySelector("[aria-expanded]") || d.querySelector("a");
+        if (trigger) trigger.focus();
+      }
+    });
   });
 })();
 

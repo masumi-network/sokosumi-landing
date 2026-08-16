@@ -72,7 +72,7 @@ async function index(ctx) {
       <div class="row-list">
         ${SLUGS.map(
           (s) => `<a class="row-item" href="/legal/${s}">
-          <h3>${esc(DOCS[s].title || LABEL[s])}</h3>
+          <h2>${esc(DOCS[s].title || LABEL[s])}</h2>
           <p>${esc(BLURB[s] || "")}</p>
           <span class="row-go">Read ${icon("arrow-up-right", 15)}</span>
         </a>`,

@@ -58,12 +58,12 @@ function press() {
     <div class="page-section flush">
       <div class="card-grid" style="max-width:820px">
         <div class="card">
-          <h3>Media inquiries</h3>
+          <h2>Media inquiries</h2>
           <p>Interviews, comments, and background conversations with the Sokosumi team.</p>
           <a class="btn btn-primary" style="margin-top:6px;align-self:flex-start" href="${PRESS_MAILTO}">Email the team</a>
         </div>
         <div class="card">
-          <h3>Facts</h3>
+          <h2>Facts</h2>
           <p>Sokosumi gives marketing teams AI coworkers with real roles that deliver finished files. It is built by Serviceplan Group, one of the world's leading agency groups, together with NMKR.</p>
         </div>
       </div>

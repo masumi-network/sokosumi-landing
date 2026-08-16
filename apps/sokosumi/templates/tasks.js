@@ -88,11 +88,15 @@ function samplePreview(offer) {
     return `<div class="task-preview">${VEIL_NOSCRIPT}${embedOutput(outs[0], offer.title)}</div>`;
   }
   const gid = "out";
+  // Per-radio rules: checked drives which panel shows and which label reads
+  // selected; focus-visible paints the ring on the VISIBLE label — the radio
+  // itself is transparent, so without this keyboard focus has no indicator.
   const rules = outs
     .map(
       (o, i) =>
         `#${gid}-${i}:checked~.embed-panels>.embed-panel:nth-child(${i + 1}){display:block}` +
-        `#${gid}-${i}:checked~.embed-tabs>label[for="${gid}-${i}"]{background:var(--foreground);color:#fff}`,
+        `#${gid}-${i}:checked~.embed-tabs>label[for="${gid}-${i}"]{background:var(--foreground);color:#fff}` +
+        `#${gid}-${i}:focus-visible~.embed-tabs>label[for="${gid}-${i}"]{outline:2px solid var(--primary);outline-offset:2px}`,
     )
     .join("");
   const radios = outs
@@ -105,9 +109,15 @@ function samplePreview(offer) {
     })
     .join("");
   const panels = outs.map((o) => `<div class="embed-panel">${embedOutput(o, offer.title)}</div>`).join("");
+  // The fieldset/legend names the radio group for assistive tech ("Sample
+  // output" + the labels), while radios, tabs, and panels stay siblings so
+  // the ~ combinator selectors above keep working without any JS.
   return `<div class="task-preview has-tabs">
     ${VEIL_NOSCRIPT}<style>.embed-panels>.embed-panel{display:none}${rules}</style>
-    ${radios}<div class="embed-tabs">${tabs}</div><div class="embed-panels">${panels}</div>
+    <fieldset class="embed-tabset">
+      <legend class="sr-only">Sample outputs for this task</legend>
+      ${radios}<div class="embed-tabs">${tabs}</div><div class="embed-panels">${panels}</div>
+    </fieldset>
   </div>`;
 }
 

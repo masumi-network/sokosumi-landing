@@ -31,7 +31,7 @@ function postCard(p) {
   return `<a class="card has-media" href="/blog/${encodeURIComponent(p.slug)}">
     <div class="card-media"><img src="${attr(postImage(p))}" alt="" loading="lazy" /></div>
     <span class="tag-quiet">${esc(meta)}</span>
-    <h3>${esc(p.title)}</h3>
+    <h2>${esc(p.title)}</h2>
     ${p.description ? `<p>${esc(p.description)}</p>` : ""}
   </a>`;
 }

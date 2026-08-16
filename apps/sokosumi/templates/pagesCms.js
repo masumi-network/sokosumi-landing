@@ -19,7 +19,7 @@ function pagePath(slug) {
 
 function pageCard(p) {
   return `<a class="card" href="${attr(pagePath(p.slug))}">
-    <h3>${esc(p.title)}</h3>
+    <h2>${esc(p.title)}</h2>
     ${p.description ? `<p>${esc(p.description)}</p>` : ""}
     <div class="card-foot"><span>Read more</span><span class="go">${icon("arrow-up-right", 15)}</span></div>
   </a>`;

@@ -771,14 +771,17 @@ function crumbs(items) {
   return `<nav class="crumbs container-app" aria-label="Breadcrumb">${parts}</nav>`;
 }
 
-// Standard page opening: head + header + breadcrumbs + <main>. Close with
-// pageEnd(). `cr` doubles as the BreadcrumbList JSON-LD source.
+// Standard page opening: head + skip link + header + breadcrumbs + <main>.
+// Close with pageEnd(). `cr` doubles as the BreadcrumbList JSON-LD source.
+// The skip link is the first focusable thing on the page and targets the
+// shared <main id="main"> — same mechanism as the landing page's own link.
 function pageStart(opts) {
   return (
     head(opts) +
+    `<a class="skip-link" href="#main">Skip to content</a>` +
     header(opts.path) +
     (opts.breadcrumb ? crumbs(opts.breadcrumb) : "") +
-    `<main class="page container-app">`
+    `<main id="main" tabindex="-1" class="page container-app">`
   );
 }
 function pageEnd() {
