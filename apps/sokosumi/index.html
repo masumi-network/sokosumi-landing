@@ -69,7 +69,7 @@
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
     <link rel="manifest" href="/assets/site.webmanifest" />
     <meta name="theme-color" content="#ffffff" />
-    <link rel="preload" as="image" href="/assets/hero-poster.jpg" fetchpriority="high" />
+    <link rel="preload" as="image" href="/assets/shot-board.webp" fetchpriority="high" />
     <link rel="preload" href="/assets/fonts/inter-400-latin.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="stylesheet" href="/assets/fonts.css" />
     <!-- reveals start at opacity 0 and are switched on by script; without JS
@@ -183,15 +183,59 @@
          state and the dropdown panels) live in /assets/nav.css, shared with
          every sub-page — see the <link> at the end of this style block. */
 
-      /* ===== hero: left-aligned serif statement over dark video ===== */
+      /* ===== hero: left-aligned serif statement over a drifting product shot ===== */
       .hero { position: relative; min-height: 100dvh; display: flex; flex-direction: column; overflow: hidden; background: var(--ink); }
-      .hero video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.82; filter: grayscale(1) contrast(1.05) brightness(0.95); }
-      /* Shading at the edges, not over the whole frame. Two flat gradients used
-         to cover the entire hero, so even the lightest point sat at ~70% black
-         and the footage barely read. Now a vignette does the work: the middle
-         stays open, the edges carry the tint, and the picture is visible. */
+
+      /* Default treatment: a product screenshot in a slow Ken Burns drift under a
+         dark scrim. The shot is LIGHT UI, so unlike the video it is dimmed hard
+         (low opacity over the ink ground) and the scrim covers the whole frame —
+         the goal is "clean dark hero with a hint of product behind it", not
+         "look at the screenshot". Only transform is animated (GPU-composited);
+         `alternate` means the pan reverses instead of snapping back. */
+      .hero .hero-shot { position: absolute; inset: 0; overflow: hidden; }
+      .hero .hero-shot img {
+        position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+        opacity: 0.58; filter: grayscale(1) brightness(0.92) contrast(1.04);
+        transform: scale(1.16);
+        animation: hero-drift 52s cubic-bezier(0.37, 0, 0.63, 1) infinite alternate;
+        will-change: transform;
+      }
+      /* Edge headroom: object-fit fills the box before the transform, so the
+         spare margin is (scale - 1)/2 per side — 8% at the tightest keyframe.
+         The largest effective offset is scale * translate ≈ 2.6%, so no edge
+         of the image can ever show, at any viewport aspect ratio. */
+      @keyframes hero-drift {
+        from { transform: scale(1.16) translate3d(2.2%, 1.4%, 0); }
+        to { transform: scale(1.24) translate3d(-2.2%, -1.6%, 0); }
+      }
+      .hero.drift-paused .hero-shot img { animation-play-state: paused; }
+      @media (prefers-reduced-motion: reduce) {
+        .hero .hero-shot img { animation: none; transform: scale(1.18); }
+      }
+
+      /* The video path, kept intact for the lab (?bg=video and friends below). */
+      .hero video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.82; filter: grayscale(1) contrast(1.05) brightness(0.95); display: none; }
+      .hero.bg-video video, .hero.bg-ink video, .hero.bg-color video, .hero.bg-duo video, .hero.bg-blur video { display: block; }
+      .hero.bg-video .hero-shot, .hero.bg-ink .hero-shot, .hero.bg-color .hero-shot, .hero.bg-duo .hero-shot, .hero.bg-blur .hero-shot { display: none; }
+
+      /* The scrim over the screenshot. The vignette recipe below (kept for the
+         video modes) leaves the centre transparent — fine over dark footage,
+         dirty over light UI. Here the whole frame carries weight: heaviest
+         where the left-aligned copy sits and where the transparent header
+         needs contrast, easing toward the right so the shot still reads. */
       .hero .scrim {
         position: absolute; inset: 0;
+        background:
+          /* weight behind the left-aligned copy (which runs wide), easing right */
+          linear-gradient(to right, rgba(0, 0, 0, 0.88), rgba(0, 0, 0, 0.6) 50%, rgba(0, 0, 0, 0.38) 78%, rgba(0, 0, 0, 0.2)),
+          /* the transparent header at the top, the trust band at the bottom */
+          linear-gradient(to bottom, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.1) 32%, rgba(0, 0, 0, 0.06) 55%, rgba(0, 0, 0, 0.58) 100%);
+      }
+      /* Video-mode scrim — shading at the edges, not over the whole frame. Two
+         flat gradients used to cover the entire hero, so even the lightest
+         point sat at ~70% black and the footage barely read. A vignette does
+         the work instead: the middle stays open, the edges carry the tint. */
+      .hero.bg-video .scrim, .hero.bg-color .scrim {
         background:
           /* the vignette — transparent centre, tint rolling in at the edges */
           radial-gradient(125% 105% at 50% 45%, transparent 34%, rgba(0, 0, 0, 0.34) 68%, rgba(0, 0, 0, 0.74) 100%),
@@ -201,8 +245,9 @@
           linear-gradient(to bottom, rgba(0, 0, 0, 0.28), rgba(0, 0, 0, 0) 30%, rgba(0, 0, 0, 0.62) 100%);
       }
 
-      /* hero background lab: try treatments via ?bg=ink|color|duo|blur (+ ?vid=test);
-         the default is now the monochrome treatment */
+      /* hero background lab: screenshots via ?bg=shot-board|shot-roster|shot-brief|shot-chat2
+         (shot-board is the default), the video via ?bg=video, and the old video
+         treatments via ?bg=ink|color|duo|blur (+ ?vid=test) */
       .hero.bg-ink video { opacity: 0.45; }
       .hero.bg-ink .scrim { background: rgba(10, 9, 8, 0.6); }
       .hero.bg-color video { filter: none; }
@@ -725,7 +770,13 @@
 
     <main id="main">
     <div class="hero">
-      <video id="bgVideo" muted loop playsinline autoplay preload="metadata" poster="/assets/hero-poster.jpg" aria-hidden="true">
+      <div class="hero-shot" aria-hidden="true">
+        <img id="bgShot" src="/assets/shot-board.webp" alt="" fetchpriority="high" decoding="async" />
+      </div>
+      <!-- The video path stays wired for the lab (?bg=video). preload="none"
+           and the poster held in data-poster keep the mp4 and jpg from
+           downloading while the screenshot treatment is the default. -->
+      <video id="bgVideo" muted loop playsinline preload="none" data-poster="/assets/hero-poster.jpg" aria-hidden="true">
         <source src="/assets/hero-bg.mp4" type="video/mp4" />
       </video>
       <div class="scrim" aria-hidden="true"></div>
@@ -1166,28 +1217,46 @@
           return '<svg width="' + size + '" height="' + size + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + (ICON_PATHS[name] || "") + "</svg>";
         }
 
-        /* video pause/play */
+        /* hero background pause/play */
         var video = document.getElementById("bgVideo");
-        /* Plays at the footage's own pace. */
         var toggle = document.getElementById("vidToggle");
+        var hero = document.querySelector(".hero");
+        var bgShot = document.getElementById("bgShot");
 
-        /* hero background lab (see the .bg-* styles): ?vid=test&bg=ink|mono|duo|blur */
+        /* hero background lab (see the .bg-* / .hero-shot styles):
+           ?bg=shot-board|shot-roster|shot-brief|shot-chat2 swaps the screenshot,
+           ?bg=video restores the footage, ?bg=ink|color|duo|blur are the old
+           video treatments, ?vid=test swaps the clip (and implies video). */
         var labParams = new URLSearchParams(location.search);
-        if (labParams.get("vid")) {
-          video.src = "/assets/hero-" + labParams.get("vid") + ".mp4";
+        var labBg = labParams.get("bg") || "";
+        var SHOT_BGS = { "shot-board": 1, "shot-roster": 1, "shot-brief": 1, "shot-chat2": 1 };
+        var VIDEO_BGS = { video: 1, ink: 1, color: 1, duo: 1, blur: 1 };
+        var useVideo = !!labParams.get("vid") || !!VIDEO_BGS[labBg];
+        if (SHOT_BGS[labBg]) bgShot.src = "/assets/" + labBg + ".webp";
+        if (useVideo) {
+          hero.classList.add("bg-" + (VIDEO_BGS[labBg] ? labBg : "video"));
+          video.poster = video.getAttribute("data-poster");
+          if (labParams.get("vid")) video.src = "/assets/hero-" + labParams.get("vid") + ".mp4";
           video.load();
           video.play().catch(function () {});
         }
-        if (labParams.get("bg")) document.querySelector(".hero").classList.add("bg-" + labParams.get("bg"));
         var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
         function setState(playing) {
           toggle.textContent = playing ? "❚❚" : "▶";
-          toggle.setAttribute("aria-label", playing ? "Pause background video" : "Play background video");
+          toggle.setAttribute("aria-label", (playing ? "Pause" : "Play") + " background " + (useVideo ? "video" : "motion"));
         }
-        if (reduce) { video.pause(); setState(false); }
+        setState(!reduce);
+        if (reduce) {
+          if (useVideo) video.pause();
+          else hero.classList.add("drift-paused");
+        }
         toggle.addEventListener("click", function () {
-          if (video.paused) { video.play(); setState(true); }
-          else { video.pause(); setState(false); }
+          if (useVideo) {
+            if (video.paused) { video.play(); setState(true); }
+            else { video.pause(); setState(false); }
+          } else {
+            setState(!hero.classList.toggle("drift-paused"));
+          }
         });
 
         /* ---------- product screenshot carousel: next shot peeks right ---------- */
