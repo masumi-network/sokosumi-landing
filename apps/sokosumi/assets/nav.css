@@ -1,8 +1,175 @@
-/* Mobile navigation, shared by the landing page and every sub-page. Below
-   900px the desktop link row is hidden on both surfaces, so without this the
-   only way out of a page on a phone was the footer. Loaded by index.html and
-   by templates/shell.js so the two headers can never drift apart again. */
+/* The site header, shared by every page. The markup comes from ONE place —
+   templates/shell.js header() — rendered server-side on sub-pages and
+   injected into index.html by server.js, and this file is the ONE place its
+   styles live (index.html's inline block and styles.css both link here
+   instead of carrying their own copy, which is how the two headers drifted
+   apart before). Behaviour (dropdown grace period, burger, the overlay
+   scroll flip) lives in /assets/nav.js.
 
+   Two states of the same component:
+   - default: paper bar, sticky, hairline bottom border (every sub-page)
+   - .is-overlay (the homepage): fixed and transparent over the dark video
+     hero with white text; nav.js adds .scrolled once the hero is gone and
+     the bar becomes the same paper treatment as everywhere else. */
+
+/* ===== the bar ===== */
+.site-header {
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(250, 250, 249, 0.92);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+}
+.site-header .bar {
+  display: flex; align-items: center; gap: clamp(20px, 3.4vw, 44px); height: 64px;
+}
+.site-header .mark { height: 16px; width: auto; display: block; transition: filter 0.4s var(--ease); }
+.nav-left { display: flex; align-items: center; gap: clamp(20px, 3.4vw, 44px); min-width: 0; }
+.site-nav { display: flex; align-items: center; gap: 26px; }
+.site-nav a { font-size: 14px; color: rgba(15, 14, 13, 0.62); transition: color 0.25s var(--ease); white-space: nowrap; }
+.site-nav a:hover, .site-nav a[aria-current] { color: var(--foreground); }
+.site-nav a[aria-current] { color: var(--primary); }
+.site-header .actions { margin-left: auto; display: flex; gap: 8px; align-items: center; }
+/* the nav buttons sit a notch above .btn-sm */
+.site-header .btn-sm { height: 36px; }
+
+/* ===== the homepage overlay state ===== */
+.site-header.is-overlay {
+  position: fixed; left: 0; right: 0;
+  background: transparent; border-bottom-color: transparent;
+  backdrop-filter: none; -webkit-backdrop-filter: none;
+  transition: background-color 0.4s var(--ease), border-color 0.4s var(--ease);
+}
+/* white chrome over the dark video */
+.site-header.is-overlay:not(.scrolled) .mark { filter: brightness(0) invert(1); }
+.site-header.is-overlay:not(.scrolled) .site-nav a { color: rgba(255, 255, 255, 0.8); }
+.site-header.is-overlay:not(.scrolled) .site-nav a:hover,
+.site-header.is-overlay:not(.scrolled) .site-nav a[aria-current] { color: #fff; }
+.site-header.is-overlay:not(.scrolled) .actions .btn-ghost { color: rgba(255, 255, 255, 0.9); }
+.site-header.is-overlay:not(.scrolled) .actions .btn-ghost:hover { color: #fff; }
+.site-header.is-overlay:not(.scrolled) .actions .btn-outline { color: #fff; border-color: rgba(255, 255, 255, 0.4); }
+.site-header.is-overlay:not(.scrolled) .actions .btn-outline:hover { border-color: rgba(255, 255, 255, 0.75); }
+.site-header.is-overlay:not(.scrolled) .actions .btn-primary { background: #fff; color: var(--ink); }
+.site-header.is-overlay:not(.scrolled) .nav-burger { color: #fff; border-color: rgba(255, 255, 255, 0.4); }
+/* past the hero (nav.js adds .scrolled) the overlay bar IS the paper bar */
+.site-header.is-overlay.scrolled {
+  background: rgba(250, 250, 249, 0.92);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  border-bottom-color: var(--border);
+}
+/* dropdown panels are always a white card, so their contents keep ink colours
+   in both bar states */
+.site-header .nav-panel { color: var(--foreground); }
+
+/* ===== dropdown menus (hover, plus focus-within for keyboards) ===== */
+/* The trigger fills the bar's full height. It used to be a 17px-tall box in a
+   64px bar, which left dead space between it and the panel: crossing that gap
+   took the pointer out of .nav-drop and snapped the menu shut mid-move. */
+.nav-left { align-self: stretch; }
+.site-nav { height: 100%; }
+.nav-drop { position: relative; display: flex; align-items: center; height: 100%; }
+.nav-drop > a { display: inline-flex; align-items: center; gap: 5px; height: 100%; }
+.nav-chev { transition: transform 0.25s var(--ease); opacity: 0.6; }
+.nav-drop:hover .nav-chev, .nav-drop:focus-within .nav-chev { transform: rotate(180deg); opacity: 1; }
+/* One box for every menu. The panel is a fixed-size surface the content lays
+   out INSIDE of — content count never drives geometry, so hovering across the
+   bar never resizes the menu. Centred on the viewport (its `top` is the 64px
+   bar plus 14px of air), which also means it can never overflow the window. */
+.nav-panel {
+  position: fixed; top: 78px; left: 50%; z-index: 60;
+  width: min(880px, calc(100vw - 48px)); min-height: 356px;
+  display: flex; flex-direction: column;
+  padding: 22px 24px 18px;
+  background: var(--card); border: 1px solid var(--border); border-radius: var(--r-lg);
+  box-shadow: 0 20px 60px rgba(15, 14, 13, 0.18);
+  opacity: 0; visibility: hidden; transform: translate(-50%, -6px);
+  transition: opacity 0.2s var(--ease), transform 0.2s var(--ease), visibility 0.2s;
+}
+/* keeps the pointer from falling through the gap between trigger and panel */
+.nav-panel::before { content: ""; position: absolute; inset: -16px 0 auto 0; height: 16px; }
+.nav-drop:hover .nav-panel, .nav-drop:focus-within .nav-panel, .nav-drop.open .nav-panel {
+  opacity: 1; visibility: visible; transform: translate(-50%, 0);
+}
+/* Inside the box: an intro rail on the left that says what the section is,
+   content in a fixed grid on the right, and a footer strip pinned to the
+   bottom edge. The rail's rule runs the full body height, so shorter content
+   reads as air inside the same panel rather than a smaller panel. */
+.nav-panel-body { flex: 1; display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: 28px; align-items: stretch; }
+.nav-intro { display: flex; flex-direction: column; gap: 10px; padding: 4px 28px 4px 0; border-right: 1px solid var(--border); min-width: 0; }
+.nav-intro-label { font-size: 11.5px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; color: var(--primary); padding: 0 8px; }
+.nav-intro-desc { font-size: 13.5px; line-height: 1.55; color: var(--muted-foreground); padding: 0 8px; text-wrap: pretty; }
+/* a full-width strip above the foot — the most-used work as a wrapping row of
+   links, so it never dictates the panel's height the way a column would */
+.nav-strip { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 6px; margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--border); }
+.nav-strip-label { font-size: 11.5px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted-foreground); padding: 0 8px; margin-right: 6px; }
+/* three fixed tracks with hairline dividers between occupied columns */
+.nav-cols { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); align-content: start; }
+.nav-col { display: flex; flex-direction: column; gap: 2px; min-width: 0; padding: 0 20px; }
+.nav-col:first-child { padding-left: 0; }
+.nav-col:last-child { padding-right: 0; }
+.nav-col + .nav-col { border-left: 1px solid var(--border); }
+.nav-col-head {
+  font-size: 11.5px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase;
+  color: var(--muted-foreground); padding: 4px 8px; margin-bottom: 4px;
+  transition: color 0.2s var(--ease);
+}
+.nav-col-head:hover { color: var(--foreground); }
+/* a wordmark replaces the vendor name in the column head; .invert flattens
+   white artwork to ink so it reads on the panel's white card */
+/* text and wordmark heads share a height so the columns line up */
+.nav-col-head { display: flex; align-items: center; min-height: 26px; }
+.nav-col-head.has-logo { padding: 0 8px; margin-bottom: 6px; opacity: 0.78; transition: opacity 0.2s var(--ease); }
+.nav-col-head.has-logo:hover { opacity: 1; }
+.nav-col-logo { display: block; }
+.nav-col-logo img { height: 17px; width: auto; max-width: 124px; object-fit: contain; display: block; }
+.nav-col-logo.invert img { filter: brightness(0); }
+.nav-col-link {
+  display: flex; flex-direction: column; gap: 1px; padding: 7px 8px; border-radius: var(--r-sm);
+  transition: background-color 0.2s var(--ease);
+}
+.nav-col-link:hover { background: var(--muted); }
+/* a portrait next to each coworker in the menu — a name alone gives no sense
+   of who is on the other side of the link */
+.nav-col-link.has-face { flex-direction: row; align-items: center; gap: 10px; }
+.nav-face {
+  width: 30px; height: 30px; border-radius: 999px; overflow: hidden; flex-shrink: 0;
+  background: var(--muted); display: block;
+}
+.nav-face img { width: 100%; height: 100%; object-fit: cover; display: block; transform: scale(1.08); }
+.nav-face.is-blank { border: 1px solid var(--border); }
+.nav-face-text { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+
+.nav-col-link span { font-size: 14px; font-weight: 400; color: var(--foreground); }
+.nav-col-link small { font-size: 12px; color: var(--muted-foreground); }
+/* The Product items: the page name sits quiet on top, the one-line
+   explanation under it carries the weight — the item reads as what the page
+   IS, not as a bare link */
+.nav-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px 12px; align-content: start; }
+.nav-grid .nav-col-link { padding: 10px 12px; gap: 3px; }
+.nav-grid .nav-col-link span {
+  font-size: 12.5px; font-weight: 500; letter-spacing: 0.02em;
+  color: var(--muted-foreground); transition: color 0.2s var(--ease);
+}
+.nav-grid .nav-col-link small { font-size: 13.5px; color: var(--foreground); line-height: 1.45; }
+.nav-grid .nav-col-link:hover span { color: var(--foreground); }
+.nav-panel-foot {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 24px;
+  margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--border);
+}
+.nav-panel-foot a {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 13px; color: var(--muted-foreground); padding: 0 8px;
+  transition: color 0.2s var(--ease);
+}
+.nav-panel-foot a:hover { color: var(--foreground); }
+/* the one accent in the panel: the strongest way onward, in Sokosumi purple */
+.nav-panel-foot .nav-foot-accent { color: var(--primary); }
+.nav-panel-foot .nav-foot-accent:hover { color: var(--primary); opacity: 0.75; }
+/* .site-nav a sets nowrap for the bar itself; inside a panel that stops the
+   use-case titles wrapping and they run into the next column */
+.nav-panel a, .nav-panel span { white-space: normal; }
+.nav-panel .icon { flex-shrink: 0; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* ===== mobile: burger + drawer ===== */
 .nav-burger {
   display: none;
   width: 36px; height: 36px; flex-shrink: 0;
@@ -18,10 +185,6 @@
 .nav-burger span + span { margin-top: 4px; }
 .nav-burger[aria-expanded="true"] span:first-child { transform: translateY(2.75px) rotate(45deg); }
 .nav-burger[aria-expanded="true"] span:last-child { transform: translateY(-2.75px) rotate(-45deg); }
-
-/* over the video hero the bar is transparent, so the burger borrows the same
-   white treatment the nav links get */
-.island-nav:not(.scrolled) .nav-burger { color: #fff; border-color: rgba(255, 255, 255, 0.4); }
 
 /* Lives outside the header on purpose: the bar uses backdrop-filter, which
    makes it a containing block for fixed descendants, so a drawer nested in it
@@ -47,21 +210,19 @@
 
 @media (max-width: 900px) {
   .nav-burger { display: inline-flex; }
-  /* one breakpoint for both headers — the landing used to keep its links to
-     680px, so the two navs collapsed at different widths */
-  .island-links, .site-nav { display: none; }
-  .island-nav { gap: 14px; }
-  .site-header .actions .btn-ghost, .island-nav .nav-login { display: none; }
+  .site-nav { display: none; }
+  .site-header .actions .btn-ghost { display: none; }
 }
 @media (max-width: 560px) {
-  .site-header .actions .btn-outline, .island-nav .nav-sales { display: none; }
+  .site-header .actions .btn-outline { display: none; }
 }
-/* the drawer is paper, so the bar above it has to be too */
-.island-nav.nav-open {
+/* the drawer is paper, so the bar above it has to be too (nav.js also adds
+   .scrolled while the drawer is open, which carries the text colours) */
+.site-header.is-overlay.nav-open {
   background: rgba(250, 250, 249, 0.92);
   backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
   border-bottom-color: var(--border);
 }
-.island-nav.nav-open .mark { filter: none; }
-.island-nav.nav-open .nav-burger { color: var(--foreground); border-color: var(--border); }
+.site-header.is-overlay.nav-open .mark { filter: none; }
+.site-header.is-overlay.nav-open .nav-burger { color: var(--foreground); border-color: var(--border); }
 body.nav-locked { overflow: hidden; }

@@ -175,120 +175,10 @@
       .skip-link:focus { top: 16px; }
       :focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; border-radius: 2px; }
 
-      /* ===== flat full-width nav (transparent over hero, paper after) ===== */
-      .island-nav {
-        position: fixed; top: 0; left: 0; right: 0; transform: none; z-index: 50;
-        display: flex; align-items: center; gap: clamp(20px, 3.4vw, 44px);
-        height: 64px; border-radius: 0;
-        /* keep the bar full-bleed, but pin its content to the same 1240px
-           grid every section sits on */
-        padding: 0 max(clamp(24px, 4vw, 56px), calc((100% - 1240px) / 2 + clamp(24px, 4vw, 56px)));
-        background: transparent; border-bottom: 1px solid transparent;
-        width: auto; max-width: none;
-        transition: background-color 0.4s var(--ease), border-color 0.4s var(--ease);
-      }
-      .island-nav .mark { height: 16px; width: auto; display: block; filter: brightness(0) invert(1); transition: filter 0.4s var(--ease); }
-      .island-links { display: flex; align-items: center; gap: 26px; }
-      .island-links > a, .island-links .nav-drop > a { font-size: 14px; font-weight: 400; color: rgba(255, 255, 255, 0.8); transition: color 0.25s var(--ease); }
-      .island-links > a:hover, .island-links .nav-drop > a:hover { color: #fff; }
-
-      /* ===== nav dropdowns (hover + focus-within), always on paper so they
-         stay legible over both the video hero and the scrolled bar ===== */
-      /* full-height trigger — see assets/styles.css for why */
-      .island-links { align-self: stretch; }
-      .nav-drop { position: relative; display: inline-flex; align-items: center; height: 100%; }
-      .nav-drop > a { display: inline-flex; align-items: center; gap: 5px; height: 100%; }
-      .nav-chev { transition: transform 0.25s var(--ease); opacity: 0.65; }
-      .nav-drop:hover .nav-chev, .nav-drop:focus-within .nav-chev { transform: rotate(180deg); opacity: 1; }
-      /* one fixed-size box for every menu — see assets/styles.css for why */
-      .nav-panel {
-        position: fixed; top: 78px; left: 50%; z-index: 60;
-        width: min(880px, calc(100vw - 48px)); min-height: 356px;
-        display: flex; flex-direction: column;
-        padding: 22px 24px 18px;
-        background: var(--card); border: 1px solid var(--border); border-radius: var(--r-lg);
-        box-shadow: 0 20px 60px rgba(15, 14, 13, 0.18);
-        opacity: 0; visibility: hidden; transform: translate(-50%, -6px);
-        transition: opacity 0.2s var(--ease), transform 0.2s var(--ease), visibility 0.2s;
-      }
-      .nav-panel::before { content: ""; position: absolute; inset: -16px 0 auto 0; height: 16px; }
-      .nav-drop:hover .nav-panel, .nav-drop:focus-within .nav-panel, .nav-drop.open .nav-panel { opacity: 1; visibility: visible; transform: translate(-50%, 0); }
-      /* intro rail on the left, content grid on the right, foot pinned low */
-      .nav-panel-body { flex: 1; display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: 28px; align-items: stretch; }
-      .nav-intro { display: flex; flex-direction: column; gap: 10px; padding: 4px 28px 4px 0; border-right: 1px solid var(--border); min-width: 0; }
-      .nav-intro-label { font-size: 11.5px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; color: var(--primary); padding: 0 8px; }
-      .nav-intro-desc { font-size: 13.5px; line-height: 1.55; color: var(--muted-foreground); padding: 0 8px; text-wrap: pretty; }
-      .nav-strip { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 6px; margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--border); }
-      .nav-strip-label { font-size: 11.5px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted-foreground); padding: 0 8px; margin-right: 6px; }
-      .nav-cols { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); align-content: start; }
-      .nav-col { display: flex; flex-direction: column; gap: 2px; min-width: 0; padding: 0 20px; }
-      .nav-col:first-child { padding-left: 0; }
-      .nav-col:last-child { padding-right: 0; }
-      .nav-col + .nav-col { border-left: 1px solid var(--border); }
-      .nav-col-head {
-        font-size: 11.5px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase;
-        color: var(--muted-foreground); padding: 4px 8px; margin-bottom: 4px; transition: color 0.2s var(--ease);
-      }
-      .nav-col-head:hover { color: var(--foreground); }
-      /* a wordmark replaces the vendor name in the column head; .invert flattens
-         white artwork to ink so it reads on the panel's white card */
-      /* text and wordmark heads share a height so the columns line up */
-      .nav-col-head { display: flex; align-items: center; min-height: 26px; }
-      .nav-col-head.has-logo { padding: 0 8px; margin-bottom: 6px; opacity: 0.78; transition: opacity 0.2s var(--ease); }
-      .nav-col-head.has-logo:hover { opacity: 1; }
-      .nav-col-logo { display: block; }
-      .nav-col-logo img { height: 17px; width: auto; max-width: 124px; object-fit: contain; display: block; }
-      .nav-col-logo.invert img { filter: brightness(0); }
-      .nav-col-link { display: flex; flex-direction: column; gap: 1px; padding: 7px 8px; border-radius: var(--r-sm); transition: background-color 0.2s var(--ease); }
-      .nav-col-link:hover { background: var(--muted); }
-      .nav-col-link.has-face { flex-direction: row; align-items: center; gap: 10px; }
-      .nav-face { width: 30px; height: 30px; border-radius: 999px; overflow: hidden; flex-shrink: 0; background: var(--muted); display: block; }
-      .nav-face img { width: 100%; height: 100%; object-fit: cover; display: block; transform: scale(1.08); }
-      .nav-face.is-blank { border: 1px solid var(--border); }
-      .nav-face-text { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
-
-      .nav-col-link span { font-size: 14px; color: var(--foreground); }
-      .nav-col-link small { font-size: 12px; color: var(--muted-foreground); }
-      /* Product items: quiet name on top, the explanation carries the line */
-      .nav-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px 12px; align-content: start; }
-      .nav-grid .nav-col-link { padding: 10px 12px; gap: 3px; }
-      .nav-grid .nav-col-link span {
-        font-size: 12.5px; font-weight: 500; letter-spacing: 0.02em;
-        color: var(--muted-foreground); transition: color 0.2s var(--ease);
-      }
-      .nav-grid .nav-col-link small { font-size: 13.5px; color: var(--foreground); line-height: 1.45; }
-      .nav-grid .nav-col-link:hover span { color: var(--foreground); }
-      .nav-panel-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 24px; margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--border); }
-      .nav-panel-foot a { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--muted-foreground); padding: 0 8px; transition: color 0.2s var(--ease); }
-      .nav-panel-foot a:hover { color: var(--foreground); }
-      .nav-panel-foot .nav-foot-accent { color: var(--primary); }
-      .nav-panel-foot .nav-foot-accent:hover { color: var(--primary); opacity: 0.75; }
-      .nav-panel a, .nav-panel span { white-space: normal; }
-      .nav-panel .icon { flex-shrink: 0; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-      .island-nav > div:last-child { margin-left: auto; }
-      .island-nav .nav-login { color: rgba(255, 255, 255, 0.9); }
-      .island-nav:not(.scrolled) .nav-sales { color: #fff; border-color: rgba(255, 255, 255, 0.4); }
-      .island-nav:not(.scrolled) .nav-sales:hover { border-color: rgba(255, 255, 255, 0.75); }
-      .island-nav .btn-sm { height: 36px; }
-      .island-nav:not(.scrolled) .btn-primary { background: #fff; color: var(--ink); }
-      .island-nav.scrolled {
-        background: rgba(250, 250, 249, 0.92);
-        backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-        border-bottom-color: var(--border);
-        box-shadow: none;
-      }
-      .island-nav.scrolled .mark { filter: none; }
-      .island-nav.scrolled .island-links > a,
-      .island-nav.scrolled .island-links .nav-drop > a { color: rgba(15, 14, 13, 0.62); }
-      .island-nav.scrolled .island-links > a:hover,
-      .island-nav.scrolled .island-links .nav-drop > a:hover { color: var(--foreground); }
-      /* panel contents keep their own ink colours in both nav states; the
-         container resets the inheritance context, but stays off the anchors
-         so .nav-panel-foot / .nav-foot-accent colours apply as on sub-pages */
-      .island-nav .nav-panel { color: var(--foreground); }
-      .island-nav.scrolled .nav-login { color: rgba(15, 14, 13, 0.66); }
-      /* the collapse point and the mobile drawer live in /assets/nav.css,
-         shared with the sub-pages so both headers collapse at the same width */
+      /* ===== nav =====
+         The header's styles (including its transparent-over-hero overlay
+         state and the dropdown panels) live in /assets/nav.css, shared with
+         every sub-page — see the <link> at the end of this style block. */
 
       /* ===== hero: left-aligned serif statement over dark video ===== */
       .hero { position: relative; min-height: 100dvh; display: flex; flex-direction: column; overflow: hidden; background: var(--ink); }
@@ -833,40 +723,21 @@
       .band-dark .faq-item[open] summary .faq-x { background: #fff; color: var(--ink); border-color: #fff; }
       .band-dark .faq-item .faq-a { color: rgba(255, 255, 255, 0.6); }
     </style>
-    <!-- shared with every sub-page so the two headers cannot drift. Loaded
-         after the inline block on purpose: media queries add no specificity,
-         so the collapse rules have to come last to beat .island-links above. -->
+    <!-- The whole header (bar, dropdown panels, burger, mobile drawer, and
+         the transparent-overlay state) is styled here, shared with every
+         sub-page so the two surfaces cannot drift. Loaded after the inline
+         block on purpose so its rules win ties. -->
     <link rel="stylesheet" href="/assets/nav.css" />
   </head>
   <body>
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N7GC8SFT" height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Manager"></iframe></noscript>
     <a class="skip-link" href="#main">Skip to content</a>
     <!-- ===== HERO — cinematic center ===== -->
-    <header class="site-banner">
-      <nav class="island-nav" aria-label="Primary">
-        <a href="/" aria-label="Sokosumi">
-          <img class="mark" src="/assets/sokosumi-wordmark.svg" alt="Sokosumi" width="144" height="17" />
-        </a>
-        <div class="island-links">
-          <span class="nav-drop" id="navAgents">
-            <a href="/ai-coworkers">AI Coworkers<svg class="nav-chev" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></a>
-          </span>
-          <span class="nav-drop" id="navProduct">
-            <a href="/product">Product<svg class="nav-chev" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></a>
-          </span>
-          <span class="nav-drop" id="navUseCases">
-            <a href="/use-cases">Use cases<svg class="nav-chev" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></a>
-          </span>
-          <a href="/pricing">Pricing</a>
-        </div>
-        <div style="display: flex; gap: 8px; align-items: center;">
-          <a class="btn btn-sm btn-ghost nav-login" href="https://app.sokosumi.com/signin">Log In</a>
-          <a class="btn btn-sm btn-outline nav-sales" href="/contact/sales">Talk to Sales</a>
-          <a class="btn btn-sm btn-primary" href="https://app.sokosumi.com" data-analytics="sign_up_click" data-analytics-location="nav">Sign Up</a>
-          <button class="nav-burger" id="navBurger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobileNav"><span></span><span></span></button>
-        </div>
-      </nav>
-    </header>
+    <!-- The header (and the mobile drawer it controls) is injected here by
+         server.js from templates/shell.js header("/", { overlay: true }) —
+         the ONE source of truth for the site chrome, shared with every
+         sub-page. Do not hand-write a header in this file. -->
+    <!--SSR:HEADER-->
 
     <main id="main">
     <div class="hero">
@@ -929,21 +800,6 @@
         <button id="vidToggle" class="vid-toggle" aria-label="Pause background video">❚❚</button>
       </div>
     </div>
-    <!-- same links templates/shell.js renders; both use /assets/nav.{css,js} -->
-    <div class="mobile-nav" id="mobileNav" hidden>
-      <a class="m-link" href="/ai-coworkers">AI Coworkers<small>Named specialists you can hire</small></a>
-      <a class="m-link" href="/vendors">Vendors<small>The teams behind them</small></a>
-      <a class="m-link" href="/tasks">Template tasks<small>Ready-to-run work</small></a>
-      <a class="m-link" href="/product">Product<small>How it works, end to end</small></a>
-      <a class="m-link" href="/use-cases">Use cases<small>By job and by industry</small></a>
-      <a class="m-link" href="/pricing">Pricing<small>Plans and credits per seat</small></a>
-      <div class="m-actions">
-        <a class="btn btn-primary" href="https://app.sokosumi.com" data-analytics="sign_up_click" data-analytics-location="mobile_nav">Sign Up</a>
-        <a class="btn btn-outline" href="/contact/sales">Talk to Sales</a>
-        <a class="btn btn-ghost" href="https://app.sokosumi.com/signin">Log In</a>
-      </div>
-    </div>
-
     <!-- ===== AI COWORKERS — asymmetric podium (live from /api/catalog) ===== -->
     <section class="block" id="coworkers">
       <div class="container-app">
@@ -1419,14 +1275,8 @@
           goShot(0);
         }
 
-        /* ---------- island nav: light glass once the hero scrolls away ---------- */
-        var nav = document.querySelector(".island-nav");
-        var hero = document.querySelector(".hero");
-        if (nav && hero && "IntersectionObserver" in window) {
-          new IntersectionObserver(function (entries) {
-            nav.classList.toggle("scrolled", !entries[0].isIntersecting);
-          }, { rootMargin: "-72px 0px 0px 0px" }).observe(hero);
-        }
+        /* the header's transparent-to-paper scroll flip lives in /assets/nav.js,
+           shared with the sub-pages */
 
         /* ---------- scroll reveals ---------- */
         var revealEls = [].slice.call(document.querySelectorAll("[data-reveal]"));
@@ -1449,160 +1299,8 @@
         /* ---------- the introduction trio, Elena centered ---------- */
         var INTRO_SLUGS = ["hannah", "elena", "jamal"];
 
-        /* ---------- nav dropdowns: top vendors + industries from the CMS ---------- */
-        (function () {
-          var ARROW =
-            '<svg class="icon" width="13" height="13" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg>';
-          /* same trigger semantics templates/shell.js renders server-side:
-             the link advertises the panel it controls; nav.js keeps
-             aria-expanded in sync as menus open and close */
-          function exposePanel(drop, panelId) {
-            var trigger = drop.querySelector("a");
-            var panel = drop.querySelector(".nav-panel");
-            if (!trigger || !panel) return;
-            panel.id = panelId;
-            trigger.setAttribute("aria-haspopup", "true");
-            trigger.setAttribute("aria-expanded", "false");
-            trigger.setAttribute("aria-controls", panelId);
-          }
-          fetch("/api/nav")
-            .then(function (r) { return r.json(); })
-            .then(function (n) {
-              var agents = document.getElementById("navAgents");
-              if (agents && (n.vendors || []).length) {
-                var cols = n.vendors
-                  .map(function (v) {
-                    var links = (v.picks || [])
-                      .map(function (p) {
-                        return (
-                          '<a class="nav-col-link has-face" href="/ai-coworkers/' + encodeURIComponent(p.slug) + '">' +
-                          (p.image
-                            ? '<span class="nav-face"><img src="' + esc(p.image) + '" alt="" loading="lazy" /></span>'
-                            : '<span class="nav-face is-blank"></span>') +
-                          '<span class="nav-face-text"><span>' + esc(p.name) + "</span>" +
-                          (p.role ? "<small>" + esc(p.role) + "</small>" : "") +
-                          "</span></a>"
-                        );
-                      })
-                      .join("");
-                    /* the wordmark stands in for the name when we have one;
-                       .invert flattens white artwork to ink, as on /vendors */
-                    var head = v.logo
-                      ? '<span class="nav-col-logo' + (v.logo.invert ? " invert" : "") + '">' +
-                        '<img src="' + esc(v.logo.url) + '" alt="' + esc(v.name) + '" loading="lazy" /></span>'
-                      : esc(v.name);
-                    return (
-                      '<div class="nav-col"><a class="nav-col-head' + (v.logo ? " has-logo" : "") +
-                      '" href="/vendors/' + encodeURIComponent(v.slug) + '">' + head + "</a>" +
-                      links + "</div>"
-                    );
-                  })
-                  .join("");
-                agents.insertAdjacentHTML(
-                  "beforeend",
-                  '<div class="nav-panel" role="group" aria-label="AI Coworkers">' +
-                    '<div class="nav-panel-body">' +
-                      '<div class="nav-intro">' +
-                        '<p class="nav-intro-label">AI Coworkers</p>' +
-                        '<p class="nav-intro-desc">Specialist AI agents with a name, a role and a vendor behind them. Brief one like a colleague and get finished work back.</p>' +
-                      "</div>" +
-                      '<div class="nav-cols">' + cols + "</div>" +
-                    "</div>" +
-                    '<div class="nav-panel-foot">' +
-                      '<a href="/vendors">Show all vendors ' + ARROW + "</a>" +
-                      '<a class="nav-foot-accent" href="/ai-coworkers">Show all coworkers ' + ARROW + "</a>" +
-                    "</div></div>",
-                );
-                exposePanel(agents, "nav-panel-1");
-              }
-
-              /* the product deep-dives, from the CMS via /api/nav */
-              var prod = document.getElementById("navProduct");
-              var productPages = n.productPages || [];
-              if (prod && productPages.length) {
-                function shortLabel(t, max) {
-                  t = String(t || "").trim();
-                  if (t.length <= max) return t;
-                  var cut = t.slice(0, max + 1), at = cut.lastIndexOf(" ");
-                  return cut.slice(0, at > 20 ? at : max).replace(/[\s,;:.–—-]+$/, "") + "\u2026";
-                }
-                prod.insertAdjacentHTML(
-                  "beforeend",
-                  '<div class="nav-panel" role="group" aria-label="Product">' +
-                    '<div class="nav-panel-body">' +
-                      '<div class="nav-intro">' +
-                        '<p class="nav-intro-label">Product</p>' +
-                        '<p class="nav-intro-desc">How work moves through Sokosumi: brief a coworker, follow it on the task board, collect the output.</p>' +
-                      "</div>" +
-                      '<div class="nav-grid">' +
-                        productPages
-                          .map(function (p) {
-                            return (
-                              '<a class="nav-col-link" href="/' + p.slug.split("/").map(encodeURIComponent).join("/") + '">' +
-                              "<span>" + esc(p.title) + "</span>" +
-                              (p.description ? "<small>" + esc(shortLabel(p.description, 62)) + "</small>" : "") +
-                              "</a>"
-                            );
-                          })
-                          .join("") +
-                      "</div>" +
-                    "</div>" +
-                    '<div class="nav-panel-foot"><a href="/product">Product overview ' + ARROW + "</a>" +
-                    '<a class="nav-foot-accent" href="/pricing">Pricing ' + ARROW + "</a></div></div>",
-                );
-                exposePanel(prod, "nav-panel-2");
-              }
-
-              /* same panel templates/shell.js renders: a column per industry
-                 with the work it actually runs, then the most-used column */
-              var uc = document.getElementById("navUseCases");
-              var popular = n.popularUseCases || [];
-              if (uc && ((n.industries || []).length || popular.length)) {
-                function ucLink(p) {
-                  return (
-                    '<a class="nav-col-link" href="/use-cases/' + encodeURIComponent(p.slug) + '">' +
-                    "<span>" + esc(p.title) + "</span></a>"
-                  );
-                }
-                var ucCols = (n.industries || [])
-                  .map(function (i) {
-                    return (
-                      '<div class="nav-col"><a class="nav-col-head" href="/use-cases/industries/' +
-                      encodeURIComponent(i.slug) + '">' + esc(i.name) + "</a>" +
-                      (i.picks || []).map(ucLink).join("") + "</div>"
-                    );
-                  })
-                  .join("");
-                /* only the most-used work the industry columns do not already
-                   show — same dedupe templates/shell.js applies */
-                var shown = {};
-                (n.industries || []).forEach(function (i) {
-                  (i.picks || []).forEach(function (p) { shown[p.slug] = true; });
-                });
-                var extras = popular.filter(function (p) { return !shown[p.slug]; }).slice(0, 4);
-                var popStrip = extras.length
-                  ? '<div class="nav-strip"><span class="nav-strip-label">Most used</span>' + extras.map(ucLink).join("") + "</div>"
-                  : "";
-                uc.insertAdjacentHTML(
-                  "beforeend",
-                  '<div class="nav-panel" role="group" aria-label="Use cases">' +
-                    '<div class="nav-panel-body">' +
-                      '<div class="nav-intro">' +
-                        '<p class="nav-intro-label">Use cases</p>' +
-                        '<p class="nav-intro-desc">The work teams hand to AI coworkers, organised by industry. Start from one instead of a blank brief.</p>' +
-                      "</div>" +
-                      '<div class="nav-cols">' + ucCols + "</div>" +
-                    "</div>" +
-                    popStrip +
-                    '<div class="nav-panel-foot"><a href="/use-cases">All use cases ' + ARROW + "</a>" +
-                    '<a class="nav-foot-accent" href="/tasks">Browse template tasks ' + ARROW + "</a></div>" +
-                    "</div>",
-                );
-                exposePanel(uc, "nav-panel-3");
-              }
-            })
-            .catch(function () { /* nav stays as plain links */ });
-        })();
+        /* dropdown panels arrive server-rendered inside the injected header
+           (templates/shell.js), so there is nothing to hydrate here */
 
         fetch("/api/catalog")
           .then(function (r) { return r.json(); })

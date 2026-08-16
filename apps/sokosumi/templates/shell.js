@@ -676,8 +676,15 @@ function mobileNav() {
 
 const BURGER = `<button class="nav-burger" id="navBurger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobileNav"><span></span><span></span></button>`;
 
-function header(currentPath) {
-  return `<header class="site-header">
+// The ONE site header. Sub-pages render it directly; the homepage gets the
+// exact same markup injected by server.js (serveIndex) in place of the
+// <!--SSR:HEADER--> placeholder in index.html, so the two surfaces cannot
+// drift. `opts.overlay` adds the homepage treatment: transparent over the
+// dark video hero, flipping to the standard paper bar once the hero scrolls
+// away (assets/nav.js toggles .scrolled; assets/nav.css holds both states).
+function header(currentPath, opts) {
+  const overlay = opts && opts.overlay;
+  return `<header class="site-header${overlay ? " is-overlay" : ""}">
       <div class="container-app bar">
         <div class="nav-left">
           <a href="/" aria-label="Sokosumi"><img class="mark" src="/assets/sokosumi-wordmark.svg" alt="Sokosumi" width="144" height="17" /></a>

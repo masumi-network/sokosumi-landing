@@ -80,14 +80,38 @@
   });
 })();
 
+// The homepage's overlay header: transparent over the dark video hero, then
+// the standard paper bar once the hero scrolls away. Sub-pages render the
+// same header without .is-overlay and are always paper, so this block is a
+// no-op there. Lives here — the one script both surfaces load — so the flip
+// cannot exist on one surface and not the other.
+(function () {
+  var bar = document.querySelector(".site-header.is-overlay");
+  if (!bar) return;
+  var hero = document.querySelector(".hero");
+  // No hero to be transparent over (or no observer support): stay paper, so
+  // the bar is never a dark scrim floating on light content.
+  if (!hero || !("IntersectionObserver" in window)) return bar.classList.add("scrolled");
+  new IntersectionObserver(
+    function (entries) {
+      // While the drawer is open the bar must stay paper regardless of what
+      // is behind it; the burger handler below restores the true state on close.
+      if (bar.classList.contains("nav-open")) return;
+      bar.classList.toggle("scrolled", !entries[0].isIntersecting);
+    },
+    // flip once the hero has left the space the 64px bar occupies (plus air)
+    { rootMargin: "-72px 0px 0px 0px" },
+  ).observe(hero);
+})();
+
 // Mobile drawer toggle, shared by the landing page and every sub-page.
-// The drawer markup is rendered server-side (templates/shell.js) and inline
-// on index.html; this only wires the button.
+// The drawer markup comes from templates/shell.js on both surfaces (the
+// server injects it into index.html); this only wires the button.
 (function () {
   var btn = document.getElementById("navBurger");
   var panel = document.getElementById("mobileNav");
   if (!btn || !panel) return;
-  var bar = btn.closest(".island-nav, .site-header");
+  var bar = btn.closest(".site-header");
 
   // On the landing page the bar is transparent over the video and its buttons
   // are inverted for it. An open drawer puts paper behind the bar, so it has
@@ -95,7 +119,7 @@
   // give it back on close, since no intersection fires while the page stays put.
   var hero = document.querySelector(".hero");
   function restoreBarState() {
-    if (!bar || !hero || !bar.classList.contains("island-nav")) return;
+    if (!bar || !hero || !bar.classList.contains("is-overlay")) return;
     bar.classList.toggle("scrolled", hero.getBoundingClientRect().bottom <= 72);
   }
 

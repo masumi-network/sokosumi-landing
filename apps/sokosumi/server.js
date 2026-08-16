@@ -594,14 +594,23 @@ const assetsDir = path.join(root, "assets");
     });
   }
 
-  function serveIndex(req, res) {
+  async function serveIndex(req, res) {
     const file = path.join(root, "index.html");
     const stat = fs.statSync(file);
+    // The homepage carries the SAME header as every sub-page: shell.header()
+    // is the single source of truth, injected here in place of index.html's
+    // <!--SSR:HEADER--> placeholder. `overlay: true` is the one difference —
+    // transparent over the dark video hero, flipping to the standard paper
+    // bar on scroll (assets/nav.js + assets/nav.css).
+    shell.setNav(await buildNav({ draft: hasPreviewCookie(req) }).catch(() => null));
+    const html = fs
+      .readFileSync(file, "utf8")
+      .replace("<!--SSR:HEADER-->", shell.header("/", { overlay: true }));
     send(req, res, 200, {
       "Content-Type": "text/html; charset=utf-8",
       "Cache-Control": "public, max-age=300",
       "Last-Modified": stat.mtime.toUTCString(),
-    }, versionAssets(fs.readFileSync(file, "utf8")));
+    }, versionAssets(html));
   }
 
   const handler = async (req, res) => {
@@ -845,7 +854,9 @@ const assetsDir = path.join(root, "assets");
           return send(req, res, 200, { "Content-Type": "application/xml; charset=utf-8", "Cache-Control": "public, max-age=600" }, xml);
         }
 
-        if (urlPath === "/") return serveIndex(req, res);
+        // awaited so a CMS hiccup inside serveIndex lands in the catch below
+        // instead of becoming an unhandled rejection
+        if (urlPath === "/") return await serveIndex(req, res);
 
         const clean = urlPath.replace(/\/+$/, "") || "/";
         const seg = clean.split("/").filter(Boolean);

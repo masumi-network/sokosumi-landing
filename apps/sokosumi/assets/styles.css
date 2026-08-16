@@ -27,10 +27,14 @@
 /* `clip` rather than `hidden`: it stops a full-bleed band from ever producing
    a horizontal scrollbar without turning <html> into a scroll container. */
 html { scroll-behavior: smooth; overflow-x: clip; }
+/* No overflow-x on body: html's clip above already contains horizontal
+   overflow, and overflow-x: hidden here made <body> its own (never-scrolling)
+   scroll container — which silently broke the sticky header, so it scrolled
+   away with the page instead of pinning to the top. */
 body {
   font-family: var(--sans); font-size: 15px;
   background: var(--background); color: var(--foreground);
-  -webkit-font-smoothing: antialiased; overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
 }
 a { color: inherit; text-decoration: none; }
 img { max-width: 100%; }
@@ -80,135 +84,12 @@ button { font-family: inherit; }
 .btn-lg.btn-outline { padding: 0 22px; }
 .btn .orb { display: none; }
 
-/* ===== header (paper bar on the 1240 grid, like the landing when scrolled) ===== */
-.site-header {
-  position: sticky; top: 0; z-index: 50;
-  background: rgba(250, 250, 249, 0.92);
-  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--border);
-}
-.site-header .bar {
-  display: flex; align-items: center; gap: clamp(20px, 3.4vw, 44px); height: 64px;
-}
-.site-header .mark { height: 16px; width: auto; display: block; }
-.nav-left { display: flex; align-items: center; gap: clamp(20px, 3.4vw, 44px); min-width: 0; }
-.site-nav { display: flex; align-items: center; gap: 26px; }
-.site-nav a { font-size: 14px; color: rgba(15, 14, 13, 0.62); transition: color 0.25s var(--ease); white-space: nowrap; }
-.site-nav a:hover, .site-nav a[aria-current] { color: var(--foreground); }
-.site-header .actions { margin-left: auto; display: flex; gap: 8px; align-items: center; }
-/* the landing bumps its nav buttons a notch above .btn-sm; match it */
-.site-header .btn-sm { height: 36px; }
-
-/* ===== dropdown menus (hover, plus focus-within for keyboards) ===== */
-/* The trigger fills the bar's full height. It used to be a 17px-tall box in a
-   64px bar, which left dead space between it and the panel: crossing that gap
-   took the pointer out of .nav-drop and snapped the menu shut mid-move. */
-.nav-left { align-self: stretch; }
-.site-nav { height: 100%; }
-.nav-drop { position: relative; display: flex; align-items: center; height: 100%; }
-.nav-drop > a { display: inline-flex; align-items: center; gap: 5px; height: 100%; }
-.nav-chev { transition: transform 0.25s var(--ease); opacity: 0.6; }
-.nav-drop:hover .nav-chev, .nav-drop:focus-within .nav-chev { transform: rotate(180deg); opacity: 1; }
-/* One box for every menu. The panel is a fixed-size surface the content lays
-   out INSIDE of — content count never drives geometry, so hovering across the
-   bar never resizes the menu. Centred on the viewport like the old mega panel
-   (its `top` is the 64px bar plus 14px of air), which also means it can never
-   overflow the window at any width. */
-.nav-panel {
-  position: fixed; top: 78px; left: 50%; z-index: 60;
-  width: min(880px, calc(100vw - 48px)); min-height: 356px;
-  display: flex; flex-direction: column;
-  padding: 22px 24px 18px;
-  background: var(--card); border: 1px solid var(--border); border-radius: var(--r-lg);
-  box-shadow: 0 20px 60px rgba(15, 14, 13, 0.18);
-  opacity: 0; visibility: hidden; transform: translate(-50%, -6px);
-  transition: opacity 0.2s var(--ease), transform 0.2s var(--ease), visibility 0.2s;
-}
-/* keeps the pointer from falling through the gap between trigger and panel */
-.nav-panel::before { content: ""; position: absolute; inset: -16px 0 auto 0; height: 16px; }
-.nav-drop:hover .nav-panel, .nav-drop:focus-within .nav-panel, .nav-drop.open .nav-panel {
-  opacity: 1; visibility: visible; transform: translate(-50%, 0);
-}
-/* Inside the box: an intro rail on the left that says what the section is,
-   content in a fixed grid on the right, and a footer strip pinned to the
-   bottom edge. The rail's rule runs the full body height, so shorter content
-   reads as air inside the same panel rather than a smaller panel. */
-.nav-panel-body { flex: 1; display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: 28px; align-items: stretch; }
-.nav-intro { display: flex; flex-direction: column; gap: 10px; padding: 4px 28px 4px 0; border-right: 1px solid var(--border); min-width: 0; }
-.nav-intro-label { font-size: 11.5px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; color: var(--primary); padding: 0 8px; }
-.nav-intro-desc { font-size: 13.5px; line-height: 1.55; color: var(--muted-foreground); padding: 0 8px; text-wrap: pretty; }
-/* a full-width strip above the foot — the most-used work as a wrapping row of
-   links, so it never dictates the panel's height the way a column would */
-.nav-strip { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 6px; margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--border); }
-.nav-strip-label { font-size: 11.5px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted-foreground); padding: 0 8px; margin-right: 6px; }
-/* three fixed tracks with hairline dividers between occupied columns */
-.nav-cols { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); align-content: start; }
-.nav-col { display: flex; flex-direction: column; gap: 2px; min-width: 0; padding: 0 20px; }
-.nav-col:first-child { padding-left: 0; }
-.nav-col:last-child { padding-right: 0; }
-.nav-col + .nav-col { border-left: 1px solid var(--border); }
-.nav-col-head {
-  font-size: 11.5px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase;
-  color: var(--muted-foreground); padding: 4px 8px; margin-bottom: 4px;
-  transition: color 0.2s var(--ease);
-}
-.nav-col-head:hover { color: var(--foreground); }
-/* a wordmark replaces the vendor name in the column head; .invert flattens
-   white artwork to ink so it reads on the panel's white card */
-/* text and wordmark heads share a height so the columns line up */
-.nav-col-head { display: flex; align-items: center; min-height: 26px; }
-.nav-col-head.has-logo { padding: 0 8px; margin-bottom: 6px; opacity: 0.78; transition: opacity 0.2s var(--ease); }
-.nav-col-head.has-logo:hover { opacity: 1; }
-.nav-col-logo { display: block; }
-.nav-col-logo img { height: 17px; width: auto; max-width: 124px; object-fit: contain; display: block; }
-.nav-col-logo.invert img { filter: brightness(0); }
-.nav-col-link {
-  display: flex; flex-direction: column; gap: 1px; padding: 7px 8px; border-radius: var(--r-sm);
-  transition: background-color 0.2s var(--ease);
-}
-.nav-col-link:hover { background: var(--muted); }
-/* a portrait next to each coworker in the menu — a name alone gives no sense
-   of who is on the other side of the link */
-.nav-col-link.has-face { flex-direction: row; align-items: center; gap: 10px; }
-.nav-face {
-  width: 30px; height: 30px; border-radius: 999px; overflow: hidden; flex-shrink: 0;
-  background: var(--muted); display: block;
-}
-.nav-face img { width: 100%; height: 100%; object-fit: cover; display: block; transform: scale(1.08); }
-.nav-face.is-blank { border: 1px solid var(--border); }
-.nav-face-text { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
-
-.nav-col-link span { font-size: 14px; font-weight: 400; color: var(--foreground); }
-.nav-col-link small { font-size: 12px; color: var(--muted-foreground); }
-/* The Product items: the page name sits quiet on top, the one-line
-   explanation under it carries the weight — the item reads as what the page
-   IS, not as a bare link */
-.nav-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px 12px; align-content: start; }
-.nav-grid .nav-col-link { padding: 10px 12px; gap: 3px; }
-.nav-grid .nav-col-link span {
-  font-size: 12.5px; font-weight: 500; letter-spacing: 0.02em;
-  color: var(--muted-foreground); transition: color 0.2s var(--ease);
-}
-.nav-grid .nav-col-link small { font-size: 13.5px; color: var(--foreground); line-height: 1.45; }
-.nav-grid .nav-col-link:hover span { color: var(--foreground); }
-.nav-panel-foot {
-  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 24px;
-  margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--border);
-}
-.nav-panel-foot a {
-  display: inline-flex; align-items: center; gap: 6px;
-  font-size: 13px; color: var(--muted-foreground); padding: 0 8px;
-  transition: color 0.2s var(--ease);
-}
-.nav-panel-foot a:hover { color: var(--foreground); }
-/* the one accent in the panel: the strongest way onward, in Sokosumi purple */
-.nav-panel-foot .nav-foot-accent { color: var(--primary); }
-.nav-panel-foot .nav-foot-accent:hover { color: var(--primary); opacity: 0.75; }
-/* .site-nav a sets nowrap for the bar itself; inside a panel that stops the
-   use-case titles wrapping and they run into the next column */
-.nav-panel a, .nav-panel span { white-space: normal; }
-/* the collapse points and the mobile drawer live in nav.css, shared with the
-   landing page so the two headers stay in step */
+/* ===== header =====
+   The whole site header — bar, dropdown panels, burger, mobile drawer, and
+   the homepage's transparent overlay state — lives in /assets/nav.css, the
+   one stylesheet both index.html and the server-rendered sub-pages load.
+   Do not re-add header rules here: that is exactly how the two surfaces
+   drifted apart before. */
 
 /* ===== breadcrumbs ===== */
 .crumbs { padding: 18px clamp(24px, 4vw, 56px) 0; font-size: 12.5px; color: var(--muted-foreground); }
@@ -1089,9 +970,6 @@ footer.site {
 /* on the dark bands the same role needs the lifted tone */
 .band-dark .eyebrow,
 .blk-cta .eyebrow { color: var(--primary-on-dark); }
-
-/* where you are: the nav item for the section you are in */
-.site-nav a[aria-current] { color: var(--primary); }
 
 /* where you can go: the arrow on a row, and a link in body copy */
 .row-item:hover .row-go { color: var(--primary); }
