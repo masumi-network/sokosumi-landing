@@ -27,7 +27,7 @@
   <body>
     <header>
       <h1 id="labTitle">Hero background lab</h1>
-      <p>The same clip under five treatments. Each frame is the live landing page, so the motion is real. Click a heading to open that variant full-screen.</p>
+      <p>Four drifting screenshots and five video treatments. Each frame is the live landing page, so the motion is real. Click a heading to open that variant full-screen.</p>
       <p id="clipSwitch" style="margin-top: 10px; font-size: 13px;"></p>
     </header>
 
@@ -46,14 +46,18 @@
         }).join(" · ");
 
       var VARIANTS = [
-        { q: "", name: "1 · Monochrome (current default)", desc: "Grayscale with the cinematic scrim. Matches the grayscale photography and ink chapters." },
-        { q: "&bg=color", name: "2 · Full color", desc: "The clip untreated under the cinematic scrim. The previous default." },
-        { q: "&bg=ink", name: "3 · Ink wash", desc: "Flat, heavy dark overlay. The clip becomes a faint texture; maximum text focus, most minimal." },
-        { q: "&bg=duo", name: "4 · Purple duotone", desc: "Grayscale clip washed in Wisteria purple. The strongest brand statement, and the most color." },
-        { q: "&bg=blur", name: "5 · Frosted", desc: "Heavy blur turns the clip into slow-moving ambient color. Abstract, calm, no legibility fight at all." },
+        { url: "/", name: "A · Drifting screenshot: task board (current default)", desc: "shot-board.webp in a slow Ken Burns pan under a dark scrim. The default on the landing page." },
+        { url: "/?bg=shot-roster", name: "B · Drifting screenshot: coworker roster", desc: "shot-roster.webp under the same drift and scrim." },
+        { url: "/?bg=shot-brief", name: "C · Drifting screenshot: brief prompt", desc: "shot-brief.webp under the same drift and scrim." },
+        { url: "/?bg=shot-chat2", name: "D · Drifting screenshot: coworker chat", desc: "shot-chat2.webp under the same drift and scrim." },
+        { q: "", name: "1 · Video, monochrome (previous default)", desc: "Grayscale clip with the cinematic vignette scrim. Reachable directly at /?bg=video." },
+        { q: "&bg=color", name: "2 · Video, full color", desc: "The clip untreated under the cinematic scrim." },
+        { q: "&bg=ink", name: "3 · Video, ink wash", desc: "Flat, heavy dark overlay. The clip becomes a faint texture; maximum text focus, most minimal." },
+        { q: "&bg=duo", name: "4 · Video, purple duotone", desc: "Grayscale clip washed in Wisteria purple. The strongest brand statement, and the most color." },
+        { q: "&bg=blur", name: "5 · Video, frosted", desc: "Heavy blur turns the clip into slow-moving ambient color. Abstract, calm, no legibility fight at all." },
       ];
       document.getElementById("variants").innerHTML = VARIANTS.map(function (v) {
-        var url = "/?vid=" + encodeURIComponent(vid) + v.q;
+        var url = v.url || "/?vid=" + encodeURIComponent(vid) + v.q;
         return (
           '<div class="v"><h2><a href="' + url + '" target="_blank">' + v.name + "</a></h2>" +
           "<p>" + v.desc + "</p>" +
