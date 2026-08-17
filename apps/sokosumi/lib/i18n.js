@@ -110,6 +110,18 @@ function localizeHtml(html) {
 // ── the German dictionary ────────────────────────────────────────────────
 // Keys are the exact English strings the templates use.
 const DE = {
+  "Writing":
+    "Text",
+  "Planning":
+    "Planung",
+  "Data":
+    "Daten",
+  "Presentations":
+    "Pr\u00e4sentationen",
+  "Coordination":
+    "Koordination",
+  "Other":
+    "Sonstiges",
   "Articles, announcements, and press from the team behind your AI coworkers \u2014 how the marketplace works, what teams brief, and what shipped recently.":
     "Artikel, Ank\u00fcndigungen und Presse vom Team hinter Ihren AI Coworkern \u2014 wie der Marktplatz funktioniert, was Teams briefen und was zuletzt erschienen ist.",
   "How Sokosumi compares to other AI platforms and agent tools, side by side: what each one does, how you brief it, and what you actually get back.":

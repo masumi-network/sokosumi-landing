@@ -132,7 +132,7 @@ function taskCard(offer, coworker) {
     .join(" ")
     .toLowerCase();
   return `<a class="offer-card task-hit" href="${attr(href)}" data-cat="${attr(offer.category || "")}" data-out="${attr(offer.output || "text")}" data-text="${attr(searchText)}">
-    <div class="offer-meta"><span>${esc(offer.category || t("Task"))}</span><span class="offer-type" data-out="${attr(offer.output || "text")}">${icon(om.icon, 12)}${esc(om.label)}</span></div>
+    <div class="offer-meta"><span>${esc(offer.category ? t(offer.category) : t("Task"))}</span><span class="offer-type" data-out="${attr(offer.output || "text")}">${icon(om.icon, 12)}${esc(om.label)}</span></div>
     <div class="offer-title">${esc(offer.title)}</div>
     ${offer.description ? `<div class="offer-desc">${esc(offer.description)}</div>` : ""}
     <div class="offer-foot">${avatar(coworker, "sm")}<span>${esc(coworker.name)}</span><span class="go">${icon("arrow-up-right", 15)}</span></div>
@@ -165,7 +165,7 @@ async function browse(ctx) {
 
   const chips =
     `<button type="button" class="fchip" data-cat="">${esc(t("All"))} <span>${hits.length}</span></button>` +
-    cats.map(([name, n]) => `<button type="button" class="fchip" data-cat="${attr(name)}">${esc(name)} <span>${n}</span></button>`).join("");
+    cats.map(([name, n]) => `<button type="button" class="fchip" data-cat="${attr(name)}">${esc(t(name))} <span>${n}</span></button>`).join("");
 
   const coworkerCount = new Set(hits.map(({ c }) => c.slug)).size;
   const countLine = tp(
@@ -311,7 +311,7 @@ async function detail(ctx) {
       <div data-reveal>${samplePreview(offer)}</div>
       <aside class="task-side" data-reveal style="--i:1">
         <div>
-          <div class="meta-row">${offer.category ? `<span class="kicker">${esc(offer.category)}</span>` : ""}<span class="offer-type" data-out="${attr(offer.output || outs[0].type || "text")}">${icon(om.icon, 13)}${esc(om.label)}</span></div>
+          <div class="meta-row">${offer.category ? `<span class="kicker">${esc(t(offer.category))}</span>` : ""}<span class="offer-type" data-out="${attr(offer.output || outs[0].type || "text")}">${icon(om.icon, 13)}${esc(om.label)}</span></div>
           <h1 style="margin-top:8px">${esc(offer.title)}</h1>
         </div>
         ${offer.description ? `<p class="lede">${esc(offer.description)}</p>` : ""}
