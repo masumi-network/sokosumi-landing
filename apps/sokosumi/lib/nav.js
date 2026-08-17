@@ -99,27 +99,20 @@ async function buildNav(opts) {
     .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name))
     .slice(0, TOP_INDUSTRIES);
 
-  // The jobs list that IS the Use cases menu: each use case with the face of
-  // the coworker who leads it (the named curated coworker sits last in
-  // relatedAgents, same convention as templates/useCases.js). Most
-  // cross-industry work first, so the menu leads with the jobs the widest
-  // audience recognises; the industry taxonomy lives on /use-cases where a
-  // filter bar has room for it.
-  const coworkerBySlug = new Map();
-  for (const c of coworkers) {
-    coworkerBySlug.set(c.slug, c);
-    if (c.catalogSlug) coworkerBySlug.set(c.catalogSlug, c);
-  }
-  const leadImageOf = (uc) => {
-    const crew = (uc.relatedAgents || []).map((r) => r && coworkerBySlug.get(r.agentSlug)).filter(Boolean);
-    const lead =
-      [...crew].reverse().find((c) => c.kind === "coworker" && c.image) || crew.find((c) => c.image) || null;
-    return lead ? lead.image : null;
-  };
+  // The jobs list that IS the Use cases menu: each use case with its primary
+  // industry (the first industry on the doc — same convention the breadcrumb
+  // and card eyebrow use). No coworker faces here: a use case is a piece of
+  // work run by a team, not one person's act. Most cross-industry work
+  // first, so the menu leads with the jobs the widest audience recognises;
+  // the full industry taxonomy lives on /use-cases where the filter bar has
+  // room for it.
   const popular = [...useCases]
     .sort((a, b) => (b.industries || []).length - (a.industries || []).length || String(a.title).localeCompare(String(b.title)))
     .slice(0, POPULAR_USE_CASES)
-    .map((uc) => ({ title: uc.title, slug: uc.slug, image: leadImageOf(uc) }));
+    .map((uc) => {
+      const inds = (uc.industries || []).filter((i) => i && typeof i === "object" && i.name);
+      return { title: uc.title, slug: uc.slug, industry: inds.length ? inds[0].name : "" };
+    });
 
   // Portraits for the CTA bands. Curated coworkers only — marketplace listings
   // are line icons that read as clip art at avatar size. The featured vendor's

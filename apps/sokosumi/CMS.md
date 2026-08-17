@@ -59,27 +59,44 @@ Publishing shows up within about five minutes. The sitemap updates itself.
    description is the card teaser and the meta description.
 2. Pick one or more **industries**. This is what puts the use case on
    `/use-cases/industries/<slug>` and what fills the "Use cases" nav dropdown.
-   *The first industry you pick wins the breadcrumb and the card eyebrow*, so
-   pick the primary one first.
+   *The first industry you pick wins the breadcrumb, the hero eyebrow, the
+   card eyebrow, and the caption under the use case in the nav menu*, so pick
+   the primary one first.
 3. Add **relatedAgents** — one row per coworker, using the coworker's slug (or
-   its `catalogSlug`). These drive most of the page's automatic sections: the
-   faces on the card, the portrait beside the hero, and "The coworkers who run
-   it" with each coworker's template tasks. **Put the named curated coworker
-   LAST** — the last coworker with a portrait becomes the face of the use case,
-   in the hero, on the cards, and in the nav menu. A slug that matches nothing
-   is dropped silently, so check the coworker's URL.
+   its `catalogSlug`). These drive the automatic sections: "The coworkers who
+   run it" with each coworker's template tasks, and the "N coworkers on it"
+   line on the cards. Order does not matter for artwork — no coworker fronts
+   the page any more; the hero and every card carry an abstract field
+   generated from the slug instead. A slug that matches nothing is dropped
+   silently, so check the coworker's URL.
 4. Build the body in **layout** with the blocks below. Open with a Hero and
    **fill both CTAs** — a use-case hero always shows two buttons, and an empty
    secondary falls back to "Talk to sales". The recommended layout is
-   Hero → Steps → Checklist → FAQ → CTA band; add a **Stats** block only when
-   you have real numbers and a **Quote** when a testimonial fits the story.
+   Hero → Steps → Rich text → Feature grids → Checklist → FAQ → CTA band; add
+   a **Stats** block only when you have real numbers and a **Quote** when a
+   named customer fits the story.
 5. Publish → live at `/use-cases/<slug>`.
 
-Use-case pages re-arrange a few things on their own, so don't fight them:
+Use-case pages follow the HubSpot use-case shape and re-arrange a few things
+on their own, so don't fight them:
 
+- **The hero is centred over an abstract field.** The artwork is generated
+  from the slug — deterministic, different per page, nothing to upload. The
+  first industry rides the hero eyebrow.
+- **The first Rich text block is hoisted under the hero** as the centred
+  value-prop intro, wherever you drag it. One to three short paragraphs is
+  the sweet spot; no rich text simply means no intro.
 - **Steps render as full-width numbered chapters** (big purple numeral, large
   title), not the compact three-up cards other pages get. 3–4 steps with a
   sentence or two each is the sweet spot.
+- **A mid-page CTA is automatic** after your composed blocks: the outcome
+  (the doc's title) restated with the hero's two buttons. Don't add a second
+  CTA band for it.
+- **A Stats block is the page's results band** — big numbers after the
+  capability sections. Only add one when every number has a source; the page
+  is designed to render nothing there until then.
+- **A Quote block is the page's customer-story slot.** Same rule: a real,
+  named person or nothing.
 - **The FAQ always renders after "The coworkers who run it"**, wherever you
   drag it — last objection before the close.
 - **"The coworkers who run it" and "Related use cases" are automatic**, built
@@ -333,10 +350,10 @@ except the four top-level labels.
   get a coworker in: set `kind = coworker`, set its `vendor`, keep the vendor
   `active`, and lower the coworker's `order`. A coworker with no vendor never
   appears in the menu at all.
-- **Use cases menu** — the six most cross-industry use cases, each with the
-  portrait of the coworker who leads it (the last coworker with artwork in
-  relatedAgents). Tagging a use case with more industries moves it up; the
-  industry taxonomy itself lives on `/use-cases`, not in the menu.
+- **Use cases menu** — the six most cross-industry use cases, each captioned
+  with its primary industry (the first one on the doc) and a small abstract
+  swatch generated from the slug. Tagging a use case with more industries
+  moves it up; the full industry taxonomy lives on `/use-cases`.
 
 The homepage menu is built in the browser from `/api/nav` and can lag the
 sub-page menus by a few minutes. Preview mode affects sub-page menus only.

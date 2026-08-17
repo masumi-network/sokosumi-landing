@@ -5,6 +5,7 @@
 const shell = require("./shell");
 const cms = require("../lib/cms");
 const blocks = require("./blocks");
+const art = require("./art");
 const { esc, attr, icon, avatar, pageStart, pageEnd } = shell;
 
 // Populated industry relations only (depth 1 gives objects; ids are skipped).
@@ -12,37 +13,23 @@ function industriesOf(uc) {
   return (uc.industries || []).filter((i) => i && typeof i === "object" && i.slug);
 }
 
-// The coworker who leads the work is what makes one use case recognisable
-// from another: the portraits are strongly coloured and no two are alike,
-// where eight cards of grey text are indistinguishable. The named curated
-// coworker is listed last in relatedAgents, so scan from the end and fall
-// back to any related listing with artwork.
-function leadOf(crew) {
-  const list = crew || [];
-  return [...list].reverse().find((c) => c.kind === "coworker" && c.image) || list.find((c) => c.image) || null;
-}
-
-// A use case card carries what a reader actually wants: which industry it is
-// for, who leads the work, and who else is on it. `crew` is the resolved
-// coworker docs behind relatedAgents; it is optional, so the card degrades
-// to text when nothing resolves.
+// A use case card: the industry it is for, the outcome, and how many
+// coworkers are on it. The banner is the page's own abstract field at
+// thumbnail size, so the card previews the page it links to — no single
+// coworker fronts the work. `crew` (the resolved coworker docs behind
+// relatedAgents) is optional; the card degrades to text without it.
 function useCaseCard(uc, crew) {
   const ind = industriesOf(uc)[0];
-  const team = (crew || []).slice(0, 4);
-  const lead = leadOf(crew);
-  const media = lead
-    ? `<span class="uc-lead${lead.kind === "agent" ? " is-icon" : ""}">
-        <img src="${attr(lead.image)}" alt="${attr(lead.name)}" loading="lazy" />
-        <em>${esc(lead.name)}</em>
-      </span>`
-    : "";
-  const others = team.length > 1 ? `${team.length - 1} more on it` : "Read the workflow";
-  return `<a class="card uc-card${media ? " has-lead" : ""}" href="/use-cases/${encodeURIComponent(uc.slug)}">
+  const svg = art.field(uc.slug, { w: 600, h: 240 });
+  const media = svg ? `<span class="uc-art" aria-hidden="true">${svg}</span>` : "";
+  const n = (crew || []).length;
+  const foot = n ? `${n} coworker${n === 1 ? "" : "s"} on it` : "Read the workflow";
+  return `<a class="card uc-card${media ? " has-art" : ""}" href="/use-cases/${encodeURIComponent(uc.slug)}">
     ${media}
     <span class="uc-eyebrow">${esc(ind ? ind.name : "Use case")}</span>
     <h3>${esc(uc.title)}</h3>
     <p>${esc(uc.description || "")}</p>
-    <div class="card-foot"><span class="tag-quiet">${esc(others)}</span><span class="go">${icon(
+    <div class="card-foot"><span class="tag-quiet">${esc(foot)}</span><span class="go">${icon(
       "arrow-up-right",
       15,
     )}</span></div>
@@ -117,7 +104,7 @@ async function hub(ctx) {
 
   const casesSection = `<section class="page-section flush">
       <h2>${useCases.length === 1 ? "One workflow" : `${useCases.length} workflows`}</h2>
-      <p class="sub">Each one is a real job, start to finished file, with the coworker who leads it.</p>
+      <p class="sub">Each one is a real job, start to finished file, run by a team of coworkers.</p>
       ${
         useCases.length
           ? `<div class="card-grid uc-grid">${useCases.map((uc) => useCaseCard(uc, crewOf(uc))).join("")}</div>`
@@ -196,18 +183,21 @@ async function industry(ctx) {
 }
 
 // ── detail page ──────────────────────────────────────────────────────────
-// The converting shape (HubSpot/Stripe/Vercel use-case pages, adapted to
-// ink-on-paper): an outcome-led hero with the lead coworker beside it and
-// two CTAs, the steps block promoted to substantial numbered chapters, the
-// team behind the work with their ready-to-run tasks as the honest proof,
-// then FAQ, related work, and the single closing band. Every section below
-// renders nothing at all when its data is missing.
+// HubSpot's use-case shape (hubspot.com/use-case/generate-leads), translated
+// to ink-on-paper: breadcrumb, a centred outcome-led hero over an abstract
+// field with two CTAs, a centred value-prop intro, numbered capability
+// chapters, the audience/segment grids the editors wrote, a results slot and
+// a customer-quote slot that render nothing until real data exists, a
+// mid-page CTA restating the outcome, the team as a supporting section, FAQ,
+// related use cases, and the single closing band. No section leads with one
+// coworker; every section renders nothing at all when its data is missing.
 
-// The hero the block wrote, made outcome-led: industry in the eyebrow, both
-// CTAs always present (the block's own when set, the site defaults when
-// not), and the lead coworker's portrait as the visual — the coworker IS
-// the product here, the way HubSpot's hero names Marketing Hub.
-function heroSection(doc, blk, inds, crew, lead) {
+// Centred hero. The visual is a seeded abstract field (templates/art.js)
+// behind the copy — deterministic per slug, different across the eight
+// pages, and absent (a plain hero) if generation fails. Industry rides the
+// eyebrow; both CTAs always present (the block's own when set, the site
+// defaults when not).
+function heroSection(doc, blk, inds) {
   const b = blk || {};
   const base = b.eyebrow || "Use case";
   const eyebrow = base === "Use case" && inds[0] ? `Use case · ${esc(inds[0].name)}` : esc(base);
@@ -221,25 +211,10 @@ function heroSection(doc, blk, inds, crew, lead) {
     btn(b.ctaLabel || "Get started", primaryHref, "btn-primary", primaryHref.startsWith(shell.APP)) +
     btn(b.secondaryCtaLabel || "Talk to sales", b.secondaryCtaHref || shell.SALES_URL, "btn-outline");
 
-  let rail = "";
-  if (lead && lead.image) {
-    const others = crew.filter((c) => c !== lead && c.image).slice(0, 3);
-    rail = `<aside class="uc-hero-lead">
-      <a class="uc-lead-card${lead.kind === "agent" ? " is-icon" : ""}" href="/ai-coworkers/${encodeURIComponent(lead.slug)}">
-        <img src="${attr(lead.image)}" alt="${attr(lead.name)}" />
-        <span class="uc-lead-who"><strong>Led by ${esc(lead.name)}</strong>${lead.role ? `<small>${esc(lead.role)}</small>` : ""}</span>
-      </a>
-      ${
-        others.length
-          ? `<div class="uc-lead-crew"><span class="uc-crew">${others
-              .map((c) => avatar(c, "sm"))
-              .join("")}</span><span>with ${others.length} more coworker${others.length === 1 ? "" : "s"} on the job</span></div>`
-          : ""
-      }
-    </aside>`;
-  }
+  const svg = art.field(doc.slug, { w: 1200, h: 460, bias: "edges" });
 
-  return `<section class="blk blk-hero uc-hero${rail ? " has-lead" : ""}" data-reveal>
+  return `<section class="blk blk-hero uc-hero-hs" data-reveal>
+    ${svg ? `<div class="uc-hero-art" aria-hidden="true">${svg}</div>` : ""}
     <div class="uc-hero-copy">
       <span class="eyebrow">${eyebrow}</span>
       <h1>${esc(heading)}</h1>
@@ -247,8 +222,15 @@ function heroSection(doc, blk, inds, crew, lead) {
       <div class="cta-row">${ctas}</div>
       ${primaryHref.startsWith(shell.APP) ? shell.NO_CARD : ""}
     </div>
-    ${rail}
   </section>`;
+}
+
+// The first rich text block, hoisted under the hero as the centred
+// value-prop intro — HubSpot's "Use Marketing Hub to…" paragraph. Pages
+// whose editors wrote no rich text simply have no intro.
+function introSection(b) {
+  if (!b || !b.contentHtml) return "";
+  return `<section class="blk uc-intro" data-reveal><div class="prose">${b.contentHtml}</div></section>`;
 }
 
 // The steps block, promoted from three small cards to the numbered spine of
@@ -276,9 +258,27 @@ function chapterSteps(b) {
   </section>`;
 }
 
-// The team is the proof this site can honestly make today: named coworkers
-// with real template tasks a visitor can open and run. Absent crew, absent
-// section.
+// The mid-page CTA HubSpot places after the capability sections: the outcome
+// restated, with the same pair of doors as the hero. Built entirely from the
+// doc, so it never needs an editor and never invents a claim.
+function midCta(doc, heroBlk) {
+  const b = heroBlk || {};
+  const primaryHref = b.ctaHref || shell.APP;
+  const signup = primaryHref.startsWith(shell.APP);
+  return `<section class="page-section uc-mid-cta" data-reveal>
+    <h2>${esc(doc.title)}</h2>
+    <p class="sub">Create an account and hand over the first brief today.</p>
+    <div class="cta-row">
+      <a class="btn btn-primary btn-lg" href="${attr(primaryHref)}"${signup ? ` data-analytics="sign_up_click" data-analytics-location="use_case_mid"` : ""}>${esc(b.ctaLabel || "Get started")}</a>
+      <a class="btn btn-outline btn-lg" href="${attr(shell.SALES_URL)}">Talk to sales</a>
+    </div>
+    ${signup ? shell.NO_CARD : ""}
+  </section>`;
+}
+
+// The team is a supporting section, not the headline act: named coworkers
+// with real template tasks a visitor can open and run — the proof this site
+// can honestly make today. Absent crew, absent section.
 function teamSection(crew, offers) {
   if (!crew.length) return "";
   const byAgent = new Map();
@@ -317,8 +317,8 @@ function teamSection(crew, offers) {
   </section>`;
 }
 
-// Related work in the same industries — the "keep reading" HubSpot closes
-// with, built from data that already exists on every doc.
+// Related work in the same industries — the "keep exploring" close HubSpot
+// ends with, built from data that already exists on every doc.
 function relatedSection(doc, inds, allCases, crewOf) {
   const mine = new Set(inds.map((i) => i.slug));
   const related = allCases
@@ -344,16 +344,21 @@ async function detail(ctx) {
   ]);
   const crewOf = crewResolver(coworkers);
   const crew = crewOf(doc);
-  const lead = leadOf(crew);
 
   // Split the layout into the pieces the page re-orders around its own
-  // sections: the opening hero, the closing band, and the FAQ (which reads
+  // sections: the opening hero, the closing band, the first rich text
+  // (hoisted to the centred intro under the hero), and the FAQ (which reads
   // best after the team, as the last objection before the close). Whatever
   // an editor composed in between renders in their order — steps promoted
-  // to chapters, everything else exactly as on any CMS page.
+  // to numbered chapters, everything else exactly as on any CMS page. A
+  // stats block is the results band and a quote block is the customer
+  // story; neither exists until an editor has real numbers or a named
+  // customer, so those HubSpot sections render nothing today.
   const layout = [...(doc.layout || [])];
   const heroBlock = layout[0] && layout[0].blockType === "hero" ? layout.shift() : null;
   const bandBlock = layout.length && layout[layout.length - 1].blockType === "ctaBand" ? layout.pop() : null;
+  const introIdx = layout.findIndex((b) => b.blockType === "richText");
+  const introBlock = introIdx >= 0 ? layout.splice(introIdx, 1)[0] : null;
   const faqIdx = layout.findIndex((b) => b.blockType === "faq");
   const faqBlock = faqIdx >= 0 ? layout.splice(faqIdx, 1)[0] : null;
 
@@ -382,8 +387,10 @@ async function detail(ctx) {
       breadcrumb: cr,
       jsonld: blocks.faqJsonLd(blocks.collectFaqs(doc.layout)) || undefined,
     }) +
-    heroSection(doc, heroBlock, inds, crew, lead) +
+    heroSection(doc, heroBlock, inds) +
+    introSection(introBlock) +
     middle +
+    midCta(doc, heroBlock) +
     teamSection(crew, offers) +
     (faqBlock ? blocks.renderBlocks([faqBlock]) : "") +
     relatedSection(doc, inds, allCases, crewOf) +
