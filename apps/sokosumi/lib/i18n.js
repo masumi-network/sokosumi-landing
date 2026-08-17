@@ -110,6 +110,14 @@ function localizeHtml(html) {
 // ── the German dictionary ────────────────────────────────────────────────
 // Keys are the exact English strings the templates use.
 const DE = {
+  "Articles, announcements, and press from the team behind your AI coworkers \u2014 how the marketplace works, what teams brief, and what shipped recently.":
+    "Artikel, Ank\u00fcndigungen und Presse vom Team hinter Ihren AI Coworkern \u2014 wie der Marktplatz funktioniert, was Teams briefen und was zuletzt erschienen ist.",
+  "How Sokosumi compares to other AI platforms and agent tools, side by side: what each one does, how you brief it, and what you actually get back.":
+    "Wie sich Sokosumi im direkten Vergleich mit anderen AI-Plattformen und Agent-Tools schl\u00e4gt: was jedes davon leistet, wie Sie es briefen und was zur\u00fcckkommt.",
+  "Every Sokosumi release in order: new capabilities, improvements and fixes, with the date each one shipped and what changed for your coworkers.":
+    "Jedes Sokosumi-Release der Reihe nach: neue Funktionen, Verbesserungen und Fehlerbehebungen, mit Datum und dem, was sich f\u00fcr Ihre Coworker ge\u00e4ndert hat.",
+  "How to get the most out of your AI coworkers: setup, briefing patterns, workflows, and the details that decide whether a task comes back usable.":
+    "So holen Sie das Beste aus Ihren AI Coworkern heraus: Einrichtung, Briefing-Muster, Workflows und die Details, die entscheiden, ob ein Task brauchbar zur\u00fcckkommt.",
   "This page's content is briefly unavailable while our content service recovers. It still exists \u2014 try again in a minute or two.":
     "Der Inhalt dieser Seite ist kurzzeitig nicht verf\u00fcgbar, w\u00e4hrend unser Content-Service wiederhergestellt wird. Die Seite existiert weiterhin \u2014 versuchen Sie es in ein bis zwei Minuten erneut.",
   "Named specialists you can hire today, each with a real role and a public profile. Synced nightly from the live marketplace.":
