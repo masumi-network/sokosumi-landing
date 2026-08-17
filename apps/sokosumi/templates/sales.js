@@ -65,7 +65,7 @@ function form(values, error) {
 }
 
 function sentState() {
-  return `<div class="notice" data-reveal>
+  return `<div class="notice" data-reveal data-analytics="generate_lead" data-analytics-on="load" data-analytics-form-name="sales_inquiry">
     <span class="eyebrow">${esc(t("Request received"))}</span>
     <h1>${esc(t("Thanks, that is on its way."))}</h1>
     <p>${esc(t("We have your request and will come back to you within one working day. If it is urgent, write to"))} <a href="mailto:info@sokosumi.com">info@sokosumi.com</a> ${esc(t("and it reaches the same inbox."))}</p>

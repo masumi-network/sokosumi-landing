@@ -205,8 +205,12 @@ function heroSection(doc, blk, inds) {
   const heading = b.heading || doc.title;
   const sub = b.subheading || doc.description || "";
 
+  // `analytics` true = the signup CTA; false = the sales CTA. Both are intent
+  // worth measuring, they are just different intents.
   const btn = (label, href, cls, analytics) =>
-    `<a class="btn ${cls} btn-lg" href="${attr(href)}"${analytics ? ` data-analytics="sign_up_click" data-analytics-location="use_case_hero"` : ""}>${esc(label)}</a>`;
+    `<a class="btn ${cls} btn-lg" href="${attr(href)}" data-analytics="${
+      analytics ? "sign_up_click" : "talk_to_sales_click"
+    }" data-analytics-location="use_case_hero">${esc(label)}</a>`;
   const primaryHref = b.ctaHref || shell.APP_SIGNUP;
   const ctas =
     btn(b.ctaLabel || t("Get started"), primaryHref, "btn-primary", primaryHref.startsWith(shell.APP)) +

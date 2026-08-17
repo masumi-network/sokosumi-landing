@@ -60,6 +60,13 @@ const ANALYTICS_HEAD = `<script>
     gtag('set', 'ads_data_redaction', true);
   </script>
   <script>(function(w,d,s,l,i){
+        // Production hostnames only. Preview deploys and local dev were feeding the
+    // same GA4 property as production — over the last 7 days the preview host
+    // sent 366 pageviews against production's 156, plus localhost and
+    // 127.0.0.1, which makes every report wrong until someone remembers to
+    // filter. Nothing measures anything anywhere else.
+    var TRACK_HOSTS = { "www.sokosumi.com": 1, "sokosumi.com": 1 };
+    if (!TRACK_HOSTS[location.hostname]) return;
     w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});
     // GTM and its gtag payload are ~315KB, and on a phone that bandwidth
     // competes with the hero for the paint. Nothing in the container needs to
@@ -770,7 +777,7 @@ function mobileNav() {
         ${links}
         <div class="m-actions">
           <a class="btn btn-primary" href="${APP_SIGNUP}" data-analytics="sign_up_click" data-analytics-location="mobile_nav">${esc(t("Sign Up"))}</a>
-          <a class="btn btn-outline" href="${SALES_URL}">${esc(t("Talk to Sales"))}</a>
+          <a class="btn btn-outline" href="${SALES_URL}" data-analytics="talk_to_sales_click" data-analytics-location="mobile_nav">${esc(t("Talk to Sales"))}</a>
           <a class="btn btn-ghost" href="${APP_SIGNIN}">${esc(t("Log In"))}</a>
         </div>
       </div>`;
@@ -797,7 +804,7 @@ function header(currentPath, opts) {
         </div>
         <div class="actions">
           <a class="btn btn-sm btn-ghost" href="${APP_SIGNIN}">${esc(t("Log In"))}</a>
-          <a class="btn btn-sm btn-outline" href="${SALES_URL}">${esc(t("Talk to Sales"))}</a>
+          <a class="btn btn-sm btn-outline" href="${SALES_URL}" data-analytics="talk_to_sales_click" data-analytics-location="nav">${esc(t("Talk to Sales"))}</a>
           <a class="btn btn-sm btn-primary" href="${APP_SIGNUP}" data-analytics="sign_up_click" data-analytics-location="nav">${esc(t("Sign Up"))}</a>
           ${burger()}
         </div>

@@ -238,7 +238,7 @@ function form(values, error) {
 }
 
 function sentState() {
-  return `<div class="notice" data-reveal>
+  return `<div class="notice" data-reveal data-analytics="generate_lead" data-analytics-on="load" data-analytics-form-name="agent_listing">
     <span class="eyebrow">${esc(t("Submission received"))}</span>
     <h1>${esc(t("Thanks — your agent is with the team."))}</h1>
     <p>${esc(t("We will review the listing and come back to you. If you need to add anything, reply to the confirmation or write to"))} <a href="mailto:${attr(leads.SUPPORT_TO)}">${esc(leads.SUPPORT_TO)}</a>.</p>

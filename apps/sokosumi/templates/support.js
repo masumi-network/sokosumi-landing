@@ -99,7 +99,7 @@ function supportForm(values, error) {
 }
 
 function sentState() {
-  return `<div class="notice" data-reveal>
+  return `<div class="notice" data-reveal data-analytics="generate_lead" data-analytics-on="load" data-analytics-form-name="support_request">
     <span class="eyebrow">${esc(t("Request received"))}</span>
     <h1>${esc(t("Thanks — that is with support."))}</h1>
     <p>${esc(t("We have it and will come back to you within one working day. If it is urgent, write to"))} <a href="mailto:${attr(leads.SUPPORT_TO)}">${esc(leads.SUPPORT_TO)}</a> ${esc(t("and it reaches the same inbox."))}</p>

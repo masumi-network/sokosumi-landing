@@ -68,13 +68,18 @@ Nothing analytics- or ads-related leaves the browser until the visitor opts in.
 ## Events
 
 GA4 records `page_view` on every route by itself. `view_pricing` is derived in
-GTM from the URL (`/pricing`) — also no code. The only interaction this site
-instruments is the signup CTA:
+GTM from the URL (`/pricing`) — also no code.
 
-| Event           | Fires when…                          | How |
-|-----------------|--------------------------------------|-----|
-| `sign_up_click` `{location, plan?}` | a "Sign Up" CTA is clicked | `data-analytics="sign_up_click"` on the button (hero, nav, mobile nav, pricing plans, CTA band) |
+| Event | Fires when… | How |
+|-------|-------------|-----|
+| `sign_up_click` `{location}` | a "Sign Up" / "Get started" CTA is clicked | `data-analytics="sign_up_click"` (hero, nav, mobile nav, CTA band, use-case hero/mid) |
+| `talk_to_sales_click` `{location}` | a "Talk to Sales" CTA is clicked | `data-analytics="talk_to_sales_click"` (hero, nav, mobile nav, use-case hero) |
+| `generate_lead` `{form_name}` | a lead form is **accepted by the server** | `data-analytics-on="load"` on the success state — `sales_inquiry`, `support_request`, `agent_listing` |
 | `consent_status` `{consent_analytics, consent_marketing}` | cookie choice made | `assets/consent.js` |
+
+`generate_lead` fires on the server-rendered `?sent=1` state, not on the submit
+click, so it counts submissions the server actually accepted. A click handler
+would also count the ones that failed validation.
 
 `sign_up_click` is the marketing-side *intent*; the actual account creation
 fires `sign_up` in the app. Together they are the top of the funnel:
@@ -83,9 +88,24 @@ fires `sign_up` in the app. Together they are the top of the funnel:
 sign_up_click (here)  →  sign_up (app)  →  onboarding_complete  →  agent_hired  →  purchase
 ```
 
-To add an interaction event, put `data-analytics="event_name"` on the element
-(plus optional `data-analytics-*` params), then add a Custom Event trigger +
-GA4 Event tag in GTM. No code change beyond the attribute.
+## Adding an event
+
+Put `data-analytics="event_name"` on the element (plus optional
+`data-analytics-*` attributes, which become event parameters), then add a
+Custom Event trigger + GA4 Event tag in GTM. No code change beyond the
+attribute.
+
+Add `data-analytics-on="load"` to fire on page load instead of on click — for
+outcomes rather than interactions. It fires once per element per page.
+
+## Where it does NOT run
+
+GTM only loads on `www.sokosumi.com` and `sokosumi.com` (`TRACK_HOSTS` in the
+loader). Preview deployments and local dev used to feed the same GA4 property
+as production — over one 7-day window the preview host sent 366 pageviews
+against production's 156, plus `localhost` and `127.0.0.1` — which makes every
+report wrong until someone remembers to filter. Consent Mode defaults still run
+everywhere; only the container is withheld.
 
 ## The GTM container
 
@@ -93,3 +113,24 @@ The container (GTM-N7GC8SFT) is configured in the GTM UI. See the app repo's
 `apps/web/TRACKING.md` for its contents (GA4 config with consent + cross-domain,
 per-event GA4 tags, User-ID, Google Ads linker). Test with Tag Assistant before
 publishing and confirm no tag fires before consent is granted.
+
+## Known gap — ad tags are not consent-gated
+
+Audited 2026-08-17 by reading the published container (`gtm.js`) directly.
+
+All GA4 tags require `analytics_storage` — 1 Google tag (`G-G4BW0XC76M`) plus 22
+GA4 event tags. Correct.
+
+**11 Google Ads tags declare no consent requirement at all**: the Google tag for
+`AW-16455471438`, two Conversion Linkers, seven conversion tags and one
+remarketing tag. They fire before the visitor has chosen, which was confirmed on
+a clean browser with no consent cookie — `gtag/js?id=AW-16455471438` and
+`pagead2.googlesyndication.com/ccm/collect` both went out.
+
+That contradicts the promise at the top of this file ("Nothing analytics- or
+ads-related leaves the browser until the visitor opts in") and is the Advanced
+Consent Mode behaviour, not the Basic one described here. Fixing it is a GTM UI
+change — set the ad tags' "Additional consent checks" to require `ad_storage`,
+`ad_user_data` and `ad_personalization` — not a code change, so it is not done
+here. Decide with whoever owns the container and the privacy notice; the
+operator is Munich-based, so this is a GDPR/TTDSG question, not a preference.

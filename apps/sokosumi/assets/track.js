@@ -21,6 +21,34 @@
     return out;
   }
 
+  // Some events are outcomes, not clicks. A lead form here is a plain POST that
+  // redirects back with ?sent=1, so the honest place to record it is the success
+  // state the server rendered — firing on click would also count submissions
+  // that failed validation. Mark an element data-analytics-on="load" and it
+  // fires once on load instead of on click.
+  function firePageLoadEvents() {
+    var els = document.querySelectorAll('[data-analytics][data-analytics-on="load"]');
+    for (var i = 0; i < els.length; i++) {
+      var el = els[i];
+      var name = el.getAttribute("data-analytics");
+      if (!name || el.hasAttribute("data-fired")) continue;
+      window.dataLayer = window.dataLayer || [];
+      var payload = paramsFrom(el);
+      // `on` is the trigger switch, not a parameter. The guard attribute is
+      // deliberately NOT data-analytics-* so paramsFrom cannot pick it up.
+      delete payload.on;
+      el.setAttribute("data-fired", "");
+      payload.event = name;
+      window.dataLayer.push(payload);
+    }
+  }
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", firePageLoadEvents, { once: true });
+  } else {
+    firePageLoadEvents();
+  }
+
+
   document.addEventListener(
     "click",
     function (e) {

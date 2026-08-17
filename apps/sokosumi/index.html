@@ -37,6 +37,13 @@
       gtag('set', 'ads_data_redaction', true);
     </script>
     <script>(function(w,d,s,l,i){
+            // Production hostnames only. Preview deploys and local dev were feeding the
+      // same GA4 property as production — over the last 7 days the preview host
+      // sent 366 pageviews against production's 156, plus localhost and
+      // 127.0.0.1, which makes every report wrong until someone remembers to
+      // filter. Nothing measures anything anywhere else.
+      var TRACK_HOSTS = { "www.sokosumi.com": 1, "sokosumi.com": 1 };
+      if (!TRACK_HOSTS[location.hostname]) return;
       w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});
       // Mirrors templates/shell.js ANALYTICS_HEAD — keep the two identical.
       // ~315KB of container competing with the hero for phone bandwidth, and
@@ -150,7 +157,7 @@
         </p>
 
         <div class="hero-cta" data-reveal style="--i: 3">
-          <a class="btn btn-lg hero-cta-sales" href="/contact/sales">Talk to Sales</a>
+          <a class="btn btn-lg hero-cta-sales" href="/contact/sales" data-analytics="talk_to_sales_click" data-analytics-location="hero">Talk to Sales</a>
           <a class="btn btn-lg hero-cta-signup" href="https://app.sokosumi.com/signup" data-analytics="sign_up_click" data-analytics-location="hero">Sign Up</a>
         </div>
         <p class="hero-note" data-reveal style="--i: 3"><span class="no-card">*No Credit Card required</span></p>
