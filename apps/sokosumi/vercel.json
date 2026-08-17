@@ -9,5 +9,54 @@
       "maxDuration": 15
     }
   },
-  "rewrites": [{ "source": "/(.*)", "destination": "/api/index" }]
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/api/index"
+    }
+  ],
+  "images": {
+    "sizes": [
+      32,
+      48,
+      64,
+      96,
+      128,
+      192,
+      256,
+      384,
+      640,
+      828,
+      1080,
+      1200,
+      1920
+    ],
+    "formats": [
+      "image/avif",
+      "image/webp"
+    ],
+    "minimumCacheTTL": 2678400,
+    "remotePatterns": [
+      {
+        "protocol": "https",
+        "hostname": "c-ipfs-gw.nmkr.io"
+      },
+      {
+        "protocol": "https",
+        "hostname": "**.azurecontainerapps.io"
+      },
+      {
+        "protocol": "https",
+        "hostname": "payload-production-6f43.up.railway.app"
+      },
+      {
+        "protocol": "https",
+        "hostname": "www.sokosumi.com"
+      },
+      {
+        "protocol": "https",
+        "hostname": "sokosumi.com"
+      }
+    ]
+  }
 }
