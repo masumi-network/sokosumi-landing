@@ -44,14 +44,14 @@ async function index(ctx) {
   return (
     pageStart({
       title: "Blog | Sokosumi",
-      description: "Articles, announcements, and press from the team behind your AI coworkers.",
+      description: "Articles, announcements, and press from the team behind your AI coworkers \u2014 how the marketplace works, what teams brief, and what shipped recently.",
       path: "/blog",
       breadcrumb: cr,
       jsonld: shell.itemListLd("Sokosumi blog", "/blog", posts.map((p) => ({ name: p.title, path: `/blog/${p.slug}` }))),
     }) +
     `<div class="page-head" data-reveal>
       <h1>${esc(t("The Sokosumi blog"))}</h1>
-      <p class="sub">${esc(t("Articles, announcements, and press from the team behind your AI coworkers."))}</p>
+      <p class="sub">${esc(t("Articles, announcements, and press from the team behind your AI coworkers \u2014 how the marketplace works, what teams brief, and what shipped recently."))}</p>
     </div>` +
     (posts.length
       ? `<div class="page-section flush" data-reveal>

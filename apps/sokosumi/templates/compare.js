@@ -29,7 +29,7 @@ async function index(ctx) {
     pageStart({
       title: "Compare | Sokosumi",
       description:
-        "How Sokosumi compares to other AI platforms and agent tools, side by side.",
+        "How Sokosumi compares to other AI platforms and agent tools, side by side: what each one does, how you brief it, and what you actually get back.",
       path: "/compare",
       breadcrumb: cr,
     }) +

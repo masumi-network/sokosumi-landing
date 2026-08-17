@@ -67,7 +67,7 @@ async function index(ctx) {
   return (
     pageStart({
       title: "Releases | Sokosumi",
-      description: "Every Sokosumi release: new capabilities, improvements, and fixes, in order.",
+      description: "Every Sokosumi release in order: new capabilities, improvements and fixes, with the date each one shipped and what changed for your coworkers.",
       path: "/releases",
       breadcrumb: cr,
       jsonld: shell.itemListLd("Sokosumi releases", "/releases", releases.map((r) => ({ name: r.title, path: `/releases/${r.slug}` }))),

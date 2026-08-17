@@ -44,7 +44,7 @@ async function index(ctx) {
   return (
     pageStart({
       title: "Guides | Sokosumi",
-      description: "How to get the most out of your AI coworkers: setup, workflows, and advanced patterns.",
+      description: "How to get the most out of your AI coworkers: setup, briefing patterns, workflows, and the details that decide whether a task comes back usable.",
       path: "/guides",
       breadcrumb: cr,
       jsonld: shell.itemListLd("Sokosumi guides", "/guides", guides.map((g) => ({ name: g.title, path: `/guides/${g.slug}` }))),
