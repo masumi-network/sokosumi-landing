@@ -401,7 +401,7 @@ function ctaFaces(seed, count) {
   const picked = [];
   for (let i = 0; i < n; i++) picked.push(pool[(start + i) % pool.length]);
   return `<span class="cta-faces" aria-hidden="true">${picked
-    .map((c) => `<img src="${attr(c.image)}" alt="" loading="lazy" />`)
+    .map((c) => `<img${thumbSrc(c.image, 96)} alt="" width="40" height="40" loading="lazy" decoding="async" />`)
     .join("")}</span>`;
 }
 
@@ -443,7 +443,7 @@ function shotFigure(shot, opts) {
   const o = opts || {};
   if (!shot) return "";
   return `<figure class="shot-fig${o.wide ? " wide" : ""}">
-      <img src="${attr(shot.src)}" alt="${attr(shot.alt)}" width="2400" height="1350" loading="lazy" decoding="async" />
+      <img${thumbSrc(shot.src, 828)} alt="${attr(shot.alt)}" width="2400" height="1350" loading="lazy" decoding="async" />
       ${o.caption === false ? "" : `<figcaption>${esc(shot.caption)}</figcaption>`}
     </figure>`;
 }
@@ -460,7 +460,7 @@ function quoteSection(t, opts) {
       <figure class="pull-quote">
         <blockquote>&ldquo;${esc(t.quote)}&rdquo;</blockquote>
         <figcaption>
-          ${av ? `<span class="pq-avatar"><img src="${attr(av)}" alt="" loading="lazy" /></span>` : ""}
+          ${av ? `<span class="pq-avatar"><img${thumbSrc(av, 128)} alt="" width="46" height="46" loading="lazy" decoding="async" /></span>` : ""}
           <span class="pq-who"><strong>${esc(t.name)}</strong>${t.role ? `<small>${esc(t.role)}</small>` : ""}</span>
         </figcaption>
       </figure>
@@ -550,7 +550,7 @@ function navVisualFaces() {
     pool
       .map(
         (c) =>
-          `<span class="nav-visual-face"><img data-src="${attr(c.image)}" alt="" width="56" height="56" /></span>`,
+          `<span class="nav-visual-face"><img data-src="${attr(thumb(c.image, 128))}" alt="" width="56" height="56" decoding="async" /></span>`,
       )
       .join(""),
   );
@@ -558,7 +558,7 @@ function navVisualFaces() {
 
 // A zoomed crop of a product render for the Product rail.
 function navVisualShot(src) {
-  return navVisual("shot", `<img data-src="${attr(src)}" alt="" width="2400" height="1350" />`);
+  return navVisual("shot", `<img data-src="${attr(thumb(src, 640))}" alt="" width="2400" height="1350" decoding="async" />`);
 }
 
 // The AI Coworkers mega menu: the top vendors with their wordmark, a few
@@ -584,7 +584,7 @@ function agentsPanel() {
                   // the fetch — the hidden panel still has geometry, so every
                   // desktop page view pulled ~7 MB of avatars for a menu most
                   // visitors never open. nav.js promotes them on first open.
-                  ? `<span class="nav-face"><img data-src="${attr(p.image)}" alt="" width="30" height="30" /></span>`
+                  ? `<span class="nav-face"><img data-src="${attr(thumb(p.image, 96))}" alt="" width="30" height="30" decoding="async" /></span>`
                   : `<span class="nav-face is-blank"></span>`
               }<span class="nav-face-text"><span>${esc(p.name)}</span>${
                 p.role ? `<small>${esc(p.role)}</small>` : ""
@@ -923,13 +923,41 @@ function pageEnd() {
   return `</main>` + footer();
 }
 
+// ---- image thumbnails via Vercel's optimizer ----
+// The marketplace portraits come straight from an IPFS gateway at whatever
+// resolution the vendor uploaded: one of them is a 2.1MB PNG rendered as a
+// 34px circle, and three of them together were 4MB of a 4.5MB page. Routing
+// them through /_vercel/image at the size they actually render turns that
+// 2.1MB into 869 bytes of AVIF. Cost is bounded because the width is always
+// one of the sizes declared in vercel.json.
+//
+// Only on Vercel: the endpoint does not exist under `node server.js`, and
+// rewriting unconditionally would break every image in local dev.
+const OPTIMIZE_IMAGES = Boolean(process.env.VERCEL);
+function thumb(url, w) {
+  if (!url) return url;
+  const u = String(url);
+  // SVG is already tiny and the optimizer refuses it without
+  // dangerouslyAllowSVG; data: URIs have nothing to fetch.
+  if (!OPTIMIZE_IMAGES || u.startsWith("data:") || /\.svg(\?|$)/i.test(u)) return u;
+  return `/_vercel/image?url=${encodeURIComponent(u)}&w=${w}&q=75`;
+}
+// `src` plus a 2x `srcset`, ready to drop into a tag. Retina phones are the
+// common case for avatars, so shipping only 1x would look soft.
+function thumbSrc(url, w, attrName) {
+  if (!url) return "";
+  const name = attrName || "src";
+  if (!OPTIMIZE_IMAGES) return ` ${name}="${attr(url)}"`;
+  return ` ${name}="${attr(thumb(url, w))}" srcset="${attr(thumb(url, w))} 1x, ${attr(thumb(url, w * 2))} 2x"`;
+}
+
 function avatar(entity, cls) {
   const img = entity && entity.image;
   // Marketplace listings are represented by a line-art icon, not a portrait,
   // so it gets contained and inset instead of cropped to fill the circle.
   const icon = entity && entity.kind === "agent" ? " is-icon" : "";
   if (img) {
-    return `<span class="avatar ${cls || ""}${icon}"><img src="${attr(img)}" alt="" loading="lazy" /></span>`;
+    return `<span class="avatar ${cls || ""}${icon}"><img${thumbSrc(img, 96)} alt="" width="44" height="44" loading="lazy" decoding="async" /></span>`;
   }
   const initial = esc((entity && entity.name ? entity.name : "?").charAt(0));
   return `<span class="avatar ${cls || ""}" style="background:var(--ink)">${initial}</span>`;
@@ -955,6 +983,8 @@ function vendorLogo(v, cls) {
 
 module.exports = {
   APP,
+  thumb,
+  thumbSrc,
   APP_SIGNUP,
   APP_SIGNIN,
   SITE,

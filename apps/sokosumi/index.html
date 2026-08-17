@@ -510,6 +510,20 @@
             return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c];
           });
         }
+            // The catalog's portraits arrive at whatever resolution the vendor
+            // uploaded — one is a 2.1MB PNG rendered as a 34px circle. Where the
+            // optimizer exists, ask for the size we actually paint. Guarded by
+            // hostname so `node server.js` in dev still renders every portrait.
+            var IMG_OPT = /(^|\.)sokosumi\.com$/.test(location.hostname) || /\.vercel\.app$/.test(location.hostname);
+            function thumb(u, w) {
+              if (!u || !IMG_OPT || u.indexOf("data:") === 0 || /\.svg($|\?)/i.test(u)) return u;
+              return "/_vercel/image?url=" + encodeURIComponent(u) + "&w=" + w + "&q=75";
+            }
+            function thumbSet(u, w) {
+              if (!u) return "";
+              if (!IMG_OPT) return ' src="' + esc(u) + '"';
+              return ' src="' + esc(thumb(u, w)) + '" srcset="' + esc(thumb(u, w)) + ' 1x, ' + esc(thumb(u, w * 2)) + ' 2x"';
+            }
 
         /* ---------- icons (inline, 1.75 stroke) ---------- */
         var ICON_PATHS = {
@@ -675,7 +689,7 @@
             var faces = coworkers.filter(function (c) { return c.image; }).slice(0, 5);
             if (social && faces.length) {
               document.getElementById("heroAvatars").innerHTML = faces
-                .map(function (c) { return '<img src="' + esc(c.image) + '" alt="" />'; })
+                .map(function (c) { return "<img" + thumbSet(c.image, 96) + ' alt="" width="40" height="40" decoding="async" />'; })
                 .join("");
               var agentCount = (d.agents || []).length || coworkers.length;
               document.getElementById("heroCount").textContent = agentCount + "+ Agents";
@@ -691,7 +705,7 @@
             [].slice.call(document.querySelectorAll("[data-cw-ava]")).forEach(function (el) {
               var c = bySlug[el.getAttribute("data-cw-ava")];
               if (c && c.image) {
-                el.innerHTML = '<img src="' + esc(c.image) + '" alt="' + esc(c.name) + '" loading="lazy" />';
+                el.innerHTML = "<img" + thumbSet(c.image, 96) + ' alt="' + esc(c.name) + '" loading="lazy" decoding="async" />';
               }
             });
             var trio = INTRO_SLUGS
@@ -734,7 +748,7 @@
                 return (
                   '<a class="intro-person" href="/ai-coworkers/' + encodeURIComponent(c.slug) + '" data-reveal style="--i:' + i + '">' +
                   '<span class="shell"><span class="portrait" style="display:block">' +
-                  (c.image ? '<img src="' + esc(c.image) + '" alt="' + esc(c.name) + '" loading="lazy" />' : "") +
+                  (c.image ? "<img" + thumbSet(c.image, 192) + ' alt="' + esc(c.name) + '" loading="lazy" decoding="async" />' : "") +
                   "</span></span>" +
                   "<h3>" + esc(c.name) + "</h3>" +
                   (c.role ? '<div class="role">' + esc(c.role) + "</div>" : "") +
@@ -755,7 +769,7 @@
               var moreFaces = rest.filter(function (c) { return c.image; }).slice(0, 4);
               var extra = rest.length - moreFaces.length;
               var stack = moreFaces
-                .map(function (c) { return '<img src="' + esc(c.image) + '" alt="" loading="lazy" />'; })
+                .map(function (c) { return "<img" + thumbSet(c.image, 96) + ' alt="" loading="lazy" decoding="async" />'; })
                 .join("");
               if (extra > 0) stack += '<span class="more-count">+' + extra + "</span>";
               moreEl.innerHTML =

@@ -615,6 +615,36 @@ const assetsDir = path.join(root, "assets");
   // Only same-origin /assets/... references, and only those without a query
   // already. Anything absolute or external is left untouched.
   const ASSET_REF = /(["'(])(\/assets\/[A-Za-z0-9._\/-]+)(["')])/g;
+  // Route the homepage's heaviest raster images through Vercel's optimizer.
+  // Done here rather than in index.html so the markup keeps plain /assets/
+  // paths that work under `node server.js`, where /_vercel/image does not
+  // exist. serviceplan-hq.jpg is the worst offender: 405KB of 1400px JPEG for
+  // a slot that is ~340 CSS px wide on a phone. At w=640 AVIF it is 26KB.
+  const OPTIMIZE_IMAGES = Boolean(process.env.VERCEL);
+  const opt = (p, w) => `/_vercel/image?url=${encodeURIComponent(p)}&w=${w}&q=75`;
+  // Each entry: the asset path, the widths to offer, and the `sizes` hint that
+  // tells the browser how wide it renders. Without `sizes` a srcset is a guess.
+  const HOMEPAGE_IMAGES = [
+    { file: "/assets/serviceplan-hq.jpg", widths: [640, 828, 1200], sizes: "(max-width: 900px) 92vw, 640px" },
+    { file: "/assets/florian-haller.jpg", widths: [640, 828, 1200], sizes: "(max-width: 900px) 92vw, 720px" },
+    { file: "/assets/shot-board.webp", widths: [828, 1200, 1920], sizes: "100vw" },
+    { file: "/assets/shot-roster.webp", widths: [828, 1200, 1920], sizes: "100vw" },
+    { file: "/assets/shot-brief.webp", widths: [828, 1200, 1920], sizes: "100vw" },
+    { file: "/assets/shot-chat2.webp", widths: [828, 1200, 1920], sizes: "100vw" },
+  ];
+  function optimizeImages(html) {
+    if (!OPTIMIZE_IMAGES) return html;
+    for (const { file, widths, sizes } of HOMEPAGE_IMAGES) {
+      const srcset = widths.map((w) => `${opt(file, w)} ${w}w`).join(", ");
+      const mid = widths[Math.floor(widths.length / 2)];
+      // Both plain src and the deferred data-src the hero rotator hydrates.
+      for (const name of ["src", "data-src"]) {
+        html = html.split(`${name}="${file}"`).join(`${name}="${opt(file, mid)}" srcset="${srcset}" sizes="${sizes}"`);
+      }
+    }
+    return html;
+  }
+
   function versionAssets(html) {
     return html.replace(ASSET_REF, (m, open, url, close) => {
       const v = assetVersion(url.slice(1));
@@ -669,7 +699,7 @@ const assetsDir = path.join(root, "assets");
       // not happened. Revalidation is a cheap 304; the CDN does the real work.
       "Cache-Control": "public, max-age=0, s-maxage=300, must-revalidate",
       "Last-Modified": stat.mtime.toUTCString(),
-    }, versionAssets(html));
+    }, versionAssets(optimizeImages(html)));
   }
 
   const handler = async (req, res) => {

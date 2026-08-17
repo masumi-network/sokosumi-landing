@@ -29,7 +29,7 @@ function vendorSlug(cw) {
 
 function tile(c, i) {
   const img = c.image
-    ? `<span class="portrait${c.kind === "agent" ? " is-icon" : ""}"><img src="${attr(c.image)}" alt="${attr(c.name)}" loading="lazy" /></span>`
+    ? `<span class="portrait${c.kind === "agent" ? " is-icon" : ""}"><img${shell.thumbSrc(c.image, 192)} alt="${attr(c.name)}" loading="lazy" decoding="async" /></span>`
     : `<span class="portrait"></span>`;
   return `<a class="cw-tile" href="/ai-coworkers/${encodeURIComponent(c.slug)}" data-reveal style="--i:${i % 4}">
     ${img}
@@ -278,7 +278,7 @@ async function profile(ctx) {
       jsonld: profileLd(c, vn, vs),
     }) +
     `<div class="cw-hero">
-      <div class="cw-portrait${c.kind === "agent" ? " is-icon" : ""}" data-reveal>${c.image ? `<img src="${attr(c.image)}" alt="${attr(c.name)}" />` : ""}</div>
+      <div class="cw-portrait${c.kind === "agent" ? " is-icon" : ""}" data-reveal>${c.image ? `<img${shell.thumbSrc(c.image, 384)} alt="${attr(c.name)}" decoding="async" />` : ""}</div>
       <div class="cw-info" data-reveal style="--i:1">
         <span class="eyebrow">${esc(c.kind === "agent" ? t("On the marketplace") : t("Featured coworker"))}${
           vn ? ` &middot; <a href="/vendors/${attr(vs || "")}">${esc(vn)}</a>` : ""
