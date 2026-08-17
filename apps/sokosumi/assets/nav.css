@@ -245,6 +245,10 @@
 .nav-burger {
   display: none;
   width: 36px; height: 36px; flex-shrink: 0;
+  /* column, or the two bars sit SIDE BY SIDE: the button is a flex container
+     and its default row direction turned the "burger" into one broken dash
+     and the open state's X into a chevron that never crossed */
+  flex-direction: column;
   align-items: center; justify-content: center;
   background: transparent; border: 1px solid var(--border); border-radius: var(--r-md);
   color: inherit; cursor: pointer; padding: 0;
@@ -266,6 +270,8 @@
   background: var(--background);
   border-top: 1px solid var(--border);
   overflow-y: auto;
+  /* a swipe that runs out of drawer must not hand its momentum to the page */
+  overscroll-behavior: contain;
   padding: 8px clamp(24px, 6vw, 40px) 40px;
   display: flex; flex-direction: column;
 }
@@ -297,7 +303,24 @@
 }
 .site-header.is-overlay.nav-open .mark { filter: none; }
 .site-header.is-overlay.nav-open .nav-burger { color: var(--foreground); border-color: var(--border); }
-body.nav-locked { overflow: hidden; }
+/* The scroll lock while the drawer is open. `overflow: hidden` on body alone
+   does NOT lock anything here: body's overflow only propagates to the viewport
+   when <html>'s overflow is `visible`, and styles.css puts overflow-x: clip on
+   html — so the page happily scrolled behind the open drawer and the visitor
+   closed it somewhere else entirely. Lock the real scroller (html), and pin
+   body with position: fixed, which is the one approach iOS Safari actually
+   honours for touch (overflow: hidden famously is not). nav.js records the
+   scroll offset, sets body's inline `top` to keep the page visually in place,
+   and restores the scroll position on close. */
+html.nav-locked { overflow: hidden; }
+body.nav-locked { position: fixed; left: 0; right: 0; width: 100%; overflow: hidden; }
+/* Inside a position: fixed body a position: sticky header stops sticking — its
+   static position is the top of the pinned body, which sits at -scrollY, so
+   the bar (and the close button in it) slid off screen the moment the drawer
+   opened anywhere but the top of a sub-page. While the lock is on, the bar is
+   plainly fixed to the viewport instead; the homepage's .is-overlay bar is
+   fixed anyway, so this only changes the sub-page state. */
+body.nav-locked .site-header { position: fixed; top: 0; left: 0; right: 0; }
 
 /* ===== the footer ===== */
 /* Same deal as the header above: markup comes from ONE place —

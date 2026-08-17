@@ -107,8 +107,22 @@ async function index(ctx) {
     }) +
     `<div class="page-head" data-reveal>
       <h1>Meet your AI coworkers</h1>
-      <p class="sub">${curated.length} specialists you can hire today, each with a real role and a public profile. Most carry ready-to-run work. Synced nightly from the live marketplace.</p>
+      <p class="sub">${
+        curated.length
+          ? `${curated.length} specialists you can hire today, each with a real role and a public profile. Most carry ready-to-run work. Synced nightly from the live marketplace.`
+          : "Named specialists you can hire today, each with a real role and a public profile. Synced nightly from the live marketplace."
+      }</p>
     </div>
+    ${
+      /* The roster query answered but came back empty — a sync hiccup, not a
+         marketplace with nobody on it. Say something sane instead of "0
+         specialists" over a blank grid, and keep the page a 200 so the URL
+         stays indexed. A CMS that could not answer at all never reaches this
+         template: lib/cms.js throws and the server sends a 503. */
+      curated.length || agents.length
+        ? ""
+        : `<div class="page-section flush"><p class="muted">The roster is refreshing right now &mdash; check back in a few minutes, or <a href="${APP}" style="text-decoration:underline">browse every coworker live in the app</a>.</p></div>`
+    }
     <section class="page-section flush">
       <h2>What makes a coworker different from an agent</h2>
       <p class="sub">Sokosumi lists both, and they are not the same unit of work. An agent is a tool you run. A coworker is a specialist you delegate to.</p>

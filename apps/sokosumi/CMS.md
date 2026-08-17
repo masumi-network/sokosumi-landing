@@ -427,3 +427,31 @@ field means: edit the collection, `pnpm payload migrate:create <name>`,
 `pnpm payload migrate`, `pnpm generate:types`, then deploy. Never hand-write a
 migration without its `.json` snapshot, or the next generated migration will
 re-emit the same column.
+
+---
+
+## When the CMS is down (site-side resilience)
+
+The site (lib/cms.js) survives CMS outages in layers:
+
+1. **Stale-on-error, in memory + `data/cms-cache.json`** — every query's last
+   good answer is kept for the process lifetime and mirrored to disk, and is
+   served whenever the CMS fails or times out.
+2. **`cms-seed.json` (committed)** — a snapshot of that same cache, loaded as
+   a floor beneath it, so a *cold start during an outage* (fresh deploy, no
+   volume) still renders every page. Entries are stamped `at: 0`, so the CMS
+   replaces them on the first healthy request per path.
+3. **List-fallback for single-doc lookups** — a profile whose per-slug query
+   was never cached is resolved from the cached collection list; a slug absent
+   from that list is an authoritative 404 even mid-outage.
+4. **503, never 404** — if nothing above can answer, the server sends
+   `503 Retry-After: 120` (`cmsUnavailable` tag on the error), so Google never
+   deindexes a page over a CMS blip. A payload `200` without a `docs` array
+   (half-deployed migration) counts as an outage, not as "content does not
+   exist".
+
+**Refreshing the seed** (occasionally, or after large content changes): run
+the site locally against the healthy CMS with a clean `data/`
+(`rm -rf data && PORT=4460 node server.js`), fetch every `<loc>` in
+`/sitemap.xml` once, wait ~3 s for the debounced persist, then
+`cp data/cms-cache.json cms-seed.json` and commit.
