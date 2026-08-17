@@ -1,3 +1,11 @@
+// requestIdleCallback's second argument is an IdleRequestOptions object, so the
+// old `(rIC || setTimeout)(fn, 1)` shorthand passed a number where an object
+// belongs — coerced away by most browsers, a TypeError in the ones that check.
+function onIdle(fn) {
+  if (window.requestIdleCallback) window.requestIdleCallback(fn);
+  else window.setTimeout(fn, 1);
+}
+
 // Publishes the scrollbar width so `.full-bleed` can break out of the page
 // container to the exact viewport edge. 100vw would include the scrollbar and
 // push the band 7–8px past each side. Lives here rather than in site.js
@@ -63,10 +71,10 @@
     drops.forEach(hydrate);
   }
   if (document.readyState === "complete") {
-    (window.requestIdleCallback || window.setTimeout)(hydrateAll, 1);
+    onIdle(hydrateAll);
   } else {
     window.addEventListener("load", function () {
-      (window.requestIdleCallback || window.setTimeout)(hydrateAll, 1);
+      onIdle(hydrateAll);
     });
   }
 
