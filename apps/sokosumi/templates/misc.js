@@ -43,6 +43,26 @@ function serverError() {
   );
 }
 
+// The CMS-outage page: content exists but cannot be fetched right now. Sent
+// with HTTP 503 + Retry-After (see server.js) so crawlers treat it as
+// temporary and keep the URL indexed — never a 404, never a bare 500.
+function serviceUnavailable() {
+  return (
+    pageStart({
+      title: t("Back in a moment | Sokosumi"),
+      description: t("This Sokosumi page is temporarily unavailable while our content service recovers."),
+      path: "/503",
+      noindex: true,
+    }) +
+    `<div class="notice">
+      <h1>${esc(t("Back in a moment"))}</h1>
+      <p>${esc(t("This page's content is briefly unavailable while our content service recovers. It still exists \u2014 try again in a minute or two."))}</p>
+      <a class="btn btn-primary" href="/">${esc(t("Back to the homepage"))}</a>
+    </div>` +
+    pageEnd()
+  );
+}
+
 // Static /press fallback, used when no CMS page with slug "press" exists.
 function press() {
   const cr = [{ label: "Home", href: "/" }, { label: "Press" }];
@@ -123,26 +143,37 @@ async function sitemap() {
     "/list-your-agent",
     "/press",
   ]);
+  // One collection failing is tolerable (its URLs drop out this cycle); ALL
+  // of them failing means the CMS is down with nothing cached, and a sitemap
+  // shrunk to the static URLs would tell Google the rest of the site is gone.
+  // Throw the tagged error instead so the route answers 503 and crawlers keep
+  // working from the sitemap they already have.
+  let failures = 0;
+  let outage = null;
   const safe = async (fn) => {
     try {
       return await fn();
-    } catch {
+    } catch (e) {
+      failures++;
+      if (cms.isCmsUnavailable(e)) outage = e;
       return [];
     }
   };
+  const fetchers = [
+    cms.getCoworkers,
+    cms.getOffers,
+    cms.getVendors,
+    cms.getUseCases,
+    cms.getIndustries,
+    cms.getGuides,
+    cms.getPosts,
+    cms.getReleases,
+    cms.getComparisons,
+    cms.getPages,
+  ];
   const [coworkers, offers, vendors, useCases, industries, guides, posts, releases, comparisons, pages] =
-    await Promise.all([
-      safe(cms.getCoworkers),
-      safe(cms.getOffers),
-      safe(cms.getVendors),
-      safe(cms.getUseCases),
-      safe(cms.getIndustries),
-      safe(cms.getGuides),
-      safe(cms.getPosts),
-      safe(cms.getReleases),
-      safe(cms.getComparisons),
-      safe(cms.getPages),
-    ]);
+    await Promise.all(fetchers.map(safe));
+  if (outage && failures === fetchers.length) throw outage;
 
   // Task URLs use the coworker's PUBLIC slug; offers join on catalogSlug.
   const publicSlugByAgent = new Map();
@@ -195,4 +226,4 @@ async function sitemap() {
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n${body}\n</urlset>\n`;
 }
 
-module.exports = { notFound, serverError, press, robots, sitemap };
+module.exports = { notFound, serverError, serviceUnavailable, press, robots, sitemap };

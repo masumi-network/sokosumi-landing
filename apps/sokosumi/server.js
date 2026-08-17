@@ -1100,6 +1100,20 @@ const assetsDir = path.join(root, "assets");
       } catch (e) {
         console.error(`[server] ${req.method} ${urlPath} failed:`, e);
         try {
+          // The CMS not answering is an upstream outage, not a bug here, and
+          // MUST NOT surface as a 404 (tells Google to deindex) or a plain
+          // 500 (reads as our code crashing). A 503 with Retry-After is the
+          // one status that says "temporary, come back" — crawlers keep the
+          // URL indexed and retry. Every route that could reach the CMS with
+          // a cold cache lands here via the cmsUnavailable tag; anything with
+          // a warm cache never throws at all (stale-on-error in lib/cms.js).
+          if (cms.isCmsUnavailable(e)) {
+            return send(req, res, 503, {
+              "Content-Type": "text/html; charset=utf-8",
+              "Cache-Control": "no-store",
+              "Retry-After": "120",
+            }, misc.serviceUnavailable());
+          }
           send(req, res, 500, { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-store" }, misc.serverError());
         } catch {
           /* headers already sent */

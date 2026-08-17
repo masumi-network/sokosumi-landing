@@ -21,9 +21,24 @@ const SITE = "sokosumi";
 const TTL_MS = Number(process.env.CMS_TTL_MS) || 5 * 60 * 1000;
 
 const cacheFile = path.join(__dirname, "..", "data", "cms-cache.json");
+// Committed snapshot of the same cache (refresh it by crawling the site
+// against a healthy CMS and copying the warm data/cms-cache.json over this
+// file — see CMS.md). It exists so that a COLD START
+// DURING A CMS OUTAGE — new deploy, no data/ volume, CMS down — still renders
+// every page from the last committed content instead of failing. The seed is
+// only a floor: entries are stamped far in the past, so the first request per
+// path still asks the CMS and replaces them the moment it answers.
+const seedFile = path.join(__dirname, "..", "cms-seed.json");
 let cache = {};
 try {
-  cache = JSON.parse(fs.readFileSync(cacheFile, "utf8"));
+  const seeded = JSON.parse(fs.readFileSync(seedFile, "utf8"));
+  for (const k of Object.keys(seeded)) cache[k] = { at: 0, data: seeded[k].data };
+} catch {
+  /* no committed seed */
+}
+try {
+  const disk = JSON.parse(fs.readFileSync(cacheFile, "utf8"));
+  Object.assign(cache, disk);
 } catch {
   /* cold start */
 }
@@ -127,19 +142,33 @@ function cachedGet(pathname, fallbackPathname) {
 
   const job = rawFetch(pathname, false)
     .then((data) => {
+      // A find on a healthy payload ALWAYS answers { docs: [...] }. A 200
+      // without one is a half-deployed CMS (schema migrated ahead of its
+      // code, an error body, a proxy interstitial). Throwing HERE — before
+      // remember() — keeps the garbage out of the cache and routes the
+      // request through the stale-on-error path like any other CMS failure,
+      // instead of letting it masquerade as an authoritative empty result.
+      if (!data || !Array.isArray(data.docs)) {
+        throw new Error(`CMS ${pathname} answered without a docs array`);
+      }
       remember(pathname, { at: Date.now(), data });
       persist();
       return data;
     })
     .catch((e) => {
       if (hit) {
-        console.error(`[cms] ${e.message} — serving stale data`);
+        console.error(`[cms] ${e.message} — serving stale data for ${pathname}`);
         return hit.data;
       }
       if (fallbackPathname) {
         console.error(`[cms] ${e.message} — falling back to the default locale`);
         return cachedGet(fallbackPathname, null);
       }
+      // No previous good value to fall back on. Whatever the route does with
+      // this, it must NOT read as "this content does not exist": the CMS did
+      // not answer, so nothing is known. The server maps this flag to a 503
+      // (retryable, keeps the URL indexed) instead of a 404 or a bare 500.
+      e.cmsUnavailable = true;
       throw e;
     })
     .finally(() => inFlight.delete(pathname));
@@ -170,7 +199,23 @@ function siteWhere(extra) {
 
 async function findAll(collection, params, opts) {
   const data = await cmsGet(`/api/${collection}?${qs(params)}`, opts);
-  return data.docs || [];
+  // A find on a healthy payload ALWAYS answers { docs: [...] }. A 200 without
+  // a docs array is a half-deployed CMS (schema migrated ahead of its code,
+  // an error body, a proxy interstitial) — treating it as an authoritative
+  // empty result is how a CMS blip once turned into template-level 404s that
+  // told Google to deindex real pages. Malfunction, not "does not exist".
+  if (!data || !Array.isArray(data.docs)) {
+    const e = new Error(`CMS /api/${collection} answered without a docs array`);
+    e.cmsUnavailable = true;
+    throw e;
+  }
+  return data.docs;
+}
+
+// True when an error means "the CMS could not answer" rather than a bug in
+// this codebase. The server turns these into 503s, never 404s or 500s.
+function isCmsUnavailable(e) {
+  return !!(e && e.cmsUnavailable);
 }
 
 // Absolute URL for a payload media upload (relations arrive as objects when
@@ -185,64 +230,136 @@ function mediaUrl(m) {
 const getVendors = (opts) =>
   findAll("vendors", { ...siteWhere({ active: "true" }), limit: 200, depth: 1, sort: "order" }, opts);
 
-const getVendor = async (slug, opts) =>
-  (await findAll("vendors", { ...siteWhere({ slug, active: "true" }), limit: 1, depth: 1 }, opts))[0] || null;
+// Single-doc lookups keyed on a slug have a cache entry only for slugs that
+// have actually been visited — so during an outage a never-visited profile
+// used to throw even though the COLLECTION list was sitting warm in the cache
+// (every index page refreshes it, and the committed seed always carries it).
+// When the direct query cannot be answered, answer from that list instead:
+// present → serve the stale doc; absent → an authoritative "does not exist",
+// which is what keeps unknown slugs 404ing correctly even mid-outage.
+async function findOne(direct, list, match) {
+  try {
+    return (await direct())[0] || null;
+  } catch (e) {
+    if (!isCmsUnavailable(e)) throw e;
+    const docs = await list().catch(() => null);
+    if (!docs) throw e;
+    console.error(`[cms] ${e.message} — resolved from the cached collection list`);
+    return docs.find(match) || null;
+  }
+}
+
+const getVendor = (slug, opts) =>
+  findOne(
+    () => findAll("vendors", { ...siteWhere({ slug, active: "true" }), limit: 1, depth: 1 }, opts),
+    () => getVendors(opts),
+    (v) => v.slug === slug,
+  );
 
 const getCoworkers = (opts) =>
   findAll("coworkers", { ...siteWhere({ active: "true" }), limit: 500, depth: 1, sort: "order" }, opts);
 
-const getCoworker = async (slug, opts) =>
-  (await findAll("coworkers", { ...siteWhere({ slug }), limit: 1, depth: 1 }, opts))[0] || null;
+const getCoworker = (slug, opts) =>
+  findOne(
+    () => findAll("coworkers", { ...siteWhere({ slug }), limit: 1, depth: 1 }, opts),
+    () => getCoworkers(opts),
+    (c) => c.slug === slug,
+  );
 
 // Lookup by the product's internal slug (offers.agentSlug join key) — used
 // to 301 old URLs after a public slug diverges from the catalog slug.
-const getCoworkerByCatalogSlug = async (catalogSlug, opts) =>
-  (await findAll("coworkers", { ...siteWhere({ catalogSlug }), limit: 1, depth: 0 }, opts))[0] || null;
+const getCoworkerByCatalogSlug = (catalogSlug, opts) =>
+  findOne(
+    () => findAll("coworkers", { ...siteWhere({ catalogSlug }), limit: 1, depth: 0 }, opts),
+    () => getCoworkers(opts),
+    (c) => c.catalogSlug === catalogSlug,
+  );
 
 const getOffers = (opts) =>
   findAll("offers", { ...siteWhere({ active: "true" }), limit: 500, depth: 0, sort: "order" }, opts);
 
-const getOffersFor = (agentSlug, opts) =>
-  findAll("offers", { ...siteWhere({ agentSlug, active: "true" }), limit: 100, depth: 0, sort: "order" }, opts);
+const getOffersFor = async (agentSlug, opts) => {
+  try {
+    return await findAll("offers", { ...siteWhere({ agentSlug, active: "true" }), limit: 100, depth: 0, sort: "order" }, opts);
+  } catch (e) {
+    if (!isCmsUnavailable(e)) throw e;
+    const all = await getOffers(opts).catch(() => null);
+    if (!all) throw e;
+    console.error(`[cms] ${e.message} — resolved from the cached offers list`);
+    return all.filter((o) => o.agentSlug === agentSlug);
+  }
+};
 
-const getOffer = async (agentSlug, slug, opts) =>
-  (await findAll("offers", { ...siteWhere({ agentSlug, slug }), limit: 1, depth: 0 }, opts))[0] || null;
+const getOffer = (agentSlug, slug, opts) =>
+  findOne(
+    () => findAll("offers", { ...siteWhere({ agentSlug, slug }), limit: 1, depth: 0 }, opts),
+    () => getOffers(opts),
+    (o) => o.agentSlug === agentSlug && o.slug === slug,
+  );
 
 const getIndustries = (opts) => findAll("industries", { limit: 200, depth: 0, sort: "name" }, opts);
 
-const getIndustry = async (slug, opts) =>
-  (await findAll("industries", { "where[slug][equals]": slug, limit: 1, depth: 0 }, opts))[0] || null;
+const getIndustry = (slug, opts) =>
+  findOne(
+    () => findAll("industries", { "where[slug][equals]": slug, limit: 1, depth: 0 }, opts),
+    () => getIndustries(opts),
+    (i) => i.slug === slug,
+  );
 
 const getUseCases = (opts) => findAll("use-cases", { ...siteWhere(), limit: 500, depth: 1, sort: "title" }, opts);
 
-const getUseCase = async (slug, opts) =>
-  (await findAll("use-cases", { ...siteWhere({ slug }), limit: 1, depth: 1 }, opts))[0] || null;
+const getUseCase = (slug, opts) =>
+  findOne(
+    () => findAll("use-cases", { ...siteWhere({ slug }), limit: 1, depth: 1 }, opts),
+    () => getUseCases(opts),
+    (u) => u.slug === slug,
+  );
 
 const getGuides = (opts) => findAll("guides", { ...siteWhere(), limit: 500, depth: 1, sort: "order" }, opts);
 
-const getGuide = async (slug, opts) =>
-  (await findAll("guides", { ...siteWhere({ slug }), limit: 1, depth: 1 }, opts))[0] || null;
+const getGuide = (slug, opts) =>
+  findOne(
+    () => findAll("guides", { ...siteWhere({ slug }), limit: 1, depth: 1 }, opts),
+    () => getGuides(opts),
+    (g) => g.slug === slug,
+  );
 
 const getPosts = (opts) => findAll("posts", { ...siteWhere(), limit: 500, depth: 1, sort: "-date" }, opts);
 
-const getPost = async (slug, opts) =>
-  (await findAll("posts", { ...siteWhere({ slug }), limit: 1, depth: 1 }, opts))[0] || null;
+const getPost = (slug, opts) =>
+  findOne(
+    () => findAll("posts", { ...siteWhere({ slug }), limit: 1, depth: 1 }, opts),
+    () => getPosts(opts),
+    (p) => p.slug === slug,
+  );
 
 const getReleases = (opts) => findAll("releases", { ...siteWhere(), limit: 500, depth: 1, sort: "-date" }, opts);
 
-const getRelease = async (slug, opts) =>
-  (await findAll("releases", { ...siteWhere({ slug }), limit: 1, depth: 1 }, opts))[0] || null;
+const getRelease = (slug, opts) =>
+  findOne(
+    () => findAll("releases", { ...siteWhere({ slug }), limit: 1, depth: 1 }, opts),
+    () => getReleases(opts),
+    (r) => r.slug === slug,
+  );
 
 const getComparisons = (opts) =>
   findAll("comparisons", { ...siteWhere(), limit: 200, depth: 1, sort: "title" }, opts);
 
-const getComparison = async (slug, opts) =>
-  (await findAll("comparisons", { ...siteWhere({ slug }), limit: 1, depth: 1 }, opts))[0] || null;
+const getComparison = (slug, opts) =>
+  findOne(
+    () => findAll("comparisons", { ...siteWhere({ slug }), limit: 1, depth: 1 }, opts),
+    () => getComparisons(opts),
+    (c) => c.slug === slug,
+  );
 
 const getPages = (opts) => findAll("pages", { ...siteWhere(), limit: 500, depth: 1 }, opts);
 
-const getPage = async (slug, opts) =>
-  (await findAll("pages", { ...siteWhere({ slug }), limit: 1, depth: 1 }, opts))[0] || null;
+const getPage = (slug, opts) =>
+  findOne(
+    () => findAll("pages", { ...siteWhere({ slug }), limit: 1, depth: 1 }, opts),
+    () => getPages(opts),
+    (p) => p.slug === slug,
+  );
 
 const getFaqs = (opts) => findAll("faqs", { ...siteWhere(), limit: 200, depth: 0 }, opts);
 
@@ -252,6 +369,7 @@ const getTestimonials = (opts) =>
 module.exports = {
   CMS_URL,
   mediaUrl,
+  isCmsUnavailable,
   getVendors,
   getVendor,
   getCoworkers,

@@ -186,16 +186,53 @@
     bar.classList.toggle("scrolled", hero.getBoundingClientRect().bottom <= 72);
   }
 
+  // The page must not scroll behind the open drawer. body { overflow: hidden }
+  // alone does nothing here — html carries overflow-x: clip (styles.css), so
+  // body's overflow never propagates to the viewport — and on iOS Safari it
+  // never worked anyway. Lock html (the real scroller) AND pin body with
+  // position: fixed at the current offset, which iOS does honour; put the
+  // offset back on close so the visitor stays where they were.
+  var lockY = 0;
+  var locked = false;
+  function lockScroll() {
+    if (locked) return;
+    locked = true;
+    lockY = window.scrollY || 0;
+    document.documentElement.classList.add("nav-locked");
+    document.body.classList.add("nav-locked");
+    document.body.style.top = -lockY + "px";
+  }
+  function unlockScroll() {
+    if (!locked) return;
+    locked = false;
+    document.documentElement.classList.remove("nav-locked");
+    document.body.classList.remove("nav-locked");
+    document.body.style.top = "";
+    // html has scroll-behavior: smooth; the restore must be an instant jump,
+    // not an animated scroll from the top of the page.
+    var root = document.documentElement;
+    var prev = root.style.scrollBehavior;
+    root.style.scrollBehavior = "auto";
+    window.scrollTo(0, lockY);
+    root.style.scrollBehavior = prev;
+  }
+
   function setOpen(open) {
     btn.setAttribute("aria-expanded", open ? "true" : "false");
     btn.setAttribute("aria-label", open ? "Close menu" : "Open menu");
     panel.hidden = !open;
-    document.body.classList.toggle("nav-locked", open);
+    // Bar state first: pinning body zeroes html's scroll position for a
+    // moment, and the hero observer must already see .nav-open when that
+    // synthetic scroll change fires.
     if (bar) {
       bar.classList.toggle("nav-open", open);
       if (open) bar.classList.add("scrolled");
-      else restoreBarState();
     }
+    if (open) lockScroll();
+    else unlockScroll();
+    // After the scroll offset is back, not before: this reads the hero's
+    // real position to decide whether the bar stays paper.
+    if (!open && bar) restoreBarState();
   }
 
   btn.addEventListener("click", function () {

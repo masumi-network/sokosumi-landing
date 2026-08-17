@@ -110,6 +110,18 @@ function localizeHtml(html) {
 // ── the German dictionary ────────────────────────────────────────────────
 // Keys are the exact English strings the templates use.
 const DE = {
+  "This page's content is briefly unavailable while our content service recovers. It still exists \u2014 try again in a minute or two.":
+    "Der Inhalt dieser Seite ist kurzzeitig nicht verf\u00fcgbar, w\u00e4hrend unser Content-Service wiederhergestellt wird. Die Seite existiert weiterhin \u2014 versuchen Sie es in ein bis zwei Minuten erneut.",
+  "Named specialists you can hire today, each with a real role and a public profile. Synced nightly from the live marketplace.":
+    "Benannte Spezialisten, die Sie heute engagieren können \\u2014 jeder mit einer echten Rolle und einem öffentlichen Profil. Nächtlich mit dem Marktplatz synchronisiert.",
+  "Back in a moment":
+    "Gleich wieder da",
+  "Back in a moment | Sokosumi":
+    "Gleich wieder da | Sokosumi",
+  "This Sokosumi page is temporarily unavailable while our content service recovers.":
+    "Diese Sokosumi-Seite ist vorübergehend nicht verfügbar, während unser Content-Service wiederhergestellt wird.",
+  "Back to the homepage":
+    "Zurück zur Startseite",
   // ---- shared chrome (templates/shell.js) ----
   "Skip to content": "Zum Inhalt springen",
   "Log In": "Anmelden",
