@@ -533,18 +533,18 @@
             // hostname so `node server.js` in dev still renders every portrait.
             var IMG_OPT = /(^|\.)sokosumi\.com$/.test(location.hostname) || /\.vercel\.app$/.test(location.hostname);
             var IMG_HOSTS = /^\/|^https:\/\/(?:c-ipfs-gw\.nmkr\.io|[^/]*\.azurecontainerapps\.io|[^/]*\.serviceplan-agents\.com|payload-production-6f43\.up\.railway\.app|(?:www\.)?sokosumi\.com)\//i;
-            function thumb(u, w) {
+            function thumb(u, w, q) {
               if (!u || !IMG_OPT || u.indexOf("data:") === 0 || /\.svg($|\?)/i.test(u)) return u;
               // Unknown host => the optimizer 400s and the portrait breaks. The
               // catalog can add a vendor host any night, so fall back to the
               // original: slower, never broken. Mirrors vercel.json.
               if (!IMG_HOSTS.test(u)) return u;
-              return "/_vercel/image?url=" + encodeURIComponent(u) + "&w=" + w + "&q=85";
+              return "/_vercel/image?url=" + encodeURIComponent(u) + "&w=" + w + "&q=" + (q || 85);
             }
-            function thumbSet(u, w) {
+            function thumbSet(u, w, q) {
               if (!u) return "";
               if (!IMG_OPT) return ' src="' + esc(u) + '"';
-              return ' src="' + esc(thumb(u, w)) + '" srcset="' + esc(thumb(u, w)) + ' 1x, ' + esc(thumb(u, w * 2)) + ' 2x"';
+              return ' src="' + esc(thumb(u, w, q)) + '" srcset="' + esc(thumb(u, w, q)) + ' 1x, ' + esc(thumb(u, w * 2, q)) + ' 2x"';
             }
 
         /* ---------- icons (inline, 1.75 stroke) ---------- */
@@ -770,7 +770,7 @@
                 return (
                   '<a class="intro-person" href="/ai-coworkers/' + encodeURIComponent(c.slug) + '" data-reveal style="--i:' + i + '">' +
                   '<span class="shell"><span class="portrait" style="display:block">' +
-                  (c.image ? "<img" + thumbSet(c.image, 512) + ' alt="' + esc(c.name) + '" loading="lazy" decoding="async" />' : "") +
+                  (c.image ? "<img" + thumbSet(c.image, 512, 92) + ' alt="' + esc(c.name) + '" loading="lazy" decoding="async" />' : "") +
                   "</span></span>" +
                   "<h3>" + esc(c.name) + "</h3>" +
                   (c.role ? '<div class="role">' + esc(c.role) + "</div>" : "") +
