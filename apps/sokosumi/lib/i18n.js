@@ -1098,19 +1098,28 @@ function translateHomepage(html) {
   return out;
 }
 
-// German is SERVED but not yet INDEXED. The UI layer is translated; the CMS
-// bodies (use-case/page/comparison `layout`, and every Offers field) are not
-// localizable yet, so /de pages still render English content. Advertising
-// those to Google as hreflang="de" invites a thin-duplicate judgement on the
-// English originals that actually rank. So: /de is reachable, excluded from
-// the sitemap, and noindex — until the content lands. Flip this ONE constant
-// to true when the CMS translation is done, and hreflang + sitemap light up
-// together.
-const DE_INDEXABLE = false;
+// German is live and indexable. The UI layer and every CMS body are translated;
+// what remains English on /de is deliberate and listed in DE_ENGLISH_PATHS.
+const DE_INDEXABLE = true;
+
+// Paths whose German copy is still the English text, so indexing the /de twin
+// would publish a duplicate of the English page rather than a translation.
+// The legal documents are English by owner instruction (a legal decision, not a
+// copy one), so /de/legal/* stays noindex and out of the hreflang cluster even
+// though the chrome around it is German. Everything else on /de is real German.
+const DE_ENGLISH_PATHS = [/^\/legal(\/|$)/];
+
+// Should this path advertise and index a German alternate?
+function deIndexable(path) {
+  if (!DE_INDEXABLE) return false;
+  const p = String(path || "/");
+  return !DE_ENGLISH_PATHS.some((re) => re.test(p));
+}
 
 module.exports = {
   run,
   DE_INDEXABLE,
+  deIndexable,
   store,
   locale,
   currentPath,

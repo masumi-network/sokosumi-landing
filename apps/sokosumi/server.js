@@ -679,10 +679,8 @@ const assetsDir = path.join(root, "assets");
     const EN_HOME = "https://www.sokosumi.com/";
     const DE_HOME = "https://www.sokosumi.com/de";
       const canonicalHref = i18n.locale() === "de" ? DE_HOME : EN_HOME;
-      // index.html bypasses shell.head(), so the DE_INDEXABLE gate has to be
-      // repeated here: while German pages still carry English content, the
-      // German homepage is noindex and neither locale advertises an alternate.
-      const homeHead = i18n.DE_INDEXABLE
+      // index.html bypasses shell.head(), so the gate is repeated here.
+      const homeHead = i18n.deIndexable("/")
         ? `<link rel="canonical" href="${canonicalHref}" />\n    <link rel="alternate" hreflang="en" href="${EN_HOME}" />\n    <link rel="alternate" hreflang="de" href="${DE_HOME}" />\n    <link rel="alternate" hreflang="x-default" href="${EN_HOME}" />`
         : i18n.locale() === "de"
           ? '<meta name="robots" content="noindex,follow" />'
