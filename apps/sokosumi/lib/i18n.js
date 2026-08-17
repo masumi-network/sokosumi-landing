@@ -156,8 +156,6 @@ const DE = {
     "Gleich wieder da | Sokosumi",
   "This Sokosumi page is temporarily unavailable while our content service recovers.":
     "Diese Sokosumi-Seite ist vorübergehend nicht verfügbar, während unser Content-Service wiederhergestellt wird.",
-  "Back to the homepage":
-    "Zurück zur Startseite",
   // ---- shared chrome (templates/shell.js) ----
   "Skip to content": "Zum Inhalt springen",
   "Log In": "Anmelden",
