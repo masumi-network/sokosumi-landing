@@ -114,23 +114,53 @@ The container (GTM-N7GC8SFT) is configured in the GTM UI. See the app repo's
 per-event GA4 tags, User-ID, Google Ads linker). Test with Tag Assistant before
 publishing and confirm no tag fires before consent is granted.
 
-## Known gap — ad tags are not consent-gated
+## Consent gating — what fires when
 
-Audited 2026-08-17 by reading the published container (`gtm.js`) directly.
+Audited and corrected 2026-08-17 by reading the published container and by
+watching the network in a clean headless browser. Container version 29.
 
-All GA4 tags require `analytics_storage` — 1 Google tag (`G-G4BW0XC76M`) plus 22
-GA4 event tags. Correct.
+Every tag that can fire on a page load is now withheld until the visitor
+chooses:
 
-**11 Google Ads tags declare no consent requirement at all**: the Google tag for
-`AW-16455471438`, two Conversion Linkers, seven conversion tags and one
-remarketing tag. They fire before the visitor has chosen, which was confirmed on
-a clean browser with no consent cookie — `gtag/js?id=AW-16455471438` and
-`pagead2.googlesyndication.com/ccm/collect` both went out.
+| Tag | Requires |
+|-----|----------|
+| `GA4 - config` | `analytics_storage` |
+| `Conversion Linker`, `GADS - config`, `GADS - remarketing` | `ad_storage` |
+| `Linkedin - config`, `META - config` | `ad_storage` |
 
-That contradicts the promise at the top of this file ("Nothing analytics- or
-ads-related leaves the browser until the visitor opts in") and is the Advanced
-Consent Mode behaviour, not the Basic one described here. Fixing it is a GTM UI
-change — set the ad tags' "Additional consent checks" to require `ad_storage`,
-`ad_user_data` and `ad_personalization` — not a code change, so it is not done
-here. Decide with whoever owns the container and the privacy notice; the
-operator is Munich-based, so this is a GDPR/TTDSG question, not a preference.
+Conversion tags that fire on a user action already sit behind trigger groups
+requiring `ce - consent_status`, and were left alone.
+
+Measured on production, three runs each:
+
+| Visitor | GA4 | Ads |
+|---------|-----|-----|
+| lands, never chooses | 0 | 0 |
+| lands, still deciding | 0 | 0 |
+| clicks Accept | fires on that page | fires on that page |
+| next page | fires | fires |
+
+### Why `consent_decision` exists
+
+Consent Mode blocks a gated tag at `gtm.init` and GTM never retries it —
+`wait_for_update` is 500ms and nobody reads a banner that fast. So the page a
+visitor consents ON was never recorded: measured still zero 30 seconds after
+clicking Accept, while the next navigation recorded fine. Every session lost its
+landing pageview, and a visitor who landed, accepted and left was counted as
+nothing at all.
+
+The fix is a second trigger on the page-load tags. It cannot be
+`ce - consent_status`, because the `<head>` snippet pushes `consent_status` on
+every load that finds a stored cookie — triggering on that would fire the tags
+twice for every returning visitor. `consent_decision` is pushed only from
+`apply()` in `assets/consent.js`, which is only reachable from the three banner
+buttons, so it means "the visitor just chose", exactly once.
+
+Rejecting fires the event too; Consent Mode then keeps the tags from sending
+anything, which is the point.
+
+### Trade-off accepted
+
+Gating the Google Ads tags gives up Google's cookieless conversion modelling for
+unconsented visitors, so reported Ads conversions are lower than before
+version 29. That is what putting ads behind the banner means, not a regression.
