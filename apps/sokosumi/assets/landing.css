@@ -162,7 +162,16 @@
 .hero-title .serif-accent { font-size: 1em; letter-spacing: inherit; }
 .hero-sub {
   font-size: clamp(15.5px, 1.5vw, 17px); line-height: 1.6; color: rgba(255, 255, 255, 0.88);
-  max-width: 52ch; text-wrap: pretty; margin: 0 0 36px;
+  /* 52ch capped the line at 558px while the sentence needs 599, so it broke to
+     two lines inside a 1240px hero and left "chat log." stranded on its own.
+     Measured at the 17px top of the clamp: English needs 56ch, German 62ch
+     (82 characters against English's 76). 64ch clears both with headroom, and
+     the German line is the one that sets the floor — sizing to English alone
+     would have left /de wrapping forever.
+     `balance` rather than `pretty` for the narrow widths where it does wrap:
+     pretty optimises only the last line and left a stub, which is what made
+     the break read as a mistake instead of a choice. */
+  max-width: 64ch; text-wrap: balance; margin: 0 0 36px;
   text-shadow: 0 2px 28px rgba(0, 0, 0, 0.66);
 }
 
