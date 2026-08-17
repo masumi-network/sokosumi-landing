@@ -7,6 +7,15 @@ const cms = require("../lib/cms");
 const art = require("./art");
 
 const APP = "https://app.sokosumi.com";
+// The app serves a dedicated page for each half of the auth split: /signup is
+// "Register", /signin is "Login". Linking to the bare origin instead sends a
+// logged-out visitor through the auth guard to /signin?returnUrl=/ — i.e. a
+// "Sign Up" button that lands on the login form. Point conversion CTAs at
+// SIGNUP and the header's "Log In" at SIGNIN; keep bare APP only for links
+// that mean "open the product" (existing users), where the guard's returnUrl
+// round-trip is the behaviour you want.
+const APP_SIGNUP = `${APP}/signup`;
+const APP_SIGNIN = `${APP}/signin`;
 
 // Analytics: one GTM container (GTM-N7GC8SFT) and one GA4 property
 // (G-G4BW0XC76M) span this marketing site AND app.sokosumi.com. See
@@ -464,7 +473,7 @@ function isSignupHref(href) {
 function ctaBand(b) {
   const heading = b.heading || "Put an AI coworker on it";
   const label = b.ctaLabel || "Start free";
-  const href = b.ctaHref || APP;
+  const href = b.ctaHref || APP_SIGNUP;
   // Two blocks, always: copy on the left, action on the right. The old markup
   // put the heading, subheading, faces and button in one grid and positioned
   // the button with an explicit row span, which only lined up when all three
@@ -696,9 +705,9 @@ function mobileNav() {
   return `<div class="mobile-nav" id="mobileNav" hidden>
         ${links}
         <div class="m-actions">
-          <a class="btn btn-primary" href="${APP}" data-analytics="sign_up_click" data-analytics-location="mobile_nav">Sign Up</a>
+          <a class="btn btn-primary" href="${APP_SIGNUP}" data-analytics="sign_up_click" data-analytics-location="mobile_nav">Sign Up</a>
           <a class="btn btn-outline" href="${SALES_URL}">Talk to Sales</a>
-          <a class="btn btn-ghost" href="${APP}/signin">Log In</a>
+          <a class="btn btn-ghost" href="${APP_SIGNIN}">Log In</a>
         </div>
       </div>`;
 }
@@ -722,9 +731,9 @@ function header(currentPath, opts) {
           </nav>
         </div>
         <div class="actions">
-          <a class="btn btn-sm btn-ghost" href="${APP}/signin">Log In</a>
+          <a class="btn btn-sm btn-ghost" href="${APP_SIGNIN}">Log In</a>
           <a class="btn btn-sm btn-outline" href="${SALES_URL}">Talk to Sales</a>
-          <a class="btn btn-sm btn-primary" href="${APP}" data-analytics="sign_up_click" data-analytics-location="nav">Sign Up</a>
+          <a class="btn btn-sm btn-primary" href="${APP_SIGNUP}" data-analytics="sign_up_click" data-analytics-location="nav">Sign Up</a>
           ${BURGER}
         </div>
       </div>
@@ -886,6 +895,8 @@ function vendorLogo(v, cls) {
 
 module.exports = {
   APP,
+  APP_SIGNUP,
+  APP_SIGNIN,
   SITE,
   itemListLd,
   SALES_URL,

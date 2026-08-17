@@ -6,7 +6,7 @@
 
 const shell = require("./shell");
 const cms = require("../lib/cms");
-const { esc, attr, icon, avatar, outputMeta, markdownLite, pageStart, pageEnd, APP } = shell;
+const { esc, attr, icon, avatar, outputMeta, markdownLite, pageStart, pageEnd, APP, APP_SIGNUP } = shell;
 
 function offerOutputs(offer) {
   const outs = (offer.outputs || []).filter(Boolean);
@@ -315,7 +315,7 @@ async function detail(ctx) {
           </a>
         </div>
         <div class="task-actions">
-          <a class="btn btn-primary btn-lg" href="${APP}">Try this task on Sokosumi</a>
+          <a class="btn btn-primary btn-lg" href="${APP_SIGNUP}">Try this task on Sokosumi</a>
           ${openUrl ? `<a class="btn btn-outline" href="${attr(openUrl.url)}" target="_blank" rel="noreferrer">Open sample output ${icon("arrow-up-right", 14)}</a>` : ""}
           ${shell.NO_CARD}
         </div>

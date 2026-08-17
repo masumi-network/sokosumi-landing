@@ -8,7 +8,7 @@
 
 const shell = require("./shell");
 const cms = require("../lib/cms");
-const { esc, attr, pageStart, pageEnd, APP, SALES_URL } = shell;
+const { esc, attr, pageStart, pageEnd, APP, APP_SIGNUP, SALES_URL } = shell;
 
 // The page publishes five priced tiers and carried no price markup at all.
 // Prices are read back off the same PLANS array the page renders, so the
@@ -150,7 +150,7 @@ async function render(ctx) {
       heading: "Get started on the free plan",
       subheading: "250 credits per seat, no card, and every agent on the marketplace to try them on.",
       ctaLabel: "Get started",
-      ctaHref: APP,
+      ctaHref: APP_SIGNUP,
       seed: 5,
     }) +
     pageEnd()

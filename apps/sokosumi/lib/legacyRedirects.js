@@ -40,7 +40,7 @@ const EXACT = {
   "/agents": "/ai-coworkers",
   "/ai-solutions": "/product",
   "/agentic-solutions": "/product",
-  "/sign-up": `${APP_ORIGIN}/sign-up`,
+  "/sign-up": `${APP_ORIGIN}/signup`,
   "/thank-you": "/",
   "/webinar": "/",
   "/webinar-b": "/",

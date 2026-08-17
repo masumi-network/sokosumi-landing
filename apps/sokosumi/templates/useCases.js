@@ -133,7 +133,7 @@ async function hub(ctx) {
       heading: "Put a coworker on one of these this week",
       subheading: "Create an account, pick the use case closest to your job, and hand over the first brief.",
       ctaLabel: "Get started",
-      ctaHref: shell.APP,
+      ctaHref: shell.APP_SIGNUP,
     }) +
     pageEnd()
   );
@@ -176,7 +176,7 @@ async function industry(ctx) {
       heading: `Bring a coworker into your ${ind.name.toLowerCase()} team`,
       subheading: "Create an account and hand over the first brief today.",
       ctaLabel: "Get started",
-      ctaHref: shell.APP,
+      ctaHref: shell.APP_SIGNUP,
     }) +
     pageEnd()
   );
@@ -206,7 +206,7 @@ function heroSection(doc, blk, inds) {
 
   const btn = (label, href, cls, analytics) =>
     `<a class="btn ${cls} btn-lg" href="${attr(href)}"${analytics ? ` data-analytics="sign_up_click" data-analytics-location="use_case_hero"` : ""}>${esc(label)}</a>`;
-  const primaryHref = b.ctaHref || shell.APP;
+  const primaryHref = b.ctaHref || shell.APP_SIGNUP;
   const ctas =
     btn(b.ctaLabel || "Get started", primaryHref, "btn-primary", primaryHref.startsWith(shell.APP)) +
     btn(b.secondaryCtaLabel || "Talk to sales", b.secondaryCtaHref || shell.SALES_URL, "btn-outline");
@@ -263,7 +263,7 @@ function chapterSteps(b) {
 // doc, so it never needs an editor and never invents a claim.
 function midCta(doc, heroBlk) {
   const b = heroBlk || {};
-  const primaryHref = b.ctaHref || shell.APP;
+  const primaryHref = b.ctaHref || shell.APP_SIGNUP;
   const signup = primaryHref.startsWith(shell.APP);
   return `<section class="page-section uc-mid-cta" data-reveal>
     <h2>${esc(doc.title)}</h2>
