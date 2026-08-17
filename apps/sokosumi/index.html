@@ -591,6 +591,17 @@
             var next = (shotAt + 1) % shots.length;
             if (!(shots[next].complete && shots[next].naturalWidth)) return;
             shots[shotAt].classList.remove("is-active");
+            /* Restart the incoming shot's pan instead of letting it run free.
+               The CSS animation keeps its own clock from page load while this
+               interval keeps another, and the skip above (a shot that has not
+               finished downloading) drops a beat — so the two drift apart and
+               a shot's one-way reset stops landing under the cross-fade. Once
+               that happens you see the pan snap back mid-display, which is the
+               stutter. Restarting here means every shot begins its travel at
+               the instant it starts fading in, so a reset is never on screen. */
+            shots[next].style.animation = "none";
+            void shots[next].offsetWidth;
+            shots[next].style.animation = "";
             shots[next].classList.add("is-active");
             shotAt = next;
           }, SHOT_HOLD);
@@ -763,6 +774,12 @@
            word is stacked in the same grid cell, so the slot is as wide as the
            longest one and nothing after it moves. */
         (function () {
+          /* The headline stays on "Marketing". The rotator is kept below,
+             unreached, because the words and the width-measuring it does are
+             the fiddly part — turning it back on is deleting this return.
+             "Marketing" is already in the HTML, so with this off the h1 is
+             plain static text and needs no JS at all. */
+          return;
           var el = document.getElementById("heroRotator");
           if (!el) return;
           /* the first word is in the HTML so the headline reads correctly with
