@@ -4,6 +4,7 @@
 const shell = require("./shell");
 const cms = require("../lib/cms");
 const blocks = require("./blocks");
+const { t } = require("../lib/i18n");
 const { esc, attr, icon, pageStart, pageEnd } = shell;
 
 const CATEGORY_LABELS = {
@@ -17,7 +18,7 @@ function guideRow(g) {
   return `<a class="row-item" href="/guides/${encodeURIComponent(g.slug)}">
     <h3>${esc(g.title)}</h3>
     <p>${esc(g.description || "")}</p>
-    <span class="row-go">Read ${icon("arrow-up-right", 15)}</span>
+    <span class="row-go">${esc(t("Read"))} ${icon("arrow-up-right", 15)}</span>
   </a>`;
 }
 
@@ -33,7 +34,7 @@ async function index(ctx) {
   const sections = [...byCat.entries()]
     .map(
       ([cat, list]) => `<div class="page-section">
-      <h2>${esc(CATEGORY_LABELS[cat] || cat)}</h2>
+      <h2>${esc(t(CATEGORY_LABELS[cat] || cat))}</h2>
       <div class="row-list">${list.map(guideRow).join("")}</div>
     </div>`,
     )
@@ -49,26 +50,26 @@ async function index(ctx) {
       jsonld: shell.itemListLd("Sokosumi guides", "/guides", guides.map((g) => ({ name: g.title, path: `/guides/${g.slug}` }))),
     }) +
     `<div class="page-head" data-reveal>
-      <h1>Guides</h1>
-      <p class="sub">How to get the most out of your AI coworkers, from the first briefing to advanced workflows.</p>
+      <h1>${esc(t("Guides"))}</h1>
+      <p class="sub">${esc(t("How to get the most out of your AI coworkers, from the first briefing to advanced workflows."))}</p>
     </div>
     <section class="page-section flush" data-reveal>
       <div class="shot-split">
         <div class="copy">
-          <h2>It starts with one good brief</h2>
-          <p>Say what you want done in plain language. Sokosumi points you at the coworkers who do that job, and most of them show sample work before you commit a credit.</p>
-          <a class="btn btn-outline" href="/tasks">Browse template tasks</a>
+          <h2>${esc(t("It starts with one good brief"))}</h2>
+          <p>${esc(t("Say what you want done in plain language. Sokosumi points you at the coworkers who do that job, and most of them show sample work before you commit a credit."))}</p>
+          <a class="btn btn-outline" href="/tasks">${esc(t("Browse template tasks"))}</a>
         </div>
         ${shell.shotFigure(shell.SHOTS.brief, { caption: false })}
       </div>
     </section>` +
     (guides.length
       ? sections
-      : `<div class="page-section flush"><p class="muted">Guides are on the way. In the meantime, <a href="/ai-coworkers" style="text-decoration:underline">meet the coworkers</a>.</p></div>`) +
+      : `<div class="page-section flush"><p class="muted">${esc(t("Guides are on the way. In the meantime,"))} <a href="/ai-coworkers" style="text-decoration:underline">${esc(t("meet the coworkers"))}</a>.</p></div>`) +
     shell.ctaBand({
-      heading: "Try it on a real task",
-      subheading: "The fastest way through any guide is to run the thing it describes. Signing up is free.",
-      ctaLabel: "Start free",
+      heading: t("Try it on a real task"),
+      subheading: t("The fastest way through any guide is to run the thing it describes. Signing up is free."),
+      ctaLabel: t("Start free"),
       seed: guides.length,
     }) +
     pageEnd()
@@ -87,7 +88,7 @@ async function detail(ctx) {
   const cr = [{ label: "Home", href: "/" }, { label: "Guides", href: "/guides" }, { label: g.title }];
   return (
     pageStart({
-      title: `${g.title} | Sokosumi guides`,
+      title: t("{title} | Sokosumi guides", { title: g.title }),
       description: (g.description || "").slice(0, 155),
       path: `/guides/${g.slug}`,
       breadcrumb: cr,
@@ -109,7 +110,7 @@ async function detail(ctx) {
       },
     }) +
     `<div class="page-head" data-reveal>
-      <span class="eyebrow">${esc(CATEGORY_LABELS[g.category] || "Guide")}</span>
+      <span class="eyebrow">${esc(t(CATEGORY_LABELS[g.category] || "Guide"))}</span>
       <h1>${esc(g.title)}</h1>
       ${g.description ? `<p class="sub">${esc(g.description)}</p>` : ""}
     </div>
@@ -120,14 +121,14 @@ async function detail(ctx) {
     ${blocks.renderBlocks(g.sections)}` +
     (related.length
       ? `<section class="page-section">
-          <h2>Related guides</h2>
+          <h2>${esc(t("Related guides"))}</h2>
           <div class="row-list">${related.map(guideRow).join("")}</div>
         </section>`
       : "") +
     shell.ctaBand({
-      heading: "Put this into practice",
-      subheading: "Brief a coworker with what you just read and see what comes back. Signing up is free.",
-      ctaLabel: "Start free",
+      heading: t("Put this into practice"),
+      subheading: t("Brief a coworker with what you just read and see what comes back. Signing up is free."),
+      ctaLabel: t("Start free"),
       seed: g.title.length,
     }) +
     pageEnd()

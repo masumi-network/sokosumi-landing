@@ -9,8 +9,12 @@
 //   * When a product is genuinely gone, redirect to the relevant hub, never
 //     to the home page — Google reads an irrelevant redirect as a soft 404
 //     and drops the URL anyway.
-//   * The German half of the old site (55 URLs) has no counterpart: this site
-//     is English-only, so /de/<x> resolves <x> and redirects there.
+//   * The German half of the old site (55+ URLs) now has a real counterpart:
+//     /de is a first-class locale (see lib/i18n.js). server.js strips the
+//     /de prefix BEFORE this map runs and re-prefixes any relative redirect
+//     it returns, so an old /de/ai-agents/<x> lands on /de/ai-coworkers/<x>
+//     — German stays German. This module therefore never sees a "de"
+//     segment and must not special-case one.
 //
 // To refresh after the old site changes:
 //   curl -s https://www.sokosumi.com/sitemap.xml | grep -o '<loc>[^<]*'
@@ -64,13 +68,6 @@ const PREFIX = {
 // redirecting into a 404. Optional: without it the slug is trusted.
 function resolve(segments, known) {
   if (!segments.length) return null;
-
-  // The German locale: drop the prefix and resolve the rest as English.
-  if (segments[0] === "de") {
-    const rest = segments.slice(1);
-    if (!rest.length) return "/";
-    return resolve(rest, known) || "/";
-  }
 
   const full = "/" + segments.join("/");
   if (EXACT[full]) return EXACT[full];

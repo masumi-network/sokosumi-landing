@@ -8,6 +8,7 @@
 
 const shell = require("./shell");
 const leads = require("../lib/leads");
+const { t } = require("../lib/i18n");
 const { esc, attr, icon, pageStart, pageEnd, APP, SALES_URL, SUPPORT_URL } = shell;
 
 const DEV_DOCS = "https://www.masumi.network/dev/sokosumi/documentation";
@@ -70,41 +71,41 @@ function supportForm(values, error) {
   const v = values || {};
   const val = (k) => attr(v[k] || "");
   return `<form class="lead-form" method="post" action="/api/support-request" data-reveal>
-    ${error ? `<p class="form-error" role="alert">${esc(error)}</p>` : ""}
+    ${error ? `<p class="form-error" role="alert">${esc(t(error))}</p>` : ""}
 
     <div class="field-row">
-      ${field("Your name", `<input name="name" type="text" required autocomplete="name" value="${val("name")}" />`)}
-      ${field("Email", `<input name="email" type="email" required autocomplete="email" value="${val("email")}" />`)}
+      ${field(t("Your name"), `<input name="name" type="text" required autocomplete="name" value="${val("name")}" />`)}
+      ${field(t("Email"), `<input name="email" type="email" required autocomplete="email" value="${val("email")}" />`)}
     </div>
 
     ${field(
-      "Task or job link",
+      t("Task or job link"),
       `<input name="taskLink" type="text" value="${val("taskLink")}" placeholder="https://app.sokosumi.com/…" />`,
-      "Optional, but it is the fastest way for us to see what you saw.",
+      t("Optional, but it is the fastest way for us to see what you saw."),
     )}
 
     ${field(
-      "What happened?",
-      `<textarea name="message" rows="6" required placeholder="What you expected, what you got instead, and anything you already tried.">${esc(v.message || "")}</textarea>`,
+      t("What happened?"),
+      `<textarea name="message" rows="6" required placeholder="${attr(t("What you expected, what you got instead, and anything you already tried."))}">${esc(v.message || "")}</textarea>`,
     )}
 
     <div class="hp" aria-hidden="true"><label>Website<input name="website" type="text" tabindex="-1" autocomplete="off" /></label></div>
 
     <div class="form-actions">
-      <button class="btn btn-primary btn-lg" type="submit">Send to support</button>
-      <span class="form-note">Goes straight to ${esc(leads.SUPPORT_TO)}. We reply within one working day.</span>
+      <button class="btn btn-primary btn-lg" type="submit">${esc(t("Send to support"))}</button>
+      <span class="form-note">${esc(t("Goes straight to {email}. We reply within one working day.", { email: leads.SUPPORT_TO }))}</span>
     </div>
   </form>`;
 }
 
 function sentState() {
   return `<div class="notice" data-reveal>
-    <span class="eyebrow">Request received</span>
-    <h1>Thanks — that is with support.</h1>
-    <p>We have it and will come back to you within one working day. If it is urgent, write to <a href="mailto:${attr(leads.SUPPORT_TO)}">${esc(leads.SUPPORT_TO)}</a> and it reaches the same inbox.</p>
+    <span class="eyebrow">${esc(t("Request received"))}</span>
+    <h1>${esc(t("Thanks — that is with support."))}</h1>
+    <p>${esc(t("We have it and will come back to you within one working day. If it is urgent, write to"))} <a href="mailto:${attr(leads.SUPPORT_TO)}">${esc(leads.SUPPORT_TO)}</a> ${esc(t("and it reaches the same inbox."))}</p>
     <div class="form-actions" style="margin-top:8px">
-      <a class="btn btn-primary" href="${APP}">Open the app</a>
-      <a class="btn btn-outline" href="/guides">Read the guides</a>
+      <a class="btn btn-primary" href="${APP}">${esc(t("Open the app"))}</a>
+      <a class="btn btn-outline" href="/guides">${esc(t("Read the guides"))}</a>
     </div>
   </div>`;
 }
@@ -112,9 +113,9 @@ function sentState() {
 function row(item) {
   const ext = item.external ? ' target="_blank" rel="noreferrer"' : "";
   return `<a class="row-item" href="${attr(item.href)}"${ext}>
-    <h3>${esc(item.title)}</h3>
-    <p>${esc(item.text)}</p>
-    <span class="row-go">${esc(item.go)} ${icon("arrow-up-right", 15)}</span>
+    <h3>${esc(t(item.title))}</h3>
+    <p>${esc(t(item.text))}</p>
+    <span class="row-go">${esc(t(item.go))} ${icon("arrow-up-right", 15)}</span>
   </a>`;
 }
 
@@ -143,9 +144,9 @@ async function render(ctx) {
     (sent
       ? sentState()
       : `<div class="page-head" data-reveal>
-      <span class="eyebrow">Support</span>
-      <h1>Something not working?</h1>
-      <p class="sub">Tell us what happened and we will get back to you. If you are still deciding whether Sokosumi is right for your team, <a href="${attr(SALES_URL)}" style="text-decoration:underline">talk to sales</a> instead.</p>
+      <span class="eyebrow">${esc(t("Support"))}</span>
+      <h1>${esc(t("Something not working?"))}</h1>
+      <p class="sub">${esc(t("Tell us what happened and we will get back to you. If you are still deciding whether Sokosumi is right for your team,"))} <a href="${attr(SALES_URL)}" style="text-decoration:underline">${esc(t("talk to sales"))}</a>${esc(t(" instead."))}</p>
     </div>
 
     <section class="page-section flush">
@@ -155,26 +156,26 @@ async function render(ctx) {
           error,
         )}
         <aside class="lead-aside" data-reveal style="--i:1">
-          <h2 class="section-title" style="font-size:20px">What to include</h2>
+          <h2 class="section-title" style="font-size:20px">${esc(t("What to include"))}</h2>
           <ul class="lead-list">
-            ${INCLUDE.map((t) => `<li>${icon("check", 15)}<span>${esc(t)}</span></li>`).join("")}
+            ${INCLUDE.map((line) => `<li>${icon("check", 15)}<span>${esc(t(line))}</span></li>`).join("")}
           </ul>
           <div class="lead-aside-foot">
-            <p class="muted">Prefer your own mail client?</p>
+            <p class="muted">${esc(t("Prefer your own mail client?"))}</p>
             <a class="row-go" href="${SUPPORT_MAILTO}">${esc(leads.SUPPORT_TO)} ${icon("arrow-up-right", 15)}</a>
           </div>
         </aside>
       </div>
     </section>`) +
     `<section class="page-section" data-reveal>
-      <h2>Answer it yourself, faster</h2>
-      <p class="sub">Most of what people write in about is already written down.</p>
+      <h2>${esc(t("Answer it yourself, faster"))}</h2>
+      <p class="sub">${esc(t("Most of what people write in about is already written down."))}</p>
       <div class="row-list">${SELF_SERVE.map(row).join("")}</div>
     </section>` +
     shell.ctaBand({
-      heading: "Not a support question?",
-      subheading: "Rolling Sokosumi out to a team, or listing your own coworkers as a vendor — that one is for sales.",
-      ctaLabel: "Talk to Sales",
+      heading: t("Not a support question?"),
+      subheading: t("Rolling Sokosumi out to a team, or listing your own coworkers as a vendor — that one is for sales."),
+      ctaLabel: t("Talk to Sales"),
       ctaHref: SALES_URL,
       seed: 11,
     }) +

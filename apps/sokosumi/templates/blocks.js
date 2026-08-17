@@ -8,6 +8,7 @@
 // as-is (same trust model as masumi.network).
 
 const shell = require("./shell");
+const { t } = require("../lib/i18n");
 const { esc, attr, icon } = shell;
 const { mediaUrl } = require("../lib/cms");
 
@@ -105,9 +106,9 @@ const RENDER = {
             // empty and "yes" cells were an unlabeled icon.
             const inner =
               v.toLowerCase() === "yes"
-                ? `<span class="cmp-yes">${icon("check", 12)}</span><span class="sr-only">Yes</span>`
+                ? `<span class="cmp-yes">${icon("check", 12)}</span><span class="sr-only">${esc(t("Yes"))}</span>`
                 : v.toLowerCase() === "no"
-                  ? `<span class="cmp-no"></span><span class="sr-only">No</span>`
+                  ? `<span class="cmp-no"></span><span class="sr-only">${esc(t("No"))}</span>`
                   : esc(v);
             return `<td class="${cols[i] && cols[i].highlight ? "hl" : ""}">${inner}</td>`;
           })

@@ -6,6 +6,7 @@ const shell = require("./shell");
 const cms = require("../lib/cms");
 const blocks = require("./blocks");
 const art = require("./art");
+const { t, tp } = require("../lib/i18n");
 const { esc, attr, icon, avatar, pageStart, pageEnd } = shell;
 
 // Populated industry relations only (depth 1 gives objects; ids are skipped).
@@ -23,10 +24,10 @@ function useCaseCard(uc, crew) {
   const svg = art.field(uc.slug, { w: 600, h: 240 });
   const media = svg ? `<span class="uc-art" aria-hidden="true">${svg}</span>` : "";
   const n = (crew || []).length;
-  const foot = n ? `${n} coworker${n === 1 ? "" : "s"} on it` : "Read the workflow";
+  const foot = n ? tp(n, "{n} coworker on it", "{n} coworkers on it") : t("Read the workflow");
   return `<a class="card uc-card${media ? " has-art" : ""}" href="/use-cases/${encodeURIComponent(uc.slug)}">
     ${media}
-    <span class="uc-eyebrow">${esc(ind ? ind.name : "Use case")}</span>
+    <span class="uc-eyebrow">${esc(ind ? ind.name : t("Use case"))}</span>
     <h3>${esc(uc.title)}</h3>
     <p>${esc(uc.description || "")}</p>
     <div class="card-foot"><span class="tag-quiet">${esc(foot)}</span><span class="go">${icon(
@@ -53,13 +54,13 @@ const HOW = [
 
 function howItRuns() {
   return `<section class="page-section">
-    <h2>How a use case runs</h2>
-    <p class="sub">Every use case on this page is a real workflow you can start today.</p>
+    <h2>${esc(t("How a use case runs"))}</h2>
+    <p class="sub">${esc(t("Every use case on this page is a real workflow you can start today."))}</p>
     <ol class="uc-steps">
       ${HOW.map(
-        ([t, d], i) => `<li><span class="n">${String(i + 1).padStart(2, "0")}</span><strong>${esc(
-          t,
-        )}</strong><span>${esc(d)}</span></li>`,
+        ([title, d], i) => `<li><span class="n">${String(i + 1).padStart(2, "0")}</span><strong>${esc(
+          t(title),
+        )}</strong><span>${esc(t(d))}</span></li>`,
       ).join("")}
     </ol>
   </section>`;
@@ -97,18 +98,18 @@ async function hub(ctx) {
 
   const industrySection = shown.length
     ? `<div class="page-section flush filter-bar" id="industries" data-reveal>
-        <p class="filter-label">Filter by industry</p>
+        <p class="filter-label">${esc(t("Filter by industry"))}</p>
         <div class="ind-bar">${shown.map((i) => industryPill(i, counts[i.slug] || 0)).join("")}</div>
       </div>`
     : "";
 
   const casesSection = `<section class="page-section flush">
-      <h2>${useCases.length === 1 ? "One workflow" : `${useCases.length} workflows`}</h2>
-      <p class="sub">Each one is a real job, start to finished file, run by a team of coworkers.</p>
+      <h2>${esc(useCases.length === 1 ? t("One workflow") : t("{n} workflows", { n: useCases.length }))}</h2>
+      <p class="sub">${esc(t("Each one is a real job, start to finished file, run by a team of coworkers."))}</p>
       ${
         useCases.length
           ? `<div class="card-grid uc-grid">${useCases.map((uc) => useCaseCard(uc, crewOf(uc))).join("")}</div>`
-          : `<p class="muted">Use cases are on the way. In the meantime, <a href="/tasks" style="text-decoration:underline">browse the template tasks</a>.</p>`
+          : `<p class="muted">${esc(t("Use cases are on the way. In the meantime,"))} <a href="/tasks" style="text-decoration:underline">${esc(t("browse the template tasks"))}</a>.</p>`
       }
     </section>`;
 
@@ -122,18 +123,18 @@ async function hub(ctx) {
       breadcrumb: cr,
     }) +
     `<div class="page-head" data-reveal>
-      <h1>What teams get done with Sokosumi</h1>
-      <p class="sub">Real workflows, mapped to your industry and handed to coworkers that already know the job.</p>
+      <h1>${esc(t("What teams get done with Sokosumi"))}</h1>
+      <p class="sub">${esc(t("Real workflows, mapped to your industry and handed to coworkers that already know the job."))}</p>
     </div>` +
     industrySection +
     casesSection +
     (useCases.length ? howItRuns() : "") +
-    shell.quoteSection(shell.pickQuote(testimonials, 3), { heading: "What it is like once they are running" }) +
+    shell.quoteSection(shell.pickQuote(testimonials, 3), { heading: t("What it is like once they are running") }) +
     blocks.ctaBand({
-      heading: "Put a coworker on one of these this week",
-      subheading: "Create an account, pick the use case closest to your job, and hand over the first brief.",
-      ctaLabel: "Get started",
-      ctaHref: shell.APP_SIGNUP,
+      heading: t("Put a coworker on one of these this week"),
+      subheading: t("Create an account, pick the use case closest to your job, and hand over the first brief."),
+      ctaLabel: t("Get started"),
+      ctaHref: shell.APP,
     }) +
     pageEnd()
   );
@@ -154,29 +155,29 @@ async function industry(ctx) {
   ];
   return (
     pageStart({
-      title: `${ind.name} use cases | Sokosumi`,
-      description: (ind.description || `How ${ind.name} teams put AI coworkers to work on Sokosumi.`).slice(0, 155),
+      title: t("{name} use cases | Sokosumi", { name: ind.name }),
+      description: (ind.description || t("How {name} teams put AI coworkers to work on Sokosumi.", { name: ind.name })).slice(0, 155),
       path: `/use-cases/industries/${ind.slug}`,
       breadcrumb: cr,
     }) +
     `<div class="page-head" data-reveal>
-      <span class="eyebrow">Use cases for</span>
+      <span class="eyebrow">${esc(t("Use cases for"))}</span>
       <h1>${esc(ind.name)}</h1>
       ${ind.description ? `<p class="sub">${esc(ind.description)}</p>` : ""}
-      <p class="meta-row">${useCases.length} of the ${allCases.length} workflows on Sokosumi apply here. <a href="/use-cases" style="text-decoration:underline">See all use cases</a></p>
+      <p class="meta-row">${esc(t("{n} of the {total} workflows on Sokosumi apply here.", { n: useCases.length, total: allCases.length }))} <a href="/use-cases" style="text-decoration:underline">${esc(t("See all use cases"))}</a></p>
     </div>
     <div class="page-section flush">
       ${
         useCases.length
           ? `<div class="card-grid uc-grid">${useCases.map((uc) => useCaseCard(uc, crewOf(uc))).join("")}</div>`
-          : `<p class="muted">Use cases for this industry are on the way. In the meantime, <a href="/use-cases" style="text-decoration:underline">browse all use cases</a>.</p>`
+          : `<p class="muted">${esc(t("Use cases for this industry are on the way. In the meantime,"))} <a href="/use-cases" style="text-decoration:underline">${esc(t("browse all use cases"))}</a>.</p>`
       }
     </div>` +
     blocks.ctaBand({
-      heading: `Bring a coworker into your ${ind.name.toLowerCase()} team`,
-      subheading: "Create an account and hand over the first brief today.",
-      ctaLabel: "Get started",
-      ctaHref: shell.APP_SIGNUP,
+      heading: t("Bring a coworker into your {industry} team", { industry: ind.name }),
+      subheading: t("Create an account and hand over the first brief today."),
+      ctaLabel: t("Get started"),
+      ctaHref: shell.APP,
     }) +
     pageEnd()
   );
@@ -200,7 +201,7 @@ async function industry(ctx) {
 function heroSection(doc, blk, inds) {
   const b = blk || {};
   const base = b.eyebrow || "Use case";
-  const eyebrow = base === "Use case" && inds[0] ? `Use case · ${esc(inds[0].name)}` : esc(base);
+  const eyebrow = base === "Use case" && inds[0] ? `${esc(t("Use case"))} · ${esc(inds[0].name)}` : esc(t(base));
   const heading = b.heading || doc.title;
   const sub = b.subheading || doc.description || "";
 
@@ -208,8 +209,8 @@ function heroSection(doc, blk, inds) {
     `<a class="btn ${cls} btn-lg" href="${attr(href)}"${analytics ? ` data-analytics="sign_up_click" data-analytics-location="use_case_hero"` : ""}>${esc(label)}</a>`;
   const primaryHref = b.ctaHref || shell.APP_SIGNUP;
   const ctas =
-    btn(b.ctaLabel || "Get started", primaryHref, "btn-primary", primaryHref.startsWith(shell.APP)) +
-    btn(b.secondaryCtaLabel || "Talk to sales", b.secondaryCtaHref || shell.SALES_URL, "btn-outline");
+    btn(b.ctaLabel || t("Get started"), primaryHref, "btn-primary", primaryHref.startsWith(shell.APP)) +
+    btn(b.secondaryCtaLabel || t("Talk to sales"), b.secondaryCtaHref || shell.SALES_URL, "btn-outline");
 
   const svg = art.field(doc.slug, { w: 1200, h: 460, bias: "edges" });
 
@@ -267,10 +268,10 @@ function midCta(doc, heroBlk) {
   const signup = primaryHref.startsWith(shell.APP);
   return `<section class="page-section uc-mid-cta" data-reveal>
     <h2>${esc(doc.title)}</h2>
-    <p class="sub">Create an account and hand over the first brief today.</p>
+    <p class="sub">${esc(t("Create an account and hand over the first brief today."))}</p>
     <div class="cta-row">
-      <a class="btn btn-primary btn-lg" href="${attr(primaryHref)}"${signup ? ` data-analytics="sign_up_click" data-analytics-location="use_case_mid"` : ""}>${esc(b.ctaLabel || "Get started")}</a>
-      <a class="btn btn-outline btn-lg" href="${attr(shell.SALES_URL)}">Talk to sales</a>
+      <a class="btn btn-primary btn-lg" href="${attr(primaryHref)}"${signup ? ` data-analytics="sign_up_click" data-analytics-location="use_case_mid"` : ""}>${esc(b.ctaLabel || t("Get started"))}</a>
+      <a class="btn btn-outline btn-lg" href="${attr(shell.SALES_URL)}">${esc(t("Talk to sales"))}</a>
     </div>
     ${signup ? shell.NO_CARD : ""}
   </section>`;
@@ -311,8 +312,8 @@ function teamSection(crew, offers) {
     })
     .join("");
   return `<section class="page-section" data-reveal>
-    <h2>The coworkers who run it</h2>
-    <p class="sub">Each one comes with template tasks behind this workflow, ready to brief. Open a task to see the deliverable before you start.</p>
+    <h2>${esc(t("The coworkers who run it"))}</h2>
+    <p class="sub">${esc(t("Each one comes with template tasks behind this workflow, ready to brief. Open a task to see the deliverable before you start."))}</p>
     <div class="uc-team">${cards}</div>
   </section>`;
 }
@@ -326,7 +327,7 @@ function relatedSection(doc, inds, allCases, crewOf) {
     .slice(0, 3);
   if (!related.length) return "";
   return `<section class="page-section" data-reveal>
-    <h2>Related use cases</h2>
+    <h2>${esc(t("Related use cases"))}</h2>
     <div class="card-grid uc-grid">${related.map((uc) => useCaseCard(uc, crewOf(uc))).join("")}</div>
   </section>`;
 }
@@ -368,8 +369,8 @@ async function detail(ctx) {
 
   const band = blocks.ctaBand(
     bandBlock || {
-      heading: "Put a coworker on this",
-      subheading: "Create an account, pick this use case, and hand over the first brief.",
+      heading: t("Put a coworker on this"),
+      subheading: t("Create an account, pick this use case, and hand over the first brief."),
     },
   );
 
@@ -381,7 +382,7 @@ async function detail(ctx) {
 
   return (
     pageStart({
-      title: `${doc.title} | Sokosumi use cases`,
+      title: t("{title} | Sokosumi use cases", { title: doc.title }),
       description: (doc.description || "").slice(0, 155),
       path: `/use-cases/${doc.slug}`,
       breadcrumb: cr,

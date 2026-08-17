@@ -13,6 +13,7 @@
 
 const fs = require("fs");
 const path = require("path");
+const i18n = require("./i18n");
 
 const CMS_URL = process.env.CMS_URL || "https://payload-production-6f43.up.railway.app";
 const CMS_PREVIEW_KEY = process.env.CMS_PREVIEW_KEY || "";
@@ -76,16 +77,50 @@ function remember(pathname, entry) {
   }
 }
 
+// The request's locale rides in on AsyncLocalStorage (lib/i18n.js), so no
+// call site had to change. German requests ask Payload for the de values
+// with an English fallback; requests to a CMS that does not know these
+// params yet simply get English back — never an error, never a blank.
+//
+// Locale safety of the cache: the locale params are appended to the path
+// BEFORE it is used as the cache key, so /api/pages?...&locale=de and the
+// plain English path are distinct entries. Without this, whichever locale
+// populated the cache first would be served to both for the whole TTL.
+function withLocale(pathname) {
+  if (i18n.locale() !== "de") return pathname;
+  const sep = pathname.includes("?") ? "&" : "?";
+  return `${pathname}${sep}locale=de&fallback-locale=en`;
+}
+
 // Cached GET of a payload REST path. Draft requests skip the cache entirely.
-async function cmsGet(pathname, opts) {
+//
+// German failure ladder: a CMS without the locale config yet answers a
+// ?locale=de query with an error (the live instance 500s on it today), and
+// that must NEVER take a German page down — the brief for /de is "English
+// content, German chrome" until translations exist. So a failed localized
+// fetch falls back to the plain English query (which is usually already in
+// cache), and only after THAT fails does the stale-on-error path throw.
+async function cmsGet(rawPathname, opts) {
+  const pathname = withLocale(rawPathname);
+  const fallbackPathname = pathname !== rawPathname ? rawPathname : null;
   const draft = !!(opts && opts.draft);
   if (draft) {
-    const sep = pathname.includes("?") ? "&" : "?";
-    return rawFetch(`${pathname}${sep}draft=true`, true);
+    const withDraft = (p) => `${p}${p.includes("?") ? "&" : "?"}draft=true`;
+    try {
+      return await rawFetch(withDraft(pathname), true);
+    } catch (e) {
+      if (!fallbackPathname) throw e;
+      console.error(`[cms] ${e.message} — draft falling back to the default locale`);
+      return rawFetch(withDraft(fallbackPathname), true);
+    }
   }
+  return cachedGet(pathname, fallbackPathname);
+}
+
+function cachedGet(pathname, fallbackPathname) {
   const hit = cache[pathname];
   const now = Date.now();
-  if (hit && now - hit.at < TTL_MS) return hit.data;
+  if (hit && now - hit.at < TTL_MS) return Promise.resolve(hit.data);
 
   const pending = inFlight.get(pathname);
   if (pending) return pending;
@@ -100,6 +135,10 @@ async function cmsGet(pathname, opts) {
       if (hit) {
         console.error(`[cms] ${e.message} — serving stale data`);
         return hit.data;
+      }
+      if (fallbackPathname) {
+        console.error(`[cms] ${e.message} — falling back to the default locale`);
+        return cachedGet(fallbackPathname, null);
       }
       throw e;
     })
