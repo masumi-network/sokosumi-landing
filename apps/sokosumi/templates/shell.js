@@ -1010,9 +1010,10 @@ function vendorLogo(v, cls) {
   const url = uploaded || v.logoUrl || null;
   if (!url) return "";
   const invert = !uploaded && v.logoInvert ? " invert" : "";
-  return `<span class="vendor-logo ${cls || ""}${invert}"><img src="${attr(url)}" alt="${attr(
-    v.name || "",
-  )}" loading="lazy" /></span>`;
+  // alt="" on purpose: every call site prints the vendor name as text directly
+  // beside the wordmark, so a name in the alt makes a screen reader announce it
+  // twice. The mark is decorative here, not information.
+  return `<span class="vendor-logo ${cls || ""}${invert}"><img${thumbSrc(url, 256)} alt="" loading="lazy" decoding="async" /></span>`;
 }
 
 module.exports = {
