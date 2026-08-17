@@ -131,6 +131,21 @@
     // flip once the hero has left the space the 64px bar occupies (plus air)
     { rootMargin: "-72px 0px 0px 0px" },
   ).observe(hero);
+
+  // The hero is a full screen tall, so the observer above does not fire until
+  // a whole viewport has gone by — leaving the bar completely transparent
+  // over a moving colour screenshot for that entire first screen. Blur it as
+  // soon as the visitor actually starts scrolling. Passive listener, one
+  // class toggle, no layout read beyond scrollY.
+  var scrolling = false;
+  var onScroll = function () {
+    var want = window.scrollY > 24;
+    if (want === scrolling) return;
+    scrolling = want;
+    bar.classList.toggle("over-hero", want);
+  };
+  window.addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
 })();
 
 // Mobile drawer toggle, shared by the landing page and every sub-page.
