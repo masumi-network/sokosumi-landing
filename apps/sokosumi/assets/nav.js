@@ -51,6 +51,25 @@
     });
   }
 
+  // Hydrating only on pointerenter lost the race it was in: CSS reveals the
+  // panel on :hover in 0.2s while the image request had not even started, so
+  // the FIRST hover showed empty placeholder circles and the pictures popped
+  // in afterwards — or never, if the pointer moved on. Every later hover was
+  // instant off cache, which is why the menu looked like it had images
+  // sometimes and not others. Hydrate every panel once the page is idle
+  // instead: still nothing on first paint, but the pictures are there before
+  // anyone can open a menu. open() still calls hydrate as a safety net.
+  function hydrateAll() {
+    drops.forEach(hydrate);
+  }
+  if (document.readyState === "complete") {
+    (window.requestIdleCallback || window.setTimeout)(hydrateAll, 1);
+  } else {
+    window.addEventListener("load", function () {
+      (window.requestIdleCallback || window.setTimeout)(hydrateAll, 1);
+    });
+  }
+
   function open(d) {
     clearTimeout(timers.get(d));
     drops.forEach(function (other) {
