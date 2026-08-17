@@ -1,7 +1,7 @@
-/* Sokosumi sub-page design system — the landing page's Harvey-inspired
-   language (see index.html): ink + paper monochrome, Inter with light
-   display weights, hairline borders, rectangular 4–8px radii, purple only
-   as a micro-accent. Sections alternate paper and ink bands. */
+/* Sokosumi shared design system. Both the homepage (index.html) and every
+   server-rendered sub-page load this file. Homepage-only composition
+   (hero, intro, how-it-works, org chart, Florian quote) lives in
+   /assets/landing.css. Header/footer chrome lives in /assets/nav.css. */
 
 :root {
   --background: #fafaf9;
@@ -22,6 +22,11 @@
   --r-lg: 8px;
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
   --sans: "Inter", -apple-system, system-ui, sans-serif;
+  /* Aliases so landing.css can say "serif" without shipping a second face.
+     Both resolve to Inter — a real serif later is a token change, not a
+     per-surface edit. */
+  --serif: "Inter", -apple-system, system-ui, sans-serif;
+  --mono: "Inter", -apple-system, system-ui, sans-serif;
 }
 * { margin: 0; box-sizing: border-box; }
 /* `clip` rather than `hidden`: it stops a full-bleed band from ever producing
@@ -59,7 +64,8 @@ button { font-family: inherit; }
    for an animation nobody sees, because it is already in view on load.
    Everything below the fold still animates. */
 .page-head[data-reveal],
-.page-head [data-reveal] {
+.page-head [data-reveal],
+.hero [data-reveal] {
   opacity: 1;
   transform: none;
 }
@@ -478,7 +484,9 @@ a.card:hover .go { opacity: 1; transform: none; }
 .cw-desc { font-size: 15.5px; line-height: 1.65; color: var(--muted-foreground); text-wrap: pretty; }
 .cw-cta { margin-top: 8px; }
 .cta-note { margin-top: 10px; font-size: 12.5px; line-height: 1.5; color: var(--muted-foreground); max-width: 46ch; }
-/* the reassurance line under every signup button (never in the nav) */
+/* the reassurance line under every signup button (never in the nav).
+   Paper default. Dark surfaces override: .blk-cta .no-card below, and
+   .hero .no-card in landing.css (white 0.5 on the ink hero). */
 .no-card { display: block; margin-top: 4px; font-size: 12px; line-height: 1.4; color: var(--muted-foreground); }
 .cta-action { display: flex; flex-direction: column; align-items: flex-start; gap: 0; }
 /* two classes, so it outranks .blk-cta p (16px) */
@@ -703,7 +711,8 @@ a.card:hover .go { opacity: 1; transform: none; }
 .plan ul li { display: flex; gap: 9px; align-items: baseline; }
 .plan .btn { margin-top: auto; }
 
-.blk-faq { max-width: 820px; }
+.blk-faq, .faq-list { max-width: 820px; }
+.faq-list { margin: 0; }
 .faq-item { border-bottom: 1px solid var(--border); }
 .faq-item summary {
   display: flex; align-items: center; justify-content: space-between; gap: 20px;
@@ -721,6 +730,13 @@ a.card:hover .go { opacity: 1; transform: none; }
 }
 .faq-item[open] summary .faq-x { transform: rotate(45deg); background: var(--ink); color: #fff; border-color: var(--ink); }
 .faq-item .faq-a { padding: 0 44px 24px 4px; font-size: 15px; line-height: 1.7; color: var(--muted-foreground); max-width: 64ch; }
+/* Homepage #faq is an ink band. Without these the shared paper FAQ
+   colours would sit dark-on-ink and the questions would vanish. */
+.band-dark .faq-item { border-color: var(--hairline-dark); }
+.band-dark .faq-item summary:hover { color: rgba(255, 255, 255, 0.75); }
+.band-dark .faq-item summary .faq-x { border-color: var(--hairline-dark); color: rgba(255, 255, 255, 0.6); }
+.band-dark .faq-item[open] summary .faq-x { background: #fff; color: var(--ink); border-color: #fff; }
+.band-dark .faq-item .faq-a { color: rgba(255, 255, 255, 0.6); }
 
 .cmp-table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: var(--r-lg); background: var(--card); }
 .cmp-table { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 560px; }
@@ -1033,8 +1049,8 @@ fieldset.field > legend + * { clear: both; }
 }
 .skip-link:focus { top: 16px; }
 
-/* The cookie-consent banner styles itself — assets/consent.js injects them so
-   the banner works on the landing page too, which does not load this file. */
+/* The cookie-consent banner styles itself — assets/consent.js injects them
+   so a missing stylesheet cannot leave the banner unstyled. */
 
 
 /* ===== accent =====================================================
@@ -1071,8 +1087,8 @@ a.card:hover { border-color: rgba(100, 0, 255, 0.45); }
 /* a blog post's own tag, the one coloured mark on the index */
 .tag-quiet { color: var(--primary); }
 
-/* focus was not styled at all — a visible ring is the accessibility
-   baseline, and the accent is exactly what it is for */
+/* Shared focus ring. Homepage used to ship a 3px offset in its inline
+   block; 2px is the one value now. */
 :focus-visible {
   outline: 2px solid var(--primary);
   outline-offset: 2px;

@@ -627,16 +627,22 @@ const assetsDir = path.join(root, "assets");
   async function serveIndex(req, res) {
     const file = path.join(root, "index.html");
     const stat = fs.statSync(file);
-    // The homepage carries the SAME header markup as every sub-page —
-    // shell.header() is the single source of truth, injected here in place of
-    // index.html's <!--SSR:HEADER--> placeholder. `overlay: true` is the one
-    // difference: transparent over the hero so the hero art runs edge to
-    // edge, flipping to the standard paper bar once scrolled past it
-    // (assets/nav.js + assets/nav.css).
+    // Shared chrome is injected here from shell.js so the homepage cannot
+    // drift from the sub-pages: header (overlay over the hero), the closing
+    // CTA band, and the footer. Styles for the band live in styles.css;
+    // header/footer styles live in nav.css.
     shell.setNav(await buildNav({ draft: hasPreviewCookie(req) }).catch(() => null));
     const html = fs
       .readFileSync(file, "utf8")
       .replace("<!--SSR:HEADER-->", shell.header("/", { overlay: true }))
+      .replace(
+        "<!--SSR:CTA-->",
+        shell.ctaBand({
+          heading: "Your next coworker is one click away.",
+          subheading: "Sign up and hand over your first task today.",
+          ctaLabel: "Sign Up",
+        }),
+      )
       .replace("<!--SSR:FOOTER-->", shell.footerHtml());
     send(req, res, 200, {
       "Content-Type": "text/html; charset=utf-8",

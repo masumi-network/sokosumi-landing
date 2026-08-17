@@ -9,9 +9,12 @@
 
 const cms = require("./cms");
 
-const TOP_VENDORS = 3;
-// Serviceplan Group leads the roster and the CTA faces.
+// Serviceplan Group leads the roster, the CTA faces, and the nav menu —
+// regardless of headcount. Ranking the menu purely by coworker count put
+// utxo AG (8 curated) above them (5). /ai-coworkers already leads with this
+// same slug; keep the two in step.
 const FEATURED_VENDOR = "serviceplan-group";
+const TOP_VENDORS = 3;
 const PICKS_PER_VENDOR = 4;
 const TOP_INDUSTRIES = 3;
 const PICKS_PER_INDUSTRY = 3;
@@ -68,7 +71,12 @@ async function buildNav(opts) {
       };
     })
     .filter((v) => v.picks.length)
-    .sort((a, b) => b.score - a.score || a.name.localeCompare(b.name))
+    .sort((a, b) => {
+      const af = a.slug === FEATURED_VENDOR;
+      const bf = b.slug === FEATURED_VENDOR;
+      if (af !== bf) return af ? -1 : 1;
+      return b.score - a.score || a.name.localeCompare(b.name);
+    })
     .slice(0, TOP_VENDORS);
 
   // Industries that actually have use cases, so the menu never dead-ends.

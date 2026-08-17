@@ -1,10 +1,9 @@
 /* The site header, shared by every page. The markup comes from ONE place —
    templates/shell.js header() — rendered server-side on sub-pages and
    injected into index.html by server.js, and this file is the ONE place its
-   styles live (index.html's inline block and styles.css both link here
-   instead of carrying their own copy, which is how the two headers drifted
-   apart before). Behaviour (dropdown grace period, burger, the overlay
-   scroll flip) lives in /assets/nav.js.
+   styles live (index.html and every sub-page link here instead of
+   carrying their own copy). Behaviour (dropdown grace period, burger,
+   the overlay scroll flip) lives in /assets/nav.js.
 
    Two states of the same component:
    - default: paper bar, sticky, hairline bottom border (every sub-page)
@@ -281,7 +280,7 @@ body.nav-locked { overflow: hidden; }
 /* Same deal as the header above: markup comes from ONE place —
    templates/shell.js footerHtml() — rendered server-side on sub-pages and
    injected into index.html by server.js, and this file is the ONE place its
-   styles live (styles.css and index.html's inline block both point here).
+   styles live.
    The hairline sits on the footer itself so it spans the window rather than
    stopping at the 1240px content grid. */
 footer.site {

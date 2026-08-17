@@ -213,13 +213,10 @@
     document.body.appendChild(root);
   }
 
-  // The banner's own styles, injected once. They used to live in
-  // assets/styles.css — but the landing page (index.html) is a separate design
-  // system that does NOT load styles.css, so there the banner rendered
-  // unstyled: position:static, stranded at the very bottom of the page,
-  // effectively invisible. The banner is a shared component loaded on every
-  // surface, so its styles travel with its JS. Every var below is defined in
-  // both design systems; the fallbacks are belt-and-braces.
+  // The banner's own styles, injected once. They travel with this file so
+  // a surface that forgets to load styles.css cannot leave the banner
+  // unstyled (that is how it used to render on the homepage). Fallbacks
+  // on every var are belt-and-braces; both surfaces now load styles.css.
   function injectStyles() {
     if (document.getElementById("cc-styles")) return;
     var css =
