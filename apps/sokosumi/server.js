@@ -703,6 +703,18 @@ const assetsDir = path.join(root, "assets");
   }
 
   const handler = async (req, res) => {
+      // Both sokosumi.com and www.sokosumi.com alias the same deployment, so the
+      // apex served a 200 copy of all 138 URLs. Canonicals already pointed at
+      // www, but a duplicate host is a duplicate host — send it on with a single
+      // 301 so there is exactly one address for every page. Exact-match only:
+      // preview hosts and localhost must be left alone.
+      const host = String(req.headers.host || "").toLowerCase();
+      if (host === "sokosumi.com") {
+        return send(req, res, 301, {
+          Location: `https://www.sokosumi.com${req.url || "/"}`,
+          "Cache-Control": "public, max-age=3600",
+        }, "");
+      }
       const [rawPath, rawQuery] = (req.url || "/").split("?");
       // decodeURIComponent throws on a malformed escape ("/%zz"), and this
       // runs before the try below — an uncaught throw here took the whole
