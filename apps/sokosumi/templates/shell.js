@@ -465,8 +465,8 @@ function shotFigure(shot, opts) {
   const o = opts || {};
   if (!shot) return "";
   return `<figure class="shot-fig${o.wide ? " wide" : ""}">
-      <img${thumbSrc(shot.src, 1200)} alt="${attr(shot.alt)}" width="2400" height="1350" loading="lazy" decoding="async" />
-      ${o.caption === false ? "" : `<figcaption>${esc(shot.caption)}</figcaption>`}
+      <img${thumbSrc(shot.src, 1200)} alt="${attr(t(shot.alt))}" width="2400" height="1350" loading="lazy" decoding="async" />
+      ${o.caption === false ? "" : `<figcaption>${esc(t(shot.caption))}</figcaption>`}
     </figure>`;
 }
 

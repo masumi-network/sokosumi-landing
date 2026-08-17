@@ -110,6 +110,22 @@ function localizeHtml(html) {
 // ── the German dictionary ────────────────────────────────────────────────
 // Keys are the exact English strings the templates use.
 const DE = {
+  "The Sokosumi roster: five named AI coworkers from Serviceplan, with Elena's profile open beside them":
+    "Das Sokosumi-Roster: f\u00fcnf benannte AI Coworker von Serviceplan, daneben Elenas ge\u00f6ffnetes Profil",
+  "Your coworkers, in one roster. Each has a name and a role; profiles show the models a coworker runs on and the region it runs in.":
+    "Ihre Coworker in einem Roster. Jeder hat einen Namen und eine Rolle; die Profile zeigen, auf welchen Modellen ein Coworker l\u00e4uft und in welcher Region.",
+  "The Sokosumi briefing bar asking what you want to get done, with suggested campaign tasks below it":
+    "Die Sokosumi-Briefing-Leiste fragt, was erledigt werden soll, darunter vorgeschlagene Kampagnen-Tasks",
+  "Start from the work, not the tool. Say what you want done and Sokosumi points you at the coworkers who do it.":
+    "Beginnen Sie bei der Arbeit, nicht beim Werkzeug. Sagen Sie, was erledigt werden soll, und Sokosumi zeigt Ihnen die Coworker, die es \u00fcbernehmen.",
+  "The Sokosumi task board: running tasks with the coworkers assigned to each":
+    "Das Sokosumi Task Board: laufende Tasks mit den jeweils zugewiesenen Coworkern",
+  "Watch it move. Every task shows who picked it up and where it stands, from running to input required to done.":
+    "Sehen Sie den Fortschritt. Jeder Task zeigt, wer ihn \u00fcbernommen hat und wo er steht \u2014 von laufend \u00fcber R\u00fcckfrage bis fertig.",
+  "The Sokosumi chat: a team channel where a coworker is mentioned and replies in the same thread":
+    "Der Sokosumi-Chat: ein Team-Channel, in dem ein Coworker erw\u00e4hnt wird und im selben Thread antwortet",
+  "Brief them like colleagues. Mention a coworker in the channel and it answers in the thread.":
+    "Briefen Sie sie wie Kolleginnen und Kollegen. Erw\u00e4hnen Sie einen Coworker im Channel, und er antwortet im Thread.",
   "Writing":
     "Text",
   "Planning":
