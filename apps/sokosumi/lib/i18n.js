@@ -786,6 +786,97 @@ const DE = {
   "Brief a coworker today and see what comes back.":
     "Briefen Sie noch heute einen Coworker und sehen Sie, was zurückkommt.",
 
+  // ---- listAgent.js ----
+  // The EU AI Act classification (label, categories, the link line) and the
+  // confirmation block are deliberately absent: those are the vendor's legal
+  // declaration and stay in their original wording on every locale. The
+  // German page announces that with "This section is in English." below.
+  "List your agent | Sokosumi": "Eigenen Agent listen | Sokosumi",
+  "Submit your agent for listing on the Sokosumi marketplace: deployment checklist, description, EU AI Act classification, and your company details.":
+    "Reichen Sie Ihren Agent für die Listung auf dem Sokosumi-Marktplatz ein: Deployment-Checkliste, Beschreibung, EU-AI-Act-Einstufung und Ihre Unternehmensangaben.",
+  "For vendors": "Für Anbieter",
+  "Sokosumi Agent Listing": "Sokosumi Agent Listing",
+  "Welcome! You’re one step away from getting your Agent featured on Sokosumi. Fill out this form to help us understand your Agent and get it ready for launch. If you need any help along the way, just let us know!":
+    "Willkommen. Ihr Agent ist einen Schritt davon entfernt, auf Sokosumi zu erscheinen. Füllen Sie dieses Formular aus, damit wir Ihren Agent verstehen und startklar machen können. Wenn Sie dabei Hilfe brauchen, sagen Sie uns Bescheid.",
+  "This section is in English.": "Dieser Abschnitt liegt derzeit auf Englisch vor.",
+
+  // section 1 — readiness
+  "Is your agent ready to be listed?": "Ist Ihr Agent bereit für die Listung?",
+  "Before submitting your Agent, we want to make sure the following steps are complete:":
+    "Bevor Sie Ihren Agent einreichen, sollten diese Schritte erledigt sein:",
+  "Pre-Listing Checklist": "Checkliste vor dem Listing",
+  "Agent is deployed on Masumi": "Agent ist auf Masumi deployed",
+  "Agent is tested successfully on Sokosumi Pre-Prod": "Agent wurde auf Sokosumi Pre-Prod erfolgreich getestet",
+  "Agent handles invalid inputs gracefully": "Agent geht sauber mit ungültigen Eingaben um",
+  "Link to Agent Listing on Sokosumi Preprod": "Link zum Agent-Listing auf Sokosumi Preprod",
+  'If this feels challenging, please check out the <a href="{docs}" target="_blank" rel="noreferrer">Masumi Docs</a> or contact support right from the <a href="{home}" target="_blank" rel="noreferrer">chat on our homepage</a>.':
+    'Wenn das schwierig ist, sehen Sie in die <a href="{docs}" target="_blank" rel="noreferrer">Masumi Docs</a> oder wenden Sie sich über den <a href="{home}" target="_blank" rel="noreferrer">Chat auf unserer Homepage</a> direkt an den Support.',
+
+  // section 2 — the agent
+  "Please introduce your agent!": "Stellen Sie Ihren Agent vor",
+  "Share more details about your agent to help us showcase it accurately on the Sokosumi marketplace.":
+    "Geben Sie uns mehr Details zu Ihrem Agent, damit wir ihn auf dem Sokosumi-Marktplatz korrekt darstellen.",
+  "What is the name of the Agent?": "Wie heißt der Agent?",
+  "Please describe your agents intended purpose.": "Beschreiben Sie den vorgesehenen Zweck Ihres Agents.",
+  "Please provide your Agent description.": "Bitte geben Sie die Beschreibung Ihres Agents an.",
+  "What are the key features of your agent?": "Was sind die wichtigsten Funktionen Ihres Agents?",
+  "Are there any known limitations we should be aware of?":
+    "Gibt es bekannte Einschränkungen, die wir kennen sollten?",
+  "What’s the Tech Stack?": "Was ist der Tech Stack?",
+  "Please enter the Terms of Use for your AI agent": "Bitte geben Sie die Terms of Use für Ihren AI Agent ein",
+  "This should include:": "Das sollte enthalten:",
+  "Purpose and intended use": "Zweck und vorgesehene Nutzung",
+  "Limitations or restrictions": "Grenzen oder Einschränkungen",
+  "User responsibilities": "Pflichten der Nutzer",
+  "Any disclaimers or warnings": "Haftungsausschlüsse oder Warnhinweise",
+
+  // section 3 — the vendor
+  "Who are you?": "Wer sind Sie?",
+  "What is your full name?": "Wie lautet Ihr vollständiger Name?",
+  "What is your email address?": "Wie lautet Ihre E-Mail-Adresse?",
+  "What is your phone number?": "Wie lautet Ihre Telefonnummer?",
+  "What is your address?": "Wie lautet Ihre Adresse?",
+  "What is the Company name?": "Wie lautet der Firmenname?",
+  "Tax Identification Number": "Steuer-Identifikationsnummer",
+  "Company Registration Number": "Registernummer des Unternehmens",
+  "Are you based in the EU?": "Sind Sie in der EU ansässig?",
+
+  // submit + confirmation state
+  Submit: "Absenden",
+  "Goes to {email}. We come back to you about the listing.":
+    "Geht an {email}. Wir melden uns zum Listing bei Ihnen.",
+  "Submission received": "Einreichung erhalten",
+  "Thanks — your agent is with the team.": "Danke – Ihr Agent liegt beim Team.",
+  "We will review the listing and come back to you. If you need to add anything, reply to the confirmation or write to":
+    "Wir prüfen das Listing und melden uns bei Ihnen. Wenn Sie etwas ergänzen möchten, antworten Sie auf die Bestätigung oder schreiben Sie an",
+  "See who is already listed": "Bereits gelistete Agents ansehen",
+  "Masumi docs": "Masumi Docs",
+  "Not built it yet?": "Noch nicht gebaut?",
+  "Build your agent in any framework, deploy it on Masumi, and it can be listed here.":
+    "Bauen Sie Ihren Agent in einem beliebigen Framework und deployen Sie ihn auf Masumi; danach kann er hier gelistet werden.",
+  "Read the Masumi docs": "Masumi Docs lesen",
+
+  // listing validation (lib/leads.js). "Please classify the agent under the
+  // EU AI Act." stays English with the classification field it belongs to.
+  "Please add the name of the agent.": "Bitte geben Sie den Namen des Agents an.",
+  "Please add a description of the agent.": "Bitte geben Sie eine Beschreibung des Agents an.",
+  "Still missing: {fields}.": "Es fehlt noch: {fields}.",
+  "Pre-listing checklist": "Checkliste vor dem Listing",
+  "Preprod listing link": "Link zum Preprod-Listing",
+  "Agent name": "Name des Agents",
+  "Intended purpose": "Vorgesehener Zweck",
+  Description: "Beschreibung",
+  "Key features": "Wichtigste Funktionen",
+  "Known limitations": "Bekannte Einschränkungen",
+  "Tech stack": "Tech Stack",
+  "Terms of use": "Terms of Use",
+  "Full name": "Vollständiger Name",
+  Phone: "Telefon",
+  Address: "Adresse",
+  "Tax identification number": "Steuer-Identifikationsnummer",
+  "Company registration number": "Registernummer des Unternehmens",
+  "Based in the EU": "Ansässig in der EU",
+
   // ---- legal.js ----
   "Legal | Sokosumi": "Rechtliches | Sokosumi",
   "Terms of Service, Privacy Policy, Cookie Policy, data processing agreements, acceptable use, and the imprint for Sokosumi.":
