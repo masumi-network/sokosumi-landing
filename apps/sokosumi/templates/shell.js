@@ -4,6 +4,7 @@
 // hairlines, light display weights. Styles live in /assets/styles.css.
 
 const cms = require("../lib/cms");
+const art = require("./art");
 
 const APP = "https://app.sokosumi.com";
 
@@ -604,33 +605,34 @@ function shell_truncate(s, n) {
   return cut.slice(0, at > 20 ? at : n).replace(/[\s,;:.–—-]+$/, "") + "\u2026";
 }
 
-// The Use cases menu: six jobs, each with the face of the coworker who leads
-// it, and nothing else. The old panel was the industry × use-case matrix —
-// three industry columns of picks plus a "most used" strip, ~16 links of
-// pure text for eight pages. A visitor scanning a menu picks the WORK, not
-// a vertical; the industry taxonomy lives on /use-cases where the filter
-// bar has room for it, and the panel's left foot link goes straight there.
+// The Use cases menu: six jobs, each with its primary industry under the
+// title and a seeded abstract swatch beside it — the same field the page's
+// own hero and card carry (templates/art.js), so the menu previews the page
+// rather than fronting one coworker's face. The industry caption is what
+// tells a visitor which vertical each job belongs to without leaving the
+// menu; the full taxonomy still lives on /use-cases behind the left foot
+// link. Geometry is untouched: same 880x356 panel as the other two menus.
 function useCasesPanel() {
   const jobs = (NAV_MODEL.popularUseCases || []).slice(0, 6);
   if (!jobs.length) return "";
 
   const rows = jobs
-    .map(
-      (p) =>
-        `<a class="nav-col-link has-face" href="/use-cases/${encodeURIComponent(p.slug)}">${
-          p.image
-            ? `<span class="nav-face"><img data-src="${attr(p.image)}" alt="" width="30" height="30" /></span>`
-            : `<span class="nav-face is-blank"></span>`
-        }<span class="nav-face-text"><span>${esc(p.title)}</span></span></a>`,
-    )
+    .map((p) => {
+      const swatch = art.field(p.slug, { w: 68, h: 68 });
+      return `<a class="nav-col-link has-face" href="/use-cases/${encodeURIComponent(p.slug)}">${
+        swatch ? `<span class="nav-swatch" aria-hidden="true">${swatch}</span>` : `<span class="nav-swatch is-blank" aria-hidden="true"></span>`
+      }<span class="nav-face-text"><span>${esc(p.title)}</span>${
+        p.industry ? `<small>${esc(p.industry)}</small>` : ""
+      }</span></a>`;
+    })
     .join("");
 
   return `<div class="nav-panel" role="group" aria-label="Use cases">
       <div class="nav-panel-body">
         <div class="nav-intro">
           <p class="nav-intro-label">Use cases</p>
-          <p class="nav-intro-desc">Real jobs, start to finished file. Pick one and the coworkers behind it already know the brief.</p>
-          <div class="nav-visual nav-visual-shot nav-visual-brief" aria-hidden="true"><img data-src="/assets/shot-brief.webp" alt="" width="2400" height="1350" /></div>
+          <p class="nav-intro-desc">Real jobs, start to finished file, organized by industry. Pick one and the coworkers behind it already know the brief.</p>
+          ${navVisual("abstract", art.field("use-cases", { w: 400, h: 230 }))}
         </div>
         <div class="nav-jobs">${rows}</div>
       </div>

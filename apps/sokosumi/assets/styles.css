@@ -65,6 +65,7 @@ button { font-family: inherit; }
    Everything below the fold still animates. */
 .page-head[data-reveal],
 .page-head [data-reveal],
+.blk-hero[data-reveal],
 .hero [data-reveal] {
   opacity: 1;
   transform: none;
@@ -272,33 +273,22 @@ main.page { min-height: 60vh; }
 @media (min-width: 760px) { .uc-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (min-width: 1100px) { .uc-grid { grid-template-columns: repeat(3, 1fr); } }
 .uc-card { padding-top: 20px; }
-/* The lead coworker is the card's identity. The portraits are square with
-   strong flat backgrounds, so a wide crop of the top two-thirds keeps the
-   face and lets the colour do the distinguishing. */
-.uc-card.has-lead { padding-top: 0; }
-.uc-lead {
-  position: relative; display: block; margin: 0 -22px 6px;
+/* The card's banner is the page's own seeded abstract field (templates/
+   art.js) at thumbnail size — the card previews the page it links to, and
+   the composition varies per slug, so the colour still does the
+   distinguishing without putting one coworker's face on the work. */
+.uc-card.has-art { padding-top: 0; }
+.uc-art {
+  display: block; margin: 0 -22px 6px;
   border-radius: var(--r-lg) var(--r-lg) 0 0; overflow: hidden;
-  aspect-ratio: 5 / 3; background: var(--muted);
+  aspect-ratio: 5 / 2; background: var(--card);
+  border-bottom: 1px solid var(--border);
 }
-.uc-lead img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 22%; display: block; }
-/* marketplace listings are line icons, not portraits: contain and inset */
-.uc-lead.is-icon { background: var(--muted); }
-.uc-lead.is-icon img { object-fit: contain; padding: 18%; }
-.uc-lead em {
-  position: absolute; left: 12px; bottom: 12px; font-style: normal;
-  font-size: 12px; font-weight: 500; letter-spacing: 0.01em; color: #fff;
-  background: rgba(15, 14, 13, 0.62); border-radius: var(--r-sm); padding: 4px 9px;
-  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
-}
+.uc-art svg { width: 100%; height: 100%; display: block; }
 .uc-eyebrow {
   font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase;
   color: var(--muted-foreground); margin-bottom: 2px;
 }
-.uc-crew { display: inline-flex; align-items: center; gap: 8px; min-width: 0; }
-.uc-crew .avatar { margin-right: -10px; border: 2px solid var(--card); }
-.uc-crew .avatar:last-of-type { margin-right: 0; }
-.uc-crew em { font-style: normal; margin-left: 8px; white-space: nowrap; }
 .avatar.xs { width: 22px; height: 22px; font-size: 10px; }
 
 .uc-steps { list-style: none; display: grid; gap: 14px; grid-template-columns: 1fr; counter-reset: none; }
@@ -308,35 +298,44 @@ main.page { min-height: 60vh; }
 .uc-steps strong { font-size: 16px; font-weight: 500; letter-spacing: -0.01em; }
 .uc-steps li > span:last-child { font-size: 14px; line-height: 1.55; color: var(--muted-foreground); }
 
-/* ===== use-case detail: outcome hero with the lead coworker =====
-   Copy left, the coworker who leads the work right — the coworker is the
-   named product of a use-case page, the way a HubSpot use-case hero names
-   the Hub. Without a lead portrait the hero is simply full-width copy. */
-.uc-hero.has-lead { display: grid; gap: clamp(28px, 5vw, 56px); align-items: center; }
-@media (min-width: 920px) { .uc-hero.has-lead { grid-template-columns: minmax(0, 1fr) minmax(230px, 300px); } }
-.uc-hero .no-card { margin-top: 10px; }
-.uc-hero-lead { display: flex; flex-direction: column; gap: 14px; max-width: 300px; }
-@media (max-width: 919.9px) { .uc-hero-lead { display: none; } }
-.uc-lead-card {
-  display: block; overflow: hidden;
-  background: var(--card); border: 1px solid var(--border); border-radius: var(--r-lg);
-  transition: border-color 0.25s var(--ease);
-}
-.uc-lead-card:hover { border-color: rgba(15, 14, 13, 0.4); }
-.uc-lead-card img {
-  display: block; width: 100%; aspect-ratio: 1 / 1.04;
-  object-fit: cover; object-position: 50% 18%; background: var(--muted);
-}
-.uc-lead-card.is-icon img { object-fit: contain; padding: 16%; }
-.uc-lead-who { display: flex; flex-direction: column; gap: 1px; padding: 12px 16px; border-top: 1px solid var(--border); }
-.uc-lead-who strong { font-size: 14.5px; font-weight: 500; letter-spacing: -0.01em; }
-.uc-lead-who small { font-size: 12.5px; color: var(--muted-foreground); }
-.uc-lead-crew { display: flex; align-items: center; gap: 12px; font-size: 13px; color: var(--muted-foreground); }
-.uc-lead-crew .avatar { border-color: var(--background); }
+/* ===== use-case detail: the HubSpot-shaped hero =====
+   Centred, outcome-led copy over a seeded abstract field (templates/art.js)
+   — the platform is what the hero names, the way HubSpot's hero names the
+   Hub; no coworker portrait fronts the page. The art layer is decorative
+   and absolutely positioned, so a page whose field fails to generate is
+   simply a plain centred hero. */
+.uc-hero-hs { position: relative; text-align: center; padding: clamp(64px, 9vw, 126px) 0 clamp(44px, 6vw, 76px); }
+.uc-hero-art { position: absolute; inset: 0; pointer-events: none; }
+.uc-hero-art svg { width: 100%; height: 100%; display: block; }
+.uc-hero-copy { position: relative; }
+.uc-hero-hs h1 { margin-left: auto; margin-right: auto; max-width: 22ch; }
+.uc-hero-hs .sub { margin-left: auto; margin-right: auto; }
+.uc-hero-hs .cta-row { justify-content: center; }
+.uc-hero-hs .no-card { margin-top: 10px; }
+
+/* ===== use-case detail: the centred value-prop intro =====
+   The page's first rich text block, hoisted under the hero — HubSpot's
+   "Use the Hub to…" paragraph. A centred measure, a touch larger than
+   body prose; pages without rich text simply have no intro. */
+.uc-intro .prose { max-width: 68ch; margin: 0 auto; font-size: 16.5px; line-height: 1.7; }
+.uc-intro .prose > p:first-child { font-size: 18px; color: var(--foreground); }
+
+/* ===== use-case detail: the mid-page CTA =====
+   The outcome restated after the capability sections, with the same two
+   doors as the hero — HubSpot's mid-page close, kept lighter than the ink
+   band the page still ends with. */
+.uc-mid-cta { text-align: center; }
+.uc-mid-cta > h2 { max-width: 24ch; margin-left: auto; margin-right: auto; }
+.uc-mid-cta > .sub { margin-left: auto; margin-right: auto; margin-bottom: 24px; }
+.uc-mid-cta .cta-row { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+.uc-mid-cta .no-card { margin-top: 12px; }
 
 /* ===== use-case detail: the numbered chapters =====
    The steps block, promoted from three small cards to the spine of the
    page: a big purple numeral, a display-size title, room to breathe. */
+/* the chapters' head is HubSpot's centred value-prop lead-in */
+.blk-chapters .blk-head { max-width: 640px; margin-left: auto; margin-right: auto; text-align: center; }
+.blk-chapters .blk-head .sub { margin-left: auto; margin-right: auto; }
 .chapters { list-style: none; margin: 0; padding: 0; }
 .chapter {
   display: grid; grid-template-columns: minmax(56px, 92px) minmax(0, 1fr);
