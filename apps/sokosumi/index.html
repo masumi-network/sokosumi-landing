@@ -539,7 +539,7 @@
               // catalog can add a vendor host any night, so fall back to the
               // original: slower, never broken. Mirrors vercel.json.
               if (!IMG_HOSTS.test(u)) return u;
-              return "/_vercel/image?url=" + encodeURIComponent(u) + "&w=" + w + "&q=75";
+              return "/_vercel/image?url=" + encodeURIComponent(u) + "&w=" + w + "&q=85";
             }
             function thumbSet(u, w) {
               if (!u) return "";
@@ -770,7 +770,7 @@
                 return (
                   '<a class="intro-person" href="/ai-coworkers/' + encodeURIComponent(c.slug) + '" data-reveal style="--i:' + i + '">' +
                   '<span class="shell"><span class="portrait" style="display:block">' +
-                  (c.image ? "<img" + thumbSet(c.image, 192) + ' alt="' + esc(c.name) + '" loading="lazy" decoding="async" />' : "") +
+                  (c.image ? "<img" + thumbSet(c.image, 512) + ' alt="' + esc(c.name) + '" loading="lazy" decoding="async" />' : "") +
                   "</span></span>" +
                   "<h3>" + esc(c.name) + "</h3>" +
                   (c.role ? '<div class="role">' + esc(c.role) + "</div>" : "") +

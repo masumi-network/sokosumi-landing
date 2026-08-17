@@ -465,7 +465,7 @@ function shotFigure(shot, opts) {
   const o = opts || {};
   if (!shot) return "";
   return `<figure class="shot-fig${o.wide ? " wide" : ""}">
-      <img${thumbSrc(shot.src, 828)} alt="${attr(shot.alt)}" width="2400" height="1350" loading="lazy" decoding="async" />
+      <img${thumbSrc(shot.src, 1200)} alt="${attr(shot.alt)}" width="2400" height="1350" loading="lazy" decoding="async" />
       ${o.caption === false ? "" : `<figcaption>${esc(shot.caption)}</figcaption>`}
     </figure>`;
 }
@@ -580,7 +580,7 @@ function navVisualFaces() {
 
 // A zoomed crop of a product render for the Product rail.
 function navVisualShot(src) {
-  return navVisual("shot", `<img data-src="${attr(thumb(src, 640))}" alt="" width="2400" height="1350" decoding="async" />`);
+  return navVisual("shot", `<img data-src="${attr(thumb(src, 1024))}" alt="" width="2400" height="1350" decoding="async" />`);
 }
 
 // The AI Coworkers mega menu: the top vendors with their wordmark, a few
@@ -956,10 +956,14 @@ function pageEnd() {
 // Only on Vercel: the endpoint does not exist under `node server.js`, and
 // rewriting unconditionally would break every image in local dev.
 const OPTIMIZE_IMAGES = Boolean(process.env.VERCEL);
+// q=75 is fine for screenshots but visibly soft on faces at portrait size, and
+// the portraits are the images people actually look at. 85 costs a few KB on
+// an image that started at 2MB.
+const QUALITY = 85;
 // Mirrors images.remotePatterns in vercel.json. Keep the two in step.
 const OPTIMIZABLE_HOST =
   /^\/|^https:\/\/(?:c-ipfs-gw\.nmkr\.io|[^/]*\.azurecontainerapps\.io|[^/]*\.serviceplan-agents\.com|payload-production-6f43\.up\.railway\.app|(?:www\.)?sokosumi\.com)\//i;
-function thumb(url, w) {
+function thumb(url, w, q) {
   if (!url) return url;
   const u = String(url);
   // SVG is already tiny and the optimizer refuses it without
@@ -970,15 +974,15 @@ function thumb(url, w) {
   // syncs nightly and can introduce a new vendor host at any time, so an
   // unknown host falls back to the original URL: slower, but never broken.
   if (!OPTIMIZABLE_HOST.test(u)) return u;
-  return `/_vercel/image?url=${encodeURIComponent(u)}&w=${w}&q=75`;
+  return `/_vercel/image?url=${encodeURIComponent(u)}&w=${w}&q=${q || QUALITY}`;
 }
 // `src` plus a 2x `srcset`, ready to drop into a tag. Retina phones are the
 // common case for avatars, so shipping only 1x would look soft.
-function thumbSrc(url, w, attrName) {
+function thumbSrc(url, w, attrName, q) {
   if (!url) return "";
   const name = attrName || "src";
   if (!OPTIMIZE_IMAGES) return ` ${name}="${attr(url)}"`;
-  return ` ${name}="${attr(thumb(url, w))}" srcset="${attr(thumb(url, w))} 1x, ${attr(thumb(url, w * 2))} 2x"`;
+  return ` ${name}="${attr(thumb(url, w, q))}" srcset="${attr(thumb(url, w, q))} 1x, ${attr(thumb(url, w * 2, q))} 2x"`;
 }
 
 function avatar(entity, cls) {

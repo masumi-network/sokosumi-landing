@@ -136,7 +136,7 @@ function coworkerCard(c, taskCount, i) {
   const chips = models.slice(0, 2).map((m) => `<span class="chip">${esc(m)}</span>`);
   if (taskCount) chips.push(`<span class="chip">${esc(tp(taskCount, "{n} template task", "{n} template tasks"))}</span>`);
   const face = c.image
-    ? `<span class="vcw-face"><img${shell.thumbSrc(c.image, 128)} alt="${attr(c.name)}" width="56" height="56" loading="lazy" decoding="async" /></span>`
+    ? `<span class="vcw-face"><img${shell.thumbSrc(c.image, 192)} alt="${attr(c.name)}" width="56" height="56" loading="lazy" decoding="async" /></span>`
     : `<span class="vcw-face"></span>`;
   return `<a class="card vcw-card" href="/ai-coworkers/${encodeURIComponent(c.slug)}" data-reveal style="--i:${i % 3}">
     <span class="vcw-head">

@@ -621,16 +621,16 @@ const assetsDir = path.join(root, "assets");
   // exist. serviceplan-hq.jpg is the worst offender: 405KB of 1400px JPEG for
   // a slot that is ~340 CSS px wide on a phone. At w=640 AVIF it is 26KB.
   const OPTIMIZE_IMAGES = Boolean(process.env.VERCEL);
-  const opt = (p, w) => `/_vercel/image?url=${encodeURIComponent(p)}&w=${w}&q=75`;
+  const opt = (p, w) => `/_vercel/image?url=${encodeURIComponent(p)}&w=${w}&q=85`;
   // Each entry: the asset path, the widths to offer, and the `sizes` hint that
   // tells the browser how wide it renders. Without `sizes` a srcset is a guess.
   const HOMEPAGE_IMAGES = [
-    { file: "/assets/serviceplan-hq.jpg", widths: [640, 828, 1200], sizes: "(max-width: 900px) 92vw, 640px" },
-    { file: "/assets/florian-haller.jpg", widths: [640, 828, 1200], sizes: "(max-width: 900px) 92vw, 720px" },
-    { file: "/assets/shot-board.webp", widths: [828, 1200, 1920], sizes: "100vw" },
-    { file: "/assets/shot-roster.webp", widths: [828, 1200, 1920], sizes: "100vw" },
-    { file: "/assets/shot-brief.webp", widths: [828, 1200, 1920], sizes: "100vw" },
-    { file: "/assets/shot-chat2.webp", widths: [828, 1200, 1920], sizes: "100vw" },
+    { file: "/assets/serviceplan-hq.jpg", widths: [828, 1200, 1656], sizes: "(max-width: 900px) 92vw, 640px" },
+    { file: "/assets/florian-haller.jpg", widths: [828, 1200, 1656], sizes: "(max-width: 900px) 92vw, 720px" },
+    { file: "/assets/shot-board.webp", widths: [1200, 1920, 2400], sizes: "100vw" },
+    { file: "/assets/shot-roster.webp", widths: [1200, 1920, 2400], sizes: "100vw" },
+    { file: "/assets/shot-brief.webp", widths: [1200, 1920, 2400], sizes: "100vw" },
+    { file: "/assets/shot-chat2.webp", widths: [1200, 1920, 2400], sizes: "100vw" },
   ];
   function optimizeImages(html) {
     if (!OPTIMIZE_IMAGES) return html;
