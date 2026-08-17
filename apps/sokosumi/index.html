@@ -49,10 +49,15 @@
         j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
         f.parentNode.insertBefore(j,f);
       }
-      function schedule(){ w.requestIdleCallback ? w.requestIdleCallback(boot) : setTimeout(boot,1200); }
+      // Idle arrives early on this page (TBT is ~40ms), so booting on idle still
+      // dropped 315KB of container into the paint window and cost ~10 Lighthouse
+      // points and 1.8s of LCP. Hold for a beat past load, THEN wait for idle.
+      // Tracking is unaffected in practice: a pageview still fires ~2s in, and
+      // any visitor who touches the page boots the tag immediately.
+      function schedule(){ setTimeout(function(){ w.requestIdleCallback ? w.requestIdleCallback(boot) : boot(); }, 2000); }
       if(d.readyState==='complete') schedule(); else w.addEventListener('load',schedule,{once:true});
       ['pointerdown','keydown','touchstart'].forEach(function(e){w.addEventListener(e,boot,{once:true,passive:true});});
-      setTimeout(boot,5000);
+      setTimeout(boot,8000);
     })(window,document,'script','dataLayer','GTM-N7GC8SFT');</script>
     <title>Sokosumi | AI Coworkers for your marketing team</title>
     <meta name="description" content="Hire AI coworkers and run template marketing tasks on Sokosumi. A marketplace for marketing work that arrives as a file. Built by Serviceplan Group." />

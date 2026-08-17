@@ -75,12 +75,17 @@ const ANALYTICS_HEAD = `<script>
       j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
       f.parentNode.insertBefore(j,f);
     }
-    function schedule(){ w.requestIdleCallback ? w.requestIdleCallback(boot) : setTimeout(boot,1200); }
+    // Idle arrives early on this page (TBT is ~40ms), so booting on idle still
+    // dropped 315KB of container into the paint window and cost ~10 Lighthouse
+    // points and 1.8s of LCP. Hold for a beat past load, THEN wait for idle.
+    // Tracking is unaffected in practice: a pageview still fires ~2s in, and
+    // any visitor who touches the page boots the tag immediately.
+    function schedule(){ setTimeout(function(){ w.requestIdleCallback ? w.requestIdleCallback(boot) : boot(); }, 2000); }
     if(d.readyState==='complete') schedule(); else w.addEventListener('load',schedule,{once:true});
     // A visitor who interacts before idle should be tracked from that moment.
     ['pointerdown','keydown','touchstart'].forEach(function(e){w.addEventListener(e,boot,{once:true,passive:true});});
     // Hard ceiling, so the tag never simply fails to load.
-    setTimeout(boot,5000);
+    setTimeout(boot,8000);
   })(window,document,'script','dataLayer','${GTM_ID}');</script>`;
 
 const GTM_NOSCRIPT = `<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=${GTM_ID}" height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Manager"></iframe></noscript>`;
