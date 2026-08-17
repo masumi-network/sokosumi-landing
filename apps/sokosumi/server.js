@@ -638,8 +638,8 @@ const assetsDir = path.join(root, "assets");
       .replace(
         "<!--SSR:CTA-->",
         shell.ctaBand({
-          heading: "Your next coworker is one click away.",
-          subheading: "Sign up and hand over your first task today.",
+          heading: "Give a coworker a task.",
+          subheading: "Sign up on the free plan and send the first brief today.",
           ctaLabel: "Sign Up",
         }),
       )

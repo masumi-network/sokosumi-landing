@@ -35,7 +35,14 @@
 .site-header.is-overlay {
   position: fixed; left: 0; right: 0;
   background: transparent; border-bottom-color: transparent;
-  backdrop-filter: none; -webkit-backdrop-filter: none;
+  /* blur(0), not none. backdrop-filter makes the bar a containing block AND a
+     stacking context for its fixed descendants — the dropdown panels. The
+     paper bar always has one, so leaving the overlay state at `none` meant
+     the same panel markup resolved against the viewport on the landing page
+     and against the header everywhere else. Identical geometry today, but two
+     different boxes to reason about; blur(0) is a visual no-op that makes both
+     navbar types behave the same. Same trap the mobile drawer documents. */
+  backdrop-filter: blur(0px); -webkit-backdrop-filter: blur(0px);
   transition: background-color 0.4s var(--ease), border-color 0.4s var(--ease);
 }
 /* White chrome over the dark video — bar-level links only (the plain items
