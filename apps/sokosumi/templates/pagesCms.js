@@ -5,6 +5,7 @@
 const shell = require("./shell");
 const cms = require("../lib/cms");
 const blocks = require("./blocks");
+const { t } = require("../lib/i18n");
 const { esc, attr, icon, pageStart, pageEnd } = shell;
 
 function pagePath(slug) {
@@ -21,7 +22,7 @@ function pageCard(p) {
   return `<a class="card" href="${attr(pagePath(p.slug))}">
     <h2>${esc(p.title)}</h2>
     ${p.description ? `<p>${esc(p.description)}</p>` : ""}
-    <div class="card-foot"><span>Read more</span><span class="go">${icon("arrow-up-right", 15)}</span></div>
+    <div class="card-foot"><span>${esc(t("Read more"))}</span><span class="go">${icon("arrow-up-right", 15)}</span></div>
   </a>`;
 }
 
@@ -45,9 +46,9 @@ const SURFACES = [
 
 function surfaceRow(s) {
   return `<a class="row-item" href="${attr(s.href)}">
-    <h3>${esc(s.title)}</h3>
-    <p>${esc(s.text)}</p>
-    <span class="row-go">Explore ${icon("arrow-up-right", 15)}</span>
+    <h3>${esc(t(s.title))}</h3>
+    <p>${esc(t(s.text))}</p>
+    <span class="row-go">${esc(t("Explore"))} ${icon("arrow-up-right", 15)}</span>
   </a>`;
 }
 
@@ -72,15 +73,15 @@ async function productHub(ctx) {
     : "";
 
   const surfacesSection = `<section class="page-section">
-      <h2>Explore the platform</h2>
+      <h2>${esc(t("Explore the platform"))}</h2>
       <div class="row-list">${SURFACES.map(surfaceRow).join("")}</div>
     </section>`;
 
   // A product page with no picture of the product was the emptiest page on
   // the site; these are the same four renders the landing page shows.
   const shotsSection = `<section class="page-section${productPages.length ? "" : " flush"}" data-reveal>
-      <h2>What it looks like</h2>
-      <p class="sub">Four views of the same working day: the roster, the briefing bar, the task board, and the channel your coworkers answer in.</p>
+      <h2>${esc(t("What it looks like"))}</h2>
+      <p class="sub">${esc(t("Four views of the same working day: the roster, the briefing bar, the task board, and the channel your coworkers answer in."))}</p>
       ${shell.shotGallery()}
     </section>`;
 
@@ -93,16 +94,16 @@ async function productHub(ctx) {
       breadcrumb: cr,
     }) +
     `<div class="page-head" data-reveal>
-      <h1>The Sokosumi product</h1>
-      <p class="sub">What an AI coworker is, how you brief one, where the work shows up, and what you get back.</p>
+      <h1>${esc(t("The Sokosumi product"))}</h1>
+      <p class="sub">${esc(t("What an AI coworker is, how you brief one, where the work shows up, and what you get back."))}</p>
     </div>` +
     cardsSection +
     shotsSection +
     surfacesSection +
     shell.ctaBand({
-      heading: "Start with one task",
-      subheading: "Brief a coworker today and see what comes back.",
-      ctaLabel: "Start free",
+      heading: t("Start with one task"),
+      subheading: t("Brief a coworker today and see what comes back."),
+      ctaLabel: t("Start free"),
       seed: 7,
     }) +
     pageEnd()
@@ -121,7 +122,7 @@ async function cmsPage(ctx) {
 
   return (
     pageStart({
-      title: `${doc.title} | Sokosumi`,
+      title: t("{title} | Sokosumi", { title: doc.title }),
       description: (doc.description || "").slice(0, 155),
       path: "/" + doc.slug,
       breadcrumb: cr,

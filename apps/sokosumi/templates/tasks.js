@@ -6,6 +6,7 @@
 
 const shell = require("./shell");
 const cms = require("../lib/cms");
+const { t, tp } = require("../lib/i18n");
 const { esc, attr, icon, avatar, outputMeta, markdownLite, pageStart, pageEnd, APP } = shell;
 
 function offerOutputs(offer) {
@@ -40,7 +41,7 @@ function officeViewerUrl(url, type) {
 const LIFT_VEIL = ` onload="this.parentElement.removeAttribute('data-loading')"`;
 function withVeil(inner) {
   return `<div class="embed-wrap" data-loading>
-    <div class="embed-loading" aria-hidden="true"><span class="embed-spinner"></span><span>Loading the sample&hellip;</span></div>
+    <div class="embed-loading" aria-hidden="true"><span class="embed-spinner"></span><span>${esc(t("Loading the sample…"))}</span></div>
     ${inner}
   </div>`;
 }
@@ -74,7 +75,7 @@ function embedOutput(output, title) {
       <div class="task-doc-body">${markdownLite(text)}</div>
     </article></div>`;
   }
-  return `<div class="embed-empty">${icon("file-text", 28)}<span>The sample output is generated when you run this task.</span></div>`;
+  return `<div class="embed-empty">${icon("file-text", 28)}<span>${esc(t("The sample output is generated when you run this task."))}</span></div>`;
 }
 
 // Without JS the veil's inline lift never runs; hide the veil so the embed
@@ -115,7 +116,7 @@ function samplePreview(offer) {
   return `<div class="task-preview has-tabs">
     ${VEIL_NOSCRIPT}<style>.embed-panels>.embed-panel{display:none}${rules}</style>
     <fieldset class="embed-tabset">
-      <legend class="sr-only">Sample outputs for this task</legend>
+      <legend class="sr-only">${esc(t("Sample outputs for this task"))}</legend>
       ${radios}<div class="embed-tabs">${tabs}</div><div class="embed-panels">${panels}</div>
     </fieldset>
   </div>`;
@@ -131,7 +132,7 @@ function taskCard(offer, coworker) {
     .join(" ")
     .toLowerCase();
   return `<a class="offer-card task-hit" href="${attr(href)}" data-cat="${attr(offer.category || "")}" data-out="${attr(offer.output || "text")}" data-text="${attr(searchText)}">
-    <div class="offer-meta"><span>${esc(offer.category || "Task")}</span><span class="offer-type" data-out="${attr(offer.output || "text")}">${icon(om.icon, 12)}${esc(om.label)}</span></div>
+    <div class="offer-meta"><span>${esc(offer.category || t("Task"))}</span><span class="offer-type" data-out="${attr(offer.output || "text")}">${icon(om.icon, 12)}${esc(om.label)}</span></div>
     <div class="offer-title">${esc(offer.title)}</div>
     ${offer.description ? `<div class="offer-desc">${esc(offer.description)}</div>` : ""}
     <div class="offer-foot">${avatar(coworker, "sm")}<span>${esc(coworker.name)}</span><span class="go">${icon("arrow-up-right", 15)}</span></div>
@@ -163,11 +164,16 @@ async function browse(ctx) {
   const cats = Object.entries(catCounts).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
 
   const chips =
-    `<button type="button" class="fchip" data-cat="">All <span>${hits.length}</span></button>` +
+    `<button type="button" class="fchip" data-cat="">${esc(t("All"))} <span>${hits.length}</span></button>` +
     cats.map(([name, n]) => `<button type="button" class="fchip" data-cat="${attr(name)}">${esc(name)} <span>${n}</span></button>`).join("");
 
   const coworkerCount = new Set(hits.map(({ c }) => c.slug)).size;
-  const countLine = `${hits.length} ready-to-run task${hits.length === 1 ? "" : "s"} across ${coworkerCount} coworker${coworkerCount === 1 ? "" : "s"}`;
+  const countLine = tp(
+    hits.length,
+    "{n} ready-to-run task across {c} coworker",
+    "{n} ready-to-run tasks across {c} coworkers",
+    { c: coworkerCount },
+  );
 
   const q = ctx.query || {};
   const getQ = (k) => (typeof q.get === "function" ? q.get(k) : q[k]) || "";
@@ -188,12 +194,12 @@ async function browse(ctx) {
       ),
     }) +
     `<div class="page-head" data-reveal>
-      <h1>Template tasks, ready to run</h1>
-      <p class="sub">Every task is a fixed brief with a clear deliverable, and most include a sample output you can inspect before you start. Pick one, add your details, and the coworker takes it from there.</p>
-      <p class="muted" id="taskCount">${countLine}</p>
+      <h1>${esc(t("Template tasks, ready to run"))}</h1>
+      <p class="sub">${esc(t("Every task is a fixed brief with a clear deliverable, and most include a sample output you can inspect before you start. Pick one, add your details, and the coworker takes it from there."))}</p>
+      <p class="muted" id="taskCount">${esc(countLine)}</p>
       <form class="tasks-search" id="taskSearchForm" role="search">
         <span class="ts-icon">${icon("search", 18)}</span>
-        <input id="taskSearch" type="text" placeholder="Search template tasks…" aria-label="Search template tasks" autocomplete="off" />
+        <input id="taskSearch" type="text" placeholder="${attr(t("Search template tasks…"))}" aria-label="${attr(t("Search template tasks"))}" autocomplete="off" />
       </form>
     </div>` +
     (hits.length
@@ -201,17 +207,17 @@ async function browse(ctx) {
           <div class="tasks-filters" id="catChips">${chips}</div>
           <div class="offers-grid tasks-grid" id="taskGrid">${hits.map(({ o, c }) => taskCard(o, c)).join("")}</div>
           <div class="tasks-empty" id="taskEmpty" hidden>
-            <p>No tasks match your filters.</p>
-            <button type="button" class="btn btn-outline btn-sm" id="clearFilters">Clear filters</button>
+            <p>${esc(t("No tasks match your filters."))}</p>
+            <button type="button" class="btn btn-outline btn-sm" id="clearFilters">${esc(t("Clear filters"))}</button>
           </div>
           <script>window.__TASK_INIT__=${init};</script>
           <script src="/assets/tasks-filter.js"></script>
         </div>`
-      : `<div class="page-section flush"><p class="muted">Template tasks are on the way. In the meantime, <a href="/ai-coworkers" style="text-decoration:underline">meet the coworkers</a>.</p></div>`) +
+      : `<div class="page-section flush"><p class="muted">${esc(t("Template tasks are on the way. In the meantime,"))} <a href="/ai-coworkers" style="text-decoration:underline">${esc(t("meet the coworkers"))}</a>.</p></div>`) +
     shell.ctaBand({
-      heading: "Run your first task today",
-      subheading: "Pick a template, add your brief, and get the finished file back. Signing up is free.",
-      ctaLabel: "Start free",
+      heading: t("Run your first task today"),
+      subheading: t("Pick a template, add your brief, and get the finished file back. Signing up is free."),
+      ctaLabel: t("Start free"),
       seed: hits.length,
     }) +
     pageEnd()
@@ -238,22 +244,25 @@ const OUTPUT_PHRASE = {
 function whatYouGet(offer, c, om, outs) {
   const lead = offer.longDeliverable || offer.deliverable || "";
   const samples = outs.filter((o) => o && (o.url || o.text));
-  const labels = samples.map((o) => o.label).filter(Boolean);
   const many = samples.length > 1;
+  // The label list is dropped from the German sentence shape; both locales
+  // read naturally without contorting the grammar around an inline list.
   const sampleLine = samples.length
-    ? `${many ? "Real samples" : "A real sample"}${labels.length ? ` — ${labels.map(esc).join(", ")} —` : ""} ${
-        many ? "are" : "is"
-      } on this page, so you can inspect the output before you run the task.`
-    : "The sample output appears on this page after the task's first run.";
+    ? t(
+        many
+          ? "Real samples are on this page, so you can inspect the output before you run the task."
+          : "A real sample is on this page, so you can inspect the output before you run the task.",
+      )
+    : t("The sample output appears on this page after the task's first run.");
+  const phrase = t(OUTPUT_PHRASE[offer.output] || OUTPUT_PHRASE[outs[0].type] || OUTPUT_PHRASE.text);
+  const who = c.role ? `${c.name}, ${c.role}` : c.name;
   const facts = [
-    `<li>${icon(om.icon, 15)}<span>Delivered as ${OUTPUT_PHRASE[offer.output] || OUTPUT_PHRASE[outs[0].type] || OUTPUT_PHRASE.text}.</span></li>`,
-    `<li>${icon("search", 15)}<span>${sampleLine}</span></li>`,
-    `<li>${icon("check", 15)}<span>A fixed brief run by ${esc(c.name)}${
-      c.role ? `, ${esc(c.role)}` : ""
-    } — add your details and collect the finished file from your task board.</span></li>`,
+    `<li>${icon(om.icon, 15)}<span>${esc(t("Delivered as {what}.", { what: phrase }))}</span></li>`,
+    `<li>${icon("search", 15)}<span>${esc(sampleLine)}</span></li>`,
+    `<li>${icon("check", 15)}<span>${esc(t("A fixed brief run by {who} — add your details and collect the finished file from your task board.", { who }))}</span></li>`,
   ];
   return `<div class="deliverable wyg">
-    <div class="label">What you get</div>
+    <div class="label">${esc(t("What you get"))}</div>
     ${lead ? `<p class="wyg-lead">${esc(lead)}</p>` : ""}
     <ul class="wyg-facts">${facts.join("")}</ul>
   </div>`;
@@ -284,8 +293,8 @@ async function detail(ctx) {
   cr.push({ label: c.name, href: `/ai-coworkers/${c.slug}` }, { label: offer.title });
   return (
     pageStart({
-      title: `${offer.title} | ${c.name} on Sokosumi`,
-      description: (offer.description || `${offer.title}, a template task run by ${c.name} on Sokosumi.`).slice(0, 155),
+      title: t("{name} | {role} on Sokosumi", { name: offer.title, role: c.name }),
+      description: (offer.description || t("{title}, a template task run by {name} on Sokosumi.", { title: offer.title, name: c.name })).slice(0, 155),
       path: `/ai-coworkers/${c.slug}/tasks/${offer.slug}`,
       breadcrumb: cr,
       jsonld: {
@@ -308,23 +317,23 @@ async function detail(ctx) {
         ${offer.description ? `<p class="lede">${esc(offer.description)}</p>` : ""}
         ${whatYouGet(offer, c, om, outs)}
         <div>
-          <div class="kicker" style="margin-bottom:8px">Delivered by</div>
+          <div class="kicker" style="margin-bottom:8px">${esc(t("Delivered by"))}</div>
           <a class="by-row" href="/ai-coworkers/${encodeURIComponent(c.slug)}">
             ${avatar(c, "")}
             <span class="who">${esc(c.name)}${whoSmall ? `<small>${whoSmall}</small>` : ""}</span>
           </a>
         </div>
         <div class="task-actions">
-          <a class="btn btn-primary btn-lg" href="${APP}">Try this task on Sokosumi</a>
-          ${openUrl ? `<a class="btn btn-outline" href="${attr(openUrl.url)}" target="_blank" rel="noreferrer">Open sample output ${icon("arrow-up-right", 14)}</a>` : ""}
+          <a class="btn btn-primary btn-lg" href="${APP}">${esc(t("Try this task on Sokosumi"))}</a>
+          ${openUrl ? `<a class="btn btn-outline" href="${attr(openUrl.url)}" target="_blank" rel="noreferrer">${esc(t("Open sample output"))} ${icon("arrow-up-right", 14)}</a>` : ""}
           ${shell.NO_CARD}
         </div>
       </aside>
     </div>` +
     shell.ctaBand({
-      heading: `Run "${offer.title}" with ${c.name}`,
-      subheading: "Pick a template, add your brief, and collect the finished file.",
-      ctaLabel: "Try this task free",
+      heading: t('Run "{title}" with {name}', { title: offer.title, name: c.name }),
+      subheading: t("Pick a template, add your brief, and collect the finished file."),
+      ctaLabel: t("Try this task free"),
       seed: offer.title.length,
     }) +
     pageEnd()

@@ -6,6 +6,7 @@
 
 const shell = require("./shell");
 const cms = require("../lib/cms");
+const { t, tp, locale } = require("../lib/i18n");
 const { esc, attr, icon, avatar, vendorLogo, truncate, pageStart, pageEnd } = shell;
 
 function vendorSlugOf(c) {
@@ -18,17 +19,13 @@ function offerKey(c) {
   return c.catalogSlug || c.slug;
 }
 
-function plural(n, word) {
-  return `${n} ${word}${n === 1 ? "" : "s"}`;
-}
-
 // "AI coworkers & agents" / "AI coworkers" / "AI agents" — whatever the
 // vendor actually ships, so a heading never claims a thing that is not on
 // the page below it. HTML-escaped, for direct use in the h1.
 function kindLabel(curatedCount, agentCount) {
-  if (curatedCount && agentCount) return "AI coworkers &amp; agents";
-  if (curatedCount) return "AI coworkers";
-  if (agentCount) return "AI agents";
+  if (curatedCount && agentCount) return t("AI coworkers &amp; agents");
+  if (curatedCount) return t("AI Coworkers");
+  if (agentCount) return t("AI agents");
   return "";
 }
 
@@ -36,17 +33,21 @@ function kindLabel(curatedCount, agentCount) {
 
 function vendorRow(v) {
   const bits = [];
-  if (v.curatedCount) bits.push(plural(v.curatedCount, "coworker"));
-  if (v.agentCount) bits.push(plural(v.agentCount, "agent"));
-  const label = bits.join(" · ") || "View";
+  if (v.curatedCount) bits.push(tp(v.curatedCount, "{n} coworker", "{n} coworkers"));
+  if (v.agentCount) bits.push(tp(v.agentCount, "{n} agent", "{n} agents"));
+  const label = bits.join(" · ") || t("View");
+  // The computed fallback sentence composes English grammar; in German it is
+  // rebuilt from the same facts rather than glued word for word.
+  const parts = [
+    v.curatedCount ? tp(v.curatedCount, "{n} AI coworker", "{n} AI coworkers") : "",
+    v.agentCount ? tp(v.agentCount, "{n} specialist AI agent", "{n} specialist AI agents") : "",
+  ].filter(Boolean);
   const desc = v.description
     ? truncate(v.description, 160)
-    : `Builds and operates ${[
-        v.curatedCount ? plural(v.curatedCount, "AI coworker") : "",
-        v.agentCount ? plural(v.agentCount, "specialist AI agent") : "",
-      ]
-        .filter(Boolean)
-        .join(" and ")}${v.taskCount ? `, with ${plural(v.taskCount, "ready-to-run template task")}` : ""} on Sokosumi.`;
+    : t("Builds and operates {what}{tasks} on Sokosumi.", {
+        what: parts.join(t(" and ")),
+        tasks: v.taskCount ? t(", with {n} ready-to-run template tasks", { n: v.taskCount }) : "",
+      });
   return `<a class="row-item" href="/vendors/${encodeURIComponent(v.slug)}">
     <span class="row-title">${vendorLogo(v, "sm")}${esc(v.name)}</span>
     <p>${esc(desc)}</p>
@@ -91,9 +92,9 @@ async function index(ctx) {
     { curated: 0, agents: 0 },
   );
   const facts = [];
-  if (rows.length) facts.push(`<span><strong>${rows.length}</strong> vendors</span>`);
-  if (totals.curated) facts.push(`<span><strong>${totals.curated}</strong> AI coworkers</span>`);
-  if (totals.agents) facts.push(`<span><strong>${totals.agents}</strong> marketplace agents</span>`);
+  if (rows.length) facts.push(`<span><strong>${rows.length}</strong> ${esc(t("Vendors"))}</span>`);
+  if (totals.curated) facts.push(`<span><strong>${totals.curated}</strong> ${esc(t("AI Coworkers"))}</span>`);
+  if (totals.agents) facts.push(`<span><strong>${totals.agents}</strong> ${esc(t("marketplace agents"))}</span>`);
 
   const cr = [{ label: "Home", href: "/" }, { label: "Vendors" }];
   return (
@@ -106,19 +107,19 @@ async function index(ctx) {
       jsonld: shell.itemListLd("Vendors on Sokosumi", "/vendors", rows.map((v) => ({ name: v.name, path: `/vendors/${v.slug}` }))),
     }) +
     `<div class="page-head" data-reveal>
-      <h1>The vendors behind the AI coworkers</h1>
-      <p class="sub">Every AI coworker and agent on Sokosumi is built and operated by a vendor: a team that ships it, keeps it running, and stands behind its work. Pick a vendor to see who they ship, what their listings can do, and the models and hosting on file.</p>
+      <h1>${esc(t("The vendors behind the AI coworkers"))}</h1>
+      <p class="sub">${esc(t("Every AI coworker and agent on Sokosumi is built and operated by a vendor: a team that ships it, keeps it running, and stands behind its work. Pick a vendor to see who they ship, what their listings can do, and the models and hosting on file."))}</p>
       ${facts.length ? `<div class="cw-stats vendor-facts">${facts.join("")}</div>` : ""}
     </div>` +
     (rows.length
       ? `<div class="page-section flush">
           <div class="row-list vendor-list">${rows.map(vendorRow).join("")}</div>
         </div>`
-      : `<div class="page-section flush"><p class="muted">Vendor profiles are on the way. In the meantime, <a href="/ai-coworkers" style="text-decoration:underline">meet the coworkers</a>.</p></div>`) +
+      : `<div class="page-section flush"><p class="muted">${esc(t("Vendor profiles are on the way. In the meantime,"))} <a href="/ai-coworkers" style="text-decoration:underline">${esc(t("meet the coworkers"))}</a>.</p></div>`) +
     shell.ctaBand({
-      heading: "Hire from any of them, in one place",
-      subheading: "One account, one credit balance, every vendor on the marketplace. Signing up is free.",
-      ctaLabel: "Start free",
+      heading: t("Hire from any of them, in one place"),
+      subheading: t("One account, one credit balance, every vendor on the marketplace. Signing up is free."),
+      ctaLabel: t("Start free"),
       seed: rows.length,
     }) +
     pageEnd()
@@ -133,7 +134,7 @@ async function index(ctx) {
 function coworkerCard(c, taskCount, i) {
   const models = (Array.isArray(c.profileLlm) ? c.profileLlm : []).filter(Boolean);
   const chips = models.slice(0, 2).map((m) => `<span class="chip">${esc(m)}</span>`);
-  if (taskCount) chips.push(`<span class="chip">${esc(plural(taskCount, "template task"))}</span>`);
+  if (taskCount) chips.push(`<span class="chip">${esc(tp(taskCount, "{n} template task", "{n} template tasks"))}</span>`);
   const face = c.image
     ? `<span class="vcw-face"><img src="${attr(c.image)}" alt="${attr(c.name)}" loading="lazy" /></span>`
     : `<span class="vcw-face"></span>`;
@@ -171,20 +172,21 @@ function capabilityCol(category, offers, ownerOf, i) {
   return `<div class="cap-col" data-reveal style="--i:${i % 4}">
     <span class="cap-label">${esc(category)} <em>${offers.length}</em></span>
     ${links}
-    ${rest > 0 ? `<span class="cap-more">+ ${rest} more</span>` : ""}
+    ${rest > 0 ? `<span class="cap-more">${esc(t("+ {n} more", { n: rest }))}</span>` : ""}
   </div>`;
 }
 
 function agentRow(c) {
   const stats = [];
+  const nf = () => (locale() === "de" ? "de-DE" : "en-US");
   const runCount = Number(c.runs);
-  if (Number.isFinite(runCount) && runCount > 0) stats.push(`${runCount.toLocaleString("en-US")} runs`);
-  if (c.rating && c.ratingCount) stats.push(`rated ${Number(c.rating).toFixed(1)}/5`);
-  if (c.credits) stats.push(`${c.credits} credits per run`);
+  if (Number.isFinite(runCount) && runCount > 0) stats.push(t("{n} runs", { n: runCount.toLocaleString(nf()) }));
+  if (c.rating && c.ratingCount) stats.push(t("rated {r}/5", { r: Number(c.rating).toFixed(1) }));
+  if (c.credits) stats.push(t("{n} credits per run", { n: c.credits }));
   return `<a class="row-item" href="/ai-coworkers/${encodeURIComponent(c.slug)}">
     <span style="display:flex;align-items:center;gap:12px">${avatar(c, "sm")}<span class="row-title">${esc(c.name)}</span></span>
     <p>${esc(truncate(c.description || "", 160))}${stats.length ? `<span class="row-stats">${esc(stats.join(" · "))}</span>` : ""}</p>
-    <span class="row-go">View ${icon("arrow-up-right", 15)}</span>
+    <span class="row-go">${esc(t("View"))} ${icon("arrow-up-right", 15)}</span>
   </a>`;
 }
 
@@ -215,18 +217,23 @@ async function detail(ctx) {
   const kindsH = kindLabel(curated.length, agents.length);
 
   // ── hero ──
+  const nf = locale() === "de" ? "de-DE" : "en-US";
+  const factWord = (n, singular, pluralKey) => tp(n, singular, pluralKey).replace(/^[\d.,]+\s*/, "");
   const facts = [];
-  if (curated.length) facts.push(`<span><strong>${curated.length}</strong> AI coworker${curated.length === 1 ? "" : "s"}</span>`);
-  if (agents.length) facts.push(`<span><strong>${agents.length}</strong> marketplace agent${agents.length === 1 ? "" : "s"}</span>`);
-  if (myOffers.length) facts.push(`<span><strong>${myOffers.length}</strong> template task${myOffers.length === 1 ? "" : "s"}</span>`);
-  if (totalRuns) facts.push(`<span><strong>${totalRuns.toLocaleString("en-US")}</strong> tasks run</span>`);
+  if (curated.length) facts.push(`<span><strong>${curated.length}</strong> ${esc(factWord(curated.length, "{n} AI coworker", "{n} AI coworkers"))}</span>`);
+  if (agents.length) facts.push(`<span><strong>${agents.length}</strong> ${esc(factWord(agents.length, "{n} marketplace agent", "{n} marketplace agents"))}</span>`);
+  if (myOffers.length) facts.push(`<span><strong>${myOffers.length}</strong> ${esc(factWord(myOffers.length, "{n} template task", "{n} template tasks"))}</span>`);
+  if (totalRuns) facts.push(`<span><strong>${totalRuns.toLocaleString(nf)}</strong> ${esc(t("tasks run"))}</span>`);
 
   const subParts = [
-    curated.length ? plural(curated.length, "named AI coworker") : "",
-    agents.length ? plural(agents.length, "specialist AI agent") : "",
+    curated.length ? tp(curated.length, "{n} named AI coworker", "{n} named AI coworkers") : "",
+    agents.length ? tp(agents.length, "{n} specialist AI agent", "{n} specialist AI agents") : "",
   ].filter(Boolean);
   const computedSub = subParts.length
-    ? `${v.name} builds and operates ${subParts.join(" and ")} on the Sokosumi marketplace — hire them with one free account and pay only for the work they run.`
+    ? t("{vendor} builds and operates {what} on the Sokosumi marketplace — hire them with one free account and pay only for the work they run.", {
+        vendor: v.name,
+        what: subParts.join(t(" and ")),
+      })
     : "";
   const sub = v.description || computedSub;
 
@@ -247,8 +254,8 @@ async function detail(ctx) {
 
   const coworkersSection = curated.length
     ? `<section class="page-section${flush()}">
-        <h2>AI coworkers from ${esc(v.name)}</h2>
-        <p class="sub">Named specialists with real roles and public profiles. Brief them like colleagues; most carry ready-to-run work.</p>
+        <h2>${esc(t("AI coworkers from {vendor}", { vendor: v.name }))}</h2>
+        <p class="sub">${esc(t("Named specialists with real roles and public profiles. Brief them like colleagues; most carry ready-to-run work."))}</p>
         <div class="${shell.gridCls(curated.length)}">${curated.map((c, i) => coworkerCard(c, taskCountOf(c), i)).join("")}</div>
       </section>`
     : "";
@@ -262,40 +269,52 @@ async function detail(ctx) {
   const cats = [...catMap.entries()].sort((a, b) => b[1].length - a[1].length || a[0].localeCompare(b[0]));
   const capabilitiesSection = cats.length
     ? `<section class="page-section${flush()}">
-        <h2>What ${esc(v.name)}&rsquo;s listings can do</h2>
-        <p class="sub">${myOffers.length} ready-to-run template task${myOffers.length === 1 ? "" : "s"} across ${cats.length} categor${cats.length === 1 ? "y" : "ies"}. Open one to see the deliverable; most include a sample of the output.</p>
+        <h2>${t("What {vendor}’s listings can do", { vendor: esc(v.name) })}</h2>
+        <p class="sub">${esc(
+          t("{tasks} across {cats}. Open one to see the deliverable; most include a sample of the output.", {
+            tasks: tp(myOffers.length, "{n} ready-to-run template task", "{n} ready-to-run template tasks"),
+            cats: tp(cats.length, "{n} category", "{n} categories"),
+          }),
+        )}</p>
         <div class="cap-grid">${cats.map(([cat, list], i) => capabilityCol(cat, list, (o) => byKey.get(o.agentSlug), i)).join("")}</div>
-        <a class="cap-browse" href="/tasks">Browse all template tasks ${icon("arrow-up-right", 14)}</a>
+        <a class="cap-browse" href="/tasks">${esc(t("Browse all template tasks"))} ${icon("arrow-up-right", 14)}</a>
       </section>`
     : "";
 
   const stackRows = [
     models.length
-      ? `<div class="stack-row"><span class="stack-label">Models</span><span class="stack-chips">${models.map((m) => `<span class="chip">${esc(m)}</span>`).join("")}</span></div>`
+      ? `<div class="stack-row"><span class="stack-label">${esc(t("Models"))}</span><span class="stack-chips">${models.map((m) => `<span class="chip">${esc(m)}</span>`).join("")}</span></div>`
       : "",
     regions.length
-      ? `<div class="stack-row"><span class="stack-label">Hosting</span><span class="stack-chips">${regions.map((r) => `<span class="chip">${esc(r)}</span>`).join("")}</span></div>`
+      ? `<div class="stack-row"><span class="stack-label">${esc(t("Hosting"))}</span><span class="stack-chips">${regions.map((r) => `<span class="chip">${esc(r)}</span>`).join("")}</span></div>`
       : "",
   ].filter(Boolean);
+  const stackWhat = models.length && regions.length ? t("models and hosting regions") : models.length ? t("models") : t("hosting regions");
   const stackSection = stackRows.length
     ? `<section class="page-section${flush()}">
-        <h2>Models and hosting, stated up front</h2>
-        <p class="sub">The ${models.length && regions.length ? "models and hosting regions" : models.length ? "models" : "hosting regions"} on file for ${esc(v.name)}&rsquo;s listings — visible before you spend a credit.</p>
+        <h2>${esc(t("Models and hosting, stated up front"))}</h2>
+        <p class="sub">${esc(t("The {what} on file for {vendor}’s listings — visible before you spend a credit.", { what: stackWhat, vendor: v.name }))}</p>
         <div class="stack-rows">${stackRows.join("")}</div>
       </section>`
     : "";
 
   const agentsSection = agents.length
     ? `<section class="page-section${flush()}">
-        <h2>${esc(v.name)} AI agents on the marketplace</h2>
-        <p class="sub">${plural(agents.length, "single-purpose specialist agent")} from ${esc(v.name)}${totalRuns ? `, with ${totalRuns.toLocaleString("en-US")} tasks run between them` : ""}. Each one does one job and shows its price in credits before you start.</p>
+        <h2>${esc(t("{vendor} AI agents on the marketplace", { vendor: v.name }))}</h2>
+        <p class="sub">${esc(
+          t("{agents} from {vendor}{runs}. Each one does one job and shows its price in credits before you start.", {
+            agents: tp(agents.length, "{n} single-purpose specialist agent", "{n} single-purpose specialist agents"),
+            vendor: v.name,
+            runs: totalRuns ? t(", with {n} tasks run between them", { n: totalRuns.toLocaleString(nf) }) : "",
+          }),
+        )}</p>
         <div class="row-list">${agents.map(agentRow).join("")}</div>
       </section>`
     : "";
 
   const empty =
     !curated.length && !agents.length
-      ? `<div class="page-section flush"><p class="muted">${esc(v.name)} has no listings on Sokosumi yet. In the meantime, <a href="/ai-coworkers" style="text-decoration:underline">meet the coworkers</a>.</p></div>`
+      ? `<div class="page-section flush"><p class="muted">${esc(t("{vendor} has no listings on Sokosumi yet. In the meantime,", { vendor: v.name }))} <a href="/ai-coworkers" style="text-decoration:underline">${esc(t("meet the coworkers"))}</a>.</p></div>`
       : "";
 
   // ── head ──
@@ -310,12 +329,20 @@ async function detail(ctx) {
         : agents.length
           ? "AI Agents"
           : "";
-  const title = titleKinds ? `${v.name} ${titleKinds} | Sokosumi` : `${v.name} | Vendors on Sokosumi`;
+  const title = titleKinds
+    ? t("{vendor} {kinds} | Sokosumi", { vendor: v.name, kinds: titleKinds })
+    : t("{vendor} | Vendors on Sokosumi", { vendor: v.name });
   const metaDesc = v.description
     ? truncate(v.description, 155)
     : subParts.length
-      ? truncate(`Hire ${subParts.join(" and ")} built and operated by ${v.name} on the Sokosumi marketplace. Free to sign up; credits only go on work you run.`, 155)
-      : `${v.name} is a vendor on Sokosumi, the AI coworker marketplace.`;
+      ? truncate(
+          t("Hire {what} built and operated by {vendor} on the Sokosumi marketplace. Free to sign up; credits only go on work you run.", {
+            what: subParts.join(t(" and ")),
+            vendor: v.name,
+          }),
+          155,
+        )
+      : t("{vendor} is a vendor on Sokosumi, the AI coworker marketplace.", { vendor: v.name });
 
   const orgLd = {
     "@context": "https://schema.org",
@@ -344,10 +371,10 @@ async function detail(ctx) {
   // sell the vendor — it points at the coworkers you actually can hire.
   const hasListings = curated.length > 0 || agents.length > 0;
   const ctaHeading = curated.length
-    ? `Put ${v.name}’s AI coworkers to work`
+    ? t("Put {vendor}’s AI coworkers to work", { vendor: v.name })
     : agents.length
-      ? `Run ${v.name}’s AI agents on Sokosumi`
-      : "Meet the AI coworkers on Sokosumi";
+      ? t("Run {vendor}’s AI agents on Sokosumi", { vendor: v.name })
+      : t("Meet the AI coworkers on Sokosumi");
 
   const cr = [
     { label: "Home", href: "/" },
@@ -363,9 +390,9 @@ async function detail(ctx) {
       jsonld,
     }) +
     `<div class="page-head" data-reveal>
-      <span class="eyebrow">Vendor on Sokosumi</span>
+      <span class="eyebrow">${esc(t("Vendor on Sokosumi"))}</span>
       ${vendorLogo(v, "lg")}
-      <h1>${esc(v.name)} ${kindsH || "on Sokosumi"}</h1>
+      <h1>${esc(v.name)} ${kindsH || esc(t("on Sokosumi"))}</h1>
       ${sub ? `<p class="sub">${esc(sub)}</p>` : ""}
       ${facts.length ? `<div class="cw-stats vendor-facts">${facts.join("")}</div>` : ""}
       ${website}
@@ -377,8 +404,8 @@ async function detail(ctx) {
     ${empty}` +
     shell.ctaBand({
       heading: ctaHeading,
-      subheading: "One free account covers every vendor on the marketplace. Credits only go on work you run.",
-      ctaLabel: hasListings ? "Start free" : "Browse AI coworkers",
+      subheading: t("One free account covers every vendor on the marketplace. Credits only go on work you run."),
+      ctaLabel: hasListings ? t("Start free") : t("Browse AI coworkers"),
       ctaHref: hasListings ? undefined : "/ai-coworkers",
       seed: v.name.length,
     }) +

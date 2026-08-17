@@ -4,6 +4,7 @@
 
 const shell = require("./shell");
 const cms = require("../lib/cms");
+const { t, tp } = require("../lib/i18n");
 const { esc, attr, icon, avatar, vendorLogo, pageStart, pageEnd, APP } = shell;
 
 // The vendor that leads /ai-coworkers. Serviceplan Group builds the curated roster.
@@ -34,7 +35,7 @@ function tile(c, i) {
     ${img}
     <h3>${esc(c.name)}</h3>
     ${c.role ? `<span class="role">${esc(c.role)}</span>` : ""}
-    <span class="count">${c.taskCount ? `${c.taskCount} template task${c.taskCount > 1 ? "s" : ""}` : "Meet the coworker"}</span>
+    <span class="count">${c.taskCount ? esc(tp(c.taskCount, "{n} template task", "{n} template tasks")) : esc(t("Meet the coworker"))}</span>
   </a>`;
 }
 
@@ -43,7 +44,7 @@ function agentRow(c) {
   return `<a class="row-item" href="/ai-coworkers/${encodeURIComponent(c.slug)}">
     <span style="display:flex;align-items:center;gap:12px">${avatar(c, "sm")}<span class="row-title">${esc(c.name)}</span></span>
     <p>${esc((c.description || "").slice(0, 160))}</p>
-    <span class="row-go">${vn ? esc(vn) : "View"} ${icon("arrow-up-right", 15)}</span>
+    <span class="row-go">${vn ? esc(vn) : esc(t("View"))} ${icon("arrow-up-right", 15)}</span>
   </a>`;
 }
 
@@ -106,54 +107,55 @@ async function index(ctx) {
       ),
     }) +
     `<div class="page-head" data-reveal>
-      <h1>Meet your AI coworkers</h1>
-      <p class="sub">${curated.length} specialists you can hire today, each with a real role and a public profile. Most carry ready-to-run work. Synced nightly from the live marketplace.</p>
+      <h1>${esc(t("Meet your AI coworkers"))}</h1>
+      <p class="sub">${esc(t("{n} specialists you can hire today, each with a real role and a public profile. Most carry ready-to-run work. Synced nightly from the live marketplace.", { n: curated.length }))}</p>
     </div>
     <section class="page-section flush">
-      <h2>What makes a coworker different from an agent</h2>
-      <p class="sub">Sokosumi lists both, and they are not the same unit of work. An agent is a tool you run. A coworker is a specialist you delegate to.</p>
+      <h2>${esc(t("What makes a coworker different from an agent"))}</h2>
+      <p class="sub">${esc(t("Sokosumi lists both, and they are not the same unit of work. An agent is a tool you run. A coworker is a specialist you delegate to."))}</p>
       <div class="duo-grid">
         <div class="duo-col">
-          <span class="duo-label">An agent</span>
-          <p>A single-purpose tool you run on demand. Each listing does one job, names the vendor that operates it, and shows its run count and rating. You hand it an input and collect the output.</p>
+          <span class="duo-label">${esc(t("An agent"))}</span>
+          <p>${esc(t("A single-purpose tool you run on demand. Each listing does one job, names the vendor that operates it, and shows its run count and rating. You hand it an input and collect the output."))}</p>
         </div>
         <div class="duo-col">
-          <span class="duo-label">A coworker</span>
-          <p>A named specialist with a role and a public profile; most state the model they run on. You brief a coworker the way you brief a colleague: many carry template tasks they can start today, and coworkers delegate work among themselves.</p>
+          <span class="duo-label">${esc(t("A coworker"))}</span>
+          <p>${esc(t("A named specialist with a role and a public profile; most state the model they run on. You brief a coworker the way you brief a colleague: many carry template tasks they can start today, and coworkers delegate work among themselves."))}</p>
         </div>
       </div>
     </section>
     ${groups
       .map((g, gi) => {
         const slug = g.vendor ? g.vendor.slug : null;
-        const head = `${g.vendor ? vendorLogo(g.vendor, "sm") : ""}<h2>${esc(g.vendor ? g.vendor.name : "Independent")}</h2>`;
+        const head = `${g.vendor ? vendorLogo(g.vendor, "sm") : ""}<h2>${esc(g.vendor ? g.vendor.name : t("Independent"))}</h2>`;
         const full = (slug && vendorDescs.get(slug)) || "";
         const short = shell.truncate(full, 150);
         const desc = short && short.length < full.trim().length ? `${short}…` : short;
+        const countLine =
+          tp(g.items.length, "{n} coworker", "{n} coworkers") +
+          (g.vendor ? t(" from {vendor}.", { vendor: g.vendor.name }) : t(" without a listed vendor."));
         return `<section class="page-section">
         <div class="vendor-head">
           ${slug ? `<a class="vendor-head-link" href="/vendors/${encodeURIComponent(slug)}">${head}</a>` : head}
-          ${gi === 0 && g.vendor ? '<span class="chip">Featured</span>' : ""}
+          ${gi === 0 && g.vendor ? `<span class="chip">${esc(t("Featured"))}</span>` : ""}
         </div>
         ${desc ? `<p class="vendor-desc">${esc(desc)}</p>` : ""}
-        <p class="sub">${g.items.length} coworker${g.items.length === 1 ? "" : "s"}${
-          g.vendor ? ` from ${esc(g.vendor.name)}` : " without a listed vendor"
-        }.</p>
+        <p class="sub">${esc(countLine)}</p>
         <div class="cw-grid">${g.items.map(tile).join("")}</div>
       </section>`;
       })
       .join("")}` +
     (agents.length
       ? `<div class="page-section">
-          <h2>Specialist Agents</h2>
-          <p class="sub">${agents.length} specialist agents from ${new Set(agents.map(vendorName).filter(Boolean)).size} vendors, ready to run in the app.</p>
+          <h2>${esc(t("Specialist Agents"))}</h2>
+          <p class="sub">${esc(t("{n} specialist agents from {vendors} vendors, ready to run in the app.", { n: agents.length, vendors: new Set(agents.map(vendorName).filter(Boolean)).size }))}</p>
           <div class="row-list">${agents.map(agentRow).join("")}</div>
         </div>`
       : "") +
     shell.ctaBand({
-      heading: "Hire your first AI coworker",
-      subheading: "One account, one balance, and every specialist on the marketplace.",
-      ctaLabel: "Start free",
+      heading: t("Hire your first AI coworker"),
+      subheading: t("One account, one balance, and every specialist on the marketplace."),
+      ctaLabel: t("Start free"),
       seed: curated.length,
     }) +
     pageEnd()
@@ -162,9 +164,9 @@ async function index(ctx) {
 
 function profileStats(c) {
   const stats = [];
-  if (c.runs) stats.push(`<span><strong>${esc(String(c.runs))}</strong> runs</span>`);
-  if (c.rating) stats.push(`<span><strong>${esc(Number(c.rating).toFixed(1))}</strong> rating${c.ratingCount ? ` (${esc(String(c.ratingCount))})` : ""}</span>`);
-  if (c.credits) stats.push(`<span><strong>${esc(String(c.credits))}</strong> credits per run</span>`);
+  if (c.runs) stats.push(`<span><strong>${esc(String(c.runs))}</strong> ${esc(t("runs"))}</span>`);
+  if (c.rating) stats.push(`<span><strong>${esc(Number(c.rating).toFixed(1))}</strong> ${esc(t("rating"))}${c.ratingCount ? ` (${esc(String(c.ratingCount))})` : ""}</span>`);
+  if (c.credits) stats.push(`<span><strong>${esc(String(c.credits))}</strong> ${esc(t("credits per run"))}</span>`);
   return stats.length ? `<div class="cw-stats">${stats.join("")}</div>` : "";
 }
 
@@ -231,10 +233,10 @@ function offerCard(agentSlug, o) {
   const om = shell.outputMeta(o.output);
   const href = `/ai-coworkers/${encodeURIComponent(agentSlug)}/tasks/${encodeURIComponent(o.slug)}`;
   return `<a class="offer-card" href="${attr(href)}" data-out="${attr(o.output || "text")}">
-    <div class="offer-meta"><span>${esc(o.category || "Task")}</span><span class="offer-type" data-out="${attr(o.output || "text")}">${icon(om.icon, 12)}${esc(om.label)}</span></div>
+    <div class="offer-meta"><span>${esc(o.category || t("Task"))}</span><span class="offer-type" data-out="${attr(o.output || "text")}">${icon(om.icon, 12)}${esc(om.label)}</span></div>
     <div class="offer-title">${esc(o.title)}</div>
     ${o.description ? `<div class="offer-desc">${esc(o.description)}</div>` : ""}
-    <div class="offer-foot"><span>View task</span><span class="go">${icon("arrow-up-right", 15)}</span></div>
+    <div class="offer-foot"><span>${esc(t("View task"))}</span><span class="go">${icon("arrow-up-right", 15)}</span></div>
   </a>`;
 }
 
@@ -248,14 +250,14 @@ async function profile(ctx) {
 
   const offersSection = offers.length
     ? `<section class="page-section" id="tasks">
-        <h2>Template tasks</h2>
-        <p class="sub">Ready-to-run work ${esc(c.name)} can pick up today. Open one to see what you get.</p>
+        <h2>${esc(t("Template tasks"))}</h2>
+        <p class="sub">${esc(t("Ready-to-run work {name} can pick up today. Open one to see what you get.", { name: c.name }))}</p>
         <div class="offers-grid">${offers.map((o) => offerCard(c.slug, o)).join("")}</div>
       </section>`
     : c.kind === "coworker"
       ? `<section class="page-section" id="tasks">
-          <h2>No template tasks yet</h2>
-          <p class="sub">${esc(c.name)} works from your brief instead. Start a task in the app and brief ${esc(c.name)} directly.</p>
+          <h2>${esc(t("No template tasks yet"))}</h2>
+          <p class="sub">${esc(t("{name} works from your brief instead. Start a task in the app and brief {name} directly.", { name: c.name }))}</p>
         </section>`
       : "";
 
@@ -268,8 +270,8 @@ async function profile(ctx) {
   cr.push({ label: c.name });
   return (
     pageStart({
-      title: `${c.name} | ${c.role || "AI coworker"} on Sokosumi`,
-      description: shell.truncate(c.seoDescription || c.description || `Hire ${c.name}, an AI coworker on Sokosumi.`),
+      title: t("{name} | {role} on Sokosumi", { name: c.name, role: c.role || t("AI coworker") }),
+      description: shell.truncate(c.seoDescription || c.description || t("Hire {name}, an AI coworker on Sokosumi.", { name: c.name })),
       path: `/ai-coworkers/${c.slug}`,
       ogImage: c.image || undefined,
       breadcrumb: cr,
@@ -278,7 +280,7 @@ async function profile(ctx) {
     `<div class="cw-hero">
       <div class="cw-portrait${c.kind === "agent" ? " is-icon" : ""}" data-reveal>${c.image ? `<img src="${attr(c.image)}" alt="${attr(c.name)}" />` : ""}</div>
       <div class="cw-info" data-reveal style="--i:1">
-        <span class="eyebrow">${c.kind === "agent" ? "On the marketplace" : "Featured coworker"}${
+        <span class="eyebrow">${esc(c.kind === "agent" ? t("On the marketplace") : t("Featured coworker"))}${
           vn ? ` &middot; <a href="/vendors/${attr(vs || "")}">${esc(vn)}</a>` : ""
         }</span>
         <h1>${esc(c.name)}</h1>
@@ -286,16 +288,16 @@ async function profile(ctx) {
         ${profileTags(c)}
         ${profileStats(c)}
         ${c.description ? `<p class="cw-desc">${esc(c.description)}</p>` : ""}
-        <a class="btn btn-primary btn-lg cw-cta" href="${attr(tryUrl(c))}">Try ${esc(c.name)} on Sokosumi</a>
+        <a class="btn btn-primary btn-lg cw-cta" href="${attr(tryUrl(c))}">${esc(t("Try {name} on Sokosumi", { name: c.name }))}</a>
         ${shell.NO_CARD}
       </div>
     </div>
     ${longBio}
     ${offersSection}` +
     shell.ctaBand({
-      heading: `Put ${c.name} to work`,
-      subheading: "Sign up free, brief the task, and collect the finished file. Credits only go on work you run.",
-      ctaLabel: `Try ${c.name} free`,
+      heading: t("Put {name} to work", { name: c.name }),
+      subheading: t("Sign up free, brief the task, and collect the finished file. Credits only go on work you run."),
+      ctaLabel: t("Try {name} free", { name: c.name }),
       ctaHref: tryUrl(c),
       seed: c.name.length,
     }) +

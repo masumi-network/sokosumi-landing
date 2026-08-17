@@ -407,6 +407,8 @@ function hasPreviewCookie(req) {
 // Each route: match(segments) → params or null, then handler(ctx) →
 // html string | { redirect } | null (404).
 const cms = require("./lib/cms");
+const i18n = require("./lib/i18n");
+const { t } = i18n;
 const { buildNav } = require("./lib/nav");
 const leads = require("./lib/leads");
 const salesTpl = require("./templates/sales");
@@ -474,16 +476,12 @@ const routes = [
   { m: (s) => s.length === 1 && s[0] === "list-your-agent" && {}, h: listAgentTpl.render },
   { m: (s) => s.length === 1 && s[0] === "legal" && {}, h: legalTpl.index },
   { m: (s) => s.length === 2 && s[0] === "legal" && { slug: s[1] }, h: legalTpl.detail },
-  // sokosumi.com publishes these at the root today, so those URLs keep working
+  // sokosumi.com publishes these at the root today, so those URLs keep working.
+  // The German locale needs no special case any more: the /de prefix is
+  // stripped before routing and re-applied to relative redirects, so the
+  // Terms' clause-2.4 link to /de/acceptable-use lands on /de/legal/acceptable-use.
   {
     m: (s) => s.length === 1 && legalTpl.isLegal(s[0]) && { slug: s[0] },
-    h: (ctx) => ({ redirect: `/legal/${ctx.params.slug}` }),
-  },
-  // ...and the German locale, which the Terms link into: clause 2.4 sends the
-  // User to sokosumi.com/de/acceptable-use. That reference has to resolve after
-  // the cutover, and this site is English-only, so send it to the English text.
-  {
-    m: (s) => s.length === 2 && s[0] === "de" && legalTpl.isLegal(s[1]) && { slug: s[1] },
     h: (ctx) => ({ redirect: `/legal/${ctx.params.slug}` }),
   },
   {
@@ -630,20 +628,33 @@ const assetsDir = path.join(root, "assets");
     // Shared chrome is injected here from shell.js so the homepage cannot
     // drift from the sub-pages: header (overlay over the hero), the closing
     // CTA band, and the footer. Styles for the band live in styles.css;
-    // header/footer styles live in nav.css.
+    // header/footer styles live in nav.css. Inside a /de request the injected
+    // chrome renders German by itself (shell reads the locale context); the
+    // static body is translated by i18n.translateHomepage below.
     shell.setNav(await buildNav({ draft: hasPreviewCookie(req) }).catch(() => null));
-    const html = fs
+    let html = fs
       .readFileSync(file, "utf8")
       .replace("<!--SSR:HEADER-->", shell.header("/", { overlay: true }))
       .replace(
         "<!--SSR:CTA-->",
         shell.ctaBand({
-          heading: "Give a coworker a task.",
-          subheading: "Sign up on the free plan and send the first brief today.",
-          ctaLabel: "Sign Up",
+          heading: t("Give a coworker a task."),
+          subheading: t("Sign up on the free plan and send the first brief today."),
+          ctaLabel: t("Sign Up"),
         }),
       )
       .replace("<!--SSR:FOOTER-->", shell.footerHtml());
+    // hreflang pair + locale-correct canonical. index.html hard-codes its
+    // canonical, so the swap matches that exact tag on both locales.
+    const EN_HOME = "https://www.sokosumi.com/";
+    const DE_HOME = "https://www.sokosumi.com/de";
+    const canonicalHref = i18n.locale() === "de" ? DE_HOME : EN_HOME;
+    html = html.replace(
+      '<link rel="canonical" href="https://www.sokosumi.com/" />',
+      `<link rel="canonical" href="${canonicalHref}" />\n    <link rel="alternate" hreflang="en" href="${EN_HOME}" />\n    <link rel="alternate" hreflang="de" href="${DE_HOME}" />\n    <link rel="alternate" hreflang="x-default" href="${EN_HOME}" />`,
+    );
+    if (i18n.locale() === "de") html = i18n.translateHomepage(html);
+    html = i18n.localizeHtml(html);
     send(req, res, 200, {
       "Content-Type": "text/html; charset=utf-8",
       // max-age=0 so a browser revalidates the document on every load, and
@@ -696,7 +707,32 @@ const assetsDir = path.join(root, "assets");
         }
       }
 
+      // ── locale ──
+      // /de/<path> is the German mirror of /<path>: strip the prefix here and
+      // run the WHOLE request inside the locale context (AsyncLocalStorage, so
+      // it survives every await without leaking into concurrent requests).
+      // Every handler below then serves both locales unchanged; lib/i18n.js
+      // rewrites the links and lib/cms.js asks Payload for the right locale.
+      // English stays at the un-prefixed root — those URLs carry the ranking.
+      let locale = "en";
+      if (urlPath === "/de" || urlPath.startsWith("/de/")) {
+        locale = "de";
+        urlPath = urlPath.slice(3) || "/";
+      }
+      // Relative redirects computed below are locale-less; keep the visitor
+      // in their language on the way through.
+      const inLocale = (to) => (to.startsWith("/") ? i18n.localizePath(to, locale) : to);
+
+      return i18n.run({ locale, path: urlPath }, async () => {
       try {
+        // Shared files must live at ONE url: /de/assets/…, /de/robots.txt,
+        // /de/sitemap.xml and friends would be crawlable duplicates, so they
+        // bounce to the canonical un-prefixed copy. (Extension-less /de/api/*
+        // stays served — the lead forms post there so their redirects can
+        // stay in German.)
+        if (locale === "de" && (urlPath.startsWith("/assets/") || path.extname(urlPath))) {
+          return send(req, res, 301, { Location: encodeURI(urlPath) + qs, "Cache-Control": "public, max-age=3600" }, "");
+        }
         if (urlPath === "/api/catalog") {
           return send(req, res, 200, { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "public, max-age=60" }, catalogJson());
         }
@@ -735,7 +771,7 @@ const assetsDir = path.join(root, "assets");
         if (urlPath === "/api/sales-inquiry" && req.method === "POST") {
           const ip = clientIp(req);
           const back = (params) => {
-            res.writeHead(303, { Location: "/contact/sales?" + new URLSearchParams(params), "Cache-Control": "no-store" });
+            res.writeHead(303, { Location: inLocale("/contact/sales") + "?" + new URLSearchParams(params), "Cache-Control": "no-store" });
             res.end();
           };
 
@@ -788,7 +824,7 @@ const assetsDir = path.join(root, "assets");
         if (urlPath === "/api/support-request" && req.method === "POST") {
           const ip = clientIp(req);
           const back = (params) => {
-            res.writeHead(303, { Location: "/contact/support?" + new URLSearchParams(params), "Cache-Control": "no-store" });
+            res.writeHead(303, { Location: inLocale("/contact/support") + "?" + new URLSearchParams(params), "Cache-Control": "no-store" });
             res.end();
           };
 
@@ -837,7 +873,7 @@ const assetsDir = path.join(root, "assets");
           const ip = clientIp(req);
           const back = (params) => {
             res.writeHead(303, {
-              Location: "/list-your-agent?" + new URLSearchParams(params),
+              Location: inLocale("/list-your-agent") + "?" + new URLSearchParams(params),
               "Cache-Control": "no-store",
             });
             res.end();
@@ -908,7 +944,9 @@ const assetsDir = path.join(root, "assets");
           // A 404 must not sit in a shared cache for two minutes: the usual
           // cause is content that is about to exist.
           const cache = preview || code === 404 ? "no-store" : "public, max-age=0, s-maxage=120, must-revalidate";
-          send(req, res, code || 200, { "Content-Type": "text/html; charset=utf-8", "Cache-Control": cache }, versionAssets(html));
+          // localizeHtml: on /de pages, root-relative links gain the /de
+          // prefix; on every page the language switcher's /en marker collapses.
+          send(req, res, code || 200, { "Content-Type": "text/html; charset=utf-8", "Cache-Control": cache }, versionAssets(i18n.localizeHtml(html)));
         };
 
         // Static assets first (they all live under /assets or have extensions).
@@ -994,9 +1032,11 @@ const assetsDir = path.join(root, "assets");
           const out = await r.h(ctx);
           if (out && out.redirect) {
             // Keep utm_* and friends across the hop, or every redirected
-            // entry point lands in analytics as direct traffic.
-            const sep = out.redirect.includes("?") ? "&" : "?";
-            const to = rawQuery ? out.redirect + sep + rawQuery : out.redirect;
+            // entry point lands in analytics as direct traffic. inLocale()
+            // keeps a German visitor on /de through the redirect.
+            const target = inLocale(out.redirect);
+            const sep = target.includes("?") ? "&" : "?";
+            const to = rawQuery ? target + sep + rawQuery : target;
             return send(req, res, out.status || 301, { Location: to, "Cache-Control": "public, max-age=3600" }, "");
           }
           if (out) return sendHtml(out);
@@ -1010,10 +1050,14 @@ const assetsDir = path.join(root, "assets");
         // Nothing here by that name — but the site this one replaces may have
         // published it. Check the legacy map before giving up, so the indexed
         // footprint survives the cutover.
+        // The locale prefix was stripped above, so old German URLs resolve
+        // through the same map and stay German: /de/ai-agents/<x> lands on
+        // /de/ai-coworkers/<x> (absolute app URLs pass through untouched).
         const legacy = legacyRedirects.resolve(seg, await coworkerSlugs());
         if (legacy) {
-          const sep = legacy.includes("?") ? "&" : "?";
-          const to = rawQuery ? legacy + sep + rawQuery : legacy;
+          const target = inLocale(legacy);
+          const sep = target.includes("?") ? "&" : "?";
+          const to = rawQuery ? target + sep + rawQuery : target;
           return send(req, res, 301, { Location: to, "Cache-Control": "public, max-age=86400" }, "");
         }
 
@@ -1026,6 +1070,7 @@ const assetsDir = path.join(root, "assets");
           /* headers already sent */
         }
       }
+      });
   };
 
 // ── run modes ────────────────────────────────────────────────────────────────

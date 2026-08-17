@@ -5,13 +5,14 @@
 const shell = require("./shell");
 const cms = require("../lib/cms");
 const blocks = require("./blocks");
+const { t, locale } = require("../lib/i18n");
 const { esc, attr, icon, pageStart, pageEnd } = shell;
 
 function fmtDate(d) {
   if (!d) return "";
   const dt = new Date(d);
   if (isNaN(dt.getTime())) return "";
-  return dt.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+  return dt.toLocaleDateString(locale() === "de" ? "de-DE" : "en-US", { month: "short", day: "numeric", year: "numeric" });
 }
 
 function fmtVersion(v) {
@@ -50,7 +51,7 @@ function releaseRow(r) {
     return `<a class="row-item" href="/releases/${encodeURIComponent(r.slug)}">
       ${when}
       ${body}
-      <span class="row-go">Details ${icon("arrow-up-right", 15)}</span>
+      <span class="row-go">${esc(t("Details"))} ${icon("arrow-up-right", 15)}</span>
     </a>`;
   }
   return `<div class="row-item">
@@ -72,18 +73,18 @@ async function index(ctx) {
       jsonld: shell.itemListLd("Sokosumi releases", "/releases", releases.map((r) => ({ name: r.title, path: `/releases/${r.slug}` }))),
     }) +
     `<div class="page-head" data-reveal>
-      <h1>What's new in Sokosumi</h1>
-      <p class="sub">New capabilities, improvements, and fixes, straight from the team.</p>
+      <h1>${esc(t("What's new in Sokosumi"))}</h1>
+      <p class="sub">${esc(t("New capabilities, improvements, and fixes, straight from the team."))}</p>
     </div>` +
     (releases.length
       ? `<div class="page-section flush">
           <div class="row-list">${releases.map(releaseRow).join("")}</div>
         </div>`
-      : `<div class="page-section flush"><p class="muted">Release notes are on the way. In the meantime, <a href="/blog" style="text-decoration:underline">read the blog</a>.</p></div>`) +
+      : `<div class="page-section flush"><p class="muted">${esc(t("Release notes are on the way. In the meantime,"))} <a href="/blog" style="text-decoration:underline">${esc(t("read the blog"))}</a>.</p></div>`) +
     shell.ctaBand({
-      heading: "Every release lands in your account",
-      subheading: "Nothing to install and nothing to upgrade.",
-      ctaLabel: "Start free",
+      heading: t("Every release lands in your account"),
+      subheading: t("Nothing to install and nothing to upgrade."),
+      ctaLabel: t("Start free"),
       seed: releases.length,
     }) +
     pageEnd()
@@ -105,7 +106,7 @@ async function detail(ctx) {
     : "";
   const highlightsSection = highlights.length
     ? `<section class="page-section flush blk-checklist" data-reveal>
-        <h2>Highlights</h2>
+        <h2>${esc(t("Highlights"))}</h2>
         <ul>${highlights
           .map((h) => `<li><span class="chip">${highlightTag(h.tag)}</span><span>${esc(h.text)}</span></li>`)
           .join("")}</ul>
@@ -121,7 +122,7 @@ async function detail(ctx) {
   const cr = [{ label: "Home", href: "/" }, { label: "Releases", href: "/releases" }, { label: r.title }];
   return (
     pageStart({
-      title: `${r.title} | Sokosumi releases`,
+      title: t("{title} | Sokosumi releases", { title: r.title }),
       description: (r.description || "").slice(0, 155),
       path: `/releases/${r.slug}`,
       breadcrumb: cr,
@@ -152,9 +153,9 @@ async function detail(ctx) {
     proseSection +
     blocks.renderBlocks(r.sections) +
     shell.ctaBand({
-      heading: "Try it in your account",
-      subheading: "Every release is already live in the product.",
-      ctaLabel: "Start free",
+      heading: t("Try it in your account"),
+      subheading: t("Every release is already live in the product."),
+      ctaLabel: t("Start free"),
       seed: r.title.length,
     }) +
     pageEnd()

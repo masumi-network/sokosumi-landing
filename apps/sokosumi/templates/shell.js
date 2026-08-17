@@ -5,6 +5,8 @@
 
 const cms = require("../lib/cms");
 const art = require("./art");
+const i18n = require("../lib/i18n");
+const { t } = i18n;
 
 const APP = "https://app.sokosumi.com";
 
@@ -113,7 +115,8 @@ function icon(name, size) {
   return `<svg class="icon" width="${size}" height="${size}" viewBox="0 0 24 24" aria-hidden="true">${ICONS[name] || ""}</svg>`;
 }
 
-// Output-type labels for offers (CMS `output` select).
+// Output-type labels for offers (CMS `output` select). The label goes
+// through t() at lookup time, so it follows the request's locale.
 const OUTPUT = {
   pdf: { label: "PDF", icon: "file-text" },
   doc: { label: "Document", icon: "file-text" },
@@ -124,7 +127,8 @@ const OUTPUT = {
   html: { label: "Web", icon: "window" },
 };
 function outputMeta(type) {
-  return OUTPUT[type] || OUTPUT.text;
+  const o = OUTPUT[type] || OUTPUT.text;
+  return { ...o, label: t(o.label) };
 }
 
 // ---- tiny safe Markdown (headings, bold, lists, paragraphs) ----
@@ -180,8 +184,10 @@ function breadcrumbLd(items) {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: items.map((it, i) => {
-      const el = { "@type": "ListItem", position: i + 1, name: it.label };
-      if (it.href) el.item = SITE + it.href;
+      // Labels run through t(): chrome labels ("Home", "Vendors") translate,
+      // dynamic names (coworkers, post titles) pass through unchanged.
+      const el = { "@type": "ListItem", position: i + 1, name: t(it.label) };
+      if (it.href) el.item = SITE + i18n.localizePath(it.href);
       return el;
     }),
   };
@@ -279,10 +285,24 @@ const WEBSITE = {
   inLanguage: "en",
 };
 
+// hreflang alternates for one page, both directions. Every indexable page
+// exists in both locales; x-default points at English (the ranking URLs).
+function hreflangLinks(path) {
+  const en = SITE + path;
+  const de = SITE + i18n.localizePath(path, "de");
+  return [
+    `<link rel="alternate" hreflang="en" href="${attr(en)}" />`,
+    `<link rel="alternate" hreflang="de" href="${attr(de)}" />`,
+    `<link rel="alternate" hreflang="x-default" href="${attr(en)}" />`,
+  ].join("\n    ");
+}
+
 function head(opts) {
-  const title = esc(opts.title);
-  const desc = esc(opts.description || "");
-  const canonical = SITE + opts.path;
+  const locale = i18n.locale();
+  const title = esc(t(opts.title));
+  const desc = esc(t(opts.description || ""));
+  // The canonical points at the page's OWN locale; hreflang links the pair.
+  const canonical = SITE + i18n.localizePath(opts.path);
   const og = shareImage(opts.ogImage);
   // Blog posts, guides and release notes are articles. og:type article unlocks
   // the published/modified timestamps, which "website" silently discards.
@@ -290,25 +310,26 @@ function head(opts) {
   // One @graph per page rather than a pile of loose blocks, so the page's own
   // entity can point at the organization and the site by @id instead of
   // repeating them.
-  const graph = [ORGANIZATION, WEBSITE];
+  const graph = [ORGANIZATION, { ...WEBSITE, inLanguage: locale }];
   if (opts.breadcrumb && opts.breadcrumb.length) graph.push(breadcrumbLd(opts.breadcrumb));
   if (opts.jsonld) graph.push(...(Array.isArray(opts.jsonld) ? opts.jsonld : [opts.jsonld]));
   const doc = { "@context": "https://schema.org", "@graph": graph.map(stripContext) };
   const jsonld = `<script type="application/ld+json">${JSON.stringify(doc).replace(/</g, "\\u003c")}</script>`;
   return `<!doctype html>
-<html lang="en">
+<html lang="${locale}">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     ${ANALYTICS_HEAD}
     <title>${title}</title>
     <meta name="description" content="${desc}" />
-    ${opts.noindex ? '<meta name="robots" content="noindex" />' : `<link rel="canonical" href="${attr(canonical)}" />`}
+    ${opts.noindex ? '<meta name="robots" content="noindex" />' : `<link rel="canonical" href="${attr(canonical)}" />\n    ${hreflangLinks(opts.path)}`}
     <meta property="og:site_name" content="Sokosumi" />
     <meta property="og:title" content="${title}" />
     <meta property="og:description" content="${desc}" />
     <meta property="og:type" content="${article ? "article" : "website"}" />
-    <meta property="og:locale" content="en_US" />
+    <meta property="og:locale" content="${locale === "de" ? "de_DE" : "en_US"}" />
+    <meta property="og:locale:alternate" content="${locale === "de" ? "en_US" : "de_DE"}" />
     <meta property="og:url" content="${attr(canonical)}" />
     <meta property="og:image" content="${attr(og.url)}" />
     ${og.width ? `<meta property="og:image:width" content="${og.width}" />` : ""}
@@ -339,18 +360,28 @@ function head(opts) {
     ${GTM_NOSCRIPT}`;
 }
 
-// Nav model (top vendors + industries) for the dropdown menus. It is the
-// same for every visitor, so a module-level cache is safe: the server calls
-// setNav() with the freshly built model before rendering.
-let NAV_MODEL = { vendors: [], industries: [], popularUseCases: [], faces: [] };
+// Nav model (top vendors + industries) for the dropdown menus. It now lives
+// on the request's AsyncLocalStorage store when one exists: with two locales
+// the model is NOT the same for every visitor any more, and a module-level
+// variable would let a concurrent German request's nav bleed into an English
+// render mid-await (and vice versa). The module-level copy remains only as a
+// fallback for renders outside a request context.
+let NAV_FALLBACK = { vendors: [], industries: [], popularUseCases: [], faces: [] };
 function setNav(model) {
-  if (model) NAV_MODEL = model;
+  if (!model) return;
+  const s = i18n.store();
+  if (s) s.nav = model;
+  else NAV_FALLBACK = model;
+}
+function navModel() {
+  const s = i18n.store();
+  return (s && s.nav) || NAV_FALLBACK;
 }
 
 // A few coworker portraits to warm up the ink CTA bands. Rotated by a seed so
 // the same band is not always the same three faces, but stable within a render.
 function ctaFaces(seed, count) {
-  const pool = NAV_MODEL.faces || [];
+  const pool = navModel().faces || [];
   const n = Math.min(count || 4, pool.length);
   if (!n) return "";
   const start = Math.abs(seed || 0) % pool.length;
@@ -449,10 +480,12 @@ function shotGallery(keys) {
 // and a hand-built one are the same markup.
 // Sits under any button that starts a signup. The nav is the one exception —
 // a bar of chrome is not the place for a reassurance line.
-const NO_CARD = `<p class="no-card">*No Credit Card required</p>`;
+// Locale-dependent, so functions — exported through getters below to keep
+// every `shell.NO_CARD` call site working unchanged.
+const noCard = () => `<p class="no-card">${esc(t("*No Credit Card required"))}</p>`;
 // Same line, but as a span so it can sit inside an existing note paragraph
 // instead of becoming another item in a gapped flex column.
-const NO_CARD_LINE = `<span class="no-card">*No Credit Card required</span>`;
+const noCardLine = () => `<span class="no-card">${esc(t("*No Credit Card required"))}</span>`;
 
 // True when a CTA sends the visitor into the app, i.e. it is a signup. Bands
 // that link somewhere else on the site (the blog's "Browse the roster") get
@@ -462,8 +495,8 @@ function isSignupHref(href) {
 }
 
 function ctaBand(b) {
-  const heading = b.heading || "Put an AI coworker on it";
-  const label = b.ctaLabel || "Start free";
+  const heading = b.heading || t("Put an AI coworker on it");
+  const label = b.ctaLabel || t("Start free");
   const href = b.ctaHref || APP;
   // Two blocks, always: copy on the left, action on the right. The old markup
   // put the heading, subheading, faces and button in one grid and positioned
@@ -477,7 +510,7 @@ function ctaBand(b) {
       </div>
       <div class="cta-action">
         <a class="btn btn-primary btn-lg" href="${attr(href)}"${isSignupHref(href) ? ' data-analytics="sign_up_click" data-analytics-location="cta_band"' : ""}>${esc(label)}</a>
-        ${isSignupHref(href) ? NO_CARD : ""}
+        ${isSignupHref(href) ? noCard() : ""}
       </div>
     </div></section>`;
 }
@@ -498,7 +531,7 @@ function navVisual(variant, inner) {
 // A few coworker portraits for the AI Coworkers rail — the same drawn faces
 // the CTA bands use, which are the imagery this menu is actually about.
 function navVisualFaces() {
-  const pool = (NAV_MODEL.faces || []).slice(0, 4);
+  const pool = (navModel().faces || []).slice(0, 4);
   return navVisual(
     "people",
     pool
@@ -518,7 +551,7 @@ function navVisualShot(src) {
 // The AI Coworkers mega menu: the top vendors with their wordmark, a few
 // curated coworkers each, and the two catch-all links.
 function agentsPanel() {
-  const cols = NAV_MODEL.vendors
+  const cols = navModel().vendors
     .map(
       (v) => `<div class="nav-col">
         <a class="nav-col-head${v.logo ? " has-logo" : ""}" href="/vendors/${encodeURIComponent(v.slug)}">${
@@ -553,14 +586,14 @@ function agentsPanel() {
       <div class="nav-panel-body">
         <div class="nav-intro">
           <p class="nav-intro-label">AI Coworkers</p>
-          <p class="nav-intro-desc">Specialist AI agents with a name, a role and a vendor behind them. Brief one like a colleague and get finished work back.</p>
+          <p class="nav-intro-desc">${esc(t("Specialist AI agents with a name, a role and a vendor behind them. Brief one like a colleague and get finished work back."))}</p>
           ${navVisualFaces()}
         </div>
         <div class="nav-cols">${cols}</div>
       </div>
       <div class="nav-panel-foot">
-        <a href="/vendors">Show all vendors ${icon("arrow-up-right", 13)}</a>
-        <a class="nav-foot-accent" href="/ai-coworkers">Show all coworkers ${icon("arrow-up-right", 13)}</a>
+        <a href="/vendors">${esc(t("Show all vendors"))} ${icon("arrow-up-right", 13)}</a>
+        <a class="nav-foot-accent" href="/ai-coworkers">${esc(t("Show all coworkers"))} ${icon("arrow-up-right", 13)}</a>
       </div>
     </div>`;
 }
@@ -569,7 +602,7 @@ function agentsPanel() {
 // The Product menu: the deep-dives under /product, straight from the CMS,
 // so a page added there shows up here without a code change.
 function productPanel() {
-  const pages = NAV_MODEL.productPages || [];
+  const pages = navModel().productPages || [];
   if (!pages.length) return "";
   const rows = pages
     .map(
@@ -579,18 +612,18 @@ function productPanel() {
         )}</span>${p.description ? `<small>${esc(shell_truncate(p.description, 62))}</small>` : ""}</a>`,
     )
     .join("");
-  return `<div class="nav-panel" role="group" aria-label="Product">
+  return `<div class="nav-panel" role="group" aria-label="${attr(t("Product"))}">
       <div class="nav-panel-body">
         <div class="nav-intro">
-          <p class="nav-intro-label">Product</p>
-          <p class="nav-intro-desc">How work moves through Sokosumi: brief a coworker, follow it on the task board, collect the output.</p>
+          <p class="nav-intro-label">${esc(t("Product"))}</p>
+          <p class="nav-intro-desc">${esc(t("How work moves through Sokosumi: brief a coworker, follow it on the task board, collect the output."))}</p>
           ${navVisualShot("/assets/shot-board.webp")}
         </div>
         <div class="nav-grid">${rows}</div>
       </div>
       <div class="nav-panel-foot">
-        <a href="/product">Product overview ${icon("arrow-up-right", 13)}</a>
-        <a class="nav-foot-accent" href="/pricing">Pricing ${icon("arrow-up-right", 13)}</a>
+        <a href="/product">${esc(t("Product overview"))} ${icon("arrow-up-right", 13)}</a>
+        <a class="nav-foot-accent" href="/pricing">${esc(t("Pricing"))} ${icon("arrow-up-right", 13)}</a>
       </div>
     </div>`;
 }
@@ -613,7 +646,7 @@ function shell_truncate(s, n) {
 // menu; the full taxonomy still lives on /use-cases behind the left foot
 // link. Geometry is untouched: same 880x356 panel as the other two menus.
 function useCasesPanel() {
-  const jobs = (NAV_MODEL.popularUseCases || []).slice(0, 6);
+  const jobs = (navModel().popularUseCases || []).slice(0, 6);
   if (!jobs.length) return "";
 
   const rows = jobs
@@ -627,18 +660,18 @@ function useCasesPanel() {
     })
     .join("");
 
-  return `<div class="nav-panel" role="group" aria-label="Use cases">
+  return `<div class="nav-panel" role="group" aria-label="${attr(t("Use cases"))}">
       <div class="nav-panel-body">
         <div class="nav-intro">
-          <p class="nav-intro-label">Use cases</p>
-          <p class="nav-intro-desc">Real jobs, start to finished file, organized by industry. Pick one and the coworkers behind it already know the brief.</p>
+          <p class="nav-intro-label">${esc(t("Use cases"))}</p>
+          <p class="nav-intro-desc">${esc(t("Real jobs, start to finished file, organized by industry. Pick one and the coworkers behind it already know the brief."))}</p>
           ${navVisual("abstract", art.field("use-cases", { w: 400, h: 230 }))}
         </div>
         <div class="nav-jobs">${rows}</div>
       </div>
       <div class="nav-panel-foot">
-        <a href="/use-cases#industries">Browse by industry ${icon("arrow-up-right", 13)}</a>
-        <a class="nav-foot-accent" href="/use-cases">All use cases ${icon("arrow-up-right", 13)}</a>
+        <a href="/use-cases#industries">${esc(t("Browse by industry"))} ${icon("arrow-up-right", 13)}</a>
+        <a class="nav-foot-accent" href="/use-cases">${esc(t("All use cases"))} ${icon("arrow-up-right", 13)}</a>
       </div>
     </div>`;
 }
@@ -670,10 +703,10 @@ function navItems(currentPath) {
   // Three items only. Guides and Releases are reference material, not paths
   // into the product, and they live in the footer.
   return [
-    item("/ai-coworkers", "AI Coworkers", agents, "/vendors"),
-    item("/product", "Product", product),
-    item("/use-cases", "Use cases", useCases),
-    item("/pricing", "Pricing", ""),
+    item("/ai-coworkers", esc(t("AI Coworkers")), agents, "/vendors"),
+    item("/product", esc(t("Product")), product),
+    item("/use-cases", esc(t("Use cases")), useCases),
+    item("/pricing", esc(t("Pricing")), ""),
   ].join("\n            ");
 }
 
@@ -691,19 +724,20 @@ const MOBILE_LINKS = [
 function mobileNav() {
   const links = MOBILE_LINKS.map(
     ([href, label, hint]) =>
-      `<a class="m-link" href="${href}">${esc(label)}${hint ? `<small>${esc(hint)}</small>` : ""}</a>`,
+      `<a class="m-link" href="${href}">${esc(t(label))}${hint ? `<small>${esc(t(hint))}</small>` : ""}</a>`,
   ).join("");
   return `<div class="mobile-nav" id="mobileNav" hidden>
         ${links}
         <div class="m-actions">
-          <a class="btn btn-primary" href="${APP}" data-analytics="sign_up_click" data-analytics-location="mobile_nav">Sign Up</a>
-          <a class="btn btn-outline" href="${SALES_URL}">Talk to Sales</a>
-          <a class="btn btn-ghost" href="${APP}/signin">Log In</a>
+          <a class="btn btn-primary" href="${APP}" data-analytics="sign_up_click" data-analytics-location="mobile_nav">${esc(t("Sign Up"))}</a>
+          <a class="btn btn-outline" href="${SALES_URL}">${esc(t("Talk to Sales"))}</a>
+          <a class="btn btn-ghost" href="${APP}/signin">${esc(t("Log In"))}</a>
         </div>
       </div>`;
 }
 
-const BURGER = `<button class="nav-burger" id="navBurger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobileNav"><span></span><span></span></button>`;
+const burger = () =>
+  `<button class="nav-burger" id="navBurger" type="button" aria-label="${attr(t("Open menu"))}" aria-expanded="false" aria-controls="mobileNav"><span></span><span></span></button>`;
 
 // The ONE site header. Sub-pages render it directly; the homepage gets the
 // exact same markup injected by server.js (serveIndex) in place of the
@@ -722,10 +756,10 @@ function header(currentPath, opts) {
           </nav>
         </div>
         <div class="actions">
-          <a class="btn btn-sm btn-ghost" href="${APP}/signin">Log In</a>
-          <a class="btn btn-sm btn-outline" href="${SALES_URL}">Talk to Sales</a>
-          <a class="btn btn-sm btn-primary" href="${APP}" data-analytics="sign_up_click" data-analytics-location="nav">Sign Up</a>
-          ${BURGER}
+          <a class="btn btn-sm btn-ghost" href="${APP}/signin">${esc(t("Log In"))}</a>
+          <a class="btn btn-sm btn-outline" href="${SALES_URL}">${esc(t("Talk to Sales"))}</a>
+          <a class="btn btn-sm btn-primary" href="${APP}" data-analytics="sign_up_click" data-analytics-location="nav">${esc(t("Sign Up"))}</a>
+          ${burger()}
         </div>
       </div>
     </header>
@@ -737,6 +771,25 @@ function header(currentPath, opts) {
 // (serveIndex) in place of index.html's <!--SSR:FOOTER--> placeholder, so the
 // two surfaces cannot drift. Styles live in /assets/nav.css — the one chrome
 // stylesheet both surfaces load.
+// The language switcher: same page, other locale. The EN link is written as
+// /en/<path> — a marker lib/i18n.js localizeHtml() collapses to /<path>
+// AFTER the /de link-rewrite pass, so it can never be double-prefixed.
+function langSwitcher() {
+  const path = i18n.currentPath();
+  const cur = i18n.locale();
+  const enHref = path === "/" ? "/en" : `/en${path}`;
+  const deHref = path === "/" ? "/de" : `/de${path}`;
+  const link = (loc, href, label) =>
+    cur === loc
+      ? `<span aria-current="true" lang="${loc}">${label}</span>`
+      : `<a href="${attr(href)}" hreflang="${loc}" lang="${loc}" rel="alternate">${label}</a>`;
+  return `<nav class="foot-lang" aria-label="Language">
+            ${link("en", enHref, "English")}
+            <span class="sep" aria-hidden="true">/</span>
+            ${link("de", deHref, "Deutsch")}
+          </nav>`;
+}
+
 function footerHtml() {
   return `<footer class="site">
       <div class="container-app">
@@ -745,42 +798,42 @@ function footerHtml() {
             <a href="/" aria-label="Sokosumi">
               <img class="foot-mark" src="/assets/sokosumi-wordmark.svg" alt="Sokosumi" width="121" height="16" />
             </a>
-            <p class="foot-tag">The marketplace where you hire AI coworkers for real marketing work &mdash; research, social, planning, and writing, delivered as finished files.</p>
+            <p class="foot-tag">${esc(t("The marketplace where you hire AI coworkers for real marketing work — research, social, planning, and writing, delivered as finished files."))}</p>
           </div>
           <nav class="foot-cols" aria-label="Footer">
             <div class="foot-col">
-              <h2 class="foot-h">Marketplace</h2>
+              <h2 class="foot-h">${esc(t("Marketplace"))}</h2>
               <ul>
-                <li><a href="/ai-coworkers">AI Coworkers</a></li>
-                <li><a href="/vendors">Vendors</a></li>
-                <li><a href="/tasks">Template tasks</a></li>
-                <li><a href="/list-your-agent">List your agent</a></li>
+                <li><a href="/ai-coworkers">${esc(t("AI Coworkers"))}</a></li>
+                <li><a href="/vendors">${esc(t("Vendors"))}</a></li>
+                <li><a href="/tasks">${esc(t("Template tasks"))}</a></li>
+                <li><a href="/list-your-agent">${esc(t("List your agent"))}</a></li>
               </ul>
             </div>
             <div class="foot-col">
-              <h2 class="foot-h">Product</h2>
+              <h2 class="foot-h">${esc(t("Product"))}</h2>
               <ul>
-                <li><a href="/product">How it works</a></li>
-                <li><a href="/use-cases">Use cases</a></li>
-                <li><a href="/pricing">Pricing</a></li>
-                <li><a href="/compare">Compare</a></li>
+                <li><a href="/product">${esc(t("How it works"))}</a></li>
+                <li><a href="/use-cases">${esc(t("Use cases"))}</a></li>
+                <li><a href="/pricing">${esc(t("Pricing"))}</a></li>
+                <li><a href="/compare">${esc(t("Compare"))}</a></li>
               </ul>
             </div>
             <div class="foot-col">
-              <h2 class="foot-h">Resources</h2>
+              <h2 class="foot-h">${esc(t("Resources"))}</h2>
               <ul>
-                <li><a href="/guides">Guides</a></li>
-                <li><a href="/blog">Blog</a></li>
-                <li><a href="/releases">Releases</a></li>
-                <li><a href="https://www.masumi.network/dev/sokosumi/documentation" target="_blank" rel="noreferrer">Developers</a></li>
+                <li><a href="/guides">${esc(t("Guides"))}</a></li>
+                <li><a href="/blog">${esc(t("Blog"))}</a></li>
+                <li><a href="/releases">${esc(t("Releases"))}</a></li>
+                <li><a href="https://www.masumi.network/dev/sokosumi/documentation" target="_blank" rel="noreferrer">${esc(t("Developers"))}</a></li>
               </ul>
             </div>
             <div class="foot-col">
-              <h2 class="foot-h">Company</h2>
+              <h2 class="foot-h">${esc(t("Company"))}</h2>
               <ul>
-                <li><a href="/contact">Contact</a></li>
-                <li><a href="${SUPPORT_URL}">Support</a></li>
-                <li><a href="/press">Press</a></li>
+                <li><a href="/contact">${esc(t("Contact"))}</a></li>
+                <li><a href="${SUPPORT_URL}">${esc(t("Support"))}</a></li>
+                <li><a href="/press">${esc(t("Press"))}</a></li>
                 <li><a href="https://masumi.network" target="_blank" rel="noreferrer">Masumi</a></li>
               </ul>
             </div>
@@ -789,7 +842,7 @@ function footerHtml() {
         <div class="foot-meta">
           <div class="foot-ai">
             <img src="/assets/ai-generated.png" alt="AI-generated content mark" width="32" height="32" loading="lazy" />
-            <p>Some of the content on this site is AI generated.</p>
+            <p>${esc(t("Some of the content on this site is AI generated."))}</p>
           </div>
           <nav class="foot-social" aria-label="Social">
             <a href="https://discord.com/invite/aj4QfnTS92" target="_blank" rel="noreferrer">Discord</a>
@@ -800,14 +853,15 @@ function footerHtml() {
           </nav>
         </div>
         <div class="foot-bottom">
-          <p class="foot-copy">&copy; ${new Date().getFullYear()} Sokosumi. All rights reserved.</p>
-          <nav class="foot-legal" aria-label="Legal">
-            <a href="/legal/terms-of-service">Terms</a>
-            <a href="/legal/privacy-policy">Privacy</a>
-            <a href="/legal/cookie-policy">Cookies</a>
-            <a href="/legal/imprint">Imprint</a>
-            <a href="/legal">All legal</a>
-            <a href="#" data-cc-open>Cookie settings</a>
+          <p class="foot-copy">&copy; ${new Date().getFullYear()} Sokosumi. ${esc(t("All rights reserved."))}</p>
+          ${langSwitcher()}
+          <nav class="foot-legal" aria-label="${attr(t("Legal"))}">
+            <a href="/legal/terms-of-service">${esc(t("Terms"))}</a>
+            <a href="/legal/privacy-policy">${esc(t("Privacy"))}</a>
+            <a href="/legal/cookie-policy">${esc(t("Cookies"))}</a>
+            <a href="/legal/imprint">${esc(t("Imprint"))}</a>
+            <a href="/legal">${esc(t("All legal"))}</a>
+            <a href="#" data-cc-open>${esc(t("Cookie settings"))}</a>
           </nav>
         </div>
       </div>
@@ -828,7 +882,9 @@ function crumbs(items) {
   const parts = items
     .map((it, i) => {
       const last = i === items.length - 1;
-      const label = esc(it.label);
+      // t() translates the chrome labels ("Home", "Vendors", "Use cases");
+      // dynamic names pass through untouched.
+      const label = esc(t(it.label));
       return last || !it.href
         ? `<span class="current">${label}</span>`
         : `<a href="${attr(it.href)}">${label}</a>`;
@@ -844,7 +900,7 @@ function crumbs(items) {
 function pageStart(opts) {
   return (
     head(opts) +
-    `<a class="skip-link" href="#main">Skip to content</a>` +
+    `<a class="skip-link" href="#main">${esc(t("Skip to content"))}</a>` +
     header(opts.path) +
     (opts.breadcrumb ? crumbs(opts.breadcrumb) : "") +
     `<main id="main" tabindex="-1" class="page container-app">`
@@ -911,11 +967,17 @@ module.exports = {
   ctaBand,
   quoteSection,
   pickQuote,
-  NO_CARD,
-  NO_CARD_LINE,
   gridCls,
   SHOTS,
   shotFor,
   shotFigure,
   shotGallery,
 };
+
+// Locale-dependent snippets, kept as properties so every existing
+// `shell.NO_CARD` interpolation keeps working — the getter renders for the
+// locale of the request that is reading it.
+Object.defineProperties(module.exports, {
+  NO_CARD: { enumerable: true, get: noCard },
+  NO_CARD_LINE: { enumerable: true, get: noCardLine },
+});

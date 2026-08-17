@@ -8,6 +8,7 @@
 
 const shell = require("./shell");
 const cms = require("../lib/cms");
+const { t } = require("../lib/i18n");
 const { esc, attr, pageStart, pageEnd, APP, SALES_URL } = shell;
 
 // The page publishes five priced tiers and carried no price markup at all.
@@ -108,17 +109,17 @@ const ENTERPRISE = {
 function planRow(p, i) {
   const m = p.credits ? p.credits.match(/^([\d,]+)\s+(.+)$/) : null;
   const credits = m
-    ? `<span class="num">${esc(m[1])}</span><span class="unit">${esc(m[2])}</span>`
-    : `<span class="num">Tailored</span><span class="unit">credits per seat</span>`;
+    ? `<span class="num">${esc(m[1])}</span><span class="unit">${esc(t(m[2]))}</span>`
+    : `<span class="num">${esc(t("Tailored"))}</span><span class="unit">${esc(t("credits per seat"))}</span>`;
   return `<div class="plan-row${p.featured ? " featured" : ""}" data-reveal style="--i:${i}">
     <div class="plan-head">
-      <div class="plan-name">${esc(p.name)}${p.featured ? '<span class="chip">Most popular</span>' : ""}</div>
-      <p class="plan-tagline">${esc(p.tagline)}</p>
+      <div class="plan-name">${esc(p.name)}${p.featured ? `<span class="chip">${esc(t("Most popular"))}</span>` : ""}</div>
+      <p class="plan-tagline">${esc(t(p.tagline))}</p>
     </div>
     <div class="plan-credits">${credits}</div>
     <div class="plan-price">
-      <span class="amount">${esc(p.price)}</span>
-      ${p.per ? `<span class="per">${esc(p.per)}</span>` : ""}
+      <span class="amount">${esc(t(p.price))}</span>
+      ${p.per ? `<span class="per">${esc(t(p.per))}</span>` : ""}
     </div>
   </div>`;
 }
@@ -136,20 +137,20 @@ async function render(ctx) {
       jsonld: pricingLd(),
     }) +
     `<div class="page-head" data-reveal>
-      <span class="eyebrow">Pricing</span>
-      <h1>Plans that scale with the work</h1>
-      <p class="sub">Every plan includes credits per seat. Start free, move up when your team runs more work, or talk to us about a tailored plan.</p>
+      <span class="eyebrow">${esc(t("Pricing"))}</span>
+      <h1>${esc(t("Plans that scale with the work"))}</h1>
+      <p class="sub">${esc(t("Every plan includes credits per seat. Start free, move up when your team runs more work, or talk to us about a tailored plan."))}</p>
     </div>
 
     <section class="page-section flush" data-reveal>
       <div class="plan-list">${[...PLANS, ENTERPRISE].map(planRow).join("")}</div>
-      <p class="plan-note muted" data-reveal>Need tailored seats, credits, or support? <a href="${attr(SALES_URL)}">Talk to sales</a>.</p>
+      <p class="plan-note muted" data-reveal>${esc(t("Need tailored seats, credits, or support?"))} <a href="${attr(SALES_URL)}">${esc(t("Talk to sales"))}</a>.</p>
     </section>` +
-    shell.quoteSection(shell.pickQuote(testimonials, 0), { heading: "Teams already on a plan" }) +
+    shell.quoteSection(shell.pickQuote(testimonials, 0), { heading: t("Teams already on a plan") }) +
     shell.ctaBand({
-      heading: "Get started on the free plan",
-      subheading: "250 credits per seat, no card, and every agent on the marketplace to try them on.",
-      ctaLabel: "Get started",
+      heading: t("Get started on the free plan"),
+      subheading: t("250 credits per seat, no card, and every agent on the marketplace to try them on."),
+      ctaLabel: t("Get started"),
       ctaHref: APP,
       seed: 5,
     }) +

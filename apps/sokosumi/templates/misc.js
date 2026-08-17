@@ -3,6 +3,8 @@
 
 const shell = require("./shell");
 const cms = require("../lib/cms");
+const i18n = require("../lib/i18n");
+const { t } = i18n;
 const { esc, pageStart, pageEnd, SITE } = shell;
 
 const PRESS_MAILTO = "mailto:info@sokosumi.com?subject=Press%20inquiry";
@@ -16,9 +18,9 @@ function notFound(message) {
       noindex: true,
     }) +
     `<div class="notice">
-      <h1>We couldn't find that</h1>
-      <p>${esc(message || "This page may have moved, or it isn't published yet.")}</p>
-      <a class="btn btn-primary" href="/">Back to the homepage</a>
+      <h1>${esc(t("We couldn't find that"))}</h1>
+      <p>${esc(message || t("This page may have moved, or it isn't published yet."))}</p>
+      <a class="btn btn-primary" href="/">${esc(t("Back to the homepage"))}</a>
     </div>` +
     pageEnd()
   );
@@ -33,9 +35,9 @@ function serverError() {
       noindex: true,
     }) +
     `<div class="notice">
-      <h1>Something went wrong</h1>
-      <p>We hit a snag rendering this page. Try again in a moment.</p>
-      <a class="btn btn-primary" href="/">Back to the homepage</a>
+      <h1>${esc(t("Something went wrong"))}</h1>
+      <p>${esc(t("We hit a snag rendering this page. Try again in a moment."))}</p>
+      <a class="btn btn-primary" href="/">${esc(t("Back to the homepage"))}</a>
     </div>` +
     pageEnd()
   );
@@ -52,31 +54,31 @@ function press() {
       breadcrumb: cr,
     }) +
     `<div class="page-head" data-reveal>
-      <h1>Press</h1>
-      <p class="sub">Sokosumi is the marketplace for AI coworkers, built by Serviceplan Group. For interviews, background, or assets, reach out and we will get back to you quickly.</p>
+      <h1>${esc(t("Press"))}</h1>
+      <p class="sub">${esc(t("Sokosumi is the marketplace for AI coworkers, built by Serviceplan Group. For interviews, background, or assets, reach out and we will get back to you quickly."))}</p>
     </div>
     <div class="page-section flush">
       <div class="card-grid" style="max-width:820px">
         <div class="card">
-          <h2>Media inquiries</h2>
-          <p>Interviews, comments, and background conversations with the Sokosumi team.</p>
-          <a class="btn btn-primary" style="margin-top:6px;align-self:flex-start" href="${PRESS_MAILTO}">Email the team</a>
+          <h2>${esc(t("Media inquiries"))}</h2>
+          <p>${esc(t("Interviews, comments, and background conversations with the Sokosumi team."))}</p>
+          <a class="btn btn-primary" style="margin-top:6px;align-self:flex-start" href="${PRESS_MAILTO}">${esc(t("Email the team"))}</a>
         </div>
         <div class="card">
-          <h2>Facts</h2>
-          <p>Sokosumi gives marketing teams AI coworkers with real roles that deliver finished files. It is built by Serviceplan Group, one of the world's leading agency groups, together with NMKR.</p>
+          <h2>${esc(t("Facts"))}</h2>
+          <p>${esc(t("Sokosumi gives marketing teams AI coworkers with real roles that deliver finished files. It is built by Serviceplan Group, one of the world's leading agency groups, together with NMKR."))}</p>
         </div>
       </div>
     </div>
     <section class="page-section" data-reveal>
-      <h2>Product imagery</h2>
-      <p class="sub">Screenshots of the live product, free to use in coverage of Sokosumi. Please credit Sokosumi.</p>
+      <h2>${esc(t("Product imagery"))}</h2>
+      <p class="sub">${esc(t("Screenshots of the live product, free to use in coverage of Sokosumi. Please credit Sokosumi."))}</p>
       ${shell.shotGallery()}
     </section>` +
     shell.ctaBand({
-      heading: "See the product for yourself",
-      subheading: "The whole marketplace is browsable before you spend a credit.",
-      ctaLabel: "Start free",
+      heading: t("See the product for yourself"),
+      subheading: t("The whole marketplace is browsable before you spend a credit."),
+      ctaLabel: t("Start free"),
       seed: 3,
     }) +
     pageEnd()
@@ -172,8 +174,20 @@ async function sitemap() {
   for (const p of pages) urls.add(`/${p.slug}`);
   for (const slug of require("./legal").SLUGS) urls.add(`/legal/${slug}`);
 
-  const body = [...urls].map((u) => `  <url><loc>${esc(SITE + u)}</loc></url>`).join("\n");
-  return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${body}\n</urlset>\n`;
+  // Both locales of every page, each carrying the full hreflang cluster —
+  // Google wants the alternates repeated on every member of the pair.
+  const dePath = (u) => (u === "/" ? "/de" : `/de${u}`);
+  const entry = (loc, u) => {
+    const en = esc(SITE + u);
+    const de = esc(SITE + dePath(u));
+    const alternates =
+      `<xhtml:link rel="alternate" hreflang="en" href="${en}"/>` +
+      `<xhtml:link rel="alternate" hreflang="de" href="${de}"/>` +
+      `<xhtml:link rel="alternate" hreflang="x-default" href="${en}"/>`;
+    return `  <url><loc>${loc === "de" ? de : en}</loc>${alternates}</url>`;
+  };
+  const body = [...urls].flatMap((u) => [entry("en", u), entry("de", u)]).join("\n");
+  return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n${body}\n</urlset>\n`;
 }
 
 module.exports = { notFound, serverError, press, robots, sitemap };

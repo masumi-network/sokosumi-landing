@@ -5,6 +5,7 @@
 const shell = require("./shell");
 const cms = require("../lib/cms");
 const blocks = require("./blocks");
+const { t } = require("../lib/i18n");
 const { esc, attr, icon, pageStart, pageEnd } = shell;
 
 function comparisonCard(c) {
@@ -16,7 +17,7 @@ function comparisonCard(c) {
     <div class="card-top">${top}</div>
     <h3>${esc(c.title)}</h3>
     <p>${esc(c.description || "")}</p>
-    <div class="card-foot"><span>Read the comparison</span><span class="go">${icon("arrow-up-right", 15)}</span></div>
+    <div class="card-foot"><span>${esc(t("Read the comparison"))}</span><span class="go">${icon("arrow-up-right", 15)}</span></div>
   </a>`;
 }
 
@@ -33,29 +34,29 @@ async function index(ctx) {
       breadcrumb: cr,
     }) +
     `<div class="page-head" data-reveal>
-      <h1>How Sokosumi compares</h1>
-      <p class="sub">Honest, side by side looks at Sokosumi and the tools you might be weighing it against.</p>
+      <h1>${esc(t("How Sokosumi compares"))}</h1>
+      <p class="sub">${esc(t("Honest, side by side looks at Sokosumi and the tools you might be weighing it against."))}</p>
     </div>
     <section class="page-section flush" data-reveal>
       <div class="shot-split">
         <div class="copy">
-          <h2>What you are actually comparing</h2>
-          <p>Not a chat window and not a prompt library. Named coworkers with real roles, a task board your whole team can see, and finished files at the end of it.</p>
-          <a class="btn btn-outline" href="/ai-coworkers">Meet the coworkers</a>
+          <h2>${esc(t("What you are actually comparing"))}</h2>
+          <p>${esc(t("Not a chat window and not a prompt library. Named coworkers with real roles, a task board your whole team can see, and finished files at the end of it."))}</p>
+          <a class="btn btn-outline" href="/ai-coworkers">${esc(t("Meet the coworkers"))}</a>
         </div>
         ${shell.shotFigure(shell.SHOTS.board, { caption: false })}
       </div>
     </section>` +
     (comparisons.length
       ? `<div class="page-section">
-          <h2>Side by side</h2>
+          <h2>${esc(t("Side by side"))}</h2>
           <div class="${shell.gridCls(comparisons.length)}" style="margin-top:22px">${comparisons.map(comparisonCard).join("")}</div>
         </div>`
-      : `<div class="page-section flush"><p class="muted">Comparison pages are on the way. In the meantime, <a href="/ai-coworkers" style="text-decoration:underline">meet the coworkers</a>.</p></div>`) +
+      : `<div class="page-section flush"><p class="muted">${esc(t("Comparison pages are on the way. In the meantime,"))} <a href="/ai-coworkers" style="text-decoration:underline">${esc(t("meet the coworkers"))}</a>.</p></div>`) +
     shell.ctaBand({
-      heading: "The shortest comparison is a trial",
-      subheading: "Run one real task and judge the output for yourself.",
-      ctaLabel: "Start free",
+      heading: t("The shortest comparison is a trial"),
+      subheading: t("Run one real task and judge the output for yourself."),
+      ctaLabel: t("Start free"),
       seed: comparisons.length,
     }) +
     pageEnd()
