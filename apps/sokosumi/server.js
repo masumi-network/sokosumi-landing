@@ -701,11 +701,12 @@ const assetsDir = path.join(root, "assets");
   }
 
   const handler = async (req, res) => {
-      // Both sokosumi.com and www.sokosumi.com alias the same deployment, so the
-      // apex served a 200 copy of all 138 URLs. Canonicals already pointed at
-      // www, but a duplicate host is a duplicate host — send it on with a single
-      // 301 so there is exactly one address for every page. Exact-match only:
-      // preview hosts and localhost must be left alone.
+      // Fallback only. vercel.json now redirects the apex at the edge, before a
+      // function boots — answering it here instead measured 771ms of the mobile
+      // Lighthouse run, because a 301 that costs a cold lambda is not cheap.
+      // Kept so the behaviour is still correct under `node server.js` and if the
+      // edge rule is ever removed. Exact-match: preview hosts and localhost are
+      // left alone.
       const host = String(req.headers.host || "").toLowerCase();
       if (host === "sokosumi.com") {
         return send(req, res, 301, {

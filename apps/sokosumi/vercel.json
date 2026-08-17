@@ -9,12 +9,6 @@
       "maxDuration": 15
     }
   },
-  "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "/api/index"
-    }
-  ],
   "images": {
     "sizes": [
       32,
@@ -70,5 +64,24 @@
         "hostname": "sokosumi.com"
       }
     ]
-  }
+  },
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "sokosumi.com"
+        }
+      ],
+      "destination": "https://www.sokosumi.com/:path*",
+      "permanent": true
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/api/index"
+    }
+  ]
 }
