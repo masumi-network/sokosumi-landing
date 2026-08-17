@@ -109,6 +109,25 @@
       consent_analytics: choice.analytics ? "granted" : "denied",
       consent_marketing: choice.marketing ? "granted" : "denied",
     });
+    // A SECOND event, fired only from here. `consent_status` is ALSO pushed by
+    // the <head> snippet on every load that finds a stored cookie, so a GTM
+    // trigger on that would fire the GA4 tag twice for every returning visitor.
+    // `consent_decision` comes only from apply(), and apply() is only reached
+    // from decide(), which is only reached from the three banner buttons — so
+    // it means "the visitor just chose", exactly once per decision.
+    //
+    // GTM fires the GA4 configuration tag on this. Without it the landing
+    // pageview of every session is lost: Consent Mode blocks the tag at
+    // gtm.init (wait_for_update is 500ms; nobody reads a banner that fast) and
+    // GTM never retries — measured still zero 30 seconds after accepting. A
+    // visitor who landed, accepted and left was recorded as nothing at all.
+    // Consent Mode still enforces the categories, so someone who rejects fires
+    // this event and GA4 still sends nothing.
+    window.dataLayer.push({
+      event: "consent_decision",
+      consent_analytics: choice.analytics ? "granted" : "denied",
+      consent_marketing: choice.marketing ? "granted" : "denied",
+    });
   }
 
   function decide(choice) {
