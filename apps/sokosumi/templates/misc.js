@@ -180,13 +180,18 @@ async function sitemap() {
   const entry = (loc, u) => {
     const en = esc(SITE + u);
     const de = esc(SITE + dePath(u));
-    const alternates =
-      `<xhtml:link rel="alternate" hreflang="en" href="${en}"/>` +
-      `<xhtml:link rel="alternate" hreflang="de" href="${de}"/>` +
-      `<xhtml:link rel="alternate" hreflang="x-default" href="${en}"/>`;
+    // No alternates while German is un-indexed — an hreflang cluster is a
+    // claim that both members are equivalent pages, and right now they are not.
+    const alternates = i18n.DE_INDEXABLE
+      ? `<xhtml:link rel="alternate" hreflang="en" href="${en}"/>` +
+        `<xhtml:link rel="alternate" hreflang="de" href="${de}"/>` +
+        `<xhtml:link rel="alternate" hreflang="x-default" href="${en}"/>`
+      : "";
     return `  <url><loc>${loc === "de" ? de : en}</loc>${alternates}</url>`;
   };
-  const body = [...urls].flatMap((u) => [entry("en", u), entry("de", u)]).join("\n");
+  const body = [...urls]
+    .flatMap((u) => (i18n.DE_INDEXABLE ? [entry("en", u), entry("de", u)] : [entry("en", u)]))
+    .join("\n");
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n${body}\n</urlset>\n`;
 }
 

@@ -961,8 +961,19 @@ function translateHomepage(html) {
   return out;
 }
 
+// German is SERVED but not yet INDEXED. The UI layer is translated; the CMS
+// bodies (use-case/page/comparison `layout`, and every Offers field) are not
+// localizable yet, so /de pages still render English content. Advertising
+// those to Google as hreflang="de" invites a thin-duplicate judgement on the
+// English originals that actually rank. So: /de is reachable, excluded from
+// the sitemap, and noindex — until the content lands. Flip this ONE constant
+// to true when the CMS translation is done, and hreflang + sitemap light up
+// together.
+const DE_INDEXABLE = false;
+
 module.exports = {
   run,
+  DE_INDEXABLE,
   store,
   locale,
   currentPath,

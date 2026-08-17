@@ -297,6 +297,10 @@ const WEBSITE = {
 // hreflang alternates for one page, both directions. Every indexable page
 // exists in both locales; x-default points at English (the ranking URLs).
 function hreflangLinks(path) {
+  // Until German content is real, do not advertise a de alternate at all: a
+  // half-translated page claimed as the German equivalent is worse for the
+  // English original than having no alternate.
+  if (!i18n.DE_INDEXABLE) return "";
   const en = SITE + path;
   const de = SITE + i18n.localizePath(path, "de");
   return [
@@ -332,7 +336,7 @@ function head(opts) {
     ${ANALYTICS_HEAD}
     <title>${title}</title>
     <meta name="description" content="${desc}" />
-    ${opts.noindex ? '<meta name="robots" content="noindex" />' : `<link rel="canonical" href="${attr(canonical)}" />\n    ${hreflangLinks(opts.path)}`}
+    ${opts.noindex || (locale === "de" && !i18n.DE_INDEXABLE) ? '<meta name="robots" content="noindex,follow" />' : `<link rel="canonical" href="${attr(canonical)}" />\n    ${hreflangLinks(opts.path)}`}
     <meta property="og:site_name" content="Sokosumi" />
     <meta property="og:title" content="${title}" />
     <meta property="og:description" content="${desc}" />
