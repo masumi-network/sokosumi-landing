@@ -49,6 +49,10 @@
       },
       {
         "protocol": "https",
+        "hostname": "**.serviceplan-agents.com"
+      },
+      {
+        "protocol": "https",
         "hostname": "payload-production-6f43.up.railway.app"
       },
       {

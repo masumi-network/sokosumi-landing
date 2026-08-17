@@ -59,7 +59,29 @@ const ANALYTICS_HEAD = `<script>
     gtag('set', 'url_passthrough', true);
     gtag('set', 'ads_data_redaction', true);
   </script>
-  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','${GTM_ID}');</script>`;
+  <script>(function(w,d,s,l,i){
+    w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});
+    // GTM and its gtag payload are ~315KB, and on a phone that bandwidth
+    // competes with the hero for the paint. Nothing in the container needs to
+    // run before the page is visible, so load it once the browser is idle
+    // after load. gtm.start is stamped above, at the real page-start time, so
+    // the container still reports honest timings. The fallbacks matter: no
+    // requestIdleCallback on Safari, and a tab that never fires load (bfcache
+    // restore, prerender) must still get the tag.
+    var started=false;
+    function boot(){
+      if(started)return;started=true;
+      var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';
+      j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
+      f.parentNode.insertBefore(j,f);
+    }
+    function schedule(){ w.requestIdleCallback ? w.requestIdleCallback(boot,{timeout:3000}) : setTimeout(boot,1200); }
+    if(d.readyState==='complete') schedule(); else w.addEventListener('load',schedule,{once:true});
+    // A visitor who interacts before idle should be tracked from that moment.
+    ['pointerdown','keydown','touchstart'].forEach(function(e){w.addEventListener(e,boot,{once:true,passive:true});});
+    // Hard ceiling, so the tag never simply fails to load.
+    setTimeout(boot,5000);
+  })(window,document,'script','dataLayer','${GTM_ID}');</script>`;
 
 const GTM_NOSCRIPT = `<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=${GTM_ID}" height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Manager"></iframe></noscript>`;
 // The canonical origin. www, not the apex: sokosumi.com 301s to www, so
@@ -934,12 +956,20 @@ function pageEnd() {
 // Only on Vercel: the endpoint does not exist under `node server.js`, and
 // rewriting unconditionally would break every image in local dev.
 const OPTIMIZE_IMAGES = Boolean(process.env.VERCEL);
+// Mirrors images.remotePatterns in vercel.json. Keep the two in step.
+const OPTIMIZABLE_HOST =
+  /^\/|^https:\/\/(?:c-ipfs-gw\.nmkr\.io|[^/]*\.azurecontainerapps\.io|[^/]*\.serviceplan-agents\.com|payload-production-6f43\.up\.railway\.app|(?:www\.)?sokosumi\.com)\//i;
 function thumb(url, w) {
   if (!url) return url;
   const u = String(url);
   // SVG is already tiny and the optimizer refuses it without
   // dangerouslyAllowSVG; data: URIs have nothing to fetch.
   if (!OPTIMIZE_IMAGES || u.startsWith("data:") || /\.svg(\?|$)/i.test(u)) return u;
+  // The optimizer 400s on any host missing from vercel.json's remotePatterns,
+  // which would show as a broken portrait rather than a slow one. The catalog
+  // syncs nightly and can introduce a new vendor host at any time, so an
+  // unknown host falls back to the original URL: slower, but never broken.
+  if (!OPTIMIZABLE_HOST.test(u)) return u;
   return `/_vercel/image?url=${encodeURIComponent(u)}&w=${w}&q=75`;
 }
 // `src` plus a 2x `srcset`, ready to drop into a tag. Retina phones are the
