@@ -9,7 +9,11 @@
   --card: #ffffff;
   --muted: #f2f1f0;
   --foreground: #0f0e0d;
-  --muted-foreground: rgba(15, 14, 13, 0.55);
+  /* 0.55 measured 4.13-4.28 against the three light surfaces — under the 4.5
+     WCAG AA needs for body text, which failed the whole footer and the cookie
+     banner. 0.60 clears it on all three (4.90-5.03) and is a small enough step
+     from 0.55 to leave the hierarchy looking the same. */
+  --muted-foreground: rgba(15, 14, 13, 0.6);
   --border: rgba(15, 14, 13, 0.12);
   --hairline-dark: rgba(255, 255, 255, 0.16);
   --primary: #6400ff;

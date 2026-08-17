@@ -75,7 +75,7 @@ const ANALYTICS_HEAD = `<script>
       j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
       f.parentNode.insertBefore(j,f);
     }
-    function schedule(){ w.requestIdleCallback ? w.requestIdleCallback(boot,{timeout:3000}) : setTimeout(boot,1200); }
+    function schedule(){ w.requestIdleCallback ? w.requestIdleCallback(boot) : setTimeout(boot,1200); }
     if(d.readyState==='complete') schedule(); else w.addEventListener('load',schedule,{once:true});
     // A visitor who interacts before idle should be tracked from that moment.
     ['pointerdown','keydown','touchstart'].forEach(function(e){w.addEventListener(e,boot,{once:true,passive:true});});
