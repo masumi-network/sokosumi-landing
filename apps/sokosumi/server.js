@@ -646,7 +646,12 @@ const assetsDir = path.join(root, "assets");
       .replace("<!--SSR:FOOTER-->", shell.footerHtml());
     send(req, res, 200, {
       "Content-Type": "text/html; charset=utf-8",
-      "Cache-Control": "public, max-age=300",
+      // max-age=0 so a browser revalidates the document on every load, and
+      // s-maxage so the CDN still absorbs the traffic. Assets are versioned by
+      // content hash, so a stale document is the one thing that keeps serving
+      // last deploy's CSS and JS — which looked exactly like a deploy that had
+      // not happened. Revalidation is a cheap 304; the CDN does the real work.
+      "Cache-Control": "public, max-age=0, s-maxage=300, must-revalidate",
       "Last-Modified": stat.mtime.toUTCString(),
     }, versionAssets(html));
   }
@@ -902,7 +907,7 @@ const assetsDir = path.join(root, "assets");
         const sendHtml = (html, code) => {
           // A 404 must not sit in a shared cache for two minutes: the usual
           // cause is content that is about to exist.
-          const cache = preview || code === 404 ? "no-store" : "public, max-age=120";
+          const cache = preview || code === 404 ? "no-store" : "public, max-age=0, s-maxage=120, must-revalidate";
           send(req, res, code || 200, { "Content-Type": "text/html; charset=utf-8", "Cache-Control": cache }, versionAssets(html));
         };
 
