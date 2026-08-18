@@ -163,7 +163,15 @@ async function index(ctx) {
       ? `<div class="page-section">
           <h2>${esc(t("Specialist Agents"))}</h2>
           <p class="sub">${esc(t("{n} specialist agents from {vendors} vendors, ready to run in the app.", { n: agents.length, vendors: new Set(agents.map(vendorName).filter(Boolean)).size }))}</p>
-          <div class="row-list">${agents.map(agentRow).join("")}</div>
+          <div class="row-list" data-collapsible="12">${agents.map(agentRow).join("")}</div>
+          ${
+            agents.length > 12
+              ? `<button type="button" class="row-more" data-collapse-toggle hidden>
+                   <span data-more-label>${esc(t("Show all {n} specialist agents", { n: agents.length }))}</span>
+                   <span data-less-label hidden>${esc(t("Show fewer"))}</span>
+                 </button>`
+              : ""
+          }
         </div>`
       : "") +
     shell.ctaBand({

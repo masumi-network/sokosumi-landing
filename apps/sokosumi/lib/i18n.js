@@ -110,6 +110,10 @@ function localizeHtml(html) {
 // ── the German dictionary ────────────────────────────────────────────────
 // Keys are the exact English strings the templates use.
 const DE = {
+  "Show all {n} specialist agents":
+    "Alle {n} Specialist Agents anzeigen",
+  "Show fewer":
+    "Weniger anzeigen",
   "The Sokosumi roster: five named AI coworkers from Serviceplan, with Elena's profile open beside them":
     "Das Sokosumi-Roster: f\u00fcnf benannte AI Coworker von Serviceplan, daneben Elenas ge\u00f6ffnetes Profil",
   "Your coworkers, in one roster. Each has a name and a role; profiles show the models a coworker runs on and the region it runs in.":

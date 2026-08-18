@@ -389,6 +389,20 @@ main.page { min-height: 60vh; }
 
 /* ===== quiet index rows (lists: guides, vendors, releases…) ===== */
 .row-list { border-top: 1px solid var(--border); }
+
+/* Long lists collapse to their first 12 rows. Every row stays in the HTML —
+   the rest are hidden with CSS, not withheld from the response — so crawlers
+   still see all 40 specialist agents while the page stops being a 40KB wall.
+   `is-collapsed` is added by site.js, so with JS off the full list renders. */
+.row-list.is-collapsed > :nth-child(n + 13) { display: none; }
+.row-more {
+  display: inline-flex; align-items: center; gap: 8px; margin-top: 18px;
+  height: 40px; padding: 0 18px; border-radius: var(--r-md);
+  background: transparent; border: 1px solid var(--border); cursor: pointer;
+  font-size: 14px; font-weight: 500; color: var(--foreground);
+  transition: border-color 0.25s var(--ease), background-color 0.25s var(--ease);
+}
+.row-more:hover { border-color: var(--primary); background: var(--primary-soft); }
 .row-item {
   display: grid; grid-template-columns: minmax(150px, 260px) 1fr auto;
   gap: 10px clamp(24px, 4vw, 64px); align-items: baseline;
