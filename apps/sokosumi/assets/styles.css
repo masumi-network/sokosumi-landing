@@ -308,7 +308,11 @@ main.page { min-height: 60vh; }
    Hub; no coworker portrait fronts the page. The art layer is decorative
    and absolutely positioned, so a page whose field fails to generate is
    simply a plain centred hero. */
-.uc-hero-hs { position: relative; text-align: center; padding: clamp(64px, 9vw, 126px) 0 clamp(44px, 6vw, 76px); }
+/* The art is an absolutely positioned panel filling this section, and .crumbs
+   has no bottom padding, so the tinted block sat flush against the breadcrumb —
+   measured gap: 0px. The section's own top padding only moves the text, not the
+   panel, so the breathing room has to come from a margin. */
+.uc-hero-hs { position: relative; text-align: center; margin-top: clamp(20px, 2.4vw, 32px); padding: clamp(64px, 9vw, 126px) 0 clamp(44px, 6vw, 76px); }
 .uc-hero-art { position: absolute; inset: 0; pointer-events: none; }
 .uc-hero-art svg { width: 100%; height: 100%; display: block; }
 .uc-hero-copy { position: relative; }
