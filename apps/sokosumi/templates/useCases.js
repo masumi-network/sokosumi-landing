@@ -270,8 +270,11 @@ function midCta(doc, heroBlk) {
   const b = heroBlk || {};
   const primaryHref = b.ctaHref || shell.APP_SIGNUP;
   const signup = primaryHref.startsWith(shell.APP);
+    // Not doc.title: that is already the h1, so every use-case page carried two
+    // identical headings — a wasted heading slot and a muddled signal about what
+    // the page is for.
   return `<section class="page-section uc-mid-cta" data-reveal>
-    <h2>${esc(doc.title)}</h2>
+    <h2>${esc(t("Put a coworker on this"))}</h2>
     <p class="sub">${esc(t("Create an account and hand over the first brief today."))}</p>
     <div class="cta-row">
       <a class="btn btn-primary btn-lg" href="${attr(primaryHref)}"${signup ? ` data-analytics="sign_up_click" data-analytics-location="use_case_mid"` : ""}>${esc(b.ctaLabel || t("Get started"))}</a>
