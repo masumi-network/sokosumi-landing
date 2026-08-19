@@ -76,6 +76,42 @@
       ],
       "destination": "https://www.sokosumi.com/:path*",
       "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "header",
+          "key": "accept-language",
+          "value": "de(-[A-Za-z]{2,4})?(;q=[0-9.]+)?(,.*)?"
+        }
+      ],
+      "missing": [
+        {
+          "type": "cookie",
+          "key": "soko_lang"
+        }
+      ],
+      "destination": "/de",
+      "permanent": false
+    },
+    {
+      "source": "/((?!de$|de/|api/|assets/|_vercel/|\\.well-known/)[^.]*)",
+      "has": [
+        {
+          "type": "header",
+          "key": "accept-language",
+          "value": "de(-[A-Za-z]{2,4})?(;q=[0-9.]+)?(,.*)?"
+        }
+      ],
+      "missing": [
+        {
+          "type": "cookie",
+          "key": "soko_lang"
+        }
+      ],
+      "destination": "/de/$1",
+      "permanent": false
     }
   ],
   "rewrites": [

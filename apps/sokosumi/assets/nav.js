@@ -264,3 +264,18 @@ function onIdle(fn) {
     { passive: true },
   );
 })();
+
+/* ===== language choice beats the automatic redirect =====
+   vercel.json sends a German-preferring browser from /<path> to /de/<path>,
+   but only while the soko_lang cookie is absent. Clicking either half of the
+   footer switcher is the visitor stating a preference, so it is recorded here
+   and the edge stops redirecting them. Without this the English link would
+   bounce straight back to German and the switcher would look broken.
+   Delegated from the document so it survives any re-render of the footer. */
+document.addEventListener("click", function (e) {
+  var a = e.target && e.target.closest && e.target.closest(".foot-lang a[hreflang]");
+  if (!a) return;
+  var loc = a.getAttribute("hreflang");
+  if (loc !== "en" && loc !== "de") return;
+  document.cookie = "soko_lang=" + loc + "; path=/; max-age=31536000; samesite=lax";
+});
