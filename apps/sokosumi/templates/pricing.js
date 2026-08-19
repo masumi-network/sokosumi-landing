@@ -8,8 +8,8 @@
 
 const shell = require("./shell");
 const cms = require("../lib/cms");
-const { t } = require("../lib/i18n");
-const { esc, attr, pageStart, pageEnd, APP, APP_SIGNUP, SALES_URL } = shell;
+const { t, tp, locale } = require("../lib/i18n");
+const { esc, attr, icon, pageStart, pageEnd, APP_SIGNUP, SALES_URL } = shell;
 
 // The page publishes five priced tiers and carried no price markup at all.
 // Prices are read back off the same PLANS array the page renders, so the
@@ -100,33 +100,144 @@ const ENTERPRISE = {
   per: "per month",
 };
 
-// One row, one comparison: what it costs and how many credits a seat gets.
-// With no per-plan feature lists and no per-card button, five boxes had
-// nothing to hold — so the plans take the site's quiet index-row treatment
-// (.row-item) instead: name and tagline on the left, the credits figure in a
-// column you can scan down, the price flush right. Enterprise is simply the
-// fifth row; its credits are custom like its price.
-function planRow(p, i) {
-  const m = p.credits ? p.credits.match(/^([\d,]+)\s+(.+)$/) : null;
-  const credits = m
-    ? `<span class="num">${esc(m[1])}</span><span class="unit">${esc(t(m[2]))}</span>`
-    : `<span class="num">${esc(t("Tailored"))}</span><span class="unit">${esc(t("credits per seat"))}</span>`;
-  return `<div class="plan-row${p.featured ? " featured" : ""}" data-reveal style="--i:${i}">
+// ── team-size calculator ────────────────────────────────────────────────
+// Honest arithmetic on the figures the cards already publish: seats × price
+// and seats × credits, per plan, monthly. There is no annual billing, no
+// volume break, no minimum and no cap in the product, so none appears here —
+// the only clamp is a sanity ceiling on the query value so ?seats=1e9 cannot
+// render a nonsense page. The count comes from ?seats= so the page is fully
+// usable with JavaScript off (the form submits, the presets are plain links);
+// /assets/pricing.js takes over in the browser and recomputes in place.
+const SEAT_PRESETS = [1, 5, 10, 25, 50];
+const SEAT_MAX = 9999;
+
+function seatCount(query) {
+  const n = parseInt(query && query.seats, 10);
+  return Number.isFinite(n) && n >= 1 ? Math.min(n, SEAT_MAX) : 1;
+}
+
+// Same parse planOffer() uses for the structured data, so the calculator
+// can never disagree with the markup about what a plan costs.
+function priceAmount(p) {
+  return p.price === "Free" ? 0 : Number((p.price.match(/[\d.,]+/) || ["0"])[0].replace(/,/g, ""));
+}
+function creditsAmount(p) {
+  return Number((p.credits.match(/^([\d,]+)/) || ["0"])[0].replace(/,/g, ""));
+}
+
+// Intl does the separators — 1,500 on /pricing, 1.500 on /de/pricing — and
+// the currency placement (€125 vs 125 €) for the same reason. The per-seat
+// price on the card goes through the same formatter so a German card does
+// not say "€25" above "125 €": same amount, one convention per locale.
+const intlLocale = () => (locale() === "de" ? "de-DE" : "en-US");
+const fmtInt = (n) => new Intl.NumberFormat(intlLocale()).format(n);
+const fmtEur = (n) =>
+  new Intl.NumberFormat(intlLocale(), { style: "currency", currency: "EUR", maximumFractionDigits: 0 }).format(n);
+
+function seatPicker(seats) {
+  const presets = SEAT_PRESETS.map(
+    (n) =>
+      `<a class="fchip${n === seats ? " active" : ""}" href="?seats=${n}" data-seats="${n}"${n === seats ? ' aria-current="true"' : ""} aria-label="${attr(tp(n, "{n} seat", "{n} seats"))}">${fmtInt(n)}</a>`,
+  ).join("");
+  return `<form class="seat-picker" id="seatForm" method="get" data-one="${attr(t("For {n} seat"))}" data-many="${attr(t("For {n} seats"))}" data-free="${attr(t("Free"))}" data-seat="${attr(t("seat"))}" data-seats="${attr(t("seats"))}">
+      <label class="seat-label" for="seats" id="seatLabel">${esc(t("Team size"))}</label>
+      <span class="seat-field">
+        <input class="seat-input" id="seats" name="seats" type="number" inputmode="numeric" min="1" step="1" value="${seats}" autocomplete="off" />
+        <span class="seat-unit" data-seat-unit>${esc(tp(seats, "seat", "seats"))}</span>
+      </span>
+      <span class="seat-presets" role="group" aria-labelledby="seatLabel">${presets}</span>
+      <button type="submit" class="btn btn-sm btn-outline seat-submit">${esc(t("Update"))}</button>
+      <span class="sr-only" role="status" id="seatStatus"></span>
+    </form>`;
+}
+
+// The per-card result block. Every figure is data-tagged with its per-seat
+// base so the browser script multiplies the same numbers the server did.
+function teamBlock(p, seats) {
+  const price = priceAmount(p);
+  const credits = creditsAmount(p);
+  return `<div class="plan-team">
+      <span class="plan-team-label" data-team-label>${esc(tp(seats, "For {n} seat", "For {n} seats", { n: fmtInt(seats) }))}</span>
+      <span class="plan-team-price"><strong data-team-price data-price="${price}">${esc(price ? fmtEur(price * seats) : t("Free"))}</strong> <span class="plan-team-unit" data-team-per${price ? "" : " hidden"}>${esc(t("per month"))}</span></span>
+      <span class="plan-team-credits"><strong data-team-credits data-credits="${credits}">${esc(fmtInt(credits * seats))}</strong> <span class="plan-team-unit" data-team-credits-unit>${esc(t("credits"))}</span></span>
+    </div>`;
+}
+
+// The plans as a row of cards on one tinted board, the way a plan picker
+// lays them out: name, price, who the plan is for, what a seat gets, and one
+// action — all four read at a glance and their buttons sit on one line. The
+// card body carries only what the product itself publishes for a tier: the
+// credits a seat gets — plus the team-size block, which is that figure and
+// the price multiplied by the chosen seat count. There are no per-plan
+// feature lists, so none are shown.
+// Free has no "per month", so its unit slot carries the site's no-card line
+// instead — the same fine print every signup button on the site sits over.
+// Standard is the plan most teams land on and takes the one accent border.
+function planCard(p, i, seats) {
+  const id = `plan-${p.name.toLowerCase()}`;
+  const m = p.credits.match(/^([\d,]+)\s+(.+)$/);
+  // same figure, the locale's thousands separator (1,500 → 1.500 on /de)
+  const num = locale() === "de" ? m[1].replace(/,/g, ".") : m[1];
+  return `<article class="plan-card${p.featured ? " featured" : ""}" data-reveal style="--i:${i}">
+    <h2 class="plan-name" id="${id}">${esc(p.name)}${p.featured ? `<span class="chip">${esc(t("Most popular"))}</span>` : ""}</h2>
+    <div class="plan-price">
+      <span class="amount">${esc(priceAmount(p) ? fmtEur(priceAmount(p)) : t(p.price))}</span>
+      <span class="per">${esc(t(p.per || "No credit card required"))}</span>
+    </div>
+    <p class="plan-tagline">${esc(t(p.tagline))}</p>
+    <ul class="plan-incl">
+      <li>${icon("check", 16)}<span><strong>${esc(num)}</strong> ${esc(t(m[2]))}</span></li>
+    </ul>
+    ${teamBlock(p, seats)}
+    <a class="btn ${p.featured ? "btn-primary" : "btn-outline"}" href="${attr(APP_SIGNUP)}" aria-describedby="${id}" data-analytics="sign_up_click" data-analytics-location="pricing_plan">${esc(t("Get started"))}</a>
+  </article>`;
+}
+
+// Enterprise is the fifth plan, not a footnote: it closes the board as an
+// ink band — same name, tagline and price anatomy as the cards, a different
+// route in. Its credits are tailored like its price, and the tagline already
+// says so, so the band carries no credits figure.
+function enterpriseBand(p) {
+  return `<article class="plan-enterprise" data-reveal style="--i:4">
     <div class="plan-head">
-      <div class="plan-name">${esc(p.name)}${p.featured ? `<span class="chip">${esc(t("Most popular"))}</span>` : ""}</div>
+      <h2 class="plan-name">${esc(p.name)}</h2>
       <p class="plan-tagline">${esc(t(p.tagline))}</p>
     </div>
-    <div class="plan-credits">${credits}</div>
     <div class="plan-price">
       <span class="amount">${esc(t(p.price))}</span>
       ${p.per ? `<span class="per">${esc(t(p.per))}</span>` : ""}
     </div>
-  </div>`;
+    <a class="btn btn-primary" href="${attr(SALES_URL)}" data-analytics="talk_to_sales_click" data-analytics-location="pricing_plan">${esc(t("Talk to sales"))}</a>
+  </article>`;
+}
+
+// The same client brands the homepage shows under its hero, in the same
+// order, on paper instead of ink. Nothing here is new: "In use at" and the
+// logos are lifted from index.html so the two surfaces can never disagree
+// about who is on the list.
+const LOGOS = [
+  { src: "/assets/logos/telekom.svg", alt: "Deutsche Telekom", tall: true },
+  { src: "/assets/logos/allianz.svg", alt: "Allianz" },
+  { src: "/assets/logos/lufthansa.svg", alt: "Lufthansa" },
+  { src: "/assets/logos/ard.svg", alt: "ARD" },
+  { src: "/assets/logos/tdk.svg", alt: "TDK" },
+  { src: "/assets/logos/stroer.svg", alt: "Ströer" },
+  { src: "/assets/serviceplan-logo.png", alt: "Serviceplan Group" },
+];
+function logoRow() {
+  const imgs = LOGOS.map(
+    (l) => `<img${l.tall ? ' class="logo-tall"' : ""} src="${attr(l.src)}" alt="${attr(l.alt)}" loading="lazy" decoding="async" />`,
+  ).join("");
+  return `<section class="page-section plan-logos" data-reveal>
+      <p class="plan-logos-label">${esc(t("In use at"))}</p>
+      <div class="blk-logos">${imgs}</div>
+    </section>`;
 }
 
 async function render(ctx) {
   const testimonials = await cms.getTestimonials({ draft: ctx.preview }).catch(() => []);
   const cr = [{ label: "Home", href: "/" }, { label: "Pricing" }];
+  const seats = seatCount(ctx.query);
   return (
     pageStart({
       title: "Pricing | Sokosumi",
@@ -142,10 +253,15 @@ async function render(ctx) {
       <p class="sub">${esc(t("Every plan includes credits per seat. Start free, move up when your team runs more work, or talk to us about a tailored plan."))}</p>
     </div>
 
-    <section class="page-section flush" data-reveal>
-      <div class="plan-list">${[...PLANS, ENTERPRISE].map(planRow).join("")}</div>
-      <p class="plan-note muted" data-reveal>${esc(t("Need tailored seats, credits, or support?"))} <a href="${attr(SALES_URL)}">${esc(t("Talk to sales"))}</a>.</p>
+    <section class="page-section flush">
+      <div class="plan-board">
+        ${seatPicker(seats)}
+        <div class="plan-grid">${PLANS.map((p, i) => planCard(p, i, seats)).join("")}</div>
+        ${enterpriseBand(ENTERPRISE)}
+      </div>
+      <script src="/assets/pricing.js" defer></script>
     </section>` +
+    logoRow() +
     shell.quoteSection(shell.pickQuote(testimonials, 0), { heading: t("Teams already on a plan") }) +
     shell.ctaBand({
       heading: t("Get started on the free plan"),
