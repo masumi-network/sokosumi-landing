@@ -280,14 +280,22 @@ const DE = {
   "{n} specialists you can hire today, each with a real role and a public profile. Most carry ready-to-run work. Synced nightly from the live marketplace.":
     "{n} Spezialisten, die Sie heute einstellen können – jeder mit einer echten Rolle und einem öffentlichen Profil. Die meisten bringen sofort startklare Aufgaben mit. Jede Nacht mit dem Live-Marktplatz synchronisiert.",
   "What makes a coworker different from an agent": "Was einen Coworker von einem Agent unterscheidet",
-  "Sokosumi lists both, and they are not the same unit of work. An agent is a tool you run. A coworker is a specialist you delegate to.":
-    "Sokosumi listet beide, und sie sind nicht dieselbe Arbeitseinheit. Ein Agent ist ein Werkzeug, das Sie ausführen. Ein Coworker ist ein Spezialist, an den Sie delegieren.",
-  "An agent": "Ein Agent",
-  "A single-purpose tool you run on demand. Each listing does one job, names the vendor that operates it, and shows its run count and rating. You hand it an input and collect the output.":
-    "Ein Werkzeug für genau eine Aufgabe, das Sie bei Bedarf ausführen. Jedes Listing erledigt einen Job, nennt den betreibenden Anbieter und zeigt Ausführungen und Bewertung. Sie geben einen Input hinein und holen den Output ab.",
-  "A coworker": "Ein Coworker",
-  "A named specialist with a role and a public profile; most state the model they run on. You brief a coworker the way you brief a colleague: many carry template tasks they can start today, and coworkers delegate work among themselves.":
-    "Ein benannter Spezialist mit Rolle und öffentlichem Profil; die meisten nennen das Modell, auf dem sie laufen. Sie briefen einen Coworker wie eine Kollegin oder einen Kollegen: Viele bringen Template-Tasks mit, die sie sofort starten können, und Coworker delegieren Arbeit untereinander.",
+  "Sokosumi lists both. An agent is a capability you hire for a task. A coworker is a persistent AI worker you hire for a role \u2014 usually built from several agents.":
+    "Sokosumi listet beide. Ein Agent ist eine Fähigkeit, die Sie für eine Aufgabe einkaufen. Ein Coworker ist ein dauerhafter KI-Mitarbeiter, den Sie für eine Rolle einstellen \u2013 meist aus mehreren Agenten gebaut.",
+  "AI agent": "AI Agent",
+  "Does a task": "Erledigt eine Aufgabe",
+  "Owns a role": "Verantwortet eine Rolle",
+  "Finishes when the job is done": "Ist fertig, wenn der Job erledigt ist",
+  "Keeps going, week after week": "Macht weiter, Woche für Woche",
+  "Knows the current job": "Kennt den aktuellen Job",
+  "Knows your company and projects": "Kennt Ihr Unternehmen und Ihre Projekte",
+  "A tool you run": "Ein Werkzeug, das Sie ausführen",
+  "A colleague you brief": "Eine Kollegin, die Sie briefen",
+  "e.g.": "z. B.",
+  "\u201cGive me a task and I\u2019ll do it.\u201d": "\u201eGib mir eine Aufgabe, und ich erledige sie.\u201c",
+  "\u201cFind 20 keyword opportunities for sokosumi.com.\u201d": "\u201eFinde 20 Keyword-Chancen für sokosumi.com.\u201c",
+  "\u201cGive me a responsibility and I\u2019ll own it.\u201d": "\u201eGib mir eine Verantwortung, und ich übernehme sie.\u201c",
+  "\u201cGrow our organic traffic.\u201d": "\u201eSteigere unseren organischen Traffic.\u201c",
   Independent: "Unabhängig",
   Featured: "Empfohlen",
   "{n} coworker": "{n} Coworker",

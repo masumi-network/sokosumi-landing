@@ -48,6 +48,33 @@ function agentRow(c) {
   </a>`;
 }
 
+
+// The agent-vs-coworker explainer. The terms overlap and there is no settled
+// technical line, so this does not pretend there is one — it is the product
+// distinction in the fewest words that still land: one line per side, four
+// contrasts that read across the split, one example each. Agent on paper,
+// coworker on ink: the contrast is the point, and ink is the house emphasis
+// (btn-primary is ink too), so the coworker side reads as the subject of the
+// page without a winner's badge. A full table was tried and was a wall of text.
+function cmpSplit() {
+  const pairs = [
+    [t("Does a task"), t("Owns a role")],
+    [t("Finishes when the job is done"), t("Keeps going, week after week")],
+    [t("Knows the current job"), t("Knows your company and projects")],
+    [t("A tool you run"), t("A colleague you brief")],
+  ];
+  const side = (cls, label, line, example) => `<div class="cw-split-side ${cls}">
+      <span class="cw-split-label">${esc(label)}</span>
+      <p class="cw-split-line">${esc(line)}</p>
+      <ul class="cw-split-list">${pairs.map((pr) => `<li>${esc(cls === "is-agent" ? pr[0] : pr[1])}</li>`).join("")}</ul>
+      <p class="cw-split-eg"><span>${esc(t("e.g."))}</span> ${esc(example)}</p>
+    </div>`;
+  return `<div class="cw-split" data-reveal>
+    ${side("is-agent", t("AI agent"), t("\u201cGive me a task and I\u2019ll do it.\u201d"), t("\u201cFind 20 keyword opportunities for sokosumi.com.\u201d"))}
+    ${side("is-coworker", t("AI coworker"), t("\u201cGive me a responsibility and I\u2019ll own it.\u201d"), t("\u201cGrow our organic traffic.\u201d"))}
+  </div>`;
+}
+
 async function index(ctx) {
   const opts = { draft: ctx.preview };
   // The vendor object on catalog items carries no description — that lives in
@@ -126,17 +153,8 @@ async function index(ctx) {
     }
     <section class="page-section flush">
       <h2>${esc(t("What makes a coworker different from an agent"))}</h2>
-      <p class="sub">${esc(t("Sokosumi lists both, and they are not the same unit of work. An agent is a tool you run. A coworker is a specialist you delegate to."))}</p>
-      <div class="duo-grid">
-        <div class="duo-col">
-          <span class="duo-label">${esc(t("An agent"))}</span>
-          <p>${esc(t("A single-purpose tool you run on demand. Each listing does one job, names the vendor that operates it, and shows its run count and rating. You hand it an input and collect the output."))}</p>
-        </div>
-        <div class="duo-col">
-          <span class="duo-label">${esc(t("A coworker"))}</span>
-          <p>${esc(t("A named specialist with a role and a public profile; most state the model they run on. You brief a coworker the way you brief a colleague: many carry template tasks they can start today, and coworkers delegate work among themselves."))}</p>
-        </div>
-      </div>
+      <p class="sub">${esc(t("Sokosumi lists both. An agent is a capability you hire for a task. A coworker is a persistent AI worker you hire for a role \u2014 usually built from several agents."))}</p>
+      ${cmpSplit()}
     </section>
     ${groups
       .map((g, gi) => {
