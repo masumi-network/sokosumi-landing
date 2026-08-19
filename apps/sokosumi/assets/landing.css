@@ -140,9 +140,12 @@
   position: relative; flex: 1; color: #fff; width: 100%;
   max-width: 1240px; margin: 0 auto;
   display: flex; flex-direction: column; align-items: flex-start; justify-content: center;
-  text-align: left; padding: 130px clamp(24px, 4vw, 56px) 48px;
+  /* Bottom padding is heavier than it looks like it should be: the box is
+     centred, so weight below lifts the copy off dead centre. A left-aligned
+     block mathematically centred in a 100dvh frame reads low. */
+  text-align: left; padding: 130px clamp(24px, 4vw, 56px) 96px;
 }
-.hero-social { display: flex; align-items: center; gap: 12px; margin-bottom: 28px; text-shadow: 0 2px 22px rgba(0, 0, 0, 0.66); }
+.hero-social { display: flex; align-items: center; gap: 12px; margin-bottom: clamp(5px, 0.9vw, 13px); text-shadow: 0 2px 22px rgba(0, 0, 0, 0.66); }
 .hero-social .avatars { display: flex; }
 .hero-social .avatars img {
   width: 30px; height: 30px; border-radius: 999px; object-fit: cover;
@@ -153,7 +156,7 @@
 .hero-title {
   font-family: var(--serif); font-weight: 300;
   font-size: clamp(2.9rem, 6.4vw, 5.6rem); line-height: 1.05; letter-spacing: -0.03em;
-  max-width: 20ch; text-wrap: balance; margin: 0 0 26px;
+  max-width: 20ch; text-wrap: balance; margin: 0 0 clamp(15px, 1.2vw, 17px);
   /* carries the contrast where the video is brightest, so the scrim does
      not have to darken the whole frame to keep the line readable */
   /* one wide, soft pass only — a tight second shadow reads as an outline */
@@ -171,7 +174,15 @@
      `balance` rather than `pretty` for the narrow widths where it does wrap:
      pretty optimises only the last line and left a stub, which is what made
      the break read as a mistake instead of a choice. */
-  max-width: 64ch; text-wrap: balance; margin: 0 0 36px;
+  /* The hero's one real break. These margins are deliberately not the
+     optical gaps: a 90px headline's line box carries ~21px of slack below the
+     glyphs and the eyebrow ~13px, while this 17px paragraph carries almost
+     none. Measured off the rendered pixels the four gaps now read
+     26 / 38 / 66 / 22 - eyebrow and sub bound to the headline, then a gap
+     1.7x wider where reading stops and acting starts. Before this they were
+     41 / 47 / 41 / 22: flat, with the widest gap sitting between the headline
+     and its own subheadline, which is what made the sub look orphaned. */
+  max-width: 64ch; text-wrap: balance; margin: 0 0 40px;
   text-shadow: 0 2px 28px rgba(0, 0, 0, 0.66);
 }
 
@@ -561,4 +572,163 @@ section.band-dark {
      width itself before the buttons can stretch into it */
   .hero-cta { flex-direction: column; align-items: stretch; align-self: stretch; max-width: 360px; }
   .hero-cta .btn { width: 100%; justify-content: center; }
+}
+
+/* ===== the light hero: paper ground, ink type, photograph on the right =====
+   Same hero as the default — same left-aligned composition, same type scale,
+   same CTA order. The ONLY thing that changes is what sits behind it: the
+   screenshot cycle is swapped for a fine-line colour sweep on paper, and the
+   type flips from white to ink because it now sits on light. Everything that
+   is not forced by that background change is left alone on purpose. */
+.hero.is-aurora {
+  background: var(--background);
+  overflow: hidden;
+}
+.hero.is-aurora .hero-shot,
+.hero.is-aurora video,
+.hero.is-aurora .scrim,
+/* The sweep is a static SVG — nothing to pause, so the media control is
+   meaningless here (and it is styled white-on-dark for the video hero). */
+.hero.is-aurora .vid-toggle { display: none; }
+
+.hero.is-aurora .hero-inner { position: relative; z-index: 1; color: var(--ink); }
+
+/* Ink instead of white, and none of the glow the dark hero needs to survive
+   the video — on paper that reads as a smudge. Sizes, weights, widths and
+   spacing are untouched. */
+.hero.is-aurora .hero-title,
+.hero.is-aurora .hero-title .rot-word,
+.hero.is-aurora .hero-sub,
+.hero.is-aurora .hero-social,
+.hero.is-aurora .hero-note,
+.hero.is-aurora .hero-note .no-card { text-shadow: none; }
+/* The headline is ink; only the rotator word carries the accent, matching the dot. */
+.hero.is-aurora .hero-title { color: var(--ink); }
+.hero.is-aurora .hero-title .rot-word { color: var(--primary); }
+.hero.is-aurora .hero-title .hero-dot { color: var(--primary); text-shadow: none; }
+.hero.is-aurora .hero-sub { color: var(--muted-foreground); }
+.hero.is-aurora .hero-note,
+.hero.is-aurora .hero-note .no-card,
+.hero.is-aurora .hero-social,
+.hero.is-aurora .hero-social .count { color: var(--muted-foreground); }
+
+/* Same two buttons in the same order; only the palette flips for paper. */
+.hero.is-aurora .hero-cta-signup { background: var(--ink); color: #fff; border-color: var(--ink); }
+.hero.is-aurora .hero-cta-signup:hover { background: #000; }
+.hero.is-aurora .hero-cta-sales { background: transparent; color: var(--ink); border-color: var(--border); }
+.hero.is-aurora .hero-cta-sales:hover { border-color: var(--ink); background: rgba(15,14,13,0.04); }
+
+/* The strip sits on paper here, so the white-knockout the dark hero uses would
+   make every mark vanish. */
+.hero.is-aurora .hero-logos { border-top: 1px solid var(--border); }
+.hero.is-aurora .hero-logos img { filter: none; opacity: 0.62; }
+/* Inverted to black at 0.72 this was the only mark on the strip that was not
+   grey. The other logos are #6E6C68 at 0.62, which lands on rgb(163) against
+   paper; black at 0.41 lands on the same value, so it now sits with them
+   instead of shouting. Applies to the trust band lower down too, which uses
+   the same knockout asset. */
+.hero.is-aurora .hero-logos .is-brand,
+body.hero-aurora .trust-logo.is-brand { filter: brightness(0); opacity: 0.41; }
+.hero.is-aurora .hl-label { color: var(--muted-foreground); }
+
+/* The overlay header is white-on-transparent for the dark hero; invisible on
+   paper. */
+body.hero-aurora .site-header.is-overlay:not(.scrolled) .mark { filter: none; }
+body.hero-aurora .site-header.is-overlay:not(.scrolled) .site-nav > a,
+body.hero-aurora .site-header.is-overlay:not(.scrolled) .site-nav .nav-drop > a { color: var(--muted-foreground); }
+body.hero-aurora .site-header.is-overlay:not(.scrolled) .site-nav > a:hover,
+body.hero-aurora .site-header.is-overlay:not(.scrolled) .site-nav > a[aria-current],
+body.hero-aurora .site-header.is-overlay:not(.scrolled) .site-nav .nav-drop > a:hover { color: var(--ink); }
+body.hero-aurora .site-header.is-overlay:not(.scrolled) .btn-ghost { color: var(--muted-foreground); }
+body.hero-aurora .site-header.is-overlay:not(.scrolled) .btn-outline { color: var(--ink); border-color: var(--border); }
+body.hero-aurora .site-header.is-overlay:not(.scrolled) .btn-primary { background: var(--ink); color: #fff; border-color: var(--ink); }
+body.hero-aurora .site-header.is-overlay:not(.scrolled) .nav-burger span { background: var(--ink); }
+body.hero-aurora .site-header.is-overlay:not(.scrolled) .nav-burger { color: var(--ink); border-color: var(--border); }
+/* Scrolling has started but the hero is still behind the bar. The dark-video
+   hero washes the bar in ink here so white chrome keeps working; over a light
+   hero that reads as a black bar dropped on a pale page. Same idea, inverted:
+   a lighter version of the paper bar it becomes at .scrolled, so the three
+   states run transparent -> light frost -> paper instead of jumping to dark. */
+body.hero-aurora .site-header.is-overlay.over-hero:not(.scrolled) {
+  background: rgba(250, 250, 249, 0.7);
+  border-bottom-color: rgba(15, 14, 13, 0.07);
+}
+
+/* ===== photographic heroes =====
+   Generated stock-style photography (fal.ai, FLUX Pro Ultra) briefed for this
+   layout specifically: high-key, subject on the RIGHT, left third kept calm and
+   bright so a near-black headline can sit on it. The wash below is therefore
+   light - these do not need the heavy scrim the dark cinematic hero uses.
+   -mock variants have a real product screenshot perspective-composited onto
+   the laptop screen; the plain ones leave the screen blank. */
+body[class*="hero-bg-photo"] .hero.is-aurora {
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: right center;
+}
+body[class*="hero-bg-photo"] .hero.is-aurora .hero-shot,
+body[class*="hero-bg-photo"] .hero.is-aurora video { display: none; }
+body[class*="hero-bg-photo"] .hero.is-aurora::before {
+  content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: linear-gradient(to right, rgba(250,250,249,0.92) 0%, rgba(250,250,249,0.72) 22%, rgba(250,250,249,0.3) 40%, rgba(250,250,249,0) 56%);
+}
+body[class*="hero-bg-photo"] .hero.is-aurora .hero-inner,
+body[class*="hero-bg-photo"] .hero.is-aurora .hero-logos { z-index: 5; }
+/* On paper the shared --border hairline is fine. Over a photograph it measured
+   1.03:1 against its own background - invisible - so the eye stopped finding
+   the button's edge and aligned on its LABEL instead, 20px right of the
+   headline. That read as broken alignment. A darker edge plus a slight fill
+   puts the boundary back where the box actually is, and clears the 3:1 WCAG
+   floor for non-text contrast at the same time. */
+body[class*="hero-bg-photo"] .hero.is-aurora .hero-cta-sales {
+  border-color: rgba(15, 14, 13, 0.54);
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px);
+}
+body[class*="hero-bg-photo"] .hero.is-aurora .hero-cta-sales:hover {
+  border-color: var(--ink); background: rgba(255, 255, 255, 0.85);
+}
+/* Sit the copy higher than the abstract variants do: the photographs carry
+   their subject low and right - a laptop on a desk - so a vertically centred
+   block lands on top of it.
+   Done by anchoring to the top, NOT by padding the bottom of a centred box.
+   A 300px bottom pad pushed the content box past 100dvh, which made .hero
+   885px tall in an 805px viewport and dropped the whole trust band below the
+   fold. Anchoring cannot overflow, and the vh-scaled top pad keeps the block
+   high on tall screens without stranding it on short ones. */
+body[class*="hero-bg-photo"] .hero.is-aurora .hero-inner {
+  justify-content: flex-start;
+  padding-top: clamp(118px, 17vh, 210px);
+  padding-bottom: clamp(24px, 4vh, 64px);
+}
+/* the trust band needs its own ground here - it sits over photograph, not paper */
+body[class*="hero-bg-photo"] .hero.is-aurora .hero-logos {
+  background: rgba(250, 250, 249, 0.82);
+  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+}
+body.hero-bg-photowelcome .hero.is-aurora { background-image: url("/assets/hero-photo/welcome-scene-4k.jpg"); }
+@media (max-width: 899px) {
+  /* A portrait viewport cannot carry a landscape scene behind the copy. These
+     photographs are 1.79:1, so cover scales them by HEIGHT and crops the sides
+     - which means the laptop fills almost the whole frame and there is no
+     vertical position that moves it out of the way. Measured at 390x844: both
+     buttons sat on the laptop screen and "*No Credit Card required" was
+     unreadable against the UI behind it.
+     So the photograph stops being a background and becomes a band along the
+     bottom, sized by height rather than cover, and the copy gets clean paper. */
+  body[class*="hero-bg-photo"] .hero.is-aurora {
+    background-size: auto 46%;
+    background-position: 74% bottom;
+  }
+  body[class*="hero-bg-photo"] .hero.is-aurora::before {
+    /* The band is sized to 46% of the hero and anchored bottom, so its top edge
+       sits at exactly 54%. The wash therefore has to stay FULLY opaque past
+       that line before it starts fading - otherwise the photograph's own hard
+       top edge shows as a rule straight across the page, which is what it did
+       at 768x1024. */
+    background: linear-gradient(to bottom, var(--background) 0%, var(--background) 56%, rgba(250,250,249,0.62) 64%, rgba(250,250,249,0.14) 74%, rgba(250,250,249,0) 85%);
+  }
+  /* the copy no longer competes with the photo, so it can sit a little higher
+     and leave the band more room */
+  body[class*="hero-bg-photo"] .hero.is-aurora .hero-inner { padding-top: clamp(104px, 14vh, 150px); }
 }

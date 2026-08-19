@@ -652,6 +652,8 @@ const assetsDir = path.join(root, "assets");
     });
   }
 
+
+
   async function serveIndex(req, res) {
     const file = path.join(root, "index.html");
     const stat = fs.statSync(file);
@@ -686,6 +688,14 @@ const assetsDir = path.join(root, "assets");
           ? '<meta name="robots" content="noindex,follow" />'
           : `<link rel="canonical" href="${EN_HOME}" />`;
       html = html.replace('<link rel="canonical" href="https://www.sokosumi.com/" />', homeHead);
+
+      // The hero is the photographic one - a light frame with the product on a
+      // laptop. landing.css keys its entire light treatment off these two
+      // classes, so they are applied unconditionally now rather than behind the
+      // query parameter the variants used while we were choosing.
+      html = html
+        .replace("<body", '<body class="hero-aurora hero-bg-photowelcome"')
+        .replace('<div class="hero">', '<div class="hero is-aurora">');
     if (i18n.locale() === "de") html = i18n.translateHomepage(html);
     html = i18n.localizeHtml(html);
     send(req, res, 200, {

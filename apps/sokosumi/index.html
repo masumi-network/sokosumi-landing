@@ -124,19 +124,6 @@
       <!-- Only the first shot has a real src (and is preloaded in <head>); the
            other three carry data-src and are fetched by script after window
            load, so the cycle costs the first paint nothing. -->
-      <div class="hero-shot" aria-hidden="true">
-        <img class="is-active" data-shot="shot-board" src="/assets/shot-board.webp" alt="" fetchpriority="high" decoding="async" />
-        <img data-shot="shot-roster" data-src="/assets/shot-roster.webp" alt="" decoding="async" />
-        <img data-shot="shot-brief" data-src="/assets/shot-brief.webp" alt="" decoding="async" />
-        <img data-shot="shot-chat2" data-src="/assets/shot-chat2.webp" alt="" decoding="async" />
-      </div>
-      <!-- The video path stays wired for the lab (?bg=video). preload="none"
-           and the poster held in data-poster keep the mp4 and jpg from
-           downloading while the screenshot treatment is the default. -->
-      <video id="bgVideo" muted loop playsinline preload="none" data-poster="/assets/hero-poster.jpg" aria-hidden="true">
-        <source src="/assets/hero-bg.mp4" type="video/mp4" />
-      </video>
-      <div class="scrim" aria-hidden="true"></div>
 
 
       <div class="hero-inner">
@@ -154,7 +141,7 @@
         </h1>
 
         <p class="hero-sub" data-reveal style="--i: 2">
-          Brief an AI coworker and what comes back is a finished file, not a chat log.
+          Automate Your Marketing with AI Agents That Work Around the Clock
         </p>
 
         <div class="hero-cta" data-reveal style="--i: 3">
@@ -168,7 +155,7 @@
       <!-- social proof: client brands (same set the Serviceplan/Sokosumi site uses) -->
       <div class="hero-logos" data-reveal style="--i: 5">
         <div class="hl-inner">
-        <span class="hl-label">On desks at</span>
+        <span class="hl-label">In use at</span>
         <div class="hl-marquee">
           <div class="hl-track">
             <img class="logo-tall" src="/assets/logos/telekom.svg" alt="Deutsche Telekom" />
@@ -188,7 +175,6 @@
           </div>
         </div>
         </div>
-        <button id="vidToggle" class="vid-toggle" aria-label="Pause background video">❚❚</button>
       </div>
     </div>
     <!-- ===== AI COWORKERS — asymmetric podium (live from /api/catalog) ===== -->
@@ -578,100 +564,6 @@
           return '<svg width="' + size + '" height="' + size + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + (ICON_PATHS[name] || "") + "</svg>";
         }
 
-        /* hero background pause/play */
-        var video = document.getElementById("bgVideo");
-        var toggle = document.getElementById("vidToggle");
-        var hero = document.querySelector(".hero");
-
-        /* hero background lab (see the .bg-* / .hero-shot styles):
-           the default cycles through all four screenshots;
-           ?bg=shot-board|shot-roster|shot-brief|shot-chat2 pins one shot
-           (still drifting, no cycling), ?bg=video restores the footage,
-           ?bg=ink|color|duo|blur are the old video treatments, ?vid=test
-           swaps the clip (and implies video). */
-        var labParams = new URLSearchParams(location.search);
-        var labBg = labParams.get("bg") || "";
-        var SHOT_BGS = { "shot-board": 1, "shot-roster": 1, "shot-brief": 1, "shot-chat2": 1 };
-        var VIDEO_BGS = { video: 1, ink: 1, color: 1, duo: 1, blur: 1 };
-        var useVideo = !!labParams.get("vid") || !!VIDEO_BGS[labBg];
-        /* ?tone=color drops the monochrome treatment on the screenshots and
-           keeps everything else — the drift, the cycle, the scrim. Separate
-           from ?bg= because bg=color already means "the colour VIDEO". */
-        if (labParams.get("tone") === "color") hero.classList.add("tone-color");
-        if (useVideo) {
-          hero.classList.add("bg-" + (VIDEO_BGS[labBg] ? labBg : "video"));
-          video.poster = video.getAttribute("data-poster");
-          if (labParams.get("vid")) video.src = "/assets/hero-" + labParams.get("vid") + ".mp4";
-          video.load();
-          video.play().catch(function () {});
-        }
-        var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-        /* ---------- screenshot cycle ----------
-           Every shot's drift animation runs from load (staggered via CSS
-           delays), so activating one mid-flight cross-fades into a pan that
-           is already underway — no restart. Shots 2–4 download only after
-           window load (data-src -> src), keeping first paint at one image.
-           HOLD includes the 1.8s CSS cross-fade; a shot that has not finished
-           downloading is skipped until it has, so the fade never reveals a
-           blank layer. Reduced motion: no cycle, no drift — the CSS leaves
-           the first (or pinned) shot as a static frame. */
-        var shots = [].slice.call(hero.querySelectorAll(".hero-shot img"));
-        var pinned = SHOT_BGS[labBg] || null;
-        if (pinned) {
-          shots.forEach(function (img) {
-            var active = img.getAttribute("data-shot") === labBg;
-            img.classList.toggle("is-active", active);
-            if (active && img.getAttribute("data-src")) img.src = img.getAttribute("data-src");
-          });
-        }
-        if (!useVideo && !pinned && !reduce && shots.length > 1) {
-          var SHOT_HOLD = 4500;
-          var shotAt = 0;
-          var loadRest = function () {
-            shots.forEach(function (img) {
-              if (img.getAttribute("data-src")) img.src = img.getAttribute("data-src");
-            });
-          };
-          if (document.readyState === "complete") loadRest();
-          else window.addEventListener("load", loadRest);
-          setInterval(function () {
-            if (hero.classList.contains("drift-paused")) return;
-            var next = (shotAt + 1) % shots.length;
-            if (!(shots[next].complete && shots[next].naturalWidth)) return;
-            shots[shotAt].classList.remove("is-active");
-            /* Restart the incoming shot's pan instead of letting it run free.
-               The CSS animation keeps its own clock from page load while this
-               interval keeps another, and the skip above (a shot that has not
-               finished downloading) drops a beat — so the two drift apart and
-               a shot's one-way reset stops landing under the cross-fade. Once
-               that happens you see the pan snap back mid-display, which is the
-               stutter. Restarting here means every shot begins its travel at
-               the instant it starts fading in, so a reset is never on screen. */
-            shots[next].style.animation = "none";
-            void shots[next].offsetWidth;
-            shots[next].style.animation = "";
-            shots[next].classList.add("is-active");
-            shotAt = next;
-          }, SHOT_HOLD);
-        }
-        function setState(playing) {
-          toggle.textContent = playing ? "❚❚" : "▶";
-          toggle.setAttribute("aria-label", (playing ? "Pause" : "Play") + " background " + (useVideo ? "video" : "motion"));
-        }
-        setState(!reduce);
-        if (reduce) {
-          if (useVideo) video.pause();
-          else hero.classList.add("drift-paused");
-        }
-        toggle.addEventListener("click", function () {
-          if (useVideo) {
-            if (video.paused) { video.play(); setState(true); }
-            else { video.pause(); setState(false); }
-          } else {
-            setState(!hero.classList.toggle("drift-paused"));
-          }
-        });
 
         /* ---------- product screenshot carousel: next shot peeks right ---------- */
         var shotTrack = document.getElementById("shotTrack");
@@ -708,7 +600,7 @@
         }
 
         /* ---------- the introduction trio, Elena centered ---------- */
-        var INTRO_SLUGS = ["hannah", "elena", "jamal"];
+        var INTRO_SLUGS = ["hannah", "elena", "alex"];
 
         /* dropdown panels arrive server-rendered inside the injected header
            (templates/shell.js), so there is nothing to hydrate here */

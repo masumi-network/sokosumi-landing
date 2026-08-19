@@ -927,14 +927,14 @@ const HOME_DE = [
   [">Skip to content</a>", ">Zum Inhalt springen</a>"],
   ["AI Coworkers for <span", "AI Coworkers für <span"],
   [
-    "Brief an AI coworker and what comes back is a finished file, not a chat log.",
-    "Briefen Sie einen AI Coworker – zurück kommt eine fertige Datei, kein Chatverlauf.",
+      "Automate Your Marketing with AI Agents That Work Around the Clock",
+      "Automatisieren Sie Ihr Marketing mit AI Agents, die rund um die Uhr arbeiten",
   ],
   [">Talk to Sales</a>", ">Vertrieb kontaktieren</a>"],
   [">Sign Up</a>", ">Registrieren</a>"],
   ["*No Credit Card required", "*Keine Kreditkarte erforderlich"],
   ['aria-label="Pause background video"', 'aria-label="Hintergrundvideo pausieren"'],
-  [">On desks at</span>", ">Im Einsatz bei</span>"],
+  [">In use at</span>", ">Im Einsatz bei</span>"],
 
   // roster section
   [">From the live roster</span>", ">Aus dem Live-Roster</span>"],
