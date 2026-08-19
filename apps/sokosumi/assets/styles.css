@@ -780,6 +780,25 @@ a.card:hover .go { opacity: 1; transform: none; }
    long a tagline runs. Enterprise closes the board as an ink band — the fifth
    plan, a peer with a different route in, not a footnote. */
 .plan-board { background: var(--muted); border-radius: var(--r-lg); padding: clamp(12px, 1.6vw, 20px); }
+/* ── team-size control, at the head of the board ──
+   A label, a number field and a few quick-pick chips (the task browse
+   filter chips, so the picked one takes the same accent). The submit button
+   only matters with script off; pricing.js hides it. */
+.seat-picker { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; padding: 6px 6px 18px; }
+.seat-label { font-size: 14px; font-weight: 500; letter-spacing: -0.005em; }
+.seat-field { display: inline-flex; align-items: center; gap: 10px; }
+.seat-input {
+  width: 92px; height: 40px; padding: 0 12px; font: inherit; font-size: 15px;
+  font-variant-numeric: tabular-nums; color: var(--foreground);
+  background: var(--card); border: 1px solid rgba(15, 14, 13, 0.48); border-radius: var(--r-md);
+}
+.seat-unit { font-size: 14px; color: var(--muted-foreground); }
+.seat-presets { display: inline-flex; flex-wrap: wrap; gap: 8px; }
+.seat-presets .fchip { padding: 6px 12px; font-variant-numeric: tabular-nums; }
+.seat-presets .fchip:not(.active) { border-color: rgba(15, 14, 13, 0.48); color: var(--foreground); }
+.seat-submit { height: 40px; }
+.seat-submit[hidden] { display: none; }
+@media (max-width: 639px) { .seat-picker { gap: 10px 14px; } .seat-presets { flex-basis: 100%; } }
 .plan-grid { display: grid; gap: 12px; grid-template-columns: minmax(0, 1fr); }
 @media (min-width: 640px) { .plan-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (min-width: 1200px) { .plan-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
@@ -802,6 +821,12 @@ a.card:hover .go { opacity: 1; transform: none; }
 .plan-incl li { display: flex; gap: 10px; align-items: baseline; font-size: 14.5px; line-height: 1.5; }
 .plan-incl li .icon { position: relative; top: 2px; }
 .plan-incl strong { font-weight: 500; font-variant-numeric: tabular-nums; }
+/* the team-size result: the card's own figures × the seat count chosen above */
+.plan-team { margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 3px; font-size: 14.5px; line-height: 1.5; }
+.plan-team-label { font-size: 12.5px; color: var(--muted-foreground); margin-bottom: 3px; }
+.plan-team strong { font-weight: 500; font-variant-numeric: tabular-nums; }
+.plan-team-unit { color: var(--muted-foreground); }
+.plan-team-unit[hidden] { display: none; }
 .plan-card .btn { margin-top: 20px; width: 100%; }
 /* the outline button's hairline is 1.3:1 on white; a control's edge needs
    3:1, so the plan buttons take a firmer border (0.48 → 3.4:1) */
