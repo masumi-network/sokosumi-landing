@@ -543,9 +543,9 @@ const DE = {
   Custom: "Individuell",
   "per month": "pro Monat",
   "Most popular": "Am beliebtesten",
-  Tailored: "Individuell",
   "credits per seat": "Credits pro Seat",
-  "Need tailored seats, credits, or support?": "Sie brauchen individuelle Seats, Credits oder Support?",
+  "In use at": "Im Einsatz bei",
+  "No credit card required": "Keine Kreditkarte erforderlich",
   "Teams already on a plan": "Teams, die bereits einen Plan nutzen",
   "Get started on the free plan": "Starten Sie mit dem kostenlosen Plan",
   "250 credits per seat, no card, and every agent on the marketplace to try them on.":

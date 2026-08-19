@@ -8,8 +8,8 @@
 
 const shell = require("./shell");
 const cms = require("../lib/cms");
-const { t } = require("../lib/i18n");
-const { esc, attr, pageStart, pageEnd, APP, APP_SIGNUP, SALES_URL } = shell;
+const { t, locale } = require("../lib/i18n");
+const { esc, attr, icon, pageStart, pageEnd, APP_SIGNUP, SALES_URL } = shell;
 
 // The page publishes five priced tiers and carried no price markup at all.
 // Prices are read back off the same PLANS array the page renders, so the
@@ -100,28 +100,72 @@ const ENTERPRISE = {
   per: "per month",
 };
 
-// One row, one comparison: what it costs and how many credits a seat gets.
-// With no per-plan feature lists and no per-card button, five boxes had
-// nothing to hold — so the plans take the site's quiet index-row treatment
-// (.row-item) instead: name and tagline on the left, the credits figure in a
-// column you can scan down, the price flush right. Enterprise is simply the
-// fifth row; its credits are custom like its price.
-function planRow(p, i) {
-  const m = p.credits ? p.credits.match(/^([\d,]+)\s+(.+)$/) : null;
-  const credits = m
-    ? `<span class="num">${esc(m[1])}</span><span class="unit">${esc(t(m[2]))}</span>`
-    : `<span class="num">${esc(t("Tailored"))}</span><span class="unit">${esc(t("credits per seat"))}</span>`;
-  return `<div class="plan-row${p.featured ? " featured" : ""}" data-reveal style="--i:${i}">
+// The plans as a row of cards on one tinted board, the way a plan picker
+// lays them out: name, price, who the plan is for, what a seat gets, and one
+// action — all four read at a glance and their buttons sit on one line. The
+// card body carries only what the product itself publishes for a tier: the
+// credits a seat gets. There are no per-plan feature lists, so none are shown.
+// Free has no "per month", so its unit slot carries the site's no-card line
+// instead — the same fine print every signup button on the site sits over.
+// Standard is the plan most teams land on and takes the one accent border.
+function planCard(p, i) {
+  const id = `plan-${p.name.toLowerCase()}`;
+  const m = p.credits.match(/^([\d,]+)\s+(.+)$/);
+  // same figure, the locale's thousands separator (1,500 → 1.500 on /de)
+  const num = locale() === "de" ? m[1].replace(/,/g, ".") : m[1];
+  return `<article class="plan-card${p.featured ? " featured" : ""}" data-reveal style="--i:${i}">
+    <h2 class="plan-name" id="${id}">${esc(p.name)}${p.featured ? `<span class="chip">${esc(t("Most popular"))}</span>` : ""}</h2>
+    <div class="plan-price">
+      <span class="amount">${esc(t(p.price))}</span>
+      <span class="per">${esc(t(p.per || "No credit card required"))}</span>
+    </div>
+    <p class="plan-tagline">${esc(t(p.tagline))}</p>
+    <ul class="plan-incl">
+      <li>${icon("check", 16)}<span><strong>${esc(num)}</strong> ${esc(t(m[2]))}</span></li>
+    </ul>
+    <a class="btn ${p.featured ? "btn-primary" : "btn-outline"}" href="${attr(APP_SIGNUP)}" aria-describedby="${id}" data-analytics="sign_up_click" data-analytics-location="pricing_plan">${esc(t("Get started"))}</a>
+  </article>`;
+}
+
+// Enterprise is the fifth plan, not a footnote: it closes the board as an
+// ink band — same name, tagline and price anatomy as the cards, a different
+// route in. Its credits are tailored like its price, and the tagline already
+// says so, so the band carries no credits figure.
+function enterpriseBand(p) {
+  return `<article class="plan-enterprise" data-reveal style="--i:4">
     <div class="plan-head">
-      <div class="plan-name">${esc(p.name)}${p.featured ? `<span class="chip">${esc(t("Most popular"))}</span>` : ""}</div>
+      <h2 class="plan-name">${esc(p.name)}</h2>
       <p class="plan-tagline">${esc(t(p.tagline))}</p>
     </div>
-    <div class="plan-credits">${credits}</div>
     <div class="plan-price">
       <span class="amount">${esc(t(p.price))}</span>
       ${p.per ? `<span class="per">${esc(t(p.per))}</span>` : ""}
     </div>
-  </div>`;
+    <a class="btn btn-primary" href="${attr(SALES_URL)}" data-analytics="talk_to_sales_click" data-analytics-location="pricing_plan">${esc(t("Talk to sales"))}</a>
+  </article>`;
+}
+
+// The same client brands the homepage shows under its hero, in the same
+// order, on paper instead of ink. Nothing here is new: "In use at" and the
+// logos are lifted from index.html so the two surfaces can never disagree
+// about who is on the list.
+const LOGOS = [
+  { src: "/assets/logos/telekom.svg", alt: "Deutsche Telekom", tall: true },
+  { src: "/assets/logos/allianz.svg", alt: "Allianz" },
+  { src: "/assets/logos/lufthansa.svg", alt: "Lufthansa" },
+  { src: "/assets/logos/ard.svg", alt: "ARD" },
+  { src: "/assets/logos/tdk.svg", alt: "TDK" },
+  { src: "/assets/logos/stroer.svg", alt: "Ströer" },
+  { src: "/assets/serviceplan-logo.png", alt: "Serviceplan Group" },
+];
+function logoRow() {
+  const imgs = LOGOS.map(
+    (l) => `<img${l.tall ? ' class="logo-tall"' : ""} src="${attr(l.src)}" alt="${attr(l.alt)}" loading="lazy" decoding="async" />`,
+  ).join("");
+  return `<section class="page-section plan-logos" data-reveal>
+      <p class="plan-logos-label">${esc(t("In use at"))}</p>
+      <div class="blk-logos">${imgs}</div>
+    </section>`;
 }
 
 async function render(ctx) {
@@ -142,10 +186,13 @@ async function render(ctx) {
       <p class="sub">${esc(t("Every plan includes credits per seat. Start free, move up when your team runs more work, or talk to us about a tailored plan."))}</p>
     </div>
 
-    <section class="page-section flush" data-reveal>
-      <div class="plan-list">${[...PLANS, ENTERPRISE].map(planRow).join("")}</div>
-      <p class="plan-note muted" data-reveal>${esc(t("Need tailored seats, credits, or support?"))} <a href="${attr(SALES_URL)}">${esc(t("Talk to sales"))}</a>.</p>
+    <section class="page-section flush">
+      <div class="plan-board">
+        <div class="plan-grid">${PLANS.map(planCard).join("")}</div>
+        ${enterpriseBand(ENTERPRISE)}
+      </div>
     </section>` +
+    logoRow() +
     shell.quoteSection(shell.pickQuote(testimonials, 0), { heading: t("Teams already on a plan") }) +
     shell.ctaBand({
       heading: t("Get started on the free plan"),
