@@ -727,6 +727,17 @@ const assetsDir = path.join(root, "assets");
         }),
       )
       .replace("<!--SSR:FOOTER-->", shell.footerHtml());
+    // Editor-owned hero positioning: when the sokosumi-site-config global has
+    // a hero subtitle, it replaces the built-in line (per locale via cms's
+    // locale-aware fetch). Empty global = the file's own copy stands.
+    const siteConfig = await cms.getSiteConfig().catch(() => null);
+    const heroSub = siteConfig && siteConfig.positioning && siteConfig.positioning.heroSubtitle;
+    if (heroSub) {
+      html = html.replace(
+        /(<p class="hero-sub"[^>]*>)[\s\S]*?(<\/p>)/,
+        (m, open, close) => open + "\n          " + String(heroSub).replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" })[c]) + "\n        " + close,
+      );
+    }
     // hreflang pair + locale-correct canonical. index.html hard-codes its
     // canonical, so the swap matches that exact tag on both locales.
     const EN_HOME = "https://www.sokosumi.com/";

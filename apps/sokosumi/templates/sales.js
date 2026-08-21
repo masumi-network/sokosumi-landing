@@ -3,6 +3,7 @@
 // disabled, and the endpoint redirects back here with ?sent=1 or ?error=.
 
 const shell = require("./shell");
+const cms = require("../lib/cms");
 const { t } = require("../lib/i18n");
 const { esc, attr, icon, pageStart, pageEnd, APP } = shell;
 
@@ -84,7 +85,11 @@ function sentState() {
   </div>`;
 }
 
-function render(ctx) {
+async function render(ctx) {
+  const siteConfig = await cms.getSiteConfig().catch(() => null);
+  const salesResponseLine =
+    (siteConfig && siteConfig.commitments && siteConfig.commitments.salesResponse) ||
+    t("A reply within one working day, from someone who knows the product.");
   const q = ctx.query || {};
   const get = (k) => (typeof q.get === "function" ? q.get(k) : q[k]) || "";
   const sent = get("sent") === "1";
@@ -113,7 +118,7 @@ function render(ctx) {
           ${shell.shotFigure(shell.SHOTS.board, { caption: false })}
           <h2 class="section-title" style="font-size:20px;margin-top:22px">${esc(t("What to expect"))}</h2>
           <ul class="lead-list">
-            <li>${icon("check", 15)}<span>${esc(t("A reply within one working day, from someone who knows the product."))}</span></li>
+            <li>${icon("check", 15)}<span>${esc(salesResponseLine)}</span></li>
             <li>${icon("check", 15)}<span>${esc(t("A walkthrough against your own use case, not a generic demo."))}</span></li>
             <li>${icon("check", 15)}<span>${esc(t("Straight answers on pricing, data residency, and what coworkers can and cannot do."))}</span></li>
           </ul>

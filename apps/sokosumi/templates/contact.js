@@ -2,6 +2,7 @@
 // support for existing users, plus quiet pointers into the site.
 
 const shell = require("./shell");
+const cms = require("../lib/cms");
 const { t } = require("../lib/i18n");
 const { esc, icon, pageStart, pageEnd, APP, SALES_URL } = shell;
 
@@ -37,6 +38,11 @@ function browseRow(item) {
 }
 
 async function render(ctx) {
+  const siteConfig = await cms.getSiteConfig().catch(() => null);
+  const salesPitchLine =
+    (siteConfig && siteConfig.commitments && siteConfig.commitments.salesResponse
+      ? t("Rolling Sokosumi out to a team, or want to list your own coworkers as a vendor? Tell us what you have in mind.") + " " + siteConfig.commitments.salesResponse
+      : t("Rolling Sokosumi out to a team, or want to list your own coworkers as a vendor? Tell us what you have in mind and we will get back within a day."));
   const cr = [{ label: "Home", href: "/" }, { label: "Contact" }];
   return (
     pageStart({
@@ -61,7 +67,7 @@ async function render(ctx) {
       <div class="card-grid" style="max-width:760px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))">
         <div class="card">
           <h2>${esc(t("Talk to Sales"))}</h2>
-          <p>${esc(t("Rolling Sokosumi out to a team, or want to list your own coworkers as a vendor? Tell us what you have in mind and we will get back within a day."))}</p>
+          <p>${esc(salesPitchLine)}</p>
           <div style="margin-top:auto;padding-top:10px">
             <a class="btn btn-primary" href="${SALES_URL}">${esc(t("Talk to Sales"))}</a>
           </div>

@@ -363,6 +363,25 @@ const getPage = (slug, opts) =>
 
 const getFaqs = (opts) => findAll("faqs", { ...siteWhere(), limit: 200, depth: 0 }, opts);
 
+// The sokosumi-site-config global: commercial values (plans), positioning,
+// and response commitments an editor owns. Globals answer a bare object, not
+// { docs }, so this rides rawFetch through its own tiny cache entry.
+const getSiteConfig = async (opts) => {
+  const pathname = withLocale("/api/globals/sokosumi-site-config?depth=0");
+  const hit = cache[pathname];
+  if (hit && Date.now() - hit.at < TTL_MS) return hit.data;
+  try {
+    const data = await rawFetch(pathname, false);
+    if (data && typeof data === "object" && !data.message) {
+      remember(pathname, { at: Date.now(), data });
+      return data;
+    }
+  } catch (e) {
+    if (hit) return hit.data;
+  }
+  return (hit && hit.data) || null;
+};
+
 const getTestimonials = (opts) =>
   findAll("testimonials", { ...siteWhere({ active: "true" }), limit: 50, depth: 1, sort: "order" }, opts);
 
@@ -394,4 +413,5 @@ module.exports = {
   getPage,
   getFaqs,
   getTestimonials,
+  getSiteConfig,
 };

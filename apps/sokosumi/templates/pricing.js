@@ -211,8 +211,31 @@ function enterpriseBand(p) {
   </article>`;
 }
 
+// The CMS global overrides the built-in plans when an editor filled it.
+function plansFrom(config) {
+  const cp = config && Array.isArray(config.plans) && config.plans.length ? config.plans : null;
+  const plans = cp
+    ? cp.map((p) => ({
+        name: p.name,
+        tagline: p.tagline || "",
+        price: p.price,
+        per: p.per || undefined,
+        credits: p.credits || "",
+        featured: !!p.featured,
+      }))
+    : PLANS;
+  const ent = config && config.enterprise && config.enterprise.price
+    ? { ...ENTERPRISE, ...Object.fromEntries(Object.entries(config.enterprise).filter(([, v]) => v)) }
+    : ENTERPRISE;
+  return { plans, ent };
+}
+
 async function render(ctx) {
-  const testimonials = await cms.getTestimonials({ draft: ctx.preview }).catch(() => []);
+  const [testimonials, siteConfig] = await Promise.all([
+    cms.getTestimonials({ draft: ctx.preview }).catch(() => []),
+    cms.getSiteConfig().catch(() => null),
+  ]);
+  const { plans: PLANS_ACTIVE, ent: ENTERPRISE_ACTIVE } = plansFrom(siteConfig);
   const cr = [{ label: "Home", href: "/" }, { label: "Pricing" }];
   const seats = seatCount(ctx.query);
   return (
@@ -233,8 +256,8 @@ async function render(ctx) {
     <section class="page-section flush">
       <div class="plan-board">
         ${seatPicker(seats)}
-        <div class="plan-grid">${PLANS.map((p, i) => planCard(p, i, seats)).join("")}</div>
-        ${enterpriseBand(ENTERPRISE)}
+        <div class="plan-grid">${PLANS_ACTIVE.map((p, i) => planCard(p, i, seats)).join("")}</div>
+        ${enterpriseBand(ENTERPRISE_ACTIVE)}
       </div>
       <script src="/assets/pricing.js" defer></script>
     </section>` +
