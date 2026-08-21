@@ -179,6 +179,7 @@ async function render(ctx) {
       ctaHref: SALES_URL,
       seed: 11,
     }) +
+    shell.logoRow() +
     pageEnd()
   );
 }

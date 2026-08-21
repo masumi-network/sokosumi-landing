@@ -58,6 +58,7 @@ async function index(ctx) {
           <div class="${shell.gridCls(posts.length)}">${posts.map(postCard).join("")}</div>
         </div>`
       : `<div class="page-section flush"><p class="muted">${esc(t("Posts are on the way. In the meantime,"))} <a href="/guides" style="text-decoration:underline">${esc(t("read the guides"))}</a>.</p></div>`) +
+    shell.logoRow() +
     shell.ctaBand({
       heading: t("Meet the coworkers we write about"),
       subheading: t("Every specialist on the marketplace has a public profile and work you can inspect first."),
@@ -123,6 +124,7 @@ async function detail(ctx) {
     <div class="page-section">
       <a class="muted" href="/blog" style="display:inline-flex;align-items:center;gap:8px;font-size:14px">${icon("arrow-left", 15)} ${esc(t("All posts"))}</a>
     </div>` +
+    shell.logoRow() +
     shell.ctaBand({
       heading: t("See it for yourself"),
       subheading: t("Run one real task and judge the output for yourself."),

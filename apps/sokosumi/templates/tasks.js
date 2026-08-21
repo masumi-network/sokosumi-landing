@@ -214,6 +214,7 @@ async function browse(ctx) {
           <script src="/assets/tasks-filter.js"></script>
         </div>`
       : `<div class="page-section flush"><p class="muted">${esc(t("Template tasks are on the way. In the meantime,"))} <a href="/ai-coworkers" style="text-decoration:underline">${esc(t("meet the coworkers"))}</a>.</p></div>`) +
+    shell.logoRow() +
     shell.ctaBand({
       heading: t("Run your first task today"),
       subheading: t("Pick a template, add your brief, and get the finished file back. Signing up is free."),
@@ -330,6 +331,7 @@ async function detail(ctx) {
         </div>
       </aside>
     </div>` +
+    shell.logoRow() +
     shell.ctaBand({
       heading: t('Run "{title}" with {name}', { title: offer.title, name: c.name }),
       subheading: t("Pick a template, add your brief, and collect the finished file."),

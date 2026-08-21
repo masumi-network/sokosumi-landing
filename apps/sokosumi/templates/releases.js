@@ -81,6 +81,7 @@ async function index(ctx) {
           <div class="row-list">${releases.map(releaseRow).join("")}</div>
         </div>`
       : `<div class="page-section flush"><p class="muted">${esc(t("Release notes are on the way. In the meantime,"))} <a href="/blog" style="text-decoration:underline">${esc(t("read the blog"))}</a>.</p></div>`) +
+    shell.logoRow() +
     shell.ctaBand({
       heading: t("Every release lands in your account"),
       subheading: t("Nothing to install and nothing to upgrade."),
@@ -152,6 +153,7 @@ async function detail(ctx) {
     highlightsSection +
     proseSection +
     blocks.renderBlocks(r.sections) +
+    shell.logoRow() +
     shell.ctaBand({
       heading: t("Try it in your account"),
       subheading: t("Every release is already live in the product."),

@@ -86,6 +86,7 @@ async function render(ctx) {
       </div>
       <div class="row-list" style="margin-top:clamp(28px,4vw,44px)">${BROWSE.map(browseRow).join("")}</div>
     </section>` +
+    shell.logoRow() +
     pageEnd()
   );
 }

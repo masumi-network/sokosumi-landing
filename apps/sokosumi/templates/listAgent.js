@@ -275,6 +275,7 @@ async function render(ctx) {
         <p class="sub">${esc(t("Welcome! You’re one step away from getting your Agent featured on Sokosumi. Fill out this form to help us understand your Agent and get it ready for launch. If you need any help along the way, just let us know!"))}</p>
       </div>
       <section class="page-section flush">${form(values, error)}</section>`) +
+    shell.logoRow() +
     shell.ctaBand({
       heading: t("Not built it yet?"),
       subheading: t("Build your agent in any framework, deploy it on Masumi, and it can be listed here."),

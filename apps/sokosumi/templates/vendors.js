@@ -116,6 +116,7 @@ async function index(ctx) {
           <div class="row-list vendor-list">${rows.map(vendorRow).join("")}</div>
         </div>`
       : `<div class="page-section flush"><p class="muted">${esc(t("Vendor profiles are on the way. In the meantime,"))} <a href="/ai-coworkers" style="text-decoration:underline">${esc(t("meet the coworkers"))}</a>.</p></div>`) +
+    shell.logoRow() +
     shell.ctaBand({
       heading: t("Hire from any of them, in one place"),
       subheading: t("One account, one credit balance, every vendor on the marketplace. Signing up is free."),
@@ -402,6 +403,7 @@ async function detail(ctx) {
     ${stackSection}
     ${agentsSection}
     ${empty}` +
+    shell.logoRow() +
     shell.ctaBand({
       heading: ctaHeading,
       subheading: t("One free account covers every vendor on the marketplace. Credits only go on work you run."),

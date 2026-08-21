@@ -66,6 +66,7 @@ async function index(ctx) {
     (guides.length
       ? sections
       : `<div class="page-section flush"><p class="muted">${esc(t("Guides are on the way. In the meantime,"))} <a href="/ai-coworkers" style="text-decoration:underline">${esc(t("meet the coworkers"))}</a>.</p></div>`) +
+    shell.logoRow() +
     shell.ctaBand({
       heading: t("Try it on a real task"),
       subheading: t("The fastest way through any guide is to run the thing it describes. Signing up is free."),
@@ -125,6 +126,7 @@ async function detail(ctx) {
           <div class="row-list">${related.map(guideRow).join("")}</div>
         </section>`
       : "") +
+    shell.logoRow() +
     shell.ctaBand({
       heading: t("Put this into practice"),
       subheading: t("Brief a coworker with what you just read and see what comes back. Signing up is free."),

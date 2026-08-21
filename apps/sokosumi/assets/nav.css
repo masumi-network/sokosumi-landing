@@ -162,13 +162,20 @@
 .nav-visual-abstract svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
 /* The Use cases panel: one grid of jobs, two columns of three — each job's
    seeded abstract swatch, its title, and its primary industry underneath */
+.nav-jobs-col { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
 .nav-jobs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px 16px; align-content: start; }
+.nav-ind-row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; padding: 10px 8px 0; border-top: 1px solid var(--border); }
+.nav-ind-label { font-size: 11.5px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted-foreground); margin-right: 4px; }
+.nav-ind-pill { font-size: 12.5px; color: var(--foreground); border: 1px solid var(--border); border-radius: 999px; padding: 3px 10px; white-space: nowrap; transition: border-color 0.2s var(--ease), background-color 0.2s var(--ease); }
+.nav-ind-pill:hover { background: var(--muted); border-color: rgba(15, 14, 13, 0.25); }
 .nav-jobs .nav-col-link { padding: 9px 12px; }
 .nav-swatch {
   width: 34px; height: 34px; border-radius: var(--r-sm); overflow: hidden; flex-shrink: 0;
   border: 1px solid var(--border); background: rgba(100, 0, 255, 0.04);
 }
 .nav-swatch svg { width: 100%; height: 100%; display: block; }
+.nav-swatch.is-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.nav-visual-ucphoto img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; transform: none; }
 /* a full-width strip above the foot — the most-used work as a wrapping row of
    links, so it never dictates the panel's height the way a column would */
 .nav-strip { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 6px; margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--border); }
@@ -202,6 +209,67 @@
 /* a portrait next to each coworker in the menu — a name alone gives no sense
    of who is on the other side of the link */
 .nav-col-link.has-face { flex-direction: row; align-items: center; gap: 10px; }
+/* Product menu: each surface leads with a miniature of the thing itself —
+   coworker portraits, the dark briefing bar, a micro board, a tiny document —
+   stacked above the text like a small illustrated card */
+.nav-col-link.has-ico { flex-direction: column; align-items: flex-start; justify-content: flex-start; gap: 16px; }
+.nav-mini { width: 64px; height: 44px; flex-shrink: 0; display: inline-flex; align-items: flex-end; justify-content: flex-start; }
+/* roster: three overlapping portraits */
+.nav-mini-faces img {
+  width: 32px; height: 32px; border-radius: 999px; object-fit: cover; display: block;
+  border: 2px solid var(--card); box-shadow: 0 1px 3px rgba(15, 14, 13, 0.16);
+}
+.nav-mini-faces img + img { margin-left: -11px; }
+.nav-mini-faces img { margin-bottom: 2px; }
+/* briefing: the dark search pill with its gradient ring (inner element, so
+   the shared 44px baseline box stays intact) */
+.nav-mini-brief > b {
+  display: block; width: 56px; height: 24px; border-radius: 999px; margin-bottom: 4px;
+  background: linear-gradient(#171717, #171717) padding-box,
+    linear-gradient(90deg, rgba(100, 0, 255, 0.75), rgba(0, 164, 250, 0.75)) border-box;
+  border: 1.5px solid transparent; position: relative;
+}
+.nav-mini-brief i {
+  position: absolute; left: 8px; top: 50%; transform: translateY(-50%);
+  width: 8px; height: 8px; border: 1.5px solid rgba(255, 255, 255, 0.85); border-radius: 999px;
+}
+.nav-mini-brief i::after {
+  content: ""; position: absolute; right: -3px; bottom: -2px; width: 4px; height: 1.4px;
+  background: rgba(255, 255, 255, 0.85); transform: rotate(45deg); border-radius: 1px;
+}
+/* task board: three micro lanes with cards */
+.nav-mini-board { gap: 4px; }
+.nav-mini-board i {
+  width: 16px; height: 42px; border-radius: 4px; background: rgba(15, 14, 13, 0.07);
+  padding: 3px; display: inline-flex; flex-direction: column; gap: 3px;
+}
+.nav-mini-board b { display: block; height: 10px; border-radius: 2.5px; background: var(--card); box-shadow: 0 0 0 1px rgba(15, 14, 13, 0.09); }
+.nav-mini-board .c1 b:first-child { background: rgba(100, 0, 255, 0.3); }
+.nav-mini-board .c2 b { background: rgba(245, 158, 11, 0.5); margin-top: 7px; }
+.nav-mini-board .c3 b:last-child { background: rgba(16, 185, 129, 0.45); }
+/* outputs: a tiny finished document (inner element) */
+.nav-mini-doc > b {
+  width: 34px; height: 42px; border-radius: 4px; background: var(--card);
+  border: 1px solid var(--border); box-shadow: 0 2px 6px rgba(15, 14, 13, 0.1);
+  display: inline-flex; flex-direction: column; gap: 3.5px; padding: 6px 5px;
+}
+.nav-mini-doc i { display: block; height: 2.5px; border-radius: 1px; background: rgba(15, 14, 13, 0.16); width: 100%; }
+.nav-mini-doc i.h { height: 5px; width: 62%; background: #f2c94c; margin-bottom: 1.5px; }
+.nav-mini-doc i.s { width: 45%; }
+/* scheduled: a calendar tile with a repeat dot */
+.nav-mini-sched { position: relative; }
+.nav-mini-sched .cal {
+  width: 30px; height: 30px; border-radius: 6px; background: var(--card);
+  border: 1px solid var(--border); box-shadow: 0 2px 5px rgba(15, 14, 13, 0.1);
+  display: block; position: relative;
+}
+.nav-mini-sched .cal::before { content: ""; position: absolute; inset: 4px 4px auto 4px; height: 6px; border-radius: 2px; background: rgba(100, 0, 255, 0.28); }
+.nav-mini-sched .cal::after { content: ""; position: absolute; left: 5px; bottom: 5px; width: 12px; height: 2.5px; border-radius: 1px; background: rgba(15, 14, 13, 0.18); box-shadow: 0 5px 0 rgba(15, 14, 13, 0.18); }
+.nav-mini-sched .dot { position: absolute; right: 6px; bottom: 1px; width: 12px; height: 12px; border-radius: 999px; background: #16a249; border: 2px solid var(--card); }
+/* chat: two stacked bubbles */
+.nav-mini-chat { flex-direction: column; gap: 3px; align-items: flex-start; justify-content: flex-end; padding-left: 8px; }
+.nav-mini-chat i { display: block; height: 9px; border-radius: 5px 5px 5px 1px; background: var(--muted); width: 30px; border: 1px solid var(--border); }
+.nav-mini-chat i + i { width: 22px; margin-left: 8px; background: rgba(100, 0, 255, 0.16); border-color: rgba(100, 0, 255, 0.2); }
 .nav-face {
   width: 30px; height: 30px; border-radius: 999px; overflow: hidden; flex-shrink: 0;
   background: var(--muted); display: block;
@@ -215,14 +283,18 @@
 /* The Product items: the page name sits quiet on top, the one-line
    explanation under it carries the weight — the item reads as what the page
    IS, not as a bare link */
-.nav-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px 12px; align-content: start; }
+.nav-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: 1fr; gap: 6px 12px; align-content: stretch; }
 .nav-grid .nav-col-link { padding: 10px 12px; gap: 3px; }
+.nav-grid .nav-col-link.has-ico { padding: 10px 12px 14px; }
 .nav-grid .nav-col-link span {
   font-size: 12.5px; font-weight: 500; letter-spacing: 0.02em;
   color: var(--muted-foreground); transition: color 0.2s var(--ease);
 }
 .nav-grid .nav-col-link small { font-size: 13.5px; color: var(--foreground); line-height: 1.45; }
 .nav-grid .nav-col-link:hover span { color: var(--foreground); }
+/* with an icon tile the row reads as a link again: name strong, note quiet */
+.nav-grid .nav-col-link.has-ico .nav-face-text > span { font-size: 14px; font-weight: 500; letter-spacing: 0; color: var(--foreground); }
+.nav-grid .nav-col-link.has-ico .nav-face-text > small { font-size: 12.5px; color: var(--muted-foreground); line-height: 1.45; }
 .nav-panel-foot {
   display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 24px;
   margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--border);

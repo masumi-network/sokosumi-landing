@@ -249,6 +249,8 @@ section.band-dark {
 .band-dark .btn-outline { color: #fff; border-color: rgba(255, 255, 255, 0.35); }
 .band-dark .btn-outline:hover { border-color: rgba(255, 255, 255, 0.65); }
 .section-head { max-width: 760px; margin: 0 0 clamp(44px, 6vw, 68px); text-align: left; display: flex; flex-direction: column; gap: 16px; align-items: flex-start; }
+.link-arrow { display: inline-flex; align-items: center; gap: 6px; font-size: 15px; font-weight: 500; color: var(--primary); }
+.link-arrow:hover { text-decoration: underline; }
 .section-head h2 {
   font-family: var(--serif); font-weight: 300;
   font-size: clamp(30px, 3.5vw, 48px); line-height: 1.1; letter-spacing: -0.025em; text-wrap: balance;
@@ -503,7 +505,9 @@ section.band-dark {
 /* ===== org chart: coworkers slot in under your real team =====
    Connectors are drawn per column (never across the grid) so the rail
    always meets each branch stem exactly, whatever the gap resolves to. */
-.org { --org-gap: clamp(16px, 3vw, 36px); }
+.org { --org-gap: clamp(16px, 3vw, 36px); padding: clamp(18px, 3vw, 40px); border-radius: var(--r-lg); background: #ece6fb url(/assets/gradients/g5.webp) center / cover no-repeat; }
+.org .org-stem, .org .org-drop, .org .org-branch::before, .org .org-branch::after { background: rgba(15, 14, 13, 0.22); }
+.org .org-card { box-shadow: 0 10px 30px -18px rgba(40, 10, 90, 0.35); border-color: rgba(15, 14, 13, 0.1); }
 .org-root { display: flex; justify-content: center; }
 .org-root .org-card { min-width: min(320px, 100%); }
 .org-stem { width: 1px; height: 32px; background: var(--border); margin: 0 auto; }

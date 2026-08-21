@@ -151,7 +151,18 @@ const ICONS = {
   window: '<rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/>',
   building:
     '<rect width="16" height="20" x="4" y="2" rx="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01"/><path d="M16 6h.01"/><path d="M12 6h.01"/><path d="M12 10h.01"/><path d="M12 14h.01"/><path d="M16 10h.01"/><path d="M16 14h.01"/><path d="M8 10h.01"/><path d="M8 14h.01"/>',
+  "list-todo": '<path d="M13 5h8"/><path d="M13 12h8"/><path d="M13 19h8"/><path d="m3 17 2 2 4-4"/><rect x="3" y="4" width="6" height="6" rx="1"/>',
+  "square-pen": '<path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z"/>',
+  layers: '<path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"/><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"/><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"/>',
+  "message-circle": '<path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"/>',
   star: '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>',
+  plus: '<path d="M5 12h14"/><path d="M12 5v14"/>',
+  list: '<path d="M8 6h13"/><path d="M8 12h13"/><path d="M8 18h13"/><path d="M3 6h.01"/><path d="M3 12h.01"/><path d="M3 18h.01"/>',
+  folder:
+    '<path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/>',
+  bot: '<path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/>',
+  history: '<path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l4 2"/>',
+  hash: '<line x1="4" x2="20" y1="9" y2="9"/><line x1="4" x2="20" y1="15" y2="15"/><line x1="10" x2="8" y1="3" y2="21"/><line x1="16" x2="14" y1="3" y2="21"/>',
 };
 function icon(name, size) {
   size = size || 14;
@@ -399,6 +410,7 @@ function head(opts) {
     <link rel="stylesheet" href="/assets/fonts.css" />
     <link rel="stylesheet" href="/assets/styles.css" />
     <link rel="stylesheet" href="/assets/nav.css" />
+    ${(opts.stylesheets || []).map((s) => `<link rel="stylesheet" href="${attr(s)}" />`).join("\n    ")}
     <!-- reveals start at opacity 0 and are switched on by site.js; without JS
          that would leave the page blank -->
     <noscript><style>[data-reveal] { opacity: 1 !important; transform: none !important; }</style></noscript>
@@ -486,6 +498,40 @@ function shotFigure(shot, opts) {
 // One customer quote, large. A grid of them reads as filler and repeats the
 // same names on every page; a single quote given room reads as a statement.
 // `t` is a testimonials doc (or a populated relationship from a quote block).
+// ---- social proof ------------------------------------------------------
+// One logo row + one picked quote, usable on any page. The logo list is the
+// homepage's "In use at" wall; the quote comes from the CMS testimonials the
+// caller fetched (pickQuote keeps pages from all showing the same person).
+const PROOF_LOGOS = [
+  { src: "/assets/logos/telekom.svg", alt: "Deutsche Telekom", tall: true },
+  { src: "/assets/logos/allianz.svg", alt: "Allianz" },
+  { src: "/assets/logos/lufthansa.svg", alt: "Lufthansa" },
+  { src: "/assets/logos/ard.svg", alt: "ARD" },
+  { src: "/assets/logos/tdk.svg", alt: "TDK" },
+  { src: "/assets/logos/stroer.svg", alt: "Ströer" },
+  { src: "/assets/serviceplan-logo.png", alt: "Serviceplan Group" },
+];
+function logoRow(opts) {
+  const o = opts || {};
+  const imgs = PROOF_LOGOS.map(
+    (l) => `<img${l.tall ? ' class="logo-tall"' : ""} src="${attr(l.src)}" alt="${attr(l.alt)}" loading="lazy" decoding="async" />`,
+  ).join("");
+  return `<section class="page-section plan-logos${o.flush ? " flush" : ""}" data-reveal>
+      <p class="plan-logos-label">${esc(t("In use at"))}</p>
+      <div class="blk-logos">${imgs}</div>
+    </section>`;
+}
+// logos + (when available) one testimonial. `mode`: "logos" | "quote" | "both".
+function proof(testimonials, seed, opts) {
+  const o = opts || {};
+  const mode = o.mode || "both";
+  const q = mode !== "logos" ? pickQuote(testimonials || [], seed || 0) : null;
+  return (
+    (mode !== "quote" ? logoRow({ flush: o.flush }) : "") +
+    (q ? quoteSection(q, { heading: o.heading || t("Teams already on Sokosumi") }) : "")
+  );
+}
+
 function quoteSection(t, opts) {
   if (!t || !t.quote) return "";
   const o = opts || {};
@@ -652,12 +698,38 @@ function agentsPanel() {
 function productPanel() {
   const pages = navModel().productPages || [];
   if (!pages.length) return "";
+  // Each surface leads with a miniature of the thing itself — coworker
+  // portraits for the roster, the dark briefing bar, a micro task board, a
+  // tiny document — drawn from the same assets/CSS language as the demo.
+  // Keyword match with a safe fallback so CMS-added pages still render.
+  const miniFor = (pg) => {
+    const k = (pg.slug + " " + pg.title).toLowerCase();
+    if (/coworker|agent/.test(k))
+      return `<span class="nav-mini nav-mini-faces">${["elena", "hannah", "alex"]
+        .map((sl) => `<img src="/assets/product/coworkers/${sl}.webp" alt="" width="24" height="24" loading="lazy" />`)
+        .join("")}</span>`;
+    if (/brief/.test(k)) return `<span class="nav-mini nav-mini-brief"><b><i></i></b></span>`;
+    if (/board|task/.test(k)) return `<span class="nav-mini nav-mini-board"><i class="c1"><b></b><b></b></i><i class="c2"><b></b></i><i class="c3"><b></b><b></b></i></span>`;
+    if (/output|file/.test(k)) return `<span class="nav-mini nav-mini-doc"><b><i class="h"></i><i></i><i></i><i class="s"></i></b></span>`;
+    if (/chat|channel/.test(k)) return `<span class="nav-mini nav-mini-chat"><i></i><i></i></span>`;
+    return `<span class="nav-mini nav-mini-doc"><b><i class="h"></i><i></i><i></i><i class="s"></i></b></span>`;
+  };
+  // Menu blurbs are written for the menu — complete phrases, no mid-sentence
+  // cut. The SEO description is a fallback for CMS-added pages, trimmed at a
+  // word boundary.
+  const BLURBS = {
+    "product/ai-coworkers": t("Named specialists with real roles and public profiles."),
+    "product/briefing": t("Hand over work like you brief a colleague."),
+    "product/task-board": t("Every task shows who has it and where it stands."),
+    "product/outputs": t("Finished files back: reports, decks, dashboards."),
+  };
+  const blurbFor = (pg) => BLURBS[pg.slug] || (pg.description ? shell_truncate(pg.description, 60) : "");
   const rows = pages
     .map(
       (p) =>
-        `<a class="nav-col-link" href="/${p.slug.split("/").map(encodeURIComponent).join("/")}"><span>${esc(
+        `<a class="nav-col-link has-ico" href="/${p.slug.split("/").map(encodeURIComponent).join("/")}">${miniFor(p)}<span class="nav-face-text"><span>${esc(
           p.title,
-        )}</span>${p.description ? `<small>${esc(shell_truncate(p.description, 62))}</small>` : ""}</a>`,
+        )}</span>${blurbFor(p) ? `<small>${esc(blurbFor(p))}</small>` : ""}</span></a>`,
     )
     .join("");
   return `<div class="nav-panel" role="group" aria-label="${attr(t("Product"))}">
@@ -697,11 +769,19 @@ function useCasesPanel() {
   const jobs = (navModel().popularUseCases || []).slice(0, 6);
   if (!jobs.length) return "";
 
+  // Each job's generated photo (people at work) when one exists; the seeded
+  // abstract field remains the fallback for CMS-added jobs.
+  const UC_NAV_PHOTOS = new Set(["always-on-social-listening", "audience-research-sprint", "competitor-monitoring", "seo-and-ai-visibility", "agency-new-business-research", "launch-content-engine", "seasonal-campaign-planning", "market-intelligence-briefings"]);
   const rows = jobs
     .map((p) => {
-      const swatch = art.field(p.slug, { w: 68, h: 68 });
+      const photo = UC_NAV_PHOTOS.has(p.slug) ? `/assets/use-case-img/${p.slug}.webp` : null;
+      const swatch = photo ? null : art.field(p.slug, { w: 68, h: 68 });
       return `<a class="nav-col-link has-face" href="/use-cases/${encodeURIComponent(p.slug)}">${
-        swatch ? `<span class="nav-swatch" aria-hidden="true">${swatch}</span>` : `<span class="nav-swatch is-blank" aria-hidden="true"></span>`
+        photo
+          ? `<span class="nav-swatch is-photo" aria-hidden="true"><img src="${attr(photo)}" alt="" width="68" height="68" loading="lazy" /></span>`
+          : swatch
+            ? `<span class="nav-swatch" aria-hidden="true">${swatch}</span>`
+            : `<span class="nav-swatch is-blank" aria-hidden="true"></span>`
       }<span class="nav-face-text"><span>${esc(p.title)}</span>${
         p.industry ? `<small>${esc(p.industry)}</small>` : ""
       }</span></a>`;
@@ -713,9 +793,19 @@ function useCasesPanel() {
         <div class="nav-intro">
           <p class="nav-intro-label">${esc(t("Use cases"))}</p>
           <p class="nav-intro-desc">${esc(t("Real jobs, start to finished file, organized by industry. Pick one and the coworkers behind it already know the brief."))}</p>
-          ${navVisual("abstract", art.field("use-cases", { w: 400, h: 230 }))}
+          ${navVisual("shot nav-visual-ucphoto", `<img src="/assets/use-case-img/launch-content-engine.webp" alt="" width="1152" height="640" loading="lazy" decoding="async" />`)}
         </div>
-        <div class="nav-jobs">${rows}</div>
+        <div class="nav-jobs-col">
+          <div class="nav-jobs">${rows}</div>
+          ${
+            (navModel().industries || []).length
+              ? `<div class="nav-ind-row"><span class="nav-ind-label">${esc(t("By industry"))}</span>${(navModel().industries || [])
+                  .slice(0, 6)
+                  .map((ind) => `<a class="nav-ind-pill" href="/use-cases/industries/${encodeURIComponent(ind.slug)}">${esc(ind.name)}</a>`)
+                  .join("")}</div>`
+              : ""
+          }
+        </div>
       </div>
       <div class="nav-panel-foot">
         <a href="/use-cases#industries">${esc(t("Browse by industry"))} ${icon("arrow-up-right", 13)}</a>
@@ -916,12 +1006,13 @@ function footerHtml() {
     </footer>`;
 }
 
-function footer() {
+function footer(extraScripts) {
   return `${footerHtml()}
     <script src="/assets/site.js" defer></script>
     <script src="/assets/nav.js" defer></script>
     <script src="/assets/consent.js" defer></script>
     <script src="/assets/track.js" defer></script>
+    ${extraScripts || ""}
   </body>
 </html>`;
 }
@@ -946,16 +1037,20 @@ function crumbs(items) {
 // The skip link is the first focusable thing on the page and targets the
 // shared <main id="main"> — same mechanism as the landing page's own link.
 function pageStart(opts) {
+  const mainCls = ["page", "container-app", opts.mainClass].filter(Boolean).join(" ");
   return (
     head(opts) +
     `<a class="skip-link" href="#main">${esc(t("Skip to content"))}</a>` +
     header(opts.path) +
     (opts.breadcrumb ? crumbs(opts.breadcrumb) : "") +
-    `<main id="main" tabindex="-1" class="page container-app">`
+    `<main id="main" tabindex="-1" class="${mainCls}">`
   );
 }
-function pageEnd() {
-  return `</main>` + footer();
+function pageEnd(opts) {
+  const extra = ((opts && opts.scripts) || [])
+    .map((s) => `<script src="${attr(s)}" defer></script>`)
+    .join("\n    ");
+  return `</main>` + footer(extra);
 }
 
 // ---- image thumbnails via Vercel's optimizer ----
@@ -1060,11 +1155,17 @@ module.exports = {
   ctaBand,
   quoteSection,
   pickQuote,
+  logoRow,
+  proof,
+  pickQuote,
   gridCls,
   SHOTS,
   shotFor,
   shotFigure,
   shotGallery,
+  APP,
+  APP_SIGNUP,
+  APP_SIGNIN,
 };
 
 // Locale-dependent snippets, kept as properties so every existing

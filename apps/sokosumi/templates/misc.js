@@ -95,6 +95,7 @@ function press() {
       <p class="sub">${esc(t("Screenshots of the live product, free to use in coverage of Sokosumi. Please credit Sokosumi."))}</p>
       ${shell.shotGallery()}
     </section>` +
+    shell.logoRow() +
     shell.ctaBand({
       heading: t("See the product for yourself"),
       subheading: t("The whole marketplace is browsable before you spend a credit."),
@@ -136,6 +137,8 @@ async function sitemap() {
     "/releases",
     "/compare",
     "/product",
+    "/product/chat",
+    "/product/scheduled-tasks",
     "/contact",
     "/contact/sales",
     "/contact/support",

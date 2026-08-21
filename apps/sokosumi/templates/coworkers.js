@@ -69,10 +69,10 @@ function cmpSplit() {
       <ul class="cw-split-list">${pairs.map((pr) => `<li>${esc(cls === "is-agent" ? pr[0] : pr[1])}</li>`).join("")}</ul>
       <p class="cw-split-eg"><span>${esc(t("e.g."))}</span> ${esc(example)}</p>
     </div>`;
-  return `<div class="cw-split" data-reveal>
+  return `<div class="grad-band g4" data-reveal><div class="cw-split">
     ${side("is-agent", t("AI agent"), t("\u201cGive me a task and I\u2019ll do it.\u201d"), t("\u201cFind 20 keyword opportunities for sokosumi.com.\u201d"))}
     ${side("is-coworker", t("AI coworker"), t("\u201cGive me a responsibility and I\u2019ll own it.\u201d"), t("\u201cGrow our organic traffic.\u201d"))}
-  </div>`;
+  </div></div>`;
 }
 
 async function index(ctx) {
@@ -192,6 +192,7 @@ async function index(ctx) {
           }
         </div>`
       : "") +
+    shell.logoRow() +
     shell.ctaBand({
       heading: t("Hire your first AI coworker"),
       subheading: t("One account, one balance, and every specialist on the marketplace."),
@@ -334,6 +335,7 @@ async function profile(ctx) {
     </div>
     ${longBio}
     ${offersSection}` +
+    shell.logoRow() +
     shell.ctaBand({
       heading: t("Put {name} to work", { name: c.name }),
       subheading: t("Sign up free, brief the task, and collect the finished file. Credits only go on work you run."),

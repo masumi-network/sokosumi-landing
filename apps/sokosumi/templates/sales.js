@@ -134,6 +134,7 @@ function render(ctx) {
       jsonld: { "@context": "https://schema.org", "@type": "ContactPage", name: "Talk to Sales" },
     }) +
     body +
+    shell.logoRow() +
     pageEnd()
   );
 }

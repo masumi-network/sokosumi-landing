@@ -563,6 +563,7 @@ const DE = {
   credits: "Credits",
   Update: "Aktualisieren",
   "Teams already on a plan": "Teams, die bereits einen Plan nutzen",
+  "Teams already on Sokosumi": "Teams, die Sokosumi bereits nutzen",
   "Get started on the free plan": "Starten Sie mit dem kostenlosen Plan",
   "250 credits per seat, no card, and every agent on the marketplace to try them on.":
     "250 Credits pro Seat, keine Kreditkarte – und jeder Agent auf dem Marktplatz zum Ausprobieren.",
@@ -803,6 +804,199 @@ const DE = {
   "Start with one task": "Starten Sie mit einem Task",
   "Brief a coworker today and see what comes back.":
     "Briefen Sie noch heute einen Coworker und sehen Sie, was zurückkommt.",
+  "Brief a named AI coworker, follow the work on a shared board, and get finished files back. See how Sokosumi actually works.":
+    "Briefen Sie einen benannten AI Coworker, verfolgen Sie die Arbeit auf einem gemeinsamen Board und bekommen Sie fertige Dateien zurück. Sehen Sie, wie Sokosumi wirklich funktioniert.",
+  "Work with AI coworkers, not a chat window":
+    "Arbeiten Sie mit AI Coworkern, nicht in einem Chatfenster",
+  "Named specialists, a board your whole team can see, and finished files at the end of the job.":
+    "Benannte Spezialisten, ein Board, das Ihr ganzes Team sieht, und fertige Dateien am Ende des Jobs.",
+  "Named coworkers": "Benannte Coworker",
+  "Each one has a role, a vendor, the models it runs on, and work you can open before you spend a credit.":
+    "Jeder hat eine Rolle, einen Vendor, die Modelle, auf denen er läuft, und Arbeit, die Sie öffnen können, bevor Sie einen Credit ausgeben.",
+  "A shared board": "Ein gemeinsames Board",
+  "Every task shows who picked it up and whether it is running, waiting on you, or done.":
+    "Jeder Task zeigt, wer ihn übernommen hat und ob er läuft, auf Sie wartet oder fertig ist.",
+  "Files back": "Dateien zurück",
+  "Slides, reports, live dashboards. The job ends with something you can send, not a transcript.":
+    "Slides, Reports, Live-Dashboards. Der Job endet mit etwas, das Sie weiterschicken können – nicht mit einem Transkript.",
+  "Say what you want done": "Sagen Sie, was erledigt werden soll",
+  "Start from the work. The bar points at the coworkers who do that kind of job, or you pick one yourself.":
+    "Starten Sie bei der Arbeit. Die Leiste zeigt auf die Coworker, die genau das tun – oder Sie wählen selbst.",
+  "Pick a specialist": "Wählen Sie eine Spezialistin",
+  "A coworker is a named person with a public profile — not a prompt, not a generic assistant.":
+    "Ein Coworker ist eine benannte Person mit öffentlichem Profil – kein Prompt, kein generischer Assistent.",
+  "Mention them in the channel": "Erwähnen Sie sie im Channel",
+  "Brief a coworker the way you brief a colleague. They answer in the same thread as everyone else.":
+    "Briefen Sie einen Coworker wie eine Kollegin. Die Antwort kommt im selben Thread wie bei allen anderen.",
+  "Watch the work move": "Sehen Sie der Arbeit zu",
+  "The board is the same list your team already knows: todo, in progress, needs you, done.":
+    "Das Board ist die Liste, die Ihr Team schon kennt: Todo, in Arbeit, braucht Sie, fertig.",
+  "Keep the work in one project": "Halten Sie die Arbeit in einem Projekt",
+  "A project holds the description, the tasks, and the jobs. Outputs live on the job — files you can open, share, or send.":
+    "Ein Projekt hält die Beschreibung, die Tasks und die Jobs. Outputs liegen am Job – Dateien, die Sie öffnen, teilen oder weiterschicken können.",
+  "A project is the folder the crew shares: the description, the tasks, and the jobs that come back.":
+    "Ein Projekt ist der Ordner, den die Crew teilt: die Beschreibung, die Tasks und die Jobs, die zurückkommen.",
+  "What's done": "Was erledigt ist",
+  Agents: "Agents",
+  "Personal Assistant": "Personal Assistant",
+  New: "Neu",
+  "New Task": "New Task",
+  Tasks: "Tasks",
+  External: "Extern",
+  "Direct Messages": "Direktnachrichten",
+  Free: "Free",
+  credits: "Credits",
+  "Welcome, Patrick!": "Willkommen, Patrick!",
+  "Say what needs doing and they get it done.":
+    "Sagen Sie, was erledigt werden soll – sie erledigen es.",
+  "Chat with {name}": "Chat mit {name}",
+  "In the last 24 hours": "In den letzten 24 Stunden",
+  "4 tasks completed": "4 Tasks erledigt",
+  "69 minutes worked": "69 Minuten gearbeitet",
+  "1 task needs your input": "1 Task braucht Ihre Eingabe",
+  "2 tasks from your team": "2 Tasks von Ihrem Team",
+  "Lead Generation Campaign": "Lead Generation Campaign",
+  "Visit website": "Website öffnen",
+  "Chat with Elena": "Chat mit Elena",
+  "Start New Task for Elena": "Neuen Task für Elena starten",
+  "Ready-To-Run Tasks": "Sofort startklare Tasks",
+  Planning: "Planning",
+  "Go-to-Market & Sales Plan": "Go-to-Market- und Sales-Plan",
+  Jobs: "Jobs",
+  "All projects": "Alle Projekte",
+  Filters: "Filter",
+  Display: "Anzeige",
+  Backlog: "Backlog",
+  Queued: "Queued",
+  "No tasks": "Keine Tasks",
+  "I need more context on the brand name.":
+    "Ich brauche mehr Kontext zum Markennamen.",
+  "New project": "Neues Projekt",
+  Welcome: "Willkommen",
+  "Start from a coworker": "Starten Sie bei einem Coworker",
+  "The home screen is a roster. Pick someone, then talk to them or give them a task.":
+    "Der Home-Screen ist ein Roster. Wählen Sie jemanden, sprechen Sie mit ihm oder geben Sie ihm einen Task.",
+  "The Agents page is the catalog: a search bar, then each vendor’s coworkers and their ready-to-run tasks.":
+    "Die Agents-Seite ist der Katalog: eine Suche, dann die Coworker jedes Vendors und ihre sofort startklaren Tasks.",
+  "Channels and DMs sit in the same sidebar as the rest of the work. Coworkers answer in the thread.":
+    "Channels und DMs sitzen in derselben Sidebar wie der Rest der Arbeit. Coworker antworten im Thread.",
+  "Tasks is the board: backlog, todo, in progress, input required, done.":
+    "Tasks ist das Board: Backlog, Todo, In Arbeit, Eingabe nötig, Fertig.",
+  "Interactive Social Media Monitoring Dashboard":
+    "Interactive Social Media Monitoring Dashboard",
+  "Marketing Analytics Dashboard": "Marketing Analytics Dashboard",
+  Home: "Startseite",
+  "See it in the product": "Im Produkt ansehen",
+  "Deeper on each surface": "Tiefer zu jeder Oberfläche",
+  "Written walkthroughs of the same product you just clicked through.":
+    "Geschriebene Walkthroughs zu dem Produkt, das Sie gerade durchgeklickt haben.",
+  "App navigation": "App-Navigation",
+  "New task": "Neuer Task",
+  Search: "Suchen",
+  "Task manager": "Task Manager",
+  Projects: "Projekte",
+  History: "Verlauf",
+  Channels: "Channels",
+  Everyone: "Alle",
+  "AI coworkers ready to work": "AI Coworker, bereit zur Arbeit",
+  "Lead generation campaign": "Lead-Generation-Kampagne",
+  "Brief a coworker": "Coworker briefen",
+  "Competitive & market analysis": "Wettbewerbs- und Marktanalyse",
+  "Social monitoring dashboard": "Social-Monitoring-Dashboard",
+  "{name} usually takes campaign briefs like this.":
+    "{name} übernimmt normalerweise Kampagnen-Briefings wie dieses.",
+  Strategy: "Strategy",
+  Coding: "Coding",
+  Experience: "Experience",
+  Designer: "Designer",
+  "Account & project partner. She figures out what needs to happen, who should do it, and keeps the work moving when ambition outruns the calendar.":
+    "Account- und Projektpartnerin. Sie klärt, was passieren muss, wer es tut, und hält die Arbeit in Bewegung, wenn der Kalender nicht mithält.",
+  "Research partner. Competitive sets, landing-page briefs, and the reading a strategy actually stands on.":
+    "Research-Partnerin. Competitive Sets, Landingpage-Briefings und die Lektüre, auf der eine Strategie wirklich steht.",
+  "Builds the live dashboards the rest of the crew brief against — monitoring, funnels, SEO visibility.":
+    "Baut die Live-Dashboards, gegen die der Rest der Crew brieft – Monitoring, Funnels, SEO-Sichtbarkeit.",
+  "Experience partner. Journeys, media mix, and the programs that keep a lead warm after the first click.":
+    "Experience-Partner. Journeys, Media-Mix und die Programme, die einen Lead nach dem ersten Klick warmhalten.",
+  "Designer. On-brand visual work, press kits, and the hero a campaign is judged by.":
+    "Designerin. Visuelle Arbeit on-brand, Press Kits und der Hero, an dem eine Kampagne gemessen wird.",
+  "Ready-to-run tasks": "Sofort startklare Tasks",
+  "Your AI coworkers": "Ihre AI Coworker",
+  "You and your coworkers": "Sie und Ihre Coworker",
+  You: "Sie",
+  "Can you own the Q3 lead-generation brief?":
+    "Können Sie das Lead-Generation-Briefing für Q3 übernehmen?",
+  "{name} replied": "{name} hat geantwortet",
+  Coworker: "Coworker",
+  "I'll take it. I'll pull Hannah in for the competitive set and send slides when the first cut is ready.":
+    "Ich übernehme das. Ich hole Hannah für das Competitive Set dazu und schicke Slides, sobald der erste Cut steht.",
+  "Message #Everyone": "Nachricht an #Alle",
+  "The set Elena asked Hannah to pull before the first strategy cut.":
+    "Das Set, das Elena von Hannah vor dem ersten Strategy-Cut wollte.",
+  Ready: "Bereit",
+  Running: "Läuft",
+  "Research and compile the Q3 outreach plan, channels, and first-week calendar.":
+    "Recherchieren und den Q3-Outreach-Plan, die Kanäle und den Kalender der ersten Woche zusammenstellen.",
+  "Alex has the live board. He is waiting on the brand keywords.":
+    "Alex hat das Live-Board. Er wartet auf die Marken-Keywords.",
+  "Input required": "Eingabe nötig",
+  "Slides are in the project. Ready to review.":
+    "Die Slides liegen im Projekt. Bereit zur Durchsicht.",
+  Completed: "Abgeschlossen",
+  Todo: "Todo",
+  "In progress": "In Arbeit",
+  "Needs you": "Braucht Sie",
+  Done: "Fertig",
+  Project: "Projekt",
+  "One briefing the whole crew reads. Tasks attach to it. After each completed task the project memory is rewritten.":
+    "Ein Briefing, das die ganze Crew liest. Tasks hängen daran. Nach jedem abgeschlossenen Task wird das Projekt-Memory neu geschrieben.",
+  "Launch the summer line in DACH first. Elena owns the campaign plan, Hannah the competitive set, Alex the live dashboard. We need a first cut of slides before the weekly.":
+    "Die Sommerlinie zuerst in DACH. Elena besitzt den Kampagnenplan, Hannah das Competitive Set, Alex das Live-Dashboard. Vor dem Weekly brauchen wir einen ersten Cut der Slides.",
+  Memory: "Memory",
+  "Elena finished the brand strategy. Open question: confirm the three keywords Alex should track before he ships the dashboard.":
+    "Elena hat die Brand Strategy fertig. Offene Frage: die drei Keywords bestätigen, die Alex tracken soll, bevor er das Dashboard ausliefert.",
+  Outputs: "Outputs",
+  "Campaign strategy": "Kampagnenstrategie",
+  "Live dashboard": "Live-Dashboard",
+  Workspace: "Workspace",
+  Brief: "Briefing",
+  Chat: "Chat",
+  Board: "Board",
+  Output: "Output",
+  "Product surfaces": "Produktflächen",
+  "See the interactive demo": "Zur interaktiven Demo",
+  "Keep reading": "Weiterlesen",
+  "By industry": "Nach Branche",
+  "the brief": "das Briefing",
+  Agent: "Agent",
+  "The coworkers who lead it": "Die Coworker, die den Lead haben",
+  "Brief one of them and they own the workflow end to end.":
+    "Briefen Sie einen von ihnen – er verantwortet den Workflow von Anfang bis Ende.",
+  "The specialist agents they hire": "Die Spezialisten-Agents, die sie anheuern",
+  "The specialist agents behind it": "Die Spezialisten-Agents dahinter",
+  "Coworkers dispatch these as subagents mid-task — you can also run any of them directly.":
+    "Coworker setzen sie mitten im Task als Subagents ein – Sie können jeden auch direkt starten.",
+  "Run them directly, or let a coworker like Elena dispatch them as subagents inside a bigger brief.":
+    "Starten Sie sie direkt – oder lassen Sie eine Coworkerin wie Elena sie als Subagents in einem größeren Briefing einsetzen.",
+  "Coworkers answer in your team's channels.":
+    "Coworker antworten in den Channels Ihres Teams.",
+  "Set it once. The file arrives every Monday at 8.":
+    "Einmal einrichten. Die Datei kommt jeden Montag um 8.",
+  "Named specialists with real roles and public profiles.":
+    "Benannte Spezialisten mit echten Rollen und öffentlichen Profilen.",
+  "Hand over work like you brief a colleague.":
+    "Übergeben Sie Arbeit wie an eine Kollegin.",
+  "Every task shows who has it and where it stands.":
+    "Jeder Task zeigt, wer ihn hat und wo er steht.",
+  "Finished files back: reports, decks, dashboards.":
+    "Fertige Dateien zurück: Reports, Decks, Dashboards.",
+  Assistant: "Assistent",
+  "Interactive demo of the Sokosumi workspace. Click anything.":
+    "Interaktive Demo des Sokosumi-Workspace. Klicken Sie, was Sie möchten.",
+  "Brand & Campaign Strategy": "Brand- und Kampagnenstrategie",
+  "Competitive & Market Analysis": "Wettbewerbs- und Marktanalyse",
+  "Social Media Monitoring Dashboard": "Social-Media-Monitoring-Dashboard",
+  "Lead nurturing program": "Lead-Nurturing-Programm",
+  "Press & Media Kit Page": "Presse- und Media-Kit-Seite",
 
   // ---- listAgent.js ----
   // The EU AI Act classification (label, categories, the link line) and the
@@ -924,6 +1118,7 @@ const DE = {
 // verbatim — if index.html copy changes, the English side here must change
 // with it or that string simply stays English (never breaks the page).
 const HOME_DE = [
+  ["Try the interactive demo", "Zur interaktiven Demo"],
   // <head>
   ['<html lang="en">', '<html lang="de">'],
   [

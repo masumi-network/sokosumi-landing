@@ -70,7 +70,9 @@ button { font-family: inherit; }
 .page-head[data-reveal],
 .page-head [data-reveal],
 .blk-hero[data-reveal],
-.hero [data-reveal] {
+.hero [data-reveal],
+.pd-hero,
+.pd-hero [data-reveal] {
   opacity: 1;
   transform: none;
 }
@@ -308,6 +310,11 @@ main.page { min-height: 60vh; }
   border-bottom: 1px solid var(--border);
 }
 .uc-art svg { width: 100%; height: 100%; display: block; }
+.uc-art.is-grad img { width: 100%; height: 100%; object-fit: cover; display: block; }
+/* detail hero: the gradient sits behind centred ink copy, so a white veil
+   keeps the headline at full contrast while the colour reads at the edges */
+.uc-hero-art.is-grad { background-size: cover; background-position: center; border-radius: var(--r-lg); overflow: hidden; }
+.uc-hero-art.is-grad::after { content: ""; position: absolute; inset: 0; background: radial-gradient(ellipse 72% 82% at 50% 42%, rgba(250, 250, 249, 0.92) 30%, rgba(250, 250, 249, 0.55) 62%, rgba(250, 250, 249, 0.08) 100%); }
 .uc-eyebrow {
   font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase;
   color: var(--muted-foreground); margin-bottom: 2px;
@@ -331,38 +338,49 @@ main.page { min-height: 60vh; }
    has no bottom padding, so the tinted block sat flush against the breadcrumb —
    measured gap: 0px. The section's own top padding only moves the text, not the
    panel, so the breathing room has to come from a margin. */
-.uc-hero-hs { position: relative; text-align: center; margin-top: clamp(20px, 2.4vw, 32px); padding: clamp(64px, 9vw, 126px) 0 clamp(44px, 6vw, 76px); }
+.uc-hero-hs {
+  position: relative; margin-top: clamp(20px, 2.4vw, 32px); padding: clamp(28px, 4vw, 56px) 0;
+  display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: clamp(28px, 5vw, 64px); align-items: center;
+}
+.uc-hero-media { border-radius: var(--r-lg); overflow: hidden; }
+.uc-hero-media img { width: 100%; height: 100%; aspect-ratio: 4 / 3; object-fit: cover; display: block; }
+@media (max-width: 860px) { .uc-hero-hs { grid-template-columns: minmax(0, 1fr); } .uc-hero-media img { aspect-ratio: 16 / 9; } }
 .uc-hero-art { position: absolute; inset: 0; pointer-events: none; }
 .uc-hero-art svg { width: 100%; height: 100%; display: block; }
 .uc-hero-copy { position: relative; }
-.uc-hero-hs h1 { margin-left: auto; margin-right: auto; max-width: 22ch; }
-.uc-hero-hs .sub { margin-left: auto; margin-right: auto; }
-.uc-hero-hs .cta-row { justify-content: center; }
+.uc-hero-hs h1 { max-width: 18ch; }
+.uc-hero-hs .sub { max-width: 48ch; }
+.uc-hero-hs .cta-row { justify-content: flex-start; }
 .uc-hero-hs .no-card { margin-top: 10px; }
 
 /* ===== use-case detail: the centred value-prop intro =====
    The page's first rich text block, hoisted under the hero — HubSpot's
    "Use the Hub to…" paragraph. A centred measure, a touch larger than
    body prose; pages without rich text simply have no intro. */
-.uc-intro .prose { max-width: 68ch; margin: 0 auto; font-size: 16.5px; line-height: 1.7; }
+.uc-intro .prose { max-width: 68ch; margin: 0; font-size: 16.5px; line-height: 1.7; }
 .uc-intro .prose > p:first-child { font-size: 18px; color: var(--foreground); }
 
 /* ===== use-case detail: the mid-page CTA =====
    The outcome restated after the capability sections, with the same two
    doors as the hero — HubSpot's mid-page close, kept lighter than the ink
    band the page still ends with. */
-.uc-mid-cta { text-align: center; }
-.uc-mid-cta > h2 { max-width: 24ch; margin-left: auto; margin-right: auto; }
-.uc-mid-cta > .sub { margin-left: auto; margin-right: auto; margin-bottom: 24px; }
-.uc-mid-cta .cta-row { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+.uc-mid-cta { text-align: left; }
+/* industry why-panel: same split as /ai-coworkers, list items slightly tighter */
+.ind-split { margin-top: 22px; }
+.uc-mate-tag { margin-left: auto; font-size: 10.5px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted-foreground); border: 1px solid var(--border); border-radius: 999px; padding: 2px 8px; align-self: center; }
+.uc-agents-h { margin-top: clamp(30px, 4vw, 48px); }
+.ind-split .cw-split-line { min-height: 0; }
+.uc-mid-cta > h2 { max-width: 24ch; }
+.uc-mid-cta > .sub { margin-bottom: 24px; }
+.uc-mid-cta .cta-row { display: flex; flex-wrap: wrap; gap: 10px; }
 .uc-mid-cta .no-card { margin-top: 12px; }
 
 /* ===== use-case detail: the numbered chapters =====
    The steps block, promoted from three small cards to the spine of the
    page: a big purple numeral, a display-size title, room to breathe. */
 /* the chapters' head is HubSpot's centred value-prop lead-in */
-.blk-chapters .blk-head { max-width: 640px; margin-left: auto; margin-right: auto; text-align: center; }
-.blk-chapters .blk-head .sub { margin-left: auto; margin-right: auto; }
+.blk-chapters .blk-head { max-width: 640px; }
+
 .chapters { list-style: none; margin: 0; padding: 0; }
 .chapter {
   display: grid; grid-template-columns: minmax(56px, 92px) minmax(0, 1fr);
@@ -781,11 +799,18 @@ a.card:hover .go { opacity: 1; transform: none; }
 .cmp-table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: var(--r-lg); background: var(--card); }
 .cmp-table { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 560px; }
 .cmp-table th, .cmp-table td { padding: 14px 18px; text-align: left; border-bottom: 1px solid var(--border); }
-.cmp-table tr:last-child td { border-bottom: none; }
+/* column separators — without them the highlighted column floats */
+.cmp-table tr > * + * { border-left: 1px solid var(--border); }
+.cmp-table tbody tr:last-child th, .cmp-table tbody tr:last-child td { border-bottom: none; }
+.cmp-table thead td, .cmp-table thead th { border-bottom-color: rgba(15, 14, 13, 0.22); }
 .cmp-table thead th { font-size: 12px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted-foreground); }
 .cmp-table thead th.hl { color: var(--foreground); }
 .cmp-table tbody th.row-label { font-size: 14px; text-transform: none; letter-spacing: normal; color: var(--foreground); }
-.cmp-table td.hl { background: rgba(15, 14, 13, 0.025); }
+.cmp-table thead th.hl, .cmp-table td.hl { background: rgba(15, 14, 13, 0.025); }
+/* value columns share the width and center, so yes/no glyphs align */
+.cmp-table thead th, .cmp-table tbody td { width: 22%; min-width: 130px; text-align: center; }
+.cmp-table tbody td { color: var(--muted-foreground); }
+.cmp-table tbody td.hl { color: var(--foreground); }
 .cmp-table .row-label { font-weight: 500; }
 .cmp-table .row-note { display: block; font-weight: 400; font-size: 12.5px; color: var(--muted-foreground); margin-top: 2px; }
 .cmp-yes, .cmp-no { display: inline-flex; width: 20px; height: 20px; border-radius: 999px; align-items: center; justify-content: center; }
@@ -894,6 +919,18 @@ a.card:hover .go { opacity: 1; transform: none; }
    them only draws an edge the eye has to cross (same call as the landing). */
 .shot-fig { margin: 0; }
 .shot-fig img { width: 100%; height: auto; display: block; border-radius: var(--r-lg); }
+/* comparison index: the two-name lockup at the top of each card */
+.cmp-lockup { display: flex; align-items: baseline; gap: 10px; margin-bottom: 14px; font-size: 15px; font-weight: 500; letter-spacing: -0.01em; }
+.cmp-lockup em { font-style: normal; font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted-foreground); border: 1px solid var(--border); border-radius: 999px; padding: 2px 8px; }
+.cmp-lockup span:last-child { color: var(--muted-foreground); }
+
+/* generic band for any block that should sit on the gradient */
+.grad-band { border-radius: var(--r-lg); padding: clamp(14px, 2.4vw, 32px); background: #ece6fb url(/assets/gradients/g1.webp) center / cover no-repeat; }
+.grad-band.g2 { background-image: url(/assets/gradients/g2.webp); }
+.grad-band.g3 { background-image: url(/assets/gradients/g3.webp); }
+.grad-band.g4 { background-image: url(/assets/gradients/g4.webp); }
+.grad-band.g5 { background-image: url(/assets/gradients/g5.webp); }
+.grad-band > .cw-split { box-shadow: 0 24px 60px -28px rgba(40, 10, 90, 0.4); border-color: rgba(15, 14, 13, 0.1); }
 .shot-fig figcaption {
   margin-top: 12px; font-size: 14px; line-height: 1.55;
   color: var(--muted-foreground); max-width: 62ch;

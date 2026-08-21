@@ -211,29 +211,6 @@ function enterpriseBand(p) {
   </article>`;
 }
 
-// The same client brands the homepage shows under its hero, in the same
-// order, on paper instead of ink. Nothing here is new: "In use at" and the
-// logos are lifted from index.html so the two surfaces can never disagree
-// about who is on the list.
-const LOGOS = [
-  { src: "/assets/logos/telekom.svg", alt: "Deutsche Telekom", tall: true },
-  { src: "/assets/logos/allianz.svg", alt: "Allianz" },
-  { src: "/assets/logos/lufthansa.svg", alt: "Lufthansa" },
-  { src: "/assets/logos/ard.svg", alt: "ARD" },
-  { src: "/assets/logos/tdk.svg", alt: "TDK" },
-  { src: "/assets/logos/stroer.svg", alt: "Ströer" },
-  { src: "/assets/serviceplan-logo.png", alt: "Serviceplan Group" },
-];
-function logoRow() {
-  const imgs = LOGOS.map(
-    (l) => `<img${l.tall ? ' class="logo-tall"' : ""} src="${attr(l.src)}" alt="${attr(l.alt)}" loading="lazy" decoding="async" />`,
-  ).join("");
-  return `<section class="page-section plan-logos" data-reveal>
-      <p class="plan-logos-label">${esc(t("In use at"))}</p>
-      <div class="blk-logos">${imgs}</div>
-    </section>`;
-}
-
 async function render(ctx) {
   const testimonials = await cms.getTestimonials({ draft: ctx.preview }).catch(() => []);
   const cr = [{ label: "Home", href: "/" }, { label: "Pricing" }];
@@ -261,7 +238,7 @@ async function render(ctx) {
       </div>
       <script src="/assets/pricing.js" defer></script>
     </section>` +
-    logoRow() +
+    shell.logoRow() +
     shell.quoteSection(shell.pickQuote(testimonials, 0), { heading: t("Teams already on a plan") }) +
     shell.ctaBand({
       heading: t("Get started on the free plan"),

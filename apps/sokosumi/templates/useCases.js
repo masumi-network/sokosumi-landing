@@ -6,6 +6,33 @@ const shell = require("./shell");
 const cms = require("../lib/cms");
 const blocks = require("./blocks");
 const art = require("./art");
+
+// Pick a gradient from the shared pool (assets/gradients/), seeded by the
+// slug so a page always gets the same one. Same FNV idea as art.rng.
+const GRAD_POOL = [2, 3, 4, 5, 6, 7, 8, 9, 10];
+function gradFor(seed) {
+  let h = 2166136261 >>> 0;
+  const str = String(seed || "sokosumi");
+  for (let i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); }
+  return "/assets/gradients/g" + GRAD_POOL[(h >>> 0) % GRAD_POOL.length] + ".webp";
+}
+
+// Generated editorial photos per workflow (assets/use-case-img/<slug>.webp,
+// people at work in the brand's light office world). Slugs without a photo
+// fall back to the gradient pool.
+const UC_PHOTOS = new Set([
+  "always-on-social-listening",
+  "audience-research-sprint",
+  "competitor-monitoring",
+  "seo-and-ai-visibility",
+  "agency-new-business-research",
+  "launch-content-engine",
+  "seasonal-campaign-planning",
+  "market-intelligence-briefings",
+]);
+function ucVisual(slug) {
+  return UC_PHOTOS.has(slug) ? "/assets/use-case-img/" + slug + ".webp" : gradFor(slug);
+}
 const { t, tp } = require("../lib/i18n");
 const { esc, attr, icon, avatar, pageStart, pageEnd } = shell;
 
@@ -19,10 +46,9 @@ function industriesOf(uc) {
 // thumbnail size, so the card previews the page it links to — no single
 // coworker fronts the work. `crew` (the resolved coworker docs behind
 // relatedAgents) is optional; the card degrades to text without it.
-function useCaseCard(uc, crew) {
+function useCaseCard(uc, crew, i) {
   const ind = industriesOf(uc)[0];
-  const svg = art.field(uc.slug, { w: 600, h: 240 });
-  const media = svg ? `<span class="uc-art" aria-hidden="true">${svg}</span>` : "";
+  const media = `<span class="uc-art is-grad" aria-hidden="true"><img src="${attr(UC_PHOTOS.has(uc.slug) ? ucVisual(uc.slug) : i == null ? gradFor(uc.slug) : "/assets/gradients/g" + GRAD_POOL[i % GRAD_POOL.length] + ".webp")}" alt="" width="600" height="240" loading="lazy" decoding="async" /></span>`;
   const n = (crew || []).length;
   const foot = n ? tp(n, "{n} coworker on it", "{n} coworkers on it") : t("Read the workflow");
   return `<a class="card uc-card${media ? " has-art" : ""}" href="/use-cases/${encodeURIComponent(uc.slug)}">
@@ -108,7 +134,7 @@ async function hub(ctx) {
       <p class="sub">${esc(t("Each one is a real job, start to finished file, run by a team of coworkers."))}</p>
       ${
         useCases.length
-          ? `<div class="card-grid uc-grid">${useCases.map((uc) => useCaseCard(uc, crewOf(uc))).join("")}</div>`
+          ? `<div class="card-grid uc-grid">${useCases.map((uc, i) => useCaseCard(uc, crewOf(uc), i)).join("")}</div>`
           : `<p class="muted">${esc(t("Use cases are on the way. In the meantime,"))} <a href="/tasks" style="text-decoration:underline">${esc(t("browse the template tasks"))}</a>.</p>`
       }
     </section>`;
@@ -129,6 +155,7 @@ async function hub(ctx) {
     industrySection +
     casesSection +
     (useCases.length ? howItRuns() : "") +
+    shell.logoRow() +
     shell.quoteSection(shell.pickQuote(testimonials, 3), { heading: t("What it is like once they are running") }) +
     blocks.ctaBand({
       heading: t("Put a coworker on one of these this week"),
@@ -140,11 +167,256 @@ async function hub(ctx) {
   );
 }
 
+
+// ── industry SEO content ─────────────────────────────────────────────────
+// Each industry page targets its head query ("AI for agencies", "AI coworkers
+// for agencies") with real content: a query-led h1, what that industry uses
+// coworkers for, an FAQ (FAQPage JSON-LD), and the use-case cards as the path
+// to the long-tail pages ("AI for SEO automation" → seo-and-ai-visibility).
+// Copy is page content in the CMS style — English on both locales — and a CMS
+// doc with the same slug keeps working underneath: name/description come from
+// the CMS, this layer wraps it. Facts stay Sokosumi-true: no invented stats.
+const INDUSTRY_CONTENT = {
+  agencies: {
+    why: "Why agencies switch",
+    cta: "Bring a coworker into your agency",
+    metaTitle: "AI for agencies: AI coworkers for agency teams | Sokosumi",
+    metaDesc: "AI coworkers for agencies: pitch research overnight, competitive sets per client, and production at retainer scale — without scaling headcount.",
+    h1: "AI coworkers for agencies",
+    sub: "Scale research, strategy and production across client accounts — with named AI specialists your teams brief like colleagues. Built with Serviceplan Group, one of the world's leading agency groups.",
+    split: {
+      today: { label: "Your agency today", line: "The pitch is Thursday and the research is unbillable.", items: [
+        "Pitch research eats senior hours nobody invoices",
+        "Every new account restarts the same competitive analysis",
+        "Juniors spend days compiling decks clients skim in minutes",
+        "Retainer scope grows; headcount cannot",
+      ], eg: "Three people, two evenings, one prospect deck." },
+      withS: { label: "With Sokosumi", line: "Brief it the evening before. It is on your desk at 8.", items: [
+        "A prospect brief before every first call, as a sourced PDF",
+        "Competitive sets per client, refreshed on a schedule",
+        "Content calendars and variants in each client's voice",
+        "Margins hold: coworkers cost credits per run, not salaries",
+      ], eg: "\u201cHannah — before the 11:00: their market, their vendors, and the procurement angle to lead with.\u201d" },
+    },
+    week: { heading: "A week with coworkers on the team", sub: "The cadence agency teams settle into.", items: [
+      { title: "Monday, 8:00", text: "Performance and competitor reports land per account — scheduled tasks, no one asked twice." },
+      { title: "Before every pitch", text: "New-business research briefed the evening before: market, site, campaigns, gaps." },
+      { title: "Friday", text: "Next week's content calendars and campaign plans, drafted per client for your team to shape." },
+    ] },
+    deliver: { heading: "What lands on your desk", items: [
+      { title: "Prospect briefs", text: "Two pages before the first call: their market, their tooling, the angle — with sources." },
+      { title: "Per-client competitive sets", text: "Pricing, positioning and gaps as a PDF your strategists annotate, not rebuild." },
+      { title: "Production files", text: "Calendars, copy variants and campaign plans as documents, in the client's format." },
+    ] },
+    faq: [
+      ["What does AI for agencies actually look like on Sokosumi?", "Named AI coworkers join your channels and task board. Account leads brief them like junior colleagues — research, strategy drafts, production — and get finished files back per client."],
+      ["Can each client account get its own setup?", "Yes. Projects hold per-client context, briefs and outputs, and workspace context like a client's brand guidelines attaches to every task automatically."],
+      ["Who builds the coworkers agencies use?", "Sokosumi is built with Serviceplan Group — its strategists write the Serviceplan coworkers on the roster, and other vendors ship theirs."],
+      ["How do agencies charge for coworker output?", "Like any production work: coworkers run on credits, the output is billable work product. Most agencies start on the free plan with one live account."],
+    ],
+  },
+  "e-commerce-retail": {
+    why: "Why e-commerce teams switch",
+    cta: "Bring a coworker into your e-commerce team",
+    metaTitle: "AI for e-commerce marketing | Sokosumi",
+    metaDesc: "AI coworkers for e-commerce and retail: weekly competitor pricing memos, a written read of your customers, and seasonal campaign plans before the peak.",
+    h1: "AI coworkers for e-commerce & retail",
+    sub: "Watch your market, your competitors and your seasons — with AI specialists that deliver reports and campaign plans, not dashboards you still have to read.",
+    split: {
+      today: { label: "Your team today", line: "The season starts before the plan is ready.", items: [
+        "Seasonal planning starts late, every single year",
+        "Competitor price moves surface after your campaign shipped",
+        "Reviews and social mentions pile up unread",
+        "Monday morning disappears into reporting",
+      ], eg: "The autumn campaign brief, finalized in October." },
+      withS: { label: "With Sokosumi", line: "The plan is done before the buying window opens.", items: [
+        "Seasonal plan and creative briefs ahead of every peak",
+        "A weekly competitor memo: launches, pricing, ads",
+        "A written read of what customers actually say",
+        "The Monday report arrives at 8:00, on schedule",
+      ], eg: "\u201cWatch our top five competitors — weekly memo on pricing moves and what to do about them.\u201d" },
+    },
+    week: { heading: "A week with coworkers on the team", sub: "Set once; the files keep coming.", items: [
+      { title: "Monday, 8:00", text: "Performance report and competitor pricing memo land together — compare, decide, move on." },
+      { title: "Midweek", text: "The social listening read: sentiment, themes, and the reviews worth answering." },
+      { title: "Before each season", text: "Demand signals turned into a campaign plan, calendar and creative briefs — before the window." },
+    ] },
+    deliver: { heading: "What lands on your desk", items: [
+      { title: "Weekly performance report", text: "Reach, sign-ups and what changed vs. last week — one page, ready to forward." },
+      { title: "Competitor pricing memo", text: "Price moves, launches and ad angles across your set, sourced and dated." },
+      { title: "Seasonal campaign pack", text: "Plan, calendar and creative briefs as documents your team executes." },
+    ] },
+    faq: [
+      ["How is this different from an e-commerce analytics tool?", "Tools show dashboards you still have to read. Coworkers deliver the reading: a written report of what changed and what to do, on a schedule you set."],
+      ["Can it watch competitors' pricing and ads?", "Yes — competitor monitoring runs as a scheduled task and lands as a weekly sourced memo covering launches, pricing moves and messaging."],
+      ["Does it work for seasonal peaks?", "That is a core workflow: brief the seasonal plan once and coworkers deliver the plan, calendar and creative briefs ahead of the peak."],
+      ["What do we get back, concretely?", "Files: PDF reports, documents, spreadsheets and live dashboards — attached to tasks your whole team can see."],
+    ],
+  },
+  "financial-services": {
+    why: "Why financial teams switch",
+    cta: "Bring a coworker into your marketing team",
+    metaTitle: "AI for financial services marketing | Sokosumi",
+    metaDesc: "AI coworkers for financial services: sourced market briefings without analyst hours, an audit trail on every task, and EU hosting stated up front.",
+    h1: "AI coworkers for financial services",
+    sub: "Market intelligence and marketing production for teams that answer to compliance — with coworkers that state their models and hosting region before you hire them.",
+    split: {
+      today: { label: "Your team today", line: "Every briefing costs analyst hours; every tool is a compliance question first.", items: [
+        "Market briefings depend on scarce analyst time",
+        "Every claim needs provenance before it ships",
+        "New tools stall in data-residency review",
+        "Who-asked-for-what lives in inboxes",
+      ], eg: "A quarterly competitor review, compiled by hand." },
+      withS: { label: "With Sokosumi", line: "A sourced briefing on schedule, with the audit trail built in.", items: [
+        "Recurring market briefings with sources attached",
+        "Files reviewed in your flow — nothing publishes itself",
+        "Models and hosting region stated on every coworker profile; EU hosting available",
+        "Every run logged in History: brief, coworker, cost, output",
+      ], eg: "\u201cWeekly market briefing: rates, competitors, regulation-driven shifts — with sources.\u201d" },
+    },
+    week: { heading: "A week with coworkers on the team", sub: "Intelligence as a schedule, not a project.", items: [
+      { title: "Monday", text: "The market briefing lands: competitors, rates context, regulatory shifts — sourced." },
+      { title: "Continuous", text: "Competitor monitoring logs launches and pricing changes as they appear." },
+      { title: "On demand", text: "Deep-dives for board decks and product launches, briefed like any other task." },
+    ] },
+    deliver: { heading: "What lands on your desk", items: [
+      { title: "Sourced market briefings", text: "A recurring document with references — readable by compliance, forwardable to the board." },
+      { title: "Competitor log", text: "Product launches, pricing and positioning across your set, dated and sourced." },
+      { title: "An audit trail", text: "History keeps every run: who briefed it, which coworker ran it, what it cost, what came back." },
+    ] },
+    faq: [
+      ["Where does our data live?", "Coworker profiles state the models they run on and the hosting region before you hire them; EU hosting is available, and the Personal Assistant runs Swiss-hosted open-source models."],
+      ["Is there an audit trail?", "Yes. Every task run is logged in History with its status, coworker and credit cost, and files stay attached to the task that produced them."],
+      ["Can compliance review the output before it ships?", "Outputs land on a shared board as files — nothing publishes itself. Review happens in your normal flow, with comments on the task."],
+      ["What do financial teams typically start with?", "Market intelligence briefings on a schedule: one brief, a recurring sourced document, no analyst hours consumed."],
+    ],
+  },
+  "media-publishing": {
+    why: "Why publishers switch",
+    cta: "Bring a coworker into your newsroom",
+    metaTitle: "AI for media & publishing teams | Sokosumi",
+    metaDesc: "AI coworkers for media and publishing: one launch brief becomes a month of coverage, search and AI-answer visibility measured, editors keep approval.",
+    h1: "AI coworkers for media & publishing",
+    sub: "Volume without losing the desk: coworkers draft, research and measure — your editors decide what ships.",
+    split: {
+      today: { label: "Your desk today", line: "Fewer editors, more surfaces, and AI answers taking the search traffic.", items: [
+        "Every vertical needs more coverage than the desk can draft",
+        "Search traffic is shifting to AI answers you cannot see",
+        "Audience research is guesswork between analytics tools",
+        "Launch pushes drown the week they land in",
+      ], eg: "One launch, one exhausted content team." },
+      withS: { label: "With Sokosumi", line: "One brief becomes a month of coverage — drafts, not final copy.", items: [
+        "Launch brief in, a month of coverage assets out",
+        "Rankings and AI-answer visibility measured together",
+        "Sourced audience profiles in a day, not a fortnight",
+        "Editors keep approval; coworkers hand back drafts",
+      ], eg: "\u201cTurn the spring vertical launch into four weeks of coverage: positioning, landing copy, social variants.\u201d" },
+    },
+    week: { heading: "A week with coworkers on the desk", sub: "Drafts arrive; judgment stays yours.", items: [
+      { title: "Monday", text: "The visibility report: what ranks, what AI assistants cite, where the gaps are." },
+      { title: "Per launch", text: "The content engine turns one brief into a coverage calendar with drafts attached." },
+      { title: "Per vertical", text: "Audience research sprints before you commission — sourced profiles, message tests." },
+    ] },
+    deliver: { heading: "What lands on the desk", items: [
+      { title: "Coverage calendars with drafts", text: "A month of planned pieces per launch, each with a working draft to edit." },
+      { title: "Search & AI visibility reports", text: "Rankings plus how AI assistants answer questions about your titles — measured monthly." },
+      { title: "Audience profiles", text: "Sourced reader profiles and message tests as documents, per vertical." },
+    ] },
+    faq: [
+      ["Will the output match our editorial voice?", "Workspace context carries your style guide into every task, and edits run as follow-ups on the same task until the voice is right."],
+      ["Can it help with SEO at publishing scale?", "Yes — the SEO & AI visibility workflow tracks rankings and AI-assistant visibility and returns a prioritized read, on a monthly schedule if you want it."],
+      ["Do editors keep control?", "Coworkers deliver drafts and files to the board; editors review, comment and approve in their normal flow."],
+      ["What team size does this fit?", "The free plan works for a single desk; credits per seat scale it to a newsroom."],
+    ],
+  },
+  "saas-technology": {
+    why: "Why SaaS teams switch",
+    cta: "Bring a coworker into your marketing team",
+    metaTitle: "AI for SaaS marketing teams | Sokosumi",
+    metaDesc: "AI coworkers for SaaS teams: the Monday competitor memo, AI-answer visibility next to rankings, and a launch content kit from one brief.",
+    h1: "AI coworkers for SaaS & technology",
+    sub: "A two-person marketing team with ten jobs — give the recurring ones to coworkers and keep the judgment calls.",
+    split: {
+      today: { label: "Your team today", line: "Competitors ship weekly. You find out monthly.", items: [
+        "Competitor moves surface late and anecdotally",
+        "AI assistants describe your category — without you in the answer",
+        "Every launch needs a content push you cannot staff",
+        "Reporting is a chore that slips",
+      ], eg: "A competitor pricing change, discovered in a lost deal." },
+      withS: { label: "With Sokosumi", line: "The Monday memo knows before the lost deal does.", items: [
+        "Weekly competitor memo: launches, pricing, positioning",
+        "AI-answer visibility measured next to search rankings",
+        "A launch kit from one brief: positioning, copy, one-pagers",
+        "The weekly report writes itself, on schedule",
+      ], eg: "\u201cWeekly memo on our top three competitors — what launched, what changed in pricing, what it means.\u201d" },
+    },
+    week: { heading: "A week with coworkers on the team", sub: "Recurring work runs itself; launches get a kit.", items: [
+      { title: "Monday, 9:00", text: "Competitor memo and performance report land together — fifteen minutes to a decision." },
+      { title: "Monthly", text: "Search and AI visibility measured: where you rank, how assistants describe you." },
+      { title: "Per launch", text: "One brief in — positioning, landing copy, social variants and a sales one-pager out." },
+    ] },
+    deliver: { heading: "What lands on your desk", items: [
+      { title: "The Monday memo", text: "Competitor launches, pricing changes and positioning shifts — short, sourced, scheduled." },
+      { title: "Visibility reports", text: "Rankings plus AI-assistant answers about your category, as a monthly document." },
+      { title: "Launch kits", text: "Positioning doc, landing copy, social variants and a one-pager, from a single brief." },
+    ] },
+    faq: [
+      ["How is this different from hiring a contractor?", "Coworkers start in minutes, keep your context between tasks, and cost credits per run — with sample outputs you can inspect before spending anything."],
+      ["Can it track how AI assistants talk about us?", "Yes — AI visibility is part of the SEO workflow: how assistants answer questions about your category and where you appear."],
+      ["Does it integrate with our stack?", "Work arrives as files and live web deliverables; the Personal Assistant connects mail, calendar, docs and chat tools."],
+      ["What does a lean team start with?", "One scheduled task — usually the weekly competitor memo or the weekly performance report — then the launch workflows."],
+    ],
+  },
+  "travel-hospitality": {
+    why: "Why travel teams switch",
+    cta: "Bring a coworker into your team",
+    metaTitle: "AI for travel & hospitality marketing | Sokosumi",
+    metaDesc: "AI coworkers for travel and hospitality: seasonal campaign plans before the booking window, a weekly read of guest sentiment, demand signals turned into plans.",
+    h1: "AI coworkers for travel & hospitality",
+    sub: "Seasons, reviews and demand signals — read and turned into plans before the booking window closes, by specialists a small team can actually afford.",
+    split: {
+      today: { label: "Your team today", line: "The booking window closes while the plan is in review.", items: [
+        "Season planning trails the booking window",
+        "Guest reviews pile up across five platforms",
+        "Demand shifts show up in bookings — too late",
+        "Two people carry the seasonal workload spike",
+      ], eg: "Summer campaign approved in June." },
+      withS: { label: "With Sokosumi", line: "The season is planned before the window opens.", items: [
+        "Campaign plan, calendar and briefs ahead of each season",
+        "A weekly written read of guest sentiment and reviews worth answering",
+        "Demand signals read early and turned into plans",
+        "Coworkers absorb the spike; the team keeps the judgment",
+      ], eg: "\u201cRead this season's demand signals and draft the campaign plan — before bookings open.\u201d" },
+    },
+    week: { heading: "A week with coworkers on the team", sub: "Small team, steady output.", items: [
+      { title: "Monday", text: "The guest sentiment read: what reviews say across platforms, and which to answer." },
+      { title: "Monthly", text: "A market briefing: destination trends, competitor offers, pricing moves." },
+      { title: "Per season", text: "Demand signals turned into the campaign plan, calendar and creative briefs." },
+    ] },
+    deliver: { heading: "What lands on your desk", items: [
+      { title: "Sentiment reads", text: "A weekly written summary of reviews and mentions — themes, tone, and replies worth making." },
+      { title: "Seasonal campaign packs", text: "Plan, calendar and creative briefs, delivered before the booking window." },
+      { title: "Market briefings", text: "Destination trends and competitor offers as a recurring, sourced document." },
+    ] },
+    faq: [
+      ["Can it plan around our seasons?", "Yes — seasonal campaign planning is a core workflow: brief it once per season and the plan, calendar and briefs come back before the booking window."],
+      ["Does it read reviews and social mentions?", "Social listening covers the platforms your guests use and returns a written read: sentiment, emerging themes, and posts worth a reply."],
+      ["We are a small team — is this overkill?", "The free plan fits a two-person marketing team; most start with one scheduled listening or briefing task."],
+      ["What languages does it work in?", "Coworkers brief and deliver in the language you use — English and German are first-class on Sokosumi."],
+    ],
+  },
+};
+
+
 async function industry(ctx) {
   const opts = { draft: ctx.preview };
   const ind = await cms.getIndustry(ctx.params.slug, opts);
   if (!ind) return null;
-  const [allCases, coworkers] = await Promise.all([cms.getUseCases(opts), cms.getCoworkers(opts)]);
+  const [allCases, coworkers, testimonials] = await Promise.all([
+    cms.getUseCases(opts),
+    cms.getCoworkers(opts),
+    cms.getTestimonials(opts).catch(() => []),
+  ]);
   const useCases = allCases.filter((uc) => industriesOf(uc).some((i) => i.slug === ind.slug));
   const crewOf = crewResolver(coworkers);
 
@@ -153,28 +425,62 @@ async function industry(ctx) {
     { label: "Use cases", href: "/use-cases" },
     { label: ind.name },
   ];
+  const cc = INDUSTRY_CONTENT[ind.slug];
+  // The why: the industry's week today vs. with coworkers, as the same
+  // paper/ink split panel /ai-coworkers uses — four contrasts that read
+  // across, one example under each side.
+  const splitSide = (cls, d) => `<div class="cw-split-side ${cls}">
+      <span class="cw-split-label">${esc(d.label)}</span>
+      <p class="cw-split-line">${esc(d.line)}</p>
+      <ul class="cw-split-list">${d.items.map((it) => `<li>${esc(it)}</li>`).join("")}</ul>
+      <p class="cw-split-eg"><span>${esc(cls === "is-agent" ? t("e.g.") : t("the brief"))}</span> ${esc(d.eg)}</p>
+    </div>`;
+  const splitBlock = cc
+    ? `<section class="page-section" data-reveal>
+        <h2>${esc(cc.why)}</h2>
+        <div class="cw-split ind-split">${splitSide("is-agent", cc.split.today)}${splitSide("is-coworker", cc.split.withS)}</div>
+      </section>`
+    : "";
+  const weekBlock = cc
+    ? blocks.renderBlocks([{ blockType: "steps", heading: cc.week.heading, subheading: cc.week.sub, items: cc.week.items }])
+    : "";
+  const deliverBlock = cc
+    ? blocks.renderBlocks([{ blockType: "featureGrid", heading: cc.deliver.heading, items: cc.deliver.items }])
+    : "";
+  const faqBlock = cc
+    ? blocks.renderBlocks([{ blockType: "faq", heading: "Questions we get", items: cc.faq.map(([q, a]) => ({ question: q, answer: a })) }])
+    : "";
   return (
     pageStart({
-      title: t("{name} use cases | Sokosumi", { name: ind.name }),
-      description: (ind.description || t("How {name} teams put AI coworkers to work on Sokosumi.", { name: ind.name })).slice(0, 155),
+      title: cc ? cc.metaTitle : t("{name} use cases | Sokosumi", { name: ind.name }),
+      description: cc ? cc.metaDesc : (ind.description || t("How {name} teams put AI coworkers to work on Sokosumi.", { name: ind.name })).slice(0, 155),
       path: `/use-cases/industries/${ind.slug}`,
       breadcrumb: cr,
+      jsonld: cc ? blocks.faqJsonLd(cc.faq.map(([q, a]) => ({ question: q, answer: a }))) : undefined,
     }) +
     `<div class="page-head" data-reveal>
-      <span class="eyebrow">${esc(t("Use cases for"))}</span>
-      <h1>${esc(ind.name)}</h1>
-      ${ind.description ? `<p class="sub">${esc(ind.description)}</p>` : ""}
+      <span class="eyebrow">${esc(t("Use cases for"))} ${esc(ind.name)}</span>
+      <h1>${esc(cc ? cc.h1 : ind.name)}</h1>
+      <p class="sub">${esc(cc ? cc.sub : ind.description || "")}</p>
       <p class="meta-row">${esc(t("{n} of the {total} workflows on Sokosumi apply here.", { n: useCases.length, total: allCases.length }))} <a href="/use-cases" style="text-decoration:underline">${esc(t("See all use cases"))}</a></p>
     </div>
-    <div class="page-section flush">
+    </div>
+    ` +
+    splitBlock +
+    weekBlock +
+    `<div class="page-section">
+      ${cc ? `<h2>${esc("The workflows, ready to run")}</h2><p class="sub" style="margin-bottom:22px">${esc("Each card is a real workflow with the coworkers behind it — open one and start from its brief.")}</p>` : ""}
       ${
         useCases.length
-          ? `<div class="card-grid uc-grid">${useCases.map((uc) => useCaseCard(uc, crewOf(uc))).join("")}</div>`
+          ? `<div class="card-grid uc-grid">${useCases.map((uc, i) => useCaseCard(uc, crewOf(uc), i)).join("")}</div>`
           : `<p class="muted">${esc(t("Use cases for this industry are on the way. In the meantime,"))} <a href="/use-cases" style="text-decoration:underline">${esc(t("browse all use cases"))}</a>.</p>`
       }
     </div>` +
+    deliverBlock +
+    shell.proof(testimonials, ind.slug.length) +
+    faqBlock +
     blocks.ctaBand({
-      heading: t("Bring a coworker into your {industry} team", { industry: ind.name }),
+      heading: cc && cc.cta ? cc.cta : t("Bring a coworker into your {industry} team", { industry: ind.name }),
       subheading: t("Create an account and hand over the first brief today."),
       ctaLabel: t("Get started"),
       ctaHref: shell.APP,
@@ -216,10 +522,7 @@ function heroSection(doc, blk, inds) {
     btn(b.ctaLabel || t("Get started"), primaryHref, "btn-primary", primaryHref.startsWith(shell.APP)) +
     btn(b.secondaryCtaLabel || t("Talk to sales"), b.secondaryCtaHref || shell.SALES_URL, "btn-outline");
 
-  const svg = art.field(doc.slug, { w: 1200, h: 460, bias: "edges" });
-
   return `<section class="blk blk-hero uc-hero-hs" data-reveal>
-    ${svg ? `<div class="uc-hero-art" aria-hidden="true">${svg}</div>` : ""}
     <div class="uc-hero-copy">
       <span class="eyebrow">${eyebrow}</span>
       <h1>${esc(heading)}</h1>
@@ -227,6 +530,7 @@ function heroSection(doc, blk, inds) {
       <div class="cta-row">${ctas}</div>
       ${primaryHref.startsWith(shell.APP) ? shell.NO_CARD : ""}
     </div>
+    <div class="uc-hero-media" aria-hidden="true"><img src="${attr(ucVisual(doc.slug))}" alt="" width="1152" height="640" decoding="async" fetchpriority="high" /></div>
   </section>`;
 }
 
@@ -294,13 +598,13 @@ function teamSection(crew, offers) {
     if (!byAgent.has(o.agentSlug)) byAgent.set(o.agentSlug, []);
     byAgent.get(o.agentSlug).push(o);
   }
-  const cards = crew
-    .map((c) => {
-      const tasks = (byAgent.get(c.catalogSlug) || byAgent.get(c.slug) || []).slice(0, 2);
-      return `<div class="uc-mate">
+  const mateCard = (c, tag) => {
+    const tasks = (byAgent.get(c.catalogSlug) || byAgent.get(c.slug) || []).slice(0, 2);
+    return `<div class="uc-mate">
       <a class="by-row" href="/ai-coworkers/${encodeURIComponent(c.slug)}">
         ${avatar(c, "lg")}
         <span class="who">${esc(c.name)}${c.role ? `<small>${esc(c.role)}</small>` : ""}</span>
+        ${tag ? `<span class="uc-mate-tag">${esc(tag)}</span>` : ""}
       </a>
       ${
         tasks.length
@@ -316,12 +620,30 @@ function teamSection(crew, offers) {
           : ""
       }
     </div>`;
-    })
-    .join("");
+  };
+  // Coworkers lead a workflow; specialist agents are what they hire as
+  // subagents mid-task (and what you can also run directly). The CMS knows
+  // which is which (`kind`), so the section says so instead of calling
+  // everything a coworker.
+  const leads = crew.filter((c) => c.kind !== "agent");
+  const agents = crew.filter((c) => c.kind === "agent");
+  const leadBlock = leads.length
+    ? `<h2>${esc(t("The coworkers who lead it"))}</h2>
+      <p class="sub">${esc(t("Brief one of them and they own the workflow end to end."))}</p>
+      <div class="uc-team">${leads.map((c) => mateCard(c)).join("")}</div>`
+    : "";
+  const agentBlock = agents.length
+    ? `<h2${leads.length ? ' class="uc-agents-h"' : ""}>${esc(leads.length ? t("The specialist agents they hire") : t("The specialist agents behind it"))}</h2>
+      <p class="sub">${esc(
+        leads.length
+          ? t("Coworkers dispatch these as subagents mid-task — you can also run any of them directly.")
+          : t("Run them directly, or let a coworker like Elena dispatch them as subagents inside a bigger brief."),
+      )}</p>
+      <div class="uc-team">${agents.map((c) => mateCard(c, t("Agent"))).join("")}</div>`
+    : "";
   return `<section class="page-section" data-reveal>
-    <h2>${esc(t("The coworkers who run it"))}</h2>
-    <p class="sub">${esc(t("Each one comes with template tasks behind this workflow, ready to brief. Open a task to see the deliverable before you start."))}</p>
-    <div class="uc-team">${cards}</div>
+    ${leadBlock}
+    ${agentBlock}
   </section>`;
 }
 
@@ -335,7 +657,7 @@ function relatedSection(doc, inds, allCases, crewOf) {
   if (!related.length) return "";
   return `<section class="page-section" data-reveal>
     <h2>${esc(t("Related use cases"))}</h2>
-    <div class="card-grid uc-grid">${related.map((uc) => useCaseCard(uc, crewOf(uc))).join("")}</div>
+    <div class="card-grid uc-grid">${related.map((uc, i) => useCaseCard(uc, crewOf(uc), i)).join("")}</div>
   </section>`;
 }
 
@@ -345,10 +667,11 @@ async function detail(ctx) {
   if (!doc) return null;
 
   const inds = industriesOf(doc);
-  const [coworkers, offers, allCases] = await Promise.all([
+  const [coworkers, offers, allCases, testimonials] = await Promise.all([
     cms.getCoworkers(opts).catch(() => []),
     cms.getOffers(opts).catch(() => []),
     cms.getUseCases(opts).catch(() => []),
+    cms.getTestimonials(opts).catch(() => []),
   ]);
   const crewOf = crewResolver(coworkers);
   const crew = crewOf(doc);
@@ -402,6 +725,7 @@ async function detail(ctx) {
     teamSection(crew, offers) +
     (faqBlock ? blocks.renderBlocks([faqBlock]) : "") +
     relatedSection(doc, inds, allCases, crewOf) +
+    shell.proof(testimonials, doc.slug.length, { mode: "quote" }) +
     band +
     pageEnd()
   );
