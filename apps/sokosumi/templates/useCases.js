@@ -17,7 +17,8 @@ function gradFor(seed) {
   return "/assets/gradients/g" + GRAD_POOL[(h >>> 0) % GRAD_POOL.length] + ".webp";
 }
 
-// Generated editorial photos per workflow (assets/use-case-img/<slug>.webp,
+// Generated line-collage images per workflow (assets/use-case-img/<slug>.webp,
+// see IMAGERY.md for the prompt recipe;
 // people at work in the brand's light office world). Slugs without a photo
 // fall back to the gradient pool.
 const UC_PHOTOS = new Set([
