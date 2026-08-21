@@ -694,7 +694,7 @@ const assetsDir = path.join(root, "assets");
       // classes, so they are applied unconditionally now rather than behind the
       // query parameter the variants used while we were choosing.
       html = html
-        .replace("<body", '<body class="hero-aurora hero-bg-photowelcome"')
+        .replace("<body", '<body class="hero-aurora hero-bg-photowelcome2"')
         .replace('<div class="hero">', '<div class="hero is-aurora">');
     if (i18n.locale() === "de") html = i18n.translateHomepage(html);
     html = i18n.localizeHtml(html);
