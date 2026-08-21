@@ -184,7 +184,7 @@ const INDUSTRY_CONTENT = {
     metaTitle: "AI for agencies: AI coworkers for agency teams | Sokosumi",
     metaDesc: "AI coworkers for agencies: pitch research from public sources, competitive sets per client, and production at retainer scale.",
     h1: "AI coworkers for agencies",
-    sub: "Scale research, strategy and production across client accounts — with named AI specialists your teams brief like colleagues. Built with Serviceplan Group, one of the world's leading agency groups.",
+    sub: "Use named AI specialists for research, strategy, and production across client accounts. Sokosumi was built with Serviceplan Group.",
     split: {
       today: { label: "Your agency today", line: "The pitch is Thursday and the research is unbillable.", items: [
         "Pitch research eats senior hours nobody invoices",
@@ -514,10 +514,12 @@ function heroSection(doc, blk, inds) {
 
   // `analytics` true = the signup CTA; false = the sales CTA. Both are intent
   // worth measuring, they are just different intents.
-  const btn = (label, href, cls, analytics) =>
-    `<a class="btn ${cls} btn-lg" href="${attr(href)}" data-analytics="${
+  const btn = (label, href, cls, analytics) => {
+    const target = href === "/coworkers" ? "/ai-coworkers" : href;
+    return `<a class="btn ${cls} btn-lg" href="${attr(target)}" data-analytics="${
       analytics ? "sign_up_click" : "talk_to_sales_click"
     }" data-analytics-location="use_case_hero">${esc(label)}</a>`;
+  };
   const primaryHref = b.ctaHref || shell.APP_SIGNUP;
   const ctas =
     btn(b.ctaLabel || t("Get started"), primaryHref, "btn-primary", primaryHref.startsWith(shell.APP)) +

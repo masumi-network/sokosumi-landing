@@ -44,14 +44,14 @@ async function index(ctx) {
   return (
     pageStart({
       title: "Guides | Sokosumi",
-      description: "How to get the most out of your AI coworkers: setup, briefing patterns, workflows, and the details that decide whether a task comes back usable.",
+      description: "Instructions for setting up, briefing, and running AI coworkers on Sokosumi.",
       path: "/guides",
       breadcrumb: cr,
       jsonld: shell.itemListLd("Sokosumi guides", "/guides", guides.map((g) => ({ name: g.title, path: `/guides/${g.slug}` }))),
     }) +
     `<div class="page-head" data-reveal>
       <h1>${esc(t("Guides"))}</h1>
-      <p class="sub">${esc(t("How to get the most out of your AI coworkers, from the first briefing to advanced workflows."))}</p>
+      <p class="sub">${esc(t("Instructions for AI coworkers, from the first briefing to recurring workflows."))}</p>
     </div>
     <section class="page-section flush" data-reveal>
       <div class="shot-split">
@@ -68,8 +68,8 @@ async function index(ctx) {
       : `<div class="page-section flush"><p class="muted">${esc(t("Guides are on the way. In the meantime,"))} <a href="/ai-coworkers" style="text-decoration:underline">${esc(t("meet the coworkers"))}</a>.</p></div>`) +
     shell.logoRow() +
     shell.ctaBand({
-      heading: t("Try it on a real task"),
-      subheading: t("The fastest way through any guide is to run the thing it describes. Signing up is free."),
+      heading: t("Run a task from a guide"),
+      subheading: t("Create a free account, choose a task, and apply the instructions."),
       ctaLabel: t("Start free"),
       seed: guides.length,
     }) +

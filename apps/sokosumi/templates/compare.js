@@ -42,7 +42,7 @@ async function index(ctx) {
     pageStart({
       title: "Compare | Sokosumi",
       description:
-        "How Sokosumi compares to Relevance AI, Lindy, Manus and other AI agent platforms, side by side: features, pricing, and what you actually get back.",
+        "Compare Sokosumi with Relevance AI, Lindy, and Manus across published features, pricing, and outputs.",
       path: "/compare",
       breadcrumb: cr,
     }) +
@@ -55,8 +55,8 @@ async function index(ctx) {
     </section>` +
     shell.logoRow() +
     shell.ctaBand({
-      heading: t("The shortest comparison is a trial"),
-      subheading: t("Run one real task and judge the output for yourself."),
+      heading: t("Try Sokosumi free"),
+      subheading: t("Use the 250 free credits per seat to run a task and inspect the result."),
       ctaLabel: t("Start free"),
       seed: list.length,
     }) +

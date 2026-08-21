@@ -41,9 +41,10 @@ function tile(c, i) {
 
 function agentRow(c) {
   const vn = vendorName(c);
+  const summary = c.seoDescription || c.description || "";
   return `<a class="row-item" href="/ai-coworkers/${encodeURIComponent(c.slug)}">
     <span style="display:flex;align-items:center;gap:12px">${avatar(c, "sm")}<span class="row-title">${esc(c.name)}</span></span>
-    <p>${esc((c.description || "").slice(0, 160))}</p>
+    <p>${esc(summary.slice(0, 160))}</p>
     <span class="row-go">${vn ? esc(vn) : esc(t("View"))} ${icon("arrow-up-right", 15)}</span>
   </a>`;
 }
@@ -59,9 +60,9 @@ function agentRow(c) {
 function cmpSplit() {
   const pairs = [
     [t("Does a task"), t("Owns a role")],
-    [t("Finishes when the job is done"), t("Keeps going, week after week")],
-    [t("Knows the current job"), t("Knows your company and projects")],
-    [t("A tool you run"), t("A colleague you brief")],
+    [t("Runs once when you start it"), t("Can run recurring tasks")],
+    [t("Has one defined capability"), t("Has a public profile and task list")],
+    [t("A specialist you run"), t("A coworker you brief")],
   ];
   const side = (cls, label, line, example) => `<div class="cw-split-side ${cls}">
       <span class="cw-split-label">${esc(label)}</span>
@@ -70,8 +71,8 @@ function cmpSplit() {
       <p class="cw-split-eg"><span>${esc(t("e.g."))}</span> ${esc(example)}</p>
     </div>`;
   return `<div class="grad-band g4" data-reveal><div class="cw-split">
-    ${side("is-agent", t("AI agent"), t("\u201cGive me a task and I\u2019ll do it.\u201d"), t("\u201cFind 20 keyword opportunities for sokosumi.com.\u201d"))}
-    ${side("is-coworker", t("AI coworker"), t("\u201cGive me a responsibility and I\u2019ll own it.\u201d"), t("\u201cGrow our organic traffic.\u201d"))}
+    ${side("is-agent", t("AI agent"), t("Runs one defined capability."), t("\u201cFind keyword opportunities for sokosumi.com.\u201d"))}
+    ${side("is-coworker", t("AI coworker"), t("Works in a named role."), t("\u201cRun our recurring SEO checks.\u201d"))}
   </div></div>`;
 }
 
@@ -230,7 +231,7 @@ function profileLd(c, vendorName, vendorSlug) {
     operatingSystem: "Web",
     url: `${shell.SITE}/ai-coworkers/${c.slug}`,
     image: c.image || undefined,
-    description: c.description || undefined,
+    description: c.seoDescription || c.description || undefined,
     isPartOf: { "@id": `${shell.SITE}/#website` },
   };
   if (c.role) ld.alternateName = c.role;
@@ -328,7 +329,7 @@ async function profile(ctx) {
         ${c.role ? `<div class="role">${esc(c.role)}</div>` : ""}
         ${profileTags(c)}
         ${profileStats(c)}
-        ${c.description ? `<p class="cw-desc">${esc(c.description)}</p>` : ""}
+        ${c.seoDescription || c.description ? `<p class="cw-desc">${esc(c.seoDescription || c.description)}</p>` : ""}
         <a class="btn btn-primary btn-lg cw-cta" href="${attr(tryUrl(c))}" data-analytics="sign_up_click" data-analytics-location="coworker_profile">${esc(t("Try {name} on Sokosumi", { name: c.name }))}</a>
         ${shell.NO_CARD}
       </div>

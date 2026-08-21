@@ -184,9 +184,10 @@ function agentRow(c) {
   if (Number.isFinite(runCount) && runCount > 0) stats.push(t("{n} runs", { n: runCount.toLocaleString(nf()) }));
   if (c.rating && c.ratingCount) stats.push(t("rated {r}/5", { r: Number(c.rating).toFixed(1) }));
   if (c.credits) stats.push(t("{n} credits per run", { n: c.credits }));
+  const summary = c.seoDescription || c.description || "";
   return `<a class="row-item" href="/ai-coworkers/${encodeURIComponent(c.slug)}">
     <span style="display:flex;align-items:center;gap:12px">${avatar(c, "sm")}<span class="row-title">${esc(c.name)}</span></span>
-    <p>${esc(truncate(c.description || "", 160))}${stats.length ? `<span class="row-stats">${esc(stats.join(" · "))}</span>` : ""}</p>
+    <p>${esc(truncate(summary, 160))}${stats.length ? `<span class="row-stats">${esc(stats.join(" · "))}</span>` : ""}</p>
     <span class="row-go">${esc(t("View"))} ${icon("arrow-up-right", 15)}</span>
   </a>`;
 }

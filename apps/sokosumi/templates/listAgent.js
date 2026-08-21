@@ -1,11 +1,8 @@
 // /list-your-agent — the Sokosumi Agent Listing form, rebuilt natively from
 // the Tally form at tally.so/r/nPLBaV.
 //
-// Every label, option and helper line below is verbatim from that form's own
-// definition, including its typos: the EU AI Act label really does begin with
-// a stray double quote, and "your agents intended purpose" really is missing
-// its apostrophe. They are left alone — this is a port, not a rewrite. Where
-// the original was ambiguous the deviation is commented.
+// The form keeps the source questionnaire's meaning while using concise,
+// grammatical interface copy.
 //
 // Submissions go to support@sokosumi.com through the same store-then-notify
 // path as the other two forms, so a mail outage cannot lose a listing.
@@ -22,8 +19,8 @@ const i18n = require("../lib/i18n");
 const { t } = i18n;
 const { esc, attr, icon, pageStart, pageEnd } = shell;
 
-const MASUMI_DOCS = "https://docs.masumi.network/";
-const MASUMI_HOME = "https://www.masumi.network/";
+const MASUMI_DOCS = "https://www.masumi.network/dev/masumi";
+const SUPPORT_PAGE = "/contact/support";
 const EU_AI_ACT = "https://artificialintelligenceact.eu/ai-act-explorer/";
 
 // Grouped as the original groups them, by its three section headings.
@@ -51,8 +48,8 @@ const SECTIONS = [
         // the original renders this as a textarea; a single URL wants one line
         // the two URLs are interpolated at render time so the translatable
         // key stays a sentence rather than a sentence plus two hardcoded links
-        help: 'If this feels challenging, please check out the <a href="{docs}" target="_blank" rel="noreferrer">Masumi Docs</a> or contact support right from the <a href="{home}" target="_blank" rel="noreferrer">chat on our homepage</a>.',
-        helpVars: { docs: MASUMI_DOCS, home: MASUMI_HOME },
+        help: 'See the <a href="{docs}" target="_blank" rel="noreferrer">Masumi Docs</a> or <a href="{support}">contact Sokosumi support</a>.',
+        helpVars: { docs: MASUMI_DOCS, support: SUPPORT_PAGE },
       },
     ],
   },
@@ -61,7 +58,7 @@ const SECTIONS = [
     intro: "Share more details about your agent to help us showcase it accurately on the Sokosumi marketplace.",
     fields: [
       { name: "agentName", label: "What is the name of the Agent?", type: "text", required: true },
-      { name: "purpose", label: "Please describe your agents intended purpose.", type: "textarea", required: true },
+      { name: "purpose", label: "Describe your agent's intended purpose.", type: "textarea", required: true },
       { name: "description", label: "Please provide your Agent description.", type: "textarea", required: true },
       { name: "features", label: "What are the key features of your agent?", type: "textarea", required: true },
       { name: "limitations", label: "Are there any known limitations we should be aware of?", type: "textarea", required: true },
@@ -232,7 +229,7 @@ function form(values, error) {
 
     <div class="form-actions">
       <button class="btn btn-primary btn-lg" type="submit">${esc(t("Submit"))}</button>
-      <span class="form-note">${esc(t("Goes to {email}. We come back to you about the listing.", { email: leads.SUPPORT_TO }))}</span>
+      <span class="form-note">${esc(t("Sent to {email}. We will reply about the listing.", { email: leads.SUPPORT_TO }))}</span>
     </div>
   </form>`;
 }
@@ -272,7 +269,7 @@ async function render(ctx) {
       : `<div class="page-head" data-reveal>
         <span class="eyebrow">${esc(t("For vendors"))}</span>
         <h1>${esc(t("Sokosumi Agent Listing"))}</h1>
-        <p class="sub">${esc(t("Welcome! You’re one step away from getting your Agent featured on Sokosumi. Fill out this form to help us understand your Agent and get it ready for launch. If you need any help along the way, just let us know!"))}</p>
+        <p class="sub">${esc(t("Submit the deployment checklist, agent details, risk classification, and company information for review."))}</p>
       </div>
       <section class="page-section flush">${form(values, error)}</section>`) +
     shell.logoRow() +

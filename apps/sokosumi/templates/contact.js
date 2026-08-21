@@ -23,7 +23,7 @@ const BROWSE = [
   {
     href: "/guides",
     title: "Guides",
-    desc: "Setup, workflows, and patterns for getting the most out of your coworkers.",
+    desc: "Setup, briefing, and workflow instructions for AI coworkers.",
     go: "Read",
   },
 ];

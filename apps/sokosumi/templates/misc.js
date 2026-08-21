@@ -75,7 +75,7 @@ function press() {
     }) +
     `<div class="page-head" data-reveal>
       <h1>${esc(t("Press"))}</h1>
-      <p class="sub">${esc(t("Sokosumi is the marketplace for AI coworkers, built by Serviceplan Group. For interviews, background, or assets, reach out and we will get back to you quickly."))}</p>
+      <p class="sub">${esc(t("Sokosumi is a marketplace for AI coworkers built by Serviceplan Group with NMKR. Contact us for interviews, background, or media assets."))}</p>
     </div>
     <div class="page-section flush">
       <div class="card-grid" style="max-width:820px">
@@ -86,7 +86,7 @@ function press() {
         </div>
         <div class="card">
           <h2>${esc(t("Facts"))}</h2>
-          <p>${esc(t("Sokosumi gives marketing teams AI coworkers with real roles that deliver finished files. It is built by Serviceplan Group, one of the world's leading agency groups, together with NMKR."))}</p>
+          <p>${esc(t("Sokosumi gives marketing teams AI coworkers with named roles that deliver finished files. Serviceplan Group built it together with NMKR."))}</p>
         </div>
       </div>
     </div>
@@ -98,7 +98,7 @@ function press() {
     shell.logoRow() +
     shell.ctaBand({
       heading: t("See the product for yourself"),
-      subheading: t("The whole marketplace is browsable before you spend a credit."),
+      subheading: t("Coworker profiles, task details, and sample files are public."),
       ctaLabel: t("Start free"),
       seed: 3,
     }) +

@@ -65,20 +65,20 @@ function pricingLd() {
 const PLANS = [
   {
     name: "Free",
-    tagline: "Try the marketplace on free credits.",
+    tagline: "250 credits per seat at no charge.",
     price: "Free",
     credits: "250 credits per seat",
   },
   {
     name: "Starter",
-    tagline: "For freelancers and very small teams.",
+    tagline: "1,500 credits per seat each month.",
     price: "€25",
     per: "per month",
     credits: "1,500 credits per seat",
   },
   {
     name: "Standard",
-    tagline: "For small teams that run work every week.",
+    tagline: "5,000 credits per seat each month.",
     price: "€75",
     per: "per month",
     credits: "5,000 credits per seat",
@@ -86,7 +86,7 @@ const PLANS = [
   },
   {
     name: "Pro",
-    tagline: "For teams that run a lot of work.",
+    tagline: "15,000 credits per seat each month.",
     price: "€200",
     per: "per month",
     credits: "15,000 credits per seat",
@@ -95,7 +95,7 @@ const PLANS = [
 
 const ENTERPRISE = {
   name: "Enterprise",
-  tagline: "Seats, credits, and support on your terms.",
+  tagline: "Custom seats, credits, and support.",
   price: "Custom",
   per: "per month",
 };
@@ -179,7 +179,7 @@ function planCard(p, i, seats) {
   // same figure, the locale's thousands separator (1,500 → 1.500 on /de)
   const num = locale() === "de" ? m[1].replace(/,/g, ".") : m[1];
   return `<article class="plan-card${p.featured ? " featured" : ""}" data-reveal style="--i:${i}">
-    <h2 class="plan-name" id="${id}">${esc(p.name)}${p.featured ? `<span class="chip">${esc(t("Most popular"))}</span>` : ""}</h2>
+    <h2 class="plan-name" id="${id}">${esc(p.name)}</h2>
     <div class="plan-price">
       <span class="amount">${esc(priceAmount(p) ? fmtEur(priceAmount(p)) : t(p.price))}</span>
       <span class="per">${esc(t(p.per || "No credit card required"))}</span>
@@ -226,7 +226,7 @@ async function render(ctx) {
     }) +
     `<div class="page-head" data-reveal>
       <span class="eyebrow">${esc(t("Pricing"))}</span>
-      <h1>${esc(t("Plans that scale with the work"))}</h1>
+      <h1>${esc(t("Plans and credits"))}</h1>
       <p class="sub">${esc(t("Credits per seat on every plan. Start free; upgrade when you run more work."))}</p>
     </div>
 

@@ -168,8 +168,8 @@ async function render(ctx) {
       </div>
     </section>`) +
     `<section class="page-section" data-reveal>
-      <h2>${esc(t("Answer it yourself, faster"))}</h2>
-      <p class="sub">${esc(t("Most of what people write in about is already written down."))}</p>
+      <h2>${esc(t("Find an answer"))}</h2>
+      <p class="sub">${esc(t("Guides, pricing, release notes, and task details are linked below."))}</p>
       <div class="row-list">${SELF_SERVE.map(row).join("")}</div>
     </section>` +
     shell.ctaBand({

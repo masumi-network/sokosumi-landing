@@ -111,7 +111,7 @@ function localizeHtml(html) {
 // Keys are the exact English strings the templates use.
 const DE = {
   "Show all {n} specialist agents":
-    "Alle {n} Specialist Agents anzeigen",
+    "Alle {n} spezialisierten Agents anzeigen",
   "Show fewer":
     "Weniger anzeigen",
   "The Sokosumi roster: five named AI coworkers from Serviceplan, with Elena's profile open beside them":
@@ -257,21 +257,21 @@ const DE = {
   "Press | Sokosumi": "Presse | Sokosumi",
   "Press information and media contact for Sokosumi, the AI coworker marketplace by Serviceplan Group.":
     "Presseinformationen und Medienkontakt für Sokosumi, den AI-Coworker-Marktplatz der Serviceplan Group.",
-  "Sokosumi is the marketplace for AI coworkers, built by Serviceplan Group. For interviews, background, or assets, reach out and we will get back to you quickly.":
-    "Sokosumi ist der Marktplatz für AI Coworker, entwickelt von der Serviceplan Group. Für Interviews, Hintergrundgespräche oder Material melden Sie sich gern – wir antworten schnell.",
+  "Sokosumi is a marketplace for AI coworkers built by Serviceplan Group with NMKR. Contact us for interviews, background, or media assets.":
+    "Sokosumi ist ein Marktplatz für AI Coworker, entwickelt von der Serviceplan Group gemeinsam mit NMKR. Kontaktieren Sie uns für Interviews, Hintergrundinformationen oder Medienmaterial.",
   "Media inquiries": "Presseanfragen",
   "Interviews, comments, and background conversations with the Sokosumi team.":
     "Interviews, Statements und Hintergrundgespräche mit dem Sokosumi-Team.",
   "Email the team": "E-Mail an das Team",
   Facts: "Fakten",
-  "Sokosumi gives marketing teams AI coworkers with real roles that deliver finished files. It is built by Serviceplan Group, one of the world's leading agency groups, together with NMKR.":
-    "Sokosumi gibt Marketingteams AI Coworker mit echten Rollen, die fertige Dateien liefern. Entwickelt von der Serviceplan Group, einer der führenden Agenturgruppen der Welt, gemeinsam mit NMKR.",
+  "Sokosumi gives marketing teams AI coworkers with named roles that deliver finished files. Serviceplan Group built it together with NMKR.":
+    "Sokosumi bietet Marketingteams AI Coworker mit benannten Rollen, die fertige Dateien liefern. Die Serviceplan Group hat Sokosumi gemeinsam mit NMKR entwickelt.",
   "Product imagery": "Produktbilder",
   "Screenshots of the live product, free to use in coverage of Sokosumi. Please credit Sokosumi.":
     "Screenshots des Live-Produkts, zur freien Verwendung in der Berichterstattung über Sokosumi. Bitte Sokosumi als Quelle nennen.",
   "See the product for yourself": "Sehen Sie sich das Produkt selbst an",
-  "The whole marketplace is browsable before you spend a credit.":
-    "Der gesamte Marktplatz lässt sich durchstöbern, bevor Sie einen einzigen Credit ausgeben.",
+  "Coworker profiles, task details, and sample files are public.":
+    "Coworker-Profile, Task-Details und Beispieldateien sind öffentlich.",
 
   // ---- coworkers.js ----
   "AI coworkers on Sokosumi": "AI Coworker auf Sokosumi",
@@ -286,17 +286,17 @@ const DE = {
   "AI agent": "AI Agent",
   "Does a task": "Erledigt eine Aufgabe",
   "Owns a role": "Verantwortet eine Rolle",
-  "Finishes when the job is done": "Ist fertig, wenn der Job erledigt ist",
-  "Keeps going, week after week": "Macht weiter, Woche für Woche",
-  "Knows the current job": "Kennt den aktuellen Job",
-  "Knows your company and projects": "Kennt Ihr Unternehmen und Ihre Projekte",
-  "A tool you run": "Ein Werkzeug, das Sie ausführen",
-  "A colleague you brief": "Eine Kollegin, die Sie briefen",
+  "Runs once when you start it": "Läuft einmal, wenn Sie ihn starten",
+  "Can run recurring tasks": "Kann wiederkehrende Tasks ausführen",
+  "Has one defined capability": "Hat eine definierte Funktion",
+  "Has a public profile and task list": "Hat ein öffentliches Profil und eine Task-Liste",
+  "A specialist you run": "Ein Spezialist, den Sie starten",
+  "A coworker you brief": "Ein Coworker, den Sie briefen",
   "e.g.": "z. B.",
-  "\u201cGive me a task and I\u2019ll do it.\u201d": "\u201eGib mir eine Aufgabe, und ich erledige sie.\u201c",
-  "\u201cFind 20 keyword opportunities for sokosumi.com.\u201d": "\u201eFinde 20 Keyword-Chancen für sokosumi.com.\u201c",
-  "\u201cGive me a responsibility and I\u2019ll own it.\u201d": "\u201eGib mir eine Verantwortung, und ich übernehme sie.\u201c",
-  "\u201cGrow our organic traffic.\u201d": "\u201eSteigere unseren organischen Traffic.\u201c",
+  "Runs one defined capability.": "Führt eine definierte Funktion aus.",
+  "\u201cFind keyword opportunities for sokosumi.com.\u201d": "\u201eFinde Keyword-Chancen für sokosumi.com.\u201c",
+  "Works in a named role.": "Arbeitet in einer benannten Rolle.",
+  "\u201cRun our recurring SEO checks.\u201d": "\u201eFühre unsere wiederkehrenden SEO-Checks aus.\u201c",
   Independent: "Unabhängig",
   Featured: "Empfohlen",
   "{n} coworker": "{n} Coworker",
@@ -393,12 +393,12 @@ const DE = {
     "Die Anbieter hinter den AI Coworkern und Agents auf Sokosumi: die Teams, die sie entwickeln, betreiben und für ihre Arbeit einstehen.",
   "The vendors behind the AI coworkers": "Die Anbieter hinter den AI Coworkern",
   "Every AI coworker and agent on Sokosumi is built and operated by a vendor: a team that ships it, keeps it running, and stands behind its work. Pick a vendor to see who they ship, what their listings can do, and the models and hosting on file.":
-    "Jeder AI Coworker und jeder Agent auf Sokosumi wird von einem Anbieter entwickelt und betrieben: einem Team, das ihn liefert, am Laufen hält und für seine Arbeit einsteht. Wählen Sie einen Anbieter, um zu sehen, wen er liefert, was seine Listings können und welche Modelle und Hosting-Regionen hinterlegt sind.",
+    "Jeder AI Coworker und Agent auf Sokosumi wird von einem Anbieter entwickelt und betrieben. Auf der Anbieterseite sehen Sie dessen Listings, Funktionen sowie Angaben zu Modellen und Hosting.",
   "{n} vendors": "{n} Anbieter",
   "{n} AI coworkers": "{n} AI Coworker",
   "{n} marketplace agents": "{n} Marktplatz-Agents",
   "Vendor profiles are on the way. In the meantime,": "Anbieterprofile sind in Arbeit. Bis dahin:",
-  "Hire from any of them, in one place": "Stellen Sie bei allen ein – an einem Ort",
+  "Hire from any of them, in one place": "Alle Anbieter über ein Konto nutzen",
   "One account, one credit balance, every vendor on the marketplace. Signing up is free.":
     "Ein Konto, ein Credit-Guthaben, jeder Anbieter auf dem Marktplatz. Die Registrierung ist kostenlos.",
   "{n} agent": "{n} Agent",
@@ -513,6 +513,8 @@ const DE = {
   "{n} coworkers on it": "{n} Coworker daran",
   "{n} coworker on it": "{n} Coworker daran",
   "Read the workflow": "Workflow lesen",
+  "Use named AI specialists for research, strategy, and production across client accounts. Sokosumi was built with Serviceplan Group.":
+    "Nutzen Sie benannte AI-Spezialisten für Research, Strategie und Produktion in Kundenprojekten. Sokosumi wurde mit der Serviceplan Group entwickelt.",
   "{name} use cases | Sokosumi": "Use Cases für {name} | Sokosumi",
   "How {name} teams put AI coworkers to work on Sokosumi.":
     "Wie Teams aus dem Bereich {name} AI Coworker auf Sokosumi einsetzen.",
@@ -539,19 +541,13 @@ const DE = {
   "Pricing | Sokosumi": "Preise | Sokosumi",
   "Sokosumi plans: a free tier with 250 credits per seat, Starter at €25, Standard at €75, Pro at €200 per month, and a tailored Enterprise plan.":
     "Sokosumi-Pläne: ein kostenloser Plan mit 250 Credits pro Seat, Starter für 25 €, Standard für 75 €, Pro für 200 € pro Monat sowie ein individueller Enterprise-Plan.",
-  "Plans that scale with the work": "Pläne, die mit der Arbeit wachsen",
   "Credits per seat on every plan. Start free; upgrade when you run more work.":
     "Credits pro Seat in jedem Plan. Starten Sie kostenlos und wechseln Sie, wenn Sie mehr Arbeit ausführen.",
-  "Try the marketplace on free credits.":
-    "Den Marktplatz mit kostenlosen Credits ausprobieren.",
-  "For freelancers and very small teams.":
-    "Für Freelancer und sehr kleine Teams.",
-  "For small teams that run work every week.":
-    "Für kleine Teams, die jede Woche Arbeit ausführen.",
-  "For teams that run a lot of work.":
-    "Für Teams, die viel Arbeit ausführen.",
-  "Seats, credits, and support on your terms.":
-    "Seats, Credits und Support zu Ihren Konditionen.",
+  "250 credits per seat at no charge.": "250 Credits pro Seat ohne Gebühr.",
+  "1,500 credits per seat each month.": "1.500 Credits pro Seat und Monat.",
+  "5,000 credits per seat each month.": "5.000 Credits pro Seat und Monat.",
+  "15,000 credits per seat each month.": "15.000 Credits pro Seat und Monat.",
+  "Custom seats, credits, and support.": "Individuelle Seats, Credits und Support.",
   Free: "Kostenlos",
   Custom: "Individuell",
   "per month": "pro Monat",
@@ -599,8 +595,8 @@ const DE = {
     "Alle AI Coworker auf Sokosumi, jeder mit echter Rolle und öffentlichem Profil.",
   "Ready-to-run work with a clear brief and a known deliverable.":
     "Sofort startklare Aufgaben mit klarem Briefing und bekanntem Ergebnis.",
-  "Setup, workflows, and patterns for getting the most out of your coworkers.":
-    "Einrichtung, Workflows und Muster, um das Beste aus Ihren Coworkern herauszuholen.",
+  "Setup, briefing, and workflow instructions for AI coworkers.":
+    "Anleitungen zu Einrichtung, Briefing und Workflows für AI Coworker.",
   Browse: "Stöbern",
   Read: "Lesen",
 
@@ -687,9 +683,9 @@ const DE = {
   "The account or workspace you are working in": "Das Konto oder den Workspace, in dem Sie arbeiten",
   "A screenshot, if it is something you can see": "Einen Screenshot, wenn es etwas Sichtbares ist",
   "Prefer your own mail client?": "Lieber Ihr eigenes Mailprogramm?",
-  "Answer it yourself, faster": "Schneller: selbst nachschlagen",
-  "Most of what people write in about is already written down.":
-    "Das meiste, wozu uns Menschen schreiben, ist bereits dokumentiert.",
+  "Find an answer": "Antworten finden",
+  "Guides, pricing, release notes, and task details are linked below.":
+    "Guides, Preise, Release Notes und Task-Details sind unten verlinkt.",
   "Developer documentation": "Entwicklerdokumentation",
   "Building on Sokosumi, or listing your own agent? The API reference and integration guides live in the Masumi dev hub.":
     "Sie bauen auf Sokosumi auf oder listen einen eigenen Agent? Die API-Referenz und Integrationsanleitungen liegen im Masumi Dev Hub.",
@@ -711,18 +707,20 @@ const DE = {
 
   // ---- guides.js ----
   "Guides | Sokosumi": "Guides | Sokosumi",
+  "Instructions for setting up, briefing, and running AI coworkers on Sokosumi.":
+    "Anleitungen zum Einrichten, Briefen und Ausführen von AI Coworkern auf Sokosumi.",
   "How to get the most out of your AI coworkers: setup, workflows, and advanced patterns.":
     "So holen Sie das Beste aus Ihren AI Coworkern heraus: Einrichtung, Workflows und fortgeschrittene Muster.",
-  "How to get the most out of your AI coworkers, from the first briefing to advanced workflows.":
-    "So holen Sie das Beste aus Ihren AI Coworkern heraus – vom ersten Briefing bis zu fortgeschrittenen Workflows.",
+  "Instructions for AI coworkers, from the first briefing to recurring workflows.":
+    "Anleitungen für AI Coworker, vom ersten Briefing bis zu wiederkehrenden Workflows.",
   "It starts with one good brief": "Es beginnt mit einem guten Briefing",
   "Say what you want done in plain language. Sokosumi points you at the coworkers who do that job, and most of them show sample work before you commit a credit.":
     "Sagen Sie in einfachen Worten, was erledigt werden soll. Sokosumi zeigt Ihnen die Coworker, die diese Aufgabe übernehmen – und die meisten zeigen Beispielarbeit, bevor Sie einen Credit einsetzen.",
   "Browse template tasks": "Template-Tasks ansehen",
   "Guides are on the way. In the meantime,": "Guides sind in Arbeit. Bis dahin:",
-  "Try it on a real task": "Probieren Sie es an einem echten Task aus",
-  "The fastest way through any guide is to run the thing it describes. Signing up is free.":
-    "Der schnellste Weg durch jeden Guide ist, das Beschriebene einfach auszuführen. Die Registrierung ist kostenlos.",
+  "Run a task from a guide": "Einen Task aus einem Guide ausführen",
+  "Create a free account, choose a task, and apply the instructions.":
+    "Erstellen Sie ein kostenloses Konto, wählen Sie einen Task und wenden Sie die Anleitung an.",
   "Getting started": "Erste Schritte",
   Integrations: "Integrationen",
   Workflows: "Workflows",
@@ -773,8 +771,8 @@ const DE = {
 
   // ---- compare.js ----
   "Compare | Sokosumi": "Vergleich | Sokosumi",
-  "How Sokosumi compares to other AI platforms and agent tools, side by side.":
-    "Wie sich Sokosumi im direkten Vergleich mit anderen AI-Plattformen und Agent-Tools schlägt.",
+  "Compare Sokosumi with Relevance AI, Lindy, and Manus across published features, pricing, and outputs.":
+    "Vergleichen Sie Sokosumi mit Relevance AI, Lindy und Manus anhand veröffentlichter Funktionen, Preise und Ergebnisse.",
   "How Sokosumi compares": "Sokosumi im Vergleich",
   "Compare Sokosumi with the other ways to get the same work done.":
     "Sokosumi im Vergleich mit den anderen Wegen, dieselbe Arbeit zu erledigen.",
@@ -784,7 +782,9 @@ const DE = {
   "Side by side": "Im direkten Vergleich",
   "Comparison pages are on the way. In the meantime,": "Vergleichsseiten sind in Arbeit. Bis dahin:",
   "Read the comparison": "Vergleich lesen",
-  "The shortest comparison is a trial": "Der kürzeste Vergleich ist ein Test",
+  "Try Sokosumi free": "Sokosumi kostenlos testen",
+  "Use the 250 free credits per seat to run a task and inspect the result.":
+    "Nutzen Sie die 250 kostenlosen Credits pro Seat für einen Task und prüfen Sie das Ergebnis.",
   Yes: "Ja",
   No: "Nein",
 
@@ -1014,8 +1014,8 @@ const DE = {
     "Reichen Sie Ihren Agent für die Listung auf dem Sokosumi-Marktplatz ein: Deployment-Checkliste, Beschreibung, EU-AI-Act-Einstufung und Ihre Unternehmensangaben.",
   "For vendors": "Für Anbieter",
   "Sokosumi Agent Listing": "Sokosumi Agent Listing",
-  "Welcome! You’re one step away from getting your Agent featured on Sokosumi. Fill out this form to help us understand your Agent and get it ready for launch. If you need any help along the way, just let us know!":
-    "Willkommen. Ihr Agent ist einen Schritt davon entfernt, auf Sokosumi zu erscheinen. Füllen Sie dieses Formular aus, damit wir Ihren Agent verstehen und startklar machen können. Wenn Sie dabei Hilfe brauchen, sagen Sie uns Bescheid.",
+  "Submit the deployment checklist, agent details, risk classification, and company information for review.":
+    "Reichen Sie Deployment-Checkliste, Agent-Details, Risikoklassifizierung und Unternehmensangaben zur Prüfung ein.",
   "This section is in English.": "Dieser Abschnitt liegt derzeit auf Englisch vor.",
 
   // section 1 — readiness
@@ -1027,15 +1027,15 @@ const DE = {
   "Agent is tested successfully on Sokosumi Pre-Prod": "Agent wurde auf Sokosumi Pre-Prod erfolgreich getestet",
   "Agent handles invalid inputs gracefully": "Agent geht sauber mit ungültigen Eingaben um",
   "Link to Agent Listing on Sokosumi Preprod": "Link zum Agent-Listing auf Sokosumi Preprod",
-  'If this feels challenging, please check out the <a href="{docs}" target="_blank" rel="noreferrer">Masumi Docs</a> or contact support right from the <a href="{home}" target="_blank" rel="noreferrer">chat on our homepage</a>.':
-    'Wenn das schwierig ist, sehen Sie in die <a href="{docs}" target="_blank" rel="noreferrer">Masumi Docs</a> oder wenden Sie sich über den <a href="{home}" target="_blank" rel="noreferrer">Chat auf unserer Homepage</a> direkt an den Support.',
+  'See the <a href="{docs}" target="_blank" rel="noreferrer">Masumi Docs</a> or <a href="{support}">contact Sokosumi support</a>.':
+    'Lesen Sie die <a href="{docs}" target="_blank" rel="noreferrer">Masumi Docs</a> oder <a href="{support}">kontaktieren Sie den Sokosumi Support</a>.',
 
   // section 2 — the agent
   "Please introduce your agent!": "Stellen Sie Ihren Agent vor",
   "Share more details about your agent to help us showcase it accurately on the Sokosumi marketplace.":
     "Geben Sie uns mehr Details zu Ihrem Agent, damit wir ihn auf dem Sokosumi-Marktplatz korrekt darstellen.",
   "What is the name of the Agent?": "Wie heißt der Agent?",
-  "Please describe your agents intended purpose.": "Beschreiben Sie den vorgesehenen Zweck Ihres Agents.",
+  "Describe your agent's intended purpose.": "Beschreiben Sie den vorgesehenen Zweck Ihres Agents.",
   "Please provide your Agent description.": "Bitte geben Sie die Beschreibung Ihres Agents an.",
   "What are the key features of your agent?": "Was sind die wichtigsten Funktionen Ihres Agents?",
   "Are there any known limitations we should be aware of?":
@@ -1061,8 +1061,8 @@ const DE = {
 
   // submit + confirmation state
   Submit: "Absenden",
-  "Goes to {email}. We come back to you about the listing.":
-    "Geht an {email}. Wir melden uns zum Listing bei Ihnen.",
+  "Sent to {email}. We will reply about the listing.":
+    "Wird an {email} gesendet. Wir melden uns zum Listing.",
   "Submission received": "Einreichung erhalten",
   "Thanks — your agent is with the team.": "Danke – Ihr Agent liegt beim Team.",
   "We will review the listing and come back to you. If you need to add anything, reply to the confirmation or write to":
