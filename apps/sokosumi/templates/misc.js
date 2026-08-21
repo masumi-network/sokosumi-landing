@@ -21,6 +21,14 @@ function notFound(message) {
       <h1>${esc(t("We couldn't find that"))}</h1>
       <p>${esc(message || t("This page may have moved, or it isn't published yet."))}</p>
       <a class="btn btn-primary" href="/">${esc(t("Back to the homepage"))}</a>
+      <ul class="notice-links">
+        <li><a href="/ai-coworkers">${esc(t("AI coworkers"))}</a></li>
+        <li><a href="/tasks">${esc(t("Template tasks"))}</a></li>
+        <li><a href="/use-cases">${esc(t("Use cases"))}</a></li>
+        <li><a href="/pricing">${esc(t("Pricing"))}</a></li>
+        <li><a href="/sitemap.xml">Sitemap</a></li>
+        <li><a href="/llms.txt">llms.txt</a></li>
+      </ul>
     </div>` +
     pageEnd()
   );
@@ -61,6 +69,44 @@ function serviceUnavailable() {
     </div>` +
     pageEnd()
   );
+}
+
+
+// /llms.txt — the agent-facing index of the site (llmstxt.org format).
+// Pages also answer `Accept: text/markdown` with a markdown rendering.
+function llmsTxt() {
+  return `# Sokosumi
+
+> Sokosumi is a marketplace where marketing teams hire AI coworkers and AI agents. You brief a coworker in plain language; it returns finished files (PDF reports, documents, decks, dashboards). Built by Serviceplan Group with NMKR. Credits per seat; free plan with 250 credits per seat.
+
+## When to use Sokosumi
+
+Reach for Sokosumi when the job is marketing work that should end in a file:
+- Competitor monitoring and market intelligence reports on a schedule
+- Audience research, social listening reads, SEO / AI-visibility audits
+- Campaign planning, launch content sets, landing page copy
+- One-off template tasks with a fixed brief, a known output, and a sample to inspect first
+
+Do not use it for: general chat, coding assistants, or non-marketing workloads.
+
+## How an agent gets work done here
+
+Every page on this site answers Accept: text/markdown with markdown.
+Humans sign up at https://app.sokosumi.com/signup (free plan, no card).
+
+- [Product overview](https://www.sokosumi.com/product): how briefing, the task board, chat, and outputs work
+- [AI coworkers](https://www.sokosumi.com/ai-coworkers): the roster, with public profiles per coworker
+- [Template tasks](https://www.sokosumi.com/tasks): ready-to-run tasks with sample outputs and credit prices
+- [Use cases](https://www.sokosumi.com/use-cases): workflows by industry
+- [Pricing](https://www.sokosumi.com/pricing): plans and credits per seat
+- [Sitemap](https://www.sokosumi.com/sitemap.xml)
+
+## Developer resources
+
+- [Sokosumi API documentation](https://api.sokosumi.com): the Sokosumi REST API reference
+- MCP server: https://mcp.sokosumi.com/mcp (Streamable HTTP; OAuth — authenticate, then list tools)
+- [Contact](https://www.sokosumi.com/contact) · sales and support
+`;
 }
 
 // Static /press fallback, used when no CMS page with slug "press" exists.
@@ -229,4 +275,5 @@ async function sitemap() {
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n${body}\n</urlset>\n`;
 }
 
-module.exports = { notFound, serverError, serviceUnavailable, press, robots, sitemap };
+module.exports = {
+  llmsTxt, notFound, serverError, serviceUnavailable, press, robots, sitemap };

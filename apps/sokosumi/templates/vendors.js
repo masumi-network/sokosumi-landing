@@ -75,7 +75,9 @@ async function index(ctx) {
         taskCount: offers.filter((o) => keys.has(o.agentSlug)).length,
       };
     })
-    .filter((v) => v.curatedCount + v.agentCount > 0 || v.description)
+    // A vendor with nothing listed is not shown — an empty storefront reads
+    // as broken, and inactive/placeholder records never render.
+    .filter((v) => v.curatedCount + v.agentCount > 0)
     // CMS `order` first, so an editor can pin a vendor to the top. Everyone
     // still on the default (100) sorts by substance: curated roster, then
     // marketplace footprint.

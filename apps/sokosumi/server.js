@@ -557,6 +557,57 @@ const assetsDir = path.join(root, "assets");
 
   // The single exit point for every non-streamed response: applies the base
   // headers, compresses when it is worth it, and honours HEAD.
+  // ---- markdown content negotiation (acceptmarkdown.com) ------------------
+  // An agent that sends `Accept: text/markdown` gets the page as markdown,
+  // converted from the same HTML a browser would get. Every negotiated
+  // response varies on Accept so a CDN never serves the wrong variant.
+  function wantsMarkdown(req) {
+    const a = String(req.headers.accept || "");
+    if (!a.includes("text/markdown")) return false;
+    // If html is also acceptable, markdown wins only when listed first or html absent.
+    const md = a.indexOf("text/markdown");
+    const html = a.indexOf("text/html");
+    return html === -1 || md < html;
+  }
+
+  function htmlToMarkdown(html) {
+    let s = String(html);
+    const title = (/<title>([^<]*)<\/title>/.exec(s) || [])[1] || "";
+    const canonical = (/<link rel="canonical" href="([^"]+)"/.exec(s) || [])[1] || "";
+    // Prefer the page's main content; fall back to body.
+    const main = /<main[^>]*>([\s\S]*?)<\/main>/.exec(s);
+    s = main ? main[1] : ((/<body[^>]*>([\s\S]*?)<\/body>/.exec(s) || [null, s])[1]);
+    s = s
+      .replace(/<script[\s\S]*?<\/script>/gi, "")
+      .replace(/<style[\s\S]*?<\/style>/gi, "")
+      .replace(/<svg[\s\S]*?<\/svg>/gi, "")
+      .replace(/<noscript[\s\S]*?<\/noscript>/gi, "")
+      .replace(/<!--[\s\S]*?-->/g, "");
+    const inner = (t) => t.replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim();
+    s = s
+      .replace(/<h1[^>]*>([\s\S]*?)<\/h1>/gi, (m, t) => `\n# ${inner(t)}\n`)
+      .replace(/<h2[^>]*>([\s\S]*?)<\/h2>/gi, (m, t) => `\n## ${inner(t)}\n`)
+      .replace(/<h3[^>]*>([\s\S]*?)<\/h3>/gi, (m, t) => `\n### ${inner(t)}\n`)
+      .replace(/<h4[^>]*>([\s\S]*?)<\/h4>/gi, (m, t) => `\n#### ${inner(t)}\n`)
+      .replace(/<li[^>]*>([\s\S]*?)<\/li>/gi, (m, t) => `\n- ${inner(t)}`)
+      .replace(/<a\s[^>]*href="([^"#][^"]*)"[^>]*>([\s\S]*?)<\/a>/gi, (m, href, t) => {
+        const label = inner(t);
+        if (!label) return "";
+        const abs = href.startsWith("http") ? href : `https://www.sokosumi.com${href.startsWith("/") ? href : "/" + href}`;
+        return `[${label}](${abs})`;
+      })
+      .replace(/<(?:p|blockquote|figcaption)[^>]*>([\s\S]*?)<\/(?:p|blockquote|figcaption)>/gi, (m, t) => `\n${inner(t)}\n`)
+      .replace(/<(?:br|hr)\s*\/?>(?!\n)/gi, "\n")
+      .replace(/<[^>]+>/g, " ");
+    s = s
+      .replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">")
+      .replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&nbsp;/g, " ")
+      .replace(/&mdash;/g, "—").replace(/&ldquo;/g, "\u201c").replace(/&rdquo;/g, "\u201d");
+    s = s.replace(/[ \t]+/g, " ").replace(/ ?\n ?/g, "\n").replace(/\n{3,}/g, "\n\n").trim();
+    const head = [title ? `# ${title}` : "", canonical ? `<${canonical}>` : ""].filter(Boolean).join("\n");
+    return (head ? head + "\n\n" : "") + s + "\n";
+  }
+
   function send(req, res, status, headers, body) {
     const head = { ...BASE_HEADERS, ...headers };
     let payload = Buffer.isBuffer(body) ? body : Buffer.from(body ?? "", "utf8");
@@ -980,6 +1031,9 @@ const assetsDir = path.join(root, "assets");
           return back({ sent: "1" });
         }
 
+        if (urlPath === "/llms.txt") {
+          return send(req, res, 200, { "Content-Type": "text/markdown; charset=utf-8", "Cache-Control": "public, max-age=0, s-maxage=3600, must-revalidate" }, misc.llmsTxt());
+        }
         if (urlPath === "/robots.txt") {
           return send(req, res, 200, { "Content-Type": "text/plain; charset=utf-8", "Cache-Control": "public, max-age=3600" }, misc.robots());
         }
@@ -1002,7 +1056,14 @@ const assetsDir = path.join(root, "assets");
           const cache = preview || code === 404 ? "no-store" : "public, max-age=0, s-maxage=120, must-revalidate";
           // localizeHtml: on /de pages, root-relative links gain the /de
           // prefix; on every page the language switcher's /en marker collapses.
-          send(req, res, code || 200, { "Content-Type": "text/html; charset=utf-8", "Cache-Control": cache }, versionAssets(i18n.localizeHtml(html)));
+          const finalHtml = versionAssets(i18n.localizeHtml(html));
+          // Pages negotiate on Accept (text/markdown for agents), so every
+          // page response varies on it — otherwise a shared cache can hand
+          // the HTML variant to an agent that asked for markdown.
+          if (wantsMarkdown(req)) {
+            return send(req, res, code || 200, { "Content-Type": "text/markdown; charset=utf-8", "Cache-Control": cache, Vary: "Accept" }, htmlToMarkdown(finalHtml));
+          }
+          send(req, res, code || 200, { "Content-Type": "text/html; charset=utf-8", "Cache-Control": cache, Vary: "Accept" }, finalHtml);
         };
 
         // Static assets first (they all live under /assets or have extensions).

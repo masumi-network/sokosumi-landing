@@ -254,6 +254,8 @@ const DE = {
   "Something went wrong": "Etwas ist schiefgelaufen",
   "We hit a snag rendering this page. Try again in a moment.":
     "Beim Aufbau dieser Seite ist etwas schiefgelaufen. Versuchen Sie es gleich noch einmal.",
+  "About": "Über uns",
+  "API docs": "API-Dokumentation",
   "Press | Sokosumi": "Presse | Sokosumi",
   "Press information and media contact for Sokosumi, the AI coworker marketplace by Serviceplan Group.":
     "Presseinformationen und Medienkontakt für Sokosumi, den AI-Coworker-Marktplatz der Serviceplan Group.",
