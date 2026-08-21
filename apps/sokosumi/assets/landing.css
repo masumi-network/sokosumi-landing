@@ -606,10 +606,10 @@ section.band-dark {
 .hero.is-aurora .hero-social,
 .hero.is-aurora .hero-note,
 .hero.is-aurora .hero-note .no-card { text-shadow: none; }
-/* The headline is ink; only the rotator word carries the accent, matching the dot. */
+/* The whole headline is ink — rotator word and dot included. */
 .hero.is-aurora .hero-title { color: var(--ink); }
-.hero.is-aurora .hero-title .rot-word { color: var(--primary); }
-.hero.is-aurora .hero-title .hero-dot { color: var(--primary); text-shadow: none; }
+.hero.is-aurora .hero-title .rot-word { color: var(--ink); }
+.hero.is-aurora .hero-title .hero-dot { color: var(--ink); text-shadow: none; }
 .hero.is-aurora .hero-sub { color: var(--muted-foreground); }
 .hero.is-aurora .hero-note,
 .hero.is-aurora .hero-note .no-card,
