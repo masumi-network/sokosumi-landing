@@ -70,7 +70,7 @@ function sentState() {
     <h1>${esc(t("Thanks, that is on its way."))}</h1>
     <p>${esc(t("We have your request and will come back to you within one working day. If it is urgent, write to"))} <a href="mailto:info@sokosumi.com">info@sokosumi.com</a> ${esc(t("and it reaches the same inbox."))}</p>
     <div class="form-actions" style="margin-top:8px">
-      <a class="btn btn-primary" href="${APP}">${esc(t("Start a task in the app"))}</a>
+      <a class="btn btn-primary" href="${APP}" data-analytics="sign_up_click" data-analytics-location="sales_success">${esc(t("Start a task in the app"))}</a>
       <a class="btn btn-outline" href="/ai-coworkers">${esc(t("Meet the coworkers"))}</a>
       ${shell.NO_CARD}
     </div>

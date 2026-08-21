@@ -603,7 +603,13 @@ function ctaBand(b) {
         ${ctaFaces(b.seed != null ? b.seed : heading.length, 4)}
       </div>
       <div class="cta-action">
-        <a class="btn btn-primary btn-lg" href="${attr(href)}"${isSignupHref(href) ? ' data-analytics="sign_up_click" data-analytics-location="cta_band"' : ""}>${esc(label)}</a>
+        <a class="btn btn-primary btn-lg" href="${attr(href)}"${
+          isSignupHref(href)
+            ? ' data-analytics="sign_up_click" data-analytics-location="cta_band"'
+            : href === SALES_URL
+              ? ' data-analytics="talk_to_sales_click" data-analytics-location="cta_band"'
+              : ""
+        }>${esc(label)}</a>
         ${isSignupHref(href) ? noCard() : ""}
       </div>
     </div></section>`;

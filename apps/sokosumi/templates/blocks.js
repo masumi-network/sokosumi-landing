@@ -23,7 +23,13 @@ function renamedHref(href) {
 
 function ctaLink(label, href, cls) {
   if (!label || !href) return "";
-  return `<a class="btn ${cls || "btn-primary"}" href="${attr(renamedHref(href))}">${esc(label)}</a>`;
+  // The same funnel events the hand-built pages emit. GTM already has
+  // triggers for both, so a CMS-composed CTA counts like any other.
+  const h = renamedHref(href);
+  let tag = "";
+  if (/^https:\/\/app\.sokosumi\.com(\/|$)/.test(h)) tag = ' data-analytics="sign_up_click" data-analytics-location="cms_block"';
+  else if (h === "/contact/sales" || h === "/talk-to-sales") tag = ' data-analytics="talk_to_sales_click" data-analytics-location="cms_block"';
+  return `<a class="btn ${cls || "btn-primary"}" href="${attr(h)}"${tag}>${esc(label)}</a>`;
 }
 
 function blkHead(block) {

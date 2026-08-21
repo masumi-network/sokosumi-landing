@@ -329,7 +329,7 @@ async function profile(ctx) {
         ${profileTags(c)}
         ${profileStats(c)}
         ${c.description ? `<p class="cw-desc">${esc(c.description)}</p>` : ""}
-        <a class="btn btn-primary btn-lg cw-cta" href="${attr(tryUrl(c))}">${esc(t("Try {name} on Sokosumi", { name: c.name }))}</a>
+        <a class="btn btn-primary btn-lg cw-cta" href="${attr(tryUrl(c))}" data-analytics="sign_up_click" data-analytics-location="coworker_profile">${esc(t("Try {name} on Sokosumi", { name: c.name }))}</a>
         ${shell.NO_CARD}
       </div>
     </div>

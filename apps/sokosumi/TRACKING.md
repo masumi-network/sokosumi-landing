@@ -72,8 +72,8 @@ GTM from the URL (`/pricing`) — also no code.
 
 | Event | Fires when… | How |
 |-------|-------------|-----|
-| `sign_up_click` `{location}` | a "Sign Up" / "Get started" CTA is clicked | `data-analytics="sign_up_click"` (hero, nav, mobile nav, CTA band, use-case hero/mid) |
-| `talk_to_sales_click` `{location}` | a "Talk to Sales" CTA is clicked | `data-analytics="talk_to_sales_click"` (hero, nav, mobile nav, use-case hero) |
+| `sign_up_click` `{location}` | a "Sign Up" / "Get started" / "Try …" CTA is clicked | `data-analytics="sign_up_click"` (hero, nav, mobile nav, CTA band, use-case hero/mid, pricing plan, product/surface hero, coworker profile, task detail, CMS blocks, sales/support success) |
+| `talk_to_sales_click` `{location}` | a "Talk to Sales" CTA is clicked | `data-analytics="talk_to_sales_click"` (hero, nav, mobile nav, use-case hero, pricing plan, CTA bands and CMS blocks that point at sales) |
 | `generate_lead` `{form_name}` | a lead form is **accepted by the server** | `data-analytics-on="load"` on the success state — `sales_inquiry`, `support_request`, `agent_listing` |
 | `consent_status` `{consent_analytics, consent_marketing}` | cookie choice made | `assets/consent.js` |
 
@@ -106,6 +106,15 @@ as production — over one 7-day window the preview host sent 366 pageviews
 against production's 156, plus `localhost` and `127.0.0.1` — which makes every
 report wrong until someone remembers to filter. Consent Mode defaults still run
 everywhere; only the container is withheld.
+
+## Vercel Web Analytics
+
+Every page also loads `/_vercel/insights/script.js` for Vercel Web Analytics.
+As of 2026-08-21 that URL 404s on production, which means **Web Analytics is
+not enabled on the Vercel project** (`masumi/sokosumi-landing`) — the script
+tag is present but nothing collects. Enable it in the Vercel dashboard
+(Project -> Analytics) or remove the tag; until then the 404 is the only
+effect.
 
 ## The GTM container
 

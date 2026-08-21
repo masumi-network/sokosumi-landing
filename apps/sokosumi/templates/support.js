@@ -104,7 +104,7 @@ function sentState() {
     <h1>${esc(t("Thanks — that is with support."))}</h1>
     <p>${esc(t("We have it and will come back to you within one working day. If it is urgent, write to"))} <a href="mailto:${attr(leads.SUPPORT_TO)}">${esc(leads.SUPPORT_TO)}</a> ${esc(t("and it reaches the same inbox."))}</p>
     <div class="form-actions" style="margin-top:8px">
-      <a class="btn btn-primary" href="${APP}">${esc(t("Open the app"))}</a>
+      <a class="btn btn-primary" href="${APP}" data-analytics="sign_up_click" data-analytics-location="support_success">${esc(t("Open the app"))}</a>
       <a class="btn btn-outline" href="/guides">${esc(t("Read the guides"))}</a>
     </div>
   </div>`;

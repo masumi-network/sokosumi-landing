@@ -325,7 +325,7 @@ async function detail(ctx) {
           </a>
         </div>
         <div class="task-actions">
-          <a class="btn btn-primary btn-lg" href="${APP_SIGNUP}">${esc(t("Try this task on Sokosumi"))}</a>
+          <a class="btn btn-primary btn-lg" href="${APP_SIGNUP}" data-analytics="sign_up_click" data-analytics-location="task_detail">${esc(t("Try this task on Sokosumi"))}</a>
           ${openUrl ? `<a class="btn btn-outline" href="${attr(openUrl.url)}" target="_blank" rel="noreferrer">${esc(t("Open sample output"))} ${icon("arrow-up-right", 14)}</a>` : ""}
           ${shell.NO_CARD}
         </div>
