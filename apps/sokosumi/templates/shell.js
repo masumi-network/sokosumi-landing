@@ -459,7 +459,7 @@ const SHOTS = {
   roster: {
     src: "/assets/shot-roster.webp",
     alt: "The Sokosumi roster: five named AI coworkers from Serviceplan, with Elena's profile open beside them",
-    caption: "Your coworkers, in one roster. Each has a name and a role; profiles show the models a coworker runs on and the region it runs in.",
+    caption: "Your coworkers, in one roster. Each has a name and a role. Profiles show models and hosting when the vendor lists them.",
   },
   brief: {
     src: "/assets/shot-brief.webp",
@@ -589,7 +589,7 @@ function isSignupHref(href) {
 }
 
 function ctaBand(b) {
-  const heading = b.heading || t("Put an AI coworker on it");
+  const heading = b.heading || t("Give a coworker the first task");
   const label = b.ctaLabel || t("Start free");
   const href = b.ctaHref || APP_SIGNUP;
   // Two blocks, always: copy on the left, action on the right. The old markup
@@ -686,7 +686,7 @@ function agentsPanel() {
       <div class="nav-panel-body">
         <div class="nav-intro">
           <p class="nav-intro-label">AI Coworkers</p>
-          <p class="nav-intro-desc">${esc(t("Specialist AI agents with a name, a role and a vendor behind them. Brief one like a colleague and get finished work back."))}</p>
+          <p class="nav-intro-desc">${esc(t("Named specialists from marketplace vendors. Brief one like a colleague and get finished work back."))}</p>
           ${navVisualFaces()}
         </div>
         <div class="nav-cols">${cols}</div>
@@ -798,7 +798,7 @@ function useCasesPanel() {
       <div class="nav-panel-body">
         <div class="nav-intro">
           <p class="nav-intro-label">${esc(t("Use cases"))}</p>
-          <p class="nav-intro-desc">${esc(t("Real jobs, start to finished file, organized by industry. Pick one and the coworkers behind it already know the brief."))}</p>
+          <p class="nav-intro-desc">${esc(t("Real jobs, start to finished file, organized by industry. Each one lists the coworkers and tasks that run it."))}</p>
           ${navVisual("shot nav-visual-ucphoto", `<img src="/assets/use-case-img/launch-content-engine.webp" alt="" width="1152" height="640" loading="lazy" decoding="async" />`)}
         </div>
         <div class="nav-jobs-col">
@@ -942,7 +942,7 @@ function footerHtml() {
             <a href="/" aria-label="Sokosumi">
               <img class="foot-mark" src="/assets/sokosumi-wordmark.svg" alt="Sokosumi" width="121" height="16" />
             </a>
-            <p class="foot-tag">${esc(t("The marketplace where you hire AI coworkers for real marketing work — research, social, planning, and writing, delivered as finished files."))}</p>
+            <p class="foot-tag">${esc(t("Hire AI coworkers for marketing work that comes back as finished files."))}</p>
           </div>
           <nav class="foot-cols" aria-label="Footer">
             <div class="foot-col">

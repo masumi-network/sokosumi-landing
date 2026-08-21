@@ -65,20 +65,20 @@ function pricingLd() {
 const PLANS = [
   {
     name: "Free",
-    tagline: "Getting started to work with Marketing Agents.",
+    tagline: "Try the marketplace on free credits.",
     price: "Free",
     credits: "250 credits per seat",
   },
   {
     name: "Starter",
-    tagline: "For freelancers and micro companies.",
+    tagline: "For freelancers and very small teams.",
     price: "€25",
     per: "per month",
     credits: "1,500 credits per seat",
   },
   {
     name: "Standard",
-    tagline: "Full set of marketing agents for small companies.",
+    tagline: "For small teams that run work every week.",
     price: "€75",
     per: "per month",
     credits: "5,000 credits per seat",
@@ -86,7 +86,7 @@ const PLANS = [
   },
   {
     name: "Pro",
-    tagline: "Get more access to our Marketing Agents and Services.",
+    tagline: "For teams that run a lot of work.",
     price: "€200",
     per: "per month",
     credits: "15,000 credits per seat",
@@ -95,7 +95,7 @@ const PLANS = [
 
 const ENTERPRISE = {
   name: "Enterprise",
-  tagline: "Custom plan for organizations with tailored seats, credits, and support.",
+  tagline: "Seats, credits, and support on your terms.",
   price: "Custom",
   per: "per month",
 };
@@ -227,7 +227,7 @@ async function render(ctx) {
     `<div class="page-head" data-reveal>
       <span class="eyebrow">${esc(t("Pricing"))}</span>
       <h1>${esc(t("Plans that scale with the work"))}</h1>
-      <p class="sub">${esc(t("Every plan includes credits per seat. Start free, move up when your team runs more work, or talk to us about a tailored plan."))}</p>
+      <p class="sub">${esc(t("Credits per seat on every plan. Start free; upgrade when you run more work."))}</p>
     </div>
 
     <section class="page-section flush">
@@ -239,10 +239,10 @@ async function render(ctx) {
       <script src="/assets/pricing.js" defer></script>
     </section>` +
     shell.logoRow() +
-    shell.quoteSection(shell.pickQuote(testimonials, 0), { heading: t("Teams already on a plan") }) +
+    shell.quoteSection(shell.pickQuote(testimonials, 0), { heading: t("What users say about the work") }) +
     shell.ctaBand({
       heading: t("Get started on the free plan"),
-      subheading: t("250 credits per seat, no card, and every agent on the marketplace to try them on."),
+      subheading: t("250 credits per seat. No credit card required."),
       ctaLabel: t("Get started"),
       ctaHref: APP_SIGNUP,
       seed: 5,

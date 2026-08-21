@@ -227,7 +227,7 @@ function onIdle(fn) {
 
   function setOpen(open) {
     btn.setAttribute("aria-expanded", open ? "true" : "false");
-    btn.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+    btn.setAttribute("aria-label", open ? (document.documentElement.lang === "de" ? "Menü schließen" : "Close menu") : (document.documentElement.lang === "de" ? "Menü öffnen" : "Open menu"));
     panel.hidden = !open;
     // Bar state first: pinning body zeroes html's scroll position for a
     // moment, and the hero observer must already see .nav-open when that

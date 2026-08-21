@@ -67,7 +67,7 @@ function form(values, error) {
 function sentState() {
   return `<div class="notice" data-reveal data-analytics="generate_lead" data-analytics-on="load" data-analytics-form-name="sales_inquiry">
     <span class="eyebrow">${esc(t("Request received"))}</span>
-    <h1>${esc(t("Thanks, that is on its way."))}</h1>
+    <h1>${esc(t("Request received."))}</h1>
     <p>${esc(t("We have your request and will come back to you within one working day. If it is urgent, write to"))} <a href="mailto:info@sokosumi.com">info@sokosumi.com</a> ${esc(t("and it reaches the same inbox."))}</p>
     <div class="form-actions" style="margin-top:8px">
       <a class="btn btn-primary" href="${APP}" data-analytics="sign_up_click" data-analytics-location="sales_success">${esc(t("Start a task in the app"))}</a>
@@ -95,7 +95,7 @@ function render(ctx) {
     : `<div class="page-head" data-reveal>
         <span class="eyebrow">${esc(t("Talk to Sales"))}</span>
         <h1>${esc(t("Put AI coworkers to work in your team"))}</h1>
-        <p class="sub">${esc(t("Tell us what you want to get done and we will show you exactly how Sokosumi handles it. Book a walkthrough, or just ask your questions and we will answer by email."))}</p>
+        <p class="sub">${esc(t("Tell us what you want to get done. Book a walkthrough, or ask your questions and we will answer by email."))}</p>
       </div>
       <div class="lead-layout">
         ${form(

@@ -31,16 +31,6 @@ function placeholderLayout(name) {
       secondaryCtaHref: shell.SALES_URL,
     },
     {
-      blockType: "stats",
-      heading: "At a glance",
-      items: [
-        { value: "0 → 1 task", label: "Time to first result: minutes, from a template task" },
-        { value: "14+", label: "Named coworkers with public profiles" },
-        { value: "Files back", label: "Reports, decks, dashboards — not transcripts" },
-        { value: "EU-hosted", label: "European hosting and data residency" },
-      ],
-    },
-    {
       blockType: "comparisonTable",
       heading: "Side by side",
       subheading: `What you get out of the box. ${name} cells are placeholders — verified comparison coming.`,
@@ -144,7 +134,7 @@ async function index(ctx) {
     }) +
     `<div class="page-head" data-reveal>
       <h1>${esc(t("How Sokosumi compares"))}</h1>
-      <p class="sub">${esc(t("Honest, side by side looks at Sokosumi and the tools you might be weighing it against."))}</p>
+      <p class="sub">${esc(t("Compare Sokosumi with the other ways to get the same work done."))}</p>
     </div>
     <section class="page-section" data-reveal>
       <div class="${shell.gridCls(list.length)}">${list.map(comparisonCard).join("")}</div>

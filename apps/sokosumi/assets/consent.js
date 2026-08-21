@@ -17,27 +17,34 @@
   var VERSION = 1;
   var MAX_AGE = 60 * 60 * 24 * 182; // ~6 months, then we ask again
 
+  // The banner follows the page language. German pages set <html lang="de">;
+  // everything else gets English.
+  var DE = document.documentElement.lang === "de";
+  function tr(en, de) {
+    return DE ? de : en;
+  }
+
   // Categories. `necessary` is always on and cannot be switched off; the other
   // two map onto Consent Mode signals.
   var CATEGORIES = [
     {
       key: "necessary",
-      title: "Strictly necessary",
-      body: "Required for the site to work — security, and remembering this choice. Always on.",
+      title: tr("Strictly necessary", "Unbedingt erforderlich"),
+      body: tr("Required for the site to work — security, and remembering this choice. Always on.", "Nötig, damit die Website funktioniert – Sicherheit und das Speichern dieser Auswahl. Immer aktiv."),
       locked: true,
     },
     {
       key: "analytics",
-      title: "Analytics",
+      title: tr("Analytics", "Analyse"),
       // Not "anonymous": Google Analytics sets a persistent identifier, so the
       // measurement is pseudonymous. The app says the same thing about its
       // signed-in User-ID — keep the two claims consistent.
-      body: "Usage measurement with Google Analytics, using a pseudonymous ID so we can see which pages help and which do not.",
+      body: tr("Usage measurement with Google Analytics, using a pseudonymous ID so we can see which pages help and which do not.", "Nutzungsmessung mit Google Analytics über eine pseudonyme ID, damit wir sehen, welche Seiten helfen und welche nicht."),
     },
     {
       key: "marketing",
-      title: "Marketing",
-      body: "Lets us measure ad campaigns and reach people who might find Sokosumi useful.",
+      title: tr("Marketing", "Marketing"),
+      body: tr("Lets us measure ad campaigns and reach people who might find Sokosumi useful.", "Erlaubt uns, Werbekampagnen zu messen und Menschen zu erreichen, für die Sokosumi nützlich sein könnte."),
     },
   ];
 
@@ -190,19 +197,19 @@
       return { analytics: toggles.analytics.checked, marketing: toggles.marketing.checked };
     }
 
-    var acceptAll = h("button", { class: "btn btn-primary btn-sm", type: "button" }, ["Accept all"]);
+    var acceptAll = h("button", { class: "btn btn-primary btn-sm", type: "button" }, [tr("Accept all", "Alle akzeptieren")]);
     acceptAll.onclick = function () {
       decide({ analytics: true, marketing: true });
     };
-    var rejectAll = h("button", { class: "btn btn-outline btn-sm", type: "button" }, ["Reject non-essential"]);
+    var rejectAll = h("button", { class: "btn btn-outline btn-sm", type: "button" }, [tr("Reject non-essential", "Nur notwendige")]);
     rejectAll.onclick = function () {
       decide({ analytics: false, marketing: false });
     };
-    var manage = h("button", { class: "cc-link", type: "button" }, ["Manage preferences"]);
+    var manage = h("button", { class: "cc-link", type: "button" }, [tr("Manage preferences", "Einstellungen anpassen")]);
     manage.onclick = function () {
       render(true);
     };
-    var save = h("button", { class: "btn btn-outline btn-sm", type: "button" }, ["Save choices"]);
+    var save = h("button", { class: "btn btn-outline btn-sm", type: "button" }, [tr("Save choices", "Auswahl speichern")]);
     save.onclick = function () {
       decide(collect());
     };
@@ -211,12 +218,12 @@
       ? [acceptAll, rejectAll, save]
       : [acceptAll, rejectAll, manage];
 
-    root = h("div", { class: "cc-banner", role: "dialog", "aria-label": "Cookie choices", "aria-live": "polite" }, [
+    root = h("div", { class: "cc-banner", role: "dialog", "aria-label": tr("Cookie choices", "Cookie-Auswahl"), "aria-live": "polite" }, [
       h("div", { class: "cc-inner" }, [
         h("div", { class: "cc-copy" }, [
-          h("strong", {}, ["We use cookies"]),
+          h("strong", {}, [tr("We use cookies", "Wir verwenden Cookies")]),
           h("p", {}, [
-            "Necessary cookies keep the site working. With your OK we also use analytics and marketing cookies to improve Sokosumi. See our ",
+            tr("Necessary cookies keep the site working. With your OK we also use analytics and marketing cookies to improve Sokosumi. See our ", "Notwendige Cookies halten die Website am Laufen. Mit Ihrem OK nutzen wir zusätzlich Analyse- und Marketing-Cookies, um Sokosumi zu verbessern. Mehr in unserer "),
           ]),
         ]),
         detail,
@@ -225,7 +232,7 @@
     ]);
     // link into the copy paragraph
     var p = root.querySelector(".cc-copy p");
-    var a = h("a", { href: "/legal/cookie-policy" }, ["Cookie Policy"]);
+    var a = h("a", { href: "/legal/cookie-policy" }, [tr("Cookie Policy", "Cookie-Richtlinie")]);
     p.appendChild(a);
     p.appendChild(document.createTextNode("."));
 

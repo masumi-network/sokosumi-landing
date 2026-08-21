@@ -68,11 +68,11 @@ async function render(ctx) {
         </div>
         <div class="card">
           <h2>${esc(t("Product support"))}</h2>
-          <p>${esc(t("Questions about your account, credits, or a task that did not go as planned. Include the task link if you have one, it speeds things up."))}</p>
+          <p>${esc(t("Questions about your account, credits, or a task that did not go as planned. Include the task link if you have one."))}</p>
           <div style="margin-top:auto;padding-top:10px">
             <a class="btn btn-outline" href="${shell.SUPPORT_URL}">${esc(t("Go to Support"))}</a>
           </div>
-          <p class="muted" style="font-size:12.5px">${esc(t("In a hurry? Write straight to"))} <a href="${SUPPORT_MAILTO}" style="text-decoration:underline">${esc(t("support"))}</a>${esc(t(", or open"))} <a href="${APP}" style="text-decoration:underline">${esc(t("the app"))}</a> ${esc(t("— most answers are one click away there."))}</p>
+          <p class="muted" style="font-size:12.5px">${esc(t("In a hurry? Write straight to"))} <a href="${SUPPORT_MAILTO}" style="text-decoration:underline">${esc(t("support"))}</a>${esc(t(", or open"))} <a href="${APP}" style="text-decoration:underline">${esc(t("the app"))}</a>.</p>
         </div>
       </div>
     </div>
@@ -80,7 +80,7 @@ async function render(ctx) {
       <div class="shot-split">
         <div class="copy">
           <h2>${esc(t("Prefer to look around first?"))}</h2>
-          <p>${esc(t("Every coworker, task, and sample output on the marketplace is public. Nothing here is behind a form."))}</p>
+          <p>${esc(t("Coworker profiles, tasks, and sample outputs are public. Browse before you sign up."))}</p>
         </div>
         ${shell.shotFigure(shell.SHOTS.roster, { caption: false })}
       </div>

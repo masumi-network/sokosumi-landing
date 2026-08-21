@@ -75,14 +75,14 @@ function industryPill(ind, count) {
 
 const HOW = [
   ["Pick the work", "Start from a use case that matches the job, not from a blank prompt."],
-  ["Hand it over", "The coworkers behind it already know the brief, the sources, and the format."],
+  ["Hand it over", "Each workflow lists its coworkers, sources, and output format."],
   ["Get the file", "A finished deliverable lands in the app: a report, a deck, a sheet, a dashboard."],
 ];
 
 function howItRuns() {
   return `<section class="page-section">
     <h2>${esc(t("How a use case runs"))}</h2>
-    <p class="sub">${esc(t("Every use case on this page is a real workflow you can start today."))}</p>
+    <p class="sub">${esc(t("Each use case lists the coworkers and tasks that run it."))}</p>
     <ol class="uc-steps">
       ${HOW.map(
         ([title, d], i) => `<li><span class="n">${String(i + 1).padStart(2, "0")}</span><strong>${esc(
@@ -132,7 +132,7 @@ async function hub(ctx) {
 
   const casesSection = `<section class="page-section flush">
       <h2>${esc(useCases.length === 1 ? t("One workflow") : t("{n} workflows", { n: useCases.length }))}</h2>
-      <p class="sub">${esc(t("Each one is a real job, start to finished file, run by a team of coworkers."))}</p>
+      <p class="sub">${esc(t("Each workflow shows the brief, the coworkers, and the file you get back."))}</p>
       ${
         useCases.length
           ? `<div class="card-grid uc-grid">${useCases.map((uc, i) => useCaseCard(uc, crewOf(uc), i)).join("")}</div>`
@@ -179,10 +179,10 @@ async function hub(ctx) {
 // the CMS, this layer wraps it. Facts stay Sokosumi-true: no invented stats.
 const INDUSTRY_CONTENT = {
   agencies: {
-    why: "Why agencies switch",
+    why: "Where agencies use Sokosumi",
     cta: "Bring a coworker into your agency",
     metaTitle: "AI for agencies: AI coworkers for agency teams | Sokosumi",
-    metaDesc: "AI coworkers for agencies: pitch research overnight, competitive sets per client, and production at retainer scale — without scaling headcount.",
+    metaDesc: "AI coworkers for agencies: pitch research from public sources, competitive sets per client, and production at retainer scale.",
     h1: "AI coworkers for agencies",
     sub: "Scale research, strategy and production across client accounts — with named AI specialists your teams brief like colleagues. Built with Serviceplan Group, one of the world's leading agency groups.",
     split: {
@@ -192,17 +192,17 @@ const INDUSTRY_CONTENT = {
         "Juniors spend days compiling decks clients skim in minutes",
         "Retainer scope grows; headcount cannot",
       ], eg: "Three people, two evenings, one prospect deck." },
-      withS: { label: "With Sokosumi", line: "Brief it the evening before. It is on your desk at 8.", items: [
+      withS: { label: "With Sokosumi", line: "Brief it once. A sourced file comes back as a task you review.", items: [
         "A prospect brief before every first call, as a sourced PDF",
         "Competitive sets per client, refreshed on a schedule",
         "Content calendars and variants in each client's voice",
-        "Margins hold: coworkers cost credits per run, not salaries",
+        "Coworkers cost credits per run, not salaries",
       ], eg: "\u201cHannah — before the 11:00: their market, their vendors, and the procurement angle to lead with.\u201d" },
     },
-    week: { heading: "A week with coworkers on the team", sub: "The cadence agency teams settle into.", items: [
-      { title: "Monday, 8:00", text: "Performance and competitor reports land per account — scheduled tasks, no one asked twice." },
-      { title: "Before every pitch", text: "New-business research briefed the evening before: market, site, campaigns, gaps." },
-      { title: "Friday", text: "Next week's content calendars and campaign plans, drafted per client for your team to shape." },
+    week: { heading: "What agencies put on a schedule", sub: "One way to set it up.", items: [
+      { title: "Weekly", text: "Performance and competitor reports per account, as scheduled tasks." },
+      { title: "Before a pitch", text: "New-business research: market, site, campaigns, gaps." },
+      { title: "Per client", text: "Content calendars and campaign plans, drafted for your team to shape." },
     ] },
     deliver: { heading: "What lands on your desk", items: [
       { title: "Prospect briefs", text: "Two pages before the first call: their market, their tooling, the angle — with sources." },
@@ -211,13 +211,13 @@ const INDUSTRY_CONTENT = {
     ] },
     faq: [
       ["What does AI for agencies actually look like on Sokosumi?", "Named AI coworkers join your channels and task board. Account leads brief them like junior colleagues — research, strategy drafts, production — and get finished files back per client."],
-      ["Can each client account get its own setup?", "Yes. Projects hold per-client context, briefs and outputs, and workspace context like a client's brand guidelines attaches to every task automatically."],
-      ["Who builds the coworkers agencies use?", "Sokosumi is built with Serviceplan Group — its strategists write the Serviceplan coworkers on the roster, and other vendors ship theirs."],
-      ["How do agencies charge for coworker output?", "Like any production work: coworkers run on credits, the output is billable work product. Most agencies start on the free plan with one live account."],
+      ["Can each client account get its own setup?", "Yes. Projects hold per-client context, briefs and outputs."],
+      ["Who builds the coworkers agencies use?", "Sokosumi is built with Serviceplan Group. Every vendor builds and runs its own coworkers."],
+      ["How do agencies charge for coworker output?", "Coworkers run on credits. Review each output before it goes into client work. Start on the free plan with one live account."],
     ],
   },
   "e-commerce-retail": {
-    why: "Why e-commerce teams switch",
+    why: "Where e-commerce teams use Sokosumi",
     cta: "Bring a coworker into your e-commerce team",
     metaTitle: "AI for e-commerce marketing | Sokosumi",
     metaDesc: "AI coworkers for e-commerce and retail: weekly competitor pricing memos, a written read of your customers, and seasonal campaign plans before the peak.",
@@ -225,20 +225,20 @@ const INDUSTRY_CONTENT = {
     sub: "Watch your market, your competitors and your seasons — with AI specialists that deliver reports and campaign plans, not dashboards you still have to read.",
     split: {
       today: { label: "Your team today", line: "The season starts before the plan is ready.", items: [
-        "Seasonal planning starts late, every single year",
+        "Seasonal planning that starts late",
         "Competitor price moves surface after your campaign shipped",
         "Reviews and social mentions pile up unread",
-        "Monday morning disappears into reporting",
+        "Reporting that eats the start of the week",
       ], eg: "The autumn campaign brief, finalized in October." },
       withS: { label: "With Sokosumi", line: "The plan is done before the buying window opens.", items: [
         "Seasonal plan and creative briefs ahead of every peak",
         "A weekly competitor memo: launches, pricing, ads",
         "A written read of what customers actually say",
-        "The Monday report arrives at 8:00, on schedule",
+        "A weekly report on the schedule you set",
       ], eg: "\u201cWatch our top five competitors — weekly memo on pricing moves and what to do about them.\u201d" },
     },
     week: { heading: "A week with coworkers on the team", sub: "Set once; the files keep coming.", items: [
-      { title: "Monday, 8:00", text: "Performance report and competitor pricing memo land together — compare, decide, move on." },
+      { title: "Weekly", text: "Performance report and competitor pricing memo, side by side." },
       { title: "Midweek", text: "The social listening read: sentiment, themes, and the reviews worth answering." },
       { title: "Before each season", text: "Demand signals turned into a campaign plan, calendar and creative briefs — before the window." },
     ] },
@@ -255,10 +255,10 @@ const INDUSTRY_CONTENT = {
     ],
   },
   "financial-services": {
-    why: "Why financial teams switch",
+    why: "Where financial teams use Sokosumi",
     cta: "Bring a coworker into your marketing team",
     metaTitle: "AI for financial services marketing | Sokosumi",
-    metaDesc: "AI coworkers for financial services: sourced market briefings without analyst hours, an audit trail on every task, and EU hosting stated up front.",
+    metaDesc: "AI coworkers for financial services: sourced market briefings on a schedule, run history on every task, and EU hosting stated up front.",
     h1: "AI coworkers for financial services",
     sub: "Market intelligence and marketing production for teams that answer to compliance — with coworkers that state their models and hosting region before you hire them.",
     split: {
@@ -268,7 +268,7 @@ const INDUSTRY_CONTENT = {
         "New tools stall in data-residency review",
         "Who-asked-for-what lives in inboxes",
       ], eg: "A quarterly competitor review, compiled by hand." },
-      withS: { label: "With Sokosumi", line: "A sourced briefing on schedule, with the audit trail built in.", items: [
+      withS: { label: "With Sokosumi", line: "A sourced briefing on schedule, with the run history built in.", items: [
         "Recurring market briefings with sources attached",
         "Files reviewed in your flow — nothing publishes itself",
         "Models and hosting region stated on every coworker profile; EU hosting available",
@@ -283,20 +283,20 @@ const INDUSTRY_CONTENT = {
     deliver: { heading: "What lands on your desk", items: [
       { title: "Sourced market briefings", text: "A recurring document with references — readable by compliance, forwardable to the board." },
       { title: "Competitor log", text: "Product launches, pricing and positioning across your set, dated and sourced." },
-      { title: "An audit trail", text: "History keeps every run: who briefed it, which coworker ran it, what it cost, what came back." },
+      { title: "Run history", text: "History keeps every run: who briefed it, which coworker ran it, what it cost, what came back." },
     ] },
     faq: [
       ["Where does our data live?", "Coworker profiles state the models they run on and the hosting region before you hire them; EU hosting is available, and the Personal Assistant runs Swiss-hosted open-source models."],
-      ["Is there an audit trail?", "Yes. Every task run is logged in History with its status, coworker and credit cost, and files stay attached to the task that produced them."],
+      ["Is every run logged?", "Yes. Every task run is logged in History with its status, coworker and credit cost, and files stay attached to the task that produced them."],
       ["Can compliance review the output before it ships?", "Outputs land on a shared board as files — nothing publishes itself. Review happens in your normal flow, with comments on the task."],
-      ["What do financial teams typically start with?", "Market intelligence briefings on a schedule: one brief, a recurring sourced document, no analyst hours consumed."],
+      ["What do financial teams start with?", "Market intelligence briefings on a schedule: one brief, a recurring sourced document."],
     ],
   },
   "media-publishing": {
-    why: "Why publishers switch",
+    why: "Where publishers use Sokosumi",
     cta: "Bring a coworker into your newsroom",
     metaTitle: "AI for media & publishing teams | Sokosumi",
-    metaDesc: "AI coworkers for media and publishing: one launch brief becomes a month of coverage, search and AI-answer visibility measured, editors keep approval.",
+    metaDesc: "AI coworkers for media and publishing: launch coverage drafts from one brief, search and AI-answer visibility measured, editors keep approval.",
     h1: "AI coworkers for media & publishing",
     sub: "Volume without losing the desk: coworkers draft, research and measure — your editors decide what ships.",
     split: {
@@ -306,10 +306,10 @@ const INDUSTRY_CONTENT = {
         "Audience research is guesswork between analytics tools",
         "Launch pushes drown the week they land in",
       ], eg: "One launch, one exhausted content team." },
-      withS: { label: "With Sokosumi", line: "One brief becomes a month of coverage — drafts, not final copy.", items: [
-        "Launch brief in, a month of coverage assets out",
+      withS: { label: "With Sokosumi", line: "One brief becomes a stack of coverage drafts.", items: [
+        "Launch brief in, coverage drafts out",
         "Rankings and AI-answer visibility measured together",
-        "Sourced audience profiles in a day, not a fortnight",
+        "Sourced audience profiles as documents",
         "Editors keep approval; coworkers hand back drafts",
       ], eg: "\u201cTurn the spring vertical launch into four weeks of coverage: positioning, landing copy, social variants.\u201d" },
     },
@@ -319,7 +319,7 @@ const INDUSTRY_CONTENT = {
       { title: "Per vertical", text: "Audience research sprints before you commission — sourced profiles, message tests." },
     ] },
     deliver: { heading: "What lands on the desk", items: [
-      { title: "Coverage calendars with drafts", text: "A month of planned pieces per launch, each with a working draft to edit." },
+      { title: "Coverage calendars with drafts", text: "Planned pieces per launch, each with a working draft to edit." },
       { title: "Search & AI visibility reports", text: "Rankings plus how AI assistants answer questions about your titles — measured monthly." },
       { title: "Audience profiles", text: "Sourced reader profiles and message tests as documents, per vertical." },
     ] },
@@ -331,12 +331,12 @@ const INDUSTRY_CONTENT = {
     ],
   },
   "saas-technology": {
-    why: "Why SaaS teams switch",
+    why: "Where SaaS teams use Sokosumi",
     cta: "Bring a coworker into your marketing team",
     metaTitle: "AI for SaaS marketing teams | Sokosumi",
     metaDesc: "AI coworkers for SaaS teams: the Monday competitor memo, AI-answer visibility next to rankings, and a launch content kit from one brief.",
     h1: "AI coworkers for SaaS & technology",
-    sub: "A two-person marketing team with ten jobs — give the recurring ones to coworkers and keep the judgment calls.",
+    sub: "Give the recurring marketing jobs to coworkers and keep the judgment calls.",
     split: {
       today: { label: "Your team today", line: "Competitors ship weekly. You find out monthly.", items: [
         "Competitor moves surface late and anecdotally",
@@ -352,7 +352,7 @@ const INDUSTRY_CONTENT = {
       ], eg: "\u201cWeekly memo on our top three competitors — what launched, what changed in pricing, what it means.\u201d" },
     },
     week: { heading: "A week with coworkers on the team", sub: "Recurring work runs itself; launches get a kit.", items: [
-      { title: "Monday, 9:00", text: "Competitor memo and performance report land together — fifteen minutes to a decision." },
+      { title: "Weekly", text: "Competitor memo and performance report, side by side." },
       { title: "Monthly", text: "Search and AI visibility measured: where you rank, how assistants describe you." },
       { title: "Per launch", text: "One brief in — positioning, landing copy, social variants and a sales one-pager out." },
     ] },
@@ -369,12 +369,12 @@ const INDUSTRY_CONTENT = {
     ],
   },
   "travel-hospitality": {
-    why: "Why travel teams switch",
+    why: "Where travel teams use Sokosumi",
     cta: "Bring a coworker into your team",
     metaTitle: "AI for travel & hospitality marketing | Sokosumi",
     metaDesc: "AI coworkers for travel and hospitality: seasonal campaign plans before the booking window, a weekly read of guest sentiment, demand signals turned into plans.",
     h1: "AI coworkers for travel & hospitality",
-    sub: "Seasons, reviews and demand signals — read and turned into plans before the booking window closes, by specialists a small team can actually afford.",
+    sub: "Seasons, reviews and demand signals, read and turned into plans before the booking window closes. The credit price shows before each task.",
     split: {
       today: { label: "Your team today", line: "The booking window closes while the plan is in review.", items: [
         "Season planning trails the booking window",
@@ -402,7 +402,7 @@ const INDUSTRY_CONTENT = {
     faq: [
       ["Can it plan around our seasons?", "Yes — seasonal campaign planning is a core workflow: brief it once per season and the plan, calendar and briefs come back before the booking window."],
       ["Does it read reviews and social mentions?", "Social listening covers the platforms your guests use and returns a written read: sentiment, emerging themes, and posts worth a reply."],
-      ["We are a small team — is this overkill?", "The free plan fits a two-person marketing team; most start with one scheduled listening or briefing task."],
+      ["We are a small team — is this overkill?", "The free plan fits a small team. Start with one scheduled listening or briefing task."],
       ["What languages does it work in?", "Coworkers brief and deliver in the language you use — English and German are first-class on Sokosumi."],
     ],
   },

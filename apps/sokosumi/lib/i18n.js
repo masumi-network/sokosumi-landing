@@ -116,8 +116,8 @@ const DE = {
     "Weniger anzeigen",
   "The Sokosumi roster: five named AI coworkers from Serviceplan, with Elena's profile open beside them":
     "Das Sokosumi-Roster: f\u00fcnf benannte AI Coworker von Serviceplan, daneben Elenas ge\u00f6ffnetes Profil",
-  "Your coworkers, in one roster. Each has a name and a role; profiles show the models a coworker runs on and the region it runs in.":
-    "Ihre Coworker in einem Roster. Jeder hat einen Namen und eine Rolle; die Profile zeigen, auf welchen Modellen ein Coworker l\u00e4uft und in welcher Region.",
+  "Your coworkers, in one roster. Each has a name and a role. Profiles show models and hosting when the vendor lists them.":
+    "Ihre Coworker in einem Roster. Jeder hat einen Namen und eine Rolle. Profile nennen Modelle und Hosting, wenn der Anbieter sie angibt.",
   "The Sokosumi briefing bar asking what you want to get done, with suggested campaign tasks below it":
     "Die Sokosumi-Briefing-Leiste fragt, was erledigt werden soll, darunter vorgeschlagene Kampagnen-Tasks",
   "Start from the work, not the tool. Say what you want done and Sokosumi points you at the coworkers who do it.":
@@ -183,21 +183,21 @@ const DE = {
   "Plans and credits per seat": "Pläne und Credits pro Seat",
 
   // nav panels
-  "Specialist AI agents with a name, a role and a vendor behind them. Brief one like a colleague and get finished work back.":
-    "Spezialisierte AI Agents mit Namen, Rolle und einem Anbieter dahinter. Briefen Sie sie wie Kolleginnen und Kollegen – und erhalten Sie fertige Arbeit zurück.",
+  "Named specialists from marketplace vendors. Brief one like a colleague and get finished work back.":
+    "Benannte Spezialisten von Marktplatz-Anbietern. Briefen Sie einen wie einen Kollegen und bekommen Sie fertige Arbeit zurück.",
   "Show all vendors": "Alle Anbieter anzeigen",
   "Show all coworkers": "Alle Coworker anzeigen",
   "How work moves through Sokosumi: brief a coworker, follow it on the task board, collect the output.":
     "So läuft Arbeit durch Sokosumi: Coworker briefen, auf dem Task Board verfolgen, Ergebnis abholen.",
   "Product overview": "Produktübersicht",
-  "Real jobs, start to finished file, organized by industry. Pick one and the coworkers behind it already know the brief.":
-    "Echte Aufgaben – vom Start bis zur fertigen Datei, geordnet nach Branche. Wählen Sie eine aus, die Coworker dahinter kennen das Briefing bereits.",
+  "Real jobs, start to finished file, organized by industry. Each one lists the coworkers and tasks that run it.":
+    "Echte Jobs, vom Start bis zur fertigen Datei, nach Branche sortiert. Bei jedem stehen die Coworker und Tasks, die ihn erledigen.",
   "Browse by industry": "Nach Branche filtern",
   "All use cases": "Alle Use Cases",
 
   // footer
-  "The marketplace where you hire AI coworkers for real marketing work — research, social, planning, and writing, delivered as finished files.":
-    "Der Marktplatz, auf dem Sie AI Coworker für echte Marketingarbeit einstellen – Research, Social, Planung und Texte, geliefert als fertige Dateien.",
+  "Hire AI coworkers for marketing work that comes back as finished files.":
+    "Der Marktplatz für AI Coworkers, deren Marketing-Arbeit als fertige Dateien zurückkommt.",
   Marketplace: "Marktplatz",
   "AI Coworkers": "AI Coworkers",
   "List your agent": "Eigenen Agent listen",
@@ -223,7 +223,8 @@ const DE = {
   Legal: "Rechtliches",
 
   // CTA band defaults + fine print
-  "Put an AI coworker on it": "Geben Sie die Aufgabe einem AI Coworker",
+  "Give a coworker the first task":
+    "Geben Sie einem Coworker den ersten Task",
   "Start free": "Kostenlos starten",
   "Get started": "Jetzt starten",
   "*No Credit Card required": "*Keine Kreditkarte erforderlich",
@@ -488,19 +489,19 @@ const DE = {
   "Filter by industry": "Nach Branche filtern",
   "One workflow": "Ein Workflow",
   "{n} workflows": "{n} Workflows",
-  "Each one is a real job, start to finished file, run by a team of coworkers.":
-    "Jeder ist eine echte Aufgabe – vom Start bis zur fertigen Datei, ausgeführt von einem Team aus Coworkern.",
+  "Each workflow shows the brief, the coworkers, and the file you get back.":
+    "Jeder Workflow zeigt das Briefing, die Coworker und die Datei, die Sie zurückbekommen.",
   "Use cases are on the way. In the meantime,": "Use Cases sind in Arbeit. Bis dahin:",
   "browse the template tasks": "stöbern Sie in den Template-Tasks",
   "How a use case runs": "So läuft ein Use Case ab",
-  "Every use case on this page is a real workflow you can start today.":
-    "Jeder Use Case auf dieser Seite ist ein echter Workflow, den Sie heute starten können.",
+  "Each use case lists the coworkers and tasks that run it.":
+    "Bei jedem Use Case stehen die Coworker und Tasks, die ihn erledigen.",
   "Pick the work": "Aufgabe auswählen",
   "Start from a use case that matches the job, not from a blank prompt.":
     "Starten Sie mit einem Use Case, der zur Aufgabe passt – nicht mit einem leeren Prompt.",
   "Hand it over": "Übergeben",
-  "The coworkers behind it already know the brief, the sources, and the format.":
-    "Die Coworker dahinter kennen bereits das Briefing, die Quellen und das Format.",
+  "Each workflow lists its coworkers, sources, and output format.":
+    "Bei jedem Workflow stehen Coworker, Quellen und Ausgabeformat.",
   "Get the file": "Datei erhalten",
   "A finished deliverable lands in the app: a report, a deck, a sheet, a dashboard.":
     "Ein fertiges Ergebnis landet in der App: ein Report, ein Deck, eine Tabelle, ein Dashboard.",
@@ -539,14 +540,18 @@ const DE = {
   "Sokosumi plans: a free tier with 250 credits per seat, Starter at €25, Standard at €75, Pro at €200 per month, and a tailored Enterprise plan.":
     "Sokosumi-Pläne: ein kostenloser Plan mit 250 Credits pro Seat, Starter für 25 €, Standard für 75 €, Pro für 200 € pro Monat sowie ein individueller Enterprise-Plan.",
   "Plans that scale with the work": "Pläne, die mit der Arbeit wachsen",
-  "Every plan includes credits per seat. Start free, move up when your team runs more work, or talk to us about a tailored plan.":
-    "Jeder Plan enthält Credits pro Seat. Starten Sie kostenlos, wechseln Sie nach oben, wenn Ihr Team mehr Arbeit ausführt, oder sprechen Sie mit uns über einen individuellen Plan.",
-  "Getting started to work with Marketing Agents.": "Der Einstieg in die Arbeit mit Marketing-Agents.",
-  "For freelancers and micro companies.": "Für Freelancer und Kleinstunternehmen.",
-  "Full set of marketing agents for small companies.": "Das volle Set an Marketing-Agents für kleine Unternehmen.",
-  "Get more access to our Marketing Agents and Services.": "Mehr Zugriff auf unsere Marketing-Agents und Services.",
-  "Custom plan for organizations with tailored seats, credits, and support.":
-    "Individueller Plan für Organisationen mit maßgeschneiderten Seats, Credits und Support.",
+  "Credits per seat on every plan. Start free; upgrade when you run more work.":
+    "Credits pro Seat in jedem Plan. Starten Sie kostenlos und wechseln Sie, wenn Sie mehr Arbeit ausführen.",
+  "Try the marketplace on free credits.":
+    "Den Marktplatz mit kostenlosen Credits ausprobieren.",
+  "For freelancers and very small teams.":
+    "Für Freelancer und sehr kleine Teams.",
+  "For small teams that run work every week.":
+    "Für kleine Teams, die jede Woche Arbeit ausführen.",
+  "For teams that run a lot of work.":
+    "Für Teams, die viel Arbeit ausführen.",
+  "Seats, credits, and support on your terms.":
+    "Seats, Credits und Support zu Ihren Konditionen.",
   Free: "Kostenlos",
   Custom: "Individuell",
   "per month": "pro Monat",
@@ -562,11 +567,12 @@ const DE = {
   "For {n} seats": "Für {n} Seats",
   credits: "Credits",
   Update: "Aktualisieren",
-  "Teams already on a plan": "Teams, die bereits einen Plan nutzen",
+  "What users say about the work":
+    "Was Nutzer über die Arbeit sagen",
   "Teams already on Sokosumi": "Teams, die Sokosumi bereits nutzen",
   "Get started on the free plan": "Starten Sie mit dem kostenlosen Plan",
-  "250 credits per seat, no card, and every agent on the marketplace to try them on.":
-    "250 Credits pro Seat, keine Kreditkarte – und jeder Agent auf dem Marktplatz zum Ausprobieren.",
+  "250 credits per seat. No credit card required.":
+    "250 Credits pro Seat. Keine Kreditkarte erforderlich.",
 
   // ---- contact.js ----
   "Contact | Sokosumi": "Kontakt | Sokosumi",
@@ -578,17 +584,16 @@ const DE = {
   "Rolling Sokosumi out to a team, or want to list your own coworkers as a vendor? Tell us what you have in mind and we will get back within a day.":
     "Sie führen Sokosumi in einem Team ein oder möchten als Anbieter eigene Coworker listen? Sagen Sie uns, was Sie vorhaben – wir melden uns innerhalb eines Tages.",
   "Product support": "Produkt-Support",
-  "Questions about your account, credits, or a task that did not go as planned. Include the task link if you have one, it speeds things up.":
-    "Fragen zu Ihrem Konto, zu Credits oder zu einem Task, der nicht wie geplant lief? Fügen Sie den Task-Link bei, wenn Sie einen haben – das beschleunigt die Antwort.",
+  "Questions about your account, credits, or a task that did not go as planned. Include the task link if you have one.":
+    "Fragen zu Ihrem Konto, zu Credits oder zu einem Task, der nicht wie geplant lief. Hängen Sie den Task-Link an, wenn Sie einen haben.",
   "Go to Support": "Zum Support",
   "In a hurry? Write straight to": "Eilig? Schreiben Sie direkt an den",
   support: "Support",
   ", or open": ", oder öffnen Sie",
   "the app": "die App",
-  "— most answers are one click away there.": "– die meisten Antworten sind dort nur einen Klick entfernt.",
   "Prefer to look around first?": "Möchten Sie sich erst umsehen?",
-  "Every coworker, task, and sample output on the marketplace is public. Nothing here is behind a form.":
-    "Jeder Coworker, jeder Task und jedes Beispiel-Ergebnis auf dem Marktplatz ist öffentlich. Nichts davon liegt hinter einem Formular.",
+  "Coworker profiles, tasks, and sample outputs are public. Browse before you sign up.":
+    "Coworker-Profile, Tasks und Beispiel-Ergebnisse sind öffentlich. Schauen Sie sich um, bevor Sie sich registrieren.",
   Coworkers: "Coworker",
   "Every AI coworker on Sokosumi, each with a real role and a public profile.":
     "Alle AI Coworker auf Sokosumi, jeder mit echter Rolle und öffentlichem Profil.",
@@ -605,8 +610,8 @@ const DE = {
     "Buchen Sie eine Sokosumi-Demo oder stellen Sie uns Ihre Fragen zum Einsatz von AI Coworkern in Ihrem Marketingteam.",
   Sales: "Vertrieb",
   "Put AI coworkers to work in your team": "Bringen Sie AI Coworker in Ihrem Team zum Einsatz",
-  "Tell us what you want to get done and we will show you exactly how Sokosumi handles it. Book a walkthrough, or just ask your questions and we will answer by email.":
-    "Sagen Sie uns, was Sie erledigen möchten, und wir zeigen Ihnen genau, wie Sokosumi das übernimmt. Buchen Sie eine Demo – oder stellen Sie einfach Ihre Fragen, wir antworten per E-Mail.",
+  "Tell us what you want to get done. Book a walkthrough, or ask your questions and we will answer by email.":
+    "Sagen Sie uns, was Sie erledigen wollen. Buchen Sie eine Demo oder stellen Sie Ihre Fragen – wir antworten per E-Mail.",
   "Your name": "Ihr Name",
   "Work email": "Geschäftliche E-Mail",
   "Team size": "Teamgröße",
@@ -627,7 +632,8 @@ const DE = {
   "We reply within one working day. No newsletter, no sharing your details.":
     "Wir antworten innerhalb eines Werktags. Kein Newsletter, keine Weitergabe Ihrer Daten.",
   "Request received": "Anfrage erhalten",
-  "Thanks, that is on its way.": "Danke, Ihre Anfrage ist unterwegs.",
+  "Request received.":
+    "Anfrage eingegangen.",
   "We have your request and will come back to you within one working day. If it is urgent, write to":
     "Wir haben Ihre Anfrage erhalten und melden uns innerhalb eines Werktags. Wenn es dringend ist, schreiben Sie an",
   "and it reaches the same inbox.": "– das erreicht dasselbe Postfach.",
@@ -770,8 +776,8 @@ const DE = {
   "How Sokosumi compares to other AI platforms and agent tools, side by side.":
     "Wie sich Sokosumi im direkten Vergleich mit anderen AI-Plattformen und Agent-Tools schlägt.",
   "How Sokosumi compares": "Sokosumi im Vergleich",
-  "Honest, side by side looks at Sokosumi and the tools you might be weighing it against.":
-    "Ehrliche direkte Vergleiche zwischen Sokosumi und den Tools, die Sie vielleicht abwägen.",
+  "Compare Sokosumi with the other ways to get the same work done.":
+    "Sokosumi im Vergleich mit den anderen Wegen, dieselbe Arbeit zu erledigen.",
   "What you are actually comparing": "Was Sie eigentlich vergleichen",
   "Not a chat window and not a prompt library. Named coworkers with real roles, a task board your whole team can see, and finished files at the end of it.":
     "Kein Chatfenster und keine Prompt-Bibliothek. Benannte Coworker mit echten Rollen, ein Task Board, das Ihr ganzes Team sieht, und am Ende fertige Dateien.",
@@ -785,7 +791,7 @@ const DE = {
   // ---- pagesCms.js / product hub ----
   "Product | Sokosumi": "Produkt | Sokosumi",
   "Deep dives into what your AI coworkers can do: the surfaces, workflows, and guarantees behind Sokosumi.":
-    "Tiefe Einblicke in das, was Ihre AI Coworker können: die Oberflächen, Workflows und Garantien hinter Sokosumi.",
+    "Vertiefungen zu dem, was Ihre AI Coworkers können: die Oberflächen und Workflows hinter Sokosumi.",
   "The Sokosumi product": "Das Sokosumi-Produkt",
   "What an AI coworker is, how you brief one, where the work shows up, and what you get back.":
     "Was ein AI Coworker ist, wie Sie ihn briefen, wo die Arbeit auftaucht und was Sie zurückbekommen.",
@@ -806,8 +812,8 @@ const DE = {
     "Briefen Sie noch heute einen Coworker und sehen Sie, was zurückkommt.",
   "Brief a named AI coworker, follow the work on a shared board, and get finished files back. See how Sokosumi actually works.":
     "Briefen Sie einen benannten AI Coworker, verfolgen Sie die Arbeit auf einem gemeinsamen Board und bekommen Sie fertige Dateien zurück. Sehen Sie, wie Sokosumi wirklich funktioniert.",
-  "Work with AI coworkers, not a chat window":
-    "Arbeiten Sie mit AI Coworkern, nicht in einem Chatfenster",
+  "Brief coworkers, track tasks, collect files":
+    "Coworker briefen, Tasks verfolgen, Dateien einsammeln",
   "Named specialists, a board your whole team can see, and finished files at the end of the job.":
     "Benannte Spezialisten, ein Board, das Ihr ganzes Team sieht, und fertige Dateien am Ende des Jobs.",
   "Named coworkers": "Benannte Coworker",
@@ -1138,8 +1144,8 @@ const HOME_DE = [
   [">Skip to content</a>", ">Zum Inhalt springen</a>"],
   ["AI Coworkers for <span", "AI Coworkers für <span"],
   [
-      "Automate Your Marketing with AI Agents That Work Around the Clock",
-      "Automatisieren Sie Ihr Marketing mit AI Agents, die rund um die Uhr arbeiten",
+      "Hire AI coworkers that turn a brief into finished files.",
+    "AI Coworkers, die aus einem Briefing fertige Dateien machen.",
   ],
   [">Talk to Sales</a>", ">Vertrieb kontaktieren</a>"],
   [">Sign Up</a>", ">Registrieren</a>"],
@@ -1154,8 +1160,8 @@ const HOME_DE = [
     "Das sind Ihre <span class=\"serif-accent\">AI Coworkers</span>",
   ],
   [
-    "Named specialists, each with a public profile and a role. Serviceplan Group and utxo AG both have coworkers here, and other vendors do too. A lot of them ship template tasks you can run; some list Claude or Mistral, and a few don't name a model at all.",
-    "Benannte Spezialisten, jeder mit öffentlichem Profil und Rolle. Die Serviceplan Group und die utxo AG haben hier Coworker, andere Anbieter ebenfalls. Viele bringen Template-Tasks mit, die Sie ausführen können; einige nennen Claude oder Mistral, ein paar geben gar kein Modell an.",
+    "Named specialists from vendors like Serviceplan Group and utxo AG. Open a profile for the role, the tasks, and sample work.",
+    "Benannte Spezialisten von Anbietern wie der Serviceplan Group und der utxo AG. Im Profil stehen Rolle, Tasks und Arbeitsproben.",
   ],
   ["Loading coworkers…", "Coworker werden geladen …"],
 
@@ -1165,8 +1171,8 @@ const HOME_DE = [
     "Sie schreiben ein Briefing. <span class=\"serif-accent\">Den Rest erledigen sie.</span>",
   ],
   [
-    "A lead coworker can break the brief up and send pieces out. What you get back is files.",
-    "Ein Lead-Coworker kann das Briefing aufteilen und Teile weitergeben. Zurück kommen Dateien.",
+    "Some coworkers split a brief and hand pieces to specialist agents. You get files back.",
+    "Manche Coworker teilen ein Briefing auf und geben Teile an Spezialisten-Agents. Zurück kommen Dateien.",
   ],
   [">Your briefing</span>", ">Ihr Briefing</span>"],
   [">New briefing</span>", ">Neues Briefing</span>"],
@@ -1180,18 +1186,18 @@ const HOME_DE = [
   [">Attachment</span>", ">Anhang</span>"],
   ["Send briefing <svg", "Briefing senden <svg"],
   [
-    "You file one ticket and skip the setup forms; the lead coworker takes it from there.",
-    "Sie geben ein Ticket auf und sparen sich die Einrichtungsformulare; der Lead-Coworker übernimmt ab dort.",
+    "One briefing, in plain language.",
+    "Ein Briefing, in normaler Sprache.",
   ],
-  [">Split &amp; delegated</span>", ">Aufgeteilt &amp; delegiert</span>"],
+  [">Split and delegated</span>", ">Aufgeteilt und delegiert</span>"],
   [">Delegated</span>", ">Delegiert</span>"],
   ["splits the brief into work packages", "teilt das Briefing in Arbeitspakete auf"],
   [">Audience research</span>", ">Zielgruppen-Research</span>"],
   [">Social rollout</span>", ">Social-Rollout</span>"],
   [">Campaign dashboard</span>", ">Kampagnen-Dashboard</span>"],
   [
-    "Elena hands the packages to the people who do that work, and they run at the same time.",
-    "Elena übergibt die Pakete an die Spezialisten für genau diese Arbeit – und sie laufen gleichzeitig.",
+    "Elena assigns each package to a specialist agent. They run at the same time.",
+    "Elena übergibt jedes Paket an einen Spezialisten-Agent. Sie laufen gleichzeitig.",
   ],
   [">Files back</span>", ">Dateien zurück</span>"],
   [">Done</span>", ">Fertig</span>"],
@@ -1200,8 +1206,8 @@ const HOME_DE = [
   [">Live dashboard</span>", ">Live-Dashboard</span>"],
   ["Ready to review", "Bereit zur Durchsicht"],
   [
-    "You get files, not a chat log. Most tasks already show a sample so you can see the shape of the output before you spend credits.",
-    "Sie bekommen Dateien, keinen Chatverlauf. Die meisten Tasks zeigen vorab ein Beispiel, sodass Sie die Form des Ergebnisses sehen, bevor Sie Credits einsetzen.",
+    "You get files, not a chat log. Open a task's sample before you spend credits.",
+    "Sie bekommen Dateien, keinen Chatverlauf. Öffnen Sie das Beispiel eines Tasks, bevor Sie Credits einsetzen.",
   ],
 
   // product carousel
@@ -1238,19 +1244,19 @@ const HOME_DE = [
     "Entwickelt von der Serviceplan&nbsp;Group in <span class=\"serif-accent\">München</span>.",
   ],
   [
-    "Serviceplan Group builds and runs Sokosumi. Their strategists write the Serviceplan coworkers on the roster; other vendors write theirs.",
-    "Die Serviceplan Group entwickelt und betreibt Sokosumi. Ihre Strategen schreiben die Serviceplan-Coworker im Roster; andere Anbieter schreiben ihre eigenen.",
+    "Serviceplan Group built Sokosumi with NMKR. Every vendor builds and runs its own coworkers.",
+    "Die Serviceplan Group hat Sokosumi zusammen mit NMKR gebaut. Jeder Anbieter baut und betreibt seine eigenen Coworker.",
   ],
   ["Visit Serviceplan Agents", "Serviceplan Agents besuchen"],
 
   // org chart
   [
-    "They report to <span class=\"serif-accent\">your team</span>",
-    "Sie berichten an <span class=\"serif-accent\">Ihr Team</span>",
+    "Your team <span class=\"serif-accent\">reviews the work</span>",
+    "Ihr Team <span class=\"serif-accent\">prüft die Arbeit</span>",
   ],
   [
-    "Coworkers are not a replacement for your people. They sit under someone you already have and send the work back for review.",
-    "Coworker ersetzen Ihre Leute nicht. Sie arbeiten jemandem zu, den Sie bereits haben, und geben die Arbeit zur Durchsicht zurück.",
+    "Coworkers don't replace your people. Someone on your team briefs them and reviews what comes back.",
+    "Coworker ersetzen Ihr Team nicht. Jemand aus Ihrem Team brieft sie und prüft, was zurückkommt.",
   ],
   ['<span class="org-ava">You</span>', '<span class="org-ava">Sie</span>'],
   ["<strong>You</strong><small>Head of Marketing</small>", "<strong>Sie</strong><small>Head of Marketing</small>"],
@@ -1275,8 +1281,8 @@ const HOME_DE = [
   ],
   ["Who builds the coworkers?", "Wer entwickelt die Coworker?"],
   [
-    "A named vendor builds and runs every coworker. Serviceplan Group writes its own set; utxo AG writes another; other vendors are on the marketplace too. Every coworker has a public profile. Most profiles name the models, Claude and Mistral among them.",
-    "Jeder Coworker wird von einem benannten Anbieter entwickelt und betrieben. Die Serviceplan Group schreibt ein eigenes Set; die utxo AG ein weiteres; auch andere Anbieter sind auf dem Marktplatz. Jeder Coworker hat ein öffentliches Profil. Die meisten Profile nennen die Modelle, darunter Claude und Mistral.",
+    "A named vendor builds and runs every coworker — Serviceplan Group, utxo AG, and others. Every coworker has a public profile. Some profiles list the models and hosting region.",
+    "Hinter jedem Coworker steht ein benannter Anbieter – Serviceplan Group, utxo AG und weitere. Jeder Coworker hat ein öffentliches Profil. Manche Profile nennen Modelle und Hosting-Region.",
   ],
   ["What do the template tasks cover?", "Was decken die Template-Tasks ab?"],
   [
