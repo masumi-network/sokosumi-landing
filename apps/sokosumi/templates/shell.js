@@ -509,12 +509,12 @@ const PROOF_LOGOS = [
   { src: "/assets/logos/ard.svg", alt: "ARD" },
   { src: "/assets/logos/tdk.svg", alt: "TDK" },
   { src: "/assets/logos/stroer.svg", alt: "Ströer" },
-  { src: "/assets/serviceplan-logo.png", alt: "Serviceplan Group" },
+  { src: "/assets/serviceplan-logo.png", alt: "Serviceplan Group", ink: true },
 ];
 function logoRow(opts) {
   const o = opts || {};
   const imgs = PROOF_LOGOS.map(
-    (l) => `<img${l.tall ? ' class="logo-tall"' : ""} src="${attr(l.src)}" alt="${attr(l.alt)}" loading="lazy" decoding="async" />`,
+    (l) => `<img${l.tall || l.ink ? ` class="${[l.tall ? "logo-tall" : "", l.ink ? "logo-ink" : ""].filter(Boolean).join(" ")}"` : ""} src="${attr(l.src)}" alt="${attr(l.alt)}" loading="lazy" decoding="async" />`,
   ).join("");
   return `<section class="page-section plan-logos${o.flush ? " flush" : ""}" data-reveal>
       <p class="plan-logos-label">${esc(t("In use at"))}</p>

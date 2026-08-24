@@ -631,8 +631,9 @@ section.band-dark {
    paper; black at 0.41 lands on the same value, so it now sits with them
    instead of shouting. Applies to the trust band lower down too, which uses
    the same knockout asset. */
-.hero.is-aurora .hero-logos .is-brand,
-body.hero-aurora .trust-logo.is-brand { filter: brightness(0); opacity: 0.41; }
+/* Hero logos only. The trust band further down is band-dark and keeps its
+   white logo — blackening it there made it vanish into the background. */
+.hero.is-aurora .hero-logos .is-brand { filter: brightness(0); opacity: 0.41; }
 .hero.is-aurora .hl-label { color: var(--muted-foreground); }
 
 /* The overlay header is white-on-transparent for the dark hero; invisible on

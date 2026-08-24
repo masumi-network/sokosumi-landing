@@ -907,6 +907,9 @@ a.card:hover .go { opacity: 1; transform: none; }
 
 .blk-logos { display: flex; flex-wrap: wrap; align-items: center; gap: clamp(28px, 5vw, 64px); }
 .blk-logos img { height: 24px; width: auto; object-fit: contain; opacity: 0.55; filter: grayscale(1); transition: opacity 0.3s var(--ease); }
+/* The Serviceplan wordmark is near-black ink; invert() lifts it to the same
+   mid-gray as the grayscaled brand SVGs so it stops reading as bolder. */
+.blk-logos img.logo-ink { filter: grayscale(1) invert(0.45); }
 .blk-logos img:hover { opacity: 0.9; }
 
 .blk-video .video-frame { border-radius: var(--r-lg); overflow: hidden; border: 1px solid var(--border); aspect-ratio: 16 / 9; background: var(--ink); }
