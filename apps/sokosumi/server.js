@@ -1091,12 +1091,6 @@ const assetsDir = path.join(root, "assets");
           send(req, res, code || 200, { "Content-Type": "text/html; charset=utf-8", "Cache-Control": cache, Vary: "Accept" }, finalHtml);
         };
 
-        // /llms.txt: a short, plain-text description of the site and its
-        // main sections for LLM crawlers (llmstxt.org). Facts mirror /about.
-        if (clean === "/llms.txt") {
-          return send(req, res, 200, { "Content-Type": "text/plain; charset=utf-8", "Cache-Control": "public, max-age=3600" }, aboutTpl.llmsTxt());
-        }
-
         // Static assets first (they all live under /assets or have extensions).
         if (seg[0] === "assets" || path.extname(clean)) {
           const file = resolveFile(urlPath);

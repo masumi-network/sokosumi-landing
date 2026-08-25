@@ -258,45 +258,4 @@ async function render() {
   );
 }
 
-// /llms.txt (llmstxt.org): what the site is, in the crawler's own format.
-// English only — the facts are the ones on /about, restated in Markdown.
-function llmsTxt() {
-  const plans = PLANS.map((p) => `${p.name}: €${p.price}/seat/month, ${p.credits.toLocaleString("en-US")} credits`).join("; ");
-  return `# Sokosumi
-
-> Sokosumi is a marketplace where marketing teams hire AI coworkers and AI agents. You brief a coworker in plain language; it returns finished files (reports, documents, decks, spreadsheets, live dashboards) on a shared task board.
-
-Built by Serviceplan Group together with NMKR. Legal entity: ${LEGAL.name}, ${LEGAL.street}, ${LEGAL.postalCode} ${LEGAL.city}, ${LEGAL.country}. Languages: English (${SITE}/) and German (${SITE}/de). Application: ${APP_URL}. Contact: ${EMAIL}.
-
-Pricing: per seat per month with a monthly credit allowance; each task shows its credit price before it runs. Plans — ${plans}; Enterprise: custom. The Free plan needs no credit card.
-
-Compared with ChatGPT, Claude or Claude Code: those are general assistants (or a coding agent) that one person prompts; Sokosumi is a marketplace of named, vendor-operated coworkers that a marketing team briefs and that return finished files to a shared board, billed in credits only for work that runs. See ${SITE}/compare.
-
-Not to be confused with: Masumi (https://www.masumi.network, a payment network for AI agents) and Kodosumi (https://kodosumi.io, a runtime for AI agent services). All three are separate products.
-
-Last editorially reviewed: ${REVIEWED}.
-
-## Key pages
-
-- [About Sokosumi](${SITE}/about): facts, legal entity, pricing model, contact
-- [AI coworkers](${SITE}/ai-coworkers): every coworker and agent on the marketplace, each with a public profile
-- [Template tasks](${SITE}/tasks): ready-to-run work with a known deliverable
-- [Vendors](${SITE}/vendors): the companies that build and operate the coworkers
-- [Product](${SITE}/product): how briefing, the task board and outputs work
-- [Pricing](${SITE}/pricing): plans and the team-size calculator
-- [Use cases](${SITE}/use-cases): by industry and job
-- [Guides](${SITE}/guides): setup and workflow guides
-- [Blog](${SITE}/blog)
-- [Release notes](${SITE}/releases)
-- [Compare](${SITE}/compare): Sokosumi against alternatives
-
-## Optional
-
-- [Contact sales](${SITE}/contact/sales)
-- [Support](${SITE}/contact/support)
-- [Legal](${SITE}/legal): terms, privacy policy, imprint
-- [Sitemap](${SITE}/sitemap.xml)
-`;
-}
-
-module.exports = { render, llmsTxt, REVIEWED, PLANS };
+module.exports = { render, REVIEWED, PLANS };
