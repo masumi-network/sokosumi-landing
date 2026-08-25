@@ -384,6 +384,9 @@ export default function Header({
               <Link href={joinHref(siteRootHref, "/explorer")} className="text-[14px] font-normal text-black hover:text-black/60 transition-colors px-[15px] h-full flex items-center">
                 Explorer
               </Link>
+              <Link href={joinHref(siteRootHref, "/register")} className="text-[14px] font-normal text-black hover:text-black/60 transition-colors px-[15px] h-full flex items-center">
+                Register
+              </Link>
               <Link href={joinHref(siteRootHref, "/use-cases")} className="text-[14px] font-normal text-black hover:text-black/60 transition-colors px-[15px] h-full flex items-center">
                 Use cases
               </Link>
@@ -488,6 +491,9 @@ export default function Header({
                 </Link>
                 <Link href={joinHref(siteRootHref, "/explorer")} onClick={() => setMobileMenuOpen(false)} className="text-[18px] text-black py-3 border-b border-black/[0.06]">
                   Explorer
+                </Link>
+                <Link href={joinHref(siteRootHref, "/register")} onClick={() => setMobileMenuOpen(false)} className="text-[18px] text-black py-3 border-b border-black/[0.06]">
+                  Register
                 </Link>
                 <Link href={joinHref(siteRootHref, "/use-cases")} onClick={() => setMobileMenuOpen(false)} className="text-[18px] text-black py-3 border-b border-black/[0.06]">
                   Use cases

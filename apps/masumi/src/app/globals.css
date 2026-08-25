@@ -465,3 +465,229 @@ body {
   .feature-card:hover .status-badge { animation: none; }
   .code-cursor::after { animation: none; }
 }
+
+/* Masumi register wizard (ported from masumi-network-site) */
+:root {
+  --masumi-purple: #6b21a8;
+  --masumi-purple-bar: #7c3aed;
+  --masumi-pink: #db2777;
+  --masumi-pink-soft: #fce7f3;
+  --masumi-ink: #0a0a0a;
+  --masumi-muted: #525252;
+  --masumi-border: #e5e5e5;
+  --masumi-surface: #fafafa;
+  --masumi-white: #ffffff;
+}
+
+@theme inline {
+  --color-masumi-purple: var(--masumi-purple);
+  --color-masumi-purple-bar: var(--masumi-purple-bar);
+  --color-masumi-pink: var(--masumi-pink);
+  --color-masumi-pink-soft: var(--masumi-pink-soft);
+  --color-masumi-ink: var(--masumi-ink);
+  --color-masumi-muted: var(--masumi-muted);
+  --color-masumi-border: var(--masumi-border);
+  --color-masumi-surface: var(--masumi-surface);
+  --color-masumi-white: var(--masumi-white);
+}
+
+@layer components {
+  .btn-primary {
+    display: inline-flex;
+    height: 2.75rem;
+    min-width: 11rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    background: var(--masumi-ink);
+    padding: 0 1.5rem;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: #fff !important;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .btn-primary:hover {
+    background: #000;
+    transform: translateY(-1px);
+    box-shadow: 0 8px 20px rgb(0 0 0 / 12%);
+  }
+
+  .btn-primary:disabled {
+    cursor: not-allowed;
+  }
+
+  .btn-secondary {
+    display: inline-flex;
+    height: 2.75rem;
+    min-width: 11rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    border: 1px solid #d4d4d4;
+    background: #fff;
+    padding: 0 1.5rem;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: #0a0a0a !important;
+    cursor: pointer;
+    transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+  }
+
+  .btn-secondary:hover {
+    background: var(--masumi-surface);
+    border-color: #a3a3a3;
+    transform: translateY(-1px);
+  }
+
+  .btn-secondary:disabled {
+    cursor: not-allowed;
+  }
+
+  .btn-accent {
+    display: inline-flex;
+    height: 2.75rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    background: var(--masumi-purple-bar);
+    padding: 0 1.5rem;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: #fff !important;
+    cursor: pointer;
+  }
+
+  .btn-accent:hover {
+    opacity: 0.92;
+  }
+
+  .btn-accent:disabled {
+    cursor: not-allowed;
+  }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@utility animate-fade-in {
+  animation: fade-in 0.45s ease-out both;
+}
+
+@utility animate-fade-in-up {
+  animation: fade-in-up 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes masumi-logo-enter {
+  from { opacity: 0; transform: scale(0.82) rotate(-180deg); }
+  to { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+
+@utility animate-masumi-logo-enter {
+  animation: masumi-logo-enter 0.65s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+@utility animation-delay-100 {
+  animation-delay: 100ms;
+}
+
+@keyframes dialog-overlay-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes dialog-content-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@utility animate-dialog-overlay-in {
+  animation: dialog-overlay-in 0.2s ease-out both;
+}
+
+@utility animate-dialog-content-in {
+  animation: dialog-content-in 0.28s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+.dialog-stagger-in > * {
+  opacity: 0;
+  animation: fade-in-up 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.dialog-stagger-in > *:nth-child(1) { animation-delay: 0.05s; }
+.dialog-stagger-in > *:nth-child(2) { animation-delay: 0.1s; }
+.dialog-stagger-in > *:nth-child(3) { animation-delay: 0.15s; }
+.dialog-stagger-in > *:nth-child(4) { animation-delay: 0.2s; }
+
+@keyframes register-mint-rail-flow {
+  0% { background-position: 0 0; }
+  100% { background-position: 0 200%; }
+}
+
+@keyframes register-mint-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 color-mix(in oklab, var(--masumi-pink) 35%, transparent); }
+  50% { box-shadow: 0 0 0 6px color-mix(in oklab, var(--masumi-pink) 0%, transparent); }
+}
+
+.register-mint-progress-rail {
+  background: linear-gradient(
+    to bottom,
+    var(--masumi-pink) 0%,
+    var(--masumi-pink) 45%,
+    var(--masumi-border) 45%,
+    var(--masumi-border) 100%
+  );
+  background-size: 100% 200%;
+}
+
+.register-mint-progress-rail--done {
+  background: var(--masumi-pink);
+}
+
+.register-mint-progress-rail--active {
+  animation: register-mint-rail-flow 2.2s ease-in-out infinite;
+}
+
+.register-mint-progress-pulse {
+  animation: register-mint-pulse 2.2s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-in,
+  .animate-fade-in-up,
+  .animate-masumi-logo-enter,
+  .animate-dialog-overlay-in,
+  .animate-dialog-content-in,
+  .dialog-stagger-in > *,
+  .btn-primary,
+  .btn-secondary,
+  .register-mint-progress-rail--active,
+  .register-mint-progress-pulse {
+    animation: none !important;
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .btn-primary:hover,
+  .btn-secondary:hover {
+    transform: none;
+  }
+}
