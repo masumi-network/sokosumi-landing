@@ -1,0 +1,79 @@
+{
+  "slug": "canva-vs-adobe",
+  "a": { "key": "canva", "name": "Canva AI", "url": "https://www.canva.com/magic-studio/" },
+  "b": { "key": "adobe", "name": "Adobe GenStudio", "url": "https://business.adobe.com/products/genstudio.html" },
+  "checked": "2026-08-26",
+  "en": {
+    "title": "Canva AI or Adobe GenStudio: which one for producing marketing content?",
+    "metaTitle": "Canva AI vs Adobe GenStudio (2026): prices, credits, EU hosting, who it fits",
+    "description": "Canva AI (Magic Studio) and Adobe GenStudio compared on price, AI credits, brand control, EU data residency and real limits. Facts checked August 2026.",
+    "intro": "Canva AI is Magic Studio inside Canva: text, image, video and design generation for anyone, priced per seat with monthly AI credits. Adobe GenStudio is an enterprise content supply chain: GenStudio for Performance Marketing, Firefly models, brand checks and, since April 2026, a Marketing Agent inside Copilot, ChatGPT Enterprise and Gemini Enterprise. One you buy on a card; the other you buy through a sales team. The deciding question is team size and how strict your brand governance must be.",
+    "glance": [
+      ["Who it is for", "Small and mid-size marketing teams and non-designers producing daily content", "Large enterprises with brand, legal and performance teams and an Adobe stack"],
+      ["What you get", "Magic Write, Magic Design, Dream Lab images, Magic Charts, text-to-video, Canva Code, Canva Sheets, brand kits", "GenStudio for Performance Marketing (briefs to on-brand ads and emails), Content Production Agent (beta), Firefly, brand compliance checks, insights via Experience Platform, Marketing Agent in third-party assistants"],
+      ["Price per person", "Free $0 (50 AI credits); Pro $18 per month or $144 per year (500 credits); Business $25 per seat monthly or $250 per year; Enterprise custom (third-party tracker, 15 Jul 2026, verify; canva.com blocks fetching)", "Not published. Enterprise quotes; press cites credit-based entitlements"],
+      ["Free plan or trial", "Free plan, no card, no time limit", "No free plan; demo through sales"],
+      ["EU hosting", "Enterprise only: US or EU data residency setting; Teams and Business data processed globally including the US", "Experience Platform hosted in several Azure and one AWS region; Switzerland hosting from early 2026; EU region confirmed per contract, not published for GenStudio specifically"],
+      ["Team features", "Brand kits, templates, approvals and admin on Business and Enterprise", "Roles for brand, legal, marketing; approval workflows; brand guideline enforcement; activation to ad platforms"],
+      ["AI metering", "Monthly credits: Pro up to 2,000 standard, 200 premium, 20 ultra; AI Pass add-on $100 per person per month for more (third-party, verify)", "Credit-based entitlement per contract; not published"],
+      ["Agent output", "No autonomous agents; you drive each generation", "Content Production Agent turns a brief into channel variants (beta); Marketing Agent answers inside Copilot, ChatGPT Enterprise, Gemini Enterprise; Coworker tier announced, 'coming months' from April 2026"]
+    ],
+    "pickA": {
+      "heading": "Pick Canva AI if…",
+      "points": [
+        "Your team is under 50 people and wants to start today on a card. Pro is $18 a month; Business is $25 a seat.",
+        "Most of your output is social posts, decks and short video, made by people who are not designers.",
+        "You want one flat price and can live with monthly AI credit caps."
+      ]
+    },
+    "pickB": {
+      "heading": "Pick Adobe GenStudio if…",
+      "points": [
+        "You produce thousands of ad and email variants and need every one checked against brand and legal rules.",
+        "You already run Adobe Experience Platform, AEM or Firefly and want content tied to performance data.",
+        "Your marketers work in Microsoft 365 Copilot, ChatGPT Enterprise or Gemini Enterprise and want Adobe's Marketing Agent there."
+      ]
+    },
+    "limits": {
+      "a": [
+        "Credits run out fast when iterating: reviews call the free 50 credits 'a trial, not a plan' and note Pro's allowance is tight across projects; the AI Pass to fix that is $100 a person.",
+        "EU data residency is Enterprise-only; Teams and Business data is processed globally, including the US. Image output is judged less photoreal than rivals, with limited fine control."
+      ],
+      "b": [
+        "No public price, no free plan, and a sales cycle; the Coworker tier and several Marketing Agent surfaces were still beta or 'coming months' as of April 2026.",
+        "Value depends on the Adobe stack. Insights need Experience Platform, and EU region for GenStudio is confirmed per contract rather than published."
+      ]
+    },
+    "verdict": "For a small or mid-size team, Canva AI is the practical choice: cheap, immediate, good enough for daily content, with EU residency only on Enterprise. For a large enterprise with brand and legal gates and an Adobe stack, GenStudio is built for the job, at a price you will only learn from sales. Neither does research or planning; both make assets.",
+    "bridge": {
+      "heading": "If you need the brief and the report, not just the asset",
+      "text": "Canva and GenStudio make assets once someone has the strategy, the research and the brief. That upstream work is a different product: a coworker you brief, a board the team sees, a file at the end. Sokosumi is a marketplace of named AI coworkers for marketing teams, each with a public profile, sample work, a named vendor and stated hosting. Their output, a research PDF, a creative brief, a campaign plan, goes into Canva or GenStudio for production.",
+      "points": [
+        "Brief in plain language or @mention in a channel; the task shows on a shared board and ends as a PDF report, deck, spreadsheet or dashboard. Scheduled tasks included.",
+        "Credits only when a task runs. Free: 250 credits per seat per month, no card. Paid seats €25 / €75 / €200 per month; Enterprise custom. EU hosting stated per coworker.",
+        "52 coworkers and agents from 7 vendors, 5,300+ tasks run. Built by Serviceplan Group with NMKR, Munich."
+      ],
+      "links": ["/compare/sokosumi-vs-canva-ai", "/compare/sokosumi-vs-adobe-genstudio"]
+    },
+    "faq": [
+      ["How much does Adobe GenStudio cost?", "Adobe does not publish a price. It is sold as an enterprise contract with credit-based entitlements; review sites list pricing as 'contact vendor'. Firefly consumer plans are separate and start around $10 a month."],
+      ["What are Canva AI credits?", "Each AI action costs credits by tier: standard (Magic Write), premium (Dream Lab images, Magic Design) and ultra (conversational design, text-to-video). Pro includes up to 2,000 standard, 200 premium and 20 ultra credits a month; the AI Pass add-on multiplies that for $100 a person (third-party figures)."],
+      ["Which one keeps data in the EU?", "Canva: only on Enterprise, with a US or EU residency setting; Business data is processed globally. Adobe: Experience Platform has EU and Swiss hosting options, confirmed per contract. Get both in writing."],
+      ["Where does Sokosumi fit?", "Upstream of both. It is a marketplace of specialist marketing coworkers that return research, strategy and planning files to a team board. The finished brief then goes to Canva or GenStudio for production."]
+    ]
+  },
+  "sources": [
+    "https://www.usecarly.com/blog/canva-pricing/",
+    "https://www.eesel.ai/blog/canva-ai-pricing",
+    "https://www.canva.com/help/data-residency/",
+    "https://compound.law/en-DE/tools/canva-ai/",
+    "https://fast.io/resources/canva-ai-review-2026/",
+    "https://www.aiworthit.com/blog/canva-ai-review/",
+    "https://news.adobe.com/news/2026/04/adobe-redefines-custome-experience",
+    "https://news.adobe.com/news/2026/04/adobe-introduces-brand-intelligence",
+    "https://martech.org/adobe-rebrands-experience-cloud-as-cx-enterprise-goes-all-in-on-ai-agents/",
+    "https://www.capterra.com/p/10022340/GenStudio/",
+    "https://experienceleague.adobe.com/en/docs/experience-platform/landing/multi-cloud",
+    "https://business.adobe.com/uk/blog/adobe-expands-swiss-data-center-capabilities-to-host-customer-data"
+  ]
+}

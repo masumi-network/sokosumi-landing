@@ -1,0 +1,76 @@
+{
+  "slug": "sintra-vs-lindy",
+  "a": { "key": "sintra", "name": "Sintra", "url": "https://sintra.ai" },
+  "b": { "key": "lindy", "name": "Lindy", "url": "https://www.lindy.ai" },
+  "checked": "2026-08-26",
+  "en": {
+    "title": "Sintra or Lindy: named AI helpers or a configurable AI assistant?",
+    "metaTitle": "Sintra vs Lindy (2026): prices, credits, helpers vs agents, who it fits",
+    "description": "Sintra and Lindy compared: what each is, plan prices, how credits work, hosting and the limits reviewers report. Facts checked August 2026 with a pick for each buyer.",
+    "intro": "Sintra is a bundle of twelve named AI helpers (Soshie for social, Penn for copy, Seomi for SEO and so on) for small business owners, sold as one cheap subscription with 250 credits a month. Lindy is a configurable AI assistant per user for email, meetings, CRM and research, sold per seat with far more credits. The deciding question is chat-style help for a solo owner versus an assistant that takes actions for a team.",
+    "glance": [
+      ["Who it is for", "Solo founders and very small businesses that want role-named helpers to chat with", "Individuals and small teams that want an assistant that acts in their inbox, calendar and CRM"],
+      ["What you get", "12 helpers for support, copy, SEO, social, email, sales, data, e-commerce, recruiting, strategy; Brain AI for business context; 15+ integrations", "Prebuilt assistants and templates; email, calendar, CRM, research and reporting tasks; thousands of integrations"],
+      ["Price", "All helpers: $97 regular monthly, on sale at $48.50; 3-month $23.60 per month; 12-month $15.60 per month. Single helper $39 per month", "Plus $29.99, Pro $99.99, Max $199.99 per user per month; Enterprise custom"],
+      ["Free plan or trial", "No free trial; 14-day money-back guarantee", "No free plan on the pricing page; 7-day trial only for teammates joining via Slack"],
+      ["EU hosting", "Not published. Legal entity is playOS, Inc. in Delaware, US, with a Lithuanian affiliate; data may be processed in the US", "Not published. SOC 2 Type II, GDPR and HIPAA controls listed"],
+      ["Team features", "Built for one owner; workspace shares the 250 credits", "Per-user seats sharing one credit pool per workspace"],
+      ["Build your own agents", "No. Fixed set of helpers you can customise with your business data", "Yes, no-code, from templates"],
+      ["What is metered", "250 credits a month on every plan, same on the $97 and $15.60 plans; helpers stop when credits run out", "Credits per user: 3,000 / 15,000 / 35,000 a month. Simple task 2 to 250 credits; deep work 250 to 1,000"]
+    ],
+    "pickA": {
+      "heading": "Pick Sintra if…",
+      "points": [
+        "You are one person running a small business and want cheap help drafting posts, emails and ideas.",
+        "You like having named roles to talk to rather than building anything.",
+        "Price is the main factor. The 12-month deal works out at $15.60 a month."
+      ]
+    },
+    "pickB": {
+      "heading": "Pick Lindy if…",
+      "points": [
+        "You want an assistant that does things: triages email, books meetings, updates the CRM, runs research.",
+        "You use it daily and need a real credit budget. Plus has 3,000 credits per user; Sintra has 250 for the whole workspace.",
+        "You have a team and want per-user seats with a shared pool."
+      ]
+    },
+    "limits": {
+      "a": [
+        "250 credits a month is the cap on every plan; reviewers report emptying it in two to ten days, and helpers stop when it is gone. Users who signed up for 'unlimited' plans were moved to the metered one.",
+        "Trustpilot sits around 2.4/5 with billing and refund complaints; reviewers say helpers are good at ideas but weak at finished, usable work."
+      ],
+      "b": [
+        "Cost is the top G2 complaint (dozens of 'expensive' mentions). Credits reset monthly, and a failing loop can burn thousands before anyone notices.",
+        "No hosting region is published; reviewers describe US hosting by default. Trustpilot rating is low (1.7/5), mostly billing and support."
+      ]
+    },
+    "verdict": "Sintra wins for a solo owner who wants cheap, chat-style help and will live inside 250 credits. Lindy wins for anyone who needs an assistant that acts in their tools and uses it daily, at three to twelve times the price. Neither publishes EU hosting.",
+    "bridge": {
+      "heading": "If you want the work done, not a chat window",
+      "text": "Both tools above give a person a helper to chat with or an assistant to configure. If the team's real need is a competitor report, a campaign plan or the Monday performance PDF, that is a different product: a coworker you brief, a board the team sees, a file at the end. Sokosumi is a marketplace of named AI coworkers for marketing teams, each with a role, a public profile, sample work and a named vendor that states its models and hosting.",
+      "points": [
+        "Brief in plain language or @mention in a channel; the task shows on a shared board and ends with a finished file.",
+        "Credits only when a task runs. Free: 250 credits per seat per month, no card. Paid seats €25, €75 or €200 per month.",
+        "EU hosting available, stated per coworker. Built by Serviceplan Group with NMKR, Munich."
+      ],
+      "links": ["/compare/sokosumi-vs-sintra", "/compare/sokosumi-vs-lindy"]
+    },
+    "faq": [
+      ["How much does Sintra really cost?", "The regular monthly price is $97 for all helpers, shown on sale at $48.50. The 3-month plan is $23.60 a month and the 12-month plan $15.60 a month. A single helper is $39 a month. Every plan has the same 250 credits."],
+      ["Does Sintra have a free trial?", "No. It offers a 14-day money-back guarantee instead. Reviewers report refunds being refused on technicalities, so read the terms first."],
+      ["How do Lindy credits compare?", "Lindy Plus includes 3,000 credits per user per month, Pro 15,000, Max 35,000. Simple tasks cost 2 to 250 credits and deep work 250 to 1,000. Credits reset each month."],
+      ["Is there a finished-work option for marketing teams?", "Sokosumi is a marketplace of AI coworkers that return finished files to a shared board. Free tier of 250 credits per seat per month; EU hosting stated per coworker."]
+    ]
+  },
+  "sources": [
+    "https://sintra.ai/pricing",
+    "https://sintra.ai/privacy-policy",
+    "https://www.eesel.ai/blog/sintra-ai-review",
+    "https://krater.ai/blog/sintra-ai-review-comparison",
+    "https://checkthat.ai/brands/sintra/reviews",
+    "https://www.lindy.ai/pricing",
+    "https://www.lindy.ai/security",
+    "https://hackceleration.com/labs/review/lindy",
+    "https://www.usecarly.com/blog/lindy-ai-review/"
+  ]
+}

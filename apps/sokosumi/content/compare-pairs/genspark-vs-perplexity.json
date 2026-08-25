@@ -1,0 +1,132 @@
+{
+  "slug": "genspark-vs-perplexity",
+  "a": {
+    "key": "genspark",
+    "name": "Genspark",
+    "url": "https://www.genspark.ai"
+  },
+  "b": {
+    "key": "perplexity",
+    "name": "Perplexity",
+    "url": "https://www.perplexity.ai"
+  },
+  "checked": "2026-08-26",
+  "en": {
+    "title": "Genspark or Perplexity: which one turns a question into a deliverable?",
+    "metaTitle": "Genspark vs Perplexity (2026): credits, Labs, team seats, EU hosting, limits",
+    "description": "Genspark and Perplexity compared on research quality, finished output, prices, team seats, EU hosting and real limits. Facts checked August 2026.",
+    "intro": "Genspark is a Super Agent workspace that turns a brief into slides, docs, sheets and sites, charged in credits. Perplexity is an answer engine with citations, plus Deep Research and Labs, which build reports, spreadsheets and dashboards. Both go from question to artefact. The deciding question is what you value more: Genspark's production of finished decks, or Perplexity's sourced answers.",
+    "glance": [
+      [
+        "Who it is for",
+        "People who need decks, docs and sheets produced fast, with a chat workspace on the side",
+        "People who ask the web questions all day and want citations first, with reports on demand"
+      ],
+      [
+        "What you get",
+        "Super Agent, AI Slides, AI Sheets, AI Docs, sites, AI Drive, zero-credit chat and image models (to 31 Dec 2026)",
+        "Sourced answers, Deep Research, Labs (reports, sheets, dashboards, mini apps), Comet browser, Spaces"
+      ],
+      [
+        "Price per person",
+        "Free (100 daily credits); Plus from 10,000 and Pro from 125,000 credits per month, dollar prices shown after sign-in (third-party capture, 2 Jun 2026, verify)",
+        "Free $0; Pro $20 per month; Max $200 per month with unlimited Labs (third-party tracker, 27 Apr 2026, verify; perplexity.ai blocks fetching)"
+      ],
+      [
+        "Price per seat (team)",
+        "Team $30 per seat per month, 12,000 credits per seat, 2–150 seats; Enterprise 151+ seats custom",
+        "Enterprise Pro $40 per seat per month; Enterprise Max $325 per seat (third-party, verify)"
+      ],
+      [
+        "Free plan or trial",
+        "Free plan, 100 daily credits",
+        "Free plan with limited Pro searches and Deep Research"
+      ],
+      [
+        "EU hosting",
+        "Enterprise only: EU, US or APAC data residency. Team and individual: not published",
+        "Not published. Processing reported in US data centres; sources disagree on EU options"
+      ],
+      [
+        "Team features",
+        "Shared AI Drive, seat admin; SLA and success manager on Enterprise",
+        "Shared Spaces, SSO/SCIM, SOC 2 Type II, no training on data on Enterprise"
+      ],
+      [
+        "What is metered",
+        "Credits per task; slides, agent runs and video cost more; failed tasks still charged; no rollover",
+        "Query caps: Pro gets 20 Deep Research a day and 50 Labs a month; Max unlimited Labs"
+      ]
+    ],
+    "pickA": {
+      "heading": "Pick Genspark if…",
+      "points": [
+        "The deliverable is a slide deck or a formatted document, and you want it in one pass.",
+        "You want a team plan with a published seat price and no sales call: $30 per seat, 2 to 150 seats.",
+        "You want top chat and image models without spending credits, at least until the end of 2026."
+      ]
+    },
+    "pickB": {
+      "heading": "Pick Perplexity if…",
+      "points": [
+        "Sourced answers matter more than polished layout. Every answer cites its pages by default.",
+        "You want a known cap instead of a credit meter: 20 Deep Research runs a day on Pro for $20.",
+        "You want a browser that acts for you. Comet is included."
+      ]
+    },
+    "limits": {
+      "a": [
+        "Credit costs vary widely by task, failed or retried tasks still cost credits, and unused credits expire monthly. Reviews flag billing surprises.",
+        "Individual plan prices are hidden until sign-in, EU residency is Enterprise-only (151+ seats), and the free-model promise ends 31 Dec 2026."
+      ],
+      "b": [
+        "Citations can point at weak sources, and studies find a share of URLs in deep research outputs are fabricated. Check links before you forward a report.",
+        "EU hosting is not published, the pricing page blocks fetching, and Labs is capped at 50 a month unless you pay $200 for Max."
+      ]
+    },
+    "verdict": "For finished decks and docs on a team plan you can buy today, Genspark wins. For research you can trust and check, Perplexity wins, and it is the cheaper single seat. Neither gives a small team EU hosting, and both need a person to read the output before it goes out.",
+    "bridge": {
+      "heading": "If you want the work done, and someone accountable for it",
+      "text": "Both tools return artefacts from a brief. What they do not give you is a named specialist, a stated vendor and a board where the team sees the task. Sokosumi is a marketplace of named AI coworkers for marketing teams, each with a role, a public profile, sample work, a named vendor with stated models and stated hosting.",
+      "points": [
+        "Brief in plain language or @mention in a channel; the task shows on a shared board and ends as a PDF report, deck, spreadsheet or live dashboard. Scheduled tasks included.",
+        "Credits only when a task runs. Free: 250 credits per seat per month, no card. Paid seats €25 / €75 / €200 per month; Enterprise custom. EU hosting stated per coworker.",
+        "52 coworkers and agents from 7 vendors, 5,300+ tasks run. Built by Serviceplan Group with NMKR, Munich."
+      ],
+      "links": [
+        "/compare/sokosumi-vs-genspark",
+        "/compare/sokosumi-vs-perplexity"
+      ]
+    },
+    "faq": [
+      [
+        "Which one makes better slides?",
+        "Genspark. AI Slides is a core product with templates and editing. Perplexity Labs can produce a presentation, but its strength is the sourced research behind it, not the layout."
+      ],
+      [
+        "Which one is better for research?",
+        "Perplexity. Sources sit on every answer and Deep Research plans are visible before they run. Genspark's agent also cites, but reviews flag more wrong numbers in stats-heavy prompts."
+      ],
+      [
+        "What does a team of five pay?",
+        "Genspark Team: $150 a month for 60,000 credits. Perplexity Enterprise Pro: about $200 a month with query caps instead of credits (third-party figures)."
+      ],
+      [
+        "Where does Sokosumi fit?",
+        "It also goes from brief to finished file, but through specialist marketing coworkers from named vendors, delivered to a shared team board with credits charged only when a task runs."
+      ]
+    ]
+  },
+  "sources": [
+    "https://www.usagepricing.com/blueprint/genspark",
+    "https://cybernews.com/ai-tools/genspark-ai-review/",
+    "https://www.eesel.ai/blog/genspark-ai-review",
+    "https://locusfounder.com/guides/genspark-review",
+    "https://www.finout.io/blog/perplexity-pricing-in-2026",
+    "https://www.eesel.ai/blog/perplexity-comet-pricing",
+    "https://compound.law/en-DE/tools/perplexity/",
+    "https://sonomos.ai/blog/is-perplexity-ai-gdpr-compliant-2026/",
+    "https://www.secondtalent.com/resources/perplexity-deep-research-review/",
+    "https://arxiv.org/pdf/2604.03173"
+  ]
+}

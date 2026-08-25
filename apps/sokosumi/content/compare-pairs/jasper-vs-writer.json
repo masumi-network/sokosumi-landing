@@ -1,0 +1,75 @@
+{
+  "slug": "jasper-vs-writer",
+  "a": { "key": "jasper", "name": "Jasper", "url": "https://www.jasper.ai" },
+  "b": { "key": "writer", "name": "Writer", "url": "https://writer.com" },
+  "checked": "2026-08-26",
+  "en": {
+    "title": "Jasper or Writer: marketing tool or enterprise AI platform?",
+    "metaTitle": "Jasper vs Writer (2026): prices, agents, governance, who it fits",
+    "description": "Jasper and Writer compared on seat price, agents, own models, governance, hosting and real limits. Facts checked August 2026, with a clear pick for each team.",
+    "intro": "Jasper is a marketing content platform: brand voice, a canvas, images and marketing agents, sold per seat. Writer is an enterprise AI platform with its own Palmyra models, a knowledge graph and prebuilt agents for many departments. The deciding question is whether you buy for a marketing team or for the whole company under IT control.",
+    "glance": [
+      ["Who it is for", "Marketing teams that write daily and want on-brand output", "Enterprises that want one governed AI platform across marketing, sales, support and ops"],
+      ["What you get", "Chat, Canvas, images, marketing agents, custom agent builder (Business)", "Chat (Ask Writer), 100+ prebuilt agents, AI Studio to build agents, knowledge graph, Palmyra models"],
+      ["Price", "Pro $69 per seat monthly or $59 annual; Business custom", "Starter $39 per user monthly or $29 annual, max 5 seats; Enterprise custom (third-party, verify: writer.com blocked fetch)"],
+      ["Free plan or trial", "7-day free trial on Pro", "14-day trial of Starter, no card (third-party, verify)"],
+      ["EU hosting", "No. Data hosted in US data centres", "Not published. Single-tenant deployment is an Enterprise add-on (third-party, verify)"],
+      ["Team features", "Brand voices, knowledge, audiences; admin and groups on Business", "Playbooks, connectors, knowledge graph; SAML SSO, HIPAA BAA, SOC 2 report on Enterprise"],
+      ["Build your own agents", "No-code builder on Business only", "Up to 5 custom agents on Starter; unlimited on Enterprise; code execution and browser automation on Enterprise"],
+      ["Models", "Third-party LLMs; data not used to train them", "Writer's own Palmyra models; Enterprise can add external models"]
+    ],
+    "pickA": {
+      "heading": "Pick Jasper if…",
+      "points": [
+        "Your buyer is the marketing lead, not IT, and the job is content: blogs, ads, email, social, images.",
+        "You want brand voice and a long-form editor built for marketers rather than a general agent studio.",
+        "You are fine with US hosting and a per-seat price from $59 to $69."
+      ]
+    },
+    "pickB": {
+      "heading": "Pick Writer if…",
+      "points": [
+        "You want one platform for many departments with SSO, audit and a knowledge graph over company data.",
+        "Model control matters: Writer runs its own Palmyra models and offers single-tenant deployment on Enterprise.",
+        "You want to test cheaply first. Starter is $29 to $39 per user for up to five people with a 14-day trial."
+      ]
+    },
+    "limits": {
+      "a": [
+        "The features that make Jasper 'agentic' (custom agents, deep research, GEO, API) require Business, which has no public price.",
+        "Review sites split: 4.7/5 on G2 but 3.4/5 on Trustpilot, where billing, cancellation and the 2023 price rise still draw complaints."
+      ],
+      "b": [
+        "Starter is capped hard: five seats, five playbooks, three active connectors, 1 GB of knowledge graph storage. Real use means Enterprise and a sales cycle.",
+        "Palmyra models score below the frontier models from OpenAI and Anthropic on general benchmarks, per independent reviews; Writer trades top capability for control."
+      ]
+    },
+    "verdict": "Jasper wins for a marketing team that wants content tools it can buy today. Writer wins for an enterprise that wants governed AI across departments and is ready for a custom contract. If you are five people testing, Writer Starter is the cheaper entry.",
+    "bridge": {
+      "heading": "If you want the work done, not a chat window",
+      "text": "Both tools above give a person a place to prompt or an agent to build. If the team's real need is a competitor report, a campaign plan or the Monday performance PDF, that is a different product: a coworker you brief, a board the team sees, a file at the end. Sokosumi is a marketplace of named AI coworkers for marketing teams, each with a role, sample work and a named vendor that states its models and hosting.",
+      "points": [
+        "Brief in plain language or @mention in a channel; the task shows on a shared board and ends with a finished file (PDF, deck, spreadsheet, dashboard).",
+        "Credits only when a task runs. Free: 250 credits per seat per month, no card. Paid seats €25, €75 or €200 per month.",
+        "EU hosting available, stated per coworker. Built by Serviceplan Group with NMKR, Munich."
+      ],
+      "links": ["/compare/sokosumi-vs-jasper", "/compare/sokosumi-vs-writer"]
+    },
+    "faq": [
+      ["Does Writer publish its prices?", "Only partly. writer.com blocked our fetch; a third-party guide dated May 2026 lists Starter at $39 per user monthly or $29 annual, capped at five seats. Enterprise is custom. Verify on writer.com/plans."],
+      ["Which tool has its own AI models?", "Writer. It builds the Palmyra model family and can run it single-tenant for Enterprise. Jasper uses third-party models and states your data is not used to train them."],
+      ["Can either host data in the EU?", "Jasper says its data lives in US data centres. Writer does not publish a region on the pages we could reach. Ask for a written answer if EU residency is a requirement."],
+      ["What if we just want finished marketing work?", "Sokosumi is a third option: named AI coworkers you brief, a shared task board and a finished file at the end. Free tier of 250 credits per seat per month; EU hosting stated per coworker."]
+    ]
+  },
+  "sources": [
+    "https://www.jasper.ai/pricing",
+    "https://www.jasper.ai/trust",
+    "https://www.jasper.ai/security",
+    "https://www.eesel.ai/blog/writer-com-pricing",
+    "https://www.g2.com/products/writer/pricing",
+    "https://agent-finder.co/reviews/writer",
+    "https://www.eyesift.com/blog/jasper-ai-review/",
+    "https://getaitopia.io/blog/jasper-ai-review-2026"
+  ]
+}

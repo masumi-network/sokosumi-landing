@@ -1,0 +1,75 @@
+{
+  "slug": "lindy-vs-relevance",
+  "a": { "key": "lindy", "name": "Lindy", "url": "https://www.lindy.ai" },
+  "b": { "key": "relevance", "name": "Relevance AI", "url": "https://relevanceai.com" },
+  "checked": "2026-08-26",
+  "en": {
+    "title": "Lindy or Relevance AI: which agent builder for a small team?",
+    "metaTitle": "Lindy vs Relevance AI (2026): prices, credits vs actions, EU hosting",
+    "description": "Lindy and Relevance AI compared: per-user credits versus actions plus vendor credits, hosting regions, free plans and the limits reviewers report. Checked August 2026.",
+    "intro": "Lindy sells AI assistants per user that handle email, meetings, CRM and research, metered in credits. Relevance AI sells a no-code builder for multi-agent 'workforces', metered in actions plus vendor credits for model use. The deciding question is whether you want a ready assistant for each person or a platform to build agents that serve the whole team.",
+    "glance": [
+      ["Who it is for", "Individuals and small teams that want a ready assistant in Slack, email and calendar", "Ops and go-to-market teams that want to build and run their own agents"],
+      ["What you get", "Prebuilt assistants and templates; chat, email, calendar, CRM and research tasks", "Agent and tool builder, multi-agent workforces, marketplace of templates, analytics"],
+      ["Price", "Plus $29.99, Pro $99.99, Max $199.99 per user per month; Enterprise custom", "Free $0; Pro $19 per month annual or $29 monthly; Team $234 annual or $349 monthly; Enterprise custom"],
+      ["Free plan or trial", "No free plan on the pricing page; 7-day trial only for teammates joining via Slack", "Free plan: 200 actions per month, 1 user, 1 project"],
+      ["EU hosting", "Not published. SOC 2 Type II, GDPR and HIPAA controls listed", "Region chosen at signup: US (N. Virginia), EU/UK (London), AU (Sydney)"],
+      ["Team features", "Workspace shares one credit pool; per-user seats", "Pro 2 build users; Team 5 build users, 45 end users, shared projects; SSO and RBAC on Enterprise"],
+      ["Build your own agents", "Yes, no-code, from templates", "Yes, the whole product is a builder"],
+      ["What is metered", "Credits per user: 3,000 / 15,000 / 35,000 a month. Simple task 2 to 250 credits, deep work 250 to 1,000, big builds 1,000 to 2,500", "Actions: 200 / 2,500 / 7,000 a month plus vendor credits $2 one-off / $20 / $70. Top-up $80 per 1,000 actions, $20 per 10,000 vendor credits"]
+    ],
+    "pickA": {
+      "heading": "Pick Lindy if…",
+      "points": [
+        "Each person needs their own assistant for inbox, calendar and follow-ups, today, without building.",
+        "You live in Slack and want teammates to join and trial from there.",
+        "You prefer one meter. Lindy has credits only; Relevance has two."
+      ]
+    },
+    "pickB": {
+      "heading": "Pick Relevance AI if…",
+      "points": [
+        "You want to design agents and tools that run for the whole team, not per-person assistants.",
+        "You want to start free and stay cheap. Free has 200 actions; Pro is $19 a month annual.",
+        "You need to pick a hosting region. Relevance lets you choose US, EU/UK or AU at signup."
+      ]
+    },
+    "limits": {
+      "a": [
+        "Cost is the top G2 complaint (dozens of 'expensive' mentions). Credits reset monthly and do not roll over, and a failing loop can burn thousands before you notice.",
+        "No hosting region is published. Reviewers describe US hosting by default; ask for a written answer if EU residency matters."
+      ],
+      "b": [
+        "Two meters (actions and vendor credits) make monthly cost hard to forecast, the most cited complaint on G2 and Capterra.",
+        "Beyond one simple agent, reviewers say multi-agent setups need real technical skill despite the no-code label. The EU/UK region is in London, which is outside the EU."
+      ]
+    },
+    "verdict": "Lindy wins for a small team that wants a working assistant per person now and can live with US hosting and a per-user price. Relevance AI wins for a team with one technical person that wants to build agents, start free and pick a region. Neither returns finished marketing deliverables out of the box.",
+    "bridge": {
+      "heading": "If you want the work done, not an agent to build",
+      "text": "Both tools above give a person an assistant to run or a builder to configure. If the team's real need is a competitor report, a campaign plan or the Monday performance PDF, that is a different product: a coworker you brief, a board the team sees, a file at the end. Sokosumi is a marketplace of named AI coworkers for marketing teams, each with a role, sample work and a named vendor that states its models and hosting.",
+      "points": [
+        "Brief in plain language or @mention in a channel; the task shows on a shared board and ends with a finished file.",
+        "Credits only when a task runs. Free: 250 credits per seat per month, no card. Paid seats €25, €75 or €200 per month.",
+        "EU hosting available, stated per coworker. Built by Serviceplan Group with NMKR, Munich."
+      ],
+      "links": ["/compare/sokosumi-vs-lindy", "/compare/sokosumi-vs-relevance-ai"]
+    },
+    "faq": [
+      ["What is a Lindy credit worth?", "Lindy says credits measure the work done. Everyday tasks cost 2 to 250 credits, deep work such as research or reporting 250 to 1,000, big builds 1,000 to 2,500. Plus includes 3,000 per user per month."],
+      ["What is the difference between Relevance actions and vendor credits?", "Actions count what the agent does (steps, tool calls). Vendor credits pay for the AI model behind it. Plan actions reset monthly; vendor credits roll over while you subscribe."],
+      ["Can I host in the EU?", "Relevance AI offers an EU/UK region in London, which is UK not EU. Lindy publishes no region. Check both in writing if EU residency is a hard rule."],
+      ["Is there a ready-made option for marketing work?", "Sokosumi is a marketplace of AI coworkers that return finished files to a shared board. Free tier of 250 credits per seat per month; EU hosting stated per coworker."]
+    ]
+  },
+  "sources": [
+    "https://www.lindy.ai/pricing",
+    "https://www.lindy.ai/security",
+    "https://relevanceai.com/docs/get-started/pricing",
+    "https://relevanceai.com/docs/admin/security",
+    "https://hackceleration.com/labs/review/lindy",
+    "https://www.usecarly.com/blog/lindy-ai-review/",
+    "https://www.quantumdesk.com/blog/relevance-ai-reviews",
+    "https://www.11x.ai/guides/relevance-ai-review"
+  ]
+}

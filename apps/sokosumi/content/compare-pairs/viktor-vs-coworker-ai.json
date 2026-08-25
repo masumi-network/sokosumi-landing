@@ -1,0 +1,134 @@
+{
+  "slug": "viktor-vs-coworker-ai",
+  "a": {
+    "key": "viktor",
+    "name": "Viktor",
+    "url": "https://viktor.com"
+  },
+  "b": {
+    "key": "coworker-ai",
+    "name": "Coworker.ai",
+    "url": "https://coworker.ai"
+  },
+  "checked": "2026-08-26",
+  "en": {
+    "title": "Viktor or Coworker.ai: two 'AI coworker' platforms compared",
+    "metaTitle": "Viktor vs Coworker.ai (2026): credits vs seats, integrations, EU hosting, limits",
+    "description": "Viktor (AI employee in Slack, workspace credits) vs Coworker.ai (per-user agent platform): prices, outputs, hosting, limits. Checked August 2026.",
+    "intro": "Viktor is an AI employee that lives in Slack and Microsoft Teams: you @mention it, it works across 3,200+ tools and comes back with a report, spreadsheet, PDF or dashboard. Coworker.ai is an enterprise agent platform with a company context graph, 150+ prebuilt agents and artifacts such as decks and dashboards. The deciding difference: Viktor charges the workspace by credits per task; Coworker.ai charges per user and sells through demos.",
+    "glance": [
+      [
+        "Who it is for",
+        "Teams that already run in Slack or Teams and want one assistant to do tasks across their tools",
+        "Enterprise teams (sales, marketing, support, ops) that want governed agents over company data"
+      ],
+      [
+        "What you get",
+        "Chat in Slack, Teams, Discord and web; reports, dashboards, PDFs, spreadsheets, web apps, code with pull requests; scheduled tasks; Viktor Spaces",
+        "Chat, 150+ prebuilt agents, artifacts (decks, dashboards, models, branded PDFs, apps), meetings, organisational memory (OM2), MCP access"
+      ],
+      [
+        "Price per user",
+        "No per-user price. Workspace plans from $50/month for 20,000 credits; $75 for 30,000; $100 for 40,000; $200 for 80,000; $300 for 125,000; Enterprise custom",
+        "Pro $29.99/user/month; Max $149.99/user/month (billed annually); Enterprise custom"
+      ],
+      [
+        "Free plan or trial",
+        "$100 in free credits, no card; trial credits never expire",
+        "Not published; 'Book a demo'"
+      ],
+      [
+        "EU hosting",
+        "Default AWS us-east-1; EU data residency on Enterprise contracts only. SOC 2 Type 1, CASA Tier 3; SOC 2 Type II and ISO 27001 in progress",
+        "US-hosted; SOC 2 Type II, GDPR, CASA Tier 2; private cloud, on-prem or air-gapped on Enterprise"
+      ],
+      [
+        "Team features",
+        "Shared workspace credits, scheduled tasks, isolated compute per user",
+        "Pro: 10 connectors, unlimited agents; Max: all 50+ connectors; Enterprise: SSO, SLAs, customer success"
+      ],
+      [
+        "Build your own agents",
+        "Instruct Viktor per task or schedule; no separate agent builder",
+        "Yes: unlimited agents on all plans plus 150+ prebuilt"
+      ],
+      [
+        "Company",
+        "Founders in Warsaw; $75M Series A led by Accel (May 2026); 2,000+ organisations at that time",
+        "Village Platforms, Inc., San Francisco; $13M seed"
+      ]
+    ],
+    "pickA": {
+      "heading": "Pick Viktor if…",
+      "points": [
+        "Your team lives in Slack or Teams and wants to @mention one assistant for real tasks.",
+        "You prefer to pay per task from a shared pool rather than per seat.",
+        "You want to test for free with $100 of credits and no sales call."
+      ]
+    },
+    "pickB": {
+      "heading": "Pick Coworker.ai if…",
+      "points": [
+        "You want many role-specific agents and a knowledge graph across your systems.",
+        "Predictable per-seat pricing matters more than pay-per-task.",
+        "You need on-prem or private cloud options and a customer success team."
+      ]
+    },
+    "limits": {
+      "a": [
+        "Credit spend is hard to predict: quick tasks cost 100–300 credits, full projects 2,000–5,000; reviewers report fast burn while learning, and unused credits roll over one month only (viktor.com/pricing; eesel review 17 Jul 2026; thisandthat review 12 Aug 2026, Trustpilot 3.4/5).",
+        "EU data residency only on Enterprise; default region is AWS us-east-1; SOC 2 Type II and ISO 27001 still in progress (viktor.com/security)."
+      ],
+      "b": [
+        "US-hosted with no published EU region; EU options mean an Enterprise deployment (coworker.ai/security).",
+        "No published free trial or self-serve start, and few independent reviews exist (SourceForge lists none as of Aug 2026), so you buy on a demo."
+      ]
+    },
+    "verdict": "Viktor is the faster start: free credits, no seats, and it works where your team already chats. Coworker.ai fits a larger company that wants a governed agent platform with many connectors and is ready for a sales process. For EU data residency, both need an Enterprise contract; neither offers it on a standard plan.",
+    "bridge": {
+      "heading": "If you want the work done, not a chat window",
+      "text": "Both tools above give a team one assistant or a set of agents to instruct. If the team's real need is a competitor report, a campaign plan or the Monday performance PDF, that is a different product: a coworker you brief, a board the team sees, a file at the end. Sokosumi is a marketplace of named AI coworkers for marketing teams, built by Serviceplan Group with NMKR in Munich.",
+      "points": [
+        "52 coworkers and agents from 7 vendors; each profile names the vendor, the models and the hosting, with EU hosting available and stated per coworker.",
+        "Free: 250 credits per seat per month, no card. Paid seats €25, €75 or €200 per month; credits are used only when a task runs.",
+        "Tasks show on a shared board and end with a finished PDF, deck, spreadsheet or dashboard; scheduled tasks repeat on their own."
+      ],
+      "links": [
+        "/compare/sokosumi-vs-viktor",
+        "/compare/sokosumi-vs-coworker-ai"
+      ]
+    },
+    "faq": [
+      [
+        "How much does a Viktor task cost?",
+        "Viktor publishes ranges: 100–300 credits for quick tasks, 500–1,500 for complex workflows, 2,000–5,000 for full projects. The $50 plan buys 20,000 credits for the whole workspace."
+      ],
+      [
+        "Is Viktor a German company?",
+        "Its founders are in Warsaw and it raised $75M from Accel in May 2026. Some reports mention a Munich office; the company site does not publish office locations."
+      ],
+      [
+        "Does Coworker.ai have a free trial?",
+        "Not published. The pricing page lists Pro, Max and Enterprise and the site directs visitors to book a demo."
+      ],
+      [
+        "Can either deliver finished files to a shared board?",
+        "Viktor returns files into the Slack or Teams thread where it was asked. Coworker.ai produces artifacts in its workspace. Neither runs a shared task board with named vendor coworkers; Sokosumi is built around that."
+      ]
+    ]
+  },
+  "sources": [
+    "https://viktor.com/pricing",
+    "https://viktor.com/",
+    "https://viktor.com/security",
+    "https://fortune.com/2026/05/19/viktor-ai-startup-raises-75-million-for-virtual-coworker-exclusive/",
+    "https://www.eesel.ai/blog/viktor-ai-review",
+    "https://www.thisandthat.chat/blog/viktor-review-2026/",
+    "https://coworker.ai/pricing",
+    "https://coworker.ai/",
+    "https://coworker.ai/security",
+    "https://coworker.ai/use-cases/marketing",
+    "https://sourceforge.net/software/product/Coworker.ai/",
+    "https://www.thesaasnews.com/news/coworker-ai-raises-13-million-in-seed-round/"
+  ]
+}

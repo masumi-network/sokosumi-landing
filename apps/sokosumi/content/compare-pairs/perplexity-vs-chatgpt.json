@@ -1,0 +1,78 @@
+{
+  "slug": "perplexity-vs-chatgpt",
+  "a": { "key": "perplexity", "name": "Perplexity", "url": "https://www.perplexity.ai" },
+  "b": { "key": "chatgpt", "name": "ChatGPT", "url": "https://chatgpt.com" },
+  "checked": "2026-08-26",
+  "en": {
+    "title": "Perplexity or ChatGPT for research: which one answers with sources you can trust?",
+    "metaTitle": "Perplexity vs ChatGPT for research (2026): prices, Deep Research, Labs, limits",
+    "description": "Perplexity and ChatGPT compared for research work: sourced answers, Deep Research, Labs, team plans, EU hosting and real limits. Checked August 2026.",
+    "intro": "Perplexity is a search engine that answers in prose with citations, plus Deep Research and Labs, which turn a question into a report, spreadsheet or dashboard. ChatGPT is a general assistant that also has Deep Research and agent mode, and much more besides. For research the deciding question is whether you want a tool built only for sourced answers, or a general tool that does research as one job among many.",
+    "glance": [
+      ["Who it is for", "Analysts, marketers and anyone who asks the web questions all day and wants citations first", "Everyone; research is one of many jobs alongside writing, images, code and agents"],
+      ["What you get", "Sourced answers, Deep Research, Labs (reports, spreadsheets, dashboards, mini apps), Comet browser, Spaces for teams", "Chat, Deep Research (plan you can edit, MCP sources), agent mode, Scheduled Tasks, Projects, images, Codex, connectors"],
+      ["Price per person", "Free $0; Pro $20 per month or $200 per year; Max $200 per month (third-party tracker, 27 Apr 2026, verify; perplexity.ai blocks fetching)", "Free $0; Go $8; Plus $20; Pro $100 or $200 per month (third-party tracker, 20 Aug 2026, verify)"],
+      ["Price per seat (team)", "Enterprise Pro $40 per seat per month; Enterprise Max $325 per seat (third-party, verify)", "Business $20 per seat annual or $25 monthly, 2-seat minimum; Enterprise quote"],
+      ["Free plan or trial", "Free plan with limited Pro searches and about 5 Deep Research runs a day", "Free plan, no card"],
+      ["EU hosting", "Not published. Processing reported in US data centres; sources disagree on EU options. Get it in writing before signing", "Enterprise only: Europe residency at rest for new workspaces. Business, Plus and Pro store data in the US"],
+      ["Team features", "Shared Spaces, SSO/SCIM, SOC 2 Type II, no training on data (Enterprise)", "Shared workspace and Projects, SAML SSO, admin controls, no training on business data"],
+      ["Research limits", "Pro: 20 Deep Research runs a day, 50 Labs a month; Max: unlimited Labs (third-party, verify)", "Deep Research and agent mode on Plus and up, excluded from Go; usage windows per plan"]
+    ],
+    "pickA": {
+      "heading": "Pick Perplexity if…",
+      "points": [
+        "You want every answer to show its sources by default, so a colleague can check it in a click.",
+        "You need a finished artefact from a question: Labs turns a brief into a report, spreadsheet or dashboard.",
+        "Research is the main job and $20 a month is the budget. Pro covers 20 Deep Research runs a day."
+      ]
+    },
+    "pickB": {
+      "heading": "Pick ChatGPT if…",
+      "points": [
+        "You want one tool for research and everything else: writing, images, slides, code.",
+        "You need research over private data. Deep Research can read MCP servers and 60+ connectors on Business.",
+        "You need EU data residency with a contract and can buy Enterprise."
+      ]
+    },
+    "limits": {
+      "a": [
+        "Citations can point at weak sources, and academic tests find 3–13% of URLs in deep research outputs are fabricated across tools; check the links before you forward a report.",
+        "EU residency is not published, the pricing page blocks fetching, and Deep Research has daily caps even on Pro."
+      ],
+      "b": [
+        "Deep Research and agent mode are not on the $8 Go plan, and each plan has usage windows; Pro at $100–200 is the tier for heavy daily research.",
+        "EU data residency needs Enterprise (reported ~150-seat minimum). Business and consumer plans keep data in the US."
+      ]
+    },
+    "verdict": "For sourced answers and quick research artefacts, Perplexity is the better single-purpose tool and the cheaper Enterprise seat for pure research. For research that has to sit next to writing, images and private data, ChatGPT wins. Neither publishes an EU hosting promise below the enterprise tier, and both need a human to check the citations.",
+    "bridge": {
+      "heading": "If you want the work done, not a chat window",
+      "text": "Both tools give one person a place to ask. If the team's real need is a competitor report, a market sizing or the Monday performance PDF, that is a different product: a coworker you brief, a board the team sees, a file at the end. Sokosumi is a marketplace of named AI coworkers for marketing teams, each with a public profile, sample work, a named vendor and stated hosting. Credits are spent only when a task runs.",
+      "points": [
+        "Brief in plain language or @mention in a channel; the task shows on a shared board and ends as a PDF report, deck, spreadsheet or dashboard.",
+        "Free: 250 credits per seat per month, no card. Paid seats €25 / €75 / €200 per month; Enterprise custom. EU hosting stated per coworker.",
+        "52 coworkers and agents from 7 vendors, 5,300+ tasks run. Built by Serviceplan Group with NMKR, Munich."
+      ],
+      "links": ["/compare/sokosumi-vs-perplexity", "/compare/sokosumi-vs-chatgpt"]
+    },
+    "faq": [
+      ["Is Perplexity more accurate than ChatGPT?", "Not by itself. Perplexity shows sources on every answer, which makes errors easier to spot. Both tools can cite weak pages or invent links in long reports. Treat both as a first draft."],
+      ["What does Perplexity Labs make?", "From one prompt it produces a report, a spreadsheet, a dashboard or a small web app, with sources. Pro includes 50 Labs a month; Max is unlimited (third-party figures)."],
+      ["Which is cheaper for a research team of five?", "Perplexity Enterprise Pro is about $40 per seat; ChatGPT Business is $20–25 per seat. ChatGPT is cheaper, but Perplexity's seat is research-only with higher research caps."],
+      ["Where does Sokosumi fit?", "It is not a search tool. It is a marketplace of specialist coworkers that deliver a finished, sourced marketing report to a team board. Teams keep Perplexity or ChatGPT for daily questions and hire a coworker for the recurring report."]
+    ]
+  },
+  "sources": [
+    "https://www.finout.io/blog/perplexity-pricing-in-2026",
+    "https://www.eesel.ai/blog/perplexity-comet-pricing",
+    "https://compound.law/en-DE/tools/perplexity/",
+    "https://sonomos.ai/blog/is-perplexity-ai-gdpr-compliant-2026/",
+    "https://www.secondtalent.com/resources/perplexity-deep-research-review/",
+    "https://arxiv.org/pdf/2604.03173",
+    "https://www.cloudzero.com/blog/how-much-does-chatgpt-cost/",
+    "https://coworker.ai/blog/chatgpt-enterprise-pricing",
+    "https://openai.com/index/expanding-data-residency-access-to-business-customers-worldwide/",
+    "https://help.openai.com/en/articles/8792828-what-is-chatgpt-business",
+    "https://intuitionlabs.ai/articles/chatgpt-plans-comparison"
+  ]
+}

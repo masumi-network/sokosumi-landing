@@ -1,0 +1,129 @@
+{
+  "slug": "the-need-vs-sintra",
+  "a": {
+    "key": "the-need",
+    "name": "The NEED",
+    "url": "https://theneed.works/ki-mitarbeiter"
+  },
+  "b": {
+    "key": "sintra",
+    "name": "Sintra",
+    "url": "https://sintra.ai"
+  },
+  "checked": "2026-08-26",
+  "en": {
+    "title": "The NEED or Sintra: flat-rate 'AI employees' for small companies",
+    "metaTitle": "The NEED vs Sintra (2026): prices, credits, EU hosting, what the agents do",
+    "description": "The NEED KI-Mitarbeiter vs Sintra AI helpers: flat €40 or credit plans, EU hosting, what the agents do and real limits. Checked August 2026.",
+    "intro": "The NEED sells 'KI-Mitarbeiter': hundreds of preconfigured AI agents for sales, support, admin and operations at a flat €40 per month, hosted in the EU. Sintra sells 12 named 'AI helpers' (Soshie for social, Penn for copy, Seomi for SEO) to small business owners on a discounted subscription with 250 credits a month. The deciding difference: The NEED is a German ops-and-support toolkit; Sintra is a marketing-and-admin chat bundle with a credit meter and US data processing.",
+    "glance": [
+      [
+        "Who it is for",
+        "German SMEs that want ready-made agents for support, lead qualification, data upkeep and reporting",
+        "Solo founders and small teams that want named chat helpers for social, copy, email and support"
+      ],
+      [
+        "What you get",
+        "700+ preconfigured agents (page also says 400+), 1,500+ automatable tasks, human-in-the-loop review, audit trails, role-based rights",
+        "12 helpers sharing one 'Brain' knowledge store, 15+ integrations (Gmail, Notion, Shopify, QuickBooks), image generation"
+      ],
+      [
+        "Price per user",
+        "€40/month flat for the platform; no seat fees stated",
+        "List $97/month; sold at $48.50 monthly, $23.60 on 3 months, $15.60 on 12 months (as of 26 Aug 2026). Single helper $39/month"
+      ],
+      [
+        "Free plan or trial",
+        "None published; free audit and a free monthly workshop",
+        "No free plan; 14-day money-back guarantee"
+      ],
+      [
+        "EU hosting",
+        "Stated: GDPR-compliant, EU data resident, encrypted, sensitive data stays in the EU",
+        "Not EU. Legal entity PlayOS, Inc. (Delaware); privacy policy says data may be processed in the US; models from OpenAI, Google, Anthropic"
+      ],
+      [
+        "Team features",
+        "Role-based permissions, audit trails; seat model not published",
+        "Unlimited workspaces; no per-seat plan or team admin"
+      ],
+      [
+        "Build your own agents",
+        "No builder shown; pick and configure preconfigured agents; connects to LangChain, Zapier, Make, n8n",
+        "No builder; helpers are fixed personas with automations you configure"
+      ],
+      [
+        "Credits",
+        "Unlimited use stated",
+        "250 credits per month on every plan; top-ups extra; credits do not roll over"
+      ]
+    ],
+    "pickA": {
+      "heading": "Pick The NEED if…",
+      "points": [
+        "You need EU data residency and a German contract partner.",
+        "Your tasks are support, lead qualification, data upkeep or reporting rather than marketing content.",
+        "You want a flat price with no credit meter."
+      ]
+    },
+    "pickB": {
+      "heading": "Pick Sintra if…",
+      "points": [
+        "You are a solo founder who wants social posts, emails and copy from friendly named helpers.",
+        "You want to start today at a low promo price and can live with 250 credits for heavy tasks.",
+        "US data processing is acceptable for your content."
+      ]
+    },
+    "limits": {
+      "a": [
+        "No public trial, no independent reviews found, and the product page states both '700+' and '400+' agents; ask for a demo and a written agent list before buying (theneed.works/ki-mitarbeiter, checked 26 Aug 2026).",
+        "Agents target sales, support, admin and ops; the page names no marketing agents and no finished-file outputs (reports, decks)."
+      ],
+      "b": [
+        "Credits: every plan has the same 250 monthly credits; heavy image or data use runs out fast, and top-ups are not covered by the money-back guarantee. Trustpilot suspended Sintra's score over review incentives; recent reviews cite credit burn and refund friction (uk.trustpilot.com, Aug 2026).",
+        "Helpers do not execute: they do not post to social, send email or update a CRM by themselves, and lack helpdesk integrations such as Zendesk (eesel review, 17 Jul 2026)."
+      ]
+    },
+    "verdict": "For a German company with data protection rules, The NEED is the only one of the two that fits: EU resident, flat €40, ops-focused. For a solo founder who wants marketing drafts fast and does not mind US processing or credits, Sintra is cheaper to start but watch the credit meter and renewal price. Neither delivers finished files to a shared team board.",
+    "bridge": {
+      "heading": "If you want the work done, not a chat window",
+      "text": "Both tools above give one person a set of agents to chat with. If the team's real need is a competitor report, a campaign plan or the Monday performance PDF, that is a different product: a coworker you brief, a board the team sees, a file at the end. Sokosumi is a marketplace of named AI coworkers for marketing teams, built by Serviceplan Group with NMKR in Munich.",
+      "points": [
+        "52 coworkers and agents from 7 vendors; each profile names the vendor, the models and the hosting, with EU hosting available.",
+        "Free: 250 credits per seat per month, no card. Paid seats €25, €75 or €200 per month; credits are used only when a task runs.",
+        "Tasks end with a finished PDF, deck, spreadsheet or dashboard; scheduled tasks repeat on their own."
+      ],
+      "links": [
+        "/compare/sokosumi-vs-the-need",
+        "/compare/sokosumi-vs-sintra"
+      ]
+    },
+    "faq": [
+      [
+        "Is Sintra a European company?",
+        "It was founded in Lithuania and has a Lithuanian affiliate (Monkai, UAB), but the contracting entity in the privacy policy is PlayOS, Inc. in Delaware, and data may be processed in the US."
+      ],
+      [
+        "What does €40 at The NEED cover?",
+        "The page says the full platform: preconfigured agents, unlimited use and updates, monthly cancellation, no setup fee. Seat count and limits are not published; confirm in writing."
+      ],
+      [
+        "Do Sintra credits run out?",
+        "Yes. Each plan includes 250 credits a month for advanced actions such as images and data analysis. When they are gone you buy top-ups; unused credits do not carry over."
+      ],
+      [
+        "Which one produces finished marketing reports?",
+        "Neither. The NEED focuses on ops and support tasks; Sintra returns chat drafts. Sokosumi coworkers are built to return a finished file to a team board."
+      ]
+    ]
+  },
+  "sources": [
+    "https://theneed.works/ki-mitarbeiter",
+    "https://theneed.works/",
+    "https://sintra.ai/pricing",
+    "https://sintra.ai/privacy-policy",
+    "https://uk.trustpilot.com/review/sintra.ai",
+    "https://www.eesel.ai/blog/sintra-ai-review",
+    "https://tech.eu/2025/06/10/lithuanian-ai-startup-sintra-secures-17m-seed-empowering-smbs-with-ai-helpers/"
+  ]
+}

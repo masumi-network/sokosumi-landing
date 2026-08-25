@@ -1,0 +1,129 @@
+{
+  "slug": "whaaat-vs-jasper",
+  "a": {
+    "key": "whaaat",
+    "name": "Whaaat AI",
+    "url": "https://www.whaaat.ai"
+  },
+  "b": {
+    "key": "jasper",
+    "name": "Jasper",
+    "url": "https://www.jasper.ai"
+  },
+  "checked": "2026-08-26",
+  "en": {
+    "title": "Whaaat AI or Jasper: a $25 Berlin startup versus the US marketing AI leader",
+    "metaTitle": "Whaaat AI vs Jasper (2026): prices, agents, brand voice, hosting, limits",
+    "description": "Whaaat AI ($25 unlimited) vs Jasper (from $59 per seat): marketing agents, brand voice, US hosting, team features, limits. Checked August 2026.",
+    "intro": "Whaaat AI gives small marketing teams 28 named content agents with one brand knowledge base for $25 a month. Jasper is the established marketing AI platform with 100+ agents, Canvas, brand voices and enterprise governance, from $59 per seat. The deciding difference: price and depth. Whaaat is cheap and simple; Jasper costs more and offers team controls, an agent builder and an API.",
+    "glance": [
+      [
+        "Who it is for",
+        "Small marketing teams, startups and agencies with several brands",
+        "Marketing teams in mid-size and large companies that need brand control, governance and scale"
+      ],
+      [
+        "What you get",
+        "28 channel-specific agents (LinkedIn, blog, SEO, PR, email, TikTok), shared brand knowledge base, brand presets, image generation",
+        "Canvas workspace, agents for marketing workflows, brand voices, knowledge assets, audiences, image generation, browser extension; Business adds custom agent builder, GEO and deep research agents, API"
+      ],
+      [
+        "Price per user",
+        "$25/month, unlimited agents (seat model not published)",
+        "Pro $69/seat monthly or $59/seat annual, 1 seat; Business custom, 12-month minimum"
+      ],
+      [
+        "Free plan or trial",
+        "7-day free trial",
+        "7-day free trial; no free plan"
+      ],
+      [
+        "EU hosting",
+        "Not published; German legal entity (UFOstart GmbH, Berlin)",
+        "No. Customer data hosted in US data centres; SOC 2, GDPR, DPA; data not used to train third-party models"
+      ],
+      [
+        "Team features",
+        "Brand presets per client; seats not published",
+        "Business: SSO/SAML, admin controls, groups, usage analytics, unlimited brand voices"
+      ],
+      [
+        "Build your own agents",
+        "No",
+        "Yes, on Business: no-code custom agent builder"
+      ],
+      [
+        "Company",
+        "UFOstart GmbH, Berlin, ~12 staff, seed round 2026",
+        "Jasper AI, Austin; $125M Series A (2022); G2 4.7/5 from 1,270 reviews (June 2026)"
+      ]
+    ],
+    "pickA": {
+      "heading": "Pick Whaaat AI if…",
+      "points": [
+        "You are a team of one to five and $59+ per seat is too much.",
+        "You want a German vendor and a flat price with no seat count.",
+        "Your need is channel content, not a governed content operation."
+      ]
+    },
+    "pickB": {
+      "heading": "Pick Jasper if…",
+      "points": [
+        "You need brand governance: approved voices, groups, SSO, audit and usage analytics.",
+        "You want to build custom agents or call an API.",
+        "You have budget for seats and a 12-month contract on Business."
+      ]
+    },
+    "limits": {
+      "a": [
+        "No published hosting region, GDPR statement, fair-use policy or team seat model (whaaat.ai, checked 26 Aug 2026). Small, young company (ADZINE, June 2026).",
+        "Content generation only; no publishing, scheduling or analytics integrations listed."
+      ],
+      "b": [
+        "Price is the most common complaint on G2 and Capterra; Pro is one seat only, and more users need a custom Business contract with a 12-month minimum (jasper.ai/pricing; eesel review 2026).",
+        "US-hosted only; reviewers also cite generic output that needs editing and no publishing step (Jasper pricing page; G2 review themes, 2026)."
+      ]
+    },
+    "verdict": "Jasper is the safer choice for a team that needs governance and scale, and the only one of the two with team admin, an agent builder and an API. Whaaat AI wins on price for small teams and agencies with several brands. For EU data protection, neither publishes EU hosting; Jasper states US data centres, Whaaat states nothing yet.",
+    "bridge": {
+      "heading": "If you want the work done, not a chat window",
+      "text": "Both tools above give a person agents to generate content. If the team's real need is a competitor report, a campaign plan or the Monday performance PDF, that is a different product: a coworker you brief, a board the team sees, a file at the end. Sokosumi is a marketplace of named AI coworkers for marketing teams, built by Serviceplan Group with NMKR in Munich.",
+      "points": [
+        "52 coworkers and agents from 7 vendors; each profile names the vendor, the models and the hosting, with EU hosting available.",
+        "Free: 250 credits per seat per month, no card. Paid seats €25, €75 or €200 per month; credits are used only when a task runs.",
+        "Tasks end with a finished PDF, deck, spreadsheet or dashboard on a shared board; scheduled tasks repeat on their own."
+      ],
+      "links": [
+        "/compare/sokosumi-vs-whaaat-ai",
+        "/compare/sokosumi-vs-jasper"
+      ]
+    },
+    "faq": [
+      [
+        "Does Jasper offer EU hosting?",
+        "No. Jasper's pricing page states that customer data is hosted in US-based data centres. It is GDPR-compliant with a DPA and does not train third-party models on your data."
+      ],
+      [
+        "Can more than one person use Whaaat AI?",
+        "The site sells one $25 plan and mentions brand presets for several clients, but does not publish seats or roles. Ask the vendor."
+      ],
+      [
+        "What is the difference between Jasper Pro and Business?",
+        "Pro is one seat with Canvas, agents, two brand voices and image tools. Business adds unlimited brand voices, a custom agent builder, GEO and deep research agents, API, SSO and admin controls, with custom pricing and a 12-month minimum."
+      ],
+      [
+        "Which one hands my team a finished report?",
+        "Neither is built around it. Both return text and images in a workspace. Sokosumi coworkers deliver finished files to a shared board."
+      ]
+    ]
+  },
+  "sources": [
+    "https://www.whaaat.ai/",
+    "https://www.whaaat.ai/lp/agencies",
+    "https://www.adzine.de/2026/06/berliner-startup-buendelt-ki-agenten-fuer-marketingaufgaben/",
+    "https://www.jasper.ai/pricing",
+    "https://www.jasper.ai/trust",
+    "https://www.eesel.ai/blog/jasper-ai-review-2026",
+    "https://www.eyesift.com/blog/jasper-ai-review/"
+  ]
+}

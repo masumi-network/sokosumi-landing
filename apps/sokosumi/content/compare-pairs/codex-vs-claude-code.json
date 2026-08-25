@@ -1,0 +1,133 @@
+{
+  "slug": "codex-vs-claude-code",
+  "a": {
+    "key": "chatgpt",
+    "name": "OpenAI Codex",
+    "url": "https://openai.com/codex/"
+  },
+  "b": {
+    "key": "claude-code",
+    "name": "Claude Code",
+    "url": "https://code.claude.com"
+  },
+  "checked": "2026-08-26",
+  "en": {
+    "title": "OpenAI Codex or Claude Code: which coding agent for your team?",
+    "metaTitle": "OpenAI Codex vs Claude Code (2026): prices, usage limits, EU residency, who it fits",
+    "description": "OpenAI Codex and Claude Code compared on price, included usage, team seats, EU residency and real limits. Checked August 2026, plus who fits which.",
+    "intro": "Codex is OpenAI's coding agent: a CLI, IDE extension and cloud agent, included in every ChatGPT plan and sharing its usage. Claude Code is Anthropic's coding agent: a CLI, IDE extensions, desktop app and web sessions, included in Claude plans and sharing their usage. Both do the same job from a prompt. The deciding differences are the plan you already pay for, how usage is counted, and where the data sits.",
+    "glance": [
+      [
+        "Who it is for",
+        "Teams already on ChatGPT who want an agent for many parallel, cheaper tasks",
+        "Teams who want the highest-rated code quality and a CLI that scripts into CI, Slack and schedules"
+      ],
+      [
+        "What you get",
+        "Codex CLI, IDE extension, cloud tasks, code review, subagents; shares usage with ChatGPT",
+        "CLI, VS Code and JetBrains, desktop app, web, subagents, hooks, skills, MCP, routines, GitHub Actions, Slack"
+      ],
+      [
+        "Price per person",
+        "Included in ChatGPT: Free, Go $8, Plus $20, Pro 5x $100 or Pro 20x $200 per month; extra usage via credits per million tokens (learn.chatgpt.com, 26 Aug 2026; plan prices third-party, verify)",
+        "Included in Claude: Free (limited), Pro $17 annual or $20 monthly, Max 5x from $100, Max 20x $200 per month; or API per token (claude.com, 26 Aug 2026)"
+      ],
+      [
+        "Price per seat (team)",
+        "Business $20 per seat annual or $25 monthly, includes Codex; Enterprise custom with credit-based, no fixed rate limits",
+        "Team Premium seat $100 annual or $125 monthly includes Claude Code; Standard seat does not; Enterprise custom"
+      ],
+      [
+        "Free plan or trial",
+        "Free ChatGPT plan includes Codex",
+        "Free Claude plan includes Claude Code with low limits"
+      ],
+      [
+        "Usage model",
+        "Five-hour windows per model tier (Plus roughly 10–100 heavy, 250–2,000 light tasks); OpenAI paused the five-hour cap on Plus, Business and Pro from 12 Jul 2026, no end date",
+        "Five-hour and weekly limits shared with chat and Cowork; Anthropic running a temporary 50% boost since May 2026"
+      ],
+      [
+        "EU hosting",
+        "Enterprise only: Europe data residency at rest for new workspaces; Business and consumer plans store data in the US; Codex via API follows API residency",
+        "None on Anthropic plans; EU only via AWS Bedrock Frankfurt or Vertex AI EU with your own key"
+      ],
+      [
+        "Team features",
+        "Shared workspace, SSO, admin controls, no training on business data",
+        "Shared CLAUDE.md, skills, hooks, org settings; SSO, SCIM, audit on Team/Enterprise"
+      ]
+    ],
+    "pickA": {
+      "heading": "Pick OpenAI Codex if…",
+      "points": [
+        "Your company already pays for ChatGPT Business or Enterprise. Codex is in the seat at no extra cost.",
+        "You run many parallel tasks and care about token cost. Reviews put Codex at several times the token efficiency of Claude Code.",
+        "You need EU data residency and have an Enterprise contract."
+      ]
+    },
+    "pickB": {
+      "heading": "Pick Claude Code if…",
+      "points": [
+        "Code quality on hard, multi-file work matters most. Blind reviews cited in 2026 comparisons favour Claude Code about two to one.",
+        "You want the agent scripted into CI, Slack and scheduled routines from day one.",
+        "One subscription should also cover Claude chat and Cowork for the same person."
+      ]
+    },
+    "limits": {
+      "a": [
+        "Reviews report erratic behaviour in long sessions and weaker front-end output than Claude Code.",
+        "EU residency needs ChatGPT Enterprise; Business seats and Plus store data in the US. OpenAI blocks automated reads of its pricing page, so plan prices here rely on dated third-party trackers."
+      ],
+      "b": [
+        "Rate limits are the top complaint: five-hour and weekly caps shared with chat, and Pro users hit them routinely; the current higher limits are a temporary boost.",
+        "No EU residency on Anthropic's own plans, and the Team Standard seat excludes Claude Code; you need Premium at $100–125."
+      ]
+    },
+    "verdict": "If your company already licenses ChatGPT, Codex is free to try and cheaper to run at volume, with EU residency on Enterprise. If code quality on hard tasks and deep automation matter more than cost, Claude Code wins, but you accept usage caps and US hosting. Many developers now run both.",
+    "bridge": {
+      "heading": "If you were going to build a marketing agent yourselves",
+      "text": "Sokosumi is not a coding tool and does not compete with either of these. But one reason teams compare them is a plan to build an in-house research or reporting agent for marketing. That build means a developer owns the prompts, the data licences, the hosting and the upkeep. There is a hired option: Sokosumi is a marketplace of named AI coworkers for marketing teams, each with a public profile, a named vendor, stated models and stated hosting.",
+      "points": [
+        "Brief in plain language or @mention in a channel; the task shows on a shared board and ends as a PDF report, deck, spreadsheet or dashboard. Scheduled tasks included.",
+        "Credits only when a task runs. Free: 250 credits per seat per month, no card. Paid seats €25 / €75 / €200 per month; Enterprise custom. EU hosting stated per coworker.",
+        "52 coworkers and agents from 7 vendors, 5,300+ tasks run. Built by Serviceplan Group with NMKR, Munich."
+      ],
+      "links": [
+        "/compare/sokosumi-vs-openai-codex",
+        "/compare/sokosumi-vs-claude-code"
+      ]
+    },
+    "faq": [
+      [
+        "Is Codex really free?",
+        "It is included in every ChatGPT plan, including Free, and shares that plan's usage. Heavy use needs Plus, Pro or credits. There is no separate Codex subscription."
+      ],
+      [
+        "What does a team of five pay?",
+        "Codex: five ChatGPT Business seats at $20 annual, $100 a month. Claude Code: five Team Premium seats at $100 annual, $500 a month. Claude's Premium seat includes far more usage than a Business seat, so compare included work, not just price."
+      ],
+      [
+        "Which one keeps code in the EU?",
+        "Codex through ChatGPT Enterprise with Europe residency, or through the API with residency set. Claude Code only via AWS Bedrock Frankfurt or Vertex AI EU with your own API key; not on Anthropic's own plans."
+      ],
+      [
+        "Where does Sokosumi fit?",
+        "It does not write your code. It is a marketplace of specialist marketing coworkers that return finished files. Developers who would otherwise build a marketing agent can hire one instead, or list their own agent on the marketplace."
+      ]
+    ]
+  },
+  "sources": [
+    "https://learn.chatgpt.com/docs/pricing",
+    "https://www.cloudzero.com/blog/how-much-does-chatgpt-cost/",
+    "https://www.morphllm.com/codex-pricing",
+    "https://openai.com/index/expanding-data-residency-access-to-business-customers-worldwide/",
+    "https://code.claude.com/docs/en/overview",
+    "https://claude.com/pricing",
+    "https://ccforeveryone.com/guides/claude-code-limits-and-pricing",
+    "https://compound.law/en-DE/tools/claude-eu-hosting/",
+    "https://www.morphllm.com/comparisons/codex-vs-claude-code",
+    "https://www.nxcode.io/resources/news/claude-code-vs-codex-cli-terminal-coding-comparison-2026",
+    "https://www.totalum.app/blog/claude-code-vs-codex-2026"
+  ]
+}

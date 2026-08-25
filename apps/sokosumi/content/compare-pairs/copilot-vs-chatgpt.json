@@ -1,0 +1,78 @@
+{
+  "slug": "copilot-vs-chatgpt",
+  "a": { "key": "copilot", "name": "Microsoft 365 Copilot", "url": "https://www.microsoft.com/en-us/microsoft-365-copilot" },
+  "b": { "key": "chatgpt", "name": "ChatGPT Enterprise", "url": "https://chatgpt.com" },
+  "checked": "2026-08-26",
+  "en": {
+    "title": "Microsoft 365 Copilot or ChatGPT Enterprise: which one for a company rollout?",
+    "metaTitle": "Microsoft 365 Copilot vs ChatGPT Enterprise (2026): price, EU data, who it fits",
+    "description": "Microsoft 365 Copilot and ChatGPT Enterprise compared on seat price, agents, EU data boundary, file output and real limits. Checked August 2026.",
+    "intro": "Microsoft 365 Copilot is AI inside Word, Excel, PowerPoint, Outlook and Teams, sold as a $30 add-on per user, with Researcher and Analyst agents. ChatGPT Enterprise is OpenAI's own assistant for companies: a shared workspace with agent mode, Deep Research, Codex and connectors, sold on a custom contract. The deciding question is where people work: inside Office files, or in a chat window that connects to them.",
+    "glance": [
+      ["Who it is for", "Companies on Microsoft 365 that want AI inside the apps they already pay for", "Companies of 150+ seats that want the best general assistant with enterprise controls"],
+      ["What you get", "Copilot in Word, Excel, PowerPoint, Outlook, Teams; Copilot Chat; Researcher, Analyst, Facilitator agents; Notebooks; custom agents via Copilot Studio", "Chat, GPT Images, voice, Deep Research, agent mode, Scheduled Tasks, Projects, custom GPTs, Codex, 60+ connectors, compliance API"],
+      ["Price per user", "Enterprise $30 per user per month annual ($31.50 monthly billing); Business add-on $21 list, $18 promo to 31 Dec 2026; requires a Microsoft 365 licence (microsoft.com, 26 Aug 2026)", "Not published. Procurement reports cite $45–75 per seat, ~$60 average, ~150-seat minimum, annual prepay (third-party, verify). Business tier is $20 annual / $25 monthly"],
+      ["Free plan or trial", "No free tier of Copilot; Copilot Chat is included in Microsoft 365 licences", "No trial for Enterprise; Free and Business plans exist"],
+      ["EU hosting", "Yes. EU Data Boundary, data at rest in the EU. Caveat: flex routing lets inference run in the US, Canada or Australia at peak load and is on by default for tenants created after 25 Mar 2026; admins can switch it off", "Yes. Data residency in Europe (EEA + Switzerland) at no extra cost, at rest, for new workspaces only. Not available on Business"],
+      ["Team features", "Tenant admin, Entra identity, DLP, SharePoint Advanced Management, Copilot Analytics, Agent Store", "SAML SSO, SCIM, role-based access, audit and compliance API, customer-managed keys, no training on data"],
+      ["Build your own agents", "Copilot Studio: $200 per 25,000-credit pack or pay-as-you-go; publish to the Agent Store", "Custom GPTs and agent mode; OpenAI Frontier platform (custom pricing) for enterprise agents"],
+      ["Finished files", "Native: Word, Excel, PowerPoint documents in place", "Agent mode and data analysis export spreadsheets, slides, PDF; edits do not land in your Office files"]
+    ],
+    "pickA": {
+      "heading": "Pick Microsoft 365 Copilot if…",
+      "points": [
+        "Your people work in Word, Excel and PowerPoint all day and you want AI there, not in a separate tab.",
+        "You need a fixed, published price. $30 per user per month, no seat minimum beyond your existing Microsoft 365 licences.",
+        "Your compliance team already accepted the EU Data Boundary and will turn flex routing off."
+      ]
+    },
+    "pickB": {
+      "heading": "Pick ChatGPT Enterprise if…",
+      "points": [
+        "You want the strongest general assistant, with images, voice, agent mode and Deep Research, and are ready for a 150-seat contract.",
+        "You need connectors beyond Microsoft: Google Drive, GitHub, databases, and MCP servers for Deep Research.",
+        "Your developers will use Codex on the same contract, with usage that scales on credits."
+      ]
+    },
+    "limits": {
+      "a": [
+        "Researcher and Analyst have a combined cap reported at 25 queries per user per month; autonomous agents need Copilot Studio credits on top of the seat price.",
+        "Flex routing: since 17 Apr 2026 EU tenants default to allowing inference outside the EU at peak demand unless an admin opts out (Microsoft Learn)."
+      ],
+      "b": [
+        "No public price and a reported ~150-seat minimum. Smaller companies get Business, which has no EU data residency.",
+        "Residency covers data at rest for new workspaces only; existing workspaces cannot be moved. OpenAI blocks automated reads of its pricing page, so numbers here rely on dated third-party trackers."
+      ]
+    },
+    "verdict": "For a Microsoft shop that wants AI inside Office at a known price, Copilot wins and is easier to buy. For a large company that wants the best general assistant and will negotiate a contract, ChatGPT Enterprise wins on capability. Both can keep EU data at rest in Europe; only Copilot has the flex-routing catch to switch off.",
+    "bridge": {
+      "heading": "If you want the work done, not a chat window",
+      "text": "Both tools give each person a place to prompt. If the team's real need is a competitor report, a campaign plan or the Monday performance PDF, that is a different product: a coworker you brief, a board the team sees, a file at the end. Sokosumi is a marketplace of named AI coworkers for marketing teams, each with a public profile, a named vendor, stated models and stated hosting. Credits are spent only when a task runs.",
+      "points": [
+        "Brief in plain language or @mention in a channel; the task shows on a shared board and ends as a PDF, deck, spreadsheet or dashboard. Scheduled tasks included.",
+        "Free: 250 credits per seat per month, no card. Paid seats €25 / €75 / €200 per month; Enterprise custom. EU hosting stated per coworker.",
+        "52 coworkers and agents from 7 vendors, 5,300+ tasks run. Built by Serviceplan Group with NMKR, Munich."
+      ],
+      "links": ["/compare/sokosumi-vs-microsoft-365-copilot", "/compare/sokosumi-vs-chatgpt"]
+    },
+    "faq": [
+      ["Do I need both?", "Many companies run both: Copilot for Office documents and meetings, ChatGPT for research, images and agent tasks. The cost is roughly $30 plus $45–75 per person per month, so most pick one as the default and licence the other for a smaller group."],
+      ["Which one keeps data in the EU?", "Both can. Copilot stores data at rest inside the EU Data Boundary; check the flex routing setting in the admin centre. ChatGPT Enterprise offers Europe residency for new workspaces at no extra cost. ChatGPT Business does not."],
+      ["What is the smallest company that can buy each?", "Copilot: any Microsoft 365 customer, one seat. ChatGPT Enterprise: reports cite about 150 seats; below that OpenAI sells Business at $20–25 per seat with a 2-seat minimum."],
+      ["Where does Sokosumi fit?", "It is not a general assistant. It is a marketplace of specialist marketing coworkers that deliver finished files to a team board and post into Teams channels. It sits alongside Copilot or ChatGPT rather than replacing them."]
+    ]
+  },
+  "sources": [
+    "https://www.microsoft.com/en-us/microsoft-365-copilot/pricing",
+    "https://www.microsoft.com/en-us/microsoft-365-copilot/enterprise",
+    "https://www.microsoft.com/en-us/microsoft-365-copilot/pricing/copilot-studio",
+    "https://learn.microsoft.com/en-us/microsoft-365/copilot/copilot-flex-routing",
+    "https://learn.microsoft.com/en-us/microsoft-365/copilot/faq-researcher",
+    "https://office365itpros.com/2026/04/07/flex-routing-copilot-europe/",
+    "https://www.cloudzero.com/blog/how-much-does-chatgpt-cost/",
+    "https://coworker.ai/blog/chatgpt-enterprise-pricing",
+    "https://openai.com/index/expanding-data-residency-access-to-business-customers-worldwide/",
+    "https://help.openai.com/en/articles/8792828-what-is-chatgpt-business",
+    "https://learn.chatgpt.com/docs/pricing"
+  ]
+}

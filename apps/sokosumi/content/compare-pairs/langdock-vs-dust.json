@@ -1,0 +1,131 @@
+{
+  "slug": "langdock-vs-dust",
+  "a": {
+    "key": "langdock",
+    "name": "Langdock",
+    "url": "https://www.langdock.com"
+  },
+  "b": {
+    "key": "dust",
+    "name": "Dust",
+    "url": "https://dust.tt"
+  },
+  "checked": "2026-08-26",
+  "en": {
+    "title": "Langdock or Dust: two European AI workspaces compared",
+    "metaTitle": "Langdock vs Dust (2026): seat prices, credits, EU hosting, agents",
+    "description": "Langdock (Berlin) and Dust (Paris) compared: per-seat prices, credit metering, EU hosting, agent builders and real limits. Checked August 2026.",
+    "intro": "Langdock and Dust both sell an AI workspace where a company builds its own agents on top of many models and its own data. Both are European and EU-hosted. The deciding difference is billing and depth: Langdock charges a flat seat with usage windows; Dust charges a seat plus a monthly credit pool, and leans harder on connecting company knowledge.",
+    "glance": [
+      [
+        "Who it is for",
+        "DACH companies rolling out AI to all staff with EU hosting and model choice",
+        "Tech-minded EU teams that want agents grounded in Notion, Drive, Slack, GitHub and similar sources"
+      ],
+      [
+        "What you get",
+        "Chat with 40+ models, agents, workflows with triggers, Slack and Teams bots, scheduled tasks, API",
+        "Chat, custom agents connected to company data, Slack integration, MCP servers, API"
+      ],
+      [
+        "Price per user",
+        "€25/month Standard; €99/month Business Max. Annual billing saves 20%",
+        "Pro $30/seat/month ($24 annual) with 8,000 credits; Max $150 ($120 annual) with 40,000 credits; Enterprise custom (third-party capture of dust.tt pricing, 24 Jun 2026; verify)"
+      ],
+      [
+        "Free plan or trial",
+        "7-day trial, €5 model credits, no card",
+        "Free plan with 500 credits, one-time, no monthly reset"
+      ],
+      [
+        "EU hosting",
+        "App and most models in the EU on Azure; ISO 27001, SOC 2 Type II",
+        "EU region available (eu.dust.tt) with EU inference where possible; SOC 2 Type II, GDPR. Claude Sonnet 5 not yet available on EU workspaces (Dust changelog, 30 Jun 2026)"
+      ],
+      [
+        "Team features",
+        "SSO, SCIM, SAML; shared agents; Governance add-on; up to 1,000 users on Business",
+        "Workspace admin, shared agents, SCIM and audit logs on Enterprise, single-tenant option"
+      ],
+      [
+        "Build your own agents",
+        "Yes: agents with knowledge and tools; workflows with 2,500 runs/month included, more from €539/month",
+        "Yes: agents with data sources, tools and MCP servers; no separate workflow tier, credits meter every run"
+      ],
+      [
+        "Billing logic",
+        "Seat price; usage measured in 5-hour and weekly windows; extra usage pay-as-you-go",
+        "Seat price plus credits; credits reset monthly and do not carry over; API usage $0.01 per credit"
+      ]
+    ],
+    "pickA": {
+      "heading": "Pick Langdock if…",
+      "points": [
+        "You want a plain seat price with no credit pool to watch.",
+        "You need a Teams bot and SSO/SCIM on the standard business plan.",
+        "You want multi-step workflows with schedules and human approval steps."
+      ]
+    },
+    "pickB": {
+      "heading": "Pick Dust if…",
+      "points": [
+        "Your agents must read deeply from Notion, Drive, Slack, GitHub or Intercom, and answer from that data.",
+        "You are comfortable with credit metering and want a real free tier to test with.",
+        "Your team is technical and wants MCP servers and an API as first-class parts of the product."
+      ]
+    },
+    "limits": {
+      "a": [
+        "Usage windows: heavy users hit the 5-hour or weekly limit and fall back to a lighter model unless extra usage is enabled (Langdock docs, fair usage policy).",
+        "Reviews flag a learning curve for advanced features and a young company (founded 2023); a 90-day test found Mistral model errors (teamazing, updated 17 Aug 2026)."
+      ],
+      "b": [
+        "Credits do not roll over, and the free plan's 500 credits never reset, so trials are short (third-party capture of Dust pricing, 24 Jun 2026).",
+        "EU workspaces lag on some models: Claude Sonnet 5 was not available on EU data residency as of 30 Jun 2026 (Dust changelog). Dust has no file storage of its own; files stay where they were (fast.io review, 2026)."
+      ]
+    },
+    "verdict": "Langdock is the safer buy for a company-wide rollout in the DACH region: simpler billing, Teams bot, and a flat seat. Dust is the stronger pick for a smaller technical team that wants agents grounded in company data and does not mind credits. On EU hosting both are credible; check Dust's model list for your EU workspace first.",
+    "bridge": {
+      "heading": "If you want the work done, not a chat window",
+      "text": "Both tools above give a person a place to prompt and a builder to make agents. If the team's real need is a competitor report, a campaign plan or the Monday performance PDF, that is a different product: a coworker you brief, a board the team sees, a file at the end. Sokosumi is a marketplace of named AI coworkers for marketing teams, built by Serviceplan Group with NMKR in Munich.",
+      "points": [
+        "52 coworkers and agents from 7 vendors, each with a public profile, sample work, stated models and hosting.",
+        "Free: 250 credits per seat per month, no card. Paid seats €25, €75 or €200 per month; credits are used only when a task runs.",
+        "Tasks end with a finished file: PDF report, deck, spreadsheet or live dashboard."
+      ],
+      "links": [
+        "/compare/sokosumi-vs-langdock",
+        "/compare/sokosumi-vs-dust"
+      ]
+    },
+    "faq": [
+      [
+        "How do Dust credits work?",
+        "Each seat gets a monthly credit pool: 8,000 on Pro, 40,000 on Max. Stronger models use more credits per message. Unused credits are lost at month end. Enterprise pools credits across the workspace."
+      ],
+      [
+        "Does Langdock have a credit system?",
+        "No. Langdock charges per seat and measures usage in a 5-hour session window and a weekly window. When you reach a limit, it switches to a lighter model unless your admin allows extra usage."
+      ],
+      [
+        "Which one is hosted in the EU?",
+        "Both. Langdock runs on Azure in the EU. Dust offers an EU region at eu.dust.tt; some newer models arrive later there."
+      ],
+      [
+        "Can either deliver a finished deck or report to my team?",
+        "Both can return text and files to the person who asked. Neither runs a shared task board with named coworkers; Sokosumi and similar products are built for that."
+      ]
+    ]
+  },
+  "sources": [
+    "https://www.langdock.com/pricing",
+    "https://www.langdock.com/security",
+    "https://docs.langdock.com/en/using-langdock/models-and-limits/fair-usage-policy.md",
+    "https://www.teamazing.com/blog/langdock-enterprise-review-2026/",
+    "https://www.usagepricing.com/blueprint/dust",
+    "https://docs.dust.tt/changelog",
+    "https://docs.dust.tt/docs/snowflake-tool",
+    "https://dust.tt/home/security",
+    "https://fast.io/resources/dust-ai-workspace/"
+  ]
+}

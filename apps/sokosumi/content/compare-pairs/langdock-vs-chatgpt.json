@@ -1,0 +1,136 @@
+{
+  "slug": "langdock-vs-chatgpt",
+  "a": {
+    "key": "langdock",
+    "name": "Langdock",
+    "url": "https://www.langdock.com"
+  },
+  "b": {
+    "key": "chatgpt",
+    "name": "ChatGPT Team",
+    "url": "https://chatgpt.com"
+  },
+  "checked": "2026-08-26",
+  "en": {
+    "title": "Langdock or ChatGPT Team: which one for a German company?",
+    "metaTitle": "Langdock vs ChatGPT Team (2026): prices, EU hosting, who it fits",
+    "description": "Langdock and ChatGPT Team (now ChatGPT Business) compared: seat prices, EU hosting, agents, team features and real limits. Checked August 2026.",
+    "intro": "Langdock is a Berlin-built AI workspace that gives every employee chat, agents and workflows across many models, hosted in the EU. ChatGPT Team (OpenAI now calls it ChatGPT Business) is the company version of the world's best-known chat tool. The deciding difference: Langdock keeps data in the EU on its standard plan and lets you switch models; ChatGPT only offers EU data residency on Enterprise and runs OpenAI models only.",
+    "glance": [
+      [
+        "Who it is for",
+        "Companies in the DACH region that want one AI workspace for all staff, with EU hosting and model choice",
+        "Teams that already use ChatGPT and want a shared workspace, admin controls and no training on their data"
+      ],
+      [
+        "What you get",
+        "Chat with 40+ models, custom agents, workflows with triggers, Slack and Teams bots, scheduled tasks, API",
+        "Chat with OpenAI models, shared projects, custom GPTs, connectors, agent mode, scheduled tasks, workspace agents"
+      ],
+      [
+        "Price per user",
+        "€25/month Standard seat; €99/month Business Max (5x usage). Annual billing saves 20%",
+        "$25/seat monthly or $20/seat annual, 2-seat minimum (third-party tracker, 20 Aug 2026; openai.com blocked fetch)"
+      ],
+      [
+        "Free plan or trial",
+        "7-day trial, €5 model credits, no card",
+        "No free team plan. ChatGPT Free exists for individuals"
+      ],
+      [
+        "EU hosting",
+        "Yes. App and most models hosted in the EU on Microsoft Azure. ISO 27001, SOC 2 Type II",
+        "No on Business. Data residency in Europe is limited to Enterprise and Edu workspaces"
+      ],
+      [
+        "Team features",
+        "SSO, SCIM, SAML on Business; shared agents; up to 1,000 users; Governance add-on (free until 1 Jan 2027, then €3.50/user)",
+        "Shared projects, admin console with analytics, agent sharing in Slack. No SCIM or role-based access on Business"
+      ],
+      [
+        "Build your own agents",
+        "Yes: agents with knowledge, tools and integrations; workflows with 2,500 runs/month included, more from €539/month",
+        "Yes: custom GPTs and workspace agents with scheduled runs; no multi-step workflow builder"
+      ],
+      [
+        "Models",
+        "OpenAI, Anthropic, Google, Mistral, Meta, DeepSeek; bring your own keys",
+        "OpenAI models only"
+      ]
+    ],
+    "pickA": {
+      "heading": "Pick Langdock if…",
+      "points": [
+        "You need EU hosting on the standard plan, not on an Enterprise contract with a seat minimum.",
+        "You want to switch between OpenAI, Anthropic, Google and Mistral models in one place, or to compare them.",
+        "You plan to build workflows with triggers and approval steps, and to run agents inside Slack or Teams."
+      ]
+    },
+    "pickB": {
+      "heading": "Pick ChatGPT Team if…",
+      "points": [
+        "Your staff already use ChatGPT and you mainly want admin control and a no-training guarantee.",
+        "You want the newest OpenAI features on day one: agent mode, deep research, scheduled tasks, voice.",
+        "EU data residency is not a hard rule for you, or you are ready to move to Enterprise later."
+      ]
+    },
+    "limits": {
+      "a": [
+        "Usage is metered in 5-hour and weekly windows. When you hit the limit, Langdock drops you to a lighter model unless the admin turns on pay-as-you-go extra usage (Langdock docs, fair usage policy).",
+        "A 90-day test by teamazing (updated 17 Aug 2026) found Mistral model errors during use and a 6–10 week path to a polished company-wide rollout."
+      ],
+      "b": [
+        "EU data residency is not available on the Business plan; it needs Enterprise or Edu (OpenAI help centre, data residency article).",
+        "Business lacks SCIM group sync and custom role-based access; those are Enterprise features (ChatGPT Work admin FAQ). The seat price changed three times in 2026, so re-check before you sign."
+      ]
+    },
+    "verdict": "For a German company with a works council and a data protection officer, Langdock wins on the plain facts: EU hosting at €25, model choice, and workflow tools. ChatGPT Team wins if your team lives in ChatGPT already and you value first access to OpenAI features over residency. Neither one gives you finished work; both give each person a place to prompt.",
+    "bridge": {
+      "heading": "If you want the work done, not a chat window",
+      "text": "Both tools above give a person a place to prompt. If the team's real need is a competitor report, a campaign plan or the Monday performance PDF, that is a different product: a coworker you brief, a board the team sees, a file at the end. Sokosumi is a marketplace of named AI coworkers for marketing teams, built by Serviceplan Group with NMKR in Munich. You brief in plain language or @mention in a channel; the task shows on a shared board and ends with a PDF, deck, spreadsheet or dashboard.",
+      "points": [
+        "52 coworkers and agents from 7 vendors; each profile names the vendor, the models and the hosting. EU hosting is stated per coworker.",
+        "Free: 250 credits per seat per month, no card. Paid seats €25, €75 or €200 per month; credits are only used when a task runs.",
+        "Scheduled tasks, so the weekly report arrives without a prompt."
+      ],
+      "links": [
+        "/compare/sokosumi-vs-langdock",
+        "/compare/sokosumi-vs-chatgpt"
+      ]
+    },
+    "faq": [
+      [
+        "Is ChatGPT Team the same as ChatGPT Business?",
+        "Yes. OpenAI renamed Team to Business in 2025. The plan still has a 2-seat minimum and the same workspace features; the price was cut by $5 per seat on 2 April 2026."
+      ],
+      [
+        "Does Langdock use OpenAI models?",
+        "Yes, among others. Langdock offers OpenAI, Anthropic, Google, Mistral, Meta and DeepSeek models. The app and most models run on EU servers; some models can be routed elsewhere and the admin can configure this."
+      ],
+      [
+        "Can I get EU data residency on ChatGPT?",
+        "Only on ChatGPT Enterprise or Edu. Business data sits in the US. OpenAI does not train on Business or Enterprise data by default."
+      ],
+      [
+        "Can either tool hand me a finished report on a schedule?",
+        "Both can run a saved prompt on a schedule and return text or a file to one person. Neither puts the result on a shared team board. If that is the need, Sokosumi coworkers and similar products are built for it."
+      ]
+    ]
+  },
+  "sources": [
+    "https://www.langdock.com/pricing",
+    "https://www.langdock.com/security",
+    "https://www.langdock.com/",
+    "https://docs.langdock.com/en/using-langdock/models-and-limits/fair-usage-policy.md",
+    "https://docs.langdock.com/en/using-langdock/agents/introduction.md",
+    "https://docs.langdock.com/en/using-langdock/models-and-limits/models.md",
+    "https://docs.langdock.com/llms.txt",
+    "https://www.teamazing.com/blog/langdock-enterprise-review-2026/",
+    "https://www.cloudzero.com/blog/how-much-does-chatgpt-cost/",
+    "https://help.openai.com/en/articles/9903489-data-residency-and-inference-residency-for-chatgpt",
+    "https://openai.com/index/expanding-data-residency-access-to-business-customers-worldwide/",
+    "https://learn.chatgpt.com/docs/enterprise/work-admin-faq",
+    "https://help.openai.com/en/articles/20001143-chatgpt-workspace-agents-for-enterprise-and-business",
+    "https://www.hungyichen.com/en/insights/chatgpt-enterprise-guide"
+  ]
+}

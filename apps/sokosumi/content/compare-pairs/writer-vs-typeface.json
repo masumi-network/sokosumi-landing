@@ -1,0 +1,75 @@
+{
+  "slug": "writer-vs-typeface",
+  "a": { "key": "writer", "name": "Writer", "url": "https://writer.com" },
+  "b": { "key": "typeface", "name": "Typeface", "url": "https://www.typeface.ai" },
+  "checked": "2026-08-26",
+  "en": {
+    "title": "Writer or Typeface: two enterprise AI platforms, two different jobs",
+    "metaTitle": "Writer vs Typeface (2026): prices, agents, brand control, who it fits",
+    "description": "Writer and Typeface compared: what each does, published prices, agents, brand grounding, hosting and real limits. Checked August 2026 with a clear pick for each buyer.",
+    "intro": "Writer is an enterprise AI platform with its own Palmyra models, a knowledge graph and prebuilt agents for every department. Typeface is an enterprise marketing platform that runs campaigns with brand-grounded agents (Arc Graph, Arc Agents, Arc Spaces, Arc Forge). The deciding question is whether you need company-wide AI or a marketing content supply chain.",
+    "glance": [
+      ["Who it is for", "Enterprises rolling out governed AI to marketing, sales, support, ops", "Large-brand marketing orgs that produce campaign content at scale"],
+      ["What you get", "Chat, 100+ prebuilt agents, agent studio, knowledge graph, Palmyra models", "Brand graph, marketing agents for research, briefs, content and channel execution, approval spaces, IT customisation layer"],
+      ["Price", "Starter $39 per user monthly or $29 annual, max 5 seats; Enterprise custom (third-party, verify)", "Not published. Demo and custom contract only"],
+      ["Free plan or trial", "14-day Starter trial, no card (third-party, verify)", "None shown on typeface.ai"],
+      ["EU hosting", "Not published; single-tenant deployment on Enterprise (third-party, verify)", "Not published. Site states dedicated models, encryption and access controls"],
+      ["Team features", "Playbooks, connectors, SAML SSO, HIPAA BAA, SOC 2 report on Enterprise", "Approval workflows in Arc Spaces, governance for IT via Arc Forge"],
+      ["Build your own agents", "Yes: 5 custom agents on Starter, unlimited on Enterprise", "Configured agents within guardrails; extension via Arc Forge"],
+      ["Named customers", "Not listed on pages reached", "Asics, Johnson Controls, Sally Beauty, AB InBev, P&G, State Farm"]
+    ],
+    "pickA": {
+      "heading": "Pick Writer if…",
+      "points": [
+        "You want one AI platform for many departments, not just marketing.",
+        "Model control matters: own models, single-tenant option, external models on Enterprise.",
+        "You want a cheap way in. Starter costs $29 to $39 per user for up to five people."
+      ]
+    },
+    "pickB": {
+      "heading": "Pick Typeface if…",
+      "points": [
+        "You are a large consumer brand producing thousands of on-brand assets across channels.",
+        "You need approval flows and brand rules built into the content pipeline, with IT able to extend it.",
+        "You already run a Google Cloud or Microsoft marketing stack and want agents wired into it."
+      ]
+    },
+    "limits": {
+      "a": [
+        "Starter caps are tight: five seats, five playbooks, three connectors, 1 GB knowledge graph. Anything serious needs Enterprise.",
+        "Palmyra models sit below the frontier models on general benchmarks, per independent reviews. You trade top capability for control."
+      ],
+      "b": [
+        "No public pricing, no self-serve, no trial. Third-party guides disagree on cost (one lists $49 to $99 per user; another says six figures a year). Treat all of them as unverified.",
+        "Built for Fortune 500 marketing orgs. A mid-size team will find the sales motion and setup heavy for its size."
+      ]
+    },
+    "verdict": "Writer wins for a company that wants governed AI everywhere and a low-cost way to start. Typeface wins for a large brand whose problem is campaign volume and brand control across channels. A mid-size DACH marketing team is not the target of either.",
+    "bridge": {
+      "heading": "If you want the work done, not a platform to roll out",
+      "text": "Both platforms above need a rollout: connectors, playbooks, brand graphs, approvals. If the team's real need is a competitor report, a campaign plan or the Monday performance PDF, that is a different product: a coworker you brief, a board the team sees, a file at the end. Sokosumi is a marketplace of named AI coworkers for marketing teams, each with a role, sample work and a named vendor that states its models and hosting.",
+      "points": [
+        "Brief in plain language or @mention in a channel; the task shows on a shared board and ends with a finished file.",
+        "Credits only when a task runs. Free: 250 credits per seat per month, no card. Paid seats €25, €75 or €200 per month.",
+        "EU hosting available, stated per coworker. Built by Serviceplan Group with NMKR, Munich."
+      ],
+      "links": ["/compare/sokosumi-vs-writer", "/compare/sokosumi-vs-typeface"]
+    },
+    "faq": [
+      ["How much does Typeface cost?", "Typeface does not publish prices. Its site offers a demo only. Third-party guides give conflicting numbers, so ask for a quote and do not rely on them."],
+      ["What are Typeface Arc Agents?", "Agents announced with the Marketing Orchestration Engine on 4 March 2026. They research, brief, create and optimise campaign content within brand guardrails, with people approving in Arc Spaces."],
+      ["Does Writer work for marketing only?", "No. Writer sells to marketing, sales, support, HR and ops. Marketing is one of many use cases, which is a strength for company-wide rollouts and a weakness if you want a marketing-only tool."],
+      ["Is there a lighter option for a mid-size marketing team?", "Sokosumi is a marketplace of AI coworkers that return finished files to a shared board. It starts free with 250 credits per seat per month and states EU hosting per coworker."]
+    ]
+  },
+  "sources": [
+    "https://www.eesel.ai/blog/writer-com-pricing",
+    "https://www.g2.com/products/writer/pricing",
+    "https://agent-finder.co/reviews/writer",
+    "https://www.typeface.ai/",
+    "https://finance.yahoo.com/news/typeface-launches-marketing-orchestration-engine-140000606.html",
+    "https://finance.yahoo.com/sectors/technology/articles/typeface-brings-agentic-marketing-orchestration-130000077.html",
+    "https://www.eesel.ai/blog/typeface-ai-pricing",
+    "https://theaiagentindex.com/agents/typeface"
+  ]
+}

@@ -1,0 +1,78 @@
+{
+  "slug": "manus-vs-genspark",
+  "a": { "key": "manus", "name": "Manus", "url": "https://manus.im" },
+  "b": { "key": "genspark", "name": "Genspark", "url": "https://www.genspark.ai" },
+  "checked": "2026-08-26",
+  "en": {
+    "title": "Manus or Genspark: which general agent for reports, decks and research?",
+    "metaTitle": "Manus vs Genspark (2026): credits, prices, team plans, EU hosting, limits",
+    "description": "Manus and Genspark compared on credits, prices, team plans, data hosting, ownership and real limits. Facts checked August 2026, plus who should pick which.",
+    "intro": "Manus is a general autonomous agent: you give it a goal and it browses, runs code and returns a report, site or spreadsheet. Genspark is a Super Agent workspace that produces docs, slide decks, sheets and sites from a brief, with unmetered access to top chat models thrown in. Both charge in credits. The deciding differences are the team plan, where your data sits, and who owns the company.",
+    "glance": [
+      ["Who it is for", "Solo operators and small teams who want one agent to run long tasks end to end", "Individuals and teams who want finished slides, docs and sheets fast, plus a chat workspace"],
+      ["What you get", "Autonomous agent with browser, code sandbox, file output, 300 daily refresh credits on every plan, up to 20 parallel tasks on paid", "Super Agent, AI Slides, AI Sheets, AI Docs, sites, AI Drive storage, zero-credit chat and image models (guaranteed to 31 Dec 2026)"],
+      ["Price per person", "Free $0; Standard $20 per month (4,000 credits); Customizable $40 (8,000); Extended $200 (40,000); ~17% off annual (third-party tracker, 26 Jun 2026, verify; manus.im blocks fetching)", "Free (100 daily credits); Plus from 10,000 credits and Pro from 125,000 credits per month, dollar prices only shown after sign-in (third-party capture, 2 Jun 2026, verify)"],
+      ["Price per seat (team)", "Team and Enterprise: custom per-seat pricing, SSO (third-party, verify)", "Team $30 per seat per month, 12,000 credits per seat, 2–150 seats self-serve; Enterprise 151+ seats, 25,000 credits per seat, custom"],
+      ["Free plan or trial", "Free plan with 300 daily credits", "Free plan with 100 daily credits"],
+      ["EU hosting", "Not published. Company headquartered in Singapore; reviews note SOC 2 and GDPR certification not complete", "Enterprise only: EU, US or APAC data residency. Team and individual plans: not published"],
+      ["Team features", "Team plan with SSO (details not published)", "Shared AI Drive, seat admin, 99.9% uptime SLA and a success manager on Enterprise"],
+      ["Company status", "Meta's ~$2B purchase was blocked by Chinese regulators in April 2026; Manus is returning to independent operation and deleted user data created since 29 Dec 2025 unless users downloaded it by 24 Aug 2026", "Palo Alto; Series B extended to $485M at a $2.6B valuation, June 2026"]
+    ],
+    "pickA": {
+      "heading": "Pick Manus if…",
+      "points": [
+        "You want one agent to run a long, open-ended task, like scraping, comparing and writing up, with a code sandbox.",
+        "The 300 daily refresh credits cover most of your work and you are fine with the $20 Standard plan.",
+        "You are a solo user and do not need a published team price."
+      ]
+    },
+    "pickB": {
+      "heading": "Pick Genspark if…",
+      "points": [
+        "The output you need most is a slide deck, a doc or a sheet, done in minutes.",
+        "You want a team plan you can buy today: $30 per seat, 2 to 150 seats, no sales call.",
+        "You need EU data residency and have 151+ seats for the Enterprise tier."
+      ]
+    },
+    "limits": {
+      "a": [
+        "Credit burn is hard to predict: reviewers report complex research tasks using 500–900 credits and multi-step tasks failing mid-stream with no refund; there is no context-limit warning.",
+        "Ownership and data are unsettled. The blocked Meta deal led to a forced deletion of user data created since 29 Dec 2025, and EU hosting is not published."
+      ],
+      "b": [
+        "Pricing is opaque: Plus and Pro dollar prices show only after sign-in, credits do not roll over, and failed or retried tasks still cost credits.",
+        "Reviews flag occasional wrong numbers in stats-heavy output, and the zero-credit model promise ends 31 Dec 2026 with no stated successor."
+      ]
+    },
+    "verdict": "For a solo user running long autonomous tasks, Manus is the more capable agent, if you accept unpredictable credits and an unsettled company. For a team that mostly wants decks, docs and sheets, Genspark's $30 seat and EU residency on Enterprise make it the safer buy. Neither publishes EU hosting below enterprise level.",
+    "bridge": {
+      "heading": "If you want the work done, not a builder to babysit",
+      "text": "Both tools return files from a brief, which is the right idea. The difference is who is accountable and where the team sees the work. Sokosumi is a marketplace of named AI coworkers for marketing teams: each has a role, a public profile, sample work, a named vendor with stated models and stated hosting. The task shows on a shared board and ends as a finished file.",
+      "points": [
+        "Brief in plain language or @mention in a channel; the task ends as a PDF report, deck, spreadsheet or live dashboard the whole team can see. Scheduled tasks included.",
+        "Credits only when a task runs. Free: 250 credits per seat per month, no card. Paid seats €25 / €75 / €200 per month; Enterprise custom. EU hosting stated per coworker.",
+        "52 coworkers and agents from 7 vendors, 5,300+ tasks run. Built by Serviceplan Group with NMKR, Munich."
+      ],
+      "links": ["/compare/sokosumi-vs-manus", "/compare/sokosumi-vs-genspark"]
+    },
+    "faq": [
+      ["Who owns Manus now?", "Meta bought Manus in late December 2025 for about $2B. Chinese regulators blocked the deal in April 2026 and Meta unwound it. Manus says it will operate as an independent company again; earlier talks with Tencent are unresolved (CNBC, August 2026)."],
+      ["How far do the credits go?", "It depends on the task. Manus reviewers report simple tasks at a few credits and complex research at 500–900. Genspark charges different amounts for agent runs, slides and video, and charges even when a task fails. Both reset or expire monthly."],
+      ["Can I buy either for a whole team?", "Genspark: yes, $30 per seat for 2–150 seats, self-serve. Manus: team pricing is custom and not published."],
+      ["Where does Sokosumi fit?", "It also returns finished files from a brief, but through specialist marketing coworkers from named vendors with stated hosting, on a shared team board, with credits charged only when a task runs."]
+    ]
+  },
+  "sources": [
+    "https://www.nocode.mba/articles/manus-ai-pricing",
+    "https://www.cnbc.com/2026/08/11/manus-china-meta-acquisition.html",
+    "https://thenextweb.com/news/manus-meta-acquisition-blocked-china-independent-data-deletion",
+    "https://www.cnbc.com/2026/04/27/meta-manus-china-blocks-acquisition-ai-startup.html",
+    "https://www.riotimesonline.com/manus-a-i-review-14-failures-in-two-weeks-of-testing/",
+    "https://toolchase.com/blog/manus-ai-review/",
+    "https://www.usagepricing.com/blueprint/genspark",
+    "https://www.businesswire.com/news/home/20260617758937/en/Genspark.ai-Extends-Series-B-to-$485M-at-$2.6B-Post-Money-Valuation-Appoints-Jamison-Powell-as-Chief-Revenue-Officer",
+    "https://cybernews.com/ai-tools/genspark-ai-review/",
+    "https://www.eesel.ai/blog/genspark-ai-review",
+    "https://locusfounder.com/guides/genspark-review"
+  ]
+}

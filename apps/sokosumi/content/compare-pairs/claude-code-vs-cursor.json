@@ -1,0 +1,79 @@
+{
+  "slug": "claude-code-vs-cursor",
+  "a": { "key": "claude-code", "name": "Claude Code", "url": "https://code.claude.com" },
+  "b": { "key": "cursor", "name": "Cursor", "url": "https://cursor.com" },
+  "checked": "2026-08-26",
+  "en": {
+    "title": "Claude Code or Cursor: which coding agent for your developers?",
+    "metaTitle": "Claude Code vs Cursor (2026): prices, usage limits, team plans, data handling",
+    "description": "Claude Code and Cursor compared on price, usage limits, team plans, privacy and real limits. Facts checked August 2026, plus who should pick which.",
+    "intro": "Claude Code is Anthropic's coding agent: it runs in the terminal, IDE, desktop app or browser, reads a codebase, edits files, runs commands and opens pull requests. Cursor is an AI code editor, a fork of VS Code with an agent, tab completion, cloud agents and Bugbot reviews built in. The deciding question is where your developers want the AI: driving the whole task from a prompt, or sitting inside the editor as they type.",
+    "glance": [
+      ["Who it is for", "Developers who delegate whole tasks: refactors, tests, fixes across many files, CI automation", "Developers who want AI in the editor: completions, inline edits, chat, plus an agent when needed"],
+      ["What you get", "CLI, VS Code and JetBrains extensions, desktop app, web sessions, subagents, hooks, skills, MCP, scheduled routines, GitHub Actions, Slack", "Editor, Tab completion, Agent, Composer model, cloud agents, Bugbot code review, MCP, rules and skills marketplace for teams"],
+      ["Price per person", "Included in Claude plans: Free (limited), Pro $17 annual or $20 monthly, Max 5x from $100, Max 20x $200 per month; or pay per token via API (claude.com, 26 Aug 2026)", "Hobby free; Pro $20; Pro+ $60; Ultra $200 per month (cursor.com shows Pro $20; Pro+ and Ultra prices from third-party trackers, verify)"],
+      ["Price per seat (team)", "Team Premium seat $100 annual or $125 monthly includes Claude Code; Standard seat $20/$25 does not; Enterprise custom", "Teams $40 per user per month (Standard); Premium seat $120 monthly or $96 annual (third-party, verify); Enterprise custom with pooled usage"],
+      ["Free plan or trial", "Free plan includes Claude Code with low limits", "Hobby plan, free, no card"],
+      ["Usage model", "Five-hour and weekly limits shared with Claude chat and Cowork; overflow to API credits", "Monthly credit pool per plan; Auto mode unmetered; frontier models draw from the pool; rate limits per minute and hour"],
+      ["EU hosting / data", "No EU residency on Anthropic plans; consumer plans train on data unless you opt out, Team/Enterprise do not. EU processing via AWS Bedrock Frankfurt or Vertex AI EU", "No EU residency published; privacy mode (team-wide on Teams) means no training on your code; SOC 2 Type II; no infrastructure in China"],
+      ["Team features", "Shared CLAUDE.md, skills, hooks, org-wide settings; SSO, SCIM and audit on Team/Enterprise", "Central billing, team marketplace for rules and skills, usage analytics, SAML SSO; SCIM, audit logs and access controls on Enterprise"]
+    ],
+    "pickA": {
+      "heading": "Pick Claude Code if…",
+      "points": [
+        "Your developers hand off whole tasks and review the result, and work in any editor or the terminal.",
+        "You want the agent in CI, Slack and on a schedule: PR reviews, nightly fixes, doc syncs.",
+        "One subscription should cover chat, Cowork and coding. Max at $100–200 does."
+      ]
+    },
+    "pickB": {
+      "heading": "Pick Cursor if…",
+      "points": [
+        "Your developers want fast completions and inline edits while they type, in a VS Code-shaped editor.",
+        "You want a predictable $20 credit pool per seat and an unmetered Auto mode for routine work.",
+        "You want automated code review (Bugbot) and cloud agents inside the same product."
+      ]
+    },
+    "limits": {
+      "a": [
+        "Rate limits are the top complaint: five-hour and weekly caps shared with chat and Cowork, and heavy users on Pro hit them routinely. Anthropic has been running a temporary 50% boost since May 2026.",
+        "No EU residency on Anthropic's own plans, and Team Standard seats do not include Claude Code; you need Premium at $100–125."
+      ],
+      "b": [
+        "Pricing has changed several times since June 2025; users reported Pro credits depleting in a day and large overages, and the CEO apologised. Per-minute and per-hour rate caps still bite active developers.",
+        "No published EU residency. It is an editor, so it does not run in CI or on a schedule the way a CLI agent does."
+      ]
+    },
+    "verdict": "Many teams run both: Cursor as the editor, Claude Code in its terminal. If you must pick one, Claude Code suits teams that delegate and automate; Cursor suits teams that want the AI at their fingertips with a fixed credit pool. Neither offers EU residency on a standard plan.",
+    "bridge": {
+      "heading": "If you were going to build a marketing agent yourselves",
+      "text": "Sokosumi is not a coding tool and does not compete with either of these. But one reason teams compare them is a plan to build an in-house research or reporting agent for marketing. That build means a developer owns the prompts, the data licences, the hosting and the upkeep. There is a hired option: Sokosumi is a marketplace of named AI coworkers for marketing teams, each with a public profile, a named vendor, stated models and stated hosting.",
+      "points": [
+        "Brief in plain language or @mention in a channel; the task shows on a shared board and ends as a PDF report, deck, spreadsheet or dashboard. Scheduled tasks included.",
+        "Credits only when a task runs. Free: 250 credits per seat per month, no card. Paid seats €25 / €75 / €200 per month; Enterprise custom. EU hosting stated per coworker.",
+        "52 coworkers and agents from 7 vendors, 5,300+ tasks run. Built by Serviceplan Group with NMKR, Munich."
+      ],
+      "links": ["/compare/sokosumi-vs-claude-code", "/compare/sokosumi-vs-cursor"]
+    },
+    "faq": [
+      ["Can I use Claude Code inside Cursor?", "Yes. The Claude Code extension installs in Cursor, and Claude Code also runs in Cursor's integrated terminal. Each is billed on its own plan."],
+      ["What does a team of five pay?", "Claude Code: five Team Premium seats at $100 each annual, $500 a month. Cursor: five Teams seats at $40, $200 a month, plus any usage beyond the included credits."],
+      ["Which one keeps code in the EU?", "Neither on a standard plan. Claude can run through AWS Bedrock Frankfurt or Vertex AI EU with your own API key. Cursor publishes no EU residency; privacy mode stops training on your code but does not fix location."],
+      ["Where does Sokosumi fit?", "It does not write your code. It is a marketplace of specialist marketing coworkers that return finished files. Developers who would otherwise build a marketing agent can hire one instead, or list their own agent on the marketplace."]
+    ]
+  },
+  "sources": [
+    "https://code.claude.com/docs/en/overview",
+    "https://claude.com/pricing",
+    "https://ccforeveryone.com/guides/claude-code-limits-and-pricing",
+    "https://www.truefoundry.com/blog/claude-code-limits-explained",
+    "https://compound.law/en-DE/tools/claude-eu-hosting/",
+    "https://meprism.com/opt-out-guides/blog/claude-anthropic-ai-training-opt-out",
+    "https://cursor.com/pricing",
+    "https://cursor.com/security",
+    "https://aiproductivity.ai/blog/cursor-pricing/",
+    "https://www.finout.io/blog/what-happened-to-cursor-pricing-2026-guide-5-cost-cutting-tips",
+    "https://www.builder.io/blog/cursor-vs-claude-code",
+    "https://composio.dev/content/cursor-vs-claude-code"
+  ]
+}

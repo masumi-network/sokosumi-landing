@@ -1,0 +1,76 @@
+{
+  "slug": "copy-ai-vs-hubspot",
+  "a": { "key": "copy-ai", "name": "Copy.ai", "url": "https://www.copy.ai" },
+  "b": { "key": "hubspot", "name": "HubSpot Breeze", "url": "https://www.hubspot.com/products/artificial-intelligence" },
+  "checked": "2026-08-26",
+  "en": {
+    "title": "Copy.ai or HubSpot Breeze: workflow platform or agents inside your CRM?",
+    "metaTitle": "Copy.ai vs HubSpot Breeze (2026): prices, credits, EU hosting, who it fits",
+    "description": "Copy.ai and HubSpot Breeze agents compared on price, what is metered, EU hosting and real limits. Facts checked August 2026 with a clear pick for each team.",
+    "intro": "Copy.ai is a standalone go-to-market platform: multi-model chat plus content and outreach workflows. HubSpot Breeze is the set of AI agents inside HubSpot's CRM, paid with HubSpot credits. The deciding question is whether you already live in HubSpot and want agents there, or want a workflow tool that sits outside any CRM.",
+    "glance": [
+      ["Who it is for", "Sales and marketing ops teams building repeatable workflows", "HubSpot customers on Professional or Enterprise tiers"],
+      ["What you get", "Chat with OpenAI, Anthropic, Gemini models; workflows; API on Enterprise", "Customer Agent (support), Prospecting Agent (outreach), Data Agent, Content Agent, plus Breeze assistant features inside HubSpot"],
+      ["Price", "Chat $29 per month ($24 annual) for 5 seats; Growth $1,000, Expansion $2,000, Scale $3,000 per month; Enterprise custom", "Needs a Pro or Enterprise hub (Marketing Hub Pro from $800 per month, third-party, verify). Credits about $10 per 1,000 (third-party, verify)"],
+      ["Free plan or trial", "No free plan shown on the pricing page at check", "Free CRM exists, but agents need Pro or Enterprise; 28-day free trial of Customer and Prospecting agents"],
+      ["EU hosting", "Not published", "Yes. EU (Germany) data centre available; analytics and some processing still go to the US"],
+      ["Team features", "Seat bundles per tier; designated support on Enterprise", "Shared CRM, permissions and reporting already in HubSpot; one credit pool for all AI features"],
+      ["Build your own agents", "Custom workflows on Growth and up", "Prebuilt agents with fixed instructions; Agent Builder for custom agents"],
+      ["What is metered", "Workflow credits: 20K, 45K, 75K per month by tier", "Outcomes since 14 Apr 2026: 50 credits ($0.50) per resolved conversation, 100 credits ($1) per recommended lead; included credits per tier"]
+    ],
+    "pickA": {
+      "heading": "Pick Copy.ai if…",
+      "points": [
+        "You do not run HubSpot, or you want AI workflows that work across your CRM, email and content tools.",
+        "You want to pick the model per task (OpenAI, Anthropic, Gemini) from one chat.",
+        "You have a large team. Growth covers 75 seats for $1,000 a month."
+      ]
+    },
+    "pickB": {
+      "heading": "Pick HubSpot Breeze if…",
+      "points": [
+        "You already pay for Marketing, Sales or Service Hub Pro. The agents are an add-on inside what you own.",
+        "You want to pay per result. Customer Agent bills only on a resolved conversation, Prospecting Agent only on a recommended lead.",
+        "EU hosting is a requirement. HubSpot offers a Germany data centre."
+      ]
+    },
+    "limits": {
+      "a": [
+        "Price gap: nothing between Chat at $29 and Growth at $1,000. A ten-person team that wants workflows pays for 75 seats.",
+        "Reviewers name credits, billing and support as the main pain. Trustpilot 1.9/5; support is email-only with slow replies reported."
+      ],
+      "b": [
+        "Agents are locked to Pro and Enterprise tiers, so the real entry price is the hub subscription, not the credits.",
+        "One credit pool feeds every AI feature. A campaign that spikes conversations spikes the bill; HubSpot advises setting a monthly credit cap. Prebuilt agents' default instructions and tools cannot be edited (third-party, verify)."
+      ]
+    },
+    "verdict": "HubSpot Breeze wins if you are already a HubSpot Pro customer: it is cheaper to add, pays per outcome and can sit in an EU data centre. Copy.ai wins if you are not on HubSpot and want model choice and workflows across tools, and you are large enough for the $1,000 tier. Neither is a finished-work service.",
+    "bridge": {
+      "heading": "If you want the work done, not a chat window",
+      "text": "Both tools above give a person a workflow to build or an agent to switch on inside a system. If the team's real need is a competitor report, a campaign plan or the Monday performance PDF, that is a different product: a coworker you brief, a board the team sees, a file at the end. Sokosumi is a marketplace of named AI coworkers for marketing teams, each with a role, sample work and a named vendor that states its models and hosting.",
+      "points": [
+        "Brief in plain language or @mention in a channel; the task shows on a shared board and ends with a finished file.",
+        "Credits only when a task runs. Free: 250 credits per seat per month, no card. Paid seats €25, €75 or €200 per month.",
+        "EU hosting available, stated per coworker. Built by Serviceplan Group with NMKR, Munich."
+      ],
+      "links": ["/compare/sokosumi-vs-copy-ai", "/compare/sokosumi-vs-hubspot-breeze"]
+    },
+    "faq": [
+      ["What does a HubSpot Breeze agent cost?", "Since 14 April 2026 the Customer Agent costs 50 credits ($0.50) per resolved conversation and the Prospecting Agent 100 credits ($1.00) per recommended lead. Credits sell at about $10 per 1,000, and each hub tier includes some credits (third-party, verify)."],
+      ["Can I use Breeze without a paid HubSpot plan?", "Not the agents. Customer and Prospecting agents require a Professional or Enterprise tier. Some lighter Breeze features exist on lower tiers."],
+      ["Does Copy.ai have a free plan?", "The pricing page we checked shows Chat at $29 a month as the entry plan. Third-party guides disagree on whether a free plan still exists for new users."],
+      ["Is there an option that just delivers the marketing work?", "Sokosumi is a marketplace of AI coworkers that return finished files to a shared board. Free tier of 250 credits per seat per month; EU hosting stated per coworker."]
+    ]
+  },
+  "sources": [
+    "https://www.copy.ai/prices",
+    "https://www.copy.ai/security",
+    "https://www.hubspot.com/company-news/hubspots-customer-agent-and-prospecting-agent-now-you-pay-when-the-task-is-complete",
+    "https://knowledge.hubspot.com/account-security/hubspot-cloud-infrastructure-and-data-hosting-frequently-asked-questions",
+    "https://www.huboexperts.com/blog/hubspot-credits-pricing-changes-2026-guide",
+    "https://resolve247.ai/blog/hubspot-customer-agent/",
+    "https://www.getmacha.com/blog/hubspot-breeze-ai-agent-complete-guide",
+    "https://saleshive.com/vendors/copy-ai",
+    "https://digijaws.com/reviews/copy-ai/"
+  ]
+}

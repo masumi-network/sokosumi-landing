@@ -1,0 +1,79 @@
+{
+  "slug": "chatgpt-vs-claude",
+  "a": { "key": "chatgpt", "name": "ChatGPT", "url": "https://chatgpt.com" },
+  "b": { "key": "claude", "name": "Claude", "url": "https://claude.com" },
+  "checked": "2026-08-26",
+  "en": {
+    "title": "ChatGPT or Claude: which one for a marketing team?",
+    "metaTitle": "ChatGPT vs Claude (2026): prices, EU hosting, files, who it fits",
+    "description": "ChatGPT and Claude compared on price, team plans, file output, EU hosting and real limits. Facts checked in August 2026, plus who should pick which.",
+    "intro": "ChatGPT is OpenAI's assistant: chat, images, voice, agent mode, deep research and Codex, sold per person or per seat. Claude is Anthropic's assistant: chat, projects, file creation, Cowork for multi-step tasks and Claude Code, also sold per person or per seat. Prices are near identical. The deciding difference is what you make: ChatGPT does images and voice; Claude does long documents and unattended tasks over your files.",
+    "glance": [
+      ["Who it is for", "Anyone. Strongest for images, voice, plugins and a wide app ecosystem", "Writers, analysts and anyone working on long documents or multi-step desk work"],
+      ["What you get", "Chat, GPT Images, voice, Deep Research, agent mode, Scheduled Tasks, Projects, custom GPTs, Codex, 60+ connectors on Business", "Chat, Projects, Artifacts, .xlsx/.pptx/.docx/PDF creation on all plans, Cowork (scheduled unattended tasks), Claude Code, Design, connectors"],
+      ["Price per person", "Free $0; Go $8; Plus $20; Pro $100 or $200 per month (third-party tracker, 20 Aug 2026, verify)", "Free $0; Pro $17 annual or $20 monthly; Max from $100 per month (claude.com, 26 Aug 2026)"],
+      ["Price per seat (team)", "Business $20 per seat annual or $25 monthly, 2-seat minimum; Enterprise quote, reports cite ~$45–75 per seat with ~150-seat minimum (third-party, verify)", "Team Standard seat $20 annual or $25 monthly, Premium seat $100 or $125, 2–150 seats; Enterprise $20 per seat plus API usage, or custom"],
+      ["Free plan or trial", "Free plan, no card", "Free plan, no card; file creation and Claude Code included on Free"],
+      ["EU hosting", "Enterprise and Edu only: data residency in Europe at no extra cost. Business, Plus and Pro store data in the US", "No EU residency on any Anthropic plan; workspace geo is US. EU processing only via AWS Bedrock (Frankfurt) or Google Vertex AI EU"],
+      ["Team features", "Shared workspace, shared Projects, SAML SSO, admin controls, no training on business data", "Shared projects, enterprise search, SSO, admin controls, central billing; SCIM and audit logs on Enterprise"],
+      ["Build your own agents", "Custom GPTs and agent mode; Frontier platform for enterprise (custom pricing)", "Projects with instructions, Cowork plugins, Agent SDK for developers; no consumer agent store"]
+    ],
+    "pickA": {
+      "heading": "Pick ChatGPT if…",
+      "points": [
+        "Your team needs images, voice or video in the same tool. Claude does not generate images; it writes code to draw charts instead.",
+        "You are a large company that needs EU data residency and can sign an Enterprise contract. Business does not include it.",
+        "You want the widest set of connectors and custom GPTs, and people already use it at home."
+      ]
+    },
+    "pickB": {
+      "heading": "Pick Claude if…",
+      "points": [
+        "Your work is long documents: briefs, reports, contracts, decks. Claude's file creation works on every plan, including Free.",
+        "You want a task that runs unattended on a schedule over folders and tools. That is Cowork, on any paid plan.",
+        "Your developers will use the same subscription for coding. Claude Code is in Pro, Max and Team Premium seats."
+      ]
+    },
+    "limits": {
+      "a": [
+        "EU data residency needs Enterprise. Business, Plus and Pro data sits in the US, and residency can only be set on new workspaces (OpenAI help centre).",
+        "The Go plan excludes agent mode and Deep Research, and OpenAI blocks automated reads of its pricing page, so prices here come from a dated third-party tracker."
+      ],
+      "b": [
+        "Usage caps. Pro, Max and Team share five-hour and weekly limits across chat, Cowork and Claude Code; heavy users hit them, and this is the most common complaint in reviews.",
+        "No EU residency on any Anthropic plan. Consumer plans (Free, Pro, Max) use chats for training unless you opt out in settings; Team and Enterprise do not."
+      ]
+    },
+    "verdict": "At $20 a person the two cost the same. Pick ChatGPT for images, voice and the broadest ecosystem, or for EU residency via Enterprise. Pick Claude for long writing, finished Office files and scheduled Cowork tasks, and accept US hosting and usage caps.",
+    "bridge": {
+      "heading": "If you want the work done, not a chat window",
+      "text": "Both tools give one person a place to prompt. If the team's real need is a competitor report, a campaign plan or the Monday performance PDF, that is a different product: a coworker you brief, a board the team sees, a file at the end. Sokosumi is a marketplace of named AI coworkers for marketing teams, each with a public profile, a named vendor and stated hosting. Credits are spent only when a task runs; EU hosting is stated per coworker.",
+      "points": [
+        "Brief in plain language or @mention in a channel; the task shows on a shared board and ends as a PDF, deck, spreadsheet or dashboard.",
+        "Free: 250 credits per seat per month, no card. Paid seats €25 / €75 / €200 per month; Enterprise custom.",
+        "52 coworkers and agents from 7 vendors, 5,300+ tasks run. Built by Serviceplan Group with NMKR, Munich."
+      ],
+      "links": ["/compare/sokosumi-vs-chatgpt", "/compare/sokosumi-vs-claude"]
+    },
+    "faq": [
+      ["Which is cheaper for a team of ten?", "The same. ChatGPT Business is $20 per seat annual or $25 monthly; Claude Team Standard is $20 annual or $25 monthly. Claude's Premium seat ($100–125) adds more usage and Claude Code."],
+      ["Which one keeps data in the EU?", "ChatGPT Enterprise can store data in Europe at no extra charge. ChatGPT Business and all Anthropic plans store data in the US. For Claude in the EU you go through AWS Bedrock Frankfurt or Google Vertex AI EU."],
+      ["Can both make PowerPoint and Excel files?", "Yes. Claude creates .xlsx, .pptx, .docx and PDF on every plan. ChatGPT's agent mode and data analysis can output spreadsheets, slides and PDFs on paid plans."],
+      ["Where does Sokosumi fit?", "It is not a chat assistant. It is a marketplace of specialist coworkers that return finished marketing files to a team board. Many teams keep ChatGPT or Claude for daily chat and add a coworker for recurring reports."]
+    ]
+  },
+  "sources": [
+    "https://claude.com/pricing",
+    "https://claude.com/product/cowork",
+    "https://support.claude.com/en/articles/12111783-create-and-edit-files-with-claude",
+    "https://www.cloudzero.com/blog/how-much-does-chatgpt-cost/",
+    "https://coworker.ai/blog/chatgpt-enterprise-pricing",
+    "https://openai.com/index/expanding-data-residency-access-to-business-customers-worldwide/",
+    "https://help.openai.com/en/articles/8792828-what-is-chatgpt-business",
+    "https://learn.chatgpt.com/docs/pricing",
+    "https://compound.law/en-DE/tools/claude-eu-hosting/",
+    "https://www.infoq.com/news/2026/07/claude-foundry-ga-europe/",
+    "https://www.zapier.com/blog/claude-vs-chatgpt/",
+    "https://meprism.com/opt-out-guides/blog/claude-anthropic-ai-training-opt-out"
+  ]
+}

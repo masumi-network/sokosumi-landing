@@ -1,0 +1,130 @@
+{
+  "slug": "whaaat-vs-sintra",
+  "a": {
+    "key": "whaaat",
+    "name": "Whaaat AI",
+    "url": "https://www.whaaat.ai"
+  },
+  "b": {
+    "key": "sintra",
+    "name": "Sintra",
+    "url": "https://sintra.ai"
+  },
+  "checked": "2026-08-26",
+  "en": {
+    "title": "Whaaat AI or Sintra: named marketing agents for small teams",
+    "metaTitle": "Whaaat AI vs Sintra (2026): prices, credits, agents, hosting, limits",
+    "description": "Whaaat AI (Berlin) vs Sintra: $25 unlimited or credit plans, 28 marketing agents vs 12 helpers, data hosting and real limits. Checked August 2026.",
+    "intro": "Whaaat AI is a Berlin platform with 28 named marketing agents (Lin for LinkedIn, Bob for blogs, Sepp for SEO articles) that share one brand knowledge base, for $25 a month with unlimited use. Sintra bundles 12 named helpers across marketing, support, sales and admin on a discounted subscription with 250 credits a month. The deciding difference: Whaaat is marketing-only and unmetered; Sintra is broader but metered.",
+    "glance": [
+      [
+        "Who it is for",
+        "Small marketing teams, startups and agencies that publish across many channels",
+        "Solo founders and small businesses that want one helper each for social, copy, support, sales and admin"
+      ],
+      [
+        "What you get",
+        "28 channel-specific content agents, shared brand knowledge base, brand presets per client, image generation via FLUX",
+        "12 helpers with a shared 'Brain', 15+ integrations (Gmail, Notion, Shopify, QuickBooks), image generation"
+      ],
+      [
+        "Price per user",
+        "$25/month, unlimited use of all agents (single price; seat model not published)",
+        "List $97/month; sold at $48.50 monthly, $23.60 on 3 months, $15.60 on 12 months (as of 26 Aug 2026). Single helper $39/month"
+      ],
+      [
+        "Free plan or trial",
+        "7-day free trial, full access to all agents",
+        "No free plan; 14-day money-back guarantee"
+      ],
+      [
+        "EU hosting",
+        "Not published. Company is UFOstart GmbH, Berlin; models from OpenAI, Anthropic, Google, Mistral",
+        "Not EU. Entity PlayOS, Inc. (Delaware); data may be processed in the US"
+      ],
+      [
+        "Team features",
+        "Multi-client brand presets; team seats not published",
+        "Unlimited workspaces; no per-seat plan or team admin"
+      ],
+      [
+        "Build your own agents",
+        "No; preconfigured agents only",
+        "No; fixed helper personas with configurable automations"
+      ],
+      [
+        "Credits",
+        "None; unlimited stated",
+        "250 credits per month on every plan; top-ups extra; no rollover"
+      ]
+    ],
+    "pickA": {
+      "heading": "Pick Whaaat AI if…",
+      "points": [
+        "Your need is marketing content across many channels and you want one flat price with no meter.",
+        "You run several brands or clients and want presets per brand.",
+        "You prefer a German vendor with a Berlin address, even though hosting details are not yet published."
+      ]
+    },
+    "pickB": {
+      "heading": "Pick Sintra if…",
+      "points": [
+        "You need helpers beyond marketing: support, sales, bookkeeping, recruiting.",
+        "You want integrations with Gmail, Notion or Shopify inside the helper chat.",
+        "You can accept credits and US processing for a low promo price."
+      ]
+    },
+    "limits": {
+      "a": [
+        "No published hosting region, GDPR statement or team seat model on the site; a ~12-person startup that closed a seed round in 2026 (ADZINE, June 2026). Ask before buying.",
+        "Agents produce content; the site lists no publishing or scheduling integrations, so posting still happens elsewhere."
+      ],
+      "b": [
+        "Credits: 250 a month on every plan; image and data tasks drain them fast, and Trustpilot suspended Sintra's score over review incentives while recent reviews cite credit burn (uk.trustpilot.com, Aug 2026).",
+        "Helpers do not execute: no auto-posting, sending or CRM updates; no helpdesk integrations such as Zendesk (eesel review, 17 Jul 2026)."
+      ]
+    },
+    "verdict": "For a small marketing team that only wants content, Whaaat AI is simpler and cheaper to run: $25, no credits, marketing-only. Sintra suits a solo founder who needs a support or sales helper too and can manage credits. On data protection, neither publishes an EU hosting fact today; Whaaat is at least a German legal entity.",
+    "bridge": {
+      "heading": "If you want the work done, not a chat window",
+      "text": "Both tools above give one person named agents to chat with. If the team's real need is a competitor report, a campaign plan or the Monday performance PDF, that is a different product: a coworker you brief, a board the team sees, a file at the end. Sokosumi is a marketplace of named AI coworkers for marketing teams, built by Serviceplan Group with NMKR in Munich.",
+      "points": [
+        "52 coworkers and agents from 7 vendors; each profile names the vendor, the models and the hosting, with EU hosting available.",
+        "Free: 250 credits per seat per month, no card. Paid seats €25, €75 or €200 per month; credits are used only when a task runs.",
+        "Tasks show on a shared board and end with a finished PDF, deck, spreadsheet or dashboard."
+      ],
+      "links": [
+        "/compare/sokosumi-vs-whaaat-ai",
+        "/compare/sokosumi-vs-sintra"
+      ]
+    },
+    "faq": [
+      [
+        "Is Whaaat AI really unlimited?",
+        "The site says $25 a month for unlimited use of all agents and all models. It does not publish a fair-use policy; ask if you plan very heavy use."
+      ],
+      [
+        "Who is behind Whaaat AI?",
+        "UFOstart GmbH in Berlin, founded by Lars Schulze and Thomas Hessler, about 12 staff, seed-funded (ADZINE, June 2026)."
+      ],
+      [
+        "Where is Sintra data processed?",
+        "Sintra's privacy policy names PlayOS, Inc. in Delaware and says data may be processed in the US, with OpenAI, Google and Anthropic as AI providers."
+      ],
+      [
+        "Which one delivers a finished campaign plan as a file?",
+        "Both return text and images in a chat. Neither runs a shared task board with file deliverables; Sokosumi coworkers are built for that."
+      ]
+    ]
+  },
+  "sources": [
+    "https://www.whaaat.ai/",
+    "https://www.whaaat.ai/de",
+    "https://www.whaaat.ai/lp/agencies",
+    "https://www.adzine.de/2026/06/berliner-startup-buendelt-ki-agenten-fuer-marketingaufgaben/",
+    "https://sintra.ai/pricing",
+    "https://sintra.ai/privacy-policy",
+    "https://uk.trustpilot.com/review/sintra.ai",
+    "https://www.eesel.ai/blog/sintra-ai-review"
+  ]
+}

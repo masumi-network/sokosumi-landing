@@ -1,0 +1,76 @@
+{
+  "slug": "relevance-vs-n8n",
+  "a": { "key": "relevance", "name": "Relevance AI", "url": "https://relevanceai.com" },
+  "b": { "key": "n8n", "name": "n8n", "url": "https://n8n.io" },
+  "checked": "2026-08-26",
+  "en": {
+    "title": "Relevance AI or n8n: agent workforce builder or workflow engine?",
+    "metaTitle": "Relevance AI vs n8n (2026): prices, actions vs executions, EU hosting",
+    "description": "Relevance AI and n8n compared: what each builds, how each meters use, published prices, EU hosting and the limits reviewers report. Checked August 2026.",
+    "intro": "Relevance AI is a no-code builder for AI agents and multi-agent 'workforces', metered in actions plus model credits. n8n is a workflow automation engine from Berlin with AI agent nodes, metered per workflow execution, and it can be self-hosted for free. The deciding question is whether your team wants agents as the product or workflows with AI steps inside.",
+    "glance": [
+      ["Who it is for", "Ops and go-to-market teams building agents without much code", "Technical teams and IT that want automation they can host and extend"],
+      ["What you get", "Agent and tool builder, workforces, template marketplace, analytics", "Visual workflow builder, 400+ integrations, AI agent nodes, code nodes, self-host option"],
+      ["Price", "Free $0; Pro $19 per month annual or $29 monthly; Team $234 annual or $349 monthly; Enterprise custom", "Cloud Starter €20, Pro €50 per month; Business €667 per month billed annually; Enterprise custom. Community edition free to self-host"],
+      ["Free plan or trial", "Free plan with 200 actions a month", "Free cloud trial, no card; no permanent free cloud plan. Self-hosted Community edition is free"],
+      ["EU hosting", "Choose at signup: US, EU/UK (London), AU", "Yes. Cloud data stored in Frankfurt, Germany. Self-host anywhere"],
+      ["Team features", "Pro 2 build users; Team 5 build users and 45 end users; SSO and RBAC on Enterprise", "Unlimited users on all cloud plans; SSO, SAML, LDAP and advanced RBAC on Business and up"],
+      ["Build your own agents", "Yes, that is the product", "Yes, AI agent nodes inside workflows; bring your own model keys"],
+      ["What is metered", "Actions (200 / 2,500 / 7,000 a month) plus vendor credits; top-up $80 per 1,000 actions", "Workflow executions (2,500 / 10,000 / 40,000 a month). One execution is one full run no matter how many steps"]
+    ],
+    "pickA": {
+      "heading": "Pick Relevance AI if…",
+      "points": [
+        "Your team is not technical and wants to build agents from templates and plain-language instructions.",
+        "You want agents with a chat or task front end for end users, not only background automations.",
+        "You want a real free tier to test on before paying $19 a month."
+      ]
+    },
+    "pickB": {
+      "heading": "Pick n8n if…",
+      "points": [
+        "You need EU hosting by default. n8n Cloud runs in Frankfurt, and self-hosting keeps data wherever you put it.",
+        "You want predictable pricing: one execution is one run, however many steps it has, and users are unlimited.",
+        "You have someone who can write a little JavaScript and wants full control over integrations and models."
+      ]
+    },
+    "limits": {
+      "a": [
+        "Two meters (actions plus vendor credits) make monthly cost hard to forecast; this is the most cited complaint on G2 and Capterra.",
+        "Reviewers say multi-agent setups need real technical skill despite the no-code label. The EU/UK region is in London, outside the EU."
+      ],
+      "b": [
+        "The learning curve is the top G2 drawback. Error handling, sub-workflows and data mapping often need JavaScript.",
+        "No permanent free cloud tier, and SSO, SAML and advanced roles only start on Business at €667 a month. Self-hosting in production means Docker, SSL and upkeep on your side."
+      ]
+    },
+    "verdict": "n8n wins for a technical team, especially one that must keep data in the EU or wants flat, per-run pricing. Relevance AI wins for a non-technical team that wants to build agents from templates and start free. Both are builders: someone on your team has to design, test and maintain what runs.",
+    "bridge": {
+      "heading": "If you want the work done, not a workflow to maintain",
+      "text": "Both tools above give a builder a canvas. Someone has to design the agent, wire the tools and fix it when it breaks. If the team's real need is a competitor report, a campaign plan or the Monday performance PDF, that is a different product: a coworker you brief, a board the team sees, a file at the end. Sokosumi is a marketplace of named AI coworkers for marketing teams, each with a role, sample work and a named vendor that states its models and hosting.",
+      "points": [
+        "Brief in plain language or @mention in a channel; the task shows on a shared board and ends with a finished file.",
+        "Credits only when a task runs. Free: 250 credits per seat per month, no card. Paid seats €25, €75 or €200 per month.",
+        "EU hosting available, stated per coworker. Built by Serviceplan Group with NMKR, Munich."
+      ],
+      "links": ["/compare/sokosumi-vs-relevance-ai", "/compare/sokosumi-vs-n8n"]
+    },
+    "faq": [
+      ["How does n8n count an execution?", "One execution is one complete run of a workflow, no matter how many steps it has. Starter includes 2,500 a month, Pro 10,000, Business 40,000. If you go over, workflows keep running and overage may be charged."],
+      ["What are Relevance AI actions and vendor credits?", "Actions count what an agent does. Vendor credits pay for the model behind it. Free has 200 actions; Pro 2,500 plus $20 in credits; Team 7,000 plus $70. Top-ups cost $80 per 1,000 actions."],
+      ["Which one keeps data in the EU?", "n8n Cloud stores data in Frankfurt, Germany, and n8n GmbH is a Berlin company. Relevance AI's EU/UK region is in London, which is not in the EU."],
+      ["Is there an option with no building at all?", "Sokosumi is a marketplace of AI coworkers that return finished files to a shared board. Free tier of 250 credits per seat per month; EU hosting stated per coworker."]
+    ]
+  },
+  "sources": [
+    "https://relevanceai.com/docs/get-started/pricing",
+    "https://relevanceai.com/docs/admin/security",
+    "https://n8n.io/pricing/",
+    "https://n8n.io/legal/",
+    "https://n8n.io/imprint/",
+    "https://www.g2.com/products/n8n/reviews",
+    "https://softailed.com/blog/n8n-review",
+    "https://www.quantumdesk.com/blog/relevance-ai-reviews",
+    "https://www.11x.ai/guides/relevance-ai-review"
+  ]
+}

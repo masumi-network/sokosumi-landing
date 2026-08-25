@@ -1,0 +1,80 @@
+{
+  "slug": "agentforce-vs-hubspot",
+  "a": { "key": "agentforce", "name": "Salesforce Agentforce", "url": "https://www.salesforce.com/agentforce/" },
+  "b": { "key": "hubspot", "name": "HubSpot Breeze", "url": "https://www.hubspot.com/products/artificial-intelligence" },
+  "checked": "2026-08-26",
+  "en": {
+    "title": "Salesforce Agentforce or HubSpot Breeze: which CRM agents for a marketing and sales team?",
+    "metaTitle": "Salesforce Agentforce vs HubSpot Breeze (2026): credits, outcome pricing, EU hosting",
+    "description": "Agentforce and HubSpot Breeze compared on pricing models, what the agents do, EU hosting, setup effort and real limits. Facts checked August 2026.",
+    "intro": "Agentforce is Salesforce's agent layer: you build agents on your CRM data and pay per action, per conversation or per user. Breeze is HubSpot's built-in AI: an assistant, a Customer Agent, a Prospecting Agent and a Data Agent, paid per result. Neither is bought on its own; you already have the CRM. The deciding question is which CRM you run and how much building you want to do.",
+    "glance": [
+      ["Who it is for", "Enterprises on Salesforce with an admin or partner to build and tune agents", "SMB and mid-market teams on HubSpot who want agents switched on, not built"],
+      ["What you get", "Agent Builder, prebuilt agents (service, sales, Campaign Creation in Marketing Cloud), AgentExchange marketplace, Data 360 grounding", "Breeze Assistant, Customer Agent, Prospecting Agent, Data Agent, custom agents, Breeze Intelligence enrichment"],
+      ["Price", "Flex Credits $500 per 100,000 (standard action 20 credits = $0.10); or $2 per conversation; or per-user 'digital labor' from $125 per user per month; 100,000 credits free with Salesforce Foundations on Enterprise Edition and up (third-party summaries of salesforce.com, verify; page blocks fetching)", "Customer Agent $0.50 per resolved conversation; Prospecting Agent $1.00 per recommended lead; Data Agent $0.10 per answer; credits $10 per 1,000; since 14 Apr 2026 (hubspot.com)"],
+      ["Free plan or trial", "No free plan; Foundations bundles free credits for existing customers", "28-day free trial of Customer and Prospecting Agents on Pro and Enterprise"],
+      ["EU hosting", "Yes, via Hyperforce EU regions (Germany, France); Salesforce states US and Europe keep AI data residency in region", "CRM data in Frankfurt if chosen at setup; but HubSpot lists Breeze AI features among products that operate outside the EU hosting envelope"],
+      ["Team features", "Full Salesforce admin, roles, audit; agents share CRM permissions", "HubSpot admin, seat and credit controls; credits shared across all AI features"],
+      ["Build your own agents", "Yes, Agent Builder with topics, actions and Flows; AgentExchange for partner agents", "Custom agents in Breeze, simpler scope; external knowledge needs workarounds"],
+      ["Marketing coverage", "Marketing Cloud Growth includes Agentforce Campaign Creation; edition prices not published", "Breeze Assistant drafts content and campaigns; no standalone marketing agent priced per outcome"]
+    ],
+    "pickA": {
+      "heading": "Pick Salesforce Agentforce if…",
+      "points": [
+        "You are already on Salesforce Enterprise Edition and want agents grounded in your full CRM and Data 360.",
+        "You have an admin or partner and a budget for a 4 to 16 week rollout.",
+        "You need EU residency with a clear statement that AI processing stays in region."
+      ]
+    },
+    "pickB": {
+      "heading": "Pick HubSpot Breeze if…",
+      "points": [
+        "You are on HubSpot Pro or Enterprise and want agents live this week without a build project.",
+        "You want to pay only for results: $0.50 per resolved ticket, $1 per lead recommended.",
+        "Your team is small and does not have a Salesforce admin."
+      ]
+    },
+    "limits": {
+      "a": [
+        "Cost and effort. Analysts report Year 1 totals of $270,000–540,000 once Data Cloud, services and training are counted, and only a small share of buyers had reached production by 2026.",
+        "Three pricing models at once (credits, conversations, per user) make the bill hard to predict; data outside Salesforce is invisible to the agent unless piped in."
+      ],
+      "b": [
+        "Breeze works best when everything lives in HubSpot; external knowledge sources need workarounds, and the Assistant has rate limits of about 30 requests a minute and 1,000 a day.",
+        "EU hosting does not clearly cover Breeze: HubSpot's own documentation lists Breeze AI features as operating outside the EU hosting envelope. Credits auto-upgrade by default and do not roll over."
+      ]
+    },
+    "verdict": "You do not choose between these; your CRM chooses for you. On Salesforce, Agentforce is powerful and EU-resident but expensive and slow to reach production. On HubSpot, Breeze is cheap, quick and paid per result, but EU coverage for the AI features is unclear and the agents stay inside HubSpot's walls.",
+    "bridge": {
+      "heading": "If you want marketing work done, not a CRM agent",
+      "text": "Both products run agents on CRM records: service tickets, leads, contacts. Neither returns a competitor report, a campaign plan or the Monday performance PDF. That is a different product: a coworker you brief, a board the team sees, a file at the end. Sokosumi is a marketplace of named AI coworkers for marketing teams, each with a public profile, a named vendor, stated models and stated hosting.",
+      "points": [
+        "Brief in plain language or @mention in a channel; the task shows on a shared board and ends as a PDF, deck, spreadsheet or dashboard. Scheduled tasks included.",
+        "Credits only when a task runs. Free: 250 credits per seat per month, no card. Paid seats €25 / €75 / €200 per month; Enterprise custom. EU hosting stated per coworker.",
+        "52 coworkers and agents from 7 vendors, 5,300+ tasks run. Built by Serviceplan Group with NMKR, Munich."
+      ],
+      "links": ["/compare/sokosumi-vs-salesforce-agentforce", "/compare/sokosumi-vs-hubspot-breeze"]
+    },
+    "faq": [
+      ["What does one Agentforce action cost?", "A standard action is 20 Flex Credits, or $0.10 at $500 per 100,000 credits. Voice actions are 30 credits. Salesforce also sells $2 per conversation and per-user plans from $125 a month (third-party summaries; verify with Salesforce)."],
+      ["What does HubSpot Breeze cost?", "Since 14 April 2026: $0.50 per conversation the Customer Agent resolves, $1 per lead the Prospecting Agent recommends, $0.10 per Data Agent answer. Credits are $10 per 1,000 and shared across all AI features. Both agents come with a 28-day trial on Pro and Enterprise."],
+      ["Which one keeps data in the EU?", "Agentforce on Hyperforce EU keeps CRM and AI processing in region per Salesforce. HubSpot hosts CRM data in Frankfurt if chosen, but its documentation lists Breeze AI features as operating outside that envelope. Ask HubSpot in writing before relying on it."],
+      ["Where does Sokosumi fit?", "It does not touch your CRM records. It is a marketplace of specialist marketing coworkers that deliver finished files, like research reports and campaign plans, to a team board. Teams keep Agentforce or Breeze for CRM automation and add a coworker for the work outside the CRM."]
+    ]
+  },
+  "sources": [
+    "https://www.constellationr.com/insights/news/salesforce-revamps-agentforce-pricing-flex-credits-what-you-need-know",
+    "https://coworker.ai/blog/salesforce-agentforce-pricing",
+    "https://www.getclientell.com/guides/agentforce-pricing-explained",
+    "https://www.salesforce.com/platform/data-residence-eu-oz/",
+    "https://compound.law/en-DE/tools/salesforce-einstein/",
+    "https://www.eesel.ai/blog/is-salesforce-agentforce-worth-the-cost",
+    "https://www.apexhours.com/agentforce-limitations-and-workarounds/",
+    "https://www.hubspot.com/company-news/hubspots-customer-agent-and-prospecting-agent-now-you-pay-when-the-task-is-complete",
+    "https://www.cmswire.com/customer-experience/hubspot-shifts-breeze-ai-agents-to-pay-per-result-pricing/",
+    "https://knowledge.hubspot.com/account-security/hubspot-cloud-infrastructure-and-data-hosting-frequently-asked-questions",
+    "https://vantagepoint.io/blog/hs/eu-data-residency-hubspot-subprocessors",
+    "https://www.eesel.ai/blog/is-hubspot-breeze-worth-it",
+    "https://myaskai.com/blog/hubspot-breeze-ai-agent-complete-guide-2026"
+  ]
+}
