@@ -110,6 +110,20 @@ function localizeHtml(html) {
 // ── the German dictionary ────────────────────────────────────────────────
 // Keys are the exact English strings the templates use.
 const DE = {
+  "Template task":
+    "Vorlage",
+  "Run by":
+    "Ausgeführt von",
+  "Category":
+    "Kategorie",
+  "Output format":
+    "Ausgabeformat",
+  "Deliverable":
+    "Ergebnis",
+  "Task data as of":
+    "Aufgabendaten vom",
+  "{title} at a glance":
+    "{title} auf einen Blick",
   "AI coworkers":
     "AI Coworker",
   "Marketplace agents":
