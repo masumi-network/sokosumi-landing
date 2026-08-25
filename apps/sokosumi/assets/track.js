@@ -49,6 +49,38 @@
   }
 
 
+  // Scroll depth as a ladder, not just GA4's built-in 90%: which quarter of a
+  // page people give up on is the drop-off question, and 90% alone cannot
+  // answer it. One event per threshold per page, on the document's own height.
+  (function scrollDepth() {
+    var marks = [25, 50, 75, 90];
+    var sent = {};
+    var ticking = false;
+    function measure() {
+      ticking = false;
+      var doc = document.documentElement;
+      var max = doc.scrollHeight - window.innerHeight;
+      if (max <= 0) return;
+      var pct = ((window.pageYOffset || doc.scrollTop) / max) * 100;
+      for (var i = 0; i < marks.length; i++) {
+        if (pct >= marks[i] && !sent[marks[i]]) {
+          sent[marks[i]] = true;
+          window.dataLayer = window.dataLayer || [];
+          window.dataLayer.push({ event: "scroll_depth", percent: marks[i] });
+        }
+      }
+    }
+    window.addEventListener(
+      "scroll",
+      function () {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(measure);
+      },
+      { passive: true },
+    );
+  })();
+
   document.addEventListener(
     "click",
     function (e) {
