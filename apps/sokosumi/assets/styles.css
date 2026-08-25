@@ -113,13 +113,13 @@ button { font-family: inherit; }
 
 /* ===== page anatomy ===== */
 main.page { min-height: 60vh; }
-.page-head { padding: clamp(36px, 5vw, 64px) 0 clamp(28px, 4vw, 44px); max-width: 820px; }
+.page-head { padding: clamp(36px, 5vw, 64px) 0 clamp(28px, 4vw, 44px); max-width: 940px; }
 .page-head .eyebrow { display: block; font-size: 13px; color: var(--muted-foreground); margin-bottom: 14px; }
 .page-head h1 {
   font-weight: 300; font-size: clamp(32px, 4.4vw, 54px);
   line-height: 1.08; letter-spacing: -0.025em; text-wrap: balance;
 }
-.page-head .sub { margin-top: 16px; font-size: 16.5px; line-height: 1.6; color: var(--muted-foreground); max-width: 58ch; text-wrap: pretty; }
+.page-head .sub { margin-top: 16px; font-size: 16.5px; line-height: 1.6; color: var(--muted-foreground); max-width: 72ch; text-wrap: pretty; }
 .page-head .meta-row { margin-top: 18px; display: flex; flex-wrap: wrap; gap: 8px 18px; font-size: 13px; color: var(--muted-foreground); }
 
 .page-section { padding: clamp(36px, 5vw, 56px) 0; border-top: 1px solid var(--border); }
@@ -495,7 +495,7 @@ a.card:hover .go { opacity: 1; transform: none; }
 .card .card-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
 /* article lead image, sized to the prose measure rather than the full grid */
-.post-cover { margin: 0 0 clamp(28px, 4vw, 44px); max-width: 860px; }
+.post-cover { margin: 0 0 clamp(28px, 4vw, 44px); max-width: 900px; }
 /* aspect-ratio, not height:auto — the cover sits above the fold on articles,
    and without a reserved box the whole article jumped down by ~480px the
    moment the image arrived. The product screenshots are already 16:9, so
@@ -696,17 +696,28 @@ a.card:hover .go { opacity: 1; transform: none; }
 .embed-tabset { border: 0; margin: 0; padding: 0; min-width: 0; }
 
 /* ===== prose (CMS rich text) ===== */
-.prose { max-width: 720px; font-size: 16px; line-height: 1.75; }
-.prose > * + * { margin-top: 0.9em; }
-.prose h2 { font-weight: 400; font-size: clamp(22px, 2.4vw, 28px); letter-spacing: -0.015em; margin-top: 2em; line-height: 1.25; }
-.prose h3 { font-weight: 500; font-size: 18px; letter-spacing: -0.01em; margin-top: 1.6em; }
-.prose h4 { font-weight: 500; font-size: 16px; margin-top: 1.4em; }
+.prose { max-width: 900px; font-size: 16.5px; line-height: 1.75; }
+/* The CMS wraps rich text in .payload-richtext, so the rhythm must reach
+   descendants, not only direct children. */
+.prose > * + *, .prose .payload-richtext > * + * { margin-top: 1em; }
+.prose .payload-richtext > p:first-child { font-size: 18.5px; line-height: 1.65; color: var(--foreground); }
+.prose h2 { font-weight: 400; font-size: clamp(22px, 2.4vw, 28px); letter-spacing: -0.015em; line-height: 1.25; margin-top: 2.2em !important; margin-bottom: 0.55em; }
+.prose h3 { font-weight: 500; font-size: 18px; letter-spacing: -0.01em; margin-top: 1.8em !important; margin-bottom: 0.4em; }
+.prose h4 { font-weight: 500; font-size: 16px; margin-top: 1.4em !important; }
 .prose p, .prose li { color: rgba(15, 14, 13, 0.78); }
 .prose ul, .prose ol { padding-left: 1.35em; }
-.prose li + li { margin-top: 0.35em; }
+.prose li { padding-left: 0.2em; }
+.prose li + li { margin-top: 0.5em; }
+.prose li::marker { color: var(--muted-foreground); }
 .prose a { text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--border); transition: text-decoration-color 0.25s var(--ease); }
 .prose a:hover { text-decoration-color: var(--foreground); }
-.prose blockquote { border-left: 1px solid var(--foreground); padding-left: 20px; font-size: 17px; color: var(--foreground); }
+/* A quote in a guide is almost always an example briefing: show it as the
+   thing itself — a card you could paste into the app — not as a citation. */
+.prose blockquote { margin: 1.4em 0 !important; padding: 22px 24px 22px 26px; border: 1px solid var(--border); border-left: 2px solid var(--foreground); border-radius: var(--r-lg); background: var(--card); font-size: 16.5px; line-height: 1.7; color: var(--foreground); }
+.prose blockquote::before { content: "Example"; display: block; margin-bottom: 8px; font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted-foreground); }
+html[lang="de"] .prose blockquote::before { content: "Beispiel"; }
+.prose blockquote p { color: inherit; }
+.prose blockquote + p { margin-top: 1.4em; }
 .prose code { font-size: 0.9em; background: var(--muted); border-radius: var(--r-sm); padding: 2px 6px; }
 .prose pre { background: var(--ink); color: #fafaf9; border-radius: var(--r-md); padding: 18px 20px; overflow-x: auto; font-size: 13.5px; line-height: 1.6; }
 .prose pre code { background: none; padding: 0; }
@@ -718,12 +729,12 @@ a.card:hover .go { opacity: 1; transform: none; }
 .blk + .blk { border-top: 1px solid var(--border); }
 .blk-hero { padding: clamp(56px, 8vw, 110px) 0 clamp(40px, 6vw, 72px); border-top: none !important; }
 .blk-hero .eyebrow { display: block; font-size: 13px; color: var(--muted-foreground); margin-bottom: 16px; }
-.blk-hero h1 { font-weight: 300; font-size: clamp(34px, 5vw, 62px); letter-spacing: -0.028em; line-height: 1.06; max-width: 20ch; text-wrap: balance; }
-.blk-hero .sub { margin-top: 18px; font-size: 17px; line-height: 1.6; color: var(--muted-foreground); max-width: 56ch; text-wrap: pretty; }
+.blk-hero h1 { font-weight: 300; font-size: clamp(34px, 5vw, 62px); letter-spacing: -0.028em; line-height: 1.06; max-width: 28ch; text-wrap: balance; }
+.blk-hero .sub { margin-top: 18px; font-size: 17px; line-height: 1.6; color: var(--muted-foreground); max-width: 72ch; text-wrap: pretty; }
 .blk-hero .cta-row { margin-top: 30px; display: flex; flex-wrap: wrap; gap: 10px; }
-.blk-head { max-width: 760px; margin-bottom: clamp(28px, 4vw, 44px); }
+.blk-head { max-width: 940px; margin-bottom: clamp(28px, 4vw, 44px); }
 .blk-head h2 { font-weight: 300; font-size: clamp(26px, 3vw, 38px); letter-spacing: -0.02em; line-height: 1.12; text-wrap: balance; }
-.blk-head .sub { margin-top: 12px; font-size: 15.5px; line-height: 1.6; color: var(--muted-foreground); max-width: 58ch; }
+.blk-head .sub { margin-top: 12px; font-size: 15.5px; line-height: 1.6; color: var(--muted-foreground); max-width: 72ch; }
 
 .blk-grid { display: grid; gap: 14px; grid-template-columns: 1fr; }
 @media (min-width: 680px) { .blk-grid { grid-template-columns: repeat(2, 1fr); } }
@@ -751,7 +762,7 @@ a.card:hover .go { opacity: 1; transform: none; }
 .mt-media { border-radius: var(--r-lg); overflow: hidden; background: var(--muted); }
 .mt-media img { width: 100%; height: auto; display: block; }
 .mt-copy h2 { font-weight: 300; font-size: clamp(24px, 2.8vw, 36px); letter-spacing: -0.02em; line-height: 1.15; }
-.mt-copy p { margin-top: 14px; font-size: 15.5px; line-height: 1.65; color: var(--muted-foreground); max-width: 52ch; }
+.mt-copy p { margin-top: 14px; font-size: 15.5px; line-height: 1.65; color: var(--muted-foreground); max-width: 60ch; }
 .mt-copy .btn { margin-top: 22px; }
 
 .blk-checklist ul { list-style: none; padding: 0; max-width: 640px; }
@@ -1289,11 +1300,15 @@ h1, h2, h3 { overflow-wrap: break-word; }
 
 /* compare: stats under the answer, alternating picture sections, quieter h3s */
 .cmp-value { padding-top: 0; }
-.cmp-value-line { font-weight: 300; font-size: clamp(22px, 2.6vw, 34px); letter-spacing: -0.02em; line-height: 1.25; max-width: 30ch; text-wrap: balance; }
+.cmp-value-line { font-weight: 300; font-size: clamp(22px, 2.6vw, 34px); letter-spacing: -0.02em; line-height: 1.25; max-width: 44ch; text-wrap: balance; }
 .cmp-value-line strong { font-weight: 500; }
 .cmp-value-note { margin-top: 10px; font-size: 12.5px; color: var(--muted-foreground); }
-.cmp-different h2 { font-weight: 300; font-size: clamp(26px, 3.2vw, 40px); letter-spacing: -0.025em; margin-bottom: clamp(20px, 3vw, 36px); max-width: 24ch; text-wrap: balance; }
+.cmp-different h2 { font-weight: 300; font-size: clamp(26px, 3.2vw, 40px); letter-spacing: -0.025em; margin-bottom: clamp(20px, 3vw, 36px); max-width: 34ch; text-wrap: balance; }
 .cmp-mt { padding: clamp(18px, 3vw, 36px) 0; }
 .cmp-mt + .cmp-mt { border-top: 1px solid var(--border); }
 .cmp-mt .mt-copy h3 { font-weight: 400; font-size: clamp(20px, 2.2vw, 26px); letter-spacing: -0.02em; line-height: 1.2; }
 .cmp-mt .mt-media { border: 1px solid var(--border); background: #fff; }
+
+/* guide meta row: category · reading time · updated */
+.guide-meta { display: flex; flex-wrap: wrap; gap: 6px 14px; margin-top: 16px; font-size: 13px; color: var(--muted-foreground); }
+.guide-meta span + span::before { content: "·"; margin-right: 14px; }

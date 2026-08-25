@@ -11,7 +11,7 @@ body:has(.cc-banner) .product-page .pd-stage { margin-bottom: 220px; }
 .product-page .pd-stage { margin-bottom: 8px; }
 
 .pd-hero { padding: clamp(28px, 4vw, 52px) 0 8px; }
-.pd-hero-copy { max-width: 720px; margin: 0 auto 28px; text-align: center; }
+.pd-hero-copy { max-width: 900px; margin: 0 auto 28px; text-align: center; }
 .pd-hero-copy h1 {
   font-weight: 300;
   font-size: clamp(32px, 5vw, 56px);
@@ -21,7 +21,7 @@ body:has(.cc-banner) .product-page .pd-stage { margin-bottom: 220px; }
   overflow-wrap: anywhere;
   min-width: 0;
 }
-.pd-hero-copy .sub { margin: 16px auto 0; max-width: 46ch; font-size: 16.5px; line-height: 1.55; color: var(--muted-foreground); text-wrap: pretty; }
+.pd-hero-copy .sub { margin: 16px auto 0; max-width: 60ch; font-size: 16.5px; line-height: 1.55; color: var(--muted-foreground); text-wrap: pretty; }
 .pd-hero-actions { margin-top: 22px; display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
 .pd-hero .no-card { margin-top: 10px; }
 

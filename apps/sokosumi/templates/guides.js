@@ -4,7 +4,8 @@
 const shell = require("./shell");
 const cms = require("../lib/cms");
 const blocks = require("./blocks");
-const { t } = require("../lib/i18n");
+const i18n = require("../lib/i18n");
+const { t } = i18n;
 const { esc, attr, icon, pageStart, pageEnd } = shell;
 
 const CATEGORY_LABELS = {
@@ -77,6 +78,19 @@ async function index(ctx) {
   );
 }
 
+// Reading time from the rendered text (200 words a minute) and the last
+// edit, so a reader knows what they are getting into before they scroll.
+function guideMeta(g) {
+  const words = String(g.contentHtml || "").replace(/<[^>]+>/g, " ").split(/\s+/).filter(Boolean).length;
+  const mins = Math.max(1, Math.round(words / 200));
+  const parts = [t("{n} min read", { n: mins })];
+  if (g.updatedAt) {
+    const d = new Date(g.updatedAt);
+    parts.push(t("Updated {date}", { date: new Intl.DateTimeFormat(i18n.locale() === "de" ? "de-DE" : "en-GB", { day: "numeric", month: "short", year: "numeric" }).format(d) }));
+  }
+  return `<p class="guide-meta">${parts.map((x) => `<span>${esc(x)}</span>`).join("")}</p>`;
+}
+
 async function detail(ctx) {
   const g = await cms.getGuide(ctx.params.slug, { draft: ctx.preview });
   if (!g) return null;
@@ -114,6 +128,7 @@ async function detail(ctx) {
       <span class="eyebrow">${esc(t(CATEGORY_LABELS[g.category] || "Guide"))}</span>
       <h1>${esc(g.title)}</h1>
       ${g.description ? `<p class="sub">${esc(g.description)}</p>` : ""}
+      ${guideMeta(g)}
     </div>
     ${cover}
     <article class="page-section flush" data-reveal>
