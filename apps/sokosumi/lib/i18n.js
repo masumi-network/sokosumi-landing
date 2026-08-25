@@ -110,6 +110,8 @@ function localizeHtml(html) {
 // ── the German dictionary ────────────────────────────────────────────────
 // Keys are the exact English strings the templates use.
 const DE = {
+  "The question we get first: how is this different from the tool we already have? One page per tool, seven rows each.":
+    "Die erste Frage, die wir bekommen: Was ist der Unterschied zu dem Tool, das wir schon haben? Eine Seite pro Tool, sieben Zeilen.",
   "How is Sokosumi different from ChatGPT or Claude Code?":
     "Worin unterscheidet sich Sokosumi von ChatGPT oder Claude Code?",
   "ChatGPT and Claude are general assistants one person prompts; Claude Code is an agent for developers working in a codebase. Sokosumi is a marketplace of named coworkers, each built and operated by a vendor, that a marketing team briefs in plain language and that deliver finished files to a shared task board. Credits only go on work that runs. Several coworkers run on OpenAI or Anthropic models; the model is not what you buy.":

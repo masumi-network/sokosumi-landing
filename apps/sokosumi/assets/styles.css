@@ -1270,3 +1270,20 @@ h1, h2, h3 { overflow-wrap: break-word; }
 .entity-list li { padding: 14px 0; border-bottom: 1px solid var(--border); font-size: 15px; line-height: 1.55; }
 .entity-list a { text-decoration: underline; text-underline-offset: 3px; }
 .entity .page-head .sub + .sub { margin-top: 12px; }
+
+/* ===== compare: two marks and a "vs" ===== */
+.cmp-versus { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.cmp-versus em { font-style: normal; font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted-foreground); border: 1px solid var(--border); border-radius: 999px; padding: 2px 8px; }
+.cmp-mark { display: inline-flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 500; letter-spacing: -0.01em; }
+.cmp-mark img { display: block; }
+.cmp-mark-logo img, .cmp-mark-logo b { width: 24px; height: 24px; border-radius: 6px; object-fit: contain; filter: grayscale(1) contrast(1.15); }
+.cmp-mark-logo b { display: inline-flex; align-items: center; justify-content: center; border: 1px solid var(--foreground); font-weight: 500; font-size: 12px; }
+.cmp-versus-head { padding-top: clamp(36px, 5vw, 64px); }
+.cmp-versus-head + .blk-hero { padding-top: 12px; }
+.cmp-versus.is-lg { gap: 18px; margin-bottom: 0; }
+.cmp-versus.is-lg em { font-size: 12px; padding: 4px 11px; }
+.cmp-versus.is-lg .cmp-mark { font-size: 20px; font-weight: 400; gap: 12px; }
+.cmp-versus.is-lg .cmp-mark-logo img, .cmp-versus.is-lg .cmp-mark-logo b { width: 48px; height: 48px; border-radius: 12px; border: 1px solid var(--border); padding: 6px; background: #fff; }
+.cmp-versus.is-lg .cmp-mark-word > img { height: 14px; width: auto; }
+.cmp-mark-word > img { height: 9px; width: auto; }
+@media (max-width: 599px) { .cmp-versus.is-lg { flex-wrap: wrap; } }
