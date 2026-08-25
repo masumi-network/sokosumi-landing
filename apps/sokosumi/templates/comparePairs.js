@@ -154,7 +154,7 @@ async function detail(ctx) {
     </section>
     <section class="page-section pair-bridge" id="want-alternatives" data-reveal>
       <div class="pair-bridge-box">
-        <span class="eyebrow">${esc(t("A third option"))}</span>
+        <div class="pair-bridge-head"><span class="eyebrow">${esc(t("A third option"))}</span><span class="cmp-mark cmp-mark-logo"><img src="/assets/apple-touch-icon.png" alt="" width="24" height="24">Sokosumi</span></div>
         <h2>${esc(c.bridge.heading)}</h2>
         <p>${esc(c.bridge.text)}</p>
         <ul>${c.bridge.points.map((x) => `<li>${esc(x)}</li>`).join("")}</ul>
@@ -183,4 +183,4 @@ async function detail(ctx) {
   );
 }
 
-module.exports = { all, get, card, detail };
+module.exports = { all, get, card, detail, lockup, copy };

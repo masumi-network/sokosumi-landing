@@ -49,15 +49,43 @@ function comparisonCard(c) {
   </a>`;
 }
 
-// Tool-vs-tool pages (two products we do not sell), below the Sokosumi ones.
-function pairSection() {
-  const list = pairs.all();
-  if (!list.length) return "";
-  return `<section class="page-section pair-index" data-reveal>
-      <h2>${esc(t("Tool vs tool"))}</h2>
-      <p class="sub">${esc(t("Choosing between two other tools? Plain comparisons, checked against the vendors' own pages, with a note on where Sokosumi fits."))}</p>
-      <div class="${shell.gridCls(list.length)}">${list.map(pairs.card).join("")}</div>
+// The index is grouped by what the reader already has on their desk. Both
+// the Sokosumi-vs pages (by competitor slug) and the tool-vs-tool pages (by
+// the first tool's key) fall into the same five groups.
+const GROUPS = [
+  { id: "assistants", title: () => t("General AI assistants"), sub: () => t("The chat tools most teams already pay for. Good at answering; the work still lands on your desk."), keys: ["chatgpt", "claude", "gemini", "google-gemini", "copilot", "microsoft-365-copilot", "perplexity", "notion", "notion-ai", "deepl", "deepl-agent", "genspark", "manus"] },
+  { id: "coding", title: () => t("Coding agents"), sub: () => t("Built for engineers. Marketing teams ask about them because a colleague uses one."), keys: ["claude-code", "codex", "openai-codex", "cursor", "github-copilot"] },
+  { id: "platforms", title: () => t("AI workspaces and agent builders"), sub: () => t("Company-wide chat with your data, or a canvas to build your own agents. Someone has to build and maintain them."), keys: ["langdock", "nele", "nele-ai", "dust", "lindy", "relevance", "relevance-ai", "beam", "beam-ai", "n8n", "zapier", "zapier-agents", "motion", "paradigm", "agentforce", "salesforce-agentforce"] },
+  { id: "employees", title: () => t("AI employees"), sub: () => t("Named assistants you subscribe to. Closest to the Sokosumi idea; the difference is who builds them and what comes back."), keys: ["sintra", "viktor", "whaaat", "whaaat-ai", "coworker-ai", "the-need"] },
+  { id: "marketing", title: () => t("Marketing and content tools"), sub: () => t("Writing, brand and campaign suites. Strong inside their editor; the research and reporting around them is still manual."), keys: ["jasper", "copy-ai", "writer", "typeface", "adobe", "adobe-genstudio", "canva", "canva-ai", "hubspot", "hubspot-breeze"] },
+];
+const groupOf = (key) => GROUPS.find((g) => g.keys.includes(key)) || GROUPS[2];
+
+function pairRow(p) {
+  const { c } = pairs.copy(p);
+  return `<a class="pair-row" href="/compare/${encodeURIComponent(p.slug)}">
+    ${pairs.lockup(p)}
+    <span class="pair-row-title">${esc(c.title)}</span>
+    <span class="go">${icon("arrow-up-right", 15)}</span>
+  </a>`;
+}
+
+function groupSection(g, sokoList, pairList) {
+  if (!sokoList.length && !pairList.length) return "";
+  return `<section class="page-section cmp-group" id="${g.id}" data-reveal>
+      <div class="cmp-group-head">
+        <h2>${esc(g.title())}</h2>
+        <p class="sub">${esc(g.sub())}</p>
+      </div>
+      ${sokoList.length ? `<div class="${shell.gridCls(sokoList.length)}">${sokoList.map(comparisonCard).join("")}</div>` : ""}
+      ${pairList.length ? `<div class="cmp-pairs"><h3>${esc(t("{group}: tool vs tool", { group: g.title() }))}</h3><div class="pair-rows">${pairList.map(pairRow).join("")}</div></div>` : ""}
     </section>`;
+}
+
+function jumpNav(counts) {
+  return `<nav class="cmp-jump" aria-label="${attr(t("Sections"))}">${GROUPS.filter((g) => counts[g.id])
+    .map((g) => `<a href="#${g.id}">${esc(g.title())}<span>${counts[g.id]}</span></a>`)
+    .join("")}</nav>`;
 }
 
 async function index(ctx) {
@@ -71,6 +99,16 @@ async function index(ctx) {
     .filter((c) => c.competitor && !/^vs-/.test(c.slug))
     .sort((a, b) => rank(a) - rank(b) || String(a.competitor).localeCompare(String(b.competitor)));
 
+  const bySoko = {}, byPair = {}, counts = {};
+  for (const c of list) {
+    const g = groupOf(c.slug.replace("sokosumi-vs-", ""));
+    (bySoko[g.id] = bySoko[g.id] || []).push(c);
+  }
+  for (const p of pairs.all()) {
+    const g = groupOf(p.a.key) === GROUPS[2] && !GROUPS[2].keys.includes(p.a.key) ? groupOf(p.b.key) : groupOf(p.a.key);
+    (byPair[g.id] = byPair[g.id] || []).push(p);
+  }
+  for (const g of GROUPS) counts[g.id] = (bySoko[g.id] || []).length + (byPair[g.id] || []).length;
   const cr = [{ label: "Home", href: "/" }, { label: "Compare" }];
   return (
     pageStart({
@@ -83,12 +121,10 @@ async function index(ctx) {
     }) +
     `<div class="page-head" data-reveal>
       <h1>${esc(t("How Sokosumi compares"))}</h1>
-      <p class="sub">${esc(t("The question we get first: how is this different from the tool we already have? One page per tool, seven rows each."))}</p>
+      <p class="sub">${esc(t("The question we get first: how is this different from the tool we already have? {n} pages, one per tool, sorted by what you already use.", { n: list.length + pairs.all().length }))}</p>
     </div>
-    <section class="page-section" data-reveal>
-      <div class="${shell.gridCls(list.length)}">${list.map(comparisonCard).join("")}</div>
-    </section>
-    ${pairSection()}` +
+    ${jumpNav(counts)}
+    ${GROUPS.map((g) => groupSection(g, bySoko[g.id] || [], byPair[g.id] || [])).join("")}` +
     shell.logoRow() +
     shell.ctaBand({
       heading: t("Try Sokosumi free"),

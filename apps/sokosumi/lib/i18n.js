@@ -110,6 +110,32 @@ function localizeHtml(html) {
 // ── the German dictionary ────────────────────────────────────────────────
 // Keys are the exact English strings the templates use.
 const DE = {
+  "General AI assistants":
+    "Allgemeine KI-Assistenten",
+  "The chat tools most teams already pay for. Good at answering; the work still lands on your desk.":
+    "Die Chat-Tools, für die die meisten Teams schon zahlen. Gut im Antworten; die Arbeit landet trotzdem auf Ihrem Tisch.",
+  "Coding agents":
+    "Coding-Agenten",
+  "Built for engineers. Marketing teams ask about them because a colleague uses one.":
+    "Gebaut für Entwickler. Marketingteams fragen danach, weil ein Kollege einen nutzt.",
+  "AI workspaces and agent builders":
+    "KI-Workspaces und Agent-Builder",
+  "Company-wide chat with your data, or a canvas to build your own agents. Someone has to build and maintain them.":
+    "Unternehmensweiter Chat mit Ihren Daten oder eine Fläche, um eigene Agenten zu bauen. Jemand muss sie bauen und pflegen.",
+  "AI employees":
+    "KI-Mitarbeiter",
+  "Named assistants you subscribe to. Closest to the Sokosumi idea; the difference is who builds them and what comes back.":
+    "Benannte Assistenten im Abo. Der Sokosumi-Idee am nächsten; der Unterschied ist, wer sie baut und was zurückkommt.",
+  "Marketing and content tools":
+    "Marketing- und Content-Tools",
+  "Writing, brand and campaign suites. Strong inside their editor; the research and reporting around them is still manual.":
+    "Text-, Marken- und Kampagnen-Suiten. Stark im eigenen Editor; Recherche und Reporting drumherum bleiben Handarbeit.",
+  "{group}: tool vs tool":
+    "{group}: Tool gegen Tool",
+  "Sections":
+    "Abschnitte",
+  "The question we get first: how is this different from the tool we already have? {n} pages, one per tool, sorted by what you already use.":
+    "Die erste Frage, die wir hören: Was ist der Unterschied zum Tool, das wir schon haben? {n} Seiten, eine pro Tool, sortiert nach dem, was Sie bereits nutzen.",
   "AI agents for marketing: named coworkers with real roles | Sokosumi":
     "KI-Agenten für Marketing: benannte Coworker mit echten Rollen | Sokosumi",
   "AI agents and coworkers for marketing teams: {n} named specialists with a role, a vendor, sample work and a credit price you see first. Brief one; get a file back.":
