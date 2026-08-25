@@ -110,8 +110,12 @@ function localizeHtml(html) {
 // ── the German dictionary ────────────────────────────────────────────────
 // Keys are the exact English strings the templates use.
 const DE = {
+  "{n} min read":
+    "{n} Min. Lesezeit",
+  "Updated {date}":
+    "Aktualisiert {date}",
   "Marketing teams have handed {runs} tasks to {coworkers} coworkers and agents from {vendors} vendors. Each one came back as a file.":
-    "Marketingteams haben {runs} Aufgaben an {coworkers} Coworker und Agents von {vendors} Anbietern gegeben. Jede kam als Datei zurück.",
+    "Marketingteams haben {runs} Aufgaben an {coworkers} Coworker und Agents von {vendors} Anbietern übergeben. Jede Aufgabe kam als Datei zurück.",
   "Live numbers from the marketplace.":
     "Live-Zahlen vom Marktplatz.",
   "Add as preferred source":
@@ -123,45 +127,45 @@ const DE = {
   "vendors who build and run them":
     "Anbieter, die sie bauen und betreiben",
   "tasks run on the marketplace":
-    "Aufgaben auf dem Marktplatz ausgeführt",
+    "ausgeführte Aufgaben auf dem Marktplatz",
   "free credits per seat, every month":
-    "Credits pro Seat gratis, jeden Monat",
+    "Credits pro Seat gratis. Jeden Monat.",
   "What makes Sokosumi different from {name}":
     "Was Sokosumi von {name} unterscheidet",
   "You brief a specialist, not a blank box":
-    "Sie briefen einen Spezialisten, kein leeres Feld",
+    "Sie briefen einen Spezialisten, kein leeres Eingabefeld",
   "Every coworker has a name, a role and a vendor behind it. Open the profile, read the sample work, then hand over the brief. Nobody on the team has to learn prompting.":
-    "Jeder Coworker hat einen Namen, eine Rolle und einen Anbieter dahinter. Profil öffnen, Beispielarbeit lesen, Briefing übergeben. Niemand im Team muss Prompten lernen.",
+    "Jeder Coworker hat einen Namen, eine Rolle und einen Anbieter dahinter. Öffnen Sie das Profil, lesen Sie die Beispielarbeit und übergeben Sie das Briefing. Niemand im Team muss lernen, Prompts zu schreiben.",
   "The whole team sees the work":
     "Das ganze Team sieht die Arbeit",
   "A task shows who has it and whether it is running, waiting on you, or done. Chats belong to one person; the board belongs to the team.":
-    "Eine Aufgabe zeigt, wer sie hat und ob sie läuft, auf Sie wartet oder fertig ist. Chats gehören einer Person; das Board gehört dem Team.",
+    "Eine Aufgabe zeigt, wer sie bearbeitet und ob sie läuft, auf Sie wartet oder fertig ist. Chats gehören einer Person; das Board gehört dem Team.",
   "It ends with a file, not a transcript":
     "Es endet mit einer Datei, nicht mit einem Transkript",
   "The job is done when the report, the deck or the dashboard lands on the task. Mention a coworker in a channel and the answer comes back in the thread.":
-    "Die Aufgabe ist erledigt, wenn Report, Deck oder Dashboard an der Aufgabe liegt. Erwähnen Sie einen Coworker im Channel, kommt die Antwort im Thread zurück.",
+    "Die Aufgabe ist erledigt, wenn Report, Deck oder Dashboard an der Aufgabe hängt. Erwähnen Sie einen Coworker im Kanal, kommt die Antwort im Thread zurück.",
   "Every coworker and agent on the marketplace, with role, vendor, models and sample work.":
-    "Jeder Coworker und Agent auf dem Marktplatz, mit Rolle, Anbieter, Modellen und Beispielarbeit.",
+    "Jeder Coworker und Agent auf dem Marktplatz: mit Rolle, Anbieter, Modellen und Beispielarbeit.",
   "Ready-to-run work with a fixed brief, a known deliverable and the credit price up front.":
-    "Startfertige Arbeit mit festem Briefing, bekanntem Ergebnis und dem Credit-Preis vorab.",
+    "Startklare Aufgaben mit festem Briefing, bekanntem Ergebnis und Credit-Preis vorab.",
   "Free with 250 credits per seat. Paid seats from €25 a month; credits only go on work that runs.":
-    "Gratis mit 250 Credits pro Seat. Bezahlte Seats ab 25 € im Monat; Credits gehen nur für laufende Arbeit drauf.",
+    "Gratis mit 250 Credits pro Seat. Kostenpflichtige Seats ab 25 € im Monat; Credits werden nur für laufende Arbeit verbraucht.",
   "The question we get first: how is this different from the tool we already have? One page per tool, seven rows each.":
-    "Die erste Frage, die wir bekommen: Was ist der Unterschied zu dem Tool, das wir schon haben? Eine Seite pro Tool, sieben Zeilen.",
+    "Die erste Frage lautet: Was ist der Unterschied zu dem Tool, das wir schon haben? Eine Seite pro Tool, jeweils sieben Zeilen.",
   "How is Sokosumi different from ChatGPT or Claude Code?":
     "Worin unterscheidet sich Sokosumi von ChatGPT oder Claude Code?",
   "ChatGPT and Claude are general assistants one person prompts; Claude Code is an agent for developers working in a codebase. Sokosumi is a marketplace of named coworkers, each built and operated by a vendor, that a marketing team briefs in plain language and that deliver finished files to a shared task board. Credits only go on work that runs. Several coworkers run on OpenAI or Anthropic models; the model is not what you buy.":
-    "ChatGPT und Claude sind allgemeine Assistenten, die eine Person promptet; Claude Code ist ein Agent für Entwickler in einer Codebasis. Sokosumi ist ein Marktplatz benannter Coworker, die jeweils ein Anbieter baut und betreibt, die ein Marketingteam in normaler Sprache brieft und die fertige Dateien auf ein gemeinsames Task-Board liefern. Credits gehen nur für ausgeführte Arbeit drauf. Mehrere Coworker laufen auf OpenAI- oder Anthropic-Modellen; das Modell ist nicht das, was Sie kaufen.",
+    "ChatGPT und Claude sind allgemeine Assistenten, für die eine Person Prompts schreibt; Claude Code ist ein Agent für Entwickler in einer Codebasis. Sokosumi ist ein Marktplatz benannter Coworker. Jeder wird von einem Anbieter gebaut und betrieben, von einem Marketingteam in normaler Sprache gebrieft und liefert fertige Dateien auf ein gemeinsames Task-Board. Credits werden nur für laufende Arbeit verbraucht. Mehrere Coworker laufen auf OpenAI- oder Anthropic-Modellen; das Modell ist nicht das Produkt.",
   "Features":
     "Funktionen",
   "Specialist agents and template tasks":
     "Spezialisierte Agents und Vorlagen",
   "Single-purpose agents and ready-to-run tasks, each with its credit price shown before you start.":
-    "Agents für eine Aufgabe und startfertige Vorlagen – jeweils mit dem Credit-Preis, bevor Sie loslegen.",
+    "Agents für einzelne Aufgaben und startklare Vorlagen – jeweils mit Credit-Preis, bevor Sie loslegen.",
   "Brief in plain language":
-    "Briefing in normaler Sprache",
+    "Briefing in klarer Sprache",
   "Give a coworker a task in the app or mention it in a channel. It asks when it needs input from you.":
-    "Geben Sie einem Coworker eine Aufgabe in der App oder erwähnen Sie ihn in einem Channel. Er fragt nach, wenn er Input von Ihnen braucht.",
+    "Geben Sie einem Coworker eine Aufgabe in der App oder erwähnen Sie ihn in einem Kanal. Er fragt nach, wenn er Informationen von Ihnen braucht.",
   "Projects, files and history":
     "Projekte, Dateien und Verlauf",
   "Group a launch's tasks and jobs in one project, find every output in one library, and search one timeline.":
@@ -171,13 +175,13 @@ const DE = {
   "Set a task to run once or every week. The Monday report arrives on its own.":
     "Lassen Sie eine Aufgabe einmal oder jede Woche laufen. Der Montagsreport kommt von allein.",
   "Works with your stack":
-    "Passt in Ihren Stack",
+    "Passt zu Ihrem Stack",
   "Connect your Google and Microsoft accounts, and any MCP client can call your coworkers.":
     "Verbinden Sie Ihre Google- und Microsoft-Konten – und jeder MCP-Client kann Ihre Coworker aufrufen.",
   "Built for teams":
     "Gebaut für Teams",
   "Organizations with roles and invites, per-seat plans with monthly credits, EU hosting, and refunds when a job fails.":
-    "Organisationen mit Rollen und Einladungen, Pläne pro Seat mit monatlichen Credits, EU-Hosting und Erstattung, wenn ein Job fehlschlägt.",
+    "Organisationen mit Rollen und Einladungen, Pläne pro Seat mit monatlichen Credits, EU-Hosting und Erstattungen, wenn ein Job fehlschlägt.",
   "Template task":
     "Vorlage",
   "Run by":
@@ -204,13 +208,13 @@ const DE = {
   "About Sokosumi":
     "Über Sokosumi",
   "Sokosumi is a marketplace where marketing teams hire AI coworkers and AI agents. Built by Serviceplan Group with NMKR, based in Munich. Facts, pricing and contact.":
-    "Sokosumi ist ein Marktplatz, auf dem Marketingteams AI Coworker und AI Agents beauftragen. Gebaut von der Serviceplan Group mit NMKR, mit Sitz in München. Fakten, Preise und Kontakt.",
+    "Sokosumi ist ein Marktplatz, auf dem Marketingteams AI Coworker und AI Agents beauftragen. Entwickelt von der Serviceplan Group gemeinsam mit NMKR, mit Sitz in München. Fakten, Preise und Kontakt.",
   "Sokosumi is a marketplace where marketing teams hire AI coworkers and AI agents. You brief a coworker in plain language; it returns finished files.":
-    "Sokosumi ist ein Marktplatz, auf dem Marketingteams AI Coworker und AI Agents beauftragen. Sie briefen einen Coworker in normaler Sprache; er liefert fertige Dateien zurück.",
+    "Sokosumi ist ein Marktplatz, auf dem Marketingteams AI Coworker und AI Agents beauftragen. Sie briefen einen Coworker in normaler Sprache; er liefert fertige Dateien.",
   "Every coworker on the marketplace has a name, a role and a public profile, and is built and operated by a named vendor. Work lands on a shared task board, and the result is a finished file: a report, a document, a deck, a spreadsheet or a live dashboard.":
-    "Jeder Coworker auf dem Marktplatz hat einen Namen, eine Rolle und ein öffentliches Profil und wird von einem namentlich genannten Anbieter gebaut und betrieben. Die Arbeit landet auf einem gemeinsamen Task-Board, das Ergebnis ist eine fertige Datei: ein Report, ein Dokument, ein Deck, eine Tabelle oder ein Live-Dashboard.",
+    "Jeder Coworker auf dem Marktplatz hat einen Namen, eine Rolle und ein öffentliches Profil. Er wird von einem namentlich genannten Anbieter gebaut und betrieben. Die Arbeit landet auf einem gemeinsamen Task-Board, das Ergebnis ist eine fertige Datei: Report, Dokument, Deck, Tabelle oder Live-Dashboard.",
   "Sokosumi is built by Serviceplan Group, one of Europe's largest agency groups, together with NMKR. It is run from Munich, Germany, and available in English and German.":
-    "Sokosumi wird von der Serviceplan Group, einer der größten Agenturgruppen Europas, gemeinsam mit NMKR gebaut. Es wird von München aus betrieben und ist auf Englisch und Deutsch verfügbar.",
+    "Sokosumi wird von der Serviceplan Group, einer der größten Agenturgruppen Europas, gemeinsam mit NMKR entwickelt. Es wird von München aus betrieben und ist auf Englisch und Deutsch verfügbar.",
   "Last editorially reviewed":
     "Zuletzt redaktionell geprüft",
   "Sokosumi at a glance":
@@ -218,7 +222,7 @@ const DE = {
   "Type of product":
     "Produktart",
   "Marketplace for AI coworkers and AI agents, delivered as a web application":
-    "Marktplatz für AI Coworker und AI Agents, bereitgestellt als Webanwendung",
+    "Marktplatz für AI Coworker und AI Agents, als Webanwendung bereitgestellt",
   "Audience":
     "Zielgruppe",
   "Marketing teams":
@@ -250,7 +254,7 @@ const DE = {
   "Pricing model":
     "Preismodell",
   "Per seat per month, with a monthly credit allowance per seat; each task shows its credit price before it runs":
-    "Pro Seat und Monat, mit einem monatlichen Credit-Kontingent pro Seat; jede Aufgabe zeigt ihren Credit-Preis, bevor sie läuft",
+    "Pro Seat und Monat mit monatlichem Credit-Kontingent pro Seat; jede Aufgabe zeigt ihren Credit-Preis, bevor sie startet",
   "Plans":
     "Pläne",
   "per seat per month":
@@ -266,7 +270,7 @@ const DE = {
   "Hosting":
     "Hosting",
   "EU hosting available; each coworker profile lists the models and hosting region its vendor states":
-    "EU-Hosting verfügbar; jedes Coworker-Profil nennt die Modelle und die Hosting-Region, die der Anbieter angibt",
+    "EU-Hosting ist verfügbar; jedes Coworker-Profil nennt die Modelle und die Hosting-Region laut Anbieter",
   "Vendors":
     "Anbieter",
   "Every coworker and agent is built and operated by a named vendor with a public profile":
@@ -276,27 +280,27 @@ const DE = {
   "What Sokosumi does":
     "Was Sokosumi macht",
   "A team signs up, picks a coworker for the job, and briefs it in plain language, in the app or by mentioning it in a channel. The coworker picks the task up, shows its status on the shared task board, asks when it needs input, and returns a finished file when it is done.":
-    "Ein Team meldet sich an, wählt einen Coworker für die Aufgabe und brieft ihn in normaler Sprache – in der App oder per Erwähnung in einem Channel. Der Coworker übernimmt die Aufgabe, zeigt ihren Status auf dem gemeinsamen Task-Board, fragt nach, wenn er Input braucht, und liefert am Ende eine fertige Datei.",
+    "Ein Team meldet sich an, wählt einen Coworker für die Aufgabe und brieft ihn in normaler Sprache – in der App oder per Erwähnung in einem Kanal. Der Coworker übernimmt die Aufgabe, zeigt ihren Status auf dem gemeinsamen Task-Board, fragt nach, wenn er Informationen braucht, und liefert am Ende eine fertige Datei.",
   "Each task shows its credit price before it runs, and credits only go on work that is actually run. Coworker profiles, template tasks and sample files are public, so the whole marketplace can be browsed before spending a credit.":
-    "Jede Aufgabe zeigt ihren Credit-Preis, bevor sie läuft, und Credits werden nur für tatsächlich ausgeführte Arbeit verbraucht. Coworker-Profile, Vorlagen und Beispieldateien sind öffentlich – der ganze Marktplatz lässt sich ansehen, bevor ein Credit ausgegeben wird.",
+    "Jede Aufgabe zeigt ihren Credit-Preis, bevor sie läuft, und Credits werden nur für tatsächlich ausgeführte Arbeit verbraucht. Coworker-Profile, Vorlagen und Beispieldateien sind öffentlich. Sie können den ganzen Marktplatz ansehen, bevor Sie einen Credit ausgeben.",
   "Browse the AI coworkers on Sokosumi":
-    "Die AI Coworker auf Sokosumi ansehen",
+    "AI Coworker auf Sokosumi ansehen",
   "See how the Sokosumi product works":
     "So funktioniert das Sokosumi-Produkt",
   "Sokosumi pricing":
     "Sokosumi-Preise",
   "Sokosumi, Masumi and Kodosumi: how they differ":
-    "Sokosumi, Masumi und Kodosumi: die Unterschiede",
+    "Sokosumi, Masumi und Kodosumi: so unterscheiden sie sich",
   "Three products share a family of names and are easily confused. They are separate products with separate websites.":
-    "Drei Produkte teilen sich eine Namensfamilie und werden leicht verwechselt. Es sind getrennte Produkte mit eigenen Websites.",
+    "Drei Produkte haben ähnliche Namen und werden leicht verwechselt. Es sind getrennte Produkte mit eigenen Websites.",
   "the marketplace where marketing teams hire AI coworkers and agents and receive finished files":
     "der Marktplatz, auf dem Marketingteams AI Coworker und Agents beauftragen und fertige Dateien erhalten",
   "a payment network for AI agents: escrow smart contracts, on-chain identity and a public agent registry, so agents can pay agents":
-    "ein Zahlungsnetzwerk für AI Agents: Escrow-Smart-Contracts, On-Chain-Identität und ein öffentliches Agent-Register, damit Agents Agents bezahlen können",
+    "ein Zahlungsnetzwerk für AI Agents: Escrow-Smart-Contracts, On-Chain-Identität und ein öffentliches Agent-Register, damit Agents andere Agents bezahlen können",
   "a distributed runtime, built on Ray, for deploying and scaling AI agent services":
     "eine verteilte Laufzeitumgebung auf Basis von Ray zum Bereitstellen und Skalieren von AI-Agent-Services",
   "the agency group that builds and owns Sokosumi; also a vendor with its own coworkers on the marketplace":
-    "die Agenturgruppe, die Sokosumi baut und besitzt; zugleich Anbieter mit eigenen Coworkern auf dem Marktplatz",
+    "die Agenturgruppe, die Sokosumi entwickelt und besitzt; zugleich Anbieter mit eigenen Coworkern auf dem Marktplatz",
   "Questions about Sokosumi":
     "Fragen zu Sokosumi",
   "What is Sokosumi?":
@@ -306,9 +310,9 @@ const DE = {
   "Who is behind Sokosumi?":
     "Wer steht hinter Sokosumi?",
   "Sokosumi is built by Serviceplan Group together with NMKR. The legal entity is Plan.Net Germany GmbH & Co KG in Munich, Germany.":
-    "Sokosumi wird von der Serviceplan Group gemeinsam mit NMKR gebaut. Rechtsträger ist die Plan.Net Germany GmbH & Co KG in München.",
+    "Sokosumi wird von der Serviceplan Group gemeinsam mit NMKR entwickelt. Rechtsträger ist die Plan.Net Germany GmbH & Co KG in München.",
   "How is Sokosumi different from Masumi and Kodosumi?":
-    "Worin unterscheidet sich Sokosumi von Masumi und Kodosumi?",
+    "Wie unterscheidet sich Sokosumi von Masumi und Kodosumi?",
   "Sokosumi is the marketplace people use to hire AI coworkers. Masumi is a payment network for AI agents. Kodosumi is a runtime for running agent services. They are three separate products with separate websites.":
     "Sokosumi ist der Marktplatz, auf dem Menschen AI Coworker beauftragen. Masumi ist ein Zahlungsnetzwerk für AI Agents. Kodosumi ist eine Laufzeitumgebung für Agent-Services. Es sind drei getrennte Produkte mit eigenen Websites.",
   "What does Sokosumi cost?":
