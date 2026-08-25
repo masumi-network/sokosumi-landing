@@ -88,6 +88,7 @@ async function detail(ctx) {
       title: t("{title} | Sokosumi blog", { title: p.title }),
       description: (p.description || "").slice(0, 155),
       path: `/blog/${p.slug}`,
+      og: { type: "article", eyebrow: t("Blog"), title: p.title, sub: p.description || "", img: cover || "" },
       breadcrumb: cr,
       ogImage: cover || undefined,
       article: { published: p.date || undefined, modified: p.updatedAt || p.date || undefined },

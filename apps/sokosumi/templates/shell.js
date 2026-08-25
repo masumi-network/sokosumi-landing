@@ -4,6 +4,7 @@
 // hairlines, light display weights. Styles live in /assets/styles.css.
 
 const cms = require("../lib/cms");
+const ogLib = require("../lib/og");
 const art = require("./art");
 const i18n = require("../lib/i18n");
 const { t } = i18n;
@@ -355,7 +356,16 @@ function head(opts) {
   const desc = esc(t(opts.description || ""));
   // The canonical points at the page's OWN locale; hreflang links the pair.
   const canonical = SITE + i18n.localizePath(opts.path);
-  const og = shareImage(opts.ogImage);
+  // A page-specific generated image unless the page brings a real one
+  // (a post cover, a coworker portrait handled by its own layout). The
+  // homepage keeps the hand-made og-image.jpg.
+  const og = opts.og
+    ? { url: ogLib.url(SITE, { ...opts.og, title: opts.og.title || opts.title }), width: ogLib.W, height: ogLib.H, alt: opts.og.title || opts.title }
+    : opts.ogImage
+      ? shareImage(opts.ogImage)
+      : opts.path && opts.path !== "/"
+        ? { url: ogLib.url(SITE, { type: "page", title: String(opts.title || "").replace(/\s*\|\s*Sokosumi.*$/i, ""), sub: opts.description || "" }), width: ogLib.W, height: ogLib.H, alt: opts.title }
+        : shareImage(null);
   // Blog posts, guides and release notes are articles. og:type article unlocks
   // the published/modified timestamps, which "website" silently discards.
   const article = opts.article || null;

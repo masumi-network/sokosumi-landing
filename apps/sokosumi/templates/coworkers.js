@@ -341,7 +341,7 @@ async function profile(ctx) {
       title: t("{name} | {role} on Sokosumi", { name: c.name, role: c.role || t("AI coworker") }),
       description: shell.truncate(c.seoDescription || c.description || t("Hire {name}, an AI coworker on Sokosumi.", { name: c.name })),
       path: `/ai-coworkers/${c.slug}`,
-      ogImage: c.image || undefined,
+      og: { type: "coworker", title: c.name, sub: c.role || "", eyebrow: c.kind === "agent" ? t("Specialist agent on Sokosumi") : t("AI coworker on Sokosumi"), meta: [vn, c.profileHosting].filter(Boolean).join(" · "), img: c.image || "" },
       breadcrumb: cr,
       jsonld: profileLd(c, vn, vs),
     }) +

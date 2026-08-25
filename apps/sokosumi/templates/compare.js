@@ -79,6 +79,7 @@ async function index(ctx) {
         "What is the difference between ChatGPT, Claude, Copilot, Langdock and Sokosumi? One page per tool: who it is for, what you get back, what you pay for.",
       path: "/compare",
       breadcrumb: cr,
+      og: { type: "page", eyebrow: "Compare", title: t("How Sokosumi compares"), sub: t("ChatGPT, Claude, Copilot, Langdock and 30 more. One page per tool.") },
     }) +
     `<div class="page-head" data-reveal>
       <h1>${esc(t("How Sokosumi compares"))}</h1>
@@ -194,6 +195,7 @@ async function detail(ctx) {
       path: `/compare/${doc.slug}`,
       breadcrumb: cr,
       noindex: NOINDEX.has(doc.slug),
+      og: { type: "compare", b: name, logo: cms.mediaUrl(doc.competitorLogo) || "", title: (hero[0] && hero[0].heading) || doc.title, sub: "" },
     }) +
     `<div class="cmp-versus-head" data-reveal>${versus(doc, "lg")}</div>` +
     blocks.renderBlocks(hero) +

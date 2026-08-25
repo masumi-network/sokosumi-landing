@@ -718,6 +718,7 @@ async function detail(ctx) {
       title: t("{title} | Sokosumi use cases", { title: doc.title }),
       description: (doc.description || "").slice(0, 155),
       path: `/use-cases/${doc.slug}`,
+      og: { type: "article", eyebrow: t("Use case"), title: doc.title, sub: doc.description || "" },
       breadcrumb: cr,
       jsonld: blocks.faqJsonLd(blocks.collectFaqs(doc.layout)) || undefined,
     }) +

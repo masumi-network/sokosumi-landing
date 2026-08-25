@@ -414,6 +414,7 @@ const leads = require("./lib/leads");
 const salesTpl = require("./templates/sales");
 const pricingTpl = require("./templates/pricing");
 const aboutTpl = require("./templates/about");
+const og = require("./lib/og");
 const supportTpl = require("./templates/support");
 const legalTpl = require("./templates/legal");
 const legacyRedirects = require("./lib/legacyRedirects");
@@ -1056,6 +1057,17 @@ const assetsDir = path.join(root, "assets");
           return back({ sent: "1" });
         }
 
+        // Generated share images: everything comes from the query string so
+        // the CDN caches one PNG per page. See lib/og.js.
+        if (urlPath === "/og.png") {
+          try {
+            const png = await og.render(Object.fromEntries(new URLSearchParams(rawQuery || "")));
+            return send(req, res, 200, { "Content-Type": "image/png", "Cache-Control": "public, max-age=86400, s-maxage=604800, stale-while-revalidate=2592000" }, png);
+          } catch (e) {
+            console.error("[og]", e.message);
+            return send(req, res, 500, { "Content-Type": "text/plain" }, "og failed");
+          }
+        }
         if (urlPath === "/llms.txt") {
           return send(req, res, 200, { "Content-Type": "text/markdown; charset=utf-8", "Cache-Control": "public, max-age=0, s-maxage=3600, must-revalidate" }, misc.llmsTxt());
         }

@@ -106,6 +106,7 @@ async function detail(ctx) {
       title: t("{title} | Sokosumi guides", { title: g.title }),
       description: (g.description || "").slice(0, 155),
       path: `/guides/${g.slug}`,
+      og: { type: "article", eyebrow: t("Guide"), title: g.title, sub: g.description || "", img: coverUrl || "" },
       breadcrumb: cr,
       article: { published: g.publishedAt || g.createdAt || undefined, modified: g.updatedAt || undefined },
       jsonld: {

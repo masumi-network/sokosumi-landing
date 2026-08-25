@@ -113,6 +113,7 @@ async function detail(ctx) {
       path: `/compare/${p.slug}`,
       breadcrumb: cr,
       noindex: !translated,
+      og: { type: "pair", a: p.a.name, b: p.b.name, logoA: logoUrl(p.a.key), logoB: logoUrl(p.b.key), title: c.title, sub: "" },
       jsonld: [
         blocks.faqJsonLd(faqs),
         {
