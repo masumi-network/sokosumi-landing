@@ -584,11 +584,12 @@ function layout(p, loc) {
     { blockType: "hero", eyebrow: ui.eyebrow, heading: d.q, subheading: d.a, ctaLabel: ui.cta, ctaHref: SIGNUP, secondaryCtaLabel: ui.cta2, secondaryCtaHref: "/contact/sales" },
     {
       blockType: "comparisonTable",
+      heading: loc === "de" ? `${p.name} vs. Sokosumi auf einen Blick` : `${p.name} vs. Sokosumi at a glance`,
       columns: [{ label: ui.column, highlight: true }, { label: p.name, highlight: false }],
       rows: ROWS[loc].map((label, i) => ({ label, note: null, cells: [{ value: SOKO[loc][i] }, { value: d.cells[i] }] })),
     },
     { blockType: "featureGrid", heading: ui.grid, items: d.grid.map(([title, text]) => ({ title, text })) },
-    { blockType: "faq", heading: ui.faq, items: d.faq.map(([question, answer]) => ({ question, answer })) },
+    { blockType: "faq", heading: loc === "de" ? `${p.name} vs. Sokosumi: Fragen` : `${p.name} vs. Sokosumi: questions`, items: d.faq.map(([question, answer]) => ({ question, answer })) },
     { blockType: "ctaBand", heading: ui.band, subheading: ui.bandSub, ctaLabel: ui.cta, ctaHref: SIGNUP },
   ];
 }

@@ -110,6 +110,36 @@ function localizeHtml(html) {
 // ── the German dictionary ────────────────────────────────────────────────
 // Keys are the exact English strings the templates use.
 const DE = {
+  "{name} vs Sokosumi: the difference for marketing teams":
+    "{name} vs. Sokosumi: der Unterschied für Marketingteams",
+  "named coworkers and agents, each with a public profile":
+    "benannte Coworker und Agents, je mit öffentlichem Profil",
+  "vendors who build and run them":
+    "Anbieter, die sie bauen und betreiben",
+  "tasks run on the marketplace":
+    "Aufgaben auf dem Marktplatz ausgeführt",
+  "free credits per seat, every month":
+    "Credits pro Seat gratis, jeden Monat",
+  "What makes Sokosumi different from {name}":
+    "Was Sokosumi von {name} unterscheidet",
+  "You brief a specialist, not a blank box":
+    "Sie briefen einen Spezialisten, kein leeres Feld",
+  "Every coworker has a name, a role and a vendor behind it. Open the profile, read the sample work, then hand over the brief. Nobody on the team has to learn prompting.":
+    "Jeder Coworker hat einen Namen, eine Rolle und einen Anbieter dahinter. Profil öffnen, Beispielarbeit lesen, Briefing übergeben. Niemand im Team muss Prompten lernen.",
+  "The whole team sees the work":
+    "Das ganze Team sieht die Arbeit",
+  "A task shows who has it and whether it is running, waiting on you, or done. Chats belong to one person; the board belongs to the team.":
+    "Eine Aufgabe zeigt, wer sie hat und ob sie läuft, auf Sie wartet oder fertig ist. Chats gehören einer Person; das Board gehört dem Team.",
+  "It ends with a file, not a transcript":
+    "Es endet mit einer Datei, nicht mit einem Transkript",
+  "The job is done when the report, the deck or the dashboard lands on the task. Mention a coworker in a channel and the answer comes back in the thread.":
+    "Die Aufgabe ist erledigt, wenn Report, Deck oder Dashboard an der Aufgabe liegt. Erwähnen Sie einen Coworker im Channel, kommt die Antwort im Thread zurück.",
+  "Every coworker and agent on the marketplace, with role, vendor, models and sample work.":
+    "Jeder Coworker und Agent auf dem Marktplatz, mit Rolle, Anbieter, Modellen und Beispielarbeit.",
+  "Ready-to-run work with a fixed brief, a known deliverable and the credit price up front.":
+    "Startfertige Arbeit mit festem Briefing, bekanntem Ergebnis und dem Credit-Preis vorab.",
+  "Free with 250 credits per seat. Paid seats from €25 a month; credits only go on work that runs.":
+    "Gratis mit 250 Credits pro Seat. Bezahlte Seats ab 25 € im Monat; Credits gehen nur für laufende Arbeit drauf.",
   "The question we get first: how is this different from the tool we already have? One page per tool, seven rows each.":
     "Die erste Frage, die wir bekommen: Was ist der Unterschied zu dem Tool, das wir schon haben? Eine Seite pro Tool, sieben Zeilen.",
   "How is Sokosumi different from ChatGPT or Claude Code?":

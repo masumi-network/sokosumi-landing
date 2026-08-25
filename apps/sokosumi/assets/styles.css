@@ -1287,3 +1287,13 @@ h1, h2, h3 { overflow-wrap: break-word; }
 .cmp-versus.is-lg .cmp-mark-word > img { height: 14px; width: auto; }
 .cmp-mark-word > img { height: 9px; width: auto; }
 @media (max-width: 599px) { .cmp-versus.is-lg { flex-wrap: wrap; } }
+
+/* compare: stats under the answer, alternating picture sections, quieter h3s */
+.cmp-stats { padding-top: 0; }
+.cmp-stats .blk-stats { grid-template-columns: repeat(4, 1fr); gap: 18px; }
+@media (max-width: 859px) { .cmp-stats .blk-stats { grid-template-columns: repeat(2, 1fr); } }
+.cmp-different h2 { font-weight: 300; font-size: clamp(26px, 3.2vw, 40px); letter-spacing: -0.025em; margin-bottom: clamp(20px, 3vw, 36px); max-width: 24ch; text-wrap: balance; }
+.cmp-mt { padding: clamp(18px, 3vw, 36px) 0; }
+.cmp-mt + .cmp-mt { border-top: 1px solid var(--border); }
+.cmp-mt .mt-copy h3 { font-weight: 400; font-size: clamp(20px, 2.2vw, 26px); letter-spacing: -0.02em; line-height: 1.2; }
+.cmp-mt .mt-media { border: 1px solid var(--border); background: #fff; }

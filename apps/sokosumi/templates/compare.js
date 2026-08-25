@@ -12,7 +12,8 @@
 const shell = require("./shell");
 const cms = require("../lib/cms");
 const blocks = require("./blocks");
-const { t } = require("../lib/i18n");
+const i18n = require("../lib/i18n");
+const { t } = i18n;
 const { esc, attr, icon, pageStart, pageEnd } = shell;
 
 // The three product-vs-product pages carry unverified competitor cells until
@@ -87,15 +88,82 @@ async function index(ctx) {
 
 // ---- detail --------------------------------------------------------------
 
-async function detail(ctx) {
-  const doc = (await cms.getComparison(ctx.params.slug, { draft: ctx.preview })) || null;
-  if (!doc) return null;
+// ---- the parts every comparison page shares ----
+// Modelled on hubspot.com/comparisons: a question, numbers, one table, what
+// makes the product different (with pictures), customers, questions, links.
+// The competitor-specific copy comes from the CMS doc; these come from the
+// catalog and the site so they are always current and never invented.
 
+function statsRow(coworkers) {
+  const live = (coworkers || []).filter((c) => c.active !== false);
+  const runs = live.reduce((a, c) => a + (Number(c.runs) || 0), 0);
+  const vendors = new Set(live.map((c) => (c.vendor && typeof c.vendor === "object" ? c.vendor.slug : c.vendor)).filter(Boolean)).size;
+  const nf = (n) => n.toLocaleString(i18n.locale() === "de" ? "de-DE" : "en-US");
+  const floor = (n, step) => nf(Math.floor(n / step) * step) + "+";
+  const items = [
+    [nf(live.length), t("named coworkers and agents, each with a public profile")],
+    [vendors ? nf(vendors) : "—", t("vendors who build and run them")],
+    [runs >= 1000 ? floor(runs, 100) : nf(runs), t("tasks run on the marketplace")],
+    ["250", t("free credits per seat, every month")],
+  ];
+  return `<section class="page-section flush cmp-stats" data-reveal>
+    <div class="blk-stats" style="--n:4">${items
+      .map(([v, l]) => `<div class="stat"><div class="value">${esc(v)}</div><div class="label">${esc(l)}</div></div>`)
+      .join("")}</div>
+  </section>`;
+}
+
+// The three "in practice" points from the CMS doc, competitor-specific, each
+// next to the product view it talks about: roster, board, chat.
+const SHOT_ORDER = ["roster", "board", "chat"];
+function different(name, items) {
+  const list = (items || []).slice(0, 3);
+  if (!list.length) return "";
+  return `<section class="page-section cmp-different">
+    <h2>${esc(t("What makes Sokosumi different from {name}", { name }))}</h2>
+    ${list.map((it, i) => {
+      const shot = shell.SHOTS[SHOT_ORDER[i % SHOT_ORDER.length]];
+      return `<div class="blk-media-text${i % 2 ? " media-left" : ""} cmp-mt" data-reveal>
+        <div class="mt-copy"><h3>${esc(it.title)}</h3><p>${esc(it.text)}</p></div>
+        <div class="mt-media"><img${shell.thumbSrc(shot.src, 1200)} alt="${attr(shot.alt)}" width="2400" height="1350" loading="lazy" decoding="async" /></div>
+      </div>`;
+    }).join("")}
+  </section>`;
+}
+
+const RELATED = [
+  { href: "/ai-coworkers", title: "Meet the coworkers", text: "Every coworker and agent on the marketplace, with role, vendor, models and sample work." },
+  { href: "/tasks", title: "Template tasks", text: "Ready-to-run work with a fixed brief, a known deliverable and the credit price up front." },
+  { href: "/pricing", title: "Pricing", text: "Free with 250 credits per seat. Paid seats from €25 a month; credits only go on work that runs." },
+];
+
+function related() {
+  return `<section class="page-section" data-reveal>
+    <h2>${esc(t("See it for yourself"))}</h2>
+    <div class="card-grid">${RELATED.map(
+      (r) => `<a class="card" href="${r.href}"><h3>${esc(t(r.title))}</h3><p>${esc(t(r.text))}</p><div class="card-foot"><span>${esc(t("Explore"))}</span><span class="go">${icon("arrow-up-right", 15)}</span></div></a>`,
+    ).join("")}</div>
+  </section>`;
+}
+
+async function detail(ctx) {
+  const opts = { draft: ctx.preview };
+  const [doc, coworkers, testimonials] = await Promise.all([
+    cms.getComparison(ctx.params.slug, opts),
+    cms.getCoworkers(opts).catch(() => []),
+    cms.getTestimonials(opts).catch(() => []),
+  ]);
+  if (!doc) return null;
+  const name = doc.competitor || doc.title;
+
+  // CMS layout: hero, table, "in practice" grid, faq, cta band — in that order.
   const body = [...(doc.layout || [])];
   const bandBlock = body.length && body[body.length - 1].blockType === "ctaBand" ? body.pop() : null;
-
-  const faqs = blocks.collectFaqs(doc.layout);
-  const jsonld = blocks.faqJsonLd(faqs);
+  const hero = body.filter((b) => b.blockType === "hero");
+  const table = body.filter((b) => b.blockType === "comparisonTable");
+  const grid = body.filter((b) => b.blockType === "featureGrid");
+  const faq = body.filter((b) => b.blockType === "faq");
+  const rest = body.filter((b) => !["hero", "comparisonTable", "featureGrid", "faq"].includes(b.blockType));
 
   const cr = [
     { label: "Home", href: "/" },
@@ -104,16 +172,22 @@ async function detail(ctx) {
   ];
   return (
     pageStart({
-      title: `${doc.title} | Sokosumi`,
+      // The search phrase people type, then the promise. The h1 asks the question.
+      title: t("{name} vs Sokosumi: the difference for marketing teams", { name }),
       description: (doc.description || "").slice(0, 155),
       path: `/compare/${doc.slug}`,
       breadcrumb: cr,
-      // Unverified competitor claims stay out of the index.
       noindex: NOINDEX.has(doc.slug),
     }) +
     `<div class="cmp-versus-head" data-reveal>${versus(doc, "lg")}</div>` +
-    blocks.renderBlocks(body) +
-    shell.logoRow() +
+    blocks.renderBlocks(hero) +
+    statsRow(coworkers) +
+    blocks.renderBlocks(table) +
+    different(name, grid.flatMap((g) => g.items || [])) +
+    shell.proof(testimonials, name.length, { heading: t("Teams already on Sokosumi") }) +
+    blocks.renderBlocks(faq) +
+    blocks.renderBlocks(rest) +
+    related() +
     (bandBlock ? blocks.renderBlocks([bandBlock]) : "") +
     pageEnd()
   );
