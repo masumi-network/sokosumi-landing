@@ -92,6 +92,16 @@ async function productHub(ctx) {
       description: "Deep dives into what your AI coworkers can do: the surfaces, workflows, and guarantees behind Sokosumi.",
       path: "/product",
       breadcrumb: cr,
+      jsonld: {
+        "@type": "WebApplication",
+        "@id": `${shell.SITE}/#app`,
+        name: "Sokosumi",
+        url: "https://app.sokosumi.com",
+        applicationCategory: "BusinessApplication",
+        operatingSystem: "Web",
+        publisher: { "@id": `${shell.SITE}/#organization` },
+        description: t("What an AI coworker is, how you brief one, where the work shows up, and what you get back."),
+      },
     }) +
     `<div class="page-head" data-reveal>
       <h1>${esc(t("The Sokosumi product"))}</h1>

@@ -413,6 +413,7 @@ const { buildNav } = require("./lib/nav");
 const leads = require("./lib/leads");
 const salesTpl = require("./templates/sales");
 const pricingTpl = require("./templates/pricing");
+const aboutTpl = require("./templates/about");
 const supportTpl = require("./templates/support");
 const legalTpl = require("./templates/legal");
 const legacyRedirects = require("./lib/legacyRedirects");
@@ -467,6 +468,9 @@ const routes = [
   { m: (s) => s.length === 2 && s[0] === "compare" && { slug: s[1] }, h: compareTpl.detail },
   { m: (s) => s.length === 1 && s[0] === "product" && {}, h: pagesTpl.productHub },
   { m: (s) => s.length === 1 && s[0] === "pricing" && {}, h: pricingTpl.render },
+  // The entity page for Sokosumi itself lives in code so its JSON-LD is
+  // generated from the same facts as the visible text (see templates/about.js).
+  { m: (s) => s.length === 1 && s[0] === "about" && {}, h: aboutTpl.render },
   { m: (s) => s.length === 1 && s[0] === "contact" && {}, h: contactTpl.render },
   { m: (s) => s.length === 2 && s[0] === "contact" && s[1] === "sales" && {}, h: salesTpl.render },
   { m: (s) => s.length === 2 && s[0] === "contact" && s[1] === "support" && {}, h: supportTpl.render },
@@ -1014,6 +1018,12 @@ const assetsDir = path.join(root, "assets");
           // prefix; on every page the language switcher's /en marker collapses.
           send(req, res, code || 200, { "Content-Type": "text/html; charset=utf-8", "Cache-Control": cache }, versionAssets(i18n.localizeHtml(html)));
         };
+
+        // /llms.txt: a short, plain-text description of the site and its
+        // main sections for LLM crawlers (llmstxt.org). Facts mirror /about.
+        if (clean === "/llms.txt") {
+          return send(req, res, 200, { "Content-Type": "text/plain; charset=utf-8", "Cache-Control": "public, max-age=3600" }, aboutTpl.llmsTxt());
+        }
 
         // Static assets first (they all live under /assets or have extensions).
         if (seg[0] === "assets" || path.extname(clean)) {

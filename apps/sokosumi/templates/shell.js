@@ -299,23 +299,17 @@ const SOCIALS = [
   "https://github.com/masumi-network",
 ];
 
+// Structured data mirrors what the page shows. Every page shows the wordmark
+// and the social links in the footer, so that is all this node claims; the
+// legal entity, address and VAT ID are stated (and mirrored) on /about, which
+// carries the full node under the same @id. See templates/about.js.
 const ORGANIZATION = {
   "@type": "Organization",
   "@id": `${SITE}/#organization`,
   name: "Sokosumi",
-  legalName: "Plan.Net Germany GmbH & Co KG",
   url: `${SITE}/`,
   logo: { "@type": "ImageObject", url: `${SITE}/assets/sokosumi-wordmark.svg` },
   image: `${SITE}/assets/og-image.jpg`,
-  vatID: "DE222163784",
-  address: {
-    "@type": "PostalAddress",
-    streetAddress: "Friedenstr. 24",
-    postalCode: "81671",
-    addressLocality: "Munich",
-    addressCountry: "DE",
-  },
-  parentOrganization: { "@type": "Organization", name: "Serviceplan Group", url: "https://www.serviceplan.com" },
   sameAs: SOCIALS,
 };
 
@@ -357,7 +351,9 @@ function head(opts) {
   // One @graph per page rather than a pile of loose blocks, so the page's own
   // entity can point at the organization and the site by @id instead of
   // repeating them.
-  const graph = [ORGANIZATION, { ...WEBSITE, inLanguage: locale }];
+  // A page about the organization itself (/about) supplies a fuller node
+  // under the same @id; every other page carries the minimal one.
+  const graph = [opts.organization || ORGANIZATION, { ...WEBSITE, inLanguage: locale }];
   if (opts.breadcrumb && opts.breadcrumb.length) graph.push(breadcrumbLd(opts.breadcrumb));
   if (opts.jsonld) graph.push(...(Array.isArray(opts.jsonld) ? opts.jsonld : [opts.jsonld]));
   const doc = { "@context": "https://schema.org", "@graph": graph.map(stripContext) };
@@ -879,6 +875,7 @@ function footerHtml() {
             <div class="foot-col">
               <h2 class="foot-h">${esc(t("Company"))}</h2>
               <ul>
+                <li><a href="/about">${esc(t("About"))}</a></li>
                 <li><a href="/contact">${esc(t("Contact"))}</a></li>
                 <li><a href="${SUPPORT_URL}">${esc(t("Support"))}</a></li>
                 <li><a href="/press">${esc(t("Press"))}</a></li>
@@ -1030,6 +1027,7 @@ function vendorLogo(v, cls) {
 }
 
 module.exports = {
+  ORGANIZATION,
   APP,
   thumb,
   thumbSrc,

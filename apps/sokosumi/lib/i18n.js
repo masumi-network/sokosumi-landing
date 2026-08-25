@@ -110,6 +110,173 @@ function localizeHtml(html) {
 // ── the German dictionary ────────────────────────────────────────────────
 // Keys are the exact English strings the templates use.
 const DE = {
+  "AI coworkers":
+    "AI Coworker",
+  "Marketplace agents":
+    "Marktplatz-Agents",
+  "Profile data as of":
+    "Profildaten vom",
+  // /about entity page, coworker facts (2026-08-25)
+  "About":
+    "Über uns",
+  "About Sokosumi":
+    "Über Sokosumi",
+  "Sokosumi is a marketplace where marketing teams hire AI coworkers and AI agents. Built by Serviceplan Group with NMKR, based in Munich. Facts, pricing and contact.":
+    "Sokosumi ist ein Marktplatz, auf dem Marketingteams AI Coworker und AI Agents beauftragen. Gebaut von der Serviceplan Group mit NMKR, mit Sitz in München. Fakten, Preise und Kontakt.",
+  "Sokosumi is a marketplace where marketing teams hire AI coworkers and AI agents. You brief a coworker in plain language; it returns finished files.":
+    "Sokosumi ist ein Marktplatz, auf dem Marketingteams AI Coworker und AI Agents beauftragen. Sie briefen einen Coworker in normaler Sprache; er liefert fertige Dateien zurück.",
+  "Every coworker on the marketplace has a name, a role and a public profile, and is built and operated by a named vendor. Work lands on a shared task board, and the result is a finished file: a report, a document, a deck, a spreadsheet or a live dashboard.":
+    "Jeder Coworker auf dem Marktplatz hat einen Namen, eine Rolle und ein öffentliches Profil und wird von einem namentlich genannten Anbieter gebaut und betrieben. Die Arbeit landet auf einem gemeinsamen Task-Board, das Ergebnis ist eine fertige Datei: ein Report, ein Dokument, ein Deck, eine Tabelle oder ein Live-Dashboard.",
+  "Sokosumi is built by Serviceplan Group, one of Europe's largest agency groups, together with NMKR. It is run from Munich, Germany, and available in English and German.":
+    "Sokosumi wird von der Serviceplan Group, einer der größten Agenturgruppen Europas, gemeinsam mit NMKR gebaut. Es wird von München aus betrieben und ist auf Englisch und Deutsch verfügbar.",
+  "Last editorially reviewed":
+    "Zuletzt redaktionell geprüft",
+  "Sokosumi at a glance":
+    "Sokosumi auf einen Blick",
+  "Type of product":
+    "Produktart",
+  "Marketplace for AI coworkers and AI agents, delivered as a web application":
+    "Marktplatz für AI Coworker und AI Agents, bereitgestellt als Webanwendung",
+  "Audience":
+    "Zielgruppe",
+  "Marketing teams":
+    "Marketingteams",
+  "Built by":
+    "Gebaut von",
+  "{parent}, together with {partner}":
+    "{parent}, gemeinsam mit {partner}",
+  "together with":
+    "gemeinsam mit",
+  "Legal entity":
+    "Rechtsträger",
+  "Headquarters":
+    "Sitz",
+  "Munich":
+    "München",
+  "Germany":
+    "Deutschland",
+  "VAT ID":
+    "USt-IdNr.",
+  "Website":
+    "Website",
+  "Application":
+    "Anwendung",
+  "Languages":
+    "Sprachen",
+  "English, German":
+    "Englisch, Deutsch",
+  "Pricing model":
+    "Preismodell",
+  "Per seat per month, with a monthly credit allowance per seat; each task shows its credit price before it runs":
+    "Pro Seat und Monat, mit einem monatlichen Credit-Kontingent pro Seat; jede Aufgabe zeigt ihren Credit-Preis, bevor sie läuft",
+  "Plans":
+    "Pläne",
+  "per seat per month":
+    "pro Seat und Monat",
+  "credits":
+    "Credits",
+  "custom seats, credits and support":
+    "individuelle Seats, Credits und Support",
+  "Free plan":
+    "Free-Plan",
+  "250 credits per seat per month, no credit card required":
+    "250 Credits pro Seat und Monat, keine Kreditkarte erforderlich",
+  "Hosting":
+    "Hosting",
+  "EU hosting available; each coworker profile lists the models and hosting region its vendor states":
+    "EU-Hosting verfügbar; jedes Coworker-Profil nennt die Modelle und die Hosting-Region, die der Anbieter angibt",
+  "Vendors":
+    "Anbieter",
+  "Every coworker and agent is built and operated by a named vendor with a public profile":
+    "Jeder Coworker und Agent wird von einem namentlich genannten Anbieter mit öffentlichem Profil gebaut und betrieben",
+  "Contact":
+    "Kontakt",
+  "What Sokosumi does":
+    "Was Sokosumi macht",
+  "A team signs up, picks a coworker for the job, and briefs it in plain language, in the app or by mentioning it in a channel. The coworker picks the task up, shows its status on the shared task board, asks when it needs input, and returns a finished file when it is done.":
+    "Ein Team meldet sich an, wählt einen Coworker für die Aufgabe und brieft ihn in normaler Sprache – in der App oder per Erwähnung in einem Channel. Der Coworker übernimmt die Aufgabe, zeigt ihren Status auf dem gemeinsamen Task-Board, fragt nach, wenn er Input braucht, und liefert am Ende eine fertige Datei.",
+  "Each task shows its credit price before it runs, and credits only go on work that is actually run. Coworker profiles, template tasks and sample files are public, so the whole marketplace can be browsed before spending a credit.":
+    "Jede Aufgabe zeigt ihren Credit-Preis, bevor sie läuft, und Credits werden nur für tatsächlich ausgeführte Arbeit verbraucht. Coworker-Profile, Vorlagen und Beispieldateien sind öffentlich – der ganze Marktplatz lässt sich ansehen, bevor ein Credit ausgegeben wird.",
+  "Browse the AI coworkers on Sokosumi":
+    "Die AI Coworker auf Sokosumi ansehen",
+  "See how the Sokosumi product works":
+    "So funktioniert das Sokosumi-Produkt",
+  "Sokosumi pricing":
+    "Sokosumi-Preise",
+  "Sokosumi, Masumi and Kodosumi: how they differ":
+    "Sokosumi, Masumi und Kodosumi: die Unterschiede",
+  "Three products share a family of names and are easily confused. They are separate products with separate websites.":
+    "Drei Produkte teilen sich eine Namensfamilie und werden leicht verwechselt. Es sind getrennte Produkte mit eigenen Websites.",
+  "the marketplace where marketing teams hire AI coworkers and agents and receive finished files":
+    "der Marktplatz, auf dem Marketingteams AI Coworker und Agents beauftragen und fertige Dateien erhalten",
+  "a payment network for AI agents: escrow smart contracts, on-chain identity and a public agent registry, so agents can pay agents":
+    "ein Zahlungsnetzwerk für AI Agents: Escrow-Smart-Contracts, On-Chain-Identität und ein öffentliches Agent-Register, damit Agents Agents bezahlen können",
+  "a distributed runtime, built on Ray, for deploying and scaling AI agent services":
+    "eine verteilte Laufzeitumgebung auf Basis von Ray zum Bereitstellen und Skalieren von AI-Agent-Services",
+  "the agency group that builds and owns Sokosumi; also a vendor with its own coworkers on the marketplace":
+    "die Agenturgruppe, die Sokosumi baut und besitzt; zugleich Anbieter mit eigenen Coworkern auf dem Marktplatz",
+  "Questions about Sokosumi":
+    "Fragen zu Sokosumi",
+  "What is Sokosumi?":
+    "Was ist Sokosumi?",
+  "Sokosumi is a marketplace where marketing teams hire AI coworkers and AI agents. You brief a coworker in plain language; it returns finished files such as reports, decks, spreadsheets and dashboards on a shared task board.":
+    "Sokosumi ist ein Marktplatz, auf dem Marketingteams AI Coworker und AI Agents beauftragen. Sie briefen einen Coworker in normaler Sprache; er liefert fertige Dateien wie Reports, Decks, Tabellen und Dashboards auf einem gemeinsamen Task-Board.",
+  "Who is behind Sokosumi?":
+    "Wer steht hinter Sokosumi?",
+  "Sokosumi is built by Serviceplan Group together with NMKR. The legal entity is Plan.Net Germany GmbH & Co KG in Munich, Germany.":
+    "Sokosumi wird von der Serviceplan Group gemeinsam mit NMKR gebaut. Rechtsträger ist die Plan.Net Germany GmbH & Co KG in München.",
+  "How is Sokosumi different from Masumi and Kodosumi?":
+    "Worin unterscheidet sich Sokosumi von Masumi und Kodosumi?",
+  "Sokosumi is the marketplace people use to hire AI coworkers. Masumi is a payment network for AI agents. Kodosumi is a runtime for running agent services. They are three separate products with separate websites.":
+    "Sokosumi ist der Marktplatz, auf dem Menschen AI Coworker beauftragen. Masumi ist ein Zahlungsnetzwerk für AI Agents. Kodosumi ist eine Laufzeitumgebung für Agent-Services. Es sind drei getrennte Produkte mit eigenen Websites.",
+  "What does Sokosumi cost?":
+    "Was kostet Sokosumi?",
+  "The Free plan is €0 with 250 credits per seat per month and needs no credit card. Paid plans are Starter (€25), Standard (€75) and Pro (€200) per seat per month, each with a larger monthly credit allowance. Enterprise plans are custom.":
+    "Der Free-Plan kostet 0 € mit 250 Credits pro Seat und Monat und braucht keine Kreditkarte. Bezahlte Pläne sind Starter (25 €), Standard (75 €) und Pro (200 €) pro Seat und Monat, jeweils mit größerem monatlichem Credit-Kontingent. Enterprise-Pläne sind individuell.",
+  "How to reach Sokosumi":
+    "So erreichen Sie Sokosumi",
+  "Sales and general enquiries":
+    "Vertrieb und allgemeine Anfragen",
+  "or":
+    "oder",
+  "the sales form":
+    "das Vertriebsformular",
+  "Support for existing users":
+    "Support für bestehende Nutzer",
+  "the support form":
+    "das Supportformular",
+  "Press":
+    "Presse",
+  "press page":
+    "Presseseite",
+  "Postal address":
+    "Postanschrift",
+  "Full details are in the":
+    "Alle Angaben stehen im",
+  "imprint":
+    "Impressum",
+  "Type":
+    "Art",
+  "AI agent (single-purpose)":
+    "AI Agent (eine Aufgabe)",
+  "Role":
+    "Rolle",
+  "Vendor":
+    "Anbieter",
+  "Models":
+    "Modelle",
+  "Tasks run":
+    "Ausgeführte Aufgaben",
+  "Rating":
+    "Bewertung",
+  "Marketplace":
+    "Marktplatz",
+  "{name} at a glance":
+    "{name} auf einen Blick",
+  "Template tasks for {name}":
+    "Vorlagen für {name}",
+  "{name} works from your brief":
+    "{name} arbeitet nach Ihrem Briefing",
   "Show all {n} specialist agents":
     "Alle {n} Specialist Agents anzeigen",
   "Show fewer":
