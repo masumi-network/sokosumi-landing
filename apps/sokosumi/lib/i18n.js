@@ -110,6 +110,8 @@ function localizeHtml(html) {
 // ── the German dictionary ────────────────────────────────────────────────
 // Keys are the exact English strings the templates use.
 const DE = {
+  "Add as preferred source":
+    "Als bevorzugte Quelle hinzufügen",
   "{name} vs Sokosumi: the difference for marketing teams":
     "{name} vs. Sokosumi: der Unterschied für Marketingteams",
   "named coworkers and agents, each with a public profile":
