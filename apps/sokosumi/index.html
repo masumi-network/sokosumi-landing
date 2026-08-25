@@ -98,7 +98,12 @@
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
     <link rel="manifest" href="/assets/site.webmanifest" />
     <meta name="theme-color" content="#ffffff" />
-    <link rel="preload" as="image" href="/assets/shot-board.webp" fetchpriority="high" />
+    <!-- The LCP element is the hero's CSS background photograph (landing.css
+         sets it on .hero.is-aurora). A background image is only discovered once
+         the stylesheet has arrived, which measured 1.2s of LCP "load delay" on
+         mobile; preloading it here starts the fetch with the HTML. -->
+    <link rel="preload" as="image" href="/assets/hero-photo/welcome-scene-mock-4k.webp" fetchpriority="high" />
+    <link rel="preload" href="/assets/fonts/inter-300-latin.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/assets/fonts/inter-400-latin.woff2" as="font" type="font/woff2" crossorigin />
     <script defer src="/_vercel/insights/script.js"></script>
     <link rel="stylesheet" href="/assets/fonts.css" />

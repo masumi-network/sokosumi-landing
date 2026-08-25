@@ -705,7 +705,10 @@ const assetsDir = path.join(root, "assets");
       // content hash, so a stale document is the one thing that keeps serving
       // last deploy's CSS and JS — which looked exactly like a deploy that had
       // not happened. Revalidation is a cheap 304; the CDN does the real work.
-      "Cache-Control": "public, max-age=0, s-maxage=300, must-revalidate",
+      // stale-while-revalidate: the CDN answers from its copy at once and
+      // re-renders in the background, so a visitor never waits on a function
+      // boot. Field TTFB was 1.3s with the CDN missing on most requests.
+      "Cache-Control": "public, max-age=0, s-maxage=300, stale-while-revalidate=86400, must-revalidate",
       "Last-Modified": stat.mtime.toUTCString(),
     }, versionAssets(optimizeImages(html)));
   }
@@ -999,7 +1002,7 @@ const assetsDir = path.join(root, "assets");
         const sendHtml = (html, code) => {
           // A 404 must not sit in a shared cache for two minutes: the usual
           // cause is content that is about to exist.
-          const cache = preview || code === 404 ? "no-store" : "public, max-age=0, s-maxage=120, must-revalidate";
+          const cache = preview || code === 404 ? "no-store" : "public, max-age=0, s-maxage=120, stale-while-revalidate=86400, must-revalidate";
           // localizeHtml: on /de pages, root-relative links gain the /de
           // prefix; on every page the language switcher's /en marker collapses.
           send(req, res, code || 200, { "Content-Type": "text/html; charset=utf-8", "Cache-Control": cache }, versionAssets(i18n.localizeHtml(html)));
@@ -1023,9 +1026,16 @@ const assetsDir = path.join(root, "assets");
           // images, video and icons rarely change, so they keep the long,
           // revalidate-in-background cache.
           const isAppCode = ext === ".js" || ext === ".css";
-          const cacheControl = isAppCode
-            ? "public, no-cache"
-            : "public, max-age=86400, stale-while-revalidate=604800";
+          // A `?v=` that matches the current content hash names this exact
+          // byte sequence, and every edit or deploy changes the hash (the
+          // rendered HTML always links the current one), so that URL can be
+          // cached forever. Unversioned requests keep the revalidate rule.
+          const versioned = query.v && query.v === assetVersion(path.relative(root, file.path));
+          const cacheControl = versioned
+            ? "public, max-age=31536000, immutable"
+            : isAppCode
+              ? "public, no-cache"
+              : "public, max-age=86400, stale-while-revalidate=604800";
 
           const inm = req.headers["if-none-match"];
           const ims = req.headers["if-modified-since"];
