@@ -110,6 +110,10 @@ function localizeHtml(html) {
 // ── the German dictionary ────────────────────────────────────────────────
 // Keys are the exact English strings the templates use.
 const DE = {
+  "How is Sokosumi different from ChatGPT or Claude Code?":
+    "Worin unterscheidet sich Sokosumi von ChatGPT oder Claude Code?",
+  "ChatGPT and Claude are general assistants one person prompts; Claude Code is an agent for developers working in a codebase. Sokosumi is a marketplace of named coworkers, each built and operated by a vendor, that a marketing team briefs in plain language and that deliver finished files to a shared task board. Credits only go on work that runs. Several coworkers run on OpenAI or Anthropic models; the model is not what you buy.":
+    "ChatGPT und Claude sind allgemeine Assistenten, die eine Person promptet; Claude Code ist ein Agent für Entwickler in einer Codebasis. Sokosumi ist ein Marktplatz benannter Coworker, die jeweils ein Anbieter baut und betreibt, die ein Marketingteam in normaler Sprache brieft und die fertige Dateien auf ein gemeinsames Task-Board liefern. Credits gehen nur für ausgeführte Arbeit drauf. Mehrere Coworker laufen auf OpenAI- oder Anthropic-Modellen; das Modell ist nicht das, was Sie kaufen.",
   "Features":
     "Funktionen",
   "Specialist agents and template tasks":

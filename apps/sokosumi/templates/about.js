@@ -161,6 +161,10 @@ async function render() {
       a: t("Sokosumi is built by Serviceplan Group together with NMKR. The legal entity is Plan.Net Germany GmbH & Co KG in Munich, Germany."),
     },
     {
+      q: t("How is Sokosumi different from ChatGPT or Claude Code?"),
+      a: t("ChatGPT and Claude are general assistants one person prompts; Claude Code is an agent for developers working in a codebase. Sokosumi is a marketplace of named coworkers, each built and operated by a vendor, that a marketing team briefs in plain language and that deliver finished files to a shared task board. Credits only go on work that runs. Several coworkers run on OpenAI or Anthropic models; the model is not what you buy."),
+    },
+    {
       q: t("How is Sokosumi different from Masumi and Kodosumi?"),
       a: t("Sokosumi is the marketplace people use to hire AI coworkers. Masumi is a payment network for AI agents. Kodosumi is a runtime for running agent services. They are three separate products with separate websites."),
     },
@@ -265,6 +269,8 @@ function llmsTxt() {
 Built by Serviceplan Group together with NMKR. Legal entity: ${LEGAL.name}, ${LEGAL.street}, ${LEGAL.postalCode} ${LEGAL.city}, ${LEGAL.country}. Languages: English (${SITE}/) and German (${SITE}/de). Application: ${APP_URL}. Contact: ${EMAIL}.
 
 Pricing: per seat per month with a monthly credit allowance; each task shows its credit price before it runs. Plans — ${plans}; Enterprise: custom. The Free plan needs no credit card.
+
+Compared with ChatGPT, Claude or Claude Code: those are general assistants (or a coding agent) that one person prompts; Sokosumi is a marketplace of named, vendor-operated coworkers that a marketing team briefs and that return finished files to a shared board, billed in credits only for work that runs. See ${SITE}/compare.
 
 Not to be confused with: Masumi (https://www.masumi.network, a payment network for AI agents) and Kodosumi (https://kodosumi.io, a runtime for AI agent services). All three are separate products.
 
