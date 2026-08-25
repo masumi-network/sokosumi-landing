@@ -9,3 +9,7 @@ This repository is an npm workspace for Summation/Sokosumi product sites and too
 **Structure**: apps live under `apps/*`; reusable product chrome lives in `packages/shared`; generated docs/content/data are common and should be treated carefully.
 
 For detailed architecture, see [docs/CODEBASE_MAP.md](docs/CODEBASE_MAP.md). For the focused dev hub map, see [docs/DEV_HUB_MAP.md](docs/DEV_HUB_MAP.md).
+
+## Deploying sokosumi.com
+
+Production is built by Vercel **from `main` only** (git integration). Never `vercel promote` or `vercel --prod` a branch build: on 2026-08-25 a promoted `productspage` build was silently replaced by the next push to `main`, and 14 commits of work "disappeared" from the site until the branches were merged. Merge into `main`, push, done.
