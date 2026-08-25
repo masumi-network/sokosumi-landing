@@ -102,7 +102,12 @@
          sets it on .hero.is-aurora). A background image is only discovered once
          the stylesheet has arrived, which measured 1.2s of LCP "load delay" on
          mobile; preloading it here starts the fetch with the HTML. -->
-    <link rel="preload" as="image" href="/assets/hero-photo/welcome-scene-mock-4k.webp" fetchpriority="high" />
+    <!-- These hrefs must equal the url() in landing.css byte for byte — the
+         server leaves preload images unversioned for that reason. A mismatch
+         downloads the photo twice. Phones get the 1080px cut (19 KB vs 176 KB):
+         below 900px the photo is a band along the bottom, not the backdrop. -->
+    <link rel="preload" as="image" href="/assets/hero-photo/welcome-scene-mock-1080.webp" media="(max-width: 899px)" fetchpriority="high" />
+    <link rel="preload" as="image" href="/assets/hero-photo/welcome-scene-mock-4k.webp" media="(min-width: 900px)" fetchpriority="high" />
     <link rel="preload" href="/assets/fonts/inter-300-latin.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/assets/fonts/inter-400-latin.woff2" as="font" type="font/woff2" crossorigin />
     <script defer src="/_vercel/insights/script.js"></script>

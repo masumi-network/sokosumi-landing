@@ -719,6 +719,7 @@ body.hero-bg-photowelcome2 .hero.is-aurora { background-image: url("/assets/hero
      unreadable against the UI behind it.
      So the photograph stops being a background and becomes a band along the
      bottom, sized by height rather than cover, and the copy gets clean paper. */
+  body.hero-bg-photowelcome2 .hero.is-aurora { background-image: url("/assets/hero-photo/welcome-scene-mock-1080.webp"); }
   body[class*="hero-bg-photo"] .hero.is-aurora {
     background-size: auto 46%;
     background-position: 74% bottom;

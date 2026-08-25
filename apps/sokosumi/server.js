@@ -645,11 +645,18 @@ const assetsDir = path.join(root, "assets");
     return html;
   }
 
+  // Image preloads are left alone: their href must match the url() in the
+  // stylesheet exactly, and CSS references are not versioned. A ?v= on the
+  // preload alone made the browser download the hero photo twice.
+  const PRELOAD_IMAGE = /<link rel="preload" as="image"[^>]*>/g;
   function versionAssets(html) {
-    return html.replace(ASSET_REF, (m, open, url, close) => {
-      const v = assetVersion(url.slice(1));
-      return v ? `${open}${url}?v=${v}${close}` : m;
-    });
+    return html
+      .split(PRELOAD_IMAGE)
+      .map((chunk) => chunk.replace(ASSET_REF, (m, open, url, close) => {
+        const v = assetVersion(url.slice(1));
+        return v ? `${open}${url}?v=${v}${close}` : m;
+      }))
+      .reduce((out, chunk, i, arr) => out + chunk + (i < arr.length - 1 ? html.match(PRELOAD_IMAGE)[i] : ""), "");
   }
 
 
