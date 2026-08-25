@@ -46,7 +46,9 @@ const UI = {
 
 // name, logo media id, then per locale: q (h1), a (two lines), cells (7),
 // grid (3 × [title, text]), faq (3 × [q, a]).
-const PAGES = [
+import { PAGES_MORE } from "./cms-compare-pages-more.mjs";
+
+const PAGES_BASE = [
   {
     slug: "sokosumi-vs-chatgpt", name: "ChatGPT", logo: 28, noindex: false,
     en: {
@@ -576,6 +578,8 @@ const PAGES = [
     },
   },
 ];
+
+const PAGES = [...PAGES_BASE, ...PAGES_MORE];
 
 function layout(p, loc) {
   const d = p[loc];

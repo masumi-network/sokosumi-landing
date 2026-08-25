@@ -94,22 +94,25 @@ async function index(ctx) {
 // The competitor-specific copy comes from the CMS doc; these come from the
 // catalog and the site so they are always current and never invented.
 
-function statsRow(coworkers) {
+// One sentence that says what the numbers mean, built from the live catalog.
+// Counts only what the marketplace records: coworkers, vendors, tasks run.
+// No hours-saved figure, because nothing measures it yet.
+function valueLine(coworkers) {
   const live = (coworkers || []).filter((c) => c.active !== false);
+  if (!live.length) return "";
   const runs = live.reduce((a, c) => a + (Number(c.runs) || 0), 0);
   const vendors = new Set(live.map((c) => (c.vendor && typeof c.vendor === "object" ? c.vendor.slug : c.vendor)).filter(Boolean)).size;
   const nf = (n) => n.toLocaleString(i18n.locale() === "de" ? "de-DE" : "en-US");
-  const floor = (n, step) => nf(Math.floor(n / step) * step) + "+";
-  const items = [
-    [nf(live.length), t("named coworkers and agents, each with a public profile")],
-    [vendors ? nf(vendors) : "—", t("vendors who build and run them")],
-    [runs >= 1000 ? floor(runs, 100) : nf(runs), t("tasks run on the marketplace")],
-    ["250", t("free credits per seat, every month")],
-  ];
-  return `<section class="page-section flush cmp-stats" data-reveal>
-    <div class="blk-stats" style="--n:4">${items
-      .map(([v, l]) => `<div class="stat"><div class="value">${esc(v)}</div><div class="label">${esc(l)}</div></div>`)
-      .join("")}</div>
+  const runsText = runs >= 1000 ? nf(Math.floor(runs / 100) * 100) + "+" : nf(runs);
+  const b = (v) => `<strong>${esc(v)}</strong>`;
+  const line = t("Marketing teams have handed {runs} tasks to {coworkers} coworkers and agents from {vendors} vendors. Each one came back as a file.", {
+    runs: b(runsText),
+    coworkers: b(nf(live.length)),
+    vendors: b(nf(vendors)),
+  });
+  return `<section class="page-section flush cmp-value" data-reveal>
+    <p class="cmp-value-line">${line}</p>
+    <p class="cmp-value-note">${esc(t("Live numbers from the marketplace."))}</p>
   </section>`;
 }
 
@@ -181,7 +184,7 @@ async function detail(ctx) {
     }) +
     `<div class="cmp-versus-head" data-reveal>${versus(doc, "lg")}</div>` +
     blocks.renderBlocks(hero) +
-    statsRow(coworkers) +
+    valueLine(coworkers) +
     blocks.renderBlocks(table) +
     different(name, grid.flatMap((g) => g.items || [])) +
     shell.proof(testimonials, name.length, { heading: t("Teams already on Sokosumi") }) +

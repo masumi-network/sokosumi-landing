@@ -110,6 +110,10 @@ function localizeHtml(html) {
 // ── the German dictionary ────────────────────────────────────────────────
 // Keys are the exact English strings the templates use.
 const DE = {
+  "Marketing teams have handed {runs} tasks to {coworkers} coworkers and agents from {vendors} vendors. Each one came back as a file.":
+    "Marketingteams haben {runs} Aufgaben an {coworkers} Coworker und Agents von {vendors} Anbietern gegeben. Jede kam als Datei zurück.",
+  "Live numbers from the marketplace.":
+    "Live-Zahlen vom Marktplatz.",
   "Add as preferred source":
     "Als bevorzugte Quelle hinzufügen",
   "{name} vs Sokosumi: the difference for marketing teams":
