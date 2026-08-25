@@ -110,6 +110,28 @@ function localizeHtml(html) {
 // ── the German dictionary ────────────────────────────────────────────────
 // Keys are the exact English strings the templates use.
 const DE = {
+  "{a} vs {b} at a glance":
+    "{a} und {b} im Vergleich",
+  "Where each one falls short":
+    "Wo die beiden an Grenzen stoßen",
+  "{a} or {b}: the verdict":
+    "{a} oder {b}: das Fazit",
+  "A third option":
+    "Eine dritte Option",
+  "Sokosumi vs {name}":
+    "Sokosumi vs. {name}",
+  "{a} vs {b}: questions":
+    "{a} und {b}: häufige Fragen",
+  "Sources":
+    "Quellen",
+  "Prices and features as published by the vendors on the date checked. Tell us if something changed.":
+    "Preise und Funktionen laut Anbieterangaben zum Prüfdatum. Sagen Sie uns Bescheid, wenn sich etwas geändert hat.",
+  "Checked {date}":
+    "Geprüft am {date}",
+  "Tool vs tool":
+    "Tool gegen Tool",
+  "Choosing between two other tools? Plain comparisons, checked against the vendors' own pages, with a note on where Sokosumi fits.":
+    "Sie schwanken zwischen zwei anderen Tools? Klare Vergleiche, geprüft an den Seiten der Anbieter, mit einem Hinweis, wo Sokosumi passt.",
   "{n} min read":
     "{n} Min. Lesezeit",
   "Updated {date}":

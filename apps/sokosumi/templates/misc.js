@@ -201,6 +201,7 @@ async function sitemap() {
     "/legal",
     "/list-your-agent",
     "/press",
+    ...require("./comparePairs").all().map((p) => `/compare/${p.slug}`),
   ]);
   // One collection failing is tolerable (its URLs drop out this cycle); ALL
   // of them failing means the CMS is down with nothing cached, and a sitemap

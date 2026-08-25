@@ -12,6 +12,7 @@
 const shell = require("./shell");
 const cms = require("../lib/cms");
 const blocks = require("./blocks");
+const pairs = require("./comparePairs");
 const i18n = require("../lib/i18n");
 const { t } = i18n;
 const { esc, attr, icon, pageStart, pageEnd } = shell;
@@ -48,6 +49,17 @@ function comparisonCard(c) {
   </a>`;
 }
 
+// Tool-vs-tool pages (two products we do not sell), below the Sokosumi ones.
+function pairSection() {
+  const list = pairs.all();
+  if (!list.length) return "";
+  return `<section class="page-section pair-index" data-reveal>
+      <h2>${esc(t("Tool vs tool"))}</h2>
+      <p class="sub">${esc(t("Choosing between two other tools? Plain comparisons, checked against the vendors' own pages, with a note on where Sokosumi fits."))}</p>
+      <div class="${shell.gridCls(list.length)}">${list.map(pairs.card).join("")}</div>
+    </section>`;
+}
+
 async function index(ctx) {
   const fromCms = await cms.getComparisons({ draft: ctx.preview });
   // Product-vs-product pages only on the index; concept pages (vs hiring a
@@ -74,7 +86,8 @@ async function index(ctx) {
     </div>
     <section class="page-section" data-reveal>
       <div class="${shell.gridCls(list.length)}">${list.map(comparisonCard).join("")}</div>
-    </section>` +
+    </section>
+    ${pairSection()}` +
     shell.logoRow() +
     shell.ctaBand({
       heading: t("Try Sokosumi free"),
@@ -156,7 +169,7 @@ async function detail(ctx) {
     cms.getCoworkers(opts).catch(() => []),
     cms.getTestimonials(opts).catch(() => []),
   ]);
-  if (!doc) return null;
+  if (!doc) return pairs.detail(ctx);
   const name = doc.competitor || doc.title;
 
   // CMS layout: hero, table, "in practice" grid, faq, cta band — in that order.
