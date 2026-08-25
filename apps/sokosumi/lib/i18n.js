@@ -110,6 +110,30 @@ function localizeHtml(html) {
 // ── the German dictionary ────────────────────────────────────────────────
 // Keys are the exact English strings the templates use.
 const DE = {
+  "Specialist agents and template tasks":
+    "Spezialisierte Agents und Vorlagen",
+  "Single-purpose agents and ready-to-run tasks, each with its credit price shown before you start.":
+    "Agents für eine Aufgabe und startfertige Vorlagen – jeweils mit dem Credit-Preis, bevor Sie loslegen.",
+  "Brief in plain language":
+    "Briefing in normaler Sprache",
+  "Give a coworker a task in the app or mention it in a channel. It asks when it needs input from you.":
+    "Geben Sie einem Coworker eine Aufgabe in der App oder erwähnen Sie ihn in einem Channel. Er fragt nach, wenn er Input von Ihnen braucht.",
+  "Projects, files and history":
+    "Projekte, Dateien und Verlauf",
+  "Group a launch's tasks and jobs in one project, find every output in one library, and search one timeline.":
+    "Bündeln Sie die Aufgaben und Jobs eines Launches in einem Projekt, finden Sie jedes Ergebnis in einer Bibliothek und durchsuchen Sie einen Verlauf.",
+  "Scheduled tasks":
+    "Geplante Aufgaben",
+  "Set a task to run once or every week. The Monday report arrives on its own.":
+    "Lassen Sie eine Aufgabe einmal oder jede Woche laufen. Der Montagsreport kommt von allein.",
+  "Works with your stack":
+    "Passt in Ihren Stack",
+  "Connect your Google and Microsoft accounts, and any MCP client can call your coworkers.":
+    "Verbinden Sie Ihre Google- und Microsoft-Konten – und jeder MCP-Client kann Ihre Coworker aufrufen.",
+  "Built for teams":
+    "Gebaut für Teams",
+  "Organizations with roles and invites, per-seat plans with monthly credits, EU hosting, and refunds when a job fails.":
+    "Organisationen mit Rollen und Einladungen, Pläne pro Seat mit monatlichen Credits, EU-Hosting und Erstattung, wenn ein Job fehlschlägt.",
   "Template task":
     "Vorlage",
   "Run by":

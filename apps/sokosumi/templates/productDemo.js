@@ -986,6 +986,23 @@ const SURFACES = [
   { href: "/vendors", title: "Vendors", text: "The teams behind the coworkers on the marketplace, with everything they ship in one place." },
 ];
 
+// What a marketing team gets, in the order the work happens. Every entry
+// names a thing that exists in the app today (sidebar label or route) and
+// states a fact about it; nothing here is a plan. Vendor and developer
+// tooling (API keys, OAuth clients, listing agents) belongs on
+// /list-your-agent, and the Personal Assistant has its own section below.
+const FEATURES = [
+  ["Named coworkers", "Each one has a role, a vendor, the models it runs on, and work you can open before you spend a credit."],
+  ["Specialist agents and template tasks", "Single-purpose agents and ready-to-run tasks, each with its credit price shown before you start."],
+  ["Brief in plain language", "Give a coworker a task in the app or mention it in a channel. It asks when it needs input from you."],
+  ["A shared board", "Every task shows who picked it up and whether it is running, waiting on you, or done."],
+  ["Files back", "Slides, reports, live dashboards. The job ends with something you can send, not a transcript."],
+  ["Projects, files and history", "Group a launch's tasks and jobs in one project, find every output in one library, and search one timeline."],
+  ["Scheduled tasks", "Set a task to run once or every week. The Monday report arrives on its own."],
+  ["Works with your stack", "Connect your Google and Microsoft accounts, and any MCP client can call your coworkers."],
+  ["Built for teams", "Organizations with roles and invites, per-seat plans with monthly credits, EU hosting, and refunds when a job fails."],
+];
+
 function render(opts) {
   const productPages = opts.productPages || [];
   const cards = productPages.length
@@ -1027,9 +1044,7 @@ function render(opts) {
       </div>
     </section>
     <section class="pd-pillars">
-      <article><h2>${esc(t("Named coworkers"))}</h2><p>${esc(t("Each one has a role, a vendor, the models it runs on, and work you can open before you spend a credit."))}</p></article>
-      <article><h2>${esc(t("A shared board"))}</h2><p>${esc(t("Every task shows who picked it up and whether it is running, waiting on you, or done."))}</p></article>
-      <article><h2>${esc(t("Files back"))}</h2><p>${esc(t("Slides, reports, live dashboards. The job ends with something you can send, not a transcript."))}</p></article>
+      ${FEATURES.map(([h, p]) => `<article><h2>${esc(t(h))}</h2><p>${esc(t(p))}</p></article>`).join("")}
     </section>
     ${chapter("1.0", "home", "Start from a coworker", "The home screen is a roster. Pick someone, then talk to them or give them a task.")}
     ${chapter("2.0", "agents", "Say what you want done", "The Agents page is the catalog: a search bar, then each vendor’s coworkers and their ready-to-run tasks.")}

@@ -756,9 +756,9 @@ body:has(.cc-banner) .product-page .pd-stage { margin-bottom: 220px; }
 .pd-tab.is-active span { color: rgba(255, 255, 255, 0.62); }
 .pd-tab:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
 
-.pd-pillars { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; margin: clamp(36px, 6vw, 72px) 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-.pd-pillars article { padding: 28px 22px 28px 0; min-width: 0; }
-.pd-pillars article + article { padding-left: 22px; border-left: 1px solid var(--border); }
+.pd-pillars { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; margin: clamp(36px, 6vw, 72px) 0; border-top: 1px solid var(--border); }
+.pd-pillars article { padding: 26px 22px 26px 0; min-width: 0; border-bottom: 1px solid var(--border); }
+.pd-pillars article:not(:nth-child(3n + 1)) { padding-left: 22px; border-left: 1px solid var(--border); }
 .pd-pillars h2 { font-size: 20px; font-weight: 300; letter-spacing: -0.02em; margin-bottom: 8px; }
 .pd-pillars p { font-size: 14.5px; line-height: 1.55; color: var(--muted-foreground); max-width: 36ch; }
 
@@ -834,6 +834,6 @@ body:has(.cc-banner) .product-page .pd-stage { margin-bottom: 220px; }
 @media (max-width: 768px) {
   .pd-pillars { grid-template-columns: minmax(0, 1fr); }
   .pd-pillars article { padding: 22px 0; }
-  .pd-pillars article + article { padding-left: 0; border-left: 0; border-top: 1px solid var(--border); }
+  .pd-pillars article:not(:nth-child(3n + 1)) { padding-left: 0; border-left: 0; }
   .pd-stage-note { font-size: 12px; }
 }
