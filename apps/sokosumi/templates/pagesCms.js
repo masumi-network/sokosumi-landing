@@ -47,7 +47,7 @@ async function productHub(ctx) {
   const cr = [{ label: "Home", href: "/" }, { label: "Product" }];
   return (
     pageStart({
-      title: "Product | Sokosumi",
+      title: t("AI coworker for marketing teams: how Sokosumi works | Product"),
       description:
         "Brief a named AI coworker, follow the work on a shared board, and get finished files back. See how Sokosumi actually works.",
       path: "/product",

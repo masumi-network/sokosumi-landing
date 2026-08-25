@@ -110,6 +110,38 @@ function localizeHtml(html) {
 // ── the German dictionary ────────────────────────────────────────────────
 // Keys are the exact English strings the templates use.
 const DE = {
+  "AI agents for marketing: named coworkers with real roles | Sokosumi":
+    "KI-Agenten für Marketing: benannte Coworker mit echten Rollen | Sokosumi",
+  "AI agents and coworkers for marketing teams: {n} named specialists with a role, a vendor, sample work and a credit price you see first. Brief one; get a file back.":
+    "KI-Agenten und Coworker für Marketingteams: {n} benannte Spezialisten mit Rolle, Anbieter, Beispielarbeit und einem Credit-Preis, den Sie vorher sehen. Briefen, Datei zurückbekommen.",
+  "AI agents for marketing, with names and roles":
+    "KI-Agenten für Marketing, mit Namen und Rollen",
+  "{n} specialists from {v} vendors. Brief one; get a file back.":
+    "{n} Spezialisten von {v} Anbietern. Briefen, Datei zurückbekommen.",
+  "What is an AI marketing agent?":
+    "Was ist ein KI-Agent für Marketing?",
+  "Software that does one marketing job on its own from a brief: a competitor scan, a weekly performance report, a social calendar. On Sokosumi an agent has a name, a vendor and a price in credits you see before it runs.":
+    "Software, die eine Marketingaufgabe nach einem Briefing selbstständig erledigt: einen Wettbewerbs-Scan, einen wöchentlichen Performance-Report, einen Social-Media-Kalender. Auf Sokosumi hat ein Agent einen Namen, einen Anbieter und einen Preis in Credits, den Sie vor dem Start sehen.",
+  "What is the difference between an AI agent and an AI coworker?":
+    "Was ist der Unterschied zwischen einem KI-Agenten und einem AI Coworker?",
+  "An agent does one task. A coworker holds a role, such as research or creative, and is usually built from several agents. You brief a coworker like a colleague and it returns a file.":
+    "Ein Agent erledigt eine Aufgabe. Ein Coworker hat eine Rolle, etwa Recherche oder Kreation, und besteht meist aus mehreren Agenten. Sie briefen einen Coworker wie einen Kollegen, und er liefert eine Datei zurück.",
+  "How do marketing teams use AI agents day to day?":
+    "Wie nutzen Marketingteams KI-Agenten im Alltag?",
+  "They hand over the recurring and the well-defined work: market and competitor research, reporting, first drafts, campaign plans, dashboards. The team keeps judgement, brand and the client.":
+    "Sie geben die wiederkehrende und klar umrissene Arbeit ab: Markt- und Wettbewerbsrecherche, Reporting, erste Entwürfe, Kampagnenpläne, Dashboards. Urteil, Marke und Kunde bleiben beim Team.",
+  "What does an AI agent for marketing cost?":
+    "Was kostet ein KI-Agent für Marketing?",
+  "On Sokosumi, credits only when a task runs. The free plan has 250 credits per seat every month; paid seats are €25, €75 or €200 a month. Each task shows its credit price first.":
+    "Auf Sokosumi werden Credits nur verbraucht, wenn eine Aufgabe läuft. Der Free-Plan hat jeden Monat 250 Credits pro Seat; bezahlte Seats kosten 25 €, 75 € oder 200 € im Monat. Jede Aufgabe zeigt ihren Credit-Preis vorab.",
+  "Is my data safe with AI marketing agents?":
+    "Sind meine Daten bei KI-Marketing-Agenten sicher?",
+  "Each coworker profile states its models and hosting as the vendor provides them. EU hosting is available. You decide what you attach to a task.":
+    "Jedes Coworker-Profil nennt Modelle und Hosting laut Anbieter. EU-Hosting ist verfügbar. Sie entscheiden, was Sie an eine Aufgabe anhängen.",
+  "AI agents for marketing: questions":
+    "KI-Agenten für Marketing: häufige Fragen",
+  "AI coworker for marketing teams: how Sokosumi works | Product":
+    "AI Coworker für Marketingteams: So funktioniert Sokosumi | Produkt",
   "{a} vs {b} at a glance":
     "{a} und {b} im Vergleich",
   "Where each one falls short":

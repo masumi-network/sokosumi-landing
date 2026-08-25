@@ -442,7 +442,7 @@ function viewHome() {
   return `<section class="pd-view pd-home" data-view-panel="home">
     <div class="pd-home-mark">${mark(48)}</div>
     <div class="pd-home-body">
-      <h1 class="pd-h1">Welcome, Patrick!</h1>
+      <h2 class="pd-h1">Welcome, Patrick!</h2>
       <p class="pd-home-sub">Say what needs doing and they get it done.</p>
       <div class="pd-strip-wrap" aria-label="Available coworkers">
         <div class="pd-strip">
@@ -585,7 +585,7 @@ function viewTaskDetail() {
         <button type="button" class="pd-td-back" data-pd-view="tasks">${ico("arrow-left")}<span>Back to tasks</span></button>
         <div class="pd-td-actions"><button type="button" class="pd-ib pd-ib-7" data-pd-open="share" aria-label="Share">${ico("share")}</button><button type="button" class="pd-btn pd-btn-outline pd-btn-icon" data-pd-open="taskmenu" aria-label="Actions">${ico("ellipsis")}</button></div>
       </div>
-      <h1 data-pd-td-title></h1>
+      <h2 data-pd-td-title></h2>
       <div class="pd-td-sections">
         <section class="pd-td-sec">
           <h2>Description</h2>
@@ -649,7 +649,7 @@ function viewProject() {
         <button type="button" class="pd-td-back" data-pd-view="projects">${ico("arrow-left")}<span>Back to projects</span></button>
         <div class="pd-td-actions"><button type="button" class="pd-btn pd-btn-outline pd-btn-sm" data-pd-open="projectedit">${ico("pencil")}<span>Edit</span></button><button type="button" class="pd-btn pd-btn-dark pd-btn-sm" data-pd-open="newtask">${ico("plus")}<span>New Task</span></button></div>
       </div>
-      <div class="pd-project-head"><span class="pd-proj-mark pd-proj-mark-lg" data-pd-project-mark></span><div><h1 data-pd-project-title></h1><p class="pd-td-muted" data-pd-project-desc></p></div></div>
+      <div class="pd-project-head"><span class="pd-proj-mark pd-proj-mark-lg" data-pd-project-mark></span><div><h2 data-pd-project-title></h2><p class="pd-td-muted" data-pd-project-desc></p></div></div>
       <div class="pd-seg pd-seg-sm" role="tablist"><button type="button" class="is-on" data-pd-projtab="tasks">Tasks</button><button type="button" data-pd-projtab="jobs">Jobs</button><button type="button" data-pd-projtab="memory">Memory</button></div>
       <div data-pd-projpanel="tasks"><ul class="pd-td-linked" data-pd-project-tasks></ul><p class="pd-empty-note" data-pd-project-notasks hidden>No tasks in this project yet.</p></div>
       <div data-pd-projpanel="jobs" hidden><p class="pd-empty-note">No jobs yet. Jobs are the outputs a task hands back.</p></div>
@@ -698,7 +698,7 @@ function viewPa() {
   return `<section class="pd-view pd-pa-view" data-view-panel="pa">
     <div class="pd-pa-hero">
       <div class="pd-pa-orb"><i class="g1"></i><i class="g2"></i><i class="r1"></i><i class="r2"></i><img src="/assets/product/pa-face.png" alt="Personal Assistant" width="160" height="160" /></div>
-      <h1>Meet your personal assistant.</h1>
+      <h2 class="pd-pa-h1">Meet your personal assistant.</h2>
       <p class="pd-pa-sub">Your private AI coworker and main interface to Sokosumi.</p>
       <div class="pd-pa-cta"><button type="button" class="pd-btn pd-btn-primary pd-btn-lg pd-btn-auto" data-pd-open="activate">Activate your assistant ${ico("arrow-right")}</button><p>Gets its own private computer. Connects to your tools, remembers your context, runs while you sleep.</p></div>
       <ul class="pd-pa-tools">${tools.map(([n, i, c]) => `<li title="${attr(n)}" style="color:${c}">${ico(i, 18)}</li>`).join("")}<li class="is-more">and more</li></ul>
@@ -890,7 +890,7 @@ function featProject() {
   const pr = PROJECTS[0];
   const list = TASKS.filter((tk) => tk.project === pr.name);
   return `<div class="pd-feat-project pd-td">
-    <div class="pd-project-head"><span class="pd-proj-mark pd-proj-mark-lg">${esc(pr.n)}</span><div><h1>${esc(pr.name)}</h1><p class="pd-td-muted">${esc(pr.d)}</p></div></div>
+    <div class="pd-project-head"><span class="pd-proj-mark pd-proj-mark-lg">${esc(pr.n)}</span><div><h2>${esc(pr.name)}</h2><p class="pd-td-muted">${esc(pr.d)}</p></div></div>
     <div class="pd-seg pd-seg-sm"><span class="is-on">Tasks</span><span>Jobs</span><span>Memory</span></div>
     <ul class="pd-td-linked">${list.map((tk) => `<li><span>${ico("list-todo", 16)}<span class="pd-trunc">${esc(tk.title)}</span></span>${badge(tk.status)}</li>`).join("")}</ul>
   </div>`;

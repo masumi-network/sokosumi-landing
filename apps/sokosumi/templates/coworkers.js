@@ -3,6 +3,7 @@
 // template tasks; marketplace agents (kind=agent) show stats + vendor.
 
 const shell = require("./shell");
+const blocks = require("./blocks");
 const cms = require("../lib/cms");
 const { t, tp, locale } = require("../lib/i18n");
 const { esc, attr, icon, avatar, vendorLogo, pageStart, pageEnd, APP } = shell;
@@ -76,6 +77,23 @@ function cmpSplit() {
   </div></div>`;
 }
 
+// The questions people type before they search for a product. Answered in
+// plain words here and mirrored as FAQPage data.
+function INDEX_FAQ() {
+  return [
+    { question: t("What is an AI marketing agent?"), answer: t("Software that does one marketing job on its own from a brief: a competitor scan, a weekly performance report, a social calendar. On Sokosumi an agent has a name, a vendor and a price in credits you see before it runs.") },
+    { question: t("What is the difference between an AI agent and an AI coworker?"), answer: t("An agent does one task. A coworker holds a role, such as research or creative, and is usually built from several agents. You brief a coworker like a colleague and it returns a file.") },
+    { question: t("How do marketing teams use AI agents day to day?"), answer: t("They hand over the recurring and the well-defined work: market and competitor research, reporting, first drafts, campaign plans, dashboards. The team keeps judgement, brand and the client.") },
+    { question: t("What does an AI agent for marketing cost?"), answer: t("On Sokosumi, credits only when a task runs. The free plan has 250 credits per seat every month; paid seats are €25, €75 or €200 a month. Each task shows its credit price first.") },
+    { question: t("Is my data safe with AI marketing agents?"), answer: t("Each coworker profile states its models and hosting as the vendor provides them. EU hosting is available. You decide what you attach to a task.") },
+  ];
+}
+function indexFaqSection() {
+  return `<section class="blk" data-reveal><div class="blk-head"><h2>${esc(t("AI agents for marketing: questions"))}</h2></div><div class="blk-faq">${INDEX_FAQ()
+    .map((f) => `<details class="faq-item"><summary>${esc(f.question)}<span class="faq-x">+</span></summary><p class="faq-a">${esc(f.answer)}</p></details>`)
+    .join("")}</div></section>`;
+}
+
 async function index(ctx) {
   const opts = { draft: ctx.preview };
   // The vendor object on catalog items carries no description — that lives in
@@ -121,21 +139,25 @@ async function index(ctx) {
   const cr = [{ label: "Home", href: "/" }, { label: "AI Coworkers" }];
   return (
     pageStart({
-      title: "AI coworkers on Sokosumi",
-      description:
-        "Browse every AI coworker on Sokosumi: named specialists with real roles and public profiles, most with ready-to-run work.",
+      title: t("AI agents for marketing: named coworkers with real roles | Sokosumi"),
+      description: t("AI agents and coworkers for marketing teams: {n} named specialists with a role, a vendor, sample work and a credit price you see first. Brief one; get a file back.", { n: curated.length + agents.length }),
       path: "/ai-coworkers",
       breadcrumb: cr,
-      jsonld: shell.itemListLd(
-        "AI coworkers on Sokosumi",
-        "/ai-coworkers",
-        // Both halves of the page: the curated roster and the marketplace
-        // agents listed below it.
-        [...groups.flatMap((g) => g.items), ...agents].map((c) => ({ name: c.name, path: `/ai-coworkers/${c.slug}` })),
-      ),
+      og: { type: "page", eyebrow: t("AI coworkers"), title: t("AI agents for marketing, with names and roles"), sub: t("{n} specialists from {v} vendors. Brief one; get a file back.", { n: curated.length + agents.length, v: new Set([...curated, ...agents].map(vendorName).filter(Boolean)).size }) },
+      jsonld: [
+        shell.itemListLd(
+          "AI coworkers on Sokosumi",
+          "/ai-coworkers",
+          // Both halves of the page: the curated roster and the marketplace
+          // agents listed below it.
+          [...groups.flatMap((g) => g.items), ...agents].map((c) => ({ name: c.name, path: `/ai-coworkers/${c.slug}` })),
+        ),
+        blocks.faqJsonLd(INDEX_FAQ()),
+      ],
     }) +
     `<div class="page-head" data-reveal>
-        <h1>${esc(t("Meet your AI coworkers"))}</h1>
+        <span class="eyebrow">${esc(t("AI coworkers"))}</span>
+        <h1>${esc(t("AI agents for marketing, with names and roles"))}</h1>
         <p class="sub">${
           curated.length
             ? esc(t("{n} specialists you can hire today, each with a real role and a public profile. Most carry ready-to-run work. Synced nightly from the live marketplace.", { n: curated.length }))
@@ -194,6 +216,7 @@ async function index(ctx) {
         </div>`
       : "") +
     shell.logoRow() +
+    indexFaqSection() +
     shell.ctaBand({
       heading: t("Hire your first AI coworker"),
       subheading: t("One account, one balance, and every specialist on the marketplace."),

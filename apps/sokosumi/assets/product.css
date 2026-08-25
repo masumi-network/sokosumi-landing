@@ -94,7 +94,7 @@ body:has(.cc-banner) .product-page .pd-stage { margin-bottom: 220px; }
 .pd-app *, .pd-app *::before, .pd-app *::after { box-sizing: border-box; }
 /* resets at zero specificity so component classes always win */
 :where(.pd-app) :where(button) { font: inherit; color: inherit; background: none; border: 0; padding: 0; margin: 0; cursor: pointer; text-align: left; }
-:where(.pd-app) :where(h1, h2, h3, h4, p, ul, blockquote, pre) { margin: 0; padding: 0; }
+:where(.pd-app) :where(h2, h2, h3, h4, p, ul, blockquote, pre) { margin: 0; padding: 0; }
 :where(.pd-app) :where(ul) { list-style: none; }
 :where(.pd-app) :where(img) { display: block; }
 .pd-app [hidden] { display: none !important; }
@@ -269,7 +269,7 @@ body:has(.cc-banner) .product-page .pd-stage { margin-bottom: 220px; }
 .pd-home { margin: 0 -16px; flex: 1; align-items: stretch; padding-top: 40px; }
 .pd-home-mark { align-self: center; color: var(--fg); display: flex; }
 .pd-home-body { flex: 1; min-height: 0; display: flex; flex-direction: column; align-items: stretch; text-align: center; padding: 40px 0 32px; }
-.pd-h1 { font-size: 36px; line-height: 40px; font-weight: 300; text-wrap: balance; padding: 0 16px; }
+.pd-h2 { font-size: 36px; line-height: 40px; font-weight: 300; text-wrap: balance; padding: 0 16px; }
 .pd-home-sub { margin-top: 24px; padding: 0 16px; font-size: 18px; line-height: 1.65; color: var(--mfg); }
 .pd-strip-wrap { width: 100%; overflow-x: auto; overflow-y: hidden; scrollbar-width: none; margin-top: 40px; flex-shrink: 0; }
 .pd-strip-wrap::-webkit-scrollbar { display: none; }
@@ -412,7 +412,7 @@ body:has(.cc-banner) .product-page .pd-stage { margin-bottom: 220px; }
 .pd-td-back { display: inline-flex; align-items: center; gap: 6px; color: var(--mfg); font-size: 14px; }
 .pd-td-back:hover { color: var(--fg); }
 .pd-td-actions { display: flex; align-items: center; gap: 8px; }
-.pd-td h1 { font-size: 20px; line-height: 1.25; font-weight: 600; letter-spacing: -0.01em; margin-top: -8px; }
+.pd-td h2 { font-size: 20px; line-height: 1.25; font-weight: 600; letter-spacing: -0.01em; margin-top: -8px; }
 .pd-td-sections { display: flex; flex-direction: column; gap: 32px; margin-top: 8px; }
 .pd-td-sec { display: flex; flex-direction: column; gap: 8px; }
 .pd-td-sec h2 { font-size: 12px; line-height: 16px; font-weight: 500; color: rgba(10, 10, 10, 0.35); }
@@ -462,7 +462,7 @@ body:has(.cc-banner) .product-page .pd-stage { margin-bottom: 220px; }
 .pd-act-files-label { font-size: 12px; font-weight: 600; }
 .pd-act-files .pd-msg-file { max-width: 100%; width: 100%; }
 .pd-project-head { display: flex; align-items: center; gap: 16px; margin-top: -8px; }
-.pd-project-head h1 { margin: 0; }
+.pd-project-head h2 { margin: 0; }
 .pd-proj-mark-lg { width: 48px; height: 48px; font-size: 18px; border-radius: 12px; }
 .pd-empty-note { font-size: 14px; color: var(--mfg); padding: 24px 0; }
 
@@ -575,7 +575,7 @@ body:has(.cc-banner) .product-page .pd-stage { margin-bottom: 220px; }
 .pd-pa-orb .g2 { width: 208px; height: 208px; background: rgba(100, 0, 255, 0.15); filter: blur(32px); }
 .pd-pa-orb .r1 { width: 288px; height: 288px; border: 1px solid rgba(230, 230, 230, 0.6); -webkit-mask-image: linear-gradient(to bottom, #000, transparent); mask-image: linear-gradient(to bottom, #000, transparent); }
 .pd-pa-orb .r2 { width: 208px; height: 208px; border: 1px solid rgba(100, 0, 255, 0.2); }
-.pd-pa-hero h1 { margin-top: 32px; font-size: 48px; line-height: 1; font-weight: 300; letter-spacing: -0.025em; text-wrap: balance; max-width: 768px; }
+.pd-pa-hero h2 { margin-top: 32px; font-size: 48px; line-height: 1; font-weight: 300; letter-spacing: -0.025em; text-wrap: balance; max-width: 768px; }
 .pd-pa-sub { margin-top: 20px; font-size: 18px; line-height: 1.625; color: var(--mfg); max-width: 576px; }
 .pd-pa-cta { margin-top: 32px; display: flex; flex-direction: column; align-items: center; }
 .pd-pa-cta .pd-btn { padding: 0 24px; gap: 8px; }
@@ -802,7 +802,7 @@ body:has(.cc-banner) .product-page .pd-stage { margin-bottom: 220px; }
 .pd-feat-board .pd-lane-body { overflow: hidden; }
 .pd-feat-project { padding: 36px 40px; gap: 18px; max-width: none; height: 100%; }
 .pd-feat-project .pd-project-head { margin-top: 0; }
-.pd-feat-project h1 { font-size: 20px; line-height: 1.25; font-weight: 600; letter-spacing: -0.01em; }
+.pd-feat-project h2 { font-size: 20px; line-height: 1.25; font-weight: 600; letter-spacing: -0.01em; }
 .pd-feat-project .pd-td-linked { margin-top: 0; }
 @media (max-width: 900px) {
   .pd-chapter { grid-template-columns: minmax(0, 1fr); gap: 24px; }
