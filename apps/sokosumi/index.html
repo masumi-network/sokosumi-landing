@@ -87,7 +87,7 @@
     <meta name="twitter:image:alt" content="Sokosumi, AI coworkers for marketing teams" />
 
     <script type="application/ld+json">
-    {"@context":"https://schema.org","@type":"Organization","@id":"https://www.sokosumi.com/#organization","name":"Sokosumi","legalName":"Plan.Net Germany GmbH & Co KG","url":"https://www.sokosumi.com/","logo":{"@type":"ImageObject","url":"https://www.sokosumi.com/assets/sokosumi-wordmark.svg"},"image":"https://www.sokosumi.com/assets/og-image.jpg","vatID":"DE222163784","description":"Sokosumi is a marketplace where marketing teams hire AI coworkers and AI agents. Brief a coworker in plain language and get finished files back: reports, documents, decks, dashboards. Built by Serviceplan Group with NMKR.","contactPoint":[{"@type":"ContactPoint","contactType":"sales","email":"info@sokosumi.com","url":"https://www.sokosumi.com/contact/sales","availableLanguage":["en","de"]},{"@type":"ContactPoint","contactType":"customer support","email":"support@serviceplan-agents.com","url":"https://www.sokosumi.com/contact/support","availableLanguage":["en","de"]}],"address":{"@type":"PostalAddress","streetAddress":"Friedenstr. 24","postalCode":"81671","addressLocality":"Munich","addressCountry":"DE"},"parentOrganization":{"@type":"Organization","name":"Serviceplan Group","url":"https://www.serviceplan.com"},"sameAs":["https://x.com/sokosumi","https://linkedin.com/company/sokosumi/","https://discord.com/invite/aj4QfnTS92","https://t.me/+igMz0AazR-cwMzJi","https://github.com/masumi-network"]}
+    {"@context":"https://schema.org","@type":"Organization","@id":"https://www.sokosumi.com/#organization","name":"Sokosumi","url":"https://www.sokosumi.com/","logo":{"@type":"ImageObject","url":"https://www.sokosumi.com/assets/sokosumi-wordmark.svg"},"image":"https://www.sokosumi.com/assets/og-image.jpg","description":"Sokosumi is a marketplace where marketing teams hire AI coworkers and AI agents. Brief a coworker in plain language and get finished files back: reports, documents, decks, dashboards. Built by Serviceplan Group with NMKR.","contactPoint":[{"@type":"ContactPoint","contactType":"sales","email":"info@sokosumi.com","url":"https://www.sokosumi.com/contact/sales","availableLanguage":["en","de"]},{"@type":"ContactPoint","contactType":"customer support","email":"support@serviceplan-agents.com","url":"https://www.sokosumi.com/contact/support","availableLanguage":["en","de"]}],"sameAs":["https://x.com/sokosumi","https://linkedin.com/company/sokosumi/","https://discord.com/invite/aj4QfnTS92","https://t.me/+igMz0AazR-cwMzJi","https://github.com/masumi-network"]}
     </script>
     <script type="application/ld+json">
     {"@context":"https://schema.org","@type":"WebSite","@id":"https://www.sokosumi.com/#website","name":"Sokosumi","url":"https://www.sokosumi.com/","publisher":{"@id":"https://www.sokosumi.com/#organization"},"inLanguage":"en"}
@@ -98,7 +98,17 @@
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
     <link rel="manifest" href="/assets/site.webmanifest" />
     <meta name="theme-color" content="#ffffff" />
-    <link rel="preload" as="image" href="/assets/shot-board.webp" fetchpriority="high" />
+    <!-- The LCP element is the hero's CSS background photograph (landing.css
+         sets it on .hero.is-aurora). A background image is only discovered once
+         the stylesheet has arrived, which measured 1.2s of LCP "load delay" on
+         mobile; preloading it here starts the fetch with the HTML. -->
+    <!-- These hrefs must equal the url() in landing.css byte for byte — the
+         server leaves preload images unversioned for that reason. A mismatch
+         downloads the photo twice. Phones get the 1080px cut (19 KB vs 176 KB):
+         below 900px the photo is a band along the bottom, not the backdrop. -->
+    <link rel="preload" as="image" href="/assets/hero-photo/welcome-scene-mock-1080.webp" media="(max-width: 899px)" fetchpriority="high" />
+    <link rel="preload" as="image" href="/assets/hero-photo/welcome-scene-mock-4k.webp" media="(min-width: 900px)" fetchpriority="high" />
+    <link rel="preload" href="/assets/fonts/inter-300-latin.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/assets/fonts/inter-400-latin.woff2" as="font" type="font/woff2" crossorigin />
     <script defer src="/_vercel/insights/script.js"></script>
     <link rel="stylesheet" href="/assets/fonts.css" />

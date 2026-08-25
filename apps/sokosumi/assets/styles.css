@@ -1254,3 +1254,19 @@ h1, h2, h3 { overflow-wrap: break-word; }
 .notice-links { list-style: none; display: flex; flex-wrap: wrap; gap: 8px 20px; justify-content: center; padding: 22px 0 0; margin: 0; }
 .notice-links a { font-size: 14px; color: var(--muted-foreground); text-decoration: underline; }
 .notice-links a:hover { color: var(--foreground); }
+
+/* ===== entity pages (/about, coworker and vendor profiles) =====
+   A <dl> is the one HTML structure that reads as "attribute: value" to a
+   person and to a machine alike, which is why the facts tables use it. */
+.data-grid { margin: 0; border-top: 1px solid var(--border); }
+.data-grid .dg-row { display: grid; grid-template-columns: minmax(140px, 220px) 1fr; gap: 12px 24px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+.data-grid dt { font-size: 13px; color: var(--muted-foreground); padding-top: 2px; }
+.data-grid dd { margin: 0; font-size: 15px; line-height: 1.55; text-wrap: pretty; }
+.data-grid dd a { text-decoration: underline; text-underline-offset: 3px; }
+.data-grid ul.plain { list-style: none; margin: 0; padding: 0; }
+.data-grid ul.plain li + li { margin-top: 4px; }
+@media (max-width: 599px) { .data-grid .dg-row { grid-template-columns: 1fr; gap: 4px; } }
+.entity-list { list-style: none; margin: 18px 0 0; padding: 0; border-top: 1px solid var(--border); }
+.entity-list li { padding: 14px 0; border-bottom: 1px solid var(--border); font-size: 15px; line-height: 1.55; }
+.entity-list a { text-decoration: underline; text-underline-offset: 3px; }
+.entity .page-head .sub + .sub { margin-top: 12px; }

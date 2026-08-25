@@ -4,7 +4,7 @@
 
 const shell = require("./shell");
 const cms = require("../lib/cms");
-const { t, tp } = require("../lib/i18n");
+const { t, tp, locale } = require("../lib/i18n");
 const { esc, attr, icon, avatar, vendorLogo, pageStart, pageEnd, APP } = shell;
 
 // The vendor that leads /ai-coworkers. Serviceplan Group builds the curated roster.
@@ -271,6 +271,32 @@ function profileTags(c) {
   return tags.length ? `<div class="cw-tags">${tags.join("")}</div>` : "";
 }
 
+// The facts a profile states, as a <dl>: the same attributes the chips and
+// stats show, in a form a person and a retrieval system read identically.
+// Only what the catalog actually provides appears; nothing is inferred.
+function profileFacts(c, vn, vs) {
+  const rows = [];
+  rows.push([t("Type"), c.kind === "agent" ? t("AI agent (single-purpose)") : t("AI coworker")]);
+  if (c.role) rows.push([t("Role"), esc(c.role)]);
+  if (vn) rows.push([t("Vendor"), vs ? `<a href="/vendors/${attr(vs)}">${esc(vn)}</a>` : esc(vn)]);
+  const llm = Array.isArray(c.profileLlm) ? c.profileLlm.filter(Boolean) : [];
+  if (llm.length) rows.push([t("Models"), esc(llm.join(", "))]);
+  if (c.profileHosting) rows.push([t("Hosting"), esc(c.profileHosting)]);
+  if (c.runs) rows.push([t("Tasks run"), esc(Number(c.runs).toLocaleString(locale() === "de" ? "de-DE" : "en-US"))]);
+  if (c.rating && c.ratingCount) rows.push([t("Rating"), esc(`${Number(c.rating).toFixed(1)} / 5 (${c.ratingCount})`)]);
+  rows.push([t("Marketplace"), `<a href="/">Sokosumi</a>`]);
+  const synced = c.syncedAt || c.updatedAt;
+  if (synced) {
+    const d = new Date(synced);
+    const label = new Intl.DateTimeFormat(locale() === "de" ? "de-DE" : "en-GB", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" }).format(d);
+    rows.push([t("Profile data as of"), `<time datetime="${d.toISOString().slice(0, 10)}">${esc(label)}</time>`]);
+  }
+  return `<section class="page-section flush" data-reveal>
+        <h2>${esc(t("{name} at a glance", { name: c.name }))}</h2>
+        <dl class="data-grid">${rows.map(([k, v]) => `<div class="dg-row"><dt>${esc(k)}</dt><dd>${v}</dd></div>`).join("")}</dl>
+      </section>`;
+}
+
 function offerCard(agentSlug, o) {
   const om = shell.outputMeta(o.output);
   const href = `/ai-coworkers/${encodeURIComponent(agentSlug)}/tasks/${encodeURIComponent(o.slug)}`;
@@ -292,13 +318,13 @@ async function profile(ctx) {
 
   const offersSection = offers.length
     ? `<section class="page-section" id="tasks">
-        <h2>${esc(t("Template tasks"))}</h2>
+        <h2>${esc(t("Template tasks for {name}", { name: c.name }))}</h2>
         <p class="sub">${esc(t("Ready-to-run work {name} can pick up today. Open one to see what you get.", { name: c.name }))}</p>
         <div class="offers-grid">${offers.map((o) => offerCard(c.slug, o)).join("")}</div>
       </section>`
     : c.kind === "coworker"
       ? `<section class="page-section" id="tasks">
-          <h2>${esc(t("No template tasks yet"))}</h2>
+          <h2>${esc(t("{name} works from your brief", { name: c.name }))}</h2>
           <p class="sub">${esc(t("{name} works from your brief instead. Start a task in the app and brief {name} directly.", { name: c.name }))}</p>
         </section>`
       : "";
@@ -334,6 +360,7 @@ async function profile(ctx) {
         ${shell.NO_CARD}
       </div>
     </div>
+    ${profileFacts(c, vn, vs)}
     ${longBio}
     ${offersSection}` +
     shell.logoRow() +

@@ -18,6 +18,8 @@
   var cf = new Intl.NumberFormat(lang, { style: "currency", currency: "EUR", maximumFractionDigits: 0 });
   var MAX = 9999;
   var announceTimer;
+  var trackTimer;
+  var lastTracked = seats();
 
   // The form only exists for the no-script path; with script the page
   // recomputes as you type, so the submit button has nothing to do.
@@ -61,6 +63,21 @@
       announceTimer = setTimeout(function () {
         status.textContent = label + ". " + parts.join(". ") + ".";
       }, 400);
+    }
+    // The plan CTAs report the seat count they were clicked at, and the
+    // calculator itself reports once per settled change (not per keystroke).
+    cards.forEach(function (card) {
+      var cta = card.querySelector("[data-analytics]");
+      if (cta) cta.setAttribute("data-analytics-seats", n);
+    });
+    if (n !== lastTracked) {
+      clearTimeout(trackTimer);
+      trackTimer = setTimeout(function () {
+        if (n === lastTracked) return;
+        lastTracked = n;
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({ event: "pricing_calculator", seats: n });
+      }, 800);
     }
   }
 

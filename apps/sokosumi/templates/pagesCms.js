@@ -54,6 +54,16 @@ async function productHub(ctx) {
       breadcrumb: cr,
       mainClass: "product-page",
       stylesheets: ["/assets/product.css"],
+      jsonld: {
+        "@type": "WebApplication",
+        "@id": `${shell.SITE}/#app`,
+        name: "Sokosumi",
+        url: "https://app.sokosumi.com",
+        applicationCategory: "BusinessApplication",
+        operatingSystem: "Web",
+        publisher: { "@id": `${shell.SITE}/#organization` },
+        description: t("What an AI coworker is, how you brief one, where the work shows up, and what you get back."),
+      },
     }) +
     productDemo.render({ coworkers, productPages }) +
     shell.proof(testimonials, 1) +

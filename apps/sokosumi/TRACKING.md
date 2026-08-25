@@ -67,15 +67,43 @@ Nothing analytics- or ads-related leaves the browser until the visitor opts in.
 
 ## Events
 
-GA4 records `page_view` on every route by itself. `view_pricing` is derived in
-GTM from the URL (`/pricing`) — also no code.
+GA4 records `page_view` on every route by itself, plus the enhanced-measurement
+`scroll` (90 %) event.
 
 | Event | Fires when… | How |
 |-------|-------------|-----|
-| `sign_up_click` `{location}` | a "Sign Up" / "Get started" / "Try …" CTA is clicked | `data-analytics="sign_up_click"` (hero, nav, mobile nav, CTA band, use-case hero/mid, pricing plan, product/surface hero, coworker profile, task detail, CMS blocks, sales/support success) |
-| `talk_to_sales_click` `{location}` | a "Talk to Sales" CTA is clicked | `data-analytics="talk_to_sales_click"` (hero, nav, mobile nav, use-case hero, pricing plan, CTA bands and CMS blocks that point at sales) |
+| `sign_up_click` `{location, plan, seats}` | a "Sign Up" / "Get started" / "Try …" CTA is clicked | `data-analytics="sign_up_click"` (hero, nav, mobile nav, CTA band, use-case hero/mid, pricing plan cards — those carry `plan` + the calculator's `seats`) |
+| `talk_to_sales_click` `{location, plan}` | a "Talk to Sales" CTA is clicked | `data-analytics="talk_to_sales_click"` (hero, nav, mobile nav, use-case hero, enterprise band) |
 | `generate_lead` `{form_name}` | a lead form is **accepted by the server** | `data-analytics-on="load"` on the success state — `sales_inquiry`, `support_request`, `agent_listing` |
+| `view_pricing` `{seats}` | /pricing renders | `data-analytics-on="load"` on the plan board |
+| `pricing_calculator` `{seats}` | the team-size calculator settles on a new count | `assets/pricing.js`, 800 ms after the last change |
+| `scroll_depth` `{percent}` | 25 / 50 / 75 / 90 % of a page scrolled | `assets/track.js`, once per threshold per page |
 | `consent_status` `{consent_analytics, consent_marketing}` | cookie choice made | `assets/consent.js` |
+
+Every parameter above is registered as an event-scoped custom dimension in GA4
+(`location`, `plan`, `seats`, `percent`, `form_name`) — an unregistered
+parameter is collected but cannot be reported on. Register new ones in
+Admin → Custom definitions the day you add them; GA4 does not backfill.
+
+Key events on the marketing side: `sign_up_click`, `talk_to_sales_click`,
+`generate_lead`. `talk_to_sales_click` must be starred in Admin → Events once it
+has fired for the first time (GA4 only lists events it has seen).
+
+## Reading the reports honestly
+
+- **Always split by `hostName`.** The landing page and the app share one
+  property, so `landingPage = /` is the www homepage *and* the app root. Any
+  "which page converts" question without `hostName` is wrong.
+- **Referral exclusions** (data stream → Configure tag settings → List unwanted
+  referrals): `stripe.com`, `accounts.google.com`, `microsoftonline.com`,
+  `onecdn.static.microsoft`, `sokosumi`. Without these, every Google / Microsoft
+  SSO sign-up reset its session source to the OAuth host — ~18 % of sessions
+  in Aug 2026 were attributed to `accounts.google.com`.
+- **Cross-domain** covers `www.sokosumi.com`, `app.sokosumi.com` and anything
+  containing `sokosumi.com`.
+- GTM setup for the events above: `scripts/gtm-marketing-events.sh` (run once,
+  then publish). `gtm-container.json` is a stale 2025 snapshot — the live
+  container has ~50 tags; trust the GTM UI, not the file.
 
 `generate_lead` fires on the server-rendered `?sent=1` state, not on the submit
 click, so it counts submissions the server actually accepted. A click handler

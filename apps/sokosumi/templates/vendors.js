@@ -362,7 +362,7 @@ async function detail(ctx) {
   };
   const jsonld = [orgLd];
   const listLd = shell.itemListLd(
-    `AI coworkers and agents from ${v.name}`,
+    t("AI coworkers from {vendor}", { vendor: v.name }),
     `/vendors/${v.slug}`,
     [...curated, ...agents].map((c) => ({ name: c.name, path: `/ai-coworkers/${c.slug}` })),
   );
@@ -380,6 +380,27 @@ async function detail(ctx) {
       ? t("Run {vendor}’s AI agents on Sokosumi", { vendor: v.name })
       : t("Meet the AI coworkers on Sokosumi");
 
+  // The same counts as the stats row, as attribute/value pairs a person and a
+  // retrieval system read identically. Only what the catalog states.
+  const dlRows = [];
+  dlRows.push([t("Type"), t("Vendor on Sokosumi")]);
+  if (v.website) dlRows.push([t("Website"), `<a href="${attr(v.website)}" rel="noreferrer">${esc(v.website.replace(/^https?:\/\//, "").replace(/\/$/, ""))}</a>`]);
+  if (curated.length) dlRows.push([t("AI coworkers"), esc(String(curated.length))]);
+  if (agents.length) dlRows.push([t("Marketplace agents"), esc(String(agents.length))]);
+  if (myOffers.length) dlRows.push([t("Template tasks"), esc(String(myOffers.length))]);
+  if (totalRuns) dlRows.push([t("Tasks run"), esc(totalRuns.toLocaleString(nf))]);
+  dlRows.push([t("Marketplace"), `<a href="/">Sokosumi</a>`]);
+  const synced = v.syncedAt || v.updatedAt;
+  if (synced) {
+    const d = new Date(synced);
+    const label = new Intl.DateTimeFormat(locale() === "de" ? "de-DE" : "en-GB", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" }).format(d);
+    dlRows.push([t("Profile data as of"), `<time datetime="${d.toISOString().slice(0, 10)}">${esc(label)}</time>`]);
+  }
+  const factsDl = `<section class="page-section flush" data-reveal>
+      <h2>${esc(t("{name} at a glance", { name: v.name }))}</h2>
+      <dl class="data-grid">${dlRows.map(([k, val]) => `<div class="dg-row"><dt>${esc(k)}</dt><dd>${val}</dd></div>`).join("")}</dl>
+    </section>`;
+
   const cr = [
     { label: "Home", href: "/" },
     { label: "Vendors", href: "/vendors" },
@@ -394,13 +415,14 @@ async function detail(ctx) {
       jsonld,
     }) +
     `<div class="page-head" data-reveal>
-      <span class="eyebrow">${esc(t("Vendor on Sokosumi"))}</span>
+      <span class="eyebrow">${esc(t("Vendor on Sokosumi"))}${kindsH ? ` &middot; ${kindsH}` : ""}</span>
       ${vendorLogo(v, "lg")}
-      <h1>${esc(v.name)} ${kindsH || esc(t("on Sokosumi"))}</h1>
+      <h1>${esc(v.name)}</h1>
       ${sub ? `<p class="sub">${esc(sub)}</p>` : ""}
       ${facts.length ? `<div class="cw-stats vendor-facts">${facts.join("")}</div>` : ""}
       ${website}
     </div>
+    ${factsDl}
     ${coworkersSection}
     ${capabilitiesSection}
     ${stackSection}

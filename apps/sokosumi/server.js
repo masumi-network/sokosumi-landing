@@ -413,6 +413,7 @@ const { buildNav } = require("./lib/nav");
 const leads = require("./lib/leads");
 const salesTpl = require("./templates/sales");
 const pricingTpl = require("./templates/pricing");
+const aboutTpl = require("./templates/about");
 const supportTpl = require("./templates/support");
 const legalTpl = require("./templates/legal");
 const legacyRedirects = require("./lib/legacyRedirects");
@@ -467,6 +468,9 @@ const routes = [
   { m: (s) => s.length === 2 && s[0] === "compare" && { slug: s[1] }, h: compareTpl.detail },
   { m: (s) => s.length === 1 && s[0] === "product" && {}, h: pagesTpl.productHub },
   { m: (s) => s.length === 1 && s[0] === "pricing" && {}, h: pricingTpl.render },
+  // The entity page for Sokosumi itself lives in code so its JSON-LD is
+  // generated from the same facts as the visible text (see templates/about.js).
+  { m: (s) => s.length === 1 && s[0] === "about" && {}, h: aboutTpl.render },
   { m: (s) => s.length === 1 && s[0] === "contact" && {}, h: contactTpl.render },
   { m: (s) => s.length === 2 && s[0] === "contact" && s[1] === "sales" && {}, h: salesTpl.render },
   { m: (s) => s.length === 2 && s[0] === "contact" && s[1] === "support" && {}, h: supportTpl.render },
@@ -696,11 +700,18 @@ const assetsDir = path.join(root, "assets");
     return html;
   }
 
+  // Image preloads are left alone: their href must match the url() in the
+  // stylesheet exactly, and CSS references are not versioned. A ?v= on the
+  // preload alone made the browser download the hero photo twice.
+  const PRELOAD_IMAGE = /<link rel="preload" as="image"[^>]*>/g;
   function versionAssets(html) {
-    return html.replace(ASSET_REF, (m, open, url, close) => {
-      const v = assetVersion(url.slice(1));
-      return v ? `${open}${url}?v=${v}${close}` : m;
-    });
+    return html
+      .split(PRELOAD_IMAGE)
+      .map((chunk) => chunk.replace(ASSET_REF, (m, open, url, close) => {
+        const v = assetVersion(url.slice(1));
+        return v ? `${open}${url}?v=${v}${close}` : m;
+      }))
+      .reduce((out, chunk, i, arr) => out + chunk + (i < arr.length - 1 ? html.match(PRELOAD_IMAGE)[i] : ""), "");
   }
 
 
@@ -767,7 +778,10 @@ const assetsDir = path.join(root, "assets");
       // content hash, so a stale document is the one thing that keeps serving
       // last deploy's CSS and JS — which looked exactly like a deploy that had
       // not happened. Revalidation is a cheap 304; the CDN does the real work.
-      "Cache-Control": "public, max-age=0, s-maxage=300, must-revalidate",
+      // stale-while-revalidate: the CDN answers from its copy at once and
+      // re-renders in the background, so a visitor never waits on a function
+      // boot. Field TTFB was 1.3s with the CDN missing on most requests.
+      "Cache-Control": "public, max-age=0, s-maxage=300, stale-while-revalidate=86400, must-revalidate",
       "Last-Modified": stat.mtime.toUTCString(),
     }, versionAssets(optimizeImages(html)));
   }
@@ -1064,7 +1078,7 @@ const assetsDir = path.join(root, "assets");
         const sendHtml = (html, code) => {
           // A 404 must not sit in a shared cache for two minutes: the usual
           // cause is content that is about to exist.
-          const cache = preview || code === 404 ? "no-store" : "public, max-age=0, s-maxage=120, must-revalidate";
+          const cache = preview || code === 404 ? "no-store" : "public, max-age=0, s-maxage=120, stale-while-revalidate=86400, must-revalidate";
           // localizeHtml: on /de pages, root-relative links gain the /de
           // prefix; on every page the language switcher's /en marker collapses.
           const finalHtml = versionAssets(i18n.localizeHtml(html));
@@ -1076,6 +1090,12 @@ const assetsDir = path.join(root, "assets");
           }
           send(req, res, code || 200, { "Content-Type": "text/html; charset=utf-8", "Cache-Control": cache, Vary: "Accept" }, finalHtml);
         };
+
+        // /llms.txt: a short, plain-text description of the site and its
+        // main sections for LLM crawlers (llmstxt.org). Facts mirror /about.
+        if (clean === "/llms.txt") {
+          return send(req, res, 200, { "Content-Type": "text/plain; charset=utf-8", "Cache-Control": "public, max-age=3600" }, aboutTpl.llmsTxt());
+        }
 
         // Static assets first (they all live under /assets or have extensions).
         if (seg[0] === "assets" || path.extname(clean)) {
@@ -1095,9 +1115,16 @@ const assetsDir = path.join(root, "assets");
           // images, video and icons rarely change, so they keep the long,
           // revalidate-in-background cache.
           const isAppCode = ext === ".js" || ext === ".css";
-          const cacheControl = isAppCode
-            ? "public, no-cache"
-            : "public, max-age=86400, stale-while-revalidate=604800";
+          // A `?v=` that matches the current content hash names this exact
+          // byte sequence, and every edit or deploy changes the hash (the
+          // rendered HTML always links the current one), so that URL can be
+          // cached forever. Unversioned requests keep the revalidate rule.
+          const versioned = query.v && query.v === assetVersion(path.relative(root, file.path));
+          const cacheControl = versioned
+            ? "public, max-age=31536000, immutable"
+            : isAppCode
+              ? "public, no-cache"
+              : "public, max-age=86400, stale-while-revalidate=604800";
 
           const inm = req.headers["if-none-match"];
           const ims = req.headers["if-modified-since"];

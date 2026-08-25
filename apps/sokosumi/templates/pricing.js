@@ -189,7 +189,7 @@ function planCard(p, i, seats) {
       <li>${icon("check", 16)}<span><strong>${esc(num)}</strong> ${esc(t(m[2]))}</span></li>
     </ul>
     ${teamBlock(p, seats)}
-    <a class="btn ${p.featured ? "btn-primary" : "btn-outline"}" href="${attr(APP_SIGNUP)}" aria-describedby="${id}" data-analytics="sign_up_click" data-analytics-location="pricing_plan">${esc(t("Get started"))}</a>
+    <a class="btn ${p.featured ? "btn-primary" : "btn-outline"}" href="${attr(APP_SIGNUP)}" aria-describedby="${id}" data-analytics="sign_up_click" data-analytics-location="pricing_plan" data-analytics-plan="${p.name.toLowerCase()}" data-analytics-seats="${seats}">${esc(t("Get started"))}</a>
   </article>`;
 }
 
@@ -207,7 +207,7 @@ function enterpriseBand(p) {
       <span class="amount">${esc(t(p.price))}</span>
       ${p.per ? `<span class="per">${esc(t(p.per))}</span>` : ""}
     </div>
-    <a class="btn btn-primary" href="${attr(SALES_URL)}" data-analytics="talk_to_sales_click" data-analytics-location="pricing_plan">${esc(t("Talk to sales"))}</a>
+    <a class="btn btn-primary" href="${attr(SALES_URL)}" data-analytics="talk_to_sales_click" data-analytics-location="pricing_plan" data-analytics-plan="enterprise">${esc(t("Talk to sales"))}</a>
   </article>`;
 }
 
@@ -254,7 +254,7 @@ async function render(ctx) {
     </div>
 
     <section class="page-section flush">
-      <div class="plan-board">
+      <div class="plan-board" data-analytics="view_pricing" data-analytics-on="load">
         ${seatPicker(seats)}
         <div class="plan-grid">${PLANS_ACTIVE.map((p, i) => planCard(p, i, seats)).join("")}</div>
         ${enterpriseBand(ENTERPRISE_ACTIVE)}
