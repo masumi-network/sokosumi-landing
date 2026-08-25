@@ -224,51 +224,131 @@ WPP Open is the closest thing to an agency-sold agent product: an "Agent Hub" of
 
 ---
 
+---
+
+## 6. General-purpose AI assistants and agent products marketing teams use instead of a marketplace
+
+These are the real day-to-day substitutes. Note on sourcing: openai.com and help.openai.com, perplexity.ai and canva.com refused automated fetches; prices for those are taken from dated third-party pricing trackers and flagged.
+
+### ChatGPT (OpenAI)
+- Plans (third-party tracker dated 20 Aug 2026; openai.com blocked): Free $0; Go $8/month; Plus $20/month; Pro $100 or $200/month; Business $20/seat/month annual or $25 monthly (2-seat minimum, cut by $5 on 2 Apr 2026); Enterprise quote-only, annual, procurement reports cite ~$45–75/seat with a 150-seat minimum. https://www.cloudzero.com/blog/how-much-does-chatgpt-cost/ , https://coworker.ai/blog/chatgpt-enterprise-pricing
+- Capabilities: Agent mode and Deep Research (excluded from Go), Projects, custom GPTs, Scheduled Tasks (one-time or recurring), Canvas being folded into chat "writing blocks" on GPT-5.5. https://help.openai.com/en/articles/10291617-scheduled-tasks-in-chatgpt , https://help.openai.com/en/articles/6825453-chatgpt-release-notes
+- Finished files: agent mode and data analysis can output spreadsheets/slides/PDF; per-person, not team-shared by default. Enterprise adds "data residency options"; Business/Plus data sits in the US. https://www.cloudzero.com/blog/how-much-does-chatgpt-cost/
+- Enterprise coworkers: OpenAI Frontier (5 Feb 2026), custom pricing. https://www.cnbc.com/2026/02/05/open-ai-frontier-enterprise-customers.html
+- Position against it: ChatGPT is a blank box each person prompts alone; Sokosumi gives a team named coworkers with roles, a named vendor and a shared board where output lands as files everyone sees. Seat price is the same (€25 vs $20–25) but Sokosumi credits only burn on work actually run. EU hosting is a Sokosumi default; on ChatGPT it needs Enterprise.
+
+### Claude (Anthropic)
+- Plans (claude.com/pricing): Free $0; Pro $17/month annual or $20 monthly; Max from $100/month (5x/20x); Team Standard seat $20 annual / $25 monthly, Premium seat $100 / $125; Enterprise seat price + usage at API rates. https://claude.com/pricing
+- Capabilities: Projects and Artifacts (Pro+); file creation of .xlsx, .pptx, .docx, PDF on all plans incl. Free; Claude Cowork (GA April 2026, paid plans) runs multi-step tasks over folders/tools and supports scheduled recurring tasks that "run unattended"; Claude Code on Pro+. https://support.claude.com/en/articles/12111783-create-and-edit-files-with-claude , https://claude.com/product/cowork , https://support.claude.com/en/articles/13854387-schedule-recurring-tasks-in-claude-cowork
+- EU residency: first-party Team/Enterprise store data in the US; EU residency only via AWS Bedrock Frankfurt or Vertex AI EU; Microsoft Foundry EU listed "coming 2026". https://www.infoq.com/news/2026/07/claude-foundry-ga-europe/ , https://compound.law/en-DE/tools/claude-eu-hosting/
+- Position against it: Cowork is the closest single-user analogue to a Sokosumi coworker (goal in, deck/sheet out, scheduled). Sokosumi's answer: many specialised coworkers from multiple vendors with disclosed models (Claude among them, hosted Azure Frankfurt), a team board instead of one person's desktop, premium research data (Statista/GWI), and EU hosting that Anthropic's own plans lack.
+
+### Claude Code / OpenAI Codex / Cursor / GitHub Copilot ("our devs just build it")
+- Prices: Claude Code included in Claude Pro $20 and Max $100–200 (https://claude.com/pricing); Codex included in ChatGPT Plus $20 / Pro $200, no separate SKU (https://www.eesel.ai/blog/codex-pricing, third-party); Cursor Hobby free, Individual $20/month, Teams $40/user/month, Enterprise custom (https://cursor.com/pricing); GitHub Copilot Free $0, Pro $10, Pro+ $39, Max $100/month (https://github.com/features/copilot/plans).
+- Difference: these are developer agents producing code and repos, not marketing deliverables; building an in-house research/reporting agent means a dev owns prompts, data licences, hosting, evaluation and upkeep.
+- Position against it: Sokosumi is "buy, don't build" for marketing — vendor-operated coworkers with maintained data sources and EU hosting, paid per task. Open protocols (Masumi; CrewAI/LangGraph/n8n agents can be listed) let the same dev team publish their agent to the marketplace instead of running it alone. https://www.house-of-communication.com/de/de/newsroom/twelve-mail/twelve-mail-no-20/sokosumi.html
+
+### Google Gemini (app, Workspace, Gemini Enterprise, NotebookLM)
+- Gemini app: Google AI Pro CHF 17/month (Deep Research, NotebookLM higher limits, 5 TB); AI Ultra from CHF 100 or CHF 170/month with agent mode. https://gemini.google/subscriptions/
+- Workspace (Gemini bundled since Mar 2025): Starter CHF 7, Standard CHF 14, Plus CHF 22 per user/month list, Enterprise custom; "Fundamental data regions" (US/EU) included from Business Standard, enterprise data regions on Enterprise. https://workspace.google.com/pricing , https://knowledge.workspace.google.com/admin/compliance/choose-a-geographic-location-for-your-data
+- Gemini Enterprise (ex-Agentspace, agent platform + Agent Gallery/marketplace): Business $21, Standard $30, Plus $50 per user/month per third-party trackers (Google pricing page 404 at fetch time); EU multi-region data residency supported for Standard/Plus with feature exclusions (Gemini 3.1 Pro, web grounding, image generation not EU-resident). https://coworker.ai/blog/gemini-enterprise-pricing , https://docs.cloud.google.com/gemini/enterprise/docs/locations
+- Finished files: Docs/Sheets/Slides natively; NotebookLM produces reports/slides/audio from sources; scheduled actions in Gemini app.
+- Position against it: Gemini is strongest inside Google Docs/Sheets, which most DACH corporates do not run. Sokosumi returns Office/PDF files into a board regardless of suite, adds named vendors and EU-only hosting without the feature exclusions Google lists for EU residency.
+
+### Microsoft 365 Copilot (+ Copilot Studio, Agent Store)
+- Prices (microsoft.com): Copilot Business add-on $21/user/month list ($18 promo through Dec 2026) with Researcher, Analyst, Facilitator agents; Business Standard with Copilot $23.50; Business Premium with Copilot $32; Enterprise Copilot $30/user/month; Copilot Studio $200 per 25,000-credit pack or pay-as-you-go; Agent 365 $15/user/month add-on (third-party); E7 suite $99/user/month. https://www.microsoft.com/en-us/microsoft-365-copilot/pricing , https://www.microsoft.com/en-us/microsoft-365-copilot/pricing/copilot-studio , https://www.aguidetocloud.com/licensing/agent-365/
+- Agent Store: agents built in Copilot Studio are published to the Microsoft 365 Agent Store ("Built by your org", admin-approved) or the commercial marketplace. https://learn.microsoft.com/en-us/microsoft-copilot-studio/publication-add-bot-to-microsoft-teams
+- EU residency: Copilot is an EU Data Boundary service with in-country processing being added; but "Flex Routing" lets inference leave the EU at peak demand, on by default from 17 Apr 2026 unless admins opt out. https://www.microsoft.com/en-us/microsoft-365/blog/2025/11/04/microsoft-offers-in-country-data-processing-to-15-countries-to-strengthen-sovereign-controls-for-microsoft-365-copilot/ , https://changepilot.cloud/blog/microsoft-365-copilot-flex-routing-eu-data-boundary-mc1269223
+- Finished files: yes, natively in Word/Excel/PowerPoint; Researcher/Analyst produce reports; autonomous agents need Copilot Studio credits.
+- Position against it: Copilot is the default "we already pay $30/seat" objection. Sokosumi is complementary: coworkers post into Teams channels, deliver Office files, and cost nothing until a task runs; it adds marketing-specialist agents and external data that Copilot's generic Researcher lacks, with a fixed Frankfurt hosting promise rather than flex routing.
+
+### Perplexity (Pro, Max, Enterprise, Comet)
+- Prices (third-party trackers; perplexity.ai blocked): Pro $20/month; Max $200/month with unlimited Labs (dashboards, spreadsheets, presentations); Enterprise Pro $40/seat/month, Enterprise Max $325/seat/month; Comet browser free, Comet Enterprise bundled. https://www.finout.io/blog/perplexity-pricing-in-2026 , https://www.eesel.ai/blog/perplexity-comet-pricing
+- EU residency: not published in sources found.
+- Position against it: Perplexity Labs competes head-on with Hannah-style research reports. Sokosumi's counter: licensed premium sources (Statista, GWI, dpa, DataForSEO) with a named vendor accountable for the report, delivered to a team board, EU-hosted.
+
+### Manus and Genspark — see section 1 (Manus $20/$40/$200 credit plans, Singapore, ownership unresolved; Genspark Team $30/seat, EU data residency only on Enterprise).
+
+### Notion AI
+- Prices: Free $0, Plus $10, Business $20/member/month (Notion Agent, AI Meeting Notes, Enterprise Search), Enterprise custom; Custom Agents (triggers: schedules, Slack, email, database changes) on Business/Enterprise, metered at $10 per 1,000 Notion credits from 4 May 2026. https://www.notion.com/pricing , https://www.notion.com/product/agents , https://matthiasfrank.de/en/notion-custom-agents-full-tutorial-use-cases-pricing-changes/
+- EU residency: Enterprise plan, Frankfurt. https://www.notion.com/blog/notion-expands-data-residency-to-japan-south-korea
+- Finished files: Notion pages/databases, not PPTX/XLSX.
+- Position against it: Notion agents live inside Notion; Sokosumi coworkers deliver portable files into any stack and are specialists built by vendors, not generic agents the team must author.
+
+### Canva AI (Magic Studio)
+- Prices (third-party, verified July 2026; canva.com blocked): Pro ~$18/month with 500 AI credits; Business $25/user/month (replaces Teams), AI Pass add-on $100/person/month. https://www.usecarly.com/blog/canva-pricing/ , https://checkthat.ai/brands/canva/pricing
+- Finished files: designs, decks, video, Sheets exports; no autonomous research or scheduled tasks. EU residency: not published.
+- Position against it: Canva is where Sokosumi outputs get styled, not a substitute for research/strategy coworkers; pitch "Hannah's PDF plus Maya's creative brief go into Canva".
+
+### Adobe Firefly / GenStudio
+- Firefly: Standard $9.99 (2,000 credits), Pro $19.99, Premium $199.99 (50,000 credits); unlimited standard generations on paid plans. https://helpx.adobe.com/creative-cloud/apps/generative-ai/generative-credits-faq.html , https://costbench.com/software/ai-image-generators/adobe-firefly/ (third-party prices)
+- GenStudio / CX Enterprise: enterprise quotes; Marketing Agent and a coming "Coworker" tier (see section 3). https://news.adobe.com/news/2026/04/adobe-redefines-custome-experience
+- Position against it: Adobe is asset production for large enterprises on Adobe stacks; Sokosumi is deliverable-level knowledge work for mid-size teams at a self-serve price. Watch Adobe's use of "Coworker" for keyword collisions.
+
+### Substitute summary table
+
+| Product | Entry team price | EU residency | Finished files | Scheduled/autonomous |
+|---|---|---|---|---|
+| ChatGPT Business | $20–25/seat | Enterprise only | yes (agent/data analysis) | Scheduled Tasks, Agent mode |
+| Claude Team | $20–25/seat | no (Bedrock/Vertex only) | xlsx/pptx/docx/pdf all plans | Cowork scheduled tasks |
+| Gemini Workspace | CHF 7–22/user | data regions from Business Standard | Docs/Sheets/Slides | limited |
+| Gemini Enterprise | $21–50/user | EU multi-region (exclusions) | via Workspace | agents, Agent Gallery |
+| M365 Copilot | $21–30/user (+Studio credits) | EU Data Boundary, flex routing caveat | Office native | Copilot Studio agents |
+| Perplexity Enterprise | $40/seat | not published | Labs (Max) | limited |
+| Notion Business | $20/member | Enterprise, Frankfurt | Notion pages | Custom Agents (credits) |
+| Sokosumi Starter | €25/seat, 1,500 credits | Frankfurt (vendor-disclosed) | PDF/deck/sheet/dashboard to team board | queued tasks, credits only when run |
+
 ## Ranked shortlist
 
-(a) DACH sales conversations
-1. Langdock — the €25/seat EU-hosted incumbent already in many German companies.
-2. Whaaat AI — Berlin, named marketing agents, $25/month; the "same idea, cheaper" objection.
-3. Viktor — Munich/Warsaw, $75M, returns files from Slack/Teams; the best-funded EU coworker.
-4. Dust — Paris, credit-metered seats, EU; the "we'll build our own agents" option.
-5. HubSpot Breeze / Salesforce Agentforce — "already in our CRM" objection.
-6. DeepL Agent — trusted German brand entering agents; sovereignty story competes.
-7. Sintra — cheap named-helper bundle prospects will have tried.
-8. Microsoft Copilot + Agent Store — "we have M365 Copilot" objection.
+(a) DACH sales conversations — most likely objections, in order
+1. ChatGPT (Business/Enterprise) — already on every desk at $20–25/seat; the default "why not just ChatGPT" question.
+2. Microsoft 365 Copilot — "we already pay $30/seat and it lives in Teams"; EU Data Boundary story sounds equivalent until flex routing comes up.
+3. Langdock — the €25/seat EU-hosted DACH incumbent with ~$42M ARR; "we already rolled out Langdock".
+4. Claude (Team + Cowork) — closest single-user analogue to a coworker returning decks and sheets on a schedule; no EU residency on first-party plans.
+5. Whaaat AI — Berlin, named marketing agents, $25/month; "same idea, cheaper".
+6. Viktor — Munich/Warsaw, $75M Series A, returns files from Slack/Teams.
+7. Google Gemini / Gemini Enterprise — for Google-Workspace shops; EU residency with exclusions.
+8. Dust — Paris, credit-metered seats; the "we'll build our own agents" option.
+9. HubSpot Breeze / Salesforce Agentforce — "already in our CRM" objection.
+10. Perplexity / DeepL Agent — research-report substitute and the trusted German brand entering agents.
 
-(b) SEO /compare pages
-1. Langdock (German search volume, same price point)
-2. Jasper (marketing agents, high volume)
-3. Lindy (identical seat+credit model; "AI employee" queries)
-4. Relevance AI ("AI workforce")
-5. Sintra ("AI helpers/employees")
-6. Coworker.ai + Viktor ("AI coworker" keyword owners)
-7. Genspark / Manus (deliverable-producing agents; "Super Agent")
-8. Copy.ai and Writer (marketing/enterprise agent workflows)
-9. Whaaat AI (German "KI Marketing Agenten")
-10. ChatGPT Business / Frontier (baseline everyone compares to)
+(b) SEO /compare pages — by search demand and page fit
+1. ChatGPT ("Sokosumi vs ChatGPT for marketing teams")
+2. Microsoft 365 Copilot
+3. Langdock (German search volume, same price point)
+4. Claude / Claude Cowork
+5. Jasper (marketing agents, high volume)
+6. Lindy (identical seat + credit model; "AI employee" queries)
+7. Gemini Enterprise / Google Workspace AI
+8. Relevance AI and Sintra ("AI workforce", "AI helpers")
+9. Coworker.ai + Viktor ("AI coworker" keyword owners)
+10. Genspark / Manus / Perplexity Labs (deliverable-producing agents)
+11. Whaaat AI (German "KI Marketing Agenten")
+12. Copy.ai and Writer
 
 ## Positioning gaps
 
 Competitors claim, Sokosumi does not (yet) say:
-- Deep integrations in the user's stack (Viktor 3,000+ tools, Coworker 50+ connectors, Lindy/Relevance 2,000+) — Sokosumi's story is brief → files, not living inside CRM/Drive.
-- Build-your-own agents and governance/approval workflows (Langdock, Dust, Writer, Relevance).
-- Outcome-based pricing (HubSpot pays per resolved outcome; Google marketplace supports outcome pricing).
-- Scale proof (Langdock $42M ARR, Sintra 40k customers, Viktor 2,000 orgs).
-- Free tiers with recurring credits (Genspark 100/day, Manus 300/day) vs Sokosumi's flat 250.
+- Deep integrations in the user's stack (Viktor 3,000+ tools, Coworker 50+ connectors, M365 Copilot native Office, Gemini native Workspace) — Sokosumi's story is brief → files, not living inside the suite.
+- Ubiquity and zero switching cost: ChatGPT, Copilot and Claude are already licensed; Sokosumi must justify a second seat or position as pay-per-task on top.
+- Build-your-own agents and governance/approval workflows (Langdock, Dust, Writer, Relevance, Copilot Studio, Notion Custom Agents).
+- Scheduled, unattended work on a personal desktop (Claude Cowork, ChatGPT Scheduled Tasks) — Sokosumi's queued tasks exist but are not marketed as recurring automations.
+- Outcome-based pricing (HubSpot per resolved outcome; Google marketplace supports outcome pricing).
+- Scale proof (Langdock $42M ARR, Sintra 40k customers, Viktor 2,000 orgs) and daily-refresh free credits (Genspark, Manus).
 
 Sokosumi claims that competitors do not:
-- Multi-vendor marketplace where each coworker names its builder/operator and discloses model and hosting region.
-- Finished files (PDF, deck, sheet, live dashboard) as the unit of work, with visible credit price before running.
-- Agency lineage (Serviceplan) plus premium research data partners (Statista, GWI, dpa, DataForSEO).
-- EU AI Act compliance framing, EU hosting, DE+EN, invoice payment.
-- Shared task board across a team, coworkers @mentioned in channels.
+- Multi-vendor marketplace where each coworker names its builder/operator and discloses model and hosting region; no general assistant does this.
+- Finished files as the unit of work on a shared team board, visible credit price before running; assistants deliver into one person's chat.
+- Credits only on work run vs flat seat fees (ChatGPT, Claude, Copilot, Gemini all charge per seat regardless of use).
+- Licensed premium research data (Statista, GWI, dpa, DataForSEO) behind the research coworker, versus web grounding.
+- Fixed EU hosting (Azure Frankfurt, Swiss sovereign option) with no flex routing (Copilot), no US-only residency (Claude, ChatGPT Business) and no EU feature exclusions (Gemini Enterprise).
+- Agency lineage (Serviceplan) and EU AI Act compliance framing; DE + EN; invoice payment.
 
-Suggested fixes: publish an integrations page, a vendor directory page, a "why finished files" comparison table, and case-study numbers.
+Suggested fixes: publish an integrations page (Teams/Slack/Drive), a vendor directory page, a "why finished files on a board" comparison table against ChatGPT/Copilot/Claude, a recurring-tasks feature page, and case-study numbers.
 
 ## Queries appendix
 
-English: "Langdock pricing per user agents 2026"; "Lindy AI pricing plans credits 2026"; "Relevance AI workforce pricing funding 2026"; "Dust.tt pricing per seat funding 2026"; "Beam AI agents pricing funding Berlin"; "Sintra AI helpers pricing funding 2026"; "Artisan AI Ava pricing funding 2026"; "11x.ai Alice pricing funding 2026"; "usemotion AI employees pricing funding 2026"; "Paradigm AI spreadsheet agents pricing funding"; "Genspark Super Agent pricing plans 2026 funding"; "Manus AI pricing plans credits 2026 Meta acquisition"; "Kern AI Cognigy Aleph Alpha agents pricing 2026"; "DeepL Agent pricing launch"; "Jasper AI pricing 2026 agents Writer AI pricing 2026 agents"; "Copy.ai pricing 2026 Typeface pricing marketing agents"; "HubSpot Breeze agents pricing credits 2026"; "Salesforce Agentforce pricing Flex Credits marketing agent 2026 AgentExchange"; "Adobe GenStudio pricing Sprinklr Canva Magic Studio marketing agents 2026"; "Microsoft Agent Store Copilot agents marketplace Google Gemini Enterprise Agentspace AWS AI Agents marketplace 2026"; "Agent.ai marketplace Dharmesh Shah OpenAI apps ChatGPT agents marketplace 2026"; "Fiverr Go AI Upwork Uma AI agents marketplace 2026"; "WPP Open Publicis CoreAI Omnicom Omni agent marketplace 2026"; "\"AI employee\" marketplace hire AI employees platform 2026"; "OpenAI Frontier AI coworkers platform launch February 2026 pricing"; "Viktor AI coworker startup Series A"; "WPP Open Pro self-serve launch price 2026"; "Coworker AI Village Platforms funding".
+English: "Langdock pricing per user agents 2026"; "Lindy AI pricing plans credits 2026"; "Relevance AI workforce pricing funding 2026"; "Dust.tt pricing per seat funding 2026"; "Beam AI agents pricing funding Berlin"; "Sintra AI helpers pricing funding 2026"; "Artisan AI Ava pricing funding 2026"; "11x.ai Alice pricing funding 2026"; "usemotion AI employees pricing funding 2026"; "Paradigm AI spreadsheet agents pricing funding"; "Genspark Super Agent pricing plans 2026 funding"; "Manus AI pricing plans credits 2026 Meta acquisition"; "Kern AI Cognigy Aleph Alpha agents pricing 2026"; "DeepL Agent pricing launch"; "Jasper AI pricing 2026 agents Writer AI pricing 2026 agents"; "Copy.ai pricing 2026 Typeface pricing marketing agents"; "HubSpot Breeze agents pricing credits 2026"; "Salesforce Agentforce pricing Flex Credits marketing agent 2026 AgentExchange"; "Adobe GenStudio pricing Sprinklr Canva Magic Studio marketing agents 2026"; "Microsoft Agent Store Copilot agents marketplace Google Gemini Enterprise Agentspace AWS AI Agents marketplace 2026"; "Agent.ai marketplace Dharmesh Shah OpenAI apps ChatGPT agents marketplace 2026"; "Fiverr Go AI Upwork Uma AI agents marketplace 2026"; "WPP Open Publicis CoreAI Omnicom Omni agent marketplace 2026"; "\"AI employee\" marketplace hire AI employees platform 2026"; "OpenAI Frontier AI coworkers platform launch February 2026 pricing"; "Viktor AI coworker startup Series A"; "WPP Open Pro self-serve launch price 2026"; "Coworker AI Village Platforms funding"; "Claude Cowork Anthropic launch file creation xlsx pptx scheduled tasks 2026"; "Anthropic Claude data residency EU Enterprise Team 2026"; "Gemini Enterprise pricing per user per month 2026"; "Microsoft EU Data Boundary Copilot data residency 2026"; "Perplexity Enterprise Pro pricing per seat 2026 Comet Labs"; "OpenAI Codex pricing included ChatGPT plans 2026 Claude Code pricing"; "ChatGPT Business Enterprise pricing per seat 2026 April price cut"; "Canva pricing Teams per person 2026 AI credits"; "Adobe Firefly plans pricing generative credits 2026"; "Notion data residency EU Enterprise 2026 Custom Agents".
 
 German: "KI-Mitarbeiter Marketing Plattform Agenten mieten" → The NEED GmbH, matchilla.de, RentAHuman.ai; "\"KI-Agenten\" Marketing Team Plattform Deutschland Anbieter 2026" → Lime Connect, Whaaat AI/Ufostart (ADZINE), GO TO KI, Werk von Morgen, n8n/Make; "\"AI Coworker\" Plattform Marketing Deutschland" → Coworker.ai, Search Atlas AI Coworker, Serviceplan/Sokosumi (Hannah & Co), Sortlist; "\"KI-Kollege\" OR \"digitaler Mitarbeiter\" Marketing Plattform Preise" → ALAIQ, ki-mitarbeiter.app, KI Navigator (AT), Optimizely, Superchat; "Marktplatz KI-Agenten Deutschland Sokosumi Alternative" → only Sokosumi coverage (new-business.de, campaigngermany.de, marketingreport.de.com) plus superchat.de listicle; "Jung von Matt AI JvM KI Tool Plattform 2026" → JvM STABLES/Frontify; "Scholz & Friends KI Agenten Plattform Launch 2026" → S&F Wien "Open", Head of AI; "Lime Connect KI-Agenten Plattform Preise"; "Whaaat AI Ufostart Berlin Preis KI Marketing Agenten".
 
@@ -369,3 +449,35 @@ German: "KI-Mitarbeiter Marketing Plattform Agenten mieten" → The NEED GmbH, m
 - https://www.gwa.de/agentur-neuigkeiten/brand-tech-in-der-praxis-jung-von-matt-integriert-ki-modell-in-frontify-plattform/
 - https://campaigngermany.de/news/beitrag/2345-christian-thron-steigt-bei-scholz-amp-friends-zum-gruppenweiten-head-of-ai-auf.html
 - https://www.horizont.at/agenturen/news/the-future-is-open-scholz--friends-wien-launcht-neues-agenturmodell-102636
+- https://www.cloudzero.com/blog/how-much-does-chatgpt-cost/
+- https://coworker.ai/blog/chatgpt-enterprise-pricing
+- https://help.openai.com/en/articles/10291617-scheduled-tasks-in-chatgpt
+- https://help.openai.com/en/articles/6825453-chatgpt-release-notes
+- https://claude.com/pricing
+- https://claude.com/product/cowork
+- https://support.claude.com/en/articles/12111783-create-and-edit-files-with-claude
+- https://support.claude.com/en/articles/13854387-schedule-recurring-tasks-in-claude-cowork
+- https://www.infoq.com/news/2026/07/claude-foundry-ga-europe/
+- https://compound.law/en-DE/tools/claude-eu-hosting/
+- https://www.eesel.ai/blog/codex-pricing
+- https://cursor.com/pricing
+- https://github.com/features/copilot/plans
+- https://gemini.google/subscriptions/
+- https://workspace.google.com/pricing
+- https://knowledge.workspace.google.com/admin/compliance/choose-a-geographic-location-for-your-data
+- https://coworker.ai/blog/gemini-enterprise-pricing
+- https://docs.cloud.google.com/gemini/enterprise/docs/locations
+- https://www.microsoft.com/en-us/microsoft-365-copilot/pricing
+- https://www.aguidetocloud.com/licensing/agent-365/
+- https://www.microsoft.com/en-us/microsoft-365/blog/2025/11/04/microsoft-offers-in-country-data-processing-to-15-countries-to-strengthen-sovereign-controls-for-microsoft-365-copilot/
+- https://changepilot.cloud/blog/microsoft-365-copilot-flex-routing-eu-data-boundary-mc1269223
+- https://www.finout.io/blog/perplexity-pricing-in-2026
+- https://www.eesel.ai/blog/perplexity-comet-pricing
+- https://www.notion.com/pricing
+- https://www.notion.com/product/agents
+- https://matthiasfrank.de/en/notion-custom-agents-full-tutorial-use-cases-pricing-changes/
+- https://www.notion.com/blog/notion-expands-data-residency-to-japan-south-korea
+- https://www.usecarly.com/blog/canva-pricing/
+- https://checkthat.ai/brands/canva/pricing
+- https://helpx.adobe.com/creative-cloud/apps/generative-ai/generative-credits-faq.html
+- https://costbench.com/software/ai-image-generators/adobe-firefly/
