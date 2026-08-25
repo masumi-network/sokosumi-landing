@@ -117,6 +117,112 @@
       ]
     ]
   },
+  "de": {
+    "title": "DeepL Agent oder Langdock: deutscher Agent oder deutscher AI-Arbeitsbereich?",
+    "metaTitle": "DeepL Agent vs Langdock (2026): Aufgaben, Preise, EU-Hosting",
+    "description": "DeepL Agent (Köln) vs Langdock (Berlin): was beide sind, veröffentlichte Preise, EU-Hosting, Agent-Bau und Grenzen. Stand August 2026.",
+    "intro": "DeepL Agent ist ein autonomer Agent des Kölner Übersetzungsunternehmens: Sie geben eine Aufgabe in klaren Worten, und er arbeitet per Browser, E-Mail und CRM wie ein Mensch. Langdock ist ein AI-Arbeitsbereich, in dem jeder Mitarbeitende Chat, eigene Agents und Workflows über viele Modelle bekommt. Der Unterschied: DeepL verkauft einen Agent über Sales ohne öffentlichen Preis; Langdock verkauft eine Self-Serve-Plattform für €25 pro Seat.",
+    "glance": [
+      [
+        "Für wen es passt",
+        "Unternehmen, die DeepL bereits vertrauen und einen Agent für wiederkehrende Aufgaben in Sales, Finance, Support, Marketing oder Lokalisierung wollen",
+        "Unternehmen in der DACH-Region, die AI Chat, Agents und Workflows für alle Mitarbeitenden ausrollen"
+      ],
+      [
+        "Was Sie bekommen",
+        "Einen autonomen Agent, der virtuellen Browser, Tastatur und Maus nutzt; arbeitet mit CRM, E-Mail, Kalender, Wissens-Hubs; Mensch kann pausieren oder prüfen",
+        "Chat mit 40+ Modellen, eigene Agents, Workflows mit Triggern, Slack- und Teams-Bots, geplante Aufgaben, API"
+      ],
+      [
+        "Preis pro Nutzer",
+        "Nicht veröffentlicht. Verkauf über DeepL Sales oder Customer Success. DeepL-Übersetzerpläne als Referenz: Starter €8.99, Advanced €29.99, Ultimate €59.99 pro Nutzer/Monat jährlich (Drittanbieter-Seiten; deepl.com blockiert Abruf)",
+        "€25/Monat Standard; €99/Monat Business Max. Jährliche Abrechnung spart 20%"
+      ],
+      [
+        "Free-Plan oder Test",
+        "Für den Agent nicht veröffentlicht",
+        "7 Tage Test, €5 Modell-Credits, keine Kreditkarte"
+      ],
+      [
+        "EU-Hosting",
+        "DeepL ist ein deutsches Unternehmen und nennt Datensouveränität, aber die Hosting-Region des Agent ist nicht veröffentlicht",
+        "App und die meisten Modelle in der EU auf Azure; ISO 27001, SOC 2 Type II"
+      ],
+      [
+        "Teamfunktionen",
+        "Nutzerverwaltung für DeepL Agent über DeepL Admin (Help-Center-Artikel existiert; Details hinter Abrufblock)",
+        "SSO, SCIM, SAML; gemeinsame Agents; Governance Add-on; bis zu 1,000 Nutzer auf Business"
+      ],
+      [
+        "Eigene Agents bauen",
+        "Kein Builder. Ein allgemeiner Agent, den Sie je Aufgabe instruieren",
+        "Ja: Agents mit Wissen und Tools; mehrstufige Workflows mit Zeitplänen und Freigaben"
+      ],
+      [
+        "Status",
+        "Angekündigt 3 Sep 2025 (Beta), allgemein verfügbar seit 5 Nov 2025 nach 1,000+ Beta-Nutzern",
+        "Seit 2023 im Markt; nennt 10,000+ Unternehmen"
+      ]
+    ],
+    "pickA": {
+      "heading": "Wählen Sie DeepL Agent, wenn …",
+      "points": [
+        "Sie einen Agent wollen, der echte Tools durchklickt (CRM, Inbox, Web), statt nur ein Chatfenster.",
+        "Sie DeepL bereits unternehmensweit nutzen und einen Anbieter sowie einen Vertrag wollen.",
+        "Sie mit einem Sales-getriebenen Kauf leben und auf ein Angebot warten können."
+      ]
+    },
+    "pickB": {
+      "heading": "Wählen Sie Langdock, wenn …",
+      "points": [
+        "Sie heute einen veröffentlichten Preis und einen Self-Serve-Test wollen.",
+        "Sie viele Modelle, eigene Agents und Workflows für viele Teams brauchen, nicht einen Agent.",
+        "Sie EU-Hosting-Fakten schriftlich brauchen, bevor Procurement unterschreibt."
+      ]
+    },
+    "limits": {
+      "a": [
+        "Kein öffentlicher Preis, kein öffentlicher Test und keine veröffentlichte Hosting-Region für den Agent; DeepLs Help Center sagt, Zugang läuft über Sales oder Customer Success (support.deepl.com, About DeepL Agent).",
+        "Neues Produkt: allgemeine Verfügbarkeit erst seit 5 Nov 2025, und DeepLs eigene Veröffentlichung betont Monitoring, Pause und menschliche Prüfung. Es ist also noch nicht hands-off."
+      ],
+      "b": [
+        "Nutzungsfenster: Heavy User erreichen 5-Stunden- oder Wochenlimits und fallen auf ein leichteres Modell zurück, wenn Zusatznutzung nicht aktiviert ist (Langdock Docs).",
+        "Langdock-Agents chatten und rufen Tools auf; sie bedienen keinen Browser wie ein Mensch. Ein 90-Tage-Test fand außerdem Mistral-Modellfehler und einen 6–10-wöchigen Rollout-Pfad (teamazing, aktualisiert 17 Aug 2026)."
+      ]
+    },
+    "verdict": "Das sind unterschiedliche Produkte. Langdock ist die klare Wahl für ein Unternehmen, das jetzt einen AI-Arbeitsbereich mit Preisliste und EU-Hosting-Fakten will. DeepL Agent ist einen Call wert, wenn Sie einen browsersteuernden Agent von einer deutschen Marke wollen und einen Sales-Prozess akzeptieren. Wenn DeepL Preis oder Hosting nicht schriftlich nennt, ist es noch nicht vergleichbar.",
+    "bridge": {
+      "heading": "Wenn Sie Arbeit erledigt haben wollen, kein Chatfenster",
+      "text": "DeepL Agent und Langdock geben jeweils einer Person ein Tool: einen Agent zum Instruieren oder einen Arbeitsbereich zum Prompten. Wenn das Team eigentlich einen Wettbewerbsbericht, einen Kampagnenplan oder das Montags-PDF zur Performance braucht, ist das ein anderes Produkt: ein Coworker, den Sie briefen, ein Task-Board fürs Team, am Ende eine Datei. Sokosumi ist ein Marktplatz für benannte AI-Coworker für Marketingteams, gebaut von Serviceplan Group mit NMKR in München.",
+      "points": [
+        "52 Coworker und Agents von 7 Anbietern; jedes Profil nennt Anbieter, Modelle und Hosting, mit verfügbarem EU-Hosting.",
+        "Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25, €75 oder €200 pro Monat; Credits werden nur verbraucht, wenn eine Aufgabe läuft.",
+        "Aufgaben enden mit einer fertigen Datei auf einem gemeinsamen Task-Board; geplante Aufgaben laufen ohne neuen Prompt."
+      ],
+      "links": [
+        "/compare/sokosumi-vs-deepl-agent",
+        "/compare/sokosumi-vs-langdock"
+      ]
+    },
+    "faq": [
+      [
+        "Ist DeepL Agent Teil von DeepL Pro?",
+        "Nicht als gelistetes Plan-Feature. DeepLs Help Center sagt, der Agent sei für Unternehmen über Sales oder Customer Success verfügbar; die Übersetzerpläne (Starter, Advanced, Ultimate) zeigen ihn nicht."
+      ],
+      [
+        "Übersetzt DeepL Agent?",
+        "Er kann Übersetzungs- und Lokalisierungsaufgaben enthalten, ist aber ein allgemeiner Business-Agent. DeepL nennt Sales, Finance, Customer Service, Marketing, Lokalisierung und HR als Zielteams."
+      ],
+      [
+        "Wird Langdock in Deutschland gehostet?",
+        "Langdock nennt EU-Hosting auf Microsoft Azure; Reviews nennen Frankfurt. Einige Modelle können außerhalb der EU geroutet werden, und der Admin kann das konfigurieren."
+      ],
+      [
+        "Welches Produkt gibt meinem Marketingteam fertige Berichte?",
+        "Keines ist darauf gebaut. DeepL Agent erledigt Aufgaben für eine Person; Langdock liefert Chat-Ausgaben und Dateien. Sokosumi und ähnliche Coworker-Produkte liefern Dateien auf ein Task-Board."
+      ]
+    ]
+  },
   "sources": [
     "https://www.prnewswire.com/news-releases/deepl-unveils-autonomous-ai-agent-for-businesses-302543914.html",
     "https://www.prnewswire.com/news-releases/deepl-unveils-next-gen-language-ai-tools-and-game-changing-agentic-productivity-solution-302604737.html",

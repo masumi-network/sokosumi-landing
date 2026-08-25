@@ -62,6 +62,112 @@
       ["Is there a ready-made option for marketing work?", "Sokosumi is a marketplace of AI coworkers that return finished files to a shared board. Free tier of 250 credits per seat per month; EU hosting stated per coworker."]
     ]
   },
+  "de": {
+    "title": "Lindy oder Relevance AI: welcher Agent Builder für kleine Teams?",
+    "metaTitle": "Lindy vs Relevance AI (2026): Preise, Credits, Actions",
+    "description": "Lindy und Relevance AI im Vergleich: Credits pro Nutzer gegen Actions plus Anbieter-Credits, Hosting-Regionen, Free-Pläne und Grenzen. Stand August 2026.",
+    "intro": "Lindy verkauft AI-Assistenten pro Nutzer für E-Mail, Meetings, CRM und Recherche, gemessen in Credits. Relevance AI verkauft einen Builder ohne Code für Multi-Agent-'Workforces', gemessen in Actions plus Anbieter-Credits für Modellnutzung. Entscheidend ist, ob Sie einen fertigen Assistenten pro Person oder eine Plattform für Agents wollen, die dem ganzen Team dienen.",
+    "glance": [
+      [
+        "Für wen es passt",
+        "Einzelpersonen und kleine Teams, die einen fertigen Assistenten in Slack, E-Mail und Kalender wollen",
+        "Ops- und Go-to-Market-Teams, die eigene Agents bauen und betreiben wollen"
+      ],
+      [
+        "Was Sie bekommen",
+        "Vorgefertigte Assistenten und Vorlagen; Chat-, E-Mail-, Kalender-, CRM- und Rechercheaufgaben",
+        "Agent- und Tool-Builder, Multi-Agent Workforces, Vorlagen-Marktplatz, Analytics"
+      ],
+      [
+        "Preis",
+        "Plus $29.99, Pro $99.99, Max $199.99 pro Nutzer und Monat; Enterprise individuell",
+        "Free $0; Pro $19 pro Monat jährlich oder $29 monatlich; Team $234 jährlich oder $349 monatlich; Enterprise individuell"
+      ],
+      [
+        "Free-Plan oder Test",
+        "Kein Free-Plan auf der Preisseite; 7-Tage-Test nur für Teammitglieder, die über Slack beitreten",
+        "Free-Plan: 200 Actions pro Monat, 1 Nutzer, 1 Projekt"
+      ],
+      [
+        "EU-Hosting",
+        "Nicht veröffentlicht. SOC 2 Type II, GDPR und HIPAA-Kontrollen gelistet",
+        "Region bei Signup gewählt: US (N. Virginia), EU/UK (London), AU (Sydney)"
+      ],
+      [
+        "Teamfunktionen",
+        "Workspace teilt einen Credit-Pool; Seats pro Nutzer",
+        "Pro 2 Build-Nutzer; Team 5 Build-Nutzer, 45 Endnutzer, gemeinsame Projekte; SSO und RBAC auf Enterprise"
+      ],
+      [
+        "Eigene Agents bauen",
+        "Ja, ohne Code, aus Vorlagen",
+        "Ja, das ganze Produkt ist ein Builder"
+      ],
+      [
+        "Was gezählt wird",
+        "Credits pro Nutzer: 3,000 / 15,000 / 35,000 pro Monat. Einfache Aufgabe 2 bis 250 Credits, Deep Work 250 bis 1,000, große Builds 1,000 bis 2,500",
+        "Actions: 200 / 2,500 / 7,000 pro Monat plus Anbieter-Credits $2 einmalig / $20 / $70. Top-up $80 pro 1,000 Actions, $20 pro 10,000 Anbieter-Credits"
+      ]
+    ],
+    "pickA": {
+      "heading": "Wählen Sie Lindy, wenn …",
+      "points": [
+        "Jede Person heute einen eigenen Assistenten für Inbox, Kalender und Follow-ups braucht, ohne etwas zu bauen.",
+        "Sie in Slack leben und möchten, dass Teammitglieder von dort beitreten und testen.",
+        "Sie einen Zähler bevorzugen. Lindy hat nur Credits; Relevance hat zwei."
+      ]
+    },
+    "pickB": {
+      "heading": "Wählen Sie Relevance AI, wenn …",
+      "points": [
+        "Sie Agents und Tools entwerfen wollen, die für das ganze Team laufen, nicht Assistenten pro Person.",
+        "Sie kostenlos starten und günstig bleiben wollen. Free hat 200 Actions; Pro kostet $19 pro Monat jährlich.",
+        "Sie eine Hosting-Region wählen müssen. Relevance lässt Sie beim Signup US, EU/UK oder AU wählen."
+      ]
+    },
+    "limits": {
+      "a": [
+        "Kosten sind der wichtigste G2-Kritikpunkt (Dutzende 'expensive'-Nennungen). Credits resetten monatlich und werden nicht übertragen, und eine fehlerhafte Schleife kann tausende verbrauchen, bevor es auffällt.",
+        "Keine Hosting-Region veröffentlicht. Reviews beschreiben US-Hosting als Standard; fragen Sie schriftlich nach, wenn EU-Residenz wichtig ist."
+      ],
+      "b": [
+        "Zwei Zähler (Actions und Anbieter-Credits) machen Monatskosten schwer planbar, der meistgenannte Kritikpunkt auf G2 und Capterra.",
+        "Jenseits eines einfachen Agent sagen Reviews, dass Multi-Agent-Setups trotz No-Code-Label echtes technisches Können brauchen. Die EU/UK-Region liegt in London, also außerhalb der EU."
+      ]
+    },
+    "verdict": "Lindy gewinnt für ein kleines Team, das jetzt einen funktionierenden Assistenten pro Person will und mit US-Hosting sowie Nutzerpreis leben kann. Relevance AI gewinnt für ein Team mit einer technischen Person, das Agents bauen, kostenlos starten und eine Region wählen will. Keines liefert fertige Marketing-Ergebnisse out of the box.",
+    "bridge": {
+      "heading": "Wenn Sie Arbeit erledigt haben wollen, keinen Agent bauen",
+      "text": "Beide Tools geben einer Person einen Assistenten zum Betreiben oder einen Builder zum Konfigurieren. Wenn das Team eigentlich einen Wettbewerbsbericht, einen Kampagnenplan oder das Montags-PDF zur Performance braucht, ist das ein anderes Produkt: ein Coworker, den Sie briefen, ein Task-Board fürs Team, am Ende eine Datei. Sokosumi ist ein Marktplatz für benannte AI-Coworker für Marketingteams, jeweils mit Rolle, Beispielarbeit und einem benannten Anbieter, der Modelle und Hosting ausweist.",
+      "points": [
+        "Briefen Sie in klarer Sprache oder per @Mention in einem Kanal; die Aufgabe erscheint auf einem gemeinsamen Task-Board und endet mit einer fertigen Datei.",
+        "Credits nur, wenn eine Aufgabe läuft. Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25, €75 oder €200 pro Monat.",
+        "EU-Hosting verfügbar, je Coworker ausgewiesen. Gebaut von Serviceplan Group mit NMKR, München."
+      ],
+      "links": [
+        "/compare/sokosumi-vs-lindy",
+        "/compare/sokosumi-vs-relevance-ai"
+      ]
+    },
+    "faq": [
+      [
+        "Was ist ein Lindy Credit wert?",
+        "Lindy sagt, Credits messen erledigte Arbeit. Alltagstasks kosten 2 bis 250 Credits, Deep Work wie Recherche oder Reporting 250 bis 1,000, große Builds 1,000 bis 2,500. Plus enthält 3,000 pro Nutzer und Monat."
+      ],
+      [
+        "Was ist der Unterschied zwischen Relevance Actions und Anbieter-Credits?",
+        "Actions zählen, was der Agent tut (Schritte, Tool-Aufrufe). Anbieter-Credits bezahlen das KI-Modell dahinter. Plan-Actions resetten monatlich; Anbieter-Credits werden übertragen, solange Sie abonnieren."
+      ],
+      [
+        "Kann ich in der EU hosten?",
+        "Relevance AI bietet eine EU/UK-Region in London, also UK und nicht EU. Lindy veröffentlicht keine Region. Prüfen Sie beides schriftlich, wenn EU-Residenz Pflicht ist."
+      ],
+      [
+        "Gibt es eine fertige Option für Marketingarbeit?",
+        "Sokosumi ist ein Marktplatz für AI-Coworker, die fertige Dateien auf ein gemeinsames Task-Board liefern. Free-Plan mit 250 Credits pro Seat und Monat; EU-Hosting je Coworker ausgewiesen."
+      ]
+    ]
+  },
   "sources": [
     "https://www.lindy.ai/pricing",
     "https://www.lindy.ai/security",

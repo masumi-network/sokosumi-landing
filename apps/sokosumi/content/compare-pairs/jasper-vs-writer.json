@@ -62,6 +62,112 @@
       ["What if we just want finished marketing work?", "Sokosumi is a third option: named AI coworkers you brief, a shared task board and a finished file at the end. Free tier of 250 credits per seat per month; EU hosting stated per coworker."]
     ]
   },
+  "de": {
+    "title": "Jasper oder Writer: Marketingtool oder Enterprise-AI-Plattform?",
+    "metaTitle": "Jasper vs Writer (2026): Preise, Agents, Governance",
+    "description": "Jasper und Writer im Vergleich: Seat-Preis, Agents, eigene Modelle, Governance, Hosting und echte Grenzen. Stand August 2026, mit Empfehlung.",
+    "intro": "Jasper ist eine Marketing-Content-Plattform: Brand Voice, Canvas, Bilder und Marketing-Agents, verkauft pro Seat. Writer ist eine Enterprise-AI-Plattform mit eigenen Palmyra-Modellen, Knowledge Graph und vorgefertigten Agents für viele Abteilungen. Entscheidend ist, ob Sie für ein Marketingteam kaufen oder für das ganze Unternehmen unter IT-Kontrolle.",
+    "glance": [
+      [
+        "Für wen es passt",
+        "Marketingteams, die täglich schreiben und markenkonformen Output wollen",
+        "Unternehmen, die eine gesteuerte AI-Plattform über Marketing, Sales, Support und Ops hinweg wollen"
+      ],
+      [
+        "Was Sie bekommen",
+        "Chat, Canvas, Bilder, Marketing-Agents, Custom Agent Builder (Business)",
+        "Chat (Ask Writer), 100+ vorgefertigte Agents, AI Studio zum Bauen von Agents, Knowledge Graph, Palmyra-Modelle"
+      ],
+      [
+        "Preis",
+        "Pro $69 pro Seat monatlich oder $59 jährlich; Business individuell",
+        "Starter $39 pro Nutzer monatlich oder $29 jährlich, max 5 Seats; Enterprise individuell (Drittanbieter, prüfen: writer.com blockierte Abruf)"
+      ],
+      [
+        "Free-Plan oder Test",
+        "7 Tage kostenloser Test auf Pro",
+        "14 Tage Test von Starter, keine Kreditkarte (Drittanbieter, prüfen)"
+      ],
+      [
+        "EU-Hosting",
+        "Nein. Daten in US-Rechenzentren",
+        "Nicht veröffentlicht. Single-Tenant-Deployment ist ein Enterprise Add-on (Drittanbieter, prüfen)"
+      ],
+      [
+        "Teamfunktionen",
+        "Brand Voices, Knowledge, Audiences; Admin und Gruppen auf Business",
+        "Playbooks, Konnektoren, Knowledge Graph; SAML SSO, HIPAA BAA, SOC 2 Report auf Enterprise"
+      ],
+      [
+        "Eigene Agents bauen",
+        "No-Code Builder nur auf Business",
+        "Bis zu 5 eigene Agents auf Starter; unbegrenzt auf Enterprise; Code-Ausführung und Browser-Automation auf Enterprise"
+      ],
+      [
+        "Modelle",
+        "Drittanbieter-LLMs; Daten werden nicht zu deren Training genutzt",
+        "Writers eigene Palmyra-Modelle; Enterprise kann externe Modelle ergänzen"
+      ]
+    ],
+    "pickA": {
+      "heading": "Wählen Sie Jasper, wenn …",
+      "points": [
+        "Der Käufer die Marketingleitung ist, nicht IT, und die Aufgabe Content ist: Blogs, Ads, E-Mail, Social, Bilder.",
+        "Sie Brand Voice und Langform-Editor für Marketer wollen statt eines allgemeinen Agent Studio.",
+        "US-Hosting und ein Seat-Preis von $59 bis $69 für Sie passen."
+      ]
+    },
+    "pickB": {
+      "heading": "Wählen Sie Writer, wenn …",
+      "points": [
+        "Sie eine Plattform für viele Abteilungen mit SSO, Audit und Knowledge Graph über Unternehmensdaten wollen.",
+        "Modellkontrolle wichtig ist: Writer betreibt eigene Palmyra-Modelle und bietet Single-Tenant-Deployment auf Enterprise.",
+        "Sie günstig testen wollen. Starter kostet $29 bis $39 pro Nutzer für bis zu fünf Personen mit 14-Tage-Test."
+      ]
+    },
+    "limits": {
+      "a": [
+        "Die Funktionen, die Jasper 'agentic' machen (eigene Agents, Deep Research, GEO, API), brauchen Business ohne öffentlichen Preis.",
+        "Reviews sind gespalten: 4.7/5 auf G2, aber 3.4/5 auf Trustpilot, wo Billing, Kündigung und die Preiserhöhung 2023 weiter Kritik auslösen."
+      ],
+      "b": [
+        "Starter ist hart begrenzt: fünf Seats, fünf Playbooks, drei aktive Konnektoren, 1 GB Knowledge-Graph-Speicher. Ernsthafte Nutzung bedeutet Enterprise und Sales-Zyklus.",
+        "Palmyra-Modelle liegen laut unabhängigen Reviews auf allgemeinen Benchmarks unter Frontier-Modellen von OpenAI und Anthropic; Writer tauscht Top-Leistung gegen Kontrolle."
+      ]
+    },
+    "verdict": "Jasper gewinnt für ein Marketingteam, das Content-Tools heute kaufen will. Writer gewinnt für ein Unternehmen, das gesteuerte AI abteilungsübergreifend will und bereit für einen individuellen Vertrag ist. Wenn Sie zu fünft testen, ist Writer Starter der günstigere Einstieg.",
+    "bridge": {
+      "heading": "Wenn Sie Arbeit erledigt haben wollen, kein Chatfenster",
+      "text": "Beide Tools geben einer Person einen Ort zum Prompten oder einen Agent zum Bauen. Wenn das Team eigentlich einen Wettbewerbsbericht, einen Kampagnenplan oder das Montags-PDF zur Performance braucht, ist das ein anderes Produkt: ein Coworker, den Sie briefen, ein Task-Board fürs Team, am Ende eine Datei. Sokosumi ist ein Marktplatz für benannte AI-Coworker für Marketingteams, jeweils mit Rolle, Beispielarbeit und einem benannten Anbieter, der Modelle und Hosting ausweist.",
+      "points": [
+        "Briefen Sie in klarer Sprache oder per @Mention in einem Kanal; die Aufgabe erscheint auf einem gemeinsamen Task-Board und endet mit einer fertigen Datei (PDF, Deck, Spreadsheet, Dashboard).",
+        "Credits nur, wenn eine Aufgabe läuft. Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25, €75 oder €200 pro Monat.",
+        "EU-Hosting verfügbar, je Coworker ausgewiesen. Gebaut von Serviceplan Group mit NMKR, München."
+      ],
+      "links": [
+        "/compare/sokosumi-vs-jasper",
+        "/compare/sokosumi-vs-writer"
+      ]
+    },
+    "faq": [
+      [
+        "Veröffentlicht Writer seine Preise?",
+        "Nur teilweise. writer.com blockierte unseren Abruf; ein Drittanbieter-Guide vom May 2026 nennt Starter mit $39 pro Nutzer monatlich oder $29 jährlich, begrenzt auf fünf Seats. Enterprise ist individuell. Prüfen Sie writer.com/plans."
+      ],
+      [
+        "Welches Tool hat eigene KI-Modelle?",
+        "Writer. Es baut die Palmyra-Modellfamilie und kann sie für Enterprise Single-Tenant betreiben. Jasper nutzt Drittanbieter-Modelle und sagt, dass Ihre Daten nicht zu deren Training verwendet werden."
+      ],
+      [
+        "Kann eines Daten in der EU hosten?",
+        "Jasper sagt, seine Daten liegen in US-Rechenzentren. Writer veröffentlicht auf den erreichbaren Seiten keine Region. Fragen Sie schriftlich nach, wenn EU-Residenz Pflicht ist."
+      ],
+      [
+        "Was, wenn wir nur fertige Marketingarbeit wollen?",
+        "Sokosumi ist eine dritte Option: benannte AI-Coworker, die Sie briefen, ein gemeinsames Task-Board und am Ende eine fertige Datei. Free-Plan mit 250 Credits pro Seat und Monat; EU-Hosting je Coworker ausgewiesen."
+      ]
+    ]
+  },
   "sources": [
     "https://www.jasper.ai/pricing",
     "https://www.jasper.ai/trust",

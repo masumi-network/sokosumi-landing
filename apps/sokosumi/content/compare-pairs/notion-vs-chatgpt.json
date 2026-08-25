@@ -62,6 +62,112 @@
       ["Where does Sokosumi fit?", "It is not a document tool or a general assistant. It is a marketplace of specialist marketing coworkers that deliver finished files to a team board. Teams keep Notion for their wiki, ChatGPT for daily chat, and hire a coworker for recurring marketing reports."]
     ]
   },
+  "de": {
+    "title": "Notion AI oder ChatGPT: was passt zu dokumentenorientierten Teams?",
+    "metaTitle": "Notion AI vs ChatGPT (2026): Preise, Agents, EU-Hosting",
+    "description": "Notion AI und ChatGPT im Vergleich: Preis, Agents, Dateiausgabe, EU-Datenresidenz und echte Grenzen. Stand August 2026, plus Empfehlung für Teams.",
+    "intro": "Notion AI ist die KI-Schicht in Notion: Chat über Ihre Seiten, Meeting Notes, Enterprise Search, ein Notion Agent, der den Workspace editiert, und Custom Agents, die auf Triggern laufen. ChatGPT ist ein allgemeiner Assistent außerhalb Ihrer Dokumente und verbindet sich mit ihnen. Entscheidend ist, ob das Wissen Ihres Teams schon in Notion liegt. Wenn ja, arbeitet Notion AI direkt daran. Wenn nicht, ist ChatGPT das breitere Tool.",
+    "glance": [
+      [
+        "Für wen es passt",
+        "Teams, deren Docs, Wikis und Projekte in Notion liegen",
+        "Alle; ein allgemeiner Assistent für Schreiben, Recherche, Bilder und Code"
+      ],
+      [
+        "Was Sie bekommen",
+        "Notion AI Chat, AI Meeting Notes, Enterprise Search, Notion Agent, Custom Agents auf Triggern (Zeitplan, Slack, E-Mail, Datenbankänderung), Workers (Beta)",
+        "Chat, GPT Images, Voice, Deep Research, Agent Mode, Scheduled Tasks, Projects, Custom GPTs, Codex, Konnektoren"
+      ],
+      [
+        "Preis pro Person",
+        "Free $0 (AI-Test); Plus $10 pro Mitglied monatlich (ca. $8 jährlich); Business $20 monatlich (ca. $16 jährlich) mit Notion AI und Notion Agent enthalten; Enterprise individuell (notion.com, 26 Aug 2026)",
+        "Free $0; Go $8; Plus $20; Pro $100 oder $200 pro Monat (Drittanbieter-Tracker, 20 Aug 2026, prüfen)"
+      ],
+      [
+        "Preis pro Seat (Team)",
+        "Business $20 pro Mitglied monatlich, ca. $16 jährlich; Custom Agents gezählt mit $10 pro 1,000 Notion Credits, im Workspace gepoolt",
+        "Business $20 pro Seat jährlich oder $25 monatlich, 2-Seat-Minimum; Enterprise-Angebot"
+      ],
+      [
+        "Free-Plan oder Test",
+        "Free-Plan mit begrenztem KI-Test; Custom Agents kostenlos testbar",
+        "Free-Plan, keine Kreditkarte"
+      ],
+      [
+        "EU-Hosting",
+        "Nur Enterprise: Datenresidenz in Frankfurt (AWS eu-central-1) ohne Aufpreis; Notion AI hält Daten mit Zero-Retention-LLM-Bedingungen in der Region. Plus und Business sind US-gehostet",
+        "Nur Enterprise: Europa-Residenz at rest für neue Workspaces. Business, Plus und Pro speichern Daten in den USA"
+      ],
+      [
+        "Teamfunktionen",
+        "Gemeinsamer Workspace, Admin-Kontrollen, SSO auf Business, SCIM und Audit auf Enterprise; Agents arbeiten in gemeinsamen Seiten",
+        "Gemeinsamer Workspace und Projects, SAML SSO, Admin-Kontrollen, kein Training auf Geschäftsdaten"
+      ],
+      [
+        "Eigene Agents bauen",
+        "Ja. Custom Agents mit Triggern und Tools, ohne Code, in Credits gemessen (ab 4 May 2026)",
+        "Custom GPTs; Agent Mode für Einzelaufgaben; Frontier Platform für Enterprise (individuell)"
+      ]
+    ],
+    "pickA": {
+      "heading": "Wählen Sie Notion AI, wenn …",
+      "points": [
+        "Ihr Wiki, Ihre Projekte und Meeting Notes bereits in Notion liegen und Sie KI wollen, die diese Seiten direkt editiert.",
+        "Sie Agents wollen, die auf einen Trigger wie Slack-Nachricht oder Datenbankänderung laufen, ohne Entwickler. Custom Agents tun das mit Credit-Limits und ohne Überraschungsrechnungen.",
+        "Sie EU-Hosting wollen und Enterprise kaufen können. Frankfurt-Residenz ist enthalten und deckt Notion AI ab."
+      ]
+    },
+    "pickB": {
+      "heading": "Wählen Sie ChatGPT, wenn …",
+      "points": [
+        "Ihr Wissen über Google Drive, SharePoint, GitHub und E-Mail verteilt ist, nicht in einem Notion-Workspace.",
+        "Sie Bilder, Voice, Code und Deep Research im selben Tool brauchen.",
+        "Sie die Ausgabe als eigenständiges Spreadsheet, Slide Deck oder PDF wollen statt als Notion-Seite."
+      ]
+    },
+    "limits": {
+      "a": [
+        "Output sind Notion-Seiten und Datenbanken, nicht .pptx oder .xlsx. Agents laufen bis zu 20 Minuten pro Session und pausieren, wenn Workspace-Credits leer sind.",
+        "Volles Notion AI braucht den Business-Plan ($20 pro Mitglied); Plus bekommt nur einen Test. EU-Residenz braucht Enterprise, und Calendar, Mail sowie Beta-Funktionen sind ausgeschlossen."
+      ],
+      "b": [
+        "Es lebt nicht in Ihren Dokumenten. Edits landen im Chat oder in einer heruntergeladenen Datei, die Sie zurückkopieren.",
+        "EU-Datenresidenz braucht Enterprise (berichtet ca. 150-Seat-Minimum). OpenAI blockiert automatisierte Abrufe der Preisseite, daher beruhen Preise auf einem datierten Drittanbieter-Tracker."
+      ]
+    },
+    "verdict": "Wenn Ihr Unternehmen auf Notion läuft, ist Notion AI auf Business der bessere Kauf: gleicher $20-Seat, und die Agents arbeiten in den Seiten, die Ihr Team ohnehin liest. Wenn Ihr Wissen anderswo liegt oder Sie Bilder, Code und eigenständige Dateien brauchen, gewinnt ChatGPT. Für EU-Hosting brauchen beide ihre Enterprise-Stufe.",
+    "bridge": {
+      "heading": "Wenn Sie Arbeit erledigt haben wollen, kein Chatfenster",
+      "text": "Beide Tools geben einer Person einen Ort zum Prompten, und Notion ergänzt Agents, die Sie selbst bauen. Wenn das Team eigentlich einen Wettbewerbsbericht, einen Kampagnenplan oder das Montags-PDF zur Performance braucht, ist das ein anderes Produkt: ein Coworker, den Sie briefen, ein Task-Board fürs Team, am Ende eine Datei. Sokosumi ist ein Marktplatz für benannte AI-Coworker für Marketingteams, jeweils mit öffentlichem Profil, Beispielarbeit, benanntem Anbieter und genanntem Hosting.",
+      "points": [
+        "Briefen Sie in klarer Sprache oder per @Mention in einem Kanal; die Aufgabe erscheint auf einem gemeinsamen Task-Board und endet als PDF, Deck, Spreadsheet oder Dashboard, das in jeden Stack passt, auch Notion.",
+        "Credits nur, wenn eine Aufgabe läuft. Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25 / €75 / €200 pro Monat; Enterprise individuell. EU-Hosting je Coworker ausgewiesen.",
+        "52 Coworker und Agents von 7 Anbietern, 5,300+ erledigte Aufgaben. Gebaut von Serviceplan Group mit NMKR, München."
+      ],
+      "links": [
+        "/compare/sokosumi-vs-notion-ai",
+        "/compare/sokosumi-vs-chatgpt"
+      ]
+    },
+    "faq": [
+      [
+        "Ist Notion AI im Notion-Preis enthalten?",
+        "Auf Business ($20 pro Mitglied monatlich) und Enterprise ja: Notion AI und Notion Agent sind enthalten. Free und Plus erhalten einen Test. Custom Agents werden separat mit $10 pro 1,000 Credits gezählt, jeder Lauf kostet grob 1 bis 30 Credits."
+      ],
+      [
+        "Welches Produkt hält Daten in der EU?",
+        "Beide nur auf Enterprise-Plänen. Notion Enterprise bietet Frankfurt-Residenz ohne Aufpreis, und Notion AI hält Daten in der Region. ChatGPT Enterprise bietet Europa-Residenz für neue Workspaces. Business-Pläne beider Produkte sind US-gehostet."
+      ],
+      [
+        "Kann ChatGPT meine Notion-Seiten lesen?",
+        "Ja, über Konnektoren auf Business und Enterprise. Es liest und fasst zusammen; es editiert Seiten nicht direkt wie der Notion Agent."
+      ],
+      [
+        "Wo passt Sokosumi hinein?",
+        "Es ist kein Dokumententool und kein allgemeiner Assistent. Es ist ein Marktplatz für spezialisierte Marketing-Coworker, die fertige Dateien auf ein Task-Board liefern. Teams behalten Notion für ihr Wiki, ChatGPT für täglichen Chat und mieten einen Coworker für wiederkehrende Marketingberichte."
+      ]
+    ]
+  },
   "sources": [
     "https://www.notion.com/pricing",
     "https://www.notion.com/product/agents",

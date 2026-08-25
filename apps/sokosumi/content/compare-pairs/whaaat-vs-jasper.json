@@ -117,6 +117,112 @@
       ]
     ]
   },
+  "de": {
+    "title": "Whaaat AI oder Jasper: $25-Berliner Startup oder US-Marktführer für Marketing-AI?",
+    "metaTitle": "Whaaat AI vs Jasper (2026): Preise, Agents, Brand Voice",
+    "description": "Whaaat AI für $25 unlimited vs Jasper ab $59 pro Seat: Marketing-Agents, Brand Voice, US-Hosting, Teamfunktionen und Grenzen. Stand August 2026.",
+    "intro": "Whaaat AI gibt kleinen Marketingteams 28 benannte Content-Agents mit einer gemeinsamen Brand Knowledge Base für $25 pro Monat. Jasper ist die etablierte Marketing-AI-Plattform mit 100+ Agents, Canvas, Brand Voices und Enterprise Governance, ab $59 pro Seat. Der Unterschied: Preis und Tiefe. Whaaat ist günstig und einfach; Jasper kostet mehr und bietet Teamkontrollen, Agent Builder und API.",
+    "glance": [
+      [
+        "Für wen es passt",
+        "Kleine Marketingteams, Startups und Agenturen mit mehreren Marken",
+        "Marketingteams in mittleren und großen Unternehmen, die Brand Control, Governance und Skalierung brauchen"
+      ],
+      [
+        "Was Sie bekommen",
+        "28 kanalspezifische Agents (LinkedIn, Blog, SEO, PR, E-Mail, TikTok), gemeinsame Brand Knowledge Base, Brand Presets, Bildgenerierung",
+        "Canvas-Arbeitsbereich, Agents für Marketing-Workflows, Brand Voices, Knowledge Assets, Audiences, Bildgenerierung, Browser Extension; Business ergänzt Custom Agent Builder, GEO und Deep-Research-Agents, API"
+      ],
+      [
+        "Preis pro Nutzer",
+        "$25/Monat, unbegrenzte Agents (Seat-Modell nicht veröffentlicht)",
+        "Pro $69/Seat monatlich oder $59/Seat jährlich, 1 Seat; Business individuell, 12-Monatsminimum"
+      ],
+      [
+        "Free-Plan oder Test",
+        "7 Tage kostenloser Test",
+        "7 Tage kostenloser Test; kein Free-Plan"
+      ],
+      [
+        "EU-Hosting",
+        "Nicht veröffentlicht; deutscher Rechtsträger (UFOstart GmbH, Berlin)",
+        "Nein. Kundendaten in US-Rechenzentren; SOC 2, GDPR, DPA; Daten werden nicht zum Training von Drittanbieter-Modellen genutzt"
+      ],
+      [
+        "Teamfunktionen",
+        "Brand Presets pro Kunde; Seats nicht veröffentlicht",
+        "Business: SSO/SAML, Admin-Kontrollen, Gruppen, Nutzungsanalysen, unbegrenzte Brand Voices"
+      ],
+      [
+        "Eigene Agents bauen",
+        "Nein",
+        "Ja, auf Business: Custom Agent Builder ohne Code"
+      ],
+      [
+        "Unternehmen",
+        "UFOstart GmbH, Berlin, ca. 12 Mitarbeitende, Seed-Runde 2026",
+        "Jasper AI, Austin; $125M Series A (2022); G2 4.7/5 aus 1,270 Reviews (Juni 2026)"
+      ]
+    ],
+    "pickA": {
+      "heading": "Wählen Sie Whaaat AI, wenn …",
+      "points": [
+        "Sie ein Team von einer bis fünf Personen sind und $59+ pro Seat zu viel ist.",
+        "Sie einen deutschen Anbieter und einen Pauschalpreis ohne Seat-Zahl wollen.",
+        "Ihr Bedarf Kanal-Content ist, nicht ein gesteuerter Content-Betrieb."
+      ]
+    },
+    "pickB": {
+      "heading": "Wählen Sie Jasper, wenn …",
+      "points": [
+        "Sie Brand Governance brauchen: freigegebene Voices, Gruppen, SSO, Audit und Nutzungsanalysen.",
+        "Sie eigene Agents bauen oder eine API aufrufen wollen.",
+        "Sie Budget für Seats und einen 12-Monatsvertrag auf Business haben."
+      ]
+    },
+    "limits": {
+      "a": [
+        "Keine veröffentlichte Hosting-Region, GDPR-Aussage, Fair-Use-Policy oder Team-Seat-Modell (whaaat.ai, geprüft 26 Aug 2026). Kleines, junges Unternehmen (ADZINE, Juni 2026).",
+        "Nur Content-Generierung; keine Publishing-, Scheduling- oder Analytics-Integrationen gelistet."
+      ],
+      "b": [
+        "Preis ist der häufigste Kritikpunkt auf G2 und Capterra; Pro ist nur ein Seat, und mehr Nutzer brauchen einen individuellen Business-Vertrag mit 12-Monatsminimum (jasper.ai/pricing; eesel Review 2026).",
+        "Nur US-Hosting; Reviews nennen außerdem generischen Output, der redigiert werden muss, und keinen Publishing-Schritt (Jasper-Preisseite; G2-Review-Themen, 2026)."
+      ]
+    },
+    "verdict": "Jasper ist die sicherere Wahl für ein Team, das Governance und Skalierung braucht, und als einziges der beiden mit Team-Admin, Agent Builder und API. Whaaat AI gewinnt beim Preis für kleine Teams und Agenturen mit mehreren Marken. Für EU-Datenschutz veröffentlicht keines EU-Hosting; Jasper nennt US-Rechenzentren, Whaaat noch nichts.",
+    "bridge": {
+      "heading": "Wenn Sie Arbeit erledigt haben wollen, kein Chatfenster",
+      "text": "Beide Tools geben einer Person Agents zur Content-Erzeugung. Wenn das Team eigentlich einen Wettbewerbsbericht, einen Kampagnenplan oder das Montags-PDF zur Performance braucht, ist das ein anderes Produkt: ein Coworker, den Sie briefen, ein Task-Board fürs Team, am Ende eine Datei. Sokosumi ist ein Marktplatz für benannte AI-Coworker für Marketingteams, gebaut von Serviceplan Group mit NMKR in München.",
+      "points": [
+        "52 Coworker und Agents von 7 Anbietern; jedes Profil nennt Anbieter, Modelle und Hosting, mit verfügbarem EU-Hosting.",
+        "Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25, €75 oder €200 pro Monat; Credits werden nur verbraucht, wenn eine Aufgabe läuft.",
+        "Aufgaben enden mit einem fertigen PDF, Deck, Spreadsheet oder Dashboard auf einem gemeinsamen Task-Board; geplante Aufgaben wiederholen sich selbst."
+      ],
+      "links": [
+        "/compare/sokosumi-vs-whaaat-ai",
+        "/compare/sokosumi-vs-jasper"
+      ]
+    },
+    "faq": [
+      [
+        "Bietet Jasper EU-Hosting?",
+        "Nein. Jaspers Preisseite sagt, dass Kundendaten in US-basierten Rechenzentren gehostet werden. Jasper ist GDPR-compliant mit DPA und trainiert Drittanbieter-Modelle nicht auf Ihren Daten."
+      ],
+      [
+        "Können mehrere Personen Whaaat AI nutzen?",
+        "Die Site verkauft einen $25-Plan und nennt Brand Presets für mehrere Kunden, veröffentlicht aber keine Seats oder Rollen. Fragen Sie den Anbieter."
+      ],
+      [
+        "Was ist der Unterschied zwischen Jasper Pro und Business?",
+        "Pro ist ein Seat mit Canvas, Agents, zwei Brand Voices und Bildtools. Business ergänzt unbegrenzte Brand Voices, Custom Agent Builder, GEO und Deep-Research-Agents, API, SSO und Admin-Kontrollen, mit individuellen Preisen und 12-Monatsminimum."
+      ],
+      [
+        "Welches Produkt übergibt meinem Team einen fertigen Bericht?",
+        "Keines ist darauf gebaut. Beide geben Text und Bilder in einem Arbeitsbereich zurück. Sokosumi-Coworker liefern fertige Dateien auf ein Task-Board."
+      ]
+    ]
+  },
   "sources": [
     "https://www.whaaat.ai/",
     "https://www.whaaat.ai/lp/agencies",

@@ -117,6 +117,112 @@
       ]
     ]
   },
+  "de": {
+    "title": "Whaaat AI oder Sintra: benannte Marketing-Agents für kleine Teams",
+    "metaTitle": "Whaaat AI vs Sintra (2026): Preise, Credits, Agents",
+    "description": "Whaaat AI aus Berlin vs Sintra: $25 unlimited oder Credit-Pläne, 28 Marketing-Agents vs 12 Helfer, Hosting und Grenzen. Stand August 2026.",
+    "intro": "Whaaat AI ist eine Berliner Plattform mit 28 benannten Marketing-Agents (Lin für LinkedIn, Bob für Blogs, Sepp für SEO-Artikel), die eine Brand Knowledge Base teilen, für $25 pro Monat mit unbegrenzter Nutzung. Sintra bündelt 12 benannte Helfer für Marketing, Support, Sales und Admin in einer vergünstigten Subscription mit 250 Credits pro Monat. Unterschied: Whaaat ist nur Marketing und ungemessen; Sintra ist breiter, aber gemessen.",
+    "glance": [
+      [
+        "Für wen es passt",
+        "Kleine Marketingteams, Startups und Agenturen, die über viele Kanäle veröffentlichen",
+        "Solo-Gründer und kleine Unternehmen, die je einen Helfer für Social, Copy, Support, Sales und Admin wollen"
+      ],
+      [
+        "Was Sie bekommen",
+        "28 kanalspezifische Content-Agents, gemeinsame Brand Knowledge Base, Brand Presets pro Kunde, Bildgenerierung über FLUX",
+        "12 Helfer mit gemeinsamem 'Brain', 15+ Integrationen (Gmail, Notion, Shopify, QuickBooks), Bildgenerierung"
+      ],
+      [
+        "Preis pro Nutzer",
+        "$25/Monat, unbegrenzte Nutzung aller Agents (ein Preis; Seat-Modell nicht veröffentlicht)",
+        "Liste $97/Monat; verkauft für $48.50 monatlich, $23.60 bei 3 Monaten, $15.60 bei 12 Monaten (Stand 26 Aug 2026). Einzelner Helfer $39/Monat"
+      ],
+      [
+        "Free-Plan oder Test",
+        "7 Tage kostenloser Test, voller Zugang zu allen Agents",
+        "Kein Free-Plan; 14 Tage Geld-zurück-Garantie"
+      ],
+      [
+        "EU-Hosting",
+        "Nicht veröffentlicht. Unternehmen ist UFOstart GmbH, Berlin; Modelle von OpenAI, Anthropic, Google, Mistral",
+        "Nicht EU. Rechtsträger PlayOS, Inc. (Delaware); Daten können in den USA verarbeitet werden"
+      ],
+      [
+        "Teamfunktionen",
+        "Brand Presets für mehrere Kunden; Team-Seats nicht veröffentlicht",
+        "Unbegrenzte Workspaces; kein Seat-Plan oder Team-Admin"
+      ],
+      [
+        "Eigene Agents bauen",
+        "Nein; nur vorkonfigurierte Agents",
+        "Nein; feste Helfer-Personas mit konfigurierbaren Automationen"
+      ],
+      [
+        "Credits",
+        "Keine; unbegrenzt genannt",
+        "250 Credits pro Monat auf jedem Plan; Top-ups extra; kein Rollover"
+      ]
+    ],
+    "pickA": {
+      "heading": "Wählen Sie Whaaat AI, wenn …",
+      "points": [
+        "Ihr Bedarf Marketing-Content über viele Kanäle ist und Sie einen Pauschalpreis ohne Zähler wollen.",
+        "Sie mehrere Marken oder Kunden führen und Presets je Marke wollen.",
+        "Sie einen deutschen Anbieter mit Berliner Adresse bevorzugen, auch wenn Hosting-Details noch nicht veröffentlicht sind."
+      ]
+    },
+    "pickB": {
+      "heading": "Wählen Sie Sintra, wenn …",
+      "points": [
+        "Sie Helfer jenseits von Marketing brauchen: Support, Sales, Buchhaltung, Recruiting.",
+        "Sie Integrationen mit Gmail, Notion oder Shopify im Helfer-Chat wollen.",
+        "Sie Credits und US-Verarbeitung für einen niedrigen Promo-Preis akzeptieren."
+      ]
+    },
+    "limits": {
+      "a": [
+        "Keine veröffentlichte Hosting-Region, GDPR-Aussage oder Team-Seat-Modell auf der Site; ein Startup mit ca. 12 Personen und Seed-Runde 2026 (ADZINE, Juni 2026). Vor Kauf fragen.",
+        "Agents erzeugen Content; die Site listet keine Publishing- oder Scheduling-Integrationen, also passiert Posting weiter anderswo."
+      ],
+      "b": [
+        "Credits: 250 pro Monat auf jedem Plan; Bild- und Datenaufgaben verbrauchen sie schnell, und Trustpilot sperrte Sintras Score wegen Review-Incentives, während aktuelle Reviews Credit-Verbrauch nennen (uk.trustpilot.com, Aug 2026).",
+        "Helfer führen nicht aus: kein Auto-Posting, Senden oder CRM-Updates; keine Helpdesk-Integrationen wie Zendesk (eesel Review, 17 Jul 2026)."
+      ]
+    },
+    "verdict": "Für ein kleines Marketingteam, das nur Content will, ist Whaaat AI einfacher und günstiger zu betreiben: $25, keine Credits, nur Marketing. Sintra passt zu Solo-Gründern, die zusätzlich Support- oder Sales-Helfer brauchen und Credits steuern können. Beim Datenschutz veröffentlicht heute keines eine EU-Hosting-Tatsache; Whaaat ist immerhin deutscher Rechtsträger.",
+    "bridge": {
+      "heading": "Wenn Sie Arbeit erledigt haben wollen, kein Chatfenster",
+      "text": "Beide Tools geben einer Person benannte Agents zum Chatten. Wenn das Team eigentlich einen Wettbewerbsbericht, einen Kampagnenplan oder das Montags-PDF zur Performance braucht, ist das ein anderes Produkt: ein Coworker, den Sie briefen, ein Task-Board fürs Team, am Ende eine Datei. Sokosumi ist ein Marktplatz für benannte AI-Coworker für Marketingteams, gebaut von Serviceplan Group mit NMKR in München.",
+      "points": [
+        "52 Coworker und Agents von 7 Anbietern; jedes Profil nennt Anbieter, Modelle und Hosting, mit verfügbarem EU-Hosting.",
+        "Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25, €75 oder €200 pro Monat; Credits werden nur verbraucht, wenn eine Aufgabe läuft.",
+        "Aufgaben erscheinen auf einem gemeinsamen Task-Board und enden mit fertigem PDF, Deck, Spreadsheet oder Dashboard."
+      ],
+      "links": [
+        "/compare/sokosumi-vs-whaaat-ai",
+        "/compare/sokosumi-vs-sintra"
+      ]
+    },
+    "faq": [
+      [
+        "Ist Whaaat AI wirklich unbegrenzt?",
+        "Die Site sagt $25 pro Monat für unbegrenzte Nutzung aller Agents und aller Modelle. Eine Fair-Use-Policy veröffentlicht sie nicht; fragen Sie bei sehr starker Nutzung nach."
+      ],
+      [
+        "Wer steckt hinter Whaaat AI?",
+        "UFOstart GmbH in Berlin, gegründet von Lars Schulze und Thomas Hessler, ca. 12 Mitarbeitende, Seed-finanziert (ADZINE, Juni 2026)."
+      ],
+      [
+        "Wo werden Sintra-Daten verarbeitet?",
+        "Sintras Privacy Policy nennt PlayOS, Inc. in Delaware und sagt, Daten können in den USA verarbeitet werden, mit OpenAI, Google und Anthropic als AI-Anbietern."
+      ],
+      [
+        "Welches Produkt liefert einen fertigen Kampagnenplan als Datei?",
+        "Beide geben Text und Bilder in einem Chat zurück. Keines betreibt ein gemeinsames Task-Board mit Datei-Deliverables; Sokosumi-Coworker sind dafür gebaut."
+      ]
+    ]
+  },
   "sources": [
     "https://www.whaaat.ai/",
     "https://www.whaaat.ai/de",

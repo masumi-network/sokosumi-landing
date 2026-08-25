@@ -117,6 +117,112 @@
       ]
     ]
   },
+  "de": {
+    "title": "nele.ai oder Langdock: zwei deutsche 'sichere ChatGPT'-Plattformen",
+    "metaTitle": "nele.ai vs Langdock (2026): Preise, Credits, deutsches Hosting",
+    "description": "nele.ai vs Langdock: unternehmensweite Credits oder Seat-Preis, deutsches oder EU-Hosting, Office-Add-ins, Agents und Grenzen. Stand August 2026.",
+    "intro": "nele.ai ist eine deutsche Multi-Modell-Chat-Plattform mit Prompt-Bibliothek, Wissensbasis sowie Word- und Excel-Add-ins, bezahlt über ein unternehmensweites Credit-Volumen. Langdock ist ein Berliner AI-Arbeitsbereich mit Chat, eigenen Agents und Workflows, bezahlt pro Seat. Der Unterschied: nele.ai ist ein günstiger, sicherer Chat für alle; Langdock ergänzt Agents, Workflows und Slack- oder Teams-Bots.",
+    "glance": [
+      [
+        "Für wen es passt",
+        "Deutsche KMU und öffentliche Stellen, die einen DSGVO-sicheren Chat mit Office-Add-ins zu niedrigen Kosten wollen",
+        "DACH-Unternehmen, die Chat plus eigene Agents und Workflows für alle Mitarbeitenden wollen"
+      ],
+      [
+        "Was Sie bekommen",
+        "Chat mit GPT-, Claude-, Gemini- und Llama-Modellen; 300+ Prompt-Bibliothek; Wissensbasis (RAG); Word- und Excel-Add-ins; API; SSO",
+        "Chat mit 40+ Modellen, eigene Agents, Workflows mit Triggern, Slack- und Teams-Bots, geplante Aufgaben, API"
+      ],
+      [
+        "Preis pro Nutzer",
+        "Kein Nutzerpreis. Unternehmensweites Credit-Volumen von 1,000 Credits für €10/Monat bis 750,000 für €3,750/Monat; 10,000 Credits €90; 100,000 Credits €500",
+        "€25/Monat Standard; €99/Monat Business Max. Jährliche Abrechnung spart 20%"
+      ],
+      [
+        "Free-Plan oder Test",
+        "7 Tage Test mit 1,000 Credits",
+        "7 Tage Test, €5 Modell-Credits, keine Kreditkarte"
+      ],
+      [
+        "EU-Hosting",
+        "Deutscher Serverstandort; ISO 27001",
+        "EU-Hosting auf Azure; ISO 27001, SOC 2 Type II"
+      ],
+      [
+        "Teamfunktionen",
+        "Admin Panel, SSO (SAML 2.0), Nutzer- und Modellverwaltung, unbegrenzte Nutzer auf einem Credit-Pool",
+        "SSO, SCIM, SAML; gemeinsame Agents; Governance Add-on; bis zu 1,000 Nutzer auf Business"
+      ],
+      [
+        "Eigene Agents bauen",
+        "Kein Agent- oder Workflow-Builder. Geführte 'Assistance Prompts' und Wissensbasis-Add-on (€19.95/Monat, 2 GB, 20 MB pro Datei)",
+        "Ja: Agents mit Wissen und Tools; Workflows mit 2,500 Läufen/Monat enthalten, mehr ab €539/Monat"
+      ],
+      [
+        "Unternehmen",
+        "GAL Digital GmbH, Hungen, Hessen",
+        "Langdock GmbH, Berlin"
+      ]
+    ],
+    "pickA": {
+      "heading": "Wählen Sie nele.ai, wenn …",
+      "points": [
+        "Sie den niedrigsten Einstieg für ein ganzes Unternehmen wollen: ein Credit-Pool, keine Seat-Gebühren.",
+        "Ihre Mitarbeitenden vor allem in Word und Excel arbeiten und KI in diesen Apps wollen.",
+        "Sie deutschen Serverstandort und deutschen Anbieter wollen und Chat genügt."
+      ]
+    },
+    "pickB": {
+      "heading": "Wählen Sie Langdock, wenn …",
+      "points": [
+        "Sie Agents und Workflows bauen wollen, nicht nur chatten.",
+        "Sie Slack- oder Teams-Bots und SCIM-Provisioning brauchen.",
+        "Sie starke Nutzung pro Person erwarten und einen Seat-Preis einem gemeinsamen Credit-Pool vorziehen."
+      ]
+    },
+    "limits": {
+      "a": [
+        "Keine Agents oder Workflows: nele.ai ist Chat, Prompts, Wissensbasis und Office-Add-ins. Das Wissensbasis-Add-on ist auf 2 GB und 20 MB pro Datei begrenzt (nele.ai Preisseite).",
+        "Ein Datenschutzanwalt (Dr. DSGVO, aktualisiert 10 Mar 2026) argumentiert, dass nele.ais automatische Anonymisierung personenbezogene Daten nicht zuverlässig erkennen kann, und zeigte übersehene Fälle. Auf OMR Reviews gibt es noch keine Bewertungen."
+      ],
+      "b": [
+        "Seat-Preise wachsen mit der Mitarbeiterzahl; Nutzung wird in 5-Stunden- und Wochenfenstern gemessen, mit Rückfall auf ein leichteres Modell (Langdock Docs, Fair Usage Policy).",
+        "Reviews nennen eine Lernkurve für erweiterte Funktionen und einen 6–10-wöchigen Weg zu einem sauberen Rollout (teamazing 90-Tage-Test, aktualisiert 17 Aug 2026)."
+      ]
+    },
+    "verdict": "Für ein Unternehmen, das nur sicheren, günstigen Chat mit deutschem Hosting und Office-Add-ins braucht, kostet nele.ai einen Bruchteil von Langdock. Für ein Unternehmen, das Agents, Workflows und Chatbots in Slack oder Teams will, ist Langdock vollständiger und den Seat-Preis eher wert. Prüfen Sie nele.ais Anonymisierungsversprechen gegen Ihre Datenschutzanforderungen.",
+    "bridge": {
+      "heading": "Wenn Sie Arbeit erledigt haben wollen, kein Chatfenster",
+      "text": "Beide Tools geben einer Person einen Ort zum Prompten. Wenn das Team eigentlich einen Wettbewerbsbericht, einen Kampagnenplan oder das Montags-PDF zur Performance braucht, ist das ein anderes Produkt: ein Coworker, den Sie briefen, ein Task-Board fürs Team, am Ende eine Datei. Sokosumi ist ein Marktplatz für benannte AI-Coworker für Marketingteams, gebaut von Serviceplan Group mit NMKR in München.",
+      "points": [
+        "52 Coworker und Agents von 7 Anbietern; jedes Profil nennt Anbieter, Modelle und Hosting, mit verfügbarem EU-Hosting.",
+        "Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25, €75 oder €200 pro Monat; Credits werden nur verbraucht, wenn eine Aufgabe läuft.",
+        "Aufgaben enden mit einem fertigen PDF, Deck, Spreadsheet oder Dashboard auf einem gemeinsamen Task-Board."
+      ],
+      "links": [
+        "/compare/sokosumi-vs-nele-ai",
+        "/compare/sokosumi-vs-langdock"
+      ]
+    },
+    "faq": [
+      [
+        "Wie weit reichen nele.ai Credits?",
+        "nele.ai sagt, 1,000 Credits verarbeiten etwa 1.6 Millionen Wörter Text. Bild- und stärkere Modellnutzung kosten mehr. Das Credit-Volumen kann monatlich geändert werden."
+      ],
+      [
+        "Wird nele.ai in Deutschland gehostet?",
+        "nele.ai nennt einen deutschen Serverstandort und ISO 27001-Zertifizierung. Die Modelle selbst kommen von OpenAI, Anthropic, Google und Microsoft Azure; prüfen Sie die Subprozessorliste, wo jedes Modell läuft."
+      ],
+      [
+        "Hat Langdock Office-Add-ins?",
+        "Langdock verbindet sich über Integrationen und einen Teams-Bot mit Microsoft 365. Word- oder Excel-Add-ins wie nele.ai listet es nicht."
+      ],
+      [
+        "Kann eines eine Aufgabe nach Zeitplan ausführen und eine Datei ans Team liefern?",
+        "Langdock kann einen gespeicherten Prompt oder Workflow nach Zeitplan für einen Nutzer ausführen. nele.ai bietet keine Planung. Keines hat ein gemeinsames Task-Board; Sokosumi ist darauf gebaut."
+      ]
+    ]
+  },
   "sources": [
     "https://www.nele.ai/de/ki-preise",
     "https://www.nele.ai/en",

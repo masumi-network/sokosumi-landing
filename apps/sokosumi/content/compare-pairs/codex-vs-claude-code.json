@@ -117,6 +117,112 @@
       ]
     ]
   },
+  "de": {
+    "title": "OpenAI Codex oder Claude Code: welcher Coding-Agent für Ihr Team?",
+    "metaTitle": "OpenAI Codex vs Claude Code (2026): Preise, Limits, EU-Residenz",
+    "description": "OpenAI Codex und Claude Code im Vergleich: Preis, enthaltene Nutzung, Team-Seats, EU-Residenz und echte Grenzen. Stand August 2026.",
+    "intro": "Codex ist OpenAIs Coding-Agent: CLI, IDE-Erweiterung und Cloud-Agent, in jedem ChatGPT-Plan enthalten und mit dessen Nutzung geteilt. Claude Code ist Anthropics Coding-Agent: CLI, IDE-Erweiterungen, Desktop-App und Web-Sessions, in Claude-Plänen enthalten und mit deren Nutzung geteilt. Beide erledigen dieselbe Art Aufgabe aus einem Prompt. Entscheidend sind der Plan, den Sie schon zahlen, wie Nutzung gezählt wird und wo die Daten liegen.",
+    "glance": [
+      [
+        "Für wen es passt",
+        "Teams, die bereits ChatGPT nutzen und einen Agent für viele parallele, günstigere Aufgaben wollen",
+        "Teams, die sehr hoch bewertete Codequalität und eine CLI wollen, die in CI, Slack und Zeitpläne passt"
+      ],
+      [
+        "Was Sie bekommen",
+        "Codex CLI, IDE-Erweiterung, Cloud-Aufgaben, Code-Review, Subagents; teilt Nutzung mit ChatGPT",
+        "CLI, VS Code und JetBrains, Desktop-App, Web, Subagents, Hooks, Skills, MCP, Routinen, GitHub Actions, Slack"
+      ],
+      [
+        "Preis pro Person",
+        "In ChatGPT enthalten: Free, Go $8, Plus $20, Pro 5x $100 oder Pro 20x $200 pro Monat; Zusatznutzung über Credits pro Million Tokens (learn.chatgpt.com, 26 Aug 2026; Planpreise Drittanbieter, prüfen)",
+        "In Claude enthalten: Free (limitiert), Pro $17 jährlich oder $20 monatlich, Max 5x ab $100, Max 20x $200 pro Monat; oder API pro Token (claude.com, 26 Aug 2026)"
+      ],
+      [
+        "Preis pro Seat (Team)",
+        "Business $20 pro Seat jährlich oder $25 monatlich, enthält Codex; Enterprise individuell mit Credit-basiertem Modell und ohne feste Ratenlimits",
+        "Team Premium Seat $100 jährlich oder $125 monatlich enthält Claude Code; Standard Seat nicht; Enterprise individuell"
+      ],
+      [
+        "Free-Plan oder Test",
+        "Free-Plan von ChatGPT enthält Codex",
+        "Free-Plan von Claude enthält Claude Code mit niedrigen Limits"
+      ],
+      [
+        "Nutzungsmodell",
+        "Fünf-Stunden-Fenster pro Modellstufe (Plus grob 10–100 schwere, 250–2,000 leichte Aufgaben); OpenAI pausierte die Fünf-Stunden-Grenze auf Plus, Business und Pro ab 12 Jul 2026, ohne Enddatum",
+        "Fünf-Stunden- und Wochenlimits gemeinsam mit Chat und Cowork; Anthropic fährt seit Mai 2026 temporär 50% mehr"
+      ],
+      [
+        "EU-Hosting",
+        "Nur Enterprise: Europa-Datenresidenz at rest für neue Workspaces; Business- und Consumer-Pläne speichern Daten in den USA; Codex über API folgt API-Residenz",
+        "Keine auf Anthropic-Plänen; EU nur über AWS Bedrock Frankfurt oder Vertex AI EU mit eigenem Key"
+      ],
+      [
+        "Teamfunktionen",
+        "Gemeinsamer Arbeitsbereich, SSO, Admin-Kontrollen, kein Training auf Geschäftsdaten",
+        "Gemeinsame CLAUDE.md, Skills, Hooks, Org-Einstellungen; SSO, SCIM, Audit auf Team/Enterprise"
+      ]
+    ],
+    "pickA": {
+      "heading": "Wählen Sie OpenAI Codex, wenn …",
+      "points": [
+        "Ihr Unternehmen bereits ChatGPT Business oder Enterprise bezahlt. Codex steckt ohne Aufpreis im Seat.",
+        "Sie viele parallele Aufgaben laufen lassen und Tokenkosten wichtig sind. Reviews sehen Codex um ein Mehrfaches token-effizienter als Claude Code.",
+        "Sie EU-Datenresidenz brauchen und einen Enterprise-Vertrag haben."
+      ]
+    },
+    "pickB": {
+      "heading": "Wählen Sie Claude Code, wenn …",
+      "points": [
+        "Codequalität bei schwieriger Mehrdateien-Arbeit am wichtigsten ist. Blind Reviews in Vergleichen 2026 bevorzugen Claude Code etwa zwei zu eins.",
+        "Sie den Agent ab Tag eins in CI, Slack und geplante Routinen einbauen wollen.",
+        "Eine Subscription auch Claude Chat und Cowork für dieselbe Person abdecken soll."
+      ]
+    },
+    "limits": {
+      "a": [
+        "Reviews berichten von erratischem Verhalten in langen Sessions und schwächerem Frontend-Output als Claude Code.",
+        "EU-Residenz braucht ChatGPT Enterprise; Business-Seats und Plus speichern Daten in den USA. OpenAI blockiert automatisierte Abrufe der Preisseite, daher beruhen Planpreise hier auf datierten Drittanbieter-Trackern."
+      ],
+      "b": [
+        "Ratenlimits sind der Hauptkritikpunkt: Fünf-Stunden- und Wochenlimits werden mit Chat geteilt, und Pro-Nutzer erreichen sie regelmäßig; die aktuell höheren Limits sind temporär.",
+        "Keine EU-Residenz auf Anthropic-Plänen, und der Team Standard Seat enthält Claude Code nicht; Sie brauchen Premium für $100–125."
+      ]
+    },
+    "verdict": "Wenn Ihr Unternehmen ChatGPT bereits lizenziert, ist Codex kostenlos testbar und bei Volumen günstiger, mit EU-Residenz auf Enterprise. Wenn Codequalität bei schweren Aufgaben und tiefe Automatisierung wichtiger sind als Kosten, gewinnt Claude Code, aber mit Nutzungslimits und US-Hosting. Viele Entwickler nutzen inzwischen beide.",
+    "bridge": {
+      "heading": "Wenn Sie gerade einen Marketing-Agent selbst bauen wollten",
+      "text": "Sokosumi ist kein Coding-Tool und konkurriert nicht mit diesen Produkten. Ein Grund für den Vergleich ist aber oft der Plan, intern einen Recherche- oder Reporting-Agent für Marketing zu bauen. Dann besitzt ein Entwickler Prompts, Datenlizenzen, Hosting und Wartung. Es gibt eine Mietoption: Sokosumi ist ein Marktplatz für benannte AI-Coworker für Marketingteams, jeweils mit öffentlichem Profil, benanntem Anbieter, genannten Modellen und genanntem Hosting.",
+      "points": [
+        "Briefen Sie in klarer Sprache oder per @Mention in einem Kanal; die Aufgabe erscheint auf einem gemeinsamen Task-Board und endet als PDF-Bericht, Deck, Spreadsheet oder Dashboard. Geplante Aufgaben inklusive.",
+        "Credits nur, wenn eine Aufgabe läuft. Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25 / €75 / €200 pro Monat; Enterprise individuell. EU-Hosting je Coworker ausgewiesen.",
+        "52 Coworker und Agents von 7 Anbietern, 5,300+ erledigte Aufgaben. Gebaut von Serviceplan Group mit NMKR, München."
+      ],
+      "links": [
+        "/compare/sokosumi-vs-openai-codex",
+        "/compare/sokosumi-vs-claude-code"
+      ]
+    },
+    "faq": [
+      [
+        "Ist Codex wirklich kostenlos?",
+        "Codex ist in jedem ChatGPT-Plan enthalten, auch Free, und teilt dessen Nutzung. Für starke Nutzung brauchen Sie Plus, Pro oder Credits. Es gibt keine separate Codex-Subscription."
+      ],
+      [
+        "Was zahlt ein Team mit fünf Personen?",
+        "Codex: fünf ChatGPT Business Seats zu $20 jährlich, $100 pro Monat. Claude Code: fünf Team Premium Seats zu $100 jährlich, $500 pro Monat. Claudes Premium Seat enthält deutlich mehr Nutzung als ein Business Seat, vergleichen Sie also die enthaltene Arbeit, nicht nur den Preis."
+      ],
+      [
+        "Welches Produkt hält Code in der EU?",
+        "Codex über ChatGPT Enterprise mit Europa-Residenz oder über die API mit gesetzter Residenz. Claude Code nur über AWS Bedrock Frankfurt oder Vertex AI EU mit eigenem API-Key; nicht auf Anthropic-Plänen."
+      ],
+      [
+        "Wo passt Sokosumi hinein?",
+        "Es schreibt keinen Code. Es ist ein Marktplatz für spezialisierte Marketing-Coworker, die fertige Dateien liefern. Entwickler, die sonst einen Marketing-Agent bauen würden, können stattdessen einen mieten oder ihren eigenen Agent im Marktplatz anbieten."
+      ]
+    ]
+  },
   "sources": [
     "https://learn.chatgpt.com/docs/pricing",
     "https://www.cloudzero.com/blog/how-much-does-chatgpt-cost/",

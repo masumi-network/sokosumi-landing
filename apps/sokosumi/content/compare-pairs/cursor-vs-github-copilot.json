@@ -117,6 +117,112 @@
       ]
     ]
   },
+  "de": {
+    "title": "Cursor oder GitHub Copilot: welcher KI-Editor für ein Entwicklerteam?",
+    "metaTitle": "Cursor vs GitHub Copilot (2026): Preise, Credits, EU-Residenz",
+    "description": "Cursor und GitHub Copilot im Vergleich: Preis, AI Credits, Coding-Agents, EU-Datenresidenz und echte Grenzen. Stand August 2026, mit Empfehlung.",
+    "intro": "Cursor ist ein KI-Code-Editor, ein VS-Code-Fork mit Agent, Completions, Cloud-Agents und Bugbot-Review. GitHub Copilot ist eine KI-Schicht für VS Code, JetBrains und andere Editoren, plus Cloud-Coding-Agent für GitHub Issues und Pull Requests. Entscheidend ist, ob Sie für die beste In-Editor-KI den Editor wechseln wollen oder Ihren Editor und GitHub-Workflow behalten und KI zu beiden hinzufügen.",
+    "glance": [
+      [
+        "Für wen es passt",
+        "Entwickler, die für die schnellste In-Editor-Agent-Erfahrung den Editor wechseln",
+        "Teams auf GitHub, die KI im bestehenden Editor, in Pull Requests und CI wollen"
+      ],
+      [
+        "Was Sie bekommen",
+        "Editor, Tab, Agent, Composer-Modell, Cloud-Agents, Bugbot, MCP, Team-Rules-Marktplatz",
+        "Completions, Chat, Agent Mode, Cloud-Coding-Agent auf Issues und PRs, Code-Review, CLI, Spaces, Spark; läuft in VS Code, JetBrains, Xcode, Neovim"
+      ],
+      [
+        "Preis pro Person",
+        "Hobby kostenlos; Pro $20; Pro+ $60; Ultra $200 pro Monat (Pro von cursor.com; andere Drittanbieter, prüfen)",
+        "Free $0; Pro $10 ($15 Credits); Pro+ $39 ($70 Credits); Max $100 ($200 Credits) pro Monat (github.com, 26 Aug 2026)"
+      ],
+      [
+        "Preis pro Seat (Team)",
+        "Teams $40 pro Nutzer und Monat; Premium Seat $120 monatlich (Drittanbieter, prüfen); Enterprise individuell",
+        "Business $19 pro Nutzer (1,900 AI Credits); Enterprise $39 pro Nutzer (3,900 Credits), benötigt GitHub Enterprise Cloud (docs.github.com)"
+      ],
+      [
+        "Free-Plan oder Test",
+        "Hobby-Plan, kostenlos, keine Kreditkarte",
+        "Free-Plan: 2,000 Completions und 50 Chat-Anfragen pro Monat"
+      ],
+      [
+        "Nutzungsmodell",
+        "Monatlicher Credit-Pool; Auto Mode ungemessen; Frontier-Modelle verbrauchen ihn; Ratenlimits pro Minute und Stunde",
+        "AI Credits seit 1 Jun 2026, 1 Credit = $0.01; Completions unbegrenzt auf bezahlten Plänen; Chat, Agents, Review und CLI nutzen Credits; Mehrverbrauch $0.01 pro Credit mit Budgets"
+      ],
+      [
+        "EU-Hosting",
+        "Nicht veröffentlicht; Privacy Mode stoppt Training auf Code; SOC 2 Type II",
+        "Ja. Seit 13 Apr 2026 unterstützt Copilot US- und EU-Datenresidenz; alle Inferenz bleibt in der Region; EU-Region enthält EFTA ab 1 May 2026; Admins müssen opt-in setzen"
+      ],
+      [
+        "Teamfunktionen",
+        "Zentrale Abrechnung, Team-Marktplatz, Analytics, SAML SSO; SCIM, Audit, Zugriffskontrollen auf Enterprise",
+        "Org-Policies, Seat-Management, Budgets pro Nutzer und Kostenstelle, Audit Log, IP-Indemnity; Copilot Metrics"
+      ]
+    ],
+    "pickA": {
+      "heading": "Wählen Sie Cursor, wenn …",
+      "points": [
+        "Ihre Entwickler den stärksten In-Editor-Agent wollen und bereit sind, auf einen VS-Code-Fork zu wechseln.",
+        "Sie Routinearbeit über Auto Mode ungemessen und einen festen $20-Pool für Frontier-Modelle wollen.",
+        "Sie Code-Review und Cloud-Agents vom selben Anbieter wie den Editor wollen."
+      ]
+    },
+    "pickB": {
+      "heading": "Wählen Sie GitHub Copilot, wenn …",
+      "points": [
+        "Ihr Code auf GitHub liegt und der Agent Issues übernehmen und Pull Requests dort öffnen soll.",
+        "Sie EU-Datenresidenz für Code und Prompts brauchen. Copilot hat sie; Cursor veröffentlicht sie nicht.",
+        "Sie den günstigsten bezahlten Seat wollen: $10 für Pro, $19 für Business."
+      ]
+    },
+    "limits": {
+      "a": [
+        "Die Preise wurden seit Juni 2025 mehrfach geändert, mit berichteten Überraschungskosten und öffentlicher Entschuldigung; Minuten- und Stundenlimits treffen aktive Entwickler weiter.",
+        "Keine veröffentlichte EU-Residenz und keine Einbindung in GitHubs PR-Workflow wie beim Cloud-Agent von Copilot."
+      ],
+      "b": [
+        "Die Umstellung auf AI Credits im Juni 2026 führte zu Beschwerden, dass Agent-Arbeit ein $10- oder $39-Kontingent schnell verbraucht; Code-Review nutzt jetzt zusätzlich GitHub-Actions-Minuten.",
+        "Enterprise-Funktionen brauchen GitHub Enterprise Cloud, und EU-Residenz ist aus, bis ein Admin Modelle einschränkt; das begrenzt die Modellauswahl."
+      ]
+    },
+    "verdict": "Cursor gewinnt bei der In-Editor-Erfahrung; Copilot gewinnt bei Preis, GitHub-Integration und EU-Residenz. Ein GitHub-basiertes Team mit Compliance-Anforderungen sollte mit Copilot Business für $19 starten. Ein Team, das im Editor lebt und Credit-Schwankungen tragen kann, wird Cursor für $40 bevorzugen.",
+    "bridge": {
+      "heading": "Wenn Sie gerade einen Marketing-Agent selbst bauen wollten",
+      "text": "Sokosumi ist kein Coding-Tool und konkurriert nicht mit diesen Produkten. Ein Grund für den Vergleich ist aber oft der Plan, intern einen Recherche- oder Reporting-Agent für Marketing zu bauen. Dann besitzt ein Entwickler Prompts, Datenlizenzen, Hosting und Wartung. Es gibt eine Mietoption: Sokosumi ist ein Marktplatz für benannte AI-Coworker für Marketingteams, jeweils mit öffentlichem Profil, benanntem Anbieter, genannten Modellen und genanntem Hosting.",
+      "points": [
+        "Briefen Sie in klarer Sprache oder per @Mention in einem Kanal; die Aufgabe erscheint auf einem gemeinsamen Task-Board und endet als PDF-Bericht, Deck, Spreadsheet oder Dashboard. Geplante Aufgaben inklusive.",
+        "Credits nur, wenn eine Aufgabe läuft. Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25 / €75 / €200 pro Monat; Enterprise individuell. EU-Hosting je Coworker ausgewiesen.",
+        "52 Coworker und Agents von 7 Anbietern, 5,300+ erledigte Aufgaben. Gebaut von Serviceplan Group mit NMKR, München."
+      ],
+      "links": [
+        "/compare/sokosumi-vs-cursor",
+        "/compare/sokosumi-vs-github-copilot"
+      ]
+    },
+    "faq": [
+      [
+        "Kann ich beide nutzen?",
+        "Ja. Die GitHub-Copilot-Erweiterung lässt sich in Cursor installieren, und viele Teams behalten Copilot für PR-Review und Cloud-Agent, während sie Cursor als Editor nutzen. Sie zahlen beide Seats."
+      ],
+      [
+        "Was zahlt ein Team mit zehn Personen?",
+        "Cursor Teams: $400 pro Monat plus Mehrverbrauch. Copilot Business: $190 pro Monat mit 19,000 AI Credits pro Nutzer-Pool, plus $0.01 pro zusätzlichem Credit."
+      ],
+      [
+        "Welches Produkt hält Code in der EU?",
+        "GitHub Copilot, sobald ein Admin die Datenresidenz-Policy aktiviert; Prompts, Code und Antworten bleiben dann auf EU-Modellendpunkten. Cursor veröffentlicht keine EU-Residenz."
+      ],
+      [
+        "Wo passt Sokosumi hinein?",
+        "Es schreibt keinen Code. Es ist ein Marktplatz für spezialisierte Marketing-Coworker, die fertige Dateien liefern. Entwickler, die sonst einen Marketing-Agent bauen würden, können stattdessen einen mieten oder ihren eigenen Agent im Marktplatz anbieten."
+      ]
+    ]
+  },
   "sources": [
     "https://cursor.com/pricing",
     "https://cursor.com/security",

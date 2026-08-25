@@ -117,6 +117,112 @@
       ]
     ]
   },
+  "de": {
+    "title": "Viktor oder Sintra: AI-Mitarbeiter in Slack oder Paket aus AI-Helfern?",
+    "metaTitle": "Viktor vs Sintra (2026): Credits, Preise, Aufgaben, Hosting",
+    "description": "Viktor, AI-Mitarbeiter in Slack und Teams, vs Sintra mit 12 benannten Helfern: Credits, Preise, Outputs, Hosting und Grenzen. Stand August 2026.",
+    "intro": "Viktor ist ein AI-Mitarbeiter, den Sie in Slack oder Teams per @Mention briefen; er verbindet sich mit 3,200+ Tools und liefert Berichte, Spreadsheets, PDFs und Dashboards. Sintra ist ein Paket aus 12 benannten Chat-Helfern (Soshie, Penn, Cassie) für kleine Unternehmer. Unterschied: Viktor erledigt Aufgaben über Ihre Systeme und berechnet den Workspace per Credits; Sintra entwirft Inhalte im Chat und gibt jedem Plan dieselben 250 Credits.",
+    "glance": [
+      [
+        "Für wen es passt",
+        "Teams in Slack oder Teams, die einen Assistenten zum Datenziehen und Dateierstellen wollen",
+        "Solo-Gründer und sehr kleine Unternehmen, die benannte Helfer für Social, Copy, E-Mail, Support wollen"
+      ],
+      [
+        "Was Sie bekommen",
+        "Aufgabenausführung über Tools; Berichte, Dashboards, PDFs, Spreadsheets, Web-Apps, Code; geplante Aufgaben; Slack, Teams, Discord und Web",
+        "12 Helfer mit gemeinsamem 'Brain', 15+ Integrationen (Gmail, Notion, Shopify, QuickBooks), Bildgenerierung"
+      ],
+      [
+        "Preis pro Nutzer",
+        "Kein Nutzerpreis. Workspace-Pläne ab $50/Monat für 20,000 Credits bis $300 für 125,000; Enterprise individuell",
+        "Liste $97/Monat; verkauft für $48.50 monatlich, $23.60 bei 3 Monaten, $15.60 bei 12 Monaten (Stand 26 Aug 2026). Einzelner Helfer $39/Monat"
+      ],
+      [
+        "Free-Plan oder Test",
+        "$100 kostenlose Credits, keine Kreditkarte",
+        "Kein Free-Plan; 14 Tage Geld-zurück-Garantie"
+      ],
+      [
+        "EU-Hosting",
+        "Standard AWS us-east-1; EU-Residenz nur auf Enterprise; SOC 2 Type 1, ISO 27001 in Arbeit",
+        "Nicht EU. Rechtsträger PlayOS, Inc. (Delaware); Daten können in den USA verarbeitet werden"
+      ],
+      [
+        "Teamfunktionen",
+        "Gemeinsame Workspace-Credits; isoliertes Compute pro Nutzer; geplante Aufgaben",
+        "Unbegrenzte Workspaces; kein Seat-Plan oder Team-Admin"
+      ],
+      [
+        "Eigene Agents bauen",
+        "Pro Aufgabe oder Zeitplan instruieren; kein separater Builder",
+        "Nein; feste Helfer-Personas mit konfigurierbaren Automationen"
+      ],
+      [
+        "Credits",
+        "100–300 pro schneller Aufgabe, 500–1,500 pro komplexem Workflow, 2,000–5,000 pro vollem Projekt; Rollover einen Monat",
+        "250 pro Monat auf jedem Plan; Top-ups extra; kein Rollover"
+      ]
+    ],
+    "pickA": {
+      "heading": "Wählen Sie Viktor, wenn …",
+      "points": [
+        "Sie Arbeit in Ihren Tools erledigt haben wollen (CRM, HubSpot, Notion, GitHub), nicht einen Entwurf zum Kopieren.",
+        "Ihr Team bereits in Slack oder Teams ist und einen gemeinsamen Assistenten will.",
+        "Sie einen Credit-Pool budgetieren können, der mit der Aufgabenkomplexität skaliert."
+      ]
+    },
+    "pickB": {
+      "heading": "Wählen Sie Sintra, wenn …",
+      "points": [
+        "Sie allein sind und freundliche Helfer für Posts, E-Mails und Copy wollen.",
+        "Sie zum niedrigsten Promo-Preis starten und vor allem Textaufgaben ohne Credit-Verbrauch haben.",
+        "Das Tool nicht in anderen Systemen handeln muss."
+      ]
+    },
+    "limits": {
+      "a": [
+        "Credit-Verbrauch ist schwer planbar: Reviews berichten von $200 in zwei Tagen während des Lernens; ein starker Monat kann Sie eine Stufe höher schieben (thisandthat Review 12 Aug 2026; eesel Review 17 Jul 2026).",
+        "Keine EU-Residenz im Standardplan; Standardregion ist AWS us-east-1, SOC 2 Type II und ISO 27001 noch in Arbeit (viktor.com/security)."
+      ],
+      "b": [
+        "Dieselben 250 Credits auf jedem Plan; Bilder und Datenaufgaben verbrauchen sie schnell; Top-ups sind von der Geld-zurück-Garantie ausgeschlossen. Trustpilot sperrte Sintras Score wegen Review-Incentives (uk.trustpilot.com, Aug 2026).",
+        "Helfer führen nicht aus: kein Posting, kein Senden, keine CRM-Updates; keine Helpdesk-Integrationen (eesel Review 17 Jul 2026)."
+      ]
+    },
+    "verdict": "Die beiden liegen auf verschiedenen Ebenen. Viktor ist ein arbeitender Assistent für ein Team mit echten Systemen; Sintra ist ein Chatpaket für Solo-Owner. Wenn Sie Ausgabedateien und Aktionen über Tools brauchen, Viktor; wenn Sie günstige Entwürfe wollen und mit Credit-Zähler leben, Sintra. Keines bietet EU-Hosting im Standardplan.",
+    "bridge": {
+      "heading": "Wenn Sie Arbeit erledigt haben wollen, kein Chatfenster",
+      "text": "Beide Tools geben einer Person einen Assistenten zum Instruieren. Wenn das Team eigentlich einen Wettbewerbsbericht, einen Kampagnenplan oder das Montags-PDF zur Performance braucht, ist das ein anderes Produkt: ein Coworker, den Sie briefen, ein Task-Board fürs Team, am Ende eine Datei. Sokosumi ist ein Marktplatz für benannte AI-Coworker für Marketingteams, gebaut von Serviceplan Group mit NMKR in München.",
+      "points": [
+        "52 Coworker und Agents von 7 Anbietern; jedes Profil nennt Anbieter, Modelle und Hosting, mit verfügbarem EU-Hosting.",
+        "Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25, €75 oder €200 pro Monat; Credits werden nur verbraucht, wenn eine Aufgabe läuft.",
+        "Aufgaben erscheinen auf einem gemeinsamen Task-Board und enden mit fertigem PDF, Deck, Spreadsheet oder Dashboard."
+      ],
+      "links": [
+        "/compare/sokosumi-vs-viktor",
+        "/compare/sokosumi-vs-sintra"
+      ]
+    },
+    "faq": [
+      [
+        "Nutzen beide Credits?",
+        "Ja, unterschiedlich. Viktor berechnet den ganzen Workspace aus einem Credit-Pool, der mit Aufgabengröße skaliert. Sintra gibt jedem Plan 250 Credits pro Monat für erweiterte Aktionen; einfache Textaufgaben verbrauchen sie nicht."
+      ],
+      [
+        "Welches Produkt arbeitet in Slack?",
+        "Viktor ist für Slack und Teams gebaut und hat im August 2026 Discord und eine Web-App ergänzt. Sintra ist eine Web-App mit Integrationen, kein Slack-Assistent."
+      ],
+      [
+        "Ist eines in der EU gehostet?",
+        "Viktor bietet EU-Datenresidenz nur auf Enterprise-Verträgen. Sintras Privacy Policy sagt, Daten können in den USA verarbeitet werden."
+      ],
+      [
+        "Welches Produkt gibt einem Marketingteam fertige Berichte auf einem Board?",
+        "Viktor gibt Dateien im Chat-Thread zurück. Sintra liefert Entwürfe im Chat. Ein gemeinsames Task-Board mit benannten Coworker und Anbieter-Offenlegung ist das, wofür Sokosumi gebaut ist."
+      ]
+    ]
+  },
   "sources": [
     "https://viktor.com/pricing",
     "https://viktor.com/",

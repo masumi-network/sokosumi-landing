@@ -62,6 +62,112 @@
       ["Is there a finished-work option for marketing teams?", "Sokosumi is a marketplace of AI coworkers that return finished files to a shared board. Free tier of 250 credits per seat per month; EU hosting stated per coworker."]
     ]
   },
+  "de": {
+    "title": "Zapier Agents oder Lindy: Agents auf Ihren Apps oder Assistent pro Person?",
+    "metaTitle": "Zapier Agents vs Lindy (2026): Preise, Activities, Credits",
+    "description": "Zapier Agents und Lindy im Vergleich: Aufgaben, Activities versus Credits, Planpreise, Free-Pläne, Hosting und Review-Grenzen. Stand August 2026.",
+    "intro": "Zapier Agents sind AI Agents auf Zapiers App-Katalog, gemessen in Activities zusätzlich zu taskbasierten Plänen. Lindy verkauft AI-Assistenten pro Nutzer für E-Mail, Meetings, CRM und Recherche, gemessen in Credits. Entscheidend ist, ob Sie Agents in Ihrem bestehenden App-Stack wollen oder einen persönlichen Assistenten für jedes Teammitglied.",
+    "glance": [
+      [
+        "Für wen es passt",
+        "Teams, die bereits mit Zapier automatisieren und Agents über 8,000+ Apps wollen",
+        "Einzelpersonen und kleine Teams, die einen fertigen Assistenten in Slack, E-Mail und Kalender wollen"
+      ],
+      [
+        "Was Sie bekommen",
+        "Agents mit Triggern, Wissensquellen, Actions und Web-Browsing plus klassische Zaps",
+        "Vorgefertigte Assistenten und Vorlagen für Inbox, Meetings, Outreach, Recherche, Reporting"
+      ],
+      [
+        "Preis",
+        "Free $0; Professional ab $19.99 pro Monat jährlich ($29.99 monatlich); Team ab $69 jährlich ($103.50 monatlich) für 25 Nutzer; Enterprise individuell",
+        "Plus $29.99, Pro $99.99, Max $199.99 pro Nutzer und Monat; Enterprise individuell"
+      ],
+      [
+        "Free-Plan oder Test",
+        "Free-Plan mit 400 Agent Activities und 100 Tasks pro Monat",
+        "Kein Free-Plan auf der Preisseite; 7-Tage-Test nur für Teammitglieder, die über Slack beitreten"
+      ],
+      [
+        "EU-Hosting",
+        "Keine EU-Residenz veröffentlicht; auf AWS in den USA gehostet (Drittanbieter, prüfen)",
+        "Nicht veröffentlicht. SOC 2 Type II, GDPR und HIPAA-Kontrollen gelistet"
+      ],
+      [
+        "Teamfunktionen",
+        "1 Nutzer auf Free und Pro; 25 Nutzer auf Team mit gemeinsamem Activity-Pool",
+        "Seats pro Nutzer mit einem gemeinsamen Credit-Pool pro Workspace"
+      ],
+      [
+        "Eigene Agents bauen",
+        "Ja, in klarer Sprache auf Zapier Actions",
+        "Ja, ohne Code, aus Vorlagen"
+      ],
+      [
+        "Was gezählt wird",
+        "Activities: Trigger, Wissensantwort, Action, Web Browse, Web Search, Chrome-Nachricht. 400 Free, 1,500 Pro, gemeinsam auf Team",
+        "Credits pro Nutzer: 3,000 / 15,000 / 35,000 pro Monat. Einfache Aufgabe 2 bis 250 Credits; Deep Work 250 bis 1,000; große Builds 1,000 bis 2,500"
+      ]
+    ],
+    "pickA": {
+      "heading": "Wählen Sie Zapier Agents, wenn …",
+      "points": [
+        "Die Aufgabe Daten bewegen und Aktionen über viele SaaS-Apps ausführen ist, und Zapier sie bereits verbindet.",
+        "Sie kostenlos starten wollen. 400 Activities pro Monat reichen, um einen Agent zu testen.",
+        "Sie 25 Personen auf einem Konto für $69 pro Monat wollen statt Nutzerpreis pro Person."
+      ]
+    },
+    "pickB": {
+      "heading": "Wählen Sie Lindy, wenn …",
+      "points": [
+        "Jede Person einen Assistenten braucht, der Inbox liest, Meetings bucht und Antworten entwirft.",
+        "Sie tiefere Einzelaufgaben wie Recherche und Reporting wollen, die Lindy mit 250 bis 1,000 Credits bepreist.",
+        "Ihr Team in Slack lebt und Sie möchten, dass Teammitglieder von dort beitreten und testen."
+      ]
+    },
+    "limits": {
+      "a": [
+        "Activities sind ein separates Kontingent neben Tasks und werden über das Team-Konto geteilt; ein Heavy User kann den Monat aller verbrauchen. Rechercheartige Anweisungen verbrennen viele Activities pro Lauf.",
+        "Keine EU-Datenresidenz veröffentlicht, und Zapier sagt, es unterstütze keine HIPAA-geschützten Daten."
+      ],
+      "b": [
+        "Kosten sind der wichtigste G2-Kritikpunkt. Credits werden nicht übertragen, und eine fehlerhafte Schleife kann tausende Credits verbrauchen, bevor es auffällt.",
+        "Keine Hosting-Region veröffentlicht; Reviews beschreiben US-Hosting als Standard. Trustpilot-Bewertung niedrig (1.7/5), meist Billing und Support."
+      ]
+    },
+    "verdict": "Zapier Agents gewinnen für ein Team, dessen Arbeit App-übergreifende Automation ist und das kostenlos starten sowie günstige Teampreise will. Lindy gewinnt, wenn jede Person einen persönlichen Assistenten mit tieferen Aufgaben und Slack-Onboarding braucht. Keines veröffentlicht EU-Hosting, daher sollte ein europäisches Team beide schriftlich fragen.",
+    "bridge": {
+      "heading": "Wenn Sie Arbeit erledigt haben wollen, keinen Agent konfigurieren",
+      "text": "Beide Tools geben einer Person einen Agent zum Einrichten und Überwachen. Wenn das Team eigentlich einen Wettbewerbsbericht, einen Kampagnenplan oder das Montags-PDF zur Performance braucht, ist das ein anderes Produkt: ein Coworker, den Sie briefen, ein Task-Board fürs Team, am Ende eine Datei. Sokosumi ist ein Marktplatz für benannte AI-Coworker für Marketingteams, jeweils mit Rolle, Beispielarbeit und einem benannten Anbieter, der Modelle und Hosting ausweist.",
+      "points": [
+        "Briefen Sie in klarer Sprache oder per @Mention in einem Kanal; die Aufgabe erscheint auf einem gemeinsamen Task-Board und endet mit einer fertigen Datei.",
+        "Credits nur, wenn eine Aufgabe läuft. Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25, €75 oder €200 pro Monat.",
+        "EU-Hosting verfügbar, je Coworker ausgewiesen. Gebaut von Serviceplan Group mit NMKR, München."
+      ],
+      "links": [
+        "/compare/sokosumi-vs-zapier-agents",
+        "/compare/sokosumi-vs-lindy"
+      ]
+    },
+    "faq": [
+      [
+        "Wie viele Agent Activities bekomme ich bei Zapier?",
+        "Free enthält 400 pro Monat, Professional 1,500, und Team teilt einen Pool über das Konto. Enterprise wird über Sales vereinbart. Activities sind getrennt von Zap Tasks."
+      ],
+      [
+        "Wie weit reichen 3,000 Lindy Credits?",
+        "Lindy bepreist Alltagstasks mit 2 bis 250 Credits, Deep Work mit 250 bis 1,000 und große Builds mit 1,000 bis 2,500. Plus deckt also einige hundert einfache Aufgaben oder wenige tiefe Aufgaben pro Nutzer und Monat ab."
+      ],
+      [
+        "Hostet eines Daten in der EU?",
+        "Keines veröffentlicht eine EU-Region. Zapier hostet auf AWS in den USA und stützt sich auf das EU-US Data Privacy Framework. Lindy nennt SOC 2 und GDPR-Kontrollen, aber keine Region."
+      ],
+      [
+        "Gibt es eine Fertigarbeits-Option für Marketingteams?",
+        "Sokosumi ist ein Marktplatz für AI-Coworker, die fertige Dateien auf ein gemeinsames Task-Board liefern. Free-Plan mit 250 Credits pro Seat und Monat; EU-Hosting je Coworker ausgewiesen."
+      ]
+    ]
+  },
   "sources": [
     "https://zapier.com/pricing",
     "https://zapier.com/legal/data-privacy",

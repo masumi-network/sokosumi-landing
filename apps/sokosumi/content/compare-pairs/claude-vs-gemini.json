@@ -62,6 +62,112 @@
       ["Where does Sokosumi fit?", "It is not a chat assistant. It is a marketplace of specialist marketing coworkers that return finished files to a team board, with EU hosting stated per coworker. Teams keep Claude or Gemini for daily chat and hire a coworker for recurring reports."]
     ]
   },
+  "de": {
+    "title": "Claude oder Google Gemini: welches Tool für Schreiben und Reporting?",
+    "metaTitle": "Claude vs Google Gemini (2026): Preise, Workspace, EU-Hosting",
+    "description": "Claude und Google Gemini im Vergleich: Preis, Dateiausgabe, Workspace-Fit, EU-Datenregionen und echte Grenzen. Stand August 2026, plus Empfehlung.",
+    "intro": "Claude ist Anthropics Assistent: Chat, Projekte, Office-Dateierstellung, Cowork für geplante Aufgaben und Claude Code. Gemini ist Googles Assistent: eine eigenständige App mit Deep Research und NotebookLM, plus Gemini in Gmail, Docs, Sheets und Slides auf Workspace-Plänen. Entscheidend ist Ihre Office-Suite. Wenn Sie in Google Docs leben, ist Gemini schon dort. Wenn nicht, funktionieren Claudes Dateien überall.",
+    "glance": [
+      [
+        "Für wen es passt",
+        "Texter, Analysten und alle, die an langen Dokumenten oder mehrstufiger Büroarbeit arbeiten",
+        "Google-Workspace-Unternehmen und alle, die Recherche mit Gmail und Drive verbinden wollen"
+      ],
+      [
+        "Was Sie bekommen",
+        "Chat, Projects, Erstellung von .xlsx/.pptx/.docx/PDF auf allen Plänen, Cowork (unbeaufsichtigte geplante Aufgaben), Claude Code, Design",
+        "Gemini App mit Deep Research, NotebookLM, Flow-Video-Credits; Gemini in Gmail, Docs, Sheets, Slides, Meet auf Workspace; Gemini Enterprise Agent-Plattform"
+      ],
+      [
+        "Preis pro Person",
+        "Free $0; Pro $17 jährlich oder $20 monatlich; Max ab $100 (claude.com, 26 Aug 2026)",
+        "Free; Google AI Plus CHF 5; AI Pro CHF 17; AI Ultra CHF 100 oder CHF 170 pro Monat (gemini.google, Schweizer Preise, 26 Aug 2026)"
+      ],
+      [
+        "Preis pro Seat (Team)",
+        "Team Standard $20 jährlich oder $25 monatlich, Premium $100 oder $125, 2–150 Seats; Enterprise $20 pro Seat plus API-Nutzung oder individuell",
+        "Workspace Starter CHF 7, Standard CHF 14, Plus CHF 22 pro Nutzer und Monat, Enterprise individuell (Gemini enthalten); Gemini Enterprise Platform $21 / $30 / $50+ pro Seat (Drittanbieter, prüfen)"
+      ],
+      [
+        "Free-Plan oder Test",
+        "Free-Plan, keine Kreditkarte; Dateierstellung enthalten",
+        "Kostenlose Gemini App; Workspace hat 14 Tage Test"
+      ],
+      [
+        "EU-Hosting",
+        "Keines auf Anthropic-Plänen; Workspace-Geo ist USA. EU über AWS Bedrock Frankfurt oder Vertex AI EU",
+        "Workspace-Datenregionen (EU) ab Business Standard; Gemini Enterprise EU-Residenz auf Standard und Plus, aber Gemini 3.1 Pro, Web-Grounding und Bildgenerierung sind nicht EU-resident. Consumer-Gemini-App: keine EU-Option, Chats können fürs Training genutzt werden"
+      ],
+      [
+        "Teamfunktionen",
+        "Gemeinsame Projekte, Enterprise Search, SSO, Admin-Kontrollen; SCIM und Audit Logs auf Enterprise",
+        "Workspace Admin Console, Datenregionen, DLP; Gemini Enterprise ergänzt Agent Gallery und Governance"
+      ],
+      [
+        "Eigene Agents bauen",
+        "Projects, Cowork-Plugins, Agent SDK für Entwickler",
+        "Gems in der App; Gemini Enterprise Agent Builder und Agent Gallery; Vertex AI für Entwickler"
+      ]
+    ],
+    "pickA": {
+      "heading": "Wählen Sie Claude, wenn …",
+      "points": [
+        "Ihr Unternehmen Microsoft 365 oder gar keine Suite nutzt. Claude liefert .docx, .xlsx und .pptx, die überall öffnen.",
+        "Eine Person eine unbeaufsichtigte Aufgabe planen soll, etwa ein wöchentliches Readout-Deck, und das Ergebnis prüft. Das ist Cowork.",
+        "Ihre Arbeit lang ist: Berichte, Verträge, Briefings. Reviews bewerten Claude bei Langform-Texten durchgehend stärker."
+      ]
+    },
+    "pickB": {
+      "heading": "Wählen Sie Google Gemini, wenn …",
+      "points": [
+        "Ihr Team schon in Gmail, Docs und Sheets lebt. Gemini sitzt in der Seitenleiste und braucht kein neues Tool.",
+        "Sie EU-Datenregionen auf einem Unternehmensplan brauchen. Workspace Business Standard und höher enthalten sie; Anthropic-Pläne nicht.",
+        "Recherche die Hauptaufgabe ist. Deep Research liest hunderte Seiten und kann neben dem Web auch eigenes Drive und Gmail durchsuchen."
+      ]
+    },
+    "limits": {
+      "a": [
+        "Nutzungslimits werden über Chat, Cowork und Claude Code geteilt, mit Fünf-Stunden- und Wochenlimits; der häufigste Review-Kritikpunkt.",
+        "Keine EU-Residenz auf Anthropic-Plänen. Consumer-Pläne nutzen Chats fürs Training, wenn Sie nicht widersprechen; Team und Enterprise nicht."
+      ],
+      "b": [
+        "EU-Residenz auf Gemini Enterprise schließt wichtige Funktionen aus: Gemini 3.1 Pro, Web-Grounding und Bildgenerierung sind nicht EU-resident, und Google empfiehlt die globale Location, wenn Residenz nicht vorgeschrieben ist.",
+        "Die Consumer-Gemini-App hat kein Data Processing Addendum; Prompts können menschlich geprüft und standardmäßig fürs Training genutzt werden. Reviews nennen außerdem uneinheitliche Ausgaben und erfundene Zahlen."
+      ]
+    },
+    "verdict": "Wenn Sie auf Google Workspace sind, ist Gemini der sinnvolle Standard: Es ist bereits in Ihren Dokumenten, und EU-Datenregionen kommen ab Business Standard. Wenn Sie auf Microsoft arbeiten oder portable Office-Dateien und geplante unbeaufsichtigte Aufgaben wollen, ist Claude stärker, bringt aber US-Hosting und Nutzungslimits mit.",
+    "bridge": {
+      "heading": "Wenn Sie Arbeit erledigt haben wollen, kein Chatfenster",
+      "text": "Beide Tools geben einer Person einen Ort zum Prompten. Wenn das Team eigentlich einen Wettbewerbsbericht, einen Kampagnenplan oder das Montags-PDF zur Performance braucht, ist das ein anderes Produkt: ein Coworker, den Sie briefen, ein Task-Board fürs Team, am Ende eine Datei. Sokosumi ist ein Marktplatz für benannte AI-Coworker für Marketingteams, jeweils mit öffentlichem Profil, Beispielarbeit, benanntem Anbieter und genanntem Hosting. EU-Hosting ist je Coworker ausgewiesen.",
+      "points": [
+        "Briefen Sie in klarer Sprache oder per @Mention in einem Kanal; die Aufgabe erscheint auf einem gemeinsamen Task-Board und endet als PDF, Deck, Spreadsheet oder Dashboard.",
+        "Credits nur, wenn eine Aufgabe läuft. Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25 / €75 / €200 pro Monat.",
+        "52 Coworker und Agents von 7 Anbietern, 5,300+ erledigte Aufgaben. Gebaut von Serviceplan Group mit NMKR, München."
+      ],
+      "links": [
+        "/compare/sokosumi-vs-claude",
+        "/compare/sokosumi-vs-google-gemini"
+      ]
+    },
+    "faq": [
+      [
+        "Ist Gemini kostenlos in Google Workspace enthalten?",
+        "Ja. Seit März 2025 ist Gemini in Workspace-Plänen gebündelt. Starter (CHF 7) bekommt Gemini in Gmail und der App; Standard (CHF 14) und Plus (CHF 22) ergänzen Gemini in Docs, Sheets, Slides, Drive, Meet und Chat."
+      ],
+      [
+        "Welches Produkt ist sicherer für EU-Personendaten?",
+        "Workspace mit Gemini: DPA, kein Training auf Ihren Daten und EU-Datenregionen ab Business Standard. Claude Team und Enterprise haben ein DPA, speichern Daten aber in den USA. Vermeiden Sie die Consumer-Gemini-App für Unternehmensdaten."
+      ],
+      [
+        "Kann Claude in Google Docs arbeiten?",
+        "Nicht nativ. Claude erstellt und editiert Dateien, die Sie herunterladen oder über Drive-Konnektoren verbinden. Gemini editiert Docs und Sheets direkt."
+      ],
+      [
+        "Wo passt Sokosumi hinein?",
+        "Es ist kein Chat-Assistent. Es ist ein Marktplatz für spezialisierte Marketing-Coworker, die fertige Dateien auf ein Task-Board liefern, mit EU-Hosting je Coworker. Teams behalten Claude oder Gemini für täglichen Chat und mieten einen Coworker für wiederkehrende Berichte."
+      ]
+    ]
+  },
   "sources": [
     "https://claude.com/pricing",
     "https://claude.com/product/cowork",

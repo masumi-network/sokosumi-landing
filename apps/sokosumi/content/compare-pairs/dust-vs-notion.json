@@ -117,6 +117,112 @@
       ]
     ]
   },
+  "de": {
+    "title": "Dust oder Notion AI: Agents auf Unternehmensdaten, zwei Wege",
+    "metaTitle": "Dust vs Notion AI (2026): Preise, Credits, EU-Hosting",
+    "description": "Dust (Pariser Agent-Arbeitsbereich) vs Notion AI: Seat-Preise, Credits, EU-Hosting, Agent-Trigger, Outputs und Grenzen. Stand August 2026.",
+    "intro": "Dust ist ein in Paris gebauter Arbeitsbereich zum Bauen von Agents, die Notion, Drive, Slack, GitHub und andere Quellen über viele Modelle lesen. Notion AI ist die Assistenten- und Agent-Schicht in Notion: ein persönlicher Notion Agent auf Business, plus Custom Agents, die nach Zeitplänen und Triggern laufen. Unterschied: Dust ist eine eigenständige Agent-Plattform mit Modellauswahl; Notion Agents leben in Notion-Seiten und Datenbanken.",
+    "glance": [
+      [
+        "Für wen es passt",
+        "Teams, die Agents über Unternehmenswissen bauen und steuern wollen, außerhalb einer einzelnen App",
+        "Teams, deren Docs, Wikis und Projekte schon in Notion liegen und die KI und Automationen dort wollen"
+      ],
+      [
+        "Was Sie bekommen",
+        "Chat, eigene Agents mit Datenquellen und Tools, Slack-Integration, MCP-Server, API",
+        "Notion AI Writing und Search, Notion Agent (fragt, sucht, editiert innerhalb Ihrer Berechtigungen), Custom Agents nach Zeitplan oder Slack-, E-Mail- und Datenbank-Triggern, AI Meeting Notes, Enterprise Search"
+      ],
+      [
+        "Preis pro Nutzer",
+        "Pro $30/Seat/Monat ($24 jährlich) mit 8,000 Credits; Max $150 ($120 jährlich) mit 40,000; Enterprise individuell (Drittanbieter-Capture von dust.tt Pricing, 24 Jun 2026; prüfen)",
+        "Plus $10, Business $20 pro Mitglied/Monat (jährlich); Enterprise individuell. Custom Agents werden mit $10 pro 1,000 Credits gezählt (seit 4 May 2026)"
+      ],
+      [
+        "Free-Plan oder Test",
+        "Free-Plan mit 500 Credits, einmalig",
+        "Free-Plan mit Test-KI-Funktionen; Custom Agents kostenlos testbar"
+      ],
+      [
+        "EU-Hosting",
+        "EU-Region verfügbar (eu.dust.tt); SOC 2 Type II, GDPR; Claude Sonnet 5 noch nicht auf EU-Workspaces (Changelog 30 Jun 2026)",
+        "EU-Datenresidenz (Frankfurt, Irland-Backup) nur auf Enterprise; Notion AI auf Enterprise mit Zero Data Retention bei LLM-Anbietern abgedeckt"
+      ],
+      [
+        "Teamfunktionen",
+        "Workspace-Admin, gemeinsame Agents; SCIM, Audit Logs, Single-Tenant auf Enterprise",
+        "Workspace-Admin; SSO, SCIM, Audit Log auf Enterprise; Agents beachten Notion-Seitenberechtigungen"
+      ],
+      [
+        "Eigene Agents bauen",
+        "Ja: Datenquellen, Tools, MCP-Server; Credits pro Lauf",
+        "Ja: Custom Agents auf Business und Enterprise; Credits pro Lauf, im Workspace gepoolt, kein Rollover"
+      ],
+      [
+        "Outputs",
+        "Chat-Antworten und Dateien zurück an den Nutzer; kein eigener Dateispeicher",
+        "Notion-Seiten, Datenbanken und Slack-Posts; nicht PPTX oder XLSX"
+      ]
+    ],
+    "pickA": {
+      "heading": "Wählen Sie Dust, wenn …",
+      "points": [
+        "Ihr Wissen über Notion, Drive, Slack, GitHub und Intercom verteilt ist und Sie eine Agent-Schicht darüber wollen.",
+        "Sie Modelle wählen und wechseln wollen, auch in einer EU-Region.",
+        "Ihre Builder technisch sind und MCP-Server sowie eine API wollen."
+      ]
+    },
+    "pickB": {
+      "heading": "Wählen Sie Notion AI, wenn …",
+      "points": [
+        "Ihr Team schon in Notion lebt und KI dort will, wo die Seiten liegen.",
+        "Sie geplante Agents wollen, die Datenbanken aktualisieren und in Slack posten, ohne ein weiteres Tool.",
+        "Sie einen niedrigeren Seat-Preis wollen und Custom Agents per Credits zählen können."
+      ]
+    },
+    "limits": {
+      "a": [
+        "Credits werden monatlich zurückgesetzt und verfallen; die 500 Credits im Free-Plan sind einmalig (Drittanbieter-Capture von Dust Pricing, 24 Jun 2026).",
+        "EU-Workspaces hinken bei manchen Modellen hinterher (Claude Sonnet 5 war am 30 Jun 2026 nicht für EU-Residenz verfügbar); Dust speichert keine eigenen Dateien (Dust Changelog; fast.io Review 2026)."
+      ],
+      "b": [
+        "EU-Datenresidenz nur auf Enterprise; Business-Daten liegen in den USA. Business 'unlimited AI' hat eine Fair-Use-Policy mit unveröffentlichten Schwellen (Notion Help Center; eesel Review, May 2026).",
+        "Agents handeln in Notion: Sie können Slack lesen, aber nicht auf eine Slack-Nachricht antworten, Läufe sind auf 20 Minuten begrenzt, und Nutzer berichten von fehlgeschlagenen geplanten Läufen (eesel Review, May 2026)."
+      ]
+    },
+    "verdict": "Wenn Notion Ihr System of Record ist, ist Notion AI der günstigere, einfachere Weg, und die Agents passen natürlich in Ihre Datenbanken. Wenn Ihr Wissen über viele Tools verteilt ist oder Sie Modellauswahl und eine EU-Region unterhalb von Enterprise brauchen, ist Dust die stärkere Plattform. Beide zählen Agent-Läufe in Credits; budgetieren müssen Sie so oder so.",
+    "bridge": {
+      "heading": "Wenn Sie Arbeit erledigt haben wollen, kein Chatfenster",
+      "text": "Beide Tools geben einem Team einen Builder und einen Ort zum Prompten. Wenn das Team eigentlich einen Wettbewerbsbericht, einen Kampagnenplan oder das Montags-PDF zur Performance braucht, ist das ein anderes Produkt: ein Coworker, den Sie briefen, ein Task-Board fürs Team, am Ende eine Datei. Sokosumi ist ein Marktplatz für benannte AI-Coworker für Marketingteams, gebaut von Serviceplan Group mit NMKR in München.",
+      "points": [
+        "52 Coworker und Agents von 7 Anbietern; jedes Profil nennt Anbieter, Modelle und Hosting, mit verfügbarem EU-Hosting.",
+        "Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25, €75 oder €200 pro Monat; Credits werden nur verbraucht, wenn eine Aufgabe läuft.",
+        "Aufgaben enden mit einem fertigen PDF, Deck, Spreadsheet oder Dashboard auf einem gemeinsamen Task-Board; geplante Aufgaben wiederholen sich selbst."
+      ],
+      "links": [
+        "/compare/sokosumi-vs-dust",
+        "/compare/sokosumi-vs-notion-ai"
+      ]
+    },
+    "faq": [
+      [
+        "Wie werden Notion Custom Agents abgerechnet?",
+        "Custom Agents laufen auf Business und Enterprise und nutzen Notion Credits zu $10 pro 1,000 pro Monat. Credits werden im Workspace geteilt, monatlich zurückgesetzt und nicht übertragen. Notion Agent, AI Meeting Notes und Enterprise Search sind auf Business enthalten."
+      ],
+      [
+        "Kann Dust mein Notion lesen?",
+        "Ja. Notion ist eine der Datenquellen von Dust, neben Google Drive, Slack, Confluence, Microsoft 365, GitHub, Intercom, Salesforce und Zendesk."
+      ],
+      [
+        "Welches Produkt wird in der EU gehostet?",
+        "Dust bietet auf seinen Plänen eine EU-Region. Notion bietet EU-Datenresidenz in Frankfurt nur im Enterprise-Plan."
+      ],
+      [
+        "Welches Produkt liefert fertige Decks oder Spreadsheets?",
+        "Keines ist darauf gebaut. Dust gibt Chat-Ausgaben und Dateien an den Nutzer zurück; Notion Agents schreiben Seiten und Datenbankzeilen. Sokosumi-Coworker liefern Dateien auf ein Task-Board."
+      ]
+    ]
+  },
   "sources": [
     "https://www.usagepricing.com/blueprint/dust",
     "https://docs.dust.tt/changelog",

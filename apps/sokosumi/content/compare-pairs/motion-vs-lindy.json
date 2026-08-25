@@ -62,6 +62,112 @@
       ["Is there a finished-work option for marketing teams?", "Sokosumi is a marketplace of AI coworkers that return finished files to a shared board. Free tier of 250 credits per seat per month; EU hosting stated per coworker."]
     ]
   },
+  "de": {
+    "title": "Motion oder Lindy: Arbeitssuite mit KI oder eigenständiger AI-Assistent?",
+    "metaTitle": "Motion vs Lindy (2026): Preise, AI Credits, EU-Hosting",
+    "description": "Motion und Lindy im Vergleich: was beide sind, Seat-Preise, AI Credits, EU-Hosting und von Reviews gemeldete Grenzen. Stand August 2026.",
+    "intro": "Motion ist eine Projekt-, Kalender- und Docs-Suite mit AI Credits und neuerer 'AI Employees'-Stufe. Lindy ist ein eigenständiger AI-Assistent pro Nutzer für E-Mail, Meetings, CRM und Recherche. Entscheidend ist, ob Sie KI in einem Work-Management-Tool wollen, das Sie zusätzlich einführen, oder einen Assistenten, der sich in Ihre vorhandenen Tools einklinkt.",
+    "glance": [
+      [
+        "Für wen es passt",
+        "Kleine Teams und Agenturen, die Tasks, Kalender, Docs und KI in einer App wollen",
+        "Einzelpersonen und kleine Teams, die einen fertigen Assistenten in Slack, E-Mail und Kalender wollen"
+      ],
+      [
+        "Was Sie bekommen",
+        "Automatisch geplante Aufgaben und Projekte, Kalender, Meeting Notes, Docs, AI Chat, Agents auf der AI Employees-Stufe",
+        "Vorgefertigte Assistenten für Inbox, Meetings, Outreach, Recherche und Reporting"
+      ],
+      [
+        "Preis",
+        "Teams: Pro AI $19 pro Seat und Monat jährlich ($29 monatlich); Business AI $29 jährlich ($49 monatlich). Individuals: $29 / $39 jährlich. AI Employees-Stufe zum Prüfzeitpunkt nicht auf der Preisseite; Drittanbieter nennen etwa $49 pro Monat jährlich (Drittanbieter, prüfen)",
+        "Plus $29.99, Pro $99.99, Max $199.99 pro Nutzer und Monat; Enterprise individuell"
+      ],
+      [
+        "Free-Plan oder Test",
+        "7 Tage Test mit $1 Kreditkarten-Hold; kein Free-Plan",
+        "Kein Free-Plan auf der Preisseite; 7-Tage-Test nur für Teammitglieder, die über Slack beitreten"
+      ],
+      [
+        "EU-Hosting",
+        "Nein. Motion sagt, Daten werden in Googles us-central1-Region (Iowa) gespeichert und EU-only Storage kann nicht angefragt werden",
+        "Nicht veröffentlicht. SOC 2 Type II, GDPR und HIPAA-Kontrollen gelistet"
+      ],
+      [
+        "Teamfunktionen",
+        "Kapazitätsplanung, Dashboards, Gantt, Zeiterfassung, Berechtigungen auf Business AI",
+        "Seats pro Nutzer mit einem gemeinsamen Credit-Pool pro Workspace"
+      ],
+      [
+        "Eigene Agents bauen",
+        "Begrenzt; AI Employees sind von Motion betriebene Agents in der Suite",
+        "Ja, ohne Code, aus Vorlagen"
+      ],
+      [
+        "Was gezählt wird",
+        "AI Credits pro Seat: 7,500 Pro AI, 15,000 Business AI. Zusatzcredits $0.25 oder $0.19 pro 100",
+        "Credits pro Nutzer: 3,000 / 15,000 / 35,000 pro Monat, je Aufgabengröße"
+      ]
+    ],
+    "pickA": {
+      "heading": "Wählen Sie Motion, wenn …",
+      "points": [
+        "Sie eine App für Aufgaben, Kalender und Docs wollen und KI ein Zusatznutzen ist.",
+        "Sie den niedrigsten Seat-Preis wollen. Team Pro AI kostet $19 pro Seat und Monat im Jahresplan.",
+        "Ihr Team in den USA ist oder kein EU-Hosting braucht."
+      ]
+    },
+    "pickB": {
+      "heading": "Wählen Sie Lindy, wenn …",
+      "points": [
+        "Sie keine Projekttools wechseln wollen. Lindy arbeitet auf Gmail, Slack, Kalender und CRM.",
+        "Sie einen Assistenten wollen, der tiefere Arbeit wie Recherche und Reporting erledigt, nicht nur Planung.",
+        "Sie Agents selbst konfigurieren wollen statt eines festen Sets in einer Suite."
+      ]
+    },
+    "limits": {
+      "a": [
+        "Motion sagt klar, dass EU-only Storage nicht möglich ist. Daten liegen in Iowa.",
+        "Reviews berichten von Feature-Überladung seit dem 'AI super app'-Pivot und schwacher Mobile App (etwa 2.7/5 auf G2 gegenüber 4.5 auf Desktop). Heavy AI User zahlen über den Listenpreis hinaus Credit-Mehrkosten."
+      ],
+      "b": [
+        "Kosten sind der wichtigste G2-Kritikpunkt. Credits werden nicht übertragen, und eine fehlerhafte Schleife kann tausende verbrauchen, bevor es auffällt.",
+        "Keine Hosting-Region veröffentlicht; Reviews beschreiben US-Hosting als Standard. Trustpilot-Bewertung niedrig (1.7/5), meist Billing und Support."
+      ]
+    },
+    "verdict": "Motion gewinnt für ein kleines Team, das eine Arbeitssuite mit KI für $19 bis $29 pro Seat will und kein EU-Hosting braucht. Lindy gewinnt für ein Team, das seine Tools behält und einen Assistenten will, der echte Aufgaben erledigt, zu höherem Nutzerpreis. Keines ist auf dem Papier EU-gehostet; Motion sagt es ausdrücklich.",
+    "bridge": {
+      "heading": "Wenn Sie Arbeit erledigt haben wollen, nicht noch eine App einführen",
+      "text": "Beide Tools geben einer Person einen Ort zum Planen oder einen Assistenten zum Einrichten. Wenn das Team eigentlich einen Wettbewerbsbericht, einen Kampagnenplan oder das Montags-PDF zur Performance braucht, ist das ein anderes Produkt: ein Coworker, den Sie briefen, ein Task-Board fürs Team, am Ende eine Datei. Sokosumi ist ein Marktplatz für benannte AI-Coworker für Marketingteams, jeweils mit Rolle, Beispielarbeit und einem benannten Anbieter, der Modelle und Hosting ausweist.",
+      "points": [
+        "Briefen Sie in klarer Sprache oder per @Mention in einem Kanal; die Aufgabe erscheint auf einem gemeinsamen Task-Board und endet mit einer fertigen Datei.",
+        "Credits nur, wenn eine Aufgabe läuft. Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25, €75 oder €200 pro Monat.",
+        "EU-Hosting verfügbar, je Coworker ausgewiesen. Gebaut von Serviceplan Group mit NMKR, München."
+      ],
+      "links": [
+        "/compare/sokosumi-vs-motion",
+        "/compare/sokosumi-vs-lindy"
+      ]
+    },
+    "faq": [
+      [
+        "Was ist Motions AI Employees-Stufe?",
+        "Eine neuere Stufe für Agents, die ganze Workflows in Motion ausführen. Sie wurde beim Check nicht auf der Preisseite gezeigt; Drittanbieter-Reviews nennen etwa $49 pro Monat bei Jahresabrechnung mit rund 10,000 Credits. Mit Motion prüfen."
+      ],
+      [
+        "Speichert Motion Daten in der EU?",
+        "Nein. Motions Security-Seite sagt, Daten werden in Googles us-central1-Region in Iowa gespeichert und EU-only Storage kann nicht angefragt werden."
+      ],
+      [
+        "Wie funktionieren Lindy Credits?",
+        "Credits messen erledigte Arbeit und werden nur verbraucht, wenn Lindy arbeitet. Alltagstasks kosten 2 bis 250 Credits, Deep Work 250 bis 1,000, große Builds 1,000 bis 2,500. Plus enthält 3,000 pro Nutzer und Monat; Credits resetten monatlich."
+      ],
+      [
+        "Gibt es eine Fertigarbeits-Option für Marketingteams?",
+        "Sokosumi ist ein Marktplatz für AI-Coworker, die fertige Dateien auf ein gemeinsames Task-Board liefern. Free-Plan mit 250 Credits pro Seat und Monat; EU-Hosting je Coworker ausgewiesen."
+      ]
+    ]
+  },
   "sources": [
     "https://www.usemotion.com/pricing",
     "https://www.usemotion.com/security",

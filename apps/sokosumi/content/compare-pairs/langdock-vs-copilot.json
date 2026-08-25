@@ -117,6 +117,112 @@
       ]
     ]
   },
+  "de": {
+    "title": "Langdock oder Microsoft 365 Copilot: was passt zu Microsoft-365-Unternehmen?",
+    "metaTitle": "Langdock vs Microsoft 365 Copilot (2026): Preise, EU-Daten",
+    "description": "Langdock vs Microsoft 365 Copilot für DACH-Unternehmen: Seat-Preise, EU Data Boundary gegen EU-Hosting, Agents und Researcher-Limits. Stand August 2026.",
+    "intro": "Langdock ist ein EU-gehosteter AI-Arbeitsbereich mit Chat, Agents und Workflows über viele Modelle. Microsoft 365 Copilot ist die KI-Schicht in Word, Excel, Outlook und Teams, verkauft als Add-on zu einer Microsoft 365-Lizenz. Der Unterschied: Copilot arbeitet dort, wo Ihre Dateien schon liegen; Langdock gibt Modellauswahl und ein klares EU-Hosting-Versprechen ohne Microsofts Peak-Time-Routing.",
+    "glance": [
+      [
+        "Für wen es passt",
+        "Unternehmen, die unabhängig von der Office-Suite einen AI-Arbeitsbereich für alle mit Modellauswahl und EU-Hosting wollen",
+        "Unternehmen auf Microsoft 365, die KI in Office-Apps und Teams wollen, gekauft über ihren bestehenden Microsoft-Vertrag"
+      ],
+      [
+        "Was Sie bekommen",
+        "Chat mit 40+ Modellen, eigene Agents, Workflows mit Triggern, Slack- und Teams-Bots, geplante Aufgaben, API",
+        "Copilot in Word, Excel, PowerPoint, Outlook, Teams; Copilot Chat; Researcher, Analyst und Facilitator Agents; Copilot Studio für eigene Agents"
+      ],
+      [
+        "Preis pro Nutzer",
+        "€25/Monat Standard Seat; €99/Monat Business Max. Jährliche Abrechnung spart 20%",
+        "Copilot Business Add-on $21/Nutzer/Monat Liste ($18 Promo 1 Jul–31 Dec 2026, erstes Jahr, jährlich); $30/Nutzer/Monat für Enterprise Microsoft 365 Copilot. Benötigt passenden Microsoft 365-Plan"
+      ],
+      [
+        "Free-Plan oder Test",
+        "7 Tage Test, €5 Modell-Credits, keine Kreditkarte",
+        "1 Monat kostenloser Test von Copilot Business; Copilot-Studio-Test mit $200 Azure Credit"
+      ],
+      [
+        "EU-Hosting",
+        "App und die meisten Modelle in der EU auf Azure gehostet; ISO 27001, SOC 2 Type II",
+        "EU Data Boundary Service. Aber Flex Routing lässt Modellverarbeitung bei Spitzennachfrage die EU verlassen, standardmäßig aktiv seit 17 Apr 2026, wenn der Admin es nicht abschaltet. Anthropic-Modelle sind von der EU Data Boundary ausgeschlossen"
+      ],
+      [
+        "Teamfunktionen",
+        "SSO, SCIM, SAML; gemeinsame Agents; Governance Add-on (gratis bis 1 Jan 2027, danach €3.50/Nutzer)",
+        "Volle Microsoft 365-Administration, Purview, DLP, Retention; Agents im Microsoft 365 Agent Store veröffentlichen"
+      ],
+      [
+        "Eigene Agents bauen",
+        "Ja: Agents mit Wissen und Tools; Workflows mit 2,500 Läufen/Monat enthalten, mehr ab €539/Monat",
+        "Ja: Copilot Studio, für interne Agents enthalten; eigenständige Nutzung $200 pro 25,000 Credits oder Pay-as-you-go"
+      ],
+      [
+        "Deep Research",
+        "Über Modelle und Agents; kein festes veröffentlichtes Limit",
+        "Researcher Agent, begrenzt auf 25 Abfragen pro Nutzer und Monat; kann keine Bilder verarbeiten; PowerPoint- und PDF-Ausgabe als kommend gelistet"
+      ]
+    ],
+    "pickA": {
+      "heading": "Wählen Sie Langdock, wenn …",
+      "points": [
+        "Sie ein festes EU-Hosting-Versprechen ohne Peak-Time-Routing außerhalb der EU wollen.",
+        "Sie zwischen OpenAI-, Anthropic-, Google- und Mistral-Modellen vergleichen oder wechseln wollen.",
+        "Ihr Team nicht komplett auf Microsoft 365 ist oder Workflows mit Triggern und Freigaben ohne Copilot-Studio-Credits braucht."
+      ]
+    },
+    "pickB": {
+      "heading": "Wählen Sie Microsoft 365 Copilot, wenn …",
+      "points": [
+        "Ihre Arbeit in Word, Excel, Outlook und Teams liegt und Sie KI dort wollen, nicht in einem separaten Tab.",
+        "Sie über Ihren bestehenden Microsoft-Vertrag kaufen und Purview, DLP und Retention Policies wiederverwenden wollen.",
+        "Copilot Mailbox, Kalender und SharePoint mit denselben Berechtigungen lesen soll, die Nutzer bereits haben."
+      ]
+    },
+    "limits": {
+      "a": [
+        "Nutzung wird in 5-Stunden- und Wochenfenstern gemessen; am Limit fällt Langdock auf ein leichteres Modell zurück, wenn Zusatznutzung nicht aktiviert ist (Langdock Docs, Fair Usage Policy).",
+        "Langdock sitzt nicht direkt in Office-Dateien. Es erreicht Microsoft 365 über Integrationen und einen Teams-Bot; direktes Bearbeiten eines Dokuments ist nicht das Modell (teamazing 90-Tage-Test, aktualisiert 17 Aug 2026)."
+      ],
+      "b": [
+        "Researcher ist auf 25 Abfragen pro Nutzer und Monat begrenzt, kann keine Bilder als Input nehmen und nicht mit Copilot Studio angepasst werden (Microsoft Learn, Researcher FAQ, aktualisiert 18 Aug 2026).",
+        "Flex Routing sendet Modellverarbeitung außerhalb der EU Data Boundary, wenn EU-Kapazität knapp ist. Es ist für EU-Tenants seit 17 Apr 2026 standardmäßig aktiv; Admins müssen widersprechen (Microsoft Message Center MC1269223)."
+      ]
+    },
+    "verdict": "Wenn Sie ein Microsoft-Unternehmen sind und KI in den Apps wollen, die Menschen ohnehin öffnen, ist Copilot der natürliche Kauf; der Preis liegt nahe bei Langdock und die Admin-Story ist tiefer. Wenn Sie ein striktes EU-Hosting-Versprechen, Modellauswahl oder Workflow-Automation ohne zweites Credit-System brauchen, ist Langdock sauberer. Viele DACH-Unternehmen nutzen beides: Copilot in Office, Langdock als modellagnostischen Arbeitsbereich.",
+    "bridge": {
+      "heading": "Wenn Sie Arbeit erledigt haben wollen, kein Chatfenster",
+      "text": "Beide Tools geben einer Person einen Ort zum Prompten. Wenn das Team eigentlich einen Wettbewerbsbericht, einen Kampagnenplan oder das Montags-PDF zur Performance braucht, ist das ein anderes Produkt: ein Coworker, den Sie briefen, ein Task-Board fürs Team, am Ende eine Datei. Sokosumi ist ein Marktplatz für benannte AI-Coworker für Marketingteams, gebaut von Serviceplan Group mit NMKR in München. Coworker können per @Mention in einem Kanal briefed werden; die Aufgabe erscheint auf einem Task-Board und endet mit PDF, Deck, Spreadsheet oder Dashboard.",
+      "points": [
+        "52 Coworker und Agents von 7 Anbietern; jedes Profil nennt Anbieter, Modelle und Hosting-Region.",
+        "Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25, €75 oder €200 pro Monat; Credits werden nur verbraucht, wenn eine Aufgabe läuft.",
+        "Geplante Aufgaben und fertige Dateien, damit niemand am Montag neu prompten muss."
+      ],
+      "links": [
+        "/compare/sokosumi-vs-langdock",
+        "/compare/sokosumi-vs-microsoft-365-copilot"
+      ]
+    },
+    "faq": [
+      [
+        "Brauche ich eine Microsoft 365-Lizenz für Copilot?",
+        "Ja. Copilot Business ist ein Add-on zu einem passenden Microsoft 365-Plan. Microsoft verkauft auch Bundles: Business Standard mit Copilot für $23.50 und Business Premium mit Copilot für $32 pro Nutzer und Monat, jährlich."
+      ],
+      [
+        "Bleiben Copilot-Daten in der EU?",
+        "Daten at rest bleiben in der EU Data Boundary. Modellverarbeitung kann unter Flex Routing bei Spitzennachfrage außerhalb der EU laufen, wenn Ihr Admin es nicht deaktiviert. Anthropic-Modelle in Copilot sind von der EU Data Boundary ausgeschlossen."
+      ],
+      [
+        "Kann Langdock in Teams arbeiten?",
+        "Ja. Langdock hat einen Teams-Bot und einen Slack-Bot, sodass Menschen Modelle und Agents aus einem Chatfenster nutzen können. Word- oder Excel-Dateien editiert es nicht direkt."
+      ],
+      [
+        "Welches Produkt erzeugt fertige Dateien für ein Team?",
+        "Copilot erstellt Office-Dateien für die fragende Person. Langdock gibt Chat-Ausgaben und Dateien an den Nutzer zurück. Keines legt fertige Arbeit auf ein gemeinsames Task-Board; Produkte wie Sokosumi sind darauf gebaut."
+      ]
+    ]
+  },
   "sources": [
     "https://www.langdock.com/pricing",
     "https://www.langdock.com/security",
