@@ -762,8 +762,9 @@ body:has(.cc-banner) .product-page .pd-stage { margin-bottom: 220px; }
 .pd-features-head { display: flex; align-items: baseline; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 22px; }
 .pd-features-head h2 { font-size: clamp(28px, 3.4vw, 40px); font-weight: 300; letter-spacing: -0.03em; }
 .pd-features-head .sub { font-size: 15px; color: var(--muted-foreground); max-width: 44ch; margin: 0; }
-.pd-pillars { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; border-top: 1px solid var(--foreground); }
+.pd-pillars { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; }
 .pd-pillars article { position: relative; padding: 26px 22px 30px 0; min-width: 0; border-bottom: 1px solid var(--border); }
+.pd-pillars article:nth-last-child(-n + 3) { border-bottom: 0; }
 .pd-pillars article:not(:nth-child(3n + 1)) { padding-left: 22px; border-left: 1px solid var(--border); }
 .pd-pillars .pd-feat-ico { display: inline-flex; width: 40px; height: 40px; align-items: center; justify-content: center; border: 1px solid var(--foreground); border-radius: 999px; color: var(--foreground); margin-bottom: 18px; }
 .pd-pillars .pd-feat-ico svg { width: 20px; height: 20px; stroke-width: 1.5; }
@@ -845,6 +846,8 @@ body:has(.cc-banner) .product-page .pd-stage { margin-bottom: 220px; }
   .pd-pillars { grid-template-columns: minmax(0, 1fr); }
   .pd-pillars article { padding: 22px 0 24px; }
   .pd-pillars article:not(:nth-child(3n + 1)) { padding-left: 0; border-left: 0; }
+  .pd-pillars article:nth-last-child(-n + 3) { border-bottom: 1px solid var(--border); }
+  .pd-pillars article:last-child { border-bottom: 0; }
   .pd-pillars .pd-feat-num { right: 0; top: 24px; }
   .pd-stage-note { font-size: 12px; }
 }
