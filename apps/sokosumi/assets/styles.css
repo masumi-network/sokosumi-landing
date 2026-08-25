@@ -1284,8 +1284,7 @@ h1, h2, h3 { overflow-wrap: break-word; }
 .cmp-versus.is-lg em { font-size: 12px; padding: 4px 11px; }
 .cmp-versus.is-lg .cmp-mark { font-size: 20px; font-weight: 400; gap: 12px; }
 .cmp-versus.is-lg .cmp-mark-logo img, .cmp-versus.is-lg .cmp-mark-logo b { width: 48px; height: 48px; border-radius: 12px; border: 1px solid var(--border); padding: 6px; background: #fff; }
-.cmp-versus.is-lg .cmp-mark-word > img { height: 14px; width: auto; }
-.cmp-mark-word > img { height: 9px; width: auto; }
+
 @media (max-width: 599px) { .cmp-versus.is-lg { flex-wrap: wrap; } }
 
 /* compare: stats under the answer, alternating picture sections, quieter h3s */

@@ -33,7 +33,7 @@ function versus(c, size) {
     ? `<img${shell.thumbSrc(logo, size === "lg" ? 96 : 48, "src", 100)} alt="${attr(name)}" width="${size === "lg" ? 48 : 24}" height="${size === "lg" ? 48 : 24}" loading="lazy" decoding="async" />`
     : `<b>${esc(name.slice(0, 1))}</b>`;
   return `<div class="cmp-versus${size === "lg" ? " is-lg" : ""}" aria-label="Sokosumi vs ${attr(name)}">
-    <span class="cmp-mark cmp-mark-word"><img src="/assets/sokosumi-wordmark.svg" alt="Sokosumi" width="${size === "lg" ? 120 : 72}" height="${size === "lg" ? 14 : 9}" /></span>
+    <span class="cmp-mark cmp-mark-logo"><img src="/assets/apple-touch-icon.png" alt="" width="${size === "lg" ? 48 : 24}" height="${size === "lg" ? 48 : 24}" decoding="async" /><span>Sokosumi</span></span>
     <em>vs</em>
     <span class="cmp-mark cmp-mark-logo">${mark}<span>${esc(name)}</span></span>
   </div>`;
