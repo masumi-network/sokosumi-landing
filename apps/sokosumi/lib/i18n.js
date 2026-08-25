@@ -598,9 +598,9 @@ const DE = {
 
   // footer
   "Hire AI coworkers for marketing work that comes back as finished files.":
-    "Der Marktplatz für AI Coworkers, deren Marketing-Arbeit als fertige Dateien zurückkommt.",
+    "Der Marktplatz für AI Coworker, deren Marketing-Arbeit als fertige Dateien zurückkommt.",
   Marketplace: "Marktplatz",
-  "AI Coworkers": "AI Coworkers",
+  "AI Coworkers": "AI Coworker",
   "List your agent": "Eigenen Agent listen",
   "How it works": "So funktioniert es",
   Compare: "Vergleich",
@@ -1194,7 +1194,7 @@ const DE = {
   // ---- pagesCms.js / product hub ----
   "Product | Sokosumi": "Produkt | Sokosumi",
   "Deep dives into what your AI coworkers can do: the surfaces, workflows, and guarantees behind Sokosumi.":
-    "Vertiefungen zu dem, was Ihre AI Coworkers können: die Oberflächen und Workflows hinter Sokosumi.",
+    "Vertiefungen zu dem, was Ihre AI Coworker können: die Oberflächen und Workflows hinter Sokosumi.",
   "The Sokosumi product": "Das Sokosumi-Produkt",
   "What an AI coworker is, how you brief one, where the work shows up, and what you get back.":
     "Was ein AI Coworker ist, wie Sie ihn briefen, wo die Arbeit auftaucht und was Sie zurückbekommen.",
@@ -1532,7 +1532,7 @@ const HOME_DE = [
   ['<html lang="en">', '<html lang="de">'],
   [
     "Sokosumi | AI Coworkers for your marketing team",
-    "Sokosumi | AI Coworkers für Ihr Marketingteam",
+    "Sokosumi | AI Coworker für Ihr Marketingteam",
   ],
   [
     "Hire AI coworkers and run template marketing tasks on Sokosumi. A marketplace for marketing work that arrives as a file. Built by Serviceplan Group.",
@@ -1545,10 +1545,10 @@ const HOME_DE = [
 
   // skip link + hero
   [">Skip to content</a>", ">Zum Inhalt springen</a>"],
-  ["AI Coworkers for <span", "AI Coworkers für <span"],
+  [">AI Coworkers for Marketing.</h1>", ">AI Coworker für Marketing.</h1>"],
   [
       "Hire AI coworkers that turn a brief into finished files.",
-    "AI Coworkers, die aus einem Briefing fertige Dateien machen.",
+    "AI Coworker, die aus einem Briefing fertige Dateien machen.",
   ],
   [">Talk to Sales</a>", ">Vertrieb kontaktieren</a>"],
   [">Sign Up</a>", ">Registrieren</a>"],
@@ -1560,7 +1560,7 @@ const HOME_DE = [
   [">From the live roster</span>", ">Aus dem Live-Roster</span>"],
   [
     "These are your <span class=\"serif-accent\">AI coworkers</span>",
-    "Das sind Ihre <span class=\"serif-accent\">AI Coworkers</span>",
+    "Das sind Ihre <span class=\"serif-accent\">AI Coworker</span>",
   ],
   [
     "Named specialists from vendors like Serviceplan Group and utxo AG. Open a profile for the role, the tasks, and sample work.",
@@ -1710,7 +1710,7 @@ const HOME_DE = [
   ['"+ Agents"', '"+ Agents"'],
   ["The live marketplace is unreachable right now.", "Der Live-Marktplatz ist gerade nicht erreichbar."],
   ["'<span class=\"label\">Meet all '", "'<span class=\"label\">Alle '"],
-  ['" AI Coworkers" +', '" AI Coworkers kennenlernen" +'],
+  ['" AI Coworkers" +', '" AI Coworker kennenlernen" +'],
 ];
 
 function translateHomepage(html) {

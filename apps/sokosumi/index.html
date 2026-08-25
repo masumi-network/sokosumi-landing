@@ -142,13 +142,7 @@
           <span class="count" id="heroCount"></span>
         </div>
 
-        <h1 class="hero-title" data-reveal style="--i: 1">
-          <!-- The rotator's first word is real text, so it needs no sr-only
-               twin: with one there, the h1's text content read
-               "AI Coworkers for Marketing.Marketing." to anything that does
-               not apply CSS — crawlers included. -->
-          AI Coworkers for <span class="rotator" id="heroRotator"><span class="rot-word is-active">Marketing<span class="hero-dot">.</span></span></span>
-        </h1>
+        <h1 class="hero-title" data-reveal style="--i: 1">AI Coworkers for Marketing.</h1>
 
         <p class="hero-sub" data-reveal style="--i: 2">
           Hire AI coworkers that turn a brief into finished files.
@@ -722,58 +716,7 @@
             document.getElementById("cwSkeleton").textContent = "The live marketplace is unreachable right now.";
           });
 
-        /* hero: the discipline cycles, the rest of the line holds still. Every
-           word is stacked in the same grid cell, so the slot is as wide as the
-           longest one and nothing after it moves. */
-        (function () {
-          /* The headline stays on "Marketing". The rotator is kept below,
-             unreached, because the words and the width-measuring it does are
-             the fiddly part — turning it back on is deleting this return.
-             "Marketing" is already in the HTML, so with this off the h1 is
-             plain static text and needs no JS at all. */
-          return;
-          var el = document.getElementById("heroRotator");
-          if (!el) return;
-          /* the first word is in the HTML so the headline reads correctly with
-             no JavaScript and before this runs; the set below replaces it */
-          /* Kept to words no wider than "Marketing": the slot reserves the longest
-   one, so a single over-long word ("Campaigns" needed 1147px against a
-   1106px measure) would push the whole headline onto two lines for every
-   word, not just itself. */
-          var WORDS = ["Marketing", "Sales", "Outreach", "Content", "Research", "Branding", "Social"];
 
-          /* One word lives in the DOM at a time. Stacking all seven in the grid
-             cell reserved the slot for free, but it also made the h1's text
-             content read "AI Coworkers for Marketing.Sales.Outreach.Content.
-             Research.Branding.Social." to anything that reads the rendered
-             page — Google included. Measure the widest word instead and hold
-             the slot open with min-width, so nothing shifts and the heading
-             stays one phrase. */
-          var word = el.querySelector(".rot-word");
-          if (!word) return;
-          var probe = word.cloneNode(true);
-          probe.style.cssText = "position:absolute;visibility:hidden;white-space:nowrap;";
-          el.appendChild(probe);
-          var widest = 0;
-          WORDS.forEach(function (w) {
-            probe.firstChild.nodeValue = w;
-            widest = Math.max(widest, probe.getBoundingClientRect().width);
-          });
-          el.removeChild(probe);
-          el.style.minWidth = Math.ceil(widest) + "px";
-
-          var i = 0;
-          if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-          setInterval(function () {
-            word.classList.remove("is-active");
-            /* swap exactly at the trough of the 200ms fade, then fade back in */
-            setTimeout(function () {
-              i = (i + 1) % WORDS.length;
-              word.firstChild.nodeValue = WORDS[i];
-              word.classList.add("is-active");
-            }, 200);
-          }, 2600);
-        })();
       })();
     </script>
     <script src="/assets/site.js" defer></script>
