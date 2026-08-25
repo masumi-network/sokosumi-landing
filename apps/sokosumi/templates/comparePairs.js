@@ -183,4 +183,4 @@ async function detail(ctx) {
   );
 }
 
-module.exports = { all, get, card, detail, lockup, copy };
+module.exports = { all, get, card, detail, lockup, copy, logoUrl };

@@ -1401,3 +1401,23 @@ a.sp-pn:hover .sp-pn-title { text-decoration: underline; text-underline-offset: 
 .sp-bridge-box .cta-row { margin-top: 24px; display: flex; flex-wrap: wrap; gap: 10px; }
 .sp-page .blk-logos img { max-height: 40px; }
 @media (max-width: 699px) { .sp-chapter { grid-template-columns: 40px minmax(0, 1fr) auto; } .sp-chapter-num { display: none; } .sp-prevnext { grid-template-columns: 1fr; } }
+
+/* tool how-to guides */
+.tg-head-logo { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 16px; font-size: 13px; color: var(--muted-foreground); }
+.tg-head-logo img, .tg-head-logo b { width: 40px; height: 40px; object-fit: contain; border: 1px solid var(--border); border-radius: 10px; padding: 6px; background: #fff; display: inline-flex; align-items: center; justify-content: center; font-weight: 500; color: var(--foreground); }
+.tg-toc { margin: 0 0 8px; padding: 18px 22px; border: 1px solid var(--border); border-radius: var(--r-lg); max-width: 900px; }
+.tg-toc-label { display: block; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted-foreground); margin-bottom: 10px; }
+.tg-toc ol { margin: 0; padding-left: 1.3em; columns: 2; column-gap: 32px; font-size: 14.5px; line-height: 1.9; }
+.tg-toc a { color: var(--foreground); text-decoration: none; }
+.tg-toc a:hover { text-decoration: underline; text-underline-offset: 3px; }
+.tg-article .prose h2 { scroll-margin-top: 90px; }
+.tg-article .prose blockquote::before { content: "Prompt"; }
+html[lang="de"] .tg-article .prose blockquote::before { content: "Prompt"; }
+.tg-article .prose blockquote { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13.5px; line-height: 1.6; white-space: pre-wrap; }
+.tg-article .prose blockquote p { font-family: inherit; font-size: inherit; }
+.tg-card .tg-logo { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted-foreground); margin-bottom: 12px; }
+.tg-card .tg-logo img, .tg-card .tg-logo b { width: 28px; height: 28px; object-fit: contain; border: 1px solid var(--border); border-radius: 8px; padding: 4px; background: #fff; display: inline-flex; align-items: center; justify-content: center; font-weight: 500; color: var(--foreground); }
+.tg-index .blk-head { margin-bottom: 8px; }
+.tg-index .blk-head .sub { color: var(--muted-foreground); max-width: 72ch; margin-top: 8px; }
+.tg-tool-head { font-size: 13px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted-foreground); margin: 28px 0 12px; }
+@media (max-width: 599px) { .tg-toc ol { columns: 1; } }
