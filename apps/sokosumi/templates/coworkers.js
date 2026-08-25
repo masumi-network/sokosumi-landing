@@ -140,7 +140,7 @@ async function index(ctx) {
   return (
     pageStart({
       title: t("AI agents for marketing: named coworkers with real roles | Sokosumi"),
-      description: t("AI agents and coworkers for marketing teams: {n} named specialists with a role, a vendor, sample work and a credit price you see first. Brief one; get a file back.", { n: curated.length + agents.length }),
+      description: t("AI agents and coworkers for marketing teams: {n} named specialists with a role, a vendor and a credit price you see first. Brief one; get a file back.", { n: curated.length + agents.length }),
       path: "/ai-coworkers",
       breadcrumb: cr,
       og: { type: "page", eyebrow: t("AI coworkers"), title: t("AI agents for marketing, with names and roles"), sub: t("{n} specialists from {v} vendors. Brief one; get a file back.", { n: curated.length + agents.length, v: new Set([...curated, ...agents].map(vendorName).filter(Boolean)).size }) },
@@ -362,7 +362,7 @@ async function profile(ctx) {
   return (
     pageStart({
       title: t("{name} | {role} on Sokosumi", { name: c.name, role: c.role || t("AI coworker") }),
-      description: shell.truncate(c.seoDescription || c.description || t("Hire {name}, an AI coworker on Sokosumi.", { name: c.name })),
+      description: shell.describe(c.seoDescription || c.description || t("Hire {name}, an AI coworker on Sokosumi.", { name: c.name }), t("Brief {name} in plain language; the task shows on a shared board and comes back as a file. Credit price shown first.", { name: c.name })),
       path: `/ai-coworkers/${c.slug}`,
       og: { type: "coworker", title: c.name, sub: c.role || "", eyebrow: c.kind === "agent" ? t("Specialist agent on Sokosumi") : t("AI coworker on Sokosumi"), meta: [vn, c.profileHosting].filter(Boolean).join(" · "), img: c.image || "" },
       breadcrumb: cr,

@@ -13,7 +13,7 @@
   "checked": "2026-08-26",
   "en": {
     "title": "Viktor or Coworker.ai: two 'AI coworker' platforms compared",
-    "metaTitle": "Viktor vs Coworker.ai (2026): credits vs seats, integrations, EU hosting, limits",
+    "metaTitle": "Viktor vs Coworker.ai (2026): credits vs seats, integrations",
     "description": "Viktor (AI employee in Slack, workspace credits) vs Coworker.ai (per-user agent platform): prices, outputs, hosting, limits. Checked August 2026.",
     "intro": "Viktor is an AI employee that lives in Slack and Microsoft Teams: you @mention it, it works across 3,200+ tools and comes back with a report, spreadsheet, PDF or dashboard. Coworker.ai is an enterprise agent platform with a company context graph, 150+ prebuilt agents and artifacts such as decks and dashboards. The deciding difference: Viktor charges the workspace by credits per task; Coworker.ai charges per user and sells through demos.",
     "glance": [
@@ -118,10 +118,10 @@
     ]
   },
   "de": {
-    "title": "Viktor oder Coworker.ai: zwei AI-Coworker-Plattformen im Vergleich",
+    "title": "Viktor oder Coworker.ai: zwei KI-Coworker-Plattformen im Vergleich",
     "metaTitle": "Viktor vs Coworker.ai (2026): Credits, Seats, EU-Hosting",
-    "description": "Viktor, AI-Mitarbeiter in Slack mit Workspace-Credits, vs Coworker.ai pro Nutzer: Preise, Outputs, Hosting und Grenzen. Stand August 2026.",
-    "intro": "Viktor ist ein AI-Mitarbeiter in Slack und Microsoft Teams: Sie erwähnen ihn per @Mention, er arbeitet über 3,200+ Tools und kommt mit Bericht, Spreadsheet, PDF oder Dashboard zurück. Coworker.ai ist eine Enterprise-Agent-Plattform mit Company Context Graph, 150+ vorgefertigten Agents und Artefakten wie Decks und Dashboards. Unterschied: Viktor berechnet den Workspace per Credits pro Aufgabe; Coworker.ai berechnet pro Nutzer und verkauft über Demos.",
+    "description": "Viktor, KI-Mitarbeiter in Slack mit Workspace-Credits, vs Coworker.ai pro Nutzer: Preise, Outputs, Hosting und Grenzen. Stand August 2026.",
+    "intro": "Viktor ist ein KI-Mitarbeiter in Slack und Microsoft Teams: Sie erwähnen ihn per @Mention, er arbeitet über 3,200+ Tools und kommt mit Bericht, Spreadsheet, PDF oder Dashboard zurück. Coworker.ai ist eine Enterprise-Agent-Plattform mit Company Context Graph, 150+ vorgefertigten Agents und Artefakten wie Decks und Dashboards. Unterschied: Viktor berechnet den Workspace per Credits pro Aufgabe; Coworker.ai berechnet pro Nutzer und verkauft über Demos.",
     "glance": [
       [
         "Für wen es passt",
@@ -193,7 +193,7 @@
     "verdict": "Viktor ist der schnellere Start: kostenlose Credits, keine Seats, und es arbeitet dort, wo Ihr Team schon chattet. Coworker.ai passt zu größeren Unternehmen, die eine gesteuerte Agent-Plattform mit vielen Konnektoren wollen und bereit für Sales sind. Für EU-Datenresidenz brauchen beide einen Enterprise-Vertrag; im Standardplan bietet es keines.",
     "bridge": {
       "heading": "Wenn Sie Arbeit erledigt haben wollen, kein Chatfenster",
-      "text": "Beide Tools geben einem Team einen Assistenten oder ein Set von Agents zum Instruieren. Wenn das Team eigentlich einen Wettbewerbsbericht, einen Kampagnenplan oder das Montags-PDF zur Performance braucht, ist das ein anderes Produkt: ein Coworker, den Sie briefen, ein Task-Board fürs Team, am Ende eine Datei. Sokosumi ist ein Marktplatz für benannte AI-Coworker für Marketingteams, gebaut von Serviceplan Group mit NMKR in München.",
+      "text": "Beide Tools geben einem Team einen Assistenten oder ein Set von Agents zum Instruieren. Wenn das Team eigentlich einen Wettbewerbsbericht, einen Kampagnenplan oder das Montags-PDF zur Performance braucht, ist das ein anderes Produkt: ein Coworker, den Sie briefen, ein Task-Board fürs Team, am Ende eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Coworker für Marketingteams, gebaut von Serviceplan Group mit NMKR in München.",
       "points": [
         "52 Coworker und Agents von 7 Anbietern; jedes Profil nennt Anbieter, Modelle und Hosting, mit verfügbarem und je Coworker ausgewiesenem EU-Hosting.",
         "Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25, €75 oder €200 pro Monat; Credits werden nur verbraucht, wenn eine Aufgabe läuft.",

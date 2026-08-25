@@ -13,7 +13,7 @@
   "checked": "2026-08-26",
   "en": {
     "title": "Whaaat AI or Jasper: a $25 Berlin startup versus the US marketing AI leader",
-    "metaTitle": "Whaaat AI vs Jasper (2026): prices, agents, brand voice, hosting, limits",
+    "metaTitle": "Whaaat AI vs Jasper (2026): prices, agents, brand voice",
     "description": "Whaaat AI ($25 unlimited) vs Jasper (from $59 per seat): marketing agents, brand voice, US hosting, team features, limits. Checked August 2026.",
     "intro": "Whaaat AI gives small marketing teams 28 named content agents with one brand knowledge base for $25 a month. Jasper is the established marketing AI platform with 100+ agents, Canvas, brand voices and enterprise governance, from $59 per seat. The deciding difference: price and depth. Whaaat is cheap and simple; Jasper costs more and offers team controls, an agent builder and an API.",
     "glance": [
@@ -118,10 +118,10 @@
     ]
   },
   "de": {
-    "title": "Whaaat AI oder Jasper: $25-Berliner Startup oder US-Marktführer für Marketing-AI?",
+    "title": "Whaaat AI oder Jasper: $25-Berliner Startup oder US-Marktführer für Marketing-KI?",
     "metaTitle": "Whaaat AI vs Jasper (2026): Preise, Agents, Brand Voice",
-    "description": "Whaaat AI für $25 unlimited vs Jasper ab $59 pro Seat: Marketing-Agents, Brand Voice, US-Hosting, Teamfunktionen und Grenzen. Stand August 2026.",
-    "intro": "Whaaat AI gibt kleinen Marketingteams 28 benannte Content-Agents mit einer gemeinsamen Brand Knowledge Base für $25 pro Monat. Jasper ist die etablierte Marketing-AI-Plattform mit 100+ Agents, Canvas, Brand Voices und Enterprise Governance, ab $59 pro Seat. Der Unterschied: Preis und Tiefe. Whaaat ist günstig und einfach; Jasper kostet mehr und bietet Teamkontrollen, Agent Builder und API.",
+    "description": "Whaaat KI für $25 unlimited vs Jasper ab $59 pro Seat: Marketing-Agents, Brand Voice, US-Hosting, Teamfunktionen und Grenzen. Stand August 2026.",
+    "intro": "Whaaat AI gibt kleinen Marketingteams 28 benannte Content-Agents mit einer gemeinsamen Brand Knowledge Base für $25 pro Monat. Jasper ist die etablierte Marketing-KI-Plattform mit 100+ Agents, Canvas, Brand Voices und Enterprise Governance, ab $59 pro Seat. Der Unterschied: Preis und Tiefe. Whaaat ist günstig und einfach; Jasper kostet mehr und bietet Teamkontrollen, Agent Builder und API.",
     "glance": [
       [
         "Für wen es passt",
@@ -193,7 +193,7 @@
     "verdict": "Jasper ist die sicherere Wahl für ein Team, das Governance und Skalierung braucht, und als einziges der beiden mit Team-Admin, Agent Builder und API. Whaaat AI gewinnt beim Preis für kleine Teams und Agenturen mit mehreren Marken. Für EU-Datenschutz veröffentlicht keines EU-Hosting; Jasper nennt US-Rechenzentren, Whaaat noch nichts.",
     "bridge": {
       "heading": "Wenn Sie Arbeit erledigt haben wollen, kein Chatfenster",
-      "text": "Beide Tools geben einer Person Agents zur Content-Erzeugung. Wenn das Team eigentlich einen Wettbewerbsbericht, einen Kampagnenplan oder das Montags-PDF zur Performance braucht, ist das ein anderes Produkt: ein Coworker, den Sie briefen, ein Task-Board fürs Team, am Ende eine Datei. Sokosumi ist ein Marktplatz für benannte AI-Coworker für Marketingteams, gebaut von Serviceplan Group mit NMKR in München.",
+      "text": "Beide Tools geben einer Person Agents zur Content-Erzeugung. Wenn das Team eigentlich einen Wettbewerbsbericht, einen Kampagnenplan oder das Montags-PDF zur Performance braucht, ist das ein anderes Produkt: ein Coworker, den Sie briefen, ein Task-Board fürs Team, am Ende eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Coworker für Marketingteams, gebaut von Serviceplan Group mit NMKR in München.",
       "points": [
         "52 Coworker und Agents von 7 Anbietern; jedes Profil nennt Anbieter, Modelle und Hosting, mit verfügbarem EU-Hosting.",
         "Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25, €75 oder €200 pro Monat; Credits werden nur verbraucht, wenn eine Aufgabe läuft.",

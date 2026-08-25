@@ -13,7 +13,7 @@
   "checked": "2026-08-26",
   "en": {
     "title": "Langdock or ChatGPT Team: which one for a German company?",
-    "metaTitle": "Langdock vs ChatGPT Team (2026): prices, EU hosting, who it fits",
+    "metaTitle": "Langdock vs ChatGPT Team (2026): prices, EU hosting",
     "description": "Langdock and ChatGPT Team (now ChatGPT Business) compared: seat prices, EU hosting, agents, team features and real limits. Checked August 2026.",
     "intro": "Langdock is a Berlin-built AI workspace that gives every employee chat, agents and workflows across many models, hosted in the EU. ChatGPT Team (OpenAI now calls it ChatGPT Business) is the company version of the world's best-known chat tool. The deciding difference: Langdock keeps data in the EU on its standard plan and lets you switch models; ChatGPT only offers EU data residency on Enterprise and runs OpenAI models only.",
     "glance": [
@@ -121,11 +121,11 @@
     "title": "Langdock oder ChatGPT Team: was passt zu einem deutschen Unternehmen?",
     "metaTitle": "Langdock vs ChatGPT Team (2026): Preise, EU-Hosting",
     "description": "Langdock und ChatGPT Team, heute ChatGPT Business, im Vergleich: Seat-Preise, EU-Hosting, Agents, Teamfunktionen und Grenzen. Stand August 2026.",
-    "intro": "Langdock ist ein in Berlin gebauter AI-Arbeitsbereich, der jedem Mitarbeitenden Chat, Agents und Workflows über viele Modelle gibt, gehostet in der EU. ChatGPT Team, von OpenAI inzwischen ChatGPT Business genannt, ist die Unternehmensversion des bekanntesten Chat-Tools. Der Unterschied: Langdock hält Daten schon im Standardplan in der EU und lässt Modelle wechseln; ChatGPT bietet EU-Datenresidenz nur auf Enterprise und nutzt nur OpenAI-Modelle.",
+    "intro": "Langdock ist ein in Berlin gebauter KI-Arbeitsbereich, der jedem Mitarbeitenden Chat, Agents und Workflows über viele Modelle gibt, gehostet in der EU. ChatGPT Team, von OpenAI inzwischen ChatGPT Business genannt, ist die Unternehmensversion des bekanntesten Chat-Tools. Der Unterschied: Langdock hält Daten schon im Standardplan in der EU und lässt Modelle wechseln; ChatGPT bietet EU-Datenresidenz nur auf Enterprise und nutzt nur OpenAI-Modelle.",
     "glance": [
       [
         "Für wen es passt",
-        "Unternehmen in der DACH-Region, die einen AI-Arbeitsbereich für alle Mitarbeitenden mit EU-Hosting und Modellauswahl wollen",
+        "Unternehmen in der DACH-Region, die einen KI-Arbeitsbereich für alle Mitarbeitenden mit EU-Hosting und Modellauswahl wollen",
         "Teams, die ChatGPT bereits nutzen und gemeinsamen Arbeitsbereich, Admin-Kontrollen und kein Training auf ihren Daten wollen"
       ],
       [
@@ -176,7 +176,7 @@
       "heading": "Wählen Sie ChatGPT Team, wenn …",
       "points": [
         "Ihre Mitarbeitenden ChatGPT bereits nutzen und Sie vor allem Admin-Kontrolle und No-Training-Garantie wollen.",
-        "Sie die neuesten OpenAI-Funktionen am ersten Tag wollen: Agent Mode, Deep Research, Scheduled Tasks, Voice.",
+        "Sie die neuesten OpenKI-Funktionen am ersten Tag wollen: Agent Mode, Deep Research, Scheduled Tasks, Voice.",
         "EU-Datenresidenz keine harte Regel ist oder Sie später auf Enterprise wechseln können."
       ]
     },
@@ -190,10 +190,10 @@
         "Business fehlen SCIM-Gruppensync und eigene rollenbasierte Zugriffe; das sind Enterprise-Funktionen (ChatGPT Work Admin FAQ). Der Seat-Preis änderte sich 2026 dreimal, also vor Unterschrift neu prüfen."
       ]
     },
-    "verdict": "Für ein deutsches Unternehmen mit Betriebsrat und Datenschutzbeauftragtem gewinnt Langdock auf den harten Fakten: EU-Hosting für €25, Modellauswahl und Workflow-Tools. ChatGPT Team gewinnt, wenn Ihr Team ohnehin in ChatGPT lebt und Sie ersten Zugriff auf OpenAI-Funktionen höher bewerten als Residenz. Keines liefert fertige Arbeit; beide geben jeder Person einen Ort zum Prompten.",
+    "verdict": "Für ein deutsches Unternehmen mit Betriebsrat und Datenschutzbeauftragtem gewinnt Langdock auf den harten Fakten: EU-Hosting für €25, Modellauswahl und Workflow-Tools. ChatGPT Team gewinnt, wenn Ihr Team ohnehin in ChatGPT lebt und Sie ersten Zugriff auf OpenKI-Funktionen höher bewerten als Residenz. Keines liefert fertige Arbeit; beide geben jeder Person einen Ort zum Prompten.",
     "bridge": {
       "heading": "Wenn Sie Arbeit erledigt haben wollen, kein Chatfenster",
-      "text": "Beide Tools geben einer Person einen Ort zum Prompten. Wenn das Team eigentlich einen Wettbewerbsbericht, einen Kampagnenplan oder das Montags-PDF zur Performance braucht, ist das ein anderes Produkt: ein Coworker, den Sie briefen, ein Task-Board fürs Team, am Ende eine Datei. Sokosumi ist ein Marktplatz für benannte AI-Coworker für Marketingteams, gebaut von Serviceplan Group mit NMKR in München. Sie briefen in klarer Sprache oder per @Mention in einem Kanal; die Aufgabe erscheint auf einem gemeinsamen Task-Board und endet mit PDF, Deck, Spreadsheet oder Dashboard.",
+      "text": "Beide Tools geben einer Person einen Ort zum Prompten. Wenn das Team eigentlich einen Wettbewerbsbericht, einen Kampagnenplan oder das Montags-PDF zur Performance braucht, ist das ein anderes Produkt: ein Coworker, den Sie briefen, ein Task-Board fürs Team, am Ende eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Coworker für Marketingteams, gebaut von Serviceplan Group mit NMKR in München. Sie briefen in klarer Sprache oder per @Mention in einem Kanal; die Aufgabe erscheint auf einem gemeinsamen Task-Board und endet mit PDF, Deck, Spreadsheet oder Dashboard.",
       "points": [
         "52 Coworker und Agents von 7 Anbietern; jedes Profil nennt Anbieter, Modelle und Hosting. EU-Hosting ist je Coworker ausgewiesen.",
         "Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25, €75 oder €200 pro Monat; Credits werden nur verbraucht, wenn eine Aufgabe läuft.",

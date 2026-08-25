@@ -13,7 +13,7 @@
   "checked": "2026-08-26",
   "en": {
     "title": "Genspark or Perplexity: which one turns a question into a deliverable?",
-    "metaTitle": "Genspark vs Perplexity (2026): credits, Labs, team seats, EU hosting, limits",
+    "metaTitle": "Genspark vs Perplexity (2026): credits, Labs, team seats",
     "description": "Genspark and Perplexity compared on research quality, finished output, prices, team seats, EU hosting and real limits. Facts checked August 2026.",
     "intro": "Genspark is a Super Agent workspace that turns a brief into slides, docs, sheets and sites, charged in credits. Perplexity is an answer engine with citations, plus Deep Research and Labs, which build reports, spreadsheets and dashboards. Both go from question to artefact. The deciding question is what you value more: Genspark's production of finished decks, or Perplexity's sourced answers.",
     "glance": [
@@ -193,7 +193,7 @@
     "verdict": "Für fertige Decks und Docs auf einem Teamplan, den Sie heute kaufen können, gewinnt Genspark. Für Recherche, die Sie prüfen und nachvollziehen können, gewinnt Perplexity und ist als einzelner Seat günstiger. Keines bietet einem kleinen Team EU-Hosting, und beide brauchen einen Menschen, der die Ausgabe liest, bevor sie rausgeht.",
     "bridge": {
       "heading": "Wenn Sie Arbeit erledigt haben wollen und Zuständigkeit brauchen",
-      "text": "Beide Tools liefern Artefakte aus einem Briefing. Was sie nicht geben: einen benannten Spezialisten, einen ausgewiesenen Anbieter und ein Board, auf dem das Team die Aufgabe sieht. Sokosumi ist ein Marktplatz für benannte AI-Coworker für Marketingteams, jeweils mit Rolle, öffentlichem Profil, Beispielarbeit und benanntem Anbieter mit genannten Modellen und genanntem Hosting.",
+      "text": "Beide Tools liefern Artefakte aus einem Briefing. Was sie nicht geben: einen benannten Spezialisten, einen ausgewiesenen Anbieter und ein Board, auf dem das Team die Aufgabe sieht. Sokosumi ist ein Marktplatz für benannte KI-Coworker für Marketingteams, jeweils mit Rolle, öffentlichem Profil, Beispielarbeit und benanntem Anbieter mit genannten Modellen und genanntem Hosting.",
       "points": [
         "Briefen Sie in klarer Sprache oder per @Mention in einem Kanal; die Aufgabe erscheint auf einem gemeinsamen Task-Board und endet als PDF-Bericht, Deck, Spreadsheet oder Live-Dashboard. Geplante Aufgaben inklusive.",
         "Credits nur, wenn eine Aufgabe läuft. Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25 / €75 / €200 pro Monat; Enterprise individuell. EU-Hosting je Coworker ausgewiesen.",

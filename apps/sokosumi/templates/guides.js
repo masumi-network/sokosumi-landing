@@ -45,7 +45,7 @@ async function index(ctx) {
   return (
     pageStart({
       title: "Guides | Sokosumi",
-      description: "Instructions for setting up, briefing, and running AI coworkers on Sokosumi.",
+      description: t("Guides for marketing teams on Sokosumi: set up a workspace, write a briefing that works, run and schedule AI coworkers, use the files that come back."),
       path: "/guides",
       breadcrumb: cr,
       jsonld: shell.itemListLd("Sokosumi guides", "/guides", guides.map((g) => ({ name: g.title, path: `/guides/${g.slug}` }))),
@@ -104,7 +104,7 @@ async function detail(ctx) {
   return (
     pageStart({
       title: t("{title} | Sokosumi guides", { title: g.title }),
-      description: (g.description || "").slice(0, 155),
+      description: shell.describe(g.description, t("A Sokosumi guide for marketing teams: what to do, in which order, with examples.")),
       path: `/guides/${g.slug}`,
       og: { type: "article", eyebrow: t("Guide"), title: g.title, sub: g.description || "", img: coverUrl || "" },
       breadcrumb: cr,

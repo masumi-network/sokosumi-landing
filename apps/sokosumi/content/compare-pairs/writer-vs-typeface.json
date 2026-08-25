@@ -1,22 +1,62 @@
 {
   "slug": "writer-vs-typeface",
-  "a": { "key": "writer", "name": "Writer", "url": "https://writer.com" },
-  "b": { "key": "typeface", "name": "Typeface", "url": "https://www.typeface.ai" },
+  "a": {
+    "key": "writer",
+    "name": "Writer",
+    "url": "https://writer.com"
+  },
+  "b": {
+    "key": "typeface",
+    "name": "Typeface",
+    "url": "https://www.typeface.ai"
+  },
   "checked": "2026-08-26",
   "en": {
     "title": "Writer or Typeface: two enterprise AI platforms, two different jobs",
-    "metaTitle": "Writer vs Typeface (2026): prices, agents, brand control, who it fits",
+    "metaTitle": "Writer vs Typeface (2026): prices, agents, brand control",
     "description": "Writer and Typeface compared: what each does, published prices, agents, brand grounding, hosting and real limits. Checked August 2026 with a clear pick for each buyer.",
     "intro": "Writer is an enterprise AI platform with its own Palmyra models, a knowledge graph and prebuilt agents for every department. Typeface is an enterprise marketing platform that runs campaigns with brand-grounded agents (Arc Graph, Arc Agents, Arc Spaces, Arc Forge). The deciding question is whether you need company-wide AI or a marketing content supply chain.",
     "glance": [
-      ["Who it is for", "Enterprises rolling out governed AI to marketing, sales, support, ops", "Large-brand marketing orgs that produce campaign content at scale"],
-      ["What you get", "Chat, 100+ prebuilt agents, agent studio, knowledge graph, Palmyra models", "Brand graph, marketing agents for research, briefs, content and channel execution, approval spaces, IT customisation layer"],
-      ["Price", "Starter $39 per user monthly or $29 annual, max 5 seats; Enterprise custom (third-party, verify)", "Not published. Demo and custom contract only"],
-      ["Free plan or trial", "14-day Starter trial, no card (third-party, verify)", "None shown on typeface.ai"],
-      ["EU hosting", "Not published; single-tenant deployment on Enterprise (third-party, verify)", "Not published. Site states dedicated models, encryption and access controls"],
-      ["Team features", "Playbooks, connectors, SAML SSO, HIPAA BAA, SOC 2 report on Enterprise", "Approval workflows in Arc Spaces, governance for IT via Arc Forge"],
-      ["Build your own agents", "Yes: 5 custom agents on Starter, unlimited on Enterprise", "Configured agents within guardrails; extension via Arc Forge"],
-      ["Named customers", "Not listed on pages reached", "Asics, Johnson Controls, Sally Beauty, AB InBev, P&G, State Farm"]
+      [
+        "Who it is for",
+        "Enterprises rolling out governed AI to marketing, sales, support, ops",
+        "Large-brand marketing orgs that produce campaign content at scale"
+      ],
+      [
+        "What you get",
+        "Chat, 100+ prebuilt agents, agent studio, knowledge graph, Palmyra models",
+        "Brand graph, marketing agents for research, briefs, content and channel execution, approval spaces, IT customisation layer"
+      ],
+      [
+        "Price",
+        "Starter $39 per user monthly or $29 annual, max 5 seats; Enterprise custom (third-party, verify)",
+        "Not published. Demo and custom contract only"
+      ],
+      [
+        "Free plan or trial",
+        "14-day Starter trial, no card (third-party, verify)",
+        "None shown on typeface.ai"
+      ],
+      [
+        "EU hosting",
+        "Not published; single-tenant deployment on Enterprise (third-party, verify)",
+        "Not published. Site states dedicated models, encryption and access controls"
+      ],
+      [
+        "Team features",
+        "Playbooks, connectors, SAML SSO, HIPAA BAA, SOC 2 report on Enterprise",
+        "Approval workflows in Arc Spaces, governance for IT via Arc Forge"
+      ],
+      [
+        "Build your own agents",
+        "Yes: 5 custom agents on Starter, unlimited on Enterprise",
+        "Configured agents within guardrails; extension via Arc Forge"
+      ],
+      [
+        "Named customers",
+        "Not listed on pages reached",
+        "Asics, Johnson Controls, Sally Beauty, AB InBev, P&G, State Farm"
+      ]
     ],
     "pickA": {
       "heading": "Pick Writer if…",
@@ -53,24 +93,39 @@
         "Credits only when a task runs. Free: 250 credits per seat per month, no card. Paid seats €25, €75 or €200 per month.",
         "EU hosting available, stated per coworker. Built by Serviceplan Group with NMKR, Munich."
       ],
-      "links": ["/compare/sokosumi-vs-writer", "/compare/sokosumi-vs-typeface"]
+      "links": [
+        "/compare/sokosumi-vs-writer",
+        "/compare/sokosumi-vs-typeface"
+      ]
     },
     "faq": [
-      ["How much does Typeface cost?", "Typeface does not publish prices. Its site offers a demo only. Third-party guides give conflicting numbers, so ask for a quote and do not rely on them."],
-      ["What are Typeface Arc Agents?", "Agents announced with the Marketing Orchestration Engine on 4 March 2026. They research, brief, create and optimise campaign content within brand guardrails, with people approving in Arc Spaces."],
-      ["Does Writer work for marketing only?", "No. Writer sells to marketing, sales, support, HR and ops. Marketing is one of many use cases, which is a strength for company-wide rollouts and a weakness if you want a marketing-only tool."],
-      ["Is there a lighter option for a mid-size marketing team?", "Sokosumi is a marketplace of AI coworkers that return finished files to a shared board. It starts free with 250 credits per seat per month and states EU hosting per coworker."]
+      [
+        "How much does Typeface cost?",
+        "Typeface does not publish prices. Its site offers a demo only. Third-party guides give conflicting numbers, so ask for a quote and do not rely on them."
+      ],
+      [
+        "What are Typeface Arc Agents?",
+        "Agents announced with the Marketing Orchestration Engine on 4 March 2026. They research, brief, create and optimise campaign content within brand guardrails, with people approving in Arc Spaces."
+      ],
+      [
+        "Does Writer work for marketing only?",
+        "No. Writer sells to marketing, sales, support, HR and ops. Marketing is one of many use cases, which is a strength for company-wide rollouts and a weakness if you want a marketing-only tool."
+      ],
+      [
+        "Is there a lighter option for a mid-size marketing team?",
+        "Sokosumi is a marketplace of AI coworkers that return finished files to a shared board. It starts free with 250 credits per seat per month and states EU hosting per coworker."
+      ]
     ]
   },
   "de": {
-    "title": "Writer oder Typeface: zwei Enterprise-AI-Plattformen, zwei Aufgaben",
+    "title": "Writer oder Typeface: zwei Enterprise-KI-Plattformen, zwei Aufgaben",
     "metaTitle": "Writer vs Typeface (2026): Preise, Agents, Brand Control",
     "description": "Writer und Typeface im Vergleich: was beide tun, veröffentlichte Preise, Agents, Brand Grounding, Hosting und echte Grenzen. Stand August 2026.",
-    "intro": "Writer ist eine Enterprise-AI-Plattform mit eigenen Palmyra-Modellen, Knowledge Graph und vorgefertigten Agents für jede Abteilung. Typeface ist eine Enterprise-Marketingplattform, die Kampagnen mit brand-gegroundeten Agents steuert (Arc Graph, Arc Agents, Arc Spaces, Arc Forge). Entscheidend ist, ob Sie unternehmensweite AI oder eine Marketing-Content-Supply-Chain brauchen.",
+    "intro": "Writer ist eine Enterprise-KI-Plattform mit eigenen Palmyra-Modellen, Knowledge Graph und vorgefertigten Agents für jede Abteilung. Typeface ist eine Enterprise-Marketingplattform, die Kampagnen mit brand-gegroundeten Agents steuert (Arc Graph, Arc Agents, Arc Spaces, Arc Forge). Entscheidend ist, ob Sie unternehmensweite KI oder eine Marketing-Content-Supply-Chain brauchen.",
     "glance": [
       [
         "Für wen es passt",
-        "Unternehmen, die gesteuerte AI in Marketing, Sales, Support und Ops ausrollen",
+        "Unternehmen, die gesteuerte KI in Marketing, Sales, Support und Ops ausrollen",
         "Marketingorganisationen großer Marken, die Kampagnencontent in großem Umfang produzieren"
       ],
       [
@@ -112,7 +167,7 @@
     "pickA": {
       "heading": "Wählen Sie Writer, wenn …",
       "points": [
-        "Sie eine AI-Plattform für viele Abteilungen wollen, nicht nur Marketing.",
+        "Sie eine KI-Plattform für viele Abteilungen wollen, nicht nur Marketing.",
         "Modellkontrolle zählt: eigene Modelle, Single-Tenant-Option, externe Modelle auf Enterprise.",
         "Sie günstig einsteigen wollen. Starter kostet $29 bis $39 pro Nutzer für bis zu fünf Personen."
       ]
@@ -135,10 +190,10 @@
         "Gebaut für Fortune-500-Marketingorganisationen. Ein mittelgroßes Team wird Sales Motion und Setup schwer für seine Größe finden."
       ]
     },
-    "verdict": "Writer gewinnt für ein Unternehmen, das gesteuerte AI überall und einen günstigen Einstieg will. Typeface gewinnt für eine große Marke, deren Problem Kampagnenvolumen und Brand Control über Kanäle ist. Ein mittelgroßes DACH-Marketingteam ist nicht Zielgruppe der beiden.",
+    "verdict": "Writer gewinnt für ein Unternehmen, das gesteuerte KI überall und einen günstigen Einstieg will. Typeface gewinnt für eine große Marke, deren Problem Kampagnenvolumen und Brand Control über Kanäle ist. Ein mittelgroßes DACH-Marketingteam ist nicht Zielgruppe der beiden.",
     "bridge": {
       "heading": "Wenn Sie Arbeit erledigt haben wollen, keine Plattform ausrollen",
-      "text": "Beide Plattformen brauchen einen Rollout: Konnektoren, Playbooks, Brand Graphs, Freigaben. Wenn das Team eigentlich einen Wettbewerbsbericht, einen Kampagnenplan oder das Montags-PDF zur Performance braucht, ist das ein anderes Produkt: ein Coworker, den Sie briefen, ein Task-Board fürs Team, am Ende eine Datei. Sokosumi ist ein Marktplatz für benannte AI-Coworker für Marketingteams, jeweils mit Rolle, Beispielarbeit und einem benannten Anbieter, der Modelle und Hosting ausweist.",
+      "text": "Beide Plattformen brauchen einen Rollout: Konnektoren, Playbooks, Brand Graphs, Freigaben. Wenn das Team eigentlich einen Wettbewerbsbericht, einen Kampagnenplan oder das Montags-PDF zur Performance braucht, ist das ein anderes Produkt: ein Coworker, den Sie briefen, ein Task-Board fürs Team, am Ende eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Coworker für Marketingteams, jeweils mit Rolle, Beispielarbeit und einem benannten Anbieter, der Modelle und Hosting ausweist.",
       "points": [
         "Briefen Sie in klarer Sprache oder per @Mention in einem Kanal; die Aufgabe erscheint auf einem gemeinsamen Task-Board und endet mit einer fertigen Datei.",
         "Credits nur, wenn eine Aufgabe läuft. Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25, €75 oder €200 pro Monat.",
@@ -164,7 +219,7 @@
       ],
       [
         "Gibt es eine leichtere Option für ein mittelgroßes Marketingteam?",
-        "Sokosumi ist ein Marktplatz für AI-Coworker, die fertige Dateien auf ein Task-Board liefern. Es startet kostenlos mit 250 Credits pro Seat und Monat und weist EU-Hosting je Coworker aus."
+        "Sokosumi ist ein Marktplatz für KI-Coworker, die fertige Dateien auf ein Task-Board liefern. Es startet kostenlos mit 250 Credits pro Seat und Monat und weist EU-Hosting je Coworker aus."
       ]
     ]
   },

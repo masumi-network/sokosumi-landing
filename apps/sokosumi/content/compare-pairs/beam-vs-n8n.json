@@ -1,22 +1,62 @@
 {
   "slug": "beam-vs-n8n",
-  "a": { "key": "beam", "name": "Beam AI", "url": "https://beam.ai" },
-  "b": { "key": "n8n", "name": "n8n", "url": "https://n8n.io" },
+  "a": {
+    "key": "beam",
+    "name": "Beam AI",
+    "url": "https://beam.ai"
+  },
+  "b": {
+    "key": "n8n",
+    "name": "n8n",
+    "url": "https://n8n.io"
+  },
   "checked": "2026-08-26",
   "en": {
     "title": "Beam AI or n8n: managed process agents or your own workflow engine?",
-    "metaTitle": "Beam AI vs n8n (2026): prices, tasks vs executions, EU hosting, who it fits",
+    "metaTitle": "Beam AI vs n8n (2026): prices, tasks vs executions, EU hosting",
     "description": "Beam AI and n8n compared: what each automates, how each meters use, prices, German hosting and the limits reviewers report. Facts checked August 2026.",
     "intro": "Beam AI sells agentic process automation for back-office work such as invoices, claims and support tickets, priced per task. n8n is an open workflow engine from Berlin with AI agent nodes, priced per execution and free to self-host. The deciding question is whether you want a vendor to run process agents for you or a platform your own team builds on.",
     "glance": [
-      ["Who it is for", "Operations, finance, insurance and support teams with high-volume, rule-bound work", "Technical teams and IT that want automation they can host and extend"],
-      ["What you get", "Prebuilt process agents, self-healing outputs, output evaluation, solution engineers on Custom", "Visual workflow builder, 400+ integrations, AI agent nodes, code nodes, self-host option"],
-      ["Price", "Free $0 (20 tasks); Pro $50 per month (200 tasks); Scale $3,990 per month; Custom", "Cloud Starter €20, Pro €50 per month; Business €667 per month annual; Enterprise custom; Community edition free"],
-      ["Free plan or trial", "Free plan with 20 tasks a month", "Free cloud trial, no card; self-hosted Community edition free"],
-      ["EU hosting", "Yes. Standard cloud hosting on AWS in Germany; model calls via Azure OpenAI in Germany, France, Sweden or Switzerland. Integrations provider in the US", "Yes. Cloud data in Frankfurt, Germany; self-host anywhere"],
-      ["Team features", "Not detailed on the pricing page; enterprise security on Scale and Custom", "Unlimited users on all cloud plans; SSO, SAML, LDAP on Business"],
-      ["Build your own agents", "Configure agents from Beam's library; deeper builds with Beam's engineers", "Yes, fully; AI agent nodes with your own model keys"],
-      ["What is metered", "Tasks: 20 Free, 200 Pro, high volume on Scale. The pricing page does not define what counts as one task", "Workflow executions: 2,500 / 10,000 / 40,000 a month; one execution is one full run"]
+      [
+        "Who it is for",
+        "Operations, finance, insurance and support teams with high-volume, rule-bound work",
+        "Technical teams and IT that want automation they can host and extend"
+      ],
+      [
+        "What you get",
+        "Prebuilt process agents, self-healing outputs, output evaluation, solution engineers on Custom",
+        "Visual workflow builder, 400+ integrations, AI agent nodes, code nodes, self-host option"
+      ],
+      [
+        "Price",
+        "Free $0 (20 tasks); Pro $50 per month (200 tasks); Scale $3,990 per month; Custom",
+        "Cloud Starter €20, Pro €50 per month; Business €667 per month annual; Enterprise custom; Community edition free"
+      ],
+      [
+        "Free plan or trial",
+        "Free plan with 20 tasks a month",
+        "Free cloud trial, no card; self-hosted Community edition free"
+      ],
+      [
+        "EU hosting",
+        "Yes. Standard cloud hosting on AWS in Germany; model calls via Azure OpenAI in Germany, France, Sweden or Switzerland. Integrations provider in the US",
+        "Yes. Cloud data in Frankfurt, Germany; self-host anywhere"
+      ],
+      [
+        "Team features",
+        "Not detailed on the pricing page; enterprise security on Scale and Custom",
+        "Unlimited users on all cloud plans; SSO, SAML, LDAP on Business"
+      ],
+      [
+        "Build your own agents",
+        "Configure agents from Beam's library; deeper builds with Beam's engineers",
+        "Yes, fully; AI agent nodes with your own model keys"
+      ],
+      [
+        "What is metered",
+        "Tasks: 20 Free, 200 Pro, high volume on Scale. The pricing page does not define what counts as one task",
+        "Workflow executions: 2,500 / 10,000 / 40,000 a month; one execution is one full run"
+      ]
     ],
     "pickA": {
       "heading": "Pick Beam AI if…",
@@ -53,20 +93,35 @@
         "Credits only when a task runs. Free: 250 credits per seat per month, no card. Paid seats €25, €75 or €200 per month.",
         "EU hosting available, stated per coworker. Built by Serviceplan Group with NMKR, Munich."
       ],
-      "links": ["/compare/sokosumi-vs-beam-ai", "/compare/sokosumi-vs-n8n"]
+      "links": [
+        "/compare/sokosumi-vs-beam-ai",
+        "/compare/sokosumi-vs-n8n"
+      ]
     },
     "faq": [
-      ["What is a task in Beam AI?", "The pricing page lists 20 tasks on Free and 200 on Pro but does not define a task. Beam describes tasks as units of process work such as an invoice or a support inquiry. Ask Beam for the exact counting rule before you buy."],
-      ["Is Beam AI hosted in Germany?", "Beam's data security policy lists AWS in Germany for standard cloud hosting and Azure OpenAI in Germany, France, Sweden or Switzerland for model calls. Its integrations provider is in the US."],
-      ["How does n8n count executions?", "One execution is one complete workflow run regardless of steps. Starter has 2,500 a month, Pro 10,000, Business 40,000. Workflows keep running past the quota and overage may apply."],
-      ["Is there a ready-made option for marketing deliverables?", "Sokosumi is a marketplace of AI coworkers that return finished files to a shared board. Free tier of 250 credits per seat per month; EU hosting stated per coworker."]
+      [
+        "What is a task in Beam AI?",
+        "The pricing page lists 20 tasks on Free and 200 on Pro but does not define a task. Beam describes tasks as units of process work such as an invoice or a support inquiry. Ask Beam for the exact counting rule before you buy."
+      ],
+      [
+        "Is Beam AI hosted in Germany?",
+        "Beam's data security policy lists AWS in Germany for standard cloud hosting and Azure OpenAI in Germany, France, Sweden or Switzerland for model calls. Its integrations provider is in the US."
+      ],
+      [
+        "How does n8n count executions?",
+        "One execution is one complete workflow run regardless of steps. Starter has 2,500 a month, Pro 10,000, Business 40,000. Workflows keep running past the quota and overage may apply."
+      ],
+      [
+        "Is there a ready-made option for marketing deliverables?",
+        "Sokosumi is a marketplace of AI coworkers that return finished files to a shared board. Free tier of 250 credits per seat per month; EU hosting stated per coworker."
+      ]
     ]
   },
   "de": {
     "title": "Beam AI oder n8n: gemanagte Prozess-Agents oder eigene Workflow-Engine?",
     "metaTitle": "Beam AI vs n8n (2026): Preise, Aufgaben, EU-Hosting",
     "description": "Beam AI und n8n im Vergleich: was beide automatisieren, wie Nutzung gezählt wird, Preise, deutsches Hosting und gemeldete Grenzen. Stand August 2026.",
-    "intro": "Beam AI verkauft agentische Prozessautomatisierung für Backoffice-Arbeit wie Rechnungen, Schadenfälle und Support-Tickets, bezahlt pro Aufgabe. n8n ist eine offene Workflow-Engine aus Berlin mit AI-Agent-Knoten, bezahlt pro Ausführung und kostenlos selbst betreibbar. Entscheidend ist, ob ein Anbieter Prozess-Agents für Sie betreiben soll oder ob Ihr eigenes Team auf einer Plattform baut.",
+    "intro": "Beam AI verkauft agentische Prozessautomatisierung für Backoffice-Arbeit wie Rechnungen, Schadenfälle und Support-Tickets, bezahlt pro Aufgabe. n8n ist eine offene Workflow-Engine aus Berlin mit KI-Agent-Knoten, bezahlt pro Ausführung und kostenlos selbst betreibbar. Entscheidend ist, ob ein Anbieter Prozess-Agents für Sie betreiben soll oder ob Ihr eigenes Team auf einer Plattform baut.",
     "glance": [
       [
         "Für wen es passt",
@@ -76,7 +131,7 @@
       [
         "Was Sie bekommen",
         "Vorgefertigte Prozess-Agents, selbstheilende Ausgaben, Output-Bewertung, Solution Engineers auf Custom",
-        "Visueller Workflow-Builder, 400+ Integrationen, AI-Agent-Knoten, Code-Knoten, Self-Host-Option"
+        "Visueller Workflow-Builder, 400+ Integrationen, KI-Agent-Knoten, Code-Knoten, Self-Host-Option"
       ],
       [
         "Preis",
@@ -101,7 +156,7 @@
       [
         "Eigene Agents bauen",
         "Agents aus der Beam-Bibliothek konfigurieren; tiefere Builds mit Beam Engineers",
-        "Ja, vollständig; AI-Agent-Knoten mit eigenen Modell-Keys"
+        "Ja, vollständig; KI-Agent-Knoten mit eigenen Modell-Keys"
       ],
       [
         "Was gezählt wird",
@@ -138,7 +193,7 @@
     "verdict": "Beam AI gewinnt für ein Operations-Team mit hohem Volumen, klar definiertem Prozess und Budget für einen gemanagten Anbieter. n8n gewinnt für ein technisches Team, das eine günstige, flexible Engine unter eigener Kontrolle will. Beide können Daten in Deutschland halten, was in dieser Kategorie selten ist.",
     "bridge": {
       "heading": "Wenn Sie Marketingarbeit erledigt haben wollen, nicht Prozesse automatisieren",
-      "text": "Beide Tools automatisieren Prozesse: eines gemanagt, eines selbst gebaut. Wenn das Team eigentlich einen Wettbewerbsbericht, einen Kampagnenplan oder das Montags-PDF zur Performance braucht, ist das ein anderes Produkt: ein Coworker, den Sie briefen, ein Task-Board fürs Team, am Ende eine Datei. Sokosumi ist ein Marktplatz für benannte AI-Coworker für Marketingteams, jeweils mit Rolle, Beispielarbeit und benanntem Anbieter, der Modelle und Hosting ausweist.",
+      "text": "Beide Tools automatisieren Prozesse: eines gemanagt, eines selbst gebaut. Wenn das Team eigentlich einen Wettbewerbsbericht, einen Kampagnenplan oder das Montags-PDF zur Performance braucht, ist das ein anderes Produkt: ein Coworker, den Sie briefen, ein Task-Board fürs Team, am Ende eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Coworker für Marketingteams, jeweils mit Rolle, Beispielarbeit und benanntem Anbieter, der Modelle und Hosting ausweist.",
       "points": [
         "Briefen Sie in klarer Sprache oder per @Mention in einem Kanal; die Aufgabe erscheint auf einem gemeinsamen Task-Board und endet mit einer fertigen Datei.",
         "Credits nur, wenn eine Aufgabe läuft. Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25, €75 oder €200 pro Monat.",
@@ -164,7 +219,7 @@
       ],
       [
         "Gibt es eine fertige Option für Marketing-Ergebnisse?",
-        "Sokosumi ist ein Marktplatz für AI-Coworker, die fertige Dateien auf ein gemeinsames Task-Board liefern. Free-Plan mit 250 Credits pro Seat und Monat; EU-Hosting je Coworker ausgewiesen."
+        "Sokosumi ist ein Marktplatz für KI-Coworker, die fertige Dateien auf ein gemeinsames Task-Board liefern. Free-Plan mit 250 Credits pro Seat und Monat; EU-Hosting je Coworker ausgewiesen."
       ]
     ]
   },

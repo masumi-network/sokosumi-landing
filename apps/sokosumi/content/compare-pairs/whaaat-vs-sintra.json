@@ -13,7 +13,7 @@
   "checked": "2026-08-26",
   "en": {
     "title": "Whaaat AI or Sintra: named marketing agents for small teams",
-    "metaTitle": "Whaaat AI vs Sintra (2026): prices, credits, agents, hosting, limits",
+    "metaTitle": "Whaaat AI vs Sintra (2026): prices, credits, agents, hosting",
     "description": "Whaaat AI (Berlin) vs Sintra: $25 unlimited or credit plans, 28 marketing agents vs 12 helpers, data hosting and real limits. Checked August 2026.",
     "intro": "Whaaat AI is a Berlin platform with 28 named marketing agents (Lin for LinkedIn, Bob for blogs, Sepp for SEO articles) that share one brand knowledge base, for $25 a month with unlimited use. Sintra bundles 12 named helpers across marketing, support, sales and admin on a discounted subscription with 250 credits a month. The deciding difference: Whaaat is marketing-only and unmetered; Sintra is broader but metered.",
     "glance": [
@@ -193,7 +193,7 @@
     "verdict": "Für ein kleines Marketingteam, das nur Content will, ist Whaaat AI einfacher und günstiger zu betreiben: $25, keine Credits, nur Marketing. Sintra passt zu Solo-Gründern, die zusätzlich Support- oder Sales-Helfer brauchen und Credits steuern können. Beim Datenschutz veröffentlicht heute keines eine EU-Hosting-Tatsache; Whaaat ist immerhin deutscher Rechtsträger.",
     "bridge": {
       "heading": "Wenn Sie Arbeit erledigt haben wollen, kein Chatfenster",
-      "text": "Beide Tools geben einer Person benannte Agents zum Chatten. Wenn das Team eigentlich einen Wettbewerbsbericht, einen Kampagnenplan oder das Montags-PDF zur Performance braucht, ist das ein anderes Produkt: ein Coworker, den Sie briefen, ein Task-Board fürs Team, am Ende eine Datei. Sokosumi ist ein Marktplatz für benannte AI-Coworker für Marketingteams, gebaut von Serviceplan Group mit NMKR in München.",
+      "text": "Beide Tools geben einer Person benannte Agents zum Chatten. Wenn das Team eigentlich einen Wettbewerbsbericht, einen Kampagnenplan oder das Montags-PDF zur Performance braucht, ist das ein anderes Produkt: ein Coworker, den Sie briefen, ein Task-Board fürs Team, am Ende eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Coworker für Marketingteams, gebaut von Serviceplan Group mit NMKR in München.",
       "points": [
         "52 Coworker und Agents von 7 Anbietern; jedes Profil nennt Anbieter, Modelle und Hosting, mit verfügbarem EU-Hosting.",
         "Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25, €75 oder €200 pro Monat; Credits werden nur verbraucht, wenn eine Aufgabe läuft.",
@@ -215,7 +215,7 @@
       ],
       [
         "Wo werden Sintra-Daten verarbeitet?",
-        "Sintras Privacy Policy nennt PlayOS, Inc. in Delaware und sagt, Daten können in den USA verarbeitet werden, mit OpenAI, Google und Anthropic als AI-Anbietern."
+        "Sintras Privacy Policy nennt PlayOS, Inc. in Delaware und sagt, Daten können in den USA verarbeitet werden, mit OpenAI, Google und Anthropic als KI-Anbietern."
       ],
       [
         "Welches Produkt liefert einen fertigen Kampagnenplan als Datei?",

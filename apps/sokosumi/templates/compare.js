@@ -112,9 +112,8 @@ async function index(ctx) {
   const cr = [{ label: "Home", href: "/" }, { label: "Compare" }];
   return (
     pageStart({
-      title: "Compare | Sokosumi",
-      description:
-        "What is the difference between ChatGPT, Claude, Copilot, Langdock and Sokosumi? One page per tool: who it is for, what you get back, what you pay for.",
+      title: t("Compare | Sokosumi"),
+      description: t("What is the difference between ChatGPT, Claude, Copilot, Langdock and Sokosumi? One page per tool: who it is for, what you get back, what you pay for."),
       path: "/compare",
       breadcrumb: cr,
       og: { type: "page", eyebrow: "Compare", title: t("How Sokosumi compares"), sub: t("ChatGPT, Claude, Copilot, Langdock and 30 more. One page per tool.") },
@@ -227,7 +226,7 @@ async function detail(ctx) {
     pageStart({
       // The search phrase people type, then the promise. The h1 asks the question.
       title: t("{name} vs Sokosumi: the difference for marketing teams", { name }),
-      description: (doc.description || "").slice(0, 155),
+      description: shell.describe(t("{name} vs Sokosumi for marketing teams: {desc}", { name, desc: (doc.description || "").trim() }), t("Who each one fits, what you get back and what you pay, in seven rows.")),
       path: `/compare/${doc.slug}`,
       breadcrumb: cr,
       noindex: NOINDEX.has(doc.slug),

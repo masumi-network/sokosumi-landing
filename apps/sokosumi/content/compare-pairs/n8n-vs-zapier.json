@@ -1,22 +1,62 @@
 {
   "slug": "n8n-vs-zapier",
-  "a": { "key": "n8n", "name": "n8n", "url": "https://n8n.io" },
-  "b": { "key": "zapier", "name": "Zapier Agents", "url": "https://zapier.com/agents" },
+  "a": {
+    "key": "n8n",
+    "name": "n8n",
+    "url": "https://n8n.io"
+  },
+  "b": {
+    "key": "zapier",
+    "name": "Zapier Agents",
+    "url": "https://zapier.com/agents"
+  },
   "checked": "2026-08-26",
   "en": {
     "title": "n8n or Zapier Agents: which automation platform for a European team?",
-    "metaTitle": "n8n vs Zapier Agents (2026): prices, executions vs activities, EU hosting",
+    "metaTitle": "n8n vs Zapier Agents (2026): prices, executions vs activities",
     "description": "n8n and Zapier Agents compared: pricing, how executions, tasks and activities are counted, EU hosting and real limits. Facts checked August 2026 with a pick for each team.",
     "intro": "n8n is a Berlin-built workflow engine with AI agent nodes, sold per execution on EU-hosted cloud or free to self-host. Zapier Agents are AI agents on top of Zapier's 8,000-plus app connections, sold in 'activities' on top of Zapier's task-based plans. The deciding question is EU hosting and control versus the widest app catalogue and the least setup.",
     "glance": [
-      ["Who it is for", "Technical teams and IT that want automation they can host and extend", "Non-technical teams that want agents across many SaaS apps fast"],
-      ["What you get", "Visual workflow builder, AI agent nodes, code nodes, 400+ integrations, self-host option", "Agents with triggers, knowledge sources, web browsing, plus classic Zaps across 8,000+ apps"],
-      ["Price", "Cloud Starter €20, Pro €50 per month; Business €667 per month annual; Enterprise custom; Community edition free", "Free $0; Professional from $19.99 per month annual ($29.99 monthly); Team from $69 annual ($103.50 monthly) for 25 users; Enterprise custom"],
-      ["Free plan or trial", "Free cloud trial, no card; free self-hosted Community edition", "Free plan: 100 tasks and 400 agent activities a month"],
-      ["EU hosting", "Yes. Cloud data in Frankfurt, Germany; self-host anywhere", "No EU residency published. Data hosted on AWS in the US; EU-US Data Privacy Framework certified (third-party, verify)"],
-      ["Team features", "Unlimited users on all cloud plans; SSO, SAML, LDAP on Business", "1 user on Free and Pro; 25 users on Team; unlimited on Enterprise"],
-      ["Build your own agents", "Yes, AI agent nodes with your own model keys", "Yes, Zapier Agents in plain language"],
-      ["What is metered", "Workflow executions: 2,500 / 10,000 / 40,000 a month; one execution is one full run", "Two meters: Zap tasks (100 / 750+ / 2,000+ a month) and agent activities (400 Free, 1,500 Pro, shared pool on Team). One activity is a trigger, a knowledge answer, an action, a web browse, a web search or a Chrome message"]
+      [
+        "Who it is for",
+        "Technical teams and IT that want automation they can host and extend",
+        "Non-technical teams that want agents across many SaaS apps fast"
+      ],
+      [
+        "What you get",
+        "Visual workflow builder, AI agent nodes, code nodes, 400+ integrations, self-host option",
+        "Agents with triggers, knowledge sources, web browsing, plus classic Zaps across 8,000+ apps"
+      ],
+      [
+        "Price",
+        "Cloud Starter €20, Pro €50 per month; Business €667 per month annual; Enterprise custom; Community edition free",
+        "Free $0; Professional from $19.99 per month annual ($29.99 monthly); Team from $69 annual ($103.50 monthly) for 25 users; Enterprise custom"
+      ],
+      [
+        "Free plan or trial",
+        "Free cloud trial, no card; free self-hosted Community edition",
+        "Free plan: 100 tasks and 400 agent activities a month"
+      ],
+      [
+        "EU hosting",
+        "Yes. Cloud data in Frankfurt, Germany; self-host anywhere",
+        "No EU residency published. Data hosted on AWS in the US; EU-US Data Privacy Framework certified (third-party, verify)"
+      ],
+      [
+        "Team features",
+        "Unlimited users on all cloud plans; SSO, SAML, LDAP on Business",
+        "1 user on Free and Pro; 25 users on Team; unlimited on Enterprise"
+      ],
+      [
+        "Build your own agents",
+        "Yes, AI agent nodes with your own model keys",
+        "Yes, Zapier Agents in plain language"
+      ],
+      [
+        "What is metered",
+        "Workflow executions: 2,500 / 10,000 / 40,000 a month; one execution is one full run",
+        "Two meters: Zap tasks (100 / 750+ / 2,000+ a month) and agent activities (400 Free, 1,500 Pro, shared pool on Team). One activity is a trigger, a knowledge answer, an action, a web browse, a web search or a Chrome message"
+      ]
     ],
     "pickA": {
       "heading": "Pick n8n if…",
@@ -53,20 +93,35 @@
         "Credits only when a task runs. Free: 250 credits per seat per month, no card. Paid seats €25, €75 or €200 per month.",
         "EU hosting available, stated per coworker. Built by Serviceplan Group with NMKR, Munich."
       ],
-      "links": ["/compare/sokosumi-vs-n8n", "/compare/sokosumi-vs-zapier-agents"]
+      "links": [
+        "/compare/sokosumi-vs-n8n",
+        "/compare/sokosumi-vs-zapier-agents"
+      ]
     },
     "faq": [
-      ["What is a Zapier agent activity?", "Any billable agent step: using a trigger, answering from a knowledge source, running an action, browsing or scraping a page, a web search, or a message sent via the Chrome extension. Free includes 400 a month, Pro 1,500; Team shares a pool across the account."],
-      ["How does n8n count executions?", "One execution is one complete workflow run regardless of steps. Starter has 2,500 a month, Pro 10,000, Business 40,000. Workflows keep running past the quota and overage may apply."],
-      ["Which one is hosted in the EU?", "n8n Cloud stores data in Frankfurt, Germany. Zapier publishes no EU residency and hosts on AWS in the US, relying on the EU-US Data Privacy Framework for transfers."],
-      ["Is there an option with no building at all?", "Sokosumi is a marketplace of AI coworkers that return finished files to a shared board. Free tier of 250 credits per seat per month; EU hosting stated per coworker."]
+      [
+        "What is a Zapier agent activity?",
+        "Any billable agent step: using a trigger, answering from a knowledge source, running an action, browsing or scraping a page, a web search, or a message sent via the Chrome extension. Free includes 400 a month, Pro 1,500; Team shares a pool across the account."
+      ],
+      [
+        "How does n8n count executions?",
+        "One execution is one complete workflow run regardless of steps. Starter has 2,500 a month, Pro 10,000, Business 40,000. Workflows keep running past the quota and overage may apply."
+      ],
+      [
+        "Which one is hosted in the EU?",
+        "n8n Cloud stores data in Frankfurt, Germany. Zapier publishes no EU residency and hosts on AWS in the US, relying on the EU-US Data Privacy Framework for transfers."
+      ],
+      [
+        "Is there an option with no building at all?",
+        "Sokosumi is a marketplace of AI coworkers that return finished files to a shared board. Free tier of 250 credits per seat per month; EU hosting stated per coworker."
+      ]
     ]
   },
   "de": {
     "title": "n8n oder Zapier Agents: welche Automationsplattform für ein europäisches Team?",
     "metaTitle": "n8n vs Zapier Agents (2026): Preise, Ausführungen, EU-Hosting",
     "description": "n8n und Zapier Agents im Vergleich: Preise, Zählung von Ausführungen, Tasks und Activities, EU-Hosting und Grenzen. Stand August 2026.",
-    "intro": "n8n ist eine in Berlin gebaute Workflow-Engine mit AI-Agent-Knoten, verkauft pro Ausführung in EU-gehosteter Cloud oder kostenlos selbst betreibbar. Zapier Agents sind AI Agents auf Zapiers 8,000+ App-Verbindungen, verkauft in 'Activities' zusätzlich zu Zapiers Task-Plänen. Entscheidend ist EU-Hosting und Kontrolle gegenüber breitem App-Katalog und geringstem Setup.",
+    "intro": "n8n ist eine in Berlin gebaute Workflow-Engine mit KI-Agent-Knoten, verkauft pro Ausführung in EU-gehosteter Cloud oder kostenlos selbst betreibbar. Zapier Agents sind KI-Agents auf Zapiers 8,000+ App-Verbindungen, verkauft in 'Activities' zusätzlich zu Zapiers Task-Plänen. Entscheidend ist EU-Hosting und Kontrolle gegenüber breitem App-Katalog und geringstem Setup.",
     "glance": [
       [
         "Für wen es passt",
@@ -75,7 +130,7 @@
       ],
       [
         "Was Sie bekommen",
-        "Visueller Workflow-Builder, AI-Agent-Knoten, Code-Knoten, 400+ Integrationen, Self-Host-Option",
+        "Visueller Workflow-Builder, KI-Agent-Knoten, Code-Knoten, 400+ Integrationen, Self-Host-Option",
         "Agents mit Triggern, Wissensquellen, Web-Browsing plus klassische Zaps über 8,000+ Apps"
       ],
       [
@@ -100,7 +155,7 @@
       ],
       [
         "Eigene Agents bauen",
-        "Ja, AI-Agent-Knoten mit eigenen Modell-Keys",
+        "Ja, KI-Agent-Knoten mit eigenen Modell-Keys",
         "Ja, Zapier Agents in klarer Sprache"
       ],
       [
@@ -138,7 +193,7 @@
     "verdict": "n8n gewinnt für ein europäisches Team mit Entwickler, das EU-Hosting und planbare Kosten pro Lauf braucht. Zapier Agents gewinnen für ein nicht-technisches Team, dem App-Breite und null Setup wichtiger sind als Hosting-Kontrolle. Wenn Sie EU-Hosting und No-Code zugleich brauchen, passt keines perfekt.",
     "bridge": {
       "heading": "Wenn Sie Arbeit erledigt haben wollen, keinen Workflow warten",
-      "text": "Beide Tools geben einem Builder eine Leinwand. Jemand muss den Ablauf entwerfen, Apps verbinden und reparieren, wenn ein Auth-Token abläuft. Wenn das Team eigentlich einen Wettbewerbsbericht, einen Kampagnenplan oder das Montags-PDF zur Performance braucht, ist das ein anderes Produkt: ein Coworker, den Sie briefen, ein Task-Board fürs Team, am Ende eine Datei. Sokosumi ist ein Marktplatz für benannte AI-Coworker für Marketingteams, jeweils mit Rolle, Beispielarbeit und einem benannten Anbieter, der Modelle und Hosting ausweist.",
+      "text": "Beide Tools geben einem Builder eine Leinwand. Jemand muss den Ablauf entwerfen, Apps verbinden und reparieren, wenn ein Auth-Token abläuft. Wenn das Team eigentlich einen Wettbewerbsbericht, einen Kampagnenplan oder das Montags-PDF zur Performance braucht, ist das ein anderes Produkt: ein Coworker, den Sie briefen, ein Task-Board fürs Team, am Ende eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Coworker für Marketingteams, jeweils mit Rolle, Beispielarbeit und einem benannten Anbieter, der Modelle und Hosting ausweist.",
       "points": [
         "Briefen Sie in klarer Sprache oder per @Mention in einem Kanal; die Aufgabe erscheint auf einem gemeinsamen Task-Board und endet mit einer fertigen Datei.",
         "Credits nur, wenn eine Aufgabe läuft. Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25, €75 oder €200 pro Monat.",
@@ -164,7 +219,7 @@
       ],
       [
         "Gibt es eine Option ganz ohne Bauen?",
-        "Sokosumi ist ein Marktplatz für AI-Coworker, die fertige Dateien auf ein gemeinsames Task-Board liefern. Free-Plan mit 250 Credits pro Seat und Monat; EU-Hosting je Coworker ausgewiesen."
+        "Sokosumi ist ein Marktplatz für KI-Coworker, die fertige Dateien auf ein gemeinsames Task-Board liefern. Free-Plan mit 250 Credits pro Seat und Monat; EU-Hosting je Coworker ausgewiesen."
       ]
     ]
   },

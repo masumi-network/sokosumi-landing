@@ -13,7 +13,7 @@
   "checked": "2026-08-26",
   "en": {
     "title": "nele.ai or Langdock: two German 'safe ChatGPT' platforms compared",
-    "metaTitle": "nele.ai vs Langdock (2026): prices, credits vs seats, German hosting, agents",
+    "metaTitle": "nele.ai vs Langdock (2026): prices, credits vs seats",
     "description": "nele.ai vs Langdock: company-wide credits or per-seat pricing, German or EU hosting, Office add-ins, agents and limits. Checked August 2026.",
     "intro": "nele.ai is a German multi-model chat platform with a prompt library, a knowledge base and Word and Excel add-ins, priced by a company-wide credit volume. Langdock is a Berlin AI workspace with chat, custom agents and workflows, priced per seat. The deciding difference: nele.ai is a cheap, secure chat for everyone; Langdock adds agents, workflows and Slack or Teams bots on top.",
     "glance": [
@@ -121,7 +121,7 @@
     "title": "nele.ai oder Langdock: zwei deutsche 'sichere ChatGPT'-Plattformen",
     "metaTitle": "nele.ai vs Langdock (2026): Preise, Credits, deutsches Hosting",
     "description": "nele.ai vs Langdock: unternehmensweite Credits oder Seat-Preis, deutsches oder EU-Hosting, Office-Add-ins, Agents und Grenzen. Stand August 2026.",
-    "intro": "nele.ai ist eine deutsche Multi-Modell-Chat-Plattform mit Prompt-Bibliothek, Wissensbasis sowie Word- und Excel-Add-ins, bezahlt über ein unternehmensweites Credit-Volumen. Langdock ist ein Berliner AI-Arbeitsbereich mit Chat, eigenen Agents und Workflows, bezahlt pro Seat. Der Unterschied: nele.ai ist ein günstiger, sicherer Chat für alle; Langdock ergänzt Agents, Workflows und Slack- oder Teams-Bots.",
+    "intro": "nele.ai ist eine deutsche Multi-Modell-Chat-Plattform mit Prompt-Bibliothek, Wissensbasis sowie Word- und Excel-Add-ins, bezahlt über ein unternehmensweites Credit-Volumen. Langdock ist ein Berliner KI-Arbeitsbereich mit Chat, eigenen Agents und Workflows, bezahlt pro Seat. Der Unterschied: nele.ai ist ein günstiger, sicherer Chat für alle; Langdock ergänzt Agents, Workflows und Slack- oder Teams-Bots.",
     "glance": [
       [
         "Für wen es passt",
@@ -193,7 +193,7 @@
     "verdict": "Für ein Unternehmen, das nur sicheren, günstigen Chat mit deutschem Hosting und Office-Add-ins braucht, kostet nele.ai einen Bruchteil von Langdock. Für ein Unternehmen, das Agents, Workflows und Chatbots in Slack oder Teams will, ist Langdock vollständiger und den Seat-Preis eher wert. Prüfen Sie nele.ais Anonymisierungsversprechen gegen Ihre Datenschutzanforderungen.",
     "bridge": {
       "heading": "Wenn Sie Arbeit erledigt haben wollen, kein Chatfenster",
-      "text": "Beide Tools geben einer Person einen Ort zum Prompten. Wenn das Team eigentlich einen Wettbewerbsbericht, einen Kampagnenplan oder das Montags-PDF zur Performance braucht, ist das ein anderes Produkt: ein Coworker, den Sie briefen, ein Task-Board fürs Team, am Ende eine Datei. Sokosumi ist ein Marktplatz für benannte AI-Coworker für Marketingteams, gebaut von Serviceplan Group mit NMKR in München.",
+      "text": "Beide Tools geben einer Person einen Ort zum Prompten. Wenn das Team eigentlich einen Wettbewerbsbericht, einen Kampagnenplan oder das Montags-PDF zur Performance braucht, ist das ein anderes Produkt: ein Coworker, den Sie briefen, ein Task-Board fürs Team, am Ende eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Coworker für Marketingteams, gebaut von Serviceplan Group mit NMKR in München.",
       "points": [
         "52 Coworker und Agents von 7 Anbietern; jedes Profil nennt Anbieter, Modelle und Hosting, mit verfügbarem EU-Hosting.",
         "Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25, €75 oder €200 pro Monat; Credits werden nur verbraucht, wenn eine Aufgabe läuft.",

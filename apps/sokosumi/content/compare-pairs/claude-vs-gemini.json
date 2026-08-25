@@ -1,22 +1,62 @@
 {
   "slug": "claude-vs-gemini",
-  "a": { "key": "claude", "name": "Claude", "url": "https://claude.com" },
-  "b": { "key": "gemini", "name": "Google Gemini", "url": "https://gemini.google" },
+  "a": {
+    "key": "claude",
+    "name": "Claude",
+    "url": "https://claude.com"
+  },
+  "b": {
+    "key": "gemini",
+    "name": "Google Gemini",
+    "url": "https://gemini.google"
+  },
   "checked": "2026-08-26",
   "en": {
     "title": "Claude or Google Gemini: which one for a team that writes and reports?",
-    "metaTitle": "Claude vs Google Gemini (2026): prices, Workspace, EU hosting, who it fits",
+    "metaTitle": "Claude vs Google Gemini (2026): prices, Workspace, EU hosting",
     "description": "Claude and Google Gemini compared on price, file output, Workspace fit, EU data regions and real limits. Checked August 2026, plus who should pick which.",
     "intro": "Claude is Anthropic's assistant: chat, projects, Office file creation, Cowork for scheduled tasks and Claude Code. Gemini is Google's assistant: a standalone app with Deep Research and NotebookLM, plus Gemini built into Gmail, Docs, Sheets and Slides on Workspace plans. The deciding question is your office suite. If you live in Google Docs, Gemini is already there. If you do not, Claude's files work anywhere.",
     "glance": [
-      ["Who it is for", "Writers, analysts, anyone working on long documents or multi-step desk work", "Google Workspace companies, and anyone who wants research tied to Gmail and Drive"],
-      ["What you get", "Chat, Projects, .xlsx/.pptx/.docx/PDF creation on all plans, Cowork (unattended scheduled tasks), Claude Code, Design", "Gemini app with Deep Research, NotebookLM, Flow video credits; Gemini inside Gmail, Docs, Sheets, Slides, Meet on Workspace; Gemini Enterprise agent platform"],
-      ["Price per person", "Free $0; Pro $17 annual or $20 monthly; Max from $100 (claude.com, 26 Aug 2026)", "Free; Google AI Plus CHF 5; AI Pro CHF 17; AI Ultra CHF 100 or CHF 170 per month (gemini.google, Swiss prices, 26 Aug 2026)"],
-      ["Price per seat (team)", "Team Standard $20 annual or $25 monthly, Premium $100 or $125, 2–150 seats; Enterprise $20 per seat plus API usage, or custom", "Workspace Starter CHF 7, Standard CHF 14, Plus CHF 22 per user per month, Enterprise custom (Gemini bundled); Gemini Enterprise platform $21 / $30 / $50+ per seat (third-party, verify)"],
-      ["Free plan or trial", "Free plan, no card; file creation included", "Free Gemini app; Workspace has a 14-day trial"],
-      ["EU hosting", "None on Anthropic plans; workspace geo is US. EU via AWS Bedrock Frankfurt or Vertex AI EU", "Workspace data regions (EU) from Business Standard; Gemini Enterprise EU residency on Standard and Plus, but Gemini 3.1 Pro, web grounding and image generation are not EU-resident. Consumer Gemini app: no EU option, chats may be used for training"],
-      ["Team features", "Shared projects, enterprise search, SSO, admin controls; SCIM and audit logs on Enterprise", "Workspace admin console, data regions, DLP; Gemini Enterprise adds Agent Gallery and governance"],
-      ["Build your own agents", "Projects, Cowork plugins, Agent SDK for developers", "Gems in the app; Gemini Enterprise agent builder and Agent Gallery; Vertex AI for developers"]
+      [
+        "Who it is for",
+        "Writers, analysts, anyone working on long documents or multi-step desk work",
+        "Google Workspace companies, and anyone who wants research tied to Gmail and Drive"
+      ],
+      [
+        "What you get",
+        "Chat, Projects, .xlsx/.pptx/.docx/PDF creation on all plans, Cowork (unattended scheduled tasks), Claude Code, Design",
+        "Gemini app with Deep Research, NotebookLM, Flow video credits; Gemini inside Gmail, Docs, Sheets, Slides, Meet on Workspace; Gemini Enterprise agent platform"
+      ],
+      [
+        "Price per person",
+        "Free $0; Pro $17 annual or $20 monthly; Max from $100 (claude.com, 26 Aug 2026)",
+        "Free; Google AI Plus CHF 5; AI Pro CHF 17; AI Ultra CHF 100 or CHF 170 per month (gemini.google, Swiss prices, 26 Aug 2026)"
+      ],
+      [
+        "Price per seat (team)",
+        "Team Standard $20 annual or $25 monthly, Premium $100 or $125, 2–150 seats; Enterprise $20 per seat plus API usage, or custom",
+        "Workspace Starter CHF 7, Standard CHF 14, Plus CHF 22 per user per month, Enterprise custom (Gemini bundled); Gemini Enterprise platform $21 / $30 / $50+ per seat (third-party, verify)"
+      ],
+      [
+        "Free plan or trial",
+        "Free plan, no card; file creation included",
+        "Free Gemini app; Workspace has a 14-day trial"
+      ],
+      [
+        "EU hosting",
+        "None on Anthropic plans; workspace geo is US. EU via AWS Bedrock Frankfurt or Vertex AI EU",
+        "Workspace data regions (EU) from Business Standard; Gemini Enterprise EU residency on Standard and Plus, but Gemini 3.1 Pro, web grounding and image generation are not EU-resident. Consumer Gemini app: no EU option, chats may be used for training"
+      ],
+      [
+        "Team features",
+        "Shared projects, enterprise search, SSO, admin controls; SCIM and audit logs on Enterprise",
+        "Workspace admin console, data regions, DLP; Gemini Enterprise adds Agent Gallery and governance"
+      ],
+      [
+        "Build your own agents",
+        "Projects, Cowork plugins, Agent SDK for developers",
+        "Gems in the app; Gemini Enterprise agent builder and Agent Gallery; Vertex AI for developers"
+      ]
     ],
     "pickA": {
       "heading": "Pick Claude if…",
@@ -53,13 +93,28 @@
         "Credits only when a task runs. Free: 250 credits per seat per month, no card. Paid seats €25 / €75 / €200 per month.",
         "52 coworkers and agents from 7 vendors, 5,300+ tasks run. Built by Serviceplan Group with NMKR, Munich."
       ],
-      "links": ["/compare/sokosumi-vs-claude", "/compare/sokosumi-vs-google-gemini"]
+      "links": [
+        "/compare/sokosumi-vs-claude",
+        "/compare/sokosumi-vs-google-gemini"
+      ]
     },
     "faq": [
-      ["Is Gemini free with Google Workspace?", "Yes. Since March 2025 Gemini is bundled into Workspace plans. Starter (CHF 7) gets Gemini in Gmail and the app; Standard (CHF 14) and Plus (CHF 22) add Gemini in Docs, Sheets, Slides, Drive, Meet and Chat."],
-      ["Which one is safer for EU personal data?", "Workspace with Gemini: it has a DPA, no training on your data, and EU data regions from Business Standard. Claude Team and Enterprise have a DPA but store data in the US. Avoid the consumer Gemini app for company data."],
-      ["Can Claude work inside Google Docs?", "Not natively. Claude creates and edits files you download or connect via Drive connectors. Gemini edits Docs and Sheets in place."],
-      ["Where does Sokosumi fit?", "It is not a chat assistant. It is a marketplace of specialist marketing coworkers that return finished files to a team board, with EU hosting stated per coworker. Teams keep Claude or Gemini for daily chat and hire a coworker for recurring reports."]
+      [
+        "Is Gemini free with Google Workspace?",
+        "Yes. Since March 2025 Gemini is bundled into Workspace plans. Starter (CHF 7) gets Gemini in Gmail and the app; Standard (CHF 14) and Plus (CHF 22) add Gemini in Docs, Sheets, Slides, Drive, Meet and Chat."
+      ],
+      [
+        "Which one is safer for EU personal data?",
+        "Workspace with Gemini: it has a DPA, no training on your data, and EU data regions from Business Standard. Claude Team and Enterprise have a DPA but store data in the US. Avoid the consumer Gemini app for company data."
+      ],
+      [
+        "Can Claude work inside Google Docs?",
+        "Not natively. Claude creates and edits files you download or connect via Drive connectors. Gemini edits Docs and Sheets in place."
+      ],
+      [
+        "Where does Sokosumi fit?",
+        "It is not a chat assistant. It is a marketplace of specialist marketing coworkers that return finished files to a team board, with EU hosting stated per coworker. Teams keep Claude or Gemini for daily chat and hire a coworker for recurring reports."
+      ]
     ]
   },
   "de": {
@@ -106,7 +161,7 @@
       [
         "Eigene Agents bauen",
         "Projects, Cowork-Plugins, Agent SDK für Entwickler",
-        "Gems in der App; Gemini Enterprise Agent Builder und Agent Gallery; Vertex AI für Entwickler"
+        "Gems in der App; Gemini Enterprise Agent Builder und Agent Gallery; Vertex KI für Entwickler"
       ]
     ],
     "pickA": {
@@ -138,7 +193,7 @@
     "verdict": "Wenn Sie auf Google Workspace sind, ist Gemini der sinnvolle Standard: Es ist bereits in Ihren Dokumenten, und EU-Datenregionen kommen ab Business Standard. Wenn Sie auf Microsoft arbeiten oder portable Office-Dateien und geplante unbeaufsichtigte Aufgaben wollen, ist Claude stärker, bringt aber US-Hosting und Nutzungslimits mit.",
     "bridge": {
       "heading": "Wenn Sie Arbeit erledigt haben wollen, kein Chatfenster",
-      "text": "Beide Tools geben einer Person einen Ort zum Prompten. Wenn das Team eigentlich einen Wettbewerbsbericht, einen Kampagnenplan oder das Montags-PDF zur Performance braucht, ist das ein anderes Produkt: ein Coworker, den Sie briefen, ein Task-Board fürs Team, am Ende eine Datei. Sokosumi ist ein Marktplatz für benannte AI-Coworker für Marketingteams, jeweils mit öffentlichem Profil, Beispielarbeit, benanntem Anbieter und genanntem Hosting. EU-Hosting ist je Coworker ausgewiesen.",
+      "text": "Beide Tools geben einer Person einen Ort zum Prompten. Wenn das Team eigentlich einen Wettbewerbsbericht, einen Kampagnenplan oder das Montags-PDF zur Performance braucht, ist das ein anderes Produkt: ein Coworker, den Sie briefen, ein Task-Board fürs Team, am Ende eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Coworker für Marketingteams, jeweils mit öffentlichem Profil, Beispielarbeit, benanntem Anbieter und genanntem Hosting. EU-Hosting ist je Coworker ausgewiesen.",
       "points": [
         "Briefen Sie in klarer Sprache oder per @Mention in einem Kanal; die Aufgabe erscheint auf einem gemeinsamen Task-Board und endet als PDF, Deck, Spreadsheet oder Dashboard.",
         "Credits nur, wenn eine Aufgabe läuft. Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25 / €75 / €200 pro Monat.",

@@ -116,6 +116,18 @@ const attr = esc;
 
 // Word-boundary truncation for meta descriptions: never cuts mid-word,
 // never leaves trailing space or punctuation fragments.
+// Meta descriptions between ~110 and 158 characters: pad a short CMS
+// sentence with a page-type sentence, cut a long one at a word.
+function describe(main, extra, max) {
+  let s = String(main || "").trim();
+  const limit = max || 158;
+  if (extra && s.length < 110) {
+    const padded = `${s}${s && !/[.!?]$/.test(s) ? "." : ""} ${extra}`.trim();
+    // Never cut the padding sentence in half: keep it only if it fits.
+    if (padded.length <= limit || s.length < 90) return truncate(padded, limit);
+  }
+  return truncate(s, limit);
+}
 function truncate(s, n) {
   const str = String(s || "").trim();
   const max = n || 155;
@@ -396,6 +408,8 @@ function head(opts) {
     <meta property="og:locale:alternate" content="${locale === "de" ? "en_US" : "de_DE"}" />
     <meta property="og:url" content="${attr(canonical)}" />
     <meta property="og:image" content="${attr(og.url)}" />
+    <meta property="og:image:secure_url" content="${attr(og.url)}" />
+    <meta property="og:image:type" content="${/\.jpe?g(\?|$)/i.test(og.url) ? "image/jpeg" : "image/png"}" />
     ${og.width ? `<meta property="og:image:width" content="${og.width}" />` : ""}
     ${og.height ? `<meta property="og:image:height" content="${og.height}" />` : ""}
     <meta property="og:image:alt" content="${attr(og.alt || opts.title)}" />
@@ -1144,6 +1158,7 @@ function vendorLogo(v, cls) {
 }
 
 module.exports = {
+  describe,
   ORGANIZATION,
   APP,
   thumb,

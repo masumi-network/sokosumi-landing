@@ -5,6 +5,7 @@
 const shell = require("./shell");
 const cms = require("../lib/cms");
 const blocks = require("./blocks");
+const spSection = require("./serviceplanAi");
 const productDemo = require("./productDemo");
 const { t } = require("../lib/i18n");
 const { esc, pageStart, pageEnd } = shell;
@@ -168,6 +169,7 @@ async function cmsPage(ctx) {
   const doc = await cms.getPage(ctx.params.slug, { draft: ctx.preview });
   if (!doc) return null;
   if (SURFACES[doc.slug]) return surfacePage(doc, doc.slug, ctx);
+  if (spSection.isSection(doc.slug)) return spSection.render(doc, ctx);
 
   const cr = [{ label: "Home", href: "/" }];
   if (doc.parent && typeof doc.parent === "object" && doc.parent.title && doc.parent.slug) {

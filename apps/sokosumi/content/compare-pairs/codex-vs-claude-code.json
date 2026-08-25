@@ -13,7 +13,7 @@
   "checked": "2026-08-26",
   "en": {
     "title": "OpenAI Codex or Claude Code: which coding agent for your team?",
-    "metaTitle": "OpenAI Codex vs Claude Code (2026): prices, usage limits, EU residency, who it fits",
+    "metaTitle": "OpenAI Codex vs Claude Code (2026): prices, usage limits",
     "description": "OpenAI Codex and Claude Code compared on price, included usage, team seats, EU residency and real limits. Checked August 2026, plus who fits which.",
     "intro": "Codex is OpenAI's coding agent: a CLI, IDE extension and cloud agent, included in every ChatGPT plan and sharing its usage. Claude Code is Anthropic's coding agent: a CLI, IDE extensions, desktop app and web sessions, included in Claude plans and sharing their usage. Both do the same job from a prompt. The deciding differences are the plan you already pay for, how usage is counted, and where the data sits.",
     "glance": [
@@ -119,7 +119,7 @@
   },
   "de": {
     "title": "OpenAI Codex oder Claude Code: welcher Coding-Agent für Ihr Team?",
-    "metaTitle": "OpenAI Codex vs Claude Code (2026): Preise, Limits, EU-Residenz",
+    "metaTitle": "OpenAI Codex vs Claude Code (2026): Preise, Limits",
     "description": "OpenAI Codex und Claude Code im Vergleich: Preis, enthaltene Nutzung, Team-Seats, EU-Residenz und echte Grenzen. Stand August 2026.",
     "intro": "Codex ist OpenAIs Coding-Agent: CLI, IDE-Erweiterung und Cloud-Agent, in jedem ChatGPT-Plan enthalten und mit dessen Nutzung geteilt. Claude Code ist Anthropics Coding-Agent: CLI, IDE-Erweiterungen, Desktop-App und Web-Sessions, in Claude-Plänen enthalten und mit deren Nutzung geteilt. Beide erledigen dieselbe Art Aufgabe aus einem Prompt. Entscheidend sind der Plan, den Sie schon zahlen, wie Nutzung gezählt wird und wo die Daten liegen.",
     "glance": [
@@ -193,7 +193,7 @@
     "verdict": "Wenn Ihr Unternehmen ChatGPT bereits lizenziert, ist Codex kostenlos testbar und bei Volumen günstiger, mit EU-Residenz auf Enterprise. Wenn Codequalität bei schweren Aufgaben und tiefe Automatisierung wichtiger sind als Kosten, gewinnt Claude Code, aber mit Nutzungslimits und US-Hosting. Viele Entwickler nutzen inzwischen beide.",
     "bridge": {
       "heading": "Wenn Sie gerade einen Marketing-Agent selbst bauen wollten",
-      "text": "Sokosumi ist kein Coding-Tool und konkurriert nicht mit diesen Produkten. Ein Grund für den Vergleich ist aber oft der Plan, intern einen Recherche- oder Reporting-Agent für Marketing zu bauen. Dann besitzt ein Entwickler Prompts, Datenlizenzen, Hosting und Wartung. Es gibt eine Mietoption: Sokosumi ist ein Marktplatz für benannte AI-Coworker für Marketingteams, jeweils mit öffentlichem Profil, benanntem Anbieter, genannten Modellen und genanntem Hosting.",
+      "text": "Sokosumi ist kein Coding-Tool und konkurriert nicht mit diesen Produkten. Ein Grund für den Vergleich ist aber oft der Plan, intern einen Recherche- oder Reporting-Agent für Marketing zu bauen. Dann besitzt ein Entwickler Prompts, Datenlizenzen, Hosting und Wartung. Es gibt eine Mietoption: Sokosumi ist ein Marktplatz für benannte KI-Coworker für Marketingteams, jeweils mit öffentlichem Profil, benanntem Anbieter, genannten Modellen und genanntem Hosting.",
       "points": [
         "Briefen Sie in klarer Sprache oder per @Mention in einem Kanal; die Aufgabe erscheint auf einem gemeinsamen Task-Board und endet als PDF-Bericht, Deck, Spreadsheet oder Dashboard. Geplante Aufgaben inklusive.",
         "Credits nur, wenn eine Aufgabe läuft. Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25 / €75 / €200 pro Monat; Enterprise individuell. EU-Hosting je Coworker ausgewiesen.",

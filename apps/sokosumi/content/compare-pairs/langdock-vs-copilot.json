@@ -13,7 +13,7 @@
   "checked": "2026-08-26",
   "en": {
     "title": "Langdock or Microsoft 365 Copilot: which one for a company on Microsoft 365?",
-    "metaTitle": "Langdock vs Microsoft 365 Copilot (2026): prices, EU data, agents, limits",
+    "metaTitle": "Langdock vs Microsoft 365 Copilot (2026): prices, EU data",
     "description": "Langdock vs Microsoft 365 Copilot for DACH companies: seat prices, EU Data Boundary vs EU hosting, agents, Researcher caps. Checked August 2026.",
     "intro": "Langdock is an EU-hosted AI workspace with chat, agents and workflows across many models. Microsoft 365 Copilot is the AI layer inside Word, Excel, Outlook and Teams, sold as an add-on to a Microsoft 365 licence. The deciding difference: Copilot works where your files already are; Langdock gives you model choice and a fixed EU hosting promise without Microsoft's peak-time routing.",
     "glance": [
@@ -121,11 +121,11 @@
     "title": "Langdock oder Microsoft 365 Copilot: was passt zu Microsoft-365-Unternehmen?",
     "metaTitle": "Langdock vs Microsoft 365 Copilot (2026): Preise, EU-Daten",
     "description": "Langdock vs Microsoft 365 Copilot für DACH-Unternehmen: Seat-Preise, EU Data Boundary gegen EU-Hosting, Agents und Researcher-Limits. Stand August 2026.",
-    "intro": "Langdock ist ein EU-gehosteter AI-Arbeitsbereich mit Chat, Agents und Workflows über viele Modelle. Microsoft 365 Copilot ist die KI-Schicht in Word, Excel, Outlook und Teams, verkauft als Add-on zu einer Microsoft 365-Lizenz. Der Unterschied: Copilot arbeitet dort, wo Ihre Dateien schon liegen; Langdock gibt Modellauswahl und ein klares EU-Hosting-Versprechen ohne Microsofts Peak-Time-Routing.",
+    "intro": "Langdock ist ein EU-gehosteter KI-Arbeitsbereich mit Chat, Agents und Workflows über viele Modelle. Microsoft 365 Copilot ist die KI-Schicht in Word, Excel, Outlook und Teams, verkauft als Add-on zu einer Microsoft 365-Lizenz. Der Unterschied: Copilot arbeitet dort, wo Ihre Dateien schon liegen; Langdock gibt Modellauswahl und ein klares EU-Hosting-Versprechen ohne Microsofts Peak-Time-Routing.",
     "glance": [
       [
         "Für wen es passt",
-        "Unternehmen, die unabhängig von der Office-Suite einen AI-Arbeitsbereich für alle mit Modellauswahl und EU-Hosting wollen",
+        "Unternehmen, die unabhängig von der Office-Suite einen KI-Arbeitsbereich für alle mit Modellauswahl und EU-Hosting wollen",
         "Unternehmen auf Microsoft 365, die KI in Office-Apps und Teams wollen, gekauft über ihren bestehenden Microsoft-Vertrag"
       ],
       [
@@ -193,7 +193,7 @@
     "verdict": "Wenn Sie ein Microsoft-Unternehmen sind und KI in den Apps wollen, die Menschen ohnehin öffnen, ist Copilot der natürliche Kauf; der Preis liegt nahe bei Langdock und die Admin-Story ist tiefer. Wenn Sie ein striktes EU-Hosting-Versprechen, Modellauswahl oder Workflow-Automation ohne zweites Credit-System brauchen, ist Langdock sauberer. Viele DACH-Unternehmen nutzen beides: Copilot in Office, Langdock als modellagnostischen Arbeitsbereich.",
     "bridge": {
       "heading": "Wenn Sie Arbeit erledigt haben wollen, kein Chatfenster",
-      "text": "Beide Tools geben einer Person einen Ort zum Prompten. Wenn das Team eigentlich einen Wettbewerbsbericht, einen Kampagnenplan oder das Montags-PDF zur Performance braucht, ist das ein anderes Produkt: ein Coworker, den Sie briefen, ein Task-Board fürs Team, am Ende eine Datei. Sokosumi ist ein Marktplatz für benannte AI-Coworker für Marketingteams, gebaut von Serviceplan Group mit NMKR in München. Coworker können per @Mention in einem Kanal briefed werden; die Aufgabe erscheint auf einem Task-Board und endet mit PDF, Deck, Spreadsheet oder Dashboard.",
+      "text": "Beide Tools geben einer Person einen Ort zum Prompten. Wenn das Team eigentlich einen Wettbewerbsbericht, einen Kampagnenplan oder das Montags-PDF zur Performance braucht, ist das ein anderes Produkt: ein Coworker, den Sie briefen, ein Task-Board fürs Team, am Ende eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Coworker für Marketingteams, gebaut von Serviceplan Group mit NMKR in München. Coworker können per @Mention in einem Kanal briefed werden; die Aufgabe erscheint auf einem Task-Board und endet mit PDF, Deck, Spreadsheet oder Dashboard.",
       "points": [
         "52 Coworker und Agents von 7 Anbietern; jedes Profil nennt Anbieter, Modelle und Hosting-Region.",
         "Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25, €75 oder €200 pro Monat; Credits werden nur verbraucht, wenn eine Aufgabe läuft.",

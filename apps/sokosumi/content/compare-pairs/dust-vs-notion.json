@@ -13,7 +13,7 @@
   "checked": "2026-08-26",
   "en": {
     "title": "Dust or Notion AI: agents on your company data, two ways",
-    "metaTitle": "Dust vs Notion AI (2026): prices, credits, EU hosting, custom agents, limits",
+    "metaTitle": "Dust vs Notion AI (2026): prices, credits, EU hosting",
     "description": "Dust (Paris agent workspace) vs Notion AI: seat prices, credit metering, EU hosting, agent triggers, outputs and real limits. Checked August 2026.",
     "intro": "Dust is a Paris-built workspace for building agents that read from Notion, Drive, Slack, GitHub and other sources across many models. Notion AI is the assistant and agent layer inside Notion: a personal Notion Agent on Business, plus Custom Agents that run on schedules and triggers. The deciding difference: Dust is a standalone agent platform with model choice; Notion agents live inside Notion pages and databases.",
     "glance": [
@@ -193,7 +193,7 @@
     "verdict": "Wenn Notion Ihr System of Record ist, ist Notion AI der günstigere, einfachere Weg, und die Agents passen natürlich in Ihre Datenbanken. Wenn Ihr Wissen über viele Tools verteilt ist oder Sie Modellauswahl und eine EU-Region unterhalb von Enterprise brauchen, ist Dust die stärkere Plattform. Beide zählen Agent-Läufe in Credits; budgetieren müssen Sie so oder so.",
     "bridge": {
       "heading": "Wenn Sie Arbeit erledigt haben wollen, kein Chatfenster",
-      "text": "Beide Tools geben einem Team einen Builder und einen Ort zum Prompten. Wenn das Team eigentlich einen Wettbewerbsbericht, einen Kampagnenplan oder das Montags-PDF zur Performance braucht, ist das ein anderes Produkt: ein Coworker, den Sie briefen, ein Task-Board fürs Team, am Ende eine Datei. Sokosumi ist ein Marktplatz für benannte AI-Coworker für Marketingteams, gebaut von Serviceplan Group mit NMKR in München.",
+      "text": "Beide Tools geben einem Team einen Builder und einen Ort zum Prompten. Wenn das Team eigentlich einen Wettbewerbsbericht, einen Kampagnenplan oder das Montags-PDF zur Performance braucht, ist das ein anderes Produkt: ein Coworker, den Sie briefen, ein Task-Board fürs Team, am Ende eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Coworker für Marketingteams, gebaut von Serviceplan Group mit NMKR in München.",
       "points": [
         "52 Coworker und Agents von 7 Anbietern; jedes Profil nennt Anbieter, Modelle und Hosting, mit verfügbarem EU-Hosting.",
         "Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25, €75 oder €200 pro Monat; Credits werden nur verbraucht, wenn eine Aufgabe läuft.",

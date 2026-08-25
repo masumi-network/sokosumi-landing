@@ -13,7 +13,7 @@
   "checked": "2026-08-26",
   "en": {
     "title": "Langdock or Dust: two European AI workspaces compared",
-    "metaTitle": "Langdock vs Dust (2026): seat prices, credits, EU hosting, agents",
+    "metaTitle": "Langdock vs Dust (2026): seat prices, credits, EU hosting",
     "description": "Langdock (Berlin) and Dust (Paris) compared: per-seat prices, credit metering, EU hosting, agent builders and real limits. Checked August 2026.",
     "intro": "Langdock and Dust both sell an AI workspace where a company builds its own agents on top of many models and its own data. Both are European and EU-hosted. The deciding difference is billing and depth: Langdock charges a flat seat with usage windows; Dust charges a seat plus a monthly credit pool, and leans harder on connecting company knowledge.",
     "glance": [
@@ -118,14 +118,14 @@
     ]
   },
   "de": {
-    "title": "Langdock oder Dust: zwei europäische AI-Arbeitsbereiche im Vergleich",
+    "title": "Langdock oder Dust: zwei europäische KI-Arbeitsbereiche im Vergleich",
     "metaTitle": "Langdock vs Dust (2026): Seat-Preise, Credits, EU-Hosting",
     "description": "Langdock (Berlin) und Dust (Paris) im Vergleich: Seat-Preise, Credit-Zählung, EU-Hosting, Agent Builder und Grenzen. Stand August 2026.",
-    "intro": "Langdock und Dust verkaufen beide einen AI-Arbeitsbereich, in dem ein Unternehmen eigene Agents auf vielen Modellen und eigenen Daten baut. Beide sind europäisch und EU-gehostet. Der Unterschied liegt in Abrechnung und Tiefe: Langdock verlangt einen flachen Seat-Preis mit Nutzungsfenstern; Dust verlangt Seat plus monatlichen Credit-Pool und legt mehr Gewicht auf angebundenes Unternehmenswissen.",
+    "intro": "Langdock und Dust verkaufen beide einen KI-Arbeitsbereich, in dem ein Unternehmen eigene Agents auf vielen Modellen und eigenen Daten baut. Beide sind europäisch und EU-gehostet. Der Unterschied liegt in Abrechnung und Tiefe: Langdock verlangt einen flachen Seat-Preis mit Nutzungsfenstern; Dust verlangt Seat plus monatlichen Credit-Pool und legt mehr Gewicht auf angebundenes Unternehmenswissen.",
     "glance": [
       [
         "Für wen es passt",
-        "DACH-Unternehmen, die AI für alle Mitarbeitenden mit EU-Hosting und Modellauswahl ausrollen",
+        "DACH-Unternehmen, die KI für alle Mitarbeitenden mit EU-Hosting und Modellauswahl ausrollen",
         "Technisch orientierte EU-Teams, die Agents auf Notion, Drive, Slack, GitHub und ähnlichen Quellen gründen wollen"
       ],
       [
@@ -193,7 +193,7 @@
     "verdict": "Langdock ist der sicherere Kauf für einen unternehmensweiten Rollout in der DACH-Region: einfachere Abrechnung, Teams-Bot und flacher Seat. Dust ist stärker für ein kleineres technisches Team, das Agents auf Unternehmensdaten gründen will und Credits akzeptiert. Beim EU-Hosting sind beide glaubwürdig; prüfen Sie bei Dust zuerst die Modellliste Ihres EU-Workspace.",
     "bridge": {
       "heading": "Wenn Sie Arbeit erledigt haben wollen, kein Chatfenster",
-      "text": "Beide Tools geben einer Person einen Ort zum Prompten und einen Builder für Agents. Wenn das Team eigentlich einen Wettbewerbsbericht, einen Kampagnenplan oder das Montags-PDF zur Performance braucht, ist das ein anderes Produkt: ein Coworker, den Sie briefen, ein Task-Board fürs Team, am Ende eine Datei. Sokosumi ist ein Marktplatz für benannte AI-Coworker für Marketingteams, gebaut von Serviceplan Group mit NMKR in München.",
+      "text": "Beide Tools geben einer Person einen Ort zum Prompten und einen Builder für Agents. Wenn das Team eigentlich einen Wettbewerbsbericht, einen Kampagnenplan oder das Montags-PDF zur Performance braucht, ist das ein anderes Produkt: ein Coworker, den Sie briefen, ein Task-Board fürs Team, am Ende eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Coworker für Marketingteams, gebaut von Serviceplan Group mit NMKR in München.",
       "points": [
         "52 Coworker und Agents von 7 Anbietern, jeweils mit öffentlichem Profil, Beispielarbeit, genannten Modellen und Hosting.",
         "Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25, €75 oder €200 pro Monat; Credits werden nur verbraucht, wenn eine Aufgabe läuft.",

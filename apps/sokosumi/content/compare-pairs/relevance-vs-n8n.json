@@ -1,22 +1,62 @@
 {
   "slug": "relevance-vs-n8n",
-  "a": { "key": "relevance", "name": "Relevance AI", "url": "https://relevanceai.com" },
-  "b": { "key": "n8n", "name": "n8n", "url": "https://n8n.io" },
+  "a": {
+    "key": "relevance",
+    "name": "Relevance AI",
+    "url": "https://relevanceai.com"
+  },
+  "b": {
+    "key": "n8n",
+    "name": "n8n",
+    "url": "https://n8n.io"
+  },
   "checked": "2026-08-26",
   "en": {
     "title": "Relevance AI or n8n: agent workforce builder or workflow engine?",
-    "metaTitle": "Relevance AI vs n8n (2026): prices, actions vs executions, EU hosting",
+    "metaTitle": "Relevance AI vs n8n (2026): prices, actions vs executions",
     "description": "Relevance AI and n8n compared: what each builds, how each meters use, published prices, EU hosting and the limits reviewers report. Checked August 2026.",
     "intro": "Relevance AI is a no-code builder for AI agents and multi-agent 'workforces', metered in actions plus model credits. n8n is a workflow automation engine from Berlin with AI agent nodes, metered per workflow execution, and it can be self-hosted for free. The deciding question is whether your team wants agents as the product or workflows with AI steps inside.",
     "glance": [
-      ["Who it is for", "Ops and go-to-market teams building agents without much code", "Technical teams and IT that want automation they can host and extend"],
-      ["What you get", "Agent and tool builder, workforces, template marketplace, analytics", "Visual workflow builder, 400+ integrations, AI agent nodes, code nodes, self-host option"],
-      ["Price", "Free $0; Pro $19 per month annual or $29 monthly; Team $234 annual or $349 monthly; Enterprise custom", "Cloud Starter €20, Pro €50 per month; Business €667 per month billed annually; Enterprise custom. Community edition free to self-host"],
-      ["Free plan or trial", "Free plan with 200 actions a month", "Free cloud trial, no card; no permanent free cloud plan. Self-hosted Community edition is free"],
-      ["EU hosting", "Choose at signup: US, EU/UK (London), AU", "Yes. Cloud data stored in Frankfurt, Germany. Self-host anywhere"],
-      ["Team features", "Pro 2 build users; Team 5 build users and 45 end users; SSO and RBAC on Enterprise", "Unlimited users on all cloud plans; SSO, SAML, LDAP and advanced RBAC on Business and up"],
-      ["Build your own agents", "Yes, that is the product", "Yes, AI agent nodes inside workflows; bring your own model keys"],
-      ["What is metered", "Actions (200 / 2,500 / 7,000 a month) plus vendor credits; top-up $80 per 1,000 actions", "Workflow executions (2,500 / 10,000 / 40,000 a month). One execution is one full run no matter how many steps"]
+      [
+        "Who it is for",
+        "Ops and go-to-market teams building agents without much code",
+        "Technical teams and IT that want automation they can host and extend"
+      ],
+      [
+        "What you get",
+        "Agent and tool builder, workforces, template marketplace, analytics",
+        "Visual workflow builder, 400+ integrations, AI agent nodes, code nodes, self-host option"
+      ],
+      [
+        "Price",
+        "Free $0; Pro $19 per month annual or $29 monthly; Team $234 annual or $349 monthly; Enterprise custom",
+        "Cloud Starter €20, Pro €50 per month; Business €667 per month billed annually; Enterprise custom. Community edition free to self-host"
+      ],
+      [
+        "Free plan or trial",
+        "Free plan with 200 actions a month",
+        "Free cloud trial, no card; no permanent free cloud plan. Self-hosted Community edition is free"
+      ],
+      [
+        "EU hosting",
+        "Choose at signup: US, EU/UK (London), AU",
+        "Yes. Cloud data stored in Frankfurt, Germany. Self-host anywhere"
+      ],
+      [
+        "Team features",
+        "Pro 2 build users; Team 5 build users and 45 end users; SSO and RBAC on Enterprise",
+        "Unlimited users on all cloud plans; SSO, SAML, LDAP and advanced RBAC on Business and up"
+      ],
+      [
+        "Build your own agents",
+        "Yes, that is the product",
+        "Yes, AI agent nodes inside workflows; bring your own model keys"
+      ],
+      [
+        "What is metered",
+        "Actions (200 / 2,500 / 7,000 a month) plus vendor credits; top-up $80 per 1,000 actions",
+        "Workflow executions (2,500 / 10,000 / 40,000 a month). One execution is one full run no matter how many steps"
+      ]
     ],
     "pickA": {
       "heading": "Pick Relevance AI if…",
@@ -53,20 +93,35 @@
         "Credits only when a task runs. Free: 250 credits per seat per month, no card. Paid seats €25, €75 or €200 per month.",
         "EU hosting available, stated per coworker. Built by Serviceplan Group with NMKR, Munich."
       ],
-      "links": ["/compare/sokosumi-vs-relevance-ai", "/compare/sokosumi-vs-n8n"]
+      "links": [
+        "/compare/sokosumi-vs-relevance-ai",
+        "/compare/sokosumi-vs-n8n"
+      ]
     },
     "faq": [
-      ["How does n8n count an execution?", "One execution is one complete run of a workflow, no matter how many steps it has. Starter includes 2,500 a month, Pro 10,000, Business 40,000. If you go over, workflows keep running and overage may be charged."],
-      ["What are Relevance AI actions and vendor credits?", "Actions count what an agent does. Vendor credits pay for the model behind it. Free has 200 actions; Pro 2,500 plus $20 in credits; Team 7,000 plus $70. Top-ups cost $80 per 1,000 actions."],
-      ["Which one keeps data in the EU?", "n8n Cloud stores data in Frankfurt, Germany, and n8n GmbH is a Berlin company. Relevance AI's EU/UK region is in London, which is not in the EU."],
-      ["Is there an option with no building at all?", "Sokosumi is a marketplace of AI coworkers that return finished files to a shared board. Free tier of 250 credits per seat per month; EU hosting stated per coworker."]
+      [
+        "How does n8n count an execution?",
+        "One execution is one complete run of a workflow, no matter how many steps it has. Starter includes 2,500 a month, Pro 10,000, Business 40,000. If you go over, workflows keep running and overage may be charged."
+      ],
+      [
+        "What are Relevance AI actions and vendor credits?",
+        "Actions count what an agent does. Vendor credits pay for the model behind it. Free has 200 actions; Pro 2,500 plus $20 in credits; Team 7,000 plus $70. Top-ups cost $80 per 1,000 actions."
+      ],
+      [
+        "Which one keeps data in the EU?",
+        "n8n Cloud stores data in Frankfurt, Germany, and n8n GmbH is a Berlin company. Relevance AI's EU/UK region is in London, which is not in the EU."
+      ],
+      [
+        "Is there an option with no building at all?",
+        "Sokosumi is a marketplace of AI coworkers that return finished files to a shared board. Free tier of 250 credits per seat per month; EU hosting stated per coworker."
+      ]
     ]
   },
   "de": {
     "title": "Relevance AI oder n8n: Agent-Workforce-Builder oder Workflow-Engine?",
     "metaTitle": "Relevance AI vs n8n (2026): Preise, Actions, EU-Hosting",
     "description": "Relevance AI und n8n im Vergleich: was beide bauen, wie Nutzung gezählt wird, veröffentlichte Preise, EU-Hosting und Grenzen. Stand August 2026.",
-    "intro": "Relevance AI ist ein No-Code-Builder für AI Agents und Multi-Agent-'Workforces', gemessen in Actions plus Modell-Credits. n8n ist eine Workflow-Automation-Engine aus Berlin mit AI-Agent-Knoten, gemessen pro Workflow-Ausführung und kostenlos selbst betreibbar. Entscheidend ist, ob Ihr Team Agents als Produkt will oder Workflows mit KI-Schritten darin.",
+    "intro": "Relevance AI ist ein No-Code-Builder für KI-Agents und Multi-Agent-'Workforces', gemessen in Actions plus Modell-Credits. n8n ist eine Workflow-Automation-Engine aus Berlin mit KI-Agent-Knoten, gemessen pro Workflow-Ausführung und kostenlos selbst betreibbar. Entscheidend ist, ob Ihr Team Agents als Produkt will oder Workflows mit KI-Schritten darin.",
     "glance": [
       [
         "Für wen es passt",
@@ -76,7 +131,7 @@
       [
         "Was Sie bekommen",
         "Agent- und Tool-Builder, Workforces, Vorlagen-Marktplatz, Analytics",
-        "Visueller Workflow-Builder, 400+ Integrationen, AI-Agent-Knoten, Code-Knoten, Self-Host-Option"
+        "Visueller Workflow-Builder, 400+ Integrationen, KI-Agent-Knoten, Code-Knoten, Self-Host-Option"
       ],
       [
         "Preis",
@@ -101,7 +156,7 @@
       [
         "Eigene Agents bauen",
         "Ja, das ist das Produkt",
-        "Ja, AI-Agent-Knoten in Workflows; eigene Modell-Keys mitbringen"
+        "Ja, KI-Agent-Knoten in Workflows; eigene Modell-Keys mitbringen"
       ],
       [
         "Was gezählt wird",
@@ -138,7 +193,7 @@
     "verdict": "n8n gewinnt für ein technisches Team, besonders wenn Daten in der EU bleiben müssen oder flache Preise pro Lauf gewünscht sind. Relevance AI gewinnt für ein nicht-technisches Team, das Agents aus Vorlagen bauen und kostenlos starten will. Beide sind Builder: Jemand in Ihrem Team muss entwerfen, testen und warten, was läuft.",
     "bridge": {
       "heading": "Wenn Sie Arbeit erledigt haben wollen, keinen Workflow warten",
-      "text": "Beide Tools geben einem Builder eine Leinwand. Jemand muss den Agent entwerfen, Tools verbinden und reparieren, wenn etwas bricht. Wenn das Team eigentlich einen Wettbewerbsbericht, einen Kampagnenplan oder das Montags-PDF zur Performance braucht, ist das ein anderes Produkt: ein Coworker, den Sie briefen, ein Task-Board fürs Team, am Ende eine Datei. Sokosumi ist ein Marktplatz für benannte AI-Coworker für Marketingteams, jeweils mit Rolle, Beispielarbeit und einem benannten Anbieter, der Modelle und Hosting ausweist.",
+      "text": "Beide Tools geben einem Builder eine Leinwand. Jemand muss den Agent entwerfen, Tools verbinden und reparieren, wenn etwas bricht. Wenn das Team eigentlich einen Wettbewerbsbericht, einen Kampagnenplan oder das Montags-PDF zur Performance braucht, ist das ein anderes Produkt: ein Coworker, den Sie briefen, ein Task-Board fürs Team, am Ende eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Coworker für Marketingteams, jeweils mit Rolle, Beispielarbeit und einem benannten Anbieter, der Modelle und Hosting ausweist.",
       "points": [
         "Briefen Sie in klarer Sprache oder per @Mention in einem Kanal; die Aufgabe erscheint auf einem gemeinsamen Task-Board und endet mit einer fertigen Datei.",
         "Credits nur, wenn eine Aufgabe läuft. Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25, €75 oder €200 pro Monat.",
@@ -164,7 +219,7 @@
       ],
       [
         "Gibt es eine Option ganz ohne Bauen?",
-        "Sokosumi ist ein Marktplatz für AI-Coworker, die fertige Dateien auf ein gemeinsames Task-Board liefern. Free-Plan mit 250 Credits pro Seat und Monat; EU-Hosting je Coworker ausgewiesen."
+        "Sokosumi ist ein Marktplatz für KI-Coworker, die fertige Dateien auf ein gemeinsames Task-Board liefern. Free-Plan mit 250 Credits pro Seat und Monat; EU-Hosting je Coworker ausgewiesen."
       ]
     ]
   },

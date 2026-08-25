@@ -180,7 +180,19 @@ async function render(query) {
 function url(site, q) {
   const params = new URLSearchParams();
   for (const [k, v] of Object.entries(q)) if (v != null && v !== "") params.set(k, String(v).slice(0, 200));
-  return `${site}/og.png?${params.toString()}`;
+  const key = Buffer.from(params.toString()).toString("base64url");
+  return `${site}/og/${key}.png`;
+}
+// /og/<base64url(query)>.png → query object. Scrapers treat a path that
+// ends in .png with no query string most reliably.
+function parsePath(urlPath) {
+  const m = urlPath.match(/^\/og\/([A-Za-z0-9_-]+)\.png$/);
+  if (!m) return null;
+  try {
+    return Object.fromEntries(new URLSearchParams(Buffer.from(m[1], "base64url").toString("utf8")));
+  } catch {
+    return null;
+  }
 }
 
-module.exports = { render, url, W, H };
+module.exports = { render, url, parsePath, W, H };

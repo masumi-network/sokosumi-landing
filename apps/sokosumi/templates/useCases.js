@@ -453,8 +453,8 @@ async function industry(ctx) {
     : "";
   return (
     pageStart({
-      title: cc ? cc.metaTitle : t("{name} use cases | Sokosumi", { name: ind.name }),
-      description: cc ? cc.metaDesc : (ind.description || t("How {name} teams put AI coworkers to work on Sokosumi.", { name: ind.name })).slice(0, 155),
+      title: cc ? t(cc.metaTitle) : t("{name} use cases | Sokosumi", { name: ind.name }),
+      description: cc ? t(cc.metaDesc) : (ind.description || t("How {name} teams put AI coworkers to work on Sokosumi.", { name: ind.name })).slice(0, 155),
       path: `/use-cases/industries/${ind.slug}`,
       breadcrumb: cr,
       jsonld: cc ? blocks.faqJsonLd(cc.faq.map(([q, a]) => ({ question: q, answer: a }))) : undefined,
@@ -716,7 +716,7 @@ async function detail(ctx) {
   return (
     pageStart({
       title: t("{title} | Sokosumi use cases", { title: doc.title }),
-      description: (doc.description || "").slice(0, 155),
+      description: shell.describe(doc.description, t("A Sokosumi use case: which coworker does it, what you brief, what comes back as a file.")),
       path: `/use-cases/${doc.slug}`,
       og: { type: "article", eyebrow: t("Use case"), title: doc.title, sub: doc.description || "" },
       breadcrumb: cr,

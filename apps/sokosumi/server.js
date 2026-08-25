@@ -1059,9 +1059,11 @@ const assetsDir = path.join(root, "assets");
 
         // Generated share images: everything comes from the query string so
         // the CDN caches one PNG per page. See lib/og.js.
-        if (urlPath === "/og.png") {
+        if (urlPath === "/og.png" || urlPath.startsWith("/og/")) {
           try {
-            const png = await og.render(Object.fromEntries(new URLSearchParams(rawQuery || "")));
+            const q = urlPath === "/og.png" ? Object.fromEntries(new URLSearchParams(rawQuery || "")) : og.parsePath(urlPath);
+            if (!q) return send(req, res, 404, { "Content-Type": "text/plain" }, "not found");
+            const png = await og.render(q);
             return send(req, res, 200, { "Content-Type": "image/png", "Cache-Control": "public, max-age=86400, s-maxage=604800, stale-while-revalidate=2592000" }, png);
           } catch (e) {
             console.error("[og]", e.message);

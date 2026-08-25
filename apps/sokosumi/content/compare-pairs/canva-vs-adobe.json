@@ -1,22 +1,62 @@
 {
   "slug": "canva-vs-adobe",
-  "a": { "key": "canva", "name": "Canva AI", "url": "https://www.canva.com/magic-studio/" },
-  "b": { "key": "adobe", "name": "Adobe GenStudio", "url": "https://business.adobe.com/products/genstudio.html" },
+  "a": {
+    "key": "canva",
+    "name": "Canva AI",
+    "url": "https://www.canva.com/magic-studio/"
+  },
+  "b": {
+    "key": "adobe",
+    "name": "Adobe GenStudio",
+    "url": "https://business.adobe.com/products/genstudio.html"
+  },
   "checked": "2026-08-26",
   "en": {
     "title": "Canva AI or Adobe GenStudio: which one for producing marketing content?",
-    "metaTitle": "Canva AI vs Adobe GenStudio (2026): prices, credits, EU hosting, who it fits",
+    "metaTitle": "Canva AI vs Adobe GenStudio (2026): prices, credits",
     "description": "Canva AI (Magic Studio) and Adobe GenStudio compared on price, AI credits, brand control, EU data residency and real limits. Facts checked August 2026.",
     "intro": "Canva AI is Magic Studio inside Canva: text, image, video and design generation for anyone, priced per seat with monthly AI credits. Adobe GenStudio is an enterprise content supply chain: GenStudio for Performance Marketing, Firefly models, brand checks and, since April 2026, a Marketing Agent inside Copilot, ChatGPT Enterprise and Gemini Enterprise. One you buy on a card; the other you buy through a sales team. The deciding question is team size and how strict your brand governance must be.",
     "glance": [
-      ["Who it is for", "Small and mid-size marketing teams and non-designers producing daily content", "Large enterprises with brand, legal and performance teams and an Adobe stack"],
-      ["What you get", "Magic Write, Magic Design, Dream Lab images, Magic Charts, text-to-video, Canva Code, Canva Sheets, brand kits", "GenStudio for Performance Marketing (briefs to on-brand ads and emails), Content Production Agent (beta), Firefly, brand compliance checks, insights via Experience Platform, Marketing Agent in third-party assistants"],
-      ["Price per person", "Free $0 (50 AI credits); Pro $18 per month or $144 per year (500 credits); Business $25 per seat monthly or $250 per year; Enterprise custom (third-party tracker, 15 Jul 2026, verify; canva.com blocks fetching)", "Not published. Enterprise quotes; press cites credit-based entitlements"],
-      ["Free plan or trial", "Free plan, no card, no time limit", "No free plan; demo through sales"],
-      ["EU hosting", "Enterprise only: US or EU data residency setting; Teams and Business data processed globally including the US", "Experience Platform hosted in several Azure and one AWS region; Switzerland hosting from early 2026; EU region confirmed per contract, not published for GenStudio specifically"],
-      ["Team features", "Brand kits, templates, approvals and admin on Business and Enterprise", "Roles for brand, legal, marketing; approval workflows; brand guideline enforcement; activation to ad platforms"],
-      ["AI metering", "Monthly credits: Pro up to 2,000 standard, 200 premium, 20 ultra; AI Pass add-on $100 per person per month for more (third-party, verify)", "Credit-based entitlement per contract; not published"],
-      ["Agent output", "No autonomous agents; you drive each generation", "Content Production Agent turns a brief into channel variants (beta); Marketing Agent answers inside Copilot, ChatGPT Enterprise, Gemini Enterprise; Coworker tier announced, 'coming months' from April 2026"]
+      [
+        "Who it is for",
+        "Small and mid-size marketing teams and non-designers producing daily content",
+        "Large enterprises with brand, legal and performance teams and an Adobe stack"
+      ],
+      [
+        "What you get",
+        "Magic Write, Magic Design, Dream Lab images, Magic Charts, text-to-video, Canva Code, Canva Sheets, brand kits",
+        "GenStudio for Performance Marketing (briefs to on-brand ads and emails), Content Production Agent (beta), Firefly, brand compliance checks, insights via Experience Platform, Marketing Agent in third-party assistants"
+      ],
+      [
+        "Price per person",
+        "Free $0 (50 AI credits); Pro $18 per month or $144 per year (500 credits); Business $25 per seat monthly or $250 per year; Enterprise custom (third-party tracker, 15 Jul 2026, verify; canva.com blocks fetching)",
+        "Not published. Enterprise quotes; press cites credit-based entitlements"
+      ],
+      [
+        "Free plan or trial",
+        "Free plan, no card, no time limit",
+        "No free plan; demo through sales"
+      ],
+      [
+        "EU hosting",
+        "Enterprise only: US or EU data residency setting; Teams and Business data processed globally including the US",
+        "Experience Platform hosted in several Azure and one AWS region; Switzerland hosting from early 2026; EU region confirmed per contract, not published for GenStudio specifically"
+      ],
+      [
+        "Team features",
+        "Brand kits, templates, approvals and admin on Business and Enterprise",
+        "Roles for brand, legal, marketing; approval workflows; brand guideline enforcement; activation to ad platforms"
+      ],
+      [
+        "AI metering",
+        "Monthly credits: Pro up to 2,000 standard, 200 premium, 20 ultra; AI Pass add-on $100 per person per month for more (third-party, verify)",
+        "Credit-based entitlement per contract; not published"
+      ],
+      [
+        "Agent output",
+        "No autonomous agents; you drive each generation",
+        "Content Production Agent turns a brief into channel variants (beta); Marketing Agent answers inside Copilot, ChatGPT Enterprise, Gemini Enterprise; Coworker tier announced, 'coming months' from April 2026"
+      ]
     ],
     "pickA": {
       "heading": "Pick Canva AI if…",
@@ -53,20 +93,35 @@
         "Credits only when a task runs. Free: 250 credits per seat per month, no card. Paid seats €25 / €75 / €200 per month; Enterprise custom. EU hosting stated per coworker.",
         "52 coworkers and agents from 7 vendors, 5,300+ tasks run. Built by Serviceplan Group with NMKR, Munich."
       ],
-      "links": ["/compare/sokosumi-vs-canva-ai", "/compare/sokosumi-vs-adobe-genstudio"]
+      "links": [
+        "/compare/sokosumi-vs-canva-ai",
+        "/compare/sokosumi-vs-adobe-genstudio"
+      ]
     },
     "faq": [
-      ["How much does Adobe GenStudio cost?", "Adobe does not publish a price. It is sold as an enterprise contract with credit-based entitlements; review sites list pricing as 'contact vendor'. Firefly consumer plans are separate and start around $10 a month."],
-      ["What are Canva AI credits?", "Each AI action costs credits by tier: standard (Magic Write), premium (Dream Lab images, Magic Design) and ultra (conversational design, text-to-video). Pro includes up to 2,000 standard, 200 premium and 20 ultra credits a month; the AI Pass add-on multiplies that for $100 a person (third-party figures)."],
-      ["Which one keeps data in the EU?", "Canva: only on Enterprise, with a US or EU residency setting; Business data is processed globally. Adobe: Experience Platform has EU and Swiss hosting options, confirmed per contract. Get both in writing."],
-      ["Where does Sokosumi fit?", "Upstream of both. It is a marketplace of specialist marketing coworkers that return research, strategy and planning files to a team board. The finished brief then goes to Canva or GenStudio for production."]
+      [
+        "How much does Adobe GenStudio cost?",
+        "Adobe does not publish a price. It is sold as an enterprise contract with credit-based entitlements; review sites list pricing as 'contact vendor'. Firefly consumer plans are separate and start around $10 a month."
+      ],
+      [
+        "What are Canva AI credits?",
+        "Each AI action costs credits by tier: standard (Magic Write), premium (Dream Lab images, Magic Design) and ultra (conversational design, text-to-video). Pro includes up to 2,000 standard, 200 premium and 20 ultra credits a month; the AI Pass add-on multiplies that for $100 a person (third-party figures)."
+      ],
+      [
+        "Which one keeps data in the EU?",
+        "Canva: only on Enterprise, with a US or EU residency setting; Business data is processed globally. Adobe: Experience Platform has EU and Swiss hosting options, confirmed per contract. Get both in writing."
+      ],
+      [
+        "Where does Sokosumi fit?",
+        "Upstream of both. It is a marketplace of specialist marketing coworkers that return research, strategy and planning files to a team board. The finished brief then goes to Canva or GenStudio for production."
+      ]
     ]
   },
   "de": {
     "title": "Canva AI oder Adobe GenStudio: womit produziert ein Marketingteam Inhalte?",
-    "metaTitle": "Canva AI vs Adobe GenStudio (2026): Preise, Credits, EU-Hosting",
-    "description": "Canva AI (Magic Studio) und Adobe GenStudio im Vergleich: Preis, AI Credits, Markenkontrolle, EU-Datenresidenz und Grenzen. Stand August 2026.",
-    "intro": "Canva AI ist Magic Studio in Canva: Text-, Bild-, Video- und Designgenerierung für alle, bezahlt pro Seat mit monatlichen AI Credits. Adobe GenStudio ist eine Enterprise-Content-Supply-Chain: GenStudio for Performance Marketing, Firefly-Modelle, Markenprüfungen und seit April 2026 ein Marketing Agent in Copilot, ChatGPT Enterprise und Gemini Enterprise. Das eine kaufen Sie mit Kreditkarte; das andere über Sales. Entscheidend sind Teamgröße und Strenge Ihrer Markensteuerung.",
+    "metaTitle": "Canva AI vs Adobe GenStudio (2026): Preise, Credits",
+    "description": "Canva AI (Magic Studio) und Adobe GenStudio im Vergleich: Preis, KI-Credits, Markenkontrolle, EU-Datenresidenz und Grenzen. Stand August 2026.",
+    "intro": "Canva AI ist Magic Studio in Canva: Text-, Bild-, Video- und Designgenerierung für alle, bezahlt pro Seat mit monatlichen KI-Credits. Adobe GenStudio ist eine Enterprise-Content-Supply-Chain: GenStudio for Performance Marketing, Firefly-Modelle, Markenprüfungen und seit April 2026 ein Marketing Agent in Copilot, ChatGPT Enterprise und Gemini Enterprise. Das eine kaufen Sie mit Kreditkarte; das andere über Sales. Entscheidend sind Teamgröße und Strenge Ihrer Markensteuerung.",
     "glance": [
       [
         "Für wen es passt",
@@ -80,7 +135,7 @@
       ],
       [
         "Preis pro Person",
-        "Free $0 (50 AI Credits); Pro $18 pro Monat oder $144 pro Jahr (500 Credits); Business $25 pro Seat monatlich oder $250 pro Jahr; Enterprise individuell (Drittanbieter-Tracker, 15 Jul 2026, prüfen; canva.com blockiert Abrufe)",
+        "Free $0 (50 KI-Credits); Pro $18 pro Monat oder $144 pro Jahr (500 Credits); Business $25 pro Seat monatlich oder $250 pro Jahr; Enterprise individuell (Drittanbieter-Tracker, 15 Jul 2026, prüfen; canva.com blockiert Abrufe)",
         "Nicht veröffentlicht. Enterprise-Angebote; Presse nennt Credit-basierte Ansprüche"
       ],
       [
@@ -138,7 +193,7 @@
     "verdict": "Für ein kleines oder mittleres Team ist Canva AI die praktische Wahl: günstig, sofort nutzbar, gut genug für tägliche Inhalte, mit EU-Residenz nur auf Enterprise. Für große Unternehmen mit Brand- und Legal-Gates und Adobe-Stack ist GenStudio dafür gebaut, zu einem Preis, den nur Sales nennt. Keines recherchiert oder plant; beide erstellen Assets.",
     "bridge": {
       "heading": "Wenn Sie Briefing und Bericht brauchen, nicht nur das Asset",
-      "text": "Canva und GenStudio erstellen Assets, sobald Strategie, Recherche und Briefing vorliegen. Diese Vorarbeit ist ein anderes Produkt: ein Coworker, den Sie briefen, ein Task-Board fürs Team, am Ende eine Datei. Sokosumi ist ein Marktplatz für benannte AI-Coworker für Marketingteams, jeweils mit öffentlichem Profil, Beispielarbeit, benanntem Anbieter und genanntem Hosting. Der Output, ein Recherche-PDF, ein Kreativbriefing, ein Kampagnenplan, geht danach in Canva oder GenStudio in die Produktion.",
+      "text": "Canva und GenStudio erstellen Assets, sobald Strategie, Recherche und Briefing vorliegen. Diese Vorarbeit ist ein anderes Produkt: ein Coworker, den Sie briefen, ein Task-Board fürs Team, am Ende eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Coworker für Marketingteams, jeweils mit öffentlichem Profil, Beispielarbeit, benanntem Anbieter und genanntem Hosting. Der Output, ein Recherche-PDF, ein Kreativbriefing, ein Kampagnenplan, geht danach in Canva oder GenStudio in die Produktion.",
       "points": [
         "Briefen Sie in klarer Sprache oder per @Mention in einem Kanal; die Aufgabe erscheint auf einem gemeinsamen Task-Board und endet als PDF-Bericht, Deck, Spreadsheet oder Dashboard. Geplante Aufgaben inklusive.",
         "Credits nur, wenn eine Aufgabe läuft. Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25 / €75 / €200 pro Monat; Enterprise individuell. EU-Hosting je Coworker ausgewiesen.",
@@ -155,7 +210,7 @@
         "Adobe veröffentlicht keinen Preis. GenStudio wird als Enterprise-Vertrag mit Credit-basierten Ansprüchen verkauft; Review-Seiten listen 'contact vendor'. Firefly-Consumer-Pläne sind separat und starten bei etwa $10 pro Monat."
       ],
       [
-        "Was sind Canva AI Credits?",
+        "Was sind Canva KI-Credits?",
         "Jede KI-Aktion kostet Credits nach Stufe: Standard (Magic Write), Premium (Dream Lab Bilder, Magic Design) und Ultra (konversationelles Design, Text-zu-Video). Pro enthält bis zu 2,000 Standard-, 200 Premium- und 20 Ultra-Credits pro Monat; der AI Pass vervielfacht das für $100 pro Person (Drittanbieter-Zahlen)."
       ],
       [

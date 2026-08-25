@@ -13,7 +13,7 @@
   "checked": "2026-08-26",
   "en": {
     "title": "Viktor or Sintra: an AI employee in Slack versus a bundle of AI helpers",
-    "metaTitle": "Viktor vs Sintra (2026): credits, prices, what each does, hosting, limits",
+    "metaTitle": "Viktor vs Sintra (2026): credits, prices, what each does",
     "description": "Viktor (AI employee in Slack and Teams) vs Sintra (12 named helpers): credits, prices, outputs, hosting and real limits. Checked August 2026.",
     "intro": "Viktor is an AI employee you @mention in Slack or Teams; it connects to 3,200+ tools and returns reports, spreadsheets, PDFs and dashboards. Sintra is a bundle of 12 named chat helpers (Soshie, Penn, Cassie) for small business owners. The deciding difference: Viktor does tasks across your systems and bills the workspace by credits; Sintra drafts content in a chat and gives every plan the same 250 credits.",
     "glance": [
@@ -118,10 +118,10 @@
     ]
   },
   "de": {
-    "title": "Viktor oder Sintra: AI-Mitarbeiter in Slack oder Paket aus AI-Helfern?",
+    "title": "Viktor oder Sintra: KI-Mitarbeiter in Slack oder Paket aus KI-Helfern?",
     "metaTitle": "Viktor vs Sintra (2026): Credits, Preise, Aufgaben, Hosting",
-    "description": "Viktor, AI-Mitarbeiter in Slack und Teams, vs Sintra mit 12 benannten Helfern: Credits, Preise, Outputs, Hosting und Grenzen. Stand August 2026.",
-    "intro": "Viktor ist ein AI-Mitarbeiter, den Sie in Slack oder Teams per @Mention briefen; er verbindet sich mit 3,200+ Tools und liefert Berichte, Spreadsheets, PDFs und Dashboards. Sintra ist ein Paket aus 12 benannten Chat-Helfern (Soshie, Penn, Cassie) für kleine Unternehmer. Unterschied: Viktor erledigt Aufgaben über Ihre Systeme und berechnet den Workspace per Credits; Sintra entwirft Inhalte im Chat und gibt jedem Plan dieselben 250 Credits.",
+    "description": "Viktor, KI-Mitarbeiter in Slack und Teams, vs Sintra mit 12 benannten Helfern: Credits, Preise, Outputs, Hosting und Grenzen. Stand August 2026.",
+    "intro": "Viktor ist ein KI-Mitarbeiter, den Sie in Slack oder Teams per @Mention briefen; er verbindet sich mit 3,200+ Tools und liefert Berichte, Spreadsheets, PDFs und Dashboards. Sintra ist ein Paket aus 12 benannten Chat-Helfern (Soshie, Penn, Cassie) für kleine Unternehmer. Unterschied: Viktor erledigt Aufgaben über Ihre Systeme und berechnet den Workspace per Credits; Sintra entwirft Inhalte im Chat und gibt jedem Plan dieselben 250 Credits.",
     "glance": [
       [
         "Für wen es passt",
@@ -193,7 +193,7 @@
     "verdict": "Die beiden liegen auf verschiedenen Ebenen. Viktor ist ein arbeitender Assistent für ein Team mit echten Systemen; Sintra ist ein Chatpaket für Solo-Owner. Wenn Sie Ausgabedateien und Aktionen über Tools brauchen, Viktor; wenn Sie günstige Entwürfe wollen und mit Credit-Zähler leben, Sintra. Keines bietet EU-Hosting im Standardplan.",
     "bridge": {
       "heading": "Wenn Sie Arbeit erledigt haben wollen, kein Chatfenster",
-      "text": "Beide Tools geben einer Person einen Assistenten zum Instruieren. Wenn das Team eigentlich einen Wettbewerbsbericht, einen Kampagnenplan oder das Montags-PDF zur Performance braucht, ist das ein anderes Produkt: ein Coworker, den Sie briefen, ein Task-Board fürs Team, am Ende eine Datei. Sokosumi ist ein Marktplatz für benannte AI-Coworker für Marketingteams, gebaut von Serviceplan Group mit NMKR in München.",
+      "text": "Beide Tools geben einer Person einen Assistenten zum Instruieren. Wenn das Team eigentlich einen Wettbewerbsbericht, einen Kampagnenplan oder das Montags-PDF zur Performance braucht, ist das ein anderes Produkt: ein Coworker, den Sie briefen, ein Task-Board fürs Team, am Ende eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Coworker für Marketingteams, gebaut von Serviceplan Group mit NMKR in München.",
       "points": [
         "52 Coworker und Agents von 7 Anbietern; jedes Profil nennt Anbieter, Modelle und Hosting, mit verfügbarem EU-Hosting.",
         "Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25, €75 oder €200 pro Monat; Credits werden nur verbraucht, wenn eine Aufgabe läuft.",

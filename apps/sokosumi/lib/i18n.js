@@ -110,6 +110,74 @@ function localizeHtml(html) {
 // ── the German dictionary ────────────────────────────────────────────────
 // Keys are the exact English strings the templates use.
 const DE = {
+  "Guides for marketing teams on Sokosumi: set up a workspace, write a briefing that works, run and schedule AI coworkers, use the files that come back.":
+    "Guides für Marketingteams auf Sokosumi: Workspace einrichten, ein Briefing schreiben, das funktioniert, AI Coworker starten und planen, die Dateien nutzen.",
+  "What is the difference between ChatGPT, Claude, Copilot, Langdock and Sokosumi? One page per tool: who it is for, what you get back, what you pay for.":
+    "Was ist der Unterschied zwischen ChatGPT, Claude, Copilot, Langdock und Sokosumi? Eine Seite pro Tool: für wen es ist, was Sie zurückbekommen, was Sie zahlen.",
+  "AI coworkers for SaaS teams: the Monday competitor memo, AI-answer visibility next to rankings, and a launch content kit from one brief.":
+    "AI Coworker für SaaS-Teams: das Wettbewerber-Memo am Montag, Sichtbarkeit in KI-Antworten neben den Rankings und ein Launch-Content-Kit aus einem Briefing.",
+  "AI coworkers for travel and hospitality: seasonal campaign plans before the booking window, a weekly read of guest sentiment, demand signals turned into plans.":
+    "AI Coworker für Reise und Gastgewerbe: Saisonkampagnen-Pläne vor dem Buchungsfenster, eine wöchentliche Auswertung der Gäste-Stimmung, Nachfragesignale als Pläne.",
+  "AI for agencies: AI coworkers for agency teams | Sokosumi":
+    "KI für Agenturen: AI Coworker für Agenturteams | Sokosumi",
+  "AI coworkers for agencies: pitch research from public sources, competitive sets per client, and production at retainer scale.":
+    "AI Coworker für Agenturen: Pitch-Recherche aus öffentlichen Quellen, Wettbewerbs-Sets pro Kunde und Produktion im Retainer-Maßstab.",
+  "AI for e-commerce marketing | Sokosumi":
+    "KI für E-Commerce-Marketing | Sokosumi",
+  "AI coworkers for e-commerce and retail: weekly competitor pricing memos, a written read of your customers, and seasonal campaign plans before the peak.":
+    "AI Coworker für E-Commerce und Handel: wöchentliche Preis-Memos zu Wettbewerbern, eine schriftliche Auswertung Ihrer Kunden und Saisonkampagnen-Pläne vor der Hochphase.",
+  "AI for financial services marketing | Sokosumi":
+    "KI für Marketing in der Finanzbranche | Sokosumi",
+  "AI coworkers for financial services: sourced market briefings on a schedule, run history on every task, and EU hosting stated up front.":
+    "AI Coworker für Finanzdienstleister: Marktbriefings mit Quellen nach Zeitplan, Verlauf zu jeder Aufgabe und EU-Hosting vorab benannt.",
+  "AI for media & publishing teams | Sokosumi":
+    "KI für Medien- und Verlagsteams | Sokosumi",
+  "AI coworkers for media and publishing: launch coverage drafts from one brief, search and AI-answer visibility measured, editors keep approval.":
+    "AI Coworker für Medien und Verlage: Entwürfe zur Launch-Berichterstattung aus einem Briefing, Sichtbarkeit in Suche und KI-Antworten gemessen, die Redaktion behält die Freigabe.",
+  "AI for SaaS marketing teams | Sokosumi":
+    "KI für SaaS-Marketingteams | Sokosumi",
+  "AI for travel & hospitality marketing | Sokosumi":
+    "KI für Marketing in Reise und Gastgewerbe | Sokosumi",
+  "Brief {name} in plain language; the task shows on a shared board and comes back as a file. Credit price shown first.":
+    "Briefen Sie {name} in einfacher Sprache; die Aufgabe erscheint auf dem gemeinsamen Board und kommt als Datei zurück. Credit-Preis vorab sichtbar.",
+  "AI agents and coworkers for marketing teams: {n} named specialists with a role, a vendor and a credit price you see first. Brief one; get a file back.":
+    "KI-Agenten und Coworker für Marketingteams: {n} benannte Spezialisten mit Rolle, Anbieter und Credit-Preis vorab. Briefen, Datei zurückbekommen.",
+  "A template task by {name} on Sokosumi: brief it in plain language, follow it on the board, get the file back.":
+    "Eine Vorlage von {name} auf Sokosumi: in einfacher Sprache briefen, auf dem Board verfolgen, Datei zurückbekommen.",
+  "{name} vs Sokosumi for marketing teams: {desc}":
+    "{name} vs. Sokosumi für Marketingteams: {desc}",
+  "Who each one fits, what you get back and what you pay, in seven rows.":
+    "Für wen sich welches Tool eignet, was Sie zurückbekommen und was Sie zahlen, in sieben Zeilen.",
+  "A Sokosumi guide for marketing teams: what to do, in which order, with examples.":
+    "Ein Sokosumi-Guide für Marketingteams: was zu tun ist, in welcher Reihenfolge, mit Beispielen.",
+  "Guides for marketing teams on Sokosumi: setting up a workspace, writing a briefing that works, running and scheduling AI coworkers, and what to do with the files that come back.":
+    "Guides für Marketingteams auf Sokosumi: Workspace einrichten, ein Briefing schreiben, das funktioniert, AI Coworker starten und planen, die Dateien nutzen.",
+  "A Sokosumi use case: which coworker does it, what you brief, what comes back as a file.":
+    "Ein Sokosumi-Anwendungsfall: welcher Coworker es erledigt, was Sie briefen, was als Datei zurückkommt.",
+  "Chapters":
+    "Kapitel",
+  "Overview":
+    "Überblick",
+  "Previous chapter":
+    "Vorheriges Kapitel",
+  "Next chapter":
+    "Nächstes Kapitel",
+  "Serviceplan Group's AI product for marketing teams":
+    "Das KI-Produkt der Serviceplan Group für Marketingteams",
+  "What the House of Communication learned about AI, as a product you can use on Monday":
+    "Was das House of Communication über KI gelernt hat, als Produkt, das Sie am Montag nutzen können",
+  "Sokosumi is the marketplace of named AI coworkers built by Serviceplan Group with NMKR. You brief a coworker like a colleague; the task shows on a shared board and comes back as a file: a PDF, a deck, a spreadsheet or a dashboard.":
+    "Sokosumi ist der Marktplatz für benannte AI Coworker, entwickelt von der Serviceplan Group mit NMKR. Sie briefen einen Coworker wie einen Kollegen; die Aufgabe erscheint auf einem gemeinsamen Board und kommt als Datei zurück: PDF, Präsentation, Tabelle oder Dashboard.",
+  "See how it works":
+    "So funktioniert es",
+  "Reviewed {date}":
+    "Geprüft am {date}",
+  "Sources linked in the text":
+    "Quellen im Text verlinkt",
+  "The chapters":
+    "Die Kapitel",
+  "Serviceplan Group and AI":
+    "Serviceplan Group und KI",
   "General AI assistants":
     "Allgemeine KI-Assistenten",
   "The chat tools most teams already pay for. Good at answering; the work still lands on your desk.":
@@ -288,7 +356,7 @@ const DE = {
   "About Sokosumi":
     "Über Sokosumi",
   "Sokosumi is a marketplace where marketing teams hire AI coworkers and AI agents. Built by Serviceplan Group with NMKR, based in Munich. Facts, pricing and contact.":
-    "Sokosumi ist ein Marktplatz, auf dem Marketingteams AI Coworker und AI Agents beauftragen. Entwickelt von der Serviceplan Group gemeinsam mit NMKR, mit Sitz in München. Fakten, Preise und Kontakt.",
+    "Sokosumi ist der Marktplatz, auf dem Marketingteams AI Coworker und Agents beauftragen. Von der Serviceplan Group mit NMKR, München. Fakten, Preise und Kontakt.",
   "Sokosumi is a marketplace where marketing teams hire AI coworkers and AI agents. You brief a coworker in plain language; it returns finished files.":
     "Sokosumi ist ein Marktplatz, auf dem Marketingteams AI Coworker und AI Agents beauftragen. Sie briefen einen Coworker in normaler Sprache; er liefert fertige Dateien.",
   "Every coworker on the marketplace has a name, a role and a public profile, and is built and operated by a named vendor. Work lands on a shared task board, and the result is a finished file: a report, a document, a deck, a spreadsheet or a live dashboard.":
@@ -1146,7 +1214,7 @@ const DE = {
   "Brief a coworker today and see what comes back.":
     "Briefen Sie noch heute einen Coworker und sehen Sie, was zurückkommt.",
   "Brief a named AI coworker, follow the work on a shared board, and get finished files back. See how Sokosumi actually works.":
-    "Briefen Sie einen benannten AI Coworker, verfolgen Sie die Arbeit auf einem gemeinsamen Board und bekommen Sie fertige Dateien zurück. Sehen Sie, wie Sokosumi wirklich funktioniert.",
+    "Einen benannten AI Coworker briefen, die Arbeit auf einem gemeinsamen Board verfolgen und fertige Dateien zurückbekommen. So funktioniert Sokosumi wirklich.",
   "Brief coworkers, track tasks, collect files":
     "Coworker briefen, Tasks verfolgen, Dateien einsammeln",
   "Named specialists, a board your whole team can see, and finished files at the end of the job.":
@@ -1468,7 +1536,7 @@ const HOME_DE = [
   ],
   [
     "Hire AI coworkers and run template marketing tasks on Sokosumi. A marketplace for marketing work that arrives as a file. Built by Serviceplan Group.",
-    "Stellen Sie AI Coworker ein und starten Sie Template-Marketing-Tasks auf Sokosumi. Ein Marktplatz für Marketingarbeit, die als Datei ankommt. Entwickelt von der Serviceplan Group.",
+    "AI Coworker für Ihr Marketingteam: briefen, Datei zurückbekommen. Sokosumi ist der Marktplatz für Marketingarbeit, die als Datei ankommt. Von der Serviceplan Group.",
   ],
   ['<meta property="og:url" content="https://www.sokosumi.com/" />', '<meta property="og:url" content="https://www.sokosumi.com/de" />'],
   ['<meta property="og:locale" content="en_US" />', '<meta property="og:locale" content="de_DE" />\n    <meta property="og:locale:alternate" content="en_US" />'],
