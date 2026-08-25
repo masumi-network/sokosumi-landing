@@ -992,15 +992,15 @@ const SURFACES = [
 // tooling (API keys, OAuth clients, listing agents) belongs on
 // /list-your-agent, and the Personal Assistant has its own section below.
 const FEATURES = [
-  ["Named coworkers", "Each one has a role, a vendor, the models it runs on, and work you can open before you spend a credit."],
-  ["Specialist agents and template tasks", "Single-purpose agents and ready-to-run tasks, each with its credit price shown before you start."],
-  ["Brief in plain language", "Give a coworker a task in the app or mention it in a channel. It asks when it needs input from you."],
-  ["A shared board", "Every task shows who picked it up and whether it is running, waiting on you, or done."],
-  ["Files back", "Slides, reports, live dashboards. The job ends with something you can send, not a transcript."],
-  ["Projects, files and history", "Group a launch's tasks and jobs in one project, find every output in one library, and search one timeline."],
-  ["Scheduled tasks", "Set a task to run once or every week. The Monday report arrives on its own."],
-  ["Works with your stack", "Connect your Google and Microsoft accounts, and any MCP client can call your coworkers."],
-  ["Built for teams", "Organizations with roles and invites, per-seat plans with monthly credits, EU hosting, and refunds when a job fails."],
+  ["users-round", "Named coworkers", "Each one has a role, a vendor, the models it runs on, and work you can open before you spend a credit."],
+  ["list-todo", "Specialist agents and template tasks", "Single-purpose agents and ready-to-run tasks, each with its credit price shown before you start."],
+  ["message-square", "Brief in plain language", "Give a coworker a task in the app or mention it in a channel. It asks when it needs input from you."],
+  ["folder-kanban", "A shared board", "Every task shows who picked it up and whether it is running, waiting on you, or done."],
+  ["file-text", "Files back", "Slides, reports, live dashboards. The job ends with something you can send, not a transcript."],
+  ["folder", "Projects, files and history", "Group a launch's tasks and jobs in one project, find every output in one library, and search one timeline."],
+  ["calendar-clock", "Scheduled tasks", "Set a task to run once or every week. The Monday report arrives on its own."],
+  ["layers", "Works with your stack", "Connect your Google and Microsoft accounts, and any MCP client can call your coworkers."],
+  ["building", "Built for teams", "Organizations with roles and invites, per-seat plans with monthly credits, EU hosting, and refunds when a job fails."],
 ];
 
 function render(opts) {
@@ -1043,8 +1043,14 @@ function render(opts) {
         <div class="pd-stage-scroll" id="pd-stage-scroll"><div class="pd-sizer" id="pd-sizer">${appChrome()}</div></div>
       </div>
     </section>
-    <section class="pd-pillars">
-      ${FEATURES.map(([h, p]) => `<article><h2>${esc(t(h))}</h2><p>${esc(t(p))}</p></article>`).join("")}
+    <section class="pd-features">
+      <div class="pd-features-head">
+        <h2>${esc(t("Features"))}</h2>
+        <p class="sub">${esc(t("What a marketing team gets, from the first brief to the finished file."))}</p>
+      </div>
+      <div class="pd-pillars">
+        ${FEATURES.map(([i, h, p], n) => `<article><span class="pd-feat-ico" aria-hidden="true">${ico(i, 22)}</span><span class="pd-feat-num">${String(n + 1).padStart(2, "0")}</span><h3>${esc(t(h))}</h3><p>${esc(t(p))}</p></article>`).join("")}
+      </div>
     </section>
     ${chapter("1.0", "home", "Start from a coworker", "The home screen is a roster. Pick someone, then talk to them or give them a task.")}
     ${chapter("2.0", "agents", "Say what you want done", "The Agents page is the catalog: a search bar, then each vendor’s coworkers and their ready-to-run tasks.")}
