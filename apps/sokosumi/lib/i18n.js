@@ -112,8 +112,6 @@ function localizeHtml(html) {
 const DE = {
   "Features":
     "Funktionen",
-  "What a marketing team gets, from the first brief to the finished file.":
-    "Was ein Marketingteam bekommt – vom ersten Briefing bis zur fertigen Datei.",
   "Specialist agents and template tasks":
     "Spezialisierte Agents und Vorlagen",
   "Single-purpose agents and ready-to-run tasks, each with its credit price shown before you start.":

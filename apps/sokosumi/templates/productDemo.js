@@ -1046,7 +1046,6 @@ function render(opts) {
     <section class="pd-features">
       <div class="pd-features-head">
         <h2>${esc(t("Features"))}</h2>
-        <p class="sub">${esc(t("What a marketing team gets, from the first brief to the finished file."))}</p>
       </div>
       <div class="pd-pillars">
         ${FEATURES.map(([i, h, p], n) => `<article><span class="pd-feat-ico" aria-hidden="true">${ico(i, 22)}</span><span class="pd-feat-num">${String(n + 1).padStart(2, "0")}</span><h3>${esc(t(h))}</h3><p>${esc(t(p))}</p></article>`).join("")}
