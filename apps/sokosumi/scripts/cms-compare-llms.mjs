@@ -593,6 +593,16 @@ function layout(p, loc) {
   ];
 }
 
+// Meta description / card text: whole sentences, at most ~155 characters.
+function summary(text) {
+  const out = [];
+  for (const sentence of text.match(/[^.!?]+[.!?]+/g) || [text]) {
+    if ((out.join(" ") + " " + sentence).trim().length > 155) break;
+    out.push(sentence.trim());
+  }
+  return out.join(" ") || text.slice(0, 155);
+}
+
 async function api(path, init = {}) {
   const res = await fetch(BASE + path, { ...init, headers: { ...H, ...(init.headers || {}) } });
   const body = await res.json().catch(() => ({}));
@@ -604,7 +614,7 @@ for (const p of PAGES) {
   const found = await api(`/api/comparisons?where[slug][equals]=${p.slug}&limit=1&depth=0&draft=true`);
   const en = {
     site: "sokosumi", slug: p.slug, competitor: p.name, competitorLogo: p.logo,
-    title: `Sokosumi vs. ${p.name}`, description: p.en.a.slice(0, 155), layout: layout(p, "en"), _status: status,
+    title: `Sokosumi vs. ${p.name}`, description: summary(p.en.a), layout: layout(p, "en"), _status: status,
   };
   let id = found.docs?.[0]?.id;
   if (id) {
@@ -620,7 +630,7 @@ for (const p of PAGES) {
   // empty English text.
   const saved = await api(`/api/comparisons/${id}?locale=en&depth=0&draft=true`);
   const de = withIds(saved.layout, layout(p, "de"));
-  await api(`/api/comparisons/${id}?locale=de`, { method: "PATCH", body: JSON.stringify({ title: `Sokosumi vs. ${p.name}`, description: p.de.a.slice(0, 155), layout: de, _status: status }) });
+  await api(`/api/comparisons/${id}?locale=de`, { method: "PATCH", body: JSON.stringify({ title: `Sokosumi vs. ${p.name}`, description: summary(p.de.a), layout: de, _status: status }) });
 }
 
 function withIds(from, to) {

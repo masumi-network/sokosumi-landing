@@ -51,7 +51,12 @@ async function index(ctx) {
   const fromCms = await cms.getComparisons({ draft: ctx.preview });
   // Product-vs-product pages only on the index; concept pages (vs hiring a
   // freelancer, …) stay reachable by URL but are not the story here.
-  const list = fromCms.filter((c) => c.competitor && !/^vs-/.test(c.slug));
+  // The tools people already have come first; the rest alphabetically.
+  const FIRST = ["sokosumi-vs-chatgpt", "sokosumi-vs-claude", "sokosumi-vs-claude-code", "sokosumi-vs-microsoft-365-copilot", "sokosumi-vs-google-gemini", "sokosumi-vs-langdock"];
+  const rank = (c) => (FIRST.includes(c.slug) ? FIRST.indexOf(c.slug) : FIRST.length);
+  const list = fromCms
+    .filter((c) => c.competitor && !/^vs-/.test(c.slug))
+    .sort((a, b) => rank(a) - rank(b) || String(a.competitor).localeCompare(String(b.competitor)));
 
   const cr = [{ label: "Home", href: "/" }, { label: "Compare" }];
   return (
