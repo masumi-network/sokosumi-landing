@@ -429,6 +429,7 @@ const supportTpl = require("./templates/support");
 const legalTpl = require("./templates/legal");
 const legacyRedirects = require("./lib/legacyRedirects");
 const listAgentTpl = require("./templates/listAgent");
+const toolsTpl = require("./templates/tools");
 
 // Public coworker slugs follow the persona name; the product's internal
 // slug lives in catalogSlug. Old internal-slug URLs 301 to the public one.
@@ -479,6 +480,9 @@ const routes = [
   { m: (s) => s.length === 2 && s[0] === "compare" && { slug: s[1] }, h: compareTpl.detail },
   { m: (s) => s.length === 1 && s[0] === "product" && {}, h: pagesTpl.productHub },
   { m: (s) => s.length === 1 && s[0] === "pricing" && {}, h: pricingTpl.render },
+  // /tools — free instant marketing tools. Not linked from nav/footer yet.
+  { m: (s) => s.length === 1 && s[0] === "tools" && {}, h: toolsTpl.index },
+  { m: (s) => s.length === 2 && s[0] === "tools" && { slug: s[1] }, h: toolsTpl.detail },
   // The entity page for Sokosumi itself lives in code so its JSON-LD is
   // generated from the same facts as the visible text (see templates/about.js).
   { m: (s) => s.length === 1 && s[0] === "about" && {}, h: aboutTpl.render },
