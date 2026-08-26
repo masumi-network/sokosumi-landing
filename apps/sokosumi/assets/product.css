@@ -765,7 +765,7 @@ body:has(.cc-banner) .product-page .pd-stage { margin-bottom: 220px; }
 .pd-pillars article { position: relative; padding: 26px 22px 30px 0; min-width: 0; border-bottom: 1px solid var(--border); }
 .pd-pillars article:nth-last-child(-n + 3) { border-bottom: 0; }
 .pd-pillars article:not(:nth-child(3n + 1)) { padding-left: 22px; border-left: 1px solid var(--border); }
-.pd-pillars .pd-feat-ico { display: inline-flex; width: 40px; height: 40px; align-items: center; justify-content: center; border: 1px solid var(--foreground); border-radius: 999px; color: var(--foreground); margin-bottom: 18px; }
+.pd-pillars .pd-feat-ico { display: inline-flex; width: 40px; height: 40px; align-items: center; justify-content: center; border: 1px solid var(--border); border-radius: 999px; color: var(--foreground); margin-bottom: 18px; }
 .pd-pillars .pd-feat-ico svg { width: 20px; height: 20px; stroke-width: 1.5; }
 .pd-pillars .pd-feat-num { position: absolute; top: 28px; right: 22px; font-size: 12px; font-variant-numeric: tabular-nums; color: var(--muted-foreground); letter-spacing: 0.04em; }
 .pd-pillars article:nth-child(3n) .pd-feat-num { right: 0; }

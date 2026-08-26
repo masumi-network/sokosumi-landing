@@ -28,6 +28,18 @@ body:has(.sp-page) {
   --sp-band-ink: var(--card);
   --sp-font-display: var(--display);
   --sp-font-body: var(--sans);
+  /* One type ladder for the whole dossier. Four body steps and four heading
+     steps — nothing else. A surface that wants "slightly smaller" picks the
+     step below, it does not invent 12.5px. */
+  --sp-xs: 12px;      /* uppercase eyebrows, numbers, table heads */
+  --sp-sm: 14px;      /* captions, meta, secondary copy */
+  --sp-md: 16px;      /* body, card headings, data tables */
+  --sp-lg: 18px;      /* sub-heads, lead-ins */
+  --sp-lead: clamp(16px, 1.6vw, 19px);
+  --sp-h3: clamp(20px, 2.2vw, 26px);
+  --sp-h2: clamp(28px, 3.5vw, 44px);
+  --sp-h1-chapter: clamp(36px, 4.4vw, 60px);
+  --sp-h1: clamp(38px, 6vw, 76px);
   --space-3xs: 4px;
   --space-2xs: 8px;
   --space-xs: 12px;
@@ -60,7 +72,7 @@ body:has(.sp-page) {
 .sp-page .eyebrow {
   display: block;
   color: var(--sp-quiet);
-  font-size: 12px;
+  font-size: var(--sp-xs);
   font-weight: 500;
   letter-spacing: 0.055em;
   margin-bottom: var(--space-sm);
@@ -96,7 +108,7 @@ body:has(.sp-page) {
 .sp-hero-logo b {
   align-items: center;
   display: flex;
-  font-size: 18px;
+  font-size: var(--sp-lg);
   font-weight: 500;
   height: 28px;
   justify-content: center;
@@ -118,7 +130,7 @@ body:has(.sp-page) {
 
 .sp-hero h1 {
   font-family: var(--sp-font-display);
-  font-size: clamp(38px, 6vw, 76px);
+  font-size: var(--sp-h1);
   font-weight: 300;
   letter-spacing: -0.045em;
   line-height: 0.99;
@@ -130,7 +142,7 @@ body:has(.sp-page) {
 
 .sp-hero-copy > p {
   color: var(--sp-quiet);
-  font-size: clamp(16px, 1.6vw, 19px);
+  font-size: var(--sp-lead);
   line-height: 1.6;
   margin-top: var(--space-md);
   max-width: 58ch;
@@ -142,7 +154,7 @@ body:has(.sp-page) {
   color: var(--sp-quiet);
   display: flex;
   flex-wrap: wrap;
-  font-size: 12px;
+  font-size: var(--sp-xs);
   gap: var(--space-2xs) var(--space-md);
   margin-top: var(--space-lg);
   padding-top: var(--space-sm);
@@ -170,13 +182,13 @@ body:has(.sp-page) {
 .sp-system-map figcaption span,
 .sp-map-foundation span {
   color: var(--sp-quiet);
-  font-size: 11px;
+  font-size: var(--sp-xs);
   letter-spacing: 0.055em;
   text-transform: uppercase;
 }
 
 .sp-system-map figcaption strong {
-  font-size: 17px;
+  font-size: var(--sp-lg);
   font-weight: 500;
   line-height: 1.35;
 }
@@ -200,25 +212,25 @@ body:has(.sp-page) {
 
 .sp-map-node > span {
   color: var(--sp-quiet);
-  font-size: 11px;
+  font-size: var(--sp-xs);
   font-variant-numeric: tabular-nums;
   grid-row: 1 / 4;
   padding-top: var(--space-3xs);
 }
 
 .sp-map-node strong {
-  font-size: 15px;
+  font-size: var(--sp-md);
   font-weight: 600;
 }
 
 .sp-map-node small {
   color: var(--sp-quiet);
-  font-size: 12.5px;
+  font-size: var(--sp-sm);
   line-height: 1.4;
 }
 
 .sp-map-node em {
-  font-size: 11px;
+  font-size: var(--sp-xs);
   font-style: normal;
   line-height: 1.4;
 }
@@ -239,7 +251,7 @@ body:has(.sp-page) {
 }
 
 .sp-map-foundation strong {
-  font-size: 15px;
+  font-size: var(--sp-md);
   font-weight: 500;
 }
 
@@ -253,7 +265,7 @@ body:has(.sp-page) {
 .sp-proof-label {
   color: var(--sp-quiet);
   display: block;
-  font-size: 11px;
+  font-size: var(--sp-xs);
   font-weight: 500;
   letter-spacing: 0.055em;
   margin-bottom: var(--space-sm);
@@ -276,12 +288,12 @@ body:has(.sp-page) {
 
 .sp-hero-proof dt {
   color: var(--sp-quiet);
-  font-size: 11px;
+  font-size: var(--sp-xs);
   margin-bottom: 4px;
 }
 
 .sp-hero-proof dd {
-  font-size: 13px;
+  font-size: var(--sp-sm);
   font-weight: 500;
 }
 
@@ -299,7 +311,7 @@ body:has(.sp-page) {
 .sp-hero-proof li a {
   align-items: baseline;
   display: grid;
-  font-size: 12.5px;
+  font-size: var(--sp-sm);
   gap: var(--space-xs);
   grid-template-columns: 18px minmax(0, 1fr);
   line-height: 1.45;
@@ -309,7 +321,7 @@ body:has(.sp-page) {
 .sp-hero-proof li a::before {
   color: var(--sp-quiet);
   content: counter(proof, decimal-leading-zero);
-  font-size: 10px;
+  font-size: var(--sp-xs);
 }
 
 .sp-hero-proof li a:hover {
@@ -342,7 +354,7 @@ body:has(.sp-page) {
 .sp-evidence h2,
 .sp-bridge h2 {
   font-family: var(--sp-font-display);
-  font-size: clamp(28px, 3.5vw, 44px);
+  font-size: var(--sp-h2);
   font-weight: 300;
   letter-spacing: -0.035em;
   line-height: 1.08;
@@ -350,7 +362,7 @@ body:has(.sp-page) {
 }
 
 .sp-page .prose {
-  font-size: clamp(16px, 1.35vw, 18px);
+  font-size: var(--sp-md);
   line-height: 1.78;
   max-width: 68ch;
 }
@@ -394,14 +406,14 @@ body:has(.sp-page) {
 }
 
 .sp-page .blk-stats .value {
-  font-size: clamp(30px, 4vw, 48px);
+  font-size: var(--sp-h2);
   font-weight: 300;
   letter-spacing: -0.04em;
 }
 
 .sp-page .blk-stats .label {
   color: var(--sp-quiet);
-  font-size: 12.5px;
+  font-size: var(--sp-sm);
   line-height: 1.45;
   margin-top: var(--space-2xs);
 }
@@ -421,7 +433,7 @@ body:has(.sp-page) {
 }
 
 .sp-page .blk-grid .card h3 {
-  font-size: 16px;
+  font-size: var(--sp-md);
   font-weight: 500;
   line-height: 1.35;
 }
@@ -429,7 +441,7 @@ body:has(.sp-page) {
 
 .sp-page .blk-grid .card p {
   color: var(--sp-quiet);
-  font-size: 14px;
+  font-size: var(--sp-sm);
   line-height: 1.65;
   margin-top: var(--space-2xs);
 }
@@ -449,19 +461,19 @@ body:has(.sp-page) {
 
 .sp-page .blk-steps .num {
   color: var(--sp-quiet);
-  font-size: 11px;
+  font-size: var(--sp-xs);
   grid-row: 1 / 3;
   padding-top: 4px;
 }
 
 .sp-page .blk-steps h3 {
-  font-size: 16px;
+  font-size: var(--sp-md);
   font-weight: 500;
 }
 
 .sp-page .blk-steps p {
   color: var(--sp-quiet);
-  font-size: 14px;
+  font-size: var(--sp-sm);
   line-height: 1.65;
 }
 
@@ -496,7 +508,7 @@ body:has(.sp-page) {
   align-items: center;
   cursor: pointer;
   display: flex;
-  font-size: 13px;
+  font-size: var(--sp-sm);
   font-weight: 500;
   justify-content: space-between;
   min-height: 56px;
@@ -535,7 +547,7 @@ body:has(.sp-page) {
 .sp-index-group > span {
   color: var(--sp-quiet);
   display: block;
-  font-size: 10.5px;
+  font-size: var(--sp-xs);
   font-weight: 500;
   letter-spacing: 0.055em;
   margin-bottom: var(--space-2xs);
@@ -547,7 +559,7 @@ body:has(.sp-page) {
 .sp-index-group a {
   border-left: 1px solid var(--sp-rule);
   color: var(--sp-quiet);
-  font-size: 12.5px;
+  font-size: var(--sp-sm);
   line-height: 1.45;
   overflow: hidden;
   padding: var(--space-2xs) 0 var(--space-2xs) var(--space-xs);
@@ -603,7 +615,7 @@ body:has(.sp-page) {
 
 .sp-section-intro > p {
   color: var(--sp-quiet);
-  font-size: 16px;
+  font-size: var(--sp-md);
   line-height: 1.65;
   max-width: 54ch;
 }
@@ -630,20 +642,20 @@ body:has(.sp-page) {
 
 .sp-group-index {
   color: var(--sp-quiet);
-  font-size: 11px;
+  font-size: var(--sp-xs);
   font-variant-numeric: tabular-nums;
   padding-top: var(--space-3xs);
 }
 
 .sp-group-head h3 {
-  font-size: clamp(21px, 2.4vw, 28px);
+  font-size: var(--sp-h3);
   font-weight: 400;
   letter-spacing: -0.025em;
 }
 
 .sp-group-head p {
   color: var(--sp-quiet);
-  font-size: 13.5px;
+  font-size: var(--sp-sm);
   line-height: 1.6;
   margin-top: var(--space-2xs);
   max-width: 44ch;
@@ -665,7 +677,7 @@ body:has(.sp-page) {
 .sp-chapter-num {
   color: var(--sp-quiet);
   display: none;
-  font-size: 10.5px;
+  font-size: var(--sp-xs);
   font-variant-numeric: tabular-nums;
   grid-column: 1;
   grid-row: 1;
@@ -693,7 +705,7 @@ body:has(.sp-page) {
   border: 0;
   border-radius: 0;
   display: flex;
-  font-size: 13px;
+  font-size: var(--sp-sm);
   font-weight: 500;
   height: 24px;
   justify-content: center;
@@ -725,14 +737,14 @@ body:has(.sp-page) {
 
 .sp-chapter-kicker {
   color: var(--sp-quiet);
-  font-size: 10.5px;
+  font-size: var(--sp-xs);
   letter-spacing: 0.035em;
   line-height: 1.35;
   text-transform: uppercase;
 }
 
 .sp-chapter-title {
-  font-size: clamp(16px, 1.6vw, 19px);
+  font-size: var(--sp-lead);
   font-weight: 500;
   letter-spacing: -0.015em;
   line-height: 1.35;
@@ -741,7 +753,7 @@ body:has(.sp-page) {
 .sp-chapter-desc {
   color: var(--sp-quiet);
   display: -webkit-box;
-  font-size: 13px;
+  font-size: var(--sp-sm);
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
   line-height: 1.55;
@@ -775,7 +787,7 @@ body:has(.sp-page) {
 
 .sp-evidence header p {
   color: var(--sp-quiet);
-  font-size: 13.5px;
+  font-size: var(--sp-sm);
   line-height: 1.6;
   margin-top: var(--space-sm);
   max-width: 54ch;
@@ -796,7 +808,7 @@ body:has(.sp-page) {
 
 .sp-evidence li > span {
   color: var(--sp-quiet);
-  font-size: 10.5px;
+  font-size: var(--sp-xs);
 }
 
 .sp-evidence li a {
@@ -807,13 +819,13 @@ body:has(.sp-page) {
 }
 
 .sp-evidence li strong {
-  font-size: 13px;
+  font-size: var(--sp-sm);
   font-weight: 500;
 }
 
 .sp-evidence li small {
   color: var(--sp-quiet);
-  font-size: 11px;
+  font-size: var(--sp-xs);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -842,13 +854,13 @@ body:has(.sp-page) {
 
 .sp-pn > span {
   color: var(--sp-quiet);
-  font-size: 11px;
+  font-size: var(--sp-xs);
   letter-spacing: 0.05em;
   text-transform: uppercase;
 }
 
 .sp-pn strong {
-  font-size: 17px;
+  font-size: var(--sp-lg);
   font-weight: 400;
   line-height: 1.4;
   max-width: 32ch;
@@ -880,7 +892,7 @@ a.sp-pn:hover strong {
 
 .sp-bridge p {
   color: var(--sp-band-ink);
-  font-size: 16px;
+  font-size: var(--sp-md);
   line-height: 1.65;
   margin-top: var(--space-sm);
   max-width: 58ch;
@@ -904,7 +916,7 @@ a.sp-pn:hover strong {
   align-items: center;
   color: var(--sp-band-ink);
   display: inline-flex;
-  font-size: 13px;
+  font-size: var(--sp-sm);
   gap: var(--space-2xs);
   opacity: 0.68;
 }
@@ -1020,7 +1032,7 @@ a.sp-pn:hover strong {
   }
 
   .sp-hero-chapter h1 {
-    font-size: clamp(44px, 5vw, 68px);
+    font-size: var(--sp-h1-chapter);
   }
 
   .sp-reading-layout {
@@ -1164,7 +1176,7 @@ a.sp-pn:hover strong {
 
 .sp-stats-source {
   color: var(--sp-quiet);
-  font-size: 12.5px;
+  font-size: var(--sp-sm);
   margin: calc(-1 * var(--space-lg)) 0 var(--space-xl);
 }
 
@@ -1219,13 +1231,13 @@ a.sp-pn:hover strong {
 
 .sp-fig figcaption span {
   color: var(--sp-quiet);
-  font-size: 11px;
+  font-size: var(--sp-xs);
   letter-spacing: 0.055em;
   text-transform: uppercase;
 }
 
 .sp-fig figcaption strong {
-  font-size: clamp(18px, 2vw, 22px);
+  font-size: var(--sp-h3);
   font-weight: 500;
   letter-spacing: -0.015em;
   line-height: 1.3;
@@ -1235,7 +1247,7 @@ a.sp-pn:hover strong {
 
 .sp-fig-note {
   color: var(--sp-quiet);
-  font-size: 13px;
+  font-size: var(--sp-sm);
   line-height: 1.5;
   max-width: 64ch;
 }
@@ -1265,21 +1277,21 @@ a.sp-pn:hover strong {
 
 .sp-flow-num {
   color: var(--sp-quiet);
-  font-size: 11px;
+  font-size: var(--sp-xs);
   font-variant-numeric: tabular-nums;
   grid-row: 1 / 4;
   padding-top: 3px;
 }
 
 .sp-flow strong {
-  font-size: 15px;
+  font-size: var(--sp-md);
   font-weight: 600;
   line-height: 1.3;
 }
 
 .sp-flow em {
   color: var(--sp-accent);
-  font-size: 11.5px;
+  font-size: var(--sp-xs);
   font-style: normal;
   font-weight: 500;
   letter-spacing: 0.02em;
@@ -1287,7 +1299,7 @@ a.sp-pn:hover strong {
 
 .sp-flow small {
   color: var(--sp-quiet);
-  font-size: 13px;
+  font-size: var(--sp-sm);
   line-height: 1.5;
 }
 
@@ -1313,7 +1325,7 @@ a.sp-pn:hover strong {
 
 .sp-flow-owners small {
   color: var(--sp-quiet);
-  font-size: 11.5px;
+  font-size: var(--sp-xs);
 }
 
 /* stack */
@@ -1335,28 +1347,28 @@ a.sp-pn:hover strong {
 
 .sp-stack-layer > span {
   color: var(--sp-quiet);
-  font-size: 11px;
+  font-size: var(--sp-xs);
   font-variant-numeric: tabular-nums;
   padding-top: 3px;
 }
 
 .sp-stack-layer strong {
   display: block;
-  font-size: 15px;
+  font-size: var(--sp-md);
   font-weight: 600;
 }
 
 .sp-stack-layer small {
   color: var(--sp-quiet);
   display: block;
-  font-size: 13px;
+  font-size: var(--sp-sm);
   line-height: 1.5;
   margin-top: 2px;
 }
 
 .sp-stack-layer em {
   color: var(--sp-quiet);
-  font-size: 11.5px;
+  font-size: var(--sp-xs);
   font-style: normal;
   grid-column: 2;
 }
@@ -1377,18 +1389,18 @@ a.sp-pn:hover strong {
 }
 
 .sp-stack-foundation span {
-  font-size: 11px;
+  font-size: var(--sp-xs);
   letter-spacing: 0.055em;
   text-transform: uppercase;
 }
 
 .sp-stack-foundation strong {
-  font-size: 15px;
+  font-size: var(--sp-md);
   font-weight: 500;
 }
 
 .sp-stack-foundation small {
-  font-size: 12.5px;
+  font-size: var(--sp-sm);
 }
 
 /* matrix + ledger */
@@ -1399,7 +1411,7 @@ a.sp-pn:hover strong {
 
 .sp-matrix {
   border-collapse: collapse;
-  font-size: 13.5px;
+  font-size: var(--sp-md);
   line-height: 1.45;
   min-width: 560px;
   width: 100%;
@@ -1416,7 +1428,7 @@ a.sp-pn:hover strong {
 .sp-matrix thead th {
   border-bottom: 1px solid var(--sp-ink);
   color: var(--sp-quiet);
-  font-size: 11px;
+  font-size: var(--sp-xs);
   font-weight: 500;
   letter-spacing: 0.055em;
   padding-top: 0;
@@ -1431,7 +1443,7 @@ a.sp-pn:hover strong {
 .sp-matrix tbody th small {
   color: var(--sp-quiet);
   display: block;
-  font-size: 11.5px;
+  font-size: var(--sp-xs);
   font-weight: 400;
   margin-top: 2px;
 }
@@ -1503,14 +1515,14 @@ a.sp-pn:hover strong {
 
 .sp-chips-label strong {
   display: block;
-  font-size: 15px;
+  font-size: var(--sp-md);
   font-weight: 600;
 }
 
 .sp-chips-label small {
   color: var(--sp-quiet);
   display: block;
-  font-size: 12.5px;
+  font-size: var(--sp-sm);
   line-height: 1.45;
   margin-top: 2px;
 }
@@ -1532,7 +1544,7 @@ a.sp-pn:hover strong {
 .sp-chips li {
   border: 1px solid var(--sp-rule);
   border-radius: 999px;
-  font-size: 12.5px;
+  font-size: var(--sp-sm);
   font-weight: 500;
   padding: 4px 11px;
   white-space: nowrap;
@@ -1591,7 +1603,7 @@ a.sp-pn:hover strong {
 
 .sp-tl-year {
   color: var(--sp-ink);
-  font-size: 22px;
+  font-size: var(--sp-lg);
   font-weight: 300;
   grid-column: 1 / -1;
   letter-spacing: -0.03em;
@@ -1601,7 +1613,7 @@ a.sp-pn:hover strong {
 
 .sp-timeline time {
   color: var(--sp-quiet);
-  font-size: 11.5px;
+  font-size: var(--sp-xs);
   font-variant-numeric: tabular-nums;
   padding-top: 3px;
   white-space: nowrap;
@@ -1615,20 +1627,20 @@ a.sp-pn:hover strong {
 }
 
 .sp-timeline strong {
-  font-size: 15px;
+  font-size: var(--sp-md);
   font-weight: 600;
   line-height: 1.3;
 }
 
 .sp-timeline small {
   color: var(--sp-quiet);
-  font-size: 13px;
+  font-size: var(--sp-sm);
   line-height: 1.5;
 }
 
 .sp-timeline a {
   color: var(--sp-ink);
-  font-size: 12px;
+  font-size: var(--sp-xs);
   text-decoration: underline;
   text-decoration-color: var(--sp-rule);
   text-underline-offset: 3px;
@@ -1662,14 +1674,14 @@ a.sp-pn:hover strong {
 .sp-net-center-t {
   fill: var(--sp-band-ink);
   font-family: var(--sp-font-body);
-  font-size: 14px;
+  font-size: var(--sp-sm);
   font-weight: 500;
 }
 
 .sp-net-center-s {
   fill: var(--sp-band-ink);
   font-family: var(--sp-font-body);
-  font-size: 10.5px;
+  font-size: var(--sp-xs);
   opacity: 0.65;
 }
 
@@ -1682,14 +1694,14 @@ a.sp-pn:hover strong {
 .sp-net-t {
   fill: var(--sp-ink);
   font-family: var(--sp-font-body);
-  font-size: 13px;
+  font-size: var(--sp-sm);
   font-weight: 600;
 }
 
 .sp-net-s {
   fill: var(--sp-quiet);
   font-family: var(--sp-font-body);
-  font-size: 10.5px;
+  font-size: var(--sp-xs);
 }
 
 .sp-net-list {
@@ -1708,13 +1720,13 @@ a.sp-pn:hover strong {
 }
 
 .sp-net-list strong {
-  font-size: 14px;
+  font-size: var(--sp-sm);
   font-weight: 600;
 }
 
 .sp-net-list small {
   color: var(--sp-quiet);
-  font-size: 12.5px;
+  font-size: var(--sp-sm);
 }
 
 /* screenshots + photo */
@@ -1737,7 +1749,7 @@ a.sp-pn:hover strong {
 .sp-shot p {
   color: var(--sp-quiet);
   display: grid;
-  font-size: 13px;
+  font-size: var(--sp-sm);
   gap: var(--space-xs);
   grid-template-columns: 24px minmax(0, 1fr);
   line-height: 1.5;
@@ -1746,7 +1758,7 @@ a.sp-pn:hover strong {
 
 .sp-shot p span {
   color: var(--sp-ink);
-  font-size: 11px;
+  font-size: var(--sp-xs);
   font-variant-numeric: tabular-nums;
   padding-top: 3px;
 }
@@ -1767,7 +1779,7 @@ a.sp-pn:hover strong {
 
 .sp-photo p {
   color: var(--sp-quiet);
-  font-size: 12.5px;
+  font-size: var(--sp-sm);
   line-height: 1.5;
   margin-top: var(--space-xs);
   padding-top: var(--space-2xs);
@@ -1966,14 +1978,14 @@ a.sp-pn:hover strong {
 }
 
 .sp-related strong {
-  font-size: 14.5px;
+  font-size: var(--sp-sm);
   font-weight: 500;
   line-height: 1.3;
 }
 
 .sp-related small {
   color: var(--sp-quiet);
-  font-size: 12px;
+  font-size: var(--sp-xs);
 }
 
 .sp-pn strong .sp-glyph {
@@ -2102,7 +2114,7 @@ a.sp-pn:hover strong {
   color: var(--sp-quiet);
   display: flex;
   flex-wrap: wrap;
-  font-size: 12.5px;
+  font-size: var(--sp-sm);
   gap: var(--space-2xs) var(--space-sm);
   justify-content: space-between;
   line-height: 1.5;
@@ -2136,7 +2148,7 @@ a.sp-pn:hover strong {
 }
 
 .sp-fig figcaption strong {
-  font-size: clamp(20px, 2.2vw, 26px);
+  font-size: var(--sp-h3);
   font-weight: 300;
   letter-spacing: -0.02em;
 }
@@ -2350,7 +2362,7 @@ a.sp-pn:hover strong {
   }
 
   .sp-hero-chapter h1 {
-    font-size: clamp(38px, 4vw, 56px);
+    font-size: var(--sp-h1-chapter);
     hyphens: manual;
     max-width: 18ch;
     overflow-wrap: normal;
@@ -2388,3 +2400,8 @@ a.sp-pn:hover strong {
 .sp-hero-logo:not(.sp-logo-count-2):not(.sp-logo-count-3):not(:has(> .sp-glyph)) { width: auto; padding: 0; background: none; border: 0; height: auto; }
 .sp-hero-logo:not(.sp-logo-count-2):not(.sp-logo-count-3) > img { width: auto; max-width: 260px; height: 25px; object-position: left center; }
 .sp-chapter-logo:not(.sp-logo-count-2):not(.sp-logo-count-3) > img { width: auto; max-width: 200px; height: 20px; object-position: left center; }
+
+@media (max-width: 40rem) {
+  .sp-matrix-logos tbody th { min-width: 150px; }
+  .sp-matrix-logos tbody th img { max-width: 170px; height: 24px; min-width: 0; }
+}

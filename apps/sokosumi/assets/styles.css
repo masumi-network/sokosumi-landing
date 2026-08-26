@@ -213,7 +213,7 @@ main.page { min-height: 60vh; }
 .cap-grid { display: grid; gap: 22px 28px; grid-template-columns: 1fr; }
 @media (min-width: 680px) { .cap-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (min-width: 1020px) { .cap-grid { grid-template-columns: repeat(3, 1fr); } }
-.cap-col { border-top: 1px solid var(--foreground); padding-top: 14px; display: flex; flex-direction: column; align-items: flex-start; }
+.cap-col { border-top: 1px solid var(--border); padding-top: 14px; display: flex; flex-direction: column; align-items: flex-start; }
 .cap-label {
   font-size: 11.5px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase;
   color: var(--muted-foreground); margin-bottom: 8px;
@@ -326,7 +326,7 @@ main.page { min-height: 60vh; }
 
 .uc-steps { list-style: none; display: grid; gap: 14px; grid-template-columns: 1fr; counter-reset: none; }
 @media (min-width: 800px) { .uc-steps { grid-template-columns: repeat(3, 1fr); gap: 28px; } }
-.uc-steps li { display: flex; flex-direction: column; gap: 7px; padding-top: 16px; border-top: 1px solid var(--foreground); }
+.uc-steps li { display: flex; flex-direction: column; gap: 7px; padding-top: 16px; border-top: 1px solid var(--border); }
 .uc-steps .n { font-size: 12px; letter-spacing: 0.08em; color: var(--muted-foreground); font-variant-numeric: tabular-nums; }
 .uc-steps strong { font-size: 16px; font-weight: 500; letter-spacing: -0.01em; }
 .uc-steps li > span:last-child { font-size: 14px; line-height: 1.55; color: var(--muted-foreground); }
@@ -389,7 +389,7 @@ main.page { min-height: 60vh; }
   display: grid; grid-template-columns: minmax(56px, 92px) minmax(0, 1fr);
   gap: 10px clamp(20px, 4vw, 48px);
   padding: clamp(26px, 4vw, 42px) 0;
-  border-top: 1px solid var(--foreground);
+  border-top: 1px solid var(--border);
 }
 .ch-num {
   font-weight: 300; font-size: clamp(28px, 3.4vw, 44px); line-height: 1;
@@ -428,13 +428,19 @@ main.page { min-height: 60vh; }
 @media (max-width: 720px) { .vendor-list .row-item { grid-template-columns: minmax(0, 1fr) auto; } }
 
 /* ===== quiet index rows (lists: guides, vendors, releases…) ===== */
-.row-list { border-top: 1px solid var(--border); }
+/* No rule of its own: the section already opens with one, and a second line
+   100px under the heading reads as clutter. The rows carry their own
+   separators and the last one drops its rule (below). */
+.row-list { border-top: 0; }
 
 /* Long lists collapse to their first 12 rows. Every row stays in the HTML —
    the rest are hidden with CSS, not withheld from the response — so crawlers
    still see all 40 specialist agents while the page stops being a 40KB wall.
    `is-collapsed` is added by site.js, so with JS off the full list renders. */
 .row-list.is-collapsed > :nth-child(n + 13) { display: none; }
+/* the list ends where the section ends: a last rule here would stack against
+   the next .page-section border-top with nothing between the two */
+.row-list > :last-child { border-bottom: 0; }
 .row-more {
   display: inline-flex; align-items: center; gap: 8px; margin-top: 18px;
   height: 40px; padding: 0 18px; border-radius: var(--r-md);
@@ -716,7 +722,7 @@ a.card:hover .go { opacity: 1; transform: none; }
 .prose a:hover { text-decoration-color: var(--foreground); }
 /* A quote in a guide is almost always an example briefing: show it as the
    thing itself — a card you could paste into the app — not as a citation. */
-.prose blockquote { margin: 1.4em 0 !important; padding: 22px 24px 22px 26px; border: 1px solid var(--border); border-left: 2px solid var(--foreground); border-radius: var(--r-lg); background: var(--card); font-size: 16.5px; line-height: 1.7; color: var(--foreground); }
+.prose blockquote { margin: 1.4em 0 !important; padding: 22px 24px 22px 26px; border: 1px solid var(--border); border-left: 2px solid var(--primary); border-radius: var(--r-lg); background: var(--card); font-size: 16.5px; line-height: 1.7; color: var(--foreground); }
 .prose blockquote::before { content: "Example"; display: block; margin-bottom: 8px; font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted-foreground); }
 html[lang="de"] .prose blockquote::before { content: "Beispiel"; }
 .prose blockquote p { color: inherit; }
@@ -745,7 +751,7 @@ html[lang="de"] .prose blockquote::before { content: "Beispiel"; }
 
 .blk-stats { display: grid; gap: 14px; grid-template-columns: repeat(2, 1fr); }
 @media (min-width: 860px) { .blk-stats { grid-template-columns: repeat(var(--n, 4), 1fr); } }
-.stat { border-top: 1px solid var(--foreground); padding-top: 14px; }
+.stat { border-top: 1px solid var(--border); padding-top: 14px; }
 .stat .value { font-weight: 300; font-size: clamp(30px, 3.6vw, 46px); letter-spacing: -0.02em; line-height: 1.05; }
 .stat .label { margin-top: 6px; font-size: 13.5px; color: var(--muted-foreground); }
 
@@ -849,12 +855,12 @@ html[lang="de"] .prose blockquote::before { content: "Beispiel"; }
 .seat-input {
   width: 92px; height: 40px; padding: 0 12px; font: inherit; font-size: 15px;
   font-variant-numeric: tabular-nums; color: var(--foreground);
-  background: var(--card); border: 1px solid rgba(15, 14, 13, 0.48); border-radius: var(--r-md);
+  background: var(--card); border: 1px solid var(--border); border-radius: var(--r-md);
 }
 .seat-unit { font-size: 14px; color: var(--muted-foreground); }
 .seat-presets { display: inline-flex; flex-wrap: wrap; gap: 8px; }
 .seat-presets .fchip { padding: 6px 12px; font-variant-numeric: tabular-nums; }
-.seat-presets .fchip:not(.active) { border-color: rgba(15, 14, 13, 0.48); color: var(--foreground); }
+.seat-presets .fchip:not(.active) { border-color: var(--border); color: var(--foreground); }
 .seat-submit { height: 40px; }
 .seat-submit[hidden] { display: none; }
 @media (max-width: 639px) { .seat-picker { gap: 10px 14px; } .seat-presets { flex-basis: 100%; } }
@@ -889,7 +895,7 @@ html[lang="de"] .prose blockquote::before { content: "Beispiel"; }
 .plan-card .btn { margin-top: 20px; width: 100%; }
 /* the outline button's hairline is 1.3:1 on white; a control's edge needs
    3:1, so the plan buttons take a firmer border (0.48 → 3.4:1) */
-.plan-card .btn-outline { border-color: rgba(15, 14, 13, 0.48); }
+.plan-card .btn-outline { border-color: var(--border); }
 .plan-card .btn-outline:hover { border-color: rgba(15, 14, 13, 0.8); }
 
 .plan-enterprise {
@@ -1291,7 +1297,7 @@ h1, h2, h3 { overflow-wrap: break-word; }
 .cmp-mark { display: inline-flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 500; letter-spacing: -0.01em; white-space: nowrap; }
 .cmp-mark img { display: block; }
 .cmp-mark-logo img, .cmp-mark-logo b { width: 24px; height: 24px; border-radius: 6px; object-fit: contain; filter: grayscale(1) contrast(1.15); }
-.cmp-mark-logo b { display: inline-flex; align-items: center; justify-content: center; border: 1px solid var(--foreground); font-weight: 500; font-size: 12px; }
+.cmp-mark-logo b { display: inline-flex; align-items: center; justify-content: center; border: 1px solid var(--border); font-weight: 500; font-size: 12px; }
 .cmp-versus-head { padding-top: clamp(36px, 5vw, 64px); }
 .cmp-versus-head + .blk-hero { padding-top: 12px; }
 .cmp-versus.is-lg { gap: 18px; margin-bottom: 0; }
@@ -1319,7 +1325,7 @@ h1, h2, h3 { overflow-wrap: break-word; }
 /* ===== tool-vs-tool pages ===== */
 .pair-hero .guide-meta { margin-top: 14px; }
 .pair-picks { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(20px, 3vw, 40px); }
-.pair-pick { border-top: 1px solid var(--foreground); padding-top: 18px; }
+.pair-pick { border-top: 1px solid var(--border); padding-top: 18px; }
 .pair-pick h3, .pair-limits-grid h3 { font-size: 18px; font-weight: 500; letter-spacing: -0.01em; margin-bottom: 12px; }
 .pair-pick ul, .pair-limits-grid ul { list-style: none; margin: 0; padding: 0; }
 .pair-pick li, .pair-limits-grid li { position: relative; padding-left: 22px; font-size: 15.5px; line-height: 1.6; color: rgba(15, 14, 13, 0.78); }
@@ -1329,7 +1335,7 @@ h1, h2, h3 { overflow-wrap: break-word; }
 .pair-limits h2, .pair-verdict h2 { font-weight: 300; font-size: clamp(24px, 2.8vw, 34px); letter-spacing: -0.02em; margin-bottom: 18px; }
 .pair-limits-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(20px, 3vw, 40px); }
 .pair-verdict-text { font-size: clamp(18px, 2vw, 22px); line-height: 1.5; max-width: 60ch; text-wrap: pretty; }
-.pair-bridge-box { border: 1px solid var(--foreground); border-radius: var(--r-lg); padding: clamp(24px, 3.5vw, 44px); background: var(--card); }
+.pair-bridge-box { border: 1px solid var(--border); border-radius: var(--r-lg); padding: clamp(24px, 3.5vw, 44px); background: var(--card); }
 .pair-bridge-box .eyebrow { display: block; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted-foreground); margin-bottom: 12px; }
 .pair-bridge-box h2 { font-weight: 300; font-size: clamp(24px, 2.8vw, 34px); letter-spacing: -0.02em; max-width: 30ch; text-wrap: balance; }
 .pair-bridge-box > p { margin-top: 14px; font-size: 16px; line-height: 1.65; max-width: 66ch; color: rgba(15, 14, 13, 0.78); }
@@ -1395,7 +1401,7 @@ h1, h2, h3 { overflow-wrap: break-word; }
 .sp-pn-label { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted-foreground); }
 .sp-pn-title { font-size: 17px; }
 a.sp-pn:hover .sp-pn-title { text-decoration: underline; text-underline-offset: 3px; }
-.sp-bridge-box { border: 1px solid var(--foreground); border-radius: var(--r-lg); padding: clamp(24px, 3.5vw, 44px); background: var(--card); }
+.sp-bridge-box { border: 1px solid var(--border); border-radius: var(--r-lg); padding: clamp(24px, 3.5vw, 44px); background: var(--card); }
 .sp-bridge-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 12px; }
 .sp-bridge-head .eyebrow { margin: 0; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted-foreground); }
 .sp-bridge-head .cmp-mark img { filter: none; border-radius: 6px; }
