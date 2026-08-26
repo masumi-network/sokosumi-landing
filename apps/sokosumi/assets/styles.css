@@ -4,10 +4,10 @@
    /assets/landing.css. Header/footer chrome lives in /assets/nav.css. */
 
 :root {
-  --background: #fafaf9;
+  --background: #f5f5f5;
   --ink: #0f0e0d;
   --card: #ffffff;
-  --muted: #f2f1f0;
+  --muted: #ebeae9;
   --foreground: #0f0e0d;
   /* 0.55 measured 4.13-4.28 against the three light surfaces — under the 4.5
      WCAG AA needs for body text, which failed the whole footer and the cookie
