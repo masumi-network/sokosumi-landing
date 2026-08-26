@@ -32,7 +32,17 @@ Category accents are the **only** chromatic color beyond purple, and only where 
 
 ## Typography
 
-**Inter**, all weights. Hierarchy comes from **size + weight together**:
+**Two families, no more.** Inter carries everything a reader reads; the platform's
+own monospace carries code. There is no third face, and no second webfont download.
+
+| Token | Resolves to | Used for |
+| --- | --- | --- |
+| `--sans` | Inter (self-hosted 300/400/500) | body, UI, labels |
+| `--display` | Inter | headlines and display copy — swap here to introduce a real display face |
+| `--mono` | `ui-monospace, SFMono-Regular, Menlo, monospace` | code blocks, DESIGN.md source, prompt quotes |
+
+Never write a raw font stack in a component — reference the token, so a future
+family change is one line. Hierarchy comes from **size + weight together**:
 
 - **Light (300)** — headlines only: hero `text-2xl md:text-3xl font-light`, section headings
   `text-xl md:text-2xl font-light`. Airy, sophisticated, never bold.

@@ -8,7 +8,7 @@ const { esc, attr, icon } = shell;
 const L = (en, de) => (i18n.locale() === "de" ? de : en);
 
 const LOGO = {
-  Serviceplan: "/assets/serviceplan-logo.png",
+  Serviceplan: "/assets/logos/serviceplan-group.svg",
   Mediaplus: "/assets/logos/mediaplus.svg",
   "Plan.Net": "/assets/logos/plan-net.svg",
   Masumi: "/assets/logos/masumi.svg",

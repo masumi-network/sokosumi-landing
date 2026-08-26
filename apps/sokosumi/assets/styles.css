@@ -27,12 +27,13 @@
   --r-md: 6px;
   --r-lg: 8px;
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  /* Two families, no more: Inter for everything a reader reads, and the
+     platform's own monospace for code. --display is the same face as --sans
+     today (different weights carry the contrast); swapping in a real display
+     face later is a one-line token change, not a per-surface edit. */
   --sans: "Inter", -apple-system, system-ui, sans-serif;
-  /* Aliases so landing.css can say "serif" without shipping a second face.
-     Both resolve to Inter — a real serif later is a token change, not a
-     per-surface edit. */
-  --serif: "Inter", -apple-system, system-ui, sans-serif;
-  --mono: "Inter", -apple-system, system-ui, sans-serif;
+  --display: "Inter", -apple-system, system-ui, sans-serif;
+  --mono: ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 * { margin: 0; box-sizing: border-box; }
 /* `clip` rather than `hidden`: it stops a full-bleed band from ever producing
@@ -1415,7 +1416,7 @@ a.sp-pn:hover .sp-pn-title { text-decoration: underline; text-underline-offset: 
 .tg-article .prose h2 { scroll-margin-top: 90px; }
 .tg-article .prose blockquote::before { content: "Prompt"; }
 html[lang="de"] .tg-article .prose blockquote::before { content: "Prompt"; }
-.tg-article .prose blockquote { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13.5px; line-height: 1.6; white-space: pre-wrap; }
+.tg-article .prose blockquote { font-family: var(--mono); font-size: 13.5px; line-height: 1.6; white-space: pre-wrap; }
 .tg-article .prose blockquote p { font-family: inherit; font-size: inherit; }
 .tg-card .tg-logo { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted-foreground); margin-bottom: 12px; }
 .tg-card .tg-logo img, .tg-card .tg-logo b { width: 28px; height: 28px; object-fit: contain; border: 1px solid var(--border); border-radius: 8px; padding: 4px; background: #fff; display: inline-flex; align-items: center; justify-content: center; font-weight: 500; color: var(--foreground); }

@@ -758,7 +758,7 @@
 .dm-tool-head .dm-overline {
   margin-bottom: 8px;
   color: var(--muted-foreground);
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-family: var(--mono);
   font-size: 11px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -818,7 +818,7 @@
 
 .dm-bar label {
   color: var(--muted-foreground);
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-family: var(--mono);
   font-size: 11px;
   letter-spacing: 0.12em;
 }
@@ -873,7 +873,7 @@
 
 .dm-try > span {
   color: var(--muted-foreground);
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-family: var(--mono);
   font-size: 11px;
   letter-spacing: 0.12em;
   margin-right: 4px;
@@ -996,7 +996,7 @@
 
 .dm-how .dm-overline {
   color: var(--muted-foreground);
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-family: var(--mono);
   font-size: 11px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -1018,7 +1018,7 @@
 .dm-how li span {
   color: var(--primary);
   display: block;
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-family: var(--mono);
   font-size: 12px;
   margin-bottom: 12px;
 }
@@ -1128,7 +1128,7 @@
   border-radius: 12px;
   color: var(--muted-foreground);
   display: grid;
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-family: var(--mono);
   font-size: 12.5px;
   gap: 4px;
   line-height: 1.5;
@@ -1276,7 +1276,7 @@
 
 .dm-analysis-head .dm-overline {
   color: var(--muted-foreground);
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-family: var(--mono);
   font-size: 11px;
   letter-spacing: 0.12em;
   margin-bottom: 4px;

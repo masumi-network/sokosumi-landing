@@ -26,7 +26,7 @@ body:has(.sp-page) {
   --sp-accent-dark: var(--primary-on-dark);
   --sp-band: var(--ink);
   --sp-band-ink: var(--card);
-  --sp-font-display: var(--sans);
+  --sp-font-display: var(--display);
   --sp-font-body: var(--sans);
   --space-3xs: 4px;
   --space-2xs: 8px;
@@ -1463,10 +1463,17 @@ a.sp-pn:hover strong {
 
 .sp-matrix-logos tbody th img {
   display: block;
-  height: 26px;
+  height: 30px;
   object-fit: contain;
   object-position: left;
-  width: 120px;
+  width: 100%;
+  max-width: 280px;
+  min-width: 190px;
+}
+
+.sp-matrix-logos tbody th {
+  min-width: 210px;
+  padding-right: var(--space-lg);
 }
 
 .sp-matrix tbody tr:last-child th,

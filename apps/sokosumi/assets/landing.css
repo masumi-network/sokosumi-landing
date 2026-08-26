@@ -4,7 +4,7 @@
    hero, Ken Burns shots, coworker intro, how-it-works tickets, shots
    carousel, trust band, org chart, and the Florian Haller quote. */
 
-.serif-accent { font-family: var(--serif); font-style: normal; font-weight: inherit; letter-spacing: inherit; }
+.serif-accent { font-family: var(--display); font-style: normal; font-weight: inherit; letter-spacing: inherit; }
 .eyebrow { font-size: 13px; font-weight: 400; letter-spacing: 0; text-transform: none; color: var(--primary); }
 
 /* ===== hero: left-aligned serif statement over a drifting product shot ===== */
@@ -154,7 +154,7 @@
 .hero-social .avatars img:first-child { margin-left: 0; }
 .hero-social .count { font-size: 13px; font-weight: 400; letter-spacing: 0; color: rgba(255, 255, 255, 0.75); }
 .hero-title {
-  font-family: var(--serif); font-weight: 300;
+  font-family: var(--display); font-weight: 300;
   font-size: clamp(2.9rem, 6.4vw, 5.6rem); line-height: 1.05; letter-spacing: -0.03em;
   max-width: 20ch; text-wrap: balance; margin: 0 0 clamp(15px, 1.2vw, 17px);
   /* carries the contrast where the video is brightest, so the scrim does
@@ -252,7 +252,7 @@ section.band-dark {
 .link-arrow { display: inline-flex; align-items: center; gap: 6px; font-size: 15px; font-weight: 500; color: var(--primary); }
 .link-arrow:hover { text-decoration: underline; }
 .section-head h2 {
-  font-family: var(--serif); font-weight: 300;
+  font-family: var(--display); font-weight: 300;
   font-size: clamp(30px, 3.5vw, 48px); line-height: 1.1; letter-spacing: -0.025em; text-wrap: balance;
 }
 .section-head p { font-size: 16.5px; line-height: 1.6; color: var(--muted-foreground); max-width: 54ch; }
@@ -314,7 +314,7 @@ section.band-dark {
 }
 .intro-person .portrait img { width: 100%; height: 100%; object-fit: cover; display: block; transform: scale(1.14); transition: transform 0.8s var(--ease); }
 .intro-person:hover .portrait img { transform: scale(1.19); }
-.intro-person h3 { font-family: var(--serif); font-size: 21px; font-weight: 400; margin: 16px 0 3px; letter-spacing: -0.01em; }
+.intro-person h3 { font-family: var(--display); font-size: 21px; font-weight: 400; margin: 16px 0 3px; letter-spacing: -0.01em; }
 .intro-person .role { font-size: 12.5px; letter-spacing: 0; color: var(--muted-foreground); }
 .intro-person .blurb {
   margin-top: 9px; font-size: 13px; line-height: 1.5; color: var(--muted-foreground);
@@ -499,7 +499,7 @@ section.band-dark {
 .trust-media:hover img { transform: scale(1.03); }
 .trust-copy { display: flex; flex-direction: column; align-items: flex-start; gap: 20px; }
 .trust-logo { height: 22px; width: auto; }
-.trust-headline { font-family: var(--serif); font-size: clamp(26px, 3vw, 38px); font-weight: 300; line-height: 1.15; letter-spacing: -0.02em; text-wrap: balance; }
+.trust-headline { font-family: var(--display); font-size: clamp(26px, 3vw, 38px); font-weight: 300; line-height: 1.15; letter-spacing: -0.02em; text-wrap: balance; }
 .trust-copy p { font-size: 16px; line-height: 1.65; max-width: 46ch; }
 
 /* ===== org chart: coworkers slot in under your real team =====
@@ -561,7 +561,7 @@ section.band-dark {
 .quote-grid { display: grid; gap: clamp(36px, 5vw, 72px); grid-template-columns: 1fr; align-items: center; }
 @media (min-width: 880px) { .quote-grid { grid-template-columns: 1.15fr 1fr; } }
 .quote-text {
-  font-family: var(--serif); font-weight: 300;
+  font-family: var(--display); font-weight: 300;
   font-size: clamp(22px, 2.6vw, 34px); line-height: 1.35; letter-spacing: -0.015em;
   text-wrap: pretty; margin: 0;
 }

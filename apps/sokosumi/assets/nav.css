@@ -142,11 +142,10 @@
   background-size: 12px 12px; background-position: -3px -3px;
 }
 /* AI Coworkers: the same drawn portraits the menu's links carry, clustered */
-.nav-visual-people { display: flex; align-items: center; justify-content: center; }
+.nav-visual-people { display: flex; align-items: center; justify-content: center; border: 0; background: var(--stage); background-origin: border-box; }
 .nav-visual-face {
   width: 54px; height: 54px; border-radius: 999px; overflow: hidden; flex-shrink: 0;
-  background: var(--muted); border: 2px solid var(--card);
-  box-shadow: 0 1px 4px rgba(15, 14, 13, 0.14);
+  background: var(--muted); border: 2px solid #fff;
 }
 .nav-visual-face + .nav-visual-face { margin-left: -12px; }
 .nav-visual-face img { width: 100%; height: 100%; object-fit: cover; display: block; }
