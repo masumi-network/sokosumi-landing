@@ -388,6 +388,11 @@
   border-bottom: 1px solid var(--border);
 }
 
+/* see "no trailing rule on a repeated list" in styles.css */
+.dm-prose-section:last-child {
+  border-bottom: 0;
+}
+
 .dm-type-row {
   display: grid;
   grid-template-columns: minmax(90px, 0.7fr) minmax(0, 1.3fr);

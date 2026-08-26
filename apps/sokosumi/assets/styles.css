@@ -441,6 +441,18 @@ main.page { min-height: 60vh; }
 /* the list ends where the section ends: a last rule here would stack against
    the next .page-section border-top with nothing between the two */
 .row-list > :last-child { border-bottom: 0; }
+
+/* ===== no trailing rule on a repeated list =====
+   Every list whose items carry a border-bottom ends level with the next
+   section's border-top, which stacks two rules with empty space between them.
+   The rule belongs *between* items, so the last one always drops it. Add new
+   item selectors here rather than re-solving this per component. */
+.faq-item:last-of-type,
+.blk-checklist li:last-child,
+.entity-list li:last-child,
+.data-grid .dg-row:last-child {
+  border-bottom: 0;
+}
 .row-more {
   display: inline-flex; align-items: center; gap: 8px; margin-top: 18px;
   height: 40px; padding: 0 18px; border-radius: var(--r-md);
@@ -1280,6 +1292,9 @@ h1, h2, h3 { overflow-wrap: break-word; }
    person and to a machine alike, which is why the facts tables use it. */
 .data-grid { margin: 0; border-top: 1px solid var(--border); }
 .data-grid .dg-row { display: grid; grid-template-columns: minmax(140px, 220px) 1fr; gap: 12px 24px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+/* The grid ends where its content ends: a closing rule here would stack
+   against the next section's border-top with empty space between the two. */
+.data-grid .dg-row:last-child { border-bottom: 0; }
 .data-grid dt { font-size: 13px; color: var(--muted-foreground); padding-top: 2px; }
 .data-grid dd { margin: 0; font-size: 15px; line-height: 1.55; text-wrap: pretty; }
 .data-grid dd a { text-decoration: underline; text-underline-offset: 3px; }
@@ -1366,8 +1381,13 @@ h1, h2, h3 { overflow-wrap: break-word; }
 .cmp-group-head .sub { color: var(--muted-foreground); max-width: 60ch; margin: 0; }
 .cmp-pairs { margin-top: 32px; }
 .cmp-pairs h3 { font-size: 13px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted-foreground); margin-bottom: 12px; }
-.pair-rows { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-top: 1px solid var(--border); }
-.pair-row { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 18px; padding: 16px 4px; border-bottom: 1px solid var(--border); text-decoration: none; color: var(--foreground); }
+/* Separator on the TOP of each item, not the bottom. In a two-column grid the
+   last DOM item is not reliably the bottom row (an odd count leaves one alone),
+   but the first row is always the first N items — so this is the only side that
+   can be cleared deterministically, and the list never ends on a rule. */
+.pair-rows { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.pair-rows > :nth-child(-n + 2) { border-top: 0; }
+.pair-row { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 18px; padding: 16px 4px; border-top: 1px solid var(--border); text-decoration: none; color: var(--foreground); }
 .pair-row .cmp-versus { margin: 0; flex-shrink: 0; }
 .pair-row .cmp-mark { font-size: 0; gap: 0; }
 .pair-row .cmp-mark-logo img, .pair-row .cmp-mark-logo b { width: 28px; height: 28px; }
@@ -1377,7 +1397,10 @@ h1, h2, h3 { overflow-wrap: break-word; }
 .pair-bridge-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 12px; }
 .pair-bridge-head .eyebrow { margin: 0; }
 .pair-bridge-head .cmp-mark img { filter: none; border-radius: 6px; }
-@media (max-width: 799px) { .cmp-group-head, .pair-rows { grid-template-columns: 1fr; } }
+@media (max-width: 799px) {
+  .cmp-group-head, .pair-rows { grid-template-columns: 1fr; }
+  .pair-rows > :nth-child(2) { border-top: 1px solid var(--border); }
+}
 
 /* Serviceplan Group and AI section */
 .sp-head { position: relative; }
