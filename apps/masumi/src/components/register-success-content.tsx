@@ -247,7 +247,7 @@ export function RegisterSuccessContent({
         {panelStack(
           <>
             {agentId ? <CopyAgentId agentId={agentId} /> : null}
-            <RegisterProgress />
+            <RegisterProgress step="processing" />
           </>,
         )}
       </div>

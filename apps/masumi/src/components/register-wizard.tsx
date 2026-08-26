@@ -759,10 +759,10 @@ export function RegisterWizard() {
                 <dt className="text-xs text-masumi-muted">Pricing</dt>
                 <dd className="mt-1 font-medium">Dynamic</dd>
               </div>
-              <div className="rounded-lg border border-masumi-border bg-masumi-surface/60 p-3 sm:col-span-2">
-                <dt className="text-xs text-masumi-muted">x402</dt>
-                <dd className="mt-1 font-medium">
-                  {watched.includeX402 ? (
+              {watched.includeX402 ? (
+                <div className="rounded-lg border border-masumi-border bg-masumi-surface/60 p-3 sm:col-span-2">
+                  <dt className="text-xs text-masumi-muted">x402</dt>
+                  <dd className="mt-1 font-medium">
                     <span className="inline-flex flex-wrap items-center gap-2">
                       {(() => {
                         const chain = getEvmChainByCaip2Id(watched.x402.network);
@@ -803,11 +803,9 @@ export function RegisterWizard() {
                         );
                       })()}
                     </span>
-                  ) : (
-                    "None"
-                  )}
-                </dd>
-              </div>
+                  </dd>
+                </div>
+              ) : null}
             </dl>
           ) : null}
         </div>

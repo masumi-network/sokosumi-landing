@@ -647,6 +647,14 @@ body {
 }
 
 .register-mint-progress-rail {
+  background: var(--masumi-border);
+}
+
+.register-mint-progress-rail--done {
+  background: var(--masumi-pink);
+}
+
+.register-mint-progress-rail--active {
   background: linear-gradient(
     to bottom,
     var(--masumi-pink) 0%,
@@ -655,13 +663,6 @@ body {
     var(--masumi-border) 100%
   );
   background-size: 100% 200%;
-}
-
-.register-mint-progress-rail--done {
-  background: var(--masumi-pink);
-}
-
-.register-mint-progress-rail--active {
   animation: register-mint-rail-flow 2.2s ease-in-out infinite;
 }
 
