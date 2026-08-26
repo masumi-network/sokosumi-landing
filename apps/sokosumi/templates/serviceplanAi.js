@@ -147,10 +147,16 @@ function extrasFor(slug, isHub, index, block) {
   return out.join("");
 }
 
+function openingFigure(slug, isHub) {
+  if (isHub) return "";
+  const fig = figures.figureFor(slug);
+  return fig && fig.after === -1 ? fig.html : "";
+}
+
 function renderArticle(layout, slug, isHub) {
   const used = new Set();
   const outline = [];
-  const html = layout
+  const html = openingFigure(slug, isHub) + layout
     .map((block, index) => {
       const heading = headingFor(block);
       let id = idFor(heading || block.blockType, index);
@@ -263,7 +269,9 @@ function contents(outline) {
 }
 
 function readingRail(list, current, outline) {
+  const chapter = list.find((item) => item.doc.slug === current);
   return `<aside class="sp-reading-rail">
+    ${figures.groupImage(chapter?.group, "sp-rail-img")}
     ${contents(outline)}
     <nav class="sp-dossier-index" aria-label="${attr(ui("Dossier chapters", "Dossier-Kapitel"))}">
       <span>${esc(ui("Dossier index", "Dossier-Index"))}</span>

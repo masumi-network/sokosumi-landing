@@ -22,7 +22,7 @@ const logo = (name, w = 110, h = 24) =>
 
 function figure(kind, caption, title, body, wide) {
   return `<figure class="sp-fig sp-fig-${kind}${wide ? " sp-fig-wide" : ""}">
-    <figcaption><span>${esc(caption)}</span><strong>${esc(title)}</strong></figcaption>
+    <figcaption><span>${esc(L("At a glance", "Auf einen Blick"))} · ${esc(caption)}</span><strong>${esc(title)}</strong></figcaption>
     ${body}
   </figure>`;
 }
@@ -179,7 +179,7 @@ function brandLayerMatrix() {
   );
 }
 
-function groupImage(id) {
+function groupImage(id, cls) {
   const map = {
     architecture: ["/assets/serviceplan-ai/architecture.jpg", L("A strategist arranging cards on a wall grid", "Ein Stratege ordnet Karten auf einem Wandraster")],
     products: ["/assets/serviceplan-ai/products.jpg", L("A marketer working from a laptop and printed briefs", "Ein Marketer arbeitet an Laptop und gedruckten Briefings")],
@@ -187,7 +187,7 @@ function groupImage(id) {
     proof: ["/assets/serviceplan-ai/proof.jpg", L("An archivist pinning documents to a board", "Ein Archivar heftet Dokumente an eine Tafel")],
   };
   const hit = map[id];
-  return hit ? `<img class="sp-group-img" src="${attr(hit[0])}" alt="${attr(hit[1])}" width="1152" height="640" loading="lazy">` : "";
+  return hit ? `<img class="${cls || "sp-group-img"}" src="${attr(hit[0])}" alt="${attr(hit[1])}" width="1152" height="640" loading="lazy">` : "";
 }
 
 // ---------------------------------------------------------------------------
@@ -195,7 +195,7 @@ function groupImage(id) {
 
 const FIGURES = {
   "house-of-ai": () => ({
-    after: 0,
+    after: -1,
     html: figure(
       "flow",
       L("The loop", "Der Kreislauf"),
@@ -210,7 +210,7 @@ const FIGURES = {
   }),
 
   "serviceplan-creative-ai": () => ({
-    after: 0,
+    after: -1,
     html: figure(
       "flow",
       L("Creative pipeline", "Kreativ-Pipeline"),
@@ -225,7 +225,7 @@ const FIGURES = {
   }),
 
   "mediaplus-ai": () => ({
-    after: 1,
+    after: -1,
     html: figure(
       "stack",
       L("Mediaplus stack", "Mediaplus-Stack"),
@@ -241,7 +241,7 @@ const FIGURES = {
   }),
 
   "plan-net-agentic-ai": () => ({
-    after: 1,
+    after: -1,
     html: figure(
       "matrix",
       L("Three expressions", "Drei Ausprägungen"),
@@ -258,7 +258,7 @@ const FIGURES = {
   }),
 
   "mediaplus-ai-products": () => ({
-    after: 0,
+    after: -1,
     html: figure(
       "chips",
       L("Product map", "Produktkarte"),
@@ -274,7 +274,7 @@ const FIGURES = {
   }),
 
   "ai-coworkers": () => ({
-    after: 0,
+    after: -1,
     html: figure(
       "shots",
       L("In the product", "Im Produkt"),
@@ -288,7 +288,7 @@ const FIGURES = {
   }),
 
   "masumi-sokosumi-kodosumi": () => ({
-    after: 0,
+    after: -1,
     html: figure(
       "flow",
       L("A task through the stack", "Ein Task durch den Stack"),
@@ -303,7 +303,7 @@ const FIGURES = {
   }),
 
   "serviceplan-generate-ai-makeline": () => ({
-    after: 0,
+    after: -1,
     html: figure(
       "flow",
       L("Content supply chain", "Content Supply Chain"),
@@ -318,7 +318,7 @@ const FIGURES = {
   }),
 
   "ai-marketing-agency": () => ({
-    after: 1,
+    after: -1,
     html: figure(
       "matrix",
       L("Delivery models compared", "Liefermodelle im Vergleich"),
@@ -336,7 +336,7 @@ const FIGURES = {
   }),
 
   "ai-search-geo": () => ({
-    after: 0,
+    after: -1,
     html: figure(
       "matrix",
       L("SEO vs GEO", "SEO vs. GEO"),
@@ -355,7 +355,7 @@ const FIGURES = {
   }),
 
   "ai-marketing-cases": () => ({
-    after: 0,
+    after: -1,
     html: figure(
       "ledger",
       L("Case ledger", "Case-Verzeichnis"),
@@ -377,7 +377,7 @@ const FIGURES = {
   }),
 
   "partnerships-and-cases": () => ({
-    after: 0,
+    after: -1,
     html: figure(
       "network",
       L("Partner map", "Partnerkarte"),
@@ -395,7 +395,7 @@ const FIGURES = {
   }),
 
   "timeline-and-sources": () => ({
-    after: 0,
+    after: -1,
     html: figure(
       "timeline",
       L("Dated record", "Datierte Chronik"),

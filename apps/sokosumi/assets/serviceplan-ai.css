@@ -68,7 +68,6 @@ body:has(.sp-page) {
 }
 
 .sp-hero {
-  border-bottom: 1px solid var(--sp-rule);
   display: grid;
   gap: clamp(var(--space-lg), 7vw, var(--space-4xl));
   padding: clamp(var(--space-lg), 6vw, var(--space-3xl)) 0 clamp(var(--space-2xl), 9vw, var(--space-5xl));
@@ -317,21 +316,13 @@ body:has(.sp-page) {
   color: var(--sp-accent);
 }
 
-.sp-hub-body {
-  border-bottom: 1px solid var(--sp-rule);
-}
 
 .sp-block {
   scroll-margin-top: 96px;
 }
 
 .sp-block > .blk {
-  border-top: 1px solid var(--sp-rule);
-  padding: clamp(var(--space-xl), 7vw, var(--space-4xl)) 0;
-}
-
-.sp-hub-body .sp-block:first-child > .blk {
-  border-top: 0;
+  padding: clamp(var(--space-lg), 5vw, var(--space-3xl)) 0;
 }
 
 .sp-page .sp-block [data-reveal] {
@@ -386,7 +377,6 @@ body:has(.sp-page) {
 }
 
 .sp-page .blk-stats {
-  border-bottom: 1px solid var(--sp-rule);
   border-top: 1px solid var(--sp-ink);
   gap: 0;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -395,7 +385,6 @@ body:has(.sp-page) {
 .sp-page .blk-stats .stat {
   background: transparent;
   border: 0;
-  border-bottom: 1px solid var(--sp-rule);
   border-radius: 0;
   padding: var(--space-md) 0;
 }
@@ -427,7 +416,6 @@ body:has(.sp-page) {
 .sp-page .blk-grid .card {
   background: transparent;
   border: 0;
-  border-bottom: 1px solid var(--sp-rule);
   border-radius: 0;
   min-height: 0;
   padding: var(--space-md) 0;
@@ -437,6 +425,11 @@ body:has(.sp-page) {
   font-size: 16px;
   font-weight: 500;
   line-height: 1.35;
+}
+
+.sp-page .blk-grid .card + .card,
+.sp-page .blk-steps .step + .step {
+  border-top: 1px solid var(--sp-rule);
 }
 
 .sp-page .blk-grid .card p {
@@ -454,7 +447,6 @@ body:has(.sp-page) {
 }
 
 .sp-page .blk-steps .step {
-  border-bottom: 1px solid var(--sp-rule);
   display: grid;
   gap: var(--space-2xs) var(--space-sm);
   grid-template-columns: 34px minmax(0, 1fr);
@@ -592,11 +584,7 @@ body:has(.sp-page) {
 }
 
 .sp-article > .sp-block > .blk {
-  padding: clamp(var(--space-xl), 6vw, 72px) 0;
-}
-
-.sp-article > .sp-block:first-child > .blk {
-  border-top: 0;
+  padding: clamp(var(--space-lg), 5vw, var(--space-2xl)) 0;
 }
 
 .sp-article .blk-head,
@@ -631,8 +619,11 @@ body:has(.sp-page) {
   border-top: 1px solid var(--sp-ink);
 }
 
+.sp-group + .sp-group {
+  border-top: 1px solid var(--sp-rule);
+}
+
 .sp-group {
-  border-bottom: 1px solid var(--sp-ink);
   display: grid;
   gap: var(--space-lg);
   padding: clamp(36px, 5vw, 64px) 0;
@@ -665,13 +656,12 @@ body:has(.sp-page) {
   max-width: 44ch;
 }
 
-.sp-chapter-list {
+.sp-chapter + .sp-chapter {
   border-top: 1px solid var(--sp-rule);
 }
 
 .sp-chapter {
   align-items: start;
-  border-bottom: 1px solid var(--sp-rule);
   color: var(--sp-ink);
   display: grid;
   gap: 12px;
@@ -992,6 +982,16 @@ a.sp-pn:hover strong {
   .sp-page .blk-grid .card:nth-child(even) {
     border-left: 1px solid var(--sp-rule);
     padding-left: 24px;
+  }
+
+  .sp-page .blk-grid .card + .card,
+  .sp-page .blk-steps .step + .step {
+    border-top: 0;
+  }
+
+  .sp-page .blk-grid .card:nth-child(n + 3),
+  .sp-page .blk-steps .step:nth-child(n + 3) {
+    border-top: 1px solid var(--sp-rule);
   }
 
   .sp-page .blk-grid .card:nth-child(odd) {
@@ -1760,7 +1760,6 @@ a.sp-pn:hover strong {
 }
 
 .sp-photo p {
-  border-top: 1px solid var(--sp-rule);
   color: var(--sp-quiet);
   font-size: 12.5px;
   line-height: 1.5;
@@ -1841,4 +1840,18 @@ a.sp-pn:hover strong {
   .sp-system-map .sp-map-node {
     transition: none;
   }
+}
+
+.sp-rail-img {
+  aspect-ratio: 3 / 2;
+  border-radius: var(--r-md);
+  display: block;
+  height: auto;
+  margin-bottom: var(--space-lg);
+  object-fit: cover;
+  width: 100%;
+}
+
+.sp-article > .sp-fig:first-child {
+  margin-top: clamp(var(--space-lg), 5vw, var(--space-2xl));
 }
