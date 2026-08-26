@@ -97,6 +97,7 @@ const SURFACES = {
   },
   "product/task-board": {
     feat: "tasks",
+    panel: true,
     metaTitle: "A task board for AI work | Sokosumi",
     related: [["product/briefing", "How work gets onto the board"], ["product/outputs", "What a finished task hands back"], ["use-cases", "Boards in real workflows"]],
   },
@@ -132,6 +133,44 @@ async function surfacePage(doc, slug, ctx) {
   const related = cfg.related
     .map(([slugPath, label]) => `<a class="row-item" href="/${slugPath}"><h3>${esc(label)}</h3><span class="row-go">${shell.icon("arrow-up-right", 15)}</span></a>`)
     .join("");
+  // Panel layout (test on the task board): one soft panel carries the hero,
+  // the product stage and the first three feature points, so the page opens
+  // like a single composed spread instead of stacked sections.
+  if (cfg.panel) {
+    const grid = layout.find((b) => b.blockType === "featureGrid" && (b.items || []).length >= 3);
+    const rest = blocks.renderBlocks(layout.filter((b) => b.blockType !== "hero" && b.blockType !== "ctaBand" && b !== grid));
+    return (
+      pageStart({
+        title: t(cfg.metaTitle),
+        description: (doc.description || "").slice(0, 160),
+        path: "/" + slug,
+        breadcrumb: cr,
+        stylesheets: ["/assets/product.css"],
+        mainClass: "surface-page surface-panel-page",
+        jsonld: blocks.faqJsonLd(blocks.collectFaqs(layout)),
+      }) +
+      `<section class="sk-panel">
+        <p class="sk-eyebrow">${esc(doc.title)}</p>
+        <div class="sk-head">
+          <h1>${esc((hero && hero.heading) || doc.title)}</h1>
+          <div class="sk-lead">
+            ${hero && hero.subheading ? `<p>${esc(hero.subheading)}</p>` : ""}
+            <a class="sk-link" href="${shell.APP_SIGNUP}" data-analytics="sign_up_click" data-analytics-location="surface_hero">${esc(t("Start free"))} <span aria-hidden="true">→</span></a>
+          </div>
+        </div>
+        <div class="sk-stage">${productDemo.featBand(cfg.feat)}</div>
+        ${grid ? `<div class="sk-feats">${grid.items.slice(0, 3).map((it) => `<div><h3>${esc(it.title)}</h3><p>${esc(it.text || "")}</p></div>`).join("")}</div>` : ""}
+      </section>` +
+      rest +
+      `<section class="page-section"><h2>${esc(t("Keep reading"))}</h2><div class="row-list">${related}</div></section>` +
+      shell.proof(testimonials, slug.length, { mode: "logos" }) +
+      (band
+        ? blocks.renderBlocks([band])
+        : shell.ctaBand({ heading: t("Start with one task"), subheading: t("Brief a coworker today and see what comes back."), ctaLabel: t("Start free"), seed: slug.length })) +
+      pageEnd({ scripts: ["/assets/product-feat.js"] })
+    );
+  }
+
   return (
     pageStart({
       title: t(cfg.metaTitle),
