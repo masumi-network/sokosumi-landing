@@ -1571,9 +1571,9 @@ const HOME_DE = [
 
   // skip link + hero
   [">Skip to content</a>", ">Zum Inhalt springen</a>"],
-  [">AI Coworkers for Marketing.</h1>", ">AI Coworker für Marketing.</h1>"],
+  [">AI Coworker for Marketing.</h1>", ">AI Coworker für Marketing.</h1>"],
   // the share card is generated from the headline, so it needs the German one
-  ["https://www.sokosumi.com/og/dHlwZT1wYWdlJnRpdGxlPUFJK0Nvd29ya2Vycytmb3IrTWFya2V0aW5nLiZzdWI9SGlyZStBSStjb3dvcmtlcnMrdGhhdCt0dXJuK2ErYnJpZWYraW50bytmaW5pc2hlZCtmaWxlcy4mZXllYnJvdz1Tb2tvc3VtaQ.png", "https://www.sokosumi.com/og/dHlwZT1wYWdlJnRpdGxlPUFJK0Nvd29ya2VyK2YlQzMlQkNyK01hcmtldGluZy4mc3ViPUFJK0Nvd29ya2VyJTJDK2RpZSthdXMrZWluZW0rQnJpZWZpbmcrZmVydGlnZStEYXRlaWVuK21hY2hlbi4mZXllYnJvdz1Tb2tvc3VtaQ.png"],
+  ["https://www.sokosumi.com/og/dHlwZT1wYWdlJnRpdGxlPUFJK0Nvd29ya2VyK2ZvcitNYXJrZXRpbmcuJnN1Yj1IaXJlK0FJK2Nvd29ya2Vycyt0aGF0K3R1cm4rYSticmllZitpbnRvK2ZpbmlzaGVkK2ZpbGVzLiZleWVicm93PVNva29zdW1p.png", "https://www.sokosumi.com/og/dHlwZT1wYWdlJnRpdGxlPUFJK0Nvd29ya2VyK2YlQzMlQkNyK01hcmtldGluZy4mc3ViPUFJK0Nvd29ya2VyJTJDK2RpZSthdXMrZWluZW0rQnJpZWZpbmcrZmVydGlnZStEYXRlaWVuK21hY2hlbi4mZXllYnJvdz1Tb2tvc3VtaQ.png"],
   [
       "Hire AI coworkers that turn a brief into finished files.",
     "AI Coworker, die aus einem Briefing fertige Dateien machen.",
