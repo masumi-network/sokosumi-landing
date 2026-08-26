@@ -734,3 +734,5 @@ body.hero-bg-photowelcome2 .hero.is-aurora { background-image: url("/assets/hero
      and leave the band more room */
   body[class*="hero-bg-photo"] .hero.is-aurora .hero-inner { padding-top: clamp(104px, 14vh, 150px); }
 }
+/* Connectors sit on the dark stage now */
+.org .org-stem, .org .org-drop, .org .org-branch::before, .org .org-branch::after { background: rgba(255, 255, 255, 0.28); }

@@ -5,6 +5,7 @@
 
 :root {
   --background: #f5f5f5;
+  --stage: linear-gradient(180deg, #0a0a0a 0%, #0f1c25 22%, #2c4452 52%, #7d8f9b 78%, #d9dee2 94%, #eceef0 100%);
   --ink: #0f0e0d;
   --card: #ffffff;
   --muted: #ebeae9;
@@ -1421,3 +1422,11 @@ html[lang="de"] .tg-article .prose blockquote::before { content: "Prompt"; }
 .tg-index .blk-head .sub { color: var(--muted-foreground); max-width: 72ch; margin-top: 8px; }
 .tg-tool-head { font-size: 13px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted-foreground); margin: 28px 0 12px; }
 @media (max-width: 599px) { .tg-toc ol { columns: 1; } }
+
+/* One stage gradient everywhere a product visual sits on a backdrop. */
+.grad-band, .grad-band.g2, .grad-band.g3, .grad-band.g4, .grad-band.g5,
+.pd-feat, .pd-stage, .uc-art.is-grad, .org {
+  background-color: #0f1c25 !important;
+  background-image: var(--stage) !important;
+}
+.uc-art.is-grad img { mix-blend-mode: normal; }
