@@ -2022,3 +2022,11 @@ a.sp-pn:hover strong {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
+
+.sp-hero-chapter {
+  padding-bottom: clamp(var(--space-lg), 4vw, var(--space-xl));
+}
+
+.sp-photo img {
+  aspect-ratio: 2 / 1;
+}

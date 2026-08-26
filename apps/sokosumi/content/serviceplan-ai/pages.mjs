@@ -174,12 +174,6 @@ Das Agenturangebot und das Self-Service-Produkt sind verbunden, aber nicht ident
 Serviceplan calls the House of AI the **digital twin of the House of Communication**. That description matters: the model mirrors how the group already combines creative, media, data and technology disciplines. The goal is to connect those disciplines through one operating model rather than to place an AI feature in each agency independently.
 
 The official page describes three connected suites — Insight.AI, Creative.AI and Activate.AI — above a fully compliant Global Data Platform. Agentic.AI sits across the system as a layer of specialised agents. Mediaplus' Plus.AI adds a conversational intelligence layer for media work. [See Serviceplan Group's architecture](${SOURCE.house}).`),
-      steps("How work moves through the house", "A real engagement can enter at any point, but the model is easiest to understand as a loop.", [
-        ["Observe", "Audience, market, behavioural and first-party data are gathered and structured on the shared platform."],
-        ["Decide", "Insight.AI turns evidence into audiences, personas, scenarios and recommendations that a team can challenge."],
-        ["Create", "Creative.AI supports concept development, production and asset adaptation with agency craft still responsible for the idea and brand."],
-        ["Activate and learn", "Activate.AI places and optimises media; new performance data flows back into the next decision. Agents can execute defined steps across the loop."],
-      ]),
       richText(`## What is public and what is not
 The names and high-level structure are public. Serviceplan also documents individual products and units elsewhere, including Plus.AI, Behave.AI, Agentic Services, HealthContent.AI and Sokosumi. Detailed model choices, client data architecture, governance controls and performance by client are not published as one technical specification. A useful evaluation should therefore ask for the exact data sources, approval points, hosting, measurement plan and human responsibility for the proposed use case.`),
       faq("House of AI questions", [
@@ -209,12 +203,6 @@ The names and high-level structure are public. Serviceplan also documents indivi
 Serviceplan nennt das House of AI den **digitalen Zwilling des House of Communication**. Das ist mehr als ein Bild: Das Modell spiegelt die bestehende Verbindung von Kreation, Media, Daten und Technologie. Diese Disziplinen sollen über ein gemeinsames Betriebsmodell zusammenspielen, statt in jeder Agentur ein isoliertes KI-Feature zu erhalten.
 
 Die offizielle Seite beschreibt drei verbundene Säulen — Insight.AI, Creative.AI und Activate.AI — auf einer als compliant bezeichneten Global Data Platform. Agentic.AI liegt als Schicht spezialisierter Agents darüber. Mediaplus ergänzt dies mit Plus.AI als dialogorientierter Intelligence-Schicht für Media. [Zur offiziellen Architektur](${SOURCE.house}).`),
-      steps("Wie Arbeit durch das House of AI läuft", "Ein Projekt kann an jeder Stelle beginnen. Als Kreislauf wird das Modell am klarsten.", [
-        ["Beobachten", "Zielgruppen-, Markt-, Verhaltens- und First-Party-Daten werden gesammelt und auf der gemeinsamen Plattform strukturiert."],
-        ["Entscheiden", "Insight.AI übersetzt Evidenz in Zielgruppen, Personas, Szenarien und Empfehlungen, die ein Team prüfen kann."],
-        ["Kreieren", "Creative.AI unterstützt Ideenentwicklung, Produktion und Asset-Adaption; Idee, Marke und Freigabe bleiben bei den verantwortlichen Menschen."],
-        ["Aktivieren und lernen", "Activate.AI spielt Media aus und optimiert. Neue Leistungsdaten fließen in die nächste Entscheidung; Agents können definierte Schritte im Kreislauf ausführen."],
-      ]),
       richText(`## Was öffentlich ist und was nicht
 Namen und Grundstruktur sind öffentlich. Weitere Produkte und Einheiten wie Plus.AI, Behave.AI, Agentic Services, HealthContent.AI und Sokosumi dokumentiert Serviceplan an anderer Stelle. Konkrete Modellwahl, Kundendatenarchitektur, Governance-Kontrollen und Ergebnisse pro Kunde liegen jedoch nicht als gemeinsame technische Spezifikation vor. Eine belastbare Bewertung sollte deshalb Datenquellen, Freigabepunkte, Hosting, Messplan und menschliche Verantwortung für den jeweiligen Use Case einzeln prüfen.`),
       faq("Fragen zum House of AI", [
@@ -599,12 +587,6 @@ Serviceplans [Praxisbeitrag](${SOURCE.coworkerBlog}) beschreibt, wie Hannah und 
 An agent marketplace needs more than a directory. Providers need a way to run services; buyers need a usable interface; both sides need rules for payment and evidence that a job reached a defined state. Serviceplan and NMKR split those concerns rather than hiding them in one proprietary application.
 
 The [official Plan.Net Masumi page](${SOURCE.masumi}) describes Masumi as the trust and payment layer for Agentic Services. The [Sokosumi launch announcement](${SOURCE.sokosumi}) then presents the marketplace as the business-facing access point, following Masumi and Kodosumi in the stack.`),
-      steps("A task through the stack", "The exact technical path depends on the provider, but the responsibilities remain distinct.", [
-        ["Choose and brief", "A buyer finds a coworker or specialist agent in Sokosumi and submits the task, context and expected output."],
-        ["Run", "The agent service executes on its hosting or deployment environment; Kodosumi is one deployment option in the ecosystem."],
-        ["Coordinate", "Sokosumi tracks the task and can expose hand-offs between coworkers or specialist agents to the user."],
-        ["Settle and record", "Masumi handles the payment and job-state protocol so completion, payout or refund follows explicit rules."],
-      ]),
       richText(`## The partnership behind Masumi
 NMKR and Serviceplan Group introduced Masumi in 2024 and later announced a strategic partnership with the Cardano Foundation. [NMKR's project account](${SOURCE.nmkr}) publishes historical network and adoption figures for January to October 2025. Those numbers are useful evidence of activity, but they are provider-published and time-bounded rather than current audited market share.
 
@@ -640,12 +622,6 @@ Masumi is intentionally usable beyond Sokosumi. The protocol can support agents 
 Ein Marktplatz für Agents braucht mehr als ein Verzeichnis. Anbieter müssen Services betreiben, Käufer brauchen eine brauchbare Oberfläche, und beide Seiten benötigen Regeln für Zahlung sowie Nachweise über einen definierten Jobstatus. Serviceplan und NMKR trennen diese Aufgaben, statt sie in einer proprietären Anwendung zu verstecken.
 
 Die [offizielle Masumi-Seite von Plan.Net](${SOURCE.masumi}) beschreibt Masumi als Vertrauens- und Zahlungsschicht für Agentic Services. Die [Sokosumi-Launch-Mitteilung](${SOURCE.sokosumi}) positioniert den Marktplatz anschließend als Zugang für Unternehmen — aufbauend auf Masumi und Kodosumi.`),
-      steps("Ein Task durch den Stack", "Der genaue technische Pfad hängt vom Anbieter ab; die Verantwortungsbereiche bleiben jedoch getrennt.", [
-        ["Auswählen und briefen", "Ein Käufer findet auf Sokosumi einen Coworker oder spezialisierten Agent und beschreibt Aufgabe, Kontext und erwartetes Ergebnis."],
-        ["Ausführen", "Der Agent-Service läuft in seiner Hosting- oder Deployment-Umgebung; Kodosumi ist eine Deployment-Option im Ökosystem."],
-        ["Koordinieren", "Sokosumi verfolgt den Task und kann Übergaben zwischen Coworkern oder spezialisierten Agents für Nutzer sichtbar machen."],
-        ["Abrechnen und festhalten", "Masumi regelt Zahlung und Jobstatus, damit Abschluss, Auszahlung oder Rückerstattung expliziten Regeln folgen."],
-      ]),
       richText(`## Die Partnerschaft hinter Masumi
 NMKR und Serviceplan Group stellten Masumi 2024 vor und kündigten später eine strategische Partnerschaft mit der Cardano Foundation an. [NMKRs Projektbericht](${SOURCE.nmkr}) veröffentlicht historische Netzwerk- und Nutzungszahlen für Januar bis Oktober 2025. Diese Werte belegen Aktivität, sind aber zeitlich begrenzte Anbieterangaben und kein aktueller auditierter Marktanteil.
 
@@ -770,12 +746,6 @@ Das Netzwerk wurde 2025 Independent Network of the Year und meldete für 2025/26
         "From agent infrastructure to a group-wide operating model",
         "The dated record shows how protocols, products, agency services and partnerships accumulated into the House of AI.",
       ),
-      steps("2024–2026", "Dates follow public announcements. Where sources disagree, the ambiguity is stated instead of resolved by guesswork.", [
-        ["2024: Agentic Services and Masumi", "Plan.Net publicly described Agentic Services and introduced Masumi with NMKR. A December partnership with the Cardano Foundation followed."],
-        ["2025: House of AI and Sokosumi", "The group reported the House of AI and a Global Data Hub across 25 markets. Plan.Net Studios and NMKR launched Sokosumi on 25 June."],
-        ["Early 2026: creative scale and coworkers", "Luma AI became the creative-AI technology partner in February. Hannah and Elena launched as the first SME House-of-AI offer in March, followed by HealthContent.AI."],
-        ["Mid 2026: media and dedicated units", "Mediaplus launched Behave.AI in May and Plus.AI in June. FY results in July named a dedicated Plan.Net Agentic AI business unit."],
-      ]),
       richText(`## Dated source record
 ### 11 December 2024 — Cardano Foundation partnership
 Serviceplan Group, NMKR and the Cardano Foundation announced strategic collaboration around the Masumi network. [Source](${SOURCE.masumiPartner}).
@@ -828,12 +798,6 @@ Serviceplan listed House of AI implementation, Luma AI, Behave.AI, Plus.AI and a
         "Von Agent-Infrastruktur zum gruppenweiten Betriebsmodell",
         "Die datierte Entwicklung zeigt, wie Protokolle, Produkte, Agenturleistungen und Partnerschaften zum House of AI zusammengewachsen sind.",
       ),
-      steps("2024–2026", "Die Daten folgen öffentlichen Mitteilungen. Wenn Quellen voneinander abweichen, bleibt die Unschärfe sichtbar.", [
-        ["2024: Agentic Services und Masumi", "Plan.Net beschrieb Agentic Services und stellte Masumi gemeinsam mit NMKR vor. Im Dezember folgte die Partnerschaft mit der Cardano Foundation."],
-        ["2025: House of AI und Sokosumi", "Die Gruppe berichtete über das House of AI und einen Global Data Hub in 25 Märkten. Plan.Net Studios und NMKR starteten Sokosumi am 25. Juni."],
-        ["Anfang 2026: kreative Skalierung und Coworker", "Luma AI wurde im Februar Technologiepartner für Creative AI. Hannah und Elena starteten im März als erstes KMU-Angebot, gefolgt von HealthContent.AI."],
-        ["Mitte 2026: Media und eigene Einheiten", "Mediaplus startete Behave.AI im Mai und Plus.AI im Juni. Der Jahresbericht nannte im Juli eine eigene Einheit Plan.Net Agentic AI."],
-      ]),
       richText(`## Datierte Quellen
 ### 11. Dezember 2024 — Partnerschaft mit der Cardano Foundation
 Serviceplan Group, NMKR und Cardano Foundation kündigten eine strategische Zusammenarbeit zum Masumi-Netzwerk an. [Quelle](${SOURCE.masumiPartner}).
@@ -1083,12 +1047,6 @@ THE MARCOM ENGINE zufolge versorgt die KI-gestützte [BMW und MINI Content Facto
 Serviceplan describes a Munich AI Lab and collaboration with Silverside AI's San Francisco lab. The [first-party account](${SOURCE.labs}) says the collaboration led to the rollout and first client deployments of **Serviceplan Generate.AI**, plus training for internal key users. It describes a modular environment in which Serviceplan controls data structures and claims GDPR compliance. That is a provider claim, not an external certification.
 
 A second [Serviceplan account](${SOURCE.generate}) describes Generate.AI as multi-client capable, able to automate generation workflows and support fine-tuning for products and campaigns. The sources establish collaboration with Silverside; they do not establish an ownership relationship or a public technical architecture.`),
-      steps("A content-supply-chain view", "Generation is one stage; production control spans the complete flow.", [
-        ["Plan", "Campaigns, markets, variants, assets, rights and production requirements enter one structured brief."],
-        ["Generate and produce", "Approved creative systems produce source assets and variants with human direction and quality control."],
-        ["Adapt and review", "Teams localise, resize, version and approve content across brands, channels and markets."],
-        ["Store and distribute", "Assets, feedback, status and delivery remain connected so the operation can be measured and improved."],
-      ]),
       richText(`## MAKELINE in public deployments
 The [L'Oréal MAKELINE case](${SOURCE.makeline}) covers four divisions, 35 brands and more than 200 stakeholders. Serviceplan reports more than 50,000 assets, 5,500-plus annual projects, 50% faster production and 30% savings, without publishing an independent comparison method. THE MARCOM ENGINE says the [BMW/MINI Content Factory](${SOURCE.bmwContent}) supplies 26 European markets using MAKELINE as the central platform.
 
@@ -1125,12 +1083,6 @@ The [L'Oréal MAKELINE case](${SOURCE.makeline}) covers four divisions, 35 brand
 Serviceplan beschreibt ein AI Lab in München und die Zusammenarbeit mit dem San-Francisco-Lab von Silverside AI. Laut [Primärquelle](${SOURCE.labs}) führte die Zusammenarbeit zum Rollout und zu ersten Kundeneinsätzen von **Serviceplan Generate.AI** sowie zur Schulung interner Key User. Beschrieben wird eine modulare Umgebung, in der Serviceplan Datenstrukturen kontrolliert und DSGVO-Konformität beansprucht. Das ist eine Anbieterangabe, keine externe Zertifizierung.
 
 Ein weiterer [Serviceplan-Beitrag](${SOURCE.generate}) beschreibt Generate.AI als mandantenfähig, fähig zur Automatisierung von Generierungsworkflows und einsetzbar für Fine-Tuning von Produkten und Kampagnen. Die Quellen belegen die Zusammenarbeit mit Silverside, aber keine Eigentümerbeziehung oder öffentliche technische Architektur.`),
-      steps("Die Content-Supply-Chain-Sicht", "Generierung ist eine Stufe; Produktionskontrolle umfasst den gesamten Ablauf.", [
-        ["Planen", "Kampagnen, Märkte, Varianten, Assets, Rechte und Produktionsanforderungen fließen in ein strukturiertes Briefing."],
-        ["Generieren und produzieren", "Freigegebene kreative Systeme erzeugen Quellassets und Varianten unter menschlicher Leitung und Qualitätskontrolle."],
-        ["Adaptieren und prüfen", "Teams lokalisieren, formatieren, versionieren und genehmigen Inhalte über Marken, Kanäle und Märkte."],
-        ["Speichern und ausspielen", "Assets, Feedback, Status und Delivery bleiben verbunden, damit der Betrieb gemessen und verbessert werden kann."],
-      ]),
       richText(`## MAKELINE in öffentlichen Deployments
 Der [L'Oréal-MAKELINE-Case](${SOURCE.makeline}) umfasst vier Divisionen, 35 Marken und mehr als 200 Stakeholder. Serviceplan meldet über 50.000 Assets, mehr als 5.500 Projekte jährlich, 50 Prozent schnellere Produktion und 30 Prozent Einsparung, ohne eine unabhängige Vergleichsmethode zu veröffentlichen. THE MARCOM ENGINE zufolge versorgt die [BMW/MINI Content Factory](${SOURCE.bmwContent}) 26 europäische Märkte mit MAKELINE als zentraler Plattform.
 
@@ -1162,12 +1114,6 @@ Der [L'Oréal-MAKELINE-Case](${SOURCE.makeline}) umfasst vier Divisionen, 35 Mar
         "The products behind insight, creative testing and activation",
         "One maintained map of the public portfolio, rather than a thin page for every .AI name.",
       ),
-      featureGrid("The House-of-AI layers", [
-        ["Foundation", "Global Data Platform, Plus.AI and the Data Ecosystem provide shared data and a conversational planning layer."],
-        ["Insight.AI", "Research.AI, Search.AI, Persona.AI, Touchpoint.AI and Behave.AI support research, visibility, audiences, journeys and behaviour."],
-        ["Creative.AI", "Pretest.AI evaluates video and static creative against a large benchmark set before campaign launch."],
-        ["Activate.AI", "Track.AI, NE.R.O. AI, Predict.AI, Total Video Integrator and Ecosystem.AI support data flow, targeting, modelling, planning and orchestration."],
-      ]),
       richText(`## What the named products do
 Mediaplus' [Data & AI portfolio](${SOURCE.dataAi}) groups four core workflows: strategy, audience, media modelling and measurement. **Research.AI** generates synthetic profiles and conducts agent-led interviews; its [product page](${SOURCE.researchAi}) says 100 profiles are the default and claims more than 90% accuracy compared with real samples. The same page says human and hybrid panels are future additions, so the current public offer should be understood as synthetic-panel research.
 
@@ -1208,12 +1154,6 @@ Mediaplus' [Data & AI portfolio](${SOURCE.dataAi}) groups four core workflows: s
         "Die Produkte hinter Insight, Kreativtests und Aktivierung",
         "Eine gepflegte Karte des öffentlichen Portfolios statt einer dünnen Seite für jeden .AI-Namen.",
       ),
-      featureGrid("Die House-of-AI-Schichten", [
-        ["Foundation", "Global Data Platform, Plus.AI und das Data Ecosystem liefern gemeinsame Daten und eine dialogorientierte Planungsschicht."],
-        ["Insight.AI", "Research.AI, Search.AI, Persona.AI, Touchpoint.AI und Behave.AI unterstützen Research, Sichtbarkeit, Zielgruppen, Journeys und Verhalten."],
-        ["Creative.AI", "Pretest.AI bewertet Video- und Static-Creatives vor Kampagnenstart gegen ein großes Benchmark-Set."],
-        ["Activate.AI", "Track.AI, NE.R.O. AI, Predict.AI, Total Video Integrator und Ecosystem.AI unterstützen Datenfluss, Targeting, Modellierung, Planung und Orchestrierung."],
-      ]),
       richText(`## Was die benannten Produkte leisten
 Das [Data-&-AI-Portfolio](${SOURCE.dataAi}) von Mediaplus gruppiert Strategie, Audience, Media-Modellierung und Messung. **Research.AI** erzeugt synthetische Profile und führt agentenbasierte Interviews. Die [Produktseite](${SOURCE.researchAi}) nennt 100 Profile als Standard und beansprucht über 90 Prozent Genauigkeit gegenüber realen Stichproben. Human- und Hybrid-Panels werden dort als zukünftige Erweiterung genannt; das aktuelle öffentliche Angebot ist daher synthetisches Panel-Research.
 

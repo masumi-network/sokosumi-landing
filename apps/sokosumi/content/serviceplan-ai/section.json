@@ -225,12 +225,7 @@
       "slug": "ai-marketing-agency",
       "short": "AI agency guide",
       "group": "guides",
-      "logos": [
-        {
-          "src": "/assets/serviceplan-logo.png",
-          "name": "Serviceplan"
-        }
-      ],
+      "logos": [],
       "layers": [
         1,
         2,
@@ -248,12 +243,7 @@
       "slug": "ai-search-geo",
       "short": "AI search & GEO",
       "group": "guides",
-      "logos": [
-        {
-          "src": "/assets/logos/mediaplus.svg",
-          "name": "Mediaplus"
-        }
-      ],
+      "logos": [],
       "layers": [
         1
       ],
@@ -268,12 +258,7 @@
       "slug": "ai-marketing-cases",
       "short": "AI cases",
       "group": "proof",
-      "logos": [
-        {
-          "src": "/assets/serviceplan-logo.png",
-          "name": "Serviceplan"
-        }
-      ],
+      "logos": [],
       "layers": [
         2,
         3
@@ -311,12 +296,7 @@
       "slug": "timeline-and-sources",
       "short": "Timeline",
       "group": "proof",
-      "logos": [
-        {
-          "src": "/assets/serviceplan-logo.png",
-          "name": "Serviceplan"
-        }
-      ],
+      "logos": [],
       "layers": [],
       "icon": "timeline",
       "related": [

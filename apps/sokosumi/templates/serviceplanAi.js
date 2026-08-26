@@ -301,8 +301,9 @@ function systemMap(lit = [], chapterName = "") {
   ];
   const focused = lit.length > 0 && lit.length < 4;
   const litNames = nodes.filter((n, i) => lit.includes(i + 1)).map((n) => n[1]);
+  const joinNames = (names, and) => (names.length > 1 ? `${names.slice(0, -1).join(", ")} ${and} ${names.at(-1)}` : names[0]);
   const title = focused
-    ? ui(`${chapterName || "This chapter"} sits in ${litNames.join(" and ")}`, `${chapterName || "Dieses Kapitel"} gehört zu ${litNames.join(" und ")}`)
+    ? ui(`This chapter sits in ${joinNames(litNames, "and")}`, `Dieses Kapitel gehört zu ${joinNames(litNames, "und")}`)
     : ui("One marketing system, four connected layers", "Ein Marketingsystem, vier verbundene Ebenen");
   return `<figure class="sp-system-map${focused ? " is-focused" : ""}" aria-labelledby="sp-system-title">
     <figcaption>
