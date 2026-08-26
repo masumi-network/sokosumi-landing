@@ -3,6 +3,7 @@
 // `industries` taxonomy. Detail pages are block-based (see blocks.js).
 
 const shell = require("./shell");
+const deliverable = require("./deliverable");
 const cms = require("../lib/cms");
 const blocks = require("./blocks");
 const art = require("./art");
@@ -50,16 +51,7 @@ function industriesOf(uc) {
 // What the workflow hands back, read off the copy. Honest and cheap: no
 // invented metrics, just the noun the brief already uses.
 function deliverableOf(uc) {
-  const text = `${uc.title || ""} ${uc.description || ""}`.toLowerCase();
-  const pairs = [
-    [/deck|presentation|slides/, "Deck"],
-    [/dashboard/, "Dashboard"],
-    [/report|monitor|briefing|audit|analysis/, "Report"],
-    [/content set|copy|content|variants|landing/, "Content set"],
-    [/plan|calendar/, "Plan"],
-  ];
-  const hit = pairs.find(([re]) => re.test(text));
-  return hit ? t(hit[1]) : t("Finished file");
+  return t(deliverable.LABELS[deliverable.kindOf(uc)]);
 }
 
 // The study card: what comes back, and who does it. Sits on the stage in
@@ -76,7 +68,7 @@ function studyCard(uc, crew, opts) {
   return `<span class="uc-stage${o.compact ? " is-compact" : ""}" aria-hidden="true">
     <span class="uc-study">
       <span class="uc-study-head">
-        <span class="uc-doc"><i></i><i></i><i class="s"></i></span>
+        ${deliverable.svg(deliverable.kindOf(uc), "uc-mock")}
         <span class="uc-study-title"><strong>${esc(deliverableOf(uc))}</strong><small>${esc(t("What comes back"))}</small></span>
         
       </span>

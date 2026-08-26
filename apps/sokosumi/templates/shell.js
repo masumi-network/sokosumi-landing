@@ -4,6 +4,7 @@
 // hairlines, light display weights. Styles live in /assets/styles.css.
 
 const cms = require("../lib/cms");
+const deliverable = require("./deliverable");
 const ogLib = require("../lib/og");
 const art = require("./art");
 const i18n = require("../lib/i18n");
@@ -802,18 +803,9 @@ function useCasesPanel() {
 
   // Each job's generated photo (people at work) when one exists; the seeded
   // abstract field remains the fallback for CMS-added jobs.
-  const UC_NAV_PHOTOS = new Set(["always-on-social-listening", "audience-research-sprint", "competitor-monitoring", "seo-and-ai-visibility", "agency-new-business-research", "launch-content-engine", "seasonal-campaign-planning", "market-intelligence-briefings"]);
   const rows = jobs
     .map((p) => {
-      const photo = UC_NAV_PHOTOS.has(p.slug) ? `/assets/use-case-img/${p.slug}.webp` : null;
-      const swatch = photo ? null : art.field(p.slug, { w: 68, h: 68 });
-      return `<a class="nav-col-link has-face" href="/use-cases/${encodeURIComponent(p.slug)}">${
-        photo
-          ? `<span class="nav-swatch is-photo" aria-hidden="true"><img${thumbSrc(photo, 136)} alt="" width="68" height="68" loading="lazy" decoding="async" /></span>`
-          : swatch
-            ? `<span class="nav-swatch" aria-hidden="true">${swatch}</span>`
-            : `<span class="nav-swatch is-blank" aria-hidden="true"></span>`
-      }<span class="nav-face-text"><span>${esc(p.title)}</span>${
+      return `<a class="nav-col-link has-face" href="/use-cases/${encodeURIComponent(p.slug)}"><span class="nav-swatch is-mock" aria-hidden="true">${deliverable.svg(deliverable.kindOf(p), "nav-mock")}</span><span class="nav-face-text"><span>${esc(p.title)}</span>${
         p.industry ? `<small>${esc(p.industry)}</small>` : ""
       }</span></a>`;
     })
@@ -824,7 +816,7 @@ function useCasesPanel() {
         <div class="nav-intro">
           <p class="nav-intro-label">${esc(t("Use cases"))}</p>
           <p class="nav-intro-desc">${esc(t("Real jobs, start to finished file, organized by industry. Each one lists the coworkers and tasks that run it."))}</p>
-          ${navVisual("shot nav-visual-ucphoto", `<img${thumbSrc("/assets/use-case-img/launch-content-engine.webp", 640)} alt="" width="1152" height="640" loading="lazy" decoding="async" />`)}
+          ${navVisual("ucstage", deliverable.svg("deck", "nav-mock"))}
         </div>
         <div class="nav-jobs-col">
           <div class="nav-jobs">${rows}</div>
