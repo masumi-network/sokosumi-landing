@@ -976,7 +976,7 @@
 }
 
 .dm-gallery-section {
-  padding-top: 0;
+  padding-top: clamp(56px, 8vw, 96px);
 }
 
 .dm-section-head {
