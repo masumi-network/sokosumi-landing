@@ -960,6 +960,16 @@ const DE = {
 
   // ---- pricing.js ----
   "Pricing | Sokosumi": "Preise | Sokosumi",
+  "Pricing: credits per seat, free plan included | Sokosumi": "Preise: Credits pro Seat, kostenloser Plan inklusive | Sokosumi",
+  "Guides to AI marketing and AI coworkers | Sokosumi": "Guides zu KI-Marketing und AI Coworkern | Sokosumi",
+  "Blog: AI marketing, agents and coworkers | Sokosumi": "Blog: KI-Marketing, Agents und Coworker | Sokosumi",
+  "Product releases and changelog | Sokosumi": "Produkt-Updates und Changelog | Sokosumi",
+  "Compare AI marketing tools side by side | Sokosumi": "KI-Marketing-Tools im direkten Vergleich | Sokosumi",
+  "Contact Sokosumi: sales, support and press | Sokosumi": "Kontakt: Vertrieb, Support und Presse | Sokosumi",
+  "Support and help for Sokosumi users | Sokosumi": "Hilfe und Support für Sokosumi-Nutzer | Sokosumi",
+  "Legal: terms, privacy, DPA and imprint | Sokosumi": "Rechtliches: AGB, Datenschutz, AVV und Impressum | Sokosumi",
+  "Press and media resources | Sokosumi": "Presse und Medieninformationen | Sokosumi",
+  "About Sokosumi: AI coworkers by Serviceplan and NMKR": "Über Sokosumi: AI Coworker von Serviceplan und NMKR",
   "Sokosumi plans: a free tier with 250 credits per seat, Starter at €25, Standard at €75, Pro at €200 per month, and a tailored Enterprise plan.":
     "Sokosumi-Pläne: ein kostenloser Plan mit 250 Credits pro Seat, Starter für 25 €, Standard für 75 €, Pro für 200 € pro Monat sowie ein individueller Enterprise-Plan.",
   "Credits per seat on every plan. Start free; upgrade when you run more work.":
@@ -1552,7 +1562,7 @@ const HOME_DE = [
   ],
   [
     "Hire AI coworkers and run template marketing tasks on Sokosumi. A marketplace for marketing work that arrives as a file. Built by Serviceplan Group.",
-    "AI Coworker für Ihr Marketingteam: briefen, Datei zurückbekommen. Sokosumi ist der Marktplatz für Marketingarbeit, die als Datei ankommt. Von der Serviceplan Group.",
+    "AI Coworker für Ihr Marketingteam: briefen, fertige Datei zurückbekommen. Der Marktplatz für Marketingarbeit, die als Datei ankommt. Von der Serviceplan Group.",
   ],
   ['<meta property="og:url" content="https://www.sokosumi.com/" />', '<meta property="og:url" content="https://www.sokosumi.com/de" />'],
   ['<meta property="og:locale" content="en_US" />', '<meta property="og:locale" content="de_DE" />\n    <meta property="og:locale:alternate" content="en_US" />'],

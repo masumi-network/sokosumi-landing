@@ -364,7 +364,13 @@ function hreflangLinks(path) {
 function head(opts) {
   const locale = i18n.locale();
   const title = esc(t(opts.title));
-  const desc = esc(t(opts.description || ""));
+  const clampDesc = (text) => {
+    const value = String(text || "").trim();
+    if (value.length <= 160) return value;
+    const cut = value.slice(0, 157);
+    return cut.slice(0, Math.max(cut.lastIndexOf(" "), 120)).replace(/[,;:\s]+$/, "") + "…";
+  };
+  const desc = esc(clampDesc(t(opts.description || "")));
   // The canonical points at the page's OWN locale; hreflang links the pair.
   const canonical = SITE + i18n.localizePath(opts.path);
   // A page-specific generated image unless the page brings a real one
@@ -803,7 +809,7 @@ function useCasesPanel() {
       const swatch = photo ? null : art.field(p.slug, { w: 68, h: 68 });
       return `<a class="nav-col-link has-face" href="/use-cases/${encodeURIComponent(p.slug)}">${
         photo
-          ? `<span class="nav-swatch is-photo" aria-hidden="true"><img src="${attr(photo)}" alt="" width="68" height="68" loading="lazy" /></span>`
+          ? `<span class="nav-swatch is-photo" aria-hidden="true"><img${thumbSrc(photo, 136)} alt="" width="68" height="68" loading="lazy" decoding="async" /></span>`
           : swatch
             ? `<span class="nav-swatch" aria-hidden="true">${swatch}</span>`
             : `<span class="nav-swatch is-blank" aria-hidden="true"></span>`
@@ -818,7 +824,7 @@ function useCasesPanel() {
         <div class="nav-intro">
           <p class="nav-intro-label">${esc(t("Use cases"))}</p>
           <p class="nav-intro-desc">${esc(t("Real jobs, start to finished file, organized by industry. Each one lists the coworkers and tasks that run it."))}</p>
-          ${navVisual("shot nav-visual-ucphoto", `<img src="/assets/use-case-img/launch-content-engine.webp" alt="" width="1152" height="640" loading="lazy" decoding="async" />`)}
+          ${navVisual("shot nav-visual-ucphoto", `<img${thumbSrc("/assets/use-case-img/launch-content-engine.webp", 640)} alt="" width="1152" height="640" loading="lazy" decoding="async" />`)}
         </div>
         <div class="nav-jobs-col">
           <div class="nav-jobs">${rows}</div>

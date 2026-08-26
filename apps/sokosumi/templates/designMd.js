@@ -51,7 +51,7 @@ function render() {
     pageStart({
       title: "Free DESIGN.md generator for AI coding agents | Sokosumi",
       description:
-        "Generate a DESIGN.md from any website URL. Extract colors, typography, spacing, components, and design guidance for Claude Code, Cursor, Codex, and other AI coding agents.",
+        "Generate a DESIGN.md from any website URL: colors, typography, spacing, components and design guidance for Claude Code, Cursor, Codex and other coding agents.",
       path,
       englishOnly: true,
       breadcrumb: crumbs,
@@ -263,7 +263,7 @@ async function analysis(ctx) {
   ];
   return (
     pageStart({
-      title: `${name} DESIGN.md — colors, typography and components | Sokosumi`,
+      title: `${name} DESIGN.md: colors, type, components | Sokosumi`,
       description: description.slice(0, 160),
       path,
       englishOnly: true,

@@ -58,7 +58,7 @@ async function index(ctx) {
   const cr = [{ label: "Home", href: "/" }, { label: "Legal" }];
   return (
     pageStart({
-      title: "Legal | Sokosumi",
+      title: "Legal: terms, privacy, DPA and imprint | Sokosumi",
       description:
         "Terms of Service, Privacy Policy, Cookie Policy, data processing agreements, acceptable use, and the imprint for Sokosumi.",
       path: "/legal",

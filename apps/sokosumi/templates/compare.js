@@ -112,7 +112,7 @@ async function index(ctx) {
   const cr = [{ label: "Home", href: "/" }, { label: "Compare" }];
   return (
     pageStart({
-      title: t("Compare | Sokosumi"),
+      title: t("Compare AI marketing tools side by side | Sokosumi"),
       description: t("What is the difference between ChatGPT, Claude, Copilot, Langdock and Sokosumi? One page per tool: who it is for, what you get back, what you pay for."),
       path: "/compare",
       breadcrumb: cr,

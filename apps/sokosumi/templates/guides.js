@@ -123,7 +123,7 @@ async function index(ctx) {
   const cr = [{ label: "Home", href: "/" }, { label: "Guides" }];
   return (
     pageStart({
-      title: t("Guides | Sokosumi"),
+      title: t("Guides to AI marketing and AI coworkers | Sokosumi"),
       description: t("Guides for marketing teams on Sokosumi: set up a workspace, write a briefing that works, run and schedule AI coworkers, use the files that come back."),
       path: "/guides",
       breadcrumb: cr,

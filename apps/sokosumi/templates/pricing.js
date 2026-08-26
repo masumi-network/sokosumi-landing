@@ -137,7 +137,7 @@ const fmtEur = (n) =>
 function seatPicker(seats) {
   const presets = SEAT_PRESETS.map(
     (n) =>
-      `<a class="fchip${n === seats ? " active" : ""}" href="?seats=${n}" data-seats="${n}"${n === seats ? ' aria-current="true"' : ""} aria-label="${attr(tp(n, "{n} seat", "{n} seats"))}">${fmtInt(n)}</a>`,
+      `<a class="fchip${n === seats ? " active" : ""}" href="?seats=${n}" rel="nofollow" data-seats="${n}"${n === seats ? ' aria-current="true"' : ""} aria-label="${attr(tp(n, "{n} seat", "{n} seats"))}">${fmtInt(n)}</a>`,
   ).join("");
   return `<form class="seat-picker" id="seatForm" method="get" data-one="${attr(t("For {n} seat"))}" data-many="${attr(t("For {n} seats"))}" data-free="${attr(t("Free"))}" data-seat="${attr(t("seat"))}" data-seats="${attr(t("seats"))}">
       <label class="seat-label" for="seats" id="seatLabel">${esc(t("Team size"))}</label>
@@ -240,7 +240,7 @@ async function render(ctx) {
   const seats = seatCount(ctx.query);
   return (
     pageStart({
-      title: "Pricing | Sokosumi",
+      title: "Pricing: credits per seat, free plan included | Sokosumi",
       description:
         "Sokosumi plans: a free tier with 250 credits per seat, Starter at €25, Standard at €75, Pro at €200 per month, and a tailored Enterprise plan.",
       path: "/pricing",

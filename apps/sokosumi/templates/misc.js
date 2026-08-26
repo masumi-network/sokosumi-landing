@@ -132,7 +132,7 @@ function press() {
   const cr = [{ label: "Home", href: "/" }, { label: "Press" }];
   return (
     pageStart({
-      title: "Press | Sokosumi",
+      title: "Press and media resources | Sokosumi",
       description: "Press information and media contact for Sokosumi, the AI coworker marketplace by Serviceplan Group.",
       path: "/press",
       breadcrumb: cr,
