@@ -735,8 +735,23 @@ const assetsDir = path.join(root, "assets");
     return (head ? head + "\n\n" : "") + s + "\n";
   }
 
+  // Only the production hostname may be indexed. Vercel preview builds, the
+  // *.vercel.app deployment URLs and any other alias serve this same code, so
+  // without this they are a full, crawlable duplicate of the site competing
+  // with it in search. robots.txt is per-host, so www's file cannot cover
+  // them — the host has to answer for itself.
+  const CANONICAL_HOST = (process.env.CANONICAL_HOST || "www.sokosumi.com").toLowerCase();
+  function isPublicHost(req) {
+    const host = String(req.headers["x-forwarded-host"] || req.headers.host || "").toLowerCase().split(":")[0];
+    if (!host) return true;
+    if (host === CANONICAL_HOST) return true;
+    // local development and the apex (which 301s to www) stay untouched
+    return host === "localhost" || host === "127.0.0.1" || host === "[::1]" || host === "sokosumi.com";
+  }
+
   function send(req, res, status, headers, body) {
     const head = { ...BASE_HEADERS, ...headers };
+    if (!isPublicHost(req)) head["X-Robots-Tag"] = "noindex, nofollow";
     let payload = Buffer.isBuffer(body) ? body : Buffer.from(body ?? "", "utf8");
     const type = String(head["Content-Type"] || "");
 
@@ -1315,7 +1330,8 @@ const assetsDir = path.join(root, "assets");
           return send(req, res, 200, { "Content-Type": "text/markdown; charset=utf-8", "Cache-Control": "public, max-age=0, s-maxage=3600, must-revalidate" }, misc.llmsTxt());
         }
         if (urlPath === "/robots.txt") {
-          return send(req, res, 200, { "Content-Type": "text/plain; charset=utf-8", "Cache-Control": "public, max-age=3600" }, misc.robots());
+          const body = isPublicHost(req) ? misc.robots() : "User-agent: *\nDisallow: /\n";
+          return send(req, res, 200, { "Content-Type": "text/plain; charset=utf-8", "Cache-Control": "public, max-age=3600" }, body);
         }
 
         if (urlPath === "/sitemap.xml") {
