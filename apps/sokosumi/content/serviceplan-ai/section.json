@@ -3,7 +3,10 @@
   "groups": [
     {
       "id": "architecture",
-      "label": { "en": "Architecture", "de": "Architektur" },
+      "label": {
+        "en": "Architecture",
+        "de": "Architektur"
+      },
       "description": {
         "en": "How the House of AI is organised across creativity, media and technology.",
         "de": "Wie das House of AI über Kreation, Media und Technologie organisiert ist."
@@ -11,7 +14,10 @@
     },
     {
       "id": "products",
-      "label": { "en": "Products and infrastructure", "de": "Produkte und Infrastruktur" },
+      "label": {
+        "en": "Products and infrastructure",
+        "de": "Produkte und Infrastruktur"
+      },
       "description": {
         "en": "The systems, coworkers and production products teams can actually use.",
         "de": "Systeme, Coworker und Produktionsprodukte, die Teams tatsächlich nutzen können."
@@ -19,7 +25,10 @@
     },
     {
       "id": "guides",
-      "label": { "en": "Buyer guides", "de": "Buyer-Guides" },
+      "label": {
+        "en": "Buyer guides",
+        "de": "Buyer-Guides"
+      },
       "description": {
         "en": "Practical frameworks for choosing an AI agency and measuring AI-search visibility.",
         "de": "Praxisrahmen für die Wahl einer KI-Agentur und die Messung von AI-Search-Sichtbarkeit."
@@ -27,7 +36,10 @@
     },
     {
       "id": "proof",
-      "label": { "en": "Proof and sources", "de": "Nachweise und Quellen" },
+      "label": {
+        "en": "Proof and sources",
+        "de": "Nachweise und Quellen"
+      },
       "description": {
         "en": "Published cases, partnerships, milestones and the evidence behind this dossier.",
         "de": "Veröffentlichte Cases, Partnerschaften, Meilensteine und die Evidenz hinter diesem Dossier."
@@ -39,86 +51,208 @@
       "slug": "house-of-ai",
       "short": "House of AI",
       "group": "architecture",
-      "logos": [{ "src": "/assets/serviceplan-logo.png", "name": "Serviceplan" }]
+      "logos": [
+        {
+          "src": "/assets/serviceplan-logo.png",
+          "name": "Serviceplan"
+        }
+      ],
+      "layers": [
+        1,
+        2,
+        3,
+        4
+      ]
     },
     {
       "slug": "serviceplan-creative-ai",
       "short": "Serviceplan",
       "group": "architecture",
-      "logos": [{ "src": "/assets/serviceplan-logo.png", "name": "Serviceplan" }]
+      "logos": [
+        {
+          "src": "/assets/serviceplan-logo.png",
+          "name": "Serviceplan"
+        }
+      ],
+      "layers": [
+        2
+      ]
     },
     {
       "slug": "mediaplus-ai",
       "short": "Mediaplus",
       "group": "architecture",
-      "logos": [{ "src": "/assets/logos/mediaplus.svg", "name": "Mediaplus" }]
+      "logos": [
+        {
+          "src": "/assets/logos/mediaplus.svg",
+          "name": "Mediaplus"
+        }
+      ],
+      "layers": [
+        1,
+        3
+      ]
     },
     {
       "slug": "plan-net-agentic-ai",
       "short": "Plan.Net",
       "group": "architecture",
-      "logos": [{ "src": "/assets/logos/plan-net.svg", "name": "Plan.Net" }]
+      "logos": [
+        {
+          "src": "/assets/logos/plan-net.svg",
+          "name": "Plan.Net"
+        }
+      ],
+      "layers": [
+        4
+      ]
     },
     {
       "slug": "mediaplus-ai-products",
       "short": "Mediaplus products",
       "group": "products",
-      "logos": [{ "src": "/assets/logos/mediaplus.svg", "name": "Mediaplus" }]
+      "logos": [
+        {
+          "src": "/assets/logos/mediaplus.svg",
+          "name": "Mediaplus"
+        }
+      ],
+      "layers": [
+        1,
+        2,
+        3
+      ]
     },
     {
       "slug": "ai-coworkers",
       "short": "AI Coworkers",
       "group": "products",
-      "logos": [{ "src": "/assets/logos/sokosumi.svg", "name": "Sokosumi" }]
+      "logos": [
+        {
+          "src": "/assets/logos/sokosumi.svg",
+          "name": "Sokosumi"
+        }
+      ],
+      "layers": [
+        4
+      ]
     },
     {
       "slug": "masumi-sokosumi-kodosumi",
       "short": "AI stack",
       "group": "products",
       "logos": [
-        { "src": "/assets/logos/masumi.svg", "name": "Masumi" },
-        { "src": "/assets/logos/sokosumi.svg", "name": "Sokosumi" },
-        { "src": "/assets/logos/kodosumi.svg", "name": "Kodosumi" }
+        {
+          "src": "/assets/logos/masumi.svg",
+          "name": "Masumi"
+        },
+        {
+          "src": "/assets/logos/sokosumi.svg",
+          "name": "Sokosumi"
+        },
+        {
+          "src": "/assets/logos/kodosumi.svg",
+          "name": "Kodosumi"
+        }
+      ],
+      "layers": [
+        4
       ]
     },
     {
       "slug": "serviceplan-generate-ai-makeline",
       "short": "Generate.AI & MAKELINE",
       "group": "products",
-      "logos": [{ "src": "/assets/serviceplan-logo.png", "name": "Serviceplan" }]
+      "logos": [
+        {
+          "src": "/assets/serviceplan-logo.png",
+          "name": "Serviceplan"
+        }
+      ],
+      "layers": [
+        2
+      ]
     },
     {
       "slug": "ai-marketing-agency",
       "short": "AI agency guide",
       "group": "guides",
-      "logos": [{ "src": "/assets/serviceplan-logo.png", "name": "Serviceplan" }]
+      "logos": [
+        {
+          "src": "/assets/serviceplan-logo.png",
+          "name": "Serviceplan"
+        }
+      ],
+      "layers": [
+        1,
+        2,
+        3,
+        4
+      ]
     },
     {
       "slug": "ai-search-geo",
       "short": "AI search & GEO",
       "group": "guides",
-      "logos": [{ "src": "/assets/logos/mediaplus.svg", "name": "Mediaplus" }]
+      "logos": [
+        {
+          "src": "/assets/logos/mediaplus.svg",
+          "name": "Mediaplus"
+        }
+      ],
+      "layers": [
+        1
+      ]
     },
     {
       "slug": "ai-marketing-cases",
       "short": "AI cases",
       "group": "proof",
-      "logos": [{ "src": "/assets/serviceplan-logo.png", "name": "Serviceplan" }]
+      "logos": [
+        {
+          "src": "/assets/serviceplan-logo.png",
+          "name": "Serviceplan"
+        }
+      ],
+      "layers": [
+        2,
+        3
+      ]
     },
     {
       "slug": "partnerships-and-cases",
       "short": "Partnerships",
       "group": "proof",
       "logos": [
-        { "src": "/assets/serviceplan-logo.png", "name": "Serviceplan" },
-        { "src": "/assets/nmkr-logo.svg", "name": "NMKR" }
-      ]
+        {
+          "src": "/assets/serviceplan-logo.png",
+          "name": "Serviceplan"
+        },
+        {
+          "src": "/assets/nmkr-logo.svg",
+          "name": "NMKR"
+        }
+      ],
+      "layers": []
     },
     {
       "slug": "timeline-and-sources",
       "short": "Timeline",
       "group": "proof",
-      "logos": [{ "src": "/assets/serviceplan-logo.png", "name": "Serviceplan" }]
+      "logos": [
+        {
+          "src": "/assets/serviceplan-logo.png",
+          "name": "Serviceplan"
+        }
+      ],
+      "layers": []
     }
-  ]
+  ],
+  "statsSource": {
+    "url": "https://www.house-of-communication.com/int/en/newsroom/2026/07/serviceplan-group-2025-2026-fiscal-year.html",
+    "label": {
+      "en": "Serviceplan Group fiscal-year 2025/26 results, July 2026",
+      "de": "Serviceplan Group Geschäftsjahr 2025/26, Juli 2026"
+    }
+  }
 }

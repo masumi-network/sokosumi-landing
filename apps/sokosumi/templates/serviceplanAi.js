@@ -4,6 +4,7 @@ const shell = require("./shell");
 const blocks = require("./blocks");
 const cms = require("../lib/cms");
 const i18n = require("../lib/i18n");
+const figures = require("./serviceplanFigures");
 
 const { esc, attr, icon, pageStart, pageEnd } = shell;
 const CONFIG = path.join(__dirname, "..", "content", "serviceplan-ai", "section.json");
@@ -125,7 +126,28 @@ function idFor(value, index) {
   return id || `section-${index + 1}`;
 }
 
-function renderArticle(layout) {
+function statsSourceNote() {
+  const source = config().statsSource;
+  if (!source?.url) return "";
+  return `<p class="sp-stats-source">${esc(ui("Source", "Quelle"))}: <a href="${attr(source.url)}" rel="noopener">${esc(localText(source.label))} ${icon("arrow-up-right", 12)}</a></p>`;
+}
+
+// Template-owned figures are slotted between CMS blocks: chapter diagrams
+// after the block index they belong to, the brand × layer matrix after the
+// hub's "where the work sits" grid, and the source line under hub stats.
+function extrasFor(slug, isHub, index, block) {
+  const out = [];
+  if (isHub) {
+    if (block.blockType === "stats") out.push(statsSourceNote());
+    if (index === 2) out.push(figures.brandLayerMatrix());
+  } else {
+    const fig = figures.figureFor(slug);
+    if (fig && fig.after === index) out.push(fig.html);
+  }
+  return out.join("");
+}
+
+function renderArticle(layout, slug, isHub) {
   const used = new Set();
   const outline = [];
   const html = layout
@@ -136,7 +158,7 @@ function renderArticle(layout) {
       while (used.has(id)) id = `${idFor(heading || block.blockType, index)}-${suffix++}`;
       used.add(id);
       if (heading) outline.push({ id, heading });
-      return `<div class="sp-block sp-block-${attr(block.blockType || "unknown")}" id="${attr(id)}">${blocks.renderBlocks([block])}</div>`;
+      return `<div class="sp-block sp-block-${attr(block.blockType || "unknown")}" id="${attr(id)}">${blocks.renderBlocks([block])}</div>${extrasFor(slug, isHub, index, block)}`;
     })
     .join("");
   return { html, outline };
@@ -147,13 +169,25 @@ function citedSources(html) {
   const pattern = /<a\s+[^>]*href=["'](https?:\/\/[^"']+)["']/gi;
   let match;
   while ((match = pattern.exec(html))) urls.push(match[1]);
-  return [...new Set(urls)].map((url) => {
+  const parsed = [...new Set(urls)].map((url) => {
     try {
-      return { url, domain: new URL(url).hostname.replace(/^www\./, "") };
+      const u = new URL(url);
+      const slug = u.pathname
+        .split("/")
+        .filter(Boolean)
+        .pop()
+        ?.replace(/\.(html?|pdf)(\.coredownload\.pdf)?$/i, "")
+        .replace(/[-_]+/g, " ")
+        .trim();
+      return { url, domain: u.hostname.replace(/^www\./, ""), slug: slug || u.hostname };
     } catch {
-      return { url, domain: url };
+      return { url, domain: url, slug: url };
     }
   });
+  // When one domain is cited several times, the domain alone says nothing;
+  // show the page slug as the title instead.
+  const counts = parsed.reduce((m, s) => m.set(s.domain, (m.get(s.domain) || 0) + 1), new Map());
+  return parsed.map((s) => ({ ...s, title: counts.get(s.domain) > 1 && s.slug ? s.slug.charAt(0).toUpperCase() + s.slug.slice(1) : s.domain }));
 }
 
 function chapterCard(chapter, index) {
@@ -178,8 +212,8 @@ function groupedChapters(list) {
       <span class="eyebrow">${esc(ui("Authority dossier", "Authority-Dossier"))}</span>
       <h2 id="sp-directory-title">${esc(ui("Choose a way into the system", "Wählen Sie Ihren Einstieg ins System"))}</h2>
       <p>${esc(ui(
-        "The chapters move from organisational architecture to usable products, buyer guidance and primary-source evidence.",
-        "Die Kapitel führen von der Organisationsarchitektur über nutzbare Produkte und Buyer-Guides bis zu den Primärquellen.",
+        "The chapters move from organisational architecture to usable products, buyer guidance and primary-source evidence. The source count on each card is the number of distinct primary documents that chapter links to.",
+        "Die Kapitel führen von der Organisationsarchitektur über nutzbare Produkte und Buyer-Guides bis zu den Primärquellen. Die Quellenzahl auf jeder Karte ist die Anzahl der verlinkten Primärdokumente.",
       ))}</p>
     </header>
     <div class="sp-groups">
@@ -191,6 +225,7 @@ function groupedChapters(list) {
               <div>
                 <h3 id="sp-group-${attr(group.id)}">${esc(localText(group.label))}</h3>
                 <p>${esc(localText(group.description))}</p>
+                ${figures.groupImage(group.id)}
               </div>
             </header>
             <div class="sp-chapter-list">
@@ -249,22 +284,29 @@ function mobileIndex(list, current, outline) {
   </details>`;
 }
 
-function systemMap() {
+// `lit` = layer numbers (1–4) this chapter is about. Empty = show all
+// layers at full strength (hub, cross-cutting chapters).
+function systemMap(lit = [], chapterName = "") {
   const nodes = [
     ["01", "Insight.AI", ui("Research and direction", "Research und Orientierung"), "Serviceplan · Mediaplus"],
     ["02", "Creative.AI", ui("Ideas and production", "Ideen und Produktion"), "Serviceplan"],
     ["03", "Activate.AI", ui("Media and optimisation", "Media und Optimierung"), "Mediaplus"],
     ["04", "Agentic.AI", ui("Agents and orchestration", "Agents und Orchestrierung"), "Plan.Net"],
   ];
-  return `<figure class="sp-system-map" aria-labelledby="sp-system-title">
+  const focused = lit.length > 0 && lit.length < 4;
+  const litNames = nodes.filter((n, i) => lit.includes(i + 1)).map((n) => n[1]);
+  const title = focused
+    ? ui(`${chapterName || "This chapter"} sits in ${litNames.join(" and ")}`, `${chapterName || "Dieses Kapitel"} gehört zu ${litNames.join(" und ")}`)
+    : ui("One marketing system, four connected layers", "Ein Marketingsystem, vier verbundene Ebenen");
+  return `<figure class="sp-system-map${focused ? " is-focused" : ""}" aria-labelledby="sp-system-title">
     <figcaption>
       <span>${esc(ui("Serviceplan's public model", "Serviceplans öffentliches Modell"))}</span>
-      <strong id="sp-system-title">${esc(ui("One marketing system, four connected layers", "Ein Marketingsystem, vier verbundene Ebenen"))}</strong>
+      <strong id="sp-system-title">${esc(title)}</strong>
     </figcaption>
     <div class="sp-map-flow">
       ${nodes
         .map(
-          ([number, name, purpose, owner]) => `<div class="sp-map-node">
+          ([number, name, purpose, owner], i) => `<div class="sp-map-node${focused ? (lit.includes(i + 1) ? " is-lit" : " is-dim") : ""}">
             <span>${number}</span>
             <strong>${name}</strong>
             <small>${esc(purpose)}</small>
@@ -291,11 +333,11 @@ function formatDate(value) {
   }).format(date);
 }
 
-function heroProof(doc, chapter, outline) {
+function heroProof(doc, chapter) {
   const group = groupFor(chapter);
   const sources = sourceUrls(doc.layout).length;
   const minutes = readingMinutes(doc.layout);
-  return `<aside class="sp-hero-proof" aria-label="${attr(ui("Page evidence", "Seitennachweis"))}">
+  return `<div class="sp-hero-side">${systemMap(chapter?.layers || [], chapter?.short || "")}<aside class="sp-hero-proof" aria-label="${attr(ui("Page evidence", "Seitennachweis"))}">
     <span class="sp-proof-label">${esc(ui("Authority dossier", "Authority-Dossier"))}</span>
     <dl>
       <div><dt>${esc(ui("Focus", "Fokus"))}</dt><dd>${esc(localText(group?.label))}</dd></div>
@@ -303,8 +345,7 @@ function heroProof(doc, chapter, outline) {
       <div><dt>${esc(ui("Linked sources", "Verlinkte Quellen"))}</dt><dd>${sources}</dd></div>
       <div><dt>${esc(ui("Reviewed", "Geprüft"))}</dt><dd>${esc(formatDate(doc.updatedAt))}</dd></div>
     </dl>
-    ${outline.length ? `<ol>${outline.slice(0, 3).map((item) => `<li><a href="#${attr(item.id)}">${esc(item.heading)}</a></li>`).join("")}</ol>` : ""}
-  </aside>`;
+  </aside></div>`;
 }
 
 function evidenceLedger(sources, updatedAt) {
@@ -324,7 +365,7 @@ function evidenceLedger(sources, updatedAt) {
           (source, index) => `<li>
             <span>${String(index + 1).padStart(2, "0")}</span>
             <a href="${attr(source.url)}" rel="noopener">
-              <strong>${esc(source.domain)}</strong>
+              <strong>${esc(source.title || source.domain)}</strong>
               <small>${esc(source.url.replace(/^https?:\/\//, ""))}</small>
             </a>
             <span aria-hidden="true">${icon("arrow-up-right", 14)}</span>
@@ -391,7 +432,7 @@ async function render(doc, ctx) {
   const layout = doc.layout || [];
   const hero = layout.find((block) => block.blockType === "hero");
   const bodyLayout = layout.filter((block) => block.blockType !== "hero" && block.blockType !== "ctaBand");
-  const article = renderArticle(bodyLayout);
+  const article = renderArticle(bodyLayout, doc.slug, isHub);
   const sources = citedSources(article.html);
   const faqs = blocks.collectFaqs(layout);
   const breadcrumbs = [{ label: "Home", href: "/" }];
@@ -450,7 +491,7 @@ async function render(doc, ctx) {
           <span>${sourceUrls(layout).length} ${esc(ui("linked sources", "verlinkte Quellen"))}</span>
         </div>
       </div>
-      ${isHub ? systemMap() : heroProof(doc, chapter, article.outline)}
+      ${isHub ? systemMap() : heroProof(doc, chapter)}
     </header>`;
 
   if (isHub) {
