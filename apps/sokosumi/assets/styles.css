@@ -1453,7 +1453,7 @@ html[lang="de"] .tg-article .prose blockquote::before { content: "Prompt"; }
 .cmp-yes, .plan-enterprise, .skip-link, .sp-nav a.is-current, section.band-dark, .shot-nav:hover,
 .hero.is-aurora .hero-cta-signup, .pd-btn-dark, .pd-btn-dark:hover, .pd-ib-dark, .pd-tab.is-active,
 .pd-mi.is-checked .pd-mi-check-box, .pd-bigsearch-in, .pd-nt-ctx .pd-ctx-chip, .dm-bar .dm-submit,
-.sp-map-foundation, .sp-stack-foundation, .sp-chips-row.is-dark, .tool-card-doc span:first-child {
+.sp-map-foundation, .sp-stack-foundation, .sp-chips-row.is-dark {
   background-color: #0f1c25 !important;
   background-image: var(--stage-deep) !important;
 }

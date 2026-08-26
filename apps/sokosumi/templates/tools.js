@@ -1,15 +1,28 @@
 const shell = require("./shell");
 
-const { esc, pageStart, pageEnd, SITE } = shell;
+const { esc, attr, icon, pageStart, pageEnd, SITE } = shell;
 
 const TOOLS = [
   {
     href: "/tools/design-md",
     name: "DESIGN.md generator",
     text: "Turn any website into design context for AI coding agents.",
+    meta: "Free · no sign-up",
     preview: ["DESIGN.md", "---", "colors: #2b5c78 · #0f0e0d", "type: Inter · 400 · 1.5", "components: buttons · cards", "---", "## Brand style"],
   },
 ];
+
+function toolCard(t) {
+  return `<a class="card tool-card" href="${attr(t.href)}">
+    <span class="tool-card-doc" aria-hidden="true">${t.preview.map((l) => `<span>${esc(l)}</span>`).join("")}</span>
+    <span class="tool-card-copy">
+      <span class="eyebrow">${esc(t.meta)}</span>
+      <strong>${esc(t.name)}</strong>
+      <span>${esc(t.text)}</span>
+      <em>Open ${icon("arrow-up-right", 15)}</em>
+    </span>
+  </a>`;
+}
 
 function render() {
   const path = "/tools";
@@ -25,22 +38,22 @@ function render() {
       jsonld: [{ "@type": "CollectionPage", "@id": `${SITE}${path}#page`, name: "Free tools", url: `${SITE}${path}` }],
       og: { type: "page", title: "Free tools", sub: "No account. No sign-up." },
     }) +
-    `<section class="tools-hero">
-      <h1>Free tools.</h1>
-      <p>No account. No sign-up.</p>
-    </section>
-    <section class="tools-list" aria-label="Tools">
-      ${TOOLS.map(
-        (t) => `<a class="tool-card" href="${t.href}">
-          <span class="tool-card-doc" aria-hidden="true">${t.preview.map((l) => `<span>${esc(l)}</span>`).join("")}</span>
-          <span class="tool-card-copy">
-            <strong>${esc(t.name)}</strong>
-            <span>${esc(t.text)}</span>
-            <em>Open <span aria-hidden="true">→</span></em>
-          </span>
-        </a>`,
-      ).join("")}
+    // Same page furniture as /guides and /vendors: an eyebrow, a left-aligned
+    // h1, a sub, then the collection. The old centred hero and floating card
+    // were the only ones of their kind on the site.
+    `<div class="page-head" data-reveal>
+      <span class="eyebrow">Free tools</span>
+      <h1>Tools you can use without an account</h1>
+      <p class="sub">Small, single-purpose tools we built for our own marketing and design work. No sign-up, no credits, nothing to install.</p>
+    </div>
+    <section class="page-section flush" data-reveal aria-label="Tools">
+      <div class="${shell.gridCls(TOOLS.length)} tools-list">${TOOLS.map(toolCard).join("")}</div>
     </section>` +
+    shell.ctaBand({
+      heading: "Give a coworker a task.",
+      subheading: "The tools are free. The coworkers turn a brief into a finished file.",
+      ctaLabel: "Sign Up",
+    }) +
     pageEnd({ englishOnly: true })
   );
 }

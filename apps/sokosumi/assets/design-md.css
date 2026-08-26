@@ -378,6 +378,7 @@
 
 .dm-type-list,
 .dm-prose-sections {
+  margin-top: 8px;
   border-top: 1px solid var(--border);
 }
 
@@ -1081,54 +1082,21 @@
 
 /* --- /tools hub -------------------------------------------------------- */
 
-.tools-hero {
-  padding: clamp(64px, 10vw, 128px) 0 clamp(40px, 6vw, 72px);
-  text-align: center;
-}
-
-.tools-hero h1 {
-  font-size: clamp(44px, 7.5vw, 88px);
-  font-weight: 300;
-  letter-spacing: -0.045em;
-  line-height: 1;
-}
-
-.tools-hero p {
-  margin-top: 16px;
-  color: var(--muted-foreground);
-  font-size: clamp(17px, 2vw, 21px);
-}
-
-.tools-list {
+/* /tools uses the shared .page-head and .card-grid; only the card's inner
+   document preview is bespoke. No centred hero, no shadow, no bespoke width. */
+.tools-list .tool-card {
   display: grid;
-  gap: 24px;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 460px));
-  justify-content: center;
-  max-width: 960px;
-  margin: 0 auto clamp(72px, 10vw, 128px);
-}
-
-.tool-card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  color: var(--foreground);
-  display: grid;
-  gap: 24px;
-  overflow: hidden;
-  padding: 28px;
+  gap: 20px;
+  align-content: start;
+  padding: 20px;
   text-decoration: none;
-  transition: border-color 160ms ease, transform 160ms ease;
-}
-
-.tool-card:hover {
-  border-color: var(--foreground);
-  transform: translateY(-2px);
+  color: var(--foreground);
 }
 
 .tool-card-doc {
   background: var(--muted);
-  border-radius: 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
   color: var(--muted-foreground);
   display: grid;
   font-family: var(--mono);
@@ -1140,7 +1108,7 @@
 
 .tool-card-doc span:first-child {
   color: var(--foreground);
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .tool-card-copy {
@@ -1148,8 +1116,16 @@
   gap: 6px;
 }
 
+.tool-card-copy .eyebrow {
+  color: var(--muted-foreground);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
 .tool-card-copy strong {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 500;
   letter-spacing: -0.02em;
 }
@@ -1161,11 +1137,17 @@
 }
 
 .tool-card-copy em {
-  margin-top: 8px;
+  margin-top: 10px;
   font-size: 14px;
   font-style: normal;
   font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--primary);
 }
+
+.tool-card:hover .tool-card-copy em { text-decoration: underline; }
 
 /* --- brand tiles, analysis pages ------------------------------------- */
 
@@ -1362,6 +1344,14 @@
 @media (min-width: 60rem) {
   .dm-analysis-grid {
     grid-template-columns: minmax(0, 1fr) 320px;
+  }
+
+  /* The document runs for thousands of pixels; the aside is a screenshot and
+     one link. Pinned, it keeps the right column alive instead of leaving a
+     column of dead space next to the whole spec. */
+  .dm-analysis-side {
+    position: sticky;
+    top: 90px;
   }
 }
 

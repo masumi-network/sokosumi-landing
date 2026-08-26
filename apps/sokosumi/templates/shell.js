@@ -728,7 +728,14 @@ function agentsPanel() {
 // The Product menu: the deep-dives under /product, straight from the CMS,
 // so a page added there shows up here without a code change.
 function productPanel() {
-  const pages = navModel().productPages || [];
+  // The menu is a way in, not a sitemap. It carries the four surfaces that
+  // make up the core loop — brief, roster, board, output — and leaves the rest
+  // to /product, which the foot link goes to. Anything beyond four rows made
+  // the panel taller than the hero and forced blurbs to truncate mid-sentence.
+  const CORE = ["product/ai-coworkers", "product/briefing", "product/task-board", "product/outputs"];
+  const all = navModel().productPages || [];
+  const bySlug = new Map(all.map((p) => [p.slug, p]));
+  const pages = [...CORE.map((slug) => bySlug.get(slug)).filter(Boolean), ...all.filter((p) => !CORE.includes(p.slug))].slice(0, 4);
   if (!pages.length) return "";
   // Each surface leads with a miniature of the thing itself — coworker
   // portraits for the roster, the dark briefing bar, a micro task board, a
@@ -769,7 +776,7 @@ function productPanel() {
         <div class="nav-intro">
           <p class="nav-intro-label">${esc(t("Product"))}</p>
           <p class="nav-intro-desc">${esc(t("How work moves through Sokosumi: brief a coworker, follow it on the task board, collect the output."))}</p>
-          ${navVisualShot("/assets/shot-board.webp")}
+          ${navVisual("stage", `<span class="nav-mini nav-mini-board"><i class="c1"><b></b><b></b></i><i class="c2"><b></b></i><i class="c3"><b></b><b></b></i></span>`)}
         </div>
         <div class="nav-grid">${rows}</div>
       </div>
@@ -816,7 +823,7 @@ function useCasesPanel() {
         <div class="nav-intro">
           <p class="nav-intro-label">${esc(t("Use cases"))}</p>
           <p class="nav-intro-desc">${esc(t("Real jobs, start to finished file, organized by industry. Each one lists the coworkers and tasks that run it."))}</p>
-          ${navVisual("ucstage", deliverable.svg("deck", "nav-mock"))}
+          ${navVisual("stage", deliverable.svg("deck", "nav-mock"))}
         </div>
         <div class="nav-jobs-col">
           <div class="nav-jobs">${rows}</div>
