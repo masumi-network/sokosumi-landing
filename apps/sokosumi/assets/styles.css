@@ -1426,13 +1426,13 @@ html[lang="de"] .tg-article .prose blockquote::before { content: "Prompt"; }
 
 /* One stage gradient everywhere a product visual sits on a backdrop. */
 .grad-band, .grad-band.g2, .grad-band.g3, .grad-band.g4, .grad-band.g5,
-.pd-feat, .pd-stage, .uc-art.is-grad, .org {
+.pd-feat, .pd-stage, .uc-art.is-grad {
   background-color: #0f1c25 !important;
   background-image: var(--stage) !important;
 }
 .uc-art.is-grad img { mix-blend-mode: normal; }
 /* The stage itself is square; only what floats on it is rounded. */
-.grad-band, .pd-feat, .pd-stage, .uc-art.is-grad, .org, .sk-stage { border-radius: 0 !important; }
+.grad-band, .pd-feat, .pd-stage, .uc-art.is-grad, .sk-stage { border-radius: 0 !important; }
 
 /* Dark CTA bands share the stage, but stop before the light tail so white
    copy stays readable. */
