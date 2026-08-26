@@ -21,7 +21,7 @@ const INK = "#0f0e0d";
 const PAPER = "#fafaf9";
 const MUTED = "#6b6a68";
 const HAIR = "rgba(15,14,13,0.14)";
-const PURPLE = "#6400ff";
+const PURPLE = "#2b5c78";
 
 const FONTS = [300, 400, 500].map((weight) => ({
   name: "Inter",

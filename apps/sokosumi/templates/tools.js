@@ -7,7 +7,7 @@ const TOOLS = [
     href: "/tools/design-md",
     name: "DESIGN.md generator",
     text: "Turn any website into design context for AI coding agents.",
-    preview: ["DESIGN.md", "---", "colors: #6400ff · #0f0e0d", "type: Inter · 400 · 1.5", "components: buttons · cards", "---", "## Brand style"],
+    preview: ["DESIGN.md", "---", "colors: #2b5c78 · #0f0e0d", "type: Inter · 400 · 1.5", "components: buttons · cards", "---", "## Brand style"],
   },
 ];
 

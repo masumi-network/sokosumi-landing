@@ -137,8 +137,8 @@
   position: relative; overflow: hidden; flex-shrink: 0;
   margin: auto 8px 2px; height: 116px;
   border: 1px solid var(--border); border-radius: var(--r-md);
-  background-color: rgba(100, 0, 255, 0.04);
-  background-image: radial-gradient(rgba(100, 0, 255, 0.14) 1px, transparent 1.4px);
+  background-color: rgba(43, 92, 120, 0.04);
+  background-image: radial-gradient(rgba(43, 92, 120, 0.14) 1px, transparent 1.4px);
   background-size: 12px 12px; background-position: -3px -3px;
 }
 /* AI Coworkers: the same drawn portraits the menu's links carry, clustered */
@@ -171,7 +171,7 @@
 .nav-jobs .nav-col-link { padding: 9px 12px; }
 .nav-swatch {
   width: 34px; height: 34px; border-radius: var(--r-sm); overflow: hidden; flex-shrink: 0;
-  border: 1px solid var(--border); background: rgba(100, 0, 255, 0.04);
+  border: 1px solid var(--border); background: rgba(43, 92, 120, 0.04);
 }
 .nav-swatch svg { width: 100%; height: 100%; display: block; }
 .nav-swatch.is-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
@@ -226,7 +226,7 @@
 .nav-mini-brief > b {
   display: block; width: 56px; height: 24px; border-radius: 999px; margin-bottom: 4px;
   background: linear-gradient(#171717, #171717) padding-box,
-    linear-gradient(90deg, rgba(100, 0, 255, 0.75), rgba(0, 164, 250, 0.75)) border-box;
+    linear-gradient(90deg, rgba(43, 92, 120, 0.75), rgba(0, 164, 250, 0.75)) border-box;
   border: 1.5px solid transparent; position: relative;
 }
 .nav-mini-brief i {
@@ -244,7 +244,7 @@
   padding: 3px; display: inline-flex; flex-direction: column; gap: 3px;
 }
 .nav-mini-board b { display: block; height: 10px; border-radius: 2.5px; background: var(--card); box-shadow: 0 0 0 1px rgba(15, 14, 13, 0.09); }
-.nav-mini-board .c1 b:first-child { background: rgba(100, 0, 255, 0.3); }
+.nav-mini-board .c1 b:first-child { background: rgba(43, 92, 120, 0.3); }
 .nav-mini-board .c2 b { background: rgba(245, 158, 11, 0.5); margin-top: 7px; }
 .nav-mini-board .c3 b:last-child { background: rgba(16, 185, 129, 0.45); }
 /* outputs: a tiny finished document (inner element) */
@@ -263,13 +263,13 @@
   border: 1px solid var(--border); box-shadow: 0 2px 5px rgba(15, 14, 13, 0.1);
   display: block; position: relative;
 }
-.nav-mini-sched .cal::before { content: ""; position: absolute; inset: 4px 4px auto 4px; height: 6px; border-radius: 2px; background: rgba(100, 0, 255, 0.28); }
+.nav-mini-sched .cal::before { content: ""; position: absolute; inset: 4px 4px auto 4px; height: 6px; border-radius: 2px; background: rgba(43, 92, 120, 0.28); }
 .nav-mini-sched .cal::after { content: ""; position: absolute; left: 5px; bottom: 5px; width: 12px; height: 2.5px; border-radius: 1px; background: rgba(15, 14, 13, 0.18); box-shadow: 0 5px 0 rgba(15, 14, 13, 0.18); }
 .nav-mini-sched .dot { position: absolute; right: 6px; bottom: 1px; width: 12px; height: 12px; border-radius: 999px; background: #16a249; border: 2px solid var(--card); }
 /* chat: two stacked bubbles */
 .nav-mini-chat { flex-direction: column; gap: 3px; align-items: flex-start; justify-content: flex-end; padding-left: 8px; }
 .nav-mini-chat i { display: block; height: 9px; border-radius: 5px 5px 5px 1px; background: var(--muted); width: 30px; border: 1px solid var(--border); }
-.nav-mini-chat i + i { width: 22px; margin-left: 8px; background: rgba(100, 0, 255, 0.16); border-color: rgba(100, 0, 255, 0.2); }
+.nav-mini-chat i + i { width: 22px; margin-left: 8px; background: rgba(43, 92, 120, 0.16); border-color: rgba(43, 92, 120, 0.2); }
 .nav-face {
   width: 30px; height: 30px; border-radius: 999px; overflow: hidden; flex-shrink: 0;
   background: var(--muted); display: block;

@@ -5,7 +5,7 @@
 // no requests, no fonts, no faces, no photography. field() answers "" on any
 // failure, and every caller treats "" as "render a plain surface instead".
 
-const BASE_HUE = 264; // #6400ff
+const BASE_HUE = 203; // #2b5c78
 
 // FNV-1a into a mulberry32-style stream: tiny, deterministic, good enough
 // spread for picking hues and positions.
