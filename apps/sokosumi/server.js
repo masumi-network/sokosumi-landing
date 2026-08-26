@@ -20,6 +20,7 @@ const path = require("path");
 const zlib = require("zlib");
 const vm = require("vm");
 const crypto = require("crypto");
+const net = require("net");
 
 const shell = require("./templates/shell");
 const misc = require("./templates/misc");
@@ -33,6 +34,7 @@ const releasesTpl = require("./templates/releases");
 const compareTpl = require("./templates/compare");
 const pagesTpl = require("./templates/pagesCms");
 const contactTpl = require("./templates/contact");
+const designMdTpl = require("./templates/designMd");
 
 const port = process.env.PORT || 3000;
 const root = __dirname;
@@ -45,6 +47,109 @@ const CORE_URL = process.env.SOKOSUMI_CORE_URL || "https://api.sokosumi.com";
 const CORE_KEY = process.env.SOKOSUMI_CORE_KEY || "";
 const REFRESH_MS = Number(process.env.CATALOG_REFRESH_MS) || 10 * 60 * 1000;
 const PREVIEW_SECRET = process.env.PREVIEW_SECRET || "";
+const DESIGN_MD_API_BASE = (process.env.MASUMI_DESIGN_MD_API_BASE || "https://www.masumi.network").replace(/\/+$/, "");
+const DESIGN_MD_API_KEY = process.env.MASUMI_DESIGN_MD_API_KEY || "";
+const DESIGN_MD_RATE_LIMIT = Number(process.env.DESIGN_MD_RATE_LIMIT) || 6;
+const designMdRequests = new Map();
+
+function publicWebsiteUrl(value) {
+  let parsed;
+  try {
+    parsed = new URL(String(value || "").trim());
+  } catch {
+    return null;
+  }
+  if (!/^https?:$/.test(parsed.protocol) || parsed.username || parsed.password) return null;
+  const hostname = parsed.hostname.toLowerCase().replace(/^\[|\]$/g, "").replace(/\.$/, "");
+  if (!hostname || hostname === "localhost" || hostname.endsWith(".localhost") || hostname.endsWith(".local")) return null;
+  const ipVersion = net.isIP(hostname);
+  if (ipVersion === 4) {
+    const parts = hostname.split(".").map(Number);
+    const privateAddress =
+      parts[0] === 0 ||
+      parts[0] === 10 ||
+      parts[0] === 127 ||
+      (parts[0] === 100 && parts[1] >= 64 && parts[1] <= 127) ||
+      (parts[0] === 169 && parts[1] === 254) ||
+      (parts[0] === 172 && parts[1] >= 16 && parts[1] <= 31) ||
+      (parts[0] === 192 && parts[1] === 168) ||
+      (parts[0] === 198 && (parts[1] === 18 || parts[1] === 19)) ||
+      parts[0] >= 224;
+    if (privateAddress) return null;
+  }
+  if (
+    ipVersion === 6 &&
+    (hostname === "::" ||
+      hostname === "::1" ||
+      /^f[cd]/i.test(hostname) ||
+      /^fe[89ab]/i.test(hostname) ||
+      /^::ffff:/i.test(hostname))
+  ) return null;
+  parsed.hash = "";
+  return parsed.href;
+}
+
+function readJsonBody(req, maxBytes = 8192) {
+  return new Promise((resolve, reject) => {
+    let body = "";
+    let size = 0;
+    req.on("data", (chunk) => {
+      size += chunk.length;
+      if (size <= maxBytes) body += chunk;
+    });
+    req.on("end", () => {
+      if (size > maxBytes) return reject(new Error("too-large"));
+      try {
+        resolve(JSON.parse(body || "{}"));
+      } catch {
+        reject(new Error("invalid-json"));
+      }
+    });
+    req.on("error", reject);
+  });
+}
+
+function designMdRateLimited(ip) {
+  const now = Date.now();
+  const windowStart = now - 60 * 60 * 1000;
+  const hits = (designMdRequests.get(ip) || []).filter((time) => time > windowStart);
+  if (hits.length >= DESIGN_MD_RATE_LIMIT) return true;
+  hits.push(now);
+  designMdRequests.set(ip, hits);
+  if (designMdRequests.size > 2000) {
+    for (const [key, times] of designMdRequests) {
+      if (!times.some((time) => time > windowStart)) designMdRequests.delete(key);
+    }
+  }
+  return false;
+}
+
+async function designMdFetch(pathname, options = {}) {
+  const response = await fetch(`${DESIGN_MD_API_BASE}${pathname}`, {
+    ...options,
+    headers: { Accept: "application/json", ...(options.headers || {}) },
+    signal: AbortSignal.timeout(12000),
+  });
+  const body = await response.text();
+  let data;
+  try {
+    data = JSON.parse(body);
+  } catch {
+    data = { error: "The analysis service returned an invalid response." };
+  }
+  return { data, status: response.status };
+}
+
+function absoluteDesignMdAssets(data) {
+  if (!data || typeof data !== "object") return data;
+  const rewrite = (value) =>
+    typeof value === "string" && value.startsWith("/") ? `${DESIGN_MD_API_BASE}${value}` : value;
+  if (Array.isArray(data.entries)) {
+    data.entries = data.entries.map((entry) => ({ ...entry, screenshotUrl: rewrite(entry.screenshotUrl) }));
+  }
+  if (data.screenshotUrl) data.screenshotUrl = rewrite(data.screenshotUrl);
+  return data;
+}
 
 const TYPES = {
   ".html": "text/html; charset=utf-8",
@@ -477,6 +582,7 @@ const routes = [
   { m: (s) => s.length === 2 && s[0] === "releases" && { slug: s[1] }, h: releasesTpl.detail },
   { m: (s) => s.length === 1 && s[0] === "compare" && {}, h: compareTpl.index },
   { m: (s) => s.length === 2 && s[0] === "compare" && { slug: s[1] }, h: compareTpl.detail },
+  { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "design-md" && {}, h: designMdTpl.render },
   { m: (s) => s.length === 1 && s[0] === "product" && {}, h: pagesTpl.productHub },
   { m: (s) => s.length === 1 && s[0] === "pricing" && {}, h: pricingTpl.render },
   // The entity page for Sokosumi itself lives in code so its JSON-LD is
@@ -748,6 +854,7 @@ const assetsDir = path.join(root, "assets");
           ctaLabel: t("Sign Up"),
         }),
       )
+      .replace("<!--SSR:FREE_TOOLS-->", designMdTpl.homeSection())
       .replace("<!--SSR:FOOTER-->", shell.footerHtml());
     // Editor-owned hero positioning: when the sokosumi-site-config global has
     // a hero subtitle, it replaces the built-in line (per locale via cms's
@@ -868,6 +975,12 @@ const assetsDir = path.join(root, "assets");
 
       return i18n.run({ locale, path: urlPath }, async () => {
       try {
+        if (locale === "de" && urlPath === "/tools/design-md") {
+          return send(req, res, 301, {
+            Location: `/tools/design-md${rawQuery ? `?${rawQuery}` : ""}`,
+            "Cache-Control": "public, max-age=86400",
+          }, "");
+        }
         // Shared files must live at ONE url: /de/assets/…, /de/robots.txt,
         // /de/sitemap.xml and friends would be crawlable duplicates, so they
         // bounce to the canonical un-prefixed copy. (Extension-less /de/api/*
@@ -886,6 +999,89 @@ const assetsDir = path.join(root, "assets");
         if (urlPath === "/api/nav") {
           const model = await buildNav({}).catch(() => ({ vendors: [], industries: [] }));
           return send(req, res, 200, { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "public, max-age=300" }, JSON.stringify(model));
+        }
+
+        if (urlPath === "/api/design-md/gallery") {
+          try {
+            const upstream = await designMdFetch("/tools/design-md/api/extractions");
+            const data = absoluteDesignMdAssets(upstream.data);
+            return send(req, res, upstream.status, {
+              "Content-Type": "application/json; charset=utf-8",
+              "Cache-Control": upstream.status === 200 ? "public, max-age=60, s-maxage=300" : "no-store",
+            }, JSON.stringify(data));
+          } catch {
+            return send(req, res, 502, { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" }, JSON.stringify({ error: "The saved-analysis archive is unavailable right now." }));
+          }
+        }
+
+        const extractionMatch = /^\/api\/design-md\/extractions\/(\d+)$/.exec(urlPath);
+        if (extractionMatch) {
+          try {
+            const upstream = await designMdFetch(`/tools/design-md/api/extractions/${extractionMatch[1]}`);
+            const data = absoluteDesignMdAssets(upstream.data);
+            return send(req, res, upstream.status, {
+              "Content-Type": "application/json; charset=utf-8",
+              "Cache-Control": upstream.status === 200 ? "public, max-age=300" : "no-store",
+            }, JSON.stringify(data));
+          } catch {
+            return send(req, res, 502, { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" }, JSON.stringify({ error: "This saved analysis is unavailable right now." }));
+          }
+        }
+
+        if (urlPath === "/api/design-md" && req.method === "POST") {
+          if (!DESIGN_MD_API_KEY) {
+            return send(req, res, 503, { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" }, JSON.stringify({ error: "The generator is temporarily unavailable." }));
+          }
+          let body;
+          try {
+            body = await readJsonBody(req);
+          } catch (error) {
+            const message = error.message === "too-large" ? "The request is too large." : "Send a valid JSON request.";
+            return send(req, res, 400, { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" }, JSON.stringify({ error: message }));
+          }
+          const targetUrl = publicWebsiteUrl(body.url);
+          if (!targetUrl) {
+            return send(req, res, 400, { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" }, JSON.stringify({ error: "Enter a complete public website URL." }));
+          }
+          if (designMdRateLimited(clientIp(req))) {
+            return send(req, res, 429, { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store", "Retry-After": "3600" }, JSON.stringify({ error: "You have reached the hourly generation limit. Try again later or open a saved analysis below." }));
+          }
+          try {
+            const upstream = await designMdFetch("/api/v1/design-md", {
+              method: "POST",
+              headers: {
+                Authorization: `Bearer ${DESIGN_MD_API_KEY}`,
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ url: targetUrl }),
+            });
+            const data = absoluteDesignMdAssets(upstream.data);
+            if (data && data.jobId) data.pollUrl = `/api/design-md/jobs/${data.jobId}`;
+            if (data && data.status === "done" && !data.url) data.url = targetUrl;
+            const responseStatus = upstream.status === 401 || upstream.status === 403 ? 503 : upstream.status;
+            if (responseStatus === 503) data.error = "The generator is temporarily unavailable.";
+            return send(req, res, responseStatus, { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" }, JSON.stringify(data));
+          } catch {
+            return send(req, res, 502, { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" }, JSON.stringify({ error: "The generator could not reach its analysis service. Try again in a moment." }));
+          }
+        }
+
+        const designJobMatch = /^\/api\/design-md\/jobs\/([A-Za-z0-9-]{16,80})$/.exec(urlPath);
+        if (designJobMatch) {
+          if (!DESIGN_MD_API_KEY) {
+            return send(req, res, 503, { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" }, JSON.stringify({ error: "The generator is temporarily unavailable." }));
+          }
+          try {
+            const upstream = await designMdFetch(`/api/v1/design-md/jobs/${encodeURIComponent(designJobMatch[1])}`, {
+              headers: { Authorization: `Bearer ${DESIGN_MD_API_KEY}` },
+            });
+            const data = absoluteDesignMdAssets(upstream.data);
+            const responseStatus = upstream.status === 401 || upstream.status === 403 ? 503 : upstream.status;
+            if (responseStatus === 503) data.error = "The generator is temporarily unavailable.";
+            return send(req, res, responseStatus, { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" }, JSON.stringify(data));
+          } catch {
+            return send(req, res, 502, { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" }, JSON.stringify({ error: "The generator could not reach its analysis service. Try again in a moment." }));
+          }
         }
 
         // Draft preview: /api/preview?secret=…&path=/x sets the cookie and

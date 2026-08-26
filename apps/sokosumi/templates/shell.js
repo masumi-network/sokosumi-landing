@@ -398,13 +398,13 @@ function head(opts) {
     ${ANALYTICS_HEAD}
     <title>${title}</title>
     <meta name="description" content="${desc}" />
-    ${opts.noindex || (locale === "de" && !i18n.deIndexable(opts.path)) ? '<meta name="robots" content="noindex,follow" />' : `<link rel="canonical" href="${attr(canonical)}" />\n    ${hreflangLinks(opts.path)}`}
+    ${opts.noindex || (locale === "de" && !i18n.deIndexable(opts.path)) ? '<meta name="robots" content="noindex,follow" />' : `<link rel="canonical" href="${attr(canonical)}" />\n    ${opts.englishOnly ? "" : hreflangLinks(opts.path)}`}
     <meta property="og:site_name" content="Sokosumi" />
     <meta property="og:title" content="${title}" />
     <meta property="og:description" content="${desc}" />
     <meta property="og:type" content="${article ? "article" : "website"}" />
     <meta property="og:locale" content="${locale === "de" ? "de_DE" : "en_US"}" />
-    <meta property="og:locale:alternate" content="${locale === "de" ? "en_US" : "de_DE"}" />
+    ${opts.englishOnly ? "" : `<meta property="og:locale:alternate" content="${locale === "de" ? "en_US" : "de_DE"}" />`}
     <meta property="og:url" content="${attr(canonical)}" />
     <meta property="og:image" content="${attr(og.url)}" />
     <meta property="og:image:secure_url" content="${attr(og.url)}" />
@@ -953,7 +953,7 @@ function langSwitcher() {
           </nav>`;
 }
 
-function footerHtml() {
+function footerHtml(opts) {
   return `<footer class="site">
       <div class="container-app">
         <div class="foot-grid">
@@ -993,6 +993,12 @@ function footerHtml() {
               </ul>
             </div>
             <div class="foot-col">
+              <h2 class="foot-h">${esc(t("Free tools"))}</h2>
+              <ul>
+                <li><a href="/tools/design-md">${esc(t("DESIGN.md generator"))}</a></li>
+              </ul>
+            </div>
+            <div class="foot-col">
               <h2 class="foot-h">${esc(t("Company"))}</h2>
               <ul>
                 <li><a href="/about">${esc(t("About"))}</a></li>
@@ -1024,7 +1030,7 @@ function footerHtml() {
         </div>
         <div class="foot-bottom">
           <p class="foot-copy">&copy; ${new Date().getFullYear()} Sokosumi. ${esc(t("All rights reserved."))}</p>
-          ${langSwitcher()}
+          ${opts && opts.englishOnly ? "" : langSwitcher()}
           <nav class="foot-legal" aria-label="${attr(t("Legal"))}">
             <a href="/legal/terms-of-service">${esc(t("Terms"))}</a>
             <a href="/legal/privacy-policy">${esc(t("Privacy"))}</a>
@@ -1038,8 +1044,8 @@ function footerHtml() {
     </footer>`;
 }
 
-function footer(extraScripts) {
-  return `${footerHtml()}
+function footer(extraScripts, opts) {
+  return `${footerHtml(opts)}
     <script src="/assets/site.js" defer></script>
     <script src="/assets/nav.js" defer></script>
     <script src="/assets/consent.js" defer></script>
@@ -1082,7 +1088,7 @@ function pageEnd(opts) {
   const extra = ((opts && opts.scripts) || [])
     .map((s) => `<script src="${attr(s)}" defer></script>`)
     .join("\n    ");
-  return `</main>` + footer(extra);
+  return `</main>` + footer(extra, opts);
 }
 
 // ---- image thumbnails via Vercel's optimizer ----

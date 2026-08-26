@@ -115,6 +115,10 @@ Humans sign up at https://app.sokosumi.com/signup (free plan, no card).
 
 - [Serviceplan Group and AI](https://www.sokosumi.com/serviceplan-ai): sourced overview of the House of AI — Insight.AI, Creative.AI, Activate.AI, Agentic.AI on a Global Data Platform — with 13 chapters on Serviceplan, Mediaplus, Plan.Net, the Masumi/Kodosumi/Sokosumi stack, AI coworkers, cases, partnerships and a dated timeline. Every claim links to a primary source.
 
+## Free tools for marketing
+
+- [DESIGN.md generator](https://www.sokosumi.com/tools/design-md): analyze a public website and create a portable design-system file for AI coding agents; free, no sign-up
+
 ## Developer resources
 
 - [Sokosumi API documentation](https://api.sokosumi.com): the Sokosumi REST API reference
@@ -205,6 +209,7 @@ async function sitemap() {
     "/legal",
     "/list-your-agent",
     "/press",
+    "/tools/design-md",
     ...require("./comparePairs").all().map((p) => `/compare/${p.slug}`),
   ]);
   // One collection failing is tolerable (its URLs drop out this cycle); ALL
@@ -277,7 +282,7 @@ async function sitemap() {
     const de = esc(SITE + dePath(u));
     // An hreflang cluster claims both members are the same page in different
     // languages, so it is only emitted where the German really is German.
-    const alternates = i18n.deIndexable(u)
+    const alternates = u !== "/tools/design-md" && i18n.deIndexable(u)
       ? `<xhtml:link rel="alternate" hreflang="en" href="${en}"/>` +
         `<xhtml:link rel="alternate" hreflang="de" href="${de}"/>` +
         `<xhtml:link rel="alternate" hreflang="x-default" href="${en}"/>`
@@ -285,7 +290,7 @@ async function sitemap() {
     return `  <url><loc>${loc === "de" ? de : en}</loc>${alternates}</url>`;
   };
   const body = [...urls]
-    .flatMap((u) => (i18n.deIndexable(u) ? [entry("en", u), entry("de", u)] : [entry("en", u)]))
+    .flatMap((u) => (u !== "/tools/design-md" && i18n.deIndexable(u) ? [entry("en", u), entry("de", u)] : [entry("en", u)]))
     .join("\n");
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n${body}\n</urlset>\n`;
 }

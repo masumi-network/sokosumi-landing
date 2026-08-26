@@ -415,7 +415,7 @@ footer.site {
 .foot-mark { height: 15px; width: auto; display: block; }
 .foot-tag { margin: 0; font-size: 13px; line-height: 1.65; color: var(--muted-foreground); }
 
-.foot-cols { display: grid; grid-template-columns: repeat(4, minmax(120px, auto)); gap: 32px 56px; }
+.foot-cols { display: grid; grid-template-columns: repeat(5, minmax(100px, auto)); gap: 32px 40px; }
 .foot-h {
   margin: 0 0 14px; font-size: 12px; font-weight: 500;
   letter-spacing: 0.08em; text-transform: uppercase; color: var(--foreground);
@@ -457,4 +457,8 @@ footer.site {
 
 @media (max-width: 640px) {
   .foot-cols { grid-template-columns: repeat(2, minmax(130px, 1fr)); width: 100%; }
+}
+
+@media (max-width: 360px) {
+  .foot-cols { grid-template-columns: minmax(0, 1fr); }
 }
