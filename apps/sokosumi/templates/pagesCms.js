@@ -48,7 +48,7 @@ async function productHub(ctx) {
   const cr = [{ label: "Home", href: "/" }, { label: "Product" }];
   return (
     pageStart({
-      title: t("AI coworker for marketing teams: how Sokosumi works | Product"),
+      title: t("AI coworker for marketing teams | Sokosumi"),
       description:
         "Brief a named AI coworker, follow the work on a shared board, and get finished files back. See how Sokosumi actually works.",
       path: "/product",
@@ -134,7 +134,7 @@ async function surfacePage(doc, slug, ctx) {
     .join("");
   return (
     pageStart({
-      title: cfg.metaTitle,
+      title: t(cfg.metaTitle),
       description: (doc.description || "").slice(0, 160),
       path: "/" + slug,
       breadcrumb: cr,

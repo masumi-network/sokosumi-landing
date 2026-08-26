@@ -43,7 +43,7 @@ async function index(ctx) {
   const cr = [{ label: "Home", href: "/" }, { label: "Blog" }];
   return (
     pageStart({
-      title: "Blog | Sokosumi",
+      title: t("Blog | Sokosumi"),
       description: "Articles, announcements, and press from the team behind your AI coworkers \u2014 how the marketplace works, what teams brief, and what shipped recently.",
       path: "/blog",
       breadcrumb: cr,
@@ -85,7 +85,7 @@ async function detail(ctx) {
   const cr = [{ label: "Home", href: "/" }, { label: "Blog", href: "/blog" }, { label: p.title }];
   return (
     pageStart({
-      title: t("{title} | Sokosumi blog", { title: p.title }),
+      title: t("{title} | Sokosumi", { title: p.title }),
       description: (p.description || "").slice(0, 155),
       path: `/blog/${p.slug}`,
       og: { type: "article", eyebrow: t("Blog"), title: p.title, sub: p.description || "", img: cover || "" },

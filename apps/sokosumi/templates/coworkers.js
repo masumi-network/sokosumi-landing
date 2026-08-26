@@ -139,7 +139,7 @@ async function index(ctx) {
   const cr = [{ label: "Home", href: "/" }, { label: "AI Coworkers" }];
   return (
     pageStart({
-      title: t("AI agents for marketing: named coworkers with real roles | Sokosumi"),
+      title: t("AI agents for marketing and AI coworkers | Sokosumi"),
       description: t("AI agents and coworkers for marketing teams: {n} named specialists with a role, a vendor and a credit price you see first. Brief one; get a file back.", { n: curated.length + agents.length }),
       path: "/ai-coworkers",
       breadcrumb: cr,
@@ -361,7 +361,10 @@ async function profile(ctx) {
   cr.push({ label: c.name });
   return (
     pageStart({
-      title: t("{name} | {role} on Sokosumi", { name: c.name, role: c.role || t("AI coworker") }),
+      title:
+        c.slug === "instagram-page-analysis"
+          ? t("Instagram analyzer for posts and pages | Sokosumi")
+          : t("{name} | {role} on Sokosumi", { name: c.name, role: c.role || t("AI coworker") }),
       description: shell.describe(c.seoDescription || c.description || t("Hire {name}, an AI coworker on Sokosumi.", { name: c.name }), t("Brief {name} in plain language; the task shows on a shared board and comes back as a file. Credit price shown first.", { name: c.name })),
       path: `/ai-coworkers/${c.slug}`,
       og: { type: "coworker", title: c.name, sub: c.role || "", eyebrow: c.kind === "agent" ? t("Specialist agent on Sokosumi") : t("AI coworker on Sokosumi"), meta: [vn, c.profileHosting].filter(Boolean).join(" · "), img: c.image || "" },

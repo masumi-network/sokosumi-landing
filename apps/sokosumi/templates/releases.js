@@ -66,7 +66,7 @@ async function index(ctx) {
   const cr = [{ label: "Home", href: "/" }, { label: "Releases" }];
   return (
     pageStart({
-      title: "Releases | Sokosumi",
+      title: t("Releases | Sokosumi"),
       description: "Every Sokosumi release in order: new capabilities, improvements and fixes, with the date each one shipped and what changed for your coworkers.",
       path: "/releases",
       breadcrumb: cr,

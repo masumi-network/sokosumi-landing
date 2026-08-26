@@ -87,7 +87,7 @@
     <meta name="twitter:image:alt" content="Sokosumi, AI coworkers for marketing teams" />
 
     <script type="application/ld+json">
-    {"@context":"https://schema.org","@type":"Organization","@id":"https://www.sokosumi.com/#organization","name":"Sokosumi","url":"https://www.sokosumi.com/","logo":{"@type":"ImageObject","url":"https://www.sokosumi.com/assets/sokosumi-wordmark.svg"},"image":"https://www.sokosumi.com/assets/og-image.jpg","description":"Sokosumi is a marketplace where marketing teams hire AI coworkers and AI agents. Brief a coworker in plain language and get finished files back: reports, documents, decks, dashboards. Built by Serviceplan Group with NMKR.","contactPoint":[{"@type":"ContactPoint","contactType":"sales","email":"info@sokosumi.com","url":"https://www.sokosumi.com/contact/sales","availableLanguage":["en","de"]},{"@type":"ContactPoint","contactType":"customer support","email":"support@serviceplan-agents.com","url":"https://www.sokosumi.com/contact/support","availableLanguage":["en","de"]}],"sameAs":["https://x.com/sokosumi","https://linkedin.com/company/sokosumi/","https://discord.com/invite/aj4QfnTS92","https://t.me/+igMz0AazR-cwMzJi","https://github.com/masumi-network"]}
+    {"@context":"https://schema.org","@type":"Organization","@id":"https://www.sokosumi.com/#organization","name":"Sokosumi","url":"https://www.sokosumi.com/","logo":{"@type":"ImageObject","url":"https://www.sokosumi.com/assets/sokosumi-wordmark.svg"},"image":"https://www.sokosumi.com/assets/og-image.jpg","description":"Sokosumi is a marketplace where marketing teams hire AI coworkers and AI agents. Brief a coworker in plain language and get finished files back: reports, documents, decks, dashboards. Built by Serviceplan Group with NMKR.","contactPoint":[{"@type":"ContactPoint","contactType":"sales","email":"info@sokosumi.com","url":"https://www.sokosumi.com/contact/sales","availableLanguage":["en","de"]},{"@type":"ContactPoint","contactType":"customer support","email":"support@serviceplan-agents.com","url":"https://www.sokosumi.com/contact/support","availableLanguage":["en","de"]}],"sameAs":["https://x.com/sokosumi","https://discord.com/invite/aj4QfnTS92","https://t.me/+igMz0AazR-cwMzJi","https://github.com/masumi-network"]}
     </script>
     <script type="application/ld+json">
     {"@context":"https://schema.org","@type":"WebSite","@id":"https://www.sokosumi.com/#website","name":"Sokosumi","url":"https://www.sokosumi.com/","publisher":{"@id":"https://www.sokosumi.com/#organization"},"inLanguage":"en"}
@@ -645,11 +645,9 @@
               .filter(Boolean);
             if (trio.length < 3) trio = coworkers.slice(0, 3);
 
-            /* The card already carries the name and the role, so a bio that
-               opens "<Name> is a <Role> at <Company>," repeats what is right
-               above it. Strip that, then cut to roughly what three lines hold
-               at the rendered column width; the CSS line clamp is what
-               actually guarantees the three-line cap. */
+            /* Emergency fallback for a catalog response without CMS editorial
+               copy. Prefer a complete first sentence; otherwise stop on a
+               clause or word boundary instead of cutting through a phrase. */
             function shortBlurb(text, name, max) {
               var t = String(text || "").trim();
               if (!t) return "";
@@ -672,10 +670,8 @@
             var intro = document.getElementById("coworkerIntro");
             intro.innerHTML = trio
               .map(function (c, i) {
-                /* c.blurb is editorial text from the CMS, written to fill the
-                   card's three lines exactly — render it verbatim. Truncating
-                   the bio is only the fallback for coworkers that have no
-                   blurb yet; the CSS clamp stays as the hard cap either way. */
+                /* c.blurb is concise editorial text from the CMS. Truncating
+                   the product bio is only the failure-mode fallback. */
                 var blurb = String(c.blurb || "").trim() || shortBlurb(c.description, c.name, 125);
                 return (
                   '<a class="intro-person" href="/ai-coworkers/' + encodeURIComponent(c.slug) + '" data-reveal style="--i:' + i + '">' +

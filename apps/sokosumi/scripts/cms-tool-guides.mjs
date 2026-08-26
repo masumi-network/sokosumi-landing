@@ -23,7 +23,12 @@ async function api(method, url, body) {
   if (!res.ok) throw new Error(`${method} ${url} ${res.status}: ${JSON.stringify(j).slice(0, 500)}`);
   return j;
 }
-const withIds = (en, de) => de.map((b, i) => ({ ...b, id: en[i]?.id, items: b.items && en[i]?.items ? b.items.map((it, j) => ({ ...it, id: en[i].items[j]?.id })) : b.items }));
+function articleWithFaq(guide, locale) {
+  const content = guide[locale];
+  if (!content.faq?.length) return content.body;
+  const faq = content.faq.map(([question, answer]) => `### ${question}\n\n${answer}`).join("\n\n");
+  return `${content.body}\n\n## ${content.faqHeading}\n\n${faq}`;
+}
 
 const dir = path.join(root, "content", "tool-guides");
 const files = fs.readdirSync(dir).filter((f) => f.endsWith(".mjs")).sort();
@@ -32,14 +37,13 @@ const status = process.env.PUBLISH ? "published" : "draft";
 const map = [];
 for (const f of files) {
   const g = (await import(path.join(dir, f))).default;
-  map.push({ slug: g.slug, tool: g.tool, job: g.job, compare: g.compare, coworker: g.coworker });
+  if (g.tool) map.push({ slug: g.slug, tool: g.tool, job: g.job, compare: g.compare, coworker: g.coworker });
   if (only && g.slug !== only) continue;
-  const faq = (loc) => (g[loc].faq?.length ? [{ blockType: "faq", heading: g[loc].faqHeading, items: g[loc].faq.map(([question, answer]) => ({ question, answer })) }] : []);
   const existing = await api("GET", `/guides?where[slug][equals]=${encodeURIComponent(g.slug)}&where[site][equals]=sokosumi&limit=1&depth=0&draft=true`);
-  const body = { title: g.en.title, slug: g.slug, description: g.en.description, site: "sokosumi", category: g.category || "workflows", order: g.order || 50, content: lexical(g.en.body), sections: faq("en"), _status: status };
+  const body = { title: g.en.title, slug: g.slug, description: g.en.description, site: "sokosumi", category: g.category || "workflows", order: g.order || 50, content: lexical(articleWithFaq(g, "en")), sections: [], _status: status };
   const doc = existing.docs[0] ? (await api("PATCH", `/guides/${existing.docs[0].id}?locale=en`, body)).doc : (await api("POST", `/guides?locale=en`, body)).doc;
   if (g.de) {
-    await api("PATCH", `/guides/${doc.id}?locale=de`, { title: g.de.title, description: g.de.description, content: lexical(g.de.body), sections: withIds(doc.sections || [], faq("de")), _status: status });
+    await api("PATCH", `/guides/${doc.id}?locale=de`, { title: g.de.title, description: g.de.description, content: lexical(articleWithFaq(g, "de")), sections: [], _status: status });
   }
   console.log(`${status} ${g.slug} #${doc.id}${g.de ? " +de" : ""}`);
 }

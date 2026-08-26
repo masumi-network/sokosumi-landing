@@ -73,7 +73,7 @@ function toolBridge(tg, g) {
       <p>${esc(t("Everything above still needs someone to write the prompt, check the answer and paste it somewhere. On Sokosumi you brief a named coworker for the same job; the task shows on a shared board and comes back as a PDF, deck, spreadsheet or dashboard. Credits are only used when a task runs, and the free plan needs no card."))}</p>
       <div class="cta-row">
         <a class="btn btn-primary" href="${attr(shell.APP_SIGNUP)}" data-analytics="sign_up_click" data-analytics-location="tool_guide_bridge">${esc(t("Start free"))}</a>
-        <a class="btn btn-outline" href="${attr(cmp)}">${esc(t("Sokosumi vs {name}", { name: tg.tool.name }))}</a>
+        <a class="btn btn-outline" href="${attr(cmp)}">${esc(t("Compare {name} with alternatives", { name: tg.tool.name }))}</a>
         ${tg.coworker ? `<a class="btn btn-outline" href="/ai-coworkers/${attr(tg.coworker)}">${esc(t("Meet the coworker for this job"))}</a>` : ""}
       </div>
     </div>
@@ -123,7 +123,7 @@ async function index(ctx) {
   const cr = [{ label: "Home", href: "/" }, { label: "Guides" }];
   return (
     pageStart({
-      title: "Guides | Sokosumi",
+      title: t("Guides | Sokosumi"),
       description: t("Guides for marketing teams on Sokosumi: set up a workspace, write a briefing that works, run and schedule AI coworkers, use the files that come back."),
       path: "/guides",
       breadcrumb: cr,
@@ -187,7 +187,7 @@ async function detail(ctx) {
     : [];
   return (
     pageStart({
-      title: tg ? t("{title} | Sokosumi", { title: g.title }) : t("{title} | Sokosumi guides", { title: g.title }),
+      title: g.title,
       description: shell.describe(g.description, t("A Sokosumi guide for marketing teams: what to do, in which order, with examples.")),
       path: `/guides/${g.slug}`,
       og: tg

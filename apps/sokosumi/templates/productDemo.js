@@ -41,7 +41,7 @@ PEOPLE.forEach((p) => { p.image = CW + p.slug + ".webp"; });
 
 const HOME_STRIP = ["soupie", "jamal", "hannah", "elena", "alex", "maya", "noodles"];
 const VENDORS = [
-  { id: "serviceplan", name: "Serviceplan", logo: "/assets/product/serviceplan.png", site: "https://www.serviceplan.com", members: ["elena", "hannah", "alex", "jamal", "maya"] },
+  { id: "serviceplan", name: "Serviceplan", logo: "/assets/product/serviceplan.png", site: "https://www.serviceplan.com", legal: "https://www.house-of-communication.com/de/de/footer/imprint.html", members: ["elena", "hannah", "alex", "jamal", "maya"] },
   { id: "utxo", name: "utxo AG", members: ["hepha", "apol", "soupie", "bront", "dite", "igni", "pheme", "vulc"] },
 ];
 
@@ -499,7 +499,7 @@ function vendorBlock(v, i) {
   return `<div class="pd-vendor" data-pd-vendor="${attr(v.id)}">
     <div class="pd-vendor-row">
       <div class="pd-vendor-id">${v.logo ? `<img src="${attr(v.logo)}" alt="${attr(v.name)}" height="20" />` : `<strong>${esc(v.name)}</strong>`}<span>${v.members.length} coworkers</span></div>
-      ${v.site ? `<div class="pd-vendor-links"><a href="${attr(v.site)}" target="_blank" rel="noopener">Visit website ${ico("external-link", 14)}</a><a href="${attr(v.site)}/legal" target="_blank" rel="noopener">Legal ${ico("external-link", 14)}</a></div>` : ""}
+      ${v.site ? `<div class="pd-vendor-links"><a href="${attr(v.site)}" target="_blank" rel="noopener">Visit website ${ico("external-link", 14)}</a>${v.legal ? `<a href="${attr(v.legal)}" target="_blank" rel="noopener">Legal ${ico("external-link", 14)}</a>` : ""}</div>` : ""}
     </div>
     <div class="pd-rule-x"></div>
     <div class="pd-split">

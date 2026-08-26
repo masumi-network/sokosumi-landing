@@ -143,7 +143,7 @@ async function hub(ctx) {
   const cr = [{ label: "Home", href: "/" }, { label: "Use cases" }];
   return (
     pageStart({
-      title: "Use cases | Sokosumi",
+      title: t("Use cases | Sokosumi"),
       description:
         "What teams get done with AI coworkers on Sokosumi, organized by industry: real workflows with the coworkers and template tasks to run them.",
       path: "/use-cases",
@@ -715,7 +715,7 @@ async function detail(ctx) {
 
   return (
     pageStart({
-      title: t("{title} | Sokosumi use cases", { title: doc.title }),
+      title: doc.title,
       description: shell.describe(doc.description, t("A Sokosumi use case: which coworker does it, what you brief, what comes back as a file.")),
       path: `/use-cases/${doc.slug}`,
       og: { type: "article", eyebrow: t("Use case"), title: doc.title, sub: doc.description || "" },

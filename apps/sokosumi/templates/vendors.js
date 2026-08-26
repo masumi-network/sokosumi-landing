@@ -327,11 +327,11 @@ async function detail(ctx) {
   // page is meant to answer for — computed from what the vendor actually ships.
   const titleKinds =
     curated.length && agents.length
-      ? "AI Coworkers & Agents"
+      ? t("AI Coworkers & Agents")
       : curated.length
-        ? "AI Coworkers"
+        ? t("AI Coworkers")
         : agents.length
-          ? "AI Agents"
+          ? t("AI Agents")
           : "";
   const title = titleKinds
     ? t("{vendor} {kinds} | Sokosumi", { vendor: v.name, kinds: titleKinds })

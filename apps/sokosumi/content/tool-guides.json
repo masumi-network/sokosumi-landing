@@ -1,1 +1,144 @@
-{ "guides": [] }
+{
+  "guides": [
+    {
+      "slug": "how-to-use-canva-for-marketing",
+      "tool": {
+        "key": "canva",
+        "name": "Canva"
+      },
+      "job": "campaign asset production",
+      "compare": "canva-vs-adobe",
+      "coworker": "elena"
+    },
+    {
+      "slug": "how-to-use-chatgpt-for-marketing",
+      "tool": {
+        "key": "chatgpt",
+        "name": "ChatGPT"
+      },
+      "job": "marketing strategy",
+      "compare": "chatgpt-vs-claude",
+      "coworker": "elena"
+    },
+    {
+      "slug": "how-to-use-chatgpt-for-sales-outreach",
+      "tool": {
+        "key": "chatgpt",
+        "name": "ChatGPT"
+      },
+      "job": "sales outreach",
+      "compare": "chatgpt-vs-claude",
+      "coworker": "hannah"
+    },
+    {
+      "slug": "how-to-use-chatgpt-for-seo-content-briefs",
+      "tool": {
+        "key": "chatgpt",
+        "name": "ChatGPT"
+      },
+      "job": "SEO content briefs",
+      "compare": "perplexity-vs-chatgpt",
+      "coworker": "elena"
+    },
+    {
+      "slug": "how-to-use-claude-for-campaign-research",
+      "tool": {
+        "key": "claude",
+        "name": "Claude"
+      },
+      "job": "campaign research",
+      "compare": "chatgpt-vs-claude",
+      "coworker": "hannah"
+    },
+    {
+      "slug": "how-to-use-claude-code-for-sales-outreach",
+      "tool": {
+        "key": "claude-code",
+        "name": "Claude Code"
+      },
+      "job": "sales outreach operations",
+      "compare": "codex-vs-claude-code",
+      "coworker": "alex"
+    },
+    {
+      "slug": "how-to-use-gemini-for-marketing",
+      "tool": {
+        "key": "gemini",
+        "name": "Gemini"
+      },
+      "job": "marketing in Google Workspace",
+      "compare": "claude-vs-gemini",
+      "coworker": "elena"
+    },
+    {
+      "slug": "how-to-use-manus-for-market-research",
+      "tool": {
+        "key": "manus",
+        "name": "Manus"
+      },
+      "job": "market research deliverables",
+      "compare": "manus-vs-genspark",
+      "coworker": "hannah"
+    },
+    {
+      "slug": "how-to-use-microsoft-copilot-for-marketing",
+      "tool": {
+        "key": "copilot",
+        "name": "Microsoft 365 Copilot"
+      },
+      "job": "B2B marketing in Microsoft 365",
+      "compare": "copilot-vs-chatgpt",
+      "coworker": "elena"
+    },
+    {
+      "slug": "how-to-use-n8n-for-lead-routing",
+      "tool": {
+        "key": "n8n",
+        "name": "n8n"
+      },
+      "job": "lead qualification and routing",
+      "compare": "n8n-vs-zapier",
+      "coworker": "alex"
+    },
+    {
+      "slug": "how-to-use-notion-ai-for-campaign-planning",
+      "tool": {
+        "key": "notion",
+        "name": "Notion AI"
+      },
+      "job": "campaign planning",
+      "compare": "notion-vs-chatgpt",
+      "coworker": "elena"
+    },
+    {
+      "slug": "how-to-use-openai-codex-for-marketing",
+      "tool": {
+        "key": "chatgpt",
+        "name": "OpenAI Codex"
+      },
+      "job": "marketing operations",
+      "compare": "codex-vs-claude-code",
+      "coworker": "alex"
+    },
+    {
+      "slug": "how-to-use-perplexity-for-competitor-research",
+      "tool": {
+        "key": "perplexity",
+        "name": "Perplexity"
+      },
+      "job": "competitor research",
+      "compare": "perplexity-vs-chatgpt",
+      "coworker": "hannah"
+    },
+    {
+      "slug": "how-to-use-zapier-agents-for-marketing",
+      "tool": {
+        "key": "zapier",
+        "name": "Zapier Agents"
+      },
+      "job": "campaign operations",
+      "compare": "n8n-vs-zapier",
+      "coworker": "alex"
+    }
+  ]
+}

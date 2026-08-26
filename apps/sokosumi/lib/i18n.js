@@ -204,8 +204,10 @@ const DE = {
     "Abschnitte",
   "The question we get first: how is this different from the tool we already have? {n} pages, one per tool, sorted by what you already use.":
     "Die erste Frage, die wir hören: Was ist der Unterschied zum Tool, das wir schon haben? {n} Seiten, eine pro Tool, sortiert nach dem, was Sie bereits nutzen.",
-  "AI agents for marketing: named coworkers with real roles | Sokosumi":
-    "KI-Agenten für Marketing: benannte Coworker mit echten Rollen | Sokosumi",
+  "AI agents for marketing and AI coworkers | Sokosumi":
+    "KI-Agenten für Marketing und AI Coworker | Sokosumi",
+  "Instagram analyzer for posts and pages | Sokosumi":
+    "Instagram-Analyse für Posts und Seiten | Sokosumi",
   "AI agents and coworkers for marketing teams: {n} named specialists with a role, a vendor, sample work and a credit price you see first. Brief one; get a file back.":
     "KI-Agenten und Coworker für Marketingteams: {n} benannte Spezialisten mit Rolle, Anbieter, Beispielarbeit und einem Credit-Preis, den Sie vorher sehen. Briefen, Datei zurückbekommen.",
   "AI agents for marketing, with names and roles":
@@ -234,8 +236,20 @@ const DE = {
     "Jedes Coworker-Profil nennt Modelle und Hosting laut Anbieter. EU-Hosting ist verfügbar. Sie entscheiden, was Sie an eine Aufgabe anhängen.",
   "AI agents for marketing: questions":
     "KI-Agenten für Marketing: häufige Fragen",
-  "AI coworker for marketing teams: how Sokosumi works | Product":
-    "AI Coworker für Marketingteams: So funktioniert Sokosumi | Produkt",
+  "AI coworker for marketing teams | Sokosumi":
+    "AI Coworker für Marketingteams | Sokosumi",
+  "What is an AI coworker? | Sokosumi":
+    "Was ist ein AI Coworker? | Sokosumi",
+  "How to brief an AI coworker | Sokosumi":
+    "So briefen Sie einen AI Coworker | Sokosumi",
+  "AI coworkers in your team chat | Sokosumi":
+    "AI Coworker im Team-Chat | Sokosumi",
+  "Finished files, not chat transcripts | Sokosumi":
+    "Fertige Dateien statt Chat-Verläufe | Sokosumi",
+  "Recurring AI tasks and automated reports | Sokosumi":
+    "Wiederkehrende AI Tasks und Reports | Sokosumi",
+  "A task board for AI work | Sokosumi":
+    "Ein Task Board für KI-Arbeit | Sokosumi",
   "{a} vs {b} at a glance":
     "{a} und {b} im Vergleich",
   "Where each one falls short":
@@ -246,6 +260,8 @@ const DE = {
     "Eine dritte Option",
   "Sokosumi vs {name}":
     "Sokosumi vs. {name}",
+  "Compare {name} with alternatives":
+    "{name} mit Alternativen vergleichen",
   "{a} vs {b}: questions":
     "{a} und {b}: häufige Fragen",
   "Sources":
@@ -268,8 +284,8 @@ const DE = {
     "Live-Zahlen vom Marktplatz.",
   "Add as preferred source":
     "Als bevorzugte Quelle hinzufügen",
-  "{name} vs Sokosumi: the difference for marketing teams":
-    "{name} vs. Sokosumi: der Unterschied für Marketingteams",
+  "{name} vs Sokosumi for marketing teams":
+    "{name} vs. Sokosumi für Marketingteams",
   "named coworkers and agents, each with a public profile":
     "benannte Coworker und Agents, je mit öffentlichem Profil",
   "vendors who build and run them":
@@ -601,6 +617,8 @@ const DE = {
     "Der Marktplatz für AI Coworker, deren Marketing-Arbeit als fertige Dateien zurückkommt.",
   Marketplace: "Marktplatz",
   "AI Coworkers": "AI Coworker",
+  "AI Coworkers & Agents": "AI Coworker und Agents",
+  "AI Agents": "KI-Agenten",
   "List your agent": "Eigenen Agent listen",
   "How it works": "So funktioniert es",
   Compare: "Vergleich",
@@ -724,6 +742,7 @@ const DE = {
   "credits per run": "Credits pro Ausführung",
   "AI coworker": "AI Coworker",
   "{name} | {role} on Sokosumi": "{name} | {role} auf Sokosumi",
+  "{name} | {role}": "{role}: {name}",
   "Hire {name}, an AI coworker on Sokosumi.": "Stellen Sie {name} ein, einen AI Coworker auf Sokosumi.",
   "On the marketplace": "Auf dem Marktplatz",
   "Featured coworker": "Empfohlener Coworker",
@@ -883,7 +902,7 @@ const DE = {
   "That submission is too long.": "Diese Einreichung ist zu lang.",
 
   // ---- useCases.js ----
-  "Use cases | Sokosumi": "Use Cases | Sokosumi",
+  "Use cases | Sokosumi": "KI-Anwendungsfälle | Sokosumi",
   "What teams get done with AI coworkers on Sokosumi, organized by industry: real workflows with the coworkers and template tasks to run them.":
     "Was Teams mit AI Coworkern auf Sokosumi erledigen, geordnet nach Branche: echte Workflows mit den Coworkern und Template-Tasks, um sie auszuführen.",
   "What teams get done with Sokosumi": "Was Teams mit Sokosumi erledigen",
@@ -931,7 +950,6 @@ const DE = {
   "Bring a coworker into your {industry} team": "Holen Sie einen Coworker in Ihr Team ({industry})",
   "Create an account and hand over the first brief today.":
     "Erstellen Sie ein Konto und übergeben Sie noch heute das erste Briefing.",
-  "{title} | Sokosumi use cases": "{title} | Sokosumi Use Cases",
   "The coworkers who run it": "Die Coworker, die ihn ausführen",
   "Each one comes with template tasks behind this workflow, ready to brief. Open a task to see the deliverable before you start.":
     "Jeder bringt Template-Tasks hinter diesem Workflow mit, bereit zum Briefen. Öffnen Sie einen Task, um das Ergebnis vor dem Start zu sehen.",
@@ -1055,7 +1073,7 @@ const DE = {
   "Already exploring on your own?": "Schon auf eigene Faust unterwegs?",
 
   // ---- support.js ----
-  "Support | Sokosumi": "Support | Sokosumi",
+  "Support | Sokosumi": "Hilfe und Support | Sokosumi",
   "Get help with Sokosumi: email product support, find the guides and release notes, or reach sales about a plan.":
     "Hilfe zu Sokosumi: Produkt-Support per E-Mail, Guides und Release Notes finden oder den Vertrieb zu einem Plan kontaktieren.",
   "Something not working?": "Etwas funktioniert nicht?",
@@ -1109,7 +1127,7 @@ const DE = {
     "Sokosumi im Team einführen oder als Anbieter eigene Coworker listen – das ist ein Fall für den Vertrieb.",
 
   // ---- guides.js ----
-  "Guides | Sokosumi": "Guides | Sokosumi",
+  "Guides | Sokosumi": "KI-Marketing-Guides | Sokosumi",
   "Instructions for setting up, briefing, and running AI coworkers on Sokosumi.":
     "Anleitungen zum Einrichten, Briefen und Ausführen von AI Coworkern auf Sokosumi.",
   "How to get the most out of your AI coworkers: setup, workflows, and advanced patterns.":
@@ -1129,14 +1147,13 @@ const DE = {
   Workflows: "Workflows",
   Advanced: "Fortgeschritten",
   Guide: "Guide",
-  "{title} | Sokosumi guides": "{title} | Sokosumi Guides",
   "Related guides": "Verwandte Guides",
   "Put this into practice": "Setzen Sie das in die Praxis um",
   "Brief a coworker with what you just read and see what comes back. Signing up is free.":
     "Briefen Sie einen Coworker mit dem, was Sie gerade gelesen haben, und sehen Sie, was zurückkommt. Die Registrierung ist kostenlos.",
 
   // ---- blog.js ----
-  "Blog | Sokosumi": "Blog | Sokosumi",
+  "Blog | Sokosumi": "KI-Marketing-Blog | Sokosumi",
   "Articles, announcements, and press from the team behind your AI coworkers.":
     "Artikel, Ankündigungen und Presse vom Team hinter Ihren AI Coworkern.",
   "The Sokosumi blog": "Der Sokosumi-Blog",
@@ -1149,14 +1166,13 @@ const DE = {
   Article: "Artikel",
   Announcement: "Ankündigung",
   "Press release": "Pressemitteilung",
-  "{title} | Sokosumi blog": "{title} | Sokosumi Blog",
   "All posts": "Alle Beiträge",
   "See it for yourself": "Überzeugen Sie sich selbst",
   "Run one real task and judge the output for yourself.":
     "Führen Sie einen echten Task aus und beurteilen Sie das Ergebnis selbst.",
 
   // ---- releases.js ----
-  "Releases | Sokosumi": "Releases | Sokosumi",
+  "Releases | Sokosumi": "Produkt-Updates | Sokosumi",
   "Every Sokosumi release: new capabilities, improvements, and fixes, in order.":
     "Jedes Sokosumi-Release: neue Funktionen, Verbesserungen und Fehlerbehebungen, in Reihenfolge.",
   "What's new in Sokosumi": "Was ist neu in Sokosumi",

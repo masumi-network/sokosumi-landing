@@ -1,4 +1,18 @@
 {
   "hub": "serviceplan-ai",
-  "chapters": []
+  "chapters": [
+    { "slug": "house-of-ai", "short": "House of AI", "logo": "/assets/serviceplan-group.webp" },
+    { "slug": "serviceplan-creative-ai", "short": "Serviceplan", "logo": "/assets/serviceplan-group.webp" },
+    { "slug": "mediaplus-ai", "short": "Mediaplus" },
+    { "slug": "mediaplus-ai-products", "short": "Mediaplus products" },
+    { "slug": "plan-net-agentic-ai", "short": "Plan.Net" },
+    { "slug": "ai-marketing-agency", "short": "AI agency guide" },
+    { "slug": "ai-search-geo", "short": "AI search & GEO" },
+    { "slug": "ai-coworkers", "short": "AI Coworkers", "logo": "/assets/apple-touch-icon.png" },
+    { "slug": "masumi-sokosumi-kodosumi", "short": "AI stack", "logo": "/assets/apple-touch-icon.png" },
+    { "slug": "serviceplan-generate-ai-makeline", "short": "Generate.AI & MAKELINE" },
+    { "slug": "ai-marketing-cases", "short": "AI cases" },
+    { "slug": "partnerships-and-cases", "short": "Proof" },
+    { "slug": "timeline-and-sources", "short": "Timeline" }
+  ]
 }

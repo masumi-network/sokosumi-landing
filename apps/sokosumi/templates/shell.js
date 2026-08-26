@@ -317,7 +317,6 @@ function stripContext(node) {
 
 const SOCIALS = [
   "https://x.com/sokosumi",
-  "https://linkedin.com/company/sokosumi/",
   "https://discord.com/invite/aj4QfnTS92",
   "https://t.me/+igMz0AazR-cwMzJi",
   "https://github.com/masumi-network",
@@ -1020,7 +1019,6 @@ function footerHtml() {
             <a href="https://x.com/sokosumi" target="_blank" rel="noreferrer">X</a>
             <a href="https://github.com/masumi-network" target="_blank" rel="noreferrer">GitHub</a>
             <a href="https://t.me/+igMz0AazR-cwMzJi" target="_blank" rel="noreferrer">Telegram</a>
-            <a href="https://linkedin.com/company/sokosumi/" target="_blank" rel="noreferrer">LinkedIn</a>
           </nav>
         </div>
         <div class="foot-bottom">

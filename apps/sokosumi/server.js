@@ -85,9 +85,19 @@ try {
 // Serialising it per request burnt ~10 ms of event loop each time; it only
 // changes when refresh() replaces the catalog.
 let catalogJsonCache = null;
+let catalogEditorialPromise = null;
 function catalogJson() {
   if (catalogJsonCache === null) catalogJsonCache = JSON.stringify(catalog);
   return catalogJsonCache;
+}
+
+function ensureCatalogEditorial() {
+  if (!catalogEditorialPromise) {
+    catalogEditorialPromise = attachBlurbs(catalog.coworkers).then(() => {
+      catalogJsonCache = null;
+    });
+  }
+  return catalogEditorialPromise;
 }
 
 // Lets the legacy redirect map check a target exists before sending anyone
@@ -226,12 +236,11 @@ function transform(coworkersRaw, agentsRaw) {
   return { fetchedAt: new Date().toISOString(), coworkers, agents, categories };
 }
 
-// Editorial three-line card text lives in the CMS (coworkers.seoDescription,
-// written to fill the homepage card exactly). The product API knows nothing
-// about it, so it is joined onto the catalog here as `blurb` — a separate
-// field, because `description` (the full bio) feeds other surfaces. The CMS
-// must never be able to break the catalog: on failure the coworkers simply
-// ship without blurbs and the page falls back to truncating the bio.
+// Editorial card text and portrait overrides live in the CMS. The product API
+// knows nothing about either, so join them onto the homepage catalog here.
+// `blurb` stays separate because `description` feeds other surfaces. The CMS
+// must never be able to break the catalog: on failure the product data ships
+// unchanged and the page falls back to its synced bio and portrait.
 //
 // Join key: the catalog slug is the product's internal slug. Once a public
 // CMS slug diverges from it, the CMS record keeps the product slug in
@@ -245,13 +254,14 @@ async function attachBlurbs(coworkers) {
   const byPublicSlug = new Map();
   for (const c of cmsCw) {
     const text = typeof c.seoDescription === "string" ? c.seoDescription.trim() : "";
-    if (!text) continue;
-    if (c.catalogSlug) byCatalogSlug.set(c.catalogSlug, text);
-    if (c.slug) byPublicSlug.set(c.slug, text);
+    const editorial = { blurb: text, image: c.image || "" };
+    if (c.catalogSlug) byCatalogSlug.set(c.catalogSlug, editorial);
+    if (c.slug) byPublicSlug.set(c.slug, editorial);
   }
   for (const c of coworkers) {
-    const blurb = byCatalogSlug.get(c.slug) || byPublicSlug.get(c.slug);
-    if (blurb) c.blurb = blurb;
+    const editorial = byCatalogSlug.get(c.slug) || byPublicSlug.get(c.slug);
+    if (editorial?.blurb) c.blurb = editorial.blurb;
+    if (editorial?.image) c.image = editorial.image;
   }
 }
 
@@ -867,6 +877,7 @@ const assetsDir = path.join(root, "assets");
           return send(req, res, 301, { Location: encodeURI(urlPath) + qs, "Cache-Control": "public, max-age=3600" }, "");
         }
         if (urlPath === "/api/catalog") {
+          await ensureCatalogEditorial();
           return send(req, res, 200, { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "public, max-age=60" }, catalogJson());
         }
 
@@ -1268,9 +1279,7 @@ if (process.argv.includes("--once")) {
   // CMS blurbs to whatever we booted with, so the homepage is not blurbless
   // just because the product API is unreachable. If refresh() wins the race
   // and swaps the catalog first, this mutates the discarded array — harmless.
-  attachBlurbs(catalog.coworkers).then(() => {
-    catalogJsonCache = null;
-  });
+  ensureCatalogEditorial();
   refresh();
   setInterval(refresh, REFRESH_MS);
 }

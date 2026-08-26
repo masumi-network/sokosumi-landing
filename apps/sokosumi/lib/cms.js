@@ -256,12 +256,24 @@ const getVendor = (slug, opts) =>
     (v) => v.slug === slug,
   );
 
-const getCoworkers = (opts) =>
-  findAll("coworkers", { ...siteWhere({ active: "true" }), limit: 500, depth: 1, sort: "order" }, opts);
+function withCoworkerImage(coworker) {
+  const override = mediaUrl(coworker.imageOverride);
+  return override ? { ...coworker, image: override } : coworker;
+}
+
+const getCoworkers = async (opts) => {
+  const coworkers = await findAll(
+    "coworkers",
+    { ...siteWhere({ active: "true" }), limit: 500, depth: 1, sort: "order" },
+    opts,
+  );
+  return coworkers.map(withCoworkerImage);
+};
 
 const getCoworker = (slug, opts) =>
   findOne(
-    () => findAll("coworkers", { ...siteWhere({ slug }), limit: 1, depth: 1 }, opts),
+    async () =>
+      (await findAll("coworkers", { ...siteWhere({ slug }), limit: 1, depth: 1 }, opts)).map(withCoworkerImage),
     () => getCoworkers(opts),
     (c) => c.slug === slug,
   );
@@ -270,7 +282,8 @@ const getCoworker = (slug, opts) =>
 // to 301 old URLs after a public slug diverges from the catalog slug.
 const getCoworkerByCatalogSlug = (catalogSlug, opts) =>
   findOne(
-    () => findAll("coworkers", { ...siteWhere({ catalogSlug }), limit: 1, depth: 0 }, opts),
+    async () =>
+      (await findAll("coworkers", { ...siteWhere({ catalogSlug }), limit: 1, depth: 1 }, opts)).map(withCoworkerImage),
     () => getCoworkers(opts),
     (c) => c.catalogSlug === catalogSlug,
   );
