@@ -2077,7 +2077,7 @@ a.sp-pn:hover strong {
 }
 
 .sp-source img {
-  aspect-ratio: 1543 / 736;
+  aspect-ratio: 1568 / 711;
   background: var(--sp-soft);
   border: 1px solid var(--sp-rule);
   border-radius: var(--r-xl, 14px);
@@ -2261,7 +2261,7 @@ a.sp-pn:hover strong {
 }
 
 .sp-group-img {
-  aspect-ratio: 1543 / 736;
+  aspect-ratio: 1568 / 711;
   border: 1px solid var(--sp-rule);
   border-radius: var(--r-lg);
   margin-top: var(--space-lg);
