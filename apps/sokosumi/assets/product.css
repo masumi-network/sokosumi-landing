@@ -51,7 +51,6 @@ body:has(.cc-banner) .product-page .pd-stage { margin-bottom: 220px; }
   border-radius: 10px;
   overflow: hidden;
   background: #fff;
-  box-shadow: 0 30px 70px -30px rgba(40, 10, 90, 0.45), 0 2px 6px rgba(40, 10, 90, 0.08);
 }
 .pd-scale-wrap {
   width: 1440px;
@@ -778,8 +777,8 @@ body:has(.cc-banner) .product-page .pd-stage { margin-bottom: 220px; }
 .pd-feat { position: relative; border-radius: 18px; background: #ece6fb center / cover no-repeat; padding: clamp(16px, 3vw, 36px); cursor: pointer; overflow: hidden; }
 .pd-feat:focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; }
 .pd-feat-scroll { display: block; }
-.pd-feat-sizer { display: block; position: relative; overflow: hidden; border-radius: 10px; border: 1px solid rgba(15, 14, 13, 0.16); background: #fff; box-shadow: 0 24px 60px -28px rgba(40, 10, 90, 0.45), 0 2px 6px rgba(40, 10, 90, 0.08); box-sizing: border-box; margin: 0 auto; transition: transform 0.25s ease, box-shadow 0.25s ease; }
-.pd-feat:hover .pd-feat-sizer { transform: translateY(-2px); box-shadow: 0 30px 70px -28px rgba(40, 10, 90, 0.5), 0 2px 6px rgba(40, 10, 90, 0.08); }
+.pd-feat-sizer { display: block; position: relative; overflow: hidden; border-radius: 10px; border: 1px solid rgba(15, 14, 13, 0.16); background: #fff; box-sizing: border-box; margin: 0 auto; transition: transform 0.25s ease, box-shadow 0.25s ease; }
+.pd-feat:hover .pd-feat-sizer { transform: translateY(-2px); }
 .pd-feat-app { display: block; height: auto; transform: scale(var(--pd-scale, 1)); transform-origin: top left; overflow: hidden; }
 .pd-feat-app .pd-strip-item, .pd-feat-app .pd-chip, .pd-feat-app .pd-btn, .pd-feat-app .pd-ib, .pd-feat-app .pd-seg span, .pd-feat-app .pd-card, .pd-feat-app .pd-react, .pd-feat-app .pd-msg-file { cursor: pointer; }
 .pd-feat-app .pd-seg span { height: 27px; padding: 0 12px; border-radius: 6px; font-size: 14px; line-height: 20px; font-weight: 500; color: var(--mfg); display: inline-flex; align-items: center; }
@@ -913,9 +912,8 @@ body:has(.cc-banner) .product-page .pd-stage { margin-bottom: 220px; }
 }
 .sk-stage .pd-feat-sizer {
   border-color: rgba(255, 255, 255, 0.35);
-  box-shadow: 0 40px 90px -30px rgba(0, 0, 0, 0.7), 0 2px 8px rgba(0, 0, 0, 0.25);
 }
-.sk-stage .pd-feat:hover .pd-feat-sizer { transform: none; box-shadow: 0 40px 90px -30px rgba(0, 0, 0, 0.7), 0 2px 8px rgba(0, 0, 0, 0.25); }
+.sk-stage .pd-feat:hover .pd-feat-sizer { transform: none; }
 .sk-feats {
   display: grid;
   gap: 32px 40px;

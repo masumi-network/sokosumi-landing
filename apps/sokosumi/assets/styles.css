@@ -947,7 +947,7 @@ html[lang="de"] .prose blockquote::before { content: "Beispiel"; }
 .grad-band.g3 { background-image: url(/assets/gradients/g3.webp); }
 .grad-band.g4 { background-image: url(/assets/gradients/g4.webp); }
 .grad-band.g5 { background-image: url(/assets/gradients/g5.webp); }
-.grad-band > .cw-split { box-shadow: 0 24px 60px -28px rgba(40, 10, 90, 0.4); border-color: rgba(15, 14, 13, 0.1); }
+.grad-band > .cw-split { border-color: rgba(15, 14, 13, 0.1); }
 .shot-fig figcaption {
   margin-top: 12px; font-size: 14px; line-height: 1.55;
   color: var(--muted-foreground); max-width: 62ch;
