@@ -776,7 +776,7 @@ function productPanel() {
         <div class="nav-intro">
           <p class="nav-intro-label">${esc(t("Product"))}</p>
           <p class="nav-intro-desc">${esc(t("How work moves through Sokosumi: brief a coworker, follow it on the task board, collect the output."))}</p>
-          ${navVisual("stage", `<span class="nav-mini nav-mini-board"><i class="c1"><b></b><b></b></i><i class="c2"><b></b></i><i class="c3"><b></b><b></b></i></span>`)}
+          ${navVisualShot("/assets/shot-roster.webp")}
         </div>
         <div class="nav-grid">${rows}</div>
       </div>

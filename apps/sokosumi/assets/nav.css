@@ -153,8 +153,8 @@
    at rail size the full frame reads as white mush */
 .nav-visual-shot img {
   position: absolute; inset: 0; width: 100%; height: 100%;
-  object-fit: cover; object-position: 38% 22%; display: block;
-  transform: scale(2.1); transform-origin: 38% 22%;
+  object-fit: cover; object-position: 34% 54%; display: block;
+  transform: scale(1.55); transform-origin: 34% 54%;
 }
 /* Use cases: the rail carries the section's own abstract field (inline SVG
    from templates/art.js) over the dot-grid base */
