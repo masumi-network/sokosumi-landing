@@ -1,18 +1,52 @@
 {
   "hub": "serviceplan-ai",
+  "groups": [
+    {
+      "id": "architecture",
+      "label": { "en": "Architecture", "de": "Architektur" },
+      "description": {
+        "en": "How the House of AI is organised across creativity, media and technology.",
+        "de": "Wie das House of AI über Kreation, Media und Technologie organisiert ist."
+      }
+    },
+    {
+      "id": "products",
+      "label": { "en": "Products and infrastructure", "de": "Produkte und Infrastruktur" },
+      "description": {
+        "en": "The systems, coworkers and production products teams can actually use.",
+        "de": "Systeme, Coworker und Produktionsprodukte, die Teams tatsächlich nutzen können."
+      }
+    },
+    {
+      "id": "guides",
+      "label": { "en": "Buyer guides", "de": "Buyer-Guides" },
+      "description": {
+        "en": "Practical frameworks for choosing an AI agency and measuring AI-search visibility.",
+        "de": "Praxisrahmen für die Wahl einer KI-Agentur und die Messung von AI-Search-Sichtbarkeit."
+      }
+    },
+    {
+      "id": "proof",
+      "label": { "en": "Proof and sources", "de": "Nachweise und Quellen" },
+      "description": {
+        "en": "Published cases, partnerships, milestones and the evidence behind this dossier.",
+        "de": "Veröffentlichte Cases, Partnerschaften, Meilensteine und die Evidenz hinter diesem Dossier."
+      }
+    }
+  ],
   "chapters": [
-    { "slug": "house-of-ai", "short": "House of AI", "logo": "/assets/serviceplan-group.webp" },
-    { "slug": "serviceplan-creative-ai", "short": "Serviceplan", "logo": "/assets/serviceplan-group.webp" },
-    { "slug": "mediaplus-ai", "short": "Mediaplus" },
-    { "slug": "mediaplus-ai-products", "short": "Mediaplus products" },
-    { "slug": "plan-net-agentic-ai", "short": "Plan.Net" },
-    { "slug": "ai-marketing-agency", "short": "AI agency guide" },
-    { "slug": "ai-search-geo", "short": "AI search & GEO" },
-    { "slug": "ai-coworkers", "short": "AI Coworkers", "logo": "/assets/apple-touch-icon.png" },
-    { "slug": "masumi-sokosumi-kodosumi", "short": "AI stack", "logo": "/assets/apple-touch-icon.png" },
-    { "slug": "serviceplan-generate-ai-makeline", "short": "Generate.AI & MAKELINE" },
-    { "slug": "ai-marketing-cases", "short": "AI cases" },
-    { "slug": "partnerships-and-cases", "short": "Proof" },
-    { "slug": "timeline-and-sources", "short": "Timeline" }
+    { "slug": "house-of-ai", "short": "House of AI", "group": "architecture", "logo": "/assets/serviceplan-group.webp" },
+    { "slug": "serviceplan-creative-ai", "short": "Serviceplan", "group": "architecture", "logo": "/assets/serviceplan-group.webp" },
+    { "slug": "mediaplus-ai", "short": "Mediaplus", "group": "architecture" },
+    { "slug": "plan-net-agentic-ai", "short": "Plan.Net", "group": "architecture" },
+    { "slug": "mediaplus-ai-products", "short": "Mediaplus products", "group": "products" },
+    { "slug": "ai-coworkers", "short": "AI Coworkers", "group": "products", "logo": "/assets/apple-touch-icon.png" },
+    { "slug": "masumi-sokosumi-kodosumi", "short": "AI stack", "group": "products", "logo": "/assets/apple-touch-icon.png" },
+    { "slug": "serviceplan-generate-ai-makeline", "short": "Generate.AI & MAKELINE", "group": "products" },
+    { "slug": "ai-marketing-agency", "short": "AI agency guide", "group": "guides" },
+    { "slug": "ai-search-geo", "short": "AI search & GEO", "group": "guides" },
+    { "slug": "ai-marketing-cases", "short": "AI cases", "group": "proof" },
+    { "slug": "partnerships-and-cases", "short": "Partnerships", "group": "proof" },
+    { "slug": "timeline-and-sources", "short": "Timeline", "group": "proof" }
   ]
 }
