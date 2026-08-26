@@ -10,7 +10,8 @@
       "description": {
         "en": "How the House of AI is organised across creativity, media and technology.",
         "de": "Wie das House of AI über Kreation, Media und Technologie organisiert ist."
-      }
+      },
+      "img": "/assets/serviceplan-ai/src/house-of-ai.jpg"
     },
     {
       "id": "products",
@@ -21,7 +22,8 @@
       "description": {
         "en": "The systems, coworkers and production products teams can actually use.",
         "de": "Systeme, Coworker und Produktionsprodukte, die Teams tatsächlich nutzen können."
-      }
+      },
+      "img": "/assets/serviceplan-ai/src/ai-coworkers.jpg"
     },
     {
       "id": "guides",
@@ -32,7 +34,8 @@
       "description": {
         "en": "Practical frameworks for choosing an AI agency and measuring AI-search visibility.",
         "de": "Praxisrahmen für die Wahl einer KI-Agentur und die Messung von AI-Search-Sichtbarkeit."
-      }
+      },
+      "img": "/assets/serviceplan-ai/src/search-ai.jpg"
     },
     {
       "id": "proof",
@@ -43,7 +46,8 @@
       "description": {
         "en": "Published cases, partnerships, milestones and the evidence behind this dossier.",
         "de": "Veröffentlichte Cases, Partnerschaften, Meilensteine und die Evidenz hinter diesem Dossier."
-      }
+      },
+      "img": "/assets/serviceplan-ai/src/luma-ai.jpg"
     }
   ],
   "chapters": [
@@ -68,7 +72,15 @@
         "mediaplus-ai-products",
         "masumi-sokosumi-kodosumi",
         "timeline-and-sources"
-      ]
+      ],
+      "source": {
+        "img": "/assets/serviceplan-ai/src/house-of-ai.jpg",
+        "caption": {
+          "en": "Serviceplan's House of AI model on house-of-communication.com",
+          "de": "Serviceplans House-of-AI-Modell auf house-of-communication.com"
+        },
+        "href": "https://www.house-of-communication.com/de/en/solutions/artificial-intelligence.html"
+      }
     },
     {
       "slug": "serviceplan-creative-ai",
@@ -88,7 +100,15 @@
         "serviceplan-generate-ai-makeline",
         "ai-marketing-cases",
         "partnerships-and-cases"
-      ]
+      ],
+      "source": {
+        "img": "/assets/serviceplan-ai/src/luma-ai.jpg",
+        "caption": {
+          "en": "Serviceplan announcing the Luma AI partnership, February 2026",
+          "de": "Serviceplan kündigt die Luma-AI-Partnerschaft an, Februar 2026"
+        },
+        "href": "https://www.house-of-communication.com/de/en/newsroom/2026/02/serviceplan-group-partnership-luma-ai.html"
+      }
     },
     {
       "slug": "mediaplus-ai",
@@ -109,7 +129,15 @@
         "mediaplus-ai-products",
         "ai-search-geo",
         "house-of-ai"
-      ]
+      ],
+      "source": {
+        "img": "/assets/serviceplan-ai/src/mediaplus-data-ai.jpg",
+        "caption": {
+          "en": "Mediaplus Data & AI on house-of-communication.com",
+          "de": "Mediaplus Data & AI auf house-of-communication.com"
+        },
+        "href": "https://www.house-of-communication.com/de/en/brands/mediaplus/services/media-data/data-ai.html"
+      }
     },
     {
       "slug": "plan-net-agentic-ai",
@@ -129,7 +157,15 @@
         "masumi-sokosumi-kodosumi",
         "ai-coworkers",
         "ai-marketing-agency"
-      ]
+      ],
+      "source": {
+        "img": "/assets/serviceplan-ai/src/plan-net-agentic-services.jpg",
+        "caption": {
+          "en": "Plan.Net Agentic Services landing page",
+          "de": "Landingpage der Plan.Net Agentic Services"
+        },
+        "href": "https://www.house-of-communication.com/de/en/brands/plan-net/landingpages/agentic-services.html"
+      }
     },
     {
       "slug": "mediaplus-ai-products",
@@ -151,7 +187,15 @@
         "mediaplus-ai",
         "ai-search-geo",
         "ai-marketing-cases"
-      ]
+      ],
+      "source": {
+        "img": "/assets/serviceplan-ai/src/behave-ai.jpg",
+        "caption": {
+          "en": "Mediaplus announcing the global Behave.AI unit, May 2026",
+          "de": "Mediaplus kündigt die globale Behave.AI-Einheit an, Mai 2026"
+        },
+        "href": "https://www.house-of-communication.com/int/en/newsroom/2026/05/mediaplus-global-ai-unit-behave.html"
+      }
     },
     {
       "slug": "ai-coworkers",
@@ -171,7 +215,15 @@
         "masumi-sokosumi-kodosumi",
         "plan-net-agentic-ai",
         "ai-marketing-agency"
-      ]
+      ],
+      "source": {
+        "img": "/assets/serviceplan-ai/src/ai-coworkers.jpg",
+        "caption": {
+          "en": "Serviceplan × Sokosumi: Hannah and Elena announced, March 2026",
+          "de": "Serviceplan × Sokosumi: Hannah und Elena vorgestellt, März 2026"
+        },
+        "href": "https://www.house-of-communication.com/de/de/newsroom/2026/02/serviceplan-group-ai-coworker.html"
+      }
     },
     {
       "slug": "masumi-sokosumi-kodosumi",
@@ -199,7 +251,15 @@
         "ai-coworkers",
         "partnerships-and-cases",
         "plan-net-agentic-ai"
-      ]
+      ],
+      "source": {
+        "img": "/assets/serviceplan-ai/src/masumi.jpg",
+        "caption": {
+          "en": "Plan.Net introducing Masumi",
+          "de": "Plan.Net stellt Masumi vor"
+        },
+        "href": "https://www.house-of-communication.com/de/en/brands/plan-net/landingpages/agentic-services/masumi.html"
+      }
     },
     {
       "slug": "serviceplan-generate-ai-makeline",
@@ -219,7 +279,15 @@
         "serviceplan-creative-ai",
         "ai-marketing-cases",
         "partnerships-and-cases"
-      ]
+      ],
+      "source": {
+        "img": "/assets/serviceplan-ai/src/makeline.jpg",
+        "caption": {
+          "en": "The MAKELINE case film on house-of-communication.com",
+          "de": "Der MAKELINE-Case-Film auf house-of-communication.com"
+        },
+        "href": "https://www.house-of-communication.com/be/en/cases/makeline.html"
+      }
     },
     {
       "slug": "ai-marketing-agency",
@@ -237,7 +305,15 @@
         "ai-coworkers",
         "plan-net-agentic-ai",
         "ai-marketing-cases"
-      ]
+      ],
+      "source": {
+        "img": "/assets/serviceplan-ai/src/house-of-ai.jpg",
+        "caption": {
+          "en": "Serviceplan's House of AI, the documented example in this guide",
+          "de": "Serviceplans House of AI, das dokumentierte Beispiel in diesem Guide"
+        },
+        "href": "https://www.house-of-communication.com/de/en/solutions/artificial-intelligence.html"
+      }
     },
     {
       "slug": "ai-search-geo",
@@ -252,7 +328,15 @@
         "mediaplus-ai-products",
         "mediaplus-ai",
         "ai-marketing-agency"
-      ]
+      ],
+      "source": {
+        "img": "/assets/serviceplan-ai/src/search-ai.jpg",
+        "caption": {
+          "en": "Mediaplus Search.AI product page",
+          "de": "Produktseite von Mediaplus Search.AI"
+        },
+        "href": "https://www.house-of-communication.com/de/en/brands/mediaplus/services/media-data/data-ai/search-ai.html"
+      }
     },
     {
       "slug": "ai-marketing-cases",
@@ -268,7 +352,15 @@
         "serviceplan-generate-ai-makeline",
         "partnerships-and-cases",
         "timeline-and-sources"
-      ]
+      ],
+      "source": {
+        "img": "/assets/serviceplan-ai/src/coca-cola.jpg",
+        "caption": {
+          "en": "Coca-Cola “Holidays are coming” case, as published by Serviceplan",
+          "de": "Coca-Cola-Case „Holidays are coming“, wie von Serviceplan veröffentlicht"
+        },
+        "href": "https://www.house-of-communication.com/de/en/cases/coca-cola-holidays-are-coming-2024.html"
+      }
     },
     {
       "slug": "partnerships-and-cases",
@@ -290,7 +382,15 @@
         "masumi-sokosumi-kodosumi",
         "serviceplan-creative-ai",
         "timeline-and-sources"
-      ]
+      ],
+      "source": {
+        "img": "/assets/serviceplan-ai/src/nmkr-masumi.jpg",
+        "caption": {
+          "en": "NMKR's own account of the Masumi collaboration",
+          "de": "NMKRs eigene Darstellung der Masumi-Zusammenarbeit"
+        },
+        "href": "https://www.nmkr.io/clients/nmkr-x-masumi"
+      }
     },
     {
       "slug": "timeline-and-sources",
@@ -303,7 +403,15 @@
         "house-of-ai",
         "partnerships-and-cases",
         "ai-marketing-cases"
-      ]
+      ],
+      "source": {
+        "img": "/assets/serviceplan-ai/src/fiscal-year-2026.jpg",
+        "caption": {
+          "en": "Serviceplan Group fiscal-year 2025/26 announcement, July 2026",
+          "de": "Serviceplan Group Geschäftsjahr 2025/26, Juli 2026"
+        },
+        "href": "https://www.house-of-communication.com/int/en/newsroom/2026/07/serviceplan-group-2025-2026-fiscal-year.html"
+      }
     }
   ],
   "statsSource": {
@@ -312,5 +420,13 @@
       "en": "Serviceplan Group fiscal-year 2025/26 results, July 2026",
       "de": "Serviceplan Group Geschäftsjahr 2025/26, Juli 2026"
     }
+  },
+  "source": {
+    "img": "/assets/serviceplan-ai/src/house-of-ai.jpg",
+    "caption": {
+      "en": "Serviceplan's House of AI, as published on house-of-communication.com",
+      "de": "Serviceplans House of AI, wie auf house-of-communication.com veröffentlicht"
+    },
+    "href": "https://www.house-of-communication.com/de/en/solutions/artificial-intelligence.html"
   }
 }

@@ -229,7 +229,7 @@ function groupedChapters(list) {
               <div>
                 <h3 id="sp-group-${attr(group.id)}"><span class="sp-group-index">${String(groupIndex + 1).padStart(2, "0")}</span>${esc(localText(group.label))}</h3>
                 <p>${esc(localText(group.description))}</p>
-                ${figures.groupImage(group.id)}
+                ${group.img ? `<img class="sp-group-img" src="${attr(group.img)}" alt="" width="1543" height="736" loading="lazy" decoding="async">` : ""}
               </div>
             </header>
             <div class="sp-chapter-list">
@@ -269,7 +269,6 @@ function contents(outline) {
 function readingRail(list, current, outline) {
   const chapter = list.find((item) => item.doc.slug === current);
   return `<aside class="sp-reading-rail">
-    ${figures.groupImage(chapter?.group, "sp-rail-img")}
     ${contents(outline)}
     <nav class="sp-dossier-index" aria-label="${attr(ui("Dossier chapters", "Dossier-Kapitel"))}">
       <span>${esc(ui("Dossier index", "Dossier-Index"))}</span>
@@ -330,6 +329,20 @@ function systemMap(lit = [], chapterName = "") {
   </figure>`;
 }
 
+// A real page from the organisation being described, framed and cited.
+// Replaces the hand-drawn "system map" box: the source material is the visual.
+function sourceFigure(source, opts = {}) {
+  if (!source || !source.img) return "";
+  let domain = "";
+  try {
+    domain = new URL(source.href).hostname.replace(/^www\./, "");
+  } catch {}
+  return `<figure class="sp-source${opts.hero ? " sp-source-hero" : ""}">
+    <a href="${attr(source.href || "#")}" rel="noopener noreferrer nofollow"><img src="${attr(source.img)}" alt="${attr(localText(source.caption))}" width="1543" height="736" loading="${opts.hero ? "eager" : "lazy"}" decoding="async"${opts.hero ? ' fetchpriority="high"' : ""}></a>
+    <figcaption><span>${esc(localText(source.caption))}</span>${domain ? `<a href="${attr(source.href)}" rel="noopener noreferrer nofollow">${esc(domain)} ${icon("arrow-up-right", 12)}</a>` : ""}</figcaption>
+  </figure>`;
+}
+
 function formatDate(value) {
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return String(value || "").slice(0, 10);
@@ -341,18 +354,7 @@ function formatDate(value) {
 }
 
 function heroProof(doc, chapter) {
-  const group = groupFor(chapter);
-  const sources = sourceUrls(doc.layout).length;
-  const minutes = readingMinutes(doc.layout);
-  return `<div class="sp-hero-side">${systemMap(chapter?.layers || [], chapter?.short || "")}<aside class="sp-hero-proof" aria-label="${attr(ui("Page evidence", "Seitennachweis"))}">
-    <span class="sp-proof-label">${esc(ui("Authority dossier", "Authority-Dossier"))}</span>
-    <dl>
-      <div><dt>${esc(ui("Focus", "Fokus"))}</dt><dd>${esc(localText(group?.label))}</dd></div>
-      <div><dt>${esc(ui("Reading time", "Lesezeit"))}</dt><dd>${minutes} min</dd></div>
-      <div><dt>${esc(ui("Linked sources", "Verlinkte Quellen"))}</dt><dd>${sources}</dd></div>
-      <div><dt>${esc(ui("Reviewed", "Geprüft"))}</dt><dd>${esc(formatDate(doc.updatedAt))}</dd></div>
-    </dl>
-  </aside></div>`;
+  return sourceFigure(chapter?.source, { hero: true });
 }
 
 function evidenceLedger(sources, updatedAt) {
@@ -511,11 +513,12 @@ async function render(doc, ctx) {
         <h1>${esc(hero?.heading || doc.title)}</h1>
         ${hero?.subheading ? `<p>${esc(hero.subheading)}</p>` : ""}
         <div class="sp-hero-meta">
+          ${chapter ? `<span>${readingMinutes(layout)} min</span>` : ""}
+          <span>${sourceUrls(layout).length} ${esc(sourceUrls(layout).length === 1 ? ui("source", "Quelle") : ui("sources", "Quellen"))}</span>
           <span>${esc(ui("Reviewed", "Geprüft"))} ${esc(formatDate(doc.updatedAt))}</span>
-          <span>${sourceUrls(layout).length} ${esc(ui("linked sources", "verlinkte Quellen"))}</span>
         </div>
       </div>
-      ${isHub ? systemMap() : heroProof(doc, chapter)}
+      ${isHub ? sourceFigure(config().source, { hero: true }) : heroProof(doc, chapter)}
     </header>`;
 
   if (isHub) {
