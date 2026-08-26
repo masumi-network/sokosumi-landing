@@ -855,10 +855,7 @@ body:has(.cc-banner) .product-page .pd-stage { margin-bottom: 220px; }
 
 /* ---- Panel layout test (/product/task-board) ---------------------------- */
 .sk-panel {
-  background: var(--muted);
-  border-radius: 24px;
-  margin: 12px 0 clamp(40px, 6vw, 72px);
-  padding: clamp(24px, 4.5vw, 56px) clamp(20px, 4.5vw, 56px) clamp(32px, 5vw, 64px);
+  margin: clamp(16px, 3vw, 40px) 0 clamp(40px, 6vw, 72px);
 }
 .sk-eyebrow {
   border-bottom: 1px solid var(--border);
