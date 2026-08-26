@@ -217,6 +217,72 @@ const TOOLS = [
     prompt:
       "Act as an image-SEO auditor. For each image (or the images found on the site) below, check: descriptive alt text, appropriate dimensions, an SEO-friendly filename, compression/file size, modern format (WebP/AVIF), and lazy loading. Present a per-image table with pass/fix for each factor, then list the highest-impact fixes and an estimated performance win.\n\nImages / site:\n{images}",
   },
+  {
+    slug: "meta-generator",
+    name: "Meta Title & Description Generator",
+    cat: "generate",
+    blurb: "Enter a URL or topic → SEO-optimized title and meta description options, length-validated.",
+    fields: [
+      { name: "target", label: "Page URL or topic", type: "text", placeholder: "https://example.com/page  — or a topic" },
+      { name: "keyword", label: "Primary keyword (optional)", type: "text", placeholder: "e.g. AI marketing tools" },
+    ],
+    prompt:
+      "Act as an SEO specialist. For \"{target}\" (primary keyword: {keyword}), write 3 title tag options and 3 meta description options. Titles must be compelling and ≤ 60 characters; meta descriptions ≤ 155 characters and end with a soft CTA. Front-load the primary keyword naturally. After each option, show its exact character count in brackets. Recommend the best pairing and say why in one line.",
+  },
+  {
+    slug: "schema-generator",
+    name: "Schema / JSON-LD Generator",
+    cat: "generate",
+    blurb: "Pick a type (Article, Product, FAQ, LocalBusiness…) → ready-to-paste JSON-LD structured data.",
+    fields: [
+      { name: "type", label: "Schema type", type: "text", placeholder: "Article, Product, FAQPage, LocalBusiness…" },
+      { name: "details", label: "Details to include", type: "textarea", placeholder: "Paste the facts: name, description, price, author, URL, address, questions & answers…" },
+    ],
+    prompt:
+      "Act as a technical SEO engineer. Generate valid schema.org JSON-LD for a {type} using the details below. Use only fields supported by the {type} type, populate every field the details allow, and leave out anything you don't have data for (don't invent values). Output a single ready-to-paste <script type=\"application/ld+json\"> block, then a one-line note of any recommended fields that are missing.\n\nDetails:\n{details}",
+  },
+  {
+    slug: "llms-txt-generator",
+    name: "llms.txt Generator",
+    cat: "generate",
+    blurb: "Enter a site → generate an llms.txt file that tells AI systems what the site is and where to look.",
+    fields: [{ name: "url", label: "Website URL", type: "url", placeholder: "https://example.com" }],
+    prompt:
+      "Generate an llms.txt file for {url} following the llms.txt spec. Structure: an H1 with the site/brand name; a blockquote with a short summary of what the site is; then H2 sections (e.g. Docs, Products, Guides, About) each containing a Markdown bullet list of key pages as [Title](URL): short description links. Keep it concise and machine-readable. Output valid Markdown only.",
+  },
+  {
+    slug: "keyword-cluster",
+    name: "Keyword Cluster / Topic Map",
+    cat: "generate",
+    blurb: "Enter a seed keyword → grouped keyword clusters by intent, plus a content plan around them.",
+    fields: [
+      { name: "keyword", label: "Seed keyword", type: "text", placeholder: "e.g. AI coworkers" },
+      { name: "audience", label: "Audience / niche (optional)", type: "text", placeholder: "e.g. marketing teams" },
+    ],
+    prompt:
+      "Act as an SEO content strategist. From the seed keyword \"{keyword}\" (audience: {audience}), build a topic map. Produce 5–7 keyword clusters, each with: a cluster name, its search intent (informational/commercial/transactional), 5–8 related keywords, and a suggested pillar page + 3 supporting article titles. Finish with the recommended publishing order and which cluster to start with for the fastest ranking win.",
+  },
+  {
+    slug: "heading-auditor",
+    name: "Heading Structure Auditor",
+    cat: "audit",
+    blurb: "Enter a URL → the page's H1–H6 outline, with SEO and hierarchy issues flagged.",
+    fields: [{ name: "url", label: "Page URL", type: "url", placeholder: "https://example.com/page" }],
+    prompt:
+      "Act as a technical SEO auditor. Extract the heading outline (H1–H6) of the page at {url} and present it as an indented tree. Then flag issues: more than one H1, skipped levels (e.g. H2 → H4), empty or duplicate headings, headings missing target keywords, and poor descriptive quality. Give a severity per issue and a specific fix. End with a corrected outline.",
+  },
+  {
+    slug: "alt-text-generator",
+    name: "Alt Text Generator",
+    cat: "generate",
+    blurb: "Enter an image URL → descriptive, SEO-friendly alt text ready to paste.",
+    fields: [
+      { name: "imageUrl", label: "Image URL", type: "url", placeholder: "https://example.com/image.jpg" },
+      { name: "context", label: "Where it's used (optional)", type: "text", placeholder: "e.g. hero image on a pricing page" },
+    ],
+    prompt:
+      "Act as an accessibility and SEO specialist. Write alt text for the image at {imageUrl}, used in this context: {context}. Provide: (1) a concise, descriptive alt text under 125 characters that conveys the image's meaning for screen readers, and (2) a keyword-aware variant if a relevant keyword fits naturally. Avoid \"image of\"/\"picture of\". If the image is decorative, say so and recommend empty alt=\"\".",
+  },
 ];
 
 function toolBySlug(slug) {
