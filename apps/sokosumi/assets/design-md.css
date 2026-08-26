@@ -1099,7 +1099,8 @@
 .tools-list {
   display: grid;
   gap: 24px;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(320px, 460px));
+  justify-content: center;
   max-width: 960px;
   margin: 0 auto clamp(72px, 10vw, 128px);
 }
