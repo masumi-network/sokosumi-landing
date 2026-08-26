@@ -93,6 +93,8 @@ The high medium-count was mostly repeated page-level instances rather than 567 d
 
 The sitemap health pass covered all 433 production sitemap URLs at the time, with all returning 200 and no sitemap-health issues. The expanded local sitemap contains the new guide and Serviceplan pages.
 
+The post-deployment production crawl covered 458 HTML pages and 460 requests. Every request succeeded, with no failed URLs and no high-severity issues. Medium findings fell from 567 to 47 and low findings from 156 to 111. The remaining medium findings are the intentional pricing-query canonicals and the noindexed German shells for English-only legal documents; the remaining low image findings are the responsive-image candidates described above.
+
 Search Console and Google Analytics data were unavailable because this environment has no Google authentication. The audit therefore does not claim click, impression or conversion findings from those systems.
 
 ## Changes made from the audit
@@ -111,7 +113,7 @@ Search Console and Google Analytics data were unavailable because this environme
 
 After deployment:
 
-1. Re-crawl the production site and compare issue counts.
+1. Re-crawl the production site and compare issue counts. Completed on 26 August 2026; see the post-deployment result above.
 2. Submit or refresh the sitemap in Search Console when access is available.
 3. Track the new page groups separately: tools, guides, Serviceplan/AI and coworker profiles.
 4. Review Ahrefs monthly for new ranking keywords, page-level movement and earned referring domains.
