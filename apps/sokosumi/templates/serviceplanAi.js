@@ -229,7 +229,7 @@ function groupedChapters(list) {
               <div>
                 <h3 id="sp-group-${attr(group.id)}"><span class="sp-group-index">${String(groupIndex + 1).padStart(2, "0")}</span>${esc(localText(group.label))}</h3>
                 <p>${esc(localText(group.description))}</p>
-                ${group.img ? `<img class="sp-group-img" src="${attr(group.img)}" alt="" width="1568" height="711" loading="lazy" decoding="async">` : ""}
+                ${group.img ? `<img class="sp-group-img" src="${attr(group.img)}" alt="" width="1400" height="700" loading="lazy" decoding="async">` : ""}
               </div>
             </header>
             <div class="sp-chapter-list">
@@ -338,7 +338,7 @@ function sourceFigure(source, opts = {}) {
     domain = new URL(source.href).hostname.replace(/^www\./, "");
   } catch {}
   return `<figure class="sp-source${opts.hero ? " sp-source-hero" : ""}">
-    <a href="${attr(source.href || "#")}" rel="noopener noreferrer nofollow"><img src="${attr(source.img)}" alt="${attr(localText(source.caption))}" width="1568" height="711" loading="${opts.hero ? "eager" : "lazy"}" decoding="async"${opts.hero ? ' fetchpriority="high"' : ""}></a>
+    <a href="${attr(source.href || "#")}" rel="noopener noreferrer nofollow"><img src="${attr(source.img)}" alt="${attr(localText(source.caption))}" width="1400" height="700" loading="${opts.hero ? "eager" : "lazy"}" decoding="async"${opts.hero ? ' fetchpriority="high"' : ""}></a>
     <figcaption><span>${esc(localText(source.caption))}</span>${domain ? `<a href="${attr(source.href)}" rel="noopener noreferrer nofollow">${esc(domain)} ${icon("arrow-up-right", 12)}</a>` : ""}</figcaption>
   </figure>`;
 }
