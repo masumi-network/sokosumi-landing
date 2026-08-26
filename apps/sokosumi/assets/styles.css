@@ -1448,3 +1448,16 @@ html[lang="de"] .tg-article .prose blockquote::before { content: "Prompt"; }
   background-image: var(--stage-deep) !important;
 }
 .btn-primary:hover, .dm-bar .dm-submit:hover { filter: brightness(1.18); }
+/* Inside a dark surface the primary button inverts to white: never ink on ink. */
+.blk-cta .btn-primary, .sp-bridge .btn-primary, .plan-enterprise .btn-primary,
+section.band-dark .btn-primary, .cw-split-side.is-coworker .btn-primary,
+.blk-cta .btn, .sp-bridge .btn, .plan-enterprise .btn {
+  background: #fff !important;
+  background-image: none !important;
+  color: var(--ink) !important;
+  border-color: #fff !important;
+}
+.blk-cta .btn-primary:hover, .sp-bridge .btn-primary:hover, .plan-enterprise .btn-primary:hover { background: #e9e8e6 !important; filter: none; }
+.blk-cta .btn-outline, .sp-bridge .btn-outline { background: transparent !important; color: #fff !important; border-color: rgba(255, 255, 255, 0.4) !important; }
+/* The coworker half of the comparison sits on the stage: keep it separated. */
+.grad-band .cw-split-side.is-coworker { border: 1px solid rgba(255, 255, 255, 0.22); }
