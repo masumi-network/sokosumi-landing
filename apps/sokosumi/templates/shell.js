@@ -988,6 +988,7 @@ function footerHtml() {
                 <li><a href="/guides">${esc(t("Guides"))}</a></li>
                 <li><a href="/blog">${esc(t("Blog"))}</a></li>
                 <li><a href="/releases">${esc(t("Releases"))}</a></li>
+                <li><a href="/serviceplan-ai">${esc(t("Serviceplan & AI"))}</a></li>
                 <li><a href="https://www.masumi.network/dev/sokosumi/documentation" target="_blank" rel="noreferrer">${esc(t("Developers"))}</a></li>
               </ul>
             </div>

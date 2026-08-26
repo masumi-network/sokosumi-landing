@@ -62,6 +62,12 @@
         2,
         3,
         4
+      ],
+      "icon": "house",
+      "related": [
+        "mediaplus-ai-products",
+        "masumi-sokosumi-kodosumi",
+        "timeline-and-sources"
       ]
     },
     {
@@ -76,6 +82,12 @@
       ],
       "layers": [
         2
+      ],
+      "icon": "spark",
+      "related": [
+        "serviceplan-generate-ai-makeline",
+        "ai-marketing-cases",
+        "partnerships-and-cases"
       ]
     },
     {
@@ -91,6 +103,12 @@
       "layers": [
         1,
         3
+      ],
+      "icon": "signal",
+      "related": [
+        "mediaplus-ai-products",
+        "ai-search-geo",
+        "house-of-ai"
       ]
     },
     {
@@ -105,6 +123,12 @@
       ],
       "layers": [
         4
+      ],
+      "icon": "nodes",
+      "related": [
+        "masumi-sokosumi-kodosumi",
+        "ai-coworkers",
+        "ai-marketing-agency"
       ]
     },
     {
@@ -121,6 +145,12 @@
         1,
         2,
         3
+      ],
+      "icon": "grid",
+      "related": [
+        "mediaplus-ai",
+        "ai-search-geo",
+        "ai-marketing-cases"
       ]
     },
     {
@@ -135,6 +165,12 @@
       ],
       "layers": [
         4
+      ],
+      "icon": "people",
+      "related": [
+        "masumi-sokosumi-kodosumi",
+        "plan-net-agentic-ai",
+        "ai-marketing-agency"
       ]
     },
     {
@@ -157,6 +193,12 @@
       ],
       "layers": [
         4
+      ],
+      "icon": "layers",
+      "related": [
+        "ai-coworkers",
+        "partnerships-and-cases",
+        "plan-net-agentic-ai"
       ]
     },
     {
@@ -171,6 +213,12 @@
       ],
       "layers": [
         2
+      ],
+      "icon": "pipeline",
+      "related": [
+        "serviceplan-creative-ai",
+        "ai-marketing-cases",
+        "partnerships-and-cases"
       ]
     },
     {
@@ -188,6 +236,12 @@
         2,
         3,
         4
+      ],
+      "icon": "compass",
+      "related": [
+        "ai-coworkers",
+        "plan-net-agentic-ai",
+        "ai-marketing-cases"
       ]
     },
     {
@@ -202,6 +256,12 @@
       ],
       "layers": [
         1
+      ],
+      "icon": "search",
+      "related": [
+        "mediaplus-ai-products",
+        "mediaplus-ai",
+        "ai-marketing-agency"
       ]
     },
     {
@@ -217,6 +277,12 @@
       "layers": [
         2,
         3
+      ],
+      "icon": "ledger",
+      "related": [
+        "serviceplan-generate-ai-makeline",
+        "partnerships-and-cases",
+        "timeline-and-sources"
       ]
     },
     {
@@ -233,7 +299,13 @@
           "name": "NMKR"
         }
       ],
-      "layers": []
+      "layers": [],
+      "icon": "network",
+      "related": [
+        "masumi-sokosumi-kodosumi",
+        "serviceplan-creative-ai",
+        "timeline-and-sources"
+      ]
     },
     {
       "slug": "timeline-and-sources",
@@ -245,7 +317,13 @@
           "name": "Serviceplan"
         }
       ],
-      "layers": []
+      "layers": [],
+      "icon": "timeline",
+      "related": [
+        "house-of-ai",
+        "partnerships-and-cases",
+        "ai-marketing-cases"
+      ]
     }
   ],
   "statsSource": {

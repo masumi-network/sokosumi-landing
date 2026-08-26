@@ -17,12 +17,112 @@ const LOGO = {
   NMKR: "/assets/nmkr-logo.svg",
 };
 
+// Line icons, 24px grid, 1.5 stroke, currentColor. One per chapter plus a
+// few for figure kinds; used on cards, heroes, rails, figures and prev/next.
+const ICON_PATHS = {
+  house: '<path d="M3 11 12 4l9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/>',
+  spark: '<path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M5.6 18.4l2.8-2.8M15.6 8.4l2.8-2.8"/>',
+  signal: '<path d="M4 19V11M10 19V5M16 19v-8M22 19V8"/>',
+  nodes: '<circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="6" r="2.5"/><circle cx="12" cy="18" r="2.5"/><path d="M8 7.5l3 8M16 7.5l-3 8M8.5 6h7"/>',
+  grid: '<rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/>',
+  people: '<circle cx="9" cy="8" r="3.5"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><path d="M16 5.5a3 3 0 0 1 0 5.5M21 20c0-2.8-1.9-5.1-4.5-5.8"/>',
+  layers: '<path d="m12 4 8 4-8 4-8-4 8-4Z"/><path d="m4 12 8 4 8-4M4 16l8 4 8-4"/>',
+  pipeline: '<path d="M3 7h5l3 5-3 5H3M11 7h5l3 5-3 5h-5"/><path d="M19 12h2"/>',
+  compass: '<circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2 5-5 2 2-5 5-2Z"/>',
+  search: '<circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.3-4.3"/>',
+  ledger: '<path d="M5 4h14v16H5z"/><path d="M8 9h8M8 13h8M8 17h5"/>',
+  network: '<circle cx="12" cy="12" r="3"/><circle cx="4" cy="6" r="1.5"/><circle cx="20" cy="6" r="1.5"/><circle cx="4" cy="18" r="1.5"/><circle cx="20" cy="18" r="1.5"/><path d="M5.2 6.8 9.6 10M18.8 6.8 14.4 10M5.2 17.2 9.6 14M18.8 17.2 14.4 14"/>',
+  timeline: '<path d="M4 12h16"/><circle cx="7" cy="12" r="2"/><circle cx="14" cy="12" r="2"/><circle cx="20" cy="12" r="1.5"/><path d="M7 14v5M14 10V5"/>',
+  arrow: '<path d="M5 12h14M13 6l6 6-6 6"/>',
+  book: '<path d="M4 5h6a3 3 0 0 1 3 3v12a2 2 0 0 0-2-2H4z"/><path d="M20 5h-6a3 3 0 0 0-3 3v12a2 2 0 0 1 2-2h7z"/>',
+};
+
+function glyph(name, size = 20, cls = "sp-glyph") {
+  const d = ICON_PATHS[name] || ICON_PATHS.book;
+  return `<svg class="${cls}" width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
+}
+
+const KIND_ICON = { flow: "pipeline", stack: "layers", matrix: "grid", chips: "grid", timeline: "timeline", network: "network", shots: "people", ledger: "ledger" };
+
+// Product and brand names → chapter. First mention in a run of text becomes
+// a link; used inside figures and, via crossLink(), in CMS prose.
+const HUB = "/serviceplan-ai/";
+const TERMS = [
+  ["House of AI", "house-of-ai"],
+  ["Global Data Platform", "house-of-ai"],
+  ["Generate.AI", "serviceplan-generate-ai-makeline"],
+  ["MAKELINE", "serviceplan-generate-ai-makeline"],
+  ["MOMENTUM", "serviceplan-generate-ai-makeline"],
+  ["Luma AI", "partnerships-and-cases"],
+  ["HealthContent.AI", "serviceplan-creative-ai"],
+  ["Creative.AI", "serviceplan-creative-ai"],
+  ["Plus.AI", "mediaplus-ai"],
+  ["Behave.AI", "mediaplus-ai"],
+  ["Research.AI", "mediaplus-ai-products"],
+  ["Search.AI", "ai-search-geo"],
+  ["Pretest.AI", "mediaplus-ai-products"],
+  ["Persona.AI", "mediaplus-ai-products"],
+  ["Predict.AI", "mediaplus-ai-products"],
+  ["Track.AI", "mediaplus-ai-products"],
+  ["Insight.AI", "mediaplus-ai-products"],
+  ["Activate.AI", "mediaplus-ai-products"],
+  ["Agentic Services", "plan-net-agentic-ai"],
+  ["Plan.Net Agentic AI", "plan-net-agentic-ai"],
+  ["Agentic.AI", "plan-net-agentic-ai"],
+  ["Plan.Net Studios", "plan-net-agentic-ai"],
+  ["AI Coworkers", "ai-coworkers"],
+  ["AI Coworker", "ai-coworkers"],
+  ["Serviceplan Agents", "ai-coworkers"],
+  ["Masumi", "masumi-sokosumi-kodosumi"],
+  ["Kodosumi", "masumi-sokosumi-kodosumi"],
+  ["Sokosumi", "masumi-sokosumi-kodosumi"],
+  ["NMKR", "partnerships-and-cases"],
+  ["Cardano Foundation", "partnerships-and-cases"],
+  ["Akkio", "partnerships-and-cases"],
+  ["GWI", "partnerships-and-cases"],
+  ["CMO Barometer", "timeline-and-sources"],
+];
+
+const escRe = (t) => t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+// Links every known term in a short label (figure cells, chips). Longer
+// names first so "Plan.Net Agentic AI" wins over "Agentic.AI".
+function linkTerms(text, current) {
+  let out = esc(text);
+  for (const [term, slug] of [...TERMS].sort((a, b) => b[0].length - a[0].length)) {
+    if (slug === current) continue;
+    out = out.replace(new RegExp(`(^|[^\\w>/"-])(${escRe(esc(term))})(?![\\w.-]*<)(?=$|[^\\w-])`), `$1<a href="${HUB}${slug}">$2</a>`);
+  }
+  return out;
+}
+
+// Prose pass: first plain-text mention per term per page, outside existing
+// anchors and headings, never to the page itself.
+function crossLink(html, currentSlug) {
+  const current = String(currentSlug || "").split("/").pop();
+  const done = new Set();
+  return html.replace(/<p(\s[^>]*)?>([\s\S]*?)<\/p>/g, (m, attrs, inner) => {
+    const parts = inner.split(/(<a\b[\s\S]*?<\/a>|<strong>[\s\S]*?<\/strong>|<[^>]+>)/g);
+    for (let i = 0; i < parts.length; i += 2) {
+      for (const [term, slug] of [...TERMS].sort((a, b) => b[0].length - a[0].length)) {
+        if (slug === current || done.has(slug)) continue;
+        const re = new RegExp(`(^|[^\\w-])(${escRe(term)})(?=$|[^\\w-])`);
+        if (re.test(parts[i])) {
+          parts[i] = parts[i].replace(re, `$1<a class="sp-xlink" href="${HUB}${slug}">$2</a>`);
+          done.add(slug);
+        }
+      }
+    }
+    return `<p${attrs || ""}>${parts.join("")}</p>`;
+  });
+}
+
 const logo = (name, w = 110, h = 24) =>
   LOGO[name] ? `<img src="${attr(LOGO[name])}" alt="${attr(name)}" width="${w}" height="${h}" loading="lazy">` : `<b>${esc(name)}</b>`;
 
 function figure(kind, caption, title, body, wide) {
   return `<figure class="sp-fig sp-fig-${kind}${wide ? " sp-fig-wide" : ""}">
-    <figcaption><span>${esc(L("At a glance", "Auf einen Blick"))} · ${esc(caption)}</span><strong>${esc(title)}</strong></figcaption>
+    <figcaption>${glyph(KIND_ICON[kind] || "book", 18)}<div><span>${esc(L("At a glance", "Auf einen Blick"))} · ${esc(caption)}</span><strong>${esc(title)}</strong></div></figcaption>
     ${body}
   </figure>`;
 }
@@ -33,7 +133,7 @@ function flow(steps) {
       (s, i) => `<li>
         <span class="sp-flow-num">${String(i + 1).padStart(2, "0")}</span>
         <strong>${esc(s.title)}</strong>
-        ${s.owner ? `<em>${esc(s.owner)}</em>` : ""}
+        ${s.owner ? `<em>${linkTerms(s.owner, CURRENT)}</em>` : ""}
         <small>${esc(s.text)}</small>
       </li>`,
     )
@@ -46,7 +146,7 @@ function stack(layers, foundation) {
       .map(
         (l, i) => `<div class="sp-stack-layer">
           <span>${String(layers.length - i).padStart(2, "0")}</span>
-          <div><strong>${esc(l.title)}</strong><small>${esc(l.text)}</small></div>
+          <div><strong>${esc(l.title)}</strong><small>${linkTerms(l.text, CURRENT)}</small></div>
           <em>${esc(l.owner || "")}</em>
         </div>`,
       )
@@ -61,7 +161,7 @@ function matrix(cols, rows, opts = {}) {
     <tbody>${rows
       .map(
         (r) => `<tr><th scope="row">${opts.logos ? logo(r.label, 120, 26) : esc(r.label)}${r.note ? `<small>${esc(r.note)}</small>` : ""}</th>${r.cells
-          .map((c) => `<td>${c === "" ? `<span class="sp-matrix-empty" aria-label="—">—</span>` : esc(c)}</td>`)
+          .map((c) => `<td>${c === "" ? `<span class="sp-matrix-empty" aria-label="—">—</span>` : linkTerms(c, opts.current)}</td>`)
           .join("")}</tr>`,
       )
       .join("")}</tbody>
@@ -73,7 +173,7 @@ function chips(rows) {
     .map(
       (r) => `<div class="sp-chips-row${r.dark ? " is-dark" : ""}">
         <div class="sp-chips-label"><strong>${esc(r.label)}</strong><small>${esc(r.text || "")}</small></div>
-        <ul>${r.items.map((it) => `<li>${esc(it)}</li>`).join("")}</ul>
+        <ul>${r.items.map((it) => `<li>${linkTerms(it, CURRENT)}</li>`).join("")}</ul>
       </div>`,
     )
     .join("")}</div>`;
@@ -124,7 +224,7 @@ function network(center, spokes) {
         )
         .join("")}
     </svg>
-    <ul class="sp-net-list">${spokes.map((s) => `<li><strong>${esc(s.name)}</strong><small>${esc(s.role)}</small></li>`).join("")}</ul>
+    <ul class="sp-net-list">${spokes.map((s) => `<li><strong>${esc(s.name)}</strong><small>${linkTerms(s.role, CURRENT)}</small></li>`).join("")}</ul>
   </div>`;
 }
 
@@ -173,7 +273,7 @@ function brandLayerMatrix() {
     "matrix",
     L("Brand × layer", "Marke × Ebene"),
     L("Which brand owns which layer of the House of AI", "Welche Marke welche Ebene des House of AI verantwortet"),
-    matrix(cols, rows, { logos: true, corner: L("Brand", "Marke") }) +
+    matrix(cols, rows, { logos: true, corner: L("Brand", "Marke"), current: "serviceplan-ai" }) +
       `<p class="sp-fig-note">${esc(L("Foundation for all three: the Global Data Platform. Product names as published by Serviceplan Group; empty cells mean no public product in that layer.", "Fundament für alle drei: die Global Data Platform. Produktnamen wie von der Serviceplan Group veröffentlicht; leere Zellen bedeuten kein öffentliches Produkt in dieser Ebene."))}</p>`,
     true,
   );
@@ -414,10 +514,15 @@ const FIGURES = {
   }),
 };
 
+let CURRENT = "";
+
 function figureFor(slug) {
   const key = String(slug || "").split("/").pop();
   const make = FIGURES[key];
-  return make ? make() : null;
+  CURRENT = key;
+  const out = make ? make() : null;
+  CURRENT = "";
+  return out;
 }
 
-module.exports = { figureFor, brandLayerMatrix, groupImage };
+module.exports = { figureFor, brandLayerMatrix, groupImage, glyph, crossLink };

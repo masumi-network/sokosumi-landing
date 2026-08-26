@@ -195,7 +195,7 @@ async function index(ctx) {
           ${gi === 0 && g.vendor ? `<span class="chip">${esc(t("Featured"))}</span>` : ""}
         </div>
         ${desc ? `<p class="vendor-desc">${esc(desc)}</p>` : ""}
-        <p class="sub">${esc(countLine)}</p>
+        <p class="sub">${esc(countLine)}${slug === FEATURED_VENDOR ? ` <a href="/serviceplan-ai">${esc(t("How Serviceplan builds AI →"))}</a>` : ""}</p>
         <div class="cw-grid">${g.items.map(tile).join("")}</div>
       </section>`;
       })

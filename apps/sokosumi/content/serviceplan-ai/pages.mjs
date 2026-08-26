@@ -104,11 +104,6 @@ This guide separates those layers. It is published by Sokosumi, which is operate
         ["24", "countries"],
         ["19", "Houses of Communication"],
       ]),
-      featureGrid("Where the AI work sits", [
-        ["Serviceplan: creativity and content", "Creative.AI, production workflows, Luma AI, Serviceplan Make, HealthContent.AI and specialist creative units."],
-        ["Mediaplus: media and intelligence", "The Global Data Platform, Insight.AI, Activate.AI, Plus.AI and the behavioural-science unit Behave.AI."],
-        ["Plan.Net: experience and technology", "Agentic Services, custom enterprise systems, Plan.Net Studios and the Masumi, Kodosumi and Sokosumi stack."],
-      ]),
       steps("The House of AI in one pass", "The public model follows the marketing value chain rather than a list of disconnected tools.", [
         ["Data foundation", "A Global Data Platform is presented as the common, compliant foundation for intelligence and activation across markets."],
         ["Insight.AI", "Audience, behaviour and journey data become research, personas and decision support."],
@@ -141,11 +136,6 @@ Dieser Guide trennt diese Ebenen. Er erscheint auf Sokosumi, das von Plan.Net Ge
         ["43", "Standorte weltweit"],
         ["24", "Länder"],
         ["19", "Houses of Communication"],
-      ]),
-      featureGrid("Wo die KI-Arbeit stattfindet", [
-        ["Serviceplan: Kreation und Content", "Creative.AI, Produktionsprozesse, Luma AI, Serviceplan Make, HealthContent.AI und spezialisierte Kreativeinheiten."],
-        ["Mediaplus: Media und Intelligence", "Global Data Platform, Insight.AI, Activate.AI, Plus.AI und die Behavioral-Science-Einheit Behave.AI."],
-        ["Plan.Net: Experience und Technologie", "Agentic Services, individuelle Enterprise-Systeme, Plan.Net Studios und der Stack aus Masumi, Kodosumi und Sokosumi."],
       ]),
       steps("Das House of AI in vier Schritten", "Das öffentliche Modell folgt der Marketing-Wertschöpfungskette statt einer Liste voneinander getrennter Tools.", [
         ["Datenbasis", "Eine Global Data Platform bildet die gemeinsame, als compliant beschriebene Grundlage für Intelligence und Aktivierung über Märkte hinweg."],

@@ -111,6 +111,10 @@ Humans sign up at https://app.sokosumi.com/signup (free plan, no card).
 - [Pricing](https://www.sokosumi.com/pricing): plans and credits per seat
 - [Sitemap](https://www.sokosumi.com/sitemap.xml)
 
+## Serviceplan Group and AI (parent company dossier)
+
+- [Serviceplan Group and AI](https://www.sokosumi.com/serviceplan-ai): sourced overview of the House of AI — Insight.AI, Creative.AI, Activate.AI, Agentic.AI on a Global Data Platform — with 13 chapters on Serviceplan, Mediaplus, Plan.Net, the Masumi/Kodosumi/Sokosumi stack, AI coworkers, cases, partnerships and a dated timeline. Every claim links to a primary source.
+
 ## Developer resources
 
 - [Sokosumi API documentation](https://api.sokosumi.com): the Sokosumi REST API reference

@@ -54,7 +54,7 @@ function facts() {
   return [
     { k: t("Type of product"), v: t("Marketplace for AI coworkers and AI agents, delivered as a web application") },
     { k: t("Audience"), v: t("Marketing teams") },
-    { k: t("Built by"), v: t("{parent}, together with {partner}", { parent: PARENT.name, partner: PARTNER.name }), html: `<a href="${PARENT.url}" rel="noreferrer">${PARENT.name}</a>, ${t("together with")} <a href="${PARTNER.url}" rel="noreferrer">${PARTNER.name}</a>` },
+    { k: t("Built by"), v: t("{parent}, together with {partner}", { parent: PARENT.name, partner: PARTNER.name }), html: `<a href="${PARENT.url}" rel="noreferrer">${PARENT.name}</a>, ${t("together with")} <a href="${PARTNER.url}" rel="noreferrer">${PARTNER.name}</a> · <a href="/serviceplan-ai">${t("How Serviceplan builds AI")}</a>` },
     { k: t("Legal entity"), v: LEGAL.name },
     { k: t("Headquarters"), v: `${LEGAL.street}, ${LEGAL.postalCode} ${t("Munich")}, ${t("Germany")}` },
     { k: t("VAT ID"), v: LEGAL.vatID },

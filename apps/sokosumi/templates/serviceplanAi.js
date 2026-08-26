@@ -36,11 +36,11 @@ function logoClass(chapter) {
 }
 
 function logoImg(chapter, context) {
-  const logos = chapterLogos(chapter);
-  if (!logos.length) {
-    return '<b aria-hidden="true">' + esc(String(chapter.short || chapter.slug).slice(0, 1).toUpperCase()) + "</b>";
+  const logos = chapterLogos(chapter).slice(0, 1);
+  if (!logos.length || chapterLogos(chapter).length > 1) {
+    return figures.glyph(chapter.icon, 26);
   }
-  const multiple = logos.length > 1;
+  const multiple = false;
   const dimensions =
     context === "hero"
       ? { width: multiple ? 112 : 124, height: multiple ? 14 : 28, loading: "eager" }
@@ -138,8 +138,7 @@ function statsSourceNote() {
 function extrasFor(slug, isHub, index, block) {
   const out = [];
   if (isHub) {
-    if (block.blockType === "stats") out.push(statsSourceNote());
-    if (index === 2) out.push(figures.brandLayerMatrix());
+    if (block.blockType === "stats") out.push(statsSourceNote(), figures.brandLayerMatrix());
   } else {
     const fig = figures.figureFor(slug);
     if (fig && fig.after === index) out.push(fig.html);
@@ -164,7 +163,7 @@ function renderArticle(layout, slug, isHub) {
       while (used.has(id)) id = `${idFor(heading || block.blockType, index)}-${suffix++}`;
       used.add(id);
       if (heading) outline.push({ id, heading });
-      return `<div class="sp-block sp-block-${attr(block.blockType || "unknown")}" id="${attr(id)}">${blocks.renderBlocks([block])}</div>${extrasFor(slug, isHub, index, block)}`;
+      return `<div class="sp-block sp-block-${attr(block.blockType || "unknown")}" id="${attr(id)}">${figures.crossLink(blocks.renderBlocks([block]), slug)}</div>${extrasFor(slug, isHub, index, block)}`;
     })
     .join("");
   return { html, outline };
@@ -201,7 +200,7 @@ function chapterCard(chapter, index) {
   const group = groupFor(chapter);
   return `<a class="sp-chapter" href="/${attr(chapter.doc.slug)}">
     <span class="sp-chapter-num">${String(index + 1).padStart(2, "0")}</span>
-    <span class="sp-chapter-logo ${logoClass(chapter)}">${logoImg(chapter, "chapter")}</span>
+    <span class="sp-chapter-icon">${figures.glyph(chapter.icon, 22)}</span>
     <span class="sp-chapter-body">
       <span class="sp-chapter-kicker">${esc(localText(group?.label))} · ${sources} ${esc(ui(sources === 1 ? "source" : "sources", sources === 1 ? "Quelle" : "Quellen"))}</span>
       <span class="sp-chapter-title">${esc(chapter.doc.title)}</span>
@@ -227,9 +226,8 @@ function groupedChapters(list) {
         .map(
           (group, groupIndex) => `<section class="sp-group" aria-labelledby="sp-group-${attr(group.id)}">
             <header class="sp-group-head">
-              <span class="sp-group-index">${String(groupIndex + 1).padStart(2, "0")}</span>
               <div>
-                <h3 id="sp-group-${attr(group.id)}">${esc(localText(group.label))}</h3>
+                <h3 id="sp-group-${attr(group.id)}"><span class="sp-group-index">${String(groupIndex + 1).padStart(2, "0")}</span>${esc(localText(group.label))}</h3>
                 <p>${esc(localText(group.description))}</p>
                 ${figures.groupImage(group.id)}
               </div>
@@ -252,7 +250,7 @@ function indexLinks(list, current) {
         ${group.chapters
           .map(
             (chapter) =>
-              `<a href="/${attr(chapter.doc.slug)}"${chapter.doc.slug === current ? ' aria-current="page"' : ""}>${esc(chapter.short || chapter.doc.title)}</a>`,
+              `<a href="/${attr(chapter.doc.slug)}"${chapter.doc.slug === current ? ' aria-current="page"' : ""}>${figures.glyph(chapter.icon, 14)}${esc(chapter.short || chapter.doc.title)}</a>`,
           )
           .join("")}
       </div>`,
@@ -384,6 +382,23 @@ function evidenceLedger(sources, updatedAt) {
   </section>`;
 }
 
+function relatedChapters(list, current) {
+  const chapter = list.find((item) => item.doc.slug === current);
+  const picks = (chapter?.related || []).map((slug) => list.find((item) => item.slug === slug)).filter(Boolean);
+  if (!picks.length) return "";
+  return `<nav class="sp-related" aria-label="${attr(ui("Related chapters", "Verwandte Kapitel"))}">
+    <span class="eyebrow">${esc(ui("Related chapters", "Verwandte Kapitel"))}</span>
+    <div>${picks
+      .map(
+        (item) => `<a href="/${attr(item.doc.slug)}">
+          ${figures.glyph(item.icon, 20)}
+          <span><strong>${esc(item.doc.title)}</strong><small>${esc(localText(groupFor(item)?.label))}</small></span>
+        </a>`,
+      )
+      .join("")}</div>
+  </nav>`;
+}
+
 function prevNext(list, current) {
   const index = list.findIndex((chapter) => chapter.doc.slug === current);
   const previous = index > 0 ? list[index - 1] : null;
@@ -391,7 +406,7 @@ function prevNext(list, current) {
   const link = (chapter, label, direction) =>
     chapter
       ? `<a class="sp-pn sp-pn-${direction}" href="/${attr(chapter.doc.slug)}">
-          <span>${esc(label)}</span><strong>${esc(chapter.doc.title)}</strong>
+          <span>${esc(label)}</span><strong>${figures.glyph(chapter.icon, 16)}${esc(chapter.doc.title)}</strong>
         </a>`
       : `<span class="sp-pn sp-pn-${direction}" aria-hidden="true"></span>`;
   return `<nav class="sp-prevnext" aria-label="${attr(ui("Adjacent chapters", "Benachbarte Kapitel"))}">
@@ -520,6 +535,7 @@ async function render(doc, ctx) {
       ${readingRail(list, doc.slug, article.outline)}
       <article class="sp-article">${article.html}${evidenceLedger(sources, doc.updatedAt)}</article>
     </div>` +
+    relatedChapters(list, doc.slug) +
     prevNext(list, doc.slug) +
     bridge() +
     pageEnd()
