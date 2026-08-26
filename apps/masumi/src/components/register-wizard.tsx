@@ -2,7 +2,7 @@
 
 import { ArrowLeft, ArrowRight, X } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { Steps } from "@/components/ui/steps";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -29,6 +29,7 @@ import {
   firstZodErrorMessage,
   type RegisterWizardFormValues,
 } from "@/lib/register-wizard/schema";
+import { fetchRegisterCapabilities } from "@/lib/register-capabilities";
 
 type StepId = "account" | "agent" | "review";
 
@@ -137,6 +138,40 @@ export function RegisterWizard() {
   const [tagInput, setTagInput] = useState("");
   const [tags, setTags] = useState<string[]>([]);
   const [x402ShowErrors, setX402ShowErrors] = useState(false);
+  const [x402CapabilitiesLoading, setX402CapabilitiesLoading] = useState(true);
+  const [x402SettleableCaip2Ids, setX402SettleableCaip2Ids] = useState<
+    string[] | null
+  >(null);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    fetchRegisterCapabilities()
+      .then((capabilities) => {
+        if (cancelled) return;
+        setX402SettleableCaip2Ids(
+          capabilities.x402SettleableNetworks.map((network) => network.caip2Id),
+        );
+      })
+      .catch(() => {
+        if (cancelled) return;
+        setX402SettleableCaip2Ids([]);
+      })
+      .finally(() => {
+        if (!cancelled) {
+          setX402CapabilitiesLoading(false);
+        }
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const x402RegistrationAvailable = useMemo(() => {
+    if (x402SettleableCaip2Ids == null) return false;
+    return x402SettleableCaip2Ids.length > 0;
+  }, [x402SettleableCaip2Ids]);
 
   const currentStep = wizardSteps.findIndex((s) => s.id === step) + 1;
   const activeMeta = wizardSteps[currentStep - 1];
@@ -635,29 +670,36 @@ export function RegisterWizard() {
                 </p>
               </div>
 
-              <label className="flex w-full cursor-pointer items-start gap-3 rounded-lg border border-masumi-border bg-white px-3 py-3">
-                <Checkbox
-                  className="mt-0.5"
-                  checked={watched.includeX402}
-                  onCheckedChange={(checked) => {
-                    const enabled = checked === true;
-                    setValue("includeX402", enabled, { shouldDirty: true });
-                    if (!enabled) {
-                      setX402ShowErrors(false);
-                      clearErrors("x402");
-                    }
-                  }}
-                />
-                <span className="text-sm text-masumi-ink">
-                  <span className="font-medium">Also accept EVM payments (x402)</span>
-                  <span className="mt-0.5 block text-xs leading-relaxed text-masumi-muted">
-                    Add a fixed stablecoin price on Base, Ethereum, or other EVM
-                    networks.
+              {x402CapabilitiesLoading ? (
+                <p className="text-xs text-masumi-muted">
+                  Checking available EVM payment networks…
+                </p>
+              ) : x402RegistrationAvailable ? (
+                <label className="flex w-full cursor-pointer items-start gap-3 rounded-lg border border-masumi-border bg-white px-3 py-3">
+                  <Checkbox
+                    className="mt-0.5"
+                    checked={watched.includeX402}
+                    onCheckedChange={(checked) => {
+                      const enabled = checked === true;
+                      setValue("includeX402", enabled, { shouldDirty: true });
+                      if (!enabled) {
+                        setX402ShowErrors(false);
+                        clearErrors("x402");
+                      }
+                    }}
+                  />
+                  <span className="text-sm text-masumi-ink">
+                    <span className="font-medium">
+                      Also accept EVM payments (x402)
+                    </span>
+                    <span className="mt-0.5 block text-xs leading-relaxed text-masumi-muted">
+                      Add a fixed stablecoin price on an available EVM network.
+                    </span>
                   </span>
-                </span>
-              </label>
+                </label>
+              ) : null}
 
-              {watched.includeX402 ? (
+              {watched.includeX402 && x402RegistrationAvailable ? (
                 <X402PaymentFields
                   value={watched.x402}
                   onChange={(x402: X402PaymentDraft) =>
@@ -665,6 +707,8 @@ export function RegisterWizard() {
                   }
                   cardanoNetwork={MASUMI_REGISTRY_NETWORK}
                   showErrors={x402ShowErrors}
+                  availableCaip2Ids={x402SettleableCaip2Ids ?? undefined}
+                  chainsLoading={x402CapabilitiesLoading}
                 />
               ) : null}
             </div>

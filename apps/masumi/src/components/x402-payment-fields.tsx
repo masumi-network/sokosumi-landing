@@ -100,11 +100,16 @@ export function X402PaymentFields({
   onChange,
   cardanoNetwork,
   showErrors = false,
+  availableCaip2Ids,
+  chainsLoading = false,
 }: {
   value: X402PaymentDraft;
   onChange: (next: X402PaymentDraft) => void;
   cardanoNetwork: "Preprod" | "Mainnet";
   showErrors?: boolean;
+  /** When set, only these CAIP-2 chains are shown (payment-node settleable list). */
+  availableCaip2Ids?: string[];
+  chainsLoading?: boolean;
 }) {
   const [humanAmount, setHumanAmount] = useState(() =>
     formatBaseUnitsToHuman(value.amount, Number(value.decimals) || 6),
@@ -139,8 +144,16 @@ export function X402PaymentFields({
         ),
       ) as X402FieldErrors);
 
-  const mainnetChains = EVM_CHAINS.filter((chain) => !chain.isTestnet);
-  const testnetChains = EVM_CHAINS.filter((chain) => chain.isTestnet);
+  const availableChains = useMemo(() => {
+    if (availableCaip2Ids == null) {
+      return [...EVM_CHAINS];
+    }
+    const allowed = new Set(availableCaip2Ids);
+    return EVM_CHAINS.filter((chain) => allowed.has(chain.caip2Id));
+  }, [availableCaip2Ids]);
+
+  const mainnetChains = availableChains.filter((chain) => !chain.isTestnet);
+  const testnetChains = availableChains.filter((chain) => chain.isTestnet);
 
   const chainMismatch =
     cardanoNetwork === "Preprod"
@@ -194,6 +207,16 @@ export function X402PaymentFields({
     });
   }
 
+  useEffect(() => {
+    if (chainsLoading || availableCaip2Ids == null) return;
+    if (availableChains.length === 0) return;
+    if (availableChains.some((chain) => chain.caip2Id === value.network)) {
+      return;
+    }
+    handleChainChange(availableChains[0]!.caip2Id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- reset selection when availability changes
+  }, [availableCaip2Ids, chainsLoading, availableChains, value.network]);
+
   function handleHumanAmountChange(nextHuman: string) {
     touch("amount");
     setHumanAmount(nextHuman);
@@ -222,6 +245,14 @@ export function X402PaymentFields({
         </p>
       </div>
 
+      {chainsLoading ? (
+        <p className="text-xs text-masumi-muted">Loading available networks…</p>
+      ) : availableCaip2Ids != null && availableChains.length === 0 ? (
+        <p className="rounded-lg border border-masumi-border bg-white px-3 py-2.5 text-xs leading-relaxed text-masumi-muted">
+          No EVM payment networks are configured for registration right now.
+        </p>
+      ) : null}
+
       {chainMismatch ? (
         <p className="rounded-lg border border-amber-300/80 bg-amber-50 px-3 py-2.5 text-xs leading-relaxed text-amber-900">
           {cardanoNetwork === "Preprod"
@@ -238,6 +269,7 @@ export function X402PaymentFields({
         <Select
           value={value.network}
           onValueChange={handleChainChange}
+          disabled={chainsLoading || availableChains.length === 0}
         >
           <SelectTrigger
             className={cn(
