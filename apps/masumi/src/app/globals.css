@@ -636,9 +636,16 @@ body {
 .dialog-stagger-in > *:nth-child(3) { animation-delay: 0.15s; }
 .dialog-stagger-in > *:nth-child(4) { animation-delay: 0.2s; }
 
-@keyframes register-mint-rail-flow {
-  0% { background-position: 0 0; }
-  100% { background-position: 0 200%; }
+@keyframes register-mint-rail-fill-down {
+  0% {
+    transform: scaleY(0);
+  }
+  85% {
+    transform: scaleY(1);
+  }
+  100% {
+    transform: scaleY(0);
+  }
 }
 
 @keyframes register-mint-pulse {
@@ -655,15 +662,18 @@ body {
 }
 
 .register-mint-progress-rail--active {
-  background: linear-gradient(
-    to bottom,
-    var(--masumi-pink) 0%,
-    var(--masumi-pink) 45%,
-    var(--masumi-border) 45%,
-    var(--masumi-border) 100%
-  );
-  background-size: 100% 200%;
-  animation: register-mint-rail-flow 2.2s ease-in-out infinite;
+  background: var(--masumi-border);
+  overflow: hidden;
+}
+
+.register-mint-progress-rail--active::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--masumi-pink);
+  transform: scaleY(0);
+  transform-origin: top center;
+  animation: register-mint-rail-fill-down 2.4s ease-in infinite;
 }
 
 .register-mint-progress-pulse {
@@ -679,7 +689,7 @@ body {
   .dialog-stagger-in > *,
   .btn-primary,
   .btn-secondary,
-  .register-mint-progress-rail--active,
+  .register-mint-progress-rail--active::after,
   .register-mint-progress-pulse {
     animation: none !important;
     transition: none !important;
