@@ -636,15 +636,12 @@ body {
 .dialog-stagger-in > *:nth-child(3) { animation-delay: 0.15s; }
 .dialog-stagger-in > *:nth-child(4) { animation-delay: 0.2s; }
 
-@keyframes register-mint-rail-fill-down {
+@keyframes register-mint-rail-travel-down {
   0% {
-    transform: scaleY(0);
-  }
-  85% {
-    transform: scaleY(1);
+    background-position: 0 -60%;
   }
   100% {
-    transform: scaleY(0);
+    background-position: 0 160%;
   }
 }
 
@@ -662,18 +659,17 @@ body {
 }
 
 .register-mint-progress-rail--active {
-  background: var(--masumi-border);
-  overflow: hidden;
-}
-
-.register-mint-progress-rail--active::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: var(--masumi-pink);
-  transform: scaleY(0);
-  transform-origin: top center;
-  animation: register-mint-rail-fill-down 2.4s ease-in infinite;
+  background-color: var(--masumi-border);
+  background-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    var(--masumi-pink) 45%,
+    var(--masumi-pink) 55%,
+    transparent 100%
+  );
+  background-size: 100% 35%;
+  background-repeat: no-repeat;
+  animation: register-mint-rail-travel-down 1.8s linear infinite;
 }
 
 .register-mint-progress-pulse {
@@ -689,7 +685,7 @@ body {
   .dialog-stagger-in > *,
   .btn-primary,
   .btn-secondary,
-  .register-mint-progress-rail--active::after,
+  .register-mint-progress-rail--active,
   .register-mint-progress-pulse {
     animation: none !important;
     transition: none !important;
