@@ -1430,3 +1430,5 @@ html[lang="de"] .tg-article .prose blockquote::before { content: "Prompt"; }
   background-image: var(--stage) !important;
 }
 .uc-art.is-grad img { mix-blend-mode: normal; }
+/* The stage itself is square; only what floats on it is rounded. */
+.grad-band, .pd-feat, .pd-stage, .uc-art.is-grad, .org, .sk-stage { border-radius: 0 !important; }
