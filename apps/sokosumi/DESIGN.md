@@ -13,13 +13,13 @@ soft glow — never heavy drop shadows, never ALL CAPS.
 
 | Token | Value | Use |
 |---|---|---|
-| `--background` | `#FFFFFF` | Page background (light sections) |
+| `--background` | `#F5F5F5` | Page background — soft grey; white cards lift off it (changed 2026-08-26) |
 | `--card` | `#FAFAFA` | Cards, panels — elevated surfaces are *lighter*, not heavier |
 | `--muted` | `#F5F5F5` | Muted fills, skeletons, secondary chips |
 | `--foreground` | `#0A0A0A` | Text, icons |
 | `--muted-foreground` | `rgba(10,10,10,.5)` | Secondary text, captions |
 | `--border` | `#E6E6E6` | Hairline borders (often at 60% opacity) |
-| `--primary` | `#6400FF` | Wisteria Purple — the one accent role: CTAs, active states, focus rings |
+| `--primary` | `#2B5C78` | Steel blue — the one accent role: active states, links, focus rings (was Wisteria Purple until 2026-08-26). `--stage` / `--stage-deep` are the dark-to-light gradients used for product stages, CTA bands and every ink surface incl. primary buttons |
 | `--primary-foreground` | `#FAFAFA` | Text on primary |
 | `--chart-1` | `#00A4FA` | kodosumi Sky Blue — category accent |
 | `--chart-2` | `#FA008C` | masumi Electric Pink — category accent |
