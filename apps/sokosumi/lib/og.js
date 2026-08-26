@@ -18,10 +18,11 @@ const root = path.join(__dirname, "..");
 const W = 1200;
 const H = 630;
 const INK = "#0f0e0d";
-const PAPER = "#fafaf9";
+const PAPER = "#f5f5f5";
 const MUTED = "#6b6a68";
 const HAIR = "rgba(15,14,13,0.14)";
 const PURPLE = "#2b5c78";
+const STAGE_DEEP = "linear-gradient(180deg, #0a0a0a 0%, #0f1c25 45%, #2c4452 100%)";
 
 const FONTS = [300, 400, 500].map((weight) => ({
   name: "Inter",
@@ -30,7 +31,14 @@ const FONTS = [300, 400, 500].map((weight) => ({
   data: fs.readFileSync(path.join(root, "assets", "fonts", "og", `inter-${weight}.woff`)),
 }));
 
-const MARK = "data:image/png;base64," + fs.readFileSync(path.join(root, "assets", "apple-touch-icon.png")).toString("base64");
+// The shipped app icon is still Wisteria purple. assets/og-mark.png is the
+// same glyph with the purple field knocked out to white, so it reads on the
+// deep stage band these cards close with. The app icon itself is untouched.
+const markUri = (f) => "data:image/png;base64," + fs.readFileSync(path.join(root, "assets", f)).toString("base64");
+// Two knockouts of the same glyph: the field drops out on the dark closing
+// band, and becomes ink when the mark sits on a white tile.
+const MARK = markUri("og-mark.png");
+const MARK_INK = markUri("og-mark-ink.png");
 
 // ---- remote images (logos, portraits) as data URIs, cached ----
 const imgCache = new Map();
@@ -76,12 +84,14 @@ function frame(children, opts) {
     [
       h("div", { display: "flex", flexDirection: "column", justifyContent: "center", flexGrow: 1 }, children),
       // footer: mark + domain, hairline above
-      h("div", { position: "absolute", left: 72, right: 72, bottom: 48, display: "flex", alignItems: "center", justifyContent: "space-between", borderTop: `1px solid ${HAIR}`, paddingTop: 22 }, [
+      // The site closes every page on a deep-stage band; the share card does
+      // the same. Full bleed and square-cornered, like the stages on the site.
+      h("div", { position: "absolute", left: 0, right: 0, bottom: 0, height: 104, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 72px", backgroundColor: "#0f1c25", backgroundImage: STAGE_DEEP }, [
         h("div", { display: "flex", alignItems: "center", gap: 14 }, [
           h("img", { width: 36, height: 36, borderRadius: 9 }, null, { src: MARK }),
-          text("Sokosumi", { fontSize: 22, fontWeight: 500 }),
+          text("Sokosumi", { fontSize: 22, fontWeight: 500, color: "#ffffff" }),
         ]),
-        text(o.right || "sokosumi.com", { fontSize: 20, color: MUTED }),
+        text(o.right || "sokosumi.com", { fontSize: 20, color: "rgba(255,255,255,0.62)" }),
       ]),
     ],
   );
@@ -92,7 +102,7 @@ function tile(src, name, size) {
   return h("div", { display: "flex", alignItems: "center", gap: 20 }, [
     src
       ? h("img", { width: s, height: s, borderRadius: s * 0.22, border: `1px solid ${HAIR}`, background: "#fff", objectFit: "contain", padding: s * 0.12 }, null, { src })
-      : h("div", { width: s, height: s, borderRadius: s * 0.22, border: `1px solid ${INK}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: s * 0.4, fontWeight: 500 }, String(name || "?").slice(0, 1)),
+      : h("div", { width: s, height: s, borderRadius: s * 0.22, border: `1px solid ${HAIR}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: s * 0.4, fontWeight: 500 }, String(name || "?").slice(0, 1)),
     text(name, { fontSize: 40, fontWeight: 500, letterSpacing: -0.5 }),
   ]);
 }
@@ -105,7 +115,7 @@ async function layoutCompare(q) {
   // Sokosumi vs <competitor>
   const logo = await dataUri(q.logo);
   return frame([
-    h("div", { display: "flex", alignItems: "center", gap: 28 }, [tile(MARK, "Sokosumi"), vsPill(), tile(logo, q.b || "")]),
+    h("div", { display: "flex", alignItems: "center", gap: 28 }, [tile(MARK_INK, "Sokosumi"), vsPill(), tile(logo, q.b || "")]),
     text(clamp(q.title, 90), { fontSize: q.title && q.title.length > 60 ? 60 : 70, fontWeight: 300, lineHeight: 1.08, letterSpacing: -2.4, marginTop: 52, maxWidth: 1040 }),
     q.sub ? text(clamp(q.sub, 120), { fontSize: 24, color: MUTED, marginTop: 22, lineHeight: 1.4, maxWidth: 900 }) : null,
   ].filter(Boolean), { right: "sokosumi.com/compare" });
@@ -141,7 +151,7 @@ async function layoutCoworker(q) {
     h("div", { display: "flex", gap: 56, alignItems: "center", marginTop: 20 }, [
       portrait
         ? h("img", { width: 300, height: 300, borderRadius: 150, objectFit: "cover", border: `1px solid ${HAIR}` }, null, { src: portrait })
-        : h("div", { width: 300, height: 300, borderRadius: 150, border: `1px solid ${INK}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 120, fontWeight: 300 }, String(q.title || "?").slice(0, 1)),
+        : h("div", { width: 300, height: 300, borderRadius: 150, border: `1px solid ${HAIR}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 120, fontWeight: 300 }, String(q.title || "?").slice(0, 1)),
       h("div", { display: "flex", flexDirection: "column", width: 640 }, [
         text(q.eyebrow || "AI coworker on Sokosumi", { fontSize: 22, color: MUTED, marginBottom: 18 }),
         text(clamp(q.title, 40), { fontSize: 88, fontWeight: 300, lineHeight: 1, letterSpacing: -3 }),
