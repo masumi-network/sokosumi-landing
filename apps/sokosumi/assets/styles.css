@@ -5,6 +5,7 @@
 
 :root {
   --background: #f5f5f5;
+  --stage-deep: linear-gradient(180deg, #0a0a0a 0%, #0f1c25 45%, #2c4452 100%);
   --stage: linear-gradient(180deg, #0a0a0a 0%, #0f1c25 22%, #2c4452 52%, #7d8f9b 78%, #d9dee2 94%, #eceef0 100%);
   --ink: #0f0e0d;
   --card: #ffffff;
@@ -1432,3 +1433,7 @@ html[lang="de"] .tg-article .prose blockquote::before { content: "Prompt"; }
 .uc-art.is-grad img { mix-blend-mode: normal; }
 /* The stage itself is square; only what floats on it is rounded. */
 .grad-band, .pd-feat, .pd-stage, .uc-art.is-grad, .org, .sk-stage { border-radius: 0 !important; }
+
+/* Dark CTA bands share the stage, but stop before the light tail so white
+   copy stays readable. */
+.blk-cta, .sp-bridge { background: #0f1c25 var(--stage-deep) !important; }
