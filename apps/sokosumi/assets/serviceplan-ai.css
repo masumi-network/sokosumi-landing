@@ -84,11 +84,13 @@ body:has(.sp-page) {
   background: var(--sp-surface);
   border: 1px solid var(--sp-rule);
   border-radius: var(--r-lg);
-  display: inline-flex;
-  height: 50px;
+  display: inline-grid;
+  gap: 4px;
+  height: 56px;
   justify-content: center;
   margin-bottom: 24px;
-  width: 50px;
+  padding: 8px 16px;
+  width: 156px;
 }
 
 .sp-hero-logo img,
@@ -97,10 +99,22 @@ body:has(.sp-page) {
   display: flex;
   font-size: 18px;
   font-weight: 500;
-  height: 32px;
+  height: 28px;
   justify-content: center;
   object-fit: contain;
-  width: 32px;
+  width: 124px;
+}
+
+.sp-hero-logo.sp-logo-count-2,
+.sp-hero-logo.sp-logo-count-3 {
+  height: auto;
+  min-height: 68px;
+}
+
+.sp-hero-logo.sp-logo-count-2 img,
+.sp-hero-logo.sp-logo-count-3 img {
+  height: 14px;
+  width: 112px;
 }
 
 .sp-hero h1 {
@@ -661,14 +675,17 @@ body:has(.sp-page) {
   color: var(--sp-ink);
   display: grid;
   gap: 12px;
-  grid-template-columns: 26px 34px minmax(0, 1fr) 18px;
+  grid-template-columns: minmax(0, 1fr) 18px;
   padding: var(--space-md) 0;
 }
 
 .sp-chapter-num {
   color: var(--sp-quiet);
+  display: none;
   font-size: 10.5px;
   font-variant-numeric: tabular-nums;
+  grid-column: 1;
+  grid-row: 1;
   padding-top: var(--space-xs);
 }
 
@@ -677,10 +694,14 @@ body:has(.sp-page) {
   background: var(--sp-surface);
   border: 1px solid var(--sp-rule);
   border-radius: var(--r-md);
-  display: flex;
-  height: 34px;
-  justify-content: center;
-  width: 34px;
+  display: grid;
+  gap: 4px;
+  grid-column: 1;
+  grid-row: 1;
+  height: 40px;
+  justify-items: center;
+  padding: 8px 12px;
+  width: 132px;
 }
 
 .sp-chapter-logo img,
@@ -695,13 +716,27 @@ body:has(.sp-page) {
   justify-content: center;
   object-fit: contain;
   padding: 0;
-  width: 24px;
+  width: 110px;
+}
+
+.sp-chapter-logo.sp-logo-count-2,
+.sp-chapter-logo.sp-logo-count-3 {
+  height: auto;
+  min-height: 52px;
+}
+
+.sp-chapter-logo.sp-logo-count-2 img,
+.sp-chapter-logo.sp-logo-count-3 img {
+  height: 12px;
+  width: 96px;
 }
 
 .sp-chapter-body {
   display: flex;
   flex-direction: column;
   gap: var(--space-3xs);
+  grid-column: 1 / 3;
+  grid-row: 2;
   min-width: 0;
 }
 
@@ -733,6 +768,8 @@ body:has(.sp-page) {
 
 .sp-chapter-go {
   color: var(--sp-quiet);
+  grid-column: 2;
+  grid-row: 1;
   padding-top: var(--space-2xs);
   transition: color 160ms var(--ease);
 }
@@ -900,6 +937,27 @@ a.sp-pn:hover strong {
 }
 
 @media (min-width: 40rem) {
+  .sp-chapter {
+    grid-template-columns: 26px 132px minmax(0, 1fr) 18px;
+  }
+
+  .sp-chapter-num {
+    display: block;
+  }
+
+  .sp-chapter-logo {
+    grid-column: 2;
+  }
+
+  .sp-chapter-body {
+    grid-column: 3;
+    grid-row: 1;
+  }
+
+  .sp-chapter-go {
+    grid-column: 4;
+  }
+
   .sp-map-flow {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -1042,14 +1100,6 @@ a.sp-pn:hover strong {
 @media (max-width: 24rem) {
   .sp-hero h1 {
     font-size: 36px;
-  }
-
-  .sp-chapter {
-    grid-template-columns: 26px minmax(0, 1fr) 18px;
-  }
-
-  .sp-chapter-logo {
-    display: none;
   }
 }
 

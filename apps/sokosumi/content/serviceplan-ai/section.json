@@ -35,18 +35,90 @@
     }
   ],
   "chapters": [
-    { "slug": "house-of-ai", "short": "House of AI", "group": "architecture", "logo": "/assets/serviceplan-group.webp" },
-    { "slug": "serviceplan-creative-ai", "short": "Serviceplan", "group": "architecture", "logo": "/assets/serviceplan-group.webp" },
-    { "slug": "mediaplus-ai", "short": "Mediaplus", "group": "architecture" },
-    { "slug": "plan-net-agentic-ai", "short": "Plan.Net", "group": "architecture" },
-    { "slug": "mediaplus-ai-products", "short": "Mediaplus products", "group": "products" },
-    { "slug": "ai-coworkers", "short": "AI Coworkers", "group": "products", "logo": "/assets/apple-touch-icon.png" },
-    { "slug": "masumi-sokosumi-kodosumi", "short": "AI stack", "group": "products", "logo": "/assets/apple-touch-icon.png" },
-    { "slug": "serviceplan-generate-ai-makeline", "short": "Generate.AI & MAKELINE", "group": "products" },
-    { "slug": "ai-marketing-agency", "short": "AI agency guide", "group": "guides" },
-    { "slug": "ai-search-geo", "short": "AI search & GEO", "group": "guides" },
-    { "slug": "ai-marketing-cases", "short": "AI cases", "group": "proof" },
-    { "slug": "partnerships-and-cases", "short": "Partnerships", "group": "proof" },
-    { "slug": "timeline-and-sources", "short": "Timeline", "group": "proof" }
+    {
+      "slug": "house-of-ai",
+      "short": "House of AI",
+      "group": "architecture",
+      "logos": [{ "src": "/assets/serviceplan-logo.png", "name": "Serviceplan" }]
+    },
+    {
+      "slug": "serviceplan-creative-ai",
+      "short": "Serviceplan",
+      "group": "architecture",
+      "logos": [{ "src": "/assets/serviceplan-logo.png", "name": "Serviceplan" }]
+    },
+    {
+      "slug": "mediaplus-ai",
+      "short": "Mediaplus",
+      "group": "architecture",
+      "logos": [{ "src": "/assets/logos/mediaplus.svg", "name": "Mediaplus" }]
+    },
+    {
+      "slug": "plan-net-agentic-ai",
+      "short": "Plan.Net",
+      "group": "architecture",
+      "logos": [{ "src": "/assets/logos/plan-net.svg", "name": "Plan.Net" }]
+    },
+    {
+      "slug": "mediaplus-ai-products",
+      "short": "Mediaplus products",
+      "group": "products",
+      "logos": [{ "src": "/assets/logos/mediaplus.svg", "name": "Mediaplus" }]
+    },
+    {
+      "slug": "ai-coworkers",
+      "short": "AI Coworkers",
+      "group": "products",
+      "logos": [{ "src": "/assets/logos/sokosumi.svg", "name": "Sokosumi" }]
+    },
+    {
+      "slug": "masumi-sokosumi-kodosumi",
+      "short": "AI stack",
+      "group": "products",
+      "logos": [
+        { "src": "/assets/logos/masumi.svg", "name": "Masumi" },
+        { "src": "/assets/logos/sokosumi.svg", "name": "Sokosumi" },
+        { "src": "/assets/logos/kodosumi.svg", "name": "Kodosumi" }
+      ]
+    },
+    {
+      "slug": "serviceplan-generate-ai-makeline",
+      "short": "Generate.AI & MAKELINE",
+      "group": "products",
+      "logos": [{ "src": "/assets/serviceplan-logo.png", "name": "Serviceplan" }]
+    },
+    {
+      "slug": "ai-marketing-agency",
+      "short": "AI agency guide",
+      "group": "guides",
+      "logos": [{ "src": "/assets/serviceplan-logo.png", "name": "Serviceplan" }]
+    },
+    {
+      "slug": "ai-search-geo",
+      "short": "AI search & GEO",
+      "group": "guides",
+      "logos": [{ "src": "/assets/logos/mediaplus.svg", "name": "Mediaplus" }]
+    },
+    {
+      "slug": "ai-marketing-cases",
+      "short": "AI cases",
+      "group": "proof",
+      "logos": [{ "src": "/assets/serviceplan-logo.png", "name": "Serviceplan" }]
+    },
+    {
+      "slug": "partnerships-and-cases",
+      "short": "Partnerships",
+      "group": "proof",
+      "logos": [
+        { "src": "/assets/serviceplan-logo.png", "name": "Serviceplan" },
+        { "src": "/assets/nmkr-logo.svg", "name": "NMKR" }
+      ]
+    },
+    {
+      "slug": "timeline-and-sources",
+      "short": "Timeline",
+      "group": "proof",
+      "logos": [{ "src": "/assets/serviceplan-logo.png", "name": "Serviceplan" }]
+    }
   ]
 }

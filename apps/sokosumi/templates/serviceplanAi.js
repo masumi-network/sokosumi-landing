@@ -25,9 +25,39 @@ const localText = (value) => (value && typeof value === "object" ? value[i18n.lo
 const HUB = () => config().hub;
 const isSection = (slug) => typeof slug === "string" && (slug === HUB() || slug.startsWith(`${HUB()}/`));
 
-function logoImg(ch, size) {
-  if (!ch.logo) return `<b aria-hidden="true">${esc(String(ch.short || ch.slug).slice(0, 1).toUpperCase())}</b>`;
-  return `<img src="${attr(ch.logo)}" alt="" width="${size}" height="${size}" loading="lazy">`;
+function chapterLogos(chapter) {
+  if (Array.isArray(chapter.logos) && chapter.logos.length) return chapter.logos;
+  return chapter.logo ? [{ src: chapter.logo, name: chapter.short }] : [];
+}
+
+function logoClass(chapter) {
+  return "sp-logo-count-" + Math.min(chapterLogos(chapter).length || 1, 3);
+}
+
+function logoImg(chapter, context) {
+  const logos = chapterLogos(chapter);
+  if (!logos.length) {
+    return '<b aria-hidden="true">' + esc(String(chapter.short || chapter.slug).slice(0, 1).toUpperCase()) + "</b>";
+  }
+  const multiple = logos.length > 1;
+  const dimensions =
+    context === "hero"
+      ? { width: multiple ? 112 : 124, height: multiple ? 14 : 28, loading: "eager" }
+      : { width: multiple ? 96 : 110, height: multiple ? 12 : 24, loading: "lazy" };
+  return logos
+    .map(
+      (logo) =>
+        '<img src="' +
+        attr(logo.src) +
+        '" alt="" width="' +
+        dimensions.width +
+        '" height="' +
+        dimensions.height +
+        '" loading="' +
+        dimensions.loading +
+        '">',
+    )
+    .join("");
 }
 
 async function chapters(ctx) {
@@ -131,7 +161,7 @@ function chapterCard(chapter, index) {
   const group = groupFor(chapter);
   return `<a class="sp-chapter" href="/${attr(chapter.doc.slug)}">
     <span class="sp-chapter-num">${String(index + 1).padStart(2, "0")}</span>
-    <span class="sp-chapter-logo">${logoImg(chapter, 34)}</span>
+    <span class="sp-chapter-logo ${logoClass(chapter)}">${logoImg(chapter, "chapter")}</span>
     <span class="sp-chapter-body">
       <span class="sp-chapter-kicker">${esc(localText(group?.label))} · ${sources} ${esc(ui(sources === 1 ? "source" : "sources", sources === 1 ? "Quelle" : "Quellen"))}</span>
       <span class="sp-chapter-title">${esc(chapter.doc.title)}</span>
@@ -411,7 +441,7 @@ async function render(doc, ctx) {
     }) +
     `<header class="sp-hero ${isHub ? "sp-hero-hub" : "sp-hero-chapter"}">
       <div class="sp-hero-copy">
-        ${chapter ? `<span class="sp-hero-logo">${logoImg(chapter, 42)}</span>` : ""}
+        ${chapter ? `<span class="sp-hero-logo ${logoClass(chapter)}">${logoImg(chapter, "hero")}</span>` : ""}
         ${hero?.eyebrow ? `<span class="eyebrow">${esc(hero.eyebrow)}</span>` : ""}
         <h1>${esc(hero?.heading || doc.title)}</h1>
         ${hero?.subheading ? `<p>${esc(hero.subheading)}</p>` : ""}
