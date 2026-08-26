@@ -2354,3 +2354,26 @@ a.sp-pn:hover strong {
     grid-template-columns: minmax(280px, 0.9fr) minmax(0, 1.1fr);
   }
 }
+
+/* Tables scroll inside their container on phones; show that there is more. */
+.sp-matrix-wrap {
+  position: relative;
+  scrollbar-width: thin;
+}
+
+@media (max-width: 40rem) {
+  .sp-matrix-wrap::after {
+    background: linear-gradient(to right, transparent, var(--sp-paper));
+    bottom: 0;
+    content: "";
+    pointer-events: none;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 40px;
+  }
+
+  .sp-matrix {
+    padding-right: 24px;
+  }
+}
