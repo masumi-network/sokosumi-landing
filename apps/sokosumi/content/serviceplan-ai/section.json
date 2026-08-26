@@ -57,7 +57,7 @@
       "group": "architecture",
       "logos": [
         {
-          "src": "/assets/serviceplan-logo.png",
+          "src": "/assets/logos/serviceplan-group.svg",
           "name": "Serviceplan"
         }
       ],
@@ -88,7 +88,7 @@
       "group": "architecture",
       "logos": [
         {
-          "src": "/assets/serviceplan-logo.png",
+          "src": "/assets/logos/serviceplan-group.svg",
           "name": "Serviceplan"
         }
       ],
@@ -267,7 +267,7 @@
       "group": "products",
       "logos": [
         {
-          "src": "/assets/serviceplan-logo.png",
+          "src": "/assets/logos/serviceplan-group.svg",
           "name": "Serviceplan"
         }
       ],
@@ -368,7 +368,7 @@
       "group": "proof",
       "logos": [
         {
-          "src": "/assets/serviceplan-logo.png",
+          "src": "/assets/logos/serviceplan-group.svg",
           "name": "Serviceplan"
         },
         {

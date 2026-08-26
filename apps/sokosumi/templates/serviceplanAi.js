@@ -43,8 +43,8 @@ function logoImg(chapter, context) {
   const multiple = false;
   const dimensions =
     context === "hero"
-      ? { width: multiple ? 112 : 124, height: multiple ? 14 : 28, loading: "eager" }
-      : { width: multiple ? 96 : 110, height: multiple ? 12 : 24, loading: "lazy" };
+      ? { width: multiple ? 112 : 240, height: multiple ? 14 : 25, loading: "eager" }
+      : { width: multiple ? 96 : 190, height: multiple ? 12 : 20, loading: "lazy" };
   return logos
     .map(
       (logo) =>

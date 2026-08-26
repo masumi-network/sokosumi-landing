@@ -464,5 +464,5 @@ footer.site {
 }
 .nav-swatch.is-mock { width: 54px; background: var(--muted); border-color: rgba(15, 14, 13, 0.08); }
 .nav-swatch.is-mock svg { width: 100%; height: 100%; }
-.nav-visual-ucstage { background: #0f1c25 var(--stage); display: flex; align-items: center; justify-content: center; padding: 18px; }
+.nav-visual-ucstage { border: 0; background: var(--stage); background-origin: border-box; display: flex; align-items: center; justify-content: center; padding: 18px; }
 .nav-visual-ucstage .nav-mock { width: 62%; height: auto; background: #fff; border-radius: 8px; border: 1px solid rgba(15, 14, 13, 0.1); }

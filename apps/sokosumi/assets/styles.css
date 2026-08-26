@@ -1465,7 +1465,7 @@ section.band-dark .btn-primary, .cw-split-side.is-coworker .btn-primary,
 /* ===== use-case study cards on the stage ===== */
 .uc-stage {
   display: block; margin: 0 -22px 6px; padding: 26px 24px;
-  background: #0f1c25 var(--stage); border: 0;
+  background: var(--stage); border: 0;
 }
 .uc-stage.is-compact { aspect-ratio: 5 / 2; display: flex; align-items: center; justify-content: center; padding: 18px 24px; }
 .uc-hero-media .uc-stage { margin: 0; padding: clamp(28px, 4vw, 48px); min-height: 100%; display: flex; align-items: center; justify-content: center; }

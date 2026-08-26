@@ -2376,3 +2376,8 @@ a.sp-pn:hover strong {
     padding-right: 24px;
   }
 }
+
+/* official House of Communication lockups are ~10:1 — give them their width */
+.sp-hero-logo:not(.sp-logo-count-2):not(.sp-logo-count-3):not(:has(> .sp-glyph)) { width: auto; padding: 0; background: none; border: 0; height: auto; }
+.sp-hero-logo:not(.sp-logo-count-2):not(.sp-logo-count-3) > img { width: auto; max-width: 260px; height: 25px; object-position: left center; }
+.sp-chapter-logo:not(.sp-logo-count-2):not(.sp-logo-count-3) > img { width: auto; max-width: 200px; height: 20px; object-position: left center; }
