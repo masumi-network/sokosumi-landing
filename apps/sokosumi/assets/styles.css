@@ -553,6 +553,20 @@ a.card:hover .go { opacity: 1; transform: none; }
    strokes keep their weight instead of being cropped to fill a portrait frame */
 .cw-portrait.is-icon { background: var(--card); border: 1px solid var(--border); }
 .cw-portrait.is-icon img { object-fit: contain; padding: 26%; }
+/* A marketplace icon is a glyph, not a portrait: at portrait size it is a huge
+   piece of line art carrying one bit of information. Cap it and let the copy
+   lead. */
+.cw-hero .cw-portrait.is-icon { width: min(160px, 40%); aspect-ratio: 1; align-self: start; }
+/* the maker's own copy runs long; keep it to a readable measure */
+.cw-vendor-copy { max-width: 72ch; }
+/* maker-supplied tables: hairlines only, and they scroll rather than push the
+   page sideways on a phone */
+.cw-table-wrap { overflow-x: auto; margin: 1.4em 0; }
+.cw-vendor-copy table { border-collapse: collapse; width: 100%; min-width: 420px; font-size: 15px; }
+.cw-vendor-copy th, .cw-vendor-copy td { text-align: left; padding: 10px 14px 10px 0; border-bottom: 1px solid var(--border); vertical-align: top; }
+.cw-vendor-copy th { font-weight: 500; font-size: 13px; color: var(--muted-foreground); }
+.cw-vendor-copy tbody tr:last-child td { border-bottom: 0; }
+.cw-vendor-copy h3 { margin-top: 1.6em; }
 .portrait.is-icon img, .cw-tile .portrait.is-icon img { object-fit: contain; padding: 24%; }
 .avatar.is-icon { background: var(--muted); }
 .avatar.is-icon img { object-fit: contain; padding: 18%; }

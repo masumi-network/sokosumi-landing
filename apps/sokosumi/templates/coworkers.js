@@ -286,6 +286,83 @@ function profileLd(c, vendorName, vendorSlug) {
   return ld;
 }
 
+
+// ---- vendor-written listing copy -------------------------------------------
+// The marketplace record carries the maker's own markdown description. It is
+// third-party text, so it is escaped first and only a fixed set of constructs
+// is rebuilt afterwards — headings, emphasis, lists, links and paragraphs.
+// Anything else survives as plain text rather than as markup.
+function vendorMarkdown(src) {
+  const raw = String(src || "").trim();
+  if (!raw) return "";
+  const inline = (line) =>
+    esc(line)
+      .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
+      .replace(/(^|[\s(])\*([^*\n]+)\*/g, "$1<em>$2</em>")
+      .replace(/`([^`]+)`/g, "<code>$1</code>")
+      // only absolute http(s) targets become links
+      .replace(/\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g, '<a href="$2" rel="nofollow noopener">$1</a>');
+  const out = [];
+  let list = null;
+  const closeList = () => { if (list) { out.push(`</${list}>`); list = null; } };
+  const cells = (line) => line.replace(/^\||\|$/g, "").split("|").map((x) => x.trim());
+  const isDivider = (line) => /^\|?\s*:?-{2,}:?\s*(\|\s*:?-{2,}:?\s*)*\|?$/.test(line);
+  const lines = raw.split(/\r?\n/);
+  for (let i = 0; i < lines.length; i++) {
+    const lineRaw = lines[i];
+    const line = lineRaw.trim();
+    if (!line) { closeList(); continue; }
+    // GFM table: a header row, a divider, then body rows. Makers use these for
+    // the facts worth having — hosting, retention, models — so they are worth
+    // rebuilding rather than dumping as pipes.
+    if (line.includes("|") && lines[i + 1] && isDivider(lines[i + 1].trim())) {
+      closeList();
+      const head = cells(line);
+      const body = [];
+      let j = i + 2;
+      for (; j < lines.length; j++) {
+        const row = lines[j].trim();
+        if (!row || !row.includes("|")) break;
+        body.push(cells(row));
+      }
+      i = j - 1;
+      out.push(
+        `<div class="cw-table-wrap"><table><thead><tr>${head.map((x) => `<th>${inline(x)}</th>`).join("")}</tr></thead>` +
+          `<tbody>${body.map((r) => `<tr>${head.map((_, k) => `<td>${inline(r[k] || "")}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`,
+      );
+      continue;
+    }
+    const h = /^(#{1,6})\s+(.*)$/.exec(line);
+    if (h) {
+      closeList();
+      // the section owns the h2, so the maker's own top level nests beneath it
+      const level = Math.min(5, Math.max(3, h[1].length + 1));
+      out.push(`<h${level}>${inline(h[2].replace(/[:\s]+$/, ""))}</h${level}>`);
+      continue;
+    }
+    const ul = /^[-*+]\s+(.*)$/.exec(line);
+    const ol = /^\d+[.)]\s+(.*)$/.exec(line);
+    if (ul || ol) {
+      const want = ul ? "ul" : "ol";
+      if (list !== want) { closeList(); out.push(`<${want}>`); list = want; }
+      out.push(`<li>${inline((ul || ol)[1])}</li>`);
+      continue;
+    }
+    closeList();
+    out.push(`<p>${inline(line)}</p>`);
+  }
+  closeList();
+  return out.join("\n");
+}
+
+// The catalog record behind a CMS listing. The CMS stores a short summary; the
+// maker's full copy, its categories and its legal links only exist here.
+function catalogAgent(c, ctx) {
+  const agents = (ctx && ctx.catalog && ctx.catalog.agents) || [];
+  if (!c || !agents.length) return null;
+  return agents.find((a) => a.id && a.id === c.externalId) || agents.find((a) => a.name === c.name) || null;
+}
+
 function profileTags(c) {
   const tags = [];
   const llm = Array.isArray(c.profileLlm) ? c.profileLlm : [];
@@ -297,7 +374,7 @@ function profileTags(c) {
 // The facts a profile states, as a <dl>: the same attributes the chips and
 // stats show, in a form a person and a retrieval system read identically.
 // Only what the catalog actually provides appears; nothing is inferred.
-function profileFacts(c, vn, vs) {
+function profileFacts(c, vn, vs, cat, cats) {
   const rows = [];
   rows.push([t("Type"), c.kind === "agent" ? t("AI agent (single-purpose)") : t("AI coworker")]);
   if (c.role) rows.push([t("Role"), esc(c.role)]);
@@ -307,7 +384,14 @@ function profileFacts(c, vn, vs) {
   if (c.profileHosting) rows.push([t("Hosting"), esc(c.profileHosting)]);
   if (c.runs) rows.push([t("Tasks run"), esc(Number(c.runs).toLocaleString(locale() === "de" ? "de-DE" : "en-US"))]);
   if (c.rating && c.ratingCount) rows.push([t("Rating"), esc(`${Number(c.rating).toFixed(1)} / 5 (${c.ratingCount})`)]);
-  rows.push([t("Marketplace"), `<a href="/">Sokosumi</a>`]);
+  if (cats && cats.length) rows.push([t("Category"), esc(cats.map((x) => x.name).join(", "))]);
+  if (cat && cat.legal && (cat.legal.terms || cat.legal.privacy)) {
+    const links = [
+      cat.legal.terms ? `<a href="${attr(cat.legal.terms)}" rel="nofollow noopener">${esc(t("Terms"))}</a>` : "",
+      cat.legal.privacy ? `<a href="${attr(cat.legal.privacy)}" rel="nofollow noopener">${esc(t("Privacy"))}</a>` : "",
+    ].filter(Boolean);
+    rows.push([t("Vendor policies"), links.join(" &middot; ")]);
+  }
   const synced = c.syncedAt || c.updatedAt;
   if (synced) {
     const d = new Date(synced);
@@ -331,6 +415,51 @@ function offerCard(agentSlug, o) {
   </a>`;
 }
 
+
+// The maker's own description of the listing. Rendered under its own heading so
+// it reads as the vendor's words rather than as Sokosumi copy.
+function vendorSection(c, cat) {
+  const md = cat && cat.description ? String(cat.description) : "";
+  // A stub like "## Overview" on its own carries nothing; require real prose.
+  const body = md.replace(/^#+.*$/gm, "").trim().length > 80 ? vendorMarkdown(md) : "";
+  if (!body) return "";
+  const who = c.vendorName || (c.vendor && c.vendor.name) || "";
+  return `<section class="page-section" id="about">
+      <h2>${esc(t("What {name} does", { name: c.name }))}</h2>
+      <p class="sub">${esc(who ? t("As described by {vendor}, the maker of this listing.", { vendor: who }) : t("As described by the maker of this listing."))}</p>
+      <div class="prose cw-vendor-copy">${body}</div>
+    </section>`;
+}
+
+// Other listings in the same category. Gives a thin listing somewhere to go and
+// the category a second route in, instead of every agent page being a dead end.
+// Categories come from the catalog, slugs from the CMS, joined on externalId.
+function relatedAgents(c, cats, ctx, siblings) {
+  const all = (ctx && ctx.catalog && ctx.catalog.agents) || [];
+  const names = new Set(cats.map((x) => x.name));
+  if (!names.size || !all.length) return "";
+  const inCategory = new Set(
+    all.filter((a) => (a.categories || []).some((x) => names.has(x.name))).map((a) => a.id),
+  );
+  const near = (siblings || [])
+    .filter((s) => s.slug !== c.slug && s.externalId && inCategory.has(s.externalId))
+    .slice(0, 6);
+  if (near.length < 2) return "";
+  const label = cats[0].name;
+  return `<section class="page-section" id="related">
+      <h2>${esc(t("More in {category}", { category: label }))}</h2>
+      <div class="row-list">${near
+        .map(
+          (a) => `<a class="row-item" href="/ai-coworkers/${encodeURIComponent(a.slug)}">
+            <span class="row-title">${esc(a.name)}</span>
+            <p>${esc(String(a.seoDescription || a.description || "").slice(0, 150))}</p>
+            <span class="row-go">${esc(vendorName(a) || t("View"))} ${icon("arrow-up-right", 15)}</span>
+          </a>`,
+        )
+        .join("")}</div>
+    </section>`;
+}
+
 async function profile(ctx) {
   const opts = { draft: ctx.preview };
   const c = await cms.getCoworker(ctx.params.slug, opts);
@@ -338,6 +467,10 @@ async function profile(ctx) {
   const offers = c.kind === "coworker" ? await cms.getOffersFor(c.catalogSlug || c.slug, opts) : [];
   const vn = vendorName(c);
   const vs = vendorSlug(c);
+  // Marketplace listings carry the maker's own copy in the catalog, not the CMS.
+  const cat = catalogAgent(c, ctx);
+  const cats = (cat && cat.categories) || [];
+  const siblings = cats.length ? await cms.getCoworkers(opts).catch(() => []) : [];
 
   const offersSection = offers.length
     ? `<section class="page-section" id="tasks">
@@ -390,9 +523,11 @@ async function profile(ctx) {
         ${shell.NO_CARD}
       </div>
     </div>
-    ${profileFacts(c, vn, vs)}
+    ${profileFacts(c, vn, vs, cat, cats)}
+    ${vendorSection(c, cat)}
     ${longBio}
-    ${offersSection}` +
+    ${offersSection}
+    ${relatedAgents(c, cats, ctx, siblings)}` +
     shell.logoRow() +
     shell.ctaBand({
       heading: t("Put {name} to work", { name: c.name }),
