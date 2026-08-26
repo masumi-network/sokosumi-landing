@@ -137,10 +137,7 @@
 
 
       <div class="hero-inner">
-        <div class="hero-social" id="heroSocial" data-reveal hidden>
-          <span class="avatars" id="heroAvatars"></span>
-          <span class="count" id="heroCount"></span>
-        </div>
+        <!--SSR:HERO_SOCIAL-->
 
         <h1 class="hero-title" data-reveal style="--i: 1">AI Coworkers for Marketing.</h1>
 
@@ -616,10 +613,12 @@
             var coworkers = d.coworkers || [];
             if (!coworkers.length) return;
 
-            /* hero social proof — real coworker faces + live agent count */
+            /* hero social proof is server-rendered (see heroSocialHtml in
+               server.js) so it paints with the document. Only fill it in here
+               if the server had no catalog to render from. */
             var social = document.getElementById("heroSocial");
             var faces = coworkers.filter(function (c) { return c.image; }).slice(0, 5);
-            if (social && faces.length) {
+            if (social && faces.length && !social.querySelector("img")) {
               document.getElementById("heroAvatars").innerHTML = faces
                 .map(function (c) { return "<img" + thumbSet(c.image, 96) + ' alt="" width="40" height="40" decoding="async" />'; })
                 .join("");

@@ -839,6 +839,22 @@ const assetsDir = path.join(root, "assets");
 
 
 
+  // Hero social proof, rendered with the document instead of hydrated after a
+  // fetch. Falls back to an empty string (the row simply does not appear) when
+  // the catalog has no portraits yet.
+  function heroSocialHtml() {
+    const faces = (catalog.coworkers || []).filter((c) => c && c.image).slice(0, 5);
+    if (!faces.length) return "";
+    const count = (catalog.agents || []).length || (catalog.coworkers || []).length;
+    const imgs = faces
+      .map((c, i) => `<img${shell.thumbSrc(c.image, 96)} alt="" width="40" height="40" decoding="async"${i === 0 ? ' fetchpriority="high"' : ""} />`)
+      .join("");
+    return `<div class="hero-social in" id="heroSocial" data-reveal>
+          <span class="avatars" id="heroAvatars">${imgs}</span>
+          <span class="count" id="heroCount">${count}+ ${t("Agents")}</span>
+        </div>`;
+  }
+
   async function serveIndex(req, res) {
     const file = path.join(root, "index.html");
     const stat = fs.statSync(file);
@@ -860,7 +876,11 @@ const assetsDir = path.join(root, "assets");
           ctaLabel: t("Sign Up"),
         }),
       )
-      .replace("<!--SSR:FOOTER-->", shell.footerHtml());
+      .replace("<!--SSR:FOOTER-->", shell.footerHtml())
+      // The hero's face row used to wait for /api/catalog, so the first thing
+      // above the headline popped in a second late. The catalog is already in
+      // memory here — render it with the document.
+      .replace("<!--SSR:HERO_SOCIAL-->", heroSocialHtml());
     // Editor-owned hero positioning: when the sokosumi-site-config global has
     // a hero subtitle, it replaces the built-in line (per locale via cms's
     // locale-aware fetch). Empty global = the file's own copy stands.
