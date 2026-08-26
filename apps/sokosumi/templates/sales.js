@@ -133,7 +133,7 @@ async function render(ctx) {
     pageStart({
       title: "Talk to Sales | Sokosumi",
       description:
-        "Book a walkthrough of Sokosumi or ask us anything about putting AI coworkers to work in your marketing team.",
+        "Book a walkthrough of Sokosumi or ask us anything about putting AI coworkers to work in your marketing team. Seat pricing, EU hosting and vendor questions welcome.",
       path: shell.SALES_URL,
       breadcrumb: CRUMBS,
       jsonld: { "@context": "https://schema.org", "@type": "ContactPage", name: "Talk to Sales" },

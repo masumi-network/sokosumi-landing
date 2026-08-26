@@ -133,7 +133,7 @@ function press() {
   return (
     pageStart({
       title: "Press and media resources | Sokosumi",
-      description: "Press information and media contact for Sokosumi, the AI coworker marketplace by Serviceplan Group.",
+      description: shell.describe("Press information and media contact for Sokosumi, the AI coworker marketplace by Serviceplan Group.", ["Logos, product facts and the people behind the company."]),
       path: "/press",
       breadcrumb: cr,
     }) +

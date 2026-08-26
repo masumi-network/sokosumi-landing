@@ -365,7 +365,11 @@ async function profile(ctx) {
         c.slug === "instagram-page-analysis"
           ? t("Instagram analyzer for posts and pages | Sokosumi")
           : t("{name} | {role} on Sokosumi", { name: c.name, role: c.role || t("AI coworker") }),
-      description: shell.describe(c.seoDescription || c.description || t("Hire {name}, an AI coworker on Sokosumi.", { name: c.name }), t("Brief {name} in plain language; the task shows on a shared board and comes back as a file. Credit price shown first.", { name: c.name })),
+      description: shell.describe(c.seoDescription || c.description || t("Hire {name}, an AI coworker on Sokosumi.", { name: c.name }), [
+        t("Brief {name} in plain language; the task shows on a shared board and comes back as a file. Credit price shown first.", { name: c.name }),
+        t("Brief {name} in plain language and get a finished file back.", { name: c.name }),
+        t("Hire {name} on Sokosumi.", { name: c.name }),
+      ]),
       path: `/ai-coworkers/${c.slug}`,
       og: { type: "coworker", title: c.name, sub: c.role || "", eyebrow: c.kind === "agent" ? t("Specialist agent on Sokosumi") : t("AI coworker on Sokosumi"), meta: [vn, c.profileHosting].filter(Boolean).join(" · "), img: c.image || "" },
       breadcrumb: cr,

@@ -226,7 +226,11 @@ async function detail(ctx) {
     pageStart({
       // The search phrase people type, then the promise. The h1 asks the question.
       title: t("{name} vs Sokosumi for marketing teams", { name }),
-      description: shell.describe(t("{name} vs Sokosumi for marketing teams: {desc}", { name, desc: (doc.description || "").trim() }), t("Who each one fits, what you get back and what you pay, in seven rows.")),
+      description: shell.describe(t("{name} vs Sokosumi for marketing teams: {desc}", { name, desc: (doc.description || "").trim() }), [
+        t("Who each one fits, what you get back and what you pay, in seven rows."),
+        t("Who each one fits and what you get back, in seven rows."),
+        t("Compared in seven rows on Sokosumi."),
+      ]),
       path: `/compare/${doc.slug}`,
       breadcrumb: cr,
       noindex: NOINDEX.has(doc.slug),

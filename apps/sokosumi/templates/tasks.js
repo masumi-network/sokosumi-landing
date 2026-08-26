@@ -318,7 +318,11 @@ async function detail(ctx) {
   return (
     pageStart({
       title: t("{name} | {role}", { name: offer.title, role: c.name }),
-      description: shell.describe(offer.description || t("{title}, a template task run by {name} on Sokosumi.", { title: offer.title, name: c.name }), t("A template task by {name} on Sokosumi: brief it in plain language, follow it on the board, get the file back.", { name: c.name })),
+      description: shell.describe(offer.description || t("{title}, a template task run by {name} on Sokosumi.", { title: offer.title, name: c.name }), [
+        t("A template task by {name} on Sokosumi: brief it in plain language, follow it on the board, get the file back.", { name: c.name }),
+        t("A template task by {name} on Sokosumi: brief it and get the file back.", { name: c.name }),
+        t("A template task run by {name} on Sokosumi.", { name: c.name }),
+      ]),
       path: `/ai-coworkers/${c.slug}/tasks/${offer.slug}`,
       breadcrumb: cr,
       jsonld: {

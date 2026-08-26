@@ -1152,6 +1152,26 @@ const DE = {
   "Run a task from a guide": "Einen Task aus einem Guide ausführen",
   "Create a free account, choose a task, and apply the instructions.":
     "Erstellen Sie ein kostenloses Konto, wählen Sie einen Task und wenden Sie die Anleitung an.",
+  // meta-description tails (see shell.describe): a short editor description is
+  // padded to a useful length for search results
+  "Part of the Sokosumi product tour: brief an AI coworker, follow the task on a shared board, collect the file.":
+    "Teil der Sokosumi-Produkttour: ein AI Coworker wird gebrieft, die Aufgabe läuft über ein gemeinsames Board, am Ende steht eine Datei.",
+  "Sokosumi: brief an AI coworker and get a finished file back.":
+    "Sokosumi: AI Coworker briefen und eine fertige Datei zurückbekommen.",
+  "A template task by {name} on Sokosumi: brief it and get the file back.":
+    "Eine Vorlagen-Aufgabe von {name} auf Sokosumi: briefen und die Datei zurückbekommen.",
+  "A template task run by {name} on Sokosumi.": "Eine Vorlagen-Aufgabe, ausgeführt von {name} auf Sokosumi.",
+  "A Sokosumi use case: who does it and what comes back as a file.":
+    "Ein Sokosumi-Use-Case: wer ihn übernimmt und was als Datei zurückkommt.",
+  "A use case for AI coworkers on Sokosumi.": "Ein Use Case für AI Coworker auf Sokosumi.",
+  "Who each one fits and what you get back, in seven rows.":
+    "Für wen sich welches Tool eignet und was zurückkommt, in sieben Zeilen.",
+  "Compared in seven rows on Sokosumi.": "In sieben Zeilen verglichen, auf Sokosumi.",
+  "AI coworkers for marketing teams.": "AI Coworker für Marketing-Teams.",
+  "Sokosumi is the AI coworker marketplace by Serviceplan Group, with named agents, stated hosting and credit pricing.":
+    "Sokosumi ist der AI-Coworker-Marktplatz der Serviceplan Group, mit benannten Agents, ausgewiesenem Hosting und Credit-Preisen.",
+  "Sokosumi is the AI coworker marketplace by Serviceplan Group.":
+    "Sokosumi ist der AI-Coworker-Marktplatz der Serviceplan Group.",
   "Getting started": "Erste Schritte",
   Integrations: "Integrationen",
   Workflows: "Workflows",

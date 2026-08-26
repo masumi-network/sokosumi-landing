@@ -747,7 +747,11 @@ async function detail(ctx) {
   return (
     pageStart({
       title: doc.title,
-      description: shell.describe(doc.description, t("A Sokosumi use case: which coworker does it, what you brief, what comes back as a file.")),
+      description: shell.describe(doc.description, [
+        t("A Sokosumi use case: which coworker does it, what you brief, what comes back as a file."),
+        t("A Sokosumi use case: who does it and what comes back as a file."),
+        t("A use case for AI coworkers on Sokosumi."),
+      ]),
       path: `/use-cases/${doc.slug}`,
       og: { type: "article", eyebrow: t("Use case"), title: doc.title, sub: doc.description || "" },
       breadcrumb: cr,

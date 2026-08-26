@@ -142,7 +142,7 @@ async function surfacePage(doc, slug, ctx) {
     return (
       pageStart({
         title: t(cfg.metaTitle),
-        description: (doc.description || "").slice(0, 160),
+        description: shell.describe(doc.description || "", [t("Part of the Sokosumi product tour: brief an AI coworker, follow the task on a shared board, collect the file."), t("Sokosumi: brief an AI coworker and get a finished file back."), t("AI coworkers for marketing teams.")]),
         path: "/" + slug,
         breadcrumb: cr,
         stylesheets: ["/assets/product.css"],
@@ -174,7 +174,7 @@ async function surfacePage(doc, slug, ctx) {
   return (
     pageStart({
       title: t(cfg.metaTitle),
-      description: (doc.description || "").slice(0, 160),
+      description: shell.describe(doc.description || "", [t("Part of the Sokosumi product tour: brief an AI coworker, follow the task on a shared board, collect the file."), t("Sokosumi: brief an AI coworker and get a finished file back."), t("AI coworkers for marketing teams.")]),
       path: "/" + slug,
       breadcrumb: cr,
       stylesheets: ["/assets/product.css"],
