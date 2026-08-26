@@ -942,3 +942,5 @@ body:has(.cc-banner) .product-page .pd-stage { margin-bottom: 220px; }
 }
 
 .sk-stage .pd-feat { margin: 0 auto; max-width: 760px; }
+body:has(.surface-panel-page) { background: #f5f5f5; }
+body:has(.surface-panel-page) .surface-panel-page { background: #f5f5f5; }
