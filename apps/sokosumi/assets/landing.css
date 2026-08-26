@@ -751,7 +751,7 @@ body.hero-bg-photowelcome2 .hero.is-aurora { background-image: url("/assets/hero
 .org .org-card.org-human { background: #fff; }
 .org .org-ava { width: 40px; height: 40px; border-radius: 999px; font-size: 13px; font-weight: 500; color: var(--muted-foreground); background: var(--muted); box-shadow: none; }
 .org .org-card.org-human .org-ava { background: var(--muted); }
-.org .org-card:not(.org-human) .org-ava { box-shadow: 0 0 0 2px #fff, 0 0 0 3px var(--primary); }
+.org .org-card:not(.org-human) .org-ava { outline: 2px solid var(--primary); outline-offset: 2px; }
 .org-root .org-card { min-width: min(360px, 100%); }
 .org .org-root .org-card .org-ava { background: var(--ink); color: #fff; }
 .org .org-who strong { font-size: 14px; }

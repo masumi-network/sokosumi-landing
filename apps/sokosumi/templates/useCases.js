@@ -47,9 +47,48 @@ function industriesOf(uc) {
 // thumbnail size, so the card previews the page it links to — no single
 // coworker fronts the work. `crew` (the resolved coworker docs behind
 // relatedAgents) is optional; the card degrades to text without it.
+// What the workflow hands back, read off the copy. Honest and cheap: no
+// invented metrics, just the noun the brief already uses.
+function deliverableOf(uc) {
+  const text = `${uc.title || ""} ${uc.description || ""}`.toLowerCase();
+  const pairs = [
+    [/deck|presentation|slides/, "Deck"],
+    [/dashboard/, "Dashboard"],
+    [/report|monitor|briefing|audit|analysis/, "Report"],
+    [/content set|copy|content|variants|landing/, "Content set"],
+    [/plan|calendar/, "Plan"],
+  ];
+  const hit = pairs.find(([re]) => re.test(text));
+  return hit ? t(hit[1]) : t("Finished file");
+}
+
+// The study card: what comes back, and who does it. Sits on the stage in
+// place of stock imagery — the visual is the product, not a mood.
+function studyCard(uc, crew, opts) {
+  const o = opts || {};
+  const people = (crew || []).slice(0, o.compact ? 4 : 5);
+  const n = (crew || []).length;
+  const roster = o.compact
+    ? ""
+    : `<ul class="uc-study-crew">${people
+        .map((c) => `<li>${shell.avatar(c)}<span><strong>${esc(c.name)}</strong><small>${esc(c.role || c.tagline || "")}</small></span></li>`)
+        .join("")}</ul>`;
+  return `<span class="uc-stage${o.compact ? " is-compact" : ""}" aria-hidden="true">
+    <span class="uc-study">
+      <span class="uc-study-head">
+        <span class="uc-doc"><i></i><i></i><i class="s"></i></span>
+        <span class="uc-study-title"><strong>${esc(deliverableOf(uc))}</strong><small>${esc(t("What comes back"))}</small></span>
+        
+      </span>
+      ${roster}
+      ${n ? `<span class="uc-study-foot">${esc(tp(n, "{n} coworker on it", "{n} coworkers on it"))}</span>` : ""}
+    </span>
+  </span>`;
+}
+
 function useCaseCard(uc, crew, i) {
   const ind = industriesOf(uc)[0];
-  const media = `<span class="uc-art is-grad" aria-hidden="true"><img src="${attr(UC_PHOTOS.has(uc.slug) ? ucVisual(uc.slug) : i == null ? gradFor(uc.slug) : "/assets/gradients/g" + GRAD_POOL[i % GRAD_POOL.length] + ".webp")}" alt="" width="600" height="240" loading="lazy" decoding="async" /></span>`;
+  const media = studyCard(uc, crew, { compact: true });
   const n = (crew || []).length;
   const foot = n ? tp(n, "{n} coworker on it", "{n} coworkers on it") : t("Read the workflow");
   return `<a class="card uc-card${media ? " has-art" : ""}" href="/use-cases/${encodeURIComponent(uc.slug)}">
@@ -505,7 +544,7 @@ async function industry(ctx) {
 // pages, and absent (a plain hero) if generation fails. Industry rides the
 // eyebrow; both CTAs always present (the block's own when set, the site
 // defaults when not).
-function heroSection(doc, blk, inds) {
+function heroSection(doc, blk, inds, crew) {
   const b = blk || {};
   const base = b.eyebrow || "Use case";
   const eyebrow = base === "Use case" && inds[0] ? `${esc(t("Use case"))} · ${esc(inds[0].name)}` : esc(t(base));
@@ -533,7 +572,7 @@ function heroSection(doc, blk, inds) {
       <div class="cta-row">${ctas}</div>
       ${primaryHref.startsWith(shell.APP) ? shell.NO_CARD : ""}
     </div>
-    <div class="uc-hero-media" aria-hidden="true"><img src="${attr(ucVisual(doc.slug))}" alt="" width="1152" height="640" decoding="async" fetchpriority="high" /></div>
+    <div class="uc-hero-media">${studyCard(doc, crew)}</div>
   </section>`;
 }
 
@@ -722,7 +761,7 @@ async function detail(ctx) {
       breadcrumb: cr,
       jsonld: blocks.faqJsonLd(blocks.collectFaqs(doc.layout)) || undefined,
     }) +
-    heroSection(doc, heroBlock, inds) +
+    heroSection(doc, heroBlock, inds, crew) +
     introSection(introBlock) +
     middle +
     midCta(doc, heroBlock) +

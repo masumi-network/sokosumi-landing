@@ -1461,3 +1461,38 @@ section.band-dark .btn-primary, .cw-split-side.is-coworker .btn-primary,
 .blk-cta .btn-outline, .sp-bridge .btn-outline { background: transparent !important; color: #fff !important; border-color: rgba(255, 255, 255, 0.4) !important; }
 /* The coworker half of the comparison sits on the stage: keep it separated. */
 .grad-band .cw-split-side.is-coworker { border: 1px solid rgba(255, 255, 255, 0.22); }
+
+/* ===== use-case study cards on the stage ===== */
+.uc-stage {
+  display: block; margin: 0 -22px 6px; padding: 26px 24px;
+  background: #0f1c25 var(--stage); border-bottom: 1px solid var(--border);
+}
+.uc-stage.is-compact { aspect-ratio: 5 / 2; display: flex; align-items: center; justify-content: center; }
+.uc-hero-media .uc-stage { margin: 0; padding: clamp(28px, 4vw, 48px); min-height: 100%; display: flex; align-items: center; justify-content: center; }
+.uc-study {
+  display: flex; flex-direction: column; gap: 14px; width: 100%; max-width: 380px;
+  background: #fff; border: 1px solid rgba(15, 14, 13, 0.1); border-radius: 12px; padding: 14px 16px;
+  color: var(--foreground); text-align: left;
+}
+.uc-stage.is-compact .uc-study { max-width: 300px; padding: 12px 14px; gap: 0; }
+.uc-study-head { display: flex; align-items: center; gap: 12px; }
+.uc-doc { position: relative; flex-shrink: 0; width: 30px; height: 38px; border: 1px solid rgba(15, 14, 13, 0.18); border-radius: 4px; background: var(--muted); display: flex; flex-direction: column; gap: 4px; padding: 9px 6px 0; }
+.uc-doc i { height: 2px; border-radius: 2px; background: rgba(15, 14, 13, 0.35); }
+.uc-doc i.s { width: 60%; }
+.uc-study-title { display: flex; flex-direction: column; line-height: 1.25; min-width: 0; }
+.uc-study-title strong { font-size: 14px; font-weight: 500; }
+.uc-study-title small { font-size: 12px; color: var(--muted-foreground); }
+.uc-faces { margin-left: auto; display: flex; }
+.uc-faces .uc-face + .uc-face { margin-left: -8px; }
+.uc-faces .avatar { width: 28px; height: 28px; font-size: 11px; box-shadow: none; outline: 2px solid #fff; }
+.uc-faces .avatar img { width: 28px; height: 28px; }
+.uc-study-crew { list-style: none; margin: 0; padding: 12px 0 0; border-top: 1px solid var(--border); display: grid; gap: 10px; }
+.uc-study-crew li { display: flex; align-items: center; gap: 10px; }
+.uc-study-crew .avatar { width: 32px; height: 32px; }
+.uc-study-crew .avatar img { width: 32px; height: 32px; }
+.uc-study-crew span { display: flex; flex-direction: column; line-height: 1.25; min-width: 0; }
+.uc-study-crew strong { font-size: 13.5px; font-weight: 500; }
+.uc-study-crew small { font-size: 12px; color: var(--muted-foreground); }
+.uc-study-foot { font-size: 12px; color: var(--muted-foreground); border-top: 1px solid var(--border); padding-top: 10px; }
+.uc-stage.is-compact .uc-study-foot { display: none; }
+.uc-hero-media { border-radius: 0; }
