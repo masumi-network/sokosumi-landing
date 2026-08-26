@@ -134,18 +134,27 @@ const fmtInt = (n) => new Intl.NumberFormat(intlLocale()).format(n);
 const fmtEur = (n) =>
   new Intl.NumberFormat(intlLocale(), { style: "currency", currency: "EUR", maximumFractionDigits: 0 }).format(n);
 
+// A slider, not a number field with presets: seat count is a magnitude people
+// scrub to see prices move, and the old row asked them to type or pick from
+// five fixed jumps. The range still submits as ?seats= so the no-script path is
+// unchanged, and its max stretches if the URL carries a bigger number.
+const SEAT_SLIDER_MAX = 50;
+
 function seatPicker(seats) {
-  const presets = SEAT_PRESETS.map(
-    (n) =>
-      `<a class="fchip${n === seats ? " active" : ""}" href="?seats=${n}" rel="nofollow" data-seats="${n}"${n === seats ? ' aria-current="true"' : ""} aria-label="${attr(tp(n, "{n} seat", "{n} seats"))}">${fmtInt(n)}</a>`,
-  ).join("");
+  const max = Math.max(SEAT_SLIDER_MAX, seats);
+  const ticks = SEAT_PRESETS.filter((n) => n <= max)
+    .map((n) => `<span class="seat-tick" style="--at:${((n - 1) / (max - 1)) * 100}%"><i></i><b>${fmtInt(n)}</b></span>`)
+    .join("");
   return `<form class="seat-picker" id="seatForm" method="get" data-one="${attr(t("For {n} seat"))}" data-many="${attr(t("For {n} seats"))}" data-free="${attr(t("Free"))}" data-seat="${attr(t("seat"))}" data-seats="${attr(t("seats"))}">
-      <label class="seat-label" for="seats" id="seatLabel">${esc(t("Team size"))}</label>
-      <span class="seat-field">
-        <input class="seat-input" id="seats" name="seats" type="number" inputmode="numeric" min="1" step="1" value="${seats}" autocomplete="off" />
-        <span class="seat-unit" data-seat-unit>${esc(tp(seats, "seat", "seats"))}</span>
-      </span>
-      <span class="seat-presets" role="group" aria-labelledby="seatLabel">${presets}</span>
+      <div class="seat-top">
+        <label class="seat-label" for="seats" id="seatLabel">${esc(t("Team size"))}</label>
+        <output class="seat-readout" for="seats"><strong data-seat-count>${fmtInt(seats)}</strong> <span data-seat-unit>${esc(tp(seats, "seat", "seats"))}</span></output>
+      </div>
+      <div class="seat-slider">
+        <input class="seat-range" id="seats" name="seats" type="range" min="1" max="${max}" step="1" value="${seats}"
+               style="--pct:${((seats - 1) / (max - 1)) * 100}%" aria-describedby="seatStatus" autocomplete="off" />
+        <span class="seat-ticks" aria-hidden="true">${ticks}</span>
+      </div>
       <button type="submit" class="btn btn-sm btn-outline seat-submit">${esc(t("Update"))}</button>
       <span class="sr-only" role="status" id="seatStatus"></span>
     </form>`;

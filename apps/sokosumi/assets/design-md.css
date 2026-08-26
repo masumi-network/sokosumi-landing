@@ -1099,9 +1099,11 @@
 }
 
 .tool-card-doc {
-  background: var(--muted);
-  border: 1px solid var(--border);
-  border-radius: var(--r-md);
+  background: #0f1c25 var(--stage);
+  border: 0;
+  border-radius: 0;
+  margin: -20px -20px 0;
+  padding: 26px 22px 30px;
   color: var(--muted-foreground);
   display: grid;
   font-family: var(--mono);
@@ -1369,4 +1371,26 @@
   .dm-analysis-head .dm-result-actions {
     width: 100%;
   }
+}
+
+/* the code preview is the card's stage: square, full-bleed to the card edge,
+   with the sample sitting on it as a light panel */
+.tools-list .tool-card { overflow: hidden; }
+/* one light panel on the stage, not a pill per line */
+.tool-card-code {
+  display: grid;
+  gap: 4px;
+  background: #fff;
+  border-radius: var(--r-md);
+  padding: 16px 18px;
+  box-shadow: none;
+}
+.tool-card-code > span:first-child { color: var(--foreground); font-weight: 500; }
+
+.dm-tool-sub {
+  margin-top: 12px;
+  max-width: 62ch;
+  color: var(--muted-foreground);
+  font-size: 16px;
+  line-height: 1.55;
 }

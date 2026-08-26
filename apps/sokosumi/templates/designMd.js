@@ -69,6 +69,7 @@ function render() {
         <div>
           <p class="dm-overline">Tool · Free</p>
           <h1>DESIGN.md Generator</h1>
+          <p class="dm-tool-sub">Paste any website and get a DESIGN.md back: its colours, type, spacing and components written up as context you can hand to an AI coding agent.</p>
         </div>
         <p class="dm-tool-meta"><span class="dm-live">Live</span><a href="https://github.com/google-labs-code/design.md" rel="noopener noreferrer">Spec <span aria-hidden="true">↗</span></a></p>
       </header>

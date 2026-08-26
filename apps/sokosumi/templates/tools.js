@@ -14,7 +14,7 @@ const TOOLS = [
 
 function toolCard(t) {
   return `<a class="card tool-card" href="${attr(t.href)}">
-    <span class="tool-card-doc" aria-hidden="true">${t.preview.map((l) => `<span>${esc(l)}</span>`).join("")}</span>
+    <span class="tool-card-doc" aria-hidden="true"><span class="tool-card-code">${t.preview.map((l) => `<span>${esc(l)}</span>`).join("")}</span></span>
     <span class="tool-card-copy">
       <span class="eyebrow">${esc(t.meta)}</span>
       <strong>${esc(t.name)}</strong>

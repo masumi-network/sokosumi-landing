@@ -875,7 +875,43 @@ html[lang="de"] .prose blockquote::before { content: "Beispiel"; }
    A label, a number field and a few quick-pick chips (the task browse
    filter chips, so the picked one takes the same accent). The submit button
    only matters with script off; pricing.js hides it. */
-.seat-picker { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; padding: 6px 6px 18px; }
+/* ===== team-size slider ===== */
+.seat-picker { display: grid; gap: 14px; padding: 6px 6px 22px; max-width: 620px; }
+.seat-top { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; }
+.seat-readout { font-size: 15px; color: var(--muted-foreground); }
+.seat-readout strong { font-size: 22px; font-weight: 400; color: var(--foreground); font-variant-numeric: tabular-nums; margin-right: 4px; }
+.seat-slider { position: relative; padding-bottom: 22px; }
+.seat-range {
+  -webkit-appearance: none; appearance: none; width: 100%; height: 22px;
+  background: transparent; margin: 0; display: block; cursor: pointer;
+}
+/* the track, with the travelled part filled to --pct */
+.seat-range::-webkit-slider-runnable-track {
+  height: 4px; border-radius: 999px;
+  background: linear-gradient(to right, var(--primary) 0 var(--pct, 0%), rgba(15, 14, 13, 0.14) var(--pct, 0%) 100%);
+}
+.seat-range::-moz-range-track {
+  height: 4px; border-radius: 999px;
+  background: linear-gradient(to right, var(--primary) 0 var(--pct, 0%), rgba(15, 14, 13, 0.14) var(--pct, 0%) 100%);
+}
+.seat-range::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none;
+  width: 22px; height: 22px; margin-top: -9px; border-radius: 999px;
+  background: #fff; border: 1px solid var(--border); outline: 3px solid var(--primary); outline-offset: -3px;
+}
+.seat-range::-moz-range-thumb {
+  width: 22px; height: 22px; border-radius: 999px; box-sizing: border-box;
+  background: #fff; border: 3px solid var(--primary);
+}
+.seat-range:focus-visible { outline: none; }
+.seat-range:focus-visible::-webkit-slider-thumb { box-shadow: 0 0 0 4px var(--primary-soft); }
+.seat-range:focus-visible::-moz-range-thumb { box-shadow: 0 0 0 4px var(--primary-soft); }
+/* preset marks stay as orientation, not as controls */
+.seat-ticks { position: absolute; left: 0; right: 0; bottom: 0; height: 20px; pointer-events: none; }
+.seat-tick { position: absolute; left: var(--at); transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.seat-tick i { width: 1px; height: 4px; background: rgba(15, 14, 13, 0.18); display: block; }
+.seat-tick b { font-size: 11px; font-weight: 400; color: var(--muted-foreground); font-variant-numeric: tabular-nums; }
+.seat-picker .seat-submit { justify-self: start; }
 .seat-label { font-size: 14px; font-weight: 500; letter-spacing: -0.005em; }
 .seat-field { display: inline-flex; align-items: center; gap: 10px; }
 .seat-input {
