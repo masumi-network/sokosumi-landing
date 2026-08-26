@@ -379,14 +379,14 @@
 
   function renderGallery() {
     gallery.replaceChildren();
-    var shown = archiveExpanded ? archive : archive.slice(0, 8);
+    var shown = archiveExpanded ? archive : archive.slice(0, 12);
     shown.forEach(function (entry) {
       gallery.appendChild(galleryCard(entry));
     });
     galleryCount.textContent = archive.length
       ? archive.length + (archive.length === 1 ? " saved analysis" : " saved analyses")
       : "No saved analyses yet";
-    galleryMore.hidden = archive.length <= 8 || archiveExpanded;
+    galleryMore.hidden = archive.length <= 12 || archiveExpanded;
   }
 
   async function openArchiveEntry(id, button) {
@@ -430,4 +430,36 @@
   });
 
   loadGallery();
+})();
+
+(function () {
+  var form = document.getElementById("designMdForm");
+  var urlInput = document.getElementById("designMdUrl");
+  var output = document.getElementById("designMdOutput");
+  var progress = document.getElementById("designMdProgress");
+  var result = document.getElementById("designMdResult");
+  var example = document.getElementById("designMdExample");
+  if (!form || !output) return;
+
+  function sync() {
+    output.dataset.state = !result.hidden ? "result" : !progress.hidden ? "progress" : "empty";
+  }
+  var observer = new MutationObserver(sync);
+  observer.observe(progress, { attributes: true, attributeFilter: ["hidden"] });
+  observer.observe(result, { attributes: true, attributeFilter: ["hidden"] });
+  sync();
+
+  document.querySelectorAll("[data-try]").forEach(function (chip) {
+    chip.addEventListener("click", function () {
+      urlInput.value = chip.dataset.try;
+      form.requestSubmit ? form.requestSubmit() : form.dispatchEvent(new Event("submit", { cancelable: true }));
+    });
+  });
+
+  if (example) {
+    example.addEventListener("click", function () {
+      var card = document.querySelector(".dm-gallery-card");
+      if (card) card.click();
+    });
+  }
 })();

@@ -209,6 +209,7 @@ async function sitemap() {
     "/legal",
     "/list-your-agent",
     "/press",
+    "/tools",
     "/tools/design-md",
     ...require("./comparePairs").all().map((p) => `/compare/${p.slug}`),
   ]);
@@ -282,7 +283,7 @@ async function sitemap() {
     const de = esc(SITE + dePath(u));
     // An hreflang cluster claims both members are the same page in different
     // languages, so it is only emitted where the German really is German.
-    const alternates = u !== "/tools/design-md" && i18n.deIndexable(u)
+    const alternates = !u.startsWith("/tools") && i18n.deIndexable(u)
       ? `<xhtml:link rel="alternate" hreflang="en" href="${en}"/>` +
         `<xhtml:link rel="alternate" hreflang="de" href="${de}"/>` +
         `<xhtml:link rel="alternate" hreflang="x-default" href="${en}"/>`
@@ -290,7 +291,7 @@ async function sitemap() {
     return `  <url><loc>${loc === "de" ? de : en}</loc>${alternates}</url>`;
   };
   const body = [...urls]
-    .flatMap((u) => (u !== "/tools/design-md" && i18n.deIndexable(u) ? [entry("en", u), entry("de", u)] : [entry("en", u)]))
+    .flatMap((u) => (!u.startsWith("/tools") && i18n.deIndexable(u) ? [entry("en", u), entry("de", u)] : [entry("en", u)]))
     .join("\n");
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n${body}\n</urlset>\n`;
 }

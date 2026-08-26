@@ -35,6 +35,7 @@ const compareTpl = require("./templates/compare");
 const pagesTpl = require("./templates/pagesCms");
 const contactTpl = require("./templates/contact");
 const designMdTpl = require("./templates/designMd");
+const toolsTpl = require("./templates/tools");
 
 const port = process.env.PORT || 3000;
 const root = __dirname;
@@ -582,6 +583,7 @@ const routes = [
   { m: (s) => s.length === 2 && s[0] === "releases" && { slug: s[1] }, h: releasesTpl.detail },
   { m: (s) => s.length === 1 && s[0] === "compare" && {}, h: compareTpl.index },
   { m: (s) => s.length === 2 && s[0] === "compare" && { slug: s[1] }, h: compareTpl.detail },
+  { m: (s) => s.length === 1 && s[0] === "tools" && {}, h: toolsTpl.render },
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "design-md" && {}, h: designMdTpl.render },
   { m: (s) => s.length === 1 && s[0] === "product" && {}, h: pagesTpl.productHub },
   { m: (s) => s.length === 1 && s[0] === "pricing" && {}, h: pricingTpl.render },
@@ -854,7 +856,6 @@ const assetsDir = path.join(root, "assets");
           ctaLabel: t("Sign Up"),
         }),
       )
-      .replace("<!--SSR:FREE_TOOLS-->", designMdTpl.homeSection())
       .replace("<!--SSR:FOOTER-->", shell.footerHtml());
     // Editor-owned hero positioning: when the sokosumi-site-config global has
     // a hero subtitle, it replaces the built-in line (per locale via cms's
