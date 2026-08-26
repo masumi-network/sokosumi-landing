@@ -460,6 +460,7 @@
 .dm-process,
 .dm-gallery-section,
 .dm-marketing,
+.dm-how,
 .dm-faq {
   padding: clamp(64px, 9vw, 112px) 0;
   border-top: 1px solid var(--border);
@@ -1042,7 +1043,9 @@
   text-underline-offset: 3px;
 }
 
-.dm-faq {
+/* the measure belongs to the content: a max-width on the section itself would
+   clip its border-top to 760px inside a full-width column */
+.dm-faq > * {
   max-width: 760px;
 }
 

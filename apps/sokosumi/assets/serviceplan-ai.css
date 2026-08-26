@@ -848,7 +848,6 @@ body:has(.sp-page) {
   display: flex;
   flex-direction: column;
   gap: var(--space-2xs);
-  min-height: 110px;
   padding: 24px 0;
 }
 
@@ -2405,3 +2404,14 @@ a.sp-pn:hover strong {
   .sp-matrix-logos tbody th { min-width: 150px; }
   .sp-matrix-logos tbody th img { max-width: 170px; height: 24px; min-width: 0; }
 }
+
+/* The rail scrolls inside itself when the chapter list outgrows the viewport.
+   Without a fade the last row is sliced mid-word and reads as broken text
+   rather than as "there is more below". */
+.sp-reading-rail {
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 30px), transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 calc(100% - 30px), transparent 100%);
+  scrollbar-width: none;
+}
+
+.sp-reading-rail::-webkit-scrollbar { width: 0; height: 0; }

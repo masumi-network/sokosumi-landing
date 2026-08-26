@@ -1324,6 +1324,9 @@ h1, h2, h3 { overflow-wrap: break-word; }
 
 /* ===== tool-vs-tool pages ===== */
 .pair-hero .guide-meta { margin-top: 14px; }
+/* The two column rules ARE this section's opening line — the page-section's
+   own full-width rule would sit ~70px above them with nothing in between. */
+.page-section.pair-picks { border-top: 0; }
 .pair-picks { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(20px, 3vw, 40px); }
 .pair-pick { border-top: 1px solid var(--border); padding-top: 18px; }
 .pair-pick h3, .pair-limits-grid h3 { font-size: 18px; font-weight: 500; letter-spacing: -0.01em; margin-bottom: 12px; }
