@@ -229,6 +229,8 @@ async function sitemap() {
       return [];
     }
   };
+  const analyses = await require("../lib/designMdArchive").list().then((l) => l.map((e) => `/tools/design-md/analysis/${e.slug}`)).catch(() => []);
+  analyses.forEach((u) => urls.add(u));
   const fetchers = [
     cms.getCoworkers,
     cms.getOffers,

@@ -228,6 +228,10 @@
     renderProse(data.prose);
 
     editor.value = String(data.designMd || "");
+    var brandSlot = document.getElementById("designMdBrand");
+    if (brandSlot) {
+      brandSlot.replaceChildren(brandTile({ logoUrl: data.logoProxyUrl || data.logoUrl, primaryColor: data.primaryColor, name: data.name, hostname: data.hostname }));
+    }
     var resultUrl = safeExternalUrl(data.url || submittedUrl);
     source.href = resultUrl || "#";
     source.textContent = resultUrl || "Saved analysis";
@@ -352,12 +356,37 @@
     urlInput.focus();
   });
 
+  function slugFor(entry) {
+    return entry.slug || String(entry.hostname || "").replace(/^www\./, "").replace(/[^a-z0-9]+/gi, "-").replace(/^-|-$/g, "").toLowerCase();
+  }
+
+  function brandTile(entry) {
+    var tile = el("span", "dm-brand");
+    if (safeColor(entry.primaryColor)) tile.style.setProperty("--brand", entry.primaryColor);
+    if (entry.logoUrl) {
+      var img = document.createElement("img");
+      img.src = entry.logoUrl;
+      img.alt = "";
+      img.width = 28;
+      img.height = 28;
+      img.loading = "lazy";
+      img.decoding = "async";
+      img.addEventListener("error", function () {
+        tile.replaceChildren(el("b", "", String(entry.name || entry.hostname || "?").slice(0, 1).toUpperCase()));
+      });
+      tile.appendChild(img);
+    } else {
+      tile.appendChild(el("b", "", String(entry.name || entry.hostname || "?").slice(0, 1).toUpperCase()));
+    }
+    return tile;
+  }
+
   function galleryCard(entry) {
-    var button = el("button", "dm-gallery-card");
-    button.type = "button";
-    button.dataset.entryId = entry.id;
-    button.setAttribute("aria-label", "Open the DESIGN.md analysis for " + (entry.name || entry.hostname));
+    var card = el("a", "dm-gallery-card");
+    card.href = entry.path || "/tools/design-md/analysis/" + slugFor(entry);
+    card.dataset.entryId = entry.id;
     var shot = el("span", "dm-gallery-shot");
+    if (safeColor(entry.primaryColor)) shot.style.background = entry.primaryColor;
     if (entry.screenshotUrl) {
       var image = document.createElement("img");
       image.src = entry.screenshotUrl;
@@ -367,14 +396,14 @@
       shot.appendChild(image);
     }
     var meta = el("span", "dm-gallery-meta");
-    meta.appendChild(el("strong", "", entry.name || entry.hostname));
-    meta.appendChild(el("small", "", entry.hostname));
-    button.appendChild(shot);
-    button.appendChild(meta);
-    button.addEventListener("click", function () {
-      openArchiveEntry(entry.id, button);
-    });
-    return button;
+    meta.appendChild(brandTile(entry));
+    var text = el("span");
+    text.appendChild(el("strong", "", entry.name || entry.hostname));
+    text.appendChild(el("small", "", entry.hostname));
+    meta.appendChild(text);
+    card.appendChild(shot);
+    card.appendChild(meta);
+    return card;
   }
 
   function renderGallery() {
@@ -459,7 +488,7 @@
   if (example) {
     example.addEventListener("click", function () {
       var card = document.querySelector(".dm-gallery-card");
-      if (card) card.click();
+      if (card) location.href = card.href;
     });
   }
 })();

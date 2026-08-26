@@ -35,6 +35,7 @@ const compareTpl = require("./templates/compare");
 const pagesTpl = require("./templates/pagesCms");
 const contactTpl = require("./templates/contact");
 const designMdTpl = require("./templates/designMd");
+const designMdArchive = require("./lib/designMdArchive");
 const toolsTpl = require("./templates/tools");
 
 const port = process.env.PORT || 3000;
@@ -145,10 +146,12 @@ function absoluteDesignMdAssets(data) {
   if (!data || typeof data !== "object") return data;
   const rewrite = (value) =>
     typeof value === "string" && value.startsWith("/") ? `${DESIGN_MD_API_BASE}${value}` : value;
+  const logoProxy = (entry) => (entry && entry.logoUrl && entry.id ? `${DESIGN_MD_API_BASE}/tools/design-md/api/logos/${entry.id}` : null);
   if (Array.isArray(data.entries)) {
-    data.entries = data.entries.map((entry) => ({ ...entry, screenshotUrl: rewrite(entry.screenshotUrl) }));
+    data.entries = data.entries.map((entry) => ({ ...entry, screenshotUrl: rewrite(entry.screenshotUrl), logoUrl: logoProxy(entry) }));
   }
   if (data.screenshotUrl) data.screenshotUrl = rewrite(data.screenshotUrl);
+  if (data.id && data.logoUrl) data.logoProxyUrl = logoProxy(data);
   return data;
 }
 
@@ -585,6 +588,7 @@ const routes = [
   { m: (s) => s.length === 2 && s[0] === "compare" && { slug: s[1] }, h: compareTpl.detail },
   { m: (s) => s.length === 1 && s[0] === "tools" && {}, h: toolsTpl.render },
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "design-md" && {}, h: designMdTpl.render },
+  { m: (s) => s.length === 4 && s[0] === "tools" && s[1] === "design-md" && s[2] === "analysis" && { slug: s[3] }, h: designMdTpl.analysis },
   { m: (s) => s.length === 1 && s[0] === "product" && {}, h: pagesTpl.productHub },
   { m: (s) => s.length === 1 && s[0] === "pricing" && {}, h: pricingTpl.render },
   // The entity page for Sokosumi itself lives in code so its JSON-LD is
@@ -976,9 +980,18 @@ const assetsDir = path.join(root, "assets");
 
       return i18n.run({ locale, path: urlPath }, async () => {
       try {
-        if (locale === "de" && urlPath === "/tools/design-md") {
+        // Saved analyses used to be deep links into the tool (?analysis=ID);
+        // each now has its own page under /tools/design-md/analysis/<brand>.
+        if (urlPath === "/tools/design-md" && /(?:^|&)analysis=(\d+)(?:&|$)/.test(rawQuery || "")) {
+          const id = /(?:^|&)analysis=(\d+)/.exec(rawQuery)[1];
+          const entry = await designMdArchive.byId(id).catch(() => null);
+          if (entry) {
+            return send(req, res, 301, { Location: designMdArchive.pathFor(entry), "Cache-Control": "public, max-age=86400" }, "");
+          }
+        }
+        if (locale === "de" && (urlPath === "/tools" || urlPath.startsWith("/tools/"))) {
           return send(req, res, 301, {
-            Location: `/tools/design-md${rawQuery ? `?${rawQuery}` : ""}`,
+            Location: `${urlPath}${rawQuery ? `?${rawQuery}` : ""}`,
             "Cache-Control": "public, max-age=86400",
           }, "");
         }
@@ -1004,12 +1017,12 @@ const assetsDir = path.join(root, "assets");
 
         if (urlPath === "/api/design-md/gallery") {
           try {
-            const upstream = await designMdFetch("/tools/design-md/api/extractions");
-            const data = absoluteDesignMdAssets(upstream.data);
-            return send(req, res, upstream.status, {
+            // One entry per host, with the slug its analysis page lives at.
+            const entries = (await designMdArchive.list()).map((e) => ({ ...e, path: designMdArchive.pathFor(e) }));
+            return send(req, res, 200, {
               "Content-Type": "application/json; charset=utf-8",
-              "Cache-Control": upstream.status === 200 ? "public, max-age=60, s-maxage=300" : "no-store",
-            }, JSON.stringify(data));
+              "Cache-Control": "public, max-age=60, s-maxage=300",
+            }, JSON.stringify({ entries, total: entries.length }));
           } catch {
             return send(req, res, 502, { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" }, JSON.stringify({ error: "The saved-analysis archive is unavailable right now." }));
           }
