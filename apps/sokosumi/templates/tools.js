@@ -29,18 +29,6 @@ const CATEGORIES = [
 
 const TOOLS = [
   {
-    slug: "expert-agent",
-    name: "Tool Expertise Agent",
-    cat: "other",
-    blurb: "Ask a platform expert (Webflow, Shopify, WordPress…) anything, and get a precise, senior-level answer.",
-    fields: [
-      { name: "platform", label: "Platform", type: "text", placeholder: "e.g. Webflow" },
-      { name: "question", label: "Your question", type: "textarea", placeholder: "What do you want to know or build?" },
-    ],
-    prompt:
-      "You are a world-class expert in {platform} with deep, current knowledge of its features, limits, best practices and common pitfalls. Answer the question below precisely and practically. Give concrete steps, name the exact settings/menus involved, warn about gotchas, and include a short example where it helps.\n\nQuestion:\n{question}",
-  },
-  {
     slug: "seo-md-generator",
     name: "SEO.md Generator",
     cat: "generate",
