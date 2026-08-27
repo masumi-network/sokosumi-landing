@@ -1394,3 +1394,7 @@
   font-size: 16px;
   line-height: 1.55;
 }
+
+/* Every saved analysis ships in the HTML so each one has a link pointing at it;
+   past the first twelve they are hidden until "Show all". */
+.dm-gallery.is-collapsed > :nth-child(n + 13) { display: none; }
