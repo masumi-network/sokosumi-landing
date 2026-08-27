@@ -405,6 +405,17 @@ function head(opts) {
   const graph = [opts.organization || ORGANIZATION, { ...WEBSITE, inLanguage: locale }];
   if (opts.breadcrumb && opts.breadcrumb.length) graph.push(breadcrumbLd(opts.breadcrumb));
   if (opts.jsonld) graph.push(...(Array.isArray(opts.jsonld) ? opts.jsonld : [opts.jsonld]));
+  // Google's Article rich result requires an image and a publication date. Every
+  // page already resolves a share card above, and article pages already declare
+  // their dates for og:article — so fill both in here rather than asking each
+  // template to remember. Only fills what is missing; a template that states its
+  // own cover or date keeps it.
+  for (const node of graph) {
+    if (!node || !/^(Article|BlogPosting|NewsArticle|TechArticle)$/.test(String(node["@type"] || ""))) continue;
+    if (!node.image && og && og.url) node.image = og.url;
+    if (!node.datePublished && article && article.published) node.datePublished = article.published;
+    if (!node.dateModified && article && article.modified) node.dateModified = article.modified;
+  }
   const doc = { "@context": "https://schema.org", "@graph": graph.map(stripContext) };
   const jsonld = `<script type="application/ld+json">${JSON.stringify(doc).replace(/</g, "\\u003c")}</script>`;
   return `<!doctype html>

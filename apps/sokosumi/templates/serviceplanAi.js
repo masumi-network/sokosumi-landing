@@ -473,6 +473,9 @@ async function render(doc, ctx) {
       description: doc.description || "",
       url: `${shell.SITE}/${doc.slug}`,
       inLanguage: i18n.locale() === "de" ? "de" : "en",
+      // createdAt is when the chapter was first published, updatedAt when it was
+      // last reviewed; Google's Article result wants both, not just the latter.
+      ...(doc.createdAt ? { datePublished: String(doc.createdAt).slice(0, 10) } : {}),
       dateModified: String(doc.updatedAt || "").slice(0, 10),
       about: organizationLd(),
       author: { "@id": `${shell.SITE}/#organization` },

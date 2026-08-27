@@ -114,6 +114,10 @@ async function detail(ctx) {
       breadcrumb: cr,
       noindex: !translated,
       og: { type: "pair", a: p.a.name, b: p.b.name, logoA: logoUrl(p.a.key), logoB: logoUrl(p.b.key), title: c.title, sub: "" },
+      // published comes from the file's first commit, checked from the last
+      // fact review — the two are genuinely different dates and Google's
+      // Article result wants both.
+      article: { published: p.published || undefined, modified: p.checked || undefined },
       jsonld: [
         blocks.faqJsonLd(faqs),
         {
