@@ -211,6 +211,7 @@ async function sitemap() {
     "/press",
     "/tools",
     "/tools/design-md",
+    "/agency-run-by-ai",
     ...require("./comparePairs").all().map((p) => `/compare/${p.slug}`),
   ]);
   // One collection failing is tolerable (its URLs drop out this cycle); ALL

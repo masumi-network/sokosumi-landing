@@ -24,7 +24,14 @@ function config() {
 const ui = (en, de) => (i18n.locale() === "de" ? de : en);
 const localText = (value) => (value && typeof value === "object" ? value[i18n.locale()] || value.en || "" : value || "");
 const HUB = () => config().hub;
-const isSection = (slug) => typeof slug === "string" && (slug === HUB() || slug.startsWith(`${HUB()}/`));
+// Chapters promoted out of the dossier to a top-level URL. The buyer guides
+// target queries ("ai marketing agency") where a /serviceplan-ai/ prefix reads
+// as "a page about Serviceplan" in the SERP, so the doc slug drops the hub —
+// but the page keeps the dossier layout and stays in the chapter index, so it
+// loses none of its internal links.
+const PROMOTED = new Set(["ai-marketing-agency"]);
+const isSection = (slug) =>
+  typeof slug === "string" && (slug === HUB() || slug.startsWith(`${HUB()}/`) || PROMOTED.has(slug));
 
 function chapterLogos(chapter) {
   if (Array.isArray(chapter.logos) && chapter.logos.length) return chapter.logos;
@@ -65,7 +72,7 @@ async function chapters(ctx) {
   const pages = await cms.getPages({ draft: ctx.preview });
   const bySlug = new Map(pages.map((page) => [page.slug, page]));
   return config()
-    .chapters.map((chapter) => ({ ...chapter, doc: bySlug.get(`${HUB()}/${chapter.slug}`) }))
+    .chapters.map((chapter) => ({ ...chapter, doc: bySlug.get(`${HUB()}/${chapter.slug}`) || bySlug.get(chapter.slug) }))
     .filter((chapter) => chapter.doc);
 }
 

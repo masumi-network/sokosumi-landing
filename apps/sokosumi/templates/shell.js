@@ -1015,6 +1015,8 @@ function footerHtml(opts) {
               <h2 class="foot-h">${esc(t("Resources"))}</h2>
               <ul>
                 <li><a href="/guides">${esc(t("Guides"))}</a></li>
+                <li><a href="/ai-marketing-agency">${esc(t("AI marketing agency guide"))}</a></li>
+                <li><a href="/agency-run-by-ai">${esc(t("An agency run by AI"))}</a></li>
                 <li><a href="/blog">${esc(t("Blog"))}</a></li>
                 <li><a href="/releases">${esc(t("Releases"))}</a></li>
                 <li><a href="/serviceplan-ai">${esc(t("Serviceplan & AI"))}</a></li>

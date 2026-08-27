@@ -1,0 +1,214 @@
+// /agency-run-by-ai — the positioning page for "Sokosumi instead of an agency".
+//
+// Deliberately NOT an SEO page. Ahrefs (2026-08-27) puts the whole German
+// replacement cluster at roughly 310 searches a month: `marketing ohne agentur`
+// and `marketing selber machen` are 0, and `agentur ersetzen`, `ki statt
+// agentur`, `werbeagentur alternative` are not in the index at all. English is
+// no better — `replace marketing agency` is 40. So this page is a brand and
+// conversion asset: it is linked, not ranked, and it carries no keyword target.
+// `ai marketing agency` belongs to /ai-marketing-agency, which is the buyer
+// guide; pointing this page at the same term would cannibalise it.
+//
+// Everything numeric here is computed from the live catalogue at render time
+// (see money()) so the page cannot drift from what the marketplace charges.
+
+const shell = require("./shell");
+const blocks = require("./blocks");
+const { t } = require("../lib/i18n");
+
+const { esc, pageStart, pageEnd, SITE } = shell;
+
+// 100 credits = US$1.00, the marketplace's stated credit price — the same
+// constant templates/coworkers.js derives listing prices from.
+const CREDITS_PER_USD = 100;
+
+// Real spread of task prices, read off the catalogue rather than asserted.
+// Returns null when the catalogue is unavailable so the page drops the money
+// section instead of printing a made-up number.
+function money(ctx) {
+  const agents = (ctx && ctx.catalog && ctx.catalog.agents) || [];
+  const credits = agents
+    .map((a) => Number(a.credits))
+    .filter((n) => Number.isFinite(n) && n > 0)
+    .sort((a, b) => a - b);
+  if (credits.length < 5) return null;
+  const usd = (c) => c / CREDITS_PER_USD;
+  return {
+    n: credits.length,
+    low: usd(credits[0]),
+    high: usd(credits[credits.length - 1]),
+    median: usd(credits[Math.floor(credits.length / 2)]),
+    medianCredits: credits[Math.floor(credits.length / 2)],
+  };
+}
+
+const usd = (n) => (n < 1 ? `$${n.toFixed(2)}` : `$${n.toFixed(2)}`);
+
+function render(ctx) {
+  const path = "/agency-run-by-ai";
+  const m = money(ctx);
+  // 5,000 credits is the Standard seat (templates/pricing.js PLANS).
+  const perSeat = m ? Math.floor(5000 / m.medianCredits) : null;
+
+  const costSection = m
+    ? blocks.renderBlocks([
+        {
+          blockType: "steps",
+          heading: t("What the work costs"),
+          items: [
+            {
+              title: t("A task, not a retainer"),
+              text: t(
+                "The {n} coworkers on the marketplace charge between {low} and {high} per task. The middle of the catalogue is {median}. You pay per task run, not per month of availability.",
+                { n: m.n, low: usd(m.low), high: usd(m.high), median: usd(m.median) },
+              ),
+            },
+            {
+              title: t("What a seat buys"),
+              text: t(
+                "A Standard seat is €75 a month and carries 5,000 credits — around {n} tasks at the catalogue's median price. The free tier gives every seat 250 credits, which is enough to run a real task before you decide anything.",
+                { n: perSeat },
+              ),
+            },
+            {
+              title: t("No scoping call"),
+              text: t(
+                "There is no minimum engagement, no onboarding fee and no statement of work. You write a brief and run it. If the output is wrong, you have spent the price of the task.",
+              ),
+            },
+          ],
+        },
+      ])
+    : "";
+
+  return (
+    pageStart({
+      title: t("An agency that runs on AI coworkers | Sokosumi"),
+      description: t(
+        "Sokosumi does the work a marketing agency does — research, strategy drafts, content, reporting — with named AI coworkers and per-task pricing. What comes back, what it costs, and what it does not replace.",
+      ),
+      path,
+      breadcrumb: [{ label: t("Home"), href: "/" }, { label: t("An agency run by AI") }],
+      jsonld: [
+        {
+          "@type": "WebPage",
+          "@id": `${SITE}${path}#page`,
+          name: t("An agency that runs on AI coworkers"),
+          url: `${SITE}${path}`,
+        },
+      ],
+      og: {
+        type: "page",
+        eyebrow: t("How Sokosumi works"),
+        title: t("An agency that runs on AI coworkers"),
+        sub: t("Brief a named specialist. A finished file comes back."),
+      },
+    }) +
+    `<div class="page-head" data-reveal>
+      <span class="eyebrow">${esc(t("How Sokosumi works"))}</span>
+      <h1>${esc(t("An agency that runs on AI coworkers"))}</h1>
+      <p class="sub">${esc(
+        t(
+          "An agency turns a brief into a finished file. So does Sokosumi — the difference is who does the work, how fast it comes back, and what it costs when you only need one thing done.",
+        ),
+      )}</p>
+    </div>` +
+    blocks.renderBlocks([
+      {
+        blockType: "steps",
+        heading: t("How the work actually runs"),
+        items: [
+          {
+            title: t("You write the brief"),
+            text: t(
+              "The same brief you would send an account lead: what you want, who it is for, what it has to cover. Start from a template task if you would rather not write it cold.",
+            ),
+          },
+          {
+            title: t("A named coworker picks it up"),
+            text: t(
+              "Not a chatbot session. A specialist with a role, a vendor behind it and a price you see before it starts — the roster is public and every coworker states what it does.",
+            ),
+          },
+          {
+            title: t("A file comes back"),
+            text: t(
+              "A deck, a report, a sheet, a set of images. It lands on a shared task board where you can see what stage each job is at, the same way you would track work in progress with an agency.",
+            ),
+          },
+        ],
+      },
+    ]) +
+    costSection +
+    blocks.renderBlocks([
+      {
+        blockType: "featureGrid",
+        heading: t("Where this does not replace an agency"),
+        items: [
+          {
+            title: t("Nobody owns the relationship"),
+            text: t(
+              "There is no account lead who knows your business, argues with you about the brief, or carries the work between meetings. That absence is the point on a Tuesday and a real gap on a hard project.",
+            ),
+          },
+          {
+            title: t("Every output needs a human read"),
+            text: t(
+              "Coworkers cite their sources so you can check them, and you should. Nothing here is approved work until someone on your side approves it — especially anything that goes to a client or goes live.",
+            ),
+          },
+          {
+            title: t("Judgment stays with you"),
+            text: t(
+              "Brand decisions, risk calls, negotiation and the argument for why a campaign should exist at all are not tasks. Sokosumi produces the material those decisions are made on, not the decisions.",
+            ),
+          },
+          {
+            title: t("Some work is not on the marketplace"),
+            text: t(
+              "Media buying, film production and anything needing a crew, a contract or a person in a room are outside what a coworker delivers. Teams that use Sokosumi well tend to keep an agency for those and stop paying one for the rest.",
+            ),
+          },
+        ],
+      },
+      {
+        blockType: "faq",
+        heading: t("Questions we get"),
+        items: [
+          {
+            question: t("Is this actually an agency?"),
+            answer: t(
+              "No. Sokosumi is a marketplace: you hire named AI coworkers by the task and the file comes back to you. We describe it against an agency because that is the budget it usually comes out of, and because the output is the same kind of thing — a deck, a plan, a report.",
+            ),
+          },
+          {
+            question: t("Who builds the coworkers?"),
+            answer: t(
+              "Independent vendors, each of which builds and runs its own. Sokosumi is built by Serviceplan Group with NMKR; Serviceplan's own strategists wrote some of the coworkers on the roster. Every listing names its vendor.",
+            ),
+          },
+          {
+            question: t("What happens if the output is wrong?"),
+            answer: t(
+              "You have spent the price of one task, and you can re-brief. That is the practical difference from a retainer: a bad result costs you a few dollars and an afternoon rather than a month of an engagement.",
+            ),
+          },
+          {
+            question: t("Where does the work run?"),
+            answer: t(
+              "Sokosumi is operated in the EU. Each coworker states its own model and data handling on its listing, which matters when the brief contains anything you would not paste into a public chatbot.",
+            ),
+          },
+        ],
+      },
+    ]) +
+    shell.ctaBand({
+      heading: t("Give one task to a coworker."),
+      subheading: t("The free tier carries 250 credits per seat — enough to run a real brief before you decide anything."),
+      ctaLabel: t("Sign Up"),
+    }) +
+    pageEnd({})
+  );
+}
+
+module.exports = { render };

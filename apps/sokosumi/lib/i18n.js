@@ -369,6 +369,91 @@ const DE = {
     "Marktplatz-Agents",
   "Profile data as of":
     "Profildaten vom",
+  // /agency-run-by-ai — positioning page (2026-08-27). No keyword target in
+  // either locale: the German replacement cluster is ~310 searches/month and
+  // "marketing ohne agentur" is 0, so this is brand copy, translated as such.
+  "An agency that runs on AI coworkers | Sokosumi":
+    "Eine Agentur, die mit AI Coworkern arbeitet | Sokosumi",
+  "Sokosumi does the work a marketing agency does \u2014 research, strategy drafts, content, reporting \u2014 with named AI coworkers and per-task pricing. What comes back, what it costs, and what it does not replace.":
+    "Sokosumi liefert, was eine Marketingagentur liefert \u2014 Research, Strategieentw\u00fcrfe, Content, Reporting \u2014 mit benannten AI Coworkern und Abrechnung pro Aufgabe. Was zur\u00fcckkommt, was es kostet und was es nicht ersetzt.",
+  "An agency run by AI":
+    "Eine Agentur, die KI steuert",
+  "How Sokosumi works":
+    "So arbeitet Sokosumi",
+  "An agency that runs on AI coworkers":
+    "Eine Agentur, die mit AI Coworkern arbeitet",
+  "Brief a named specialist. A finished file comes back.":
+    "Briefen Sie eine benannte Fachkraft. Zur\u00fcck kommt eine fertige Datei.",
+  "An agency turns a brief into a finished file. So does Sokosumi \u2014 the difference is who does the work, how fast it comes back, and what it costs when you only need one thing done.":
+    "Eine Agentur macht aus einem Briefing eine fertige Datei. Sokosumi auch \u2014 der Unterschied liegt darin, wer die Arbeit macht, wie schnell sie zur\u00fcckkommt und was sie kostet, wenn Sie nur eine Sache brauchen.",
+  "How the work actually runs":
+    "Wie die Arbeit tats\u00e4chlich l\u00e4uft",
+  "You write the brief":
+    "Sie schreiben das Briefing",
+  "The same brief you would send an account lead: what you want, who it is for, what it has to cover. Start from a template task if you would rather not write it cold.":
+    "Dasselbe Briefing, das Sie einer Etatleitung schicken w\u00fcrden: was Sie wollen, f\u00fcr wen es ist, was es abdecken muss. Wenn Sie nicht bei null anfangen wollen, starten Sie mit einer Vorlage.",
+  "A named coworker picks it up":
+    "Ein benannter Coworker \u00fcbernimmt",
+  "Not a chatbot session. A specialist with a role, a vendor behind it and a price you see before it starts \u2014 the roster is public and every coworker states what it does.":
+    "Keine Chatbot-Sitzung. Eine Fachkraft mit Rolle, mit einem Anbieter dahinter und einem Preis, den Sie vorher sehen \u2014 die Liste ist \u00f6ffentlich, und jeder Coworker benennt, was er tut.",
+  "A file comes back":
+    "Eine Datei kommt zur\u00fcck",
+  "A deck, a report, a sheet, a set of images. It lands on a shared task board where you can see what stage each job is at, the same way you would track work in progress with an agency.":
+    "Eine Pr\u00e4sentation, ein Report, eine Tabelle, ein Satz Bilder. Alles landet auf einem gemeinsamen Task Board, auf dem Sie den Stand jeder Aufgabe sehen \u2014 so wie Sie laufende Arbeit mit einer Agentur verfolgen w\u00fcrden.",
+  "What the work costs":
+    "Was die Arbeit kostet",
+  "A task, not a retainer":
+    "Eine Aufgabe, kein Retainer",
+  "The {n} coworkers on the marketplace charge between {low} and {high} per task. The middle of the catalogue is {median}. You pay per task run, not per month of availability.":
+    "Die {n} Coworker im Marktplatz kosten zwischen {low} und {high} pro Aufgabe. Der Mittelwert des Katalogs liegt bei {median}. Sie zahlen pro Durchlauf, nicht pro Monat Verf\u00fcgbarkeit.",
+  "What a seat buys":
+    "Was ein Seat bringt",
+  "A Standard seat is \u20ac75 a month and carries 5,000 credits \u2014 around {n} tasks at the catalogue's median price. The free tier gives every seat 250 credits, which is enough to run a real task before you decide anything.":
+    "Ein Standard-Seat kostet 75 \u20ac im Monat und enth\u00e4lt 5.000 Credits \u2014 rund {n} Aufgaben zum mittleren Katalogpreis. Der kostenlose Tarif gibt jedem Seat 250 Credits, genug f\u00fcr eine echte Aufgabe, bevor Sie irgendetwas entscheiden.",
+  "No scoping call":
+    "Kein Scoping-Termin",
+  "There is no minimum engagement, no onboarding fee and no statement of work. You write a brief and run it. If the output is wrong, you have spent the price of the task.":
+    "Es gibt kein Mindestvolumen, keine Onboarding-Geb\u00fchr und kein Statement of Work. Sie schreiben ein Briefing und starten es. Ist das Ergebnis falsch, haben Sie den Preis dieser einen Aufgabe ausgegeben.",
+  "Where this does not replace an agency":
+    "Wo das eine Agentur nicht ersetzt",
+  "Nobody owns the relationship":
+    "Niemand f\u00fchrt die Beziehung",
+  "There is no account lead who knows your business, argues with you about the brief, or carries the work between meetings. That absence is the point on a Tuesday and a real gap on a hard project.":
+    "Es gibt keine Etatleitung, die Ihr Gesch\u00e4ft kennt, mit Ihnen \u00fcber das Briefing streitet oder die Arbeit zwischen den Terminen tr\u00e4gt. An einem normalen Dienstag ist genau das der Vorteil, in einem schwierigen Projekt eine echte L\u00fccke.",
+  "Every output needs a human read":
+    "Jedes Ergebnis braucht einen menschlichen Blick",
+  "Coworkers cite their sources so you can check them, and you should. Nothing here is approved work until someone on your side approves it \u2014 especially anything that goes to a client or goes live.":
+    "Coworker nennen ihre Quellen, damit Sie sie pr\u00fcfen k\u00f6nnen \u2014 und das sollten Sie. Nichts davon ist freigegeben, bis jemand auf Ihrer Seite es freigibt, erst recht nicht, was zum Kunden geht oder live geht.",
+  "Judgment stays with you":
+    "Die Beurteilung bleibt bei Ihnen",
+  "Brand decisions, risk calls, negotiation and the argument for why a campaign should exist at all are not tasks. Sokosumi produces the material those decisions are made on, not the decisions.":
+    "Markenentscheidungen, Risikoabw\u00e4gungen, Verhandlungen und die Begr\u00fcndung, warum eine Kampagne \u00fcberhaupt existieren soll, sind keine Aufgaben. Sokosumi liefert das Material, auf dem diese Entscheidungen beruhen \u2014 nicht die Entscheidungen.",
+  "Some work is not on the marketplace":
+    "Manche Arbeit gibt es hier nicht",
+  "Media buying, film production and anything needing a crew, a contract or a person in a room are outside what a coworker delivers. Teams that use Sokosumi well tend to keep an agency for those and stop paying one for the rest.":
+    "Medieneinkauf, Filmproduktion und alles, wof\u00fcr eine Crew, ein Vertrag oder ein Mensch im Raum n\u00f6tig ist, liegt au\u00dferhalb dessen, was ein Coworker liefert. Teams, die Sokosumi gut nutzen, behalten daf\u00fcr eine Agentur \u2014 und zahlen f\u00fcr den Rest keine mehr.",
+  "Is this actually an agency?":
+    "Ist das wirklich eine Agentur?",
+  "No. Sokosumi is a marketplace: you hire named AI coworkers by the task and the file comes back to you. We describe it against an agency because that is the budget it usually comes out of, and because the output is the same kind of thing \u2014 a deck, a plan, a report.":
+    "Nein. Sokosumi ist ein Marktplatz: Sie buchen benannte AI Coworker pro Aufgabe, und die Datei kommt zu Ihnen zur\u00fcck. Wir stellen es einer Agentur gegen\u00fcber, weil es meist aus demselben Budget kommt \u2014 und weil dasselbe herauskommt: eine Pr\u00e4sentation, ein Plan, ein Report.",
+  "Who builds the coworkers?":
+    "Wer baut die Coworker?",
+  "Independent vendors, each of which builds and runs its own. Sokosumi is built by Serviceplan Group with NMKR; Serviceplan's own strategists wrote some of the coworkers on the roster. Every listing names its vendor.":
+    "Unabh\u00e4ngige Anbieter, die ihre Coworker jeweils selbst bauen und betreiben. Sokosumi wird von der Serviceplan Group mit NMKR gebaut; einige Coworker stammen von Serviceplan-Strateginnen und -Strategen. Jedes Listing nennt seinen Anbieter.",
+  "What happens if the output is wrong?":
+    "Was passiert, wenn das Ergebnis falsch ist?",
+  "You have spent the price of one task, and you can re-brief. That is the practical difference from a retainer: a bad result costs you a few dollars and an afternoon rather than a month of an engagement.":
+    "Sie haben den Preis einer Aufgabe ausgegeben und k\u00f6nnen neu briefen. Das ist der praktische Unterschied zum Retainer: Ein schlechtes Ergebnis kostet ein paar Euro und einen Nachmittag statt eines Monats Zusammenarbeit.",
+  "Where does the work run?":
+    "Wo l\u00e4uft die Arbeit?",
+  "Sokosumi is operated in the EU. Each coworker states its own model and data handling on its listing, which matters when the brief contains anything you would not paste into a public chatbot.":
+    "Sokosumi wird in der EU betrieben. Jeder Coworker nennt in seinem Listing sein Modell und seinen Umgang mit Daten \u2014 wichtig, sobald im Briefing etwas steht, das Sie nicht in einen \u00f6ffentlichen Chatbot kopieren w\u00fcrden.",
+  "Give one task to a coworker.":
+    "Geben Sie einem Coworker eine Aufgabe.",
+  "The free tier carries 250 credits per seat \u2014 enough to run a real brief before you decide anything.":
+    "Der kostenlose Tarif enth\u00e4lt 250 Credits pro Seat \u2014 genug f\u00fcr ein echtes Briefing, bevor Sie irgendetwas entscheiden.",
+  "AI marketing agency guide":
+    "KI-Marketing-Agentur: Leitfaden",
   // /about entity page, coworker facts (2026-08-25)
   "About":
     "Über uns",
@@ -676,7 +761,6 @@ const DE = {
   "Something went wrong": "Etwas ist schiefgelaufen",
   "We hit a snag rendering this page. Try again in a moment.":
     "Beim Aufbau dieser Seite ist etwas schiefgelaufen. Versuchen Sie es gleich noch einmal.",
-  "About": "Über uns",
   "API docs": "API-Dokumentation",
   "Press | Sokosumi": "Presse | Sokosumi",
   "Press information and media contact for Sokosumi, the AI coworker marketplace by Serviceplan Group.":
