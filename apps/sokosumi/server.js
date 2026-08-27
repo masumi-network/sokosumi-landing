@@ -794,12 +794,19 @@ const assetsDir = path.join(root, "assets");
   // and mtime, so replacing a file changes its URL and the new one is fetched
   // immediately, while unchanged files stay cached.
   const assetVersions = new Map();
+  // Hash the bytes, not the stat. mtimeMs is NOT stable across Vercel lambda
+  // instances: the invocation that renders the HTML and the one that serves
+  // the asset can see different mtimes, so a size-and-mtime hash produced a
+  // `?v=` that never matched on the way back in. Every versioned asset then
+  // fell through to the `no-cache` branch and production revalidated all four
+  // stylesheets on every page view, while local dev looked perfectly fine.
+  // Content hashing is identical on every instance, and the result is memoised
+  // per process so each file is read at most once.
   function assetVersion(rel) {
     if (assetVersions.has(rel)) return assetVersions.get(rel);
     let v = "";
     try {
-      const st = fs.statSync(path.join(root, rel));
-      v = crypto.createHash("sha1").update(`${st.size}-${st.mtimeMs}`).digest("hex").slice(0, 8);
+      v = crypto.createHash("sha1").update(fs.readFileSync(path.join(root, rel))).digest("hex").slice(0, 8);
     } catch {
       /* referenced but missing — leave the URL alone */
     }
