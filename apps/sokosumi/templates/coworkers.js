@@ -231,7 +231,12 @@ function profileStats(c) {
   const stats = [];
   if (c.runs) stats.push(`<span><strong>${esc(String(c.runs))}</strong> ${esc(t("runs"))}</span>`);
   if (c.rating) stats.push(`<span><strong>${esc(Number(c.rating).toFixed(1))}</strong> ${esc(t("rating"))}${c.ratingCount ? ` (${esc(String(c.ratingCount))})` : ""}</span>`);
-  if (c.credits) stats.push(`<span><strong>${esc(String(c.credits))}</strong> ${esc(t("credits per run"))}</span>`);
+  if (c.credits) {
+    const usd = usdForCredits(c.credits);
+    stats.push(
+      `<span><strong>${esc(String(c.credits))}</strong> ${esc(t("credits per run"))}${usd !== null ? ` <span class="cw-stat-alt">(${esc(fmtUsd(usd))})</span>` : ""}</span>`,
+    );
+  }
   return stats.length ? `<div class="cw-stats">${stats.join("")}</div>` : "";
 }
 
@@ -258,6 +263,24 @@ function profileLd(c, vendorName, vendorSlug) {
     isPartOf: { "@id": `${shell.SITE}/#website` },
   };
   if (c.role) ld.alternateName = c.role;
+  // A run is priced in credits; the offer states the same amount in the currency
+  // those credits are sold in, so the markup matches the price on the page.
+  const usd = usdForCredits(c.credits);
+  if (usd !== null) {
+    ld.offers = {
+      "@type": "Offer",
+      price: usd.toFixed(2),
+      priceCurrency: "USD",
+      availability: "https://schema.org/InStock",
+      url: `${shell.SITE}/ai-coworkers/${c.slug}`,
+      priceSpecification: {
+        "@type": "UnitPriceSpecification",
+        price: usd.toFixed(2),
+        priceCurrency: "USD",
+        referenceQuantity: { "@type": "QuantitativeValue", value: 1, unitText: "task run" },
+      },
+    };
+  }
   if (vendorName) {
     // @id, not url: the vendor's page on this site identifies the node, it is
     // not a claim that sokosumi.com/vendors/x is the company's own website.
@@ -363,6 +386,18 @@ function catalogAgent(c, ctx) {
   return agents.find((a) => a.id && a.id === c.externalId) || agents.find((a) => a.name === c.name) || null;
 }
 
+// 100 credits = US$1.00, the marketplace's stated credit price. Everything that
+// shows money for a listing derives from this one constant so the page and its
+// structured data can never drift apart.
+const CREDITS_PER_USD = 100;
+const usdForCredits = (credits) => {
+  const n = Number(credits);
+  if (!isFinite(n) || n <= 0) return null;
+  return n / CREDITS_PER_USD;
+};
+const fmtUsd = (n) =>
+  new Intl.NumberFormat(locale() === "de" ? "de-DE" : "en-US", { style: "currency", currency: "USD" }).format(n);
+
 function profileTags(c) {
   const tags = [];
   const llm = Array.isArray(c.profileLlm) ? c.profileLlm : [];
@@ -382,6 +417,13 @@ function profileFacts(c, vn, vs, cat, cats) {
   const llm = Array.isArray(c.profileLlm) ? c.profileLlm.filter(Boolean) : [];
   if (llm.length) rows.push([t("Models"), esc(llm.join(", "))]);
   if (c.profileHosting) rows.push([t("Hosting"), esc(c.profileHosting)]);
+  if (c.credits) {
+    const usd = usdForCredits(c.credits);
+    rows.push([
+      t("Price per run"),
+      esc(usd !== null ? t("{credits} credits ({usd})", { credits: String(c.credits), usd: fmtUsd(usd) }) : t("{credits} credits", { credits: String(c.credits) })),
+    ]);
+  }
   if (c.runs) rows.push([t("Tasks run"), esc(Number(c.runs).toLocaleString(locale() === "de" ? "de-DE" : "en-US"))]);
   if (c.rating && c.ratingCount) rows.push([t("Rating"), esc(`${Number(c.rating).toFixed(1)} / 5 (${c.ratingCount})`)]);
   if (cats && cats.length) rows.push([t("Category"), esc(cats.map((x) => x.name).join(", "))]);

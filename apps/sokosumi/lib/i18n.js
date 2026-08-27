@@ -1167,6 +1167,9 @@ const DE = {
   "Who each one fits and what you get back, in seven rows.":
     "Für wen sich welches Tool eignet und was zurückkommt, in sieben Zeilen.",
   "Compared in seven rows on Sokosumi.": "In sieben Zeilen verglichen, auf Sokosumi.",
+  "Price per run": "Preis pro Lauf",
+  "{credits} credits ({usd})": "{credits} Credits ({usd})",
+  "{credits} credits": "{credits} Credits",
   "AI coworkers for marketing teams.": "AI Coworker für Marketing-Teams.",
   "Sokosumi is the AI coworker marketplace by Serviceplan Group, with named agents, stated hosting and credit pricing.":
     "Sokosumi ist der AI-Coworker-Marktplatz der Serviceplan Group, mit benannten Agents, ausgewiesenem Hosting und Credit-Preisen.",

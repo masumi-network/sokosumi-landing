@@ -1577,3 +1577,6 @@ section.band-dark .btn-primary, .cw-split-side.is-coworker .btn-primary,
 .uc-hero-media { border-radius: 0; }
 .card.uc-card.has-art { border-top: 0; overflow: hidden; }
 .card.uc-card .uc-stage { border-bottom: 0; }
+
+/* the currency equivalent of a credit price: present, but the credits lead */
+.cw-stat-alt { color: var(--muted-foreground); }
