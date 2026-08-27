@@ -95,7 +95,10 @@ function tp(n, singular, plural, vars) {
 // Root-relative href/action attributes get the /de prefix on German pages.
 // Never touched: /assets (shared files), anything already /de, the /en
 // switcher marker, and pure fragments/absolute URLs (they don't start "/").
-const LINK_RE = /\b(href|action)="\/(?!de(?:\/|"))(?!en(?:\/|"))(?!assets\/)([^"]*)"/g;
+// Also never touched: /tools*, which server.js 301s back off /de because the
+// tools are English-only. Writing /de/tools here would cost every German page
+// a redirect hop on a link we already know the destination of.
+const LINK_RE = /\b(href|action)="\/(?!de(?:\/|"))(?!en(?:\/|"))(?!assets\/)(?!tools(?:\/|"|#|\?))([^"]*)"/g;
 
 function localizeHtml(html) {
   let out = html;
