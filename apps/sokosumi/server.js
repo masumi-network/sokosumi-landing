@@ -36,6 +36,8 @@ const pagesTpl = require("./templates/pagesCms");
 const contactTpl = require("./templates/contact");
 const designMdTpl = require("./templates/designMd");
 const designMdArchive = require("./lib/designMdArchive");
+const seoMdTpl = require("./templates/seoMd");
+const seoExtract = require("./lib/seoExtract");
 const toolsTpl = require("./templates/tools");
 
 const port = process.env.PORT || 3000;
@@ -53,6 +55,8 @@ const DESIGN_MD_API_BASE = (process.env.MASUMI_DESIGN_MD_API_BASE || "https://ww
 const DESIGN_MD_API_KEY = process.env.MASUMI_DESIGN_MD_API_KEY || "";
 const DESIGN_MD_RATE_LIMIT = Number(process.env.DESIGN_MD_RATE_LIMIT) || 6;
 const designMdRequests = new Map();
+const SEO_MD_RATE_LIMIT = Number(process.env.SEO_MD_RATE_LIMIT) || 20;
+const seoMdRequests = new Map();
 
 function publicWebsiteUrl(value) {
   let parsed;
@@ -121,6 +125,23 @@ function designMdRateLimited(ip) {
   if (designMdRequests.size > 2000) {
     for (const [key, times] of designMdRequests) {
       if (!times.some((time) => time > windowStart)) designMdRequests.delete(key);
+    }
+  }
+  return false;
+}
+
+// Same sliding-hour window as the DESIGN.md limiter, but its own map and a
+// higher cap: SEO analysis is a single cheap fetch, not a browser job.
+function seoMdRateLimited(ip) {
+  const now = Date.now();
+  const windowStart = now - 60 * 60 * 1000;
+  const hits = (seoMdRequests.get(ip) || []).filter((time) => time > windowStart);
+  if (hits.length >= SEO_MD_RATE_LIMIT) return true;
+  hits.push(now);
+  seoMdRequests.set(ip, hits);
+  if (seoMdRequests.size > 2000) {
+    for (const [key, times] of seoMdRequests) {
+      if (!times.some((time) => time > windowStart)) seoMdRequests.delete(key);
     }
   }
   return false;
@@ -589,6 +610,7 @@ const routes = [
   { m: (s) => s.length === 1 && s[0] === "tools" && {}, h: toolsTpl.render },
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "design-md" && {}, h: designMdTpl.render },
   { m: (s) => s.length === 4 && s[0] === "tools" && s[1] === "design-md" && s[2] === "analysis" && { slug: s[3] }, h: designMdTpl.analysis },
+  { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "seo-md" && {}, h: seoMdTpl.render },
   { m: (s) => s.length === 1 && s[0] === "product" && {}, h: pagesTpl.productHub },
   { m: (s) => s.length === 1 && s[0] === "pricing" && {}, h: pricingTpl.render },
   // The entity page for Sokosumi itself lives in code so its JSON-LD is
@@ -1059,6 +1081,38 @@ const assetsDir = path.join(root, "assets");
             }, JSON.stringify(data));
           } catch {
             return send(req, res, 502, { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" }, JSON.stringify({ error: "This saved analysis is unavailable right now." }));
+          }
+        }
+
+        if (urlPath === "/api/seo-md" && req.method === "POST") {
+          const jsonHead = { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" };
+          let body;
+          try {
+            body = await readJsonBody(req);
+          } catch (error) {
+            const message = error.message === "too-large" ? "The request is too large." : "Send a valid JSON request.";
+            return send(req, res, 400, jsonHead, JSON.stringify({ error: message }));
+          }
+          const targetUrl = publicWebsiteUrl(body.url);
+          if (!targetUrl) {
+            return send(req, res, 400, jsonHead, JSON.stringify({ error: "Enter a complete public website URL." }));
+          }
+          if (seoMdRateLimited(clientIp(req))) {
+            return send(req, res, 429, { ...jsonHead, "Retry-After": "3600" }, JSON.stringify({ error: "You have reached the hourly limit. Try again later." }));
+          }
+          try {
+            const data = await seoExtract.analyze(targetUrl);
+            return send(req, res, 200, jsonHead, JSON.stringify({ status: "done", ...data }));
+          } catch (error) {
+            const timeout = error.name === "AbortError" || /aborted|timeout/i.test(error.message || "");
+            const message = timeout
+              ? "That site took too long to respond. Try again in a moment."
+              : error.statusCode
+                ? `That site returned an error (HTTP ${error.statusCode}).`
+                : error.message && /HTML page|did not return/i.test(error.message)
+                  ? error.message
+                  : "That site could not be reached. Check the URL and try again.";
+            return send(req, res, timeout ? 504 : 502, jsonHead, JSON.stringify({ error: message }));
           }
         }
 

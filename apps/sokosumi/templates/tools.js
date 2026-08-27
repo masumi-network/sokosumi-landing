@@ -10,6 +10,13 @@ const TOOLS = [
     meta: "Free · no sign-up",
     preview: ["DESIGN.md", "---", "colors: #2b5c78 · #0f0e0d", "type: Inter · 400 · 1.5", "components: buttons · cards", "---", "## Brand style"],
   },
+  {
+    href: "/tools/seo-md",
+    name: "SEO.md generator",
+    text: "Turn any website into an AI-readable SEO specification.",
+    meta: "Free · no sign-up",
+    preview: ["SEO.md", "---", "score: 92/100", "title: 54 chars", "canonical: set", "og:image: set", "---", "## Checklist"],
+  },
 ];
 
 function toolCard(t) {
