@@ -87,20 +87,45 @@ function collectMeta(html) {
   return meta;
 }
 
+// Some marquee/animation components repeat the same phrase inside one heading;
+// collapse an immediately-doubled string back to a single copy so the reported
+// H1 reads like the real headline.
+function dedupeRepeat(text) {
+  const words = text.split(/\s+/).filter(Boolean);
+  const n = words.length;
+  for (const times of [2, 3]) {
+    if (n < times || n % times !== 0) continue;
+    const unit = n / times;
+    let repeats = true;
+    for (let i = unit; i < n && repeats; i++) {
+      if (words[i] !== words[i % unit]) repeats = false;
+    }
+    if (repeats) return words.slice(0, unit).join(" ");
+  }
+  return text;
+}
+
 function collectHeadings(html) {
   const counts = { h1: 0, h2: 0, h3: 0, h4: 0, h5: 0, h6: 0 };
   const h1 = [];
+  const order = [];
   const re = /<(h[1-6])\b[^>]*>([\s\S]*?)<\/\1>/gi;
   let m;
   while ((m = re.exec(html))) {
     const level = m[1].toLowerCase();
     counts[level]++;
+    order.push(Number(level[1]));
     if (level === "h1") {
-      const text = visibleText(m[2]);
+      const text = dedupeRepeat(visibleText(m[2]));
       if (text) h1.push(text.slice(0, 200));
     }
   }
-  return { counts, h1 };
+  // First place the outline skips a level (e.g. h1 → h3 with no h2 between).
+  let skip = null;
+  for (let i = 1; i < order.length && !skip; i++) {
+    if (order[i] - order[i - 1] > 1) skip = `h${order[i - 1]} → h${order[i]}`;
+  }
+  return { counts, h1, skip };
 }
 
 function collectImages(html) {
@@ -168,6 +193,23 @@ function collectHreflang(html) {
   return [...new Set(langs)];
 }
 
+// First declared icon (favicon or apple-touch-icon), resolved to an absolute URL.
+function collectFavicon(html, baseUrl) {
+  const re = /<link\b[^>]*>/gi;
+  let m;
+  let apple = "";
+  while ((m = re.exec(html))) {
+    const rel = attrOf(m[0], "rel").toLowerCase();
+    const href = attrOf(m[0], "href");
+    if (!href) continue;
+    let abs;
+    try { abs = new URL(href, baseUrl).href; } catch { continue; }
+    if (/\bicon\b/.test(rel) && !/apple/.test(rel)) return abs;
+    if (/apple-touch-icon/.test(rel) && !apple) apple = abs;
+  }
+  return apple;
+}
+
 async function fetchRobots(origin) {
   try {
     const { status, text } = await fetchCapped(`${origin}/robots.txt`, { maxBytes: 512 * 1024, timeoutMs: 6000 });
@@ -189,44 +231,50 @@ async function fetchRobots(origin) {
   }
 }
 
-// Rule-based checks — each is a pass/warn/fail with a short reason. Deterministic,
-// so the same page always scores the same way.
+// Rule-based checks — each is a pass/warn/fail with a short reason and a weight,
+// so the score leans on the signals that matter most (title, description,
+// indexability, HTTPS carry more than, say, a missing favicon). Deterministic:
+// the same page always scores the same way.
 function buildChecks(d) {
   const checks = [];
-  const add = (level, label, detail) => checks.push({ level, label, detail });
+  const add = (level, label, detail, weight = 1) => checks.push({ level, label, detail, weight });
 
   const titleLen = d.title ? d.title.length : 0;
-  if (!d.title) add("fail", "Title tag", "No <title> found.");
-  else if (titleLen < 30) add("warn", "Title tag", `Short at ${titleLen} chars — aim for 30–60.`);
-  else if (titleLen > 60) add("warn", "Title tag", `Long at ${titleLen} chars — may truncate in search.`);
-  else add("pass", "Title tag", `${titleLen} chars.`);
+  if (!d.title) add("fail", "Title tag", "No <title> found.", 3);
+  else if (titleLen < 30) add("warn", "Title tag", `Short at ${titleLen} chars — aim for 30–60.`, 3);
+  else if (titleLen > 60) add("warn", "Title tag", `Long at ${titleLen} chars — may truncate in search.`, 3);
+  else add("pass", "Title tag", `${titleLen} chars.`, 3);
 
   const descLen = d.description ? d.description.length : 0;
-  if (!d.description) add("fail", "Meta description", "No meta description found.");
-  else if (descLen < 70) add("warn", "Meta description", `Short at ${descLen} chars — aim for 70–160.`);
-  else if (descLen > 160) add("warn", "Meta description", `Long at ${descLen} chars — may truncate.`);
-  else add("pass", "Meta description", `${descLen} chars.`);
+  if (!d.description) add("fail", "Meta description", "No meta description found.", 3);
+  else if (descLen < 70) add("warn", "Meta description", `Short at ${descLen} chars — aim for 70–160.`, 3);
+  else if (descLen > 160) add("warn", "Meta description", `Long at ${descLen} chars — may truncate.`, 3);
+  else add("pass", "Meta description", `${descLen} chars.`, 3);
 
-  if (d.headings.counts.h1 === 0) add("fail", "H1 heading", "No H1 on the page.");
-  else if (d.headings.counts.h1 > 1) add("warn", "H1 heading", `${d.headings.counts.h1} H1s — one is usually best.`);
-  else add("pass", "H1 heading", "Exactly one H1.");
+  if (d.headings.counts.h1 === 0) add("fail", "H1 heading", "No H1 on the page.", 2);
+  else if (d.headings.counts.h1 > 1) add("warn", "H1 heading", `${d.headings.counts.h1} H1s — one is usually best.`, 2);
+  else add("pass", "H1 heading", "Exactly one H1.", 2);
 
-  if (!d.canonical) add("warn", "Canonical URL", "No canonical link — duplicate-content risk.");
-  else add("pass", "Canonical URL", d.canonical);
+  if (d.headings.skip) add("warn", "Heading structure", `Outline skips a level (${d.headings.skip}).`);
+  else if (d.headings.counts.h2) add("pass", "Heading structure", "No skipped heading levels.");
 
-  if (d.robotsMeta && /noindex/i.test(d.robotsMeta)) add("fail", "Indexability", `Meta robots is "${d.robotsMeta}" — page is blocked from search.`);
-  else if (d.robots.blocksAll) add("fail", "Indexability", "robots.txt disallows all crawlers.");
-  else add("pass", "Indexability", "Open to crawlers.");
+  if (!d.canonical) add("warn", "Canonical URL", "No canonical link — duplicate-content risk.", 2);
+  else if (d.canonicalOffHost) add("warn", "Canonical URL", `Points to another host (${d.canonicalOffHost}).`, 2);
+  else add("pass", "Canonical URL", d.canonical, 2);
+
+  if (d.robotsMeta && /noindex/i.test(d.robotsMeta)) add("fail", "Indexability", `Meta robots is "${d.robotsMeta}" — page is blocked from search.`, 3);
+  else if (d.robots.blocksAll) add("fail", "Indexability", "robots.txt disallows all crawlers.", 3);
+  else add("pass", "Indexability", "Open to crawlers.", 3);
 
   if (!d.lang) add("warn", "Language", "No lang attribute on <html>.");
   else add("pass", "Language", d.lang);
 
-  if (!d.viewport) add("warn", "Mobile viewport", "No viewport meta — poor mobile rendering.");
-  else add("pass", "Mobile viewport", d.viewport);
+  if (!d.viewport) add("warn", "Mobile viewport", "No viewport meta — poor mobile rendering.", 2);
+  else add("pass", "Mobile viewport", d.viewport, 2);
 
-  if (!d.og["og:title"] && !d.og["og:image"]) add("warn", "Open Graph", "No Open Graph tags — weak link previews.");
-  else if (!d.og["og:image"]) add("warn", "Open Graph", "og:image missing — no preview image.");
-  else add("pass", "Open Graph", "Title and image present.");
+  if (!d.og["og:title"] && !d.og["og:image"]) add("warn", "Open Graph", "No Open Graph tags — weak link previews.", 2);
+  else if (!d.og["og:image"]) add("warn", "Open Graph", "og:image missing — no preview image.", 2);
+  else add("pass", "Open Graph", "Title and image present.", 2);
 
   if (d.images.total && d.images.missingAlt) add("warn", "Image alt text", `${d.images.missingAlt} of ${d.images.total} images missing alt.`);
   else if (d.images.total) add("pass", "Image alt text", "All images have alt text.");
@@ -234,14 +282,17 @@ function buildChecks(d) {
   if (!d.jsonLd.length) add("warn", "Structured data", "No JSON-LD schema found.");
   else add("pass", "Structured data", d.jsonLd.join(", "));
 
+  if (!d.favicon) add("warn", "Favicon", "No icon or apple-touch-icon declared.");
+  else add("pass", "Favicon", "Declared.");
+
   if (!d.robots.found) add("warn", "robots.txt", "No robots.txt found.");
   else add("pass", "robots.txt", d.robots.sitemaps.length ? `Found, references ${d.robots.sitemaps.length} sitemap(s).` : "Found.");
 
   if (!d.sitemaps.length) add("warn", "XML sitemap", "No sitemap referenced or found.");
   else add("pass", "XML sitemap", d.sitemaps[0]);
 
-  if (!d.https) add("fail", "HTTPS", "Final URL is not served over HTTPS.");
-  else add("pass", "HTTPS", "Served over HTTPS.");
+  if (!d.https) add("fail", "HTTPS", "Final URL is not served over HTTPS.", 3);
+  else add("pass", "HTTPS", "Served over HTTPS.", 3);
 
   return checks;
 }
@@ -270,6 +321,7 @@ function renderSeoMd(d) {
   L.push(FIELD("robots_meta", d.robotsMeta));
   L.push(FIELD("charset", d.charset));
   L.push(FIELD("viewport", d.viewport));
+  L.push(FIELD("favicon", d.favicon));
   L.push(``);
   L.push(`## Social`);
   L.push(FIELD("og:title", d.og["og:title"]));
@@ -349,7 +401,18 @@ async function analyze(inputUrl) {
   const links = collectLinks(text, finalUrl);
   const jsonLd = collectJsonLd(text);
   const hreflang = collectHreflang(head);
+  const favicon = collectFavicon(head, finalUrl);
   const robots = await fetchRobots(origin);
+
+  // Flag a canonical that points at a different host (a common misconfiguration
+  // that de-indexes the page). Same-host path differences are legitimate.
+  let canonicalOffHost = "";
+  if (canonical) {
+    try {
+      const cu = new URL(canonical, finalUrl);
+      if (cu.hostname.replace(/^www\./, "") !== parsedFinal.hostname.replace(/^www\./, "")) canonicalOffHost = cu.hostname;
+    } catch { /* ignore unparseable canonical */ }
+  }
 
   // Sitemaps: prefer those declared in robots.txt, fall back to the conventional
   // path (which we don't verify here — that would be another fetch per guess).
@@ -365,6 +428,8 @@ async function analyze(inputUrl) {
     title,
     description: meta["description"] || "",
     canonical,
+    canonicalOffHost,
+    favicon,
     lang,
     charset,
     viewport: meta["viewport"] || "",
@@ -388,8 +453,12 @@ async function analyze(inputUrl) {
   d.pass = d.checks.filter((c) => c.level === "pass").length;
   d.warn = d.checks.filter((c) => c.level === "warn").length;
   d.fail = d.checks.filter((c) => c.level === "fail").length;
-  // Score: full credit for passes, half for warnings, nothing for fails.
-  d.score = d.checks.length ? Math.round(((d.pass + d.warn * 0.5) / d.checks.length) * 100) : 0;
+  // Weighted score: full credit for passes, half for warnings, nothing for
+  // fails — each scaled by the check's weight so critical signals dominate.
+  const credit = { pass: 1, warn: 0.5, fail: 0 };
+  const totalWeight = d.checks.reduce((sum, c) => sum + c.weight, 0);
+  const earned = d.checks.reduce((sum, c) => sum + c.weight * credit[c.level], 0);
+  d.score = totalWeight ? Math.round((earned / totalWeight) * 100) : 0;
   d.recommendations = buildRecommendations(d.checks);
   d.seoMd = renderSeoMd(d);
   return d;

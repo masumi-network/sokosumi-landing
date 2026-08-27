@@ -117,6 +117,30 @@
     }
   }
 
+  // Favicon chip for the result header; falls back to the first letter of the
+  // hostname if the icon URL is missing or fails to load.
+  function brandTile(data) {
+    var tile = el("span", "dm-brand");
+    var letter = String(data.hostname || "?").replace(/^www\./, "").slice(0, 1).toUpperCase();
+    var icon = safeExternalUrl(data.favicon);
+    if (icon) {
+      var img = document.createElement("img");
+      img.src = icon;
+      img.alt = "";
+      img.width = 28;
+      img.height = 28;
+      img.loading = "lazy";
+      img.decoding = "async";
+      img.addEventListener("error", function () {
+        tile.replaceChildren(el("b", "", letter));
+      });
+      tile.appendChild(img);
+    } else {
+      tile.appendChild(el("b", "", letter));
+    }
+    return tile;
+  }
+
   function addPreviewBlock(title) {
     var block = el("section", "dm-preview-block");
     if (title) block.appendChild(el("h3", "", title));
@@ -204,6 +228,7 @@
       ["Language", data.lang],
       ["Robots meta", data.robotsMeta],
       ["Viewport", data.viewport],
+      ["Favicon", data.favicon],
     ]);
     var og = data.og || {};
     var tw = data.twitter || {};
@@ -234,6 +259,8 @@
     var resultUrl = safeExternalUrl(data.finalUrl || data.url || submittedUrl);
     source.href = resultUrl || "#";
     source.textContent = data.hostname || resultUrl || "Result";
+    var brand = document.getElementById("seoMdBrand");
+    if (brand) brand.replaceChildren(brandTile(data));
     result.hidden = false;
     switchTab("preview");
     result.scrollIntoView({ behavior: "smooth", block: "start" });
