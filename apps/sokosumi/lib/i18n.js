@@ -1868,8 +1868,11 @@ const DE_INDEXABLE = true;
 // would publish a duplicate of the English page rather than a translation.
 // The legal documents are English by owner instruction (a legal decision, not a
 // copy one), so /de/legal/* stays noindex and out of the hreflang cluster even
-// though the chrome around it is German. Everything else on /de is real German.
-const DE_ENGLISH_PATHS = [/^\/legal(\/|$)/];
+// though the chrome around it is German. /alternatives/* is the same shape for a
+// different reason: Ahrefs shows 0\u201360 searches/month for these terms in
+// German ("copy ai alternative" is 0), so the pages are written in English only
+// and the German twin must not be indexed as a duplicate.
+const DE_ENGLISH_PATHS = [/^\/legal(\/|$)/, /^\/alternatives(\/|$)/];
 
 // Should this path advertise and index a German alternate?
 function deIndexable(path) {

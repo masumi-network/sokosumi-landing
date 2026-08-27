@@ -59,6 +59,24 @@ const GROUPS = [
   { id: "employees", title: () => t("AI employees"), sub: () => t("Named assistants you subscribe to. Closest to the Sokosumi idea; the difference is who builds them and what comes back."), keys: ["sintra", "viktor", "whaaat", "whaaat-ai", "coworker-ai", "the-need"] },
   { id: "marketing", title: () => t("Marketing and content tools"), sub: () => t("Writing, brand and campaign suites. Strong inside their editor; the research and reporting around them is still manual."), keys: ["jasper", "copy-ai", "writer", "typeface", "adobe", "adobe-genstudio", "canva", "canva-ai", "hubspot", "hubspot-breeze"] },
 ];
+// "<tool> alternatives" pages. A different question from the X-vs-Y pages
+// above: not "how do these two differ" but "what else is in this field".
+// English-only — German demand for these terms is 0-60/month (see
+// scripts/cms-alternatives.mjs for the validation).
+const ALTERNATIVES = [
+  { href: "/alternatives/copy-ai", name: "Copy.ai alternatives", note: "Copy.ai, Jasper, Writer, HubSpot Breeze and Sokosumi on price, metering and hosting." },
+  { href: "/alternatives/manus", name: "Manus alternatives", note: "Manus, Genspark, Relevance AI, Lindy and Sokosumi on credit burn and where data lives." },
+];
+function ALTERNATIVES_SECTION() {
+  if (i18n.locale() === "de") return "";
+  return `<section class="page-section" data-reveal aria-label="${attr(t("Alternatives"))}">
+    <h2 class="sec-h">${esc(t("Looking at a whole field, not one rival"))}</h2>
+    <div class="${shell.gridCls(ALTERNATIVES.length)}">${ALTERNATIVES.map(
+      (a) => `<a class="card" href="${attr(a.href)}"><strong>${esc(a.name)}</strong><span>${esc(a.note)}</span></a>`,
+    ).join("")}</div>
+  </section>`;
+}
+
 const groupOf = (key) => GROUPS.find((g) => g.keys.includes(key)) || GROUPS[2];
 
 function pairRow(p) {
@@ -123,7 +141,8 @@ async function index(ctx) {
       <p class="sub">${esc(t("The question we get first: how is this different from the tool we already have? {n} pages, one per tool, sorted by what you already use.", { n: list.length + pairs.all().length }))}</p>
     </div>
     ${jumpNav(counts)}
-    ${GROUPS.map((g) => groupSection(g, bySoko[g.id] || [], byPair[g.id] || [])).join("")}` +
+    ${GROUPS.map((g) => groupSection(g, bySoko[g.id] || [], byPair[g.id] || [])).join("")}
+    ${ALTERNATIVES_SECTION()}` +
     shell.logoRow() +
     shell.ctaBand({
       heading: t("Try Sokosumi free"),
