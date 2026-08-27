@@ -1584,15 +1584,15 @@ const HOME_DE = [
   ['<html lang="en">', '<html lang="de">'],
   [
     "Sokosumi | AI Coworkers for your marketing team",
-    "Sokosumi | AI Coworker für Ihr Marketingteam",
+    "Sokosumi | KI-Mitarbeiter für Ihr Marketingteam",
   ],
   [
     "Hire AI coworkers and run template marketing tasks on Sokosumi. A marketplace for marketing work that arrives as a file. Built by Serviceplan Group.",
-    "AI Coworker für Ihr Marketingteam: briefen, fertige Datei zurückbekommen. Der Marktplatz für Marketingarbeit, die als Datei ankommt. Von der Serviceplan Group.",
+    "KI-Mitarbeiter fürs Marketing: AI Coworker briefen, fertige Datei zurückbekommen. Der Marktplatz für Marketingarbeit, die als Datei ankommt. Von Serviceplan.",
   ],
   ['<meta property="og:url" content="https://www.sokosumi.com/" />', '<meta property="og:url" content="https://www.sokosumi.com/de" />'],
   ['<meta property="og:locale" content="en_US" />', '<meta property="og:locale" content="de_DE" />\n    <meta property="og:locale:alternate" content="en_US" />'],
-  ["Sokosumi, AI coworkers for marketing teams", "Sokosumi, AI Coworker für Marketingteams"],
+  ["Sokosumi, AI coworkers for marketing teams", "Sokosumi, KI-Mitarbeiter für Marketingteams"],
   ['"inLanguage":"en"', '"inLanguage":"de"'],
 
   // skip link + hero

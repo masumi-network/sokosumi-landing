@@ -11,6 +11,7 @@ const headings = {
     measure: "How to measure it",
     risks: "Where teams get this wrong",
     sources: "Sources",
+    related: "Read next",
   },
   de: {
     state: "Was gesichert ist",
@@ -18,6 +19,7 @@ const headings = {
     measure: "Wie sich das messen lässt",
     risks: "Wo Teams hier falsch abbiegen",
     sources: "Quellen",
+    related: "Weiterlesen",
   },
 };
 
@@ -43,6 +45,11 @@ export function topic(locale, content) {
     bullets(content.risks),
     `## ${h.sources}`,
     links(content.sources),
+    // Sibling topic guides. These four are the most-sourced pages on the site
+    // and each received exactly one internal link (from /guides) before this,
+    // so the pages that most deserve the equity were getting the least.
+    content.related && content.related.length ? `## ${h.related}` : "",
+    links(content.related),
   ]
     .filter((block) => block && block.trim())
     .join("\n\n");
