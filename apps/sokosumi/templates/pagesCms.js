@@ -234,7 +234,29 @@ async function cmsPage(ctx) {
       stylesheets: ink ? ["/assets/page-ink.css"] : undefined,
       jsonld: blocks.faqJsonLd(blocks.collectFaqs(doc.layout)),
     }) +
-    blocks.renderBlocks(doc.layout) +
+    // On an ink page the hero gets a product screenshot beside it, so the band
+    // is not a wide slab of empty dark on a large screen. The rest of the
+    // layout renders normally.
+    (ink
+      ? (() => {
+          const [first, ...rest] = doc.layout || [];
+          const shot = shell.SHOTS.brief;
+          const hero =
+            first && first.blockType === "hero"
+              ? `<section class="ink-hero has-media" data-reveal>
+                  <div>
+                    ${first.eyebrow ? `<span class="eyebrow">${shell.esc(first.eyebrow)}</span>` : ""}
+                    <h1>${shell.esc(first.heading)}</h1>
+                    ${first.subheading ? `<p class="sub">${shell.esc(first.subheading)}</p>` : ""}
+                  </div>
+                  <div class="ink-hero-media">
+                    <img${shell.thumbSrc(shot.src, 1200)} alt="${shell.attr(t(shot.alt))}" width="2400" height="1350" loading="eager" fetchpriority="high" decoding="async" />
+                  </div>
+                </section>`
+              : "";
+          return hero + blocks.renderBlocks(hero ? rest : doc.layout);
+        })()
+      : blocks.renderBlocks(doc.layout)) +
     // standalone pages close with the same offer every other page does
     (ink
       ? shell.ctaBand({

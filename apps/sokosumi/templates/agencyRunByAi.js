@@ -16,7 +16,7 @@ const shell = require("./shell");
 const blocks = require("./blocks");
 const { t } = require("../lib/i18n");
 
-const { esc, pageStart, pageEnd, SITE } = shell;
+const { esc, attr, pageStart, pageEnd, SITE } = shell;
 
 // 100 credits = US$1.00, the marketplace's stated credit price — the same
 // constant templates/coworkers.js derives listing prices from.
@@ -106,7 +106,7 @@ function render(ctx) {
         sub: t("Brief a named specialist. A finished file comes back."),
       },
     }) +
-    `<section class="ink-hero" data-reveal>
+    `<section class="ink-hero has-media" data-reveal>
       <div>
         <span class="eyebrow">${esc(t("How Sokosumi works"))}</span>
         <h1>${esc(t("An agency that runs on AI coworkers"))}</h1>
@@ -116,33 +116,29 @@ function render(ctx) {
           ),
         )}</p>
       </div>
+      <div class="ink-hero-media">
+        <img${shell.thumbSrc(shell.SHOTS.roster.src, 1200)} alt="${attr(t(shell.SHOTS.roster.alt))}" width="2400" height="1350" loading="eager" fetchpriority="high" decoding="async" />
+      </div>
     </section>` +
-    blocks.renderBlocks([
-      {
-        blockType: "steps",
-        heading: t("How the work actually runs"),
-        items: [
-          {
-            title: t("You write the brief"),
-            text: t(
-              "The same brief you would send an account lead: what you want, who it is for, what it has to cover. Start from a template task if you would rather not write it cold.",
-            ),
-          },
-          {
-            title: t("A named coworker picks it up"),
-            text: t(
-              "Not a chatbot session. A specialist with a role, a vendor behind it, and a price you see before it starts. The roster is public and every coworker states what it does.",
-            ),
-          },
-          {
-            title: t("A file comes back"),
-            text: t(
-              "A deck, a report, a sheet, a set of images. It lands on a shared task board showing what stage each job is at, the way you would track work in progress with an agency.",
-            ),
-          },
-        ],
-      },
-    ]) +
+    // Each step next to the screen it happens on: brief, roster, board. The
+    // .blk-media-text pattern (and its media-left alternation) is the one
+    // templates/compare.js already uses for exactly this.
+    `<section class="page-section" data-reveal aria-label="${attr(t("How the work actually runs"))}">
+      <h2>${esc(t("How the work actually runs"))}</h2>
+      ${[
+        ["brief", t("You write the brief"), t("The same brief you would send an account lead: what you want, who it is for, what it has to cover. Start from a template task if you would rather not write it cold.")],
+        ["roster", t("A named coworker picks it up"), t("Not a chatbot session. A specialist with a role, a vendor behind it, and a price you see before it starts. The roster is public and every coworker states what it does.")],
+        ["board", t("A file comes back"), t("A deck, a report, a sheet, a set of images. It lands on a shared task board showing what stage each job is at, the way you would track work in progress with an agency.")],
+      ]
+        .map(([key, title, text], i) => {
+          const shot = shell.SHOTS[key];
+          return `<div class="blk-media-text${i % 2 ? " media-left" : ""}" data-reveal>
+            <div class="mt-copy"><h3>${esc(title)}</h3><p>${esc(text)}</p></div>
+            <div class="mt-media"><img${shell.thumbSrc(shot.src, 1200)} alt="${attr(t(shot.alt))}" width="2400" height="1350" loading="lazy" decoding="async" /></div>
+          </div>`;
+        })
+        .join("")}
+    </section>` +
     costSection +
     blocks.renderBlocks([
       {
