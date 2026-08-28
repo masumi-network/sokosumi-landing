@@ -2,6 +2,12 @@ import type { NextConfig } from "next";
 import path from "path";
 
 const nextConfig: NextConfig = {
+  env: {
+    NEXT_PUBLIC_MASUMI_REGISTRY_NETWORK:
+      process.env.MASUMI_REGISTRY_NETWORK ??
+      process.env.NEXT_PUBLIC_MASUMI_REGISTRY_NETWORK ??
+      "Mainnet",
+  },
   transpilePackages: ["@summation/shared", "@meshsdk/core", "@meshsdk/common", "@meshsdk/transaction", "@meshsdk/wallet", "@meshsdk/provider", "@meshsdk/core-csl", "@meshsdk/core-cst"],
   turbopack: {
     root: path.resolve(__dirname, "../.."),
