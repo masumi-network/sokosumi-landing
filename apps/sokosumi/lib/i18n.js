@@ -572,6 +572,60 @@ const DE = {
     "Keine Behauptung, \u201eEU-AI-Act-zertifiziert\u201c zu sein. Ein solches Zertifikat gibt es nicht; die Risikoeinstufung in jedem Listing ist der echte Mechanismus.",
   "No claim that European hosting alone makes a model safe. It answers where, not how well.":
     "Keine Behauptung, dass europ\u00e4isches Hosting allein ein Modell sicher macht. Es beantwortet das Wo, nicht das Wie gut.",
+  // /european-ai redesign (2026-08-28): badge row, model row, AI Act tiers,
+  // repo cards, legal-document cards.
+  "Most AI tooling a European marketing team can buy is American, closed, and vague about where your brief ends up. Sokosumi is built the other way round \u2014 and this page shows the evidence rather than a badge.":
+    "Die meisten KI-Werkzeuge, die ein europ\u00e4isches Marketingteam kaufen kann, sind amerikanisch, geschlossen und ungenau dabei, wo Ihr Briefing landet. Sokosumi ist andersherum gebaut \u2014 und diese Seite zeigt die Belege statt eines Siegels.",
+  "At a glance": "Auf einen Blick",
+  "Run from Munich, Germany": "Betrieben aus M\u00fcnchen, Deutschland",
+  "One of Europe's largest independent agency groups": "Eine der gr\u00f6\u00dften unabh\u00e4ngigen Agenturgruppen Europas",
+  "Marketplace, runtime and payments, public on GitHub": "Marktplatz, Runtime und Payments, \u00f6ffentlich auf GitHub",
+  "GDPR and a DPA": "DSGVO und AVV",
+  "Processed under the GDPR; addendum available": "Verarbeitung nach DSGVO; Auftragsverarbeitungsvertrag verf\u00fcgbar",
+  "Where your work runs": "Wo Ihre Arbeit l\u00e4uft",
+  "Operated in the EU and run from Munich by Plan.Net Germany GmbH & Co KG, Friedenstr. 24, 81671 Munich \u2014 part of Serviceplan Group.":
+    "In der EU betrieben und von M\u00fcnchen aus gef\u00fchrt \u2014 von der Plan.Net Germany GmbH & Co KG, Friedenstr. 24, 81671 M\u00fcnchen, Teil der Serviceplan Group.",
+  "Each coworker is built and run by an independent vendor. Where the vendor has filled it in, the listing names the models it uses and the hosting region \u2014 the ones that state a region today say EU \u00b7 Azure \u00b7 Frankfurt.":
+    "Jeder Coworker wird von einem unabh\u00e4ngigen Anbieter gebaut und betrieben. Wo der Anbieter es hinterlegt hat, nennt das Listing die verwendeten Modelle und die Hosting-Region \u2014 die Listings, die heute eine Region nennen, sagen EU \u00b7 Azure \u00b7 Frankfurt.",
+  "Nothing is attached to a task unless you attach it, and the run history shows what was sent and what came back.":
+    "Nichts h\u00e4ngt an einer Aufgabe, wenn Sie es nicht anh\u00e4ngen, und der Verlauf zeigt, was gesendet wurde und was zur\u00fcckkam.",
+  "Models": "Modelle",
+  "You pick the specialist, so you pick the model": "Sie w\u00e4hlen die Fachkraft \u2014 also w\u00e4hlen Sie das Modell",
+  "Coworkers on the marketplace name these models today. Hiring a different specialist for the same job is how you change the model behind it.":
+    "Coworker im Marktplatz nennen heute diese Modelle. Eine andere Fachkraft f\u00fcr dieselbe Aufgabe zu buchen, ist der Weg, das Modell dahinter zu wechseln.",
+  "Named on coworker listings where the vendor has provided them. Read the listing before you send anything sensitive \u2014 that is what it is there for.":
+    "In den Coworker-Listings genannt, sofern der Anbieter sie hinterlegt hat. Lesen Sie das Listing, bevor Sie etwas Sensibles senden \u2014 daf\u00fcr steht es da.",
+  "Every vendor classifies its risk tier before going live": "Jeder Anbieter stuft sein Risiko ein, bevor er live geht",
+  "There is no such thing as an \u201cEU AI Act certificate\u201d. What exists is the classification the Act requires \u2014 and on Sokosumi it is part of listing an agent, not an afterthought.":
+    "Ein \u201eEU-AI-Act-Zertifikat\u201c gibt es nicht. Was es gibt, ist die von der Verordnung geforderte Einstufung \u2014 und bei Sokosumi geh\u00f6rt sie zum Listing eines Agenten, nicht zum Nachgedanken.",
+  "Minimal risk": "Minimales Risiko",
+  "Transparency risk": "Transparenzrisiko",
+  "High risk": "Hohes Risiko",
+  "Spam filters, simple recommender systems.": "Spamfilter, einfache Empfehlungssysteme.",
+  "Chatbots, biometric categorisation, synthetic media.": "Chatbots, biometrische Kategorisierung, synthetische Medien.",
+  "Recruitment, credit scoring, education, law enforcement.": "Recruiting, Kreditbewertung, Bildung, Strafverfolgung.",
+  "No specific obligations under the Act.": "Keine besonderen Pflichten nach der Verordnung.",
+  "Users must be told they are dealing with AI.": "Nutzerinnen und Nutzer m\u00fcssen erfahren, dass sie es mit KI zu tun haben.",
+  "Conformity assessment and documentation required.": "Konformit\u00e4tsbewertung und Dokumentation erforderlich.",
+  "Which obligations apply depends on how you use a system, so your own use still needs your own assessment.":
+    "Welche Pflichten gelten, h\u00e4ngt vom Einsatz ab \u2014 Ihre eigene Nutzung braucht also Ihre eigene Bewertung.",
+  "Not a claim you have to take on trust \u2014 the repositories are public and the licences are these.":
+    "Keine Behauptung, der Sie glauben m\u00fcssen \u2014 die Repositories sind \u00f6ffentlich, und dies sind die Lizenzen.",
+  "The payment layer behind every agent run.": "Die Zahlungsschicht hinter jedem Agenten-Durchlauf.",
+  "Data processing addendum": "Auftragsverarbeitungsvertrag",
+  "View document": "Dokument ansehen",
+  "Does Sokosumi hold ISO 27001 or SOC 2?": "Hat Sokosumi ISO 27001 oder SOC 2?",
+  "No. Neither certification is held today, and we would rather say so here than let a procurement process discover it later. If your review needs one, tell us what it needs and we will tell you where we stand.":
+    "Nein. Keine der beiden Zertifizierungen liegt heute vor, und wir sagen das lieber hier, als es eine Beschaffung sp\u00e4ter entdecken zu lassen. Wenn Ihre Pr\u00fcfung eine braucht, sagen Sie uns welche \u2014 wir sagen Ihnen, wo wir stehen.",
+  "Which models do the coworkers use?": "Welche Modelle nutzen die Coworker?",
+  "Claude, Mistral, OpenAI and Grok appear across the coworker listings that name a model. Not every vendor has filled that field in yet, so treat the listing as the source of truth for the coworker you are about to brief rather than assuming a house model.":
+    "Claude, Mistral, OpenAI und Grok tauchen in den Coworker-Listings auf, die ein Modell nennen. Noch nicht jeder Anbieter hat dieses Feld ausgef\u00fcllt \u2014 nehmen Sie also das Listing des Coworkers, den Sie briefen wollen, als ma\u00dfgeblich, statt ein Hausmodell anzunehmen.",
+  "The marketplace is operated in the EU. The coworkers are not all ours \u2014 independent vendors build and run them \u2014 so each listing states its own hosting region rather than us making a promise on someone else's behalf. The listings that state a region today say EU \u00b7 Azure \u00b7 Frankfurt, and the listing is where you check it.":
+    "Der Marktplatz wird in der EU betrieben. Die Coworker sind nicht alle unsere \u2014 unabh\u00e4ngige Anbieter bauen und betreiben sie \u2014 deshalb nennt jedes Listing seine eigene Hosting-Region, statt dass wir ein Versprechen f\u00fcr andere abgeben. Die Listings, die heute eine Region nennen, sagen EU \u00b7 Azure \u00b7 Frankfurt, und im Listing pr\u00fcfen Sie es.",
+  "The free plan carries 250 credits per seat. Every listing shows what the vendor has stated before you brief it.":
+    "Der kostenlose Tarif enth\u00e4lt 250 Credits pro Seat. Jedes Listing zeigt, was der Anbieter angegeben hat, bevor Sie briefen.",
+  "A European AI marketplace: operated in the EU from Munich, models and hosting named on the listing, every vendor classifies its EU AI Act risk tier, and the code is public under MIT and Apache-2.0.":
+    "Ein europ\u00e4ischer KI-Marktplatz: in der EU betrieben, von M\u00fcnchen aus, Modelle und Hosting im Listing genannt, jeder Anbieter stuft sein EU-AI-Act-Risiko ein, und der Code ist unter MIT und Apache-2.0 \u00f6ffentlich.",
   // /about entity page, coworker facts (2026-08-25)
   "About":
     "Über uns",
@@ -719,8 +773,6 @@ const DE = {
     "Rolle",
   "Vendor":
     "Anbieter",
-  "Models":
-    "Modelle",
   "Tasks run":
     "Ausgeführte Aufgaben",
   "Rating":

@@ -1,0 +1,196 @@
+/* /european-ai — trust page.
+   Every colour and size here references the tokens in styles.css; nothing is
+   hard-coded. The page is a sequence of evidence blocks, so the visual job is
+   to make each block scannable at a glance and to keep the badge row from
+   reading as a certification wall it is not. */
+
+/* ── badge row ──────────────────────────────────────────────────────────── */
+.eu-badges {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: 1fr;
+}
+.eu-badge {
+  /* Stacked, not side-by-side: the logos here have wildly different aspect
+     ratios (the Serviceplan wordmark is 9.7:1, the EU emblem is 3:2), and a
+     horizontal badge let the wide one eat the card and crush its own text to
+     2px. Stacking gives every mark the full card width and a fixed-height
+     rail to sit in, so the row stays even whatever goes in it. */
+  gap: 14px;
+  padding: 20px;
+  align-items: flex-start;
+}
+.eu-badge-img {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 30px;
+  max-width: 100%;
+  overflow: hidden;
+}
+.eu-badge-img img {
+  max-height: 26px;
+  max-width: 100%;
+  width: auto;
+  object-fit: contain;
+  border-radius: 2px;
+}
+/* the EU emblem keeps its own colour; the Serviceplan wordmark is near-black
+   ink, so it is lifted the same way .blk-logos does it */
+.eu-badge-img img.logo-ink { filter: grayscale(1) invert(0.35); max-height: 17px; }
+.eu-badge-glyph { color: var(--primary); display: inline-flex; }
+.eu-badge-txt { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.eu-badge-txt strong { font-size: 14.5px; font-weight: 500; letter-spacing: -0.01em; }
+.eu-badge-txt span { font-size: 12.5px; line-height: 1.45; color: var(--muted-foreground); }
+
+.eu-lic-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 7px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.01em;
+  color: var(--muted-foreground);
+  white-space: nowrap;
+}
+
+/* ── where it runs ──────────────────────────────────────────────────────── */
+.eu-run-grid { display: grid; gap: 0; grid-template-columns: 1fr; }
+.eu-run-item {
+  display: grid;
+  gap: 6px;
+  padding: 18px 0;
+  border-top: 1px solid var(--border);
+}
+.eu-run-item:first-child { border-top: none; padding-top: 0; }
+.eu-run-k {
+  font-size: 12.5px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+.eu-run-item p { font-size: 15px; line-height: 1.6; margin: 0; max-width: 68ch; }
+
+/* ── model row ──────────────────────────────────────────────────────────── */
+.eu-model-row {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.eu-model {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 22px 14px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  min-height: 88px;
+}
+.eu-model img { height: 22px; width: auto; object-fit: contain; opacity: 0.75; }
+.eu-model-name {
+  font-size: 17px;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+.eu-model-by { font-size: 11.5px; color: var(--muted-foreground); }
+
+.eu-note {
+  margin-top: 18px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--muted-foreground);
+  max-width: 68ch;
+}
+.eu-note a { color: var(--primary); text-decoration: underline; text-underline-offset: 2px; }
+.eu-note a .icon { vertical-align: -1px; }
+
+/* ── EU AI Act tiers ────────────────────────────────────────────────────── */
+.eu-tier-grid { display: grid; gap: 14px; grid-template-columns: 1fr; }
+.eu-tier {
+  display: grid;
+  gap: 6px;
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  background: var(--card);
+}
+.eu-tier-n {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--primary);
+  letter-spacing: 0.04em;
+}
+.eu-tier strong { font-size: 16px; font-weight: 500; letter-spacing: -0.01em; }
+.eu-tier-eg { font-size: 13.5px; line-height: 1.5; color: var(--muted-foreground); }
+.eu-tier-note {
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--foreground);
+  padding-top: 8px;
+  border-top: 1px solid var(--border);
+}
+
+/* ── repos ──────────────────────────────────────────────────────────────── */
+.eu-repo-grid { display: grid; gap: 14px; grid-template-columns: 1fr; }
+.eu-repo { gap: 8px; }
+.eu-repo-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.eu-repo-stars {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--muted-foreground);
+}
+.eu-repo strong {
+  font-family: var(--mono);
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+.eu-repo > span:not(.eu-repo-top):not(.eu-repo-stars) {
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--muted-foreground);
+}
+.eu-repo em,
+.eu-legal-card em {
+  margin-top: auto;
+  padding-top: 4px;
+  font-style: normal;
+  font-size: 12.5px;
+  color: var(--primary);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* ── legal documents ────────────────────────────────────────────────────── */
+.eu-legal-grid { display: grid; gap: 12px; grid-template-columns: 1fr; }
+.eu-legal-card { gap: 10px; padding: 18px 20px; }
+.eu-legal-card strong { font-size: 14.5px; font-weight: 500; letter-spacing: -0.01em; }
+
+/* ── responsive ─────────────────────────────────────────────────────────── */
+@media (min-width: 620px) {
+  .eu-badges { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .eu-model-row { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .eu-tier-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .eu-repo-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .eu-legal-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (min-width: 900px) {
+  .eu-badges { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .eu-run-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; }
+  .eu-run-item { border-top: none; border-left: 1px solid var(--border); padding: 0 0 0 20px; }
+  .eu-run-item:first-child { padding-left: 20px; }
+  .eu-legal-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
