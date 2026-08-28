@@ -116,7 +116,8 @@ function render() {
       ),
       path: here,
       breadcrumb: [{ label: t("Home"), href: "/" }, { label: t("European AI") }],
-      stylesheets: ["/assets/european-ai.css"],
+      mainClass: "ink-page",
+      stylesheets: ["/assets/page-ink.css", "/assets/european-ai.css"],
       jsonld: [
         { "@type": "WebPage", "@id": `${SITE}${here}#page`, name: t("European AI for marketing teams"), url: `${SITE}${here}` },
       ],
@@ -136,7 +137,7 @@ function render() {
           <h1>${esc(t("European AI for marketing teams"))}</h1>
           <p>${esc(
             t(
-              "Most AI tooling a European marketing team can buy is American, closed, and vague about where your brief ends up. Sokosumi is built the other way round — and this page shows the evidence rather than a badge.",
+              "Most AI tooling a European marketing team can buy is American, closed, and vague about where your brief ends up. Sokosumi is built the other way round. This page shows the evidence instead of a badge.",
             ),
           )}</p>
         </div>
@@ -152,11 +153,11 @@ function render() {
       <div class="eu-run-grid">
         <div class="eu-run-item">
           <span class="eu-run-k">${esc(t("The marketplace"))}</span>
-          <p>${esc(t("Operated in the EU and run from Munich by Plan.Net Germany GmbH & Co KG, Friedenstr. 24, 81671 Munich — part of Serviceplan Group."))}</p>
+          <p>${esc(t("Operated in the EU and run from Munich by Plan.Net Germany GmbH & Co KG, Friedenstr. 24, 81671 Munich, part of Serviceplan Group."))}</p>
         </div>
         <div class="eu-run-item">
           <span class="eu-run-k">${esc(t("The coworkers"))}</span>
-          <p>${esc(t("Each coworker is built and run by an independent vendor. Where the vendor has filled it in, the listing names the models it uses and the hosting region — the ones that state a region today say EU · Azure · Frankfurt."))}</p>
+          <p>${esc(t("Each coworker is built and run by an independent vendor. Where the vendor has filled it in, the listing names the models it uses and the hosting region. The ones that state a region today say EU · Azure · Frankfurt."))}</p>
         </div>
         <div class="eu-run-item">
           <span class="eu-run-k">${esc(t("Your brief"))}</span>
@@ -201,13 +202,13 @@ function render() {
           }<span class="eu-model-name">${esc(m.name)}</span><span class="eu-model-by">${esc(m.by)}</span></li>`,
         ).join("")}
       </ul>
-      <p class="eu-note">${esc(t("Named on coworker listings where the vendor has provided them. Read the listing before you send anything sensitive — that is what it is there for."))}</p>
+      <p class="eu-note">${esc(t("Named on coworker listings where the vendor has provided them. Check the listing before you send anything sensitive."))}</p>
     </section>
 
     <!-- ── AI Act: numbered progression, the page's centrepiece ────────── -->
     <section class="page-section eu-tiers" data-reveal aria-label="${attr(t("EU AI Act"))}">
       <h2>${esc(t("Every vendor classifies its risk tier before going live"))}</h2>
-      <p class="sub">${esc(t("There is no such thing as an “EU AI Act certificate”. What exists is the classification the Act requires — and on Sokosumi it is part of listing an agent, not an afterthought."))}</p>
+      <p class="sub">${esc(t("There is no such thing as an “EU AI Act certificate”. What exists is the classification the Act requires, and on Sokosumi it is part of listing an agent."))}</p>
       <ol class="eu-tier-track">
         ${TIERS.map(
           (x) => `<li class="eu-tier">
@@ -228,7 +229,7 @@ function render() {
       <div class="container-app">
         <span class="eyebrow">${esc(t("Open source"))}</span>
         <h2>${esc(t("Open source, with the licences named"))}</h2>
-        <p class="eu-oss-sub">${esc(t("Not a claim you have to take on trust — the repositories are public and the licences are these."))}</p>
+        <p class="eu-oss-sub">${esc(t("The repositories are public and these are the licences."))}</p>
         <ul class="eu-repo-list">
           ${REPOS.map(
             (r) => `<li><a href="${attr(`https://github.com/masumi-network/${r.repo}`)}" target="_blank" rel="noreferrer">
@@ -267,7 +268,7 @@ function render() {
           {
             question: t("Is Sokosumi GDPR compliant?"),
             answer: t(
-              "Sokosumi processes personal data in accordance with the GDPR and applicable national data protection laws; the detail is in the privacy policy and the DPA. Worth knowing: GDPR is a regulation, not a certification scheme. There is no badge to hold, so any vendor showing you a “GDPR certified” logo made it themselves.",
+              "Sokosumi processes personal data in accordance with the GDPR and applicable national data protection laws; the detail is in the privacy policy and the DPA. GDPR is a regulation, not a certification scheme, so there is no badge to hold. A vendor showing you a “GDPR certified” logo made it themselves.",
             ),
           },
           {
@@ -285,7 +286,7 @@ function render() {
           {
             question: t("Is everything hosted in Europe?"),
             answer: t(
-              "The marketplace is operated in the EU. The coworkers are not all ours — independent vendors build and run them — so each listing states its own hosting region rather than us making a promise on someone else's behalf. The listings that state a region today say EU · Azure · Frankfurt, and the listing is where you check it.",
+              "The marketplace is operated in the EU. The coworkers are not all ours: independent vendors build and run them, so each listing states its own hosting region instead of us promising on their behalf. The listings that state a region today say EU · Azure · Frankfurt.",
             ),
           },
           {
@@ -303,15 +304,15 @@ function render() {
           {
             question: t("Why does European AI matter for a marketing team?"),
             answer: t(
-              "Mostly it is procurement. Where data is processed, which model saw the brief, and who is accountable are the questions a legal or security review asks before a tool is approved. Being able to answer them from a listing rather than a sales call is the practical benefit.",
+              "Mostly it is procurement. Where data is processed, which model saw the brief, and who is accountable are the questions a legal or security review asks before a tool is approved. You can answer all three from a listing instead of a sales call.",
             ),
           },
         ],
       },
     ]) +
     shell.ctaBand({
-      heading: t("Run one task and read the listing."),
-      subheading: t("The free plan carries 250 credits per seat. Every listing shows what the vendor has stated before you brief it."),
+      heading: t("Check it on one task"),
+      subheading: t("250 free credits per seat. No card, no sales call."),
       ctaLabel: t("Sign Up"),
     }) +
     pageEnd({})

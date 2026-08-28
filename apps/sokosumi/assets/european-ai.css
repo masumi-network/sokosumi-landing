@@ -1,31 +1,3 @@
-/* ── breadcrumbs sit on the band ────────────────────────────────────────── */
-/* The crumbs render outside <main>, so a page class cannot reach them; :has()
-   can. Earlier this page pulled the band up over them instead, which left
-   ink-on-ink text — this extends the band's own top colour behind them and
-   lifts the type, so the dark surface starts at the header and runs unbroken
-   into the gradient. #0a0a0a is --stage-deep's 0% stop, so there is no seam. */
-body:has(.eu-hero) .crumbs {
-  position: relative;
-  padding-top: 22px;
-  padding-bottom: 14px;
-  color: rgba(255, 255, 255, 0.5);
-}
-body:has(.eu-hero) .crumbs::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  --vw: calc(100vw - var(--sbw, 0px));
-  left: calc(50% - var(--vw) / 2);
-  width: var(--vw);
-  background: #0a0a0a;
-}
-body:has(.eu-hero) .crumbs a,
-body:has(.eu-hero) .crumbs .sep,
-body:has(.eu-hero) .crumbs .current { position: relative; }
-body:has(.eu-hero) .crumbs .current { color: rgba(255, 255, 255, 0.82); }
-body:has(.eu-hero) .crumbs a:hover { color: #fff; }
-
 /* /european-ai — trust page.
    Every colour references a token in styles.css. The page alternates the site's
    own ink bands against paper, and each section has a different structure, so

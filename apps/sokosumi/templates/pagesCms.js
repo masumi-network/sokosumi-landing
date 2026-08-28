@@ -210,8 +210,16 @@ async function cmsPage(ctx) {
   if (SURFACES[doc.slug]) return surfacePage(doc, doc.slug, ctx);
   if (spSection.isSection(doc.slug)) return spSection.render(doc, ctx);
 
+  // Pages that stand on their own rather than under a parent: they open on the
+  // ink band (assets/page-ink.css) and their breadcrumb is Home > page, with no
+  // section in between. /ai-marketing-agency is one — filed under the
+  // Serviceplan dossier it read, in the SERP and in the crumb, as a page about
+  // Serviceplan rather than about the category someone searched for.
+  const INK_PAGES = new Set(["ai-marketing-agency"]);
+  const ink = INK_PAGES.has(doc.slug);
+
   const cr = [{ label: "Home", href: "/" }];
-  if (doc.parent && typeof doc.parent === "object" && doc.parent.title && doc.parent.slug) {
+  if (!ink && doc.parent && typeof doc.parent === "object" && doc.parent.title && doc.parent.slug) {
     cr.push({ label: doc.parent.title, href: pagePath(doc.parent.slug) });
   }
   cr.push({ label: doc.title });
@@ -222,9 +230,20 @@ async function cmsPage(ctx) {
       description: (doc.description || "").slice(0, 155),
       path: "/" + doc.slug,
       breadcrumb: cr,
+      mainClass: ink ? "ink-page" : undefined,
+      stylesheets: ink ? ["/assets/page-ink.css"] : undefined,
       jsonld: blocks.faqJsonLd(blocks.collectFaqs(doc.layout)),
     }) +
     blocks.renderBlocks(doc.layout) +
+    // standalone pages close with the same offer every other page does
+    (ink
+      ? shell.ctaBand({
+          heading: t("Try it on one task"),
+          subheading: t("250 free credits per seat. No card, no sales call."),
+          ctaLabel: t("Start free"),
+          seed: doc.slug.length,
+        })
+      : "") +
     pageEnd()
   );
 }

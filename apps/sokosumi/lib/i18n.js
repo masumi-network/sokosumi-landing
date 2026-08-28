@@ -374,8 +374,6 @@ const DE = {
   // "marketing ohne agentur" is 0, so this is brand copy, translated as such.
   "An agency that runs on AI coworkers | Sokosumi":
     "Eine Agentur, die mit AI Coworkern arbeitet | Sokosumi",
-  "Sokosumi does the work a marketing agency does \u2014 research, strategy drafts, content, reporting \u2014 with named AI coworkers and per-task pricing. What comes back, what it costs, and what it does not replace.":
-    "Sokosumi liefert, was eine Marketingagentur liefert \u2014 Research, Strategieentw\u00fcrfe, Content, Reporting \u2014 mit benannten AI Coworkern und Abrechnung pro Aufgabe. Was zur\u00fcckkommt, was es kostet und was es nicht ersetzt.",
   "An agency run by AI":
     "Eine Agentur, die KI steuert",
   "How Sokosumi works":
@@ -384,8 +382,6 @@ const DE = {
     "Eine Agentur, die mit AI Coworkern arbeitet",
   "Brief a named specialist. A finished file comes back.":
     "Briefen Sie eine benannte Fachkraft. Zur\u00fcck kommt eine fertige Datei.",
-  "An agency turns a brief into a finished file. So does Sokosumi \u2014 the difference is who does the work, how fast it comes back, and what it costs when you only need one thing done.":
-    "Eine Agentur macht aus einem Briefing eine fertige Datei. Sokosumi auch \u2014 der Unterschied liegt darin, wer die Arbeit macht, wie schnell sie zur\u00fcckkommt und was sie kostet, wenn Sie nur eine Sache brauchen.",
   "How the work actually runs":
     "Wie die Arbeit tats\u00e4chlich l\u00e4uft",
   "You write the brief":
@@ -394,12 +390,8 @@ const DE = {
     "Dasselbe Briefing, das Sie einer Etatleitung schicken w\u00fcrden: was Sie wollen, f\u00fcr wen es ist, was es abdecken muss. Wenn Sie nicht bei null anfangen wollen, starten Sie mit einer Vorlage.",
   "A named coworker picks it up":
     "Ein benannter Coworker \u00fcbernimmt",
-  "Not a chatbot session. A specialist with a role, a vendor behind it and a price you see before it starts \u2014 the roster is public and every coworker states what it does.":
-    "Keine Chatbot-Sitzung. Eine Fachkraft mit Rolle, mit einem Anbieter dahinter und einem Preis, den Sie vorher sehen \u2014 die Liste ist \u00f6ffentlich, und jeder Coworker benennt, was er tut.",
   "A file comes back":
     "Eine Datei kommt zur\u00fcck",
-  "A deck, a report, a sheet, a set of images. It lands on a shared task board where you can see what stage each job is at, the same way you would track work in progress with an agency.":
-    "Eine Pr\u00e4sentation, ein Report, eine Tabelle, ein Satz Bilder. Alles landet auf einem gemeinsamen Task Board, auf dem Sie den Stand jeder Aufgabe sehen \u2014 so wie Sie laufende Arbeit mit einer Agentur verfolgen w\u00fcrden.",
   "What the work costs":
     "Was die Arbeit kostet",
   "A task, not a retainer":
@@ -408,8 +400,6 @@ const DE = {
     "Die {n} Coworker im Marktplatz kosten zwischen {low} und {high} pro Aufgabe. Der Mittelwert des Katalogs liegt bei {median}. Sie zahlen pro Durchlauf, nicht pro Monat Verf\u00fcgbarkeit.",
   "What a seat buys":
     "Was ein Seat bringt",
-  "A Standard seat is \u20ac75 a month and carries 5,000 credits \u2014 around {n} tasks at the catalogue's median price. The free tier gives every seat 250 credits, which is enough to run a real task before you decide anything.":
-    "Ein Standard-Seat kostet 75 \u20ac im Monat und enth\u00e4lt 5.000 Credits \u2014 rund {n} Aufgaben zum mittleren Katalogpreis. Der kostenlose Tarif gibt jedem Seat 250 Credits, genug f\u00fcr eine echte Aufgabe, bevor Sie irgendetwas entscheiden.",
   "No scoping call":
     "Kein Scoping-Termin",
   "There is no minimum engagement, no onboarding fee and no statement of work. You write a brief and run it. If the output is wrong, you have spent the price of the task.":
@@ -418,20 +408,14 @@ const DE = {
     "Wo das eine Agentur nicht ersetzt",
   "Nobody owns the relationship":
     "Niemand f\u00fchrt die Beziehung",
-  "There is no account lead who knows your business, argues with you about the brief, or carries the work between meetings. That absence is the point on a Tuesday and a real gap on a hard project.":
-    "Es gibt keine Etatleitung, die Ihr Gesch\u00e4ft kennt, mit Ihnen \u00fcber das Briefing streitet oder die Arbeit zwischen den Terminen tr\u00e4gt. An einem normalen Dienstag ist genau das der Vorteil, in einem schwierigen Projekt eine echte L\u00fccke.",
   "Every output needs a human read":
     "Jedes Ergebnis braucht einen menschlichen Blick",
-  "Coworkers cite their sources so you can check them, and you should. Nothing here is approved work until someone on your side approves it \u2014 especially anything that goes to a client or goes live.":
-    "Coworker nennen ihre Quellen, damit Sie sie pr\u00fcfen k\u00f6nnen \u2014 und das sollten Sie. Nichts davon ist freigegeben, bis jemand auf Ihrer Seite es freigibt, erst recht nicht, was zum Kunden geht oder live geht.",
   "Judgment stays with you":
     "Die Beurteilung bleibt bei Ihnen",
   "Brand decisions, risk calls, negotiation and the argument for why a campaign should exist at all are not tasks. Sokosumi produces the material those decisions are made on, not the decisions.":
     "Markenentscheidungen, Risikoabw\u00e4gungen, Verhandlungen und die Begr\u00fcndung, warum eine Kampagne \u00fcberhaupt existieren soll, sind keine Aufgaben. Sokosumi liefert das Material, auf dem diese Entscheidungen beruhen \u2014 nicht die Entscheidungen.",
   "Some work is not on the marketplace":
     "Manche Arbeit gibt es hier nicht",
-  "Media buying, film production and anything needing a crew, a contract or a person in a room are outside what a coworker delivers. Teams that use Sokosumi well tend to keep an agency for those and stop paying one for the rest.":
-    "Medieneinkauf, Filmproduktion und alles, wof\u00fcr eine Crew, ein Vertrag oder ein Mensch im Raum n\u00f6tig ist, liegt au\u00dferhalb dessen, was ein Coworker liefert. Teams, die Sokosumi gut nutzen, behalten daf\u00fcr eine Agentur \u2014 und zahlen f\u00fcr den Rest keine mehr.",
   "Is this actually an agency?":
     "Ist das wirklich eine Agentur?",
   "No. Sokosumi is a marketplace: you hire named AI coworkers by the task and the file comes back to you. We describe it against an agency because that is the budget it usually comes out of, and because the output is the same kind of thing \u2014 a deck, a plan, a report.":
@@ -448,8 +432,8 @@ const DE = {
     "Wo l\u00e4uft die Arbeit?",
   "Sokosumi is operated in the EU. Each coworker states its own model and data handling on its listing, which matters when the brief contains anything you would not paste into a public chatbot.":
     "Sokosumi wird in der EU betrieben. Jeder Coworker nennt in seinem Listing sein Modell und seinen Umgang mit Daten \u2014 wichtig, sobald im Briefing etwas steht, das Sie nicht in einen \u00f6ffentlichen Chatbot kopieren w\u00fcrden.",
-  "Give one task to a coworker.":
-    "Geben Sie einem Coworker eine Aufgabe.",
+  "Give a coworker one task":
+    "Geben Sie einem Coworker eine Aufgabe",
   "The free tier carries 250 credits per seat \u2014 enough to run a real brief before you decide anything.":
     "Der kostenlose Tarif enth\u00e4lt 250 Credits pro Seat \u2014 genug f\u00fcr ein echtes Briefing, bevor Sie irgendetwas entscheiden.",
   "AI marketing agency guide":
@@ -550,8 +534,8 @@ const DE = {
     "Den vollst\u00e4ndigen Text der Verordnung ver\u00f6ffentlicht die EU.",
   "Read the EU AI Act":
     "EU AI Act lesen",
-  "Run one task and read the listing.":
-    "Starten Sie eine Aufgabe und lesen Sie das Listing.",
+  "Check it on one task":
+    "Prüfen Sie es an einer Aufgabe",
   "The free plan carries 250 credits per seat. Every coworker states its model and hosting region before you brief it.":
     "Der kostenlose Tarif enth\u00e4lt 250 Credits pro Seat. Jeder Coworker nennt Modell und Hosting-Region, bevor Sie ihn briefen.",
   "Sokosumi processes personal data in accordance with the GDPR and applicable national data protection laws; the detail is in the privacy policy and the DPA. Note that GDPR is a regulation, not a certification scheme \u2014 there is no badge to hold, and any vendor showing you a \"GDPR certified\" logo is showing you something they made themselves.":
@@ -574,8 +558,6 @@ const DE = {
     "Keine Behauptung, dass europ\u00e4isches Hosting allein ein Modell sicher macht. Es beantwortet das Wo, nicht das Wie gut.",
   // /european-ai redesign (2026-08-28): badge row, model row, AI Act tiers,
   // repo cards, legal-document cards.
-  "Most AI tooling a European marketing team can buy is American, closed, and vague about where your brief ends up. Sokosumi is built the other way round \u2014 and this page shows the evidence rather than a badge.":
-    "Die meisten KI-Werkzeuge, die ein europ\u00e4isches Marketingteam kaufen kann, sind amerikanisch, geschlossen und ungenau dabei, wo Ihr Briefing landet. Sokosumi ist andersherum gebaut \u2014 und diese Seite zeigt die Belege statt eines Siegels.",
   "At a glance": "Auf einen Blick",
   "Run from Munich, Germany": "Betrieben aus M\u00fcnchen, Deutschland",
   "One of Europe's largest independent agency groups": "Eine der gr\u00f6\u00dften unabh\u00e4ngigen Agenturgruppen Europas",
@@ -583,21 +565,13 @@ const DE = {
   "GDPR and a DPA": "DSGVO und AVV",
   "Processed under the GDPR; addendum available": "Verarbeitung nach DSGVO; Auftragsverarbeitungsvertrag verf\u00fcgbar",
   "Where your work runs": "Wo Ihre Arbeit l\u00e4uft",
-  "Operated in the EU and run from Munich by Plan.Net Germany GmbH & Co KG, Friedenstr. 24, 81671 Munich \u2014 part of Serviceplan Group.":
-    "In der EU betrieben und von M\u00fcnchen aus gef\u00fchrt \u2014 von der Plan.Net Germany GmbH & Co KG, Friedenstr. 24, 81671 M\u00fcnchen, Teil der Serviceplan Group.",
-  "Each coworker is built and run by an independent vendor. Where the vendor has filled it in, the listing names the models it uses and the hosting region \u2014 the ones that state a region today say EU \u00b7 Azure \u00b7 Frankfurt.":
-    "Jeder Coworker wird von einem unabh\u00e4ngigen Anbieter gebaut und betrieben. Wo der Anbieter es hinterlegt hat, nennt das Listing die verwendeten Modelle und die Hosting-Region \u2014 die Listings, die heute eine Region nennen, sagen EU \u00b7 Azure \u00b7 Frankfurt.",
   "Nothing is attached to a task unless you attach it, and the run history shows what was sent and what came back.":
     "Nichts h\u00e4ngt an einer Aufgabe, wenn Sie es nicht anh\u00e4ngen, und der Verlauf zeigt, was gesendet wurde und was zur\u00fcckkam.",
   "Models": "Modelle",
   "You pick the specialist, so you pick the model": "Sie w\u00e4hlen die Fachkraft \u2014 also w\u00e4hlen Sie das Modell",
   "Coworkers on the marketplace name these models today. Hiring a different specialist for the same job is how you change the model behind it.":
     "Coworker im Marktplatz nennen heute diese Modelle. Eine andere Fachkraft f\u00fcr dieselbe Aufgabe zu buchen, ist der Weg, das Modell dahinter zu wechseln.",
-  "Named on coworker listings where the vendor has provided them. Read the listing before you send anything sensitive \u2014 that is what it is there for.":
-    "In den Coworker-Listings genannt, sofern der Anbieter sie hinterlegt hat. Lesen Sie das Listing, bevor Sie etwas Sensibles senden \u2014 daf\u00fcr steht es da.",
   "Every vendor classifies its risk tier before going live": "Jeder Anbieter stuft sein Risiko ein, bevor er live geht",
-  "There is no such thing as an \u201cEU AI Act certificate\u201d. What exists is the classification the Act requires \u2014 and on Sokosumi it is part of listing an agent, not an afterthought.":
-    "Ein \u201eEU-AI-Act-Zertifikat\u201c gibt es nicht. Was es gibt, ist die von der Verordnung geforderte Einstufung \u2014 und bei Sokosumi geh\u00f6rt sie zum Listing eines Agenten, nicht zum Nachgedanken.",
   "Minimal risk": "Minimales Risiko",
   "Transparency risk": "Transparenzrisiko",
   "High risk": "Hohes Risiko",
@@ -609,8 +583,6 @@ const DE = {
   "Conformity assessment and documentation required.": "Konformit\u00e4tsbewertung und Dokumentation erforderlich.",
   "Which obligations apply depends on how you use a system, so your own use still needs your own assessment.":
     "Welche Pflichten gelten, h\u00e4ngt vom Einsatz ab \u2014 Ihre eigene Nutzung braucht also Ihre eigene Bewertung.",
-  "Not a claim you have to take on trust \u2014 the repositories are public and the licences are these.":
-    "Keine Behauptung, der Sie glauben m\u00fcssen \u2014 die Repositories sind \u00f6ffentlich, und dies sind die Lizenzen.",
   "The payment layer behind every agent run.": "Die Zahlungsschicht hinter jedem Agenten-Durchlauf.",
   "Data processing addendum": "Auftragsverarbeitungsvertrag",
   "View document": "Dokument ansehen",
@@ -620,10 +592,8 @@ const DE = {
   "Which models do the coworkers use?": "Welche Modelle nutzen die Coworker?",
   "Claude, Mistral, OpenAI and Grok appear across the coworker listings that name a model. Not every vendor has filled that field in yet, so treat the listing as the source of truth for the coworker you are about to brief rather than assuming a house model.":
     "Claude, Mistral, OpenAI und Grok tauchen in den Coworker-Listings auf, die ein Modell nennen. Noch nicht jeder Anbieter hat dieses Feld ausgef\u00fcllt \u2014 nehmen Sie also das Listing des Coworkers, den Sie briefen wollen, als ma\u00dfgeblich, statt ein Hausmodell anzunehmen.",
-  "The marketplace is operated in the EU. The coworkers are not all ours \u2014 independent vendors build and run them \u2014 so each listing states its own hosting region rather than us making a promise on someone else's behalf. The listings that state a region today say EU \u00b7 Azure \u00b7 Frankfurt, and the listing is where you check it.":
-    "Der Marktplatz wird in der EU betrieben. Die Coworker sind nicht alle unsere \u2014 unabh\u00e4ngige Anbieter bauen und betreiben sie \u2014 deshalb nennt jedes Listing seine eigene Hosting-Region, statt dass wir ein Versprechen f\u00fcr andere abgeben. Die Listings, die heute eine Region nennen, sagen EU \u00b7 Azure \u00b7 Frankfurt, und im Listing pr\u00fcfen Sie es.",
-  "The free plan carries 250 credits per seat. Every listing shows what the vendor has stated before you brief it.":
-    "Der kostenlose Tarif enth\u00e4lt 250 Credits pro Seat. Jedes Listing zeigt, was der Anbieter angegeben hat, bevor Sie briefen.",
+  "250 free credits per seat. No card, no sales call.":
+    "250 Gratis-Credits pro Seat. Keine Karte, kein Vertriebsgespräch.",
   "A European AI marketplace: operated in the EU from Munich, models and hosting named on the listing, every vendor classifies its EU AI Act risk tier, and the code is public under MIT and Apache-2.0.":
     "Ein europ\u00e4ischer KI-Marktplatz: in der EU betrieben, von M\u00fcnchen aus, Modelle und Hosting im Listing genannt, jeder Anbieter stuft sein EU-AI-Act-Risiko ein, und der Code ist unter MIT und Apache-2.0 \u00f6ffentlich.",
   // /european-ai: the stack strip and the trimmed repo list (2026-08-28)
@@ -640,6 +610,42 @@ const DE = {
     "Der Marktplatz selbst \u2014 die Web-App, die Roster-Liste, das Task Board.",
   "The Masumi payment layer that settles every agent run.":
     "Die Masumi-Zahlungsschicht, die jeden Agenten-Durchlauf abrechnet.",
+  // /agency-run-by-ai, after the copy pass (2026-08-28)
+  "An agency turns a brief into a finished file. So does Sokosumi. What changes is who does the work, how fast it comes back, and what it costs when you only need one thing done.":
+    "Eine Agentur macht aus einem Briefing eine fertige Datei. Sokosumi auch. Was sich \u00e4ndert: wer die Arbeit macht, wie schnell sie zur\u00fcckkommt und was sie kostet, wenn Sie nur eine Sache brauchen.",
+  "Not a chatbot session. A specialist with a role, a vendor behind it, and a price you see before it starts. The roster is public and every coworker states what it does.":
+    "Keine Chatbot-Sitzung. Eine Fachkraft mit Rolle, mit einem Anbieter dahinter und einem Preis, den Sie vorher sehen. Die Liste ist \u00f6ffentlich, und jeder Coworker benennt, was er tut.",
+  "A deck, a report, a sheet, a set of images. It lands on a shared task board showing what stage each job is at, the way you would track work in progress with an agency.":
+    "Eine Pr\u00e4sentation, ein Report, eine Tabelle, ein Satz Bilder. Alles landet auf einem gemeinsamen Task Board, das den Stand jeder Aufgabe zeigt \u2014 so wie Sie laufende Arbeit mit einer Agentur verfolgen.",
+  "A Standard seat is \u20ac75 a month and carries 5,000 credits, about {n} tasks at the catalogue's median price. The free tier gives every seat 250 credits, enough to run a real task first.":
+    "Ein Standard-Seat kostet 75 \u20ac im Monat und enth\u00e4lt 5.000 Credits, also rund {n} Aufgaben zum mittleren Katalogpreis. Der kostenlose Tarif gibt jedem Seat 250 Credits, genug f\u00fcr eine echte Aufgabe vorab.",
+  "There is no account lead who knows your business, pushes back on a weak brief, or carries the work between meetings. On routine work you will not miss it. On a hard project you will.":
+    "Es gibt keine Etatleitung, die Ihr Gesch\u00e4ft kennt, ein schwaches Briefing hinterfragt oder die Arbeit zwischen den Terminen tr\u00e4gt. Bei Routinearbeit vermissen Sie das nicht. Bei einem schwierigen Projekt schon.",
+  "Coworkers cite their sources so you can check them, and you should. Nothing is approved work until someone on your side approves it, least of all anything going to a client.":
+    "Coworker nennen ihre Quellen, damit Sie sie pr\u00fcfen k\u00f6nnen \u2014 und das sollten Sie. Nichts ist freigegeben, bis jemand auf Ihrer Seite es freigibt, erst recht nichts, was zum Kunden geht.",
+  "Media buying, film production, and anything needing a crew or a contract sit outside what a coworker delivers. Teams that use Sokosumi well keep an agency for those and stop paying one for the rest.":
+    "Medieneinkauf, Filmproduktion und alles, wof\u00fcr eine Crew oder ein Vertrag n\u00f6tig ist, liegt au\u00dferhalb dessen, was ein Coworker liefert. Teams, die Sokosumi gut nutzen, behalten daf\u00fcr eine Agentur und zahlen f\u00fcr den Rest keine mehr.",
+  "Sokosumi does the work a marketing agency does: research, strategy drafts, content, reporting. Named AI coworkers, per-task pricing. What comes back, what it costs, what it does not replace.":
+    "Sokosumi liefert, was eine Marketingagentur liefert: Research, Strategieentw\u00fcrfe, Content, Reporting. Benannte AI Coworker, Abrechnung pro Aufgabe. Was zur\u00fcckkommt, was es kostet, was es nicht ersetzt.",
+  // /european-ai, after the copy pass (2026-08-28)
+  "Most AI tooling a European marketing team can buy is American, closed, and vague about where your brief ends up. Sokosumi is built the other way round. This page shows the evidence instead of a badge.":
+    "Die meisten KI-Werkzeuge, die ein europ\u00e4isches Marketingteam kaufen kann, sind amerikanisch, geschlossen und ungenau dabei, wo Ihr Briefing landet. Sokosumi ist andersherum gebaut. Diese Seite zeigt die Belege statt eines Siegels.",
+  "Operated in the EU and run from Munich by Plan.Net Germany GmbH & Co KG, Friedenstr. 24, 81671 Munich, part of Serviceplan Group.":
+    "In der EU betrieben und von M\u00fcnchen aus gef\u00fchrt, von der Plan.Net Germany GmbH & Co KG, Friedenstr. 24, 81671 M\u00fcnchen, Teil der Serviceplan Group.",
+  "Each coworker is built and run by an independent vendor. Where the vendor has filled it in, the listing names the models it uses and the hosting region. The ones that state a region today say EU \u00b7 Azure \u00b7 Frankfurt.":
+    "Jeder Coworker wird von einem unabh\u00e4ngigen Anbieter gebaut und betrieben. Wo der Anbieter es hinterlegt hat, nennt das Listing die verwendeten Modelle und die Hosting-Region. Die Listings, die heute eine Region nennen, sagen EU \u00b7 Azure \u00b7 Frankfurt.",
+  "Named on coworker listings where the vendor has provided them. Check the listing before you send anything sensitive.":
+    "In den Coworker-Listings genannt, sofern der Anbieter sie hinterlegt hat. Pr\u00fcfen Sie das Listing, bevor Sie etwas Sensibles senden.",
+  "There is no such thing as an \u201cEU AI Act certificate\u201d. What exists is the classification the Act requires, and on Sokosumi it is part of listing an agent.":
+    "Ein \u201eEU-AI-Act-Zertifikat\u201c gibt es nicht. Was es gibt, ist die von der Verordnung geforderte Einstufung, und bei Sokosumi geh\u00f6rt sie zum Listing eines Agenten.",
+  "The repositories are public and these are the licences.":
+    "Die Repositories sind \u00f6ffentlich, und dies sind die Lizenzen.",
+  "Sokosumi processes personal data in accordance with the GDPR and applicable national data protection laws; the detail is in the privacy policy and the DPA. GDPR is a regulation, not a certification scheme, so there is no badge to hold. A vendor showing you a \u201cGDPR certified\u201d logo made it themselves.":
+    "Sokosumi verarbeitet personenbezogene Daten nach der DSGVO und den geltenden nationalen Datenschutzgesetzen; die Details stehen in der Datenschutzerkl\u00e4rung und im AVV. Die DSGVO ist eine Verordnung, kein Zertifizierungssystem \u2014 es gibt also kein Siegel. Wer Ihnen ein \u201eDSGVO-zertifiziert\u201c-Logo zeigt, hat es selbst gemacht.",
+  "Mostly it is procurement. Where data is processed, which model saw the brief, and who is accountable are the questions a legal or security review asks before a tool is approved. You can answer all three from a listing instead of a sales call.":
+    "Meistens geht es um Beschaffung. Wo Daten verarbeitet werden, welches Modell das Briefing gesehen hat und wer verantwortlich ist \u2014 das fragt jede Rechts- oder Sicherheitspr\u00fcfung, bevor ein Tool freigegeben wird. Alle drei Fragen beantworten Sie aus einem Listing statt aus einem Vertriebsgespr\u00e4ch.",
+  "The marketplace is operated in the EU. The coworkers are not all ours: independent vendors build and run them, so each listing states its own hosting region instead of us promising on their behalf. The listings that state a region today say EU \u00b7 Azure \u00b7 Frankfurt.":
+    "Der Marktplatz wird in der EU betrieben. Die Coworker sind nicht alle unsere: Unabh\u00e4ngige Anbieter bauen und betreiben sie, deshalb nennt jedes Listing seine eigene Hosting-Region, statt dass wir f\u00fcr andere etwas versprechen. Die Listings, die heute eine Region nennen, sagen EU \u00b7 Azure \u00b7 Frankfurt.",
   // /about entity page, coworker facts (2026-08-25)
   "About":
     "Über uns",
@@ -961,7 +967,8 @@ const DE = {
   "Product imagery": "Produktbilder",
   "Screenshots of the live product, free to use in coverage of Sokosumi. Please credit Sokosumi.":
     "Screenshots des Live-Produkts, zur freien Verwendung in der Berichterstattung über Sokosumi. Bitte Sokosumi als Quelle nennen.",
-  "See the product for yourself": "Sehen Sie sich das Produkt selbst an",
+  "Look before you sign up":
+    "Erst schauen, dann anmelden",
   "Coworker profiles, task details, and sample files are public.":
     "Coworker-Profile, Task-Details und Beispieldateien sind öffentlich.",
 
@@ -1471,9 +1478,10 @@ const DE = {
   Announcement: "Ankündigung",
   "Press release": "Pressemitteilung",
   "All posts": "Alle Beiträge",
-  "See it for yourself": "Überzeugen Sie sich selbst",
-  "Run one real task and judge the output for yourself.":
-    "Führen Sie einen echten Task aus und beurteilen Sie das Ergebnis selbst.",
+  "Try one task":
+    "Eine Aufgabe ausprobieren",
+  "Brief a coworker and judge the output.":
+    "Briefen Sie einen Coworker und beurteilen Sie das Ergebnis.",
 
   // ---- releases.js ----
   "Releases | Sokosumi": "Produkt-Updates | Sokosumi",
@@ -1484,13 +1492,17 @@ const DE = {
     "Neue Funktionen, Verbesserungen und Fehlerbehebungen, direkt vom Team.",
   "Release notes are on the way. In the meantime,": "Release Notes sind in Arbeit. Bis dahin:",
   "read the blog": "lesen Sie den Blog",
-  "Every release lands in your account": "Jedes Release landet direkt in Ihrem Konto",
-  "Nothing to install and nothing to upgrade.": "Nichts zu installieren, nichts zu aktualisieren.",
+  "Nothing to install":
+    "Nichts zu installieren",
+  "Releases arrive in your account on their own.":
+    "Releases landen von selbst in Ihrem Konto.",
   Details: "Details",
   Highlights: "Highlights",
   "{title} | Sokosumi releases": "{title} | Sokosumi Releases",
-  "Try it in your account": "Probieren Sie es in Ihrem Konto aus",
-  "Every release is already live in the product.": "Jedes Release ist bereits live im Produkt.",
+  "Everything here is already live":
+    "Alles hier ist bereits live",
+  "Sign up free and the whole product is there.":
+    "Kostenlos anmelden — das ganze Produkt ist da.",
 
   // ---- compare.js ----
   "Compare | Sokosumi": "Vergleich | Sokosumi",

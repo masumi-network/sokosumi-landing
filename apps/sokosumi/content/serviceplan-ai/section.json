@@ -290,32 +290,6 @@
       }
     },
     {
-      "slug": "ai-marketing-agency",
-      "short": "AI agency guide",
-      "group": "guides",
-      "logos": [],
-      "layers": [
-        1,
-        2,
-        3,
-        4
-      ],
-      "icon": "compass",
-      "related": [
-        "ai-coworkers",
-        "plan-net-agentic-ai",
-        "ai-marketing-cases"
-      ],
-      "source": {
-        "img": "/assets/serviceplan-ai/src/house-of-ai.jpg",
-        "caption": {
-          "en": "Serviceplan's House of AI, the documented example in this guide",
-          "de": "Serviceplans House of AI, das dokumentierte Beispiel in diesem Guide"
-        },
-        "href": "https://www.house-of-communication.com/de/en/solutions/artificial-intelligence.html"
-      }
-    },
-    {
       "slug": "ai-search-geo",
       "short": "AI search & GEO",
       "group": "guides",

@@ -29,7 +29,11 @@ const HUB = () => config().hub;
 // as "a page about Serviceplan" in the SERP, so the doc slug drops the hub —
 // but the page keeps the dossier layout and stays in the chapter index, so it
 // loses none of its internal links.
-const PROMOTED = new Set(["ai-marketing-agency"]);
+// Chapters promoted out of the dossier. Empty today: ai-marketing-agency was
+// promoted with the dossier chrome kept, then made fully standalone — it is a
+// buyer guide in its own right, and the Serviceplan breadcrumb was telling a
+// searcher the page was about Serviceplan.
+const PROMOTED = new Set();
 const isSection = (slug) =>
   typeof slug === "string" && (slug === HUB() || slug.startsWith(`${HUB()}/`) || PROMOTED.has(slug));
 

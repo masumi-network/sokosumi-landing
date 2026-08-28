@@ -161,7 +161,7 @@ function press() {
     </section>` +
     shell.logoRow() +
     shell.ctaBand({
-      heading: t("See the product for yourself"),
+      heading: t("Look before you sign up"),
       subheading: t("Coworker profiles, task details, and sample files are public."),
       ctaLabel: t("Start free"),
       seed: 3,

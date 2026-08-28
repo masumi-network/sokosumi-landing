@@ -66,7 +66,7 @@ function render(ctx) {
             {
               title: t("What a seat buys"),
               text: t(
-                "A Standard seat is €75 a month and carries 5,000 credits — around {n} tasks at the catalogue's median price. The free tier gives every seat 250 credits, which is enough to run a real task before you decide anything.",
+                "A Standard seat is €75 a month and carries 5,000 credits, about {n} tasks at the catalogue's median price. The free tier gives every seat 250 credits, enough to run a real task first.",
                 { n: perSeat },
               ),
             },
@@ -85,10 +85,12 @@ function render(ctx) {
     pageStart({
       title: t("An agency that runs on AI coworkers | Sokosumi"),
       description: t(
-        "Sokosumi does the work a marketing agency does — research, strategy drafts, content, reporting — with named AI coworkers and per-task pricing. What comes back, what it costs, and what it does not replace.",
+        "Sokosumi does the work a marketing agency does: research, strategy drafts, content, reporting. Named AI coworkers, per-task pricing. What comes back, what it costs, what it does not replace.",
       ),
       path,
       breadcrumb: [{ label: t("Home"), href: "/" }, { label: t("An agency run by AI") }],
+      mainClass: "ink-page",
+      stylesheets: ["/assets/page-ink.css"],
       jsonld: [
         {
           "@type": "WebPage",
@@ -104,15 +106,17 @@ function render(ctx) {
         sub: t("Brief a named specialist. A finished file comes back."),
       },
     }) +
-    `<div class="page-head" data-reveal>
-      <span class="eyebrow">${esc(t("How Sokosumi works"))}</span>
-      <h1>${esc(t("An agency that runs on AI coworkers"))}</h1>
-      <p class="sub">${esc(
-        t(
-          "An agency turns a brief into a finished file. So does Sokosumi — the difference is who does the work, how fast it comes back, and what it costs when you only need one thing done.",
-        ),
-      )}</p>
-    </div>` +
+    `<section class="ink-hero" data-reveal>
+      <div>
+        <span class="eyebrow">${esc(t("How Sokosumi works"))}</span>
+        <h1>${esc(t("An agency that runs on AI coworkers"))}</h1>
+        <p class="sub">${esc(
+          t(
+            "An agency turns a brief into a finished file. So does Sokosumi. What changes is who does the work, how fast it comes back, and what it costs when you only need one thing done.",
+          ),
+        )}</p>
+      </div>
+    </section>` +
     blocks.renderBlocks([
       {
         blockType: "steps",
@@ -127,13 +131,13 @@ function render(ctx) {
           {
             title: t("A named coworker picks it up"),
             text: t(
-              "Not a chatbot session. A specialist with a role, a vendor behind it and a price you see before it starts — the roster is public and every coworker states what it does.",
+              "Not a chatbot session. A specialist with a role, a vendor behind it, and a price you see before it starts. The roster is public and every coworker states what it does.",
             ),
           },
           {
             title: t("A file comes back"),
             text: t(
-              "A deck, a report, a sheet, a set of images. It lands on a shared task board where you can see what stage each job is at, the same way you would track work in progress with an agency.",
+              "A deck, a report, a sheet, a set of images. It lands on a shared task board showing what stage each job is at, the way you would track work in progress with an agency.",
             ),
           },
         ],
@@ -148,13 +152,13 @@ function render(ctx) {
           {
             title: t("Nobody owns the relationship"),
             text: t(
-              "There is no account lead who knows your business, argues with you about the brief, or carries the work between meetings. That absence is the point on a Tuesday and a real gap on a hard project.",
+              "There is no account lead who knows your business, pushes back on a weak brief, or carries the work between meetings. On routine work you will not miss it. On a hard project you will.",
             ),
           },
           {
             title: t("Every output needs a human read"),
             text: t(
-              "Coworkers cite their sources so you can check them, and you should. Nothing here is approved work until someone on your side approves it — especially anything that goes to a client or goes live.",
+              "Coworkers cite their sources so you can check them, and you should. Nothing is approved work until someone on your side approves it, least of all anything going to a client.",
             ),
           },
           {
@@ -166,7 +170,7 @@ function render(ctx) {
           {
             title: t("Some work is not on the marketplace"),
             text: t(
-              "Media buying, film production and anything needing a crew, a contract or a person in a room are outside what a coworker delivers. Teams that use Sokosumi well tend to keep an agency for those and stop paying one for the rest.",
+              "Media buying, film production, and anything needing a crew or a contract sit outside what a coworker delivers. Teams that use Sokosumi well keep an agency for those and stop paying one for the rest.",
             ),
           },
         ],
@@ -203,8 +207,8 @@ function render(ctx) {
       },
     ]) +
     shell.ctaBand({
-      heading: t("Give one task to a coworker."),
-      subheading: t("The free tier carries 250 credits per seat — enough to run a real brief before you decide anything."),
+      heading: t("Give a coworker one task"),
+      subheading: t("250 free credits per seat, enough for a real brief."),
       ctaLabel: t("Sign Up"),
     }) +
     pageEnd({})
