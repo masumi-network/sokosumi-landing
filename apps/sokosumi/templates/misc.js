@@ -212,6 +212,7 @@ async function sitemap() {
     "/tools",
     "/tools/design-md",
     "/agency-run-by-ai",
+    "/european-ai",
     "/alternatives/copy-ai",
     "/alternatives/manus",
     ...require("./comparePairs").all().map((p) => `/compare/${p.slug}`),

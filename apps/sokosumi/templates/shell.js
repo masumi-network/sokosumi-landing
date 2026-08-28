@@ -1034,10 +1034,10 @@ function footerHtml(opts) {
               <h2 class="foot-h">${esc(t("Company"))}</h2>
               <ul>
                 <li><a href="/about">${esc(t("About"))}</a></li>
+                <li><a href="/european-ai">${esc(t("European AI"))}</a></li>
                 <li><a href="/contact">${esc(t("Contact"))}</a></li>
                 <li><a href="${SUPPORT_URL}">${esc(t("Support"))}</a></li>
                 <li><a href="/press">${esc(t("Press"))}</a></li>
-                <li><a href="/about">${esc(t("About"))}</a></li>
                 <li><a href="https://api.sokosumi.com" target="_blank" rel="noreferrer">${esc(t("API docs"))}</a></li>
                 <li><a href="https://masumi.network" target="_blank" rel="noreferrer">Masumi</a></li>
               </ul>

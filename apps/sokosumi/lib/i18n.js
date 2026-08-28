@@ -454,6 +454,124 @@ const DE = {
     "Der kostenlose Tarif enth\u00e4lt 250 Credits pro Seat \u2014 genug f\u00fcr ein echtes Briefing, bevor Sie irgendetwas entscheiden.",
   "AI marketing agency guide":
     "KI-Marketing-Agentur: Leitfaden",
+  // /european-ai — sovereignty page (2026-08-27). DE is the stronger market
+  // here: "europäische ki" is 1,000/mo with a SERP that has a DR 47 and a DR 8
+  // ranking, and "open source ki" is 1,000/mo with a DR 13 ranking. The title
+  // carries "Europäische KI", "DSGVO" and "Open Source" for that reason.
+  "European AI for marketing teams: GDPR, the AI Act and open source | Sokosumi":
+    "Europäische KI f\u00fcrs Marketing: DSGVO, AI Act und Open Source | Sokosumi",
+  "A European AI marketplace: operated in the EU, every coworker states its model and hosting region, every vendor classifies its EU AI Act risk tier, and the code is public under MIT and Apache-2.0.":
+    "Ein europ\u00e4ischer KI-Marktplatz: in der EU betrieben, jeder Coworker nennt Modell und Hosting-Region, jeder Anbieter stuft sein Risiko nach EU AI Act ein, und der Code ist unter MIT und Apache-2.0 \u00f6ffentlich.",
+  "European AI":
+    "Europ\u00e4ische KI",
+  "Built in Europe":
+    "In Europa gebaut",
+  "European AI, stated plainly":
+    "Europ\u00e4ische KI, klar benannt",
+  "Where it runs, which model, whose licence.":
+    "Wo es l\u00e4uft, welches Modell, welche Lizenz.",
+  "European AI for marketing teams":
+    "Europ\u00e4ische KI f\u00fcr Marketingteams",
+  "Most AI tooling a European marketing team can buy is American, closed, and vague about where your brief ends up. Sokosumi is built the other way round \u2014 and this page states exactly what that does and does not mean.":
+    "Die meisten KI-Werkzeuge, die ein europ\u00e4isches Marketingteam kaufen kann, sind amerikanisch, geschlossen und ungenau dabei, wo Ihr Briefing landet. Sokosumi ist andersherum gebaut \u2014 und diese Seite benennt genau, was das hei\u00dft und was nicht.",
+  "What that means":
+    "Was das bedeutet",
+  "Operated in the EU":
+    "In der EU betrieben",
+  "Sokosumi is run from Munich by Plan.Net Germany GmbH & Co KG, part of Serviceplan Group.":
+    "Sokosumi wird von M\u00fcnchen aus betrieben, von der Plan.Net Germany GmbH & Co KG, Teil der Serviceplan Group.",
+  "You choose the model":
+    "Sie w\u00e4hlen das Modell",
+  "Every coworker states the model it runs on. You pick the specialist, so you pick the model.":
+    "Jeder Coworker nennt das Modell, auf dem er l\u00e4uft. Sie w\u00e4hlen die Fachkraft \u2014 also w\u00e4hlen Sie das Modell.",
+  "Risk tier on every listing":
+    "Risikostufe in jedem Listing",
+  "Vendors classify their agent under the EU AI Act before it goes live on the marketplace.":
+    "Anbieter stufen ihren Agenten nach EU AI Act ein, bevor er im Marktplatz live geht.",
+  "Open source":
+    "Open Source",
+  "The marketplace, the runtime and the payment service are public under MIT and Apache-2.0.":
+    "Marktplatz, Runtime und Payment-Service sind unter MIT und Apache-2.0 \u00f6ffentlich.",
+  "Where your work actually runs":
+    "Wo Ihre Arbeit tats\u00e4chlich l\u00e4uft",
+  "The marketplace":
+    "Der Marktplatz",
+  "Sokosumi itself is operated in the EU and run from Munich. The company behind it is Plan.Net Germany GmbH & Co KG, Friedenstr. 24, 81671 Munich \u2014 part of Serviceplan Group, one of Europe's largest independent agency groups.":
+    "Sokosumi selbst wird in der EU betrieben, von M\u00fcnchen aus. Dahinter steht die Plan.Net Germany GmbH & Co KG, Friedenstr. 24, 81671 M\u00fcnchen \u2014 Teil der Serviceplan Group, einer der gr\u00f6\u00dften unabh\u00e4ngigen Agenturgruppen Europas.",
+  "The coworkers":
+    "Die Coworker",
+  "Each coworker is built and operated by its own vendor, and each listing states the models it uses and the hosting region the vendor provides. EU hosting is available. Read the listing before you send it anything sensitive \u2014 that is what it is there for.":
+    "Jeder Coworker wird von seinem eigenen Anbieter gebaut und betrieben, und jedes Listing nennt die verwendeten Modelle und die Hosting-Region des Anbieters. EU-Hosting ist verf\u00fcgbar. Lesen Sie das Listing, bevor Sie etwas Sensibles schicken \u2014 daf\u00fcr steht es da.",
+  "Your brief":
+    "Ihr Briefing",
+  "You decide what goes into a task. Nothing is attached to a run unless you attach it, and the run history shows what was sent and what came back.":
+    "Sie entscheiden, was in eine Aufgabe geht. Nichts h\u00e4ngt an einem Durchlauf, wenn Sie es nicht anh\u00e4ngen, und der Verlauf zeigt, was gesendet wurde und was zur\u00fcckkam.",
+  "Model choice is the point, not a setting":
+    "Modellwahl ist der Punkt, keine Einstellung",
+  "One tool, one model, no say":
+    "Ein Tool, ein Modell, kein Mitspracherecht",
+  "Most AI suites decide the model for you and change it when their vendor contract changes. You find out in a changelog, if at all.":
+    "Die meisten KI-Suiten entscheiden das Modell f\u00fcr Sie und wechseln es, wenn sich ihr Anbietervertrag \u00e4ndert. Sie erfahren es aus einem Changelog, wenn \u00fcberhaupt.",
+  "A marketplace works differently":
+    "Ein Marktplatz funktioniert anders",
+  "You hire a named specialist for a task. Its listing states the model and the hosting region, and you can pick a different coworker for the same job if you do not like the answer.":
+    "Sie buchen eine benannte Fachkraft f\u00fcr eine Aufgabe. Ihr Listing nennt Modell und Hosting-Region, und Sie k\u00f6nnen f\u00fcr dieselbe Aufgabe einen anderen Coworker w\u00e4hlen, wenn Ihnen die Antwort nicht passt.",
+  "Which matters most for sensitive work":
+    "Warum das bei sensibler Arbeit z\u00e4hlt",
+  "A market briefing on public sources and a brief containing unreleased positioning are not the same risk. Being able to route them to different coworkers is the practical form of model choice.":
+    "Ein Marktbriefing aus \u00f6ffentlichen Quellen und ein Briefing mit unver\u00f6ffentlichter Positionierung sind nicht dasselbe Risiko. Beides an unterschiedliche Coworker geben zu k\u00f6nnen, ist die praktische Form von Modellwahl.",
+  "Open source, with the licences named":
+    "Open Source, mit benannten Lizenzen",
+  "Not a claim you have to take on trust \u2014 the repositories are public and the licences are the ones below.":
+    "Keine Behauptung, der Sie glauben m\u00fcssen \u2014 die Repositories sind \u00f6ffentlich, und die Lizenzen stehen unten.",
+  "The marketplace monorepo \u2014 the product itself.":
+    "Das Monorepo des Marktplatzes \u2014 das Produkt selbst.",
+  "The runtime that manages and executes agentic services.":
+    "Die Runtime, die agentische Services verwaltet und ausf\u00fchrt.",
+  "The payment layer behind agent runs.":
+    "Die Zahlungsschicht hinter den Agenten-Durchl\u00e4ufen.",
+  "View on GitHub":
+    "Auf GitHub ansehen",
+  "European AI: common questions":
+    "Europ\u00e4ische KI: h\u00e4ufige Fragen",
+  "Is Sokosumi GDPR compliant?":
+    "Ist Sokosumi DSGVO-konform?",
+  "Is Sokosumi EU AI Act compliant?":
+    "Ist Sokosumi EU-AI-Act-konform?",
+  "Is everything hosted in Europe?":
+    "Wird alles in Europa gehostet?",
+  "What exactly is open source?":
+    "Was genau ist Open Source?",
+  "Why does European AI matter for a marketing team?":
+    "Warum ist europ\u00e4ische KI f\u00fcr ein Marketingteam wichtig?",
+  "What we do not claim":
+    "Was wir nicht behaupten",
+  "The full text of the Act is published by the EU.":
+    "Den vollst\u00e4ndigen Text der Verordnung ver\u00f6ffentlicht die EU.",
+  "Read the EU AI Act":
+    "EU AI Act lesen",
+  "Run one task and read the listing.":
+    "Starten Sie eine Aufgabe und lesen Sie das Listing.",
+  "The free plan carries 250 credits per seat. Every coworker states its model and hosting region before you brief it.":
+    "Der kostenlose Tarif enth\u00e4lt 250 Credits pro Seat. Jeder Coworker nennt Modell und Hosting-Region, bevor Sie ihn briefen.",
+  "Sokosumi processes personal data in accordance with the GDPR and applicable national data protection laws; the detail is in the privacy policy and the DPA. Note that GDPR is a regulation, not a certification scheme \u2014 there is no badge to hold, and any vendor showing you a \"GDPR certified\" logo is showing you something they made themselves.":
+    "Sokosumi verarbeitet personenbezogene Daten nach der DSGVO und den geltenden nationalen Datenschutzgesetzen; die Details stehen in der Datenschutzerkl\u00e4rung und im AVV. Wichtig: Die DSGVO ist eine Verordnung, kein Zertifizierungssystem \u2014 es gibt kein Siegel zu f\u00fchren, und wer Ihnen ein \u201eDSGVO-zertifiziert\u201c-Logo zeigt, zeigt Ihnen etwas Selbstgemachtes.",
+  "The honest answer is that \"EU AI Act certified\" is not a thing that exists to be claimed. What Sokosumi does is concrete: every vendor classifies its agent's risk tier \u2014 minimal, transparency, or high risk \u2014 before the listing goes live, and the terms shown to users are there to meet the Act's transparency requirements. Obligations depend on how you use a system, so your own use still needs your own assessment.":
+    "Die ehrliche Antwort: \u201eEU-AI-Act-zertifiziert\u201c gibt es nicht als Auszeichnung. Was Sokosumi tut, ist konkret: Jeder Anbieter stuft das Risiko seines Agenten ein \u2014 minimal, Transparenz oder hoch \u2014 bevor das Listing live geht, und die Nutzungsbedingungen erf\u00fcllen die Transparenzpflichten der Verordnung. Welche Pflichten gelten, h\u00e4ngt von Ihrem Einsatz ab \u2014 Ihre eigene Nutzung braucht also weiterhin Ihre eigene Bewertung.",
+  "The marketplace is operated in the EU. The coworkers are not all ours \u2014 independent vendors build and run them \u2014 so each listing states its own hosting region rather than us making a promise on their behalf. EU hosting is available, and the listing is where you check it.":
+    "Der Marktplatz wird in der EU betrieben. Die Coworker sind nicht alle unsere \u2014 unabh\u00e4ngige Anbieter bauen und betreiben sie \u2014 deshalb nennt jedes Listing seine eigene Hosting-Region, statt dass wir ein Versprechen f\u00fcr andere abgeben. EU-Hosting ist verf\u00fcgbar, und das Listing ist die Stelle, an der Sie es pr\u00fcfen.",
+  "The marketplace monorepo and the payment service are MIT licensed; the Kodosumi runtime that executes agentic services is Apache-2.0. All three are public on GitHub under the masumi-network organisation. The individual coworkers belong to their vendors and are licensed by them.":
+    "Das Monorepo des Marktplatzes und der Payment-Service stehen unter MIT, die Kodosumi-Runtime zur Ausf\u00fchrung agentischer Services unter Apache-2.0. Alle drei sind auf GitHub in der Organisation masumi-network \u00f6ffentlich. Die einzelnen Coworker geh\u00f6ren ihren Anbietern und werden von diesen lizenziert.",
+  "Mostly it is procurement. Where data is processed, which model saw the brief, and who is accountable are questions a legal or security review will ask before a tool gets approved. Being able to answer them from a listing rather than a sales call is the practical benefit.":
+    "Meistens geht es um Beschaffung. Wo Daten verarbeitet werden, welches Modell das Briefing gesehen hat und wer verantwortlich ist \u2014 das fragt jede Rechts- oder Sicherheitspr\u00fcfung, bevor ein Tool freigegeben wird. Der praktische Vorteil ist, diese Fragen aus einem Listing beantworten zu k\u00f6nnen statt aus einem Vertriebsgespr\u00e4ch.",
+  "No ISO 27001 or SOC 2 certification. If a procurement process needs one, ask us rather than assuming.":
+    "Keine ISO-27001- oder SOC-2-Zertifizierung. Wenn eine Beschaffung das braucht, fragen Sie uns, statt es anzunehmen.",
+  "No blanket promise that every vendor hosts in the EU. Each listing states its own region.":
+    "Kein pauschales Versprechen, dass jeder Anbieter in der EU hostet. Jedes Listing nennt seine eigene Region.",
+  "No claim to be \"EU AI Act certified\". No such certificate exists; the risk classification on each listing is the real mechanism.":
+    "Keine Behauptung, \u201eEU-AI-Act-zertifiziert\u201c zu sein. Ein solches Zertifikat gibt es nicht; die Risikoeinstufung in jedem Listing ist der echte Mechanismus.",
+  "No claim that European hosting alone makes a model safe. It answers where, not how well.":
+    "Keine Behauptung, dass europ\u00e4isches Hosting allein ein Modell sicher macht. Es beantwortet das Wo, nicht das Wie gut.",
   // /about entity page, coworker facts (2026-08-25)
   "About":
     "Über uns",

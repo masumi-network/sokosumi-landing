@@ -34,6 +34,7 @@ const releasesTpl = require("./templates/releases");
 const compareTpl = require("./templates/compare");
 const pagesTpl = require("./templates/pagesCms");
 const agencyRunByAiTpl = require("./templates/agencyRunByAi");
+const europeanAiTpl = require("./templates/europeanAi");
 const contactTpl = require("./templates/contact");
 const designMdTpl = require("./templates/designMd");
 const designMdArchive = require("./lib/designMdArchive");
@@ -571,6 +572,7 @@ const routes = [
     h: (ctx) => ({ redirect: ["/ai-coworkers", ...ctx.params.rest].join("/") }),
   },
   { m: (s) => s.length === 1 && s[0] === "agency-run-by-ai" && {}, h: agencyRunByAiTpl.render },
+  { m: (s) => s.length === 1 && s[0] === "european-ai" && {}, h: europeanAiTpl.render },
   { m: (s) => s.length === 1 && s[0] === "tasks" && {}, h: tasksTpl.browse },
   { m: (s) => s.length === 1 && s[0] === "vendors" && {}, h: vendorsTpl.index },
   { m: (s) => s.length === 2 && s[0] === "vendors" && { slug: s[1] }, h: vendorsTpl.detail },
