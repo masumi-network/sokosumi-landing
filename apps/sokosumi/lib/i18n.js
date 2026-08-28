@@ -629,8 +629,9 @@ const DE = {
   // /european-ai: the stack strip and the trimmed repo list (2026-08-28)
   "Infrastructure": "Infrastruktur",
   "The stack, and where it sits": "Der Stack \u2014 und wo er steht",
-  "Two vendors carry the application and the data, and both run in European regions.":
-    "Zwei Anbieter tragen Anwendung und Daten, und beide laufen in europ\u00e4ischen Regionen.",
+  "The application, the database and Serviceplan's own coworkers all run in European regions.":
+    "Die Anwendung, die Datenbank und Serviceplans eigene Coworker laufen alle in europ\u00e4ischen Regionen.",
+  "Serviceplan's own coworkers": "Serviceplans eigene Coworker",
   "Application hosting": "Anwendungs-Hosting",
   "Database": "Datenbank",
   "EU region \u2014 Frankfurt (fra1)": "EU-Region \u2014 Frankfurt (fra1)",

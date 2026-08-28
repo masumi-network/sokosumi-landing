@@ -1,3 +1,31 @@
+/* ── breadcrumbs sit on the band ────────────────────────────────────────── */
+/* The crumbs render outside <main>, so a page class cannot reach them; :has()
+   can. Earlier this page pulled the band up over them instead, which left
+   ink-on-ink text — this extends the band's own top colour behind them and
+   lifts the type, so the dark surface starts at the header and runs unbroken
+   into the gradient. #0a0a0a is --stage-deep's 0% stop, so there is no seam. */
+body:has(.eu-hero) .crumbs {
+  position: relative;
+  padding-top: 22px;
+  padding-bottom: 14px;
+  color: rgba(255, 255, 255, 0.5);
+}
+body:has(.eu-hero) .crumbs::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  --vw: calc(100vw - var(--sbw, 0px));
+  left: calc(50% - var(--vw) / 2);
+  width: var(--vw);
+  background: #0a0a0a;
+}
+body:has(.eu-hero) .crumbs a,
+body:has(.eu-hero) .crumbs .sep,
+body:has(.eu-hero) .crumbs .current { position: relative; }
+body:has(.eu-hero) .crumbs .current { color: rgba(255, 255, 255, 0.82); }
+body:has(.eu-hero) .crumbs a:hover { color: #fff; }
+
 /* /european-ai — trust page.
    Every colour references a token in styles.css. The page alternates the site's
    own ink bands against paper, and each section has a different structure, so
@@ -8,7 +36,7 @@
   background: #0f1c25 var(--stage-deep);
   color: #fff;
   border-top: none;
-  padding: clamp(52px, 8vw, 104px) 0 clamp(44px, 6vw, 76px);
+  padding: clamp(34px, 6vw, 76px) 0 clamp(44px, 6vw, 76px);
   /* the ring is deliberately bled past the right edge, so the band clips it
      itself rather than leaning on html{overflow-x:clip} — without this it
      added 15px of horizontal scroll at 375px */
@@ -75,9 +103,10 @@
 .eu-spec dd { font-size: 12.5px; line-height: 1.5; color: rgba(255, 255, 255, 0.6); }
 
 /* ── where it runs ──────────────────────────────────────────────────────── */
-/* the ink band above already separates these; .page-section's hairline sat
-   directly under it and read as an artefact */
-.eu-run { padding-top: clamp(40px, 6vw, 64px); border-top: none; }
+/* the ink band above is separation enough: .page-section's hairline sat
+   directly under it and read as an artefact, and an extra padding-top made
+   this the only paper section with asymmetric vertical padding */
+.eu-run { border-top: none; }
 .eu-run-grid { display: grid; gap: 0; grid-template-columns: 1fr; margin-top: 8px; }
 .eu-run-item { display: grid; gap: 6px; padding: 18px 0; border-top: 1px solid var(--border); }
 .eu-run-item:first-child { border-top: none; padding-top: 0; }
@@ -145,6 +174,7 @@
   padding: 22px 0;
   border-bottom: 1px solid var(--border);
 }
+.eu-tier:last-child { border-bottom: none; padding-bottom: 4px; }
 .eu-tier-n {
   grid-area: n;
   font-family: var(--mono);
@@ -266,6 +296,9 @@
   border-radius: var(--r-lg);
 }
 .eu-infra-logo { grid-area: logo; align-self: center; height: 28px; width: 28px; object-fit: contain; }
+/* Microsoft marks are not in simple-icons, so Azure renders name-only; the
+   empty slot keeps the three cells on one baseline */
+.eu-infra-logo-none { display: block; }
 .eu-infra-name { grid-area: name; font-size: 16px; font-weight: 500; letter-spacing: -0.01em; }
 .eu-infra-role { grid-area: role; font-size: 13.5px; color: var(--muted-foreground); }
 .eu-infra-where {
@@ -283,12 +316,10 @@
   .eu-model:nth-child(odd) { border-right: none; }
   .eu-model + .eu-model { border-left: 1px solid var(--border); }
   .eu-repo-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .eu-infra-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .eu-infra-row { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 @media (min-width: 900px) {
   .eu-spec { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .eu-run-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 30px; }
   .eu-run-item { border-top: none; border-left: 1px solid var(--border); padding: 2px 0 2px 22px; }
-  .eu-tier-track { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 30px; }
-  .eu-tier { border-top: 2px solid var(--primary); padding-top: 18px; }
 }

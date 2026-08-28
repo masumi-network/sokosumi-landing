@@ -63,7 +63,12 @@ const REPOS = [
 const INFRA = [
   { slug: "vercel", name: "Vercel", role: "Application hosting", where: "EU region — Frankfurt (fra1)" },
   { slug: "neon", name: "Neon", role: "Database", where: "EU region" },
+  { slug: "azure", name: "Microsoft Azure", role: "Serviceplan's own coworkers", where: "EU · Azure · Frankfurt" },
 ];
+const INFRA_LOGO_DIR = path.join(__dirname, "..", "assets", "logos", "infra");
+const hasInfraLogo = (slug) => {
+  try { return fs.existsSync(path.join(INFRA_LOGO_DIR, `${slug}.svg`)); } catch { return false; }
+};
 
 const TIERS = [
   { n: "01", key: "Minimal risk", eg: "Spam filters, simple recommender systems.", note: "No specific obligations under the Act." },
@@ -163,14 +168,18 @@ function render() {
     <!-- ── the stack, with logos ──────────────────────────────────────── -->
     <section class="page-section eu-infra" data-reveal aria-label="${attr(t("Infrastructure"))}">
       <h2>${esc(t("The stack, and where it sits"))}</h2>
-      <p class="sub">${esc(t("Two vendors carry the application and the data, and both run in European regions."))}</p>
+      <p class="sub">${esc(t("The application, the database and Serviceplan's own coworkers all run in European regions."))}</p>
       <ul class="eu-infra-row">
         ${INFRA.map(
           (i) => `<li class="eu-infra-item">
-            <img class="eu-infra-logo" src="/assets/logos/infra/${attr(i.slug)}.svg" alt="${attr(i.name)}" height="28" loading="lazy" decoding="async" />
+            ${
+              hasInfraLogo(i.slug)
+                ? `<img class="eu-infra-logo" src="/assets/logos/infra/${attr(i.slug)}.svg" alt="" height="28" loading="lazy" decoding="async" />`
+                : `<span class="eu-infra-logo eu-infra-logo-none" aria-hidden="true"></span>`
+            }
             <span class="eu-infra-name">${esc(i.name)}</span>
             <span class="eu-infra-role">${esc(t(i.role))}</span>
-            <span class="eu-infra-where">${esc(t(i.where))}</span>
+            <span class="eu-infra-where">${esc(i.where === "EU region" || i.where.startsWith("EU region \u2014") ? t(i.where) : i.where)}</span>
           </li>`,
         ).join("")}
       </ul>
