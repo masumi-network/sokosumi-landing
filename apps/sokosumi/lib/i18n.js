@@ -626,6 +626,19 @@ const DE = {
     "Der kostenlose Tarif enth\u00e4lt 250 Credits pro Seat. Jedes Listing zeigt, was der Anbieter angegeben hat, bevor Sie briefen.",
   "A European AI marketplace: operated in the EU from Munich, models and hosting named on the listing, every vendor classifies its EU AI Act risk tier, and the code is public under MIT and Apache-2.0.":
     "Ein europ\u00e4ischer KI-Marktplatz: in der EU betrieben, von M\u00fcnchen aus, Modelle und Hosting im Listing genannt, jeder Anbieter stuft sein EU-AI-Act-Risiko ein, und der Code ist unter MIT und Apache-2.0 \u00f6ffentlich.",
+  // /european-ai: the stack strip and the trimmed repo list (2026-08-28)
+  "Infrastructure": "Infrastruktur",
+  "The stack, and where it sits": "Der Stack \u2014 und wo er steht",
+  "Two vendors carry the application and the data, and both run in European regions.":
+    "Zwei Anbieter tragen Anwendung und Daten, und beide laufen in europ\u00e4ischen Regionen.",
+  "Application hosting": "Anwendungs-Hosting",
+  "Database": "Datenbank",
+  "EU region \u2014 Frankfurt (fra1)": "EU-Region \u2014 Frankfurt (fra1)",
+  "EU region": "EU-Region",
+  "The marketplace itself \u2014 the web app, the roster, the task board.":
+    "Der Marktplatz selbst \u2014 die Web-App, die Roster-Liste, das Task Board.",
+  "The Masumi payment layer that settles every agent run.":
+    "Die Masumi-Zahlungsschicht, die jeden Agenten-Durchlauf abrechnet.",
   // /about entity page, coworker facts (2026-08-25)
   "About":
     "Über uns",

@@ -49,10 +49,20 @@ const hasLogo = (slug) => {
   try { return fs.existsSync(path.join(LOGO_DIR, `${slug}.svg`)); } catch { return false; }
 };
 
+// Two repos, not three. There is no plain `masumi` repo in the org, so the
+// Masumi side is the payment service; kodosumi (the runtime) is dropped here
+// and still reachable from GitHub.
 const REPOS = [
-  { repo: "sokosumi", licence: "MIT", stars: 12, what: "The marketplace monorepo — the product itself." },
-  { repo: "kodosumi", licence: "Apache-2.0", stars: 42, what: "The runtime that manages and executes agentic services." },
-  { repo: "masumi-payment-service", licence: "MIT", stars: 14, what: "The payment layer behind every agent run." },
+  { repo: "sokosumi", licence: "MIT", stars: 12, what: "The marketplace itself — the web app, the roster, the task board." },
+  { repo: "masumi-payment-service", licence: "MIT", stars: 14, what: "The Masumi payment layer that settles every agent run." },
+];
+
+// Where the software actually runs. Vercel is verifiable from the response
+// headers (x-vercel-id: fra1 = Frankfurt); the Neon region is Sokosumi's own
+// configuration.
+const INFRA = [
+  { slug: "vercel", name: "Vercel", role: "Application hosting", where: "EU region — Frankfurt (fra1)" },
+  { slug: "neon", name: "Neon", role: "Database", where: "EU region" },
 ];
 
 const TIERS = [
@@ -132,7 +142,7 @@ function render() {
     </section>
 
     <!-- ── where it runs: three typeset columns, rules not cards ───────── -->
-    <section class="page-section flush eu-run" data-reveal aria-label="${attr(t("Where your work runs"))}">
+    <section class="page-section eu-run" data-reveal aria-label="${attr(t("Where your work runs"))}">
       <h2>${esc(t("Where your work actually runs"))}</h2>
       <div class="eu-run-grid">
         <div class="eu-run-item">
@@ -150,17 +160,36 @@ function render() {
       </div>
     </section>
 
+    <!-- ── the stack, with logos ──────────────────────────────────────── -->
+    <section class="page-section eu-infra" data-reveal aria-label="${attr(t("Infrastructure"))}">
+      <h2>${esc(t("The stack, and where it sits"))}</h2>
+      <p class="sub">${esc(t("Two vendors carry the application and the data, and both run in European regions."))}</p>
+      <ul class="eu-infra-row">
+        ${INFRA.map(
+          (i) => `<li class="eu-infra-item">
+            <img class="eu-infra-logo" src="/assets/logos/infra/${attr(i.slug)}.svg" alt="${attr(i.name)}" height="28" loading="lazy" decoding="async" />
+            <span class="eu-infra-name">${esc(i.name)}</span>
+            <span class="eu-infra-role">${esc(t(i.role))}</span>
+            <span class="eu-infra-where">${esc(t(i.where))}</span>
+          </li>`,
+        ).join("")}
+      </ul>
+    </section>
+
     <!-- ── models: one rule-bounded row of names ───────────────────────── -->
     <section class="page-section eu-models" data-reveal aria-label="${attr(t("Models"))}">
       <h2>${esc(t("You pick the specialist, so you pick the model"))}</h2>
       <p class="sub">${esc(t("Coworkers on the marketplace name these models today. Hiring a different specialist for the same job is how you change the model behind it."))}</p>
       <ul class="eu-model-row">
         ${MODELS.map(
+          // logo AND name: the mark alone left the row reading "Anthropic /
+          // Mistral AI / xAI", which are the makers, not the models a coworker
+          // names on its listing.
           (m) => `<li class="eu-model">${
             hasLogo(m.slug)
-              ? `<img src="/assets/logos/models/${attr(m.slug)}.svg" alt="${attr(m.name)}" height="24" loading="lazy" decoding="async" />`
-              : `<span class="eu-model-name">${esc(m.name)}</span>`
-          }<span class="eu-model-by">${esc(m.by)}</span></li>`,
+              ? `<img class="eu-model-logo" src="/assets/logos/models/${attr(m.slug)}.svg" alt="" height="22" loading="lazy" decoding="async" />`
+              : `<span class="eu-model-logo eu-model-logo-none" aria-hidden="true"></span>`
+          }<span class="eu-model-name">${esc(m.name)}</span><span class="eu-model-by">${esc(m.by)}</span></li>`,
         ).join("")}
       </ul>
       <p class="eu-note">${esc(t("Named on coworker listings where the vendor has provided them. Read the listing before you send anything sensitive — that is what it is there for."))}</p>
@@ -174,8 +203,10 @@ function render() {
         ${TIERS.map(
           (x) => `<li class="eu-tier">
             <span class="eu-tier-n">${esc(x.n)}</span>
-            <strong>${esc(t(x.key))}</strong>
-            <span class="eu-tier-eg">${esc(t(x.eg))}</span>
+            <span class="eu-tier-body">
+              <strong>${esc(t(x.key))}</strong>
+              <span class="eu-tier-eg">${esc(t(x.eg))}</span>
+            </span>
             <span class="eu-tier-note">${esc(t(x.note))}</span>
           </li>`,
         ).join("")}
@@ -192,11 +223,13 @@ function render() {
         <ul class="eu-repo-list">
           ${REPOS.map(
             (r) => `<li><a href="${attr(`https://github.com/masumi-network/${r.repo}`)}" target="_blank" rel="noreferrer">
-              <code>${esc(r.repo)}</code>
+              <span class="eu-repo-lic">${esc(r.licence)}</span>
+              <code>masumi-network/${esc(r.repo)}</code>
               <span class="eu-repo-what">${esc(t(r.what))}</span>
-              <span class="eu-lic-chip">${esc(r.licence)}</span>
-              <span class="eu-repo-stars">${icon("star", 12)} ${esc(String(r.stars))}</span>
-              <span class="eu-repo-go">${icon("arrow-up-right", 14)}</span>
+              <span class="eu-repo-foot">
+                <span class="eu-repo-stars">${icon("star", 12)} ${esc(String(r.stars))}</span>
+                <span class="eu-repo-go">${esc(t("View on GitHub"))} ${icon("arrow-up-right", 13)}</span>
+              </span>
             </a></li>`,
           ).join("")}
         </ul>
@@ -213,11 +246,10 @@ function render() {
           ["/legal/terms-of-service", t("Terms of service")],
           ["/legal/acceptable-use", t("Acceptable use")],
         ]
-          .map(([href, label]) => `<li><a href="${attr(href)}"><span>${esc(label)}</span>${icon("arrow-up-right", 14)}</a></li>`)
+          .map(([href, label]) => `<li><a href="${attr(href)}">${esc(label)} ${icon("arrow-up-right", 13)}</a></li>`)
           .join("")}
       </ul>
     </section>` +
-    shell.logoRow() +
     blocks.renderBlocks([
       {
         blockType: "faq",
