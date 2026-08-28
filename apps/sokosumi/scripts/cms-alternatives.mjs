@@ -62,7 +62,7 @@ const PAGES = [
   {
     slug: "alternatives/copy-ai",
     tool: "Copy.ai",
-    title: "Copy.ai alternatives: 5 options compared on price and hosting",
+    title: "Copy.ai alternatives: 5 options compared on price",
     description:
       "Copy.ai alternatives compared on what actually decides it: the jump from $29 to $1,000, what each tool meters, and which publish EU hosting. Prices checked 26 August 2026.",
     heroSub:

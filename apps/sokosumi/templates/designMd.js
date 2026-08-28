@@ -282,7 +282,22 @@ async function analysis(ctx) {
   ];
   return (
     pageStart({
-      title: `${name} DESIGN.md: colors, type, components | Sokosumi`,
+      // The brand name is variable-length and the descriptor was fixed, so a
+      // long name pushed the title well past what Google renders — the worst
+      // was 101 characters. Take the longest variant that still fits 60, so
+      // the name and "DESIGN.md" (the part someone searches) always survive
+      // and only the tail is sacrificed.
+      title: (() => {
+        const tails = [
+          " DESIGN.md: colors, type, components | Sokosumi",
+          " DESIGN.md: colors, type, components",
+          " DESIGN.md: colors and type",
+          " DESIGN.md",
+        ];
+        for (const tail of tails) if ((name + tail).length <= 60) return name + tail;
+        // even the bare form can overflow if the brand name itself is long
+        return `${shell.truncate(name, 60 - " DESIGN.md".length)} DESIGN.md`;
+      })(),
       description: description.slice(0, 160),
       path,
       englishOnly: true,

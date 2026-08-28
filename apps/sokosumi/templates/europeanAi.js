@@ -72,7 +72,7 @@ function render() {
   const path_ = "/european-ai";
   return (
     pageStart({
-      title: t("European AI for marketing teams: GDPR, the AI Act and open source | Sokosumi"),
+      title: t("European AI for marketing: GDPR, AI Act, open source"),
       description: t(
         "A European AI marketplace: operated in the EU from Munich, models and hosting named on the listing, every vendor classifies its EU AI Act risk tier, and the code is public under MIT and Apache-2.0.",
       ),

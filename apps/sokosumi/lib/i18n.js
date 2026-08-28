@@ -458,8 +458,8 @@ const DE = {
   // here: "europäische ki" is 1,000/mo with a SERP that has a DR 47 and a DR 8
   // ranking, and "open source ki" is 1,000/mo with a DR 13 ranking. The title
   // carries "Europäische KI", "DSGVO" and "Open Source" for that reason.
-  "European AI for marketing teams: GDPR, the AI Act and open source | Sokosumi":
-    "Europäische KI f\u00fcrs Marketing: DSGVO, AI Act und Open Source | Sokosumi",
+  "European AI for marketing: GDPR, AI Act, open source":
+    "Europäische KI: DSGVO, AI Act und Open Source",
   "A European AI marketplace: operated in the EU, every coworker states its model and hosting region, every vendor classifies its EU AI Act risk tier, and the code is public under MIT and Apache-2.0.":
     "Ein europ\u00e4ischer KI-Marktplatz: in der EU betrieben, jeder Coworker nennt Modell und Hosting-Region, jeder Anbieter stuft sein Risiko nach EU AI Act ein, und der Code ist unter MIT und Apache-2.0 \u00f6ffentlich.",
   "European AI":
