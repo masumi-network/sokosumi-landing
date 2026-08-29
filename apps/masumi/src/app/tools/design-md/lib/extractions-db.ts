@@ -1,4 +1,5 @@
 import Database from "better-sqlite3";
+import { brandKey } from "./url-guard";
 import fs from "fs";
 import path from "path";
 
@@ -18,6 +19,7 @@ function db(): Database.Database {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       url TEXT NOT NULL,
       hostname TEXT NOT NULL,
+      brand TEXT NOT NULL DEFAULT '',
       name TEXT,
       primary_color TEXT,
       logo_url TEXT,
@@ -31,6 +33,8 @@ function db(): Database.Database {
       ON extractions(created_at DESC);
     CREATE INDEX IF NOT EXISTS idx_extractions_hostname
       ON extractions(hostname);
+    CREATE INDEX IF NOT EXISTS idx_extractions_brand
+      ON extractions(brand);
   `);
 
   // Idempotent one-off migration via PRAGMA user_version. Each version
@@ -53,6 +57,27 @@ function db(): Database.Database {
     const after = (conn.prepare("SELECT COUNT(*) as c FROM extractions").get() as { c: number }).c;
     console.log(`[extractions-db] dedup v1: ${before} → ${after} rows`);
     conn.pragma("user_version = 1");
+  }
+  if (current < 2) {
+    // v2: brand column, so the gallery can dedupe notion.so against
+    // notion.com. Added and backfilled here rather than derived in the query,
+    // because the public-suffix rule is not expressible in SQL.
+    const cols = conn.prepare("PRAGMA table_info(extractions)").all() as { name: string }[];
+    if (!cols.some((c) => c.name === "brand")) {
+      conn.exec(`ALTER TABLE extractions ADD COLUMN brand TEXT NOT NULL DEFAULT ''`);
+      conn.exec(`CREATE INDEX IF NOT EXISTS idx_extractions_brand ON extractions(brand)`);
+    }
+    const rows = conn.prepare("SELECT id, hostname FROM extractions WHERE brand = ''").all() as {
+      id: number;
+      hostname: string;
+    }[];
+    const upd = conn.prepare("UPDATE extractions SET brand = ? WHERE id = ?");
+    const run = conn.transaction((list: typeof rows) => {
+      for (const r of list) upd.run(brandKey(r.hostname), r.id);
+    });
+    run(rows);
+    console.log(`[extractions-db] v2: backfilled brand on ${rows.length} rows`);
+    conn.pragma("user_version = 2");
   }
 
   _db = conn;
@@ -97,13 +122,14 @@ export function saveExtraction(input: {
 
   const stmt = db().prepare(`
     INSERT INTO extractions
-      (url, hostname, name, primary_color, logo_url, screenshot, screenshot_mime, design_md, source, created_at)
+      (url, hostname, brand, name, primary_color, logo_url, screenshot, screenshot_mime, design_md, source, created_at)
     VALUES
-      (@url, @hostname, @name, @primaryColor, @logoUrl, @screenshot, @screenshotMime, @designMd, @source, @createdAt)
+      (@url, @hostname, @brand, @name, @primaryColor, @logoUrl, @screenshot, @screenshotMime, @designMd, @source, @createdAt)
   `);
   const result = stmt.run({
     url: input.url,
     hostname,
+    brand: brandKey(hostname),
     name: input.name,
     primaryColor: input.primaryColor,
     logoUrl: input.logoUrl,
@@ -127,7 +153,12 @@ export function getRecent(limit = 12): SavedExtraction[] {
       SELECT id, url, hostname, name, primary_color, logo_url, screenshot, source, created_at
       FROM extractions e
       WHERE id IN (
-        SELECT MAX(id) FROM extractions GROUP BY hostname
+        -- Group by brand, not hostname: notion.so and notion.com are one
+        -- company, and hostname grouping published both, which also gave the
+        -- two analysis pages an identical <title>. The brand column is
+        -- computed in JS by brandKey(), because the public-suffix rule is not
+        -- expressible in SQL (sub.example.com must key on example, not sub).
+        SELECT MAX(id) FROM extractions GROUP BY brand
       )
       ORDER BY created_at DESC
       LIMIT ?

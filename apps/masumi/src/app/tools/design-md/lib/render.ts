@@ -2,6 +2,10 @@ import Browserbase from "@browserbasehq/sdk";
 import { chromium, type Page } from "playwright-core";
 
 const VIEWPORT = { width: 1280, height: 800 };
+// Three viewports of page for the vision pass. Tall enough to reach the
+// second and third section on most marketing sites, short enough that the
+// downscale still leaves component shapes legible.
+const VISION_MAX_HEIGHT = 2400;
 const NAV_TIMEOUT_MS = 25_000;
 
 export type ComputedStyle = {
@@ -17,14 +21,15 @@ export type ComputedStyle = {
 export type RenderedPage = {
   url: string;
   html: string;
-  // Viewport-only screenshot fed to the LLM as vision input. Guaranteed
-  // to fit inside Claude's 8000px image dimension limit. Optional — if
-  // capture fails we still want to keep the rendered HTML + computed
-  // styles so the LLM call can proceed in text-only mode.
+  // Screenshot fed to the LLM as vision input, clipped to VISION_MAX_HEIGHT
+  // so it stays well inside Claude's 8000px image dimension limit. It used to
+  // be viewport-only (800px), which meant the model never saw a footer, a
+  // card, a form or a table — everything below the hero was invisible to the
+  // pass that is supposed to describe layout and rhythm. Optional: if capture
+  // fails we keep the HTML + computed styles and the LLM runs text-only.
   screenshotBase64?: string;
   screenshotMime?: "image/jpeg";
-  // Clipped full-page capture used purely for the gallery thumbnail.
-  // Never sent to the LLM.
+  // Taller clipped capture used for the gallery thumbnail.
   thumbnailBase64?: string;
   thumbnailMime?: "image/jpeg";
   computed: {
@@ -84,10 +89,14 @@ export async function renderWithBrowserbase(
     let screenshotBase64: string | undefined;
     let thumbnailBase64: string | undefined;
     try {
+      const docHeightForVision = await page
+        .evaluate(() => document.documentElement.scrollHeight)
+        .catch(() => VIEWPORT.height);
+      const visionHeight = Math.min(docHeightForVision, VISION_MAX_HEIGHT);
       const viewportShot = await page.screenshot({
         type: "jpeg",
         quality: 80,
-        fullPage: false,
+        clip: { x: 0, y: 0, width: VIEWPORT.width, height: visionHeight },
         timeout: 12_000,
       });
       screenshotBase64 = viewportShot.toString("base64");
