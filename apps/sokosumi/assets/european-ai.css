@@ -93,6 +93,7 @@
 /* ── model row ──────────────────────────────────────────────────────────── */
 .eu-model-row {
   list-style: none;
+  padding-inline-start: 0;
   display: grid;
   gap: 0;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -100,23 +101,25 @@
   border-bottom: 1px solid var(--border);
 }
 .eu-model {
+  /* left, like every other block on the page — a centred island in a
+     left-aligned column was the one thing reading as off */
   display: flex;
   flex-direction: column;
   gap: 3px;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
-  text-align: center;
-  padding: 26px 12px;
+  padding: 24px 20px 24px 0;
   border-bottom: 1px solid var(--border);
 }
 .eu-model:nth-child(odd) { border-right: 1px solid var(--border); }
 .eu-model:nth-last-child(-n + 2) { border-bottom: none; }
 .eu-model-logo { height: 22px; width: 22px; object-fit: contain; }
+.eu-model-logo-none { height: 22px; }
 /* keeps the four cells on one baseline when a mark is missing (OpenAI is not
    in simple-icons, so it renders name-only) */
 .eu-model-logo-none { display: block; }
 .eu-model-name {
-  margin-top: 10px;
+  margin-top: 12px;
   font-size: clamp(17px, 1.8vw, 20px);
   font-weight: 300;
   letter-spacing: -0.02em;
@@ -136,7 +139,7 @@
 .eu-note a .icon { vertical-align: -2px; }
 
 /* ── EU AI Act: numbered rows ───────────────────────────────────────────── */
-.eu-tier-track { list-style: none; border-top: 1px solid var(--border); margin-top: 8px; }
+.eu-tier-track { list-style: none; padding-inline-start: 0; border-top: 1px solid var(--border); margin-top: 8px; }
 .eu-tier {
   display: grid;
   grid-template-columns: auto 1fr;
@@ -183,7 +186,7 @@
   margin: 8px 0 10px;
 }
 .eu-oss-sub { font-size: 15px; color: rgba(255, 255, 255, 0.6); max-width: 60ch; margin-bottom: 26px; }
-.eu-repo-list { list-style: none; display: grid; gap: 14px; grid-template-columns: 1fr; }
+.eu-repo-list { list-style: none; padding-inline-start: 0; display: grid; gap: 14px; grid-template-columns: 1fr; }
 .eu-repo-list a {
   display: grid;
   gap: 10px;
@@ -227,7 +230,7 @@
 .eu-repo-go { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; color: var(--primary-on-dark); }
 
 /* ── legal: inline chips ────────────────────────────────────────────────── */
-.eu-legal-list { list-style: none; display: flex; flex-wrap: wrap; gap: 10px; margin-top: 6px; }
+.eu-legal-list { list-style: none; padding-inline-start: 0; display: flex; flex-wrap: wrap; gap: 10px; margin-top: 6px; }
 .eu-legal-list a {
   display: inline-flex;
   align-items: center;
@@ -250,6 +253,7 @@
 /* ── the stack ──────────────────────────────────────────────────────────── */
 .eu-infra-row {
   list-style: none;
+  padding-inline-start: 0;
   display: grid;
   gap: 14px;
   grid-template-columns: 1fr;
@@ -286,7 +290,7 @@
   .eu-model-row { grid-template-columns: repeat(4, minmax(0, 1fr)); border-bottom: 1px solid var(--border); }
   .eu-model { border-bottom: none; }
   .eu-model:nth-child(odd) { border-right: none; }
-  .eu-model + .eu-model { border-left: 1px solid var(--border); }
+  .eu-model + .eu-model { border-left: 1px solid var(--border); padding-left: 22px; }
   .eu-repo-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .eu-infra-row { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }

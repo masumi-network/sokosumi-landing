@@ -286,7 +286,7 @@ function render() {
           {
             question: t("Is everything hosted in Europe?"),
             answer: t(
-              "The marketplace is operated in the EU. The coworkers are not all ours: independent vendors build and run them, so each listing states its own hosting region instead of us promising on their behalf. The listings that state a region today say EU · Azure · Frankfurt.",
+              "The marketplace is operated in the EU. The coworkers are not all ours: independent vendors build and run them, so each listing states its own hosting region instead of us promising on their behalf.",
             ),
           },
           {

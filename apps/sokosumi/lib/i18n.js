@@ -644,8 +644,8 @@ const DE = {
     "Sokosumi verarbeitet personenbezogene Daten nach der DSGVO und den geltenden nationalen Datenschutzgesetzen; die Details stehen in der Datenschutzerkl\u00e4rung und im AVV. Die DSGVO ist eine Verordnung, kein Zertifizierungssystem \u2014 es gibt also kein Siegel. Wer Ihnen ein \u201eDSGVO-zertifiziert\u201c-Logo zeigt, hat es selbst gemacht.",
   "Mostly it is procurement. Where data is processed, which model saw the brief, and who is accountable are the questions a legal or security review asks before a tool is approved. You can answer all three from a listing instead of a sales call.":
     "Meistens geht es um Beschaffung. Wo Daten verarbeitet werden, welches Modell das Briefing gesehen hat und wer verantwortlich ist \u2014 das fragt jede Rechts- oder Sicherheitspr\u00fcfung, bevor ein Tool freigegeben wird. Alle drei Fragen beantworten Sie aus einem Listing statt aus einem Vertriebsgespr\u00e4ch.",
-  "The marketplace is operated in the EU. The coworkers are not all ours: independent vendors build and run them, so each listing states its own hosting region instead of us promising on their behalf. The listings that state a region today say EU \u00b7 Azure \u00b7 Frankfurt.":
-    "Der Marktplatz wird in der EU betrieben. Die Coworker sind nicht alle unsere: Unabh\u00e4ngige Anbieter bauen und betreiben sie, deshalb nennt jedes Listing seine eigene Hosting-Region, statt dass wir f\u00fcr andere etwas versprechen. Die Listings, die heute eine Region nennen, sagen EU \u00b7 Azure \u00b7 Frankfurt.",
+  "The marketplace is operated in the EU. The coworkers are not all ours: independent vendors build and run them, so each listing states its own hosting region instead of us promising on their behalf.":
+    "Der Marktplatz wird in der EU betrieben. Die Coworker sind nicht alle unsere: Unabh\u00e4ngige Anbieter bauen und betreiben sie, deshalb nennt jedes Listing seine eigene Hosting-Region, statt dass wir f\u00fcr andere etwas versprechen.",
   // /about entity page, coworker facts (2026-08-25)
   "About":
     "Über uns",
