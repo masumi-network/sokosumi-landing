@@ -285,9 +285,18 @@ export function getRecentByUrl(
 }
 
 /**
- * Returns every extraction (LLM-source only), most recent first. Used by
- * the /tools/design-md/gallery "all entries" view. Caps at `limit` for
- * sanity; we can paginate later if the table grows huge.
+ * Returns every extraction (LLM-source only), most recent first, one per
+ * brand. Used by the /tools/design-md/gallery "all entries" view and by
+ * /tools/design-md/api/extractions, which sokosumi.com renders its gallery,
+ * its analysis pages and its sitemap from.
+ *
+ * The brand grouping matters as much here as in getRecent(): without it
+ * notion.so and notion.com both shipped, which published two analysis pages
+ * for one company with the same <title> — and, because the consumer then
+ * cannot tell which "notion" is meant, gave them the slugs notion-so and
+ * notion-com instead of notion.
+ *
+ * Caps at `limit`; we can paginate later if the table grows huge.
  */
 export function getAll(limit = 100): SavedExtraction[] {
   const rows = db()
@@ -295,6 +304,7 @@ export function getAll(limit = 100): SavedExtraction[] {
       `
       SELECT id, url, hostname, name, primary_color, logo_url, screenshot IS NOT NULL AS has_screenshot, source, created_at
       FROM extractions
+      WHERE id IN (SELECT MAX(id) FROM extractions GROUP BY brand)
       ORDER BY created_at DESC
       LIMIT ?
     `,
