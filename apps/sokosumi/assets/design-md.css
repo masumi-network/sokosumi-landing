@@ -1025,7 +1025,7 @@
   border: 1px dashed var(--border);
   border-radius: 16px;
   margin-top: 24px;
-  min-height: 300px;
+  min-height: 320px;
   padding: 0;
 }
 
@@ -1043,7 +1043,7 @@
   display: grid;
   gap: 8px;
   justify-items: center;
-  min-height: 300px;
+  min-height: 320px;
   padding: 40px 24px;
   text-align: center;
 }
@@ -1197,24 +1197,199 @@
   color: var(--foreground);
 }
 
+/* The preview stage. Light, hairlined, the same surface language as the rest
+   of the site — the old ink panel was the heaviest thing on the page and it
+   framed both tools identically. */
 .tool-card-doc {
-  background: #0f1c25 var(--stage);
-  border: 0;
-  border-radius: 0;
-  margin: -20px -20px 0;
-  padding: 26px 22px 30px;
-  color: var(--muted-foreground);
   display: grid;
-  font-family: var(--mono);
-  font-size: 12.5px;
-  gap: 4px;
-  line-height: 1.5;
-  padding: 18px 20px;
+  place-items: center;
+  /* One height for every stage, so a taller preview cannot push its card's
+     copy out of line with the card beside it. */
+  min-height: 320px;
+  margin: -20px -20px 0;
+  padding: 26px 22px;
+  background: var(--muted);
+  border-bottom: 1px solid var(--border);
 }
 
-.tool-card-doc span:first-child {
+.tp {
+  display: grid;
+  gap: 14px;
+  width: 100%;
+  max-width: 320px;
+}
+
+/* --- Open Graph checker: the card it draws, plus the verdict ---------- */
+
+.tp-card {
+  display: block;
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+}
+
+.tp-shot {
+  position: relative;
+  display: block;
+  aspect-ratio: 1200 / 630;
+  background:
+    radial-gradient(90% 120% at 15% 10%, rgba(0, 164, 250, 0.35) 0%, transparent 60%),
+    linear-gradient(135deg, #2b5c78 0%, #12232c 55%, #0f0e0d 100%);
+}
+
+.tp-pill {
+  position: absolute;
+  left: 8px;
+  bottom: 8px;
+  padding: 2px 6px;
+  background: rgba(0, 0, 0, 0.55);
+  border-radius: 3px;
+  color: #fff;
+  font-size: 9.5px;
+  line-height: 1.4;
+}
+
+.tp-meta {
+  display: grid;
+  gap: 2px;
+  padding: 8px 10px 10px;
+  background: #f2f3f5;
+  border-top: 1px solid var(--border);
+}
+
+.tp-host {
+  color: var(--muted-foreground);
+  font-size: 9px;
+  letter-spacing: 0.06em;
+}
+
+.tp-title {
   color: var(--foreground);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.tp-desc {
+  overflow: hidden;
+  color: var(--muted-foreground);
+  font-size: 10.5px;
+  line-height: 1.3;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tp-verdict {
+  display: flex;
+  gap: 6px;
+}
+
+.tp-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 9px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-size: 11px;
   font-weight: 500;
+}
+
+.tp-chip::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.tp-chip.is-pass {
+  color: #2f6b45;
+}
+.tp-chip.is-warn {
+  color: #8a6100;
+}
+
+/* --- DESIGN.md: the spec sheet it writes ----------------------------- */
+
+.tp-dm {
+  gap: 16px;
+  padding: 16px 18px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+}
+
+.tp-swatches {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
+}
+
+.tp-swatches span {
+  height: 30px;
+  border-radius: var(--r-sm);
+  box-shadow: inset 0 0 0 1px rgba(15, 14, 13, 0.08);
+}
+
+.tp-type {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+
+.tp-aa {
+  color: var(--foreground);
+  font-size: 30px;
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.tp-type-meta {
+  display: grid;
+  gap: 1px;
+}
+
+.tp-type-meta b {
+  color: var(--foreground);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.tp-type-meta i {
+  color: var(--muted-foreground);
+  font-size: 10.5px;
+  font-style: normal;
+}
+
+.tp-tokens {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding-top: 13px;
+  border-top: 1px solid var(--border);
+}
+
+.tp-tokens span {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 4px;
+  padding: 3px 8px;
+  background: var(--muted);
+  border-radius: var(--r-sm);
+  color: var(--foreground);
+  font-family: var(--mono);
+  font-size: 10.5px;
+}
+
+.tp-tokens b {
+  color: var(--muted-foreground);
+  font-weight: 400;
 }
 
 .tool-card-copy {
@@ -1476,16 +1651,6 @@
    with the sample sitting on it as a light panel */
 .tools-list .tool-card { overflow: hidden; }
 /* one light panel on the stage, not a pill per line */
-.tool-card-code {
-  display: grid;
-  gap: 4px;
-  background: #fff;
-  border-radius: var(--r-md);
-  padding: 16px 18px;
-  box-shadow: none;
-}
-.tool-card-code > span:first-child { color: var(--foreground); font-weight: 500; }
-
 .dm-tool-sub {
   margin-top: 12px;
   max-width: 62ch;
