@@ -23,6 +23,9 @@ const MUTED = "#6b6a68";
 const HAIR = "rgba(15,14,13,0.14)";
 const PURPLE = "#2b5c78";
 const STAGE_DEEP = "linear-gradient(180deg, #0a0a0a 0%, #0f1c25 45%, #2c4452 100%)";
+// The same ramp turned across the diagonal, which suits a 1.91:1 frame better
+// than a vertical one: the light lands in the bottom-right, away from the text.
+const STAGE_ANGLED = "linear-gradient(118deg, #0a0a0a 0%, #0f1c25 44%, #24485c 78%, #2c4452 100%)";
 
 const FONTS = [300, 400, 500].map((weight) => ({
   name: "Inter",
@@ -76,98 +79,183 @@ function clamp(s, n) {
   return s.length > n ? s.slice(0, n - 1).trimEnd() + "…" : s;
 }
 
+// The card ground. Every layout sits on the same deep stage the site uses for
+// its CTA bands and product stages, which is the most recognisable thing
+// Sokosumi owns — and a dark card is the one that stops a thumb in a feed of
+// white ones. The old frame was grey paper with a 104px near-black bar welded
+// to the bottom: bottom-heavy, and it spent a sixth of the card repeating the
+// wordmark next to the domain.
+// The wordmark is already on the card, so a tag that only repeats it is noise.
+// The homepage ships eyebrow=Sokosumi and coworker pages ship
+// "AI coworker on Sokosumi"; both lose the brand here and keep the rest.
+function tagLabel(raw) {
+  const t = String(raw || "").replace(/\s+on\s+Sokosumi\s*$/i, "").trim();
+  return !t || /^sokosumi$/i.test(t) ? "" : clamp(t, 28);
+}
+
 function frame(children, opts) {
   const o = opts || {};
   return h(
     "div",
-    { width: W, height: H, display: "flex", flexDirection: "column", background: PAPER, color: INK, fontFamily: "Inter", padding: "56px 72px 120px", position: "relative" },
+    {
+      width: W,
+      height: H,
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "space-between",
+      color: "#ffffff",
+      fontFamily: "Inter",
+      padding: "56px 72px",
+      backgroundColor: "#0f1c25",
+      // Two stops of light: the stage ramp across the diagonal, and a soft
+      // steel bloom off the top-right so the field is not a flat wash.
+      backgroundImage: `radial-gradient(900px 520px at 88% 6%, rgba(0,164,250,0.20) 0%, rgba(0,164,250,0) 62%), ${STAGE_ANGLED}`,
+    },
     [
-      h("div", { display: "flex", flexDirection: "column", justifyContent: "center", flexGrow: 1 }, children),
-      // footer: mark + domain, hairline above
-      // The site closes every page on a deep-stage band; the share card does
-      // the same. Full bleed and square-cornered, like the stages on the site.
-      h("div", { position: "absolute", left: 0, right: 0, bottom: 0, height: 104, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 72px", backgroundColor: "#0f1c25", backgroundImage: STAGE_DEEP }, [
+      // ---- top rail: who this is, and what kind of page it is
+      h("div", { display: "flex", alignItems: "center", justifyContent: "space-between" }, [
         h("div", { display: "flex", alignItems: "center", gap: 14 }, [
-          h("img", { width: 36, height: 36, borderRadius: 9 }, null, { src: MARK }),
-          text("Sokosumi", { fontSize: 22, fontWeight: 500, color: "#ffffff" }),
+          h("img", { width: 38, height: 38, borderRadius: 10 }, null, { src: MARK }),
+          text("Sokosumi", { fontSize: 23, fontWeight: 500, color: "#ffffff", letterSpacing: -0.2 }),
         ]),
-        text(o.right || "sokosumi.com", { fontSize: 20, color: "rgba(255,255,255,0.62)" }),
+        tagLabel(o.tag)
+          ? h(
+              "div",
+              {
+                display: "flex",
+                alignItems: "center",
+                padding: "7px 16px",
+                borderRadius: 999,
+                border: "1px solid rgba(255,255,255,0.22)",
+                fontSize: 17,
+                fontWeight: 500,
+                color: "rgba(255,255,255,0.78)",
+              },
+              tagLabel(o.tag),
+            )
+          : null,
+      ].filter(Boolean)),
+
+      // ---- the card's actual content, given the whole middle
+      h("div", { display: "flex", flexDirection: "column", flexGrow: 1, justifyContent: "center", paddingTop: 28, paddingBottom: 28 }, children),
+
+      // ---- bottom rail: a hairline, then the URL. No second wordmark.
+      h("div", { display: "flex", flexDirection: "column" }, [
+        h("div", { display: "flex", height: 1, backgroundColor: "rgba(255,255,255,0.16)", marginBottom: 22 }, []),
+        h("div", { display: "flex", alignItems: "center", justifyContent: "space-between" }, [
+          text(o.right || "sokosumi.com", { fontSize: 21, color: "rgba(255,255,255,0.66)" }),
+          o.note ? text(clamp(o.note, 40), { fontSize: 19, color: "rgba(255,255,255,0.42)" }) : null,
+        ].filter(Boolean)),
       ]),
     ],
   );
 }
 
+// Competitor logos arrive as full-colour marks made for white, so they sit on
+// a white tile rather than being dropped straight onto the dark ground.
 function tile(src, name, size) {
-  const s = size || 96;
-  return h("div", { display: "flex", alignItems: "center", gap: 20 }, [
+  const s = size || 92;
+  return h("div", { display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 18 }, [
     src
-      ? h("img", { width: s, height: s, borderRadius: s * 0.22, border: `1px solid ${HAIR}`, background: "#fff", objectFit: "contain", padding: s * 0.12 }, null, { src })
-      : h("div", { width: s, height: s, borderRadius: s * 0.22, border: `1px solid ${HAIR}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: s * 0.4, fontWeight: 500 }, String(name || "?").slice(0, 1)),
-    text(name, { fontSize: 40, fontWeight: 500, letterSpacing: -0.5 }),
+      ? h("img", { width: s, height: s, borderRadius: s * 0.24, backgroundColor: "#ffffff", objectFit: "contain", padding: s * 0.14 }, null, { src })
+      : h(
+          "div",
+          { width: s, height: s, borderRadius: s * 0.24, backgroundColor: "#ffffff", color: INK, display: "flex", alignItems: "center", justifyContent: "center", fontSize: s * 0.42, fontWeight: 500 },
+          String(name || "?").slice(0, 1),
+        ),
+    text(clamp(name, 22), { fontSize: 30, fontWeight: 500, letterSpacing: -0.4, color: "#ffffff" }),
   ]);
 }
 
 const vsPill = () =>
-  h("div", { display: "flex", alignItems: "center", justifyContent: "center", padding: "8px 18px", borderRadius: 999, border: `1px solid ${HAIR}`, fontSize: 18, fontWeight: 500, letterSpacing: 2, color: MUTED }, "VS");
+  h(
+    "div",
+    { display: "flex", alignItems: "center", justifyContent: "center", width: 54, height: 54, borderRadius: 999, border: "1px solid rgba(255,255,255,0.24)", fontSize: 17, fontWeight: 500, letterSpacing: 1.5, color: "rgba(255,255,255,0.7)", marginTop: 19 },
+    "VS",
+  );
+
+// A headline sized to its own length, so a short title fills the card and a
+// long one still fits on three lines.
+const headline = (t, opts) => {
+  const o = opts || {};
+  const n = String(t || "").length;
+  const size = o.max ? Math.min(o.max, n > 62 ? 54 : n > 42 ? 66 : 80) : n > 62 ? 54 : n > 42 ? 66 : 80;
+  return text(clamp(t, 110), { fontSize: size, fontWeight: 300, lineHeight: 1.06, letterSpacing: -2.2, color: "#ffffff", maxWidth: o.width || 1000 });
+};
+
+const sub = (t, width) =>
+  text(clamp(t, 150), { fontSize: 26, color: "rgba(255,255,255,0.66)", marginTop: 26, lineHeight: 1.4, maxWidth: width || 880 });
 
 // ---- layouts ----
 async function layoutCompare(q) {
-  // Sokosumi vs <competitor>
   const logo = await dataUri(q.logo);
-  return frame([
-    h("div", { display: "flex", alignItems: "center", gap: 28 }, [tile(MARK_INK, "Sokosumi"), vsPill(), tile(logo, q.b || "")]),
-    text(clamp(q.title, 90), { fontSize: q.title && q.title.length > 60 ? 60 : 70, fontWeight: 300, lineHeight: 1.08, letterSpacing: -2.4, marginTop: 52, maxWidth: 1040 }),
-    q.sub ? text(clamp(q.sub, 120), { fontSize: 24, color: MUTED, marginTop: 22, lineHeight: 1.4, maxWidth: 900 }) : null,
-  ].filter(Boolean), { right: "sokosumi.com/compare" });
+  return frame(
+    [
+      h("div", { display: "flex", alignItems: "flex-start", gap: 30, marginBottom: 36 }, [tile(MARK_INK, "Sokosumi"), vsPill(), tile(logo, q.b || "")]),
+      headline(q.title, { max: 56 }),
+      q.sub ? text(clamp(q.sub, 90), { fontSize: 24, color: "rgba(255,255,255,0.66)", marginTop: 20, lineHeight: 1.35, maxWidth: 860 }) : null,
+    ].filter(Boolean),
+    { right: "sokosumi.com/compare", tag: "Comparison" },
+  );
 }
 
 async function layoutPair(q) {
   const [la, lb] = await Promise.all([dataUri(q.logoA), dataUri(q.logoB)]);
-  return frame([
-    h("div", { display: "flex", alignItems: "center", gap: 28 }, [tile(la, q.a || ""), vsPill(), tile(lb, q.b || "")]),
-    text(clamp(q.title, 90), { fontSize: q.title && q.title.length > 60 ? 60 : 70, fontWeight: 300, lineHeight: 1.08, letterSpacing: -2.4, marginTop: 52, maxWidth: 1040 }),
-    q.sub ? text(clamp(q.sub, 120), { fontSize: 24, color: MUTED, marginTop: 22, lineHeight: 1.4, maxWidth: 900 }) : null,
-  ].filter(Boolean), { right: "sokosumi.com/compare" });
+  return frame(
+    [
+      h("div", { display: "flex", alignItems: "flex-start", gap: 30, marginBottom: 36 }, [tile(la, q.a || ""), vsPill(), tile(lb, q.b || "")]),
+      headline(q.title, { max: 56 }),
+      q.sub ? text(clamp(q.sub, 90), { fontSize: 24, color: "rgba(255,255,255,0.66)", marginTop: 20, lineHeight: 1.35, maxWidth: 860 }) : null,
+    ].filter(Boolean),
+    { right: "sokosumi.com/compare", tag: "Comparison" },
+  );
 }
 
 async function layoutArticle(q) {
   const cover = await dataUri(q.img);
-  const wide = !cover;
-  return frame([
-    h("div", { display: "flex", gap: 48, alignItems: "flex-start" }, [
-      h("div", { display: "flex", flexDirection: "column", width: wide ? 1056 : 640 }, [
-        q.eyebrow ? text(q.eyebrow, { fontSize: 22, color: PURPLE, marginBottom: 22, fontWeight: 500 }) : null,
-        text(clamp(q.title, 110), { fontSize: q.title && q.title.length > 50 ? 52 : 60, fontWeight: 300, lineHeight: 1.1, letterSpacing: -1.8 }),
-        q.sub ? text(clamp(q.sub, 150), { fontSize: 24, color: MUTED, marginTop: 24, lineHeight: 1.4 }) : null,
+  return frame(
+    [
+      h("div", { display: "flex", gap: 56, alignItems: "center", width: "100%" }, [
+        h(
+          "div",
+          { display: "flex", flexDirection: "column", width: cover ? 620 : 1056 },
+          [headline(q.title, { width: cover ? 620 : 1000, max: cover ? 60 : 80 }), q.sub ? sub(q.sub, cover ? 620 : 880) : null].filter(Boolean),
+        ),
+        cover ? h("img", { width: 348, height: 348, borderRadius: 22, objectFit: "cover" }, null, { src: cover }) : null,
       ].filter(Boolean)),
-      cover ? h("img", { width: 360, height: 360, borderRadius: 20, objectFit: "cover", border: `1px solid ${HAIR}` }, null, { src: cover }) : null,
-    ].filter(Boolean)),
-  ], { right: q.right || "sokosumi.com" });
+    ],
+    { right: q.right || "sokosumi.com", tag: q.eyebrow || null },
+  );
 }
 
 async function layoutCoworker(q) {
   const portrait = await dataUri(q.img);
-  return frame([
-    h("div", { display: "flex", gap: 56, alignItems: "center", marginTop: 20 }, [
-      portrait
-        ? h("img", { width: 300, height: 300, borderRadius: 150, objectFit: "cover", border: `1px solid ${HAIR}` }, null, { src: portrait })
-        : h("div", { width: 300, height: 300, borderRadius: 150, border: `1px solid ${HAIR}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 120, fontWeight: 300 }, String(q.title || "?").slice(0, 1)),
-      h("div", { display: "flex", flexDirection: "column", width: 640 }, [
-        text(q.eyebrow || "AI coworker on Sokosumi", { fontSize: 22, color: MUTED, marginBottom: 18 }),
-        text(clamp(q.title, 40), { fontSize: 88, fontWeight: 300, lineHeight: 1, letterSpacing: -3 }),
-        q.sub ? text(clamp(q.sub, 80), { fontSize: 32, marginTop: 18, color: INK, fontWeight: 400 }) : null,
-        q.meta ? text(clamp(q.meta, 90), { fontSize: 22, marginTop: 14, color: MUTED }) : null,
-      ].filter(Boolean)),
-    ]),
-  ], { right: "sokosumi.com/ai-coworkers" });
+  return frame(
+    [
+      h("div", { display: "flex", gap: 56, alignItems: "center", width: "100%" }, [
+        portrait
+          ? h("img", { width: 292, height: 292, borderRadius: 146, objectFit: "cover" }, null, { src: portrait })
+          : h(
+              "div",
+              { width: 292, height: 292, borderRadius: 146, backgroundColor: "rgba(255,255,255,0.10)", border: "1px solid rgba(255,255,255,0.18)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 116, fontWeight: 300, color: "#ffffff" },
+              String(q.title || "?").slice(0, 1),
+            ),
+        h("div", { display: "flex", flexDirection: "column", width: 660 }, [
+          text(clamp(q.title, 40), { fontSize: 92, fontWeight: 300, lineHeight: 1, letterSpacing: -3, color: "#ffffff" }),
+          q.sub ? text(clamp(q.sub, 60), { fontSize: 34, marginTop: 20, color: "rgba(255,255,255,0.9)", fontWeight: 400 }) : null,
+          q.meta ? text(clamp(q.meta, 90), { fontSize: 23, marginTop: 16, color: "rgba(255,255,255,0.58)" }) : null,
+        ].filter(Boolean)),
+      ]),
+    ],
+    { right: "sokosumi.com/ai-coworkers", tag: q.eyebrow || "AI coworker" },
+  );
 }
 
 async function layoutPage(q) {
-  return frame([
-    q.eyebrow ? text(q.eyebrow, { fontSize: 22, color: PURPLE, marginBottom: 22, fontWeight: 500 }) : null,
-    text(clamp(q.title, 100), { fontSize: q.title && q.title.length > 50 ? 62 : 78, fontWeight: 300, lineHeight: 1.06, letterSpacing: -2.6, maxWidth: 1040 }),
-    q.sub ? text(clamp(q.sub, 160), { fontSize: 28, color: MUTED, marginTop: 28, lineHeight: 1.4, maxWidth: 960 }) : null,
-  ].filter(Boolean), { right: q.right || "sokosumi.com" });
+  return frame([headline(q.title), q.sub ? sub(q.sub, 940) : null].filter(Boolean), {
+    right: q.right || "sokosumi.com",
+    tag: q.eyebrow || null,
+  });
 }
 
 const LAYOUTS = { compare: layoutCompare, pair: layoutPair, article: layoutArticle, coworker: layoutCoworker, page: layoutPage };
@@ -180,7 +268,18 @@ async function render(query) {
   const layout = LAYOUTS[query.type] || layoutPage;
   const tree = await layout(query);
   const svg = await satori(tree, { width: W, height: H, fonts: FONTS });
-  const png = new Resvg(svg, { fitTo: { mode: "width", value: W } }).render().asPng();
+  const raw = new Resvg(svg, { fitTo: { mode: "width", value: W } }).render().asPng();
+  // resvg emits full-colour PNG, and the stage gradient does not compress in
+  // that form: 259 KB for a card that is one gradient and some text. Quantised
+  // to a palette it is 44 KB with no banding I can see at 1200×630, which
+  // matters because a crawler that times out fetching the image renders the
+  // card without one. Falls back to the raw PNG if sharp throws.
+  let png = raw;
+  try {
+    png = await sharp(raw).png({ palette: true, quality: 100, compressionLevel: 9 }).toBuffer();
+  } catch {
+    png = raw;
+  }
   if (pngCache.size > 200) pngCache.delete(pngCache.keys().next().value);
   pngCache.set(key, png);
   return png;
