@@ -274,6 +274,7 @@
 /* ---- preview panel ----------------------------------------------------- */
 
 .ogc-panel {
+  container: ogc-panel / inline-size;
   min-width: 0;
   background: var(--card);
   border: 1px solid var(--border);
@@ -293,18 +294,56 @@
   display: none;
 }
 
+/* The <symbol> sprite carries no visual weight of its own. */
+.ogc-sprite {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+.ogc-logo {
+  flex-shrink: 0;
+  fill: currentColor;
+}
+
+.ogc-plat {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .ogc-tabs button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   flex-shrink: 0;
   position: relative;
-  padding: 10px 13px 12px;
+  padding: 10px 9px 12px;
   border: 0;
   background: transparent;
   color: var(--muted-foreground);
   font: inherit;
-  font-size: 13.5px;
+  font-size: 13px;
   font-weight: 500;
   cursor: pointer;
   transition: color 160ms ease-out;
+}
+
+/* Seven tabs with logos do not fit at every width, and the width that matters
+ * is the panel's, not the viewport's: on a 1440px screen the two-column grid
+ * still leaves this strip under 600px. A viewport media query gets that wrong
+ * in both directions, so this is a container query on .ogc-panel.
+ *
+ * When it is tight the labels drop and the marks carry the tabs, except for the
+ * selected one, which keeps its label so the current platform is always named. */
+@container ogc-panel (max-width: 640px) {
+  .ogc-tabs button[data-tab]:not([aria-selected="true"]) span {
+    display: none;
+  }
+  .ogc-tabs button {
+    padding: 10px 11px 12px;
+  }
 }
 
 .ogc-tabs button:hover {
@@ -313,6 +352,10 @@
 
 .ogc-tabs button[aria-selected="true"] {
   color: var(--foreground);
+}
+
+.ogc-tabs button[data-tab="html"] span {
+  display: inline !important;
 }
 
 .ogc-tabs button[aria-selected="true"]::after {
@@ -429,11 +472,16 @@
 .ogc-x .ogc-noimg {
   aspect-ratio: 1200 / 628;
 }
+/* X's own overlay: bottom-left, 12px in from both edges, ~20px tall.
+ * Measured values, not invented — see polypane.app's writeup of the redesign. */
 .ogc-x .ogc-host-pill {
   position: absolute;
   left: 12px;
-  bottom: 56px;
-  padding: 1px 6px;
+  bottom: 12px;
+  height: 20px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 6px;
   background: rgba(0, 0, 0, 0.62);
   border-radius: 4px;
   color: #fff;
@@ -490,6 +538,14 @@
   line-height: 1.32;
   color: #000000e6;
 }
+.ogc-li .ogc-d {
+  margin-top: 3px;
+  color: #00000099;
+  font-size: 13px;
+  line-height: 1.34;
+  -webkit-line-clamp: 2;
+}
+
 .ogc-li .ogc-host {
   margin-top: 4px;
   color: #00000099;

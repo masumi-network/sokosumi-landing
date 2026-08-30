@@ -6,6 +6,11 @@
  * The previews are imitations, not screenshots: same crop, same clamp, same
  * order of information as the real product. That is what makes them useful —
  * you see the sentence that gets cut, not a mockup of a nice card.
+ *
+ * They track each platform's current DESKTOP rendering, which is a moving
+ * target: X alone changed its large card three times between 2023 and 2024.
+ * When one of them shifts, the fix belongs here and in PLATFORM_SPECS in
+ * templates/ogChecker.js, which has to agree with what these draw.
  */
 (function () {
   "use strict";
@@ -92,6 +97,11 @@
     x: {
       label: "X",
       note: "",
+      // Since the October 2023 redesign the large card is the image and nothing
+      // else: X hides og:title and og:description and overlays the bare domain
+      // in the bottom-left corner. Rendering a title and description under the
+      // image, which is what this used to do, showed a card X stopped drawing
+      // years ago. The small card still carries its text.
       render: function (p) {
         var t = p.twitter;
         if (!t.large) {
@@ -114,18 +124,13 @@
           imageHtml(t.image, t.title) +
           '<span class="ogc-host-pill">' +
           esc(p.host) +
-          "</span>" +
-          '<div class="ogc-body"><div class="ogc-t">' +
-          esc(t.title || "Untitled") +
-          "</div>" +
-          (t.description ? '<div class="ogc-d">' + esc(t.description) + "</div>" : "") +
-          "</div></article>"
+          "</span></article>"
         );
       },
     },
     linkedin: {
       label: "LinkedIn",
-      note: "LinkedIn dropped the description from feed cards — the headline and the image carry the whole post.",
+      note: "LinkedIn reads og: only and ignores twitter: entirely. An og:image under 401px wide gets a small thumbnail instead of this card.",
       render: function (p) {
         return (
           '<article class="ogc-card ogc-li">' +
@@ -133,6 +138,7 @@
           '<div class="ogc-body"><div class="ogc-t">' +
           esc(p.title || "Untitled") +
           "</div>" +
+          (p.description ? '<div class="ogc-d">' + esc(p.description) + "</div>" : "") +
           '<div class="ogc-host">' +
           esc(p.host) +
           "</div></div></article>"
@@ -179,10 +185,12 @@
     },
     discord: {
       label: "Discord",
-      note: "Discord shows the most text of any platform — up to four lines — and colours the left rule from og:theme-color when it is set.",
+      note: "Discord shows the most text of any platform, up to four lines, and tints the left rule with the page's theme-color. Without one it uses its own blurple.",
       render: function (p) {
         return (
-          '<article class="ogc-card ogc-dc">' +
+          '<article class="ogc-card ogc-dc"' +
+          (p.themeColor ? ' style="--ogc-accent:' + esc(p.themeColor) + '"' : "") +
+          ">" +
           '<div class="ogc-host">' +
           esc(p.siteName || p.host) +
           "</div>" +
@@ -239,7 +247,7 @@
     var note = platform.note;
     if (tab === "x") {
       note = data.preview.twitter.large
-        ? "twitter:card is summary_large_image, so X renders the wide card below."
+        ? "summary_large_image is set. X hides the title and description on this card and overlays the domain, so the image has to carry the message on its own."
         : 'twitter:card is "' +
           data.preview.twitter.card +
           '", so X falls back to this small square card. Set summary_large_image for the wide one.';
@@ -248,17 +256,43 @@
       platform.render(data.preview) + (note ? '<p class="ogc-stage-note">' + esc(note) + "</p>" : "");
   }
 
+  // The glyphs come from the <symbol> sprite the server emits once at the top
+  // of the page, so the tab strip and the spec table share one copy.
+  var LOGO_COLOR = {
+    facebook: "#0866FF",
+    x: "#000000",
+    linkedin: "#0A66C2",
+    whatsapp: "#25D366",
+    slack: "#4A154B",
+    discord: "#5865F2",
+  };
+
   function renderTabs() {
     tabs.innerHTML = TAB_ORDER.map(function (key) {
       var label = key === "html" ? "HTML tags" : PLATFORMS[key].label;
+      var mark =
+        key === "html"
+          ? ""
+          : '<svg class="ogc-logo" width="15" height="15" style="color:' +
+            LOGO_COLOR[key] +
+            '" aria-hidden="true"><use href="#ogc-logo-' +
+            key +
+            '"/></svg>';
+      // The label span is hidden by a container query when the strip is tight,
+      // which would leave an unselected tab with no accessible name at all, so
+      // the name lives on the button rather than in its text.
       return (
         '<button type="button" role="tab" data-tab="' +
         key +
+        '" aria-label="' +
+        esc(label) +
         '" aria-selected="' +
         (key === tab) +
         '">' +
+        mark +
+        "<span>" +
         esc(label) +
-        "</button>"
+        "</span></button>"
       );
     }).join("");
   }

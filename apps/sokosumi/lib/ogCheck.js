@@ -473,7 +473,10 @@ function buildChecks(data) {
       } else if (image.width === IDEAL.width && image.height === IDEAL.height) {
         add("pass", "og:image is exactly 1200×630", "og:image", "The size every major platform is built around. Nothing gets cropped.");
       } else if (image.width < 600) {
-        add("warn", "og:image is low resolution", "og:image", `${image.width}×${image.height}. Under 600px wide, platforms fall back to the small square thumbnail instead of the wide card.`);
+        // The two thresholds are different and both documented: Facebook wants
+        // 600px for the wide card, LinkedIn 401px.
+        const alsoLinkedIn = image.width < 401 ? " LinkedIn does the same below 401px." : " LinkedIn still gets its wide card above 401px.";
+        add("warn", "og:image is low resolution", "og:image", `${image.width}×${image.height}. Facebook falls back to a small square thumbnail under 600px wide instead of the wide card.${alsoLinkedIn}`);
       } else if (ratio < 1.6 || ratio > 2.2) {
         add("warn", "og:image aspect ratio is off", "og:image", `${image.width}×${image.height} is ${ratio.toFixed(2)}:1. Cards are cropped to 1.91:1, so the top and bottom of this image will be cut.`);
       } else {
@@ -578,6 +581,13 @@ function buildChecks(data) {
 // ---------------------------------------------------------------------------
 // The preview model: what each platform will actually show.
 
+// Only colours a stylesheet can be trusted with. The value lands in an inline
+// style on the client, so anything else has to be dropped rather than escaped.
+function safeCssColor(value) {
+  const v = String(value || "").trim();
+  return /^(#[0-9a-f]{3,8}|rgba?\([\d\s.,%/]+\)|hsla?\([\d\s.,%/deg]+\)|[a-z]{3,20})$/i.test(v) ? v : "";
+}
+
 function previewModel(data) {
   const { tags, title, finalUrl, image } = data;
   const ogTitle = firstValue(tags, "og:title");
@@ -612,6 +622,10 @@ function previewModel(data) {
     imageOk: Boolean(image && image.ok && image.format !== "svg"),
     imageWidth: image ? image.width : 0,
     imageHeight: image ? image.height : 0,
+    // Discord tints an embed's left rule with the page's theme-color. Read it
+    // so the Discord preview shows the real colour rather than always the
+    // default blurple, which is what the note under it had been claiming.
+    themeColor: safeCssColor(firstValue(tags, "theme-color")),
     twitter: {
       card: twCard || "summary",
       large: twCard === "summary_large_image",
