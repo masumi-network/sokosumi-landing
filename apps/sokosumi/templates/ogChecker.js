@@ -4,98 +4,88 @@ const { esc, pageStart, pageEnd, SITE } = shell;
 
 const PATH = "/tools/og-checker";
 
-// The reference table is the reason this page is worth reading when the tool
-// itself has already told you what is wrong: the numbers are hard to find and
-// scattered across six sets of platform docs.
+// The table is the one piece of reference copy that earns its place: these
+// numbers are scattered across six sets of platform docs and nobody has them
+// memorised. Everything else on the page should be the tool.
 const PLATFORM_SPECS = [
   {
     platform: "Facebook",
-    image: "1200×630 · 1.91:1 · under 8 MB",
-    title: "~88 characters desktop, ~66 mobile",
-    description: "~200 characters desktop, ~110 mobile",
-    reads: "og:*, falls back to <title> and meta description",
+    image: "1200×630 · max 8 MB",
+    title: "~88 desktop, ~66 mobile",
+    description: "~200 desktop, ~110 mobile",
+    reads: "og:, then <title> and meta description",
   },
   {
     platform: "X (Twitter)",
-    image: "1200×628 · 1.91:1 · under 5 MB",
-    title: "~70 characters",
-    description: "Hidden on the large card",
-    reads: "twitter:*, falls back to og:*",
+    image: "1200×628 · max 5 MB",
+    title: "~70",
+    description: "hidden on the large card",
+    reads: "twitter:, then og:",
   },
   {
     platform: "LinkedIn",
-    image: "1200×627 · 1.91:1 · under 5 MB",
-    title: "~119 characters, 2 lines shown",
-    description: "Not shown in the feed any more",
-    reads: "og:* only — it ignores twitter:*",
+    image: "1200×627 · max 5 MB",
+    title: "~119, 2 lines shown",
+    description: "not shown in the feed",
+    reads: "og: only, ignores twitter:",
   },
   {
     platform: "WhatsApp",
-    image: "At least 300×200 · under ~600 KB for the large card",
-    title: "~65 characters",
-    description: "~150 characters",
-    reads: "og:*",
+    image: "min 300×200 · under ~600 KB for the big card",
+    title: "~65",
+    description: "~150",
+    reads: "og:",
   },
   {
     platform: "Slack",
-    image: "Any; rendered under the text, max 360px wide",
-    title: "Full title shown",
+    image: "any, sits under the text at 360px",
+    title: "full title",
     description: "~3 lines",
-    reads: "og:*, uses og:site_name as the eyebrow",
+    reads: "og:, plus og:site_name as the eyebrow",
   },
   {
     platform: "Discord",
-    image: "1200×630 · under 8 MB",
-    title: "256 characters",
-    description: "350 characters, ~4 lines shown",
-    reads: "og:* plus theme-color for the left rule",
+    image: "1200×630 · max 8 MB",
+    title: "256",
+    description: "350, about 4 lines",
+    reads: "og:, plus theme-color",
   },
 ];
 
 const FAQ = [
   {
-    question: "What is an Open Graph checker?",
+    question: "What does an Open Graph tester check?",
     answer:
-      "An Open Graph checker fetches a page the way Facebook, X, LinkedIn, WhatsApp, Slack and Discord fetch it, reads the og: and twitter: meta tags out of the HTML, and shows you the card each platform will build from them. It catches the mistakes you cannot see in a browser: a missing og:image, a relative image URL, an image that is the wrong size, or a description that gets cut mid-sentence.",
-  },
-  {
-    question: "Is this Open Graph checker free?",
-    answer:
-      "Yes. No account, no sign-up, no credit card, no limit on how many pages you check. It runs on Sokosumi, where our paid product is AI coworkers that do marketing work — this tool is free because it is useful, not because it is a trial.",
-  },
-  {
-    question: "Can I use this instead of the Facebook Sharing Debugger?",
-    answer:
-      "For checking your tags, yes, and it covers five more platforms in the same pass. There is one thing it cannot do: Facebook caches your card, and only Facebook can clear that cache. When you have fixed your tags here, run the URL through Facebook's own Sharing Debugger once and press Scrape Again so Facebook picks up the new version.",
+      "It fetches your page the way a social crawler does, reads the og: and twitter: tags out of the HTML, and draws the card each platform builds from them. Browsers hide these mistakes: a relative og:image path, a 400px image or a description that dies mid-word all look fine until someone shares the link.",
   },
   {
     question: "Is there still a Twitter card validator?",
     answer:
-      "No. X retired the Twitter Card Validator in 2023, which is why so many people end up here. This checker reads twitter:card, twitter:title, twitter:description and twitter:image, applies X's own fallback rules to og: tags where the twitter: ones are missing, and renders both the large and the small card so you can see which one you are actually going to get.",
+      "Not a working one. Twitter dropped the Card Validator's visual preview in August 2022 and the tool itself stopped working at some point after, which is how most people end up here. This reads twitter:card, twitter:title, twitter:description and twitter:image, applies X's fallback to your og: tags where those are missing, and draws both the wide and the small card. Only twitter:card is worth setting by hand; X reads og: for the rest.",
   },
   {
-    question: "How do I fix a LinkedIn preview that shows the old image?",
+    question: "Can this replace the Facebook Sharing Debugger?",
     answer:
-      "LinkedIn caches a URL's preview for about seven days and nothing you change on your page clears it early. Fix the tags, confirm them here, then paste the URL into LinkedIn's own Post Inspector, which forces a re-crawl. If you cannot wait, adding a harmless query string to the URL makes LinkedIn treat it as a new page.",
+      "For reading your tags, yes, across five more platforms in one pass. It can't clear Facebook's cache, though. Fix the tags here, then run the URL through Facebook's debugger once and press Scrape Again.",
+  },
+  {
+    question: "Why does LinkedIn still show my old preview?",
+    answer:
+      "LinkedIn caches a URL's preview and nothing you change on the page clears it. Confirm the tags here, then paste the URL into LinkedIn's Post Inspector to force a re-crawl. Posts already published keep the old card.",
   },
   {
     question: "What size should an og:image be?",
     answer:
-      "1200×630 pixels, which is 1.91:1, under 1 MB, and served as PNG or JPEG over https. That single size works on every platform in the table above. Anything under 600px wide makes Facebook and LinkedIn fall back to a small square thumbnail, and anything under 200px on a side is rejected outright.",
+      "1200×630, which is 1.91:1, PNG or JPEG over https, and under 1 MB. Below 600px wide Facebook and LinkedIn drop to a small square thumbnail; below 200px on a side Facebook refuses it. File-size ceilings differ, so keep it under 5 MB if one image has to work everywhere.",
   },
   {
-    question: "Why does my link preview not show an image at all?",
+    question: "Why is my link preview missing its image?",
     answer:
-      "In order of how often it happens: og:image is a relative path rather than a full https:// URL; the image is behind auth or a firewall that blocks crawlers; it is an SVG, which no major platform renders; it is over the 8 MB limit; or the platform cached an older version of the page. This checker tells you which one of those it is.",
-  },
-  {
-    question: "Do I need twitter: tags if I already have og: tags?",
-    answer:
-      "Only one: twitter:card set to summary_large_image. X reads og:title, og:description and og:image when the twitter: equivalents are missing, but it will not guess that you want the wide card. Everything else is optional and worth adding only when you want X to show something different from the other platforms.",
+      "Usually og:image is a relative path rather than a full https:// URL. After that: the image sits behind auth or a bot filter, it's an SVG, or the platform cached an older version of the page. The report above says which.",
   },
 ];
 
-const SNIPPET = `<span class="ogc-cmt">&lt;!-- The eight tags that cover every platform --&gt;</span>
+const SNIPPET = `<span class="ogc-cmt">&lt;!-- Covers every platform in the table --&gt;</span>
 &lt;title&gt;Your page title, under 60 characters&lt;/title&gt;
 &lt;meta name="description" content="What this page is, in about 150 characters."&gt;
 
@@ -120,7 +110,7 @@ function render() {
     "@type": "SoftwareApplication",
     "@id": `${SITE}${PATH}#software`,
     name: "Sokosumi Open Graph Checker",
-    alternateName: "OG image checker and social preview tool",
+    alternateName: "OG image checker and social preview tester",
     applicationCategory: "DeveloperApplication",
     operatingSystem: "Web",
     url: `${SITE}${PATH}`,
@@ -150,7 +140,7 @@ function render() {
     pageStart({
       title: "Open Graph checker — free OG image and social preview tester | Sokosumi",
       description:
-        "Free Open Graph checker. Paste a URL to see how it will look on Facebook, X, LinkedIn, WhatsApp, Slack and Discord, and get every og:image, og:title and twitter:card problem in one report. No sign-up.",
+        "Free Open Graph checker. Paste a URL to see how it looks on Facebook, X, LinkedIn, WhatsApp, Slack and Discord, and get every og:image, og:title and twitter:card problem in one report. No sign-up.",
       path: PATH,
       englishOnly: true,
       breadcrumb: crumbs,
@@ -164,9 +154,9 @@ function render() {
       },
     }) +
     `<section class="ogc-head" id="checker">
-      <p class="ogc-overline">Free tool · no sign-up</p>
-      <h1>See your link before anyone else does</h1>
-      <p class="ogc-lede">Paste a URL. We fetch it the way a social crawler does, read every Open Graph and Twitter card tag, and show you the card that Facebook, X, LinkedIn, WhatsApp, Slack and Discord will each build from it — plus everything that is missing, mis-sized or about to get truncated.</p>
+      <p class="ogc-overline">Free · no sign-up</p>
+      <h1>Open Graph checker</h1>
+      <p class="ogc-lede">Paste a URL and see the card Facebook, X, LinkedIn, WhatsApp, Slack and Discord will each build from your tags, plus every og: and twitter: problem worth fixing.</p>
 
       <form class="ogc-bar" id="ogcForm" novalidate>
         <label class="sr-only" for="ogcUrl">URL to check</label>
@@ -210,23 +200,13 @@ function render() {
       </div>
     </section>
 
-    <section class="ogc-section" aria-labelledby="ogc-how">
-      <h2 id="ogc-how">What the checker actually does</h2>
-      <p class="ogc-sub">Not a screenshot service. It requests your page from a server, so it sees exactly what a crawler sees — including the tags your JavaScript adds after load, if your server renders them, and the ones it does not.</p>
-      <ol class="ogc-steps">
-        <li><span>01</span><h3>Fetches the page</h3><p>Follows every redirect, stops at the first non-HTML response, and reads the <code>&lt;head&gt;</code> — so a tag hidden behind a 301 chain still gets found.</p></li>
-        <li><span>02</span><h3>Probes the image</h3><p>Downloads the first bytes of your <code>og:image</code> to read its real format, pixel dimensions and file weight from the file header, not from what the tags claim.</p></li>
-        <li><span>03</span><h3>Renders six cards</h3><p>Applies each platform's own crop, clamp and fallback rules, so you see the sentence that gets cut rather than a generic mockup.</p></li>
-      </ol>
-    </section>
-
     <section class="ogc-section" aria-labelledby="ogc-specs">
-      <h2 id="ogc-specs">What each platform reads, and where it cuts</h2>
-      <p class="ogc-sub">The same URL becomes six different cards. These are the limits the previews above are built on — the recommended og:image size, the character counts, and which set of tags each platform trusts.</p>
+      <h2 id="ogc-specs">OG image size and text limits by platform</h2>
+      <p class="ogc-sub">One image at 1200×630, PNG or JPEG, under 1 MB over https satisfies every row below.</p>
       <div class="ogc-table-wrap">
         <table class="ogc-table">
           <thead>
-            <tr><th scope="col">Platform</th><th scope="col">og:image</th><th scope="col">Title</th><th scope="col">Description</th><th scope="col">Tags it reads</th></tr>
+            <tr><th scope="col">Platform</th><th scope="col">og:image</th><th scope="col">Title</th><th scope="col">Description</th><th scope="col">Reads</th></tr>
           </thead>
           <tbody>
             ${PLATFORM_SPECS.map(
@@ -236,31 +216,12 @@ function render() {
           </tbody>
         </table>
       </div>
-      <p class="ogc-sub" style="margin-top:18px">One image at <strong>1200×630</strong>, PNG or JPEG, under 1 MB, served over https, satisfies every row. Everything else is a variation on that.</p>
     </section>
 
     <section class="ogc-section" aria-labelledby="ogc-fix">
       <h2 id="ogc-fix">The tags worth having</h2>
-      <p class="ogc-sub">There are dozens of Open Graph properties and almost nobody needs more than these. Paste them into your <code>&lt;head&gt;</code>, fill in your values, and run the page back through the checker.</p>
+      <p class="ogc-sub">Open Graph has dozens of properties. Almost nobody needs more than these.</p>
       <pre class="ogc-snippet">${SNIPPET}</pre>
-      <div class="ogc-ref">
-        <div>
-          <h3>og:image is the whole ballgame</h3>
-          <p>It is the only tag that changes the size of your link in someone's feed. A card with a 1200×630 image occupies several times the space of one without, and a relative path — <code>/og.png</code> instead of <code>https://…/og.png</code> — is the single most common reason an image never appears.</p>
-        </div>
-        <div>
-          <h3>twitter:card is the only X tag you need</h3>
-          <p>X reads your og: tags for everything else. Without <code>summary_large_image</code> it renders the small square card, which looks like an afterthought next to every other post in the timeline.</p>
-        </div>
-        <div>
-          <h3>Caches are the reason your fix "did not work"</h3>
-          <p>Facebook, LinkedIn and Slack all cache a URL's preview for days. Correct tags here plus an old card there means the tags are fine and the cache is stale — re-scrape the URL in that platform's own tool.</p>
-        </div>
-        <div>
-          <h3>Write the description for mobile</h3>
-          <p>Every desktop limit is generous and every mobile limit is not. Around 110 characters survives everywhere; past 200 you are writing for a feed nobody is reading on.</p>
-        </div>
-      </div>
     </section>
 
     <section class="ogc-section" id="faq" aria-labelledby="ogc-faq">
@@ -273,9 +234,9 @@ function render() {
       </div>
     </section>` +
     shell.ctaBand({
-      heading: "The card is fixed. Now someone has to write the next one.",
+      heading: "The card is fixed. Someone still has to write the next one.",
       subheading:
-        "Sokosumi is a marketplace of AI coworkers who take a brief and hand back a finished file — the launch copy, the social set, the landing page. The tools here are free; the coworkers are what we actually sell.",
+        "Sokosumi's AI coworkers turn a brief into a finished file: the launch copy, the social set, the landing page.",
       ctaLabel: "Sign up free",
     }) +
     pageEnd({ scripts: ["/assets/og-checker.js"], englishOnly: true })

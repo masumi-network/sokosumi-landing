@@ -374,6 +374,7 @@ const KB = 1024;
 const IDEAL = { width: 1200, height: 630 };
 const MIN_IMAGE = 200; // Facebook refuses anything smaller
 const MAX_IMAGE_BYTES = 8 * KB * KB; // Facebook's documented ceiling
+const TIGHT_IMAGE_BYTES = 5 * KB * KB; // X and LinkedIn both stop here
 const RENDERABLE = new Set(["image/png", "image/jpeg", "image/jpg", "image/gif", "image/webp"]);
 
 const kb = (n) => (n >= KB * KB ? `${(n / (KB * KB)).toFixed(1)} MB` : `${Math.round(n / KB)} KB`);
@@ -483,7 +484,11 @@ function buildChecks(data) {
     }
 
     if (image.bytes > MAX_IMAGE_BYTES) {
-      add("error", "og:image is over 8 MB", "og:image", `${kb(image.bytes)}. Facebook's limit is 8 MB and will refuse this file.`);
+      add("error", "og:image is over 8 MB", "og:image", `${kb(image.bytes)}. Facebook's documented ceiling is 8 MB, and X and LinkedIn stop at 5 MB, so no major platform will take this file.`);
+    } else if (image.bytes > TIGHT_IMAGE_BYTES) {
+      // Between 5 and 8 MB is the trap: Facebook accepts it, so the card looks
+      // fine where most people check, and X and LinkedIn quietly drop it.
+      add("error", "og:image is over 5 MB", "og:image", `${kb(image.bytes)}. Facebook allows up to 8 MB so it will look fine there, but X and LinkedIn both stop at 5 MB and will render the card without an image.`);
     } else if (image.bytes > 2 * KB * KB) {
       add("warn", "og:image is heavy", "og:image", `${kb(image.bytes)}. Crawlers time out on slow images; keep the file under about 1 MB.`);
     } else if (image.bytes) {

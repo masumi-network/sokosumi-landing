@@ -140,6 +140,13 @@
 
 /* ---- loading ----------------------------------------------------------- */
 
+/* `display` in a class rule beats the UA sheet's `[hidden] { display: none }`,
+ * so without this the strip announces "Fetching the page…" on a page nobody
+ * has typed into yet. Same trap as .seat-submit and .plan-team-unit. */
+.ogc-loading[hidden] {
+  display: none;
+}
+
 .ogc-loading {
   display: flex;
   align-items: center;
@@ -780,44 +787,6 @@
   text-wrap: pretty;
 }
 
-.ogc-steps {
-  display: grid;
-  gap: 20px;
-  margin-top: 34px;
-}
-
-@media (min-width: 760px) {
-  .ogc-steps {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-}
-
-.ogc-steps li {
-  padding-top: 16px;
-  border-top: 1px solid var(--border);
-  list-style: none;
-}
-
-.ogc-steps span {
-  display: block;
-  margin-bottom: 10px;
-  color: var(--primary);
-  font-family: var(--mono, ui-monospace, SFMono-Regular, Menlo, monospace);
-  font-size: 12px;
-}
-
-.ogc-steps h3 {
-  font-size: 16px;
-  font-weight: 500;
-}
-
-.ogc-steps p {
-  margin-top: 6px;
-  color: var(--muted-foreground);
-  font-size: 14.5px;
-  line-height: 1.6;
-}
-
 .ogc-table-wrap {
   margin-top: 30px;
   overflow-x: auto;
@@ -862,46 +831,6 @@
 
 .ogc-table td:first-child {
   color: var(--foreground);
-}
-
-.ogc-ref {
-  display: grid;
-  gap: 22px;
-  margin-top: 32px;
-}
-
-@media (min-width: 760px) {
-  .ogc-ref {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 22px 40px;
-  }
-}
-
-.ogc-ref > div {
-  padding-top: 16px;
-  border-top: 1px solid var(--border);
-}
-
-.ogc-ref h3 {
-  font-size: 16px;
-  font-weight: 500;
-}
-
-.ogc-ref p {
-  margin-top: 7px;
-  color: var(--muted-foreground);
-  font-size: 14.5px;
-  line-height: 1.6;
-  text-wrap: pretty;
-}
-
-.ogc-ref code,
-.ogc-section p code {
-  padding: 1px 5px;
-  background: var(--muted);
-  border-radius: var(--r-sm);
-  font-family: var(--mono, ui-monospace, SFMono-Regular, Menlo, monospace);
-  font-size: 0.88em;
 }
 
 .ogc-snippet {

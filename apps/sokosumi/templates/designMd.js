@@ -154,7 +154,7 @@ async function render() {
         <p class="dm-gallery-count" id="designMdGalleryCount" aria-live="polite">${countLabel}</p>
       </header>
       <div class="dm-gallery${archiveList.length > 12 ? " is-collapsed" : ""}" id="designMdGallery" aria-live="polite">${galleryHtml}</div>
-      <button class="btn btn-outline dm-gallery-more" id="designMdGalleryMore" type="button"${archiveList.length > 12 ? "" : " hidden"}>Show all</button>
+      <button class="btn btn-outline dm-gallery-more" id="designMdGalleryMore" type="button"${archiveList.length > 12 ? "" : " hidden"}>Show 20 more</button>
     </section>
 
     <section class="dm-how" aria-labelledby="design-md-how">

@@ -25,7 +25,9 @@
   var galleryCount = document.getElementById("designMdGalleryCount");
   var galleryMore = document.getElementById("designMdGalleryMore");
   var archive = [];
-  var archiveExpanded = false;
+  var PAGE = 12; // first screenful
+  var STEP = 20; // each press of the button
+  var archiveShown = PAGE;
   var submittedUrl = "";
   var pollTimer = null;
   var initialAnalysis = new URLSearchParams(location.search).get("analysis");
@@ -527,19 +529,25 @@
 
   function renderGallery() {
     gallery.replaceChildren();
-    var shown = archiveExpanded ? archive : archive.slice(0, 12);
-    shown.forEach(function (entry) {
+    var count = Math.min(archiveShown, archive.length);
+    archive.slice(0, count).forEach(function (entry) {
       gallery.appendChild(galleryCard(entry));
     });
     // The server ships every card and hides past the twelfth with
-    // .is-collapsed, so a crawler sees all of them. Once this renders the list
-    // itself the count is already correct, and leaving the class on kept
-    // "Show all" hiding the 96 cards it had just added.
-    gallery.classList.toggle("is-collapsed", !archiveExpanded);
+    // .is-collapsed so a crawler sees all of them. Once this renders the list
+    // itself the count is already right, and leaving the class on would hide
+    // the cards the button had just added.
+    gallery.classList.remove("is-collapsed");
     galleryCount.textContent = archive.length
-      ? archive.length + (archive.length === 1 ? " saved analysis" : " saved analyses")
+      ? (count < archive.length ? count + " of " + archive.length : String(archive.length)) +
+        (archive.length === 1 ? " saved analysis" : " saved analyses")
       : "No saved analyses yet";
-    galleryMore.hidden = archive.length <= 12 || archiveExpanded;
+
+    var left = archive.length - count;
+    galleryMore.hidden = left <= 0;
+    // Only relabel while it is still a button someone can read; otherwise the
+    // last press leaves "Show last 0" sitting in the accessibility tree.
+    if (left > 0) galleryMore.textContent = left > STEP ? "Show " + STEP + " more" : "Show last " + left;
   }
 
   async function openArchiveEntry(id, button) {
@@ -578,8 +586,14 @@
   }
 
   galleryMore.addEventListener("click", function () {
-    archiveExpanded = true;
+    var firstNew = archive.length && Math.min(archiveShown, archive.length);
+    archiveShown += STEP;
     renderGallery();
+    // Put focus on the first card that just appeared rather than leaving it on
+    // a button that may have moved or gone, so keyboard and screen-reader users
+    // land where the new content is.
+    var card = gallery.children[firstNew];
+    if (card) card.setAttribute("tabindex", "-1"), card.focus({ preventScroll: true });
   });
 
   loadGallery();

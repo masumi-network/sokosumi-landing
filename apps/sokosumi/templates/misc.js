@@ -235,7 +235,15 @@ async function sitemap() {
       return [];
     }
   };
-  const analyses = await require("../lib/designMdArchive").list().then((l) => l.map((e) => `/tools/design-md/analysis/${e.slug}`)).catch(() => []);
+  // The gallery pages through every saved brand; the sitemap publishes the
+  // newest slice of them. These are real analyses rather than thin pages, but
+  // most are one-off submissions of small personal sites, and putting every
+  // one of several hundred into the index is not what this sitemap is for.
+  const SITEMAP_ANALYSES = 250;
+  const analyses = await require("../lib/designMdArchive")
+    .list()
+    .then((l) => l.slice(0, SITEMAP_ANALYSES).map((e) => `/tools/design-md/analysis/${e.slug}`))
+    .catch(() => []);
   analyses.forEach((u) => urls.add(u));
   const fetchers = [
     cms.getCoworkers,
