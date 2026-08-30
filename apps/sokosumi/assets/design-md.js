@@ -104,7 +104,23 @@
 
   var progressLine = progress ? progress.querySelector(".dm-progress-line span") : null;
   var progressSteps = progress ? progress.querySelectorAll("li[data-step]") : [];
+  var statusTextEl = null;
   var elapsedEl = null;
+
+  // `status.textContent = message` wipes every child, so the elapsed counter
+  // cannot live as a sibling appended to the same node — it gets detached on
+  // the next phase change and the ticker then updates an orphan. The message
+  // and the counter each own a span.
+  function setStatusText(message) {
+    if (!statusTextEl) {
+      status.textContent = "";
+      statusTextEl = el("span", "dm-status-text");
+      elapsedEl = el("span", "dm-elapsed", "0s");
+      status.appendChild(statusTextEl);
+      status.appendChild(elapsedEl);
+    }
+    statusTextEl.textContent = message;
+  }
   var phaseKey = "queued";
   var phaseStartedAt = 0;
   var runStartedAt = 0;
@@ -155,11 +171,7 @@
         );
       }
     }
-    status.textContent = message;
-    if (!elapsedEl) {
-      elapsedEl = el("span", "dm-elapsed", "0s");
-      status.appendChild(elapsedEl);
-    }
+    setStatusText(message);
     startTicking();
     tick();
   }
@@ -171,7 +183,7 @@
     if (progressLine) progressLine.style.transform = "scaleX(1)";
     progress.dataset.phase = "done";
     for (var i = 0; i < progressSteps.length; i += 1) progressSteps[i].setAttribute("data-state", "done");
-    status.textContent = "Done.";
+    setStatusText("Done.");
     window.setTimeout(done, 320);
   }
 

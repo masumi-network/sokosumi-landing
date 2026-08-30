@@ -315,6 +315,10 @@
   gap: 14px;
 }
 
+.dm-status-text {
+  min-width: 0;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .dm-progress-line::after,
   .dm-progress li[data-state="active"] span::after {
