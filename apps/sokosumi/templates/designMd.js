@@ -25,11 +25,17 @@ const FAQ = [
 async function render() {
   // The analysis pages were reachable only after this gallery had been filled by
   // script, which left 100+ indexable pages with no link to them in the HTML.
-  // They are rendered server-side now and collapsed with CSS — the same pattern
-  // the agent and guide lists use, so a crawler sees every one while a reader
-  // still gets twelve.
+  // They are rendered server-side and collapsed with CSS — the same pattern the
+  // agent and guide lists use, so a crawler sees them while a reader gets twelve.
+  //
+  // Bounded, though. The archive is past a thousand brands, and rendering all of
+  // them put 638 KB of cards into the HTML that the client then threw away on
+  // load to show its first twelve. This matches the sitemap's own cap: the newest
+  // slice is what we want crawled, and the button pages through the rest from
+  // /api/design-md/gallery.
+  const SERVER_RENDERED = 120;
   const archiveList = await archive.list().catch(() => []);
-  const galleryHtml = archiveList.map(galleryCard).join("");
+  const galleryHtml = archiveList.slice(0, SERVER_RENDERED).map(galleryCard).join("");
   const countLabel = archiveList.length
     ? `${archiveList.length} ${archiveList.length === 1 ? "saved analysis" : "saved analyses"}`
     : "No saved analyses yet";
