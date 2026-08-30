@@ -23,23 +23,25 @@ html {
   font-family: var(--_serviceplan-styles---demi), 'Avenir LT Pro', sans-serif;
 }
 
+.language-toggle a,
 .language-toggle span {
   cursor: pointer;
   transition: opacity 0.2s ease;
   line-height: 1;
+  text-decoration: none;
 }
 
-.language-toggle span.active {
+.language-toggle .active {
   font-weight: 700;
   color: #fff;
 }
 
-.language-toggle span.inactive {
+.language-toggle .inactive {
   font-weight: 400;
   color: rgba(255, 255, 255, 0.5);
 }
 
-.language-toggle span.inactive:hover {
+.language-toggle .inactive:hover {
   color: rgba(255, 255, 255, 0.75);
 }
 
@@ -1740,7 +1742,7 @@ margin: 0rem !important;
             margin-bottom: 20px;
         }
 
-        .chat-welcome h1 {
+        .chat-welcome > div:first-child {
             font-size: 22px;
             font-weight: 400;
             color: #171717;
@@ -2953,5 +2955,299 @@ margin: 0rem !important;
 
   .sp-testimonial-role {
     font-size: 11px;
+  }
+}
+/* ---------------------------------------------------------------
+   Landing pages (.lp-*)
+   Layout primitives for the SEO landing pages. Deliberately scoped
+   so they cannot collide with the imported Webflow stylesheet.
+   --------------------------------------------------------------- */
+
+.lp-hero {
+  max-width: 60rem;
+  margin: 0 auto;
+  padding: 6rem 2.5rem 7rem;
+  color: #fff;
+  text-align: left;
+}
+
+.lp-eyebrow {
+  font-family: var(--_serviceplan-styles---demi), 'Avenir LT Pro', sans-serif;
+  font-size: 0.8125rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #ff4b4f;
+  margin: 0 0 1.25rem;
+}
+
+.lp-h1 {
+  /* German compounds overflow narrow viewports without this. */
+  overflow-wrap: break-word;
+  hyphens: auto;
+  font-size: clamp(2.25rem, 5vw, 3.75rem);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  margin: 0;
+  color: #fff;
+}
+
+.lp-lede {
+  font-size: clamp(1.0625rem, 1.6vw, 1.375rem);
+  line-height: 1.55;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.82);
+  margin: 1.5rem 0 0;
+  max-width: 44rem;
+}
+
+.lp-main {
+  max-width: 60rem;
+  margin: 0 auto;
+  padding: 4.5rem 2.5rem 1rem;
+  color: #0a0a0a;
+}
+
+.lp-section {
+  margin-bottom: 4rem;
+}
+
+.lp-h2 {
+  overflow-wrap: break-word;
+  hyphens: auto;
+  font-size: clamp(1.5rem, 2.6vw, 2rem);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  text-align: left;
+  color: #0a0a0a;
+  margin: 0 0 1.25rem;
+}
+
+.lp-body {
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  font-weight: 300;
+  color: #333;
+  margin: 0 0 1.125rem;
+  max-width: 46rem;
+}
+
+.lp-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+  gap: 1.25rem;
+  margin-top: 1.75rem;
+}
+
+.lp-card {
+  border: 1px solid #e6e6e6;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  background: #fafafa;
+}
+
+.lp-card-link {
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.lp-card-link:hover {
+  border-color: #ff4b4f;
+  background: #fff;
+}
+
+.lp-card-title {
+  font-size: 1.0625rem;
+  font-weight: 700;
+  line-height: 1.3;
+  margin: 0 0 0.5rem;
+  color: #0a0a0a;
+}
+
+.lp-card-text {
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  font-weight: 300;
+  color: #555;
+  margin: 0;
+}
+
+.lp-steps {
+  list-style: none;
+  margin: 1.75rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 1.5rem;
+}
+
+.lp-step {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.lp-step-num {
+  flex: 0 0 auto;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
+  background: #ff4b4f;
+  color: #fff;
+  font-size: 0.875rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 0.1rem;
+}
+
+.lp-spec {
+  margin: 1.75rem 0 0;
+  border-top: 1px solid #e6e6e6;
+}
+
+.lp-spec-row {
+  display: grid;
+  grid-template-columns: minmax(9rem, 15rem) 1fr;
+  gap: 1.5rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid #e6e6e6;
+}
+
+.lp-spec-row dt {
+  font-weight: 700;
+  font-size: 0.9375rem;
+  color: #0a0a0a;
+}
+
+.lp-spec-row dd {
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  font-weight: 300;
+  color: #555;
+}
+
+.lp-faq {
+  margin-top: 1.75rem;
+  border-top: 1px solid #e6e6e6;
+}
+
+.lp-faq-item {
+  padding: 1.5rem 0;
+  border-bottom: 1px solid #e6e6e6;
+}
+
+.lp-faq-q {
+  font-size: 1.0625rem;
+  font-weight: 700;
+  line-height: 1.35;
+  margin: 0 0 0.625rem;
+  color: #0a0a0a;
+}
+
+.lp-quote {
+  margin: 0 0 4rem;
+  padding: 1.75rem 0 1.75rem 1.75rem;
+  border-left: 3px solid #ff4b4f;
+}
+
+.lp-quote blockquote {
+  border-left: 0;
+  margin: 0;
+  padding: 0;
+  font-size: 1.25rem;
+  line-height: 1.5;
+  font-weight: 300;
+  text-align: left;
+  color: #0a0a0a;
+}
+
+.lp-quote figcaption {
+  margin-top: 0.875rem;
+  font-size: 0.875rem;
+  text-align: left;
+  color: #777;
+}
+
+.lp-cta {
+  background: #0a0a0a;
+  color: #fff;
+  margin: 3rem 1.25rem 0;
+  border-radius: 2.5rem;
+}
+
+.lp-cta-inner {
+  max-width: 55rem;
+  margin: 0 auto;
+  padding: 5rem 2.5rem;
+}
+
+.lp-cta-heading {
+  font-size: clamp(1.75rem, 3.2vw, 2.5rem);
+  text-align: left;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  margin: 0 0 1rem;
+  color: #fff;
+}
+
+.lp-cta-text {
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.75);
+  margin: 0 0 2.25rem;
+  max-width: 40rem;
+}
+
+.lp-form-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.lp-form .form_label {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.lp-form-legal {
+  font-size: 0.75rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.55);
+  margin: 1rem 0 0;
+}
+
+.lp-form-legal a {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.lp-form-done {
+  font-size: 1.125rem;
+  font-weight: 300;
+  color: #fff;
+}
+
+@media screen and (max-width: 767px) {
+  .lp-hero {
+    padding: 3.5rem 1.25rem 4rem;
+  }
+  .lp-main {
+    padding: 3rem 1.25rem 1rem;
+  }
+  .lp-cta {
+    margin: 2rem 0.5rem 0;
+    border-radius: 1.5rem;
+  }
+  .lp-cta-inner {
+    padding: 3rem 1.5rem;
+  }
+  .lp-form-fields,
+  .lp-spec-row {
+    grid-template-columns: 1fr;
   }
 }
