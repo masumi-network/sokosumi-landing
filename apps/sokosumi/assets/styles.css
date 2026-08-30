@@ -1064,11 +1064,16 @@ html[lang="de"] .prose blockquote::before { content: "Beispiel"; }
 .blk-cta h2 { font-weight: 300; font-size: clamp(30px, 3.5vw, 48px); letter-spacing: -0.025em; line-height: 1.1; max-width: 22ch; text-wrap: balance; }
 .blk-cta p { font-size: 16px; color: rgba(255, 255, 255, 0.6); }
 .blk-cta .btn-primary { background: #fff; color: var(--ink); }
-/* a few coworker faces so the ink band reads as people, not a wall */
+/* a few coworker faces so the ink band reads as people, not a wall.
+   No ring: an --ink border drew a hard black outline on every portrait, and
+   the band's gradient is nowhere near --ink for most of its height, so it read
+   as an outline rather than as the gap between overlapping circles it was
+   meant to be. The overlap tightens from 12px to 6px to compensate — each
+   portrait carries its own colour, which separates them well enough. */
 .cta-faces { display: inline-flex; align-items: center; }
 .cta-faces img {
   width: 40px; height: 40px; border-radius: 999px; object-fit: cover;
-  border: 2px solid var(--ink); margin-right: -12px; display: block;
+  margin-right: -6px; display: block;
 }
 .cta-faces img:last-child { margin-right: 0; }
 
