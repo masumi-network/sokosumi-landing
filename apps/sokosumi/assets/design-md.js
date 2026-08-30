@@ -531,6 +531,11 @@
     shown.forEach(function (entry) {
       gallery.appendChild(galleryCard(entry));
     });
+    // The server ships every card and hides past the twelfth with
+    // .is-collapsed, so a crawler sees all of them. Once this renders the list
+    // itself the count is already correct, and leaving the class on kept
+    // "Show all" hiding the 96 cards it had just added.
+    gallery.classList.toggle("is-collapsed", !archiveExpanded);
     galleryCount.textContent = archive.length
       ? archive.length + (archive.length === 1 ? " saved analysis" : " saved analyses")
       : "No saved analyses yet";
