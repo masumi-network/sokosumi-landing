@@ -86,10 +86,105 @@
     submitLoading.hidden = !busy;
   }
 
+  // ---- progress ---------------------------------------------------------
+  //
+  // An analysis takes 30-60 seconds and the old bar moved only when the phase
+  // changed, so it sat frozen at one position for almost all of it. It now
+  // eases forward continuously toward the ceiling of the current phase and
+  // never reaches it, which is the honest shape: always moving, never lying
+  // about being finished.
+
+  var PHASES = {
+    queued: { floor: 0.04, ceiling: 0.24, tau: 6000, index: 0 },
+    running: { floor: 0.24, ceiling: 0.82, tau: 26000, index: 1 },
+    finishing: { floor: 0.82, ceiling: 0.97, tau: 9000, index: 2 },
+    done: { floor: 1, ceiling: 1, tau: 1, index: 3 },
+  };
+  var STEP_ORDER = ["queued", "running", "finishing"];
+
+  var progressLine = progress ? progress.querySelector(".dm-progress-line span") : null;
+  var progressSteps = progress ? progress.querySelectorAll("li[data-step]") : [];
+  var elapsedEl = null;
+  var phaseKey = "queued";
+  var phaseStartedAt = 0;
+  var runStartedAt = 0;
+  var tickTimer = null;
+  var shown = 0;
+
+  function tick() {
+    var phase = PHASES[phaseKey] || PHASES.queued;
+    var age = Date.now() - phaseStartedAt;
+    // Asymptotic: fast at first, then ever-smaller steps toward the ceiling.
+    var target = phase.ceiling - (phase.ceiling - phase.floor) * Math.exp(-age / phase.tau);
+    // Never go backwards, even if a poll reports an earlier phase than the
+    // one we had already eased into.
+    shown = Math.max(shown, target);
+    if (progressLine) progressLine.style.transform = "scaleX(" + shown.toFixed(4) + ")";
+    if (elapsedEl) {
+      var secs = Math.round((Date.now() - runStartedAt) / 1000);
+      elapsedEl.textContent = secs < 60 ? secs + "s" : Math.floor(secs / 60) + "m " + (secs % 60) + "s";
+    }
+  }
+
+  function startTicking() {
+    if (tickTimer) return;
+    tickTimer = window.setInterval(tick, 200);
+  }
+
+  function stopTicking() {
+    if (tickTimer) window.clearInterval(tickTimer);
+    tickTimer = null;
+  }
+
   function setPhase(phase, message) {
     progress.hidden = false;
-    progress.dataset.phase = phase;
+    if (!runStartedAt) {
+      runStartedAt = Date.now();
+      shown = 0;
+    }
+    if (progress.dataset.phase !== phase) {
+      progress.dataset.phase = phase;
+      phaseStartedAt = Date.now();
+      phaseKey = phase;
+      var reached = PHASES[phase] ? PHASES[phase].index : 0;
+      for (var i = 0; i < progressSteps.length; i += 1) {
+        var at = STEP_ORDER.indexOf(progressSteps[i].getAttribute("data-step"));
+        progressSteps[i].setAttribute(
+          "data-state",
+          at < reached ? "done" : at === reached ? "active" : "pending",
+        );
+      }
+    }
     status.textContent = message;
+    if (!elapsedEl) {
+      elapsedEl = el("span", "dm-elapsed", "0s");
+      status.appendChild(elapsedEl);
+    }
+    startTicking();
+    tick();
+  }
+
+  // Run the bar to full and let it be seen there before the result replaces it.
+  function finishProgress(done) {
+    stopTicking();
+    shown = 1;
+    if (progressLine) progressLine.style.transform = "scaleX(1)";
+    progress.dataset.phase = "done";
+    for (var i = 0; i < progressSteps.length; i += 1) progressSteps[i].setAttribute("data-state", "done");
+    status.textContent = "Done.";
+    window.setTimeout(done, 320);
+  }
+
+  function resetProgress() {
+    stopTicking();
+    runStartedAt = 0;
+    phaseStartedAt = 0;
+    shown = 0;
+    phaseKey = "queued";
+    progress.dataset.phase = "";
+    if (progressLine) progressLine.style.transform = "";
+    for (var i = 0; i < progressSteps.length; i += 1) progressSteps[i].setAttribute("data-state", "pending");
+    if (elapsedEl) elapsedEl.textContent = "0s";
   }
 
   function stopPolling() {
@@ -209,6 +304,7 @@
 
   function renderResult(data) {
     stopPolling();
+    stopTicking();
     setBusy(false);
     progress.hidden = true;
     clearError();
@@ -252,8 +348,10 @@
     try {
       var data = await jsonFetch("/api/design-md/jobs/" + encodeURIComponent(jobId));
       if (data.status === "done") {
-        renderResult(data);
-        loadGallery();
+        finishProgress(function () {
+          renderResult(data);
+          loadGallery();
+        });
         return;
       }
       if (data.status === "failed") {
@@ -262,18 +360,22 @@
       if (attempt >= 120) {
         throw new Error("This analysis is taking longer than expected. Try again in a few minutes.");
       }
-      if (data.status === "running" && attempt > 20) {
-        setPhase("finishing", "The analysis is nearly ready. We are writing the file.");
+      // Elapsed seconds, not poll count: the old `attempt > 20` needed 50s of
+      // polling to admit the third step, which most runs never reached.
+      var elapsed = runStartedAt ? Date.now() - runStartedAt : 0;
+      if (data.status === "running" && elapsed > 22000) {
+        setPhase("finishing", "Nearly there. Writing the DESIGN.md file.");
       } else if (data.status === "running") {
-        setPhase("running", "The page is open. We are reading its visual system now.");
+        setPhase("running", "The page is open. Reading its colours, type and spacing.");
       } else {
-        setPhase("queued", "Your analysis is queued. It will start automatically.");
+        setPhase("queued", "Queued. Opening the page in a remote browser.");
       }
       pollTimer = window.setTimeout(function () {
         poll(jobId, attempt + 1);
-      }, 2500);
+      }, 2000);
     } catch (caught) {
       setBusy(false);
+      resetProgress();
       progress.hidden = true;
       showError(caught.message || "The website could not be analyzed.");
     }
@@ -288,7 +390,8 @@
     initialAnalysis = null;
     urlInput.value = submittedUrl;
     setBusy(true);
-    setPhase("queued", "Your analysis is queued. It will start automatically.");
+    resetProgress();
+    setPhase("queued", "Queued. Opening the page in a remote browser.");
 
     var data = await jsonFetch("/api/design-md", {
       method: "POST",
@@ -296,7 +399,9 @@
       body: JSON.stringify({ url: submittedUrl }),
     });
     if (data.status === "done") {
-      renderResult(Object.assign({ url: submittedUrl }, data));
+      finishProgress(function () {
+        renderResult(Object.assign({ url: submittedUrl }, data));
+      });
       return;
     }
     if (!data.jobId) throw new Error("The analysis service returned an incomplete response.");
@@ -307,6 +412,7 @@
     event.preventDefault();
     submitUrl(urlInput.value).catch(function (caught) {
       setBusy(false);
+      resetProgress();
       progress.hidden = true;
       showError(caught.message || "The website could not be analyzed.");
     });
@@ -349,6 +455,7 @@
 
   another.addEventListener("click", function () {
     result.hidden = true;
+    resetProgress();
     progress.hidden = true;
     clearError();
     urlInput.disabled = false;

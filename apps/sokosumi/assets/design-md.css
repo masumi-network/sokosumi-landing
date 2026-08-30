@@ -162,19 +162,26 @@
 }
 
 .dm-progress-line {
-  height: 2px;
+  position: relative;
+  height: 3px;
   overflow: hidden;
   background: var(--muted);
 }
 
+/* Width is driven from JS (see assets/design-md.js), which eases it forward on
+ * every tick. The three data-phase rules below are the no-JS fallback and the
+ * pre-tick starting point; an inline transform always wins over them.
+ *
+ * A bar that only moves when the phase changes spends 45 of a 50-second run
+ * frozen at one position, which reads as a hang rather than as work. */
 .dm-progress-line span {
   display: block;
   width: 100%;
   height: 100%;
   background: var(--primary);
-  transform: scaleX(0.16);
+  transform: scaleX(0.04);
   transform-origin: left;
-  transition: transform 420ms var(--ease);
+  transition: transform 600ms linear;
 }
 
 .dm-progress[data-phase="running"] .dm-progress-line span {
@@ -183,6 +190,37 @@
 
 .dm-progress[data-phase="finishing"] .dm-progress-line span {
   transform: scaleX(0.92);
+}
+
+.dm-progress[data-phase="done"] .dm-progress-line span {
+  transform: scaleX(1);
+}
+
+/* A highlight travelling along the filled part, so the bar reads as working
+ * even in the seconds where the easing has almost nothing left to give. */
+.dm-progress-line::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.85) 50%,
+    transparent 100%
+  );
+  transform: translateX(-100%);
+  animation: dm-sheen 1.6s ease-in-out infinite;
+}
+
+.dm-progress[data-phase="done"] .dm-progress-line::after {
+  animation: none;
+  opacity: 0;
+}
+
+@keyframes dm-sheen {
+  to {
+    transform: translateX(100%);
+  }
 }
 
 .dm-progress ol {
@@ -216,18 +254,75 @@
   font-variant-numeric: tabular-nums;
 }
 
-.dm-progress[data-phase="queued"] [data-step="queued"],
-.dm-progress[data-phase="running"] [data-step="running"],
-.dm-progress[data-phase="finishing"] [data-step="finishing"] {
+/* Steps carry their own state now. Marking only the current one threw away
+ * the thing a stepper is for — the sense that something is behind you. */
+.dm-progress li[data-state="active"],
+.dm-progress li[data-state="done"] {
   color: var(--foreground);
 }
 
-.dm-progress[data-phase="queued"] [data-step="queued"] span,
-.dm-progress[data-phase="running"] [data-step="running"] span,
-.dm-progress[data-phase="finishing"] [data-step="finishing"] span {
+.dm-progress li[data-state="active"] span {
   color: var(--card);
   background: var(--primary);
   border-color: var(--primary);
+}
+
+.dm-progress li[data-state="active"] span::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border: 1px solid var(--primary);
+  border-radius: 999px;
+  opacity: 0.5;
+  animation: dm-pulse 1.8s ease-out infinite;
+}
+
+.dm-progress li span {
+  position: relative;
+}
+
+.dm-progress li[data-state="done"] span {
+  color: var(--primary);
+  border-color: var(--primary);
+  background: var(--primary-soft);
+}
+
+@keyframes dm-pulse {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.55;
+  }
+  70% {
+    transform: scale(1.25);
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* The elapsed counter. Long runs are fine; unaccounted-for ones are not. */
+.dm-elapsed {
+  margin-left: auto;
+  color: var(--muted-foreground);
+  font-size: 12.5px;
+  font-variant-numeric: tabular-nums;
+}
+
+.dm-progress > p {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dm-progress-line::after,
+  .dm-progress li[data-state="active"] span::after {
+    animation: none;
+  }
+  .dm-progress-line::after {
+    opacity: 0;
+  }
 }
 
 .dm-progress > p {
