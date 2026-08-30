@@ -188,11 +188,19 @@ export default function LandingPage({
           ))}
         </main>
 
-        <section className="lp-cta" id="free-analysis">
-          <div className="lp-cta-inner">
-            <h2 className="lp-cta-heading">{content.cta.heading}</h2>
-            <p className="lp-cta-text">{content.cta.text}</p>
-            <AnalysisForm locale={locale} />
+        <section id="free-analysis">
+          <div className="padding-global">
+            <div className="padding-section-medium">
+              <div className="container-large">
+                <div className="lp-cta">
+                  <div className="lp-cta-inner">
+                    <h2 className="lp-cta-heading">{content.cta.heading}</h2>
+                    <p className="lp-cta-text">{content.cta.text}</p>
+                    <AnalysisForm locale={locale} />
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 

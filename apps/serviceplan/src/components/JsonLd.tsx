@@ -21,7 +21,7 @@ export function organizationSchema(locale: Locale): Json {
     "@id": ORGANIZATION_ID,
     name: "Serviceplan Agents",
     url: absolute(ROUTES.home[locale]),
-    logo: absolute("/images/sp-logo.png"),
+    logo: absolute("/images/apple-touch-icon-256.png"),
     description:
       locale === "de"
         ? "KI-Coworker fuer Marketing-Research, Projektmanagement und Strategie, entwickelt von Plan.Net Studios der Serviceplan Group."
