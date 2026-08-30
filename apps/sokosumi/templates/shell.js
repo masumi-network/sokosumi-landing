@@ -1026,6 +1026,7 @@ function footerHtml(opts) {
             <div class="foot-col">
               <h2 class="foot-h">${esc(t("Free tools"))}</h2>
               <ul>
+                <li><a href="/tools/og-checker">${esc(t("Open Graph checker"))}</a></li>
                 <li><a href="/tools/design-md">${esc(t("DESIGN.md generator"))}</a></li>
                 <li><a href="/tools">${esc(t("All tools"))}</a></li>
               </ul>

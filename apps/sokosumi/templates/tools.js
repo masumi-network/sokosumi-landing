@@ -4,6 +4,13 @@ const { esc, attr, icon, pageStart, pageEnd, SITE } = shell;
 
 const TOOLS = [
   {
+    href: "/tools/og-checker",
+    name: "Open Graph checker",
+    text: "See how any link will look on Facebook, X, LinkedIn, WhatsApp, Slack and Discord.",
+    meta: "Free \u00b7 no sign-up",
+    preview: ["og:title", "og:description", "og:image", "\u2014", "1200 \u00d7 630", "twitter:card", "summary_large_image"],
+  },
+  {
     href: "/tools/design-md",
     name: "DESIGN.md generator",
     text: "Turn any website into design context for AI coding agents.",

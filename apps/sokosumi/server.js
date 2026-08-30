@@ -39,6 +39,8 @@ const contactTpl = require("./templates/contact");
 const designMdTpl = require("./templates/designMd");
 const designMdArchive = require("./lib/designMdArchive");
 const toolsTpl = require("./templates/tools");
+const ogCheckerTpl = require("./templates/ogChecker");
+const ogCheck = require("./lib/ogCheck");
 
 const port = process.env.PORT || 3000;
 const root = __dirname;
@@ -55,6 +57,11 @@ const DESIGN_MD_API_BASE = (process.env.MASUMI_DESIGN_MD_API_BASE || "https://ww
 const DESIGN_MD_API_KEY = process.env.MASUMI_DESIGN_MD_API_KEY || "";
 const DESIGN_MD_RATE_LIMIT = Number(process.env.DESIGN_MD_RATE_LIMIT) || 6;
 const designMdRequests = new Map();
+// The OG checker is cheap (one page fetch plus a ranged image read) so its
+// ceiling is far higher than the generator's — high enough that nobody
+// checking their own site in a normal session will ever meet it.
+const OG_CHECK_RATE_LIMIT = Number(process.env.OG_CHECK_RATE_LIMIT) || 60;
+const ogCheckRequests = new Map();
 
 function publicWebsiteUrl(value) {
   let parsed;
@@ -113,20 +120,23 @@ function readJsonBody(req, maxBytes = 8192) {
   });
 }
 
-function designMdRateLimited(ip) {
+function hourlyRateLimited(store, limit, ip) {
   const now = Date.now();
   const windowStart = now - 60 * 60 * 1000;
-  const hits = (designMdRequests.get(ip) || []).filter((time) => time > windowStart);
-  if (hits.length >= DESIGN_MD_RATE_LIMIT) return true;
+  const hits = (store.get(ip) || []).filter((time) => time > windowStart);
+  if (hits.length >= limit) return true;
   hits.push(now);
-  designMdRequests.set(ip, hits);
-  if (designMdRequests.size > 2000) {
-    for (const [key, times] of designMdRequests) {
-      if (!times.some((time) => time > windowStart)) designMdRequests.delete(key);
+  store.set(ip, hits);
+  if (store.size > 2000) {
+    for (const [key, times] of store) {
+      if (!times.some((time) => time > windowStart)) store.delete(key);
     }
   }
   return false;
 }
+
+const designMdRateLimited = (ip) => hourlyRateLimited(designMdRequests, DESIGN_MD_RATE_LIMIT, ip);
+const ogCheckRateLimited = (ip) => hourlyRateLimited(ogCheckRequests, OG_CHECK_RATE_LIMIT, ip);
 
 async function designMdFetch(pathname, options = {}) {
   const response = await fetch(`${DESIGN_MD_API_BASE}${pathname}`, {
@@ -591,6 +601,7 @@ const routes = [
   { m: (s) => s.length === 1 && s[0] === "compare" && {}, h: compareTpl.index },
   { m: (s) => s.length === 2 && s[0] === "compare" && { slug: s[1] }, h: compareTpl.detail },
   { m: (s) => s.length === 1 && s[0] === "tools" && {}, h: toolsTpl.render },
+  { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "og-checker" && {}, h: ogCheckerTpl.render },
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "design-md" && {}, h: designMdTpl.render },
   { m: (s) => s.length === 4 && s[0] === "tools" && s[1] === "design-md" && s[2] === "analysis" && { slug: s[3] }, h: designMdTpl.analysis },
   { m: (s) => s.length === 1 && s[0] === "product" && {}, h: pagesTpl.productHub },
@@ -1085,6 +1096,31 @@ const assetsDir = path.join(root, "assets");
             }, JSON.stringify(data));
           } catch {
             return send(req, res, 502, { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" }, JSON.stringify({ error: "This saved analysis is unavailable right now." }));
+          }
+        }
+
+        // The OG checker's only backend. A GET so a result URL is shareable and
+        // so a CDN can collapse the stampede when one link goes round a team.
+        if (urlPath === "/api/og-check") {
+          const json = (status, payload, cache) =>
+            send(req, res, status, {
+              "Content-Type": "application/json; charset=utf-8",
+              "Cache-Control": cache || "no-store",
+            }, JSON.stringify(payload));
+
+          if (req.method !== "GET" && req.method !== "HEAD") {
+            return json(405, { error: "Use GET." });
+          }
+          if (ogCheckRateLimited(clientIp(req))) {
+            return json(429, { error: "That is a lot of checks in one hour. Give it a few minutes." });
+          }
+          try {
+            const report = await ogCheck.inspect(query.url);
+            return json(200, report, "public, max-age=60, s-maxage=300");
+          } catch (error) {
+            return json(error.status && error.status >= 400 && error.status < 600 ? error.status : 502, {
+              error: error.message || "That check did not work. Try again.",
+            });
           }
         }
 
