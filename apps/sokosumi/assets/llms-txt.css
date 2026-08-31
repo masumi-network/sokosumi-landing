@@ -1,0 +1,862 @@
+/* /tools/llms-txt — the llms.txt checker.
+ *
+ * Shares its chrome with /tools/og-checker deliberately: the two tools do the
+ * same job in the same shape — paste a URL, get a report beside a rendering of
+ * what we found — and a reader who has used one should not have to relearn the
+ * other. Layout, tabs, score pills and the report list are the same components
+ * under a different prefix. What is specific to this tool is at the bottom:
+ * the outline, the link table and the source view.
+ */
+
+.llms-tool-page {
+  min-width: 0;
+}
+
+/* ---- head + input ------------------------------------------------------ */
+
+.lt-head {
+  padding: clamp(40px, 6vw, 76px) 0 clamp(24px, 3vw, 36px);
+}
+
+.lt-overline {
+  color: var(--primary);
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 14px;
+}
+
+.lt-head h1 {
+  max-width: 18ch;
+  font-size: clamp(36px, 5.6vw, 62px);
+  font-weight: 300;
+  letter-spacing: -0.035em;
+  line-height: 1.04;
+  text-wrap: balance;
+}
+
+.lt-lede {
+  max-width: 62ch;
+  margin-top: 22px;
+  font-size: clamp(16px, 1.8vw, 19px);
+  line-height: 1.55;
+  color: var(--muted-foreground);
+  text-wrap: pretty;
+}
+
+.lt-bar {
+  display: flex;
+  gap: 10px;
+  margin-top: clamp(26px, 3.5vw, 40px);
+  padding: 10px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+}
+
+.lt-bar input {
+  flex: 1;
+  min-width: 0;
+  height: 46px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: var(--r-md);
+  background: transparent;
+  color: var(--foreground);
+  font: inherit;
+  font-size: 16px;
+}
+
+.lt-bar input::placeholder {
+  color: rgba(15, 14, 13, 0.38);
+}
+
+.lt-bar input:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: -1px;
+}
+
+.lt-submit {
+  flex-shrink: 0;
+  height: 46px;
+  padding: 0 22px;
+  border: 0;
+  border-radius: var(--r-md);
+  background: var(--primary);
+  color: #fff;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 160ms ease-out;
+}
+
+.lt-submit:hover:not(:disabled) {
+  background: #24506a;
+}
+
+.lt-submit:disabled {
+  opacity: 0.55;
+  cursor: progress;
+}
+
+.lt-try {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 14px;
+  font-size: 13px;
+  color: var(--muted-foreground);
+}
+
+.lt-try button {
+  padding: 4px 10px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted-foreground);
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  transition:
+    color 160ms ease-out,
+    border-color 160ms ease-out;
+}
+
+.lt-try button:hover {
+  color: var(--foreground);
+  border-color: var(--primary);
+}
+
+.lt-error {
+  margin-top: 16px;
+  padding: 12px 14px;
+  border: 1px solid rgba(176, 42, 42, 0.28);
+  border-radius: var(--r-md);
+  background: rgba(176, 42, 42, 0.05);
+  color: #8f2020;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* ---- loading ----------------------------------------------------------- */
+
+/* `display` in a class rule beats the UA sheet's `[hidden] { display: none }`,
+ * so without this the strip announces "Fetching the page…" on a page nobody
+ * has typed into yet. Same trap as .seat-submit and .plan-team-unit. */
+.lt-loading[hidden] {
+  display: none;
+}
+
+.lt-loading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: clamp(40px, 8vw, 80px) 0;
+  border-top: 1px solid var(--border);
+  color: var(--muted-foreground);
+  font-size: 14.5px;
+}
+
+.lt-spin {
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--border);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: ogc-spin 700ms linear infinite;
+}
+
+@keyframes ogc-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lt-spin {
+    animation-duration: 2s;
+  }
+}
+
+/* ---- result shell ------------------------------------------------------ */
+
+.lt-result {
+  padding-bottom: clamp(40px, 6vw, 72px);
+  border-top: 1px solid var(--border);
+  /* the site header is sticky, so scrolling a result into view has to clear it */
+  scroll-margin-top: 88px;
+}
+
+.lt-summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 10px 20px;
+  padding: 22px 0;
+}
+
+.lt-summary-url {
+  flex: 1;
+  min-width: 220px;
+  overflow: hidden;
+  color: var(--muted-foreground);
+  font-size: 13.5px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lt-summary-url strong {
+  display: block;
+  color: var(--foreground);
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.lt-scores {
+  display: flex;
+  gap: 8px;
+}
+
+.lt-score {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 12px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 500;
+  background: transparent;
+  color: var(--muted-foreground);
+  cursor: pointer;
+  transition:
+    border-color 160ms ease-out,
+    color 160ms ease-out;
+}
+
+.lt-score[aria-pressed="true"] {
+  border-color: currentColor;
+}
+
+.lt-score i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.lt-score.is-error {
+  color: #b02a2a;
+}
+.lt-score.is-warn {
+  color: #8a6100;
+}
+.lt-score.is-pass {
+  color: #2f6b45;
+}
+.lt-score.is-zero {
+  color: var(--muted-foreground);
+  opacity: 0.55;
+}
+
+.lt-grid {
+  display: grid;
+  gap: clamp(24px, 3vw, 36px);
+  align-items: start;
+}
+
+@media (min-width: 1000px) {
+  .lt-grid {
+    grid-template-columns: minmax(0, 1.05fr) minmax(340px, 0.95fr);
+  }
+}
+
+/* ---- preview panel ----------------------------------------------------- */
+
+.lt-panel {
+  container: lt-panel / inline-size;
+  min-width: 0;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+}
+
+.lt-tabs {
+  display: flex;
+  overflow-x: auto;
+  gap: 2px;
+  padding: 8px 8px 0;
+  border-bottom: 1px solid var(--border);
+  scrollbar-width: none;
+}
+
+.lt-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+
+
+
+
+
+
+.lt-tabs button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  position: relative;
+  padding: 10px 9px 12px;
+  border: 0;
+  background: transparent;
+  color: var(--muted-foreground);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 160ms ease-out;
+}
+
+/* Seven tabs with logos do not fit at every width, and the width that matters
+ * is the panel's, not the viewport's: on a 1440px screen the two-column grid
+ * still leaves this strip under 600px. A viewport media query gets that wrong
+ * in both directions, so this is a container query on .lt-panel.
+ *
+ * When it is tight the labels drop and the marks carry the tabs, except for the
+ * selected one, which keeps its label so the current platform is always named. */
+@container lt-panel (max-width: 640px) {
+  .lt-tabs button[data-tab]:not([aria-selected="true"]) span {
+    display: none;
+  }
+  .lt-tabs button {
+    padding: 10px 11px 12px;
+  }
+}
+
+.lt-tabs button:hover {
+  color: var(--foreground);
+}
+
+.lt-tabs button[aria-selected="true"] {
+  color: var(--foreground);
+}
+
+.lt-tabs button[data-tab="html"] span {
+  display: inline !important;
+}
+
+.lt-tabs button[aria-selected="true"]::after {
+  content: "";
+  position: absolute;
+  inset: auto 8px -1px;
+  height: 2px;
+  background: var(--primary);
+}
+
+.lt-stage {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-items: center;
+  padding: clamp(20px, 3.5vw, 34px);
+  background: var(--muted);
+  border-radius: 0 0 var(--r-lg) var(--r-lg);
+}
+
+.lt-stage-note {
+  align-self: stretch;
+  color: var(--muted-foreground);
+  font-size: 12.5px;
+  line-height: 1.5;
+  text-wrap: pretty;
+}
+
+/* ---- HTML tab ---------------------------------------------------------- */
+
+.lt-source {
+  position: relative;
+  align-self: stretch;
+  width: 100%;
+}
+
+.lt-source pre {
+  max-height: 460px;
+  margin: 0;
+  padding: 16px;
+  overflow: auto;
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  color: var(--foreground);
+  font-family: var(--mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+  font-size: 12.5px;
+  line-height: 1.65;
+  tab-size: 2;
+  white-space: pre;
+}
+
+.lt-source .lt-cmt {
+  color: var(--muted-foreground);
+}
+
+.lt-copy {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 5px 11px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  background: var(--card);
+  color: var(--muted-foreground);
+  font: inherit;
+  font-size: 12.5px;
+  cursor: pointer;
+}
+
+.lt-copy:hover {
+  color: var(--foreground);
+  border-color: var(--primary);
+}
+
+/* ---- inspector --------------------------------------------------------- */
+
+.lt-inspector {
+  min-width: 0;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+}
+
+.lt-inspector-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 18px;
+  border-bottom: 1px solid var(--border);
+}
+
+.lt-inspector-head h2 {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.lt-inspector-head span {
+  color: var(--muted-foreground);
+  font-size: 12.5px;
+}
+
+.lt-checks {
+  max-height: 640px;
+  overflow-y: auto;
+}
+
+.lt-check {
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr);
+  gap: 4px 12px;
+  padding: 15px 18px;
+  border-bottom: 1px solid var(--border);
+}
+
+.lt-check:last-child {
+  border-bottom: 0;
+}
+
+.lt-check-mark {
+  grid-row: span 2;
+  width: 18px;
+  height: 18px;
+  margin-top: 1px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.lt-check.is-error .lt-check-mark {
+  background: rgba(176, 42, 42, 0.12);
+  color: #b02a2a;
+}
+.lt-check.is-warn .lt-check-mark {
+  background: rgba(180, 130, 0, 0.14);
+  color: #8a6100;
+}
+.lt-check.is-pass .lt-check-mark {
+  background: rgba(47, 107, 69, 0.12);
+  color: #2f6b45;
+}
+
+.lt-check-title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 4px 12px;
+  font-size: 14.5px;
+  font-weight: 500;
+}
+
+.lt-check-tag {
+  color: var(--muted-foreground);
+  font-family: var(--mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+  font-size: 11.5px;
+  font-weight: 400;
+}
+
+.lt-check-detail {
+  color: var(--muted-foreground);
+  font-size: 13.5px;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+  text-wrap: pretty;
+}
+
+.lt-checks[data-filter="error"] .lt-check:not(.is-error),
+.lt-checks[data-filter="warn"] .lt-check:not(.is-warn),
+.lt-checks[data-filter="pass"] .lt-check:not(.is-pass) {
+  display: none;
+}
+
+/* ---- prose sections ---------------------------------------------------- */
+
+.lt-section {
+  padding: clamp(40px, 5.5vw, 72px) 0;
+  border-top: 1px solid var(--border);
+}
+
+.lt-section > h2 {
+  max-width: 24ch;
+  font-size: clamp(26px, 3.4vw, 38px);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  line-height: 1.12;
+}
+
+.lt-section > .lt-sub {
+  max-width: 66ch;
+  margin-top: 14px;
+  color: var(--muted-foreground);
+  font-size: 15.5px;
+  line-height: 1.6;
+  text-wrap: pretty;
+}
+
+.lt-table-wrap {
+  margin-top: 30px;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+}
+
+.lt-table {
+  width: 100%;
+  min-width: 620px;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.lt-table th,
+.lt-table td {
+  padding: 13px 16px;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  vertical-align: top;
+}
+
+.lt-table thead th {
+  background: var(--card);
+  color: var(--muted-foreground);
+  font-size: 12.5px;
+  font-weight: 500;
+}
+
+.lt-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.lt-table td:first-child {
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.lt-table td {
+  color: var(--muted-foreground);
+}
+
+.lt-table td:first-child {
+  color: var(--foreground);
+}
+
+.lt-snippet {
+  margin-top: 26px;
+  padding: 18px;
+  overflow-x: auto;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  font-family: var(--mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+  font-size: 12.5px;
+  line-height: 1.7;
+  white-space: pre;
+}
+
+.lt-snippet .lt-cmt {
+  color: var(--muted-foreground);
+}
+
+@media (max-width: 620px) {
+  .lt-bar {
+    flex-direction: column;
+  }
+  .lt-bar input,
+  .lt-submit {
+    width: 100%;
+  }
+  .lt-stage {
+    padding: 16px 12px;
+  }
+  .lt-check {
+    padding: 14px;
+  }
+}
+
+
+/* ---- outline view ------------------------------------------------------ */
+
+.lt-outline {
+  align-self: stretch;
+  width: 100%;
+  display: grid;
+  gap: 2px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  overflow: hidden;
+}
+
+.lt-outline-row {
+  display: grid;
+  grid-template-columns: 58px minmax(0, 1fr);
+  gap: 14px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+  font-size: 14.5px;
+  line-height: 1.5;
+}
+
+.lt-outline-row:last-child {
+  border-bottom: 0;
+}
+
+.lt-tag {
+  color: var(--muted-foreground);
+  font-family: var(--mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+  font-size: 11.5px;
+  padding-top: 2px;
+}
+
+.lt-outline-row strong {
+  font-weight: 500;
+}
+
+.lt-missing {
+  color: #8a6100;
+  font-style: normal;
+}
+
+.lt-sections {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.lt-section-chip {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 7px;
+  padding: 3px 10px;
+  background: var(--muted);
+  border-radius: 999px;
+  font-size: 13px;
+}
+
+.lt-section-chip b {
+  color: var(--muted-foreground);
+  font-weight: 400;
+  font-size: 12px;
+}
+
+.lt-section-chip.is-optional {
+  background: var(--primary-soft);
+  color: var(--primary);
+}
+
+/* ---- link table -------------------------------------------------------- */
+
+.lt-links {
+  align-self: stretch;
+  width: 100%;
+  display: grid;
+  gap: 2px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  overflow: hidden;
+}
+
+.lt-link {
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr) 40px;
+  gap: 12px;
+  align-items: start;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.lt-link:last-child {
+  border-bottom: 0;
+}
+
+.lt-link-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 0;
+  border-radius: var(--r-sm);
+  font-family: var(--mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+  font-size: 11.5px;
+  font-weight: 500;
+}
+
+.lt-link.is-ok .lt-link-status {
+  background: rgba(47, 107, 69, 0.12);
+  color: #2f6b45;
+}
+
+.lt-link.is-bad .lt-link-status {
+  background: rgba(176, 42, 42, 0.12);
+  color: #b02a2a;
+}
+
+.lt-link strong {
+  display: block;
+  font-size: 14.5px;
+  font-weight: 500;
+}
+
+.lt-link a {
+  display: block;
+  overflow: hidden;
+  color: var(--muted-foreground);
+  font-size: 12.5px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lt-link > div > span {
+  display: block;
+  margin-top: 3px;
+  color: var(--muted-foreground);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.lt-link-line {
+  color: var(--muted-foreground);
+  font-family: var(--mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+  font-size: 11px;
+  text-align: right;
+}
+
+/* ---- source + empty ---------------------------------------------------- */
+
+.lt-source {
+  position: relative;
+  align-self: stretch;
+  width: 100%;
+}
+
+.lt-source pre {
+  max-height: 460px;
+  margin: 0;
+  padding: 16px;
+  overflow: auto;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  font-family: var(--mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+  font-size: 12.5px;
+  line-height: 1.65;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.lt-empty {
+  display: grid;
+  gap: 8px;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.lt-empty strong {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.lt-empty span {
+  color: var(--muted-foreground);
+  font-size: 14px;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+}
+
+/* ---- starter snippet --------------------------------------------------- */
+
+.lt-snippet-wrap {
+  position: relative;
+  margin-top: 26px;
+}
+
+.lt-snippet {
+  padding: 20px;
+  overflow-x: auto;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  font-family: var(--mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+  font-size: 12.5px;
+  line-height: 1.7;
+  white-space: pre;
+}
+
+.lt-cmt {
+  color: var(--primary);
+}
+
+.lt-table code {
+  padding: 1px 5px;
+  background: var(--muted);
+  border-radius: var(--r-sm);
+  font-family: var(--mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+  font-size: 0.9em;
+}
+
+.lt-table tbody th {
+  width: 16%;
+  color: var(--foreground);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+@media (max-width: 620px) {
+  .lt-link {
+    grid-template-columns: 46px minmax(0, 1fr);
+  }
+  .lt-link-line {
+    display: none;
+  }
+}

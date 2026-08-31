@@ -7,6 +7,23 @@ const { esc, attr, icon, pageStart, pageEnd, SITE } = shell;
 // on a dark panel, which told you nothing about either of them and made two
 // unrelated tools look like the same product.
 
+// The llms.txt checker returns a verdict on a file and on the links inside it,
+// so the preview is the file's outline with the link tally.
+const llmsPreview = () => `
+  <span class="tp tp-lt">
+    <span class="tp-file">
+      <span class="tp-file-name">llms.txt</span>
+      <span class="tp-file-line"><b>#</b> Sokosumi</span>
+      <span class="tp-file-line is-quote">&gt; AI coworkers that turn a brief into a file.</span>
+      <span class="tp-file-line"><b>##</b> Docs<i>6</i></span>
+      <span class="tp-file-line"><b>##</b> Optional<i>4</i></span>
+    </span>
+    <span class="tp-verdict">
+      <span class="tp-chip is-pass">10 links OK</span>
+      <span class="tp-chip is-warn">1 warning</span>
+    </span>
+  </span>`;
+
 // The OG checker returns a social card and a verdict, so the card is the card.
 const ogPreview = () => `
   <span class="tp tp-og">
@@ -47,6 +64,13 @@ const designMdPreview = () => `
   </span>`;
 
 const TOOLS = [
+  {
+    href: "/tools/llms-txt",
+    name: "llms.txt checker",
+    text: "Validate your llms.txt — and find the links inside it that no longer resolve.",
+    meta: "Free · no sign-up",
+    preview: llmsPreview,
+  },
   {
     href: "/tools/og-checker",
     name: "Open Graph checker",

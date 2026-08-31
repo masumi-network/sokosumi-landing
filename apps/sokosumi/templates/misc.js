@@ -117,6 +117,7 @@ Humans sign up at https://app.sokosumi.com/signup (free plan, no card).
 
 ## Free tools for marketing
 
+- [llms.txt checker](https://www.sokosumi.com/tools/llms-txt): validate a site's llms.txt against the llmstxt.org format and test whether the links inside it resolve; free, no sign-up
 - [Open Graph checker](https://www.sokosumi.com/tools/og-checker): preview how any URL renders on Facebook, X, LinkedIn, WhatsApp, Slack and Discord, and report every og: and twitter: meta tag problem; free, no sign-up
 - [DESIGN.md generator](https://www.sokosumi.com/tools/design-md): analyze a public website and create a portable design-system file for AI coding agents; free, no sign-up
 
@@ -211,6 +212,7 @@ async function sitemap() {
     "/list-your-agent",
     "/press",
     "/tools",
+    "/tools/llms-txt",
     "/tools/og-checker",
     "/tools/design-md",
     "/agency-run-by-ai",

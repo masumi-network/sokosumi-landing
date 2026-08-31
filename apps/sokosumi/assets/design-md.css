@@ -1312,6 +1312,53 @@
   color: #8a6100;
 }
 
+/* --- llms.txt: the file's own outline -------------------------------- */
+
+.tp-file {
+  display: grid;
+  gap: 7px;
+  padding: 16px 18px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  font-family: var(--mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+  font-size: 11.5px;
+  line-height: 1.45;
+}
+
+.tp-file-name {
+  padding-bottom: 9px;
+  margin-bottom: 2px;
+  border-bottom: 1px solid var(--border);
+  color: var(--muted-foreground);
+  font-size: 11px;
+}
+
+.tp-file-line {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+  color: var(--foreground);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tp-file-line b {
+  color: var(--primary);
+  font-weight: 400;
+}
+
+.tp-file-line i {
+  margin-left: auto;
+  color: var(--muted-foreground);
+  font-style: normal;
+}
+
+.tp-file-line.is-quote {
+  color: var(--muted-foreground);
+}
+
 /* --- DESIGN.md: the spec sheet it writes ----------------------------- */
 
 .tp-dm {

@@ -41,6 +41,8 @@ const designMdArchive = require("./lib/designMdArchive");
 const toolsTpl = require("./templates/tools");
 const ogCheckerTpl = require("./templates/ogChecker");
 const ogCheck = require("./lib/ogCheck");
+const llmsTxtTpl = require("./templates/llmsTxt");
+const llmsCheck = require("./lib/llmsCheck");
 
 const port = process.env.PORT || 3000;
 const root = __dirname;
@@ -62,6 +64,11 @@ const designMdRequests = new Map();
 // checking their own site in a normal session will ever meet it.
 const OG_CHECK_RATE_LIMIT = Number(process.env.OG_CHECK_RATE_LIMIT) || 60;
 const ogCheckRequests = new Map();
+// The llms.txt check fans out to a dozen link probes per run, so its ceiling
+// is lower than the OG checker's — still far above anything a person doing
+// their own site will reach.
+const LLMS_CHECK_RATE_LIMIT = Number(process.env.LLMS_CHECK_RATE_LIMIT) || 30;
+const llmsCheckRequests = new Map();
 
 function publicWebsiteUrl(value) {
   let parsed;
@@ -137,6 +144,7 @@ function hourlyRateLimited(store, limit, ip) {
 
 const designMdRateLimited = (ip) => hourlyRateLimited(designMdRequests, DESIGN_MD_RATE_LIMIT, ip);
 const ogCheckRateLimited = (ip) => hourlyRateLimited(ogCheckRequests, OG_CHECK_RATE_LIMIT, ip);
+const llmsCheckRateLimited = (ip) => hourlyRateLimited(llmsCheckRequests, LLMS_CHECK_RATE_LIMIT, ip);
 
 async function designMdFetch(pathname, options = {}) {
   const response = await fetch(`${DESIGN_MD_API_BASE}${pathname}`, {
@@ -602,6 +610,7 @@ const routes = [
   { m: (s) => s.length === 2 && s[0] === "compare" && { slug: s[1] }, h: compareTpl.detail },
   { m: (s) => s.length === 1 && s[0] === "tools" && {}, h: toolsTpl.render },
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "og-checker" && {}, h: ogCheckerTpl.render },
+  { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "llms-txt" && {}, h: llmsTxtTpl.render },
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "design-md" && {}, h: designMdTpl.render },
   { m: (s) => s.length === 4 && s[0] === "tools" && s[1] === "design-md" && s[2] === "analysis" && { slug: s[3] }, h: designMdTpl.analysis },
   { m: (s) => s.length === 1 && s[0] === "product" && {}, h: pagesTpl.productHub },
@@ -1096,6 +1105,26 @@ const assetsDir = path.join(root, "assets");
             }, JSON.stringify(data));
           } catch {
             return send(req, res, 502, { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" }, JSON.stringify({ error: "This saved analysis is unavailable right now." }));
+          }
+        }
+
+        if (urlPath === "/api/llms-check") {
+          const json = (status, payload, cache) =>
+            send(req, res, status, {
+              "Content-Type": "application/json; charset=utf-8",
+              "Cache-Control": cache || "no-store",
+            }, JSON.stringify(payload));
+
+          if (req.method !== "GET" && req.method !== "HEAD") return json(405, { error: "Use GET." });
+          if (llmsCheckRateLimited(clientIp(req))) {
+            return json(429, { error: "That is a lot of checks in one hour. Give it a few minutes." });
+          }
+          try {
+            return json(200, await llmsCheck.inspect(query.url), "public, max-age=60, s-maxage=300");
+          } catch (error) {
+            return json(error.status && error.status >= 400 && error.status < 600 ? error.status : 502, {
+              error: error.message || "That check did not work. Try again.",
+            });
           }
         }
 
