@@ -6,7 +6,7 @@ const FAQ = [
   {
     question: "What is an SEO.md file?",
     answer:
-      "SEO.md is a plain-text SEO specification for AI agents and developers. It captures a page's real search signals — title, meta description, canonical, Open Graph, structured data, heading structure, indexing rules — plus a scored checklist and prioritized fixes, in one file you can drop into a repo.",
+      "SEO.md is a plain-text SEO specification for AI agents and developers. It captures a page's real search signals — title, meta description, canonical, Open Graph, structured data, heading structure, keywords, brand entities, navigation and indexing rules — plus SEO, content, brand-clarity and AI-readiness scores and prioritized fixes, in one file you can drop into a repo.",
   },
   {
     question: "How does the SEO.md generator work?",
@@ -97,7 +97,7 @@ function render() {
         <div class="dm-output-empty" id="seoMdEmpty">
           <span aria-hidden="true">↑</span>
           <strong>Output will appear here.</strong>
-          <small>Paste a URL to read its title, meta, Open Graph, structured data and headings, score them, and get an SEO.md you can edit, copy or download.</small>
+          <small>Paste a URL to read its title, meta, Open Graph, headings, keywords, important pages and declared entities, score them, and get an SEO.md you can edit, copy or download.</small>
         </div>
 
         <div class="dm-progress" id="seoMdProgress" aria-live="polite" hidden>
@@ -143,7 +143,7 @@ function render() {
       <h2 id="seo-md-how">One file that tells your AI agents the real SEO state.</h2>
       <ol>
         <li><span>01</span><h3>Paste a URL</h3><p>The page and its robots.txt are fetched server-side and parsed straight from the HTML.</p></li>
-        <li><span>02</span><h3>Get the report</h3><p>Title, meta, canonical, Open Graph, structured data and headings — scored against a best-practice checklist.</p></li>
+        <li><span>02</span><h3>Get the report</h3><p>Title, meta, Open Graph, headings, keywords, important pages, brand entities, navigation and discoverability — with SEO, content, brand and AI-readiness scores.</p></li>
         <li><span>03</span><h3>Edit and download</h3><p>Drop SEO.md in your repo. Claude Code, Cursor, Codex and Copilot follow it when writing metadata and copy.</p></li>
       </ol>
     </section>

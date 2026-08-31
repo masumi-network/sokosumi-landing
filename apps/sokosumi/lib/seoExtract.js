@@ -143,25 +143,44 @@ function collectImages(html) {
   return { total, withAlt, missingAlt: total - withAlt };
 }
 
+// Internal-link frequency is a decent proxy for which pages a site considers
+// important: the header/footer/CTA links that repeat across the page rise to the
+// top. We rank those and keep the first descriptive anchor for each — no crawl.
 function collectLinks(html, baseUrl) {
   let internal = 0;
   let external = 0;
   let nofollow = 0;
   let host = "";
   try { host = new URL(baseUrl).hostname.replace(/^www\./, ""); } catch { /* ignore */ }
-  const re = /<a\b[^>]*\bhref\s*=\s*("([^"]*)"|'([^']*)'|([^\s"'>]+))[^>]*>/gi;
+  const pages = new Map();
+  const re = /<a\b([^>]*?)\bhref\s*=\s*("([^"]*)"|'([^']*)'|([^\s"'>]+))([^>]*)>([\s\S]*?)<\/a>/gi;
   let m;
   while ((m = re.exec(html))) {
-    const href = decodeEntities(m[2] ?? m[3] ?? m[4] ?? "").trim();
+    const href = decodeEntities(m[3] ?? m[4] ?? m[5] ?? "").trim();
     if (!href || /^(#|mailto:|tel:|javascript:)/i.test(href)) continue;
-    if (/\brel\s*=\s*["']?[^"'>]*nofollow/i.test(m[0])) nofollow++;
+    const tagAttrs = (m[1] || "") + " " + (m[6] || "");
+    if (/\brel\s*=\s*["']?[^"'>]*nofollow/i.test(tagAttrs)) nofollow++;
     let target;
     try { target = new URL(href, baseUrl); } catch { continue; }
     if (!/^https?:$/.test(target.protocol)) continue;
-    if (target.hostname.replace(/^www\./, "") === host) internal++;
-    else external++;
+    if (target.hostname.replace(/^www\./, "") === host) {
+      internal++;
+      const path = (target.pathname + target.search).replace(/\/+$/, "") || "/";
+      if (path === "/") continue; // home link is not an "important page" signal
+      const anchor = visibleText(m[7]).slice(0, 80);
+      const entry = pages.get(path) || { count: 0, anchor: "" };
+      entry.count++;
+      if (!entry.anchor && anchor) entry.anchor = anchor;
+      pages.set(path, entry);
+    } else {
+      external++;
+    }
   }
-  return { internal, external, nofollow };
+  const topInternal = [...pages.entries()]
+    .map(([path, v]) => ({ path, count: v.count, anchor: v.anchor }))
+    .sort((a, b) => b.count - a.count || a.path.localeCompare(b.path))
+    .slice(0, 12);
+  return { internal, external, nofollow, topInternal };
 }
 
 function collectJsonLd(html) {
@@ -180,6 +199,304 @@ function collectJsonLd(html) {
     try { walk(JSON.parse(m[1].trim())); } catch { /* ignore malformed blocks */ }
   }
   return [...new Set(types)];
+}
+
+// Common English function words — dropped so keyword counts reflect the page's
+// actual subject matter, not "the/and/for". Deliberately small and static so the
+// extractor stays deterministic and dependency-free.
+const STOPWORDS = new Set(
+  ("a an the and or but if then else for to of in on at by with from up down out over under again " +
+    "once here there all any both each few more most other some such no nor not only own same so than too very " +
+    "can will just should now is are was were be been being have has had do does did this that these those it its " +
+    "as we you your our their they them he she his her who what which when where why how also into through about " +
+    "per via etc our us your yours www com http https one two three get got make made use used using new like").split(/\s+/),
+);
+
+// Term-frequency keywords: single words and two-word phrases, minus stopwords.
+// Terms that also appear in the title or H1 get a small boost so the page's own
+// emphasis surfaces first.
+function collectKeywords(text, emphasis) {
+  const words = text.toLowerCase().match(/[a-z][a-z0-9'’+-]{1,}/g) || [];
+  const uni = new Map();
+  const bi = new Map();
+  for (let i = 0; i < words.length; i++) {
+    const w = words[i];
+    const wOk = w.length >= 3 && !STOPWORDS.has(w);
+    if (wOk) uni.set(w, (uni.get(w) || 0) + 1);
+    if (i + 1 < words.length) {
+      const b = words[i + 1];
+      if (wOk && b.length >= 3 && !STOPWORDS.has(b)) {
+        const key = `${w} ${b}`;
+        bi.set(key, (bi.get(key) || 0) + 1);
+      }
+    }
+  }
+  const emph = new Set((String(emphasis || "").toLowerCase().match(/[a-z][a-z0-9'’+-]{2,}/g) || []));
+  const rank = (map, limit) =>
+    [...map.entries()]
+      .filter(([, c]) => c >= 2)
+      .map(([term, count]) => ({ term, count, w: count + (term.split(" ").every((t) => emph.has(t)) ? 2 : 0) }))
+      .sort((a, b) => b.w - a.w || b.count - a.count || a.term.localeCompare(b.term))
+      .slice(0, limit)
+      .map(({ term, count }) => ({ term, count }));
+  return { terms: rank(uni, 12), phrases: rank(bi, 8) };
+}
+
+const stripTags = (s) => clean(String(s || "").replace(/<[^>]+>/g, " "));
+
+// Walk every JSON-LD block and pull the things an answer engine cares about:
+// named entities (Organization, Product, Person…) and explicit Q&A pairs
+// (FAQPage / Question → acceptedAnswer). Only what the page actually declares.
+const NAMED_ENTITY =
+  /^(Organization|Corporation|LocalBusiness|OnlineBusiness|WebSite|Product|SoftwareApplication|Service|Person|Brand|Article|NewsArticle|BlogPosting|Book|Course|Event|Place|Recipe)$/i;
+
+const asText = (v) => {
+  if (v == null) return "";
+  if (typeof v === "string") return clean(v);
+  if (typeof v === "number") return String(v);
+  if (typeof v === "object") return clean(v.name || v.text || v.value || "");
+  return "";
+};
+
+function collectEntities(html) {
+  const entities = [];
+  const answers = [];
+  const sameAs = new Set();
+  let org = null;
+  const seen = new Set();
+  const typeOf = (n) => (Array.isArray(n["@type"]) ? n["@type"][0] : n["@type"]);
+  const walk = (node) => {
+    if (!node || typeof node !== "object") return;
+    if (Array.isArray(node)) return node.forEach(walk);
+    if (node.sameAs) {
+      const arr = Array.isArray(node.sameAs) ? node.sameAs : [node.sameAs];
+      arr.forEach((u) => typeof u === "string" && u.trim() && sameAs.add(u.trim()));
+    }
+    const type = typeOf(node);
+    if (typeof type === "string") {
+      if (/^Question$/i.test(type) && node.name) {
+        const acc = node.acceptedAnswer;
+        const ans = acc && (acc.text || (Array.isArray(acc) && acc[0] && acc[0].text));
+        if (answers.length < 15) answers.push({ q: stripTags(node.name).slice(0, 200), a: stripTags(ans).slice(0, 300) });
+      } else if (NAMED_ENTITY.test(type) && typeof node.name === "string" && node.name.trim()) {
+        const name = clean(node.name).slice(0, 120);
+        const key = `${type}|${name.toLowerCase()}`;
+        if (!seen.has(key) && entities.length < 20) {
+          seen.add(key);
+          entities.push({ type, name });
+        }
+        // Capture the first organization-like node's public business details.
+        if (!org && /^(Organization|Corporation|LocalBusiness|OnlineBusiness)$/i.test(type)) {
+          const addr = node.address && typeof node.address === "object" ? node.address : {};
+          const founders = [].concat(node.founder || []).map(asText).filter(Boolean);
+          org = {
+            name,
+            legalName: clean(node.legalName || ""),
+            foundingDate: clean(node.foundingDate || ""),
+            email: clean(node.email || ""),
+            telephone: clean(node.telephone || ""),
+            employees: asText(node.numberOfEmployees),
+            location: clean([addr.addressLocality, addr.addressRegion, addr.addressCountry].filter(Boolean).join(", ")),
+            founders,
+          };
+        }
+      }
+    }
+    for (const k of Object.keys(node)) {
+      if (k === "@context") continue;
+      walk(node[k]);
+    }
+  };
+  const re = /<script\b[^>]*type\s*=\s*["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi;
+  let m;
+  while ((m = re.exec(html))) {
+    try { walk(JSON.parse(m[1].trim())); } catch { /* ignore malformed blocks */ }
+  }
+  return { entities, answers, sameAs: [...sameAs], org };
+}
+
+// Social profiles: from JSON-LD sameAs plus any page link to a known network.
+const SOCIAL_NETWORKS = [
+  { network: "X / Twitter", re: /(?:^|\.)(?:twitter\.com|x\.com)$/i },
+  { network: "LinkedIn", re: /(?:^|\.)linkedin\.com$/i },
+  { network: "Facebook", re: /(?:^|\.)facebook\.com$/i },
+  { network: "Instagram", re: /(?:^|\.)instagram\.com$/i },
+  { network: "YouTube", re: /(?:^|\.)(?:youtube\.com|youtu\.be)$/i },
+  { network: "GitHub", re: /(?:^|\.)github\.com$/i },
+  { network: "TikTok", re: /(?:^|\.)tiktok\.com$/i },
+  { network: "Discord", re: /(?:^|\.)discord(?:app)?\.(?:com|gg)$/i },
+  { network: "Threads", re: /(?:^|\.)threads\.net$/i },
+  { network: "Mastodon", re: /(?:^|\.)mastodon\./i },
+  { network: "Pinterest", re: /(?:^|\.)pinterest\./i },
+  { network: "Reddit", re: /(?:^|\.)reddit\.com$/i },
+];
+
+function classifySocial(url) {
+  try {
+    const host = new URL(url).hostname;
+    const hit = SOCIAL_NETWORKS.find((s) => s.re.test(host));
+    return hit ? hit.network : "";
+  } catch { return ""; }
+}
+
+function collectSocial(html, sameAs, baseUrl) {
+  const found = new Map();
+  const consider = (url) => {
+    const net = classifySocial(url);
+    if (net && !found.has(net)) found.set(net, url.trim());
+  };
+  sameAs.forEach(consider);
+  const re = /<a\b[^>]*\bhref\s*=\s*("([^"]*)"|'([^']*)'|([^\s"'>]+))/gi;
+  let m;
+  while ((m = re.exec(html))) {
+    const href = decodeEntities(m[2] ?? m[3] ?? m[4] ?? "").trim();
+    if (!href) continue;
+    try { consider(new URL(href, baseUrl).href); } catch { /* ignore */ }
+  }
+  return [...found.entries()].map(([network, url]) => ({ network, url }));
+}
+
+// Primary navigation: the <nav> with the most links, as label → path pairs.
+function collectNav(html, baseUrl) {
+  const navs = [];
+  const re = /<nav\b[^>]*>([\s\S]*?)<\/nav>/gi;
+  let m;
+  while ((m = re.exec(html))) navs.push(m[1]);
+  let best = "";
+  let bestCount = 0;
+  for (const n of navs) {
+    const c = (n.match(/<a\b/gi) || []).length;
+    if (c > bestCount) { best = n; bestCount = c; }
+  }
+  const items = [];
+  const seen = new Set();
+  const linkRe = /<a\b[^>]*\bhref\s*=\s*("([^"]*)"|'([^']*)'|([^\s"'>]+))[^>]*>([\s\S]*?)<\/a>/gi;
+  let a;
+  while ((a = linkRe.exec(best))) {
+    const href = decodeEntities(a[2] ?? a[3] ?? a[4] ?? "").trim();
+    const label = visibleText(a[5]).slice(0, 60);
+    if (!label || /^(#|javascript:|mailto:|tel:)/i.test(href)) continue;
+    let path = href;
+    try { const u = new URL(href, baseUrl); path = (u.pathname + u.search) || "/"; } catch { /* keep raw */ }
+    const key = label.toLowerCase();
+    if (seen.has(key)) continue;
+    seen.add(key);
+    items.push({ label, path });
+    if (items.length >= 12) break;
+  }
+  return items;
+}
+
+// Classify known site sections from internal paths, so the report can say which
+// content areas exist (blog, docs, pricing…) without crawling them.
+const SECTION_RULES = [
+  { label: "Product / services", re: /^\/(?:products?|solutions?|services?|features?|platform|use-cases?)(?:\/|$)/i },
+  { label: "Pricing", re: /^\/(?:pricing|plans?)(?:\/|$)/i },
+  { label: "Blog / news", re: /^\/(?:blog|news|articles?|stories|press|insights?)(?:\/|$)/i },
+  { label: "Docs / developers", re: /^\/(?:docs?|documentation|developers?|api|reference|sdk)(?:\/|$)/i },
+  { label: "Resources / guides", re: /^\/(?:resources?|guides?|learn|library|help|support|academy|tutorials?)(?:\/|$)/i },
+  { label: "About / company", re: /^\/(?:about|company|team|careers?|jobs|customers?|contact)(?:\/|$)/i },
+  { label: "Legal", re: /^\/(?:legal|privacy|terms|cookies?|gdpr)(?:\/|$)/i },
+];
+
+function detectSections(paths) {
+  const sections = new Map();
+  for (const raw of paths) {
+    const path = typeof raw === "string" ? raw : raw && raw.path;
+    if (!path) continue;
+    // Also test with a leading locale/country segment stripped (/in/, /en/,
+    // /en-us/) so localized sites still classify their sections.
+    const delocalized = path.replace(/^\/[a-z]{2}(?:-[a-z]{2})?(?=\/)/i, "");
+    for (const rule of SECTION_RULES) {
+      if (rule.re.test(path) || (delocalized !== path && rule.re.test(delocalized))) {
+        if (!sections.has(rule.label)) sections.set(rule.label, { label: rule.label, example: path });
+        break;
+      }
+    }
+  }
+  return [...sections.values()];
+}
+
+// Fetch the AI/crawler-facing discovery files in parallel: llms.txt, an existing
+// SEO.md, and the sitemap (for a URL count). All best-effort and failure-tolerant.
+async function fetchOne(url, opts) {
+  try { return await fetchCapped(url, opts); }
+  catch { return { status: 0, text: "", headers: null }; }
+}
+
+async function fetchDiscoverability(origin, sitemapUrls) {
+  const sitemapUrl = sitemapUrls[0] || `${origin}/sitemap.xml`;
+  const [llms, seomd, sitemap] = await Promise.all([
+    fetchOne(`${origin}/llms.txt`, { maxBytes: 256 * 1024, timeoutMs: 6000 }),
+    fetchOne(`${origin}/SEO.md`, { maxBytes: 256 * 1024, timeoutMs: 6000 }),
+    fetchOne(sitemapUrl, { maxBytes: 2 * 1024 * 1024, timeoutMs: 8000 }),
+  ]);
+  const isText = (r) => r.status === 200 && r.text && !/^\s*<(?:!doctype html|html)/i.test(r.text.trim());
+  const llmsTxt = {
+    found: isText(llms) && /\S/.test(llms.text),
+    lines: isText(llms) ? llms.text.split(/\r?\n/).filter((l) => l.trim()).length : 0,
+  };
+  const seoMd = { found: isText(seomd) && /\S/.test(seomd.text) };
+  let sm = { found: false, isIndex: false, count: 0, url: "" };
+  if (sitemap.status === 200 && /<(?:urlset|sitemapindex)/i.test(sitemap.text)) {
+    sm = {
+      found: true,
+      isIndex: /<sitemapindex/i.test(sitemap.text),
+      count: (sitemap.text.match(/<loc\b/gi) || []).length,
+      url: sitemapUrl,
+    };
+  }
+  return { llmsTxt, seoMd, sitemap: sm };
+}
+
+// Secondary heuristic scores, each a share of concrete pass/fail factors. These
+// are separate from the SEO score and never change it. ai_readiness is an
+// honest proxy — how understandable the site is to AI, not measured AI presence.
+function scoreFrom(factors) {
+  const ok = factors.filter((f) => f.ok).length;
+  return { score: factors.length ? Math.round((ok / factors.length) * 100) : 0, factors };
+}
+
+function computeScores(d) {
+  const content = scoreFrom([
+    { label: "≥300 words of body copy", ok: d.wordCount >= 300 },
+    { label: "Exactly one H1", ok: d.headings.counts.h1 === 1 },
+    { label: "Uses H2 subheadings", ok: d.headings.counts.h2 > 0 },
+    { label: "No skipped heading levels", ok: !d.headings.skip },
+    { label: "Internal links present", ok: d.links.topInternal.length > 0 },
+    { label: "Images have alt text", ok: d.images.total === 0 || d.images.missingAlt === 0 },
+    { label: "Keyword-rich copy", ok: d.keywords.terms.length >= 3 },
+  ]);
+  const brand = scoreFrom([
+    { label: "Organization/WebSite schema", ok: d.jsonLd.some((t) => /^(?:Organization|Corporation|LocalBusiness|WebSite)$/i.test(t)) },
+    { label: "og:site_name set", ok: !!d.og["og:site_name"] },
+    { label: "Icon/logo declared", ok: !!d.favicon },
+    { label: "Social profiles linked", ok: d.social.length > 0 },
+    { label: "Company details in schema", ok: !!(d.org && (d.org.location || d.org.foundingDate || d.org.legalName)) },
+    { label: "Named entities declared", ok: d.entities.length > 0 },
+  ]);
+  const ai = scoreFrom([
+    { label: "Structured data present", ok: d.jsonLd.length > 0 },
+    { label: "Named entities declared", ok: d.entities.length > 0 },
+    { label: "FAQ / Q&A markup", ok: d.answers.length > 0 },
+    { label: "llms.txt published", ok: d.discovery.llmsTxt.found },
+    { label: "Canonical URL set", ok: !!d.canonical && !d.canonicalOffHost },
+    { label: "Descriptive meta description", ok: d.description.length >= 70 },
+    { label: "XML sitemap available", ok: d.discovery.sitemap.found || d.sitemaps.length > 0 },
+  ]);
+  const overall = Math.round(d.score * 0.3 + content.score * 0.25 + brand.score * 0.2 + ai.score * 0.25);
+  return { content, brand, ai, overall };
+}
+
+// Deterministic AEO/GEO opportunities — concrete, "you don't have X yet" gaps.
+function buildOpportunities(d) {
+  const ops = [];
+  if (!d.discovery.llmsTxt.found) ops.push("AEO: No llms.txt — add one so AI crawlers get a curated map of your key pages.");
+  if (!d.jsonLd.some((t) => /^(?:Organization|Corporation|LocalBusiness)$/i.test(t))) ops.push("AEO: No Organization schema — add it so AI systems can identify your brand as an entity.");
+  if (!d.answers.length) ops.push("AEO: No FAQ schema — add Q&A markup so your answers can surface in AI and rich results.");
+  if (!d.social.length) ops.push("Brand: No social profiles linked via sameAs — add them to strengthen your entity graph.");
+  if (!d.discovery.seoMd.found) ops.push("AEO: No SEO.md published — commit this file at /SEO.md so agents can read your SEO state directly.");
+  return ops;
 }
 
 function collectHreflang(html) {
@@ -263,6 +580,7 @@ function buildChecks(d) {
   else add("pass", "Canonical URL", d.canonical, 2);
 
   if (d.robotsMeta && /noindex/i.test(d.robotsMeta)) add("fail", "Indexability", `Meta robots is "${d.robotsMeta}" — page is blocked from search.`, 3);
+  else if (d.xRobotsTag && /noindex/i.test(d.xRobotsTag)) add("fail", "Indexability", `X-Robots-Tag header is "${d.xRobotsTag}" — page is blocked from search.`, 3);
   else if (d.robots.blocksAll) add("fail", "Indexability", "robots.txt disallows all crawlers.", 3);
   else add("pass", "Indexability", "Open to crawlers.", 3);
 
@@ -306,10 +624,15 @@ function renderSeoMd(d) {
   L.push(`> Generated by Sokosumi · https://sokosumi.com/tools/seo-md`);
   L.push(``);
   L.push(`## Summary`);
-  L.push(`- score: ${d.score}/100 (${d.pass} passed · ${d.warn} warnings · ${d.fail} failing)`);
+  L.push(`- overall_score: ${d.scores.overall}/100`);
+  L.push(`- seo_score: ${d.score}/100 (${d.pass} passed · ${d.warn} warnings · ${d.fail} failing)`);
+  L.push(`- content_score: ${d.scores.content.score}/100`);
+  L.push(`- brand_clarity_score: ${d.scores.brand.score}/100`);
+  L.push(`- ai_readiness_score: ${d.scores.ai.score}/100 (proxy — how understandable the site is to AI, not measured AI presence)`);
   L.push(`- url: ${d.url}`);
   if (d.finalUrl && d.finalUrl !== d.url) L.push(`- final_url: ${d.finalUrl}`);
   L.push(`- fetched: ${new Date(d.fetchedAt).toISOString()}`);
+  if (d.truncated) L.push(`- note: page exceeded 2 MB and was read partially — signals near the end may be missing.`);
   L.push(``);
   L.push(`## Identity`);
   L.push(FIELD("title", d.title ? `"${d.title}"` : ""));
@@ -332,6 +655,23 @@ function renderSeoMd(d) {
   L.push(FIELD("twitter:card", d.twitter["twitter:card"]));
   L.push(FIELD("twitter:site", d.twitter["twitter:site"]));
   L.push(``);
+  L.push(`## Brand`);
+  L.push(FIELD("brand_name", (d.org && d.org.name) || d.og["og:site_name"] || ""));
+  if (d.org) {
+    L.push(FIELD("legal_name", d.org.legalName));
+    L.push(FIELD("founded", d.org.foundingDate));
+    L.push(FIELD("location", d.org.location));
+    L.push(FIELD("founders", d.org.founders.length ? d.org.founders.join(", ") : ""));
+    L.push(FIELD("employees", d.org.employees));
+    L.push(FIELD("contact", [d.org.email, d.org.telephone].filter(Boolean).join(" · ")));
+  }
+  if (d.social.length) {
+    L.push(`- social_profiles:`);
+    for (const s of d.social) L.push(`  - ${s.network}: ${s.url}`);
+  } else {
+    L.push(FIELD("social_profiles", ""));
+  }
+  L.push(``);
   L.push(`## Structure`);
   L.push(FIELD("h1", d.headings.h1.length ? d.headings.h1.map((h) => `"${h}"`).join(", ") : ""));
   L.push(FIELD("heading_outline", Object.entries(d.headings.counts).filter(([, n]) => n).map(([k, n]) => `${k}×${n}`).join(" · ")));
@@ -340,11 +680,60 @@ function renderSeoMd(d) {
   L.push(FIELD("links", `${d.links.internal} internal, ${d.links.external} external, ${d.links.nofollow} nofollow`));
   L.push(FIELD("hreflang", d.hreflang.length ? d.hreflang.join(", ") : ""));
   L.push(``);
+  L.push(`## Keywords`);
+  L.push(FIELD("top_terms", d.keywords.terms.length ? d.keywords.terms.map((t) => `${t.term} (${t.count})`).join(", ") : ""));
+  L.push(FIELD("top_phrases", d.keywords.phrases.length ? d.keywords.phrases.map((t) => `"${t.term}" (${t.count})`).join(", ") : ""));
+  L.push(``);
+  L.push(`## Content`);
+  L.push(FIELD("internal_links", d.links.internal));
+  L.push(FIELD("external_links", d.links.external));
+  if (d.links.topInternal.length) {
+    L.push(`- important_pages:`);
+    for (const p of d.links.topInternal) L.push(`  - ${p.path}${p.anchor ? ` — "${p.anchor}"` : ""} (${p.count}×)`);
+  } else {
+    L.push(FIELD("important_pages", ""));
+  }
+  L.push(``);
+  L.push(`## Navigation`);
+  if (d.nav.length) {
+    L.push(`- primary_nav:`);
+    for (const n of d.nav) L.push(`  - ${n.label} → ${n.path}`);
+  } else {
+    L.push(FIELD("primary_nav", ""));
+  }
+  L.push(FIELD("sections", d.sections.length ? d.sections.map((s) => s.label).join(", ") : ""));
+  L.push(``);
   L.push(`## Indexing`);
   L.push(FIELD("https", d.https ? "yes" : "no"));
+  L.push(FIELD("x_robots_tag", d.xRobotsTag));
   L.push(FIELD("robots_txt", d.robots.found ? "found" : "not found"));
   L.push(FIELD("sitemaps", d.sitemaps.length ? d.sitemaps.join(", ") : ""));
+  L.push(FIELD("sitemap_urls", d.discovery.sitemap.found ? `${d.discovery.sitemap.count}${d.discovery.sitemap.isIndex ? " child sitemaps" : " URLs"}` : ""));
+  L.push(FIELD("llms_txt", d.discovery.llmsTxt.found ? `found (${d.discovery.llmsTxt.lines} lines)` : "not found"));
+  L.push(FIELD("seo_md", d.discovery.seoMd.found ? "found" : "not found"));
   L.push(FIELD("structured_data", d.jsonLd.length ? d.jsonLd.join(", ") : "none"));
+  L.push(``);
+  if (d.entities.length) {
+    L.push(`## Entities`);
+    for (const e of d.entities) L.push(`- ${e.type}: ${e.name}`);
+    L.push(``);
+  }
+  if (d.answers.length) {
+    L.push(`## Answers`);
+    for (const a of d.answers) {
+      L.push(`- Q: ${a.q}`);
+      L.push(`  A: ${a.a || "—"}`);
+    }
+    L.push(``);
+  }
+  L.push(`## Scores`);
+  const scoreBlock = (title, s) => {
+    L.push(`- ${title}: ${s.score}/100`);
+    for (const f of s.factors) L.push(`  - [${f.ok ? "x" : " "}] ${f.label}`);
+  };
+  scoreBlock("content", d.scores.content);
+  scoreBlock("brand_clarity", d.scores.brand);
+  scoreBlock("ai_readiness", d.scores.ai);
   L.push(``);
   L.push(`## Checklist`);
   const mark = { pass: "x", warn: "~", fail: " " };
@@ -387,7 +776,7 @@ async function analyze(inputUrl) {
   const htmlTag = /<html\b[^>]*>/i.exec(text);
   const lang = htmlTag ? attrOf(htmlTag[0], "lang") : "";
   const charsetTag = /<meta\b[^>]*charset\s*=\s*["']?([\w-]+)/i.exec(head);
-  const charset = charsetTag ? charsetTag[1].toLowerCase() : (meta["content-type"] ? "" : "");
+  const charset = charsetTag ? charsetTag[1].toLowerCase() : "";
 
   const og = {};
   const twitter = {};
@@ -400,9 +789,18 @@ async function analyze(inputUrl) {
   const images = collectImages(text);
   const links = collectLinks(text, finalUrl);
   const jsonLd = collectJsonLd(text);
+  const { entities, answers, sameAs, org } = collectEntities(text);
+  const social = collectSocial(text, sameAs, finalUrl);
+  const nav = collectNav(text, finalUrl);
+  const sections = detectSections([...links.topInternal.map((p) => p.path), ...nav.map((n) => n.path)]);
   const hreflang = collectHreflang(head);
   const favicon = collectFavicon(head, finalUrl);
   const robots = await fetchRobots(origin);
+  const discovery = await fetchDiscoverability(origin, robots.sitemaps.length ? robots.sitemaps : []);
+
+  const bodyHtml = (/[\s\S]*?<body[^>]*>([\s\S]*)<\/body>/i.exec(text) || [null, text])[1] || text;
+  const bodyText = visibleText(bodyHtml);
+  const keywords = collectKeywords(bodyText, `${title} ${headings.h1.join(" ")}`);
 
   // Flag a canonical that points at a different host (a common misconfiguration
   // that de-indexes the page). Same-host path differences are legitimate.
@@ -441,12 +839,18 @@ async function analyze(inputUrl) {
     images,
     links,
     jsonLd,
+    entities,
+    answers,
+    org,
+    social,
+    nav,
+    sections,
+    discovery,
+    keywords,
     hreflang,
     robots,
     sitemaps,
-    wordCount: visibleText((/[\s\S]*?<body[^>]*>([\s\S]*)<\/body>/i.exec(text) || [null, text])[1] || text)
-      .split(/\s+/)
-      .filter(Boolean).length,
+    wordCount: bodyText.split(/\s+/).filter(Boolean).length,
   };
 
   d.checks = buildChecks(d);
@@ -459,7 +863,8 @@ async function analyze(inputUrl) {
   const totalWeight = d.checks.reduce((sum, c) => sum + c.weight, 0);
   const earned = d.checks.reduce((sum, c) => sum + c.weight * credit[c.level], 0);
   d.score = totalWeight ? Math.round((earned / totalWeight) * 100) : 0;
-  d.recommendations = buildRecommendations(d.checks);
+  d.scores = computeScores(d);
+  d.recommendations = [...buildRecommendations(d.checks), ...buildOpportunities(d)];
   d.seoMd = renderSeoMd(d);
   return d;
 }

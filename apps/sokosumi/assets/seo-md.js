@@ -200,6 +200,29 @@
     block.appendChild(list);
   }
 
+  function renderList(title, items) {
+    if (!Array.isArray(items) || !items.length) return;
+    var block = addPreviewBlock(title);
+    var list = el("ol", "seo-recs");
+    items.forEach(function (item) {
+      list.appendChild(el("li", "", item));
+    });
+    block.appendChild(list);
+  }
+
+  function renderAnswers(items) {
+    if (!Array.isArray(items) || !items.length) return;
+    var block = addPreviewBlock("Answers");
+    var list = el("dl", "dm-type-list");
+    items.forEach(function (a) {
+      var row = el("div", "dm-type-row");
+      row.appendChild(el("dt", "", a.q));
+      row.appendChild(el("dd", "", a.a || "—"));
+      list.appendChild(row);
+    });
+    block.appendChild(list);
+  }
+
   function renderRecommendations(recs) {
     if (!Array.isArray(recs) || !recs.length) return;
     var block = addPreviewBlock("Recommendations");
@@ -218,6 +241,14 @@
     preview.replaceChildren();
 
     renderScore(data);
+    var sc = data.scores || null;
+    renderFields("Scores", [
+      ["Overall", sc ? sc.overall + " / 100" : ""],
+      ["SEO", data.score + " / 100"],
+      ["Content", sc ? sc.content.score + " / 100" : ""],
+      ["Brand clarity", sc ? sc.brand.score + " / 100" : ""],
+      ["AI readiness", sc ? sc.ai.score + " / 100 (proxy)" : ""],
+    ]);
     renderChecks(data.checks);
     renderFields("Identity", [
       ["Title", data.title],
@@ -239,6 +270,16 @@
       ["og:type", og["og:type"]],
       ["twitter:card", tw["twitter:card"]],
     ]);
+    var org = data.org || null;
+    renderFields("Brand", [
+      ["Brand name", (org && org.name) || og["og:site_name"] || ""],
+      ["Legal name", org ? org.legalName : ""],
+      ["Founded", org ? org.foundingDate : ""],
+      ["Location", org ? org.location : ""],
+      ["Founders", org && org.founders ? org.founders.join(", ") : ""],
+      ["Employees", org ? org.employees : ""],
+    ]);
+    renderList("Social profiles", (data.social || []).map(function (s) { return s.network + ": " + s.url; }));
     var h = data.headings || { counts: {}, h1: [] };
     var outline = Object.keys(h.counts || {})
       .filter(function (k) { return h.counts[k]; })
@@ -253,6 +294,25 @@
       ["Structured data", (data.jsonLd || []).join(", ")],
       ["Sitemaps", (data.sitemaps || []).join(", ")],
     ]);
+    var kw = data.keywords || { terms: [], phrases: [] };
+    renderFields("Keywords", [
+      ["Top terms", (kw.terms || []).map(function (t) { return t.term; }).join(", ")],
+      ["Top phrases", (kw.phrases || []).map(function (t) { return "“" + t.term + "”"; }).join(", ")],
+    ]);
+    var topInternal = (data.links && data.links.topInternal) || [];
+    renderList("Important pages", topInternal.map(function (p) {
+      return p.path + (p.anchor ? " — " + p.anchor : "") + " (" + p.count + "×)";
+    }));
+    renderList("Navigation", (data.nav || []).map(function (n) { return n.label + " → " + n.path; }));
+    var disc = data.discovery || { llmsTxt: {}, seoMd: {}, sitemap: {} };
+    renderFields("Discoverability", [
+      ["Sections", (data.sections || []).map(function (s) { return s.label; }).join(", ")],
+      ["Sitemap", disc.sitemap && disc.sitemap.found ? (disc.sitemap.count + (disc.sitemap.isIndex ? " child sitemaps" : " URLs")) : ""],
+      ["llms.txt", disc.llmsTxt && disc.llmsTxt.found ? "found" : "not found"],
+      ["SEO.md", disc.seoMd && disc.seoMd.found ? "found" : "not found"],
+    ]);
+    renderList("Entities", (data.entities || []).map(function (e) { return e.type + ": " + e.name; }));
+    renderAnswers(data.answers);
     renderRecommendations(data.recommendations);
 
     editor.value = String(data.seoMd || "");
