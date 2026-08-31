@@ -427,9 +427,9 @@ async function fetchOne(url, opts) {
 async function fetchDiscoverability(origin, sitemapUrls) {
   const sitemapUrl = sitemapUrls[0] || `${origin}/sitemap.xml`;
   const [llms, seomd, sitemap] = await Promise.all([
-    fetchOne(`${origin}/llms.txt`, { maxBytes: 256 * 1024, timeoutMs: 6000 }),
-    fetchOne(`${origin}/SEO.md`, { maxBytes: 256 * 1024, timeoutMs: 6000 }),
-    fetchOne(sitemapUrl, { maxBytes: 2 * 1024 * 1024, timeoutMs: 8000 }),
+    fetchOne(`${origin}/llms.txt`, { maxBytes: 256 * 1024, timeoutMs: 5000 }),
+    fetchOne(`${origin}/SEO.md`, { maxBytes: 256 * 1024, timeoutMs: 5000 }),
+    fetchOne(sitemapUrl, { maxBytes: 2 * 1024 * 1024, timeoutMs: 7000 }),
   ]);
   const isText = (r) => r.status === 200 && r.text && !/^\s*<(?:!doctype html|html)/i.test(r.text.trim());
   const llmsTxt = {
@@ -529,7 +529,7 @@ function collectFavicon(html, baseUrl) {
 
 async function fetchRobots(origin) {
   try {
-    const { status, text } = await fetchCapped(`${origin}/robots.txt`, { maxBytes: 512 * 1024, timeoutMs: 6000 });
+    const { status, text } = await fetchCapped(`${origin}/robots.txt`, { maxBytes: 512 * 1024, timeoutMs: 5000 });
     if (status !== 200 || /<html/i.test(text)) return { found: false, sitemaps: [], blocksAll: false };
     const sitemaps = [];
     let blocksAll = false;
@@ -756,7 +756,15 @@ function buildRecommendations(checks) {
 }
 
 async function analyze(inputUrl) {
-  const { finalUrl, status, headers, text, truncated } = await fetchCapped(inputUrl);
+  // The page and robots.txt are independent, so fetch them together instead of
+  // back-to-back. robots is requested against the input origin; fetchCapped
+  // follows redirects, so an http→https or apex→www hop still lands on the file.
+  const provisionalOrigin = new URL(inputUrl).origin;
+  const [page, robots] = await Promise.all([
+    fetchCapped(inputUrl, { timeoutMs: 10000 }),
+    fetchRobots(provisionalOrigin),
+  ]);
+  const { finalUrl, status, headers, text, truncated } = page;
   if (status >= 400) {
     const err = new Error(`The site returned HTTP ${status}.`);
     err.statusCode = status;
@@ -795,7 +803,6 @@ async function analyze(inputUrl) {
   const sections = detectSections([...links.topInternal.map((p) => p.path), ...nav.map((n) => n.path)]);
   const hreflang = collectHreflang(head);
   const favicon = collectFavicon(head, finalUrl);
-  const robots = await fetchRobots(origin);
   const discovery = await fetchDiscoverability(origin, robots.sitemaps.length ? robots.sitemaps : []);
 
   const bodyHtml = (/[\s\S]*?<body[^>]*>([\s\S]*)<\/body>/i.exec(text) || [null, text])[1] || text;

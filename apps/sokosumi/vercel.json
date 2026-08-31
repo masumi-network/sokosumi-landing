@@ -6,7 +6,7 @@
   "functions": {
     "api/index.js": {
       "includeFiles": "{index.html,catalog-seed.json,assets/**}",
-      "maxDuration": 15
+      "maxDuration": 30
     }
   },
   "images": {
