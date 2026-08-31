@@ -1459,6 +1459,13 @@ const DE = {
   Advanced: "Fortgeschritten",
   Guide: "Guide",
   "Related guides": "Verwandte Guides",
+  // Coworker profiles: the editorial overlay's own headings, plus the vendor
+  // heading it forces apart from ours. Germany is the site's largest market,
+  // so these do not get to fall through to English.
+  "Questions": "Fragen",
+  "Related": "Verwandtes",
+  "How {vendor} describes it": "So beschreibt es {vendor}",
+  "How the maker describes it": "So beschreibt es der Anbieter",
   "Put this into practice": "Setzen Sie das in die Praxis um",
   "Brief a coworker with what you just read and see what comes back. Signing up is free.":
     "Briefen Sie einen Coworker mit dem, was Sie gerade gelesen haben, und sehen Sie, was zurückkommt. Die Registrierung ist kostenlos.",

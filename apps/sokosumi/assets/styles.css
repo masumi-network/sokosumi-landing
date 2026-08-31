@@ -576,6 +576,28 @@ a.card:hover .go { opacity: 1; transform: none; }
 .cw-info .role { font-size: 16px; color: var(--muted-foreground); }
 .cw-tags { display: flex; flex-wrap: wrap; gap: 8px; }
 .cw-desc { font-size: 15.5px; line-height: 1.65; color: var(--muted-foreground); text-wrap: pretty; }
+
+/* ---- editorial overlay blocks (templates/coworkerBoost.js) ----
+   Only render on the handful of profiles that have an entry; the rest of the
+   coworker pages never see these rules. */
+.cw-spec-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: var(--r-lg); margin-top: 26px; }
+.cw-spec { width: 100%; min-width: 520px; border-collapse: collapse; font-size: 15px; }
+.cw-spec th, .cw-spec td { padding: 14px 18px; border-bottom: 1px solid var(--border); text-align: left; vertical-align: top; }
+.cw-spec thead th { background: var(--card); color: var(--muted-foreground); font-size: 12.5px; font-weight: 500; }
+.cw-spec tbody tr:last-child th, .cw-spec tbody tr:last-child td { border-bottom: 0; }
+.cw-spec tbody th { width: 26%; color: var(--foreground); font-weight: 500; white-space: nowrap; }
+.cw-spec tbody td { color: var(--muted-foreground); line-height: 1.55; }
+
+.cw-boost-links { display: grid; gap: 14px; margin-top: 24px; }
+@media (min-width: 760px) { .cw-boost-links { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.cw-boost-link {
+  display: flex; flex-direction: column; gap: 4px; padding-top: 15px;
+  border-top: 1px solid var(--border); text-decoration: none; color: var(--foreground);
+  transition: border-color 160ms ease-out;
+}
+.cw-boost-link:hover { border-color: var(--primary); }
+.cw-boost-link strong { font-size: 15.5px; font-weight: 500; }
+.cw-boost-link span { font-size: 14px; color: var(--muted-foreground); line-height: 1.5; }
 .cw-cta { margin-top: 8px; }
 .cta-note { margin-top: 10px; font-size: 12.5px; line-height: 1.5; color: var(--muted-foreground); max-width: 46ch; }
 /* the reassurance line under every signup button (never in the nav).

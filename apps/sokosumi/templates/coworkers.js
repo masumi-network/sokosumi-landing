@@ -5,6 +5,7 @@
 const shell = require("./shell");
 const blocks = require("./blocks");
 const cms = require("../lib/cms");
+const boostFor = require("./coworkerBoost").forSlug;
 const { t, tp, locale } = require("../lib/i18n");
 const { esc, attr, icon, avatar, vendorLogo, pageStart, pageEnd, APP } = shell;
 
@@ -460,14 +461,22 @@ function offerCard(agentSlug, o) {
 
 // The maker's own description of the listing. Rendered under its own heading so
 // it reads as the vendor's words rather than as Sokosumi copy.
-function vendorSection(c, cat) {
+// `alt` is set when the editorial overlay already opened the page with its own
+// "what this does" section. Both are legitimate — ours targets the query, this
+// one is the maker's own words — but they cannot both be called the same thing.
+function vendorSection(c, cat, alt) {
   const md = cat && cat.description ? String(cat.description) : "";
   // A stub like "## Overview" on its own carries nothing; require real prose.
   const body = md.replace(/^#+.*$/gm, "").trim().length > 80 ? vendorMarkdown(md) : "";
   if (!body) return "";
   const who = c.vendorName || (c.vendor && c.vendor.name) || "";
+  const heading = alt
+    ? who
+      ? t("How {vendor} describes it", { vendor: who })
+      : t("How the maker describes it")
+    : t("What {name} does", { name: c.name });
   return `<section class="page-section" id="about">
-      <h2>${esc(t("What {name} does", { name: c.name }))}</h2>
+      <h2>${esc(heading)}</h2>
       <p class="sub">${esc(who ? t("As described by {vendor}, the maker of this listing.", { vendor: who }) : t("As described by the maker of this listing."))}</p>
       <div class="prose cw-vendor-copy">${body}</div>
     </section>`;
@@ -502,6 +511,80 @@ function relatedAgents(c, cats, ctx, siblings) {
     </section>`;
 }
 
+// ---------------------------------------------------------------------------
+// Enrichment slots (templates/coworkerBoost.js). Every one of these returns an
+// empty string when the overlay has nothing for that slug, which is what keeps
+// the other 50-odd profiles byte-identical to what they render today.
+
+function boostIntro(b, c) {
+  if (!b.intro) return "";
+  return `<section class="page-section cw-boost" data-reveal>
+      <h2>${esc(b.aboutHeading || t("What {name} does", { name: c.name }))}</h2>
+      <p class="sub">${esc(b.intro)}</p>
+    </section>`;
+}
+
+function boostSpec(b) {
+  const spec = b.spec;
+  if (!spec || !Array.isArray(spec.rows) || !spec.rows.length) return "";
+  return `<section class="page-section cw-boost" data-reveal>
+      ${spec.heading ? `<h2>${esc(spec.heading)}</h2>` : ""}
+      <div class="cw-spec-wrap">
+        <table class="cw-spec">
+          ${
+            spec.columns
+              ? `<thead><tr>${spec.columns.map((h) => `<th scope="col">${esc(h)}</th>`).join("")}</tr></thead>`
+              : ""
+          }
+          <tbody>${spec.rows
+            .map((r) => `<tr>${r.map((cell, i) => (i === 0 ? `<th scope="row">${esc(cell)}</th>` : `<td>${esc(cell)}</td>`)).join("")}</tr>`)
+            .join("")}</tbody>
+        </table>
+      </div>
+    </section>`;
+}
+
+function boostFaq(b) {
+  if (!Array.isArray(b.faq) || !b.faq.length) return "";
+  return `<section class="page-section cw-boost" id="faq" data-reveal>
+      <h2>${esc(t("Questions"))}</h2>
+      <div class="faq-list">${b.faq
+        .map(
+          (f) =>
+            `<details class="faq-item"><summary>${esc(f.question)}<span class="faq-x">+</span></summary><p class="faq-a">${esc(f.answer)}</p></details>`,
+        )
+        .join("")}</div>
+    </section>`;
+}
+
+function boostRelated(b) {
+  if (!Array.isArray(b.related) || !b.related.length) return "";
+  return `<section class="page-section cw-boost" data-reveal>
+      <h2>${esc(t("Related"))}</h2>
+      <div class="cw-boost-links">${b.related
+        .map(
+          (l) =>
+            `<a class="cw-boost-link" href="${attr(l.href)}"><strong>${esc(l.label)}</strong>${l.note ? `<span>${esc(l.note)}</span>` : ""}</a>`,
+        )
+        .join("")}</div>
+    </section>`;
+}
+
+// The overlay's FAQ is only worth having if it is also the page's FAQPage
+// entity, which is what makes it eligible for the rich result.
+function boostFaqLd(b, c) {
+  if (!Array.isArray(b.faq) || !b.faq.length) return null;
+  return {
+    "@type": "FAQPage",
+    "@id": `${shell.SITE}/ai-coworkers/${c.slug}#faq`,
+    mainEntity: b.faq.map((f) => ({
+      "@type": "Question",
+      name: f.question,
+      acceptedAnswer: { "@type": "Answer", text: f.answer },
+    })),
+  };
+}
+
 async function profile(ctx) {
   const opts = { draft: ctx.preview };
   const c = await cms.getCoworker(ctx.params.slug, opts);
@@ -512,6 +595,8 @@ async function profile(ctx) {
   // Marketplace listings carry the maker's own copy in the catalog, not the CMS.
   const cat = catalogAgent(c, ctx);
   const cats = (cat && cat.categories) || [];
+  // Editorial overlay for this slug; {} when there is none.
+  const b = boostFor(c.slug, locale());
   const siblings = cats.length ? await cms.getCoworkers(opts).catch(() => []) : [];
 
   const offersSection = offers.length
@@ -536,11 +621,14 @@ async function profile(ctx) {
   cr.push({ label: c.name });
   return (
     pageStart({
+      // An editor's title wins, then the overlay's, then the generated one.
+      // c.seoTitle is read even though the CMS collection has no such field
+      // yet: adding it later is then a pure addition with no code change here.
       title:
-        c.slug === "instagram-page-analysis"
-          ? t("Instagram analyzer for posts and pages | Sokosumi")
-          : t("{name} | {role} on Sokosumi", { name: c.name, role: c.role || t("AI coworker") }),
-      description: shell.describe(c.seoDescription || c.description || t("Hire {name}, an AI coworker on Sokosumi.", { name: c.name }), [
+        c.seoTitle ||
+        b.seoTitle ||
+        t("{name} | {role} on Sokosumi", { name: c.name, role: c.role || t("AI coworker") }),
+      description: shell.describe(c.seoDescription || b.seoDescription || c.description || t("Hire {name}, an AI coworker on Sokosumi.", { name: c.name }), [
         t("Brief {name} in plain language; the task shows on a shared board and comes back as a file. Credit price shown first.", { name: c.name }),
         t("Brief {name} in plain language and get a finished file back.", { name: c.name }),
         t("Hire {name} on Sokosumi.", { name: c.name }),
@@ -548,7 +636,7 @@ async function profile(ctx) {
       path: `/ai-coworkers/${c.slug}`,
       og: { type: "coworker", title: c.name, sub: c.role || "", eyebrow: c.kind === "agent" ? t("Specialist agent on Sokosumi") : t("AI coworker on Sokosumi"), meta: [vn, c.profileHosting].filter(Boolean).join(" · "), img: c.image || "" },
       breadcrumb: cr,
-      jsonld: profileLd(c, vn, vs),
+      jsonld: [...[].concat(profileLd(c, vn, vs) || []), boostFaqLd(b, c)].filter(Boolean),
     }) +
     `<div class="cw-hero">
       <div class="cw-portrait${c.kind === "agent" ? " is-icon" : ""}" data-reveal>${c.image ? `<img${shell.thumbSrc(c.image, 512, "src", 100)} alt="${attr(c.name)}" decoding="async" />` : ""}</div>
@@ -566,9 +654,13 @@ async function profile(ctx) {
       </div>
     </div>
     ${profileFacts(c, vn, vs, cat, cats)}
-    ${vendorSection(c, cat)}
+    ${boostIntro(b, c)}
+    ${boostSpec(b)}
+    ${vendorSection(c, cat, Boolean(b.intro))}
     ${longBio}
     ${offersSection}
+    ${boostFaq(b)}
+    ${boostRelated(b)}
     ${relatedAgents(c, cats, ctx, siblings)}` +
     shell.logoRow() +
     shell.ctaBand({
