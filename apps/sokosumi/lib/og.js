@@ -285,10 +285,18 @@ async function render(query) {
   return png;
 }
 
+// Bump when the card design changes. The rendered image is cached for a week
+// at the CDN with a month of stale-while-revalidate, and the key is derived
+// only from the page's own copy — so without this a redesign keeps serving the
+// old card until that expires. It rides in the key, so every card gets a new
+// URL, which is also what nudges the social platforms to re-scrape.
+const CARD_VERSION = "2";
+
 // Build the /og.png URL for a page. Only short, public strings go in.
 function url(site, q) {
   const params = new URLSearchParams();
   for (const [k, v] of Object.entries(q)) if (v != null && v !== "") params.set(k, String(v).slice(0, 200));
+  params.set("v", CARD_VERSION);
   const key = Buffer.from(params.toString()).toString("base64url");
   return `${site}/og/${key}.png`;
 }
