@@ -577,6 +577,23 @@ a.card:hover .go { opacity: 1; transform: none; }
 .cw-tags { display: flex; flex-wrap: wrap; gap: 8px; }
 .cw-desc { font-size: 15.5px; line-height: 1.65; color: var(--muted-foreground); text-wrap: pretty; }
 
+/* ---- related comparisons rail (templates/compare.js) ----
+   42 compare pages used to carry two internal links each, both to the same
+   static cards. This is the cluster they were missing. */
+.cmp-related-grid { display: grid; gap: 14px; margin-top: 24px; }
+@media (min-width: 700px) { .cmp-related-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1040px) { .cmp-related-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.cmp-related-link {
+  display: flex; flex-direction: column; gap: 3px; padding-top: 14px;
+  border-top: 1px solid var(--border); text-decoration: none; color: var(--foreground);
+  transition: border-color 160ms ease-out;
+}
+.cmp-related-link:hover { border-color: var(--primary); }
+.cmp-related-link strong { font-size: 15.5px; font-weight: 500; }
+.cmp-related-link span { font-size: 14px; color: var(--muted-foreground); line-height: 1.5; }
+.cmp-related-all { margin-top: 22px; font-size: 14.5px; }
+.cmp-related-all a { display: inline-flex; align-items: center; gap: 6px; color: var(--primary); font-weight: 500; }
+
 /* ---- editorial overlay blocks (templates/coworkerBoost.js) ----
    Only render on the handful of profiles that have an entry; the rest of the
    coworker pages never see these rules. */

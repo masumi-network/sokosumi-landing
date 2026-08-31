@@ -1459,6 +1459,11 @@ const DE = {
   Advanced: "Fortgeschritten",
   Guide: "Guide",
   "Related guides": "Verwandte Guides",
+  "Other comparisons": "Weitere Vergleiche",
+  "All comparisons": "Alle Vergleiche",
+  "The same seven rows, against the other tools teams weigh up.":
+    "Dieselben sieben Zeilen, gegen die anderen Tools, die Teams abwägen.",
+  "Sokosumi vs {name}": "Sokosumi vs {name}",
   // Coworker profiles: the editorial overlay's own headings, plus the vendor
   // heading it forces apart from ours. Germany is the site's largest market,
   // so these do not get to fall through to English.

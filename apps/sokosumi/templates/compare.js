@@ -202,6 +202,94 @@ function different(name, items) {
   </section>`;
 }
 
+// Sibling comparisons, drawn from the same GROUPS bucket as this page.
+//
+// GSC 2026-08-31: /compare/* is 42 pages taking 706 impressions a week at an
+// average position of 8.9 — the best-ranking cluster on the site, on keywords
+// worth 3.3K-7.6K US searches a month at KD 8-23. And each of those pages
+// carried exactly two internal links, both to the same three static cards
+// below, identical on all 42. The cluster had no internal shape at all: no
+// page told Google that codex-vs-claude-code and claude-code-vs-cursor are
+// about the same thing.
+//
+// This builds that shape out of data already on hand. Both page types feed it
+// the same {slug, label} rows, so a CMS comparison and a JSON pair rank
+// together in one rail.
+const RELATED_MAX = 6;
+
+function relatedRail(currentSlug, items, opts) {
+  const o = opts || {};
+  const seen = new Set([currentSlug]);
+  const picked = [];
+  for (const it of items) {
+    if (!it || !it.slug || seen.has(it.slug)) continue;
+    seen.add(it.slug);
+    picked.push(it);
+    if (picked.length >= RELATED_MAX) break;
+  }
+  if (!picked.length) return "";
+  return `<section class="page-section cmp-related" data-reveal>
+      <h2>${esc(o.heading || t("Other comparisons"))}</h2>
+      ${o.sub ? `<p class="sub">${esc(o.sub)}</p>` : ""}
+      <div class="cmp-related-grid">${picked
+        .map(
+          (it) =>
+            `<a class="cmp-related-link" href="/compare/${attr(it.slug)}"><strong>${esc(it.label)}</strong>${
+              it.note ? `<span>${esc(it.note)}</span>` : ""
+            }</a>`,
+        )
+        .join("")}</div>
+      <p class="cmp-related-all"><a href="/compare">${esc(t("All comparisons"))} ${icon("arrow-up-right", 14)}</a></p>
+    </section>`;
+}
+
+// Every comparison the site has, as {slug, label, group}, so a page can pick
+// its own neighbours. CMS docs and JSON pairs are normalised into one list.
+function comparisonUniverse(cmsDocs, pairList) {
+  const out = [];
+  for (const c of cmsDocs || []) {
+    if (!c.competitor || /^vs-/.test(c.slug)) continue;
+    out.push({
+      kind: "soko",
+      slug: c.slug,
+      label: t("Sokosumi vs {name}", { name: c.competitor }),
+      group: groupOf(c.slug.replace("sokosumi-vs-", "")).id,
+    });
+  }
+  for (const p of pairList || []) {
+    const ga = groupOf(p.a.key);
+    const gb = groupOf(p.b.key);
+    out.push({
+      kind: "pair",
+      slug: p.slug,
+      label: `${p.a.name} vs ${p.b.name}`,
+      group: (ga && ga.id) || (gb && gb.id),
+      groupB: gb && gb.id,
+    });
+  }
+  return out;
+}
+
+// Same-group first, then anything else, so a page always fills its rail even
+// in a thin bucket.
+//
+// `groups` is a list because an X-vs-Y pair legitimately sits in two buckets:
+// codex-vs-claude-code keys on chatgpt (assistants) and claude-code (coding),
+// and a reader on it wants the other coding comparisons, not the other
+// assistants. Matching either bucket is what makes that rail useful.
+function neighbours(slug, groups, universe, kind) {
+  const want = new Set([].concat(groups).filter(Boolean));
+  const hit = (x) => want.has(x.group) || want.has(x.groupB);
+  // Inside the group, same-kind first. The X-vs-Y pages are the ones ranking
+  // (codex-vs-claude-code at position 8.8 on 7.6K searches), and left to
+  // alphabetical order they linked only to Sokosumi-vs-X pages and never to
+  // each other — so the cluster that actually ranks stayed unconnected.
+  const rank = (x) => (kind && x.kind === kind ? 0 : 1);
+  const same = universe.filter((x) => x.slug !== slug && hit(x)).sort((a, b) => rank(a) - rank(b));
+  const rest = universe.filter((x) => x.slug !== slug && !hit(x));
+  return [...same, ...rest];
+}
+
 const RELATED = [
   { href: "/ai-coworkers", title: "Meet the coworkers", text: "Every coworker and agent on the marketplace, with role, vendor, models and sample work." },
   { href: "/tasks", title: "Template tasks", text: "Ready-to-run work with a fixed brief, a known deliverable and the credit price up front." },
@@ -219,10 +307,11 @@ function related() {
 
 async function detail(ctx) {
   const opts = { draft: ctx.preview };
-  const [doc, coworkers, testimonials] = await Promise.all([
+  const [doc, coworkers, testimonials, allCmp] = await Promise.all([
     cms.getComparison(ctx.params.slug, opts),
     cms.getCoworkers(opts).catch(() => []),
     cms.getTestimonials(opts).catch(() => []),
+    cms.getComparisons(opts).catch(() => []),
   ]);
   if (!doc) return pairs.detail(ctx);
   const name = doc.competitor || doc.title;
@@ -263,10 +352,15 @@ async function detail(ctx) {
     shell.proof(testimonials, name.length, { heading: t("Teams already on Sokosumi") }) +
     blocks.renderBlocks(faq) +
     blocks.renderBlocks(rest) +
+    relatedRail(
+      doc.slug,
+      neighbours(doc.slug, [groupOf(doc.slug.replace("sokosumi-vs-", "")).id], comparisonUniverse(allCmp, pairs.all()), "soko"),
+      { heading: t("Other comparisons"), sub: t("The same seven rows, against the other tools teams weigh up.") },
+    ) +
     related() +
     (bandBlock ? blocks.renderBlocks([bandBlock]) : "") +
     pageEnd()
   );
 }
 
-module.exports = { index, detail };
+module.exports = { index, detail, relatedRail, comparisonUniverse, neighbours, groupOf };

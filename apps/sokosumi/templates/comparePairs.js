@@ -14,6 +14,10 @@ const i18n = require("../lib/i18n");
 const { t } = i18n;
 const { esc, attr, icon, pageStart, pageEnd, SITE } = shell;
 
+// Lazy require: compare.js requires this module at load, so taking it at the
+// top here would close the cycle before either module finished its exports.
+const compareTpl = () => require("./compare");
+
 const DIR = path.join(__dirname, "..", "content", "compare-pairs");
 const CMS_MEDIA = `${cms.CMS_URL}/api/media/file/compare-logo-`;
 
@@ -87,7 +91,10 @@ async function detail(ctx) {
   const p = get(ctx.params.slug);
   if (!p) return null;
   const { c, translated } = copy(p);
-  const testimonials = await cms.getTestimonials({ draft: ctx.preview }).catch(() => []);
+  const [testimonials, cmsComparisons] = await Promise.all([
+    cms.getTestimonials({ draft: ctx.preview }).catch(() => []),
+    cms.getComparisons({ draft: ctx.preview }).catch(() => []),
+  ]);
 
   const table = {
     blockType: "comparisonTable",
@@ -177,6 +184,16 @@ async function detail(ctx) {
     (p.sources && p.sources.length
       ? `<section class="page-section pair-sources"><h2>${esc(t("Sources"))}</h2><ol>${p.sources.map((s) => `<li><a href="${attr(s)}" rel="noreferrer nofollow" target="_blank">${esc(s.replace(/^https?:\/\//, "").slice(0, 80))}</a></li>`).join("")}</ol><p class="pair-sources-note">${esc(t("Prices and features as published by the vendors on the date checked. Tell us if something changed."))}</p></section>`
       : "") +
+    (() => {
+      const cmp = compareTpl();
+      // Both sides of the pair, so a coding-vs-assistant page surfaces both.
+      const groups = [(cmp.groupOf(p.a.key) || {}).id, (cmp.groupOf(p.b.key) || {}).id];
+      const universe = cmp.comparisonUniverse(cmsComparisons, all());
+      return cmp.relatedRail(p.slug, cmp.neighbours(p.slug, groups, universe, "pair"), {
+        heading: t("Other comparisons"),
+        sub: t("The same seven rows, against the other tools teams weigh up."),
+      });
+    })() +
     shell.ctaBand({
       heading: t("See the difference on one task"),
       subheading: t("250 free credits per seat. Brief a coworker, get the file back, and compare."),
