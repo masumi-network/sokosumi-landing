@@ -63,6 +63,12 @@ export default {
         "Treating a newsroom's silence as acceptance. Under the Paris Charter and AP's guidance, doubt resolves toward not using the material at all.",
       ],
       sources,
+
+      related: [
+        ["Answer engine optimization: what Google's documentation actually says", "/guides/answer-engine-optimization"],
+        ["AI brand monitoring: what Google and Microsoft actually report", "/guides/ai-brand-monitoring"],
+        ["AI in crisis communications: the rules that bind", "/guides/ai-crisis-communications"],
+      ],
     }),
     faqHeading: "AI in media relations: common questions",
     faq: [
@@ -134,6 +140,11 @@ export default {
         "Schweigen einer Redaktion als Zustimmung lesen.",
       ],
       sources,
+      related: [
+        ["Answer Engine Optimization: was Google wirklich dokumentiert", "/de/guides/answer-engine-optimization"],
+        ["KI-Markenmonitoring: was die Plattformen wirklich berichten", "/de/guides/ai-brand-monitoring"],
+        ["KI in der Krisenkommunikation: die verbindlichen Regeln", "/de/guides/ai-crisis-communications"],
+      ],
     }),
     faqHeading: "KI in der Medienarbeit: häufige Fragen",
     faq: [

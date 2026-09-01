@@ -117,6 +117,8 @@ Humans sign up at https://app.sokosumi.com/signup (free plan, no card).
 
 ## Free tools for marketing
 
+- [llms.txt checker](https://www.sokosumi.com/tools/llms-txt): validate a site's llms.txt against the llmstxt.org format and test whether the links inside it resolve; free, no sign-up
+- [Open Graph checker](https://www.sokosumi.com/tools/og-checker): preview how any URL renders on Facebook, X, LinkedIn, WhatsApp, Slack and Discord, and report every og: and twitter: meta tag problem; free, no sign-up
 - [DESIGN.md generator](https://www.sokosumi.com/tools/design-md): analyze a public website and create a portable design-system file for AI coding agents; free, no sign-up
 
 ## Developer resources
@@ -133,7 +135,7 @@ function press() {
   return (
     pageStart({
       title: "Press and media resources | Sokosumi",
-      description: "Press information and media contact for Sokosumi, the AI coworker marketplace by Serviceplan Group.",
+      description: shell.describe("Press information and media contact for Sokosumi, the AI coworker marketplace by Serviceplan Group.", ["Logos, product facts and the people behind the company."]),
       path: "/press",
       breadcrumb: cr,
     }) +
@@ -161,7 +163,7 @@ function press() {
     </section>` +
     shell.logoRow() +
     shell.ctaBand({
-      heading: t("See the product for yourself"),
+      heading: t("Look before you sign up"),
       subheading: t("Coworker profiles, task details, and sample files are public."),
       ctaLabel: t("Start free"),
       seed: 3,
@@ -210,7 +212,13 @@ async function sitemap() {
     "/list-your-agent",
     "/press",
     "/tools",
+    "/tools/llms-txt",
+    "/tools/og-checker",
     "/tools/design-md",
+    "/agency-run-by-ai",
+    "/european-ai",
+    "/alternatives/copy-ai",
+    "/alternatives/manus",
     ...require("./comparePairs").all().map((p) => `/compare/${p.slug}`),
   ]);
   // One collection failing is tolerable (its URLs drop out this cycle); ALL
@@ -229,7 +237,15 @@ async function sitemap() {
       return [];
     }
   };
-  const analyses = await require("../lib/designMdArchive").list().then((l) => l.map((e) => `/tools/design-md/analysis/${e.slug}`)).catch(() => []);
+  // The gallery pages through every saved brand; the sitemap publishes the
+  // newest slice of them. These are real analyses rather than thin pages, but
+  // most are one-off submissions of small personal sites, and putting every
+  // one of several hundred into the index is not what this sitemap is for.
+  const SITEMAP_ANALYSES = 250;
+  const analyses = await require("../lib/designMdArchive")
+    .list()
+    .then((l) => l.slice(0, SITEMAP_ANALYSES).map((e) => `/tools/design-md/analysis/${e.slug}`))
+    .catch(() => []);
   analyses.forEach((u) => urls.add(u));
   const fetchers = [
     cms.getCoworkers,

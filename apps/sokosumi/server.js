@@ -33,12 +33,18 @@ const blogTpl = require("./templates/blog");
 const releasesTpl = require("./templates/releases");
 const compareTpl = require("./templates/compare");
 const pagesTpl = require("./templates/pagesCms");
+const agencyRunByAiTpl = require("./templates/agencyRunByAi");
+const europeanAiTpl = require("./templates/europeanAi");
 const contactTpl = require("./templates/contact");
 const designMdTpl = require("./templates/designMd");
 const designMdArchive = require("./lib/designMdArchive");
 const seoMdTpl = require("./templates/seoMd");
 const seoExtract = require("./lib/seoExtract");
 const toolsTpl = require("./templates/tools");
+const ogCheckerTpl = require("./templates/ogChecker");
+const ogCheck = require("./lib/ogCheck");
+const llmsTxtTpl = require("./templates/llmsTxt");
+const llmsCheck = require("./lib/llmsCheck");
 
 const port = process.env.PORT || 3000;
 const root = __dirname;
@@ -57,6 +63,16 @@ const DESIGN_MD_RATE_LIMIT = Number(process.env.DESIGN_MD_RATE_LIMIT) || 6;
 const designMdRequests = new Map();
 const SEO_MD_RATE_LIMIT = Number(process.env.SEO_MD_RATE_LIMIT) || 20;
 const seoMdRequests = new Map();
+// The OG checker is cheap (one page fetch plus a ranged image read) so its
+// ceiling is far higher than the generator's — high enough that nobody
+// checking their own site in a normal session will ever meet it.
+const OG_CHECK_RATE_LIMIT = Number(process.env.OG_CHECK_RATE_LIMIT) || 60;
+const ogCheckRequests = new Map();
+// The llms.txt check fans out to a dozen link probes per run, so its ceiling
+// is lower than the OG checker's — still far above anything a person doing
+// their own site will reach.
+const LLMS_CHECK_RATE_LIMIT = Number(process.env.LLMS_CHECK_RATE_LIMIT) || 30;
+const llmsCheckRequests = new Map();
 
 function publicWebsiteUrl(value) {
   let parsed;
@@ -115,37 +131,25 @@ function readJsonBody(req, maxBytes = 8192) {
   });
 }
 
-function designMdRateLimited(ip) {
+function hourlyRateLimited(store, limit, ip) {
   const now = Date.now();
   const windowStart = now - 60 * 60 * 1000;
-  const hits = (designMdRequests.get(ip) || []).filter((time) => time > windowStart);
-  if (hits.length >= DESIGN_MD_RATE_LIMIT) return true;
+  const hits = (store.get(ip) || []).filter((time) => time > windowStart);
+  if (hits.length >= limit) return true;
   hits.push(now);
-  designMdRequests.set(ip, hits);
-  if (designMdRequests.size > 2000) {
-    for (const [key, times] of designMdRequests) {
-      if (!times.some((time) => time > windowStart)) designMdRequests.delete(key);
+  store.set(ip, hits);
+  if (store.size > 2000) {
+    for (const [key, times] of store) {
+      if (!times.some((time) => time > windowStart)) store.delete(key);
     }
   }
   return false;
 }
 
-// Same sliding-hour window as the DESIGN.md limiter, but its own map and a
-// higher cap: SEO analysis is a single cheap fetch, not a browser job.
-function seoMdRateLimited(ip) {
-  const now = Date.now();
-  const windowStart = now - 60 * 60 * 1000;
-  const hits = (seoMdRequests.get(ip) || []).filter((time) => time > windowStart);
-  if (hits.length >= SEO_MD_RATE_LIMIT) return true;
-  hits.push(now);
-  seoMdRequests.set(ip, hits);
-  if (seoMdRequests.size > 2000) {
-    for (const [key, times] of seoMdRequests) {
-      if (!times.some((time) => time > windowStart)) seoMdRequests.delete(key);
-    }
-  }
-  return false;
-}
+const designMdRateLimited = (ip) => hourlyRateLimited(designMdRequests, DESIGN_MD_RATE_LIMIT, ip);
+const seoMdRateLimited = (ip) => hourlyRateLimited(seoMdRequests, SEO_MD_RATE_LIMIT, ip);
+const ogCheckRateLimited = (ip) => hourlyRateLimited(ogCheckRequests, OG_CHECK_RATE_LIMIT, ip);
+const llmsCheckRateLimited = (ip) => hourlyRateLimited(llmsCheckRequests, LLMS_CHECK_RATE_LIMIT, ip);
 
 async function designMdFetch(pathname, options = {}) {
   const response = await fetch(`${DESIGN_MD_API_BASE}${pathname}`, {
@@ -590,6 +594,8 @@ const routes = [
     m: (s) => s[0] === "coworkers" && { rest: s.slice(1) },
     h: (ctx) => ({ redirect: ["/ai-coworkers", ...ctx.params.rest].join("/") }),
   },
+  { m: (s) => s.length === 1 && s[0] === "agency-run-by-ai" && {}, h: agencyRunByAiTpl.render },
+  { m: (s) => s.length === 1 && s[0] === "european-ai" && {}, h: europeanAiTpl.render },
   { m: (s) => s.length === 1 && s[0] === "tasks" && {}, h: tasksTpl.browse },
   { m: (s) => s.length === 1 && s[0] === "vendors" && {}, h: vendorsTpl.index },
   { m: (s) => s.length === 2 && s[0] === "vendors" && { slug: s[1] }, h: vendorsTpl.detail },
@@ -608,6 +614,8 @@ const routes = [
   { m: (s) => s.length === 1 && s[0] === "compare" && {}, h: compareTpl.index },
   { m: (s) => s.length === 2 && s[0] === "compare" && { slug: s[1] }, h: compareTpl.detail },
   { m: (s) => s.length === 1 && s[0] === "tools" && {}, h: toolsTpl.render },
+  { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "og-checker" && {}, h: ogCheckerTpl.render },
+  { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "llms-txt" && {}, h: llmsTxtTpl.render },
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "design-md" && {}, h: designMdTpl.render },
   { m: (s) => s.length === 4 && s[0] === "tools" && s[1] === "design-md" && s[2] === "analysis" && { slug: s[3] }, h: designMdTpl.analysis },
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "seo-md" && {}, h: seoMdTpl.render },
@@ -757,8 +765,23 @@ const assetsDir = path.join(root, "assets");
     return (head ? head + "\n\n" : "") + s + "\n";
   }
 
+  // Only the production hostname may be indexed. Vercel preview builds, the
+  // *.vercel.app deployment URLs and any other alias serve this same code, so
+  // without this they are a full, crawlable duplicate of the site competing
+  // with it in search. robots.txt is per-host, so www's file cannot cover
+  // them — the host has to answer for itself.
+  const CANONICAL_HOST = (process.env.CANONICAL_HOST || "www.sokosumi.com").toLowerCase();
+  function isPublicHost(req) {
+    const host = String(req.headers["x-forwarded-host"] || req.headers.host || "").toLowerCase().split(":")[0];
+    if (!host) return true;
+    if (host === CANONICAL_HOST) return true;
+    // local development and the apex (which 301s to www) stay untouched
+    return host === "localhost" || host === "127.0.0.1" || host === "[::1]" || host === "sokosumi.com";
+  }
+
   function send(req, res, status, headers, body) {
     const head = { ...BASE_HEADERS, ...headers };
+    if (!isPublicHost(req)) head["X-Robots-Tag"] = "noindex, nofollow";
     let payload = Buffer.isBuffer(body) ? body : Buffer.from(body ?? "", "utf8");
     const type = String(head["Content-Type"] || "");
 
@@ -799,12 +822,19 @@ const assetsDir = path.join(root, "assets");
   // and mtime, so replacing a file changes its URL and the new one is fetched
   // immediately, while unchanged files stay cached.
   const assetVersions = new Map();
+  // Hash the bytes, not the stat. mtimeMs is NOT stable across Vercel lambda
+  // instances: the invocation that renders the HTML and the one that serves
+  // the asset can see different mtimes, so a size-and-mtime hash produced a
+  // `?v=` that never matched on the way back in. Every versioned asset then
+  // fell through to the `no-cache` branch and production revalidated all four
+  // stylesheets on every page view, while local dev looked perfectly fine.
+  // Content hashing is identical on every instance, and the result is memoised
+  // per process so each file is read at most once.
   function assetVersion(rel) {
     if (assetVersions.has(rel)) return assetVersions.get(rel);
     let v = "";
     try {
-      const st = fs.statSync(path.join(root, rel));
-      v = crypto.createHash("sha1").update(`${st.size}-${st.mtimeMs}`).digest("hex").slice(0, 8);
+      v = crypto.createHash("sha1").update(fs.readFileSync(path.join(root, rel))).digest("hex").slice(0, 8);
     } catch {
       /* referenced but missing — leave the URL alone */
     }
@@ -1116,6 +1146,51 @@ const assetsDir = path.join(root, "assets");
           }
         }
 
+        if (urlPath === "/api/llms-check") {
+          const json = (status, payload, cache) =>
+            send(req, res, status, {
+              "Content-Type": "application/json; charset=utf-8",
+              "Cache-Control": cache || "no-store",
+            }, JSON.stringify(payload));
+
+          if (req.method !== "GET" && req.method !== "HEAD") return json(405, { error: "Use GET." });
+          if (llmsCheckRateLimited(clientIp(req))) {
+            return json(429, { error: "That is a lot of checks in one hour. Give it a few minutes." });
+          }
+          try {
+            return json(200, await llmsCheck.inspect(query.url), "public, max-age=60, s-maxage=300");
+          } catch (error) {
+            return json(error.status && error.status >= 400 && error.status < 600 ? error.status : 502, {
+              error: error.message || "That check did not work. Try again.",
+            });
+          }
+        }
+
+        // The OG checker's only backend. A GET so a result URL is shareable and
+        // so a CDN can collapse the stampede when one link goes round a team.
+        if (urlPath === "/api/og-check") {
+          const json = (status, payload, cache) =>
+            send(req, res, status, {
+              "Content-Type": "application/json; charset=utf-8",
+              "Cache-Control": cache || "no-store",
+            }, JSON.stringify(payload));
+
+          if (req.method !== "GET" && req.method !== "HEAD") {
+            return json(405, { error: "Use GET." });
+          }
+          if (ogCheckRateLimited(clientIp(req))) {
+            return json(429, { error: "That is a lot of checks in one hour. Give it a few minutes." });
+          }
+          try {
+            const report = await ogCheck.inspect(query.url);
+            return json(200, report, "public, max-age=60, s-maxage=300");
+          } catch (error) {
+            return json(error.status && error.status >= 400 && error.status < 600 ? error.status : 502, {
+              error: error.message || "That check did not work. Try again.",
+            });
+          }
+        }
+
         if (urlPath === "/api/design-md" && req.method === "POST") {
           if (!DESIGN_MD_API_KEY) {
             return send(req, res, 503, { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" }, JSON.stringify({ error: "The generator is temporarily unavailable." }));
@@ -1369,7 +1444,8 @@ const assetsDir = path.join(root, "assets");
           return send(req, res, 200, { "Content-Type": "text/markdown; charset=utf-8", "Cache-Control": "public, max-age=0, s-maxage=3600, must-revalidate" }, misc.llmsTxt());
         }
         if (urlPath === "/robots.txt") {
-          return send(req, res, 200, { "Content-Type": "text/plain; charset=utf-8", "Cache-Control": "public, max-age=3600" }, misc.robots());
+          const body = isPublicHost(req) ? misc.robots() : "User-agent: *\nDisallow: /\n";
+          return send(req, res, 200, { "Content-Type": "text/plain; charset=utf-8", "Cache-Control": "public, max-age=3600" }, body);
         }
 
         if (urlPath === "/sitemap.xml") {

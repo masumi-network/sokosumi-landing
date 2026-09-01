@@ -119,13 +119,23 @@ const attr = esc;
 // never leaves trailing space or punctuation fragments.
 // Meta descriptions between ~110 and 158 characters: pad a short CMS
 // sentence with a page-type sentence, cut a long one at a word.
+// `extra` may be one sentence or several, longest first. A description between
+// 90 and 110 characters used to keep none of them — the long sentence did not
+// fit and there was nothing shorter to fall back to — so it stayed too short
+// for search results. Now the first tail that fits whole is the one used.
 function describe(main, extra, max) {
   let s = String(main || "").trim();
   const limit = max || 158;
-  if (extra && s.length < 110) {
-    const padded = `${s}${s && !/[.!?]$/.test(s) ? "." : ""} ${extra}`.trim();
-    // Never cut the padding sentence in half: keep it only if it fits.
-    if (padded.length <= limit || s.length < 90) return truncate(padded, limit);
+  const tails = (Array.isArray(extra) ? extra : [extra]).filter(Boolean);
+  if (tails.length && s.length < 110) {
+    const stem = `${s}${s && !/[.!?]$/.test(s) ? "." : ""}`;
+    for (const tail of tails) {
+      const padded = `${stem} ${tail}`.trim();
+      // Never cut a padding sentence in half: keep it only if it fits whole.
+      if (padded.length <= limit) return padded;
+    }
+    // Nothing fit, but a very short description is worse than a clipped one.
+    if (s.length < 90) return truncate(`${stem} ${tails[tails.length - 1]}`.trim(), limit);
   }
   return truncate(s, limit);
 }
@@ -395,6 +405,17 @@ function head(opts) {
   const graph = [opts.organization || ORGANIZATION, { ...WEBSITE, inLanguage: locale }];
   if (opts.breadcrumb && opts.breadcrumb.length) graph.push(breadcrumbLd(opts.breadcrumb));
   if (opts.jsonld) graph.push(...(Array.isArray(opts.jsonld) ? opts.jsonld : [opts.jsonld]));
+  // Google's Article rich result requires an image and a publication date. Every
+  // page already resolves a share card above, and article pages already declare
+  // their dates for og:article — so fill both in here rather than asking each
+  // template to remember. Only fills what is missing; a template that states its
+  // own cover or date keeps it.
+  for (const node of graph) {
+    if (!node || !/^(Article|BlogPosting|NewsArticle|TechArticle)$/.test(String(node["@type"] || ""))) continue;
+    if (!node.image && og && og.url) node.image = og.url;
+    if (!node.datePublished && article && article.published) node.datePublished = article.published;
+    if (!node.dateModified && article && article.modified) node.dateModified = article.modified;
+  }
   const doc = { "@context": "https://schema.org", "@graph": graph.map(stripContext) };
   const jsonld = `<script type="application/ld+json">${JSON.stringify(doc).replace(/</g, "\\u003c")}</script>`;
   return `<!doctype html>
@@ -432,7 +453,10 @@ function head(opts) {
     <link rel="manifest" href="/assets/site.webmanifest" />
     <meta name="theme-color" content="#ffffff" />
     <link rel="preload" href="/assets/fonts/inter-400-latin.woff2" as="font" type="font/woff2" crossorigin />
-    <script defer src="/_vercel/insights/script.js"></script>
+    <!-- Vercel Web Analytics is not enabled for this project, so
+         /_vercel/insights/script.js 404s on every page. Re-add this tag after
+         turning Web Analytics on in the Vercel dashboard; traffic measurement
+         meanwhile runs through GTM/GA4. -->
     <link rel="stylesheet" href="/assets/fonts.css" />
     <link rel="stylesheet" href="/assets/styles.css" />
     <link rel="stylesheet" href="/assets/nav.css" />
@@ -991,6 +1015,8 @@ function footerHtml(opts) {
               <h2 class="foot-h">${esc(t("Resources"))}</h2>
               <ul>
                 <li><a href="/guides">${esc(t("Guides"))}</a></li>
+                <li><a href="/ai-marketing-agency">${esc(t("AI marketing agency guide"))}</a></li>
+                <li><a href="/agency-run-by-ai">${esc(t("An agency run by AI"))}</a></li>
                 <li><a href="/blog">${esc(t("Blog"))}</a></li>
                 <li><a href="/releases">${esc(t("Releases"))}</a></li>
                 <li><a href="/serviceplan-ai">${esc(t("Serviceplan & AI"))}</a></li>
@@ -1000,7 +1026,10 @@ function footerHtml(opts) {
             <div class="foot-col">
               <h2 class="foot-h">${esc(t("Free tools"))}</h2>
               <ul>
+                <li><a href="/tools/llms-txt">${esc(t("llms.txt checker"))}</a></li>
+                <li><a href="/tools/og-checker">${esc(t("Open Graph checker"))}</a></li>
                 <li><a href="/tools/design-md">${esc(t("DESIGN.md generator"))}</a></li>
+                <li><a href="/tools/seo-md">${esc(t("SEO.md generator"))}</a></li>
                 <li><a href="/tools">${esc(t("All tools"))}</a></li>
               </ul>
             </div>
@@ -1008,10 +1037,10 @@ function footerHtml(opts) {
               <h2 class="foot-h">${esc(t("Company"))}</h2>
               <ul>
                 <li><a href="/about">${esc(t("About"))}</a></li>
+                <li><a href="/european-ai">${esc(t("European AI"))}</a></li>
                 <li><a href="/contact">${esc(t("Contact"))}</a></li>
                 <li><a href="${SUPPORT_URL}">${esc(t("Support"))}</a></li>
                 <li><a href="/press">${esc(t("Press"))}</a></li>
-                <li><a href="/about">${esc(t("About"))}</a></li>
                 <li><a href="https://api.sokosumi.com" target="_blank" rel="noreferrer">${esc(t("API docs"))}</a></li>
                 <li><a href="https://masumi.network" target="_blank" rel="noreferrer">Masumi</a></li>
               </ul>

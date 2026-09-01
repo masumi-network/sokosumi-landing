@@ -5,6 +5,7 @@
 const shell = require("./shell");
 const blocks = require("./blocks");
 const cms = require("../lib/cms");
+const boostFor = require("./coworkerBoost").forSlug;
 const { t, tp, locale } = require("../lib/i18n");
 const { esc, attr, icon, avatar, vendorLogo, pageStart, pageEnd, APP } = shell;
 
@@ -231,7 +232,12 @@ function profileStats(c) {
   const stats = [];
   if (c.runs) stats.push(`<span><strong>${esc(String(c.runs))}</strong> ${esc(t("runs"))}</span>`);
   if (c.rating) stats.push(`<span><strong>${esc(Number(c.rating).toFixed(1))}</strong> ${esc(t("rating"))}${c.ratingCount ? ` (${esc(String(c.ratingCount))})` : ""}</span>`);
-  if (c.credits) stats.push(`<span><strong>${esc(String(c.credits))}</strong> ${esc(t("credits per run"))}</span>`);
+  if (c.credits) {
+    const usd = usdForCredits(c.credits);
+    stats.push(
+      `<span><strong>${esc(String(c.credits))}</strong> ${esc(t("credits per run"))}${usd !== null ? ` <span class="cw-stat-alt">(${esc(fmtUsd(usd))})</span>` : ""}</span>`,
+    );
+  }
   return stats.length ? `<div class="cw-stats">${stats.join("")}</div>` : "";
 }
 
@@ -258,6 +264,24 @@ function profileLd(c, vendorName, vendorSlug) {
     isPartOf: { "@id": `${shell.SITE}/#website` },
   };
   if (c.role) ld.alternateName = c.role;
+  // A run is priced in credits; the offer states the same amount in the currency
+  // those credits are sold in, so the markup matches the price on the page.
+  const usd = usdForCredits(c.credits);
+  if (usd !== null) {
+    ld.offers = {
+      "@type": "Offer",
+      price: usd.toFixed(2),
+      priceCurrency: "USD",
+      availability: "https://schema.org/InStock",
+      url: `${shell.SITE}/ai-coworkers/${c.slug}`,
+      priceSpecification: {
+        "@type": "UnitPriceSpecification",
+        price: usd.toFixed(2),
+        priceCurrency: "USD",
+        referenceQuantity: { "@type": "QuantitativeValue", value: 1, unitText: "task run" },
+      },
+    };
+  }
   if (vendorName) {
     // @id, not url: the vendor's page on this site identifies the node, it is
     // not a claim that sokosumi.com/vendors/x is the company's own website.
@@ -286,6 +310,95 @@ function profileLd(c, vendorName, vendorSlug) {
   return ld;
 }
 
+
+// ---- vendor-written listing copy -------------------------------------------
+// The marketplace record carries the maker's own markdown description. It is
+// third-party text, so it is escaped first and only a fixed set of constructs
+// is rebuilt afterwards — headings, emphasis, lists, links and paragraphs.
+// Anything else survives as plain text rather than as markup.
+function vendorMarkdown(src) {
+  const raw = String(src || "").trim();
+  if (!raw) return "";
+  const inline = (line) =>
+    esc(line)
+      .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
+      .replace(/(^|[\s(])\*([^*\n]+)\*/g, "$1<em>$2</em>")
+      .replace(/`([^`]+)`/g, "<code>$1</code>")
+      // only absolute http(s) targets become links
+      .replace(/\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g, '<a href="$2" rel="nofollow noopener">$1</a>');
+  const out = [];
+  let list = null;
+  const closeList = () => { if (list) { out.push(`</${list}>`); list = null; } };
+  const cells = (line) => line.replace(/^\||\|$/g, "").split("|").map((x) => x.trim());
+  const isDivider = (line) => /^\|?\s*:?-{2,}:?\s*(\|\s*:?-{2,}:?\s*)*\|?$/.test(line);
+  const lines = raw.split(/\r?\n/);
+  for (let i = 0; i < lines.length; i++) {
+    const lineRaw = lines[i];
+    const line = lineRaw.trim();
+    if (!line) { closeList(); continue; }
+    // GFM table: a header row, a divider, then body rows. Makers use these for
+    // the facts worth having — hosting, retention, models — so they are worth
+    // rebuilding rather than dumping as pipes.
+    if (line.includes("|") && lines[i + 1] && isDivider(lines[i + 1].trim())) {
+      closeList();
+      const head = cells(line);
+      const body = [];
+      let j = i + 2;
+      for (; j < lines.length; j++) {
+        const row = lines[j].trim();
+        if (!row || !row.includes("|")) break;
+        body.push(cells(row));
+      }
+      i = j - 1;
+      out.push(
+        `<div class="cw-table-wrap"><table><thead><tr>${head.map((x) => `<th>${inline(x)}</th>`).join("")}</tr></thead>` +
+          `<tbody>${body.map((r) => `<tr>${head.map((_, k) => `<td>${inline(r[k] || "")}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`,
+      );
+      continue;
+    }
+    const h = /^(#{1,6})\s+(.*)$/.exec(line);
+    if (h) {
+      closeList();
+      // the section owns the h2, so the maker's own top level nests beneath it
+      const level = Math.min(5, Math.max(3, h[1].length + 1));
+      out.push(`<h${level}>${inline(h[2].replace(/[:\s]+$/, ""))}</h${level}>`);
+      continue;
+    }
+    const ul = /^[-*+]\s+(.*)$/.exec(line);
+    const ol = /^\d+[.)]\s+(.*)$/.exec(line);
+    if (ul || ol) {
+      const want = ul ? "ul" : "ol";
+      if (list !== want) { closeList(); out.push(`<${want}>`); list = want; }
+      out.push(`<li>${inline((ul || ol)[1])}</li>`);
+      continue;
+    }
+    closeList();
+    out.push(`<p>${inline(line)}</p>`);
+  }
+  closeList();
+  return out.join("\n");
+}
+
+// The catalog record behind a CMS listing. The CMS stores a short summary; the
+// maker's full copy, its categories and its legal links only exist here.
+function catalogAgent(c, ctx) {
+  const agents = (ctx && ctx.catalog && ctx.catalog.agents) || [];
+  if (!c || !agents.length) return null;
+  return agents.find((a) => a.id && a.id === c.externalId) || agents.find((a) => a.name === c.name) || null;
+}
+
+// 100 credits = US$1.00, the marketplace's stated credit price. Everything that
+// shows money for a listing derives from this one constant so the page and its
+// structured data can never drift apart.
+const CREDITS_PER_USD = 100;
+const usdForCredits = (credits) => {
+  const n = Number(credits);
+  if (!isFinite(n) || n <= 0) return null;
+  return n / CREDITS_PER_USD;
+};
+const fmtUsd = (n) =>
+  new Intl.NumberFormat(locale() === "de" ? "de-DE" : "en-US", { style: "currency", currency: "USD" }).format(n);
+
 function profileTags(c) {
   const tags = [];
   const llm = Array.isArray(c.profileLlm) ? c.profileLlm : [];
@@ -297,7 +410,7 @@ function profileTags(c) {
 // The facts a profile states, as a <dl>: the same attributes the chips and
 // stats show, in a form a person and a retrieval system read identically.
 // Only what the catalog actually provides appears; nothing is inferred.
-function profileFacts(c, vn, vs) {
+function profileFacts(c, vn, vs, cat, cats) {
   const rows = [];
   rows.push([t("Type"), c.kind === "agent" ? t("AI agent (single-purpose)") : t("AI coworker")]);
   if (c.role) rows.push([t("Role"), esc(c.role)]);
@@ -305,9 +418,23 @@ function profileFacts(c, vn, vs) {
   const llm = Array.isArray(c.profileLlm) ? c.profileLlm.filter(Boolean) : [];
   if (llm.length) rows.push([t("Models"), esc(llm.join(", "))]);
   if (c.profileHosting) rows.push([t("Hosting"), esc(c.profileHosting)]);
+  if (c.credits) {
+    const usd = usdForCredits(c.credits);
+    rows.push([
+      t("Price per run"),
+      esc(usd !== null ? t("{credits} credits ({usd})", { credits: String(c.credits), usd: fmtUsd(usd) }) : t("{credits} credits", { credits: String(c.credits) })),
+    ]);
+  }
   if (c.runs) rows.push([t("Tasks run"), esc(Number(c.runs).toLocaleString(locale() === "de" ? "de-DE" : "en-US"))]);
   if (c.rating && c.ratingCount) rows.push([t("Rating"), esc(`${Number(c.rating).toFixed(1)} / 5 (${c.ratingCount})`)]);
-  rows.push([t("Marketplace"), `<a href="/">Sokosumi</a>`]);
+  if (cats && cats.length) rows.push([t("Category"), esc(cats.map((x) => x.name).join(", "))]);
+  if (cat && cat.legal && (cat.legal.terms || cat.legal.privacy)) {
+    const links = [
+      cat.legal.terms ? `<a href="${attr(cat.legal.terms)}" rel="nofollow noopener">${esc(t("Terms"))}</a>` : "",
+      cat.legal.privacy ? `<a href="${attr(cat.legal.privacy)}" rel="nofollow noopener">${esc(t("Privacy"))}</a>` : "",
+    ].filter(Boolean);
+    rows.push([t("Vendor policies"), links.join(" &middot; ")]);
+  }
   const synced = c.syncedAt || c.updatedAt;
   if (synced) {
     const d = new Date(synced);
@@ -331,6 +458,133 @@ function offerCard(agentSlug, o) {
   </a>`;
 }
 
+
+// The maker's own description of the listing. Rendered under its own heading so
+// it reads as the vendor's words rather than as Sokosumi copy.
+// `alt` is set when the editorial overlay already opened the page with its own
+// "what this does" section. Both are legitimate — ours targets the query, this
+// one is the maker's own words — but they cannot both be called the same thing.
+function vendorSection(c, cat, alt) {
+  const md = cat && cat.description ? String(cat.description) : "";
+  // A stub like "## Overview" on its own carries nothing; require real prose.
+  const body = md.replace(/^#+.*$/gm, "").trim().length > 80 ? vendorMarkdown(md) : "";
+  if (!body) return "";
+  const who = c.vendorName || (c.vendor && c.vendor.name) || "";
+  const heading = alt
+    ? who
+      ? t("How {vendor} describes it", { vendor: who })
+      : t("How the maker describes it")
+    : t("What {name} does", { name: c.name });
+  return `<section class="page-section" id="about">
+      <h2>${esc(heading)}</h2>
+      <p class="sub">${esc(who ? t("As described by {vendor}, the maker of this listing.", { vendor: who }) : t("As described by the maker of this listing."))}</p>
+      <div class="prose cw-vendor-copy">${body}</div>
+    </section>`;
+}
+
+// Other listings in the same category. Gives a thin listing somewhere to go and
+// the category a second route in, instead of every agent page being a dead end.
+// Categories come from the catalog, slugs from the CMS, joined on externalId.
+function relatedAgents(c, cats, ctx, siblings) {
+  const all = (ctx && ctx.catalog && ctx.catalog.agents) || [];
+  const names = new Set(cats.map((x) => x.name));
+  if (!names.size || !all.length) return "";
+  const inCategory = new Set(
+    all.filter((a) => (a.categories || []).some((x) => names.has(x.name))).map((a) => a.id),
+  );
+  const near = (siblings || [])
+    .filter((s) => s.slug !== c.slug && s.externalId && inCategory.has(s.externalId))
+    .slice(0, 6);
+  if (near.length < 2) return "";
+  const label = cats[0].name;
+  return `<section class="page-section" id="related">
+      <h2>${esc(t("More in {category}", { category: label }))}</h2>
+      <div class="row-list">${near
+        .map(
+          (a) => `<a class="row-item" href="/ai-coworkers/${encodeURIComponent(a.slug)}">
+            <span class="row-title">${esc(a.name)}</span>
+            <p>${esc(String(a.seoDescription || a.description || "").slice(0, 150))}</p>
+            <span class="row-go">${esc(vendorName(a) || t("View"))} ${icon("arrow-up-right", 15)}</span>
+          </a>`,
+        )
+        .join("")}</div>
+    </section>`;
+}
+
+// ---------------------------------------------------------------------------
+// Enrichment slots (templates/coworkerBoost.js). Every one of these returns an
+// empty string when the overlay has nothing for that slug, which is what keeps
+// the other 50-odd profiles byte-identical to what they render today.
+
+function boostIntro(b, c) {
+  if (!b.intro) return "";
+  return `<section class="page-section cw-boost" data-reveal>
+      <h2>${esc(b.aboutHeading || t("What {name} does", { name: c.name }))}</h2>
+      <p class="sub">${esc(b.intro)}</p>
+    </section>`;
+}
+
+function boostSpec(b) {
+  const spec = b.spec;
+  if (!spec || !Array.isArray(spec.rows) || !spec.rows.length) return "";
+  return `<section class="page-section cw-boost" data-reveal>
+      ${spec.heading ? `<h2>${esc(spec.heading)}</h2>` : ""}
+      <div class="cw-spec-wrap">
+        <table class="cw-spec">
+          ${
+            spec.columns
+              ? `<thead><tr>${spec.columns.map((h) => `<th scope="col">${esc(h)}</th>`).join("")}</tr></thead>`
+              : ""
+          }
+          <tbody>${spec.rows
+            .map((r) => `<tr>${r.map((cell, i) => (i === 0 ? `<th scope="row">${esc(cell)}</th>` : `<td>${esc(cell)}</td>`)).join("")}</tr>`)
+            .join("")}</tbody>
+        </table>
+      </div>
+    </section>`;
+}
+
+function boostFaq(b) {
+  if (!Array.isArray(b.faq) || !b.faq.length) return "";
+  return `<section class="page-section cw-boost" id="faq" data-reveal>
+      <h2>${esc(t("Questions"))}</h2>
+      <div class="faq-list">${b.faq
+        .map(
+          (f) =>
+            `<details class="faq-item"><summary>${esc(f.question)}<span class="faq-x">+</span></summary><p class="faq-a">${esc(f.answer)}</p></details>`,
+        )
+        .join("")}</div>
+    </section>`;
+}
+
+function boostRelated(b) {
+  if (!Array.isArray(b.related) || !b.related.length) return "";
+  return `<section class="page-section cw-boost" data-reveal>
+      <h2>${esc(t("Related"))}</h2>
+      <div class="cw-boost-links">${b.related
+        .map(
+          (l) =>
+            `<a class="cw-boost-link" href="${attr(l.href)}"><strong>${esc(l.label)}</strong>${l.note ? `<span>${esc(l.note)}</span>` : ""}</a>`,
+        )
+        .join("")}</div>
+    </section>`;
+}
+
+// The overlay's FAQ is only worth having if it is also the page's FAQPage
+// entity, which is what makes it eligible for the rich result.
+function boostFaqLd(b, c) {
+  if (!Array.isArray(b.faq) || !b.faq.length) return null;
+  return {
+    "@type": "FAQPage",
+    "@id": `${shell.SITE}/ai-coworkers/${c.slug}#faq`,
+    mainEntity: b.faq.map((f) => ({
+      "@type": "Question",
+      name: f.question,
+      acceptedAnswer: { "@type": "Answer", text: f.answer },
+    })),
+  };
+}
+
 async function profile(ctx) {
   const opts = { draft: ctx.preview };
   const c = await cms.getCoworker(ctx.params.slug, opts);
@@ -338,6 +592,12 @@ async function profile(ctx) {
   const offers = c.kind === "coworker" ? await cms.getOffersFor(c.catalogSlug || c.slug, opts) : [];
   const vn = vendorName(c);
   const vs = vendorSlug(c);
+  // Marketplace listings carry the maker's own copy in the catalog, not the CMS.
+  const cat = catalogAgent(c, ctx);
+  const cats = (cat && cat.categories) || [];
+  // Editorial overlay for this slug; {} when there is none.
+  const b = boostFor(c.slug, locale());
+  const siblings = cats.length ? await cms.getCoworkers(opts).catch(() => []) : [];
 
   const offersSection = offers.length
     ? `<section class="page-section" id="tasks">
@@ -361,15 +621,22 @@ async function profile(ctx) {
   cr.push({ label: c.name });
   return (
     pageStart({
+      // An editor's title wins, then the overlay's, then the generated one.
+      // c.seoTitle is read even though the CMS collection has no such field
+      // yet: adding it later is then a pure addition with no code change here.
       title:
-        c.slug === "instagram-page-analysis"
-          ? t("Instagram analyzer for posts and pages | Sokosumi")
-          : t("{name} | {role} on Sokosumi", { name: c.name, role: c.role || t("AI coworker") }),
-      description: shell.describe(c.seoDescription || c.description || t("Hire {name}, an AI coworker on Sokosumi.", { name: c.name }), t("Brief {name} in plain language; the task shows on a shared board and comes back as a file. Credit price shown first.", { name: c.name })),
+        c.seoTitle ||
+        b.seoTitle ||
+        t("{name} | {role} on Sokosumi", { name: c.name, role: c.role || t("AI coworker") }),
+      description: shell.describe(c.seoDescription || b.seoDescription || c.description || t("Hire {name}, an AI coworker on Sokosumi.", { name: c.name }), [
+        t("Brief {name} in plain language; the task shows on a shared board and comes back as a file. Credit price shown first.", { name: c.name }),
+        t("Brief {name} in plain language and get a finished file back.", { name: c.name }),
+        t("Hire {name} on Sokosumi.", { name: c.name }),
+      ]),
       path: `/ai-coworkers/${c.slug}`,
       og: { type: "coworker", title: c.name, sub: c.role || "", eyebrow: c.kind === "agent" ? t("Specialist agent on Sokosumi") : t("AI coworker on Sokosumi"), meta: [vn, c.profileHosting].filter(Boolean).join(" · "), img: c.image || "" },
       breadcrumb: cr,
-      jsonld: profileLd(c, vn, vs),
+      jsonld: [...[].concat(profileLd(c, vn, vs) || []), boostFaqLd(b, c)].filter(Boolean),
     }) +
     `<div class="cw-hero">
       <div class="cw-portrait${c.kind === "agent" ? " is-icon" : ""}" data-reveal>${c.image ? `<img${shell.thumbSrc(c.image, 512, "src", 100)} alt="${attr(c.name)}" decoding="async" />` : ""}</div>
@@ -386,9 +653,15 @@ async function profile(ctx) {
         ${shell.NO_CARD}
       </div>
     </div>
-    ${profileFacts(c, vn, vs)}
+    ${profileFacts(c, vn, vs, cat, cats)}
+    ${boostIntro(b, c)}
+    ${boostSpec(b)}
+    ${vendorSection(c, cat, Boolean(b.intro))}
     ${longBio}
-    ${offersSection}` +
+    ${offersSection}
+    ${boostFaq(b)}
+    ${boostRelated(b)}
+    ${relatedAgents(c, cats, ctx, siblings)}` +
     shell.logoRow() +
     shell.ctaBand({
       heading: t("Put {name} to work", { name: c.name }),

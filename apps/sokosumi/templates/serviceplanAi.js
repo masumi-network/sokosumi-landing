@@ -24,7 +24,18 @@ function config() {
 const ui = (en, de) => (i18n.locale() === "de" ? de : en);
 const localText = (value) => (value && typeof value === "object" ? value[i18n.locale()] || value.en || "" : value || "");
 const HUB = () => config().hub;
-const isSection = (slug) => typeof slug === "string" && (slug === HUB() || slug.startsWith(`${HUB()}/`));
+// Chapters promoted out of the dossier to a top-level URL. The buyer guides
+// target queries ("ai marketing agency") where a /serviceplan-ai/ prefix reads
+// as "a page about Serviceplan" in the SERP, so the doc slug drops the hub —
+// but the page keeps the dossier layout and stays in the chapter index, so it
+// loses none of its internal links.
+// Chapters promoted out of the dossier. Empty today: ai-marketing-agency was
+// promoted with the dossier chrome kept, then made fully standalone — it is a
+// buyer guide in its own right, and the Serviceplan breadcrumb was telling a
+// searcher the page was about Serviceplan.
+const PROMOTED = new Set();
+const isSection = (slug) =>
+  typeof slug === "string" && (slug === HUB() || slug.startsWith(`${HUB()}/`) || PROMOTED.has(slug));
 
 function chapterLogos(chapter) {
   if (Array.isArray(chapter.logos) && chapter.logos.length) return chapter.logos;
@@ -65,7 +76,7 @@ async function chapters(ctx) {
   const pages = await cms.getPages({ draft: ctx.preview });
   const bySlug = new Map(pages.map((page) => [page.slug, page]));
   return config()
-    .chapters.map((chapter) => ({ ...chapter, doc: bySlug.get(`${HUB()}/${chapter.slug}`) }))
+    .chapters.map((chapter) => ({ ...chapter, doc: bySlug.get(`${HUB()}/${chapter.slug}`) || bySlug.get(chapter.slug) }))
     .filter((chapter) => chapter.doc);
 }
 
@@ -473,6 +484,9 @@ async function render(doc, ctx) {
       description: doc.description || "",
       url: `${shell.SITE}/${doc.slug}`,
       inLanguage: i18n.locale() === "de" ? "de" : "en",
+      // createdAt is when the chapter was first published, updatedAt when it was
+      // last reviewed; Google's Article result wants both, not just the latter.
+      ...(doc.createdAt ? { datePublished: String(doc.createdAt).slice(0, 10) } : {}),
       dateModified: String(doc.updatedAt || "").slice(0, 10),
       about: organizationLd(),
       author: { "@id": `${shell.SITE}/#organization` },

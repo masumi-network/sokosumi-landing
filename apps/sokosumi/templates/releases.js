@@ -83,8 +83,8 @@ async function index(ctx) {
       : `<div class="page-section flush"><p class="muted">${esc(t("Release notes are on the way. In the meantime,"))} <a href="/blog" style="text-decoration:underline">${esc(t("read the blog"))}</a>.</p></div>`) +
     shell.logoRow() +
     shell.ctaBand({
-      heading: t("Every release lands in your account"),
-      subheading: t("Nothing to install and nothing to upgrade."),
+      heading: t("Nothing to install"),
+      subheading: t("Releases arrive in your account on their own."),
       ctaLabel: t("Start free"),
       seed: releases.length,
     }) +
@@ -155,8 +155,8 @@ async function detail(ctx) {
     blocks.renderBlocks(r.sections) +
     shell.logoRow() +
     shell.ctaBand({
-      heading: t("Try it in your account"),
-      subheading: t("Every release is already live in the product."),
+      heading: t("Everything here is already live"),
+      subheading: t("Sign up free and the whole product is there."),
       ctaLabel: t("Start free"),
       seed: r.title.length,
     }) +

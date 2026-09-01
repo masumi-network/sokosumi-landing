@@ -67,6 +67,12 @@ export default {
         "Buying mentions to look authoritative. Google names inauthentic mentions as a tactic that does not work.",
       ],
       sources,
+
+      related: [
+        ["AI brand monitoring: what Google and Microsoft actually report", "/guides/ai-brand-monitoring"],
+        ["AI in media relations: what newsrooms forbid", "/guides/ai-media-relations"],
+        ["AI in crisis communications: the rules that bind", "/guides/ai-crisis-communications"],
+      ],
     }),
     faqHeading: "Answer engine optimization: common questions",
     faq: [
@@ -136,6 +142,12 @@ export default {
         "Erwähnungen einkaufen, um autoritativ zu wirken.",
       ],
       sources: quellen,
+
+      related: [
+        ["KI-Markenmonitoring: was die Plattformen wirklich berichten", "/de/guides/ai-brand-monitoring"],
+        ["KI in der Medienarbeit: was Redaktionen untersagen", "/de/guides/ai-media-relations"],
+        ["KI in der Krisenkommunikation: die verbindlichen Regeln", "/de/guides/ai-crisis-communications"],
+      ],
     }),
     faqHeading: "Answer Engine Optimization: häufige Fragen",
     faq: [

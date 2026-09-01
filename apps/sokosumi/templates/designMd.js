@@ -22,7 +22,23 @@ const FAQ = [
   },
 ];
 
-function render() {
+async function render() {
+  // The analysis pages were reachable only after this gallery had been filled by
+  // script, which left 100+ indexable pages with no link to them in the HTML.
+  // They are rendered server-side and collapsed with CSS — the same pattern the
+  // agent and guide lists use, so a crawler sees them while a reader gets twelve.
+  //
+  // Bounded, though. The archive is past a thousand brands, and rendering all of
+  // them put 638 KB of cards into the HTML that the client then threw away on
+  // load to show its first twelve. This matches the sitemap's own cap: the newest
+  // slice is what we want crawled, and the button pages through the rest from
+  // /api/design-md/gallery.
+  const SERVER_RENDERED = 120;
+  const archiveList = await archive.list().catch(() => []);
+  const galleryHtml = archiveList.slice(0, SERVER_RENDERED).map(galleryCard).join("");
+  const countLabel = archiveList.length
+    ? `${archiveList.length} ${archiveList.length === 1 ? "saved analysis" : "saved analyses"}`
+    : "No saved analyses yet";
   const path = "/tools/design-md";
   const crumbs = [{ label: "Home", href: "/" }, { label: "Free tools", href: "/tools" }, { label: "DESIGN.md generator" }];
   const faqJsonLd = {
@@ -69,6 +85,7 @@ function render() {
         <div>
           <p class="dm-overline">Tool · Free</p>
           <h1>DESIGN.md Generator</h1>
+          <p class="dm-tool-sub">Paste any website and get a DESIGN.md back: its colours, type, spacing and components written up as context you can hand to an AI coding agent.</p>
         </div>
         <p class="dm-tool-meta"><span class="dm-live">Live</span><a href="https://github.com/google-labs-code/design.md" rel="noopener noreferrer">Spec <span aria-hidden="true">↗</span></a></p>
       </header>
@@ -140,10 +157,10 @@ function render() {
     <section class="dm-gallery-section" id="analyzed-pages" aria-labelledby="analyzed-pages-title">
       <header class="dm-section-head">
         <h2 id="analyzed-pages-title">Already generated</h2>
-        <p class="dm-gallery-count" id="designMdGalleryCount" aria-live="polite">Loading…</p>
+        <p class="dm-gallery-count" id="designMdGalleryCount" aria-live="polite">${countLabel}</p>
       </header>
-      <div class="dm-gallery" id="designMdGallery" aria-live="polite"></div>
-      <button class="btn btn-outline dm-gallery-more" id="designMdGalleryMore" type="button" hidden>Show all</button>
+      <div class="dm-gallery${archiveList.length > 12 ? " is-collapsed" : ""}" id="designMdGallery" aria-live="polite">${galleryHtml}</div>
+      <button class="btn btn-outline dm-gallery-more" id="designMdGalleryMore" type="button"${archiveList.length > 12 ? "" : " hidden"}>Show 20 more</button>
     </section>
 
     <section class="dm-how" aria-labelledby="design-md-how">
@@ -243,7 +260,15 @@ async function analysis(ctx) {
   const colorCount = Object.keys(fm.colors || {}).length;
   const fontFamilies = [...new Set(Object.values(fm.typography || {}).map((t) => t && t.fontFamily).filter(Boolean))];
   const description = `${name} DESIGN.md: ${colorCount} color tokens${fontFamilies.length ? `, ${fontFamilies.slice(0, 2).join(" and ")} typography` : ""}, spacing, shapes and component rules extracted from ${entry.hostname} for AI coding agents. Copy or download the file.`;
-  const related = (await archive.list().catch(() => [])).filter((e) => e.id !== entry.id).slice(0, 8);
+  // A rotating window, not the first eight every time: taking the head of the
+  // list gave those eight entries every inbound link on the site and left the
+  // rest with one apiece. Starting after this entry and wrapping around spreads
+  // the links evenly and is still deterministic per page.
+  const all = await archive.list().catch(() => []);
+  const here = Math.max(0, all.findIndex((e) => e.id === entry.id));
+  const others = all.filter((e) => e.id !== entry.id);
+  const start = others.length ? here % others.length : 0;
+  const related = others.length ? others.slice(start).concat(others.slice(0, start)).slice(0, 8) : [];
   const created = data.createdAt ? new Date(Number(data.createdAt)) : null;
   const jsonld = [
     {
@@ -263,7 +288,22 @@ async function analysis(ctx) {
   ];
   return (
     pageStart({
-      title: `${name} DESIGN.md: colors, type, components | Sokosumi`,
+      // The brand name is variable-length and the descriptor was fixed, so a
+      // long name pushed the title well past what Google renders — the worst
+      // was 101 characters. Take the longest variant that still fits 60, so
+      // the name and "DESIGN.md" (the part someone searches) always survive
+      // and only the tail is sacrificed.
+      title: (() => {
+        const tails = [
+          " DESIGN.md: colors, type, components | Sokosumi",
+          " DESIGN.md: colors, type, components",
+          " DESIGN.md: colors and type",
+          " DESIGN.md",
+        ];
+        for (const tail of tails) if ((name + tail).length <= 60) return name + tail;
+        // even the bare form can overflow if the brand name itself is long
+        return `${shell.truncate(name, 60 - " DESIGN.md".length)} DESIGN.md`;
+      })(),
       description: description.slice(0, 160),
       path,
       englishOnly: true,
@@ -310,7 +350,7 @@ async function analysis(ctx) {
     </section>
 
     ${related.length ? `<section class="dm-gallery-section" aria-labelledby="dm-related-title">
-      <header class="dm-section-head"><h2 id="dm-related-title">More analyses</h2><a class="dm-gallery-all" href="/tools/design-md#analyzed-pages">All ${related.length + 1} →</a></header>
+      <header class="dm-section-head"><h2 id="dm-related-title">More analyses</h2><a class="dm-gallery-all" href="/tools/design-md#analyzed-pages">All ${all.length} →</a></header>
       <div class="dm-gallery">${related.map(galleryCard).join("")}</div>
     </section>` : ""}` +
     pageEnd({ scripts: ["/assets/design-md-analysis.js"], englishOnly: true })

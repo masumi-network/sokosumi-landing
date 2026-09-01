@@ -60,6 +60,10 @@ const EXACT = {
   "/webinar-live": "/",
   "/webinar-thank-you": "/",
   "/register-for-webinar": "/",
+  // Promoted out of the Serviceplan dossier to a top-level URL: the buyer
+  // guide targets "ai marketing agency", where a /serviceplan-ai/ prefix reads
+  // as a page about Serviceplan rather than about the category.
+  "/serviceplan-ai/ai-marketing-agency": "/ai-marketing-agency",
 };
 
 // Prefixes whose children all collapse onto one hub. The old agent categories

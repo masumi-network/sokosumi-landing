@@ -142,7 +142,7 @@ async function surfacePage(doc, slug, ctx) {
     return (
       pageStart({
         title: t(cfg.metaTitle),
-        description: (doc.description || "").slice(0, 160),
+        description: shell.describe(doc.description || "", [t("Part of the Sokosumi product tour: brief an AI coworker, follow the task on a shared board, collect the file."), t("Sokosumi: brief an AI coworker and get a finished file back."), t("AI coworkers for marketing teams.")]),
         path: "/" + slug,
         breadcrumb: cr,
         stylesheets: ["/assets/product.css"],
@@ -174,7 +174,7 @@ async function surfacePage(doc, slug, ctx) {
   return (
     pageStart({
       title: t(cfg.metaTitle),
-      description: (doc.description || "").slice(0, 160),
+      description: shell.describe(doc.description || "", [t("Part of the Sokosumi product tour: brief an AI coworker, follow the task on a shared board, collect the file."), t("Sokosumi: brief an AI coworker and get a finished file back."), t("AI coworkers for marketing teams.")]),
       path: "/" + slug,
       breadcrumb: cr,
       stylesheets: ["/assets/product.css"],
@@ -210,8 +210,16 @@ async function cmsPage(ctx) {
   if (SURFACES[doc.slug]) return surfacePage(doc, doc.slug, ctx);
   if (spSection.isSection(doc.slug)) return spSection.render(doc, ctx);
 
+  // Pages that stand on their own rather than under a parent: they open on the
+  // ink band (assets/page-ink.css) and their breadcrumb is Home > page, with no
+  // section in between. /ai-marketing-agency is one — filed under the
+  // Serviceplan dossier it read, in the SERP and in the crumb, as a page about
+  // Serviceplan rather than about the category someone searched for.
+  const INK_PAGES = new Set(["ai-marketing-agency"]);
+  const ink = INK_PAGES.has(doc.slug);
+
   const cr = [{ label: "Home", href: "/" }];
-  if (doc.parent && typeof doc.parent === "object" && doc.parent.title && doc.parent.slug) {
+  if (!ink && doc.parent && typeof doc.parent === "object" && doc.parent.title && doc.parent.slug) {
     cr.push({ label: doc.parent.title, href: pagePath(doc.parent.slug) });
   }
   cr.push({ label: doc.title });
@@ -222,9 +230,42 @@ async function cmsPage(ctx) {
       description: (doc.description || "").slice(0, 155),
       path: "/" + doc.slug,
       breadcrumb: cr,
+      mainClass: ink ? "ink-page" : undefined,
+      stylesheets: ink ? ["/assets/page-ink.css"] : undefined,
       jsonld: blocks.faqJsonLd(blocks.collectFaqs(doc.layout)),
     }) +
-    blocks.renderBlocks(doc.layout) +
+    // On an ink page the hero gets a product screenshot beside it, so the band
+    // is not a wide slab of empty dark on a large screen. The rest of the
+    // layout renders normally.
+    (ink
+      ? (() => {
+          const [first, ...rest] = doc.layout || [];
+          const shot = shell.SHOTS.brief;
+          const hero =
+            first && first.blockType === "hero"
+              ? `<section class="ink-hero has-media" data-reveal>
+                  <div>
+                    ${first.eyebrow ? `<span class="eyebrow">${shell.esc(first.eyebrow)}</span>` : ""}
+                    <h1>${shell.esc(first.heading)}</h1>
+                    ${first.subheading ? `<p class="sub">${shell.esc(first.subheading)}</p>` : ""}
+                  </div>
+                  <div class="ink-hero-media">
+                    <img${shell.thumbSrc(shot.src, 1200)} alt="${shell.attr(t(shot.alt))}" width="2400" height="1350" loading="eager" fetchpriority="high" decoding="async" />
+                  </div>
+                </section>`
+              : "";
+          return hero + blocks.renderBlocks(hero ? rest : doc.layout);
+        })()
+      : blocks.renderBlocks(doc.layout)) +
+    // standalone pages close with the same offer every other page does
+    (ink
+      ? shell.ctaBand({
+          heading: t("Try it on one task"),
+          subheading: t("250 free credits per seat. No card, no sales call."),
+          ctaLabel: t("Start free"),
+          seed: doc.slug.length,
+        })
+      : "") +
     pageEnd()
   );
 }

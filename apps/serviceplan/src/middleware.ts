@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const GERMAN_LOCALES = ["de", "de-DE", "de-AT", "de-CH"];
-
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 

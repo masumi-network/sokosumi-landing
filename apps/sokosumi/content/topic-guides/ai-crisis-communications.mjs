@@ -64,6 +64,12 @@ export default {
         "Treating the Commission's Code of Practice as optional in substance. Signing is voluntary; the Article 50 obligations are law from 2 August 2026.",
       ],
       sources,
+
+      related: [
+        ["Answer engine optimization: what Google's documentation actually says", "/guides/answer-engine-optimization"],
+        ["AI brand monitoring: what Google and Microsoft actually report", "/guides/ai-brand-monitoring"],
+        ["AI in media relations: what newsrooms forbid", "/guides/ai-media-relations"],
+      ],
     }),
     faqHeading: "AI in crisis communications: common questions",
     faq: [
@@ -136,6 +142,11 @@ export default {
         "Den Verhaltenskodex der Kommission inhaltlich für optional halten. Die Unterzeichnung ist freiwillig, die Pflichten aus Artikel 50 sind ab dem 2. August 2026 Recht.",
       ],
       sources,
+      related: [
+        ["Answer Engine Optimization: was Google wirklich dokumentiert", "/de/guides/answer-engine-optimization"],
+        ["KI-Markenmonitoring: was die Plattformen wirklich berichten", "/de/guides/ai-brand-monitoring"],
+        ["KI in der Medienarbeit: was Redaktionen untersagen", "/de/guides/ai-media-relations"],
+      ],
     }),
     faqHeading: "KI in der Krisenkommunikation: häufige Fragen",
     faq: [

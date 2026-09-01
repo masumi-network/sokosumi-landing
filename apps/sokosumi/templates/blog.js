@@ -127,8 +127,8 @@ async function detail(ctx) {
     </div>` +
     shell.logoRow() +
     shell.ctaBand({
-      heading: t("See it for yourself"),
-      subheading: t("Run one real task and judge the output for yourself."),
+      heading: t("Try one task"),
+      subheading: t("Brief a coworker and judge the output."),
       ctaLabel: t("Start free"),
       seed: p.title.length,
     }) +

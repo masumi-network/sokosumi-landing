@@ -1,22 +1,63 @@
 {
   "slug": "jasper-vs-copy-ai",
-  "a": { "key": "jasper", "name": "Jasper", "url": "https://www.jasper.ai" },
-  "b": { "key": "copy-ai", "name": "Copy.ai", "url": "https://www.copy.ai" },
+  "a": {
+    "key": "jasper",
+    "name": "Jasper",
+    "url": "https://www.jasper.ai"
+  },
+  "b": {
+    "key": "copy-ai",
+    "name": "Copy.ai",
+    "url": "https://www.copy.ai"
+  },
   "checked": "2026-08-26",
+  "published": "2026-08-26",
   "en": {
     "title": "Jasper or Copy.ai: which one for a marketing team?",
     "metaTitle": "Jasper vs Copy.ai (2026): prices, agents, credits, who it fits",
     "description": "Jasper and Copy.ai compared on price, agents, workflow credits, hosting and real limits. Plain facts checked in August 2026, plus who should pick which.",
     "intro": "Jasper is a marketing content platform sold per seat, with brand voice, a canvas and marketing agents. Copy.ai is a go-to-market workflow platform sold per workspace, with a cheap chat tier and expensive workflow tiers. The deciding question is whether you buy a writing tool for a few people or a workflow engine for a whole sales and marketing org.",
     "glance": [
-      ["Who it is for", "Marketing teams that write a lot and want on-brand output", "Sales and marketing ops teams that run repeatable content and outreach workflows"],
-      ["What you get", "Chat, Canvas editor, images, marketing agents, brand voice, custom agent builder (Business)", "Chat with OpenAI, Anthropic and Gemini models; workflows on paid tiers; API on Enterprise"],
-      ["Price", "Pro $69 per seat monthly or $59 annual; Business custom", "Chat $29 per month ($24 annual) for 5 seats; Growth $1,000, Expansion $2,000, Scale $3,000 per month; Enterprise custom"],
-      ["Free plan or trial", "7-day free trial on Pro", "No free plan shown on the pricing page at check"],
-      ["EU hosting", "No. Data hosted in US data centres (US-East)", "Not published. SOC 2 report available"],
-      ["Team features", "Brand voices, knowledge assets, audiences; admin controls and groups on Business", "Seat bundles per tier (5 to 200); designated support team on Enterprise"],
-      ["Build your own agents", "No-code custom agent builder on Business only", "Workflow builder on Growth and up; unlimited custom workflows on Enterprise"],
-      ["What is metered", "Chat and Canvas are not metered; agents and GEO Hub use credits on Business", "Workflow credits: 20K, 45K, 75K per month on Growth, Expansion, Scale"]
+      [
+        "Who it is for",
+        "Marketing teams that write a lot and want on-brand output",
+        "Sales and marketing ops teams that run repeatable content and outreach workflows"
+      ],
+      [
+        "What you get",
+        "Chat, Canvas editor, images, marketing agents, brand voice, custom agent builder (Business)",
+        "Chat with OpenAI, Anthropic and Gemini models; workflows on paid tiers; API on Enterprise"
+      ],
+      [
+        "Price",
+        "Pro $69 per seat monthly or $59 annual; Business custom",
+        "Chat $29 per month ($24 annual) for 5 seats; Growth $1,000, Expansion $2,000, Scale $3,000 per month; Enterprise custom"
+      ],
+      [
+        "Free plan or trial",
+        "7-day free trial on Pro",
+        "No free plan shown on the pricing page at check"
+      ],
+      [
+        "EU hosting",
+        "No. Data hosted in US data centres (US-East)",
+        "Not published. SOC 2 report available"
+      ],
+      [
+        "Team features",
+        "Brand voices, knowledge assets, audiences; admin controls and groups on Business",
+        "Seat bundles per tier (5 to 200); designated support team on Enterprise"
+      ],
+      [
+        "Build your own agents",
+        "No-code custom agent builder on Business only",
+        "Workflow builder on Growth and up; unlimited custom workflows on Enterprise"
+      ],
+      [
+        "What is metered",
+        "Chat and Canvas are not metered; agents and GEO Hub use credits on Business",
+        "Workflow credits: 20K, 45K, 75K per month on Growth, Expansion, Scale"
+      ]
     ],
     "pickA": {
       "heading": "Pick Jasper if…",
@@ -53,13 +94,28 @@
         "Credits only when a task runs. Free: 250 credits per seat per month, no card. Paid seats €25, €75 or €200 per month.",
         "EU hosting available, stated per coworker. Built by Serviceplan Group with NMKR, Munich."
       ],
-      "links": ["/compare/sokosumi-vs-jasper", "/compare/sokosumi-vs-copy-ai"]
+      "links": [
+        "/compare/sokosumi-vs-jasper",
+        "/compare/sokosumi-vs-copy-ai"
+      ]
     },
     "faq": [
-      ["Does Jasper have a free plan?", "No. Jasper Pro has a 7-day free trial. After that it is $69 per seat monthly or $59 per seat on an annual plan."],
-      ["What are Copy.ai workflow credits?", "Workflow credits are the meter for running workflows. Growth includes 20,000 a month, Expansion 45,000 and Scale 75,000. Chat use is unlimited and does not use credits."],
-      ["Can either tool host data in the EU?", "Jasper states its data is hosted in US data centres. Copy.ai does not publish a hosting region on its security page. Ask sales and get it in writing if EU hosting matters to you."],
-      ["Is there a third option that delivers finished files?", "Yes. Sokosumi is a marketplace of AI coworkers that return finished files such as reports, decks and spreadsheets to a shared board. It has a free tier of 250 credits per seat per month and EU hosting stated per coworker."]
+      [
+        "Does Jasper have a free plan?",
+        "No. Jasper Pro has a 7-day free trial. After that it is $69 per seat monthly or $59 per seat on an annual plan."
+      ],
+      [
+        "What are Copy.ai workflow credits?",
+        "Workflow credits are the meter for running workflows. Growth includes 20,000 a month, Expansion 45,000 and Scale 75,000. Chat use is unlimited and does not use credits."
+      ],
+      [
+        "Can either tool host data in the EU?",
+        "Jasper states its data is hosted in US data centres. Copy.ai does not publish a hosting region on its security page. Ask sales and get it in writing if EU hosting matters to you."
+      ],
+      [
+        "Is there a third option that delivers finished files?",
+        "Yes. Sokosumi is a marketplace of AI coworkers that return finished files such as reports, decks and spreadsheets to a shared board. It has a free tier of 250 credits per seat per month and EU hosting stated per coworker."
+      ]
     ]
   },
   "de": {

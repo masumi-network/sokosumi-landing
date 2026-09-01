@@ -70,6 +70,12 @@ export default {
         "Blocking crawlers to \"protect\" the brand without checking which surface each token governs — the controls are not interchangeable, and one of them costs you search visibility while another does not.",
       ],
       sources,
+
+      related: [
+        ["Answer engine optimization: what Google's documentation actually says", "/guides/answer-engine-optimization"],
+        ["AI in media relations: what newsrooms forbid", "/guides/ai-media-relations"],
+        ["AI in crisis communications: the rules that bind", "/guides/ai-crisis-communications"],
+      ],
     }),
     faqHeading: "AI brand monitoring: common questions",
     faq: [
@@ -135,6 +141,12 @@ export default {
         "Crawler blockieren, ohne zu prüfen, welche Fläche das jeweilige Token überhaupt steuert.",
       ],
       sources: quellen,
+
+      related: [
+        ["Answer Engine Optimization: was Google wirklich dokumentiert", "/de/guides/answer-engine-optimization"],
+        ["KI in der Medienarbeit: was Redaktionen untersagen", "/de/guides/ai-media-relations"],
+        ["KI in der Krisenkommunikation: die verbindlichen Regeln", "/de/guides/ai-crisis-communications"],
+      ],
     }),
     faqHeading: "KI-Markenmonitoring: häufige Fragen",
     faq: [

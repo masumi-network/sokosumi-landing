@@ -162,19 +162,26 @@
 }
 
 .dm-progress-line {
-  height: 2px;
+  position: relative;
+  height: 3px;
   overflow: hidden;
   background: var(--muted);
 }
 
+/* Width is driven from JS (see assets/design-md.js), which eases it forward on
+ * every tick. The three data-phase rules below are the no-JS fallback and the
+ * pre-tick starting point; an inline transform always wins over them.
+ *
+ * A bar that only moves when the phase changes spends 45 of a 50-second run
+ * frozen at one position, which reads as a hang rather than as work. */
 .dm-progress-line span {
   display: block;
   width: 100%;
   height: 100%;
   background: var(--primary);
-  transform: scaleX(0.16);
+  transform: scaleX(0.04);
   transform-origin: left;
-  transition: transform 420ms var(--ease);
+  transition: transform 600ms linear;
 }
 
 .dm-progress[data-phase="running"] .dm-progress-line span {
@@ -183,6 +190,37 @@
 
 .dm-progress[data-phase="finishing"] .dm-progress-line span {
   transform: scaleX(0.92);
+}
+
+.dm-progress[data-phase="done"] .dm-progress-line span {
+  transform: scaleX(1);
+}
+
+/* A highlight travelling along the filled part, so the bar reads as working
+ * even in the seconds where the easing has almost nothing left to give. */
+.dm-progress-line::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.85) 50%,
+    transparent 100%
+  );
+  transform: translateX(-100%);
+  animation: dm-sheen 1.6s ease-in-out infinite;
+}
+
+.dm-progress[data-phase="done"] .dm-progress-line::after {
+  animation: none;
+  opacity: 0;
+}
+
+@keyframes dm-sheen {
+  to {
+    transform: translateX(100%);
+  }
 }
 
 .dm-progress ol {
@@ -216,18 +254,79 @@
   font-variant-numeric: tabular-nums;
 }
 
-.dm-progress[data-phase="queued"] [data-step="queued"],
-.dm-progress[data-phase="running"] [data-step="running"],
-.dm-progress[data-phase="finishing"] [data-step="finishing"] {
+/* Steps carry their own state now. Marking only the current one threw away
+ * the thing a stepper is for — the sense that something is behind you. */
+.dm-progress li[data-state="active"],
+.dm-progress li[data-state="done"] {
   color: var(--foreground);
 }
 
-.dm-progress[data-phase="queued"] [data-step="queued"] span,
-.dm-progress[data-phase="running"] [data-step="running"] span,
-.dm-progress[data-phase="finishing"] [data-step="finishing"] span {
+.dm-progress li[data-state="active"] span {
   color: var(--card);
   background: var(--primary);
   border-color: var(--primary);
+}
+
+.dm-progress li[data-state="active"] span::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border: 1px solid var(--primary);
+  border-radius: 999px;
+  opacity: 0.5;
+  animation: dm-pulse 1.8s ease-out infinite;
+}
+
+.dm-progress li span {
+  position: relative;
+}
+
+.dm-progress li[data-state="done"] span {
+  color: var(--primary);
+  border-color: var(--primary);
+  background: var(--primary-soft);
+}
+
+@keyframes dm-pulse {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.55;
+  }
+  70% {
+    transform: scale(1.25);
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* The elapsed counter. Long runs are fine; unaccounted-for ones are not. */
+.dm-elapsed {
+  margin-left: auto;
+  color: var(--muted-foreground);
+  font-size: 12.5px;
+  font-variant-numeric: tabular-nums;
+}
+
+.dm-progress > p {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+}
+
+.dm-status-text {
+  min-width: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dm-progress-line::after,
+  .dm-progress li[data-state="active"] span::after {
+    animation: none;
+  }
+  .dm-progress-line::after {
+    opacity: 0;
+  }
 }
 
 .dm-progress > p {
@@ -386,6 +485,11 @@
 .dm-prose-section {
   padding: 14px 0;
   border-bottom: 1px solid var(--border);
+}
+
+/* see "no trailing rule on a repeated list" in styles.css */
+.dm-prose-section:last-child {
+  border-bottom: 0;
 }
 
 .dm-type-row {
@@ -921,7 +1025,7 @@
   border: 1px dashed var(--border);
   border-radius: 16px;
   margin-top: 24px;
-  min-height: 300px;
+  min-height: 320px;
   padding: 0;
 }
 
@@ -939,7 +1043,7 @@
   display: grid;
   gap: 8px;
   justify-items: center;
-  min-height: 300px;
+  min-height: 320px;
   padding: 40px 24px;
   text-align: center;
 }
@@ -1093,22 +1197,246 @@
   color: var(--foreground);
 }
 
+/* The preview stage. Light, hairlined, the same surface language as the rest
+   of the site — the old ink panel was the heaviest thing on the page and it
+   framed both tools identically. */
 .tool-card-doc {
-  background: var(--muted);
-  border: 1px solid var(--border);
-  border-radius: var(--r-md);
-  color: var(--muted-foreground);
   display: grid;
-  font-family: var(--mono);
-  font-size: 12.5px;
-  gap: 4px;
-  line-height: 1.5;
-  padding: 18px 20px;
+  place-items: center;
+  /* One height for every stage, so a taller preview cannot push its card's
+     copy out of line with the card beside it. */
+  min-height: 320px;
+  margin: -20px -20px 0;
+  padding: 26px 22px;
+  background: var(--muted);
+  border-bottom: 1px solid var(--border);
 }
 
-.tool-card-doc span:first-child {
+.tp {
+  display: grid;
+  gap: 14px;
+  width: 100%;
+  max-width: 320px;
+}
+
+/* --- Open Graph checker: the card it draws, plus the verdict ---------- */
+
+.tp-card {
+  display: block;
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+}
+
+.tp-shot {
+  position: relative;
+  display: block;
+  aspect-ratio: 1200 / 630;
+  background:
+    radial-gradient(90% 120% at 15% 10%, rgba(0, 164, 250, 0.35) 0%, transparent 60%),
+    linear-gradient(135deg, #2b5c78 0%, #12232c 55%, #0f0e0d 100%);
+}
+
+.tp-pill {
+  position: absolute;
+  left: 8px;
+  bottom: 8px;
+  padding: 2px 6px;
+  background: rgba(0, 0, 0, 0.55);
+  border-radius: 3px;
+  color: #fff;
+  font-size: 9.5px;
+  line-height: 1.4;
+}
+
+.tp-meta {
+  display: grid;
+  gap: 2px;
+  padding: 8px 10px 10px;
+  background: #f2f3f5;
+  border-top: 1px solid var(--border);
+}
+
+.tp-host {
+  color: var(--muted-foreground);
+  font-size: 9px;
+  letter-spacing: 0.06em;
+}
+
+.tp-title {
   color: var(--foreground);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.tp-desc {
+  overflow: hidden;
+  color: var(--muted-foreground);
+  font-size: 10.5px;
+  line-height: 1.3;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tp-verdict {
+  display: flex;
+  gap: 6px;
+}
+
+.tp-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 9px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-size: 11px;
   font-weight: 500;
+}
+
+.tp-chip::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.tp-chip.is-pass {
+  color: #2f6b45;
+}
+.tp-chip.is-warn {
+  color: #8a6100;
+}
+
+/* --- llms.txt: the file's own outline -------------------------------- */
+
+.tp-file {
+  display: grid;
+  gap: 7px;
+  padding: 16px 18px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  font-family: var(--mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+  font-size: 11.5px;
+  line-height: 1.45;
+}
+
+.tp-file-name {
+  padding-bottom: 9px;
+  margin-bottom: 2px;
+  border-bottom: 1px solid var(--border);
+  color: var(--muted-foreground);
+  font-size: 11px;
+}
+
+.tp-file-line {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+  color: var(--foreground);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tp-file-line b {
+  color: var(--primary);
+  font-weight: 400;
+}
+
+.tp-file-line i {
+  margin-left: auto;
+  color: var(--muted-foreground);
+  font-style: normal;
+}
+
+.tp-file-line.is-quote {
+  color: var(--muted-foreground);
+}
+
+/* --- DESIGN.md: the spec sheet it writes ----------------------------- */
+
+.tp-dm {
+  gap: 16px;
+  padding: 16px 18px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+}
+
+.tp-swatches {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
+}
+
+.tp-swatches span {
+  height: 30px;
+  border-radius: var(--r-sm);
+  box-shadow: inset 0 0 0 1px rgba(15, 14, 13, 0.08);
+}
+
+.tp-type {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+
+.tp-aa {
+  color: var(--foreground);
+  font-size: 30px;
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.tp-type-meta {
+  display: grid;
+  gap: 1px;
+}
+
+.tp-type-meta b {
+  color: var(--foreground);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.tp-type-meta i {
+  color: var(--muted-foreground);
+  font-size: 10.5px;
+  font-style: normal;
+}
+
+.tp-tokens {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding-top: 13px;
+  border-top: 1px solid var(--border);
+}
+
+.tp-tokens span {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 4px;
+  padding: 3px 8px;
+  background: var(--muted);
+  border-radius: var(--r-sm);
+  color: var(--foreground);
+  font-family: var(--mono);
+  font-size: 10.5px;
+}
+
+.tp-tokens b {
+  color: var(--muted-foreground);
+  font-weight: 400;
 }
 
 .tool-card-copy {
@@ -1365,3 +1693,19 @@
     width: 100%;
   }
 }
+
+/* the code preview is the card's stage: square, full-bleed to the card edge,
+   with the sample sitting on it as a light panel */
+.tools-list .tool-card { overflow: hidden; }
+/* one light panel on the stage, not a pill per line */
+.dm-tool-sub {
+  margin-top: 12px;
+  max-width: 62ch;
+  color: var(--muted-foreground);
+  font-size: 16px;
+  line-height: 1.55;
+}
+
+/* Every saved analysis ships in the HTML so each one has a link pointing at it;
+   past the first twelve they are hidden until "Show all". */
+.dm-gallery.is-collapsed > :nth-child(n + 13) { display: none; }

@@ -255,7 +255,9 @@ export async function llmExtract(
   // text-only run for the same URL.
   // v6 bumps for the sharpened primary-color definition (was producing
   // primary=#000 on monochrome-with-accent brands like Masumi).
-  const cacheKey = `${MODEL}:v6${hasScreenshot ? ":vision" : ":text"}:${url}`;
+  // v7: the vision input went from an 800px hero crop to a 2400px crop, so a
+  // v6 entry would serve a materially worse result than a fresh run.
+  const cacheKey = `${MODEL}:v7${hasScreenshot ? ":vision" : ":text"}:${url}`;
   if (!opts?.force) {
     const cached = cache.get(cacheKey);
     if (cached && Date.now() - cached.ts < TTL_MS) return cached.result;
@@ -362,7 +364,7 @@ function buildPrompt(
   const trimmedHtml = html.slice(0, 16000);
   const trimmedCss = css.slice(0, 16000);
   const visionLine = hasScreenshot
-    ? `A SCREENSHOT of the rendered page is attached. **Use the screenshot to verify** color choices, identify the most prominent CTA, see the hero composition, and check dark vs light mode. The screenshot is ground truth — when the screenshot conflicts with the text signal, trust the screenshot.`
+    ? `A SCREENSHOT of the rendered page is attached, covering the top of the page down to roughly three viewports, so it shows the hero and usually the sections beneath it. **Use it to verify** colour choices, identify the most prominent CTA, read the section rhythm and spacing, see how cards, forms and tables are actually styled, and check dark vs light mode. The screenshot is ground truth: when it conflicts with the text signal, trust the screenshot. It is a crop, not the whole page, so do not conclude a footer or section is absent just because it is not visible.`
     : "";
 
   return `${FEW_SHOT}

@@ -1,0 +1,134 @@
+/* Shared ink-page chrome.
+   Opt in by giving <main> the `ink-page` class and loading this sheet. The
+   page then opens on a dark band that starts at the header and runs through
+   the breadcrumbs into the hero, the same treatment /european-ai uses.
+   Everything references tokens in styles.css. */
+
+/* ── breadcrumbs sit on the band ────────────────────────────────────────── */
+/* The crumbs render outside <main>, so a page class cannot reach them by
+   descent; :has() can. #0a0a0a is --stage-deep's 0% stop, so the crumb strip
+   and the hero gradient meet without a seam. */
+body:has(main.ink-page) .crumbs {
+  position: relative;
+  padding-top: 22px;
+  padding-bottom: 14px;
+  color: rgba(255, 255, 255, 0.5);
+}
+body:has(main.ink-page) .crumbs::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  --vw: calc(100vw - var(--sbw, 0px));
+  left: calc(50% - var(--vw) / 2);
+  width: var(--vw);
+  background: #0a0a0a;
+}
+body:has(main.ink-page) .crumbs a,
+body:has(main.ink-page) .crumbs .sep,
+body:has(main.ink-page) .crumbs .current { position: relative; }
+body:has(main.ink-page) .crumbs .current { color: rgba(255, 255, 255, 0.82); }
+body:has(main.ink-page) .crumbs a:hover { color: #fff; }
+
+/* ── the hero band ──────────────────────────────────────────────────────── */
+.ink-page .blk-hero,
+.ink-page .ink-hero {
+  --vw: calc(100vw - var(--sbw, 0px));
+  width: var(--vw);
+  margin-left: calc(50% - var(--vw) / 2);
+  margin-right: calc(50% - var(--vw) / 2);
+  /* The band is full-bleed, so it re-creates the container's own gutter with
+     padding rather than centring each child (margin-inline:auto put the h1 and
+     the sub on different left edges, because they have different natural
+     widths).
+     `100%` here resolved against the CONTAINING BLOCK, which is still the
+     1240px main — so the sum was always zero and at 1920px the hero copy sat
+     at 56px while every other section sat at 333px. --vw is the real viewport
+     width, which is what the gutter has to be measured from. */
+  padding-block: clamp(34px, 6vw, 76px) clamp(40px, 6vw, 72px);
+  padding-inline: max(
+    clamp(24px, 4vw, 56px),
+    calc((var(--vw) - 1240px) / 2 + clamp(24px, 4vw, 56px))
+  );
+  background: #0f1c25 var(--stage-deep);
+  color: #fff;
+  border-top: none;
+  overflow: hidden;
+}
+
+.ink-page .blk-hero .eyebrow,
+.ink-page .ink-hero .eyebrow { color: var(--primary-on-dark); }
+.ink-page .blk-hero h1,
+.ink-page .ink-hero h1 {
+  font-weight: 300;
+  font-size: clamp(30px, 5vw, 54px);
+  line-height: 1.06;
+  letter-spacing: -0.03em;
+  margin: 10px 0 16px;
+  max-width: 20ch;
+  /* styles.css turns on hyphens:auto for h1-h3 under 860px; on a display line
+     that hyphenates ordinary words, so these opt out and rely on break-word */
+  hyphens: manual;
+  overflow-wrap: break-word;
+  min-width: 0;
+}
+.ink-page .blk-hero .sub,
+.ink-page .ink-hero .sub {
+  font-size: clamp(15px, 1.6vw, 17px);
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.66);
+  max-width: 58ch;
+}
+.ink-page .blk-hero .cta-row { margin-top: 26px; }
+
+/* ── hero with a product shot ───────────────────────────────────────────── */
+/* The band was mostly empty dark space on a wide screen. This puts the copy
+   in one column and a real product screenshot in the other. */
+.ink-hero.has-media { display: grid; gap: clamp(28px, 4vw, 56px); grid-template-columns: 1fr; align-items: center; }
+.ink-hero .ink-hero-media { min-width: 0; }
+.ink-hero .ink-hero-media img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: var(--r-lg);
+  border: 1px solid var(--hairline-dark);
+}
+@media (min-width: 900px) {
+  .ink-hero.has-media { grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); }
+  .ink-hero.has-media h1 { max-width: 16ch; }
+  .ink-hero.has-media .sub { max-width: 46ch; }
+}
+
+/* ── first paper section after the band ─────────────────────────────────── */
+/* the band is separation enough; .page-section's hairline sitting directly
+   under it reads as an artefact */
+.ink-page .blk-hero + .blk,
+.ink-page .ink-hero + .page-section,
+.ink-page .ink-hero + .blk { border-top: none; }
+
+/* ── a spec strip, for the facts that belong in the hero ────────────────── */
+.ink-spec {
+  position: relative;
+  margin-top: clamp(30px, 5vw, 48px);
+  display: grid;
+  gap: 0;
+  grid-template-columns: 1fr;
+  border-top: 1px solid var(--hairline-dark);
+  max-width: 1240px;
+}
+.ink-spec > div { padding: 16px 0; border-bottom: 1px solid var(--hairline-dark); }
+.ink-spec dt {
+  font-size: 13.5px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: #fff;
+  margin-bottom: 3px;
+}
+.ink-spec dd { font-size: 12.5px; line-height: 1.5; color: rgba(255, 255, 255, 0.6); }
+
+@media (min-width: 620px) {
+  .ink-spec { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 32px; }
+}
+@media (min-width: 900px) {
+  .ink-spec { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
