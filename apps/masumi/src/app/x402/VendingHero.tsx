@@ -1,5 +1,8 @@
 "use client";
 
+import { type Locale } from "@/lib/i18n";
+import { t as copy } from "./copy";
+
 import { useEffect, useRef, useState, type ReactNode } from "react";
 
 const PINK = "#FA008C";
@@ -216,7 +219,8 @@ const VH_CSS = `
 }
 `;
 
-export default function VendingHero() {
+export default function VendingHero({ locale = "en" }: { locale?: Locale }) {
+  const t = copy(locale);
   const [started, setStarted] = useState(false);
   const [busy, setBusy] = useState(false);
   const [resp, setResp] = useState<{ status: number; body: unknown } | null>(null);
@@ -468,10 +472,10 @@ export default function VendingHero() {
     <section className="pt-[140px] pb-16">
       <div className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12 text-center">
         <p className="text-[11px] uppercase tracking-[0.18em] text-[#FA008C] font-mono mb-3">
-          Agent Payments
+          {t("VM1")}
         </p>
         <h1 className="mx-auto text-[34px] md:text-[52px] font-normal tracking-[-1px] leading-[1.04] text-black max-w-[860px]">
-          Try x402 on Cardano with our virtual vending machine.
+          {t("VM2")}
         </h1>
 
         <div className="relative w-full mt-10 border border-black/[0.04] bg-white hover:border-black/10 transition-colors">
@@ -483,10 +487,10 @@ export default function VendingHero() {
               }`}
             >
               <p className="text-[12px] font-mono uppercase tracking-[0.16em]" style={{ color: PINK }}>
-                Run it yourself
+                {t("VM3")}
               </p>
               <p className="mx-auto mt-2 text-[14px] md:text-[15px] text-[#5b5b5b] leading-[1.55] max-w-[540px]">
-                Every step below is a real request. Run them one at a time and watch the machine react.
+                {t("VM4")}
               </p>
             </div>
 
@@ -523,6 +527,7 @@ export default function VendingHero() {
                 <div ref={winRef} className="vh-stepswin" style={winH ? { height: winH } : undefined}>
                   <div ref={stepsRef} className="vh-steps-track w-full lg:w-[652px] lg:mr-12 text-left" style={{ transform: `translateY(${stepsY}px)` }}>
                     <Steps
+                      locale={locale}
                       resp={resp}
                       wallets={wallets}
                       chosen={chosen}
@@ -611,12 +616,11 @@ export default function VendingHero() {
                   </div>
                   <div className="min-w-0">
                     <p className="text-[10.5px] font-mono uppercase tracking-[0.12em] text-[#999] capitalize">{walletName}</p>
-                    <p className="text-[16px] font-medium text-[#0a0a0a]">Signature request</p>
+                    <p className="text-[16px] font-medium text-[#0a0a0a]">{t("VM5")}</p>
                   </div>
                 </div>
                 <p className="mt-4 text-[13px] leading-[1.55] text-[#5b5b5b]">
-                  This is a <b className="text-black font-medium">real Cardano mainnet</b> payment. Your
-                  wallet will build and sign the transaction — then the facilitator submits it on-chain.
+                  {t("VM6")} <b className="text-black font-medium">{t("VM7")}</b> {t("VM8")}
                 </p>
                 <dl className="mt-4 rounded-xl bg-[#f7f7f8] border border-black/[0.06] p-3.5 text-[12.5px] font-mono">
                   <SignRow k="Amount" v={adaFromLovelace(acc?.maxAmountRequired) || "1 ADA"} strong />
@@ -625,14 +629,14 @@ export default function VendingHero() {
                 </dl>
                 <div className="mt-5 flex items-center justify-end gap-2">
                   <button onClick={() => setSigning(false)} className="text-[13px] font-medium px-4 py-2 rounded-full text-[#555] hover:bg-black/[0.04] transition">
-                    Cancel
+                    {t("VM9")}
                   </button>
                   <button
                     onClick={signAndPay}
                     className="text-[13px] font-medium px-5 py-2 rounded-full text-white transition hover:opacity-90"
                     style={{ background: PINK }}
                   >
-                    Sign &amp; pay
+                    {t("VM10")}
                   </button>
                 </div>
               </div>
@@ -649,6 +653,7 @@ export default function VendingHero() {
 /* ───────── states ───────── */
 
 function Steps({
+  locale,
   resp,
   wallets,
   chosen,
@@ -666,6 +671,7 @@ function Steps({
   confirms,
   confirmed,
 }: {
+  locale: Locale;
   resp: { status: number; body: unknown } | null;
   wallets: Wallet[];
   chosen: string | null;
@@ -683,6 +689,7 @@ function Steps({
   confirms: ConfirmPoll[];
   confirmed: boolean;
 }) {
+  const t = copy(locale);
   const [showResult, setShowResult] = useState(false);
 
   const ada = adaFromLovelace(acc?.maxAmountRequired) || "1 ADA";
@@ -700,21 +707,21 @@ function Steps({
     <div className="sd-machine">
       <div className="sd-init">
         <i />
-        <span className="sd-init-label">start</span>
+        <span className="sd-init-label">{t("VM11")}</span>
       </div>
 
       {/* S1 — request the resource (runnable) */}
       <Transition fired />
-      <StateNode n={1} name="Payment required" status={started ? "done" : "active"}>
+      <StateNode currentLabel={t("VM27")} n={1} name="Payment required" status={started ? "done" : "active"}>
         <p className="msg-desc">
-          Ask the machine for a snack with no payment attached. Run it — the machine refuses with{" "}
+          {t("VM_STEP1_BODY")}{" "}
           <span className="code">402 Payment Required</span>.
         </p>
         <pre className="code-block">
           <code>curl -i https://www.masumi.network/vending-machine</code>
         </pre>
         {!started ? (
-          <RunButton onClick={onRunRequest} busy={busy} label="Run request" />
+          <RunButton onClick={onRunRequest} busy={busy} label={t("VM_RUNBTN")} />
         ) : (
           <>
             <p className="run-out-label">402 response</p>
@@ -726,18 +733,17 @@ function Steps({
       </StateNode>
 
       {/* S2 — sign & pay */}
-      <Transition label="choose how to pay" fired={started} />
-      <StateNode n={2} name={paid ? "Paid" : "Sign & pay"} status={started ? st(!paid, paid) : "pending"}>
+      <Transition label={t("VM_TRANSITION")} fired={started} />
+      <StateNode currentLabel={t("VM27")} n={2} name={paid ? "Paid" : "Sign & pay"} status={started ? st(!paid, paid) : "pending"}>
         {paid ? (
           <p className="msg-desc">
-            Paid <b className="text-black font-medium">{ada}</b> on mainnet, signed with{" "}
+            {t("VM12")} <b className="text-black font-medium">{ada}</b> on mainnet, signed with{" "}
             <span className="text-black capitalize">{walletLabel}</span>.
           </p>
         ) : (
           <>
             <p className="msg-desc">
-              Pay <b className="text-black font-medium">{ada}</b> on Cardano mainnet — connect a wallet to
-              build and sign the transaction. (Real funds.)
+              Pay <b className="text-black font-medium">{ada}</b> {t("VM13")}
             </p>
             {wallets.length > 0 ? (
               <div className="mt-3 flex flex-wrap gap-2">
@@ -753,7 +759,7 @@ function Steps({
               </div>
             ) : (
               <p className="mt-2.5 text-[12.5px] text-[#8a8a8a]">
-                No Cardano wallet detected — install one (Eternl, Lace, Begin, Vespr…) and reload.
+                {t("VM14")}
               </p>
             )}
             {error && <p className="pay-error">{error}</p>}
@@ -764,6 +770,7 @@ function Steps({
       {/* S3 — facilitator validates (its own step) */}
       <Transition label="POST /verify" fired={reachedVerify} />
       <StateNode
+        currentLabel={t("VM27")}
         n={3}
         name={stage === "verify" ? "Validating" : reachedVerify ? "Validated" : "Validate"}
         status={st(stage === "verify", reachedVerify)}
@@ -771,8 +778,7 @@ function Steps({
         {reachedVerify && (
           <>
             <p className="msg-desc">
-              The facilitator decodes your signed transaction and confirms it really pays the right
-              amount to the right address — before anything is broadcast.
+              {t("VM15")}
             </p>
             {verifyData && (
               <>
@@ -787,7 +793,7 @@ function Steps({
                     </pre>
                   </>
                 ) : (
-                  <p className="run-out-label vh-dots">waiting for the facilitator</p>
+                  <p className="run-out-label vh-dots">{t("VM16")}</p>
                 )}
               </>
             )}
@@ -805,6 +811,7 @@ function Steps({
       {/* S4 — settle (broadcast) then confirm on-chain */}
       <Transition label="valid" fired={reachedSettle} />
       <StateNode
+        currentLabel={t("VM27")}
         n={4}
         name={stage === "confirm" ? "Confirming" : stage === "settle" ? "Settling" : reachedDone ? "Settled" : "Settle"}
         status={st(stage === "settle" || stage === "confirm", reachedSettle)}
@@ -812,8 +819,7 @@ function Steps({
         {reachedSettle && (
           <>
             <p className="msg-desc">
-              The client retries the request with the signed payment attached. The facilitator re-verifies,
-              then broadcasts the transaction to Cardano mainnet via Blockfrost.
+              {t("VM17")}
             </p>
             {settleData && (
               <pre className="code-block">
@@ -830,12 +836,12 @@ function Steps({
                   <a className="hash-chip" href={`https://cardanoscan.io/transaction/${hash}`} target="_blank" rel="noopener noreferrer">
                     <span className="hash-k">tx</span>
                     <span className="hash-v">{shortHash(hash)}</span>
-                    <span className="hash-ext">Cardanoscan ↗</span>
+                    <span className="hash-ext">{t("VM18")}</span>
                   </a>
                 )}
               </>
             ) : (
-              <p className="run-out-label vh-dots">broadcasting to the network</p>
+              <p className="run-out-label vh-dots">{t("VM19")}</p>
             )}
             {(stage === "confirm" || stage === "done") && hash && (
               <ConfirmCheck hash={hash} confirms={confirms} confirmed={confirmed} active={stage === "confirm"} />
@@ -846,26 +852,26 @@ function Steps({
 
       {/* S5 — dispensed (accepting state) */}
       <Transition label={confirmed ? "confirmed" : "settled"} fired={reachedDone} />
-      <StateNode n={5} name="Dispensed" status={reachedDone ? "done" : "pending"} final>
+      <StateNode currentLabel={t("VM27")} n={5} name="Dispensed" status={reachedDone ? "done" : "pending"} final>
         {reachedDone && (
           <>
             <p className="msg-desc">
               {confirmed ? (
                 <>
-                  Paid and confirmed on-chain — the machine returns your snack with a <span className="code">200 OK</span>.
+                  {t("VM20")} <span className="code">200 OK</span>.
                 </>
               ) : (
                 <>
-                  Paid and accepted by the network — the machine returns your snack with a <span className="code">200 OK</span>.
+                  {t("VM21")} <span className="code">200 OK</span>.
                   On-chain confirmation is still settling.
                 </>
               )}
             </p>
             <div className="result vh-seq" style={{ animationDelay: "80ms" }}>
-              <div className="result-row"><span className="result-k">status</span><span className="result-v">success</span></div>
-              <div className="result-row"><span className="result-k">network</span><span className="result-v">{result?.payment?.network ?? "cardano:mainnet"}</span></div>
+              <div className="result-row"><span className="result-k">{t("VM22")}</span><span className="result-v">{t("VM23")}</span></div>
+              <div className="result-row"><span className="result-k">{t("VM24")}</span><span className="result-v">{result?.payment?.network ?? "cardano:mainnet"}</span></div>
               <div className="result-row">
-                <span className="result-k">transaction</span>
+                <span className="result-k">{t("VM25")}</span>
                 {hash ? (
                   <a className="result-v result-link" href={`https://cardanoscan.io/transaction/${hash}`} target="_blank" rel="noopener noreferrer">
                     {shortHash(hash)} ↗
@@ -877,7 +883,7 @@ function Steps({
             </div>
             <div className="vend-cue">
               <SnackMini />
-              <span>your snack drops into the tray</span>
+              <span>{t("VM26")}</span>
               <span className="arrow">→</span>
             </div>
             <Toggle open={showResult} onClick={() => setShowResult(!showResult)} label="Full 200 response" />
@@ -1012,12 +1018,14 @@ function StateNode({
   name,
   status,
   final,
+  currentLabel,
   children,
 }: {
   n: number;
   name: string;
   status: NodeStatus;
   final?: boolean;
+  currentLabel: string;
   children?: ReactNode;
 }) {
   const active = status === "active";
@@ -1028,7 +1036,7 @@ function StateNode({
         <span className="sd-num">S{n}</span>
         <span className="sd-name">{name}</span>
         {active ? (
-          <span className="sd-cur">current</span>
+          <span className="sd-cur">{currentLabel}</span>
         ) : status === "done" ? (
           <span className="sd-badge done">✓</span>
         ) : (

@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, type FocusEvent, type KeyboardEvent, type ReactNode } from "react";
 import Link from "next/link";
+import { navCopy, type NavLocale } from "./nav-copy";
 import { SokosumiIcon } from "./SummationLogo";
 
 const MasumiIcon = ({ className }: { className?: string }) => (
@@ -19,25 +20,25 @@ const KodosumiIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
-const products = [
+const productsList = (nav: ReturnType<typeof navCopy>) => [
   {
     id: "sokosumi" as const,
     name: "sokosumi",
-    desc: "AI Marketing Agents for Teams",
+    desc: nav("H22"),
     href: "https://sokosumi.com",
     icon: <SokosumiIcon className="w-5 h-5" />,
   },
   {
     id: "masumi" as const,
     name: "masumi",
-    desc: "The Protocol for AI Agent Networks",
+    desc: nav("H23"),
     href: "https://masumi.network",
     icon: <MasumiIcon className="w-5 h-5" />,
   },
   {
     id: "kodosumi" as const,
     name: "kodosumi",
-    desc: "Runtime for AI Agent Services",
+    desc: nav("H24"),
     href: "https://kodosumi.io",
     icon: <KodosumiIcon className="w-5 h-5" />,
   },
@@ -46,17 +47,21 @@ const products = [
 // The Masumi site does not mention Kodosumi. The Kodosumi site still needs its
 // own entry (it is the active product there), so this filters rather than
 // deleting the entry.
-function productsFor(product: "sokosumi" | "masumi" | "kodosumi") {
+function productsFor(
+  product: "sokosumi" | "masumi" | "kodosumi",
+  nav: ReturnType<typeof navCopy>,
+) {
+  const products = productsList(nav);
   return product === "masumi" ? products.filter((p) => p.id !== "kodosumi") : products;
 }
 
-const MASUMI_SOKOSUMI_BANNER = (
+const masumiSokosumiBanner = (nav: ReturnType<typeof navCopy>) => (
   <a
     href="https://sokosumi.com"
     className="group flex h-9 items-center justify-center gap-2 bg-[#6400FF] px-4 text-[13px] text-white transition-colors hover:bg-[#5200d0]"
   >
     <span className="truncate">
-      Hire ready-to-work AI agents on <strong className="font-medium">Sokosumi</strong> — the marketplace built on Masumi
+      {nav("H1")} <strong className="font-medium">{nav("H2")}</strong> {nav("H_BANNER_TAIL")}
     </span>
     <span aria-hidden className="transition-transform group-hover:translate-x-0.5">→</span>
   </a>
@@ -78,6 +83,8 @@ type HeaderProps = {
   documentationCtaHref?: string;
   documentationMenuItems?: ReadonlyArray<DocumentationMenuItem>;
   assetBaseUrl?: string;
+  /** Defaults to "en"; only masumi's /de routes pass "de" today. */
+  locale?: NavLocale;
 };
 
 function joinHref(base: string, path: string) {
@@ -143,35 +150,36 @@ function DocumentationMenuLink({
 
 function getMasumiDevHubMenuItems(
   documentationHref: string,
+  nav: ReturnType<typeof navCopy>,
 ): NonNullable<HeaderProps["documentationMenuItems"]> {
   return [
     {
       href: joinHref(documentationHref, "/map"),
-      label: "Map",
+      label: nav("H25"),
       description: "Choose a path through the Masumi ecosystem.",
       forceDocumentNavigation: true,
     },
     {
       href: joinHref(documentationHref, "/ask"),
-      label: "Ask Nori",
+      label: nav("H26"),
       description: "Ask questions across Masumi and Sokosumi.",
       forceDocumentNavigation: true,
     },
     {
       href: joinHref(documentationHref, "/masumi/documentation"),
-      label: "Masumi documentation",
+      label: nav("H27"),
       description: "Identity, registry, wallets, payments, and APIs.",
       forceDocumentNavigation: true,
     },
     {
       href: joinHref(documentationHref, "/sokosumi/documentation"),
-      label: "Sokosumi documentation",
+      label: nav("H28"),
       description: "Agents, coworkers, tasks, jobs, and organizations.",
       forceDocumentNavigation: true,
     },
     {
       href: joinHref(documentationHref, "/agents"),
-      label: "Agents",
+      label: nav("H29"),
       description: "Machine-readable docs, indexes, skills, and MCP.",
       forceDocumentNavigation: true,
     },
@@ -186,14 +194,16 @@ export default function Header({
   documentationCtaHref,
   documentationMenuItems,
   assetBaseUrl = "",
+  locale = "en",
 }: HeaderProps) {
+  const nav = navCopy(locale);
   const [showProducts, setShowProducts] = useState(false);
   const [showDocumentationMenu, setShowDocumentationMenu] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const documentationTriggerRef = useRef<HTMLAnchorElement>(null);
   const resolvedDocumentationMenuItems =
     documentationMenuItems ??
-    (product === "masumi" ? getMasumiDevHubMenuItems(documentationHref) : undefined);
+    (product === "masumi" ? getMasumiDevHubMenuItems(documentationHref, nav) : undefined);
   const openDocumentationHref =
     documentationCtaHref ??
     (product === "masumi"
@@ -206,7 +216,7 @@ export default function Header({
     topBanner !== undefined
       ? topBanner
       : product === "masumi"
-        ? MASUMI_SOKOSUMI_BANNER
+        ? masumiSokosumiBanner(nav)
         : null;
 
   useEffect(() => {
@@ -263,7 +273,7 @@ export default function Header({
                   <img src="/images/kodosumi-wordmark-black.webp" alt="kodosumi" width={100} height={18} className="h-[18px] w-auto block" fetchPriority="high" />
                 </Link>
               )}
-              <button aria-label="Switch product">
+              <button aria-label={nav("H30")}>
                 <svg width="8" height="5" viewBox="0 0 8 5" fill="none" className={`hidden sm:block transition-transform ${showProducts ? "rotate-180" : ""}`}>
                   <path d="M1 1l3 3 3-3" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
@@ -273,8 +283,8 @@ export default function Header({
             {showProducts && (
               <div className="absolute top-full left-0 pt-2">
                 <div className="bg-white rounded-xl shadow-xl border border-black/5 p-3 w-[280px]">
-                  <p className="text-[10px] uppercase tracking-widest text-[#999] mb-2 px-2 font-medium">Products</p>
-                  {productsFor(product).map((p) => (
+                  <p className="text-[10px] uppercase tracking-widest text-[#999] mb-2 px-2 font-medium">{nav("H3")}</p>
+                  {productsFor(product, nav).map((p) => (
                     <a
                       key={p.name}
                       href={p.href}
@@ -287,7 +297,7 @@ export default function Header({
                         <div className="flex items-center gap-1.5">
                           <span className="text-[14px] font-medium text-black">{p.name}</span>
                           {p.id === product && (
-                            <span className="text-[9px] text-[#2cb67d] bg-[#2cb67d]/10 px-1.5 py-0.5 rounded-full font-medium">Active</span>
+                            <span className="text-[9px] text-[#2cb67d] bg-[#2cb67d]/10 px-1.5 py-0.5 rounded-full font-medium">{nav("H4")}</span>
                           )}
                         </div>
                         <span className="text-[11px] text-[#888]">{p.desc}</span>
@@ -302,7 +312,7 @@ export default function Header({
           {product === "sokosumi" ? (
             <nav className="hidden lg:flex items-center h-[74px]">
               <Link href="/press" className="text-[14px] font-normal text-black hover:text-black/60 transition-colors px-[15px] h-full flex items-center">
-                Press
+                {nav("H5")}
               </Link>
             </nav>
           ) : product === "masumi" ? (
@@ -351,13 +361,13 @@ export default function Header({
                     <div className="mx-auto w-full max-w-[1440px] px-6 py-5 lg:px-12">
                       <div className="mb-4">
                         <div>
-                          <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-black/45">Developer Hub</p>
-                          <p className="mt-1 text-[15px] text-black/70">Explore the ecosystem, ask Nori, or open the documentation.</p>
+                          <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-black/45">{nav("H6")}</p>
+                          <p className="mt-1 text-[15px] text-black/70">{nav("H7")}</p>
                         </div>
                       </div>
                       <nav
                         className="grid grid-cols-5 gap-px border border-black/[0.08] bg-black/[0.08]"
-                        aria-label="Developer Hub destinations"
+                        aria-label={nav("H31")}
                       >
                         {resolvedDocumentationMenuItems.map((item) => (
                           <DocumentationMenuLink
@@ -382,25 +392,25 @@ export default function Header({
                 x402
               </Link>
               <Link href={joinHref(siteRootHref, "/explorer")} className="text-[14px] font-normal text-black hover:text-black/60 transition-colors px-[15px] h-full flex items-center">
-                Explorer
+                {nav("H8")}
               </Link>
               <Link href={joinHref(siteRootHref, "/use-cases")} className="text-[14px] font-normal text-black hover:text-black/60 transition-colors px-[15px] h-full flex items-center">
-                Use cases
+                {nav("H9")}
               </Link>
               <Link href={joinHref(siteRootHref, "/blogs")} className="text-[14px] font-normal text-black hover:text-black/60 transition-colors px-[15px] h-full flex items-center">
-                Blog
+                {nav("H10")}
               </Link>
               <Link href="https://github.com/masumi-network" target="_blank" rel="noopener noreferrer" className="text-[14px] font-normal text-black hover:text-black/60 transition-colors px-[15px] h-full flex items-center">
-                GitHub
+                {nav("H11")}
               </Link>
             </nav>
           ) : (
             <nav className="hidden lg:flex items-center h-[74px]">
               <Link href="https://docs.kodosumi.io" target="_blank" rel="noopener noreferrer" className="text-[14px] font-normal text-black hover:text-black/60 transition-colors px-[15px] h-full flex items-center">
-                Docs
+                {nav("H12")}
               </Link>
               <Link href="https://github.com/masumi-network/kodosumi" target="_blank" rel="noopener noreferrer" className="text-[14px] font-normal text-black hover:text-black/60 transition-colors px-[15px] h-full flex items-center">
-                GitHub
+                {nav("H11")}
               </Link>
             </nav>
           )}
@@ -409,27 +419,27 @@ export default function Header({
             {product === "sokosumi" ? (
               <>
                 <Link href="https://app.sokosumi.com" className="hidden lg:block text-[14px] font-normal text-black hover:text-black/60 transition-colors">
-                  Log in
+                  {nav("H13")}
                 </Link>
                 <Link href="https://app.sokosumi.com"
                   className="hidden lg:block bg-black text-white text-[14px] font-normal px-6 py-2 rounded-full hover:bg-black/85 transition-colors">
-                  Get started
+                  {nav("H14")}
                 </Link>
               </>
             ) : product === "masumi" ? (
               <a href={openDocumentationHref}
                 className="hidden lg:block bg-black text-white text-[14px] font-normal px-6 py-2.5 rounded-full hover:bg-black/85 transition-colors">
-                Open Documentation
+                {nav("H15")}
               </a>
             ) : (
               <Link href="https://docs.kodosumi.io" target="_blank" rel="noopener noreferrer"
                 className="hidden lg:block bg-black text-white text-[14px] font-normal px-6 py-2.5 rounded-full hover:bg-black/85 transition-colors">
-                Getting Started
+                {nav("H16")}
               </Link>
             )}
             <button
               className="lg:hidden flex flex-col gap-1.5 p-2"
-              aria-label="Menu"
+              aria-label={nav("H32")}
               aria-expanded={mobileMenuOpen}
               aria-controls="summation-site-mobile-menu"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -454,20 +464,20 @@ export default function Header({
             {product === "sokosumi" ? (
               <>
                 <Link href="/press" onClick={() => setMobileMenuOpen(false)} className="text-[18px] text-black py-3 border-b border-black/[0.06]">
-                  Press
+                  {nav("H5")}
                 </Link>
                 <Link href="https://app.sokosumi.com" onClick={() => setMobileMenuOpen(false)} className="text-[18px] text-black py-3 border-b border-black/[0.06]">
-                  Log in
+                  {nav("H13")}
                 </Link>
                 <Link href="https://app.sokosumi.com" onClick={() => setMobileMenuOpen(false)}
                   className="mt-6 bg-black text-white text-[14px] font-normal px-6 py-3 rounded-full text-center">
-                  Get started
+                  {nav("H14")}
                 </Link>
               </>
             ) : product === "masumi" ? (
               <>
                 <a href={documentationHref} onClick={() => setMobileMenuOpen(false)} className="text-[18px] text-black py-3 border-b border-black/[0.06]">
-                  Dev Hub
+                  {nav("H17")}
                 </a>
                 {resolvedDocumentationMenuItems?.length ? (
                   <div className="mb-3 ml-3 flex flex-col border-l border-black/[0.08] pl-4">
@@ -487,48 +497,48 @@ export default function Header({
                   x402
                 </Link>
                 <Link href={joinHref(siteRootHref, "/explorer")} onClick={() => setMobileMenuOpen(false)} className="text-[18px] text-black py-3 border-b border-black/[0.06]">
-                  Explorer
+                  {nav("H8")}
                 </Link>
                 <Link href={joinHref(siteRootHref, "/use-cases")} onClick={() => setMobileMenuOpen(false)} className="text-[18px] text-black py-3 border-b border-black/[0.06]">
-                  Use cases
+                  {nav("H9")}
                 </Link>
                 <Link href={joinHref(siteRootHref, "/guides")} onClick={() => setMobileMenuOpen(false)} className="text-[18px] text-black py-3 border-b border-black/[0.06]">
-                  Guides
+                  {nav("H18")}
                 </Link>
                 <Link href={joinHref(siteRootHref, "/releases")} onClick={() => setMobileMenuOpen(false)} className="text-[18px] text-black py-3 border-b border-black/[0.06]">
-                  Releases
+                  {nav("H19")}
                 </Link>
                 <Link href={joinHref(siteRootHref, "/compare")} onClick={() => setMobileMenuOpen(false)} className="text-[18px] text-black py-3 border-b border-black/[0.06]">
-                  Compare
+                  {nav("H20")}
                 </Link>
                 <Link href={joinHref(siteRootHref, "/blogs")} onClick={() => setMobileMenuOpen(false)} className="text-[18px] text-black py-3 border-b border-black/[0.06]">
-                  Blog
+                  {nav("H10")}
                 </Link>
                 <Link href="https://github.com/masumi-network" target="_blank" rel="noopener noreferrer" onClick={() => setMobileMenuOpen(false)} className="text-[18px] text-black py-3 border-b border-black/[0.06]">
-                  GitHub
+                  {nav("H11")}
                 </Link>
                 <Link href="https://discord.com/invite/aj4QfnTS92" target="_blank" rel="noopener noreferrer" onClick={() => setMobileMenuOpen(false)} className="text-[18px] text-black py-3 border-b border-black/[0.06]">
-                  Discord
+                  {nav("H21")}
                 </Link>
                 <a href={openDocumentationHref} onClick={() => setMobileMenuOpen(false)}
                   className="mt-6 bg-black text-white text-[14px] font-normal px-6 py-3 rounded-full text-center">
-                  Open Documentation
+                  {nav("H15")}
                 </a>
               </>
             ) : (
               <>
                 <Link href="https://docs.kodosumi.io" target="_blank" rel="noopener noreferrer" onClick={() => setMobileMenuOpen(false)} className="text-[18px] text-black py-3 border-b border-black/[0.06]">
-                  Docs
+                  {nav("H12")}
                 </Link>
                 <Link href="https://github.com/masumi-network/kodosumi" target="_blank" rel="noopener noreferrer" onClick={() => setMobileMenuOpen(false)} className="text-[18px] text-black py-3 border-b border-black/[0.06]">
-                  GitHub
+                  {nav("H11")}
                 </Link>
                 <Link href="https://discord.com/invite/aj4QfnTS92" target="_blank" rel="noopener noreferrer" onClick={() => setMobileMenuOpen(false)} className="text-[18px] text-black py-3 border-b border-black/[0.06]">
-                  Discord
+                  {nav("H21")}
                 </Link>
                 <Link href="https://docs.kodosumi.io" target="_blank" rel="noopener noreferrer" onClick={() => setMobileMenuOpen(false)}
                   className="mt-6 bg-black text-white text-[14px] font-normal px-6 py-3 rounded-full text-center">
-                  Getting Started
+                  {nav("H16")}
                 </Link>
               </>
             )}
