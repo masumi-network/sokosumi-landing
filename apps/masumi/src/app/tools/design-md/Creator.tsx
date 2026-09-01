@@ -1,6 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { type Locale } from "@/lib/i18n";
+import { st as siteCopy } from "@/lib/site-copy";
 import { useSearchParams } from "next/navigation";
 import yaml from "js-yaml";
 import {
@@ -161,9 +163,12 @@ type ExampleSite = { label: string; url: string };
 
 export default function Creator({
   examples = [],
+  locale = "en",
 }: {
   examples?: ExampleSite[];
+  locale?: Locale;
 }) {
+  const st = siteCopy(locale);
   const [view, setView] = useState<View>("select");
   const [source, setSource] = useState<Source>(null);
   const [system, setSystem] = useState<DesignSystem | null>(null);
@@ -180,7 +185,7 @@ export default function Creator({
         setError(null);
         setView("render");
       } catch (e) {
-        setError(e instanceof Error ? e.message : "Failed to parse");
+        setError(e instanceof Error ? e.message : st("CRE39"));
         setView("select");
       }
     },
@@ -221,7 +226,7 @@ export default function Creator({
           savedId: data?.savedId,
         });
       } catch (e) {
-        setError(e instanceof Error ? e.message : "Failed to regenerate");
+        setError(e instanceof Error ? e.message : st("CRE40"));
         // Bounce back to render view so the user doesn't lose context
         setView("render");
       }
@@ -256,7 +261,7 @@ export default function Creator({
             savedId: Number(cachedParam),
           });
         } catch (e) {
-          setError(e instanceof Error ? e.message : "Couldn't load that entry");
+          setError(e instanceof Error ? e.message : st("CRE41"));
         }
       })();
       return;
@@ -278,6 +283,7 @@ export default function Creator({
         error={error}
         initialUrl={autoUrl}
         examples={examples}
+        locale={locale}
       />
     );
   }
@@ -294,8 +300,7 @@ export default function Creator({
         onReset={reset}
         source={source}
         extractMeta={extractMeta}
-        onRegenerate={regenerate}
-      />
+        onRegenerate={regenerate} locale={locale} />
     );
   }
 
@@ -317,6 +322,7 @@ function ModeSelect({
   error,
   initialUrl,
   examples,
+  locale,
 }: {
   onUpload: (md: string, src: Source, meta?: ExtractMeta) => void;
   onUrl: (md: string, src: Source, meta?: ExtractMeta) => void;
@@ -326,7 +332,9 @@ function ModeSelect({
   error: string | null;
   initialUrl: string | null;
   examples: ExampleSite[];
+  locale: Locale;
 }) {
+  const st = siteCopy(locale);
   const [url, setUrl] = useState(initialUrl ?? "");
   const [submitting, setSubmitting] = useState(false);
   const [leadModalUrl, setLeadModalUrl] = useState<string | null>(null);
@@ -368,7 +376,7 @@ function ModeSelect({
         };
         onUrl(md, "url", meta);
       } catch (e) {
-        setError(e instanceof Error ? e.message : "Failed to extract");
+        setError(e instanceof Error ? e.message : st("CRE42"));
       } finally {
         setSubmitting(false);
       }
@@ -452,11 +460,11 @@ function ModeSelect({
           {submitting ? (
             <>
               <Spinner className="w-4 h-4" />
-              <span className="hidden sm:inline">Generating…</span>
+              <span className="hidden sm:inline">{st("CRE1")}</span>
             </>
           ) : (
             <>
-              <span className="hidden sm:inline">Generate</span>
+              <span className="hidden sm:inline">{st("CRE2")}</span>
               <span className="sm:hidden">Go</span>
               <span className="hidden md:inline text-[11px] opacity-60 border border-white/30 rounded px-1.5 py-0.5">
                 ↵
@@ -493,7 +501,7 @@ function ModeSelect({
           className="inline-flex items-center gap-1 text-[12px] text-[#666] hover:text-black transition-colors"
         >
           <UploadIcon className="w-3.5 h-3.5" />
-          Upload existing file
+          {st("CRE3")}
           <span
             className={`text-[10px] transition-transform ${showUpload ? "rotate-180" : ""}`}
             aria-hidden
@@ -505,21 +513,21 @@ function ModeSelect({
           onClick={onExample}
           className="text-[12px] text-[#666] hover:text-black transition-colors"
         >
-          Open example
+          {st("CRE4")}
         </button>
       </div>
 
       {/* Inline file drop, only when toggled */}
       {showUpload && (
-        <FileDrop onFile={handleFile} />
+        <FileDrop onFile={handleFile} locale={locale} />
       )}
 
       {/* Error banner */}
-      {error && <ErrorBanner message={error} onDismiss={() => setError(null)} />}
+      {error && <ErrorBanner message={error} onDismiss={() => setError(null)} locale={locale} />}
 
       {/* Workspace empty-state */}
       {!error && !showUpload && (
-        <EmptyWorkspace />
+        <EmptyWorkspace locale={locale} />
       )}
 
       {/* Lead-gate modal */}
@@ -527,25 +535,24 @@ function ModeSelect({
         <LeadModal
           targetUrl={leadModalUrl}
           onSubmitted={handleLeadSubmitted}
-          onClose={() => setLeadModalUrl(null)}
-        />
+          onClose={() => setLeadModalUrl(null)} locale={locale} />
       )}
     </div>
   );
 }
 
-function EmptyWorkspace() {
+function EmptyWorkspace({ locale }: { locale: Locale }) {
+  const st = siteCopy(locale);
   return (
     <div className="mt-2 border border-dashed border-black/[0.1] rounded-[12px] py-16 md:py-20 px-6 flex flex-col items-center justify-center gap-3 text-center bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.02)_1px,transparent_1px)] [background-size:20px_20px]">
       <div className="w-8 h-8 rounded-full bg-black/[0.04] flex items-center justify-center">
         <span className="text-[16px] text-[#999]" aria-hidden>↑</span>
       </div>
       <p className="text-[13px] text-[#666]">
-        Output will appear here.
+        {st("CRE5")}
       </p>
       <p className="text-[12px] text-[#999] max-w-[420px] leading-[1.5]">
-        Paste a URL above to extract brand colors, typography, layout,
-        components, and a logo. Edit visually, download <code className="font-mono">DESIGN.md</code>.
+        {st("CRE6")} <code className="font-mono">DESIGN.md</code>.
       </p>
     </div>
   );
@@ -585,10 +592,13 @@ function isLikelyUrl(value: string): boolean {
 function ErrorBanner({
   message,
   onDismiss,
+  locale,
 }: {
   message: string;
   onDismiss: () => void;
+  locale: Locale;
 }) {
+  const st = siteCopy(locale);
   return (
     <div className="flex items-start gap-3 p-4 bg-[#B8422E]/[0.05] border border-[#B8422E]/30 rounded-[8px]">
       <div className="flex-shrink-0 w-5 h-5 rounded-full bg-[#B8422E]/15 text-[#B8422E] flex items-center justify-center text-[12px] font-medium mt-0.5">
@@ -596,7 +606,7 @@ function ErrorBanner({
       </div>
       <div className="flex-1 min-w-0">
         <p className="text-[14px] font-medium text-[#B8422E] mb-0.5">
-          Couldn&apos;t generate from that URL
+          {st("CRE8")}
         </p>
         <p className="text-[13px] text-[#5b5b5b] leading-[1.5] break-words">
           {humanizeError(message)}
@@ -605,7 +615,7 @@ function ErrorBanner({
       <button
         onClick={onDismiss}
         className="flex-shrink-0 text-[14px] text-[#999] hover:text-black px-2 py-0.5"
-        aria-label="Dismiss error"
+        aria-label={st("CRE43")}
       >
         ✕
       </button>
@@ -656,11 +666,14 @@ function LeadModal({
   targetUrl,
   onSubmitted,
   onClose,
+  locale,
 }: {
   targetUrl: string;
   onSubmitted: (data: { email: string; url: string }) => Promise<void> | void;
   onClose: () => void;
+  locale: Locale;
 }) {
+  const st = siteCopy(locale);
   const [email, setEmail] = useState("");
   const [websiteUrl, setWebsiteUrl] = useState(targetUrl);
   const [agreed, setAgreed] = useState(false);
@@ -706,7 +719,7 @@ function LeadModal({
       }
       await onSubmitted({ email: email.trim(), url: normalizedUrl });
     } catch (e) {
-      setErr(e instanceof Error ? e.message : "Something went wrong");
+      setErr(e instanceof Error ? e.message : st("CRE44"));
       setSubmitting(false);
     }
   };
@@ -729,12 +742,12 @@ function LeadModal({
         <div className="p-6 md:p-8">
           <div className="flex items-start justify-between mb-1">
             <p className="text-[11px] text-[#999] uppercase tracking-[0.18em] font-mono">
-              Almost there
+              {st("CRE10")}
             </p>
             <button
               onClick={onClose}
               className="-mr-2 -mt-1 w-8 h-8 rounded-full flex items-center justify-center text-[#999] hover:text-black hover:bg-black/[0.04] transition-colors"
-              aria-label="Close"
+              aria-label={st("CRE45")}
               type="button"
             >
               ✕
@@ -745,18 +758,16 @@ function LeadModal({
             className="text-[22px] md:text-[24px] font-normal tracking-[-0.4px] text-black leading-[1.25] mb-3"
           >
             Free competitive analysis{" "}
-            <span className="text-[#FA008C]">+</span> your DESIGN.md
+            <span className="text-[#FA008C]">+</span> {st("CRE11")}
           </h2>
           <p className="text-[14px] text-[#5b5b5b] leading-[1.55] mb-6">
-            Enter your website URL and our AI-Coworker will deliver a free
-            competitive analysis straight to your inbox. We&apos;ll also
-            generate your DESIGN.md right now.
+            {st("CRE12")}
           </p>
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <label className="flex flex-col gap-2">
               <span className="text-[11px] text-[#666] uppercase tracking-[0.15em] font-mono">
-                Website URL
+                {st("CRE13")}
               </span>
               <input
                 type="text"
@@ -777,7 +788,7 @@ function LeadModal({
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="you@yourcompany.com"
+                placeholder={st("CRE46")}
                 autoFocus
                 required
                 autoComplete="email"
@@ -793,7 +804,7 @@ function LeadModal({
                 className="mt-[3px] w-4 h-4 accent-[#FA008C] cursor-pointer"
               />
               <span className="text-[12px] text-[#5b5b5b] leading-[1.5]">
-                I agree to receive a free competitive analysis from Masumi.
+                {st("CRE15")}
               </span>
             </label>
 
@@ -814,10 +825,10 @@ function LeadModal({
               {submitting ? (
                 <>
                   <Spinner className="w-4 h-4" />
-                  Sending…
+                  {st("CRE16")}
                 </>
               ) : (
-                <>Get my free analysis</>
+                <>{st("CRE17")}</>
               )}
             </button>
 
@@ -829,7 +840,7 @@ function LeadModal({
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Privacy Policy
+                {st("CRE18")}
               </a>{" "}
               and{" "}
               <a
@@ -838,7 +849,7 @@ function LeadModal({
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Terms of Use
+                {st("CRE19")}
               </a>
               .
             </p>
@@ -857,7 +868,14 @@ function Spinner({ className }: { className?: string }) {
   );
 }
 
-function FileDrop({ onFile }: { onFile: (f: File) => void }) {
+function FileDrop({
+  onFile,
+  locale,
+}: {
+  onFile: (f: File) => void;
+  locale: Locale;
+}) {
+  const st = siteCopy(locale);
   const [dragging, setDragging] = useState(false);
   return (
     <label
@@ -878,8 +896,8 @@ function FileDrop({ onFile }: { onFile: (f: File) => void }) {
         if (file) onFile(file);
       }}
     >
-      <p className="text-[14px] text-black">Drop a DESIGN.md file</p>
-      <p className="text-[12px] text-[#999]">or click to browse</p>
+      <p className="text-[14px] text-black">{st("CRE20")}</p>
+      <p className="text-[12px] text-[#999]">{st("CRE21")}</p>
       <input
         type="file"
         accept=".md,text/markdown,text/plain"
@@ -1000,6 +1018,7 @@ function RenderView({
   source,
   extractMeta,
   onRegenerate,
+  locale,
 }: {
   system: DesignSystem;
   onChange: (next: DesignSystem) => void;
@@ -1007,7 +1026,9 @@ function RenderView({
   source: Source;
   extractMeta: ExtractMeta | null;
   onRegenerate?: (url: string) => void | Promise<void>;
+  locale: Locale;
 }) {
+  const st = siteCopy(locale);
   const [tab, setTab] = useState<"visual" | "markdown">("visual");
   const [copied, setCopied] = useState(false);
   const [downloaded, setDownloaded] = useState(false);
@@ -1075,15 +1096,15 @@ function RenderView({
               }
             >
               <span className="w-1.5 h-1.5 rounded-full bg-[#FA008C]" />
-              AI-generated
+              {st("CRE23")}
             </span>
           )}
           {extractMeta?.source === "heuristic" && source === "url" && (
             <span
               className="text-[11px] px-2 py-0.5 rounded-full border border-[#B8422E]/30 text-[#B8422E]"
-              title="LLM call failed; falling back to heuristic extraction"
+              title={st("CRE47")}
             >
-              Fallback · heuristic
+              {st("CRE24")}
             </span>
           )}
         </div>
@@ -1098,10 +1119,10 @@ function RenderView({
             <button
               onClick={() => onRegenerate(extractMeta.targetUrl!)}
               className="inline-flex items-center justify-center gap-1.5 text-[13px] font-normal px-4 py-2 rounded-full border border-black/10 bg-white text-[#666] hover:text-black hover:bg-black/[0.03] transition-colors"
-              title="Re-run the AI extraction, bypassing the cache"
+              title={st("CRE48")}
             >
               <RegenerateIcon className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">Regenerate</span>
+              <span className="hidden sm:inline">{st("CRE25")}</span>
             </button>
           )}
           {extractMeta?.savedId !== undefined && (
@@ -1112,17 +1133,17 @@ function RenderView({
                   ? "bg-[#FA008C]/[0.08] border-[#FA008C]/40 text-[#FA008C]"
                   : "bg-white border-black/10 text-[#666] hover:text-black hover:bg-black/[0.03]"
               }`}
-              title="Copy a public link to this DESIGN.md"
+              title={st("CRE49")}
             >
               {shared ? (
                 <>
                   <CheckIcon className="w-3 h-3" />
-                  Link copied
+                  {st("CRE26")}
                 </>
               ) : (
                 <>
                   <ShareIcon className="w-3.5 h-3.5" />
-                  <span className="hidden sm:inline">Share</span>
+                  <span className="hidden sm:inline">{st("CRE27")}</span>
                 </>
               )}
             </button>
@@ -1138,12 +1159,12 @@ function RenderView({
             {copied ? (
               <>
                 <CheckIcon className="w-3 h-3" />
-                Copied
+                {st("CRE28")}
               </>
             ) : (
               <>
                 <CopyIcon className="w-3.5 h-3.5" />
-                Copy markdown
+                {st("CRE29")}
               </>
             )}
           </button>
@@ -1154,12 +1175,12 @@ function RenderView({
             {downloaded ? (
               <>
                 <CheckIcon className="w-3 h-3" />
-                Downloaded
+                {st("CRE30")}
               </>
             ) : (
               <>
                 <DownloadIcon className="w-3.5 h-3.5" />
-                Download .md
+                {st("CRE31")}
               </>
             )}
           </button>
@@ -1169,7 +1190,7 @@ function RenderView({
       {/* View tabs */}
       <div className="flex items-center gap-1 -mt-2">
         <ViewTab active={tab === "visual"} onClick={() => setTab("visual")}>
-          Visual preview
+          {st("CRE32")}
         </ViewTab>
         <ViewTab
           active={tab === "markdown"}
@@ -1180,7 +1201,7 @@ function RenderView({
       </div>
 
       {/* Post-download tip */}
-      {downloaded && <PostDownloadTip onDismiss={() => setDownloaded(false)} />}
+      {downloaded && <PostDownloadTip onDismiss={() => setDownloaded(false)} locale={locale} />}
 
       {/* Body */}
       {tab === "visual" ? (
@@ -1189,18 +1210,18 @@ function RenderView({
             <details className="lg:hidden mb-4 group">
               <summary className="cursor-pointer flex items-center justify-between p-4 bg-[#fafafa] border border-black/[0.06] rounded-[8px] list-none">
                 <span className="text-[14px] font-medium text-black">
-                  Edit tokens
+                  {st("CRE34")}
                 </span>
                 <span className="text-[16px] text-[#999] group-open:rotate-45 transition-transform">
                   +
                 </span>
               </summary>
               <div className="mt-4">
-                <Editor system={system} onChange={onChange} />
+                <Editor system={system} onChange={onChange} locale={locale} />
               </div>
             </details>
             <div className="hidden lg:block">
-              <Editor system={system} onChange={onChange} />
+              <Editor system={system} onChange={onChange} locale={locale} />
             </div>
           </div>
           <div className="order-1 lg:order-2">
@@ -1208,7 +1229,7 @@ function RenderView({
           </div>
         </div>
       ) : (
-        <MarkdownView md={md} onCopy={copyMarkdown} copied={copied} />
+        <MarkdownView md={md} onCopy={copyMarkdown} copied={copied} locale={locale} />
       )}
     </div>
   );
@@ -1241,11 +1262,14 @@ function MarkdownView({
   md,
   onCopy,
   copied,
+  locale,
 }: {
   md: string;
   onCopy: () => void;
   copied: boolean;
+  locale: Locale;
 }) {
+  const st = siteCopy(locale);
   return (
     <div className="relative">
       <button
@@ -1259,7 +1283,7 @@ function MarkdownView({
         {copied ? (
           <>
             <CheckIcon className="w-3 h-3" />
-            Copied
+            {st("CRE28")}
           </>
         ) : (
           <>
@@ -1272,14 +1296,20 @@ function MarkdownView({
         {md}
       </pre>
       <p className="mt-4 text-[12px] text-[#999]">
-        This is the literal contents of your <code className="font-mono">DESIGN.md</code> file.
-        Save it at the root of your repo so AI coding agents pick it up automatically.
+        {st("CRE35")} <code className="font-mono">DESIGN.md</code> {st("CRE36")}
       </p>
     </div>
   );
 }
 
-function PostDownloadTip({ onDismiss }: { onDismiss: () => void }) {
+function PostDownloadTip({
+  onDismiss,
+  locale,
+}: {
+  onDismiss: () => void;
+  locale: Locale;
+}) {
+  const st = siteCopy(locale);
   return (
     <div className="flex flex-col sm:flex-row sm:items-start gap-3 p-4 sm:p-5 bg-[#FA008C]/[0.06] border border-[#FA008C]/20 rounded-[8px]">
       <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#FA008C] text-white flex items-center justify-center">
@@ -1287,7 +1317,7 @@ function PostDownloadTip({ onDismiss }: { onDismiss: () => void }) {
       </div>
       <div className="flex-1 min-w-0">
         <p className="text-[14px] font-medium text-black mb-1">
-          Got it. Now drop it at the root of your repo.
+          {st("CRE37")}
         </p>
         <p className="text-[13px] text-[#5b5b5b] leading-[1.55]">
           Most AI coding agents (Claude Code, Cursor, Copilot) auto-discover{" "}
@@ -1304,7 +1334,7 @@ function PostDownloadTip({ onDismiss }: { onDismiss: () => void }) {
       <button
         onClick={onDismiss}
         className="self-start text-[12px] text-[#999] hover:text-black px-2 py-1"
-        aria-label="Dismiss"
+        aria-label={st("CRE50")}
       >
         ✕
       </button>

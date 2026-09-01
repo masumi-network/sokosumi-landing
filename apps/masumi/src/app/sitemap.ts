@@ -22,7 +22,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // carry the same `alternates.languages` map, which is what tells Google the
   // two URLs are translations rather than duplicates. The middleware
   // deliberately does not redirect crawlers, so both are reachable.
-  const LOCALIZED_STATIC = ["/x402-protocol", "/x402", "/glossary", "/blogs"];
+  const LOCALIZED_STATIC = [
+    "/",
+    "/x402-protocol",
+    "/x402",
+    "/tools/design-md",
+    "/glossary",
+    "/blogs",
+    "/press",
+    "/contact",
+  ];
 
   const withAlternates = (path: string, locale: Locale, rest: Omit<MetadataRoute.Sitemap[number], "url" | "alternates">) => ({
     url: `${baseUrl}${localePath(locale, path)}`,
@@ -36,13 +45,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   });
 
   const staticRoutes: MetadataRoute.Sitemap = [
-    { url: baseUrl, lastModified: new Date(), changeFrequency: "weekly", priority: 1 },
-    { url: `${baseUrl}/tools/design-md`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.9 },
     { url: `${baseUrl}/learn`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.8 },
     { url: `${baseUrl}/imprint`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.3 },
     { url: `${baseUrl}/privacy`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.3 },
-    { url: `${baseUrl}/press`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.5 },
-    { url: `${baseUrl}/contact`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.5 },
   ];
 
   const posts = await getAllPosts();
@@ -74,7 +79,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       withAlternates(path, locale, {
         lastModified: new Date(),
         changeFrequency: "weekly" as const,
-        priority: path === "/x402-protocol" ? 0.9 : path === "/x402" ? 0.8 : 0.7,
+        priority:
+          path === "/" ? 1 : path === "/x402-protocol" || path === "/tools/design-md" ? 0.9 : path === "/x402" ? 0.8 : 0.7,
       }),
     ),
   );

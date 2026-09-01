@@ -1,4 +1,6 @@
 "use client";
+import { type Locale } from "@/lib/i18n";
+import { st as siteCopy } from "@/lib/site-copy";
 
 import { useEffect, useState, useRef, useCallback } from "react";
 import { useNetwork } from "@/hooks/useNetwork";
@@ -32,7 +34,8 @@ function smoothPath(coords: [number, number][]): string {
   return d;
 }
 
-export default function VolumeTide({ dark = false }: { dark?: boolean }) {
+export default function VolumeTide({ dark = false, locale = "en" }: { dark?: boolean; locale?: Locale }) {
+  const st = siteCopy(locale);
   const network = useNetwork();
   const [points, setPoints] = useState<VolumePoint[]>([]);
   const [hovered, setHovered] = useState<VolumePoint | null>(null);
@@ -119,8 +122,8 @@ export default function VolumeTide({ dark = false }: { dark?: boolean }) {
     <div ref={containerRef}>
       <div className="flex items-end justify-between mb-3">
         <div>
-          <h3 className={`text-[14px] font-medium ${dark ? "text-white" : "text-black"}`}>Cumulative USD Volume</h3>
-          <p className={`text-[12px] mt-0.5 ${dark ? "text-white/40" : "text-[#999]"}`}>Total value transacted on Masumi</p>
+          <h3 className={`text-[14px] font-medium ${dark ? "text-white" : "text-black"}`}>{st("TIDE1")}</h3>
+          <p className={`text-[12px] mt-0.5 ${dark ? "text-white/40" : "text-[#999]"}`}>{st("TIDE2")}</p>
         </div>
         <div className="text-right">
           <span className={`text-[28px] md:text-[36px] font-normal tracking-[-1px] leading-none ${dark ? "text-white" : "text-black"}`}>

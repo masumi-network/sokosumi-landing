@@ -7,6 +7,11 @@ import { preferredLocale } from "@/lib/i18n";
 // visitor to /de/explorer when no such route exists would 404 them for the
 // crime of having a German browser.
 const LOCALIZED = [
+  /^\/$/,
+  /^\/tools\/design-md$/,
+  /^\/press$/,
+  /^\/contact$/,
+  /^\/explorer$/,
   /^\/x402$/,
   /^\/x402-protocol$/,
   /^\/glossary$/,

@@ -7,6 +7,9 @@
    prefers-reduced-motion). On mobile the SVG slice-crops its sides and
    the labels reflow below the graphic. */
 
+import { type Locale } from "@/lib/i18n";
+import { st as siteCopy } from "@/lib/site-copy";
+
 const EDGES = [
   // Marketing Agent spokes
   "M300 250 Q390 150 510 92",
@@ -44,7 +47,8 @@ const FLOWS = [
   { path: "M700 250 Q770 330 830 395", dur: "3s", begin: "3.1s", r: 3.5 },
 ];
 
-export default function AgentNetworkGraph() {
+export default function AgentNetworkGraph({ locale = "en" }: { locale?: Locale }) {
+  const st = siteCopy(locale);
   return (
     <div className="agent-netviz">
       <div className="nv-stage">
@@ -119,16 +123,16 @@ export default function AgentNetworkGraph() {
         {/* HTML overlays — fixed type sizes, legible at every viewport */}
         <div className="nv-pill">
           <img src="/images/network/usdc.png" alt="" width={18} height={18} />
-          Pays 12 USDC
+          {st("GRAPH1")}
         </div>
-        <div className="nv-tag">Verified identities · Settled on-chain</div>
+        <div className="nv-tag">{st("GRAPH2")}</div>
         <div className="nv-agents">
           <div className="nv-agent nv-agent-a">
-            <span className="nv-name">Marketing Agent</span>
+            <span className="nv-name">{st("GRAPH3")}</span>
             <span className="nv-org">SERVICEPLAN</span>
           </div>
           <div className="nv-agent nv-agent-b">
-            <span className="nv-name">Data Agent</span>
+            <span className="nv-name">{st("GRAPH4")}</span>
             <span className="nv-org">STATISTA</span>
           </div>
         </div>
