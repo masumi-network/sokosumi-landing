@@ -45,6 +45,8 @@ const ogCheckerTpl = require("./templates/ogChecker");
 const ogCheck = require("./lib/ogCheck");
 const llmsTxtTpl = require("./templates/llmsTxt");
 const llmsCheck = require("./lib/llmsCheck");
+const postCheckerTpl = require("./templates/postChecker");
+const postCheck = require("./lib/postCheck");
 
 const port = process.env.PORT || 3000;
 const root = __dirname;
@@ -73,6 +75,10 @@ const ogCheckRequests = new Map();
 // their own site will reach.
 const LLMS_CHECK_RATE_LIMIT = Number(process.env.LLMS_CHECK_RATE_LIMIT) || 30;
 const llmsCheckRequests = new Map();
+// Pure in-process text scoring, no fetch — cheaper than any other tool here,
+// so the ceiling is generous.
+const POST_CHECK_RATE_LIMIT = Number(process.env.POST_CHECK_RATE_LIMIT) || 40;
+const postCheckRequests = new Map();
 
 function publicWebsiteUrl(value) {
   let parsed;
@@ -150,6 +156,7 @@ const designMdRateLimited = (ip) => hourlyRateLimited(designMdRequests, DESIGN_M
 const seoMdRateLimited = (ip) => hourlyRateLimited(seoMdRequests, SEO_MD_RATE_LIMIT, ip);
 const ogCheckRateLimited = (ip) => hourlyRateLimited(ogCheckRequests, OG_CHECK_RATE_LIMIT, ip);
 const llmsCheckRateLimited = (ip) => hourlyRateLimited(llmsCheckRequests, LLMS_CHECK_RATE_LIMIT, ip);
+const postCheckRateLimited = (ip) => hourlyRateLimited(postCheckRequests, POST_CHECK_RATE_LIMIT, ip);
 
 async function designMdFetch(pathname, options = {}) {
   const response = await fetch(`${DESIGN_MD_API_BASE}${pathname}`, {
@@ -619,6 +626,7 @@ const routes = [
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "design-md" && {}, h: designMdTpl.render },
   { m: (s) => s.length === 4 && s[0] === "tools" && s[1] === "design-md" && s[2] === "analysis" && { slug: s[3] }, h: designMdTpl.analysis },
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "seo-md" && {}, h: seoMdTpl.render },
+  { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "social-post-checker" && {}, h: postCheckerTpl.render },
   { m: (s) => s.length === 1 && s[0] === "product" && {}, h: pagesTpl.productHub },
   { m: (s) => s.length === 1 && s[0] === "pricing" && {}, h: pricingTpl.render },
   // The entity page for Sokosumi itself lives in code so its JSON-LD is
@@ -1143,6 +1151,31 @@ const assetsDir = path.join(root, "assets");
                   ? error.message
                   : "That site could not be reached. Check the URL and try again.";
             return send(req, res, timeout ? 504 : 502, jsonHead, JSON.stringify({ error: message }));
+          }
+        }
+
+        if (urlPath === "/api/post-check" && req.method === "POST") {
+          const jsonHead = { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" };
+          let body;
+          try {
+            // The default 8KB cap sized for {url:"..."} bodies is too tight
+            // here: 5,000 characters of emoji-heavy text can expand past that
+            // once encoded as UTF-8 JSON, well before postCheck.analyze's own
+            // character-count check ever runs.
+            body = await readJsonBody(req, 24576);
+          } catch (error) {
+            const message = error.message === "too-large" ? "The request is too large." : "Send a valid JSON request.";
+            return send(req, res, 400, jsonHead, JSON.stringify({ error: message }));
+          }
+          if (postCheckRateLimited(clientIp(req))) {
+            return send(req, res, 429, { ...jsonHead, "Retry-After": "3600" }, JSON.stringify({ error: "You have reached the hourly limit. Try again later." }));
+          }
+          try {
+            const data = postCheck.analyze(body);
+            return send(req, res, 200, jsonHead, JSON.stringify(data));
+          } catch (error) {
+            const status = error.status && error.status >= 400 && error.status < 600 ? error.status : 500;
+            return send(req, res, status, jsonHead, JSON.stringify({ error: error.message || "That check did not work. Try again." }));
           }
         }
 

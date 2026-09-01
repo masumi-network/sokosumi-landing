@@ -1,0 +1,255 @@
+"use strict";
+
+// Deterministic social-post scorer for /tools/social-post-checker. Given a
+// pasted post draft (and, optionally, a planned day/time to post it) this
+// scores four dimensions — hook quality, CTA clarity, engagement-shaping
+// formatting, and timing — from static rules against the text alone. No
+// network calls, no LLM: every check here is a regex or a threshold, the same
+// way seoExtract.js and ogCheck.js score their own inputs.
+
+const MAX_TEXT_LENGTH = 5000;
+const HOOK_TRUNCATE = 210; // LinkedIn's desktop "see more" cutoff, roughly
+
+// ---------------------------------------------------------------------------
+// Static reference data
+
+const CLICHE_OPENERS = [
+  /^i'?m (so |really )?(excited|thrilled|happy|proud|honou?red)\b/i,
+  /^i am (so |really )?(excited|thrilled|happy|proud|honou?red)\b/i,
+  /^(big|huge|exciting) news\b/i,
+  /^(thrilled|excited|proud|honou?red) to (announce|share)\b/i,
+  /^just wanted to (share|say)\b/i,
+];
+
+const HOOK_TRIGGER = /\?|\d|^(how|why|this is why|the (truth|real reason)|nobody (talks|tells you)|stop\b|here'?s (why|how))/i;
+
+const CTA_PATTERNS = [
+  /\bcomment\b/i,
+  /\blet me know\b/i,
+  /\bdm me\b/i,
+  /\bfollow (me|us|for more)\b/i,
+  /what (do|would) you think/i,
+  /\bdrop a\b/i,
+  /\btag someone\b/i,
+  /\bshare (this|your)\b/i,
+  /\?\s*$/,
+];
+
+// General, widely observed B2B posting patterns — not personalized to any
+// one account's actual audience data. Surfaced honestly as a proxy, the same
+// way seoExtract.js labels its ai_readiness_score a proxy rather than a
+// measurement.
+const DAY_SCORE = { mon: 70, tue: 95, wed: 95, thu: 90, fri: 55, sat: 30, sun: 35 };
+const DAY_LABEL = { mon: "Monday", tue: "Tuesday", wed: "Wednesday", thu: "Thursday", fri: "Friday", sat: "Saturday", sun: "Sunday" };
+
+const TIME_SCORE = { "0-6": 20, "6-8": 65, "8-10": 95, "10-12": 80, "12-14": 75, "14-16": 65, "16-18": 55, "18-24": 35 };
+const TIME_LABEL = {
+  "0-6": "overnight (12–6am)",
+  "6-8": "early morning (6–8am)",
+  "8-10": "mid-morning (8–10am)",
+  "10-12": "late morning (10am–12pm)",
+  "12-14": "midday (12–2pm)",
+  "14-16": "afternoon (2–4pm)",
+  "16-18": "late afternoon (4–6pm)",
+  "18-24": "evening (6pm–12am)",
+};
+
+const DIMENSION_WEIGHT = { hook: 25, cta: 20, engagement: 35, timing: 20 };
+
+function band(score) {
+  return score >= 80 ? "pass" : score >= 50 ? "warn" : "error";
+}
+
+// ---------------------------------------------------------------------------
+// Dimension builders — each returns an array of { level, title, tag, detail,
+// weight }, the same shape (minus "weight") that ogCheck.js/llmsCheck.js use.
+
+function firstLine(text) {
+  const idx = text.indexOf("\n");
+  const line = idx === -1 ? text : text.slice(0, idx);
+  const trimmed = line.trim();
+  return trimmed || text.trim().slice(0, HOOK_TRUNCATE);
+}
+
+function buildHookChecks(text) {
+  const checks = [];
+  const add = (level, title, tag, detail, weight = 1) => checks.push({ level, title, tag, detail, weight });
+  const hook = firstLine(text);
+  const len = hook.length;
+
+  if (!hook) {
+    add("error", "No hook", "hook", "The post doesn't open with a distinct first line — nothing to earn the click past \"see more\".", 2);
+  } else if (len < 15) {
+    add("warn", "Hook is very short", "hook", `"${hook}" — ${len} characters. Too thin to create curiosity before the fold.`, 2);
+  } else if (len > HOOK_TRUNCATE) {
+    add("warn", "Hook runs past the fold", "hook", `${len} characters before the first line break. LinkedIn truncates around ${HOOK_TRUNCATE} characters on desktop, less on mobile — tighten the opening line.`, 2);
+  } else {
+    add("pass", "Hook fits before the fold", "hook", `${len} characters — visible before "see more" cuts in.`, 2);
+  }
+
+  if (hook && CLICHE_OPENERS.some((re) => re.test(hook))) {
+    add("error", "Opens with a cliché", "hook", "\"Excited to announce\"-style openers are among the most-skipped lines on LinkedIn. Lead with the claim, the number, or the tension instead.", 3);
+  } else if (hook && HOOK_TRIGGER.test(hook)) {
+    add("pass", "Hook has a trigger", "hook", "The opening line asks a question, states a number, or promises an explanation — a reason to keep reading.", 2);
+  } else if (hook) {
+    add("warn", "Hook has no obvious trigger", "hook", "No question, number, or curiosity gap in the first line. Readers scroll past a flat statement.", 2);
+  }
+
+  return checks;
+}
+
+function buildCtaChecks(text) {
+  const checks = [];
+  const add = (level, title, tag, detail, weight = 1) => checks.push({ level, title, tag, detail, weight });
+  const tail = text.trim().slice(-300);
+  const matches = CTA_PATTERNS.filter((re) => re.test(tail));
+
+  if (matches.length === 0) {
+    add("error", "No call to action", "cta", "Nothing here asks for a response — no question, no \"comment/DM/follow\", nothing that invites a reply. Early replies are what the feed uses to decide who else sees this.", 3);
+  } else if (matches.length === 1) {
+    add("pass", "Clear call to action", "cta", "The close asks for one specific response — the easiest kind for a reader to act on.", 3);
+  } else {
+    add("warn", "Multiple calls to action", "cta", `${matches.length} different asks stacked at the end. One clear ask converts better than several competing ones.`, 2);
+  }
+
+  return checks;
+}
+
+function buildEngagementChecks(text) {
+  const checks = [];
+  const add = (level, title, tag, detail, weight = 1) => checks.push({ level, title, tag, detail, weight });
+  const trimmed = text.trim();
+  const len = trimmed.length;
+  const words = trimmed.split(/\s+/).filter(Boolean);
+
+  if (len < 300) {
+    add("warn", "Post is short", "length", `${len} characters. Short posts can work, but there's often not enough here to build the dwell time the feed rewards.`, 2);
+  } else if (len > 3000) {
+    add("warn", "Post is very long", "length", `${len} characters. Long-form can work — check the first two lines are doing the work of holding attention that far.`, 1);
+  } else {
+    add("pass", "Post length is in a solid range", "length", `${len} characters.`, 2);
+  }
+
+  const paragraphs = trimmed.split(/\n\s*\n/).filter(Boolean);
+  const avgParaWords = words.length / Math.max(paragraphs.length, 1);
+  if (paragraphs.length <= 1 && words.length > 40) {
+    add("warn", "No line breaks", "formatting", "The post is one unbroken block. Short paragraphs with white space between them read far faster on mobile.", 2);
+  } else if (avgParaWords > 60) {
+    add("warn", "Paragraphs run long", "formatting", `About ${Math.round(avgParaWords)} words per paragraph on average. Roughly one idea per line or paragraph skims faster.`, 1);
+  } else {
+    add("pass", "Paragraphs are short and skimmable", "formatting", `${paragraphs.length} paragraph(s), about ${Math.round(avgParaWords)} words each.`, 2);
+  }
+
+  if (/https?:\/\/\S+/.test(trimmed)) {
+    add("warn", "Contains an outbound link", "links", "LinkedIn's feed is well documented to suppress reach on posts with an outbound link in the body. Put the link in the first comment instead and say so in the post.", 2);
+  } else {
+    add("pass", "No outbound link in the body", "links", "Nothing pulling attention — or reach — off the platform.", 1);
+  }
+
+  const hashtags = trimmed.match(/#\w+/g) || [];
+  if (hashtags.length === 0) {
+    add("warn", "No hashtags", "hashtags", "A few relevant hashtags help the post surface outside your immediate network.", 1);
+  } else if (hashtags.length > 8) {
+    add("warn", "Too many hashtags", "hashtags", `${hashtags.length} hashtags. Past 5 or so it reads as spam rather than topic-tagging — 3–5 relevant tags is the commonly cited sweet spot.`, 1);
+  } else {
+    add("pass", "Hashtags present", "hashtags", `${hashtags.length} hashtag(s)${hashtags.length >= 3 && hashtags.length <= 5 ? " — in the commonly cited sweet spot." : "."}`, 1);
+  }
+
+  if (/[A-Z]{6,}/.test(trimmed) || /!{2,}/.test(trimmed)) {
+    add("warn", "Reads as shouting", "tone", "Long runs of capitals or stacked exclamation marks read as spam to readers and to the feed.", 1);
+  } else {
+    add("pass", "Tone reads naturally", "tone", "No stacked punctuation or all-caps runs.", 1);
+  }
+
+  const emoji = trimmed.match(/\p{Extended_Pictographic}/gu) || [];
+  if (emoji.length && emoji.length / Math.max(words.length, 1) > 0.12) {
+    add("warn", "Heavy emoji use", "tone", `${emoji.length} emoji across ${words.length} words. A few as bullet markers read fine; this many can read as noisy.`, 1);
+  }
+
+  return checks;
+}
+
+function buildTimingChecks(day, timeBucket) {
+  if (!day && !timeBucket) return null;
+  const checks = [];
+  const add = (level, title, tag, detail, weight = 1) => checks.push({ level, title, tag, detail, weight });
+
+  if (day) {
+    const score = DAY_SCORE[day];
+    const level = band(score);
+    const title =
+      level === "pass" ? `${DAY_LABEL[day]} is a strong day to post` : level === "warn" ? `${DAY_LABEL[day]} is a middling day to post` : `${DAY_LABEL[day]} tends to underperform`;
+    add(level, title, "day", "Based on widely observed B2B posting patterns, not this account's own audience data — Tuesday through Thursday tends to outperform Friday and weekends.", 1);
+  }
+  if (timeBucket) {
+    const score = TIME_SCORE[timeBucket];
+    const level = band(score);
+    const label = TIME_LABEL[timeBucket];
+    const title = level === "pass" ? `${label} is a strong slot` : level === "warn" ? `${label} is a middling slot` : `${label} tends to underperform`;
+    add(level, title, "time", "General best practice, not adjusted for your audience's specific timezone or habits — mid-morning local time tends to catch people at the start of their scroll.", 1);
+  }
+
+  return checks;
+}
+
+// ---------------------------------------------------------------------------
+
+function scoreFromChecks(checks) {
+  if (!checks || !checks.length) return 0;
+  const credit = { pass: 1, warn: 0.5, error: 0 };
+  const totalWeight = checks.reduce((sum, c) => sum + (c.weight || 1), 0);
+  const earned = checks.reduce((sum, c) => sum + (c.weight || 1) * credit[c.level], 0);
+  return totalWeight ? Math.round((earned / totalWeight) * 100) : 0;
+}
+
+function buildRecommendations(dimensions) {
+  const priority = { error: 0, warn: 1, pass: 2 };
+  return dimensions
+    .flatMap((d) => d.checks.map((c) => ({ ...c, dimension: d.label })))
+    .filter((c) => c.level !== "pass")
+    .sort((a, b) => priority[a.level] - priority[b.level])
+    .map((c) => `${c.dimension} — ${c.title}: ${c.detail}`);
+}
+
+function analyze(input) {
+  const text = String((input && input.text) || "");
+  const trimmed = text.trim();
+
+  if (!trimmed) {
+    const error = new Error("Paste the post you want scored.");
+    error.status = 400;
+    throw error;
+  }
+  if (trimmed.length > MAX_TEXT_LENGTH) {
+    const error = new Error(`That's ${trimmed.length} characters — keep it under ${MAX_TEXT_LENGTH}.`);
+    error.status = 400;
+    throw error;
+  }
+
+  const day = input && Object.prototype.hasOwnProperty.call(DAY_SCORE, input.day) ? input.day : null;
+  const timeBucket = input && Object.prototype.hasOwnProperty.call(TIME_SCORE, input.timeBucket) ? input.timeBucket : null;
+
+  const dimensions = [
+    { key: "hook", label: "Hook quality", checks: buildHookChecks(trimmed) },
+    { key: "cta", label: "CTA clarity", checks: buildCtaChecks(trimmed) },
+    { key: "engagement", label: "Engagement potential", checks: buildEngagementChecks(trimmed) },
+  ];
+  const timingChecks = buildTimingChecks(day, timeBucket);
+  if (timingChecks) dimensions.push({ key: "timing", label: "Timing", checks: timingChecks });
+
+  const scored = dimensions.map((d) => ({ ...d, score: scoreFromChecks(d.checks), weight: DIMENSION_WEIGHT[d.key] }));
+  const totalWeight = scored.reduce((sum, d) => sum + d.weight, 0);
+  const overall = totalWeight ? Math.round(scored.reduce((sum, d) => sum + d.weight * d.score, 0) / totalWeight) : 0;
+
+  return {
+    length: trimmed.length,
+    day,
+    timeBucket,
+    overall,
+    dimensions: scored.map(({ weight, ...rest }) => rest),
+    recommendations: buildRecommendations(scored),
+    fetchedAt: new Date().toISOString(),
+  };
+}
+
+module.exports = { analyze };

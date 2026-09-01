@@ -81,6 +81,23 @@ const seoMdPreview = () => `
     </span>
   </span>`;
 
+// The Social post checker returns four dimension scores, so the preview is a
+// mini scorecard: the dimensions as file-style lines, with an overall verdict
+// — the same file/verdict pieces as the llms.txt and SEO.md previews.
+const postCheckerPreview = () => `
+  <span class="tp tp-psc">
+    <span class="tp-file">
+      <span class="tp-file-name">Post score</span>
+      <span class="tp-file-line"><b>hook</b><i>82/100</i></span>
+      <span class="tp-file-line"><b>CTA</b><i>90/100</i></span>
+      <span class="tp-file-line"><b>engagement</b><i>75/100</i></span>
+      <span class="tp-file-line"><b>timing</b><i>95/100</i></span>
+    </span>
+    <span class="tp-verdict">
+      <span class="tp-chip is-pass">84/100 overall</span>
+    </span>
+  </span>`;
+
 const TOOLS = [
   {
     href: "/tools/llms-txt",
@@ -109,6 +126,13 @@ const TOOLS = [
     text: "Turn any website into an AI-readable SEO specification.",
     meta: "Free · no sign-up",
     preview: seoMdPreview,
+  },
+  {
+    href: "/tools/social-post-checker",
+    name: "Social post checker",
+    text: "Score a post's hook, CTA, formatting and timing before you publish.",
+    meta: "Free · no sign-up",
+    preview: postCheckerPreview,
   },
 ];
 

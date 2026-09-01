@@ -1,0 +1,501 @@
+/* /tools/social-post-checker — same language as the other tools: a workbench
+ * above the fold, hairline borders, one accent, Inter Light for headings. No
+ * platform-imitation cards here (unlike og-checker) — this tool never fetches
+ * anything, so the result surface is just the checks.
+ */
+
+.psc-tool-page {
+  min-width: 0;
+}
+
+/* ---- head + form -------------------------------------------------------- */
+
+.psc-head {
+  padding: clamp(40px, 6vw, 76px) 0 clamp(24px, 3vw, 36px);
+}
+
+.psc-overline {
+  color: var(--primary);
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 14px;
+}
+
+.psc-head h1 {
+  max-width: 18ch;
+  font-size: clamp(36px, 5.6vw, 62px);
+  font-weight: 300;
+  letter-spacing: -0.035em;
+  line-height: 1.04;
+  text-wrap: balance;
+}
+
+.psc-lede {
+  max-width: 62ch;
+  margin-top: 22px;
+  font-size: clamp(16px, 1.8vw, 19px);
+  line-height: 1.55;
+  color: var(--muted-foreground);
+  text-wrap: pretty;
+}
+
+.psc-form {
+  margin-top: clamp(26px, 3.5vw, 40px);
+  padding: 14px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+}
+
+.psc-form textarea {
+  width: 100%;
+  min-height: 160px;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  background: var(--background);
+  color: var(--foreground);
+  font: inherit;
+  font-size: 15px;
+  line-height: 1.5;
+  resize: vertical;
+}
+
+.psc-form textarea::placeholder {
+  color: rgba(15, 14, 13, 0.38);
+}
+
+.psc-form textarea:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: -1px;
+}
+
+.psc-timing-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.psc-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 160px;
+}
+
+.psc-field label {
+  color: var(--muted-foreground);
+  font-size: 12.5px;
+}
+
+.psc-field label span {
+  opacity: 0.75;
+}
+
+.psc-field select {
+  height: 40px;
+  padding: 0 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  background: var(--background);
+  color: var(--foreground);
+  font: inherit;
+  font-size: 14px;
+}
+
+.psc-field select:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: -1px;
+}
+
+.psc-submit {
+  flex-shrink: 0;
+  height: 44px;
+  padding: 0 22px;
+  margin-left: auto;
+  border: 0;
+  border-radius: var(--r-md);
+  background: var(--primary);
+  color: #fff;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 160ms ease-out;
+}
+
+.psc-submit:hover:not(:disabled) {
+  background: #24506a;
+}
+
+.psc-submit:disabled {
+  opacity: 0.55;
+  cursor: progress;
+}
+
+.psc-try {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 14px;
+  font-size: 13px;
+  color: var(--muted-foreground);
+}
+
+.psc-try button {
+  padding: 4px 10px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted-foreground);
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  transition:
+    color 160ms ease-out,
+    border-color 160ms ease-out;
+}
+
+.psc-try button:hover {
+  color: var(--foreground);
+  border-color: var(--primary);
+}
+
+.psc-error {
+  margin-top: 16px;
+  padding: 12px 14px;
+  border: 1px solid rgba(176, 42, 42, 0.28);
+  border-radius: var(--r-md);
+  background: rgba(176, 42, 42, 0.05);
+  color: #8f2020;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* ---- loading ------------------------------------------------------------- */
+
+.psc-loading[hidden] {
+  display: none;
+}
+
+.psc-loading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: clamp(40px, 8vw, 80px) 0;
+  border-top: 1px solid var(--border);
+  color: var(--muted-foreground);
+  font-size: 14.5px;
+}
+
+.psc-spin {
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--border);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: psc-spin 700ms linear infinite;
+}
+
+@keyframes psc-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .psc-spin {
+    animation-duration: 2s;
+  }
+}
+
+/* ---- result shell --------------------------------------------------------- */
+
+.psc-result {
+  padding-bottom: clamp(40px, 6vw, 72px);
+  border-top: 1px solid var(--border);
+  scroll-margin-top: 88px;
+}
+
+.psc-summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 10px 20px;
+  padding: 22px 0;
+}
+
+.psc-summary-score {
+  flex: 1;
+  min-width: 220px;
+  color: var(--muted-foreground);
+  font-size: 14.5px;
+}
+
+.psc-summary-score strong {
+  display: inline-block;
+  margin-right: 10px;
+  color: var(--foreground);
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.psc-scores {
+  display: flex;
+  gap: 8px;
+}
+
+.psc-score {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 12px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 500;
+  background: transparent;
+  color: var(--muted-foreground);
+  cursor: pointer;
+  transition:
+    border-color 160ms ease-out,
+    color 160ms ease-out;
+}
+
+.psc-score[aria-pressed="true"] {
+  border-color: currentColor;
+}
+
+.psc-score i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.psc-score.is-error {
+  color: #b02a2a;
+}
+.psc-score.is-warn {
+  color: #8a6100;
+}
+.psc-score.is-pass {
+  color: #2f6b45;
+}
+.psc-score.is-zero {
+  color: var(--muted-foreground);
+  opacity: 0.55;
+}
+
+.psc-copy {
+  flex-shrink: 0;
+  padding: 5px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  background: var(--card);
+  color: var(--muted-foreground);
+  font: inherit;
+  font-size: 12.5px;
+  cursor: pointer;
+}
+
+.psc-copy:hover {
+  color: var(--foreground);
+  border-color: var(--primary);
+}
+
+/* ---- per-dimension scorecards ---------------------------------------------- */
+
+.psc-dims {
+  display: grid;
+  gap: 18px;
+}
+
+@media (min-width: 760px) {
+  .psc-dims {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.psc-dim {
+  min-width: 0;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+}
+
+.psc-dim-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 18px;
+  border-bottom: 1px solid var(--border);
+}
+
+.psc-dim-head h3 {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.psc-dim-score {
+  flex-shrink: 0;
+  font-size: 12.5px;
+  font-weight: 500;
+}
+
+.psc-dim-score.is-strong {
+  color: #2f6b45;
+}
+.psc-dim-score.is-needs-work {
+  color: #8a6100;
+}
+.psc-dim-score.is-weak {
+  color: #b02a2a;
+}
+
+.psc-checks {
+  max-height: 420px;
+  overflow-y: auto;
+}
+
+.psc-check {
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr);
+  gap: 4px 12px;
+  padding: 15px 18px;
+  border-bottom: 1px solid var(--border);
+}
+
+.psc-check:last-child {
+  border-bottom: 0;
+}
+
+.psc-check-mark {
+  grid-row: span 2;
+  width: 18px;
+  height: 18px;
+  margin-top: 1px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.psc-check.is-error .psc-check-mark {
+  background: rgba(176, 42, 42, 0.12);
+  color: #b02a2a;
+}
+.psc-check.is-warn .psc-check-mark {
+  background: rgba(180, 130, 0, 0.14);
+  color: #8a6100;
+}
+.psc-check.is-pass .psc-check-mark {
+  background: rgba(47, 107, 69, 0.12);
+  color: #2f6b45;
+}
+
+.psc-check-title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 4px 12px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.psc-check-tag {
+  color: var(--muted-foreground);
+  font-family: var(--mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+  font-size: 11.5px;
+  font-weight: 400;
+}
+
+.psc-check-detail {
+  color: var(--muted-foreground);
+  font-size: 13.5px;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+  text-wrap: pretty;
+}
+
+.psc-dims[data-filter="error"] .psc-check:not(.is-error),
+.psc-dims[data-filter="warn"] .psc-check:not(.is-warn),
+.psc-dims[data-filter="pass"] .psc-check:not(.is-pass) {
+  display: none;
+}
+
+/* ---- prose sections -------------------------------------------------------- */
+
+.psc-section {
+  padding: clamp(40px, 5.5vw, 72px) 0;
+  border-top: 1px solid var(--border);
+}
+
+.psc-section > h2 {
+  max-width: 24ch;
+  font-size: clamp(26px, 3.4vw, 38px);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  line-height: 1.12;
+}
+
+.psc-section > .psc-sub {
+  max-width: 66ch;
+  margin-top: 14px;
+  color: var(--muted-foreground);
+  font-size: 15.5px;
+  line-height: 1.6;
+  text-wrap: pretty;
+}
+
+.psc-cards {
+  display: grid;
+  gap: 16px;
+  margin-top: 30px;
+}
+
+@media (min-width: 760px) {
+  .psc-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.psc-card {
+  padding: 20px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+}
+
+.psc-card h3 {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.psc-card p {
+  margin-top: 8px;
+  color: var(--muted-foreground);
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+
+@media (max-width: 620px) {
+  .psc-timing-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .psc-submit {
+    margin-left: 0;
+    width: 100%;
+  }
+  .psc-check {
+    padding: 14px;
+  }
+}
