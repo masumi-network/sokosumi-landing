@@ -4,6 +4,7 @@ import { Header, Footer, FadeIn } from "@summation/shared";
 import { getAllPosts, getCategories, type Category } from "@/lib/blog";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/blogs" },
   title: "Blog",
   description:
     "News, technical deep-dives, and product updates from the Masumi team. The payment network for AI agents.",

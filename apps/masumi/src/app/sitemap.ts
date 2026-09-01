@@ -11,13 +11,19 @@ import {
 } from "@/lib/content";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = "https://masumi.network";
+  // www, matching metadataBase in layout.tsx and the host the site actually
+  // serves on. This said "https://masumi.network" until 2026-09-01, so every
+  // one of the 45 URLs Google was handed 301'd to its www twin — a whole
+  // sitemap of redirects.
+  const baseUrl = "https://www.masumi.network";
 
   const staticRoutes: MetadataRoute.Sitemap = [
     { url: baseUrl, lastModified: new Date(), changeFrequency: "weekly", priority: 1 },
     { url: `${baseUrl}/tools/design-md`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.9 },
+    { url: `${baseUrl}/x402-protocol`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.9 },
     { url: `${baseUrl}/x402`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
     { url: `${baseUrl}/blogs`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.8 },
+    { url: `${baseUrl}/learn`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.8 },
     { url: `${baseUrl}/imprint`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.3 },
     { url: `${baseUrl}/privacy`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.3 },
     { url: `${baseUrl}/press`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.5 },
@@ -48,7 +54,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const cmsPages = await cmsFetch<{ docs: { slug: string; updatedAt?: string }[] }>(
     "/pages?where[site][equals]=masumi&limit=200&depth=0",
   );
-  const pageRoutes: MetadataRoute.Sitemap = (cmsPages?.docs ?? []).map((p) => ({
+  // Demo and scaffolding pages live in the CMS alongside real ones; they should
+  // not be handed to Google. example-landing-page was in the live sitemap.
+  const CMS_PAGE_DENYLIST = new Set(["example-landing-page"]);
+  const pageRoutes: MetadataRoute.Sitemap = (cmsPages?.docs ?? [])
+    .filter((p) => !CMS_PAGE_DENYLIST.has(p.slug))
+    .map((p) => ({
     url: `${baseUrl}/${p.slug}`,
     lastModified: p.updatedAt ? new Date(p.updatedAt) : new Date(),
     changeFrequency: "weekly" as const,

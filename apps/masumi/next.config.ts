@@ -28,6 +28,15 @@ const nextConfig: NextConfig = {
     return [
       // The x402 page originally lived at /x402-cardano on the relaunch branch.
       { source: "/x402-cardano", destination: "/x402", permanent: true },
+      // Two copies of the same post went out on 2026-07-31 under different
+      // keyword-shaped slugs, with an identical <title>. Both were indexed and
+      // competing with each other; the shorter one is unpublished and folds
+      // into the fuller one here.
+      {
+        source: "/blogs/test-http-402-x402-protocol-agentic-payments",
+        destination: "/blogs/test-agentic-payments-x402-http-402-cardano",
+        permanent: true,
+      },
       { source: "/learn/start", destination: "/learn", permanent: true },
       { source: "/learn/completion", destination: "/learn/course", permanent: true },
       { source: "/learn/concepts", destination: "/learn/library#concepts", permanent: true },

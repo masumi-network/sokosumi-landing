@@ -20,6 +20,7 @@ function liveTxCount(): string {
 }
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/press" },
   title: "Press",
   description: "Press kit for Masumi. Brand assets, key facts about the payment network for AI agents, and media contact information.",
   openGraph: {

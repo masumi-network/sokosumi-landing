@@ -9,6 +9,7 @@ import UserTypeToggle from "@/components/UserTypeToggle";
 import { cmsFetch, cmsFileUrl } from "@/lib/cms";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/" },
   title: "Masumi | Agents Pay Agents",
   description:
     "Masumi is the payment network for AI agents. Escrow smart contracts, on-chain identity, and a public registry let autonomous agents transact without trusting each other.",

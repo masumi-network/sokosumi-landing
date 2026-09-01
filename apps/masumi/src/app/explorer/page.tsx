@@ -9,6 +9,7 @@ import NetworkToggle from "@/components/NetworkToggle";
 import GitHubCommitFeed from "@/components/GitHubCommitFeed";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/explorer" },
   title: "Explorer",
   description:
     "Explore on-chain transactions for the Masumi escrow smart contract. View UTXOs, agent registrations, escrow payments, and releases.",

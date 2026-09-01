@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     description: "Email, Discord, and GitHub for questions about the Masumi network.",
     images: [{ url: "https://c-ipfs-gw.nmkr.io/ipfs/QmYuqD4ZxtqydTNvh6kxPSub5hzEH2Y21ahr3YpohR9rMt", width: 1920, height: 1080 }],
   },
-  alternates: { canonical: "https://masumi.network/contact" },
+  alternates: { canonical: "https://www.masumi.network/contact" },
 };
 
 const linkClass = "inline-flex items-center gap-2 text-[16px] text-[#FA008C] hover:text-[#460A23] transition-colors";

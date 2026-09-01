@@ -93,15 +93,15 @@ function PayDot({ on, pink }: { on: boolean; pink?: boolean }) {
 }
 
 export const metadata: Metadata = {
-  title: "x402 on Cardano — Masumi",
+  title: "x402 on Cardano: escrow, refunds and a live mainnet payment — Masumi",
   description:
-    "Try x402 on Cardano with a real vending machine: a live 402 Payment Required response, a real Cardano mainnet payment, and on-chain settlement.",
-  alternates: { canonical: `${URL_BASE}${PAGE_PATH}` },
+    "x402 on Cardano adds what the base protocol leaves out: escrowed payment, automatic refunds and on-chain decision logging. Try it against a real vending machine on mainnet.",
+  alternates: { canonical: PAGE_PATH },
   openGraph: {
     type: "website",
-    title: "x402 on Cardano — Masumi",
+    title: "x402 on Cardano: escrow, refunds and a live mainnet payment — Masumi",
     description:
-      "Try x402 on Cardano with a real vending machine: a live 402 Payment Required response, a real Cardano mainnet payment, and on-chain settlement.",
+      "x402 on Cardano adds what the base protocol leaves out: escrowed payment, automatic refunds and on-chain decision logging. Try it against a real vending machine on mainnet.",
     url: `${URL_BASE}${PAGE_PATH}`,
     siteName: "Masumi",
     images: [
@@ -114,7 +114,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "x402 on Cardano — Masumi",
+    title: "x402 on Cardano: escrow, refunds and a live mainnet payment — Masumi",
     description: "Try x402 on Cardano with a real vending machine and a real mainnet payment.",
     images: [
       "https://c-ipfs-gw.nmkr.io/ipfs/QmYuqD4ZxtqydTNvh6kxPSub5hzEH2Y21ahr3YpohR9rMt",
