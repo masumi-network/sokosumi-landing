@@ -4,7 +4,7 @@ import SokosumiDemo from "@/components/SokosumiDemo";
 export default function Sokosumi({ locale = "en" }: { locale?: Locale }) {
   const tt = t(locale).sokosumi;
   return (
-    <>
+    <section className="sp-sokosumi">
     <div className="sokosumi-content">
       <div className="w-embed">
         <svg width="312" height="35" viewBox="0 0 312 35" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -58,6 +58,6 @@ export default function Sokosumi({ locale = "en" }: { locale?: Locale }) {
         </div>
       <div>{tt.learnMore}</div>
     </a>
-    </>
+    </section>
   );
 }

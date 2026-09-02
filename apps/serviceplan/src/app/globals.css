@@ -3248,40 +3248,93 @@ margin: 0rem !important;
   }
 }
 
-/* ---- Sokosumi live demo (replaces the old static dashboard mockup) ----
-   The frame is a cross-origin embed of sokosumi.com, so nothing inside can
-   be styled from here; the treatment is all on the wrapper. */
-.sp-demo {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 2.5rem;
-  width: 100%;
+/* Hallmark · section redesign: "Where our agents live" · scope: section
+ * system: preserved (project Webflow tokens) · theme: none introduced
+ * motion: none (motion-cut project — no motion library installed)
+ * pre-emit critique: P4 H4 E5 S4 R5 V3
+ * ---------------------------------------------------------------------
+   Every value below is a named token from the project's own ladder; the
+   rhythm matches what the other section heads on this page already use.
+
+   What was wrong: the description's bottom edge and the demo's top edge
+   were both at 7052px - the copy was touching the frame. The head was also
+   768px wide where every other section head on the page is 644px, and the
+   internal gaps (38/16/32/0/20/32) were not on any scale. */
+.sp-sokosumi {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
-.sp-demo-frame {
+/* The head is the page's, not this section's: 644px, same as
+   "Popular Use Cases", "How Serviceplan Agents Work", "Plans That Grow". */
+.sp-sokosumi .sokosumi-content {
+  padding-bottom: 0;
+  gap: 0;
+}
+.sp-sokosumi .max-width-large {
+  max-width: 644px;
+}
+/* Head -> demo. The neighbouring sections run 120-144px here; this was 0. */
+.sp-sokosumi .sp-demo {
+  margin-top: var(--_serviceplan-styles---120px);
+  max-width: 1200px;
+  width: 100%;
+  padding-inline: var(--_serviceplan-styles---40px);
+}
+.sp-sokosumi .sp-demo-frame {
   display: block;
   width: 100%;
-  /* Carries the layout until the embed posts its real height, which it has to
-     do because the demo clamps its scale on narrow screens and stops being
-     16:9 there. */
+  /* Holds the layout until the embed posts its real height - the demo
+     clamps its scale on narrow screens and stops being 16:9 there. */
   aspect-ratio: 1440 / 810;
-  border: 1px solid rgba(15, 14, 13, 0.14);
-  border-radius: 16px;
-  background: #fff;
-  box-shadow: 0 24px 60px -32px rgba(15, 14, 13, 0.35);
+  /* Depth from a hairline, not a drop shadow: the demo's own canvas is
+     white on a white section, so it needs an edge, not a lift. */
+  border: 1px solid var(--base-color-brand--black-20);
+  border-radius: var(--_serviceplan-styles---16px);
+  background: var(--base-color-neutral--white);
   overflow: hidden;
   color-scheme: light;
 }
-.sokosumi-demo-cap {
-  max-width: 62ch;
-  margin: 20px auto 0;
-  padding: 0 2.5rem;
+/* Caption belongs to the frame, so it sits close to it and far from the
+   link below - uneven on purpose, so the eye groups them correctly. */
+.sp-sokosumi .sokosumi-demo-cap {
+  max-width: 52ch;
+  margin: var(--_serviceplan-styles---24px) auto 0;
+  padding-inline: var(--_serviceplan-styles---40px);
   text-align: center;
-  font-size: 14px;
+  font-family: var(--_serviceplan-styles---regular);
+  font-size: var(--_serviceplan-styles---16px);
   line-height: 1.6;
-  color: rgba(15, 14, 13, 0.55);
+  color: var(--base-color-brand--text-light);
 }
+.sp-sokosumi .link-with-arrow {
+  margin-top: var(--_serviceplan-styles---48px);
+}
+
+/* The wordmark ships as a fixed 312px SVG, which with .sokosumi-content's
+   2.5rem side padding needs 392px - wider than a 320px viewport, so it was
+   being clipped at the narrow end. */
+.sp-sokosumi .sokosumi-content svg {
+  max-width: 100%;
+  height: auto;
+}
+
 @media screen and (max-width: 767px) {
-  .sp-demo { padding: 0 1.25rem; }
-  .sp-demo-frame { border-radius: 12px; }
-  .sokosumi-demo-cap { padding: 0 1.25rem; }
+  .sp-sokosumi .sokosumi-content {
+    padding-left: var(--_serviceplan-styles---20px);
+    padding-right: var(--_serviceplan-styles---20px);
+  }
+  .sp-sokosumi .sp-demo {
+    margin-top: var(--_serviceplan-styles---72px);
+    padding-inline: var(--_serviceplan-styles---20px);
+  }
+  .sp-sokosumi .sp-demo-frame {
+    border-radius: var(--_serviceplan-styles---12px);
+  }
+  .sp-sokosumi .sokosumi-demo-cap {
+    padding-inline: var(--_serviceplan-styles---20px);
+  }
+  .sp-sokosumi .link-with-arrow {
+    margin-top: var(--_serviceplan-styles---40px);
+  }
 }
