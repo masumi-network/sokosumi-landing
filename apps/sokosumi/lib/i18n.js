@@ -20,10 +20,15 @@
 //     language switcher's escape hatch: it survives the rewrite untouched and
 //     is then collapsed to /<path> on every locale.
 //
-// Glossary decisions (per the brand owner): Sokosumi, AI Coworker(s),
-// coworker names, vendor names, and model names stay English. Established
-// German marketing loanwords (Briefing, Task, Credits, Use Case, Research,
-// Social) stay as-is. Formal "Sie" throughout — this is a B2B site.
+// Glossary decisions (per the brand owner): "AI Coworker(s)" is
+// "KI-Mitarbeiter" in German, declined normally — KI-Mitarbeitern,
+// KI-Mitarbeiterin, des KI-Mitarbeiters. It stays English only where it is
+// somebody's name: Coworker.ai the competitor, the quoted term on pages whose
+// point is that a rival also says "Coworker", and Serviceplan's own
+// "AI Coworkers" offering.
+// Sokosumi, coworker names, vendor names, and model names stay English.
+// Established German marketing loanwords (Briefing, Task, Credits, Use Case,
+// Research, Social) stay as-is. Formal "Sie" throughout — this is a B2B site.
 
 const { AsyncLocalStorage } = require("async_hooks");
 
