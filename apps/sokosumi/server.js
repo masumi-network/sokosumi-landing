@@ -782,6 +782,10 @@ const assetsDir = path.join(root, "assets");
 
   function send(req, res, status, headers, body) {
     const head = { ...BASE_HEADERS, ...headers };
+    // A route opts out of an inherited base header by passing it as null,
+    // which matters for X-Frame-Options: it has no allow-list, so the only
+    // way to let one route be framed is to drop it and use frame-ancestors.
+    for (const k of Object.keys(head)) if (head[k] == null) delete head[k];
     if (!isPublicHost(req)) head["X-Robots-Tag"] = "noindex, nofollow";
     let payload = Buffer.isBuffer(body) ? body : Buffer.from(body ?? "", "utf8");
     const type = String(head["Content-Type"] || "");
@@ -1079,6 +1083,63 @@ const assetsDir = path.join(root, "assets");
         if (urlPath === "/api/catalog") {
           await ensureCatalogEditorial();
           return send(req, res, 200, { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "public, max-age=60" }, catalogJson());
+        }
+
+        // The same replica as a standalone document, for framing on
+        // serviceplan-agents.com. It mirrors /product's stylesheet stack so the
+        // demo renders identically, minus the site chrome, and strips the
+        // stage's padding and gradient so the frame contains just the app
+        // canvas. Height is posted to the parent because below 700px the demo
+        // clamps its scale and stops being 16:9.
+        if (urlPath === "/embed/product-demo") {
+          const body = `<!doctype html>
+<html lang="${i18n.locale()}">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Sokosumi product demo</title>
+<link rel="stylesheet" href="/assets/fonts.css" />
+<link rel="stylesheet" href="/assets/styles.css" />
+<link rel="stylesheet" href="/assets/product.css" />
+<style>
+  html, body { margin: 0; padding: 0; background: transparent; overflow: hidden; }
+  /* /product breaks the stage out to the viewport edge and paints a gradient
+     behind it. In a frame the host page owns that treatment. */
+  .pd-stage { width: 100%; margin: 0; padding: 0; border-radius: 0; background: none; }
+  .pd-sizer { border: 0; border-radius: 0; }
+</style>
+</head>
+<body>
+${productDemoTpl.demoStage()}
+<script src="/assets/product-demo.js" defer></script>
+<script>
+  (function () {
+    var last = 0;
+    function post() {
+      var el = document.getElementById("pd-sizer");
+      var h = el ? Math.ceil(el.getBoundingClientRect().height) : 0;
+      if (!h || h === last) return;
+      last = h;
+      parent.postMessage({ type: "sokosumi:demo-height", height: h }, "*");
+    }
+    addEventListener("load", post);
+    addEventListener("resize", post);
+    setInterval(post, 500);
+  })();
+</script>
+</body>
+</html>`;
+          return send(req, res, 200, {
+            "Content-Type": "text/html; charset=utf-8",
+            // X-Frame-Options has no allow-list, so it is dropped here and
+            // replaced by a frame-ancestors list scoped to this one route.
+            // Everything else on the site keeps SAMEORIGIN.
+            "X-Frame-Options": null,
+            "Content-Security-Policy":
+              "frame-ancestors 'self' https://www.serviceplan-agents.com https://serviceplan-agents.com",
+            "Cache-Control": "public, max-age=300, s-maxage=86400, stale-while-revalidate=604800",
+          }, body);
         }
 
         // The interactive app replica, as an HTML fragment. The homepage pulls
