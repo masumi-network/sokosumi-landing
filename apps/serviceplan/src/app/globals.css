@@ -3247,3 +3247,41 @@ margin: 0rem !important;
     grid-template-columns: 1fr;
   }
 }
+
+/* ---- Sokosumi live demo (replaces the old static dashboard mockup) ----
+   The frame is a cross-origin embed of sokosumi.com, so nothing inside can
+   be styled from here; the treatment is all on the wrapper. */
+.sp-demo {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2.5rem;
+  width: 100%;
+}
+.sp-demo-frame {
+  display: block;
+  width: 100%;
+  /* Carries the layout until the embed posts its real height, which it has to
+     do because the demo clamps its scale on narrow screens and stops being
+     16:9 there. */
+  aspect-ratio: 1440 / 810;
+  border: 1px solid rgba(15, 14, 13, 0.14);
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 24px 60px -32px rgba(15, 14, 13, 0.35);
+  overflow: hidden;
+  color-scheme: light;
+}
+.sokosumi-demo-cap {
+  max-width: 62ch;
+  margin: 20px auto 0;
+  padding: 0 2.5rem;
+  text-align: center;
+  font-size: 14px;
+  line-height: 1.6;
+  color: rgba(15, 14, 13, 0.55);
+}
+@media screen and (max-width: 767px) {
+  .sp-demo { padding: 0 1.25rem; }
+  .sp-demo-frame { border-radius: 12px; }
+  .sokosumi-demo-cap { padding: 0 1.25rem; }
+}
