@@ -1578,14 +1578,17 @@ html[lang="de"] .tg-article .prose blockquote::before { content: "Prompt"; }
 /* Inside a dark surface the primary button inverts to white: never ink on ink. */
 .blk-cta .btn-primary, .sp-bridge .btn-primary, .plan-enterprise .btn-primary,
 section.band-dark .btn-primary, .cw-split-side.is-coworker .btn-primary,
+.pair-offer .btn-primary,
 .blk-cta .btn, .sp-bridge .btn, .plan-enterprise .btn {
   background: #fff !important;
   background-image: none !important;
   color: var(--ink) !important;
   border-color: #fff !important;
 }
-.blk-cta .btn-primary:hover, .sp-bridge .btn-primary:hover, .plan-enterprise .btn-primary:hover { background: #e9e8e6 !important; filter: none; }
-.blk-cta .btn-outline, .sp-bridge .btn-outline { background: transparent !important; color: #fff !important; border-color: rgba(255, 255, 255, 0.4) !important; }
+.blk-cta .btn-primary:hover, .sp-bridge .btn-primary:hover, .plan-enterprise .btn-primary:hover,
+.pair-offer .btn-primary:hover { background: #e9e8e6 !important; filter: none; }
+.blk-cta .btn-outline, .sp-bridge .btn-outline,
+.pair-offer .btn-outline { background: transparent !important; color: #fff !important; border-color: rgba(255, 255, 255, 0.4) !important; }
 /* The coworker half of the comparison sits on the stage: keep it separated. */
 .grad-band .cw-split-side.is-coworker { border: 1px solid rgba(255, 255, 255, 0.22); }
 
@@ -1624,3 +1627,45 @@ section.band-dark .btn-primary, .cw-split-side.is-coworker .btn-primary,
 
 /* the currency equivalent of a credit price: present, but the credits lead */
 .cw-stat-alt { color: var(--muted-foreground); }
+
+/* ---- /compare/<a>-vs-<b>: the vendor band -----------------------------
+   The comparison above it is neutral - two tools we don't sell. This band
+   is where Sokosumi speaks, so it is marked as such rather than blending
+   into the editorial: same dark stage .blk-cta and .sp-bridge already use
+   for "this is the offer". A reader can see where the comparison stops and
+   the pitch starts, which is the honest way round. */
+.pair-offer {
+  display: block;
+  margin: clamp(48px, 6vw, 88px) calc(50% - 50vw) 0;
+  padding: clamp(8px, 2vw, 24px) calc(50vw - 50%) clamp(24px, 3vw, 40px);
+  background: #0f1c25 var(--stage-deep);
+  color: #fff;
+}
+/* The band is the surface now, so the box stops drawing its own. */
+.pair-offer .pair-bridge-box {
+  border: 0;
+  background: none;
+  padding-inline: 0;
+}
+.pair-offer .pair-bridge-box .eyebrow,
+.pair-offer .quote-kicker { color: rgba(255, 255, 255, 0.62); }
+.pair-offer .pair-bridge-box h2,
+.pair-offer .pull-quote blockquote { color: #fff; }
+.pair-offer .pair-bridge-box > p { color: rgba(255, 255, 255, 0.78); }
+.pair-offer .pair-bridge-box li { color: rgba(255, 255, 255, 0.86); }
+.pair-offer .pair-bridge-box li::before { background: var(--brand, #6f5cf0); }
+.pair-offer .cmp-mark-logo { color: #fff; }
+
+/* Buttons inherit the dark-surface inversion from the shared allow-list
+   above; only the row's own rhythm is set here. */
+.pair-offer .cta-row { margin-top: 28px; align-items: center; gap: 12px; }
+
+/* Proof rides along inside the band: the client logos and the quote are
+   part of the same argument, so they take the same surface. */
+.pair-offer .plan-logos-label { color: rgba(255, 255, 255, 0.55); }
+.pair-offer .blk-logos img { filter: brightness(0) invert(1); opacity: 0.62; }
+.pair-offer .blk-logos img.logo-ink { filter: brightness(0) invert(1); }
+.pair-offer .blk-logos img:hover { opacity: 0.95; }
+.pair-offer .pull-quote figcaption,
+.pair-offer .pq-who small { color: rgba(255, 255, 255, 0.66); }
+.pair-offer .pq-who strong { color: #fff; }

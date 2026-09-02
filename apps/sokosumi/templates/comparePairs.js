@@ -1,6 +1,9 @@
 // /compare/<a>-vs-<b> — third-party style pages comparing two tools we do not
 // sell, with a clearly separated note that Sokosumi is a third option when the
-// team wants finished marketing work. Content lives in
+// team wants finished marketing work. That note, the logo row and the
+// testimonial share one dark band (.pair-offer) so the page reads
+// unambiguously as neutral comparison first, vendor second - the same
+// treatment .blk-cta and .sp-bridge already use for "this is the offer". Content lives in
 // content/compare-pairs/<slug>.json (see _BRIEF.md there): English written
 // from primary sources, German added by a copy pass. A pair without German
 // serves English on /de and stays out of the German index.
@@ -163,6 +166,7 @@ async function detail(ctx) {
       <h2>${esc(t("{a} or {b}: the verdict", { a: p.a.name, b: p.b.name }))}</h2>
       <p class="pair-verdict-text">${esc(c.verdict)}</p>
     </section>
+    <section class="pair-offer">
     <section class="page-section pair-bridge" id="want-alternatives" data-reveal>
       <div class="pair-bridge-box">
         <div class="pair-bridge-head"><span class="eyebrow">${esc(t("A third option"))}</span><span class="cmp-mark cmp-mark-logo"><img src="/assets/apple-touch-icon.png" alt="" width="24" height="24">Sokosumi</span></div>
@@ -176,6 +180,7 @@ async function detail(ctx) {
       </div>
     </section>` +
     shell.proof(testimonials, p.slug.length, { heading: t("Teams already on Sokosumi") }) +
+    `</section>` +
     (faqs.length
       ? `<section class="blk" data-reveal><div class="blk-head"><h2>${esc(t("{a} vs {b}: questions", { a: p.a.name, b: p.b.name }))}</h2></div><div class="blk-faq">${faqs
           .map((f) => `<details class="faq-item"><summary>${esc(f.question)}<span class="faq-x">+</span></summary><p class="faq-a">${esc(f.answer)}</p></details>`)

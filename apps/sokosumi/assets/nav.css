@@ -522,50 +522,66 @@ footer.site {
    panels use, so all three menus share one visual language */
 .nav-visual-stage .nav-mini { transform: scale(2.1); }
 
-/* ---- "Read with AI" row -----------------------------------------------
-   Sits between the breadcrumbs and <main> on every content page. Quiet by
-   default: this is a utility, not a call to action, so it reads at the
-   weight of the breadcrumbs above it rather than competing with the H1
-   below. */
+/* ---- breadcrumbs + "Read with <assistant>" on one line ----------------
+   Crumbs left, assistant links right, sharing the breadcrumb row so the
+   links cost no vertical space on a content page. Below 760px they cannot
+   sit beside the crumbs, so the row stacks and the links scroll sideways
+   in their own track rather than wrapping into a block. */
+.crumb-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 20px;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 clamp(24px, 4vw, 56px) 18px;
+}
+.crumb-row .crumbs { padding: 0; margin: 0; min-width: 0; flex: 1 1 auto; }
 .read-with {
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
-  gap: 8px 14px;
-  /* Same box as .container-app so the row lines up with the breadcrumbs
-     above it and the H1 below, rather than hanging off to the left. */
-  max-width: 1240px;
-  margin: 0 auto;
-  padding: 0 clamp(24px, 4vw, 56px) 20px;
+  gap: 8px;
+  flex: 0 0 auto;
 }
-.read-with-label {
-  font-size: 12.5px;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--muted-foreground);
-}
-.read-with-links { display: flex; flex-wrap: wrap; gap: 8px; }
 .read-with-btn {
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  padding: 6px 12px 6px 10px;
+  padding: 5px 11px 5px 9px;
   border: 1px solid var(--border);
   border-radius: var(--r-md, 8px);
-  background: var(--background);
+  background: var(--card);
   color: var(--foreground);
-  font-size: 13px;
+  font-size: 12.5px;
   line-height: 1.2;
   text-decoration: none;
   white-space: nowrap;
   transition: border-color 0.2s var(--ease), background-color 0.2s var(--ease);
 }
 .read-with-btn img { display: block; flex-shrink: 0; }
-.read-with-btn:hover { border-color: var(--ink); background: var(--paper-2, #fff); }
+.read-with-btn .rw-short { display: none; }
+.read-with-btn:hover { border-color: var(--ink); }
 .read-with-btn:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
 
-@media (max-width: 620px) {
-  .read-with { gap: 6px 10px; padding-bottom: 16px; }
-  .read-with-label { width: 100%; }
-  .read-with-btn { font-size: 12.5px; padding: 5px 10px 5px 8px; }
+@media (max-width: 760px) {
+  .crumb-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    padding-bottom: 14px;
+  }
+  /* "Read with Claude" x3 does not fit across a phone, and a scroll track
+     hides the third one behind a gesture nobody is told about. The logo
+     already carries the verb, so the label drops to the assistant name and
+     all three fit at 320px. The full label stays in .rw-long for screen
+     readers and for the accessible name. */
+  .read-with { gap: 6px; }
+  .read-with-btn { padding: 5px 10px 5px 8px; font-size: 12.5px; }
+  .read-with-btn .rw-long {
+    position: absolute;
+    width: 1px; height: 1px;
+    margin: -1px; padding: 0; border: 0;
+    overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+  }
+  .read-with-btn .rw-short { display: inline; }
 }

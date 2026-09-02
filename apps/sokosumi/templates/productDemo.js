@@ -1048,11 +1048,6 @@ function render(opts) {
       <div class="pd-hero-copy">
         <h1>${esc(t("Brief coworkers, track tasks, collect files"))}</h1>
         <p class="sub">${esc(t("Named specialists, a board your whole team can see, and finished files at the end of the job."))}</p>
-        <div class="pd-hero-actions">
-          <a class="btn btn-primary btn-lg" href="${attr(APP_SIGNUP)}" data-analytics="sign_up_click" data-analytics-location="product_hero">${esc(t("Start free"))}</a>
-          <a class="btn btn-ghost btn-lg" href="/pricing">${esc(t("See pricing"))}</a>
-        </div>
-        ${shell.NO_CARD}
       </div>
       ${demoStage()}
     </section>
