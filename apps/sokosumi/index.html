@@ -313,58 +313,24 @@
       </div>
     </section>
 
-    <!-- ===== PRODUCT — large screenshots, arrows cycle the frames ===== -->
+    <!-- ===== PRODUCT — the live app replica, shared with /product ===== -->
     <section class="block" id="product">
       <div class="container-app">
         <div class="section-head" data-reveal>
           <h2>A look inside <span class="serif-accent">Sokosumi</span></h2>
           <p>A roster of named specialists and a board that shows who picked up what.</p>
-          <a class="link-arrow" href="/product">Try the interactive demo<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
+          <a class="link-arrow" href="/product">Open it full screen<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
         </div>
-        <div class="shot-carousel" data-reveal>
-          <div class="shot-stage">
-            <div class="shot-viewport">
-              <div class="shot-track" id="shotTrack">
-                <div class="shot-slide" data-caption="The roster. Names, roles, a profile. If a coworker lists models or a hosting region, that is where they show up.">
-                  <div class="shot-frame">
-                    <div class="shot-canvas">
-                      <img src="/assets/shot-roster.webp" alt="The Sokosumi roster: five named AI coworkers, with Elena's profile open beside them" width="2400" height="1350" loading="lazy" decoding="async" />
-                    </div>
-                  </div>
-                </div>
-                <div class="shot-slide" data-caption="Start from the job. Type what you want done and the bar points at coworkers who do that kind of work.">
-                  <div class="shot-frame">
-                    <div class="shot-canvas">
-                      <img src="/assets/shot-brief.webp" alt="The Sokosumi briefing bar asking what you want to get done, with suggested campaign tasks below it" width="2400" height="1350" loading="lazy" decoding="async" />
-                    </div>
-                  </div>
-                </div>
-                <div class="shot-slide" data-caption="A task on the board shows who has it and whether it is running, waiting on you, or done.">
-                  <div class="shot-frame">
-                    <div class="shot-canvas">
-                      <img src="/assets/shot-board.webp" alt="The Sokosumi task board: running tasks with the coworkers assigned to each" width="2400" height="1350" loading="lazy" decoding="async" />
-                    </div>
-                  </div>
-                </div>
-                <div class="shot-slide" data-caption="Mention a coworker in the channel and it answers in the same thread as everyone else.">
-                  <div class="shot-frame">
-                    <div class="shot-canvas">
-                      <img src="/assets/shot-chat2.webp" alt="The Sokosumi chat: a team channel where a coworker is mentioned and replies in the same thread" width="2400" height="1350" loading="lazy" decoding="async" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="shot-info">
-            <p id="shotCaption"></p>
-            <div class="shot-controls">
-              <span class="shot-count" id="shotCount"></span>
-              <button type="button" class="shot-nav prev" id="shotPrev" aria-label="Previous screenshot"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button>
-              <button type="button" class="shot-nav next" id="shotNext" aria-label="Next screenshot"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
-            </div>
+        <div class="pd-embed" id="pdEmbed" data-reveal>
+          <!-- Poster until the live demo is pulled in. It is what no-JS and
+               crawlers get, and it is the LCP-safe default: the demo fragment
+               is 27KB gzipped and most visitors never scroll this far. -->
+          <div class="pd-embed-poster" id="pdEmbedPoster">
+            <img src="/assets/shot-board.webp" alt="The Sokosumi task board: running tasks with the coworkers assigned to each" width="2400" height="1350" loading="lazy" decoding="async" />
+            <noscript><p class="hiw-cap">Open <a href="/product">the interactive demo</a> to click through the product.</p></noscript>
           </div>
         </div>
+        <p class="pd-embed-cap" id="pdEmbedCap">A working copy of the product, seeded with sample data. Click around &mdash; nothing here leaves your browser.</p>
       </div>
     </section>
 
@@ -570,31 +536,41 @@
         }
 
 
-        /* ---------- product screenshot carousel: next shot peeks right ---------- */
-        var shotTrack = document.getElementById("shotTrack");
-        if (shotTrack) {
-          var shotSlides = [].slice.call(shotTrack.children);
-          var shotPrev = document.getElementById("shotPrev");
-          var shotNext = document.getElementById("shotNext");
-          var shotIndex = 0;
-          var goShot = function (delta) {
-            shotIndex = Math.max(0, Math.min(shotSlides.length - 1, shotIndex + delta));
-            var viewport = shotTrack.parentElement.offsetWidth;
-            var slideW = shotSlides[0].offsetWidth;
-            var step = slideW + 24;
-            /* first slide hugs the left, last hugs the right, middle slides
-               center - so the shot you came from stays peeking at the edge */
-            var adj = shotIndex === 0 ? 0 : shotIndex === shotSlides.length - 1 ? viewport - slideW : (viewport - slideW) / 2;
-            shotTrack.style.transform = "translateX(" + (adj - shotIndex * step) + "px)";
-            document.getElementById("shotCaption").textContent = shotSlides[shotIndex].getAttribute("data-caption");
-            document.getElementById("shotCount").textContent = (shotIndex + 1) + " / " + shotSlides.length;
-            shotPrev.disabled = shotIndex === 0;
-            shotNext.disabled = shotIndex === shotSlides.length - 1;
+        /* ---------- live product demo: pulled in on approach ----------
+           The fragment is 27KB gzipped and product.css/product-demo.js another
+           39KB, so none of it is in the document. It loads once this section is
+           within a screen of the viewport, replacing the poster. /product
+           renders the same markup from templates/productDemo.js. */
+        var pdEmbed = document.getElementById("pdEmbed");
+        if (pdEmbed && "IntersectionObserver" in window && "fetch" in window) {
+          var pdLoaded = false;
+          var loadProductDemo = function () {
+            if (pdLoaded) return;
+            pdLoaded = true;
+            var css = document.createElement("link");
+            css.rel = "stylesheet";
+            css.href = "/assets/product.css";
+            document.head.appendChild(css);
+            fetch("/api/product-demo")
+              .then(function (r) { return r.ok ? r.text() : Promise.reject(r.status); })
+              .then(function (html) {
+                pdEmbed.innerHTML = html;
+                pdEmbed.classList.add("is-live");
+                /* product-demo.js reads the DOM as it evaluates and bails if the
+                   nodes are missing, so it can only be appended after the
+                   markup is in. */
+                var js = document.createElement("script");
+                js.src = "/assets/product-demo.js";
+                js.defer = true;
+                document.body.appendChild(js);
+              })
+              .catch(function () { pdLoaded = false; });
           };
-          shotPrev.addEventListener("click", function () { goShot(-1); });
-          shotNext.addEventListener("click", function () { goShot(1); });
-          window.addEventListener("resize", function () { goShot(0); });
-          goShot(0);
+          new IntersectionObserver(function (entries, obs) {
+            if (!entries.some(function (e) { return e.isIntersecting; })) return;
+            obs.disconnect();
+            loadProductDemo();
+          }, { rootMargin: "100% 0px" }).observe(pdEmbed);
         }
 
         /* the header's transparent-to-paper scroll flip lives in /assets/nav.js,

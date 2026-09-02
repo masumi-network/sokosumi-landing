@@ -33,6 +33,7 @@ const blogTpl = require("./templates/blog");
 const releasesTpl = require("./templates/releases");
 const compareTpl = require("./templates/compare");
 const pagesTpl = require("./templates/pagesCms");
+const productDemoTpl = require("./templates/productDemo");
 const agencyRunByAiTpl = require("./templates/agencyRunByAi");
 const europeanAiTpl = require("./templates/europeanAi");
 const contactTpl = require("./templates/contact");
@@ -1078,6 +1079,18 @@ const assetsDir = path.join(root, "assets");
         if (urlPath === "/api/catalog") {
           await ensureCatalogEditorial();
           return send(req, res, 200, { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "public, max-age=60" }, catalogJson());
+        }
+
+        // The interactive app replica, as an HTML fragment. The homepage pulls
+        // it in only once the "A look inside" section nears the viewport:
+        // inlining it would have taken the homepage document from 17KB to 44KB
+        // gzipped for a section most visitors never scroll to. /product renders
+        // the same markup inline from templates/productDemo.js.
+        if (urlPath === "/api/product-demo") {
+          return send(req, res, 200, {
+            "Content-Type": "text/html; charset=utf-8",
+            "Cache-Control": "public, max-age=300, s-maxage=86400, stale-while-revalidate=604800",
+          }, productDemoTpl.demoStage());
         }
 
         // Nav model for the landing page's dropdown menus (sub-pages render

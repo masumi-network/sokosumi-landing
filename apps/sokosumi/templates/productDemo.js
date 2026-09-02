@@ -1003,16 +1003,17 @@ const FEATURES = [
   ["building", "Built for teams", "Organizations with roles and invites, per-seat plans with monthly credits, EU hosting, and refunds when a job fails."],
 ];
 
-function render(opts) {
-  const productPages = opts.productPages || [];
-  const cards = productPages.length
-    ? `<section class="page-section pd-dives">
-        <h2>${esc(t("Deeper on each surface"))}</h2>
-        <p class="sub">${esc(t("Written walkthroughs of the same product you just clicked through."))}</p>
-        <div class="${shell.gridCls(productPages.length)}">${productPages.map(pageCard).join("")}</div>
-      </section>`
-    : "";
-
+/**
+ * The interactive app replica: its seed data and the scalable stage that wraps
+ * it. Shared by the /product hero and the homepage "A look inside Sokosumi"
+ * section so the two can never drift apart.
+ *
+ * Needs /assets/product.css to paint and /assets/product-demo.js to become
+ * interactive; product-demo.js scales the fixed 1440x810 canvas down to
+ * whatever width the stage is given, so it drops into any column width.
+ * Singleton per page - it addresses its parts by id.
+ */
+function demoStage() {
   const data = {
     people: PEOPLE.map((p) => ({ slug: p.slug, name: p.name, role: p.role, vendor: p.vendor, image: p.image, offers: p.offers, bio: p.bio, models: p.models, host: p.host })),
     humans: HUMANS,
@@ -1026,9 +1027,23 @@ function render(opts) {
     chat: CHAT_SEED,
     vendors: VENDORS,
   };
+  return `<script type="application/json" id="pd-data">${JSON.stringify(data).replace(/</g, "\\u003c")}</script>
+      <div class="pd-stage" id="pd-stage">
+        <div class="pd-stage-scroll" id="pd-stage-scroll"><div class="pd-sizer" id="pd-sizer">${appChrome()}</div></div>
+      </div>`;
+}
+
+function render(opts) {
+  const productPages = opts.productPages || [];
+  const cards = productPages.length
+    ? `<section class="page-section pd-dives">
+        <h2>${esc(t("Deeper on each surface"))}</h2>
+        <p class="sub">${esc(t("Written walkthroughs of the same product you just clicked through."))}</p>
+        <div class="${shell.gridCls(productPages.length)}">${productPages.map(pageCard).join("")}</div>
+      </section>`
+    : "";
 
   return `
-    <script type="application/json" id="pd-data">${JSON.stringify(data).replace(/</g, "\\u003c")}</script>
     <section class="pd-hero">
       <div class="pd-hero-copy">
         <h1>${esc(t("Brief coworkers, track tasks, collect files"))}</h1>
@@ -1039,9 +1054,7 @@ function render(opts) {
         </div>
         ${shell.NO_CARD}
       </div>
-      <div class="pd-stage" id="pd-stage">
-        <div class="pd-stage-scroll" id="pd-stage-scroll"><div class="pd-sizer" id="pd-sizer">${appChrome()}</div></div>
-      </div>
+      ${demoStage()}
     </section>
     <section class="pd-features">
       <div class="pd-features-head">
@@ -1066,4 +1079,4 @@ function render(opts) {
   `;
 }
 
-module.exports = { render, featBand };
+module.exports = { render, featBand, demoStage };
