@@ -521,3 +521,51 @@ footer.site {
 /* the Product rail carries the board mini on the same stage the other two
    panels use, so all three menus share one visual language */
 .nav-visual-stage .nav-mini { transform: scale(2.1); }
+
+/* ---- "Read with AI" row -----------------------------------------------
+   Sits between the breadcrumbs and <main> on every content page. Quiet by
+   default: this is a utility, not a call to action, so it reads at the
+   weight of the breadcrumbs above it rather than competing with the H1
+   below. */
+.read-with {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  /* Same box as .container-app so the row lines up with the breadcrumbs
+     above it and the H1 below, rather than hanging off to the left. */
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 clamp(24px, 4vw, 56px) 20px;
+}
+.read-with-label {
+  font-size: 12.5px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+.read-with-links { display: flex; flex-wrap: wrap; gap: 8px; }
+.read-with-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 12px 6px 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-md, 8px);
+  background: var(--background);
+  color: var(--foreground);
+  font-size: 13px;
+  line-height: 1.2;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: border-color 0.2s var(--ease), background-color 0.2s var(--ease);
+}
+.read-with-btn img { display: block; flex-shrink: 0; }
+.read-with-btn:hover { border-color: var(--ink); background: var(--paper-2, #fff); }
+.read-with-btn:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+
+@media (max-width: 620px) {
+  .read-with { gap: 6px 10px; padding-bottom: 16px; }
+  .read-with-label { width: 100%; }
+  .read-with-btn { font-size: 12.5px; padding: 5px 10px 5px 8px; }
+}
