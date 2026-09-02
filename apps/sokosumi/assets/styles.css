@@ -1651,6 +1651,19 @@ section.band-dark .btn-primary, .cw-split-side.is-coworker .btn-primary,
 .pair-offer .quote-kicker { color: rgba(255, 255, 255, 0.62); }
 .pair-offer .pair-bridge-box h2,
 .pair-offer .pull-quote blockquote { color: #fff; }
+/* The testimonial supports the block; it does not lead it. At the shared
+   display size it ran 38px against the block's own 34px heading and took
+   532px of band for 50 words - bigger than the thing it was backing up. */
+.pair-offer .pull-quote blockquote {
+  font-size: clamp(18px, 1.7vw, 21px);
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+  max-width: 52ch;
+}
+.pair-offer .pull-quote figcaption { margin-top: 18px; }
+/* 83 characters a line is past comfortable reading; this brings the
+   paragraph back to a normal measure without cutting a word. */
+.pair-offer .pair-bridge-box > p { max-width: 68ch; }
 .pair-offer .pair-bridge-box > p { color: rgba(255, 255, 255, 0.78); }
 .pair-offer .pair-bridge-box li { color: rgba(255, 255, 255, 0.86); }
 .pair-offer .pair-bridge-box li::before { background: var(--brand, #6f5cf0); }

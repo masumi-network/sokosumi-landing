@@ -534,7 +534,10 @@ footer.site {
   gap: 12px 20px;
   max-width: 1240px;
   margin: 0 auto;
-  padding: 0 clamp(24px, 4vw, 56px) 18px;
+  /* The row owns its top padding. .crumbs carries its own 18px, which the
+     links do not, so without this the chips sat flush against the header
+     and 7px above the breadcrumb they are meant to line up with. */
+  padding: 18px clamp(24px, 4vw, 56px) 20px;
 }
 .crumb-row .crumbs { padding: 0; margin: 0; min-width: 0; flex: 1 1 auto; }
 .read-with {
