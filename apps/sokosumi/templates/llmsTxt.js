@@ -54,7 +54,7 @@ const FAQ = [
   {
     question: "What does this llms.txt checker look at?",
     answer:
-      "It fetches your /llms.txt, parses it against the format at llmstxt.org, and reports what a reader would actually get: whether the H1 and summary are there, whether sections and links are shaped correctly, whether the file is small enough to be useful — and whether the links in it resolve, which is the part nothing else in your stack ever tests.",
+      "It fetches your /llms.txt and checks it against the format at llmstxt.org. Is the H1 there, and the summary? Are the sections and links shaped correctly? Is the file small enough to be useful? Then it follows every link to see if it resolves — the part nothing else in your stack tests.",
   },
   {
     question: "Does llms.txt help my SEO?",

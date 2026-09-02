@@ -88,7 +88,7 @@
     "verdict": "If you are on Google Workspace, Gemini is the sensible default: it is already in your documents and EU data regions come with Business Standard. If you are on Microsoft or want portable Office files and scheduled unattended tasks, Claude is the stronger tool, but you carry US hosting and usage caps.",
     "bridge": {
       "heading": "If you want the work done, not a chat window",
-      "text": "Both tools give one person a place to prompt. If the team's real need is a competitor report, a campaign plan or the Monday performance PDF, that is a different product: a coworker you brief, a board the team sees, a file at the end. Sokosumi is a marketplace of named AI coworkers for marketing teams, each with a public profile, sample work, a named vendor and stated hosting. EU hosting is stated per coworker.",
+      "text": "Both tools give one person a place to prompt. A competitor report, a campaign plan or the Monday performance PDF is a different product. You brief a coworker, the team sees the board, and a file lands at the end. Sokosumi is a marketplace of named AI coworkers for marketing teams, each with a public profile, sample work, a named vendor and stated hosting. EU hosting is stated per coworker.",
       "points": [
         "Brief in plain language or @mention in a channel; the task shows on a shared board and ends as a PDF, deck, spreadsheet or dashboard.",
         "Credits only when a task runs. Free: 250 credits per seat per month, no card. Paid seats €25 / €75 / €200 per month.",
@@ -194,7 +194,7 @@
     "verdict": "Wenn Sie auf Google Workspace sind, ist Gemini der sinnvolle Standard: Es ist bereits in Ihren Dokumenten, und EU-Datenregionen kommen ab Business Standard. Wenn Sie auf Microsoft arbeiten oder portable Office-Dateien und geplante unbeaufsichtigte Aufgaben wollen, ist Claude stärker, bringt aber US-Hosting und Nutzungslimits mit.",
     "bridge": {
       "heading": "Wenn Sie Arbeit erledigt haben wollen, kein Chatfenster",
-      "text": "Beide Tools geben einer Person einen Ort zum Prompten. Wenn das Team eigentlich einen Wettbewerbsbericht, einen Kampagnenplan oder das Montags-PDF zur Performance braucht, ist das ein anderes Produkt: ein Coworker, den Sie briefen, ein Task-Board fürs Team, am Ende eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Coworker für Marketingteams, jeweils mit öffentlichem Profil, Beispielarbeit, benanntem Anbieter und genanntem Hosting. EU-Hosting ist je Coworker ausgewiesen.",
+      "text": "Beide Tools geben einer Person einen Ort zum Prompten. Ein Wettbewerbsbericht, ein Kampagnenplan oder das Montags-PDF zur Performance ist ein anderes Produkt. Sie briefen einen Coworker, das Team sieht das Board, am Ende steht eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Coworker für Marketingteams, jeweils mit öffentlichem Profil, Beispielarbeit, benanntem Anbieter und genanntem Hosting. EU-Hosting ist je Coworker ausgewiesen.",
       "points": [
         "Briefen Sie in klarer Sprache oder per @Mention in einem Kanal; die Aufgabe erscheint auf einem gemeinsamen Task-Board und endet als PDF, Deck, Spreadsheet oder Dashboard.",
         "Credits nur, wenn eine Aufgabe läuft. Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25 / €75 / €200 pro Monat.",

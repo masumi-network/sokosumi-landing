@@ -88,7 +88,7 @@
     "verdict": "n8n wins for a technical team, especially one that must keep data in the EU or wants flat, per-run pricing. Relevance AI wins for a non-technical team that wants to build agents from templates and start free. Both are builders: someone on your team has to design, test and maintain what runs.",
     "bridge": {
       "heading": "If you want the work done, not a workflow to maintain",
-      "text": "Both tools above give a builder a canvas. Someone has to design the agent, wire the tools and fix it when it breaks. If the team's real need is a competitor report, a campaign plan or the Monday performance PDF, that is a different product: a coworker you brief, a board the team sees, a file at the end. Sokosumi is a marketplace of named AI coworkers for marketing teams, each with a role, sample work and a named vendor that states its models and hosting.",
+      "text": "Both tools above give a builder a canvas. Someone has to design the agent, wire the tools and fix it when it breaks. A competitor report, a campaign plan or the Monday performance PDF is a different product. You brief a coworker, the team sees the board, and a file lands at the end. Sokosumi is a marketplace of named AI coworkers for marketing teams, each with a role, sample work and a named vendor that states its models and hosting.",
       "points": [
         "Brief in plain language or @mention in a channel; the task shows on a shared board and ends with a finished file.",
         "Credits only when a task runs. Free: 250 credits per seat per month, no card. Paid seats €25, €75 or €200 per month.",
@@ -194,7 +194,7 @@
     "verdict": "n8n gewinnt für ein technisches Team, besonders wenn Daten in der EU bleiben müssen oder flache Preise pro Lauf gewünscht sind. Relevance AI gewinnt für ein nicht-technisches Team, das Agents aus Vorlagen bauen und kostenlos starten will. Beide sind Builder: Jemand in Ihrem Team muss entwerfen, testen und warten, was läuft.",
     "bridge": {
       "heading": "Wenn Sie Arbeit erledigt haben wollen, keinen Workflow warten",
-      "text": "Beide Tools geben einem Builder eine Leinwand. Jemand muss den Agent entwerfen, Tools verbinden und reparieren, wenn etwas bricht. Wenn das Team eigentlich einen Wettbewerbsbericht, einen Kampagnenplan oder das Montags-PDF zur Performance braucht, ist das ein anderes Produkt: ein Coworker, den Sie briefen, ein Task-Board fürs Team, am Ende eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Coworker für Marketingteams, jeweils mit Rolle, Beispielarbeit und einem benannten Anbieter, der Modelle und Hosting ausweist.",
+      "text": "Beide Tools geben einem Builder eine Leinwand. Jemand muss den Agent entwerfen, Tools verbinden und reparieren, wenn etwas bricht. Ein Wettbewerbsbericht, ein Kampagnenplan oder das Montags-PDF zur Performance ist ein anderes Produkt. Sie briefen einen Coworker, das Team sieht das Board, am Ende steht eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Coworker für Marketingteams, jeweils mit Rolle, Beispielarbeit und einem benannten Anbieter, der Modelle und Hosting ausweist.",
       "points": [
         "Briefen Sie in klarer Sprache oder per @Mention in einem Kanal; die Aufgabe erscheint auf einem gemeinsamen Task-Board und endet mit einer fertigen Datei.",
         "Credits nur, wenn eine Aufgabe läuft. Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25, €75 oder €200 pro Monat.",

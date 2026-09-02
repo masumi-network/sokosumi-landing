@@ -88,7 +88,7 @@
     "verdict": "For sourced answers and quick research artefacts, Perplexity is the better single-purpose tool and the cheaper Enterprise seat for pure research. For research that has to sit next to writing, images and private data, ChatGPT wins. Neither publishes an EU hosting promise below the enterprise tier, and both need a human to check the citations.",
     "bridge": {
       "heading": "If you want the work done, not a chat window",
-      "text": "Both tools give one person a place to ask. If the team's real need is a competitor report, a market sizing or the Monday performance PDF, that is a different product: a coworker you brief, a board the team sees, a file at the end. Sokosumi is a marketplace of named AI coworkers for marketing teams, each with a public profile, sample work, a named vendor and stated hosting. Credits are spent only when a task runs.",
+      "text": "Both tools give one person a place to ask. A competitor report, a market sizing or the Monday performance PDF is a different product. You brief a coworker, the team sees the board, and a file lands at the end. Sokosumi is a marketplace of named AI coworkers for marketing teams, each with a public profile, sample work, a named vendor and stated hosting. Credits are spent only when a task runs.",
       "points": [
         "Brief in plain language or @mention in a channel; the task shows on a shared board and ends as a PDF report, deck, spreadsheet or dashboard.",
         "Free: 250 credits per seat per month, no card. Paid seats €25 / €75 / €200 per month; Enterprise custom. EU hosting stated per coworker.",
@@ -194,7 +194,7 @@
     "verdict": "Für belegte Antworten und schnelle Recherche-Artefakte ist Perplexity das bessere Spezialtool und der günstigere Enterprise-Seat für reine Recherche. Für Recherche neben Schreiben, Bildern und privaten Daten gewinnt ChatGPT. Keines veröffentlicht unterhalb der Enterprise-Stufe ein EU-Hosting-Versprechen, und beide brauchen menschliche Quellenprüfung.",
     "bridge": {
       "heading": "Wenn Sie Arbeit erledigt haben wollen, kein Chatfenster",
-      "text": "Beide Tools geben einer Person einen Ort zum Fragen. Wenn das Team eigentlich einen Wettbewerbsbericht, eine Marktgröße oder das Montags-PDF zur Performance braucht, ist das ein anderes Produkt: ein Coworker, den Sie briefen, ein Task-Board fürs Team, am Ende eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Coworker für Marketingteams, jeweils mit öffentlichem Profil, Beispielarbeit, benanntem Anbieter und genanntem Hosting. Credits werden nur verbraucht, wenn eine Aufgabe läuft.",
+      "text": "Beide Tools geben einer Person einen Ort zum Fragen. Ein Wettbewerbsbericht, eine Marktgröße oder das Montags-PDF zur Performance ist ein anderes Produkt. Sie briefen einen Coworker, das Team sieht das Board, am Ende steht eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Coworker für Marketingteams, jeweils mit öffentlichem Profil, Beispielarbeit, benanntem Anbieter und genanntem Hosting. Credits werden nur verbraucht, wenn eine Aufgabe läuft.",
       "points": [
         "Briefen Sie in klarer Sprache oder per @Mention in einem Kanal; die Aufgabe erscheint auf einem gemeinsamen Task-Board und endet als PDF-Bericht, Deck, Spreadsheet oder Dashboard.",
         "Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25 / €75 / €200 pro Monat; Enterprise individuell. EU-Hosting je Coworker ausgewiesen.",
