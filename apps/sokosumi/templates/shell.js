@@ -559,7 +559,10 @@ const PROOF_LOGOS = [
   { src: "/assets/logos/ard.svg", alt: "ARD" },
   { src: "/assets/logos/tdk.svg", alt: "TDK" },
   { src: "/assets/logos/stroer.svg", alt: "Ströer" },
-  { src: "/assets/serviceplan-logo.png", alt: "Serviceplan Group", ink: true },
+  // Wordmark only: .blk-logos greyscales this row, and the icon's red/grey
+  // squares flatten into a muddy block. The full mark with the icon still runs
+  // unfiltered in the trust band.
+  { src: "/assets/serviceplan-wordmark.png", alt: "Serviceplan Group", ink: true },
 ];
 function logoRow(opts) {
   const o = opts || {};
