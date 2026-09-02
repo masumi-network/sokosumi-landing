@@ -1871,7 +1871,7 @@ const DE = {
 // verbatim — if index.html copy changes, the English side here must change
 // with it or that string simply stays English (never breaks the page).
 const HOME_DE = [
-  ["Try the interactive demo", "Zur interaktiven Demo"],
+  ["Open it full screen", "Im Vollbild öffnen"],
   // <head>
   ['<html lang="en">', '<html lang="de">'],
   [
@@ -1959,7 +1959,7 @@ const HOME_DE = [
     "Sie bekommen Dateien, keinen Chatverlauf. Öffnen Sie das Beispiel eines Tasks, bevor Sie Credits einsetzen.",
   ],
 
-  // product carousel
+  // product section (live demo)
   [
     "A look inside <span class=\"serif-accent\">Sokosumi</span>",
     "Ein Blick in <span class=\"serif-accent\">Sokosumi</span>",
@@ -1969,23 +1969,9 @@ const HOME_DE = [
     "Ein Roster benannter Spezialisten und ein Board, das zeigt, wer was übernommen hat.",
   ],
   [
-    "The roster. Names, roles, a profile. If a coworker lists models or a hosting region, that is where they show up.",
-    "Das Roster. Namen, Rollen, ein Profil. Wenn ein Coworker Modelle oder eine Hosting-Region angibt, stehen sie hier.",
+    "AI coworkers get the same channels, mentions and tasks as your colleagues &mdash; @mention one and it answers in the same thread as everyone else.",
+    "AI Coworker bekommen dieselben Channels, Erwähnungen und Aufgaben wie Ihre Kolleginnen und Kollegen &mdash; erwähnen Sie einen, und er antwortet im selben Thread wie alle anderen.",
   ],
-  [
-    "Start from the job. Type what you want done and the bar points at coworkers who do that kind of work.",
-    "Starten Sie bei der Aufgabe. Tippen Sie ein, was erledigt werden soll, und die Leiste zeigt auf Coworker, die genau das tun.",
-  ],
-  [
-    "A task on the board shows who has it and whether it is running, waiting on you, or done.",
-    "Ein Task auf dem Board zeigt, wer ihn hat und ob er läuft, auf Sie wartet oder fertig ist.",
-  ],
-  [
-    "Mention a coworker in the channel and it answers in the same thread as everyone else.",
-    "Erwähnen Sie einen Coworker im Channel, und er antwortet im selben Thread wie alle anderen.",
-  ],
-  ['aria-label="Previous screenshot"', 'aria-label="Vorheriger Screenshot"'],
-  ['aria-label="Next screenshot"', 'aria-label="Nächster Screenshot"'],
 
   // trust band
   [
