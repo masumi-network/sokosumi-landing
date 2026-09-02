@@ -1076,7 +1076,16 @@ function footerHtml(opts) {
           </nav>
         </div>
       </div>
-    </footer>`;
+    </footer>
+    <!-- Progressive blur along the bottom edge: six stacked layers, each with a
+         stronger backdrop-filter and a mask that sits lower, so the blur ramps
+         up toward the edge instead of starting at a hard line. Decorative and
+         inert - aria-hidden, pointer-events none, and it sits under the cookie
+         banner (z 1000) and the nav overlays (49-100). Styled in nav.css, the
+         stylesheet both the homepage and the sub-pages load. -->
+    <div class="edge-blur" aria-hidden="true">
+      <div></div><div></div><div></div><div></div><div></div><div></div>
+    </div>`;
 }
 
 function footer(extraScripts, opts) {

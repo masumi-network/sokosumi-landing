@@ -403,7 +403,59 @@ body.nav-locked .site-header { position: fixed; top: 0; left: 0; right: 0; }
 footer.site {
   padding: 0 0 40px; background: var(--background);
   border-top: 1px solid var(--border); margin-top: clamp(48px, 7vw, 96px);
+  /* Above .edge-blur. Without this the blur sits permanently over the last
+     row at the bottom of a page - copyright, the language switcher and the
+     Terms / Privacy / Cookie settings links - which have to stay readable.
+     One layer up means the effect stops where the footer starts, with no
+     scroll handler to keep in sync. */
+  position: relative; z-index: 41;
 }
+/* ---- progressive blur along the bottom edge ---------------------------
+   One backdrop-filter with a masked gradient still blurs at a single
+   strength, so the top of the band reads as a seam. Six layers, each
+   doubling the blur and masked to sit lower than the last, ramp it
+   instead. z-index stays under the cookie banner (1000) and the nav
+   overlays (49-100) so neither gets blurred or intercepted. */
+.edge-blur {
+  position: fixed;
+  inset: auto 0 0;
+  height: 80px;
+  z-index: 40;
+  pointer-events: none;
+}
+.edge-blur > div {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.edge-blur > div:nth-child(1) { backdrop-filter: blur(0.5px); -webkit-backdrop-filter: blur(0.5px);
+  -webkit-mask-image: linear-gradient(transparent 0%, #000 20%, #000 40%, transparent 60%);
+          mask-image: linear-gradient(transparent 0%, #000 20%, #000 40%, transparent 60%); }
+.edge-blur > div:nth-child(2) { backdrop-filter: blur(1px); -webkit-backdrop-filter: blur(1px);
+  -webkit-mask-image: linear-gradient(transparent 20%, #000 40%, #000 60%, transparent 80%);
+          mask-image: linear-gradient(transparent 20%, #000 40%, #000 60%, transparent 80%); }
+.edge-blur > div:nth-child(3) { backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px);
+  -webkit-mask-image: linear-gradient(transparent 40%, #000 60%, #000 80%, transparent 100%);
+          mask-image: linear-gradient(transparent 40%, #000 60%, #000 80%, transparent 100%); }
+.edge-blur > div:nth-child(4) { backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+  -webkit-mask-image: linear-gradient(transparent 60%, #000 80%, #000 100%);
+          mask-image: linear-gradient(transparent 60%, #000 80%, #000 100%); }
+.edge-blur > div:nth-child(5) { backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  -webkit-mask-image: linear-gradient(transparent 75%, #000 100%);
+          mask-image: linear-gradient(transparent 75%, #000 100%); }
+.edge-blur > div:nth-child(6) { backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  -webkit-mask-image: linear-gradient(transparent 88%, #000 100%);
+          mask-image: linear-gradient(transparent 88%, #000 100%); }
+
+/* Where backdrop-filter is unsupported the layers paint nothing, so the six
+   empty divs would just sit there costing layout. */
+@supports not (backdrop-filter: blur(1px)) {
+  .edge-blur { display: none; }
+}
+@media (max-width: 620px) {
+  .edge-blur { height: 56px; }
+}
+
 
 /* brand on the left, the four labelled columns on the right */
 .foot-grid {
