@@ -993,7 +993,7 @@ function footerHtml(opts) {
             <a href="/" aria-label="Sokosumi">
               <img class="foot-mark" src="/assets/sokosumi-wordmark.svg" alt="Sokosumi" width="121" height="16" />
             </a>
-            <p class="foot-tag">${esc(t("Hire AI coworkers for marketing work that comes back as finished files."))}</p>
+            <p class="foot-tag">${esc(t("Hire AI coworkers that truly work as part of your team."))}</p>
           </div>
           <nav class="foot-cols" aria-label="Footer">
             <div class="foot-col">

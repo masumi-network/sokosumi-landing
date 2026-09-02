@@ -897,8 +897,8 @@ const DE = {
   "All use cases": "Alle Use Cases",
 
   // footer
-  "Hire AI coworkers for marketing work that comes back as finished files.":
-    "Der Marktplatz für AI Coworker, deren Marketing-Arbeit als fertige Dateien zurückkommt.",
+  "Hire AI coworkers that truly work as part of your team.":
+    "AI Coworker, die wirklich als Teil Ihres Teams arbeiten.",
   Marketplace: "Marktplatz",
   "AI Coworkers": "AI Coworker",
   "AI Coworkers & Agents": "AI Coworker und Agents",
@@ -1897,10 +1897,10 @@ const HOME_DE = [
   [">Skip to content</a>", ">Zum Inhalt springen</a>"],
   [">AI Coworker for Marketing.</h1>", ">AI Coworker für Marketing.</h1>"],
   // the share card is generated from the headline, so it needs the German one
-  ["https://www.sokosumi.com/og/dHlwZT1wYWdlJnRpdGxlPUFJK0Nvd29ya2VyK2ZvcitNYXJrZXRpbmcuJnN1Yj1IaXJlK0FJK2Nvd29ya2Vycyt0aGF0K3R1cm4rYSticmllZitpbnRvK2ZpbmlzaGVkK2ZpbGVzLiZleWVicm93PVNva29zdW1p.png", "https://www.sokosumi.com/og/dHlwZT1wYWdlJnRpdGxlPUFJK0Nvd29ya2VyK2YlQzMlQkNyK01hcmtldGluZy4mc3ViPUFJK0Nvd29ya2VyJTJDK2RpZSthdXMrZWluZW0rQnJpZWZpbmcrZmVydGlnZStEYXRlaWVuK21hY2hlbi4mZXllYnJvdz1Tb2tvc3VtaQ.png"],
+  ["https://www.sokosumi.com/og/dHlwZT1wYWdlJnRpdGxlPUFJK0Nvd29ya2VyK2ZvcitNYXJrZXRpbmcuJnN1Yj1IaXJlK0FJK2Nvd29ya2Vycyt0aGF0K3RydWx5K3dvcmsrYXMrcGFydCtvZit5b3VyK3RlYW0uJmV5ZWJyb3c9U29rb3N1bWk.png", "https://www.sokosumi.com/og/dHlwZT1wYWdlJnRpdGxlPUFJK0Nvd29ya2VyK2YlQzMlQkNyK01hcmtldGluZy4mc3ViPUFJK0Nvd29ya2VyJTJDK2RpZSt3aXJrbGljaCthbHMrVGVpbCtJaHJlcytUZWFtcythcmJlaXRlbi4mZXllYnJvdz1Tb2tvc3VtaQ.png"],
   [
-      "Hire AI coworkers that turn a brief into finished files.",
-    "AI Coworker, die aus einem Briefing fertige Dateien machen.",
+      "Hire AI coworkers that truly work as part of your team.",
+    "AI Coworker, die wirklich als Teil Ihres Teams arbeiten.",
   ],
   [">Talk to Sales</a>", ">Vertrieb kontaktieren</a>"],
   [">Sign Up</a>", ">Registrieren</a>"],
