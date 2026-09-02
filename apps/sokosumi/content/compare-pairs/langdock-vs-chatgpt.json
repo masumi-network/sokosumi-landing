@@ -194,9 +194,9 @@
     "verdict": "Für ein deutsches Unternehmen mit Betriebsrat und Datenschutzbeauftragtem gewinnt Langdock auf den harten Fakten: EU-Hosting für €25, Modellauswahl und Workflow-Tools. ChatGPT Team gewinnt, wenn Ihr Team ohnehin in ChatGPT lebt und Sie ersten Zugriff auf OpenKI-Funktionen höher bewerten als Residenz. Keines liefert fertige Arbeit; beide geben jeder Person einen Ort zum Prompten.",
     "bridge": {
       "heading": "Wenn Sie Arbeit erledigt haben wollen, kein Chatfenster",
-      "text": "Beide Tools geben einer Person einen Ort zum Prompten. Ein Wettbewerbsbericht, ein Kampagnenplan oder das Montags-PDF zur Performance ist ein anderes Produkt. Sie briefen einen Coworker, das Team sieht das Board, am Ende steht eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Coworker für Marketingteams, gebaut von Serviceplan Group mit NMKR in München. Sie briefen in klarer Sprache oder per @Mention in einem Kanal; die Aufgabe erscheint auf einem gemeinsamen Task-Board und endet mit PDF, Deck, Spreadsheet oder Dashboard.",
+      "text": "Beide Tools geben einer Person einen Ort zum Prompten. Ein Wettbewerbsbericht, ein Kampagnenplan oder das Montags-PDF zur Performance ist ein anderes Produkt. Sie briefen einen KI-Mitarbeiter, das Team sieht das Board, am Ende steht eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Mitarbeiter für Marketingteams, gebaut von Serviceplan Group mit NMKR in München. Sie briefen in klarer Sprache oder per @Mention in einem Kanal; die Aufgabe erscheint auf einem gemeinsamen Task-Board und endet mit PDF, Deck, Spreadsheet oder Dashboard.",
       "points": [
-        "52 Coworker und Agents von 7 Anbietern; jedes Profil nennt Anbieter, Modelle und Hosting. EU-Hosting ist je Coworker ausgewiesen.",
+        "52 KI-Mitarbeiter und Agents von 7 Anbietern; jedes Profil nennt Anbieter, Modelle und Hosting. EU-Hosting ist je KI-Mitarbeiter ausgewiesen.",
         "Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25, €75 oder €200 pro Monat; Credits werden nur verbraucht, wenn eine Aufgabe läuft.",
         "Geplante Aufgaben, damit der Wochenbericht ohne neuen Prompt ankommt."
       ],
@@ -220,7 +220,7 @@
       ],
       [
         "Kann eines der Tools mir nach Zeitplan einen fertigen Bericht liefern?",
-        "Beide können einen gespeicherten Prompt nach Zeitplan ausführen und Text oder eine Datei an eine Person zurückgeben. Keines legt das Ergebnis auf ein gemeinsames Task-Board. Wenn das der Bedarf ist, sind Sokosumi-Coworker und ähnliche Produkte dafür gebaut."
+        "Beide können einen gespeicherten Prompt nach Zeitplan ausführen und Text oder eine Datei an eine Person zurückgeben. Keines legt das Ergebnis auf ein gemeinsames Task-Board. Wenn das der Bedarf ist, sind Sokosumi-KI-Mitarbeiter und ähnliche Produkte dafür gebaut."
       ]
     ]
   },

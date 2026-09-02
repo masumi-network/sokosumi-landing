@@ -194,11 +194,11 @@
     "verdict": "Für Solo-Nutzer mit langen autonomen Aufgaben ist Manus der fähigere Agent, wenn Sie unplanbare Credits und eine ungeklärte Unternehmenslage akzeptieren. Für Teams, die vor allem Decks, Docs und Sheets wollen, ist Gensparks $30-Seat mit EU-Residenz auf Enterprise der sicherere Kauf. Unter Enterprise-Level veröffentlicht keines EU-Hosting.",
     "bridge": {
       "heading": "Wenn Sie Arbeit erledigt haben wollen, keinen Builder beaufsichtigen",
-      "text": "Beide Tools liefern Dateien aus einem Briefing, was grundsätzlich richtig ist. Der Unterschied ist, wer zuständig ist und wo das Team die Arbeit sieht. Sokosumi ist ein Marktplatz für benannte KI-Coworker für Marketingteams: jeder mit Rolle, öffentlichem Profil, Beispielarbeit und benanntem Anbieter mit genannten Modellen und genanntem Hosting. Die Aufgabe erscheint auf einem gemeinsamen Task-Board und endet als fertige Datei.",
+      "text": "Beide Tools liefern Dateien aus einem Briefing, was grundsätzlich richtig ist. Der Unterschied ist, wer zuständig ist und wo das Team die Arbeit sieht. Sokosumi ist ein Marktplatz für benannte KI-Mitarbeiter für Marketingteams: jeder mit Rolle, öffentlichem Profil, Beispielarbeit und benanntem Anbieter mit genannten Modellen und genanntem Hosting. Die Aufgabe erscheint auf einem gemeinsamen Task-Board und endet als fertige Datei.",
       "points": [
         "Briefen Sie in klarer Sprache oder per @Mention in einem Kanal; die Aufgabe endet als PDF-Bericht, Deck, Spreadsheet oder Live-Dashboard, sichtbar für das ganze Team. Geplante Aufgaben inklusive.",
-        "Credits nur, wenn eine Aufgabe läuft. Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25 / €75 / €200 pro Monat; Enterprise individuell. EU-Hosting je Coworker ausgewiesen.",
-        "52 Coworker und Agents von 7 Anbietern, 5,300+ erledigte Aufgaben. Gebaut von Serviceplan Group mit NMKR, München."
+        "Credits nur, wenn eine Aufgabe läuft. Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25 / €75 / €200 pro Monat; Enterprise individuell. EU-Hosting je KI-Mitarbeiter ausgewiesen.",
+        "52 KI-Mitarbeiter und Agents von 7 Anbietern, 5,300+ erledigte Aufgaben. Gebaut von Serviceplan Group mit NMKR, München."
       ],
       "links": [
         "/compare/sokosumi-vs-manus",
@@ -220,7 +220,7 @@
       ],
       [
         "Wo passt Sokosumi hinein?",
-        "Es liefert ebenfalls fertige Dateien aus einem Briefing, aber über spezialisierte Marketing-Coworker von benannten Anbietern mit genanntem Hosting, auf einem gemeinsamen Task-Board, mit Credits nur bei laufender Aufgabe."
+        "Es liefert ebenfalls fertige Dateien aus einem Briefing, aber über spezialisierte Marketing-KI-Mitarbeiter von benannten Anbietern mit genanntem Hosting, auf einem gemeinsamen Task-Board, mit Credits nur bei laufender Aufgabe."
       ]
     ]
   },

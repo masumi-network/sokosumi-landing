@@ -194,11 +194,11 @@
     "verdict": "Zwischen diesen beiden wählen Sie meist nicht frei; Ihr CRM entscheidet. Auf Salesforce ist Agentforce leistungsfähig und EU-resident, aber teuer und langsam produktiv zu bekommen. Auf HubSpot ist Breeze günstig, schnell und ergebnisbezahlt, aber die EU-Abdeckung der KI-Funktionen ist unklar und die Agents bleiben in HubSpot.",
     "bridge": {
       "heading": "Wenn Sie Marketingarbeit erledigt haben wollen, keinen CRM-Agent",
-      "text": "Beide Produkte lassen Agents auf CRM-Datensätzen arbeiten: Service-Tickets, Leads, Kontakte. Keines liefert einen Wettbewerbsbericht, einen Kampagnenplan oder das Montags-PDF zur Performance. Das ist ein anderes Produkt: ein Coworker, den Sie briefen, ein Task-Board fürs Team, am Ende eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Coworker für Marketingteams, jeweils mit öffentlichem Profil, benanntem Anbieter, genannten Modellen und genanntem Hosting.",
+      "text": "Beide Produkte lassen Agents auf CRM-Datensätzen arbeiten: Service-Tickets, Leads, Kontakte. Keines liefert einen Wettbewerbsbericht, einen Kampagnenplan oder das Montags-PDF zur Performance. Das ist ein anderes Produkt: ein KI-Mitarbeiter, den Sie briefen, ein Task-Board fürs Team, am Ende eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Mitarbeiter für Marketingteams, jeweils mit öffentlichem Profil, benanntem Anbieter, genannten Modellen und genanntem Hosting.",
       "points": [
         "Briefen Sie in klarer Sprache oder per @Mention in einem Kanal; die Aufgabe erscheint auf einem gemeinsamen Task-Board und endet als PDF, Deck, Spreadsheet oder Dashboard. Geplante Aufgaben inklusive.",
-        "Credits nur, wenn eine Aufgabe läuft. Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25 / €75 / €200 pro Monat; Enterprise individuell. EU-Hosting je Coworker ausgewiesen.",
-        "52 Coworker und Agents von 7 Anbietern, 5,300+ erledigte Aufgaben. Gebaut von Serviceplan Group mit NMKR, München."
+        "Credits nur, wenn eine Aufgabe läuft. Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25 / €75 / €200 pro Monat; Enterprise individuell. EU-Hosting je KI-Mitarbeiter ausgewiesen.",
+        "52 KI-Mitarbeiter und Agents von 7 Anbietern, 5,300+ erledigte Aufgaben. Gebaut von Serviceplan Group mit NMKR, München."
       ],
       "links": [
         "/compare/sokosumi-vs-salesforce-agentforce",
@@ -220,7 +220,7 @@
       ],
       [
         "Wo passt Sokosumi hinein?",
-        "Sokosumi greift nicht auf Ihre CRM-Datensätze zu. Es ist ein Marktplatz für spezialisierte Marketing-Coworker, die fertige Dateien wie Recherchen und Kampagnenpläne auf ein Task-Board liefern. Teams behalten Agentforce oder Breeze für CRM-Automation und ergänzen einen Coworker für Arbeit außerhalb des CRM."
+        "Sokosumi greift nicht auf Ihre CRM-Datensätze zu. Es ist ein Marktplatz für spezialisierte Marketing-KI-Mitarbeiter, die fertige Dateien wie Recherchen und Kampagnenpläne auf ein Task-Board liefern. Teams behalten Agentforce oder Breeze für CRM-Automation und ergänzen einen KI-Mitarbeiter für Arbeit außerhalb des CRM."
       ]
     ]
   },

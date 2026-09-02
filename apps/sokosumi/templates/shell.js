@@ -439,14 +439,14 @@ function head(opts) {
     <meta property="og:image:type" content="${/\.jpe?g(\?|$)/i.test(og.url) ? "image/jpeg" : "image/png"}" />
     ${og.width ? `<meta property="og:image:width" content="${og.width}" />` : ""}
     ${og.height ? `<meta property="og:image:height" content="${og.height}" />` : ""}
-    <meta property="og:image:alt" content="${attr(og.alt || opts.title)}" />
+    <meta property="og:image:alt" content="${attr(og.alt ? t(og.alt) : opts.title)}" />
     ${article && article.published ? `<meta property="article:published_time" content="${attr(article.published)}" />` : ""}
     ${article && article.modified ? `<meta property="article:modified_time" content="${attr(article.modified)}" />` : ""}
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="${title}" />
     <meta name="twitter:description" content="${desc}" />
     <meta name="twitter:image" content="${attr(og.url)}" />
-    <meta name="twitter:image:alt" content="${attr(og.alt || opts.title)}" />
+    <meta name="twitter:image:alt" content="${attr(og.alt ? t(og.alt) : opts.title)}" />
     <link rel="icon" href="/assets/favicon.ico" sizes="32x32" />
     <link rel="icon" href="/assets/favicon.png" type="image/png" sizes="48x48" />
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
@@ -735,10 +735,10 @@ function agentsPanel() {
     )
     .join("");
   if (!cols) return "";
-  return `<div class="nav-panel" role="group" aria-label="AI Coworkers">
+  return `<div class="nav-panel" role="group" aria-label="${attr(t("AI Coworkers"))}">
       <div class="nav-panel-body">
         <div class="nav-intro">
-          <p class="nav-intro-label">AI Coworkers</p>
+          <p class="nav-intro-label">${esc(t("AI Coworkers"))}</p>
           <p class="nav-intro-desc">${esc(t("Named specialists from marketplace vendors. Brief one like a colleague and get finished work back."))}</p>
           ${navVisualFaces()}
         </div>
@@ -993,7 +993,7 @@ function footerHtml(opts) {
             <a href="/" aria-label="Sokosumi">
               <img class="foot-mark" src="/assets/sokosumi-wordmark.svg" alt="Sokosumi" width="121" height="16" />
             </a>
-            <p class="foot-tag">${esc(t("Hire AI coworkers that truly work as part of your team."))}</p>
+            <p class="foot-tag">${esc(t("Hire AI coworkers that work as part of your team."))}</p>
           </div>
           <nav class="foot-cols" aria-label="Footer">
             <div class="foot-col">

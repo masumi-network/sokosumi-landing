@@ -194,11 +194,11 @@
     "verdict": "Wenn Ihr Unternehmen ChatGPT bereits lizenziert, ist Codex kostenlos testbar und bei Volumen günstiger, mit EU-Residenz auf Enterprise. Wenn Codequalität bei schweren Aufgaben und tiefe Automatisierung wichtiger sind als Kosten, gewinnt Claude Code, aber mit Nutzungslimits und US-Hosting. Viele Entwickler nutzen inzwischen beide.",
     "bridge": {
       "heading": "Wenn Sie gerade einen Marketing-Agent selbst bauen wollten",
-      "text": "Sokosumi ist kein Coding-Tool und konkurriert nicht mit diesen Produkten. Ein Grund für den Vergleich ist aber oft der Plan, intern einen Recherche- oder Reporting-Agent für Marketing zu bauen. Dann besitzt ein Entwickler Prompts, Datenlizenzen, Hosting und Wartung. Es gibt eine Mietoption: Sokosumi ist ein Marktplatz für benannte KI-Coworker für Marketingteams, jeweils mit öffentlichem Profil, benanntem Anbieter, genannten Modellen und genanntem Hosting.",
+      "text": "Sokosumi ist kein Coding-Tool und konkurriert nicht mit diesen Produkten. Ein Grund für den Vergleich ist aber oft der Plan, intern einen Recherche- oder Reporting-Agent für Marketing zu bauen. Dann besitzt ein Entwickler Prompts, Datenlizenzen, Hosting und Wartung. Es gibt eine Mietoption: Sokosumi ist ein Marktplatz für benannte KI-Mitarbeiter für Marketingteams, jeweils mit öffentlichem Profil, benanntem Anbieter, genannten Modellen und genanntem Hosting.",
       "points": [
         "Briefen Sie in klarer Sprache oder per @Mention in einem Kanal; die Aufgabe erscheint auf einem gemeinsamen Task-Board und endet als PDF-Bericht, Deck, Spreadsheet oder Dashboard. Geplante Aufgaben inklusive.",
-        "Credits nur, wenn eine Aufgabe läuft. Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25 / €75 / €200 pro Monat; Enterprise individuell. EU-Hosting je Coworker ausgewiesen.",
-        "52 Coworker und Agents von 7 Anbietern, 5,300+ erledigte Aufgaben. Gebaut von Serviceplan Group mit NMKR, München."
+        "Credits nur, wenn eine Aufgabe läuft. Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25 / €75 / €200 pro Monat; Enterprise individuell. EU-Hosting je KI-Mitarbeiter ausgewiesen.",
+        "52 KI-Mitarbeiter und Agents von 7 Anbietern, 5,300+ erledigte Aufgaben. Gebaut von Serviceplan Group mit NMKR, München."
       ],
       "links": [
         "/compare/sokosumi-vs-openai-codex",
@@ -220,7 +220,7 @@
       ],
       [
         "Wo passt Sokosumi hinein?",
-        "Es schreibt keinen Code. Es ist ein Marktplatz für spezialisierte Marketing-Coworker, die fertige Dateien liefern. Entwickler, die sonst einen Marketing-Agent bauen würden, können stattdessen einen mieten oder ihren eigenen Agent im Marktplatz anbieten."
+        "Es schreibt keinen Code. Es ist ein Marktplatz für spezialisierte Marketing-KI-Mitarbeiter, die fertige Dateien liefern. Entwickler, die sonst einen Marketing-Agent bauen würden, können stattdessen einen mieten oder ihren eigenen Agent im Marktplatz anbieten."
       ]
     ]
   },

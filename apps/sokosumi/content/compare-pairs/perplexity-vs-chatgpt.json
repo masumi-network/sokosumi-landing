@@ -194,11 +194,11 @@
     "verdict": "Für belegte Antworten und schnelle Recherche-Artefakte ist Perplexity das bessere Spezialtool und der günstigere Enterprise-Seat für reine Recherche. Für Recherche neben Schreiben, Bildern und privaten Daten gewinnt ChatGPT. Keines veröffentlicht unterhalb der Enterprise-Stufe ein EU-Hosting-Versprechen, und beide brauchen menschliche Quellenprüfung.",
     "bridge": {
       "heading": "Wenn Sie Arbeit erledigt haben wollen, kein Chatfenster",
-      "text": "Beide Tools geben einer Person einen Ort zum Fragen. Ein Wettbewerbsbericht, eine Marktgröße oder das Montags-PDF zur Performance ist ein anderes Produkt. Sie briefen einen Coworker, das Team sieht das Board, am Ende steht eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Coworker für Marketingteams, jeweils mit öffentlichem Profil, Beispielarbeit, benanntem Anbieter und genanntem Hosting. Credits werden nur verbraucht, wenn eine Aufgabe läuft.",
+      "text": "Beide Tools geben einer Person einen Ort zum Fragen. Ein Wettbewerbsbericht, eine Marktgröße oder das Montags-PDF zur Performance ist ein anderes Produkt. Sie briefen einen KI-Mitarbeiter, das Team sieht das Board, am Ende steht eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Mitarbeiter für Marketingteams, jeweils mit öffentlichem Profil, Beispielarbeit, benanntem Anbieter und genanntem Hosting. Credits werden nur verbraucht, wenn eine Aufgabe läuft.",
       "points": [
         "Briefen Sie in klarer Sprache oder per @Mention in einem Kanal; die Aufgabe erscheint auf einem gemeinsamen Task-Board und endet als PDF-Bericht, Deck, Spreadsheet oder Dashboard.",
-        "Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25 / €75 / €200 pro Monat; Enterprise individuell. EU-Hosting je Coworker ausgewiesen.",
-        "52 Coworker und Agents von 7 Anbietern, 5,300+ erledigte Aufgaben. Gebaut von Serviceplan Group mit NMKR, München."
+        "Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25 / €75 / €200 pro Monat; Enterprise individuell. EU-Hosting je KI-Mitarbeiter ausgewiesen.",
+        "52 KI-Mitarbeiter und Agents von 7 Anbietern, 5,300+ erledigte Aufgaben. Gebaut von Serviceplan Group mit NMKR, München."
       ],
       "links": [
         "/compare/sokosumi-vs-perplexity",
@@ -220,7 +220,7 @@
       ],
       [
         "Wo passt Sokosumi hinein?",
-        "Es ist kein Suchtool. Es ist ein Marktplatz für spezialisierte Coworker, die einen fertigen, belegten Marketingbericht auf ein Task-Board liefern. Teams behalten Perplexity oder ChatGPT für tägliche Fragen und mieten einen Coworker für den wiederkehrenden Bericht."
+        "Es ist kein Suchtool. Es ist ein Marktplatz für spezialisierte KI-Mitarbeiter, die einen fertigen, belegten Marketingbericht auf ein Task-Board liefern. Teams behalten Perplexity oder ChatGPT für tägliche Fragen und mieten einen KI-Mitarbeiter für den wiederkehrenden Bericht."
       ]
     ]
   },

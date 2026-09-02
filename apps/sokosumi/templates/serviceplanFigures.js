@@ -351,7 +351,7 @@ const FIGURES = {
         [
           { label: "Agentic Services", cells: [L("Enterprises with private data and approvals", "Unternehmen mit privaten Daten und Freigaben"), L("Custom agent systems built by Plan.Net", "Von Plan.Net gebaute individuelle Agent-Systeme"), L("Weeks to months", "Wochen bis Monate"), "2024"] },
           { label: "Plan.Net Agentic AI", cells: [L("Large organisations changing the operating model", "Große Organisationen mit neuem Betriebsmodell"), L("Dedicated business unit: architecture, build, operation", "Eigene Business Unit: Architektur, Aufbau, Betrieb"), L("Programme", "Programm"), L("July 2026", "Juli 2026")] },
-          { label: "Sokosumi", cells: [L("Teams and SMEs", "Teams und KMU"), L("Named AI coworkers and specialist agents", "Benannte AI Coworker und Spezial-Agents"), L("Minutes", "Minuten"), L("June 2025", "Juni 2025")] },
+          { label: "Sokosumi", cells: [L("Teams and SMEs", "Teams und KMU"), L("Named AI coworkers and specialist agents", "Benannte KI-Mitarbeiter und Spezial-Agents"), L("Minutes", "Minuten"), L("June 2025", "Juni 2025")] },
         ],
       ),
     ),
@@ -380,7 +380,7 @@ const FIGURES = {
       L("In the product", "Im Produkt"),
       L("A brief goes in, a finished file comes back on a shared board", "Ein Briefing geht rein, eine fertige Datei kommt auf ein gemeinsames Board zurück"),
       shots([
-        { src: "/assets/shot-brief.webp", alt: L("Sokosumi brief form for an AI coworker", "Sokosumi-Briefing-Formular für einen AI Coworker"), caption: L("Brief a named coworker with context, sources and the expected output.", "Einen benannten Coworker mit Kontext, Quellen und erwartetem Ergebnis briefen.") },
+        { src: "/assets/shot-brief.webp", alt: L("Sokosumi brief form for an AI coworker", "Sokosumi-Briefing-Formular für einen KI-Mitarbeiter"), caption: L("Brief a named coworker with context, sources and the expected output.", "Einen benannten KI-Mitarbeiter mit Kontext, Quellen und erwartetem Ergebnis briefen.") },
           { src: "/assets/shot-board.webp", alt: L("Sokosumi task board with deliverables", "Sokosumi-Taskboard mit Ergebnissen"), caption: L("Every task, hand-off, deliverable and cost stays visible to the team.", "Jeder Task, jede Übergabe, jedes Ergebnis und jede Kostenposition bleibt für das Team sichtbar.") },
       ]),
       true,
@@ -394,7 +394,7 @@ const FIGURES = {
       L("A task through the stack", "Ein Task durch den Stack"),
       L("Which product is responsible at each step", "Welches Produkt in welchem Schritt verantwortlich ist"),
       flow([
-        { title: L("Choose and brief", "Auswählen und briefen"), owner: "Sokosumi", text: L("A buyer finds a coworker or agent and submits task, context and expected output.", "Ein Käufer findet einen Coworker oder Agent und übergibt Task, Kontext und erwartetes Ergebnis.") },
+        { title: L("Choose and brief", "Auswählen und briefen"), owner: "Sokosumi", text: L("A buyer finds a coworker or agent and submits task, context and expected output.", "Ein Käufer findet einen KI-Mitarbeiter oder Agent und übergibt Task, Kontext und erwartetes Ergebnis.") },
         { title: L("Run", "Ausführen"), owner: "Kodosumi", text: L("The agent service executes on its deployment environment.", "Der Agent-Service läuft in seiner Deployment-Umgebung.") },
         { title: L("Coordinate", "Koordinieren"), owner: "Sokosumi", text: L("Progress and hand-offs between agents stay visible to the user.", "Fortschritt und Übergaben zwischen Agents bleiben für den Nutzer sichtbar.") },
         { title: L("Settle and record", "Abrechnen und dokumentieren"), owner: "Masumi", text: L("Payment escrow and job state follow explicit protocol rules.", "Zahlungs-Escrow und Job-Status folgen expliziten Protokollregeln.") },
@@ -427,7 +427,7 @@ const FIGURES = {
         [L("Time to start", "Startzeit"), L("Integration", "Integration"), L("Governance sits with", "Governance liegt bei"), L("Serviceplan route", "Serviceplan-Weg")],
         [
           { label: L("Single AI tool", "Einzelnes KI-Tool"), cells: [L("Days", "Tage"), L("Buyer", "Käufer"), L("Buyer", "Käufer"), "Mediaplus Pretest.AI, Search.AI"] },
-          { label: L("AI coworker", "AI Coworker"), cells: [L("Minutes", "Minuten"), L("None required", "Keine nötig"), L("Shared: brief and approval", "Geteilt: Briefing und Freigabe"), "Sokosumi"] },
+          { label: L("AI coworker", "KI-Mitarbeiter"), cells: [L("Minutes", "Minuten"), L("None required", "Keine nötig"), L("Shared: brief and approval", "Geteilt: Briefing und Freigabe"), "Sokosumi"] },
           { label: L("Custom agent system", "Individuelles Agent-System"), cells: [L("Weeks", "Wochen"), L("Private data and tools", "Private Daten und Tools"), L("Agency and buyer", "Agentur und Käufer"), "Plan.Net Agentic Services"] },
           { label: L("Enterprise transformation", "Enterprise-Transformation"), cells: [L("Months", "Monate"), L("Operating model", "Betriebsmodell"), L("Joint programme", "Gemeinsames Programm"), "Plan.Net Agentic AI"] },
         ],
@@ -505,7 +505,7 @@ const FIGURES = {
         { date: "2025-06-25", label: L("25 Jun", "25. Juni"), title: L("Sokosumi launch", "Start von Sokosumi"), text: L("Plan.Net Studios and NMKR launch the agent marketplace, following Masumi and Kodosumi.", "Plan.Net Studios und NMKR starten den Agent-Marktplatz, nach Masumi und Kodosumi."), href: "https://www.house-of-communication.com/us/en-hoc/newsroom/2025/06/plant-net-launch-sokosumi.html" },
         { date: "2025-11-26", label: L("26 Nov", "26. Nov."), title: "CMO Barometer 2026", text: L("805 marketing leaders in 15 markets; 68% name AI the defining topic for 2026.", "805 Marketingverantwortliche in 15 Märkten; 68 % nennen KI das prägende Thema 2026."), href: "https://www.house-of-communication.com/de/en/newsroom/2025/11/serviceplan-group-cmo-barometer-2026.html" },
         { date: "2026-02-01", label: L("Feb", "Feb."), title: L("Luma AI partnership", "Partnerschaft mit Luma AI"), text: L("Luma AI becomes the group-wide creative-AI technology partner.", "Luma AI wird gruppenweiter Kreativ-KI-Technologiepartner."), href: "https://www.house-of-communication.com/de/en/newsroom/2026/02/serviceplan-group-partnership-luma-ai.html" },
-        { date: "2026-03-01", label: L("Mar", "März"), title: L("AI Coworkers and HealthContent.AI", "AI Coworker und HealthContent.AI"), text: L("Hannah and Elena launch as the first SME offer from the House of AI.", "Hannah und Elena starten als erstes KMU-Angebot aus dem House of AI."), href: "https://www.house-of-communication.com/de/de/newsroom/2026/02/serviceplan-group-ai-coworker.html" },
+        { date: "2026-03-01", label: L("Mar", "März"), title: L("AI Coworkers and HealthContent.AI", "KI-Mitarbeiter und HealthContent.AI"), text: L("Hannah and Elena launch as the first SME offer from the House of AI.", "Hannah und Elena starten als erstes KMU-Angebot aus dem House of AI."), href: "https://www.house-of-communication.com/de/de/newsroom/2026/02/serviceplan-group-ai-coworker.html" },
         { date: "2026-05-01", label: L("May", "Mai"), title: "Behave.AI", text: L("Mediaplus launches its global behavioural-science AI unit.", "Mediaplus startet seine globale verhaltenswissenschaftliche KI-Einheit."), href: "https://www.house-of-communication.com/int/en/newsroom/2026/05/mediaplus-global-ai-unit-behave.html" },
         { date: "2026-06-01", label: L("Jun", "Juni"), title: "Plus.AI", text: L("Mediaplus presents its conversational media operating system.", "Mediaplus stellt sein konversationelles Media-Betriebssystem vor.") },
         { date: "2026-07-01", label: L("Jul", "Juli"), title: L("FY results and Plan.Net Agentic AI", "Geschäftszahlen und Plan.Net Agentic AI"), text: L("Group results name a dedicated Plan.Net Agentic AI business unit.", "Die Gruppenergebnisse nennen eine eigene Business Unit Plan.Net Agentic AI."), href: "https://www.house-of-communication.com/int/en/newsroom/2026/07/serviceplan-group-2025-2026-fiscal-year.html" },

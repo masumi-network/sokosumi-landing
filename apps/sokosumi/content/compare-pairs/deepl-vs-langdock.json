@@ -194,9 +194,9 @@
     "verdict": "Das sind unterschiedliche Produkte. Langdock ist die klare Wahl für ein Unternehmen, das jetzt einen KI-Arbeitsbereich mit Preisliste und EU-Hosting-Fakten will. DeepL Agent ist einen Call wert, wenn Sie einen browsersteuernden Agent von einer deutschen Marke wollen und einen Sales-Prozess akzeptieren. Wenn DeepL Preis oder Hosting nicht schriftlich nennt, ist es noch nicht vergleichbar.",
     "bridge": {
       "heading": "Wenn Sie Arbeit erledigt haben wollen, kein Chatfenster",
-      "text": "DeepL Agent und Langdock geben jeweils einer Person ein Tool: einen Agent zum Instruieren oder einen Arbeitsbereich zum Prompten. Ein Wettbewerbsbericht, ein Kampagnenplan oder das Montags-PDF zur Performance ist ein anderes Produkt. Sie briefen einen Coworker, das Team sieht das Board, am Ende steht eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Coworker für Marketingteams, gebaut von Serviceplan Group mit NMKR in München.",
+      "text": "DeepL Agent und Langdock geben jeweils einer Person ein Tool: einen Agent zum Instruieren oder einen Arbeitsbereich zum Prompten. Ein Wettbewerbsbericht, ein Kampagnenplan oder das Montags-PDF zur Performance ist ein anderes Produkt. Sie briefen einen KI-Mitarbeiter, das Team sieht das Board, am Ende steht eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Mitarbeiter für Marketingteams, gebaut von Serviceplan Group mit NMKR in München.",
       "points": [
-        "52 Coworker und Agents von 7 Anbietern; jedes Profil nennt Anbieter, Modelle und Hosting, mit verfügbarem EU-Hosting.",
+        "52 KI-Mitarbeiter und Agents von 7 Anbietern; jedes Profil nennt Anbieter, Modelle und Hosting, mit verfügbarem EU-Hosting.",
         "Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25, €75 oder €200 pro Monat; Credits werden nur verbraucht, wenn eine Aufgabe läuft.",
         "Aufgaben enden mit einer fertigen Datei auf einem gemeinsamen Task-Board; geplante Aufgaben laufen ohne neuen Prompt."
       ],
@@ -220,7 +220,7 @@
       ],
       [
         "Welches Produkt gibt meinem Marketingteam fertige Berichte?",
-        "Keines ist darauf gebaut. DeepL Agent erledigt Aufgaben für eine Person; Langdock liefert Chat-Ausgaben und Dateien. Sokosumi und ähnliche Coworker-Produkte liefern Dateien auf ein Task-Board."
+        "Keines ist darauf gebaut. DeepL Agent erledigt Aufgaben für eine Person; Langdock liefert Chat-Ausgaben und Dateien. Sokosumi und ähnliche KI-Mitarbeiter-Produkte liefern Dateien auf ein Task-Board."
       ]
     ]
   },

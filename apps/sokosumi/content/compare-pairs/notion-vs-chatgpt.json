@@ -194,11 +194,11 @@
     "verdict": "Wenn Ihr Unternehmen auf Notion läuft, ist Notion AI auf Business der bessere Kauf: gleicher $20-Seat, und die Agents arbeiten in den Seiten, die Ihr Team ohnehin liest. Wenn Ihr Wissen anderswo liegt oder Sie Bilder, Code und eigenständige Dateien brauchen, gewinnt ChatGPT. Für EU-Hosting brauchen beide ihre Enterprise-Stufe.",
     "bridge": {
       "heading": "Wenn Sie Arbeit erledigt haben wollen, kein Chatfenster",
-      "text": "Beide Tools geben einer Person einen Ort zum Prompten, und Notion ergänzt Agents, die Sie selbst bauen. Ein Wettbewerbsbericht, ein Kampagnenplan oder das Montags-PDF zur Performance ist ein anderes Produkt. Sie briefen einen Coworker, das Team sieht das Board, am Ende steht eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Coworker für Marketingteams, jeweils mit öffentlichem Profil, Beispielarbeit, benanntem Anbieter und genanntem Hosting.",
+      "text": "Beide Tools geben einer Person einen Ort zum Prompten, und Notion ergänzt Agents, die Sie selbst bauen. Ein Wettbewerbsbericht, ein Kampagnenplan oder das Montags-PDF zur Performance ist ein anderes Produkt. Sie briefen einen KI-Mitarbeiter, das Team sieht das Board, am Ende steht eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Mitarbeiter für Marketingteams, jeweils mit öffentlichem Profil, Beispielarbeit, benanntem Anbieter und genanntem Hosting.",
       "points": [
         "Briefen Sie in klarer Sprache oder per @Mention in einem Kanal; die Aufgabe erscheint auf einem gemeinsamen Task-Board und endet als PDF, Deck, Spreadsheet oder Dashboard, das in jeden Stack passt, auch Notion.",
-        "Credits nur, wenn eine Aufgabe läuft. Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25 / €75 / €200 pro Monat; Enterprise individuell. EU-Hosting je Coworker ausgewiesen.",
-        "52 Coworker und Agents von 7 Anbietern, 5,300+ erledigte Aufgaben. Gebaut von Serviceplan Group mit NMKR, München."
+        "Credits nur, wenn eine Aufgabe läuft. Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25 / €75 / €200 pro Monat; Enterprise individuell. EU-Hosting je KI-Mitarbeiter ausgewiesen.",
+        "52 KI-Mitarbeiter und Agents von 7 Anbietern, 5,300+ erledigte Aufgaben. Gebaut von Serviceplan Group mit NMKR, München."
       ],
       "links": [
         "/compare/sokosumi-vs-notion-ai",
@@ -220,7 +220,7 @@
       ],
       [
         "Wo passt Sokosumi hinein?",
-        "Es ist kein Dokumententool und kein allgemeiner Assistent. Es ist ein Marktplatz für spezialisierte Marketing-Coworker, die fertige Dateien auf ein Task-Board liefern. Teams behalten Notion für ihr Wiki, ChatGPT für täglichen Chat und mieten einen Coworker für wiederkehrende Marketingberichte."
+        "Es ist kein Dokumententool und kein allgemeiner Assistent. Es ist ein Marktplatz für spezialisierte Marketing-KI-Mitarbeiter, die fertige Dateien auf ein Task-Board liefern. Teams behalten Notion für ihr Wiki, ChatGPT für täglichen Chat und mieten einen KI-Mitarbeiter für wiederkehrende Marketingberichte."
       ]
     ]
   },

@@ -194,9 +194,9 @@
     "verdict": "Die beiden liegen auf verschiedenen Ebenen. Viktor ist ein arbeitender Assistent für ein Team mit echten Systemen; Sintra ist ein Chatpaket für Solo-Owner. Wenn Sie Ausgabedateien und Aktionen über Tools brauchen, Viktor; wenn Sie günstige Entwürfe wollen und mit Credit-Zähler leben, Sintra. Keines bietet EU-Hosting im Standardplan.",
     "bridge": {
       "heading": "Wenn Sie Arbeit erledigt haben wollen, kein Chatfenster",
-      "text": "Beide Tools geben einer Person einen Assistenten zum Instruieren. Ein Wettbewerbsbericht, ein Kampagnenplan oder das Montags-PDF zur Performance ist ein anderes Produkt. Sie briefen einen Coworker, das Team sieht das Board, am Ende steht eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Coworker für Marketingteams, gebaut von Serviceplan Group mit NMKR in München.",
+      "text": "Beide Tools geben einer Person einen Assistenten zum Instruieren. Ein Wettbewerbsbericht, ein Kampagnenplan oder das Montags-PDF zur Performance ist ein anderes Produkt. Sie briefen einen KI-Mitarbeiter, das Team sieht das Board, am Ende steht eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Mitarbeiter für Marketingteams, gebaut von Serviceplan Group mit NMKR in München.",
       "points": [
-        "52 Coworker und Agents von 7 Anbietern; jedes Profil nennt Anbieter, Modelle und Hosting, mit verfügbarem EU-Hosting.",
+        "52 KI-Mitarbeiter und Agents von 7 Anbietern; jedes Profil nennt Anbieter, Modelle und Hosting, mit verfügbarem EU-Hosting.",
         "Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25, €75 oder €200 pro Monat; Credits werden nur verbraucht, wenn eine Aufgabe läuft.",
         "Aufgaben erscheinen auf einem gemeinsamen Task-Board und enden mit fertigem PDF, Deck, Spreadsheet oder Dashboard."
       ],
@@ -220,7 +220,7 @@
       ],
       [
         "Welches Produkt gibt einem Marketingteam fertige Berichte auf einem Board?",
-        "Viktor gibt Dateien im Chat-Thread zurück. Sintra liefert Entwürfe im Chat. Ein gemeinsames Task-Board mit benannten Coworker und Anbieter-Offenlegung ist das, wofür Sokosumi gebaut ist."
+        "Viktor gibt Dateien im Chat-Thread zurück. Sintra liefert Entwürfe im Chat. Ein gemeinsames Task-Board mit benannten KI-Mitarbeiter und Anbieter-Offenlegung ist das, wofür Sokosumi gebaut ist."
       ]
     ]
   },

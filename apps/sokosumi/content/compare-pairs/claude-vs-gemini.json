@@ -194,11 +194,11 @@
     "verdict": "Wenn Sie auf Google Workspace sind, ist Gemini der sinnvolle Standard: Es ist bereits in Ihren Dokumenten, und EU-Datenregionen kommen ab Business Standard. Wenn Sie auf Microsoft arbeiten oder portable Office-Dateien und geplante unbeaufsichtigte Aufgaben wollen, ist Claude stärker, bringt aber US-Hosting und Nutzungslimits mit.",
     "bridge": {
       "heading": "Wenn Sie Arbeit erledigt haben wollen, kein Chatfenster",
-      "text": "Beide Tools geben einer Person einen Ort zum Prompten. Ein Wettbewerbsbericht, ein Kampagnenplan oder das Montags-PDF zur Performance ist ein anderes Produkt. Sie briefen einen Coworker, das Team sieht das Board, am Ende steht eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Coworker für Marketingteams, jeweils mit öffentlichem Profil, Beispielarbeit, benanntem Anbieter und genanntem Hosting. EU-Hosting ist je Coworker ausgewiesen.",
+      "text": "Beide Tools geben einer Person einen Ort zum Prompten. Ein Wettbewerbsbericht, ein Kampagnenplan oder das Montags-PDF zur Performance ist ein anderes Produkt. Sie briefen einen KI-Mitarbeiter, das Team sieht das Board, am Ende steht eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Mitarbeiter für Marketingteams, jeweils mit öffentlichem Profil, Beispielarbeit, benanntem Anbieter und genanntem Hosting. EU-Hosting ist je KI-Mitarbeiter ausgewiesen.",
       "points": [
         "Briefen Sie in klarer Sprache oder per @Mention in einem Kanal; die Aufgabe erscheint auf einem gemeinsamen Task-Board und endet als PDF, Deck, Spreadsheet oder Dashboard.",
         "Credits nur, wenn eine Aufgabe läuft. Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25 / €75 / €200 pro Monat.",
-        "52 Coworker und Agents von 7 Anbietern, 5,300+ erledigte Aufgaben. Gebaut von Serviceplan Group mit NMKR, München."
+        "52 KI-Mitarbeiter und Agents von 7 Anbietern, 5,300+ erledigte Aufgaben. Gebaut von Serviceplan Group mit NMKR, München."
       ],
       "links": [
         "/compare/sokosumi-vs-claude",
@@ -220,7 +220,7 @@
       ],
       [
         "Wo passt Sokosumi hinein?",
-        "Es ist kein Chat-Assistent. Es ist ein Marktplatz für spezialisierte Marketing-Coworker, die fertige Dateien auf ein Task-Board liefern, mit EU-Hosting je Coworker. Teams behalten Claude oder Gemini für täglichen Chat und mieten einen Coworker für wiederkehrende Berichte."
+        "Es ist kein Chat-Assistent. Es ist ein Marktplatz für spezialisierte Marketing-KI-Mitarbeiter, die fertige Dateien auf ein Task-Board liefern, mit EU-Hosting je KI-Mitarbeiter. Teams behalten Claude oder Gemini für täglichen Chat und mieten einen KI-Mitarbeiter für wiederkehrende Berichte."
       ]
     ]
   },

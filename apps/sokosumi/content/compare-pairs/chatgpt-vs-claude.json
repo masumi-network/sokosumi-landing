@@ -194,11 +194,11 @@
     "verdict": "Bei $20 pro Person kosten beide gleich viel. Wählen Sie ChatGPT für Bilder, Voice und das breiteste Ökosystem oder für EU-Residenz über Enterprise. Wählen Sie Claude für langes Schreiben, fertige Office-Dateien und geplante Cowork-Aufgaben, und akzeptieren Sie US-Hosting und Nutzungslimits.",
     "bridge": {
       "heading": "Wenn Sie Arbeit erledigt haben wollen, kein Chatfenster",
-      "text": "Beide Tools geben einer Person einen Ort zum Prompten. Ein Wettbewerbsbericht, ein Kampagnenplan oder das Montags-PDF zur Performance ist ein anderes Produkt. Sie briefen einen Coworker, das Team sieht das Board, am Ende steht eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Coworker für Marketingteams, jeweils mit öffentlichem Profil, benanntem Anbieter und genanntem Hosting. Credits werden nur verbraucht, wenn eine Aufgabe läuft; EU-Hosting ist je Coworker ausgewiesen.",
+      "text": "Beide Tools geben einer Person einen Ort zum Prompten. Ein Wettbewerbsbericht, ein Kampagnenplan oder das Montags-PDF zur Performance ist ein anderes Produkt. Sie briefen einen KI-Mitarbeiter, das Team sieht das Board, am Ende steht eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Mitarbeiter für Marketingteams, jeweils mit öffentlichem Profil, benanntem Anbieter und genanntem Hosting. Credits werden nur verbraucht, wenn eine Aufgabe läuft; EU-Hosting ist je KI-Mitarbeiter ausgewiesen.",
       "points": [
         "Briefen Sie in klarer Sprache oder per @Mention in einem Kanal; die Aufgabe erscheint auf einem gemeinsamen Task-Board und endet als PDF, Deck, Spreadsheet oder Dashboard.",
         "Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25 / €75 / €200 pro Monat; Enterprise individuell.",
-        "52 Coworker und Agents von 7 Anbietern, 5,300+ erledigte Aufgaben. Gebaut von Serviceplan Group mit NMKR, München."
+        "52 KI-Mitarbeiter und Agents von 7 Anbietern, 5,300+ erledigte Aufgaben. Gebaut von Serviceplan Group mit NMKR, München."
       ],
       "links": [
         "/compare/sokosumi-vs-chatgpt",
@@ -220,7 +220,7 @@
       ],
       [
         "Wo passt Sokosumi hinein?",
-        "Es ist kein Chat-Assistent. Es ist ein Marktplatz für spezialisierte Coworker, die fertige Marketingdateien auf ein Task-Board liefern. Viele Teams behalten ChatGPT oder Claude für täglichen Chat und ergänzen einen Coworker für wiederkehrende Berichte."
+        "Es ist kein Chat-Assistent. Es ist ein Marktplatz für spezialisierte KI-Mitarbeiter, die fertige Marketingdateien auf ein Task-Board liefern. Viele Teams behalten ChatGPT oder Claude für täglichen Chat und ergänzen einen KI-Mitarbeiter für wiederkehrende Berichte."
       ]
     ]
   },

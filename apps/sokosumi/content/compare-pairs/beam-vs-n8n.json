@@ -194,11 +194,11 @@
     "verdict": "Beam AI gewinnt für ein Operations-Team mit hohem Volumen, klar definiertem Prozess und Budget für einen gemanagten Anbieter. n8n gewinnt für ein technisches Team, das eine günstige, flexible Engine unter eigener Kontrolle will. Beide können Daten in Deutschland halten, was in dieser Kategorie selten ist.",
     "bridge": {
       "heading": "Wenn Sie Marketingarbeit erledigt haben wollen, nicht Prozesse automatisieren",
-      "text": "Beide Tools automatisieren Prozesse: eines gemanagt, eines selbst gebaut. Ein Wettbewerbsbericht, ein Kampagnenplan oder das Montags-PDF zur Performance ist ein anderes Produkt. Sie briefen einen Coworker, das Team sieht das Board, am Ende steht eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Coworker für Marketingteams, jeweils mit Rolle, Beispielarbeit und benanntem Anbieter, der Modelle und Hosting ausweist.",
+      "text": "Beide Tools automatisieren Prozesse: eines gemanagt, eines selbst gebaut. Ein Wettbewerbsbericht, ein Kampagnenplan oder das Montags-PDF zur Performance ist ein anderes Produkt. Sie briefen einen KI-Mitarbeiter, das Team sieht das Board, am Ende steht eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Mitarbeiter für Marketingteams, jeweils mit Rolle, Beispielarbeit und benanntem Anbieter, der Modelle und Hosting ausweist.",
       "points": [
         "Briefen Sie in klarer Sprache oder per @Mention in einem Kanal; die Aufgabe erscheint auf einem gemeinsamen Task-Board und endet mit einer fertigen Datei.",
         "Credits nur, wenn eine Aufgabe läuft. Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25, €75 oder €200 pro Monat.",
-        "EU-Hosting verfügbar, je Coworker ausgewiesen. Gebaut von Serviceplan Group mit NMKR, München."
+        "EU-Hosting verfügbar, je KI-Mitarbeiter ausgewiesen. Gebaut von Serviceplan Group mit NMKR, München."
       ],
       "links": [
         "/compare/sokosumi-vs-beam-ai",
@@ -220,7 +220,7 @@
       ],
       [
         "Gibt es eine fertige Option für Marketing-Ergebnisse?",
-        "Sokosumi ist ein Marktplatz für KI-Coworker, die fertige Dateien auf ein gemeinsames Task-Board liefern. Free-Plan mit 250 Credits pro Seat und Monat; EU-Hosting je Coworker ausgewiesen."
+        "Sokosumi ist ein Marktplatz für KI-Mitarbeiter, die fertige Dateien auf ein gemeinsames Task-Board liefern. Free-Plan mit 250 Credits pro Seat und Monat; EU-Hosting je KI-Mitarbeiter ausgewiesen."
       ]
     ]
   },

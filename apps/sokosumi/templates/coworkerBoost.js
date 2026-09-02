@@ -117,7 +117,7 @@ const BOOST = {
     // ordered by the catalog, so it rarely points anywhere related.
     related: [
       { href: "/ai-coworkers/instagram-page-analysis", label: { en: "Instagram page analysis", de: "Instagram-Seitenanalyse" }, note: { en: "The same read, for Instagram", de: "Dieselbe Auswertung für Instagram" } },
-      { href: "/ai-coworkers", label: { en: "All AI coworkers", de: "Alle AI Coworker" }, note: { en: "The full marketplace", de: "Der komplette Marktplatz" } },
+      { href: "/ai-coworkers", label: { en: "All AI coworkers", de: "Alle KI-Mitarbeiter" }, note: { en: "The full marketplace", de: "Der komplette Marktplatz" } },
       { href: "/use-cases", label: { en: "Use cases", de: "Use Cases" }, note: { en: "What teams run this alongside", de: "Womit Teams das kombinieren" } },
     ],
   },

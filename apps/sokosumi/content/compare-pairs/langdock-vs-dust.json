@@ -194,9 +194,9 @@
     "verdict": "Langdock ist der sicherere Kauf für einen unternehmensweiten Rollout in der DACH-Region: einfachere Abrechnung, Teams-Bot und flacher Seat. Dust ist stärker für ein kleineres technisches Team, das Agents auf Unternehmensdaten gründen will und Credits akzeptiert. Beim EU-Hosting sind beide glaubwürdig; prüfen Sie bei Dust zuerst die Modellliste Ihres EU-Workspace.",
     "bridge": {
       "heading": "Wenn Sie Arbeit erledigt haben wollen, kein Chatfenster",
-      "text": "Beide Tools geben einer Person einen Ort zum Prompten und einen Builder für Agents. Ein Wettbewerbsbericht, ein Kampagnenplan oder das Montags-PDF zur Performance ist ein anderes Produkt. Sie briefen einen Coworker, das Team sieht das Board, am Ende steht eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Coworker für Marketingteams, gebaut von Serviceplan Group mit NMKR in München.",
+      "text": "Beide Tools geben einer Person einen Ort zum Prompten und einen Builder für Agents. Ein Wettbewerbsbericht, ein Kampagnenplan oder das Montags-PDF zur Performance ist ein anderes Produkt. Sie briefen einen KI-Mitarbeiter, das Team sieht das Board, am Ende steht eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Mitarbeiter für Marketingteams, gebaut von Serviceplan Group mit NMKR in München.",
       "points": [
-        "52 Coworker und Agents von 7 Anbietern, jeweils mit öffentlichem Profil, Beispielarbeit, genannten Modellen und Hosting.",
+        "52 KI-Mitarbeiter und Agents von 7 Anbietern, jeweils mit öffentlichem Profil, Beispielarbeit, genannten Modellen und Hosting.",
         "Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25, €75 oder €200 pro Monat; Credits werden nur verbraucht, wenn eine Aufgabe läuft.",
         "Aufgaben enden mit einer fertigen Datei: PDF-Bericht, Deck, Spreadsheet oder Live-Dashboard."
       ],
@@ -220,7 +220,7 @@
       ],
       [
         "Kann eines ein fertiges Deck oder einen Bericht an mein Team liefern?",
-        "Beide können Text und Dateien an die fragende Person zurückgeben. Keines betreibt ein gemeinsames Task-Board mit benannten Coworker; Sokosumi und ähnliche Produkte sind darauf gebaut."
+        "Beide können Text und Dateien an die fragende Person zurückgeben. Keines betreibt ein gemeinsames Task-Board mit benannten KI-Mitarbeiter; Sokosumi und ähnliche Produkte sind darauf gebaut."
       ]
     ]
   },

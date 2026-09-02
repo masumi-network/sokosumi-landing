@@ -194,11 +194,11 @@
     "verdict": "Für fertige Decks und Docs auf einem Teamplan, den Sie heute kaufen können, gewinnt Genspark. Für Recherche, die Sie prüfen und nachvollziehen können, gewinnt Perplexity und ist als einzelner Seat günstiger. Keines bietet einem kleinen Team EU-Hosting, und beide brauchen einen Menschen, der die Ausgabe liest, bevor sie rausgeht.",
     "bridge": {
       "heading": "Wenn Sie Arbeit erledigt haben wollen und Zuständigkeit brauchen",
-      "text": "Beide Tools liefern Artefakte aus einem Briefing. Was sie nicht geben: einen benannten Spezialisten, einen ausgewiesenen Anbieter und ein Board, auf dem das Team die Aufgabe sieht. Sokosumi ist ein Marktplatz für benannte KI-Coworker für Marketingteams, jeweils mit Rolle, öffentlichem Profil, Beispielarbeit und benanntem Anbieter mit genannten Modellen und genanntem Hosting.",
+      "text": "Beide Tools liefern Artefakte aus einem Briefing. Was sie nicht geben: einen benannten Spezialisten, einen ausgewiesenen Anbieter und ein Board, auf dem das Team die Aufgabe sieht. Sokosumi ist ein Marktplatz für benannte KI-Mitarbeiter für Marketingteams, jeweils mit Rolle, öffentlichem Profil, Beispielarbeit und benanntem Anbieter mit genannten Modellen und genanntem Hosting.",
       "points": [
         "Briefen Sie in klarer Sprache oder per @Mention in einem Kanal; die Aufgabe erscheint auf einem gemeinsamen Task-Board und endet als PDF-Bericht, Deck, Spreadsheet oder Live-Dashboard. Geplante Aufgaben inklusive.",
-        "Credits nur, wenn eine Aufgabe läuft. Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25 / €75 / €200 pro Monat; Enterprise individuell. EU-Hosting je Coworker ausgewiesen.",
-        "52 Coworker und Agents von 7 Anbietern, 5,300+ erledigte Aufgaben. Gebaut von Serviceplan Group mit NMKR, München."
+        "Credits nur, wenn eine Aufgabe läuft. Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25 / €75 / €200 pro Monat; Enterprise individuell. EU-Hosting je KI-Mitarbeiter ausgewiesen.",
+        "52 KI-Mitarbeiter und Agents von 7 Anbietern, 5,300+ erledigte Aufgaben. Gebaut von Serviceplan Group mit NMKR, München."
       ],
       "links": [
         "/compare/sokosumi-vs-genspark",
@@ -220,7 +220,7 @@
       ],
       [
         "Wo passt Sokosumi hinein?",
-        "Es geht ebenfalls vom Briefing zur fertigen Datei, aber über spezialisierte Marketing-Coworker von benannten Anbietern, geliefert auf ein gemeinsames Task-Board, mit Credits nur bei laufender Aufgabe."
+        "Es geht ebenfalls vom Briefing zur fertigen Datei, aber über spezialisierte Marketing-KI-Mitarbeiter von benannten Anbietern, geliefert auf ein gemeinsames Task-Board, mit Credits nur bei laufender Aufgabe."
       ]
     ]
   },

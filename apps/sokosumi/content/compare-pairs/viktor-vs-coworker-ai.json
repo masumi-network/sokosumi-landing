@@ -119,10 +119,10 @@
     ]
   },
   "de": {
-    "title": "Viktor oder Coworker.ai: zwei KI-Coworker-Plattformen im Vergleich",
-    "metaTitle": "Viktor vs Coworker.ai (2026): Credits, Seats, EU-Hosting",
-    "description": "Viktor, KI-Mitarbeiter in Slack mit Workspace-Credits, vs Coworker.ai pro Nutzer: Preise, Outputs, Hosting und Grenzen. Stand August 2026.",
-    "intro": "Viktor ist ein KI-Mitarbeiter in Slack und Microsoft Teams: Sie erwähnen ihn per @Mention, er arbeitet über 3,200+ Tools und kommt mit Bericht, Spreadsheet, PDF oder Dashboard zurück. Coworker.ai ist eine Enterprise-Agent-Plattform mit Company Context Graph, 150+ vorgefertigten Agents und Artefakten wie Decks und Dashboards. Unterschied: Viktor berechnet den Workspace per Credits pro Aufgabe; Coworker.ai berechnet pro Nutzer und verkauft über Demos.",
+    "title": "Viktor oder KI-Mitarbeiter.ai: zwei KI-Mitarbeiter-Plattformen im Vergleich",
+    "metaTitle": "Viktor vs KI-Mitarbeiter.ai (2026): Credits, Seats, EU-Hosting",
+    "description": "Viktor, KI-Mitarbeiter in Slack mit Workspace-Credits, vs KI-Mitarbeiter.ai pro Nutzer: Preise, Outputs, Hosting und Grenzen. Stand August 2026.",
+    "intro": "Viktor ist ein KI-Mitarbeiter in Slack und Microsoft Teams: Sie erwähnen ihn per @Mention, er arbeitet über 3,200+ Tools und kommt mit Bericht, Spreadsheet, PDF oder Dashboard zurück. KI-Mitarbeiter.ai ist eine Enterprise-Agent-Plattform mit Company Context Graph, 150+ vorgefertigten Agents und Artefakten wie Decks und Dashboards. Unterschied: Viktor berechnet den Workspace per Credits pro Aufgabe; KI-Mitarbeiter.ai berechnet pro Nutzer und verkauft über Demos.",
     "glance": [
       [
         "Für wen es passt",
@@ -174,7 +174,7 @@
       ]
     },
     "pickB": {
-      "heading": "Wählen Sie Coworker.ai, wenn …",
+      "heading": "Wählen Sie KI-Mitarbeiter.ai, wenn …",
       "points": [
         "Sie viele rollenspezifische Agents und einen Knowledge Graph über Ihre Systeme wollen.",
         "Planbarer Seat-Preis wichtiger ist als Pay-per-Task.",
@@ -191,12 +191,12 @@
         "Kein veröffentlichter Free-Plan oder Self-Serve-Start und wenige unabhängige Reviews (SourceForge listet Stand Aug 2026 keine), daher Kauf über Demo."
       ]
     },
-    "verdict": "Viktor ist der schnellere Start: kostenlose Credits, keine Seats, und es arbeitet dort, wo Ihr Team schon chattet. Coworker.ai passt zu größeren Unternehmen, die eine gesteuerte Agent-Plattform mit vielen Konnektoren wollen und bereit für Sales sind. Für EU-Datenresidenz brauchen beide einen Enterprise-Vertrag; im Standardplan bietet es keines.",
+    "verdict": "Viktor ist der schnellere Start: kostenlose Credits, keine Seats, und es arbeitet dort, wo Ihr Team schon chattet. KI-Mitarbeiter.ai passt zu größeren Unternehmen, die eine gesteuerte Agent-Plattform mit vielen Konnektoren wollen und bereit für Sales sind. Für EU-Datenresidenz brauchen beide einen Enterprise-Vertrag; im Standardplan bietet es keines.",
     "bridge": {
       "heading": "Wenn Sie Arbeit erledigt haben wollen, kein Chatfenster",
-      "text": "Beide Tools geben einem Team einen Assistenten oder ein Set von Agents zum Instruieren. Ein Wettbewerbsbericht, ein Kampagnenplan oder das Montags-PDF zur Performance ist ein anderes Produkt. Sie briefen einen Coworker, das Team sieht das Board, am Ende steht eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Coworker für Marketingteams, gebaut von Serviceplan Group mit NMKR in München.",
+      "text": "Beide Tools geben einem Team einen Assistenten oder ein Set von Agents zum Instruieren. Ein Wettbewerbsbericht, ein Kampagnenplan oder das Montags-PDF zur Performance ist ein anderes Produkt. Sie briefen einen KI-Mitarbeiter, das Team sieht das Board, am Ende steht eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Mitarbeiter für Marketingteams, gebaut von Serviceplan Group mit NMKR in München.",
       "points": [
-        "52 Coworker und Agents von 7 Anbietern; jedes Profil nennt Anbieter, Modelle und Hosting, mit verfügbarem und je Coworker ausgewiesenem EU-Hosting.",
+        "52 KI-Mitarbeiter und Agents von 7 Anbietern; jedes Profil nennt Anbieter, Modelle und Hosting, mit verfügbarem und je KI-Mitarbeiter ausgewiesenem EU-Hosting.",
         "Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25, €75 oder €200 pro Monat; Credits werden nur verbraucht, wenn eine Aufgabe läuft.",
         "Aufgaben erscheinen auf einem gemeinsamen Task-Board und enden mit fertigem PDF, Deck, Spreadsheet oder Dashboard; geplante Aufgaben wiederholen sich selbst."
       ],
@@ -215,12 +215,12 @@
         "Die Gründer sitzen in Warschau, und Viktor sammelte im Mai 2026 $75M von Accel ein. Manche Berichte nennen ein Münchner Büro; die Unternehmensseite veröffentlicht keine Standorte."
       ],
       [
-        "Hat Coworker.ai einen kostenlosen Test?",
+        "Hat KI-Mitarbeiter.ai einen kostenlosen Test?",
         "Nicht veröffentlicht. Die Preisseite listet Pro, Max und Enterprise, und die Site leitet Besucher zu einer Demo-Buchung."
       ],
       [
         "Kann eines fertige Dateien auf ein Task-Board liefern?",
-        "Viktor gibt Dateien in den Slack- oder Teams-Thread zurück, in dem gefragt wurde. Coworker.ai erstellt Artefakte in seinem Workspace. Keines betreibt ein gemeinsames Task-Board mit benannten Anbieter-Coworker; Sokosumi ist darauf gebaut."
+        "Viktor gibt Dateien in den Slack- oder Teams-Thread zurück, in dem gefragt wurde. KI-Mitarbeiter.ai erstellt Artefakte in seinem Workspace. Keines betreibt ein gemeinsames Task-Board mit benannten Anbieter-KI-Mitarbeiter; Sokosumi ist darauf gebaut."
       ]
     ]
   },

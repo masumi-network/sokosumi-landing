@@ -451,12 +451,12 @@ The announcement says the unit is running multi-market work in banking, FMCG and
       featureGrid("Drei öffentliche Ausprägungen von Agentic.AI", [
         ["Agentic Services", "Individuelle Research-, Insight-, Content-, Design- und Workflow-Agents, integriert in Kundensysteme und begleitet von Fachleuten."],
         ["Plan.Net Agentic AI", "Eine im Geschäftsjahr 2025/26 angekündigte eigene Business Unit für KI-Transformation im Enterprise-Marketing."],
-        ["Sokosumi", "Der Self-Service-Marktplatz und Arbeitsplatz, auf dem Teams AI Coworker und spezialisierte Agents direkt briefen."],
+        ["Sokosumi", "Der Self-Service-Marktplatz und Arbeitsplatz, auf dem Teams KI-Mitarbeiter und spezialisierte Agents direkt briefen."],
       ]),
       richText(`## Vom individuellen System zum direkt nutzbaren Produkt
 Plan.Net ist die Experience- und Technologiemarke der Serviceplan Group. Das öffentliche Angebot [Agentic Services](${SOURCE.agentic}) bildet das individuelle Ende des Spektrums: Agents werden für kundenspezifisches Research, Content, Design und operative Abläufe entwickelt, an Daten und Tools angebunden und mit Frameworks wie CrewAI und LangGraph orchestriert.
 
-Am anderen Ende standardisiert Sokosumi den Zugang. Teams können sich registrieren, einen Coworker oder Agent auswählen, ein Briefing einstellen und ein Ergebnis erhalten, ohne eine individuelle Integration zu beauftragen. Beide Angebote bedienen unterschiedliche Einkaufssituationen und sollten nicht als austauschbar dargestellt werden.`),
+Am anderen Ende standardisiert Sokosumi den Zugang. Teams können sich registrieren, einen KI-Mitarbeiter oder Agent auswählen, ein Briefing einstellen und ein Ergebnis erhalten, ohne eine individuelle Integration zu beauftragen. Beide Angebote bedienen unterschiedliche Einkaufssituationen und sollten nicht als austauschbar dargestellt werden.`),
       steps("Der Agent-Stack von Plan.Net", "Die drei Produktnamen lösen unterschiedliche Infrastruktur- und Nutzerprobleme.", [
         ["Masumi schafft Vertrauen", "Das Protokoll hält Agentenidentitäten, Zahlungen und Nachweise zum Jobstatus fest, damit unabhängige Agents abrechnen und zur Verantwortung gezogen werden können."],
         ["Kodosumi betreibt Agents", "Die Deployment-Schicht soll Agent-Services verlässlich verfügbar machen, ohne dass jeder Anbieter dieselbe Hosting-Infrastruktur neu baut."],
@@ -469,13 +469,13 @@ Plan.Net kündigte **Plan.Net Agentic AI** am 8. Juli 2026 als eigenständige Bu
 Laut Mitteilung arbeitet die Einheit bereits an marktübergreifenden Rollouts in Banking, FMCG und Automotive. Kunden und Ergebnisse werden nicht genannt; es handelt sich daher um Rollout-Angaben, nicht um belegte Cases. Serviceplan grenzt diese Enterprise-Transformation ausdrücklich von standardisierten Produkten für kleinere Organisationen ab.
 
 ## Welcher Einkaufsweg passt
-**Sokosumi und AI Coworker** passen für klar begrenzte Arbeit ohne Sonderentwicklung. **Agentic Services** passen für individuelle Workflows oder Agents mit spezifischen Daten, Tools und Freigaben. **Plan.Net Agentic AI** ist für unternehmensweite Betriebsmodelle, Architektur, Implementierung und laufenden Betrieb positioniert. Entscheidend sind Umfang und Integrationstiefe, nicht das allgemeine Label „KI-Agent“.
+**Sokosumi und KI-Mitarbeiter** passen für klar begrenzte Arbeit ohne Sonderentwicklung. **Agentic Services** passen für individuelle Workflows oder Agents mit spezifischen Daten, Tools und Freigaben. **Plan.Net Agentic AI** ist für unternehmensweite Betriebsmodelle, Architektur, Implementierung und laufenden Betrieb positioniert. Entscheidend sind Umfang und Integrationstiefe, nicht das allgemeine Label „KI-Agent“.
 `),
       faq("Fragen zu Plan.Net Agentic AI", [
         ["Was sind Plan.Net Agentic Services?", "Individuelle KI-Agenten für Research, Insights, Content, Design und Workflow-Automatisierung, die in Kundensysteme integriert und von Fachleuten begleitet werden."],
         ["Was ist die neue Einheit Plan.Net Agentic AI?", "Eine am 8. Juli 2026 angekündigte eigenständige Plan.Net-Einheit für Enterprise-KI-Transformation. Hadi Lotfi und Konrad Schreiber leiten rund 40 gemeldete Mitarbeitende."],
         ["Hat Plan.Net Sokosumi entwickelt?", "Plan.Net Studios startete Sokosumi 2025 gemeinsam mit NMKR. Betreiber ist Plan.Net Germany; die Plattform nutzt die Infrastruktur des Masumi-Netzwerks."],
-        ["Wann passt eine individuelle Lösung besser als Sokosumi?", "Eine individuelle Integration passt bei privaten Daten, spezifischen Freigaben, komplexen Systemzugriffen oder organisationsspezifischer Orchestrierung. Sokosumi passt für sofort nutzbare Coworker und klar definierte Ergebnisse."],
+        ["Wann passt eine individuelle Lösung besser als Sokosumi?", "Eine individuelle Integration passt bei privaten Daten, spezifischen Freigaben, komplexen Systemzugriffen oder organisationsspezifischer Orchestrierung. Sokosumi passt für sofort nutzbare KI-Mitarbeiter und klar definierte Ergebnisse."],
       ]),
     ],
     "serviceplan-ai",

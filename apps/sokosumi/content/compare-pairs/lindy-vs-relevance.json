@@ -194,11 +194,11 @@
     "verdict": "Lindy gewinnt für ein kleines Team, das jetzt einen funktionierenden Assistenten pro Person will und mit US-Hosting sowie Nutzerpreis leben kann. Relevance AI gewinnt für ein Team mit einer technischen Person, das Agents bauen, kostenlos starten und eine Region wählen will. Keines liefert fertige Marketing-Ergebnisse out of the box.",
     "bridge": {
       "heading": "Wenn Sie Arbeit erledigt haben wollen, keinen Agent bauen",
-      "text": "Beide Tools geben einer Person einen Assistenten zum Betreiben oder einen Builder zum Konfigurieren. Ein Wettbewerbsbericht, ein Kampagnenplan oder das Montags-PDF zur Performance ist ein anderes Produkt. Sie briefen einen Coworker, das Team sieht das Board, am Ende steht eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Coworker für Marketingteams, jeweils mit Rolle, Beispielarbeit und einem benannten Anbieter, der Modelle und Hosting ausweist.",
+      "text": "Beide Tools geben einer Person einen Assistenten zum Betreiben oder einen Builder zum Konfigurieren. Ein Wettbewerbsbericht, ein Kampagnenplan oder das Montags-PDF zur Performance ist ein anderes Produkt. Sie briefen einen KI-Mitarbeiter, das Team sieht das Board, am Ende steht eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Mitarbeiter für Marketingteams, jeweils mit Rolle, Beispielarbeit und einem benannten Anbieter, der Modelle und Hosting ausweist.",
       "points": [
         "Briefen Sie in klarer Sprache oder per @Mention in einem Kanal; die Aufgabe erscheint auf einem gemeinsamen Task-Board und endet mit einer fertigen Datei.",
         "Credits nur, wenn eine Aufgabe läuft. Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25, €75 oder €200 pro Monat.",
-        "EU-Hosting verfügbar, je Coworker ausgewiesen. Gebaut von Serviceplan Group mit NMKR, München."
+        "EU-Hosting verfügbar, je KI-Mitarbeiter ausgewiesen. Gebaut von Serviceplan Group mit NMKR, München."
       ],
       "links": [
         "/compare/sokosumi-vs-lindy",
@@ -220,7 +220,7 @@
       ],
       [
         "Gibt es eine fertige Option für Marketingarbeit?",
-        "Sokosumi ist ein Marktplatz für KI-Coworker, die fertige Dateien auf ein gemeinsames Task-Board liefern. Free-Plan mit 250 Credits pro Seat und Monat; EU-Hosting je Coworker ausgewiesen."
+        "Sokosumi ist ein Marktplatz für KI-Mitarbeiter, die fertige Dateien auf ein gemeinsames Task-Board liefern. Free-Plan mit 250 Credits pro Seat und Monat; EU-Hosting je KI-Mitarbeiter ausgewiesen."
       ]
     ]
   },

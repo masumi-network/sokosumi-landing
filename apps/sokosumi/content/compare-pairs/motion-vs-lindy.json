@@ -194,11 +194,11 @@
     "verdict": "Motion gewinnt für ein kleines Team, das eine Arbeitssuite mit KI für $19 bis $29 pro Seat will und kein EU-Hosting braucht. Lindy gewinnt für ein Team, das seine Tools behält und einen Assistenten will, der echte Aufgaben erledigt, zu höherem Nutzerpreis. Keines ist auf dem Papier EU-gehostet; Motion sagt es ausdrücklich.",
     "bridge": {
       "heading": "Wenn Sie Arbeit erledigt haben wollen, nicht noch eine App einführen",
-      "text": "Beide Tools geben einer Person einen Ort zum Planen oder einen Assistenten zum Einrichten. Ein Wettbewerbsbericht, ein Kampagnenplan oder das Montags-PDF zur Performance ist ein anderes Produkt. Sie briefen einen Coworker, das Team sieht das Board, am Ende steht eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Coworker für Marketingteams, jeweils mit Rolle, Beispielarbeit und einem benannten Anbieter, der Modelle und Hosting ausweist.",
+      "text": "Beide Tools geben einer Person einen Ort zum Planen oder einen Assistenten zum Einrichten. Ein Wettbewerbsbericht, ein Kampagnenplan oder das Montags-PDF zur Performance ist ein anderes Produkt. Sie briefen einen KI-Mitarbeiter, das Team sieht das Board, am Ende steht eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Mitarbeiter für Marketingteams, jeweils mit Rolle, Beispielarbeit und einem benannten Anbieter, der Modelle und Hosting ausweist.",
       "points": [
         "Briefen Sie in klarer Sprache oder per @Mention in einem Kanal; die Aufgabe erscheint auf einem gemeinsamen Task-Board und endet mit einer fertigen Datei.",
         "Credits nur, wenn eine Aufgabe läuft. Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25, €75 oder €200 pro Monat.",
-        "EU-Hosting verfügbar, je Coworker ausgewiesen. Gebaut von Serviceplan Group mit NMKR, München."
+        "EU-Hosting verfügbar, je KI-Mitarbeiter ausgewiesen. Gebaut von Serviceplan Group mit NMKR, München."
       ],
       "links": [
         "/compare/sokosumi-vs-motion",
@@ -220,7 +220,7 @@
       ],
       [
         "Gibt es eine Fertigarbeits-Option für Marketingteams?",
-        "Sokosumi ist ein Marktplatz für KI-Coworker, die fertige Dateien auf ein gemeinsames Task-Board liefern. Free-Plan mit 250 Credits pro Seat und Monat; EU-Hosting je Coworker ausgewiesen."
+        "Sokosumi ist ein Marktplatz für KI-Mitarbeiter, die fertige Dateien auf ein gemeinsames Task-Board liefern. Free-Plan mit 250 Credits pro Seat und Monat; EU-Hosting je KI-Mitarbeiter ausgewiesen."
       ]
     ]
   },

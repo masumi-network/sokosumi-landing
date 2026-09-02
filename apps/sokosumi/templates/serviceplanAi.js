@@ -261,7 +261,7 @@ function indexLinks(list, current) {
         ${group.chapters
           .map(
             (chapter) =>
-              `<a href="/${attr(chapter.doc.slug)}"${chapter.doc.slug === current ? ' aria-current="page"' : ""}>${figures.glyph(chapter.icon, 14)}${esc(chapter.short || chapter.doc.title)}</a>`,
+              `<a href="/${attr(chapter.doc.slug)}"${chapter.doc.slug === current ? ' aria-current="page"' : ""}>${figures.glyph(chapter.icon, 14)}${esc(chapter.short ? i18n.t(chapter.short) : chapter.doc.title)}</a>`,
           )
           .join("")}
       </div>`,
@@ -436,12 +436,12 @@ function bridge() {
       <h2>${esc(ui("Put the operating model to work", "Setzen Sie das Betriebsmodell praktisch ein"))}</h2>
       <p>${esc(ui(
         "Sokosumi gives teams direct access to named AI coworkers built for bounded marketing work — with briefs, deliverables and costs visible on one shared board.",
-        "Sokosumi gibt Teams direkten Zugang zu benannten AI Coworkern für klar abgegrenzte Marketingaufgaben – mit Briefings, Ergebnissen und Kosten auf einem gemeinsamen Board.",
+        "Sokosumi gibt Teams direkten Zugang zu benannten KI-Mitarbeitern für klar abgegrenzte Marketingaufgaben – mit Briefings, Ergebnissen und Kosten auf einem gemeinsamen Board.",
       ))}</p>
     </div>
     <div class="sp-bridge-actions">
       <a class="btn btn-primary" href="${attr(shell.APP_SIGNUP)}" data-analytics="sign_up_click" data-analytics-location="serviceplan_bridge">${esc(ui("Start free", "Kostenlos starten"))}</a>
-      <a href="/ai-coworkers">${esc(ui("Meet the coworkers", "AI Coworker kennenlernen"))} ${icon("arrow-up-right", 14)}</a>
+      <a href="/ai-coworkers">${esc(ui("Meet the coworkers", "KI-Mitarbeiter kennenlernen"))} ${icon("arrow-up-right", 14)}</a>
       <a href="/product">${esc(ui("See how it works", "So funktioniert es"))} ${icon("arrow-up-right", 14)}</a>
     </div>
   </section>`;
