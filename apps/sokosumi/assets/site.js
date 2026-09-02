@@ -61,3 +61,29 @@
     })(lists[i]);
   }
 })();
+
+/* "Read with Gemini": Google has no URL that prefills a prompt, so the link
+   copies it and opens Gemini for the reader to paste. The copy is fired on
+   click, before the tab opens, because a clipboard write needs the user
+   gesture. If it fails the link still works - it just opens Gemini empty. */
+(function () {
+  var btn = document.querySelector(".read-with-btn[data-copy-prompt]");
+  if (!btn || !navigator.clipboard) return;
+  btn.addEventListener("click", function () {
+    var label = btn.querySelector(".rw-long");
+    var short = btn.querySelector(".rw-short");
+    navigator.clipboard.writeText(btn.getAttribute("data-copy-prompt")).then(function () {
+      var done = btn.getAttribute("data-copied-label");
+      var prevLong = label && label.textContent;
+      var prevShort = short && short.textContent;
+      if (label) label.textContent = done;
+      if (short) short.textContent = done;
+      btn.classList.add("is-copied");
+      setTimeout(function () {
+        if (label) label.textContent = prevLong;
+        if (short) short.textContent = prevShort;
+        btn.classList.remove("is-copied");
+      }, 2600);
+    }).catch(function () {});
+  });
+})();
