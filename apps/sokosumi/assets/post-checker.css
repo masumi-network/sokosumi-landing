@@ -47,6 +47,59 @@
   border-radius: var(--r-lg);
 }
 
+.psc-mode {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 12px;
+}
+
+.psc-mode button {
+  padding: 7px 14px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted-foreground);
+  font: inherit;
+  font-size: 13.5px;
+  cursor: pointer;
+  transition:
+    color 160ms ease-out,
+    background 160ms ease-out,
+    border-color 160ms ease-out;
+}
+
+.psc-mode button[aria-selected="true"] {
+  color: #fff;
+  background: var(--primary);
+  border-color: var(--primary);
+}
+
+.psc-mode button:not([aria-selected="true"]):hover {
+  color: var(--foreground);
+  border-color: var(--primary);
+}
+
+.psc-form input[type="text"] {
+  width: 100%;
+  height: 44px;
+  padding: 0 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  background: var(--background);
+  color: var(--foreground);
+  font: inherit;
+  font-size: 15px;
+}
+
+.psc-form input[type="text"]::placeholder {
+  color: rgba(15, 14, 13, 0.38);
+}
+
+.psc-form input[type="text"]:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: -1px;
+}
+
 .psc-form textarea {
   width: 100%;
   min-height: 160px;

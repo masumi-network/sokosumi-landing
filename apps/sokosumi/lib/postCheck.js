@@ -3,12 +3,21 @@
 // Deterministic social-post scorer for /tools/social-post-checker. Given a
 // pasted post draft (and, optionally, a planned day/time to post it) this
 // scores four dimensions — hook quality, CTA clarity, engagement-shaping
-// formatting, and timing — from static rules against the text alone. No
-// network calls, no LLM: every check here is a regex or a threshold, the same
-// way seoExtract.js and ogCheck.js score their own inputs.
+// formatting, and timing — from static rules against the text alone. The
+// scoring itself makes no network calls, no LLM: every check here is a regex
+// or a threshold, the same way seoExtract.js and ogCheck.js score their own
+// inputs. fetchPostText() below is the one exception — it turns a public
+// LinkedIn post URL into the same plain text, for a post that's already live.
+
+const { safeFetch, readCapped, fetchErrorMessage } = require("./safeFetch");
 
 const MAX_TEXT_LENGTH = 5000;
 const HOOK_TRUNCATE = 210; // LinkedIn's desktop "see more" cutoff, roughly
+
+const LINKEDIN_UA =
+  "Mozilla/5.0 (compatible; SokosumiPostChecker/1.0; +https://sokosumi.com/tools/social-post-checker)";
+const LINKEDIN_PAGE_BYTES = 1.5 * 1024 * 1024;
+const LINKEDIN_TIMEOUT = 8000;
 
 // ---------------------------------------------------------------------------
 // Static reference data
@@ -193,6 +202,93 @@ function buildTimingChecks(day, timeBucket) {
 }
 
 // ---------------------------------------------------------------------------
+// Fetching a post's text from a public LinkedIn URL, for a post that's
+// already live. LinkedIn server-renders the full post body into a plain
+// <meta name="description"> tag on a public post's page — no login, no JS
+// required to read it, verified against live posts at /posts/... and
+// /feed/update/... URLs. A post that requires login to view (removed, or
+// visible to connections only) renders without that tag, which is the signal
+// used below to fail rather than guess.
+
+const decodeEntities = (s) =>
+  String(s || "")
+    .replace(/&#(\d+);/g, (_, d) => String.fromCodePoint(Number(d)))
+    .replace(/&#x([0-9a-f]+);/gi, (_, h) => String.fromCodePoint(parseInt(h, 16)))
+    .replace(/&quot;/g, '"')
+    .replace(/&apos;/g, "'")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&nbsp;/g, " ")
+    .replace(/&amp;/g, "&");
+
+// Accepts the URL forms LinkedIn actually hands out for a post: /posts/...,
+// /feed/update/..., and pulse/ articles. Anything else — a profile, a company
+// page, a non-LinkedIn URL — is out of scope for "paste a post link".
+function linkedInPostUrl(raw) {
+  let parsed;
+  try {
+    parsed = new URL(String(raw || "").trim());
+  } catch {
+    return null;
+  }
+  if (!/^https?:$/.test(parsed.protocol)) return null;
+  const host = parsed.hostname.toLowerCase();
+  if (host !== "linkedin.com" && !host.endsWith(".linkedin.com")) return null;
+  if (!/^\/(posts|feed\/update|pulse)\//.test(parsed.pathname)) return null;
+  parsed.hash = "";
+  return parsed.href;
+}
+
+async function fetchPostText(rawUrl) {
+  const url = linkedInPostUrl(rawUrl);
+  if (!url) {
+    const error = new Error("Paste a public LinkedIn post link — linkedin.com/posts/... or /feed/update/...");
+    error.status = 400;
+    throw error;
+  }
+
+  let response;
+  try {
+    ({ response } = await safeFetch(
+      url,
+      { headers: { "User-Agent": LINKEDIN_UA, Accept: "text/html" } },
+      LINKEDIN_TIMEOUT,
+    ));
+  } catch (fetchError) {
+    const error = new Error(fetchErrorMessage(fetchError));
+    error.status = 502;
+    throw error;
+  }
+
+  if (!response.ok) {
+    const error = new Error(
+      response.status === 404
+        ? "Couldn't find that post. Check the link, or paste the text instead."
+        : "LinkedIn didn't return that post. Paste the text instead.",
+    );
+    error.status = 502;
+    throw error;
+  }
+
+  const buf = await readCapped(response, LINKEDIN_PAGE_BYTES);
+  const html = buf.toString("utf8");
+  const match = /<meta\s+name="description"\s+content="([^"]*)"/i.exec(html);
+  const text = match ? decodeEntities(match[1]).trim() : "";
+
+  // A login wall or a removed post still answers 200 with a generic page —
+  // the tell is that the description is missing or too thin to be a post.
+  if (text.length < 20) {
+    const error = new Error(
+      "Couldn't read that post automatically — it may require login to view. Paste the text instead.",
+    );
+    error.status = 502;
+    throw error;
+  }
+
+  return text.length > MAX_TEXT_LENGTH ? text.slice(0, MAX_TEXT_LENGTH) : text;
+}
+
+// ---------------------------------------------------------------------------
 
 function scoreFromChecks(checks) {
   if (!checks || !checks.length) return 0;
@@ -252,4 +348,4 @@ function analyze(input) {
   };
 }
 
-module.exports = { analyze };
+module.exports = { analyze, fetchPostText };

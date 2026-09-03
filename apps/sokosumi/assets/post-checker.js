@@ -1,10 +1,11 @@
 /* /tools/social-post-checker — client.
  *
- * The server does all the scoring; this file only renders what comes back
- * and wires up the two "Try" examples. POSTs a JSON body rather than a GET
- * with a query string — pasted post text runs long, and there's no fetched
- * resource here to make a shareable/cacheable GET worthwhile (see
- * /api/post-check in server.js for the reasoning).
+ * The server does all the scoring (and, in link mode, the fetch that turns a
+ * LinkedIn URL into text); this file only renders what comes back, switches
+ * between the two input modes, and wires up the two "Try" examples. POSTs a
+ * JSON body rather than a GET with a query string — pasted post text runs
+ * long, and there's no fetched resource here to make a shareable/cacheable
+ * GET worthwhile (see /api/post-check in server.js for the reasoning).
  */
 (function () {
   "use strict";
@@ -13,6 +14,9 @@
   if (!form) return;
 
   var textInput = document.getElementById("pscText");
+  var urlInput = document.getElementById("pscUrl");
+  var modeTextBtn = document.getElementById("pscModeText");
+  var modeUrlBtn = document.getElementById("pscModeUrl");
   var dayInput = document.getElementById("pscDay");
   var timeInput = document.getElementById("pscTime");
   var submit = document.getElementById("pscSubmit");
@@ -26,6 +30,16 @@
 
   var data = null;
   var filter = "";
+  var mode = "text";
+
+  function setMode(next) {
+    mode = next;
+    modeTextBtn.setAttribute("aria-selected", String(mode === "text"));
+    modeUrlBtn.setAttribute("aria-selected", String(mode === "url"));
+    textInput.hidden = mode !== "text";
+    urlInput.hidden = mode !== "url";
+    errorBox.hidden = true;
+  }
 
   var EXAMPLES = {
     weak: {
@@ -159,19 +173,32 @@
     result.hidden = false;
   }
 
-  function run(text, day, timeBucket) {
-    if (!text || !text.trim()) return;
-    textInput.value = text;
+  function run(payload, day, timeBucket) {
+    var isUrl = mode === "url";
+    var value = payload;
+    if (!value || !String(value).trim()) return;
+    if (isUrl) {
+      urlInput.value = value;
+    } else {
+      textInput.value = value;
+    }
     if (day != null) dayInput.value = day;
     if (timeBucket != null) timeInput.value = timeBucket;
     errorBox.hidden = true;
     result.hidden = true;
     setBusy(true);
 
+    var body = { day: dayInput.value || undefined, timeBucket: timeInput.value || undefined };
+    if (isUrl) {
+      body.url = value;
+    } else {
+      body.text = value;
+    }
+
     fetch("/api/post-check", {
       method: "POST",
       headers: { "Content-Type": "application/json", Accept: "application/json" },
-      body: JSON.stringify({ text: text, day: dayInput.value || undefined, timeBucket: timeInput.value || undefined }),
+      body: JSON.stringify(body),
     })
       .then(function (response) {
         return response.json().then(function (body) {
@@ -195,7 +222,14 @@
 
   form.addEventListener("submit", function (event) {
     event.preventDefault();
-    run(textInput.value, dayInput.value, timeInput.value);
+    run(mode === "url" ? urlInput.value : textInput.value, dayInput.value, timeInput.value);
+  });
+
+  modeTextBtn.addEventListener("click", function () {
+    setMode("text");
+  });
+  modeUrlBtn.addEventListener("click", function () {
+    setMode("url");
   });
 
   scores.addEventListener("click", function (event) {
@@ -226,6 +260,7 @@
     if (!button) return;
     var example = EXAMPLES[button.getAttribute("data-try")];
     if (!example) return;
+    setMode("text");
     run(example.text, "", "");
   });
 })();

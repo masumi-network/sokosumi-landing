@@ -29,7 +29,12 @@ const FAQ = [
   {
     question: "What does this social post checker look at?",
     answer:
-      "Paste a post and it reads the text for four things: hook quality (does the first line earn a click before \"see more\" cuts it), CTA clarity (is there a specific ask at the end), engagement-shaping formatting (length, paragraph rhythm, outbound links, hashtag count, tone), and — if you give it a planned day and time — timing against general posting-pattern data. Everything runs on the text alone, no account or platform access needed.",
+      "Paste a post — as text, or as a link to one that's already live — and it reads the text for four things: hook quality (does the first line earn a click before \"see more\" cuts it), CTA clarity (is there a specific ask at the end), engagement-shaping formatting (length, paragraph rhythm, outbound links, hashtag count, tone), and — if you give it a planned day and time — timing against general posting-pattern data.",
+  },
+  {
+    question: "How does the LinkedIn link option work?",
+    answer:
+      "Paste the URL of a public LinkedIn post — a linkedin.com/posts/... or /feed/update/... link — and we read the post's text server-side, the same way a search engine would, then score it exactly like pasted text. No login, no LinkedIn account connected. It only works on posts LinkedIn serves publicly; a post visible to connections only, or one that's been removed, will fail and you can paste its text instead.",
   },
   {
     question: "Is this actually predicting engagement?",
@@ -49,7 +54,7 @@ const FAQ = [
   {
     question: "Is my post text stored anywhere?",
     answer:
-      "No. The text you paste is scored in memory for that one request and nothing is written to a database or log beyond the standard request logging any web server does.",
+      "No. Whether you paste text or a link, the post is scored in memory for that one request and nothing is written to a database or log beyond the standard request logging any web server does.",
   },
 ];
 
@@ -68,8 +73,9 @@ function render() {
     operatingSystem: "Web",
     url: `${SITE}${PATH}`,
     description:
-      "A free social post checker that scores a pasted LinkedIn-style post on hook quality, CTA clarity, engagement-shaping formatting, and optional posting-time fit.",
+      "A free social post checker that scores a pasted LinkedIn-style post — or a link to one that's already live — on hook quality, CTA clarity, engagement-shaping formatting, and optional posting-time fit.",
     featureList: [
+      "Score a draft by pasting its text, or a live post by pasting its link",
       "Hook quality scoring against LinkedIn's truncation point",
       "Call-to-action detection",
       "Formatting, link and hashtag checks",
@@ -93,7 +99,7 @@ function render() {
     pageStart({
       title: "Social post checker — score your LinkedIn post before you publish | Sokosumi",
       description:
-        "Free social post checker. Paste a LinkedIn-style post and get scores on hook quality, CTA clarity, engagement-shaping formatting, and timing. No sign-up.",
+        "Free social post checker. Paste a LinkedIn-style post — or a link to one already live — and get scores on hook quality, CTA clarity, engagement-shaping formatting, and timing. No sign-up.",
       path: PATH,
       englishOnly: true,
       breadcrumb: crumbs,
@@ -109,11 +115,20 @@ function render() {
     `<section class="psc-head" id="checker">
       <p class="psc-overline">Free · no sign-up</p>
       <h1>Social post checker</h1>
-      <p class="psc-lede">Paste a post and get a score on its hook, its call to action, its formatting, and — if you tell us when you're posting — its timing.</p>
+      <p class="psc-lede">Paste a draft, or a link to a post that's already live, and get a score on its hook, its call to action, its formatting, and — if you tell us when you're posting — its timing.</p>
 
       <form class="psc-form" id="pscForm" novalidate>
+        <div class="psc-mode" role="tablist" aria-label="How to give us the post">
+          <button type="button" role="tab" id="pscModeText" aria-selected="true" data-mode="text">Paste text</button>
+          <button type="button" role="tab" id="pscModeUrl" aria-selected="false" data-mode="url">Paste a LinkedIn link</button>
+        </div>
+
         <label class="sr-only" for="pscText">Post text</label>
         <textarea id="pscText" name="text" rows="9" maxlength="5000" placeholder="Paste your post here…" aria-describedby="pscError" required></textarea>
+
+        <label class="sr-only" for="pscUrl">LinkedIn post link</label>
+        <input id="pscUrl" name="url" type="text" inputmode="url" autocomplete="url" spellcheck="false" placeholder="https://www.linkedin.com/posts/…" aria-describedby="pscError" hidden />
+
         <div class="psc-timing-row">
           <div class="psc-field">
             <label for="pscDay">Planned day <span>(optional)</span></label>
