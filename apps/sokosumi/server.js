@@ -47,6 +47,8 @@ const llmsTxtTpl = require("./templates/llmsTxt");
 const llmsCheck = require("./lib/llmsCheck");
 const postCheckerTpl = require("./templates/postChecker");
 const postCheck = require("./lib/postCheck");
+const imageAuditTpl = require("./templates/imageAudit");
+const imageAudit = require("./lib/imageAudit");
 
 const port = process.env.PORT || 3000;
 const root = __dirname;
@@ -79,6 +81,11 @@ const llmsCheckRequests = new Map();
 // so the ceiling is generous.
 const POST_CHECK_RATE_LIMIT = Number(process.env.POST_CHECK_RATE_LIMIT) || 40;
 const postCheckRequests = new Map();
+// This is the most expensive tool on the site — up to 20 page fetches plus a
+// handful of image probes per run, all inside one request — so its ceiling
+// is the lowest of any of them.
+const IMAGE_AUDIT_RATE_LIMIT = Number(process.env.IMAGE_AUDIT_RATE_LIMIT) || 6;
+const imageAuditRequests = new Map();
 
 function publicWebsiteUrl(value) {
   let parsed;
@@ -157,6 +164,7 @@ const seoMdRateLimited = (ip) => hourlyRateLimited(seoMdRequests, SEO_MD_RATE_LI
 const ogCheckRateLimited = (ip) => hourlyRateLimited(ogCheckRequests, OG_CHECK_RATE_LIMIT, ip);
 const llmsCheckRateLimited = (ip) => hourlyRateLimited(llmsCheckRequests, LLMS_CHECK_RATE_LIMIT, ip);
 const postCheckRateLimited = (ip) => hourlyRateLimited(postCheckRequests, POST_CHECK_RATE_LIMIT, ip);
+const imageAuditRateLimited = (ip) => hourlyRateLimited(imageAuditRequests, IMAGE_AUDIT_RATE_LIMIT, ip);
 
 async function designMdFetch(pathname, options = {}) {
   const response = await fetch(`${DESIGN_MD_API_BASE}${pathname}`, {
@@ -627,6 +635,7 @@ const routes = [
   { m: (s) => s.length === 4 && s[0] === "tools" && s[1] === "design-md" && s[2] === "analysis" && { slug: s[3] }, h: designMdTpl.analysis },
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "seo-md" && {}, h: seoMdTpl.render },
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "social-post-checker" && {}, h: postCheckerTpl.render },
+  { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "image-audit" && {}, h: imageAuditTpl.render },
   { m: (s) => s.length === 1 && s[0] === "product" && {}, h: pagesTpl.productHub },
   { m: (s) => s.length === 1 && s[0] === "pricing" && {}, h: pricingTpl.render },
   // The entity page for Sokosumi itself lives in code so its JSON-LD is
@@ -1176,6 +1185,31 @@ const assetsDir = path.join(root, "assets");
           } catch (error) {
             const status = error.status && error.status >= 400 && error.status < 600 ? error.status : 500;
             return send(req, res, status, jsonHead, JSON.stringify({ error: error.message || "That check did not work. Try again." }));
+          }
+        }
+
+        if (urlPath === "/api/image-audit" && req.method === "POST") {
+          const jsonHead = { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" };
+          let body;
+          try {
+            body = await readJsonBody(req);
+          } catch (error) {
+            const message = error.message === "too-large" ? "The request is too large." : "Send a valid JSON request.";
+            return send(req, res, 400, jsonHead, JSON.stringify({ error: message }));
+          }
+          const targetUrl = publicWebsiteUrl(body.url);
+          if (!targetUrl) {
+            return send(req, res, 400, jsonHead, JSON.stringify({ error: "Enter a complete public website URL." }));
+          }
+          if (imageAuditRateLimited(clientIp(req))) {
+            return send(req, res, 429, { ...jsonHead, "Retry-After": "3600" }, JSON.stringify({ error: "You have reached the hourly limit. Try again later." }));
+          }
+          try {
+            const data = await imageAudit.analyze(targetUrl);
+            return send(req, res, 200, jsonHead, JSON.stringify(data));
+          } catch (error) {
+            const status = error.status && error.status >= 400 && error.status < 600 ? error.status : 502;
+            return send(req, res, status, jsonHead, JSON.stringify({ error: error.message || "That site could not be audited. Try again." }));
           }
         }
 

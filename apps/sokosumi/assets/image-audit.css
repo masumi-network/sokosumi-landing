@@ -1,0 +1,639 @@
+/* /tools/image-audit — same language as the other tools: a workbench above
+ * the fold, hairline borders, one accent, Inter Light for headings. The
+ * result is a list, not a score, so the surface below the checks is a table
+ * rather than post-checker's dimension cards.
+ */
+
+.ia-tool-page {
+  min-width: 0;
+}
+
+/* ---- head + form -------------------------------------------------------- */
+
+.ia-head {
+  padding: clamp(40px, 6vw, 76px) 0 clamp(24px, 3vw, 36px);
+}
+
+.ia-overline {
+  color: var(--primary);
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 14px;
+}
+
+.ia-head h1 {
+  max-width: 18ch;
+  font-size: clamp(36px, 5.6vw, 62px);
+  font-weight: 300;
+  letter-spacing: -0.035em;
+  line-height: 1.04;
+  text-wrap: balance;
+}
+
+.ia-lede {
+  max-width: 62ch;
+  margin-top: 22px;
+  font-size: clamp(16px, 1.8vw, 19px);
+  line-height: 1.55;
+  color: var(--muted-foreground);
+  text-wrap: pretty;
+}
+
+.ia-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: clamp(26px, 3.5vw, 40px);
+  padding: 8px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+}
+
+.ia-bar input {
+  flex: 1;
+  min-width: 220px;
+  height: 44px;
+  padding: 0 14px;
+  border: 0;
+  background: transparent;
+  color: var(--foreground);
+  font: inherit;
+  font-size: 15px;
+}
+
+.ia-bar input:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: -1px;
+  border-radius: var(--r-md);
+}
+
+.ia-bar input::placeholder {
+  color: rgba(15, 14, 13, 0.38);
+}
+
+.ia-submit {
+  flex-shrink: 0;
+  height: 44px;
+  padding: 0 22px;
+  border: 0;
+  border-radius: var(--r-md);
+  background: var(--primary);
+  color: #fff;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 160ms ease-out;
+}
+
+.ia-submit:hover:not(:disabled) {
+  background: #24506a;
+}
+
+.ia-submit:disabled {
+  opacity: 0.55;
+  cursor: progress;
+}
+
+.ia-try {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 14px;
+  font-size: 13px;
+  color: var(--muted-foreground);
+}
+
+.ia-try button {
+  padding: 4px 10px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted-foreground);
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  transition:
+    color 160ms ease-out,
+    border-color 160ms ease-out;
+}
+
+.ia-try button:hover {
+  color: var(--foreground);
+  border-color: var(--primary);
+}
+
+.ia-error {
+  margin-top: 16px;
+  padding: 12px 14px;
+  border: 1px solid rgba(176, 42, 42, 0.28);
+  border-radius: var(--r-md);
+  background: rgba(176, 42, 42, 0.05);
+  color: #8f2020;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* ---- loading ------------------------------------------------------------- */
+
+.ia-loading[hidden] {
+  display: none;
+}
+
+.ia-loading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: clamp(40px, 8vw, 80px) 0;
+  border-top: 1px solid var(--border);
+  color: var(--muted-foreground);
+  font-size: 14.5px;
+}
+
+.ia-spin {
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--border);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: ia-spin 700ms linear infinite;
+}
+
+@keyframes ia-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ia-spin {
+    animation-duration: 2s;
+  }
+}
+
+/* ---- result shell --------------------------------------------------------- */
+
+.ia-result {
+  padding-bottom: clamp(40px, 6vw, 72px);
+  border-top: 1px solid var(--border);
+  scroll-margin-top: 88px;
+}
+
+.ia-summary {
+  padding: 22px 0;
+}
+
+.ia-summary-line {
+  color: var(--muted-foreground);
+  font-size: 14.5px;
+}
+
+.ia-summary-line strong {
+  color: var(--foreground);
+  font-size: 17px;
+  font-weight: 500;
+}
+
+.ia-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.ia-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 12px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.ia-pill.is-error {
+  color: #b02a2a;
+}
+.ia-pill.is-warn {
+  color: #8a6100;
+}
+.ia-pill.is-pass {
+  color: #2f6b45;
+}
+
+/* ---- checks list ------------------------------------------------------------ */
+
+.ia-checks {
+  display: grid;
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+}
+
+.ia-check {
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr);
+  gap: 4px 12px;
+  padding: 15px 18px;
+  background: var(--card);
+}
+
+.ia-check-mark {
+  width: 18px;
+  height: 18px;
+  margin-top: 1px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.ia-check.is-error .ia-check-mark {
+  background: rgba(176, 42, 42, 0.12);
+  color: #b02a2a;
+}
+.ia-check.is-warn .ia-check-mark {
+  background: rgba(180, 130, 0, 0.14);
+  color: #8a6100;
+}
+.ia-check.is-pass .ia-check-mark {
+  background: rgba(47, 107, 69, 0.12);
+  color: #2f6b45;
+}
+
+.ia-check-title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 10px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.ia-check-tag {
+  color: var(--muted-foreground);
+  font-family: var(--mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+  font-size: 11.5px;
+  font-weight: 400;
+}
+
+.ia-check-detail {
+  margin-top: 2px;
+  color: var(--muted-foreground);
+  font-size: 13.5px;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+  text-wrap: pretty;
+}
+
+/* ---- image list ------------------------------------------------------------ */
+
+.ia-images {
+  margin-top: 28px;
+}
+
+.ia-images-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 16px;
+  margin-bottom: 12px;
+}
+
+.ia-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.ia-tabs button {
+  padding: 6px 12px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted-foreground);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    border-color 160ms ease-out,
+    color 160ms ease-out;
+}
+
+.ia-tabs button[aria-selected="true"] {
+  border-color: var(--primary);
+  color: var(--foreground);
+}
+
+.ia-images-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ia-search {
+  height: 30px;
+  padding: 0 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  background: var(--card);
+  color: var(--foreground);
+  font: inherit;
+  font-size: 12.5px;
+  width: 200px;
+}
+
+.ia-search:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: -1px;
+}
+
+.ia-btn {
+  padding: 6px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  background: var(--card);
+  color: var(--muted-foreground);
+  font: inherit;
+  font-size: 12.5px;
+  cursor: pointer;
+}
+
+.ia-btn:hover {
+  color: var(--foreground);
+  border-color: var(--primary);
+}
+
+.ia-table-wrap {
+  max-height: 560px;
+  overflow: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+}
+
+.ia-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+}
+
+.ia-table th,
+.ia-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  vertical-align: top;
+}
+
+.ia-table thead th {
+  position: sticky;
+  top: 0;
+  background: var(--card);
+  color: var(--muted-foreground);
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  z-index: 1;
+  padding: 0;
+}
+
+.ia-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.ia-th-thumb {
+  width: 54px;
+}
+
+.ia-sort {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  width: 100%;
+  padding: 10px 14px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.ia-sort:hover {
+  color: var(--foreground);
+}
+
+.ia-sort-arrow {
+  font-size: 10px;
+  line-height: 1;
+  opacity: 0;
+}
+
+.ia-sort.is-active {
+  color: var(--foreground);
+}
+
+.ia-sort.is-active .ia-sort-arrow {
+  opacity: 1;
+}
+
+.ia-cell-thumb {
+  width: 54px;
+}
+
+.ia-thumb {
+  display: block;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  object-fit: cover;
+  background: var(--border);
+}
+
+.ia-thumb.is-broken {
+  visibility: hidden;
+}
+
+.ia-cell-image a {
+  color: var(--foreground);
+  text-decoration: none;
+  word-break: break-all;
+}
+
+.ia-cell-image a:hover {
+  color: var(--primary);
+  text-decoration: underline;
+}
+
+.ia-cell-size {
+  color: var(--muted-foreground);
+  white-space: nowrap;
+}
+
+.ia-cell-size .ia-savings {
+  display: block;
+  margin-top: 2px;
+  color: #2f6b45;
+  font-size: 11.5px;
+}
+
+.ia-cell-pages {
+  max-width: 220px;
+  color: var(--muted-foreground);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ---- pagination ------------------------------------------------------------ */
+
+.ia-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.ia-pagination[hidden] {
+  display: none;
+}
+
+.ia-page-status {
+  color: var(--muted-foreground);
+  font-size: 13px;
+}
+
+.ia-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 11.5px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.ia-badge.is-error {
+  background: rgba(176, 42, 42, 0.12);
+  color: #b02a2a;
+}
+.ia-badge.is-warn {
+  background: rgba(180, 130, 0, 0.14);
+  color: #8a6100;
+}
+.ia-badge.is-pass {
+  background: rgba(47, 107, 69, 0.12);
+  color: #2f6b45;
+}
+
+.ia-badge.ia-format-avif,
+.ia-badge.ia-format-webp {
+  background: rgba(47, 107, 69, 0.12);
+  color: #2f6b45;
+}
+.ia-badge.ia-format-jpeg,
+.ia-badge.ia-format-png,
+.ia-badge.ia-format-gif {
+  background: rgba(180, 130, 0, 0.14);
+  color: #8a6100;
+}
+.ia-badge.ia-format-svg,
+.ia-badge.ia-format-unknown {
+  background: var(--border);
+  color: var(--muted-foreground);
+}
+
+.ia-empty {
+  padding: 24px;
+  text-align: center;
+  color: var(--muted-foreground);
+  font-size: 14px;
+}
+
+/* ---- prose sections -------------------------------------------------------- */
+
+.ia-section {
+  padding: clamp(40px, 5.5vw, 72px) 0;
+  border-top: 1px solid var(--border);
+}
+
+.ia-section > h2 {
+  max-width: 24ch;
+  font-size: clamp(26px, 3.4vw, 38px);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  line-height: 1.12;
+}
+
+.ia-section > .ia-sub {
+  max-width: 66ch;
+  margin-top: 14px;
+  color: var(--muted-foreground);
+  font-size: 15.5px;
+  line-height: 1.6;
+  text-wrap: pretty;
+}
+
+.ia-cards {
+  display: grid;
+  gap: 16px;
+  margin-top: 30px;
+}
+
+@media (min-width: 760px) {
+  .ia-cards {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.ia-card {
+  padding: 20px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+}
+
+.ia-card h3 {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.ia-card p {
+  margin-top: 8px;
+  color: var(--muted-foreground);
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+
+@media (max-width: 620px) {
+  .ia-submit {
+    width: 100%;
+  }
+  .ia-check {
+    padding: 14px;
+  }
+  .ia-cell-pages {
+    max-width: 120px;
+  }
+  .ia-search {
+    width: 100%;
+    order: -1;
+  }
+  .ia-images-actions {
+    flex-wrap: wrap;
+  }
+}

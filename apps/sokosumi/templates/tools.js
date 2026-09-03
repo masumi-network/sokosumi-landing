@@ -98,6 +98,23 @@ const postCheckerPreview = () => `
     </span>
   </span>`;
 
+// The image audit returns a list of flagged images, not a single score, so
+// the preview is two rows of the report itself — a missing-alt row and a
+// legacy-format row — the same file/verdict shape as the other checkers.
+const imageAuditPreview = () => `
+  <span class="tp tp-ia">
+    <span class="tp-file">
+      <span class="tp-file-name">Image audit</span>
+      <span class="tp-file-line"><b>hero.jpg</b><i>no alt</i></span>
+      <span class="tp-file-line"><b>banner.png</b><i>legacy</i></span>
+      <span class="tp-file-line"><b>icon.svg</b><i>ok</i></span>
+    </span>
+    <span class="tp-verdict">
+      <span class="tp-chip is-warn">6 missing alt</span>
+      <span class="tp-chip is-warn">14 legacy</span>
+    </span>
+  </span>`;
+
 const TOOLS = [
   {
     href: "/tools/llms-txt",
@@ -133,6 +150,13 @@ const TOOLS = [
     text: "Score a post's hook, CTA, formatting and timing before you publish.",
     meta: "Free · no sign-up",
     preview: postCheckerPreview,
+  },
+  {
+    href: "/tools/image-audit",
+    name: "Image audit",
+    text: "Every image on your site missing alt text, and every one still in a legacy format.",
+    meta: "Free · no sign-up",
+    preview: imageAuditPreview,
   },
 ];
 
