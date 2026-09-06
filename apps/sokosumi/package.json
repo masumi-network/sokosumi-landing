@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@resvg/resvg-js": "^2.6.2",
+    "qrcode": "^1.5.4",
     "satori": "^0.12.2",
     "sharp": "^0.34.5"
   }

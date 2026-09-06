@@ -1,0 +1,361 @@
+/* /tools/image-compressor — same language as the other checkers: a workbench
+ * above the fold, hairline borders, one accent, Inter Light for headings.
+ * Unique to this tool: a drag-drop zone and a before/after image compare.
+ */
+
+.ic-tool-page {
+  min-width: 0;
+}
+
+/* ---- head + form -------------------------------------------------------- */
+
+.ic-head {
+  padding: clamp(40px, 6vw, 76px) 0 clamp(24px, 3vw, 36px);
+}
+
+.ic-overline {
+  color: var(--primary);
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 14px;
+}
+
+.ic-head h1 {
+  max-width: 18ch;
+  font-size: clamp(36px, 5.6vw, 62px);
+  font-weight: 300;
+  letter-spacing: -0.035em;
+  line-height: 1.04;
+  text-wrap: balance;
+}
+
+.ic-lede {
+  max-width: 62ch;
+  margin-top: 22px;
+  font-size: clamp(16px, 1.8vw, 19px);
+  line-height: 1.55;
+  color: var(--muted-foreground);
+  text-wrap: pretty;
+}
+
+.ic-drop {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: clamp(26px, 3.5vw, 40px);
+  padding: clamp(32px, 5vw, 56px) 20px;
+  border: 1px dashed var(--border);
+  border-radius: var(--r-lg);
+  background: var(--card);
+  color: var(--muted-foreground);
+  text-align: center;
+  cursor: pointer;
+  transition:
+    border-color 160ms ease-out,
+    background 160ms ease-out;
+}
+
+.ic-drop:hover,
+.ic-drop:focus-visible,
+.ic-drop.is-dragover {
+  border-color: var(--primary);
+  background: rgba(43, 92, 120, 0.05);
+  outline: none;
+}
+
+.ic-drop-icon {
+  font-size: 20px;
+  color: var(--primary);
+}
+
+.ic-drop strong {
+  color: var(--foreground);
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.ic-drop small {
+  font-size: 12.5px;
+}
+
+.ic-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 14px;
+  margin-top: 16px;
+  padding: 14px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+}
+
+.ic-controls[hidden] {
+  display: none;
+}
+
+.ic-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 140px;
+}
+
+.ic-field-slider {
+  flex: 1;
+  min-width: 200px;
+}
+
+.ic-field label {
+  color: var(--muted-foreground);
+  font-size: 12.5px;
+}
+
+.ic-field label span {
+  color: var(--foreground);
+  font-weight: 500;
+}
+
+.ic-field select {
+  height: 40px;
+  padding: 0 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  background: var(--background);
+  color: var(--foreground);
+  font: inherit;
+  font-size: 14px;
+}
+
+.ic-field select:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: -1px;
+}
+
+.ic-field input[type="range"] {
+  width: 100%;
+  accent-color: var(--primary);
+}
+
+.ic-submit {
+  flex-shrink: 0;
+  height: 44px;
+  padding: 0 22px;
+  margin-left: auto;
+  border: 0;
+  border-radius: var(--r-md);
+  background: var(--primary);
+  color: #fff;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 160ms ease-out;
+}
+
+.ic-submit:hover:not(:disabled) {
+  background: #24506a;
+}
+
+.ic-submit:disabled {
+  opacity: 0.55;
+  cursor: progress;
+}
+
+.ic-error {
+  margin-top: 16px;
+  padding: 12px 14px;
+  border: 1px solid rgba(176, 42, 42, 0.28);
+  border-radius: var(--r-md);
+  background: rgba(176, 42, 42, 0.05);
+  color: #8f2020;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* ---- loading ------------------------------------------------------------- */
+
+.ic-loading[hidden] {
+  display: none;
+}
+
+.ic-loading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: clamp(40px, 8vw, 80px) 0;
+  border-top: 1px solid var(--border);
+  color: var(--muted-foreground);
+  font-size: 14.5px;
+}
+
+.ic-spin {
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--border);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: ic-spin 700ms linear infinite;
+}
+
+@keyframes ic-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ic-spin {
+    animation-duration: 2s;
+  }
+}
+
+/* ---- result shell --------------------------------------------------------- */
+
+.ic-result {
+  padding-bottom: clamp(40px, 6vw, 72px);
+  border-top: 1px solid var(--border);
+  scroll-margin-top: 88px;
+}
+
+.ic-compare {
+  display: grid;
+  gap: 18px;
+  margin-top: 24px;
+}
+
+@media (min-width: 640px) {
+  .ic-compare {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.ic-figure {
+  margin: 0;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+}
+
+.ic-figure img {
+  display: block;
+  width: 100%;
+  max-height: 360px;
+  object-fit: contain;
+  background: repeating-conic-gradient(rgba(0, 0, 0, 0.04) 0% 25%, transparent 0% 50%) 0 0 / 20px 20px;
+}
+
+.ic-figure figcaption {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 12px 16px;
+  border-top: 1px solid var(--border);
+  font-size: 13px;
+}
+
+.ic-figure figcaption span {
+  color: var(--muted-foreground);
+}
+
+.ic-figure figcaption b {
+  color: var(--foreground);
+  font-weight: 500;
+}
+
+.ic-summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-top: 20px;
+}
+
+.ic-summary-savings {
+  font-size: 16px;
+  color: var(--foreground);
+}
+
+.ic-summary-savings strong {
+  color: #2f6b45;
+  font-weight: 500;
+}
+
+.ic-summary-actions {
+  display: flex;
+  gap: 10px;
+}
+
+/* ---- prose sections -------------------------------------------------------- */
+
+.ic-section {
+  padding: clamp(40px, 5.5vw, 72px) 0;
+  border-top: 1px solid var(--border);
+}
+
+.ic-section > h2 {
+  max-width: 24ch;
+  font-size: clamp(26px, 3.4vw, 38px);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  line-height: 1.12;
+}
+
+.ic-section > .ic-sub {
+  max-width: 66ch;
+  margin-top: 14px;
+  color: var(--muted-foreground);
+  font-size: 15.5px;
+  line-height: 1.6;
+  text-wrap: pretty;
+}
+
+.ic-cards {
+  display: grid;
+  gap: 16px;
+  margin-top: 30px;
+}
+
+@media (min-width: 760px) {
+  .ic-cards {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.ic-card {
+  padding: 20px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+}
+
+.ic-card h3 {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.ic-card p {
+  margin-top: 8px;
+  color: var(--muted-foreground);
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+
+@media (max-width: 620px) {
+  .ic-submit {
+    margin-left: 0;
+    width: 100%;
+  }
+  .ic-summary {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .ic-summary-actions {
+    flex-direction: column;
+  }
+}

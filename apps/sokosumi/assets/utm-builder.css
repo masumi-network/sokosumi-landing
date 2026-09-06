@@ -1,0 +1,284 @@
+/* /tools/utm-builder — same language as the other checkers: a workbench
+ * above the fold, hairline borders, one accent, Inter Light for headings.
+ * No loading state here — everything updates live as you type.
+ */
+
+.ub-tool-page {
+  min-width: 0;
+}
+
+.ub-head {
+  padding: clamp(40px, 6vw, 76px) 0 clamp(24px, 3vw, 36px);
+}
+
+.ub-overline {
+  color: var(--primary);
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 14px;
+}
+
+.ub-head h1 {
+  max-width: 20ch;
+  font-size: clamp(36px, 5.6vw, 62px);
+  font-weight: 300;
+  letter-spacing: -0.035em;
+  line-height: 1.04;
+  text-wrap: balance;
+}
+
+.ub-lede {
+  max-width: 62ch;
+  margin-top: 22px;
+  font-size: clamp(16px, 1.8vw, 19px);
+  line-height: 1.55;
+  color: var(--muted-foreground);
+  text-wrap: pretty;
+}
+
+.ub-form {
+  display: grid;
+  gap: 14px;
+  margin-top: clamp(26px, 3.5vw, 40px);
+  padding: 16px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+}
+
+.ub-grid {
+  display: grid;
+  gap: 14px;
+}
+
+@media (min-width: 640px) {
+  .ub-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.ub-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ub-field label {
+  color: var(--muted-foreground);
+  font-size: 12.5px;
+}
+
+.ub-field label span {
+  opacity: 0.75;
+}
+
+.ub-field input {
+  height: 42px;
+  padding: 0 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  background: var(--background);
+  color: var(--foreground);
+  font: inherit;
+  font-size: 14.5px;
+}
+
+.ub-field input::placeholder {
+  color: rgba(15, 14, 13, 0.35);
+}
+
+.ub-field input:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: -1px;
+}
+
+.ub-error {
+  margin-top: 16px;
+  padding: 12px 14px;
+  border: 1px solid rgba(176, 42, 42, 0.28);
+  border-radius: var(--r-md);
+  background: rgba(176, 42, 42, 0.05);
+  color: #8f2020;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.ub-output {
+  display: flex;
+  gap: 8px;
+  margin-top: 18px;
+  padding: 4px;
+  background: var(--card);
+  border: 1px solid var(--primary);
+  border-radius: var(--r-md);
+}
+
+.ub-output[hidden] {
+  display: none;
+}
+
+.ub-output input {
+  flex: 1;
+  min-width: 0;
+  padding: 0 12px;
+  border: 0;
+  background: transparent;
+  color: var(--foreground);
+  font: inherit;
+  font-family: var(--mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+  font-size: 13px;
+}
+
+.ub-copy {
+  flex-shrink: 0;
+  padding: 0 16px;
+  border: 0;
+  border-radius: var(--r-sm);
+  background: var(--primary);
+  color: #fff;
+  font: inherit;
+  font-size: 13.5px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.ub-copy:hover {
+  background: #24506a;
+}
+
+/* ---- recent links --------------------------------------------------- */
+
+.ub-recent {
+  padding-bottom: clamp(30px, 4vw, 48px);
+  border-top: 1px solid var(--border);
+}
+
+.ub-recent[hidden] {
+  display: none;
+}
+
+.ub-recent-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding-top: 24px;
+}
+
+.ub-recent-head h2 {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.ub-clear {
+  padding: 4px 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  background: transparent;
+  color: var(--muted-foreground);
+  font: inherit;
+  font-size: 12.5px;
+  cursor: pointer;
+}
+
+.ub-clear:hover {
+  color: var(--foreground);
+  border-color: var(--primary);
+}
+
+.ub-recent-list {
+  display: grid;
+  gap: 8px;
+  margin-top: 14px;
+  list-style: none;
+}
+
+.ub-recent-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+}
+
+.ub-recent-url {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  color: var(--muted-foreground);
+  font-family: var(--mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ub-recent-copy {
+  flex-shrink: 0;
+  padding: 4px 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  background: transparent;
+  color: var(--muted-foreground);
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.ub-recent-copy:hover {
+  color: var(--foreground);
+  border-color: var(--primary);
+}
+
+/* ---- prose sections -------------------------------------------------------- */
+
+.ub-section {
+  padding: clamp(40px, 5.5vw, 72px) 0;
+  border-top: 1px solid var(--border);
+}
+
+.ub-section > h2 {
+  max-width: 24ch;
+  font-size: clamp(26px, 3.4vw, 38px);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  line-height: 1.12;
+}
+
+.ub-cards {
+  display: grid;
+  gap: 16px;
+  margin-top: 30px;
+}
+
+@media (min-width: 760px) {
+  .ub-cards {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.ub-card {
+  padding: 20px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+}
+
+.ub-card h3 {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.ub-card p {
+  margin-top: 8px;
+  color: var(--muted-foreground);
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+
+@media (max-width: 620px) {
+  .ub-recent-item {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

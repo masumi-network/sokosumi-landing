@@ -63,55 +63,159 @@ const designMdPreview = () => `
     </span>
   </span>`;
 
-// The SEO.md generator returns a scored spec, so the preview is the file's
-// summary lines with a score verdict — the same file/verdict pieces as the
-// llms.txt preview, since both tools hand back a scored file.
+// The SEO Analyzer scores what a page shows up as in search, so the preview
+// is the search snippet itself, plus a Lighthouse-style score ring — the way
+// the OG checker draws the social card it's actually grading.
 const seoMdPreview = () => `
   <span class="tp tp-seo">
-    <span class="tp-file">
-      <span class="tp-file-name">SEO.md</span>
-      <span class="tp-file-line"><b>score</b><i>92/100</i></span>
-      <span class="tp-file-line"><b>title</b><i>54 chars</i></span>
-      <span class="tp-file-line"><b>canonical</b><i>set</i></span>
-      <span class="tp-file-line"><b>og:image</b><i>set</i></span>
+    <span class="tp-serp">
+      <span class="tp-serp-url">sokosumi.com<i>›</i>product</span>
+      <span class="tp-serp-title">AI Coworkers for your marketing team</span>
+      <span class="tp-serp-desc">Hire AI coworkers and run template marketing tasks in one place.</span>
     </span>
     <span class="tp-verdict">
+      <span class="tp-gauge" style="--score:92"><b>92</b></span>
       <span class="tp-chip is-pass">14 passing</span>
       <span class="tp-chip is-warn">3 warnings</span>
     </span>
   </span>`;
 
-// The Social post checker returns four dimension scores, so the preview is a
-// mini scorecard: the dimensions as file-style lines, with an overall verdict
-// — the same file/verdict pieces as the llms.txt and SEO.md previews.
+// The Social post checker scores a LinkedIn-style post, so the preview is a
+// miniature of that post itself, the way the OG checker draws its card.
 const postCheckerPreview = () => `
   <span class="tp tp-psc">
-    <span class="tp-file">
-      <span class="tp-file-name">Post score</span>
-      <span class="tp-file-line"><b>hook</b><i>82/100</i></span>
-      <span class="tp-file-line"><b>CTA</b><i>90/100</i></span>
-      <span class="tp-file-line"><b>engagement</b><i>75/100</i></span>
-      <span class="tp-file-line"><b>timing</b><i>95/100</i></span>
+    <span class="tp-post">
+      <span class="tp-post-head">
+        <span class="tp-avatar"></span>
+        <span class="tp-post-name"><b>Jordan Reyes</b><i>Marketing Lead</i></span>
+      </span>
+      <span class="tp-post-body">Most SaaS teams ship a feature and hope someone notices.</span>
+      <span class="tp-post-foot"><span>👍 248</span><span>💬 37</span></span>
     </span>
     <span class="tp-verdict">
       <span class="tp-chip is-pass">84/100 overall</span>
     </span>
   </span>`;
 
-// The image audit returns a list of flagged images, not a single score, so
-// the preview is two rows of the report itself — a missing-alt row and a
-// legacy-format row — the same file/verdict shape as the other checkers.
+// The image audit returns a list of flagged images, so the preview is a mini
+// contact sheet — three thumbnails carrying the flags the real list shows.
 const imageAuditPreview = () => `
   <span class="tp tp-ia">
-    <span class="tp-file">
-      <span class="tp-file-name">Image audit</span>
-      <span class="tp-file-line"><b>hero.jpg</b><i>no alt</i></span>
-      <span class="tp-file-line"><b>banner.png</b><i>legacy</i></span>
-      <span class="tp-file-line"><b>icon.svg</b><i>ok</i></span>
+    <span class="tp-thumbs">
+      <span class="tp-thumb is-flag"><i>no alt</i></span>
+      <span class="tp-thumb is-flag"><i>legacy</i></span>
+      <span class="tp-thumb is-ok"><i>ok</i></span>
     </span>
     <span class="tp-verdict">
       <span class="tp-chip is-warn">6 missing alt</span>
       <span class="tp-chip is-warn">14 legacy</span>
+    </span>
+  </span>`;
+
+// The video script checker scores a short-form video script, so the preview
+// is a vertical reel frame with a caption — the shape of the thing it's
+// actually grading, the way the social post checker draws its post.
+const videoScriptPreview = () => `
+  <span class="tp tp-vsc">
+    <span class="tp-reel">
+      <span class="tp-reel-play" aria-hidden="true">▶</span>
+      <span class="tp-reel-caption">"Nobody tells you this before your first launch."</span>
+      <span class="tp-reel-bar"><i style="width:62%"></i></span>
+    </span>
+    <span class="tp-verdict">
+      <span class="tp-chip is-pass">83/100 overall</span>
+    </span>
+  </span>`;
+
+// The image compressor's whole point is a smaller file, so the preview is a
+// literal before/after size bar rather than a text readout of the same fact.
+const imageCompressorPreview = () => `
+  <span class="tp tp-ic">
+    <span class="tp-bars">
+      <span class="tp-bar">
+        <span class="tp-bar-label">Before</span>
+        <span class="tp-bar-track"><i style="width:100%"></i></span>
+        <span class="tp-bar-size">4.8 MB</span>
+      </span>
+      <span class="tp-bar is-after">
+        <span class="tp-bar-label">After</span>
+        <span class="tp-bar-track"><i style="width:15%"></i></span>
+        <span class="tp-bar-size">720 KB</span>
+      </span>
+    </span>
+    <span class="tp-verdict">
+      <span class="tp-chip is-pass">85% smaller</span>
+    </span>
+  </span>`;
+
+// The UTM builder appends query params to a URL, so the preview is the
+// address bar itself with the tagged part picked out in the accent color.
+const utmBuilderPreview = () => `
+  <span class="tp tp-ub">
+    <span class="tp-urlbar">
+      <span class="tp-urlbar-dot"></span>
+      <span class="tp-urlbar-text">example.com/page<b>?utm_source=newsletter&amp;utm_medium=email</b></span>
+    </span>
+    <span class="tp-verdict">
+      <span class="tp-chip is-pass">source</span>
+      <span class="tp-chip is-pass">medium</span>
+      <span class="tp-chip is-pass">campaign</span>
+    </span>
+  </span>`;
+
+// The robots.txt generator hands back a text file, the same shape as the
+// llms.txt checker's file card — a genuine match, since both are files a
+// crawler reads, rather than a reused shortcut.
+const robotsGeneratorPreview = () => `
+  <span class="tp tp-rg">
+    <span class="tp-file">
+      <span class="tp-file-name">robots.txt</span>
+      <span class="tp-file-line"><b>User-agent</b><i>*</i></span>
+      <span class="tp-file-line"><b>Disallow</b><i>/admin/</i></span>
+      <span class="tp-file-line is-quote">User-agent: GPTBot</span>
+      <span class="tp-file-line"><b>Disallow</b><i>/</i></span>
+    </span>
+    <span class="tp-verdict">
+      <span class="tp-chip is-warn">3 bots blocked</span>
+    </span>
+  </span>`;
+
+// The headline analyzer scores the headline itself, so the preview is the
+// headline as a pull quote plus a Lighthouse-style score ring — the same
+// gauge device the SEO Analyzer uses, since both hand back a single score.
+const headlineCheckerPreview = () => `
+  <span class="tp tp-ha">
+    <span class="tp-headline">
+      <span class="tp-headline-text">7 Free Marketing Tools That Cut Setup Time in Half</span>
+    </span>
+    <span class="tp-verdict">
+      <span class="tp-gauge" style="--score:88"><b>88</b></span>
+      <span class="tp-chip is-pass">3 passing</span>
+      <span class="tp-chip is-warn">1 warning</span>
+    </span>
+  </span>`;
+
+// The QR code generator's output is the code itself, so the preview is a
+// decorative pattern in the same finder-corner shape as a real one.
+const QR_PATTERN = [
+  [1, 1, 1, 1, 1, 0, 1, 1, 1],
+  [1, 0, 0, 0, 1, 0, 1, 0, 1],
+  [1, 0, 1, 0, 1, 0, 1, 0, 1],
+  [1, 0, 0, 0, 1, 0, 1, 0, 1],
+  [1, 1, 1, 1, 1, 0, 1, 1, 1],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [1, 0, 1, 1, 0, 1, 0, 1, 0],
+  [0, 1, 0, 0, 1, 0, 1, 0, 1],
+  [1, 0, 1, 0, 1, 1, 0, 1, 0],
+];
+const qrCodeGeneratorPreview = () => `
+  <span class="tp tp-qr">
+    <span class="tp-qr-code">
+      <span class="tp-qr-grid">${QR_PATTERN.flatMap((row) => row.map((cell) => `<i${cell ? ' class="is-on"' : ""}></i>`)).join("")}</span>
+    </span>
+    <span class="tp-verdict">
+      <span class="tp-chip is-pass">PNG</span>
+      <span class="tp-chip is-pass">SVG</span>
     </span>
   </span>`;
 
@@ -139,7 +243,7 @@ const TOOLS = [
   },
   {
     href: "/tools/seo-md",
-    name: "SEO.md generator",
+    name: "Website SEO Analyzer",
     text: "Turn any website into an AI-readable SEO specification.",
     meta: "Free · no sign-up",
     preview: seoMdPreview,
@@ -152,11 +256,53 @@ const TOOLS = [
     preview: postCheckerPreview,
   },
   {
+    href: "/tools/video-script-checker",
+    name: "Video Script Checker",
+    text: "Score a Reels, TikTok or Shorts script's hook, pacing and CTA before you film.",
+    meta: "Free · no sign-up",
+    preview: videoScriptPreview,
+  },
+  {
+    href: "/tools/image-compressor",
+    name: "Image Compressor",
+    text: "Shrink a JPEG, PNG, WebP or AVIF, with a real before/after size comparison.",
+    meta: "Free · no sign-up",
+    preview: imageCompressorPreview,
+  },
+  {
     href: "/tools/image-audit",
     name: "Image audit",
     text: "Every image on your site missing alt text, and every one still in a legacy format.",
     meta: "Free · no sign-up",
     preview: imageAuditPreview,
+  },
+  {
+    href: "/tools/utm-builder",
+    name: "UTM / Campaign URL Builder",
+    text: "Tag a campaign link in seconds — nothing leaves your browser.",
+    meta: "Free · no sign-up",
+    preview: utmBuilderPreview,
+  },
+  {
+    href: "/tools/headline-analyzer",
+    name: "Headline Analyzer",
+    text: "Score a headline or ad line's length, emotional pull, specificity and clarity.",
+    meta: "Free · no sign-up",
+    preview: headlineCheckerPreview,
+  },
+  {
+    href: "/tools/qr-code-generator",
+    name: "QR Code Generator",
+    text: "Turn any URL or text into a scannable PNG or SVG QR code.",
+    meta: "Free · no sign-up",
+    preview: qrCodeGeneratorPreview,
+  },
+  {
+    href: "/tools/robots-txt-generator",
+    name: "Robots.txt Generator",
+    text: "Custom crawl rules, plus a one-click checklist to block AI-training bots.",
+    meta: "Free · no sign-up",
+    preview: robotsGeneratorPreview,
   },
 ];
 

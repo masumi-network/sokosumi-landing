@@ -1,0 +1,271 @@
+/* /tools/robots-txt-generator — same language as the other tools: a
+ * workbench above the fold, hairline borders, one accent, Inter Light for
+ * headings. Unique to this tool: a two-column form + live preview layout.
+ */
+
+.rg-tool-page {
+  min-width: 0;
+}
+
+.rg-head {
+  padding: clamp(40px, 6vw, 76px) 0 clamp(24px, 3vw, 36px);
+}
+
+.rg-overline {
+  color: var(--primary);
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 14px;
+}
+
+.rg-head h1 {
+  max-width: 20ch;
+  font-size: clamp(36px, 5.6vw, 62px);
+  font-weight: 300;
+  letter-spacing: -0.035em;
+  line-height: 1.04;
+  text-wrap: balance;
+}
+
+.rg-lede {
+  max-width: 62ch;
+  margin-top: 22px;
+  font-size: clamp(16px, 1.8vw, 19px);
+  line-height: 1.55;
+  color: var(--muted-foreground);
+  text-wrap: pretty;
+}
+
+.rg-layout {
+  display: grid;
+  gap: 18px;
+  margin-top: clamp(26px, 3.5vw, 40px);
+}
+
+@media (min-width: 900px) {
+  .rg-layout {
+    grid-template-columns: 1.1fr 1fr;
+    align-items: start;
+  }
+}
+
+.rg-form {
+  display: grid;
+  gap: 16px;
+  padding: 16px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+}
+
+.rg-row {
+  display: grid;
+  gap: 14px;
+}
+
+@media (min-width: 520px) {
+  .rg-row {
+    grid-template-columns: 1fr auto;
+  }
+}
+
+.rg-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.rg-field-narrow {
+  min-width: 140px;
+}
+
+.rg-field label {
+  color: var(--muted-foreground);
+  font-size: 12.5px;
+}
+
+.rg-field label span {
+  opacity: 0.75;
+}
+
+.rg-field input,
+.rg-field textarea {
+  padding: 9px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  background: var(--background);
+  color: var(--foreground);
+  font: inherit;
+  font-family: var(--mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+  font-size: 13.5px;
+  line-height: 1.5;
+}
+
+.rg-field input {
+  height: 40px;
+}
+
+.rg-field textarea {
+  resize: vertical;
+}
+
+.rg-field input:focus,
+.rg-field textarea:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: -1px;
+}
+
+.rg-bots {
+  display: grid;
+  gap: 8px;
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+}
+
+.rg-bots legend {
+  padding: 0 4px;
+  color: var(--muted-foreground);
+  font-size: 12.5px;
+}
+
+.rg-bot {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 6px 4px;
+  cursor: pointer;
+}
+
+.rg-bot input {
+  margin-top: 3px;
+  accent-color: var(--primary);
+}
+
+.rg-bot span {
+  display: grid;
+  gap: 1px;
+}
+
+.rg-bot b {
+  font-size: 13.5px;
+  font-weight: 500;
+}
+
+.rg-bot i {
+  color: var(--muted-foreground);
+  font-size: 12px;
+  font-style: normal;
+  line-height: 1.4;
+}
+
+.rg-preview {
+  display: flex;
+  flex-direction: column;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+}
+
+.rg-preview-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  color: var(--muted-foreground);
+  font-family: var(--mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+  font-size: 12.5px;
+}
+
+.rg-preview-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.rg-btn {
+  padding: 4px 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  background: var(--background);
+  color: var(--muted-foreground);
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.rg-btn:hover {
+  color: var(--foreground);
+  border-color: var(--primary);
+}
+
+.rg-preview-body {
+  flex: 1;
+  margin: 0;
+  padding: 16px;
+  min-height: 260px;
+  max-height: 480px;
+  overflow: auto;
+  color: var(--foreground);
+  font-family: var(--mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+  font-size: 12.5px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* ---- prose sections -------------------------------------------------------- */
+
+.rg-section {
+  padding: clamp(40px, 5.5vw, 72px) 0;
+  border-top: 1px solid var(--border);
+}
+
+.rg-section > h2 {
+  max-width: 26ch;
+  font-size: clamp(26px, 3.4vw, 38px);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  line-height: 1.12;
+}
+
+.rg-section > .rg-sub {
+  max-width: 66ch;
+  margin-top: 14px;
+  color: var(--muted-foreground);
+  font-size: 15.5px;
+  line-height: 1.6;
+  text-wrap: pretty;
+}
+
+.rg-cards {
+  display: grid;
+  gap: 16px;
+  margin-top: 30px;
+}
+
+@media (min-width: 760px) {
+  .rg-cards {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.rg-card {
+  padding: 20px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+}
+
+.rg-card h3 {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.rg-card p {
+  margin-top: 8px;
+  color: var(--muted-foreground);
+  font-size: 13.5px;
+  line-height: 1.55;
+}

@@ -9,9 +9,9 @@ const FAQ = [
       "SEO.md is a plain-text SEO specification for AI agents and developers. It captures a page's real search signals — title, meta description, canonical, Open Graph, structured data, heading structure, keywords, brand entities, navigation and indexing rules — plus SEO, content, brand-clarity and AI-readiness scores and prioritized fixes, in one file you can drop into a repo.",
   },
   {
-    question: "How does the SEO.md generator work?",
+    question: "How does the Website SEO Analyzer work?",
     answer:
-      "Paste a public URL. The generator fetches the page and its robots.txt on the server, parses the on-page SEO signals directly from the HTML, scores them against best-practice rules, and produces a structured SEO.md you can review, edit, copy, or download. No sign-up, no browser extension, no API key.",
+      "Paste a public URL. The analyzer fetches the page and its robots.txt on the server, parses the on-page SEO signals directly from the HTML, scores them against best-practice rules, and produces a structured SEO.md you can review, edit, copy, or download. No sign-up, no browser extension, no API key.",
   },
   {
     question: "Which AI agents can use SEO.md?",
@@ -27,7 +27,7 @@ const FAQ = [
 
 function render() {
   const path = "/tools/seo-md";
-  const crumbs = [{ label: "Home", href: "/" }, { label: "Free tools", href: "/tools" }, { label: "SEO.md generator" }];
+  const crumbs = [{ label: "Home", href: "/" }, { label: "Free tools", href: "/tools" }, { label: "Website SEO Analyzer" }];
   const faqJsonLd = {
     "@type": "FAQPage",
     "@id": `${SITE}${path}#faq`,
@@ -40,21 +40,21 @@ function render() {
   const appJsonLd = {
     "@type": "SoftwareApplication",
     "@id": `${SITE}${path}#software`,
-    name: "Sokosumi SEO.md Generator",
+    name: "Sokosumi Website SEO Analyzer",
     applicationCategory: "DeveloperApplication",
     operatingSystem: "Web",
     url: `${SITE}${path}`,
     description:
-      "A free web tool that generates an SEO.md specification from a public website URL — title, meta, Open Graph, structured data, headings and a scored checklist — for use with AI agents.",
+      "A free website SEO analyzer that scores a public URL's on-page signals — title, meta, Open Graph, structured data, headings — and generates an SEO.md specification for use with AI agents.",
     offers: { "@type": "Offer", price: "0", priceCurrency: "EUR" },
     creator: { "@id": `${SITE}/#organization` },
   };
 
   return (
     pageStart({
-      title: "Free SEO.md generator for AI agents | Sokosumi",
+      title: "Free Website SEO Analyzer | Sokosumi",
       description:
-        "Generate an SEO.md from any website URL: title, meta description, canonical, Open Graph, structured data, headings and a scored checklist for Claude Code, Cursor and other AI agents.",
+        "Analyze any website's on-page SEO: title, meta description, canonical, Open Graph, structured data, headings and a scored checklist — exported as an SEO.md for Claude Code, Cursor and other AI agents.",
       path,
       englishOnly: true,
       breadcrumb: crumbs,
@@ -63,7 +63,7 @@ function render() {
       jsonld: [appJsonLd, faqJsonLd],
       og: {
         type: "page",
-        title: "Free SEO.md generator",
+        title: "Free Website SEO Analyzer",
         sub: "Turn any website into an AI-readable SEO specification.",
       },
     }) +
@@ -71,7 +71,7 @@ function render() {
       <header class="dm-tool-head">
         <div>
           <p class="dm-overline">Tool · Free</p>
-          <h1>SEO.md Generator</h1>
+          <h1>Website SEO Analyzer</h1>
         </div>
         <p class="dm-tool-meta"><span class="dm-live">Live</span></p>
       </header>
