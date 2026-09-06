@@ -88,6 +88,8 @@ const schemaMarkupGeneratorTpl = require("./templates/schemaMarkupGenerator");
 const caseStudyOutlineMakerTpl = require("./templates/caseStudyOutlineMaker");
 const reEngagementBuilderTpl = require("./templates/reEngagementBuilder");
 const csvDashboardTpl = require("./templates/csvDashboard");
+const redirectCheckerTpl = require("./templates/redirectChecker");
+const redirectCheck = require("./lib/redirectCheck");
 
 const port = process.env.PORT || 3000;
 const root = __dirname;
@@ -168,6 +170,9 @@ const BLOG_TO_CAROUSEL_CHECK_RATE_LIMIT = Number(process.env.BLOG_TO_CAROUSEL_CH
 const blogToCarouselCheckRequests = new Map();
 const BLOG_TO_SOCIAL_WEEK_CHECK_RATE_LIMIT = Number(process.env.BLOG_TO_SOCIAL_WEEK_CHECK_RATE_LIMIT) || 20;
 const blogToSocialWeekCheckRequests = new Map();
+// Crawls seed pages plus up to 40 link checks per request — a low ceiling.
+const REDIRECT_CHECK_RATE_LIMIT = Number(process.env.REDIRECT_CHECK_RATE_LIMIT) || 6;
+const redirectCheckRequests = new Map();
 
 function publicWebsiteUrl(value) {
   let parsed;
@@ -280,6 +285,7 @@ const answerReadinessCheckRateLimited = (ip) => hourlyRateLimited(answerReadines
 const internalLinkingCheckRateLimited = (ip) => hourlyRateLimited(internalLinkingCheckRequests, INTERNAL_LINKING_CHECK_RATE_LIMIT, ip);
 const blogToCarouselCheckRateLimited = (ip) => hourlyRateLimited(blogToCarouselCheckRequests, BLOG_TO_CAROUSEL_CHECK_RATE_LIMIT, ip);
 const blogToSocialWeekCheckRateLimited = (ip) => hourlyRateLimited(blogToSocialWeekCheckRequests, BLOG_TO_SOCIAL_WEEK_CHECK_RATE_LIMIT, ip);
+const redirectCheckRateLimited = (ip) => hourlyRateLimited(redirectCheckRequests, REDIRECT_CHECK_RATE_LIMIT, ip);
 
 async function designMdFetch(pathname, options = {}) {
   const response = await fetch(`${DESIGN_MD_API_BASE}${pathname}`, {
@@ -775,6 +781,7 @@ const routes = [
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "case-study-outline" && {}, h: caseStudyOutlineMakerTpl.render },
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "re-engagement-builder" && {}, h: reEngagementBuilderTpl.render },
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "csv-dashboard" && {}, h: csvDashboardTpl.render },
+  { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "redirect-checker" && {}, h: redirectCheckerTpl.render },
   { m: (s) => s.length === 1 && s[0] === "product" && {}, h: pagesTpl.productHub },
   { m: (s) => s.length === 1 && s[0] === "pricing" && {}, h: pricingTpl.render },
   // The entity page for Sokosumi itself lives in code so its JSON-LD is
@@ -1665,6 +1672,27 @@ const assetsDir = path.join(root, "assets");
           }
           try {
             const data = await blogToSocialWeekCheck.analyze(body);
+            return send(req, res, 200, jsonHead, JSON.stringify(data));
+          } catch (error) {
+            const status = error.status && error.status >= 400 && error.status < 600 ? error.status : 500;
+            return send(req, res, status, jsonHead, JSON.stringify({ error: error.message || "That check did not work. Try again." }));
+          }
+        }
+
+        if (urlPath === "/api/redirect-check" && req.method === "POST") {
+          const jsonHead = { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" };
+          let body;
+          try {
+            body = await readJsonBody(req, 4096);
+          } catch (error) {
+            const message = error.message === "too-large" ? "The request is too large." : "Send a valid JSON request.";
+            return send(req, res, 400, jsonHead, JSON.stringify({ error: message }));
+          }
+          if (redirectCheckRateLimited(clientIp(req))) {
+            return send(req, res, 429, { ...jsonHead, "Retry-After": "3600" }, JSON.stringify({ error: "You have reached the hourly limit. Try again later." }));
+          }
+          try {
+            const data = await redirectCheck.analyze(body);
             return send(req, res, 200, jsonHead, JSON.stringify(data));
           } catch (error) {
             const status = error.status && error.status >= 400 && error.status < 600 ? error.status : 500;

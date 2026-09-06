@@ -404,6 +404,21 @@ const keywordExtractorPreview = () => `
     </span>
   </span>`;
 
+// The redirect checker hands back a broken-link list, matching the file
+// listing device used by the llms.txt/robots.txt tools.
+const redirectCheckerPreview = () => `
+  <span class="tp tp-lt">
+    <span class="tp-file">
+      <span class="tp-file-name">Broken links</span>
+      <span class="tp-file-line"><b>404</b><i>/old-page</i></span>
+      <span class="tp-file-line is-quote">→ suggest /new-page</span>
+    </span>
+    <span class="tp-verdict">
+      <span class="tp-chip is-warn">3 broken</span>
+      <span class="tp-chip is-pass">37 OK</span>
+    </span>
+  </span>`;
+
 const TOOLS = [
   {
     href: "/tools/llms-txt",
@@ -680,6 +695,13 @@ const TOOLS = [
           <span class="tp-chip is-pass">Nothing leaves your browser</span>
         </span>
       </span>`,
+  },
+  {
+    href: "/tools/redirect-checker",
+    name: "404 & Redirect Checker",
+    text: "Crawl a site's internal links, find the truly broken ones, and get a suggested replacement.",
+    meta: "Free · no sign-up",
+    preview: redirectCheckerPreview,
   },
 ];
 
