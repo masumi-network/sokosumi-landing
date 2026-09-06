@@ -327,6 +327,22 @@ const competitorFeatureGapPreview = () => `
     </span>
   </span>`;
 
+// Answer-readiness scores the page itself, so the preview reuses the
+// SEO analyzer's search-snippet-plus-gauge device.
+const answerReadinessPreview = () => `
+  <span class="tp tp-seo">
+    <span class="tp-serp">
+      <span class="tp-serp-url">example.com<i>›</i>guide</span>
+      <span class="tp-serp-title">A clear H1, a table, three FAQ blocks</span>
+      <span class="tp-serp-desc">Chunk-friendly paragraphs and JSON-LD, checked directly against the markup.</span>
+    </span>
+    <span class="tp-verdict">
+      <span class="tp-gauge" style="--score:74"><b>74</b></span>
+      <span class="tp-chip is-pass">3 passing</span>
+      <span class="tp-chip is-warn">1 warning</span>
+    </span>
+  </span>`;
+
 const TOOLS = [
   {
     href: "/tools/llms-txt",
@@ -460,6 +476,13 @@ const TOOLS = [
     text: "Paste 2-5 competitor URLs and get a yes/no feature matrix built from their own list items.",
     meta: "Free · no sign-up",
     preview: competitorFeatureGapPreview,
+  },
+  {
+    href: "/tools/answer-readiness",
+    name: "Answer-Readiness Score",
+    text: "Score how easily an LLM could lift a clean answer from a page — headings, FAQ, tables, chunk length.",
+    meta: "Free · no sign-up",
+    preview: answerReadinessPreview,
   },
 ];
 

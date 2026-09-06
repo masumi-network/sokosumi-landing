@@ -73,6 +73,8 @@ const competitorMessagingCheckerTpl = require("./templates/competitorMessagingCh
 const competitorMessagingCheck = require("./lib/competitorMessagingCheck");
 const competitorFeatureGapCheckerTpl = require("./templates/competitorFeatureGapChecker");
 const competitorFeatureGapCheck = require("./lib/competitorFeatureGapCheck");
+const answerReadinessCheckerTpl = require("./templates/answerReadinessChecker");
+const answerReadinessCheck = require("./lib/answerReadinessCheck");
 
 const port = process.env.PORT || 3000;
 const root = __dirname;
@@ -144,6 +146,8 @@ const COMPETITOR_MESSAGING_CHECK_RATE_LIMIT = Number(process.env.COMPETITOR_MESS
 const competitorMessagingCheckRequests = new Map();
 const COMPETITOR_FEATURE_GAP_CHECK_RATE_LIMIT = Number(process.env.COMPETITOR_FEATURE_GAP_CHECK_RATE_LIMIT) || 10;
 const competitorFeatureGapCheckRequests = new Map();
+const ANSWER_READINESS_CHECK_RATE_LIMIT = Number(process.env.ANSWER_READINESS_CHECK_RATE_LIMIT) || 30;
+const answerReadinessCheckRequests = new Map();
 
 function publicWebsiteUrl(value) {
   let parsed;
@@ -252,6 +256,7 @@ const landingTeardownCheckRateLimited = (ip) => hourlyRateLimited(landingTeardow
 const competitorPositioningCheckRateLimited = (ip) => hourlyRateLimited(competitorPositioningCheckRequests, COMPETITOR_POSITIONING_CHECK_RATE_LIMIT, ip);
 const competitorMessagingCheckRateLimited = (ip) => hourlyRateLimited(competitorMessagingCheckRequests, COMPETITOR_MESSAGING_CHECK_RATE_LIMIT, ip);
 const competitorFeatureGapCheckRateLimited = (ip) => hourlyRateLimited(competitorFeatureGapCheckRequests, COMPETITOR_FEATURE_GAP_CHECK_RATE_LIMIT, ip);
+const answerReadinessCheckRateLimited = (ip) => hourlyRateLimited(answerReadinessCheckRequests, ANSWER_READINESS_CHECK_RATE_LIMIT, ip);
 
 async function designMdFetch(pathname, options = {}) {
   const response = await fetch(`${DESIGN_MD_API_BASE}${pathname}`, {
@@ -736,6 +741,7 @@ const routes = [
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "competitor-positioning" && {}, h: competitorPositioningCheckerTpl.render },
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "competitor-messaging" && {}, h: competitorMessagingCheckerTpl.render },
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "competitor-feature-gap" && {}, h: competitorFeatureGapCheckerTpl.render },
+  { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "answer-readiness" && {}, h: answerReadinessCheckerTpl.render },
   { m: (s) => s.length === 1 && s[0] === "product" && {}, h: pagesTpl.productHub },
   { m: (s) => s.length === 1 && s[0] === "pricing" && {}, h: pricingTpl.render },
   // The entity page for Sokosumi itself lives in code so its JSON-LD is
@@ -1542,6 +1548,27 @@ const assetsDir = path.join(root, "assets");
           }
           try {
             const data = await competitorFeatureGapCheck.analyze(body);
+            return send(req, res, 200, jsonHead, JSON.stringify(data));
+          } catch (error) {
+            const status = error.status && error.status >= 400 && error.status < 600 ? error.status : 500;
+            return send(req, res, status, jsonHead, JSON.stringify({ error: error.message || "That check did not work. Try again." }));
+          }
+        }
+
+        if (urlPath === "/api/answer-readiness-check" && req.method === "POST") {
+          const jsonHead = { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" };
+          let body;
+          try {
+            body = await readJsonBody(req, 4096);
+          } catch (error) {
+            const message = error.message === "too-large" ? "The request is too large." : "Send a valid JSON request.";
+            return send(req, res, 400, jsonHead, JSON.stringify({ error: message }));
+          }
+          if (answerReadinessCheckRateLimited(clientIp(req))) {
+            return send(req, res, 429, { ...jsonHead, "Retry-After": "3600" }, JSON.stringify({ error: "You have reached the hourly limit. Try again later." }));
+          }
+          try {
+            const data = await answerReadinessCheck.analyze(body);
             return send(req, res, 200, jsonHead, JSON.stringify(data));
           } catch (error) {
             const status = error.status && error.status >= 400 && error.status < 600 ? error.status : 500;
