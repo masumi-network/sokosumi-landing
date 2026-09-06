@@ -470,6 +470,19 @@ const codePilerPreview = () => `
     </span>
   </span>`;
 
+const aiSearchVisibilityPreview = () => `
+  <span class="tp tp-lt">
+    <span class="tp-file">
+      <span class="tp-file-name">robots.txt</span>
+      <span class="tp-file-line"><b>GPTBot</b><i>allowed</i></span>
+      <span class="tp-file-line"><b>ClaudeBot</b><i>allowed</i></span>
+      <span class="tp-file-line is-quote">Organization schema: missing sameAs</span>
+    </span>
+    <span class="tp-verdict">
+      <span class="tp-gauge" style="--score:67"><b>67</b></span>
+    </span>
+  </span>`;
+
 const TOOLS = [
   {
     href: "/tools/llms-txt",
@@ -781,6 +794,13 @@ const TOOLS = [
     text: "Turn a public GitHub repo into a starter system prompt matching its own conventions.",
     meta: "Free · no sign-up",
     preview: codePilerPreview,
+  },
+  {
+    href: "/tools/ai-search-visibility",
+    name: "AI Search Visibility Checker",
+    text: "Check whether AI crawlers are blocked and your brand is set up to be disambiguated. Not a live AI search measurement.",
+    meta: "Free · no sign-up",
+    preview: aiSearchVisibilityPreview,
   },
 ];
 
