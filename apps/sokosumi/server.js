@@ -90,6 +90,8 @@ const reEngagementBuilderTpl = require("./templates/reEngagementBuilder");
 const csvDashboardTpl = require("./templates/csvDashboard");
 const redirectCheckerTpl = require("./templates/redirectChecker");
 const redirectCheck = require("./lib/redirectCheck");
+const orphanPageFinderTpl = require("./templates/orphanPageFinder");
+const orphanPageCheck = require("./lib/orphanPageCheck");
 
 const port = process.env.PORT || 3000;
 const root = __dirname;
@@ -173,6 +175,8 @@ const blogToSocialWeekCheckRequests = new Map();
 // Crawls seed pages plus up to 40 link checks per request — a low ceiling.
 const REDIRECT_CHECK_RATE_LIMIT = Number(process.env.REDIRECT_CHECK_RATE_LIMIT) || 6;
 const redirectCheckRequests = new Map();
+const ORPHAN_PAGES_CHECK_RATE_LIMIT = Number(process.env.ORPHAN_PAGES_CHECK_RATE_LIMIT) || 8;
+const orphanPageCheckRequests = new Map();
 
 function publicWebsiteUrl(value) {
   let parsed;
@@ -286,6 +290,7 @@ const internalLinkingCheckRateLimited = (ip) => hourlyRateLimited(internalLinkin
 const blogToCarouselCheckRateLimited = (ip) => hourlyRateLimited(blogToCarouselCheckRequests, BLOG_TO_CAROUSEL_CHECK_RATE_LIMIT, ip);
 const blogToSocialWeekCheckRateLimited = (ip) => hourlyRateLimited(blogToSocialWeekCheckRequests, BLOG_TO_SOCIAL_WEEK_CHECK_RATE_LIMIT, ip);
 const redirectCheckRateLimited = (ip) => hourlyRateLimited(redirectCheckRequests, REDIRECT_CHECK_RATE_LIMIT, ip);
+const orphanPageCheckRateLimited = (ip) => hourlyRateLimited(orphanPageCheckRequests, ORPHAN_PAGES_CHECK_RATE_LIMIT, ip);
 
 async function designMdFetch(pathname, options = {}) {
   const response = await fetch(`${DESIGN_MD_API_BASE}${pathname}`, {
@@ -782,6 +787,7 @@ const routes = [
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "re-engagement-builder" && {}, h: reEngagementBuilderTpl.render },
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "csv-dashboard" && {}, h: csvDashboardTpl.render },
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "redirect-checker" && {}, h: redirectCheckerTpl.render },
+  { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "orphan-pages" && {}, h: orphanPageFinderTpl.render },
   { m: (s) => s.length === 1 && s[0] === "product" && {}, h: pagesTpl.productHub },
   { m: (s) => s.length === 1 && s[0] === "pricing" && {}, h: pricingTpl.render },
   // The entity page for Sokosumi itself lives in code so its JSON-LD is
@@ -1693,6 +1699,27 @@ const assetsDir = path.join(root, "assets");
           }
           try {
             const data = await redirectCheck.analyze(body);
+            return send(req, res, 200, jsonHead, JSON.stringify(data));
+          } catch (error) {
+            const status = error.status && error.status >= 400 && error.status < 600 ? error.status : 500;
+            return send(req, res, status, jsonHead, JSON.stringify({ error: error.message || "That check did not work. Try again." }));
+          }
+        }
+
+        if (urlPath === "/api/orphan-pages-check" && req.method === "POST") {
+          const jsonHead = { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" };
+          let body;
+          try {
+            body = await readJsonBody(req, 4096);
+          } catch (error) {
+            const message = error.message === "too-large" ? "The request is too large." : "Send a valid JSON request.";
+            return send(req, res, 400, jsonHead, JSON.stringify({ error: message }));
+          }
+          if (orphanPageCheckRateLimited(clientIp(req))) {
+            return send(req, res, 429, { ...jsonHead, "Retry-After": "3600" }, JSON.stringify({ error: "You have reached the hourly limit. Try again later." }));
+          }
+          try {
+            const data = await orphanPageCheck.analyze(body);
             return send(req, res, 200, jsonHead, JSON.stringify(data));
           } catch (error) {
             const status = error.status && error.status >= 400 && error.status < 600 ? error.status : 500;

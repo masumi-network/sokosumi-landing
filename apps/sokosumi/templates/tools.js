@@ -419,6 +419,18 @@ const redirectCheckerPreview = () => `
     </span>
   </span>`;
 
+const orphanPageFinderPreview = () => `
+  <span class="tp tp-lt">
+    <span class="tp-file">
+      <span class="tp-file-name">Orphan pages</span>
+      <span class="tp-file-line is-quote">/promo/2024-launch</span>
+      <span class="tp-file-line is-quote">/legacy/pricing-old</span>
+    </span>
+    <span class="tp-verdict">
+      <span class="tp-chip is-warn">2 orphans</span>
+    </span>
+  </span>`;
+
 const TOOLS = [
   {
     href: "/tools/llms-txt",
@@ -702,6 +714,13 @@ const TOOLS = [
     text: "Crawl a site's internal links, find the truly broken ones, and get a suggested replacement.",
     meta: "Free · no sign-up",
     preview: redirectCheckerPreview,
+  },
+  {
+    href: "/tools/orphan-pages",
+    name: "Orphan Page Finder",
+    text: "Find sitemap pages that no other page on the site actually links to.",
+    meta: "Free · no sign-up",
+    preview: orphanPageFinderPreview,
   },
 ];
 
