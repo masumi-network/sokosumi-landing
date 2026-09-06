@@ -343,6 +343,21 @@ const answerReadinessPreview = () => `
     </span>
   </span>`;
 
+// The internal linking finder hands back a list of page pairs, so the
+// preview is a small file-style listing of suggested link rows.
+const internalLinkingPreview = () => `
+  <span class="tp tp-lt">
+    <span class="tp-file">
+      <span class="tp-file-name">Suggested links</span>
+      <span class="tp-file-line"><b>Pricing</b><i>→ Guides</i></span>
+      <span class="tp-file-line is-quote">78% keyword overlap</span>
+      <span class="tp-file-line"><b>Blog post</b><i>→ Use cases</i></span>
+    </span>
+    <span class="tp-verdict">
+      <span class="tp-chip is-pass">9 pages crawled</span>
+    </span>
+  </span>`;
+
 const TOOLS = [
   {
     href: "/tools/llms-txt",
@@ -483,6 +498,13 @@ const TOOLS = [
     text: "Score how easily an LLM could lift a clean answer from a page — headings, FAQ, tables, chunk length.",
     meta: "Free · no sign-up",
     preview: answerReadinessPreview,
+  },
+  {
+    href: "/tools/internal-linking-finder",
+    name: "Internal Linking Opportunity Finder",
+    text: "Crawl up to 12 pages and find ones that should link to each other, with anchor text suggestions.",
+    meta: "Free · no sign-up",
+    preview: internalLinkingPreview,
   },
 ];
 
