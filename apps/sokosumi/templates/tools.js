@@ -606,6 +606,23 @@ const TOOLS = [
         </span>
       </span>`,
   },
+  {
+    href: "/tools/schema-generator",
+    name: "Schema Markup Generator",
+    text: "Build valid JSON-LD for Article, Product, FAQ, Organization, LocalBusiness, HowTo and Review.",
+    meta: "Free · no sign-up",
+    preview: () => `
+      <span class="tp tp-lt">
+        <span class="tp-file">
+          <span class="tp-file-name">schema.json</span>
+          <span class="tp-file-line"><b>@type</b><i>Article</i></span>
+          <span class="tp-file-line is-quote">"headline": "…"</span>
+        </span>
+        <span class="tp-verdict">
+          <span class="tp-chip is-pass">Nothing leaves your browser</span>
+        </span>
+      </span>`,
+  },
 ];
 
 function toolCard(t) {
