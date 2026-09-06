@@ -589,6 +589,23 @@ const TOOLS = [
         </span>
       </span>`,
   },
+  {
+    href: "/tools/keyword-clusters",
+    name: "Keyword Cluster Generator",
+    text: "Paste up to 1,000 keywords and get them grouped into topical clusters with a suggested page each.",
+    meta: "Free · no sign-up",
+    preview: () => `
+      <span class="tp tp-lt">
+        <span class="tp-file">
+          <span class="tp-file-name">Clusters</span>
+          <span class="tp-file-line"><b>Email Marketing</b><i>×14</i></span>
+          <span class="tp-file-line"><b>Social Scheduling</b><i>×9</i></span>
+        </span>
+        <span class="tp-verdict">
+          <span class="tp-chip is-pass">Nothing leaves your browser</span>
+        </span>
+      </span>`,
+  },
 ];
 
 function toolCard(t) {
