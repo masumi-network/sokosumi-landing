@@ -9,10 +9,9 @@
 // opportunity. No LLM: similarity is a Jaccard set overlap on each page's
 // top keywords, capped and timed out so a large site can't hang the request.
 
-const { safeFetch, readCapped, fetchErrorMessage } = require("./safeFetch");
 const { fetchPage, collectTitle, collectLinks, visibleText } = require("./htmlExtract");
+const { discoverPages } = require("./siteCrawl");
 
-const UA = "Mozilla/5.0 (compatible; SokosumiToolsBot/1.0; +https://sokosumi.com/tools)";
 const MAX_PAGES = 12;
 const MAX_SUGGESTIONS = 20;
 const TOP_KEYWORDS_PER_PAGE = 20;
@@ -47,40 +46,6 @@ function jaccard(a, b) {
   return union ? intersection / union : 0;
 }
 
-async function fetchXmlLocs(url, timeoutMs = 8000) {
-  let response;
-  try {
-    ({ response } = await safeFetch(url, { headers: { "User-Agent": UA, Accept: "application/xml,text/xml" } }, timeoutMs));
-  } catch (error) {
-    throw new Error(fetchErrorMessage(error));
-  }
-  if (!response.ok) throw new Error(`sitemap responded with HTTP ${response.status}`);
-  const buffer = await readCapped(response, 2 * 1024 * 1024);
-  const xml = buffer.toString("utf-8");
-  const locs = [...xml.matchAll(/<loc>\s*([^<\s]+)\s*<\/loc>/gi)].map((m) => m[1]);
-  const isSitemapIndex = /<sitemapindex\b/i.test(xml);
-  return { locs, isSitemapIndex };
-}
-
-async function discoverPages(startUrl) {
-  const origin = new URL(startUrl).origin;
-  try {
-    const { locs, isSitemapIndex } = await fetchXmlLocs(`${origin}/sitemap.xml`);
-    if (isSitemapIndex && locs.length) {
-      const first = await fetchXmlLocs(locs[0]);
-      if (first.locs.length) return first.locs.slice(0, MAX_PAGES);
-    }
-    if (locs.length) return locs.slice(0, MAX_PAGES);
-  } catch {
-    /* fall through to homepage-link discovery */
-  }
-
-  const { html, finalUrl } = await fetchPage(startUrl);
-  const links = collectLinks(html, finalUrl);
-  const pages = [finalUrl, ...links.internalUrls.slice(0, MAX_PAGES - 1)];
-  return [...new Set(pages)].slice(0, MAX_PAGES);
-}
-
 async function analyze(input) {
   const url = String((input && input.url) || "").trim();
   if (!url) {
@@ -91,7 +56,7 @@ async function analyze(input) {
 
   let pageUrls;
   try {
-    pageUrls = await discoverPages(url);
+    pageUrls = (await discoverPages(url, MAX_PAGES)).pages;
   } catch (error) {
     const err = new Error(error.message || "Could not discover pages on that site.");
     err.status = 422;
