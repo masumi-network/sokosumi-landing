@@ -312,6 +312,21 @@ const competitorMessagingPreview = () => `
     </span>
   </span>`;
 
+// The feature gap tool's output is a yes/no matrix, so the preview mimics
+// that grid directly rather than borrowing another tool's device.
+const competitorFeatureGapPreview = () => `
+  <span class="tp tp-lt">
+    <span class="tp-file">
+      <span class="tp-file-name">Feature matrix</span>
+      <span class="tp-file-line"><b>API access</b><i>✓ ✓ —</i></span>
+      <span class="tp-file-line"><b>SSO</b><i>✓ — —</i></span>
+      <span class="tp-file-line"><b>Free tier</b><i>— ✓ ✓</i></span>
+    </span>
+    <span class="tp-verdict">
+      <span class="tp-chip is-warn">1 gap found</span>
+    </span>
+  </span>`;
+
 const TOOLS = [
   {
     href: "/tools/llms-txt",
@@ -438,6 +453,13 @@ const TOOLS = [
     text: "Paste 2-5 competitor URLs and compare tone, sentence style and shared vs unique vocabulary.",
     meta: "Free · no sign-up",
     preview: competitorMessagingPreview,
+  },
+  {
+    href: "/tools/competitor-feature-gap",
+    name: "Competitor Feature Gap",
+    text: "Paste 2-5 competitor URLs and get a yes/no feature matrix built from their own list items.",
+    meta: "Free · no sign-up",
+    preview: competitorFeatureGapPreview,
   },
 ];
 
