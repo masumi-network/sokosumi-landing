@@ -233,6 +233,38 @@ const landingCopyPreview = () => `
     </span>
   </span>`;
 
+// The X algorithm analyzer scores a short post, so the preview borrows the
+// social post checker's post mockup, sized like a single-line tweet.
+const xAlgorithmPreview = () => `
+  <span class="tp tp-psc">
+    <span class="tp-post">
+      <span class="tp-post-head">
+        <span class="tp-avatar"></span>
+        <span class="tp-post-name"><b>@jordanreyes</b><i>X post</i></span>
+      </span>
+      <span class="tp-post-body">What's the most tedious part of your campaign setup — curious what everyone else is stuck doing manually.</span>
+      <span class="tp-post-foot"><span>💬 61</span><span>🔁 12</span></span>
+    </span>
+    <span class="tp-verdict">
+      <span class="tp-chip is-pass">86/100 overall</span>
+    </span>
+  </span>`;
+
+// The brand voice analyzer returns a spec, not a score, so the preview is a
+// small tag cloud plus the top-line voice label it extracted.
+const brandVoicePreview = () => `
+  <span class="tp tp-lt">
+    <span class="tp-file">
+      <span class="tp-file-name">Voice spec</span>
+      <span class="tp-file-line"><b>Voice</b><i>Reader-directed</i></span>
+      <span class="tp-file-line"><b>Style</b><i>Short and punchy</i></span>
+      <span class="tp-file-line is-quote">Ships, dashboard, onboarding, teams…</span>
+    </span>
+    <span class="tp-verdict">
+      <span class="tp-chip is-pass">8 posts read</span>
+    </span>
+  </span>`;
+
 const TOOLS = [
   {
     href: "/tools/llms-txt",
@@ -324,6 +356,20 @@ const TOOLS = [
     text: "Score your hero copy or full page on clarity, benefit focus, specificity and CTA strength.",
     meta: "Free · no sign-up",
     preview: landingCopyPreview,
+  },
+  {
+    href: "/tools/x-algorithm-analyzer",
+    name: "X Algorithm Analyzer",
+    text: "Score a post against X's own open-sourced ranking signals before you post it.",
+    meta: "Free · no sign-up",
+    preview: xAlgorithmPreview,
+  },
+  {
+    href: "/tools/brand-voice-analyzer",
+    name: "Brand Voice Analyzer",
+    text: "Paste 5-10 posts and get a reusable voice spec: sentence style, pronoun balance, vocabulary.",
+    meta: "Free · no sign-up",
+    preview: brandVoicePreview,
   },
 ];
 
