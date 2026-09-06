@@ -219,6 +219,20 @@ const qrCodeGeneratorPreview = () => `
     </span>
   </span>`;
 
+// The landing page copy analyzer scores pasted copy, so the preview reuses
+// the headline analyzer's pull-quote-plus-gauge device on a longer line.
+const landingCopyPreview = () => `
+  <span class="tp tp-ha">
+    <span class="tp-headline">
+      <span class="tp-headline-text">You'll cut campaign setup time in half — start your free trial today.</span>
+    </span>
+    <span class="tp-verdict">
+      <span class="tp-gauge" style="--score:81"><b>81</b></span>
+      <span class="tp-chip is-pass">3 passing</span>
+      <span class="tp-chip is-warn">1 warning</span>
+    </span>
+  </span>`;
+
 const TOOLS = [
   {
     href: "/tools/llms-txt",
@@ -303,6 +317,13 @@ const TOOLS = [
     text: "Custom crawl rules, plus a one-click checklist to block AI-training bots.",
     meta: "Free · no sign-up",
     preview: robotsGeneratorPreview,
+  },
+  {
+    href: "/tools/landing-page-copy-analyzer",
+    name: "Landing Page Copy Analyzer",
+    text: "Score your hero copy or full page on clarity, benefit focus, specificity and CTA strength.",
+    meta: "Free · no sign-up",
+    preview: landingCopyPreview,
   },
 ];
 

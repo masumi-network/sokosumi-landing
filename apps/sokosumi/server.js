@@ -59,6 +59,8 @@ const headlineCheckerTpl = require("./templates/headlineChecker");
 const headlineCheck = require("./lib/headlineCheck");
 const qrCodeGeneratorTpl = require("./templates/qrCodeGenerator");
 const qrCode = require("./lib/qrCode");
+const landingCopyCheckerTpl = require("./templates/landingCopyChecker");
+const landingCopyCheck = require("./lib/landingCopyCheck");
 
 const port = process.env.PORT || 3000;
 const root = __dirname;
@@ -112,6 +114,9 @@ const headlineCheckRequests = new Map();
 // image compressor.
 const QR_CODE_RATE_LIMIT = Number(process.env.QR_CODE_RATE_LIMIT) || 40;
 const qrCodeRequests = new Map();
+// Pure in-process text scoring, no fetch — same ceiling as the headline checker.
+const LANDING_COPY_CHECK_RATE_LIMIT = Number(process.env.LANDING_COPY_CHECK_RATE_LIMIT) || 40;
+const landingCopyCheckRequests = new Map();
 
 function publicWebsiteUrl(value) {
   let parsed;
@@ -213,6 +218,7 @@ const videoScriptCheckRateLimited = (ip) => hourlyRateLimited(videoScriptCheckRe
 const imageCompressRateLimited = (ip) => hourlyRateLimited(imageCompressRequests, IMAGE_COMPRESS_RATE_LIMIT, ip);
 const headlineCheckRateLimited = (ip) => hourlyRateLimited(headlineCheckRequests, HEADLINE_CHECK_RATE_LIMIT, ip);
 const qrCodeRateLimited = (ip) => hourlyRateLimited(qrCodeRequests, QR_CODE_RATE_LIMIT, ip);
+const landingCopyCheckRateLimited = (ip) => hourlyRateLimited(landingCopyCheckRequests, LANDING_COPY_CHECK_RATE_LIMIT, ip);
 
 async function designMdFetch(pathname, options = {}) {
   const response = await fetch(`${DESIGN_MD_API_BASE}${pathname}`, {
@@ -690,6 +696,7 @@ const routes = [
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "robots-txt-generator" && {}, h: robotsGeneratorTpl.render },
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "headline-analyzer" && {}, h: headlineCheckerTpl.render },
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "qr-code-generator" && {}, h: qrCodeGeneratorTpl.render },
+  { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "landing-page-copy-analyzer" && {}, h: landingCopyCheckerTpl.render },
   { m: (s) => s.length === 1 && s[0] === "product" && {}, h: pagesTpl.productHub },
   { m: (s) => s.length === 1 && s[0] === "pricing" && {}, h: pricingTpl.render },
   // The entity page for Sokosumi itself lives in code so its JSON-LD is
@@ -1349,6 +1356,27 @@ const assetsDir = path.join(root, "assets");
           }
           try {
             const data = headlineCheck.analyze(body);
+            return send(req, res, 200, jsonHead, JSON.stringify(data));
+          } catch (error) {
+            const status = error.status && error.status >= 400 && error.status < 600 ? error.status : 500;
+            return send(req, res, status, jsonHead, JSON.stringify({ error: error.message || "That check did not work. Try again." }));
+          }
+        }
+
+        if (urlPath === "/api/landing-copy-check" && req.method === "POST") {
+          const jsonHead = { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" };
+          let body;
+          try {
+            body = await readJsonBody(req, 16384);
+          } catch (error) {
+            const message = error.message === "too-large" ? "The request is too large." : "Send a valid JSON request.";
+            return send(req, res, 400, jsonHead, JSON.stringify({ error: message }));
+          }
+          if (landingCopyCheckRateLimited(clientIp(req))) {
+            return send(req, res, 429, { ...jsonHead, "Retry-After": "3600" }, JSON.stringify({ error: "You have reached the hourly limit. Try again later." }));
+          }
+          try {
+            const data = landingCopyCheck.analyze(body);
             return send(req, res, 200, jsonHead, JSON.stringify(data));
           } catch (error) {
             const status = error.status && error.status >= 400 && error.status < 600 ? error.status : 500;
