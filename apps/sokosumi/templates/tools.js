@@ -573,6 +573,22 @@ const TOOLS = [
     meta: "Free · no sign-up",
     preview: keywordExtractorPreview,
   },
+  {
+    href: "/tools/hashtag-generator",
+    name: "Hashtag Generator",
+    text: "Paste a post and get a shortlist of relevant hashtags, pulled from your own words.",
+    meta: "Free · no sign-up",
+    preview: () => `
+      <span class="tp tp-lt">
+        <span class="tp-file">
+          <span class="tp-file-name">Suggested hashtags</span>
+          <span class="tp-file-line is-quote">#marketing #AiCoworkers #onboarding</span>
+        </span>
+        <span class="tp-verdict">
+          <span class="tp-chip is-pass">Nothing leaves your browser</span>
+        </span>
+      </span>`,
+  },
 ];
 
 function toolCard(t) {
