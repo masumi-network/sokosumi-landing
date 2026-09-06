@@ -65,6 +65,8 @@ const xAlgorithmCheckerTpl = require("./templates/xAlgorithmChecker");
 const xAlgorithmCheck = require("./lib/xAlgorithmCheck");
 const brandVoiceCheckerTpl = require("./templates/brandVoiceChecker");
 const brandVoiceCheck = require("./lib/brandVoiceCheck");
+const landingTeardownCheckerTpl = require("./templates/landingTeardownChecker");
+const landingTeardownCheck = require("./lib/landingTeardownCheck");
 
 const port = process.env.PORT || 3000;
 const root = __dirname;
@@ -125,6 +127,9 @@ const X_ALGORITHM_CHECK_RATE_LIMIT = Number(process.env.X_ALGORITHM_CHECK_RATE_L
 const xAlgorithmCheckRequests = new Map();
 const BRAND_VOICE_CHECK_RATE_LIMIT = Number(process.env.BRAND_VOICE_CHECK_RATE_LIMIT) || 30;
 const brandVoiceCheckRequests = new Map();
+// One page fetch, same cost profile as the OG checker / llms.txt checker.
+const LANDING_TEARDOWN_CHECK_RATE_LIMIT = Number(process.env.LANDING_TEARDOWN_CHECK_RATE_LIMIT) || 30;
+const landingTeardownCheckRequests = new Map();
 
 function publicWebsiteUrl(value) {
   let parsed;
@@ -229,6 +234,7 @@ const qrCodeRateLimited = (ip) => hourlyRateLimited(qrCodeRequests, QR_CODE_RATE
 const landingCopyCheckRateLimited = (ip) => hourlyRateLimited(landingCopyCheckRequests, LANDING_COPY_CHECK_RATE_LIMIT, ip);
 const xAlgorithmCheckRateLimited = (ip) => hourlyRateLimited(xAlgorithmCheckRequests, X_ALGORITHM_CHECK_RATE_LIMIT, ip);
 const brandVoiceCheckRateLimited = (ip) => hourlyRateLimited(brandVoiceCheckRequests, BRAND_VOICE_CHECK_RATE_LIMIT, ip);
+const landingTeardownCheckRateLimited = (ip) => hourlyRateLimited(landingTeardownCheckRequests, LANDING_TEARDOWN_CHECK_RATE_LIMIT, ip);
 
 async function designMdFetch(pathname, options = {}) {
   const response = await fetch(`${DESIGN_MD_API_BASE}${pathname}`, {
@@ -709,6 +715,7 @@ const routes = [
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "landing-page-copy-analyzer" && {}, h: landingCopyCheckerTpl.render },
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "x-algorithm-analyzer" && {}, h: xAlgorithmCheckerTpl.render },
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "brand-voice-analyzer" && {}, h: brandVoiceCheckerTpl.render },
+  { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "landing-page-teardown" && {}, h: landingTeardownCheckerTpl.render },
   { m: (s) => s.length === 1 && s[0] === "product" && {}, h: pagesTpl.productHub },
   { m: (s) => s.length === 1 && s[0] === "pricing" && {}, h: pricingTpl.render },
   // The entity page for Sokosumi itself lives in code so its JSON-LD is
@@ -1431,6 +1438,27 @@ const assetsDir = path.join(root, "assets");
           }
           try {
             const data = brandVoiceCheck.analyze(body);
+            return send(req, res, 200, jsonHead, JSON.stringify(data));
+          } catch (error) {
+            const status = error.status && error.status >= 400 && error.status < 600 ? error.status : 500;
+            return send(req, res, status, jsonHead, JSON.stringify({ error: error.message || "That check did not work. Try again." }));
+          }
+        }
+
+        if (urlPath === "/api/landing-teardown-check" && req.method === "POST") {
+          const jsonHead = { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" };
+          let body;
+          try {
+            body = await readJsonBody(req, 4096);
+          } catch (error) {
+            const message = error.message === "too-large" ? "The request is too large." : "Send a valid JSON request.";
+            return send(req, res, 400, jsonHead, JSON.stringify({ error: message }));
+          }
+          if (landingTeardownCheckRateLimited(clientIp(req))) {
+            return send(req, res, 429, { ...jsonHead, "Retry-After": "3600" }, JSON.stringify({ error: "You have reached the hourly limit. Try again later." }));
+          }
+          try {
+            const data = await landingTeardownCheck.analyze(body);
             return send(req, res, 200, jsonHead, JSON.stringify(data));
           } catch (error) {
             const status = error.status && error.status >= 400 && error.status < 600 ? error.status : 500;

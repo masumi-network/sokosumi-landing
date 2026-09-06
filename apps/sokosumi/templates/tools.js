@@ -265,6 +265,24 @@ const brandVoicePreview = () => `
     </span>
   </span>`;
 
+// The conversion teardown returns a site card plus a verdict, matching the
+// OG checker's device since both grade a page rather than a text snippet.
+const landingTeardownPreview = () => `
+  <span class="tp tp-og">
+    <span class="tp-card">
+      <span class="tp-shot"><span class="tp-pill">example.com/landing</span></span>
+      <span class="tp-meta">
+        <span class="tp-host">CONVERSION TEARDOWN</span>
+        <span class="tp-title">Headline, CTA, proof, trust</span>
+        <span class="tp-desc">Four dimensions checked against the page's own markup.</span>
+      </span>
+    </span>
+    <span class="tp-verdict">
+      <span class="tp-chip is-pass">2 passing</span>
+      <span class="tp-chip is-warn">2 warnings</span>
+    </span>
+  </span>`;
+
 const TOOLS = [
   {
     href: "/tools/llms-txt",
@@ -370,6 +388,13 @@ const TOOLS = [
     text: "Paste 5-10 posts and get a reusable voice spec: sentence style, pronoun balance, vocabulary.",
     meta: "Free · no sign-up",
     preview: brandVoicePreview,
+  },
+  {
+    href: "/tools/landing-page-teardown",
+    name: "Landing Page Conversion Teardown",
+    text: "Enter a URL and audit its headline, CTA, social proof and trust signals.",
+    meta: "Free · no sign-up",
+    preview: landingTeardownPreview,
   },
 ];
 
