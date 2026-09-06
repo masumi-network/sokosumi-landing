@@ -358,6 +358,21 @@ const internalLinkingPreview = () => `
     </span>
   </span>`;
 
+// The carousel generator's output is a stack of slides, so the preview is a
+// tiny deck peeking out from behind itself.
+const blogToCarouselPreview = () => `
+  <span class="tp tp-lt">
+    <span class="tp-file">
+      <span class="tp-file-name">Carousel outline</span>
+      <span class="tp-file-line"><b>1</b><i>Hook</i></span>
+      <span class="tp-file-line"><b>2</b><i>Section one</i></span>
+      <span class="tp-file-line is-quote">… 6 more slides</span>
+    </span>
+    <span class="tp-verdict">
+      <span class="tp-chip is-pass">8 slides built</span>
+    </span>
+  </span>`;
+
 const TOOLS = [
   {
     href: "/tools/llms-txt",
@@ -505,6 +520,13 @@ const TOOLS = [
     text: "Crawl up to 12 pages and find ones that should link to each other, with anchor text suggestions.",
     meta: "Free · no sign-up",
     preview: internalLinkingPreview,
+  },
+  {
+    href: "/tools/blog-to-carousel",
+    name: "Blog to LinkedIn Carousel",
+    text: "Turn a blog post's own headings into a slide-by-slide carousel outline.",
+    meta: "Free · no sign-up",
+    preview: blogToCarouselPreview,
   },
 ];
 
