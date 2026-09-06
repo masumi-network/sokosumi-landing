@@ -283,6 +283,20 @@ const landingTeardownPreview = () => `
     </span>
   </span>`;
 
+// The positioning teardown compares two sites, so the preview is two mini
+// site cards facing off, the same address-bar device the UTM builder uses.
+const competitorPositioningPreview = () => `
+  <span class="tp tp-ub">
+    <span class="tp-urlbar">
+      <span class="tp-urlbar-dot"></span>
+      <span class="tp-urlbar-text">yoursite.com <b>vs</b> competitor.com</span>
+    </span>
+    <span class="tp-verdict">
+      <span class="tp-chip is-warn">3 gaps found</span>
+      <span class="tp-chip is-pass">2 you're ahead on</span>
+    </span>
+  </span>`;
+
 const TOOLS = [
   {
     href: "/tools/llms-txt",
@@ -395,6 +409,13 @@ const TOOLS = [
     text: "Enter a URL and audit its headline, CTA, social proof and trust signals.",
     meta: "Free · no sign-up",
     preview: landingTeardownPreview,
+  },
+  {
+    href: "/tools/competitor-positioning",
+    name: "Competitor Positioning Teardown",
+    text: "Enter two URLs and see the loopholes each page leaves open against the other.",
+    meta: "Free · no sign-up",
+    preview: competitorPositioningPreview,
   },
 ];
 
