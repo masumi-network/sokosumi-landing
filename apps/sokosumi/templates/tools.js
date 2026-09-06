@@ -388,6 +388,22 @@ const blogToSocialWeekPreview = () => `
     </span>
   </span>`;
 
+// Client-only generators (keyword extractor, hashtag generator, keyword
+// clusters, schema markup, case study outline, re-engagement builder, CSV
+// dashboard) reuse the UTM builder's tag-cloud-ish device: the output itself.
+const keywordExtractorPreview = () => `
+  <span class="tp tp-lt">
+    <span class="tp-file">
+      <span class="tp-file-name">Top keywords</span>
+      <span class="tp-file-line"><b>onboarding</b><i>×14</i></span>
+      <span class="tp-file-line"><b>marketing team</b><i>×9</i></span>
+      <span class="tp-file-line is-quote">…23 more</span>
+    </span>
+    <span class="tp-verdict">
+      <span class="tp-chip is-pass">Nothing leaves your browser</span>
+    </span>
+  </span>`;
+
 const TOOLS = [
   {
     href: "/tools/llms-txt",
@@ -549,6 +565,13 @@ const TOOLS = [
     text: "Turn one blog post into up to 7 days of post drafts, built from its own stats and quotes.",
     meta: "Free · no sign-up",
     preview: blogToSocialWeekPreview,
+  },
+  {
+    href: "/tools/keyword-extractor",
+    name: "Keyword Extractor",
+    text: "Paste an article and get its most frequent keywords and phrases, ranked by count.",
+    meta: "Free · no sign-up",
+    preview: keywordExtractorPreview,
   },
 ];
 

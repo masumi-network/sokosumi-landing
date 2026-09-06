@@ -81,6 +81,7 @@ const blogToCarouselCheckerTpl = require("./templates/blogToCarouselChecker");
 const blogToCarouselCheck = require("./lib/blogToCarouselCheck");
 const blogToSocialWeekCheckerTpl = require("./templates/blogToSocialWeekChecker");
 const blogToSocialWeekCheck = require("./lib/blogToSocialWeekCheck");
+const keywordExtractorTpl = require("./templates/keywordExtractor");
 
 const port = process.env.PORT || 3000;
 const root = __dirname;
@@ -761,6 +762,7 @@ const routes = [
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "internal-linking-finder" && {}, h: internalLinkingCheckerTpl.render },
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "blog-to-carousel" && {}, h: blogToCarouselCheckerTpl.render },
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "blog-to-social-week" && {}, h: blogToSocialWeekCheckerTpl.render },
+  { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "keyword-extractor" && {}, h: keywordExtractorTpl.render },
   { m: (s) => s.length === 1 && s[0] === "product" && {}, h: pagesTpl.productHub },
   { m: (s) => s.length === 1 && s[0] === "pricing" && {}, h: pricingTpl.render },
   // The entity page for Sokosumi itself lives in code so its JSON-LD is
