@@ -201,7 +201,35 @@ async function fetchPage(url, { maxBytes = 2 * 1024 * 1024, timeoutMs = 10000 } 
   }
   const buffer = await readCapped(response, maxBytes);
   const html = buffer.toString("utf-8");
-  return { html, finalUrl, status: response.status, truncated: buffer.length >= maxBytes };
+  return {
+    html,
+    finalUrl,
+    status: response.status,
+    truncated: buffer.length >= maxBytes,
+    lastModified: response.headers.get("last-modified") || null,
+  };
+}
+
+// Looks for a publish/modified date in the page's own markup — a meta tag or
+// JSON-LD — for pages that don't send a Last-Modified header (most don't).
+function collectDateMeta(html, jsonLdBlocks) {
+  const meta = collectMeta(html);
+  const metaDate = meta["article:modified_time"] || meta["article:published_time"] || meta.date || meta["og:updated_time"];
+  if (metaDate) return metaDate;
+  for (const block of jsonLdBlocks || []) {
+    const stack = [block];
+    while (stack.length) {
+      const node = stack.pop();
+      if (!node || typeof node !== "object") continue;
+      if (Array.isArray(node)) {
+        stack.push(...node);
+        continue;
+      }
+      if (node.dateModified || node.datePublished) return node.dateModified || node.datePublished;
+      if (node["@graph"]) stack.push(node["@graph"]);
+    }
+  }
+  return null;
 }
 
 module.exports = {
@@ -217,5 +245,6 @@ module.exports = {
   collectJsonLd,
   wordCount,
   extractH2Sections,
+  collectDateMeta,
   fetchPage,
 };

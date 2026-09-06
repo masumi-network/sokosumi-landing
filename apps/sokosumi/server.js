@@ -92,6 +92,8 @@ const redirectCheckerTpl = require("./templates/redirectChecker");
 const redirectCheck = require("./lib/redirectCheck");
 const orphanPageFinderTpl = require("./templates/orphanPageFinder");
 const orphanPageCheck = require("./lib/orphanPageCheck");
+const contentDecayDetectorTpl = require("./templates/contentDecayDetector");
+const contentDecayCheck = require("./lib/contentDecayCheck");
 
 const port = process.env.PORT || 3000;
 const root = __dirname;
@@ -177,6 +179,9 @@ const REDIRECT_CHECK_RATE_LIMIT = Number(process.env.REDIRECT_CHECK_RATE_LIMIT) 
 const redirectCheckRequests = new Map();
 const ORPHAN_PAGES_CHECK_RATE_LIMIT = Number(process.env.ORPHAN_PAGES_CHECK_RATE_LIMIT) || 8;
 const orphanPageCheckRequests = new Map();
+// Up to 20 page fetches per request.
+const CONTENT_DECAY_CHECK_RATE_LIMIT = Number(process.env.CONTENT_DECAY_CHECK_RATE_LIMIT) || 8;
+const contentDecayCheckRequests = new Map();
 
 function publicWebsiteUrl(value) {
   let parsed;
@@ -291,6 +296,7 @@ const blogToCarouselCheckRateLimited = (ip) => hourlyRateLimited(blogToCarouselC
 const blogToSocialWeekCheckRateLimited = (ip) => hourlyRateLimited(blogToSocialWeekCheckRequests, BLOG_TO_SOCIAL_WEEK_CHECK_RATE_LIMIT, ip);
 const redirectCheckRateLimited = (ip) => hourlyRateLimited(redirectCheckRequests, REDIRECT_CHECK_RATE_LIMIT, ip);
 const orphanPageCheckRateLimited = (ip) => hourlyRateLimited(orphanPageCheckRequests, ORPHAN_PAGES_CHECK_RATE_LIMIT, ip);
+const contentDecayCheckRateLimited = (ip) => hourlyRateLimited(contentDecayCheckRequests, CONTENT_DECAY_CHECK_RATE_LIMIT, ip);
 
 async function designMdFetch(pathname, options = {}) {
   const response = await fetch(`${DESIGN_MD_API_BASE}${pathname}`, {
@@ -788,6 +794,7 @@ const routes = [
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "csv-dashboard" && {}, h: csvDashboardTpl.render },
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "redirect-checker" && {}, h: redirectCheckerTpl.render },
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "orphan-pages" && {}, h: orphanPageFinderTpl.render },
+  { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "content-decay" && {}, h: contentDecayDetectorTpl.render },
   { m: (s) => s.length === 1 && s[0] === "product" && {}, h: pagesTpl.productHub },
   { m: (s) => s.length === 1 && s[0] === "pricing" && {}, h: pricingTpl.render },
   // The entity page for Sokosumi itself lives in code so its JSON-LD is
@@ -1720,6 +1727,27 @@ const assetsDir = path.join(root, "assets");
           }
           try {
             const data = await orphanPageCheck.analyze(body);
+            return send(req, res, 200, jsonHead, JSON.stringify(data));
+          } catch (error) {
+            const status = error.status && error.status >= 400 && error.status < 600 ? error.status : 500;
+            return send(req, res, status, jsonHead, JSON.stringify({ error: error.message || "That check did not work. Try again." }));
+          }
+        }
+
+        if (urlPath === "/api/content-decay-check" && req.method === "POST") {
+          const jsonHead = { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" };
+          let body;
+          try {
+            body = await readJsonBody(req, 4096);
+          } catch (error) {
+            const message = error.message === "too-large" ? "The request is too large." : "Send a valid JSON request.";
+            return send(req, res, 400, jsonHead, JSON.stringify({ error: message }));
+          }
+          if (contentDecayCheckRateLimited(clientIp(req))) {
+            return send(req, res, 429, { ...jsonHead, "Retry-After": "3600" }, JSON.stringify({ error: "You have reached the hourly limit. Try again later." }));
+          }
+          try {
+            const data = await contentDecayCheck.analyze(body);
             return send(req, res, 200, jsonHead, JSON.stringify(data));
           } catch (error) {
             const status = error.status && error.status >= 400 && error.status < 600 ? error.status : 500;

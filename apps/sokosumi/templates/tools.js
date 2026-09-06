@@ -431,6 +431,19 @@ const orphanPageFinderPreview = () => `
     </span>
   </span>`;
 
+const contentDecayPreview = () => `
+  <span class="tp tp-lt">
+    <span class="tp-file">
+      <span class="tp-file-name">Content decay</span>
+      <span class="tp-file-line"><b>/blog/2022-tips</b><i>3y old</i></span>
+      <span class="tp-file-line is-quote">thin vs batch average</span>
+    </span>
+    <span class="tp-verdict">
+      <span class="tp-chip is-warn">4 stale</span>
+      <span class="tp-chip is-pass">11 fresh</span>
+    </span>
+  </span>`;
+
 const TOOLS = [
   {
     href: "/tools/llms-txt",
@@ -721,6 +734,13 @@ const TOOLS = [
     text: "Find sitemap pages that no other page on the site actually links to.",
     meta: "Free · no sign-up",
     preview: orphanPageFinderPreview,
+  },
+  {
+    href: "/tools/content-decay",
+    name: "Content Decay Detector",
+    text: "Paste up to 20 content URLs and find the ones that look stale relative to the batch.",
+    meta: "Free · no sign-up",
+    preview: contentDecayPreview,
   },
 ];
 
