@@ -8,7 +8,7 @@
 // closing CTA slide. No LLM — every slide's text is lifted directly from
 // the page, not generated.
 
-const { fetchPage, collectTitle, collectMeta, visibleText, wordCount } = require("./htmlExtract");
+const { fetchPage, collectTitle, collectMeta, visibleText, wordCount, extractH2Sections } = require("./htmlExtract");
 
 const MAX_SECTION_SLIDES = 8;
 const SLIDE_BODY_WORDS = 32;
@@ -22,20 +22,6 @@ function truncateWords(text, limit) {
 function firstSentence(text) {
   const m = /^[\s\S]{1,300}?[.!?](?:\s|$)/.exec(text);
   return (m ? m[0] : text).trim();
-}
-
-function extractH2Sections(html) {
-  const positions = [];
-  const re = /<h2\b[^>]*>([\s\S]*?)<\/h2>/gi;
-  let m;
-  while ((m = re.exec(html))) {
-    positions.push({ start: m.index, headingEnd: re.lastIndex, heading: visibleText(m[1]) });
-  }
-  return positions.map((p, i) => {
-    const end = i + 1 < positions.length ? positions[i + 1].start : html.length;
-    const bodyHtml = html.slice(p.headingEnd, end);
-    return { heading: p.heading, body: visibleText(bodyHtml) };
-  });
 }
 
 async function analyze(input) {

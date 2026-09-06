@@ -160,6 +160,23 @@ function wordCount(text) {
   return (text.match(/\b[\w'-]+\b/g) || []).length;
 }
 
+// Slices the raw HTML between successive <h2> tags so callers (blog-to-
+// carousel, blog-to-social-week) can treat each section's own opening text
+// as a summary of that section, without re-deriving positions themselves.
+function extractH2Sections(html) {
+  const positions = [];
+  const re = /<h2\b[^>]*>([\s\S]*?)<\/h2>/gi;
+  let m;
+  while ((m = re.exec(html))) {
+    positions.push({ start: m.index, headingEnd: re.lastIndex, heading: visibleText(m[1]) });
+  }
+  return positions.map((p, i) => {
+    const end = i + 1 < positions.length ? positions[i + 1].start : html.length;
+    const bodyHtml = html.slice(p.headingEnd, end);
+    return { heading: p.heading, body: visibleText(bodyHtml) };
+  });
+}
+
 // Fetches through the SSRF-checked safeFetch, capped and timed out, and
 // returns the decoded body as text plus the bits every crawler tool needs.
 async function fetchPage(url, { maxBytes = 2 * 1024 * 1024, timeoutMs = 10000 } = {}) {
@@ -199,5 +216,6 @@ module.exports = {
   collectLinks,
   collectJsonLd,
   wordCount,
+  extractH2Sections,
   fetchPage,
 };

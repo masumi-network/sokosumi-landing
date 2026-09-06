@@ -373,6 +373,21 @@ const blogToCarouselPreview = () => `
     </span>
   </span>`;
 
+// The social-week tool hands back seven day-labeled drafts, matching the
+// carousel's file-listing device but with days instead of slide numbers.
+const blogToSocialWeekPreview = () => `
+  <span class="tp tp-lt">
+    <span class="tp-file">
+      <span class="tp-file-name">This week's posts</span>
+      <span class="tp-file-line"><b>Mon</b><i>Announce</i></span>
+      <span class="tp-file-line"><b>Wed</b><i>Lead with a stat</i></span>
+      <span class="tp-file-line is-quote">… 4 more days</span>
+    </span>
+    <span class="tp-verdict">
+      <span class="tp-chip is-pass">6 drafts built</span>
+    </span>
+  </span>`;
+
 const TOOLS = [
   {
     href: "/tools/llms-txt",
@@ -527,6 +542,13 @@ const TOOLS = [
     text: "Turn a blog post's own headings into a slide-by-slide carousel outline.",
     meta: "Free · no sign-up",
     preview: blogToCarouselPreview,
+  },
+  {
+    href: "/tools/blog-to-social-week",
+    name: "Blog to a Week of Social Posts",
+    text: "Turn one blog post into up to 7 days of post drafts, built from its own stats and quotes.",
+    meta: "Free · no sign-up",
+    preview: blogToSocialWeekPreview,
   },
 ];
 

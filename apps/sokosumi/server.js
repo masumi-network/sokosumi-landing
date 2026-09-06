@@ -79,6 +79,8 @@ const internalLinkingCheckerTpl = require("./templates/internalLinkingChecker");
 const internalLinkingCheck = require("./lib/internalLinkingCheck");
 const blogToCarouselCheckerTpl = require("./templates/blogToCarouselChecker");
 const blogToCarouselCheck = require("./lib/blogToCarouselCheck");
+const blogToSocialWeekCheckerTpl = require("./templates/blogToSocialWeekChecker");
+const blogToSocialWeekCheck = require("./lib/blogToSocialWeekCheck");
 
 const port = process.env.PORT || 3000;
 const root = __dirname;
@@ -157,6 +159,8 @@ const INTERNAL_LINKING_CHECK_RATE_LIMIT = Number(process.env.INTERNAL_LINKING_CH
 const internalLinkingCheckRequests = new Map();
 const BLOG_TO_CAROUSEL_CHECK_RATE_LIMIT = Number(process.env.BLOG_TO_CAROUSEL_CHECK_RATE_LIMIT) || 20;
 const blogToCarouselCheckRequests = new Map();
+const BLOG_TO_SOCIAL_WEEK_CHECK_RATE_LIMIT = Number(process.env.BLOG_TO_SOCIAL_WEEK_CHECK_RATE_LIMIT) || 20;
+const blogToSocialWeekCheckRequests = new Map();
 
 function publicWebsiteUrl(value) {
   let parsed;
@@ -268,6 +272,7 @@ const competitorFeatureGapCheckRateLimited = (ip) => hourlyRateLimited(competito
 const answerReadinessCheckRateLimited = (ip) => hourlyRateLimited(answerReadinessCheckRequests, ANSWER_READINESS_CHECK_RATE_LIMIT, ip);
 const internalLinkingCheckRateLimited = (ip) => hourlyRateLimited(internalLinkingCheckRequests, INTERNAL_LINKING_CHECK_RATE_LIMIT, ip);
 const blogToCarouselCheckRateLimited = (ip) => hourlyRateLimited(blogToCarouselCheckRequests, BLOG_TO_CAROUSEL_CHECK_RATE_LIMIT, ip);
+const blogToSocialWeekCheckRateLimited = (ip) => hourlyRateLimited(blogToSocialWeekCheckRequests, BLOG_TO_SOCIAL_WEEK_CHECK_RATE_LIMIT, ip);
 
 async function designMdFetch(pathname, options = {}) {
   const response = await fetch(`${DESIGN_MD_API_BASE}${pathname}`, {
@@ -755,6 +760,7 @@ const routes = [
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "answer-readiness" && {}, h: answerReadinessCheckerTpl.render },
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "internal-linking-finder" && {}, h: internalLinkingCheckerTpl.render },
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "blog-to-carousel" && {}, h: blogToCarouselCheckerTpl.render },
+  { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "blog-to-social-week" && {}, h: blogToSocialWeekCheckerTpl.render },
   { m: (s) => s.length === 1 && s[0] === "product" && {}, h: pagesTpl.productHub },
   { m: (s) => s.length === 1 && s[0] === "pricing" && {}, h: pricingTpl.render },
   // The entity page for Sokosumi itself lives in code so its JSON-LD is
@@ -1624,6 +1630,27 @@ const assetsDir = path.join(root, "assets");
           }
           try {
             const data = await blogToCarouselCheck.analyze(body);
+            return send(req, res, 200, jsonHead, JSON.stringify(data));
+          } catch (error) {
+            const status = error.status && error.status >= 400 && error.status < 600 ? error.status : 500;
+            return send(req, res, status, jsonHead, JSON.stringify({ error: error.message || "That check did not work. Try again." }));
+          }
+        }
+
+        if (urlPath === "/api/blog-to-social-week-check" && req.method === "POST") {
+          const jsonHead = { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" };
+          let body;
+          try {
+            body = await readJsonBody(req, 4096);
+          } catch (error) {
+            const message = error.message === "too-large" ? "The request is too large." : "Send a valid JSON request.";
+            return send(req, res, 400, jsonHead, JSON.stringify({ error: message }));
+          }
+          if (blogToSocialWeekCheckRateLimited(clientIp(req))) {
+            return send(req, res, 429, { ...jsonHead, "Retry-After": "3600" }, JSON.stringify({ error: "You have reached the hourly limit. Try again later." }));
+          }
+          try {
+            const data = await blogToSocialWeekCheck.analyze(body);
             return send(req, res, 200, jsonHead, JSON.stringify(data));
           } catch (error) {
             const status = error.status && error.status >= 400 && error.status < 600 ? error.status : 500;
