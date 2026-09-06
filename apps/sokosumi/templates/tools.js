@@ -457,6 +457,19 @@ const coreWebVitalsPreview = () => `
     </span>
   </span>`;
 
+const codePilerPreview = () => `
+  <span class="tp tp-lt">
+    <span class="tp-file">
+      <span class="tp-file-name">System prompt</span>
+      <span class="tp-file-line"><b>Lang</b><i>TypeScript 82%</i></span>
+      <span class="tp-file-line"><b>Tests</b><i>Vitest</i></span>
+      <span class="tp-file-line is-quote">Match existing code style…</span>
+    </span>
+    <span class="tp-verdict">
+      <span class="tp-chip is-pass">3 API calls</span>
+    </span>
+  </span>`;
+
 const TOOLS = [
   {
     href: "/tools/llms-txt",
@@ -761,6 +774,13 @@ const TOOLS = [
     text: "Plain-English fixes for structural signals tied to LCP, CLS and INP. Not real CrUX data.",
     meta: "Free · no sign-up",
     preview: coreWebVitalsPreview,
+  },
+  {
+    href: "/tools/codepiler",
+    name: "CodePiler",
+    text: "Turn a public GitHub repo into a starter system prompt matching its own conventions.",
+    meta: "Free · no sign-up",
+    preview: codePilerPreview,
   },
 ];
 

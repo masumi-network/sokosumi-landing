@@ -96,6 +96,8 @@ const contentDecayDetectorTpl = require("./templates/contentDecayDetector");
 const contentDecayCheck = require("./lib/contentDecayCheck");
 const coreWebVitalsExplainerTpl = require("./templates/coreWebVitalsExplainer");
 const coreWebVitalsCheck = require("./lib/coreWebVitalsCheck");
+const codePilerTpl = require("./templates/codePiler");
+const codePilerCheck = require("./lib/codePilerCheck");
 
 const port = process.env.PORT || 3000;
 const root = __dirname;
@@ -186,6 +188,11 @@ const CONTENT_DECAY_CHECK_RATE_LIMIT = Number(process.env.CONTENT_DECAY_CHECK_RA
 const contentDecayCheckRequests = new Map();
 const CORE_WEB_VITALS_CHECK_RATE_LIMIT = Number(process.env.CORE_WEB_VITALS_CHECK_RATE_LIMIT) || 30;
 const coreWebVitalsCheckRequests = new Map();
+// GitHub's unauthenticated 60 req/hour limit is shared across every visitor
+// hitting this tool from our server's IP (3 GitHub calls per analysis), so
+// this ceiling is much lower than the other checkers'.
+const CODEPILER_CHECK_RATE_LIMIT = Number(process.env.CODEPILER_CHECK_RATE_LIMIT) || 10;
+const codePilerCheckRequests = new Map();
 
 function publicWebsiteUrl(value) {
   let parsed;
@@ -302,6 +309,7 @@ const redirectCheckRateLimited = (ip) => hourlyRateLimited(redirectCheckRequests
 const orphanPageCheckRateLimited = (ip) => hourlyRateLimited(orphanPageCheckRequests, ORPHAN_PAGES_CHECK_RATE_LIMIT, ip);
 const contentDecayCheckRateLimited = (ip) => hourlyRateLimited(contentDecayCheckRequests, CONTENT_DECAY_CHECK_RATE_LIMIT, ip);
 const coreWebVitalsCheckRateLimited = (ip) => hourlyRateLimited(coreWebVitalsCheckRequests, CORE_WEB_VITALS_CHECK_RATE_LIMIT, ip);
+const codePilerCheckRateLimited = (ip) => hourlyRateLimited(codePilerCheckRequests, CODEPILER_CHECK_RATE_LIMIT, ip);
 
 async function designMdFetch(pathname, options = {}) {
   const response = await fetch(`${DESIGN_MD_API_BASE}${pathname}`, {
@@ -801,6 +809,7 @@ const routes = [
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "orphan-pages" && {}, h: orphanPageFinderTpl.render },
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "content-decay" && {}, h: contentDecayDetectorTpl.render },
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "core-web-vitals" && {}, h: coreWebVitalsExplainerTpl.render },
+  { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "codepiler" && {}, h: codePilerTpl.render },
   { m: (s) => s.length === 1 && s[0] === "product" && {}, h: pagesTpl.productHub },
   { m: (s) => s.length === 1 && s[0] === "pricing" && {}, h: pricingTpl.render },
   // The entity page for Sokosumi itself lives in code so its JSON-LD is
@@ -1775,6 +1784,27 @@ const assetsDir = path.join(root, "assets");
           }
           try {
             const data = await coreWebVitalsCheck.analyze(body);
+            return send(req, res, 200, jsonHead, JSON.stringify(data));
+          } catch (error) {
+            const status = error.status && error.status >= 400 && error.status < 600 ? error.status : 500;
+            return send(req, res, status, jsonHead, JSON.stringify({ error: error.message || "That check did not work. Try again." }));
+          }
+        }
+
+        if (urlPath === "/api/codepiler-check" && req.method === "POST") {
+          const jsonHead = { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" };
+          let body;
+          try {
+            body = await readJsonBody(req, 2048);
+          } catch (error) {
+            const message = error.message === "too-large" ? "The request is too large." : "Send a valid JSON request.";
+            return send(req, res, 400, jsonHead, JSON.stringify({ error: message }));
+          }
+          if (codePilerCheckRateLimited(clientIp(req))) {
+            return send(req, res, 429, { ...jsonHead, "Retry-After": "3600" }, JSON.stringify({ error: "You have reached the hourly limit. Try again later." }));
+          }
+          try {
+            const data = await codePilerCheck.analyze(body);
             return send(req, res, 200, jsonHead, JSON.stringify(data));
           } catch (error) {
             const status = error.status && error.status >= 400 && error.status < 600 ? error.status : 500;
