@@ -29,7 +29,7 @@ const FAQ = [
   {
     question: "What does this social post checker look at?",
     answer:
-      "Paste a post — as text, or as a link to one that's already live — and it reads the text for four things: hook quality (does the first line earn a click before \"see more\" cuts it), CTA clarity (is there a specific ask at the end), engagement-shaping formatting (length, paragraph rhythm, outbound links, hashtag count, tone), and — if you give it a planned day and time — timing against general posting-pattern data.",
+      "Paste a post — as text, or as a link to one that's already live — and it reads the text for six things: hook quality (does the first line earn a click before \"see more\" cuts it), CTA clarity (is there a specific ask at the end), engagement-shaping formatting (length, paragraph rhythm, outbound links, hashtag count, tone), readability (sentence length, active vs passive voice), specificity and credibility (concrete numbers, cited evidence), and — if you give it a planned day and time — timing against general posting-pattern data.",
   },
   {
     question: "How does the LinkedIn link option work?",
@@ -73,12 +73,14 @@ function render() {
     operatingSystem: "Web",
     url: `${SITE}${PATH}`,
     description:
-      "A free social post checker that scores a pasted LinkedIn-style post — or a link to one that's already live — on hook quality, CTA clarity, engagement-shaping formatting, and optional posting-time fit.",
+      "A free social post checker that scores a pasted LinkedIn-style post — or a link to one that's already live — on hook quality, CTA clarity, engagement-shaping formatting, readability, specificity/credibility, and optional posting-time fit.",
     featureList: [
       "Score a draft by pasting its text, or a live post by pasting its link",
       "Hook quality scoring against LinkedIn's truncation point",
       "Call-to-action detection",
       "Formatting, link and hashtag checks",
+      "Readability scoring (sentence length, active vs passive voice)",
+      "Specificity and cited-evidence detection",
       "Optional day/time timing score",
     ],
     offers: { "@type": "Offer", price: "0", priceCurrency: "EUR" },
@@ -99,7 +101,7 @@ function render() {
     pageStart({
       title: "Social post checker — score your LinkedIn post before you publish | Sokosumi",
       description:
-        "Free social post checker. Paste a LinkedIn-style post — or a link to one already live — and get scores on hook quality, CTA clarity, engagement-shaping formatting, and timing. No sign-up.",
+        "Free social post checker. Paste a LinkedIn-style post — or a link to one already live — and get scores on hook quality, CTA clarity, engagement-shaping formatting, readability, specificity/credibility, and timing. No sign-up.",
       path: PATH,
       englishOnly: true,
       breadcrumb: crumbs,
@@ -178,6 +180,8 @@ function render() {
         <div class="psc-card"><h3>Hook quality</h3><p>Does the first line fit before LinkedIn's "see more" truncation, and does it give a reader a reason to keep reading — a question, a number, a claim — rather than opening with a cliché.</p></div>
         <div class="psc-card"><h3>CTA clarity</h3><p>Is there one clear, specific ask near the end — comment, reply, follow, tag someone — or does the post just stop.</p></div>
         <div class="psc-card"><h3>Engagement potential</h3><p>Length, paragraph rhythm, outbound links in the body, hashtag count, and tone — the formatting signals that shape how far a post travels.</p></div>
+        <div class="psc-card"><h3>Readability</h3><p>Sentence length and active-vs-passive voice — how fast the post reads in a scrolling feed.</p></div>
+        <div class="psc-card"><h3>Specificity &amp; credibility</h3><p>Does it back its claim with a concrete number or cited evidence, or ask the reader to take it on faith.</p></div>
         <div class="psc-card"><h3>Timing</h3><p>Optional: tell it a planned day and time and it scores that slot against general B2B posting patterns — not your own audience data.</p></div>
       </div>
     </section>

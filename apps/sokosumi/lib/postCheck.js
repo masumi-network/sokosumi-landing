@@ -2,12 +2,13 @@
 
 // Deterministic social-post scorer for /tools/social-post-checker. Given a
 // pasted post draft (and, optionally, a planned day/time to post it) this
-// scores four dimensions — hook quality, CTA clarity, engagement-shaping
-// formatting, and timing — from static rules against the text alone. The
-// scoring itself makes no network calls, no LLM: every check here is a regex
-// or a threshold, the same way seoExtract.js and ogCheck.js score their own
-// inputs. fetchPostText() below is the one exception — it turns a public
-// LinkedIn post URL into the same plain text, for a post that's already live.
+// scores six dimensions — hook quality, CTA clarity, engagement-shaping
+// formatting, readability, specificity/credibility, and timing — from static
+// rules against the text alone. The scoring itself makes no network calls,
+// no LLM: every check here is a regex or a threshold, the same way
+// seoExtract.js and ogCheck.js score their own inputs. fetchPostText() below
+// is the one exception — it turns a public LinkedIn post URL into the same
+// plain text, for a post that's already live.
 
 const { safeFetch, readCapped, fetchErrorMessage } = require("./safeFetch");
 
@@ -63,7 +64,9 @@ const TIME_LABEL = {
   "18-24": "evening (6pm–12am)",
 };
 
-const DIMENSION_WEIGHT = { hook: 25, cta: 20, engagement: 35, timing: 20 };
+const DIMENSION_WEIGHT = { hook: 20, cta: 15, engagement: 25, readability: 15, specificity: 15, timing: 10 };
+
+const CREDIBILITY_PATTERN = /\bwe (surveyed|analyzed|studied|tracked)\b|according to|data (shows|from)|\b\d+% of\b|\bcase study\b|\bcustomers? (told|said)\b/i;
 
 function band(score) {
   return score >= 80 ? "pass" : score >= 50 ? "warn" : "error";
@@ -173,6 +176,54 @@ function buildEngagementChecks(text) {
   const emoji = trimmed.match(/\p{Extended_Pictographic}/gu) || [];
   if (emoji.length && emoji.length / Math.max(words.length, 1) > 0.12) {
     add("warn", "Heavy emoji use", "tone", `${emoji.length} emoji across ${words.length} words. A few as bullet markers read fine; this many can read as noisy.`, 1);
+  }
+
+  return checks;
+}
+
+// Folds in the Notion brief's separate "LinkedIn Post Analyzer" (score hook,
+// readability, specificity, credibility, CTA, engagement potential) rather
+// than shipping it as a second, near-duplicate tool — these two checks are
+// the only real gap between that spec and what hook/cta/engagement already
+// covered above.
+function buildReadabilityChecks(text) {
+  const checks = [];
+  const add = (level, title, tag, detail, weight = 1) => checks.push({ level, title, tag, detail, weight });
+  const sentences = text.split(/[.!?]+(?:\s|$)/).map((s) => s.trim()).filter(Boolean);
+  const words = text.split(/\s+/).filter(Boolean).length;
+  const avgWords = sentences.length ? words / sentences.length : words;
+
+  if (avgWords > 22) {
+    add("warn", "Sentences run long", "readability", `Averaging ${avgWords.toFixed(1)} words per sentence — long sentences read slower in a fast-scrolling feed.`, 2);
+  } else {
+    add("pass", "Sentences are a readable length", "readability", `Averaging ${avgWords.toFixed(1)} words per sentence.`, 2);
+  }
+
+  const passiveMatches = text.match(/\b(?:is|are|was|were|be|been|being)\s+\w+ed\b/gi) || [];
+  const passiveRatio = sentences.length ? passiveMatches.length / sentences.length : 0;
+  if (passiveRatio > 0.35) {
+    add("warn", "Heavy on passive voice", "readability", "Active voice reads faster and more confident in a feed post.", 1);
+  } else {
+    add("pass", "Mostly active voice", "readability", "No heavy reliance on passive constructions.", 1);
+  }
+
+  return checks;
+}
+
+function buildSpecificityChecks(text) {
+  const checks = [];
+  const add = (level, title, tag, detail, weight = 1) => checks.push({ level, title, tag, detail, weight });
+
+  if (/\d/.test(text)) {
+    add("pass", "Backs the claim with a number", "specificity", "A specific figure reads as more credible than a vague claim.", 2);
+  } else {
+    add("warn", "No concrete numbers", "specificity", "Nothing here is a specific figure, price, or count — every claim is qualitative.", 2);
+  }
+
+  if (CREDIBILITY_PATTERN.test(text)) {
+    add("pass", "Cites evidence", "specificity", "The post points to data, a source, or a named result rather than asserting the claim alone.", 2);
+  } else {
+    add("warn", "No cited evidence", "specificity", 'No "according to", data reference, or named result found — a reader has to take the claim on faith.', 2);
   }
 
   return checks;
@@ -329,6 +380,8 @@ function analyze(input) {
     { key: "hook", label: "Hook quality", checks: buildHookChecks(trimmed) },
     { key: "cta", label: "CTA clarity", checks: buildCtaChecks(trimmed) },
     { key: "engagement", label: "Engagement potential", checks: buildEngagementChecks(trimmed) },
+    { key: "readability", label: "Readability", checks: buildReadabilityChecks(trimmed) },
+    { key: "specificity", label: "Specificity & credibility", checks: buildSpecificityChecks(trimmed) },
   ];
   const timingChecks = buildTimingChecks(day, timeBucket);
   if (timingChecks) dimensions.push({ key: "timing", label: "Timing", checks: timingChecks });
