@@ -623,6 +623,40 @@ const TOOLS = [
         </span>
       </span>`,
   },
+  {
+    href: "/tools/case-study-outline",
+    name: "Case Study Outline Maker",
+    text: "Paste a customer win story and get a ready-to-write challenge/solution/results outline.",
+    meta: "Free · no sign-up",
+    preview: () => `
+      <span class="tp tp-lt">
+        <span class="tp-file">
+          <span class="tp-file-name">Outline</span>
+          <span class="tp-file-line"><b>1</b><i>The challenge</i></span>
+          <span class="tp-file-line"><b>3</b><i>The results</i></span>
+        </span>
+        <span class="tp-verdict">
+          <span class="tp-chip is-pass">Nothing leaves your browser</span>
+        </span>
+      </span>`,
+  },
+  {
+    href: "/tools/re-engagement-builder",
+    name: "Re-engagement Campaign Builder",
+    text: "Paste an old email and get a 3-part re-engagement sequence with subject lines.",
+    meta: "Free · no sign-up",
+    preview: () => `
+      <span class="tp tp-lt">
+        <span class="tp-file">
+          <span class="tp-file-name">Sequence</span>
+          <span class="tp-file-line"><b>Day 1</b><i>Still thinking about…</i></span>
+          <span class="tp-file-line"><b>Day 8</b><i>Should we close…</i></span>
+        </span>
+        <span class="tp-verdict">
+          <span class="tp-chip is-pass">Nothing leaves your browser</span>
+        </span>
+      </span>`,
+  },
 ];
 
 function toolCard(t) {

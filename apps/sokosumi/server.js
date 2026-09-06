@@ -85,6 +85,8 @@ const keywordExtractorTpl = require("./templates/keywordExtractor");
 const hashtagGeneratorTpl = require("./templates/hashtagGenerator");
 const keywordClusterGeneratorTpl = require("./templates/keywordClusterGenerator");
 const schemaMarkupGeneratorTpl = require("./templates/schemaMarkupGenerator");
+const caseStudyOutlineMakerTpl = require("./templates/caseStudyOutlineMaker");
+const reEngagementBuilderTpl = require("./templates/reEngagementBuilder");
 
 const port = process.env.PORT || 3000;
 const root = __dirname;
@@ -769,6 +771,8 @@ const routes = [
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "hashtag-generator" && {}, h: hashtagGeneratorTpl.render },
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "keyword-clusters" && {}, h: keywordClusterGeneratorTpl.render },
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "schema-generator" && {}, h: schemaMarkupGeneratorTpl.render },
+  { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "case-study-outline" && {}, h: caseStudyOutlineMakerTpl.render },
+  { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "re-engagement-builder" && {}, h: reEngagementBuilderTpl.render },
   { m: (s) => s.length === 1 && s[0] === "product" && {}, h: pagesTpl.productHub },
   { m: (s) => s.length === 1 && s[0] === "pricing" && {}, h: pricingTpl.render },
   // The entity page for Sokosumi itself lives in code so its JSON-LD is
