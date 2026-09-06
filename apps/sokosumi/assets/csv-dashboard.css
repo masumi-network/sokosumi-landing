@@ -1,0 +1,113 @@
+/* /tools/csv-dashboard — chart-specific bits on top of tool-kit.css. Uses the
+ * site's own --primary as the single-series color (dataviz skill: target
+ * your brand's ramps rather than a generic palette when there's a brand).
+ */
+
+.cd-stat {
+  padding: 16px 18px;
+}
+
+.cd-stat-label {
+  font-size: 12.5px;
+  color: var(--muted-foreground);
+}
+
+.cd-stat-value {
+  margin-top: 6px;
+  font-size: 22px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+.cd-stat-sub {
+  margin-top: 4px;
+  font-size: 12px;
+  color: var(--muted-foreground);
+  font-variant-numeric: tabular-nums;
+}
+
+.cd-bars {
+  display: grid;
+  gap: 10px;
+}
+
+.cd-bar-row {
+  display: grid;
+  grid-template-columns: 140px minmax(0, 1fr) 70px;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+}
+
+.cd-bar-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--muted-foreground);
+}
+
+.cd-bar-track {
+  height: 14px;
+  background: var(--muted);
+  border-radius: 7px;
+  overflow: hidden;
+  position: relative;
+}
+
+.cd-bar-fill {
+  height: 100%;
+  background: var(--primary);
+  border-radius: 7px;
+  transition: width 240ms ease-out;
+}
+
+.cd-bar-value {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  color: var(--foreground);
+}
+
+.cd-line-wrap {
+  position: relative;
+}
+
+.cd-line-svg {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.cd-line-path {
+  fill: none;
+  stroke: var(--primary);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.cd-line-grid {
+  stroke: var(--border);
+  stroke-width: 1;
+}
+
+.cd-line-dot {
+  fill: var(--primary);
+}
+
+.cd-line-tooltip {
+  position: absolute;
+  pointer-events: none;
+  padding: 6px 10px;
+  background: var(--foreground);
+  color: var(--background);
+  border-radius: var(--r-sm);
+  font-size: 12px;
+  transform: translate(-50%, -130%);
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 120ms ease-out;
+}
+
+.cd-line-tooltip.is-visible {
+  opacity: 1;
+}

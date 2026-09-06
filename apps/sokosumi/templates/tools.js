@@ -657,6 +657,30 @@ const TOOLS = [
         </span>
       </span>`,
   },
+  {
+    href: "/tools/csv-dashboard",
+    name: "CSV to Instant Dashboard",
+    text: "Upload a CSV and get stat tiles, a bar chart and a time-series chart, in your browser.",
+    meta: "Free · no sign-up",
+    preview: () => `
+      <span class="tp tp-ic">
+        <span class="tp-bars">
+          <span class="tp-bar">
+            <span class="tp-bar-label">Region A</span>
+            <span class="tp-bar-track"><i style="width:80%"></i></span>
+            <span class="tp-bar-size">1,204</span>
+          </span>
+          <span class="tp-bar is-after">
+            <span class="tp-bar-label">Region B</span>
+            <span class="tp-bar-track"><i style="width:45%"></i></span>
+            <span class="tp-bar-size">690</span>
+          </span>
+        </span>
+        <span class="tp-verdict">
+          <span class="tp-chip is-pass">Nothing leaves your browser</span>
+        </span>
+      </span>`,
+  },
 ];
 
 function toolCard(t) {
