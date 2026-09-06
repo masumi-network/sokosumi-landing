@@ -69,6 +69,8 @@ const landingTeardownCheckerTpl = require("./templates/landingTeardownChecker");
 const landingTeardownCheck = require("./lib/landingTeardownCheck");
 const competitorPositioningCheckerTpl = require("./templates/competitorPositioningChecker");
 const competitorPositioningCheck = require("./lib/competitorPositioningCheck");
+const competitorMessagingCheckerTpl = require("./templates/competitorMessagingChecker");
+const competitorMessagingCheck = require("./lib/competitorMessagingCheck");
 
 const port = process.env.PORT || 3000;
 const root = __dirname;
@@ -135,6 +137,9 @@ const landingTeardownCheckRequests = new Map();
 // Two page fetches per request — half the OG checker's ceiling.
 const COMPETITOR_POSITIONING_CHECK_RATE_LIMIT = Number(process.env.COMPETITOR_POSITIONING_CHECK_RATE_LIMIT) || 15;
 const competitorPositioningCheckRequests = new Map();
+// Up to 5 page fetches per request.
+const COMPETITOR_MESSAGING_CHECK_RATE_LIMIT = Number(process.env.COMPETITOR_MESSAGING_CHECK_RATE_LIMIT) || 10;
+const competitorMessagingCheckRequests = new Map();
 
 function publicWebsiteUrl(value) {
   let parsed;
@@ -241,6 +246,7 @@ const xAlgorithmCheckRateLimited = (ip) => hourlyRateLimited(xAlgorithmCheckRequ
 const brandVoiceCheckRateLimited = (ip) => hourlyRateLimited(brandVoiceCheckRequests, BRAND_VOICE_CHECK_RATE_LIMIT, ip);
 const landingTeardownCheckRateLimited = (ip) => hourlyRateLimited(landingTeardownCheckRequests, LANDING_TEARDOWN_CHECK_RATE_LIMIT, ip);
 const competitorPositioningCheckRateLimited = (ip) => hourlyRateLimited(competitorPositioningCheckRequests, COMPETITOR_POSITIONING_CHECK_RATE_LIMIT, ip);
+const competitorMessagingCheckRateLimited = (ip) => hourlyRateLimited(competitorMessagingCheckRequests, COMPETITOR_MESSAGING_CHECK_RATE_LIMIT, ip);
 
 async function designMdFetch(pathname, options = {}) {
   const response = await fetch(`${DESIGN_MD_API_BASE}${pathname}`, {
@@ -723,6 +729,7 @@ const routes = [
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "brand-voice-analyzer" && {}, h: brandVoiceCheckerTpl.render },
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "landing-page-teardown" && {}, h: landingTeardownCheckerTpl.render },
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "competitor-positioning" && {}, h: competitorPositioningCheckerTpl.render },
+  { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "competitor-messaging" && {}, h: competitorMessagingCheckerTpl.render },
   { m: (s) => s.length === 1 && s[0] === "product" && {}, h: pagesTpl.productHub },
   { m: (s) => s.length === 1 && s[0] === "pricing" && {}, h: pricingTpl.render },
   // The entity page for Sokosumi itself lives in code so its JSON-LD is
@@ -1487,6 +1494,27 @@ const assetsDir = path.join(root, "assets");
           }
           try {
             const data = await competitorPositioningCheck.analyze(body);
+            return send(req, res, 200, jsonHead, JSON.stringify(data));
+          } catch (error) {
+            const status = error.status && error.status >= 400 && error.status < 600 ? error.status : 500;
+            return send(req, res, status, jsonHead, JSON.stringify({ error: error.message || "That check did not work. Try again." }));
+          }
+        }
+
+        if (urlPath === "/api/competitor-messaging-check" && req.method === "POST") {
+          const jsonHead = { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" };
+          let body;
+          try {
+            body = await readJsonBody(req, 4096);
+          } catch (error) {
+            const message = error.message === "too-large" ? "The request is too large." : "Send a valid JSON request.";
+            return send(req, res, 400, jsonHead, JSON.stringify({ error: message }));
+          }
+          if (competitorMessagingCheckRateLimited(clientIp(req))) {
+            return send(req, res, 429, { ...jsonHead, "Retry-After": "3600" }, JSON.stringify({ error: "You have reached the hourly limit. Try again later." }));
+          }
+          try {
+            const data = await competitorMessagingCheck.analyze(body);
             return send(req, res, 200, jsonHead, JSON.stringify(data));
           } catch (error) {
             const status = error.status && error.status >= 400 && error.status < 600 ? error.status : 500;

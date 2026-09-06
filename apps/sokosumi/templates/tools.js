@@ -297,6 +297,21 @@ const competitorPositioningPreview = () => `
     </span>
   </span>`;
 
+// The messaging comparison spans several sites, so the preview is a row of
+// small tags — the shared-vs-unique vocabulary the real tool surfaces.
+const competitorMessagingPreview = () => `
+  <span class="tp tp-lt">
+    <span class="tp-file">
+      <span class="tp-file-name">Messaging comparison</span>
+      <span class="tp-file-line"><b>Shared</b><i>onboarding, teams</i></span>
+      <span class="tp-file-line is-quote">yoursite.com → "workflow"</span>
+      <span class="tp-file-line is-quote">competitor.com → "enterprise"</span>
+    </span>
+    <span class="tp-verdict">
+      <span class="tp-chip is-pass">3 sites compared</span>
+    </span>
+  </span>`;
+
 const TOOLS = [
   {
     href: "/tools/llms-txt",
@@ -416,6 +431,13 @@ const TOOLS = [
     text: "Enter two URLs and see the loopholes each page leaves open against the other.",
     meta: "Free · no sign-up",
     preview: competitorPositioningPreview,
+  },
+  {
+    href: "/tools/competitor-messaging",
+    name: "Competitor Messaging Comparison",
+    text: "Paste 2-5 competitor URLs and compare tone, sentence style and shared vs unique vocabulary.",
+    meta: "Free · no sign-up",
+    preview: competitorMessagingPreview,
   },
 ];
 
