@@ -444,6 +444,19 @@ const contentDecayPreview = () => `
     </span>
   </span>`;
 
+const coreWebVitalsPreview = () => `
+  <span class="tp tp-seo">
+    <span class="tp-serp">
+      <span class="tp-serp-url">example.com<i>›</i>page</span>
+      <span class="tp-serp-title">3 render-blocking scripts, 2 images missing size</span>
+      <span class="tp-serp-desc">Plain-English fixes for LCP, CLS and INP signals.</span>
+    </span>
+    <span class="tp-verdict">
+      <span class="tp-gauge" style="--score:58"><b>58</b></span>
+      <span class="tp-chip is-warn">2 warnings</span>
+    </span>
+  </span>`;
+
 const TOOLS = [
   {
     href: "/tools/llms-txt",
@@ -741,6 +754,13 @@ const TOOLS = [
     text: "Paste up to 20 content URLs and find the ones that look stale relative to the batch.",
     meta: "Free · no sign-up",
     preview: contentDecayPreview,
+  },
+  {
+    href: "/tools/core-web-vitals",
+    name: "Core Web Vitals Explainer",
+    text: "Plain-English fixes for structural signals tied to LCP, CLS and INP. Not real CrUX data.",
+    meta: "Free · no sign-up",
+    preview: coreWebVitalsPreview,
   },
 ];
 
