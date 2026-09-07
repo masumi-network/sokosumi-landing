@@ -1351,9 +1351,9 @@ const HOME_DE = [
 
   // skip link + hero
   [">Skip to content</a>", ">Zum Inhalt springen</a>"],
-  [">AI Coworker for Marketing.</h1>", ">KI-Mitarbeiter für Marketing.</h1>"],
+  [">AI Coworkers for Marketing.</h1>", ">KI-Mitarbeiter für Marketing.</h1>"],
   // the share card is generated from the headline, so it needs the German one
-  ["https://www.sokosumi.com/og/dHlwZT1wYWdlJnRpdGxlPUFJK0Nvd29ya2VyK2ZvcitNYXJrZXRpbmcuJnN1Yj1IaXJlK0FJK2Nvd29ya2Vycyt0aGF0K3dvcmsrYXMrcGFydCtvZit5b3VyK3RlYW0uJmV5ZWJyb3c9U29rb3N1bWk.png", "https://www.sokosumi.com/og/dHlwZT1wYWdlJnRpdGxlPUFJK0Nvd29ya2VyK2YlQzMlQkNyK01hcmtldGluZy4mc3ViPUtJLU1pdGFyYmVpdGVyJTJDK2RpZSthbHMrVGVpbCtJaHJlcytUZWFtcythcmJlaXRlbi4mZXllYnJvdz1Tb2tvc3VtaQ.png"],
+  ["https://www.sokosumi.com/og/dHlwZT1wYWdlJnRpdGxlPUFJK0Nvd29ya2Vycytmb3IrTWFya2V0aW5nLiZzdWI9SGlyZStBSStjb3dvcmtlcnMrdGhhdCt3b3JrK2FzK3BhcnQrb2YreW91cit0ZWFtLiZleWVicm93PVNva29zdW1p.png", "https://www.sokosumi.com/og/dHlwZT1wYWdlJnRpdGxlPUFJK0Nvd29ya2VycytmJUMzJUJDcitNYXJrZXRpbmcuJnN1Yj1LSS1NaXRhcmJlaXRlciUyQytkaWUrYWxzK1RlaWwrSWhyZXMrVGVhbXMrYXJiZWl0ZW4uJmV5ZWJyb3c9U29rb3N1bWk.png"],
   [
     "Hire AI coworkers that work as part of your team.",
     "KI-Mitarbeiter, die als Teil Ihres Teams arbeiten.",
