@@ -237,14 +237,14 @@ async function sitemap() {
       return [];
     }
   };
-  // The gallery pages through every saved brand; the sitemap publishes the
-  // newest slice of them. These are real analyses rather than thin pages, but
-  // most are one-off submissions of small personal sites, and putting every
-  // one of several hundred into the index is not what this sitemap is for.
-  const SITEMAP_ANALYSES = 250;
-  const analyses = await require("../lib/designMdArchive")
+  // The gallery pages through every saved brand, but only the curated
+  // indexable ones belong in the sitemap — everything else carries noindex
+  // (see INDEXED_HOSTS in lib/designMdArchive.js), and a sitemap that lists
+  // pages the pages themselves refuse just burns crawl budget.
+  const archive = require("../lib/designMdArchive");
+  const analyses = await archive
     .list()
-    .then((l) => l.slice(0, SITEMAP_ANALYSES).map((e) => `/tools/design-md/analysis/${e.slug}`))
+    .then((l) => l.filter(archive.indexable).map((e) => `/tools/design-md/analysis/${e.slug}`))
     .catch(() => []);
   analyses.forEach((u) => urls.add(u));
   const fetchers = [

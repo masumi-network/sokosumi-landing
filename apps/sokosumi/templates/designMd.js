@@ -250,6 +250,7 @@ function galleryCard(entry) {
 }
 
 async function analysis(ctx) {
+  if (archive.isGone(ctx.params.slug)) return { gone: true };
   const entry = await archive.bySlug(ctx.params.slug).catch(() => null);
   if (!entry) return null;
   if (entry.slug !== String(ctx.params.slug).toLowerCase()) return { redirect: archive.pathFor(entry) };
@@ -307,9 +308,13 @@ async function analysis(ctx) {
       description: description.slice(0, 160),
       path,
       englishOnly: true,
+      // Only curated, recognizable brands are worth a slot in the index;
+      // the long tail of one-off submissions renders fine but stays out
+      // (see INDEXED_HOSTS in lib/designMdArchive.js for the why).
+      noindex: !archive.indexable(entry),
       breadcrumb: [{ label: "Home", href: "/" }, { label: "Free tools", href: "/tools" }, { label: "DESIGN.md generator", href: "/tools/design-md" }, { label: name }],
       mainClass: "design-tool-page dm-analysis-page",
-      stylesheets: ["/assets/design-md.css"],
+      stylesheets: ["/assets/design-md.css", "/assets/email-gate.css"],
       jsonld,
       og: { type: "page", eyebrow: "DESIGN.md", title: `${name} design system`, sub: `Extracted from ${entry.hostname}` },
     }) +

@@ -550,7 +550,7 @@ function hasPreviewCookie(req) {
 
 // ── routing ──────────────────────────────────────────────────────────────
 // Each route: match(segments) → params or null, then handler(ctx) →
-// html string | { redirect } | null (404).
+// html string | { redirect } | { gone: true } (410) | null (404).
 const cms = require("./lib/cms");
 const i18n = require("./lib/i18n");
 const { t } = i18n;
@@ -1647,6 +1647,9 @@ ${productDemoTpl.demoStage()}
             const to = rawQuery ? target + sep + rawQuery : target;
             return send(req, res, out.status || 301, { Location: to, "Cache-Control": "public, max-age=3600" }, "");
           }
+          // 410, not 404: these URLs are removed on purpose (abusive
+          // design-md submissions) and Gone deindexes them faster.
+          if (out && out.gone) return sendHtml(misc.notFound(), 410);
           if (out) return sendHtml(out);
           return sendHtml(misc.notFound(), 404);
         }
