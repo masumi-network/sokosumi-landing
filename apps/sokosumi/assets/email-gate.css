@@ -80,23 +80,6 @@
   color: rgba(15, 14, 13, 0.55);
 }
 
-.eg-skip {
-  margin-top: 14px;
-  padding: 0;
-  border: 0;
-  background: none;
-  font: inherit;
-  font-size: 13px;
-  color: rgba(15, 14, 13, 0.55);
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  cursor: pointer;
-}
-
-.eg-skip:hover {
-  color: var(--ink, #0f0e0d);
-}
-
 @media (max-width: 480px) {
   .eg-row {
     flex-direction: column;

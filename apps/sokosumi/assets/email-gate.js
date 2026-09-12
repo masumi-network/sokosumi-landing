@@ -1,70 +1,67 @@
-// Email popup for the free tools. The first time a visitor actually runs a
-// tool (submits its form, or copies/downloads on an analysis page), a small
-// dialog asks for their email for marketing updates. Submitting stores the
-// address via /api/tool-email; declining is remembered for the session,
-// subscribing forever. The tool itself is never blocked — it keeps running
-// underneath.
+// Email gate for the free tools. Running a tool (submitting its form, or
+// copying/downloading on an analysis page) requires an email address the
+// first time: the action is intercepted, the dialog asks for the email,
+// and on success the original action is replayed. Subscribing is stored in
+// localStorage, so a visitor is only ever asked once — after that every
+// tool works directly. Doubling as a spam brake: anonymous drive-by runs
+// don't happen any more.
+//
+// Listeners sit on document in the CAPTURE phase so they run before the
+// tool scripts' own handlers on the same elements, whatever the script
+// order — stopPropagation there keeps the tool from starting.
 (function () {
   var DONE_KEY = "soko-tool-email";
-  var SKIP_KEY = "soko-tool-email-skip";
   var CONSENT = "By submitting, you agree to receive marketing emails from Sokosumi. Unsubscribe anytime.";
 
   // form id → tool name reported to the API
-  var FORMS = [
-    ["designMdForm", "design-md"],
-    ["seoMdForm", "seo-md"],
-    ["ogcForm", "og-checker"],
-    ["ltForm", "llms-txt"],
-  ];
+  var FORMS = {
+    designMdForm: "design-md",
+    seoMdForm: "seo-md",
+    ogcForm: "og-checker",
+    ltForm: "llms-txt",
+  };
   // click targets on the analysis pages, where there is no form
-  var BUTTONS = [
-    ["designMdDownload", "design-md"],
-    ["designMdCopy", "design-md"],
-  ];
+  var BUTTONS = {
+    designMdDownload: "design-md",
+    designMdCopy: "design-md",
+  };
 
-  function storageGet(store, key) {
-    try { return store.getItem(key); } catch (e) { return null; }
+  function subscribed() {
+    try { return localStorage.getItem(DONE_KEY) === "done"; } catch (e) { return false; }
   }
-  function storageSet(store, key, value) {
-    try { store.setItem(key, value); } catch (e) {}
-  }
-
-  function seen() {
-    return storageGet(localStorage, DONE_KEY) === "done" || storageGet(sessionStorage, SKIP_KEY) === "1";
+  function remember() {
+    try { localStorage.setItem(DONE_KEY, "done"); } catch (e) {}
   }
 
   var open = false;
-  var lastFocus = null;
 
-  function close(overlay) {
-    if (!overlay.parentNode) return;
-    overlay.parentNode.removeChild(overlay);
-    open = false;
-    if (lastFocus && lastFocus.focus) lastFocus.focus();
+  // The action that was intercepted, replayed after a successful submit.
+  function resume(pending) {
+    if (!pending) return;
+    if (pending.form) pending.form.requestSubmit ? pending.form.requestSubmit() : pending.form.submit();
+    else if (pending.button) pending.button.click();
   }
 
-  function show(tool) {
-    if (open || seen()) return;
+  function show(tool, pending) {
+    if (open) return;
     open = true;
-    lastFocus = document.activeElement;
 
     var overlay = document.createElement("div");
     overlay.className = "eg-overlay";
     overlay.innerHTML =
       '<div class="eg-card" role="dialog" aria-modal="true" aria-labelledby="egTitle">' +
-      '<h2 id="egTitle">Enjoying the free tools?</h2>' +
-      "<p>Leave your email and we’ll send you new free tools and product updates from Sokosumi.</p>" +
+      '<h2 id="egTitle">Enter your email to use the free tools</h2>' +
+      "<p>You only do this once. We’ll send you new free tools and product updates from Sokosumi.</p>" +
       '<form class="eg-form" novalidate>' +
       '<input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" class="eg-hp">' +
       '<div class="eg-row">' +
       '<label class="sr-only" for="egEmail">Email address</label>' +
       '<input type="email" id="egEmail" name="email" placeholder="you@company.com" autocomplete="email" required>' +
-      '<button type="submit" class="btn btn-primary">Send me updates</button>' +
+      '<button type="submit" class="btn btn-primary">Continue</button>' +
       "</div>" +
       '<p class="eg-error" hidden></p>' +
       "<p class=\"eg-consent\">" + CONSENT + "</p>" +
       "</form>" +
-      '<button type="button" class="eg-skip">No thanks</button>' +
       "</div>";
 
     document.body.appendChild(overlay);
@@ -74,24 +71,9 @@
     var error = overlay.querySelector(".eg-error");
     var card = overlay.querySelector(".eg-card");
 
-    function skip() {
-      storageSet(sessionStorage, SKIP_KEY, "1");
-      close(overlay);
-    }
-
-    overlay.addEventListener("click", function (e) {
-      if (!card.contains(e.target)) skip();
-    });
-    overlay.querySelector(".eg-skip").addEventListener("click", skip);
-    document.addEventListener("keydown", function onKey(e) {
-      if (e.key === "Escape" && overlay.parentNode) {
-        document.removeEventListener("keydown", onKey);
-        skip();
-      }
-    });
-
     form.addEventListener("submit", function (e) {
       e.preventDefault();
+      e.stopPropagation();
       error.hidden = true;
       var value = email.value.trim();
       if (!value || value.indexOf("@") < 1) {
@@ -115,9 +97,13 @@
         .then(function (res) { return res.json().catch(function () { return {}; }).then(function (data) { return { ok: res.ok, data: data }; }); })
         .then(function (out) {
           if (!out.ok) throw new Error(out.data.error || "That did not work. Try again.");
-          storageSet(localStorage, DONE_KEY, "done");
-          card.innerHTML = '<h2>Thanks — you’re on the list.</h2>';
-          setTimeout(function () { close(overlay); }, 1200);
+          remember();
+          card.innerHTML = '<h2>Thanks — you’re in.</h2>';
+          setTimeout(function () {
+            if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
+            open = false;
+            resume(pending);
+          }, 900);
         })
         .catch(function (err) {
           button.disabled = false;
@@ -129,19 +115,28 @@
     email.focus();
   }
 
-  // Let the click's own effect land first (progress bar, copied state) so
-  // the dialog reads as an aside, not as the tool's response.
-  function trigger(tool) {
-    if (seen()) return;
-    setTimeout(function () { show(tool); }, 600);
-  }
+  document.addEventListener(
+    "submit",
+    function (e) {
+      var tool = e.target && e.target.id && FORMS[e.target.id];
+      if (!tool || subscribed()) return;
+      e.preventDefault();
+      e.stopPropagation();
+      show(tool, { form: e.target });
+    },
+    true
+  );
 
-  FORMS.forEach(function (pair) {
-    var form = document.getElementById(pair[0]);
-    if (form) form.addEventListener("submit", function () { trigger(pair[1]); });
-  });
-  BUTTONS.forEach(function (pair) {
-    var el = document.getElementById(pair[0]);
-    if (el) el.addEventListener("click", function () { trigger(pair[1]); });
-  });
+  document.addEventListener(
+    "click",
+    function (e) {
+      var el = e.target && e.target.closest ? e.target.closest("button[id]") : null;
+      var tool = el && BUTTONS[el.id];
+      if (!tool || subscribed()) return;
+      e.preventDefault();
+      e.stopPropagation();
+      show(tool, { button: el });
+    },
+    true
+  );
 })();
