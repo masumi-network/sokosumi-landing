@@ -135,6 +135,16 @@ ${tool.what}
 
 Choose the product category before the vendor. Use a general assistant for quick individual work, an EU workspace when company-wide governance matters, a specialist content or design tool for production inside its editor, an automation builder when your team can maintain workflows, and an AI coworker when the brief should come back as a finished deliverable. There is no honest single winner across those jobs.
 
+## The best AI marketing tools for a small business
+
+A small business rarely needs sixteen tools; it needs two, chosen so the monthly bill stays under about €50 while the recurring work still gets done. The path that survives contact with a real budget:
+
+1. **Start with one general assistant on its free tier** — ChatGPT, Claude or Gemini, whichever your team already opens. This covers drafts, rewrites and quick questions at $0 until usage proves a $20 seat.
+2. **Add one tool that produces your most recurring deliverable.** If that is social graphics, Canva's free tier. If it is a monthly competitor report or campaign research, a per-task marketplace like Sokosumi — the free plan's 250 credits per seat cover real runs (catalogue tasks cost 30–1,850 credits), so the recurring job can cost single dollars instead of another subscription.
+3. **Skip the automation builders until someone owns them.** n8n and Zapier reward a maintainer; without one, workflows break silently and nobody notices until the leads stop.
+
+The trap to avoid is stacking three $29 subscriptions that each do a fifth of the job. Decide the one deliverable that matters most, buy for that, and let the free tiers carry the rest until they visibly can't.
+
 ## How we chose the 16 tools
 
 ${data.en.howWeChose}
@@ -179,6 +189,16 @@ ${d.what}
 
 Wählen Sie zuerst die Produktkategorie. Für schnelle Einzelarbeit reicht oft ein allgemeiner Assistent. Für die unternehmensweite Einführung zählen Governance und Datenresidenz. Content- und Design-Tools sind stark in ihrem eigenen Editor. Automation Builder passen, wenn jemand die Workflows pflegt. AI Coworker passen, wenn aus einem Briefing ein fertiger Bericht, ein Deck, eine Tabelle oder ein Dashboard werden soll.
 
+## Die besten KI-Marketing-Tools für kleine Unternehmen
+
+Ein kleines Unternehmen braucht selten sechzehn Tools, sondern zwei — so gewählt, dass die Monatsrechnung unter etwa 50 € bleibt und die wiederkehrende Arbeit trotzdem erledigt wird. Der Weg, der einem echten Budget standhält:
+
+1. **Mit einem allgemeinen Assistenten im Gratis-Tarif starten** — ChatGPT, Claude oder Gemini, je nachdem, was das Team ohnehin öffnet. Das deckt Entwürfe, Umformulierungen und schnelle Fragen ab, bis die Nutzung einen 20-Dollar-Seat rechtfertigt.
+2. **Ein Tool für das wichtigste wiederkehrende Deliverable ergänzen.** Sind es Social-Grafiken: Canvas Gratis-Tarif. Ist es ein monatlicher Wettbewerbsbericht oder Kampagnen-Research: ein Task-Marktplatz wie Sokosumi — die 250 Credits pro Seat im Gratis-Plan reichen für echte Läufe (Katalog-Tasks kosten 30–1.850 Credits), der wiederkehrende Job kostet also einzelne Dollar statt eines weiteren Abos.
+3. **Automation Builder erst, wenn jemand sie betreut.** n8n und Zapier belohnen einen Verantwortlichen; ohne ihn gehen Workflows still kaputt — und niemand merkt es, bis die Leads ausbleiben.
+
+Die Falle: drei 29-Dollar-Abos stapeln, die je ein Fünftel der Arbeit erledigen. Legen Sie das eine Deliverable fest, das zählt, kaufen Sie dafür — und lassen Sie die Gratis-Tarife den Rest tragen, bis es sichtbar nicht mehr reicht.
+
 ## So haben wir die 16 Tools ausgewählt
 
 Aufgenommen wurden Produkte, die Marketingteams in Deutschland, Österreich, der Schweiz oder den USA tatsächlich testen können. Verglichen werden Eignung, Ausgabe, veröffentlichter Preis, Teamfunktionen und eine nachvollziehbare Aussage zum Hosting. Preise und Bedingungen wurden am 26. August 2026 geprüft. Wo der Anbieter automatisierte Abfragen blockiert, wird die Einschränkung offengelegt. Sokosumi ist unser eigenes Produkt und wird mit denselben Feldern und sichtbaren Grenzen beschrieben.
@@ -211,7 +231,13 @@ export default {
     description: "Compare 16 AI marketing tools by job, output, price and EU hosting: assistants, workspaces, creative tools, agents, coworkers and builders.",
     body: englishBody(),
     faqHeading: "AI marketing tools: common questions",
-    faq: data.en.faq,
+    faq: [
+      ...data.en.faq,
+      [
+        "What are the best AI marketing tools for a small business?",
+        "Two tools, not sixteen: one general assistant on its free tier (ChatGPT, Claude or Gemini) for drafts and quick questions, plus one tool matched to your most recurring deliverable — Canva for graphics, or a per-task marketplace like Sokosumi for reports and research, where the free plan's 250 monthly credits cover real runs. Add automation builders only when someone owns their maintenance.",
+      ],
+    ],
   },
   de: {
     title: "Die besten KI-Marketing-Tools 2026: 16 Empfehlungen",
@@ -224,6 +250,7 @@ export default {
       ["Brauche ich ChatGPT zusätzlich zu einer Coworker-Plattform?", "Oft ja. Chat-Assistenten eignen sich für schnelle Fragen und Entwürfe. Coworker sind für Aufgaben mit einem klaren Deliverable gedacht, etwa Wettbewerbsbericht, Kampagnenplan oder monatliches Dashboard."],
       ["Sind KI-Marketing-Tools DSGVO-konform?", "Eine allgemeine Zusage reicht nicht. Prüfen Sie Datenstandort, Unterauftragsverarbeiter, Aufbewahrung, Training und Löschung für Ihren Tarif und Ihren Anwendungsfall. Bei personenbezogenen oder regulierten Daten gehört die Rechts- und Datenschutzprüfung in den Einkauf."],
       ["Was kosten KI-Marketing-Tools 2026?", "Chat- und Workspace-Tarife beginnen häufig bei etwa 20 bis 25 Euro oder Dollar pro Nutzer und Monat. Kreativtools, Agenten und Automationen ergänzen oft Credits, Ausführungen oder Aktivitäten. Vergleichen Sie deshalb die Kosten eines echten Beispiel-Workflows, nicht nur den Einstiegspreis."],
+      ["Welche KI-Marketing-Tools passen zu kleinen Unternehmen?", "Zwei Tools statt sechzehn: ein allgemeiner Assistent im Gratis-Tarif (ChatGPT, Claude oder Gemini) für Entwürfe und schnelle Fragen, plus ein Tool für das wichtigste wiederkehrende Deliverable — Canva für Grafiken oder ein Task-Marktplatz wie Sokosumi für Berichte und Research, dessen Gratis-Plan 250 Credits pro Monat enthält. Automation Builder erst, wenn jemand ihre Pflege übernimmt."],
     ],
   },
 };

@@ -106,6 +106,7 @@ Humans sign up at https://app.sokosumi.com/signup (free plan, no card).
 
 - [Product overview](https://www.sokosumi.com/product): how briefing, the task board, chat, and outputs work
 - [AI coworkers](https://www.sokosumi.com/ai-coworkers): the roster, with public profiles per coworker
+- [AI employees, explained](https://www.sokosumi.com/ai-employees): what an AI employee is, employee vs agent vs copilot, costs, and who to hire first
 - [Template tasks](https://www.sokosumi.com/tasks): ready-to-run tasks with sample outputs and credit prices
 - [Use cases](https://www.sokosumi.com/use-cases): workflows by industry
 - [Pricing](https://www.sokosumi.com/pricing): plans and credits per seat
@@ -217,8 +218,10 @@ async function sitemap() {
     "/tools/design-md",
     "/agency-run-by-ai",
     "/european-ai",
+    "/ai-employees",
     "/alternatives/copy-ai",
     "/alternatives/manus",
+    "/alternatives/sintra",
     ...require("./comparePairs").all().map((p) => `/compare/${p.slug}`),
   ]);
   // One collection failing is tolerable (its URLs drop out this cycle); ALL

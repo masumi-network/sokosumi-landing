@@ -2,6 +2,11 @@
 //   node scripts/cms-alternatives.mjs            # drafts
 //   PUBLISH=1 node scripts/cms-alternatives.mjs  # publish
 //
+// CAREFUL: a draft run PATCHes _status=draft onto EXISTING pages too, which
+// unpublishes them (observed 2026-09-12: copy-ai 404'd until the publish
+// run). On a live site, run with PUBLISH=1 unless you mean to take the
+// pages down.
+//
 // Why these two and no others. Every candidate was checked against Ahrefs for
 // volume AND against its live SERP, because KD alone was wrong on every term
 // tested this session. Validated 2026-08-27 (country=us):
@@ -24,6 +29,15 @@
 // demand for these terms is 0–60/month, so /alternatives/* is English-only
 // (see DE_ENGLISH_PATHS in lib/i18n.js) rather than shipping English prose on
 // a German URL.
+//
+// 2026-09-12: added `alternatives/sintra` as a PILOT — one page, measured
+// before any more are added. Ahrefs that day: sintra ai review 450/mo,
+// sintra ai pricing 200, sintra ai alternatives 70, all near-zero KD. The
+// review/pricing intent is folded into this page's FAQ with dated numbers;
+// the detailed two-product comparison stays at /compare/sokosumi-vs-sintra
+// (one intent per URL — do not also chase "review" from the compare page).
+// lindy/jasper stay rejected on the SERP grounds above until the pilot
+// shows indexation and query separation.
 
 import fs from "node:fs";
 import os from "node:os";
@@ -171,6 +185,64 @@ const PAGES = [
       ["Is Sokosumi an autonomous agent like Manus?", "No, and the difference matters. Manus is one general agent you point at a task. Sokosumi is a marketplace of named specialists, each with a stated job and a price you see before it runs. If you want open-ended autonomy, Manus is the closer fit; if you want a predictable deliverable, Sokosumi is."],
     ],
   },
+  {
+    slug: "alternatives/sintra",
+    tool: "Sintra",
+    title: "Sintra AI alternatives: 5 options compared on price",
+    description:
+      "Sintra AI alternatives compared on real cost, the 250-credit ceiling, and where data lives. List vs promotional pricing separated. Prices checked 26 August 2026.",
+    heroSub:
+      "Sintra's helpers are likeable and the promotional price is low. The two things that send people looking are the 250-credit monthly ceiling and pricing that depends on which day you caught the sale.",
+    intro: [
+      "Sintra sells twelve role-named AI helpers — support, copy, SEO, social, email, sales and more — with a shared 'Brain' you feed your business data, aimed at solo founders and very small businesses. Three things push people to compare.",
+      "**The credit ceiling.** Every plan carries 250 credits a month — the same on the $97 list plan and the $15.60 annual deal — and helpers stop when credits run out. Top-ups cost extra and credits do not roll over.",
+      "**Pricing depends on the promotion.** At check, the all-helpers plan listed at $97 a month but sold at $48.50 monthly, $23.60 on a 3-month term and $15.60 on a 12-month term. Budget against the list price, because that is what renewal can look like.",
+      "**No free plan, and no EU hosting.** There is a 14-day money-back guarantee instead of a trial. The legal entity is playOS, Inc. in Delaware, US, and data may be processed in the US — published EU residency is not offered.",
+      "If you are a solo founder inside the credit ceiling and happy with the promo price, staying is reasonable. Here is the field for everyone else.",
+    ],
+    columns: ["Sokosumi", "Sintra", "Lindy", "Motion", "Relevance AI"],
+    rows: [
+      ["Who it is for", [SOKO.who,
+        "Solo founders and very small businesses that want role-named helpers to chat with",
+        "Individuals and small teams that want an assistant acting in inbox, calendar and CRM",
+        "Small teams that want tasks, calendar, docs and AI agents in one app",
+        "Ops and go-to-market teams that want to build their own agents"]],
+      ["Price", [SOKO.price,
+        "All helpers: $97 list monthly; sold at $48.50 monthly, $23.60 on 3-month, $15.60 on 12-month terms at check",
+        "Plus $29.99, Pro $99.99, Max $199.99 per user monthly; Enterprise custom",
+        "Pro AI $19 per seat monthly annual ($29 monthly); Business AI $29 annual ($49 monthly)",
+        "Free $0; Pro $19/mo annual or $29 monthly; Team $234 annual or $349 monthly"]],
+      ["Free plan or trial", [SOKO.free,
+        "No free plan; 14-day money-back guarantee",
+        "No free plan; 7-day trial only for teammates joining via Slack",
+        "7-day trial with a $1 card hold; no free plan",
+        "Free plan: 200 actions per month, 1 user, 1 project"]],
+      ["EU hosting", [SOKO.eu,
+        "Not EU. Entity playOS, Inc. (Delaware); data may be processed in the US",
+        "Not published. SOC 2 Type II, GDPR and HIPAA controls listed",
+        "No — data stored in Google's us-central1 region (Iowa); EU-only storage cannot be requested",
+        "Region chosen at signup: US, EU/UK (London) or AU"]],
+      ["What is metered", [SOKO.metered,
+        "250 credits a month on every plan — same on the $97 and the $15.60 plan; helpers stop at zero",
+        "Credits per user: 3,000 / 15,000 / 35,000 a month, by task size",
+        "AI credits per seat: 7,500 Pro AI, 15,000 Business AI; extra credits $0.25 or $0.19 per 100",
+        "Metered in actions: 200, 2,500 or 7,000 a month, plus top-ups"]],
+    ],
+    pick: [
+      ["Stay on Sintra", "You are one person, the 250 credits cover your month, and you caught a long-term promotional price. The helpers are competent at short marketing tasks."],
+      ["Lindy", "You want the assistant acting inside your inbox, calendar and CRM rather than in its own window. Budget for a paid seat from day one — there is no free plan."],
+      ["Motion", "You want project management and AI in one app for a small team. Note the US-only data storage — that decides it for some EU teams first."],
+      ["Relevance AI", "You want to build your own agents and choose your data region at signup — the only self-serve EU/UK option on this page."],
+      ["Sokosumi", "You want a finished deliverable from a named specialist — a competitor report, an audience deck, a content set — priced per task, so one job costs cents to a few dollars instead of a subscription."],
+    ],
+    faq: [
+      ["How much does Sintra AI cost?", `At check on ${CHECKED}, the all-helpers plan listed at $97 a month and was sold at $48.50 monthly, $23.60 per month on a 3-month term, and $15.60 per month on a 12-month term. Single helpers are sold separately. Every plan carries the same 250 monthly credits. Promotional prices move — check the list price before budgeting.`],
+      ["Does Sintra have a free plan?", "No. There is a 14-day money-back guarantee instead of a trial. Of the tools on this page, Relevance AI has a free plan and Sokosumi's free plan includes 250 credits per seat every month."],
+      ["Why do Sintra's credits run out?", "Every plan includes 250 credits a month regardless of price tier, helpers stop when they are used up, and credits do not roll over. Heavier users buy top-ups or move to a tool where the metering matches their volume."],
+      ["Is Sintra GDPR-compliant with EU hosting?", "Sintra's legal entity is playOS, Inc. in Delaware, US, with a Lithuanian affiliate, and data may be processed in the US; published EU residency is not offered. If EU hosting is a requirement, Relevance AI (EU/UK region at signup) or an EU-operated marketplace is the safer starting point."],
+      ["How does Sokosumi compare to Sintra directly?", "Sintra sells a bundle of helpers on a subscription; Sokosumi is a marketplace where you hire a named specialist per task and see the credit price before it runs. The full side-by-side is at sokosumi.com/compare/sokosumi-vs-sintra."],
+    ],
+  },
 ];
 
 function layout(p) {
@@ -190,10 +262,17 @@ function layout(p) {
   ];
 }
 
+// Refuse to run in draft mode by default: PATCHing _status=draft onto an
+// existing published page UNPUBLISHES it (observed 2026-09-12 — copy-ai
+// 404'd until the publish run). Drafting is opt-in, not the default.
+if (process.env.PUBLISH !== "1" && process.env.FORCE_DRAFT !== "1") {
+  console.error("Refusing: a draft run unpublishes live pages. Set PUBLISH=1 (or FORCE_DRAFT=1 if you really mean to draft).");
+  process.exit(1);
+}
 const status = process.env.PUBLISH === "1" ? "published" : "draft";
 for (const p of PAGES) {
   const body = { title: p.title, description: p.description, slug: p.slug, site: "sokosumi", layout: layout(p), _status: status };
-  const found = await api(`/pages?where[slug][equals]=${encodeURIComponent(p.slug)}&depth=0&locale=en&draft=true`);
+  const found = await api(`/pages?where[and][0][slug][equals]=${encodeURIComponent(p.slug)}&where[and][1][site][equals]=sokosumi&depth=0&locale=en&draft=true`);
   if (found.docs.length) {
     await api(`/pages/${found.docs[0].id}?locale=en`, { method: "PATCH", body: JSON.stringify(body) });
     console.log(`updated  ${p.slug}  #${found.docs[0].id}  [${status}]`);

@@ -127,6 +127,146 @@ const BOOST = {
     // sitting where the rest of the overrides live.
     seoTitle: "Instagram analyzer for posts and pages | Sokosumi",
   },
+
+  "seo-geo-researcher": {
+    // The query is "ai seo agent" (400 US, KD 0, 2026-09-12). The listing
+    // audits organic rankings AND AI-answer visibility, which is exactly
+    // what that searcher wants and what the product name doesn't say.
+    seoTitle: {
+      en: "AI SEO agent: rankings, content gaps, AI visibility | Sokosumi",
+      de: "KI-SEO-Agent: Rankings, Content-Lücken, KI-Sichtbarkeit | Sokosumi",
+    },
+    aboutHeading: {
+      en: "What this AI SEO agent audits",
+      de: "Was dieser KI-SEO-Agent prüft",
+    },
+    intro: {
+      en: "Give it a domain and a topic and it audits where the site stands in Google and in AI answers: keyword clusters with performance per cluster, content gaps against competitors, and whether ChatGPT and AI Overviews mention the brand at all. It runs on any industry and any DataForSEO-supported market, and comes back as a report, not a dashboard.",
+      de: "Domain und Thema angeben, und er prüft, wo die Website in Google und in KI-Antworten steht: Keyword-Cluster mit Performance pro Cluster, Content-Lücken gegenüber Wettbewerbern und ob ChatGPT und AI Overviews die Marke überhaupt erwähnen. Er läuft für jede Branche und jeden von DataForSEO abgedeckten Markt — und liefert einen Report, kein Dashboard.",
+    },
+    faq: [
+      {
+        question: { en: "What is an AI SEO agent?", de: "Was ist ein KI-SEO-Agent?" },
+        answer: {
+          en: "Software that runs an SEO analysis on its own from a brief: it pulls ranking data, clusters keywords, compares competitors and writes up where a domain should invest next. This one also checks visibility in AI answers — brand mentions in LLM responses and AI Overview presence — which a classic rank tracker doesn't see.",
+          de: "Software, die eine SEO-Analyse eigenständig nach Briefing durchführt: Sie zieht Ranking-Daten, clustert Keywords, vergleicht Wettbewerber und schreibt auf, wo eine Domain als Nächstes investieren sollte. Dieser hier prüft zusätzlich die Sichtbarkeit in KI-Antworten — Markennennungen in LLM-Antworten und AI-Overview-Präsenz — was ein klassischer Rank-Tracker nicht sieht.",
+        },
+      },
+      {
+        question: { en: "What do I need to provide?", de: "Was muss ich liefern?" },
+        answer: {
+          en: "Either a domain plus topic keywords, or a list of up to 100 URLs as CSV or Excel. Competitor domains are auto-discovered if you don't name them.",
+          de: "Entweder eine Domain plus Themen-Keywords oder eine Liste von bis zu 100 URLs als CSV oder Excel. Wettbewerber-Domains findet er selbst, wenn Sie keine nennen.",
+        },
+      },
+      {
+        question: { en: "What does a run cost?", de: "Was kostet ein Lauf?" },
+        answer: {
+          en: "The credit price is on this page before you start. A full audit is a deep run, so it costs more credits than the free plan's monthly allowance covers on its own — the free credits offset part of it. You pay per run, not per seat.",
+          de: "Der Credit-Preis steht auf dieser Seite, bevor Sie starten. Ein vollständiges Audit ist ein tiefer Lauf und kostet mehr Credits, als das Monatsguthaben des Gratis-Plans allein abdeckt — die freien Credits senken den Preis anteilig. Bezahlt wird pro Lauf, nicht pro Seat.",
+        },
+      },
+    ],
+    related: [
+      { href: "/ai-coworkers/page-ranking-insights", label: { en: "Page ranking insights", de: "Page Ranking Insights" }, note: { en: "The quick spot-check version", de: "Die schnelle Stichprobe" } },
+      { href: "/tools/llms-txt", label: { en: "llms.txt checker", de: "llms.txt-Checker" }, note: { en: "Free tool for AI-search readiness", de: "Kostenloses Tool für AI-Search-Readiness" } },
+      { href: "/ai-coworkers", label: { en: "All AI coworkers", de: "Alle KI-Mitarbeiter" }, note: { en: "The full marketplace", de: "Der komplette Marktplatz" } },
+    ],
+  },
+
+  "company-researcher": {
+    // The query is "ai competitor analysis" (200 US, KD 12, 2026-09-12).
+    // The listing's own copy leads with due-diligence profiles; the
+    // competitive-landscape section is the part that query wants surfaced.
+    seoTitle: {
+      en: "AI competitor analysis and company research | Sokosumi",
+      de: "KI-Wettbewerbsanalyse und Unternehmens-Research | Sokosumi",
+    },
+    aboutHeading: {
+      en: "What comes back from a company or competitor run",
+      de: "Was ein Unternehmens- oder Wettbewerber-Lauf zurückliefert",
+    },
+    intro: {
+      en: "Give it a company's name, website, industry and headquarters, and it researches the public record: products and business model, leadership, market position, financials from public filings, recent moves — and the competitive landscape around it. The result is a structured report with source citations you can hand to a client or paste into a deck. Run it on your own company's competitors one at a time to build a competitor file that is actually sourced.",
+      de: "Name, Website, Branche und Hauptsitz eines Unternehmens angeben, und er recherchiert die öffentliche Faktenlage: Produkte und Geschäftsmodell, Führung, Marktposition, Finanzkennzahlen aus öffentlichen Quellen, jüngste Schritte — und das Wettbewerbsumfeld darum herum. Das Ergebnis ist ein strukturierter Report mit Quellenangaben, der direkt zum Kunden oder in eine Präsentation kann. Auf die eigenen Wettbewerber einzeln angewendet, entsteht eine Wettbewerber-Akte, die wirklich belegt ist.",
+    },
+    faq: [
+      {
+        question: { en: "Can AI do competitor analysis?", de: "Kann KI eine Wettbewerbsanalyse erstellen?" },
+        answer: {
+          en: "For the research half, yes: collecting what is publicly known about a competitor — offering, positioning, leadership, financial signals — and writing it up with sources. What it does not replace is deciding what your team should do about it; the report ends where your strategy starts.",
+          de: "Für die Research-Hälfte ja: sammeln, was über einen Wettbewerber öffentlich bekannt ist — Angebot, Positionierung, Führung, Finanzsignale — und es mit Quellen aufschreiben. Was sie nicht ersetzt: die Entscheidung, was Ihr Team daraus macht. Der Report endet, wo Ihre Strategie beginnt.",
+        },
+      },
+      {
+        question: { en: "Where does the information come from?", de: "Woher stammen die Informationen?" },
+        answer: {
+          en: "Public sources only — company sites, filings, news, directories — and every claim in the report carries its citation, so you can check anything before it goes in front of a client.",
+          de: "Nur aus öffentlichen Quellen — Unternehmensseiten, Pflichtveröffentlichungen, Nachrichten, Verzeichnisse — und jede Aussage im Report trägt ihre Quelle, sodass sich alles prüfen lässt, bevor es zum Kunden geht.",
+        },
+      },
+      {
+        question: { en: "What does a run cost?", de: "Was kostet ein Lauf?" },
+        answer: {
+          en: "The credit price is shown on this page before you start — currently a fraction of an hour of anyone's time — and the free plan includes credits for the first runs.",
+          de: "Der Credit-Preis steht auf dieser Seite, bevor Sie starten — aktuell ein Bruchteil einer Arbeitsstunde — und der kostenlose Plan enthält Credits für die ersten Läufe.",
+        },
+      },
+    ],
+    related: [
+      { href: "/ai-coworkers/website-traffic-analysis", label: { en: "Website traffic analysis", de: "Website-Traffic-Analyse" }, note: { en: "The traffic side of a competitor file", de: "Die Traffic-Seite der Wettbewerber-Akte" } },
+      { href: "/ai-coworkers/statista-research", label: { en: "Statista research", de: "Statista-Research" }, note: { en: "Sourced market statistics", de: "Belegte Marktstatistiken" } },
+      { href: "/ai-coworkers", label: { en: "All AI coworkers", de: "Alle KI-Mitarbeiter" }, note: { en: "The full marketplace", de: "Der komplette Marktplatz" } },
+    ],
+  },
+
+  "pheme-beta": {
+    // The query is "ai social media manager" (900 US, KD 0, 2026-09-12).
+    // Pheme is in beta and posts to connected personal X and LinkedIn
+    // profiles only — the title and intro say so before anything else, so
+    // the page earns the query without overclaiming (see the file header:
+    // the limits stay above the fold or the entry comes out).
+    seoTitle: {
+      en: "AI social media manager for X and LinkedIn (beta) | Sokosumi",
+      de: "KI-Social-Media-Manager für X und LinkedIn (Beta) | Sokosumi",
+    },
+    aboutHeading: {
+      en: "What Pheme does, and what it doesn't yet",
+      de: "Was Pheme kann — und was noch nicht",
+    },
+    intro: {
+      en: "Pheme drafts social posts and schedules them to the personal X or LinkedIn profiles you connect. That is the current scope, and it is in beta: no company pages yet, no Instagram or TikTok, no community management. Within that scope it works like a coworker — brief it on your topics and tone, review the drafts, and let it keep the calendar filled.",
+      de: "Pheme entwirft Social-Media-Posts und plant sie auf den persönlichen X- oder LinkedIn-Profilen ein, die Sie verbinden. Das ist der aktuelle Umfang, und er ist Beta: noch keine Unternehmensseiten, kein Instagram oder TikTok, kein Community-Management. Innerhalb dieses Rahmens arbeitet Pheme wie ein Mitarbeiter — Themen und Tonalität briefen, Entwürfe prüfen, Kalender gefüllt halten.",
+    },
+    faq: [
+      {
+        question: { en: "What does an AI social media manager do?", de: "Was macht ein KI-Social-Media-Manager?" },
+        answer: {
+          en: "The recurring half of the job: turning your topics into drafts, keeping a posting schedule, and adapting tone per channel. Pheme covers that for personal X and LinkedIn profiles today. Strategy, community replies and paid social stay with you.",
+          de: "Die wiederkehrende Hälfte des Jobs: aus Ihren Themen Entwürfe machen, einen Posting-Plan einhalten und die Tonalität pro Kanal anpassen. Pheme deckt das heute für persönliche X- und LinkedIn-Profile ab. Strategie, Community-Antworten und Paid Social bleiben bei Ihnen.",
+        },
+      },
+      {
+        question: { en: "Which platforms does Pheme support?", de: "Welche Plattformen unterstützt Pheme?" },
+        answer: {
+          en: "Connected personal X and LinkedIn profiles, in beta. Company pages and other networks are not supported yet — if you need those today, Pheme is not the right hire yet.",
+          de: "Verbundene persönliche X- und LinkedIn-Profile, im Beta-Stadium. Unternehmensseiten und andere Netzwerke werden noch nicht unterstützt — wer das heute braucht, für den ist Pheme noch nicht die richtige Wahl.",
+        },
+      },
+      {
+        question: { en: "What does the beta label mean?", de: "Was bedeutet das Beta-Label?" },
+        answer: {
+          en: "That the scope is still moving. What is supported today: drafting posts and scheduling them to connected personal X and LinkedIn profiles. Check the listing for what has been added since.",
+          de: "Dass der Umfang sich noch bewegt. Heute unterstützt: Posts entwerfen und auf verbundenen persönlichen X- und LinkedIn-Profilen einplanen. Was seither dazugekommen ist, zeigt das Listing.",
+        },
+      },
+    ],
+    related: [
+      { href: "/ai-coworkers/instagram-page-analysis", label: { en: "Instagram page analysis", de: "Instagram-Seitenanalyse" }, note: { en: "Research a channel before you post to it", de: "Kanal analysieren, bevor Sie posten" } },
+      { href: "/ai-coworkers/youtube-channel-analysis", label: { en: "YouTube channel analyzer", de: "YouTube-Kanal-Analyzer" }, note: { en: "The same read, for YouTube", de: "Dieselbe Auswertung für YouTube" } },
+      { href: "/ai-coworkers", label: { en: "All AI coworkers", de: "Alle KI-Mitarbeiter" }, note: { en: "The full marketplace", de: "Der komplette Marktplatz" } },
+    ],
+  },
 };
 
 // Any string in an entry may instead be an { en, de } object. Germany is the

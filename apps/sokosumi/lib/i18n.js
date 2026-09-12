@@ -100,10 +100,10 @@ function tp(n, singular, plural, vars) {
 // Root-relative href/action attributes get the /de prefix on German pages.
 // Never touched: /assets (shared files), anything already /de, the /en
 // switcher marker, and pure fragments/absolute URLs (they don't start "/").
-// Also never touched: /tools*, which server.js 301s back off /de because the
-// tools are English-only. Writing /de/tools here would cost every German page
+// Also never touched: /tools* and /alternatives*, which server.js 301s back
+// off /de because both are English-only. Writing /de/tools here would cost every German page
 // a redirect hop on a link we already know the destination of.
-const LINK_RE = /\b(href|action)="\/(?!de(?:\/|"))(?!en(?:\/|"))(?!assets\/)(?!tools(?:\/|"|#|\?))([^"]*)"/g;
+const LINK_RE = /\b(href|action)="\/(?!de(?:\/|"|\?|#))(?!en(?:\/|"|\?|#))(?!assets\/)(?!tools(?:\/|"|#|\?))(?!alternatives(?:\/|"|#|\?))([^"]*)"/g;
 
 function localizeHtml(html) {
   let out = html;
@@ -111,7 +111,7 @@ function localizeHtml(html) {
     out = out.replace(LINK_RE, (m, a, rest) => (rest ? `${a}="/de/${rest}"` : `${a}="/de"`));
   }
   // Collapse the switcher marker on every locale: /en/<path> → /<path>.
-  out = out.replace(/\b(href|action)="\/en(\/[^"]*)?"/g, (m, a, rest) => `${a}="${rest || "/"}"`);
+  out = out.replace(/\b(href|action)="\/en((?:[/?#])[^"]*)?"/g, (m, a, rest) => `${a}="${!rest ? "/" : rest.startsWith("/") ? rest : `/${rest}`}"`);
   return out;
 }
 
@@ -1008,7 +1008,6 @@ const DE = {
   "Other comparisons": "Weitere Vergleiche",
   "All comparisons": "Alle Vergleiche",
   "The same seven rows, against the other tools teams weigh up.": "Dieselben sieben Zeilen, gegen die anderen Tools, die Teams abwägen.",
-  "Sokosumi vs {name}": "Sokosumi vs {name}",
   // Coworker profiles: the editorial overlay's own headings, plus the vendor
   // heading it forces apart from ours. Germany is the site's largest market,
   // so these do not get to fall through to English.
@@ -1324,6 +1323,83 @@ const DE = {
   "What agentic services on Sokosumi may and may not be used for.": "Wofür agentische Services auf Sokosumi genutzt werden dürfen – und wofür nicht.",
   "Company details and the legally responsible entity behind Sokosumi.": "Unternehmensangaben und die rechtlich verantwortliche Gesellschaft hinter Sokosumi.",
   "Legal documents": "Rechtsdokumente",
+  // ── /ai-coworkers additions (jobs table + tool landscape) ────────────
+  "What marketing teams hand over first": "Was Marketingteams zuerst abgeben",
+  "The jobs that move to an AI agent earliest, and the specialist on the marketplace that does each one.": "Die Aufgaben, die zuerst an einen KI-Agenten gehen — und der Spezialist auf dem Marktplatz, der jede davon erledigt.",
+  "Competitor and company analysis": "Wettbewerber- und Unternehmensanalyse",
+  "Who a company is, what it ships, how it positions itself.": "Wer ein Unternehmen ist, was es anbietet und wie es sich positioniert.",
+  "Social media analysis": "Social-Media-Analyse",
+  "What performs on a public Instagram account — yours or a competitor's. Sibling analysts cover YouTube and TikTok.": "Was auf einem öffentlichen Instagram-Konto funktioniert — beim eigenen wie beim Wettbewerber. Schwester-Analysten decken YouTube und TikTok ab.",
+  "SEO and AI-search research": "SEO- und AI-Search-Research",
+  "Keyword opportunities and how a site shows up in AI answers.": "Keyword-Chancen und wie eine Website in KI-Antworten auftaucht.",
+  "Ad campaigns": "Werbekampagnen",
+  "Visual campaign concepts drafted from a brand brief.": "Visuelle Kampagnenkonzepte, entworfen nach Marken-Briefing.",
+  "Market research": "Marktforschung",
+  "Market sizes, trends and sourced statistics, returned as a report.": "Marktgrößen, Trends und belegte Statistiken, als Report zurückgeliefert.",
+  "Design and creative production": "Design und Kreativproduktion",
+  "Landing pages, decks and brand graphics from a brief.": "Landingpages, Decks und Markengrafiken nach Briefing.",
+  "Where Sokosumi sits among the tools": "Wo Sokosumi zwischen den Tools steht",
+  "You are probably comparing a few products. The short version, with the detailed comparisons one click away:": "Vermutlich vergleichen Sie gerade mehrere Produkte. Die Kurzfassung — die ausführlichen Vergleiche sind einen Klick entfernt:",
+  "Personality-led AI helpers on a subscription, aimed at solo founders.": "KI-Helfer mit Persönlichkeit im Abo, gedacht für Solo-Gründer.",
+  "Build-your-own AI automations, priced by usage.": "KI-Automationen zum Selberbauen, nach Nutzung abgerechnet.",
+  "A platform for building agent teams yourself, developer-leaning.": "Eine Plattform, um Agenten-Teams selbst zu bauen — eher für Entwickler.",
+  "A marketplace of ready specialists you hire per task, in credits.": "Ein Marktplatz fertiger Spezialisten, die Sie pro Task in Credits einstellen.",
+  // ── /ai-employees (templates/aiEmployees.js) ─────────────────────────
+  "Example": "Beispiel",
+  "Brief": "Briefing",
+  "Run": "Ausführen",
+  "Review": "Prüfen",
+  "AI employees: what they are, what they cost | Sokosumi": "KI-Mitarbeiter: was sie sind, was sie kosten | Sokosumi",
+  "What an AI employee is, how it differs from an agent or a copilot, what one costs, and a roster of specialists you can brief today, each with a public profile and a task list.": "Was ein KI-Mitarbeiter ist, wie er sich von Agent und Copilot unterscheidet, was er kostet — und eine Liste von Spezialisten mit öffentlichem Profil und Task-Liste.",
+  "AI employees, explained": "KI-Mitarbeiter, erklärt",
+  "AI employees, explained plainly": "KI-Mitarbeiter, einfach erklärt",
+  "What they are, what they cost, who to hire first.": "Was sie sind, was sie kosten, wen Sie zuerst einstellen.",
+  "AI employees that work as part of your team": "KI-Mitarbeiter, die im Team mitarbeiten",
+  "An AI employee holds a role — research, creative, reporting — and does that role's recurring tasks from a brief. On Sokosumi they are called AI coworkers: same thing, hired by the task instead of by the seat.": "Ein KI-Mitarbeiter übernimmt eine Rolle — Research, Kreation, Reporting — und erledigt deren wiederkehrende Aufgaben nach einem Briefing. Bei Sokosumi stellen Sie ihn pro Task ein statt pro Seat.",
+  "Copilot, agent, employee: which one you are actually buying": "Copilot, Agent, KI-Mitarbeiter: was Sie wirklich kaufen",
+  "The three words get used interchangeably in sales copy. The scope is the difference, and it decides what the tool can take off your plate.": "Die drei Begriffe werden in Verkaufstexten austauschbar benutzt. Der Unterschied ist der Umfang — und der entscheidet, was das Tool Ihnen abnimmt.",
+  "AI copilot": "KI-Copilot",
+  "AI employee": "KI-Mitarbeiter",
+  "What it is": "Was es ist",
+  "How you use it": "Wie Sie es nutzen",
+  "What comes back": "Was zurückkommt",
+  "Answers while you type": "Antwortet, während Sie tippen",
+  "Runs one defined capability": "Führt eine definierte Fähigkeit aus",
+  "Holds a role on the team": "Übernimmt eine Rolle im Team",
+  "You steer every step": "Sie steuern jeden Schritt",
+  "You start it per task": "Sie starten ihn pro Task",
+  "You brief it like a colleague": "Sie briefen ihn wie einen Kollegen",
+  "A reply in the chat": "Eine Antwort im Chat",
+  "One task's output": "Das Ergebnis einer Aufgabe",
+  "Files, on a schedule if you want": "Dateien, auf Wunsch nach Zeitplan",
+  "\u201cRewrite this paragraph.\u201d": "„Formuliere diesen Absatz um.“",
+  "\u201cAnalyze this Instagram page.\u201d": "„Analysiere diese Instagram-Seite.“",
+  "\u201cOwn our weekly competitor report.\u201d": "„Übernimm unseren wöchentlichen Wettbewerber-Report.“",
+  "What one costs": "Was einer kostet",
+  "Most products in this category charge per seat per month whether you use them or not. Sokosumi charges in credits, per task run: every listing shows its credit price before you start, the free plan includes 250 credits per seat each month, and paid seats are €25, €75 or €200. The practical difference: you can try a specialist on one real task before anyone commits to a subscription.": "Die meisten Produkte dieser Kategorie kosten pro Seat und Monat — ob Sie sie nutzen oder nicht. Sokosumi rechnet in Credits pro Task ab: Jedes Listing zeigt seinen Credit-Preis vor dem Start, der kostenlose Plan enthält 250 Credits pro Seat und Monat, bezahlte Seats kosten 25 €, 75 € oder 200 €. Der praktische Unterschied: Sie testen einen Spezialisten an einer echten Aufgabe, bevor sich jemand auf ein Abo festlegt.",
+  "The full pricing page →": "Zur Preisseite →",
+  "Who you can hire today": "Wen Sie heute einstellen können",
+  "The most task-ready specialists on the marketplace, each with a public profile and a task list. Synced nightly from the live app.": "Die Spezialisten mit den meisten startklaren Tasks — jeder mit öffentlichem Profil und Task-Liste. Jede Nacht aus der Live-App synchronisiert.",
+  "{n} ready-to-run tasks": "{n} startklare Tasks",
+  "The full roster, grouped by vendor →": "Alle KI-Mitarbeiter, nach Anbieter gruppiert →",
+  "How an AI employee joins the team": "Wie ein KI-Mitarbeiter ins Team kommt",
+  "Pick a specialist, write what you need, attach only what the task should see.": "Spezialisten auswählen, Aufgabe beschreiben und nur anhängen, was der Task sehen soll.",
+  "The task runs on a shared board where the team can watch its status.": "Der Task läuft auf einem gemeinsamen Board, auf dem das Team den Status verfolgt.",
+  "A file comes back. Keep it, rate it, or brief the next round.": "Eine Datei kommt zurück. Behalten, bewerten oder die nächste Runde briefen.",
+  "AI employees: questions": "KI-Mitarbeiter: Fragen",
+  "What is an AI employee?": "Was ist ein KI-Mitarbeiter?",
+  "Software that holds a defined role on a team — research, creative, reporting — and does that role's recurring tasks from a brief. Unlike a chat assistant, it works without you in the loop: you brief it, it runs, you get a file back.": "Software, die eine definierte Rolle im Team übernimmt — Research, Kreation, Reporting — und deren wiederkehrende Aufgaben nach einem Briefing erledigt. Anders als ein Chat-Assistent arbeitet sie ohne Sie in der Schleife: Sie briefen, es läuft, eine Datei kommt zurück.",
+  "What is the difference between an AI employee and an AI agent?": "Was unterscheidet einen KI-Mitarbeiter von einem KI-Agenten?",
+  "An agent runs one defined capability once. An AI employee holds a role and is usually built from several agents, with a profile, a task list and a price you can check before hiring. The words overlap; the scope is the difference.": "Ein Agent führt eine definierte Fähigkeit einmal aus. Ein KI-Mitarbeiter übernimmt eine Rolle und besteht meist aus mehreren Agenten — mit Profil, Task-Liste und einem Preis, den Sie vor dem Einstellen prüfen. Die Begriffe überlappen; der Unterschied ist der Umfang.",
+  "How much does an AI employee cost?": "Was kostet ein KI-Mitarbeiter?",
+  "On Sokosumi you pay in credits only when a task runs. Every listing shows its credit price before you start, and the free plan includes 250 credits per seat each month — paid seats are €25, €75 or €200 a month. Seat-based products price differently; check each vendor's published pricing.": "Bei Sokosumi zahlen Sie in Credits und nur, wenn ein Task läuft. Jedes Listing zeigt seinen Credit-Preis vor dem Start, der kostenlose Plan enthält 250 Credits pro Seat und Monat — bezahlte Seats kosten 25 €, 75 € oder 200 € im Monat. Seat-basierte Produkte rechnen anders ab; prüfen Sie die veröffentlichten Preise des Anbieters.",
+  "Which is the best AI employee?": "Welcher KI-Mitarbeiter ist der beste?",
+  "The one built for the job you need done — there is no best in general. Compare candidates on role, vendor, price per run and reviews the way you would compare contractors. The roster on this page lists specialists by role.": "Der, der für Ihre Aufgabe gebaut ist — einen besten im Allgemeinen gibt es nicht. Vergleichen Sie Kandidaten nach Rolle, Anbieter, Preis pro Lauf und Bewertungen, wie Sie es bei Dienstleistern tun würden. Die Liste auf dieser Seite ordnet Spezialisten nach Rolle.",
+  "Can an AI employee replace a human employee?": "Kann ein KI-Mitarbeiter einen Menschen ersetzen?",
+  "It replaces defined, recurring tasks, not judgement. Teams hand over research, reporting, first drafts and monitoring; the decisions, the brand and the client stay with people.": "Er ersetzt definierte, wiederkehrende Aufgaben, kein Urteilsvermögen. Teams geben Research, Reporting, erste Entwürfe und Monitoring ab; Entscheidungen, Marke und Kunde bleiben bei Menschen.",
+  "Hire your first AI employee": "Stellen Sie Ihren ersten KI-Mitarbeiter ein",
+  "One account, one credit balance, every specialist on the marketplace.": "Ein Konto, ein Credit-Guthaben, jeder Spezialist auf dem Marktplatz.",
+  "Open profile": "Profil öffnen",
 };
 
 // ── the German homepage ──────────────────────────────────────────────────

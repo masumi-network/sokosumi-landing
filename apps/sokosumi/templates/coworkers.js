@@ -78,6 +78,69 @@ function cmpSplit() {
   </div></div>`;
 }
 
+// The jobs marketing teams hand over first, each resolved against the live
+// roster so a renamed or retired listing drops its row instead of leaving a
+// dead link. Candidate slugs in order of preference; first one present wins.
+// Keyword surface, validated 2026-09-12: "ai competitor analysis" (200, KD 12),
+// "ai seo agent" (400, KD 0), "ai market research" (600) — the row labels say
+// the job in the searcher's words, the links go to the specialist that does it.
+const JOBS = [
+  { label: () => t("Competitor and company analysis"), note: () => t("Who a company is, what it ships, how it positions itself."), slugs: ["company-researcher"] },
+  { label: () => t("Social media analysis"), note: () => t("What performs on a public Instagram account — yours or a competitor's. Sibling analysts cover YouTube and TikTok."), slugs: ["instagram-page-analysis", "youtube-channel-analysis", "tiktok-profile-analysis"] },
+  { label: () => t("SEO and AI-search research"), note: () => t("Keyword opportunities and how a site shows up in AI answers."), slugs: ["seo-geo-researcher", "page-ranking-insights"] },
+  { label: () => t("Ad campaigns"), note: () => t("Visual campaign concepts drafted from a brand brief."), slugs: ["ad-campaign-generator", "meta-ads-library"] },
+  { label: () => t("Market research"), note: () => t("Market sizes, trends and sourced statistics, returned as a report."), slugs: ["statista-research", "midesk-market-intelligence"] },
+  { label: () => t("Design and creative production"), note: () => t("Landing pages, decks and brand graphics from a brief."), slugs: ["dite", "mass-image-generator"] },
+];
+
+function jobsSection(coworkers) {
+  const bySlug = new Map(coworkers.filter((c) => c.active !== false && c.slug).map((c) => [c.slug, c]));
+  const rows = JOBS.map((j) => {
+    const hit = j.slugs.map((s) => bySlug.get(s)).find(Boolean);
+    return hit ? { job: j.label(), note: j.note(), c: hit } : null;
+  }).filter(Boolean);
+  if (!rows.length) return "";
+  return `<section class="page-section" data-reveal>
+    <h2>${esc(t("What marketing teams hand over first"))}</h2>
+    <p class="sub">${esc(t("The jobs that move to an AI agent earliest, and the specialist on the marketplace that does each one."))}</p>
+    <div class="row-list">${rows
+      .map(
+        (r) => `<a class="row-item" href="/ai-coworkers/${encodeURIComponent(r.c.slug)}">
+        <span class="row-title">${esc(r.job)}</span>
+        <p>${esc(r.note)}</p>
+        <span class="row-go">${esc(r.c.name)} ${icon("arrow-up-right", 15)}</span>
+      </a>`,
+      )
+      .join("")}</div>
+  </section>`;
+}
+
+// Where this marketplace sits among the products a buyer will also look at.
+// One honest line each, linking to the pages that do the detailed comparing.
+// Naming competitors here is deliberate: the reader is comparing anyway, and
+// the compare pages are where Sokosumi makes its case with numbers.
+function landscapeSection() {
+  const rows = [
+    { name: "Sintra", line: t("Personality-led AI helpers on a subscription, aimed at solo founders."), href: "/compare/sokosumi-vs-sintra" },
+    { name: "Lindy", line: t("Build-your-own AI automations, priced by usage."), href: "/compare/sokosumi-vs-lindy" },
+    { name: "Relevance AI", line: t("A platform for building agent teams yourself, developer-leaning."), href: "/compare/sokosumi-vs-relevance-ai" },
+    { name: "Sokosumi", line: t("A marketplace of ready specialists you hire per task, in credits."), href: "/ai-employees" },
+  ];
+  return `<section class="page-section" data-reveal>
+    <h2>${esc(t("Where Sokosumi sits among the tools"))}</h2>
+    <p class="sub">${esc(t("You are probably comparing a few products. The short version, with the detailed comparisons one click away:"))}</p>
+    <div class="row-list">${rows
+      .map(
+        (r) => `<a class="row-item" href="${attr(r.href)}">
+        <span class="row-title">${esc(r.name)}</span>
+        <p>${esc(r.line)}</p>
+        <span class="row-go">${esc(r.href.startsWith("/compare") ? t("Compare") : t("AI employees, explained"))} ${icon("arrow-up-right", 15)}</span>
+      </a>`,
+      )
+      .join("")}</div>
+  </section>`;
+}
+
 // The questions people type before they search for a product. Answered in
 // plain words here and mirrored as FAQPage data.
 function INDEX_FAQ() {
@@ -180,6 +243,7 @@ async function index(ctx) {
       <p class="sub">${esc(t("Sokosumi lists both. An agent is a capability you hire for a task. A coworker is a persistent AI worker you hire for a role \u2014 usually built from several agents."))}</p>
       ${cmpSplit()}
     </section>
+    ${jobsSection(coworkers)}
     ${groups
       .map((g, gi) => {
         const slug = g.vendor ? g.vendor.slug : null;
@@ -216,6 +280,7 @@ async function index(ctx) {
           }
         </div>`
       : "") +
+    landscapeSection() +
     shell.logoRow() +
     indexFaqSection() +
     shell.ctaBand({

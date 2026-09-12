@@ -66,6 +66,7 @@ const GROUPS = [
 const ALTERNATIVES = [
   { href: "/alternatives/copy-ai", name: "Copy.ai alternatives", note: "Copy.ai, Jasper, Writer, HubSpot Breeze and Sokosumi on price, metering and hosting." },
   { href: "/alternatives/manus", name: "Manus alternatives", note: "Manus, Genspark, Relevance AI, Lindy and Sokosumi on credit burn and where data lives." },
+  { href: "/alternatives/sintra", name: "Sintra AI alternatives", note: "Sintra, Lindy, Motion, Relevance AI and Sokosumi on real cost, the credit ceiling and data residency." },
 ];
 function ALTERNATIVES_SECTION() {
   if (i18n.locale() === "de") return "";

@@ -36,6 +36,7 @@ const pagesTpl = require("./templates/pagesCms");
 const productDemoTpl = require("./templates/productDemo");
 const agencyRunByAiTpl = require("./templates/agencyRunByAi");
 const europeanAiTpl = require("./templates/europeanAi");
+const aiEmployeesTpl = require("./templates/aiEmployees");
 const contactTpl = require("./templates/contact");
 const designMdTpl = require("./templates/designMd");
 const designMdArchive = require("./lib/designMdArchive");
@@ -598,6 +599,7 @@ const routes = [
   },
   { m: (s) => s.length === 1 && s[0] === "agency-run-by-ai" && {}, h: agencyRunByAiTpl.render },
   { m: (s) => s.length === 1 && s[0] === "european-ai" && {}, h: europeanAiTpl.render },
+  { m: (s) => s.length === 1 && s[0] === "ai-employees" && {}, h: aiEmployeesTpl.render },
   { m: (s) => s.length === 1 && s[0] === "tasks" && {}, h: tasksTpl.browse },
   { m: (s) => s.length === 1 && s[0] === "vendors" && {}, h: vendorsTpl.index },
   { m: (s) => s.length === 2 && s[0] === "vendors" && { slug: s[1] }, h: vendorsTpl.detail },
@@ -1067,7 +1069,10 @@ const assetsDir = path.join(root, "assets");
             return send(req, res, 301, { Location: designMdArchive.pathFor(entry), "Cache-Control": "public, max-age=86400" }, "");
           }
         }
-        if (locale === "de" && (urlPath === "/tools" || urlPath.startsWith("/tools/"))) {
+        // /alternatives/* is English-only for the same reason as /tools (near-
+        // zero German demand; see DE_ENGLISH_PATHS) — without this, the CMS
+        // catch-all would serve English copy under a /de URL.
+        if (locale === "de" && (urlPath === "/tools" || urlPath.startsWith("/tools/") || urlPath === "/alternatives" || urlPath.startsWith("/alternatives/"))) {
           return send(req, res, 301, {
             Location: `${urlPath}${rawQuery ? `?${rawQuery}` : ""}`,
             "Cache-Control": "public, max-age=86400",
