@@ -81,6 +81,57 @@ const seoMdPreview = () => `
     </span>
   </span>`;
 
+// The calculators hand back a number, so the preview is a formula and its
+// result.
+const calcPreview = () => `
+  <span class="tp tp-calc">
+    <span class="tp-calc-formula">CPM = spend ÷ impressions × 1,000</span>
+    <span class="tp-calc-result"><b>$4.00</b><i>CPM</i></span>
+    <span class="tp-verdict">
+      <span class="tp-chip">CPM</span>
+      <span class="tp-chip">ROAS</span>
+      <span class="tp-chip">CTR</span>
+      <span class="tp-chip">LTV</span>
+      <span class="tp-chip">+4</span>
+    </span>
+  </span>`;
+
+// The visibility checker hands back "who the model named", so the preview is
+// a buyer question and the answer chips, with you in green.
+const aivPreview = () => `
+  <span class="tp tp-aiv">
+    <span class="tp-aiv-q">“What are the best CRM tools?”</span>
+    <span class="tp-aiv-brands">
+      <span class="tp-chip">Competitor A</span>
+      <span class="tp-chip is-pass">Your brand</span>
+      <span class="tp-chip">Competitor B</span>
+    </span>
+    <span class="tp-verdict">
+      <span class="tp-chip is-pass">Mentioned in 3/5 answers</span>
+    </span>
+  </span>`;
+
+// The formatter hands back a post, so the preview is the feed card with the
+// fold.
+const lifPreview = () => `
+  <span class="tp tp-li">
+    <span class="tp-li-head"><span class="tp-li-dot"></span><span class="tp-li-name"><b>Your Name</b><i>Marketing · 2h</i></span></span>
+    <span class="tp-li-line">𝗧𝗵𝗲 𝗳𝗶𝗿𝘀𝘁 𝗹𝗶𝗻𝗲 𝗱𝗲𝗰𝗶𝗱𝗲𝘀. Here is what we learned running…</span>
+    <span class="tp-li-more">…see more</span>
+  </span>`;
+
+// The meta tag generator hands back a search result, so the preview is one.
+const mtgPreview = () => `
+  <span class="tp tp-mtg">
+    <span class="tp-mtg-url">your-site.com</span>
+    <span class="tp-mtg-title">Project management pricing — plans from…</span>
+    <span class="tp-mtg-desc">Compare plans, see what each tier includes, and start free.</span>
+    <span class="tp-verdict">
+      <span class="tp-chip is-pass">548px / 580px</span>
+      <span class="tp-chip is-pass">151 chars</span>
+    </span>
+  </span>`;
+
 const TOOLS = [
   {
     href: "/tools/llms-txt",
@@ -109,6 +160,34 @@ const TOOLS = [
     text: "Turn any website into an AI-readable SEO specification.",
     meta: "Free · no sign-up",
     preview: seoMdPreview,
+  },
+  {
+    href: "/tools/calculators",
+    name: "Marketing calculators",
+    text: "CPM, ROAS, CTR, CPC, CPA, LTV, CAC and engagement rate — with formulas and worked examples.",
+    meta: "Free · no sign-up",
+    preview: calcPreview,
+  },
+  {
+    href: "/tools/ai-visibility",
+    name: "AI visibility checker",
+    text: "Ask an AI five buyer questions about your category and see if it names you.",
+    meta: "Free · no sign-up",
+    preview: aivPreview,
+  },
+  {
+    href: "/tools/linkedin-formatter",
+    name: "LinkedIn text formatter",
+    text: "Bold, italics and bullets for LinkedIn posts, with the “see more” fold preview.",
+    meta: "Free · no sign-up",
+    preview: lifPreview,
+  },
+  {
+    href: "/tools/meta-description-generator",
+    name: "Meta tag generator",
+    text: "Titles and descriptions written from your page, measured in pixels.",
+    meta: "Free · no sign-up",
+    preview: mtgPreview,
   },
 ];
 

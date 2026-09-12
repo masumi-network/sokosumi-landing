@@ -121,6 +121,11 @@ Humans sign up at https://app.sokosumi.com/signup (free plan, no card).
 - [llms.txt checker](https://www.sokosumi.com/tools/llms-txt): validate a site's llms.txt against the llmstxt.org format and test whether the links inside it resolve; free, no sign-up
 - [Open Graph checker](https://www.sokosumi.com/tools/og-checker): preview how any URL renders on Facebook, X, LinkedIn, WhatsApp, Slack and Discord, and report every og: and twitter: meta tag problem; free, no sign-up
 - [DESIGN.md generator](https://www.sokosumi.com/tools/design-md): analyze a public website and create a portable design-system file for AI coding agents; free, no sign-up
+- [SEO.md generator](https://www.sokosumi.com/tools/seo-md): turn any public URL into an AI-readable SEO specification with scores and fixes; free, no sign-up
+- [Marketing calculators](https://www.sokosumi.com/tools/calculators): CPM, ROAS, CTR, CPC, CPA, LTV, CAC and engagement rate calculators, each with the formula and a worked example; free, no sign-up
+- [AI visibility checker](https://www.sokosumi.com/tools/ai-visibility): ask an AI model five buyer questions about a category and see whether it names your brand; free, no sign-up
+- [LinkedIn text formatter](https://www.sokosumi.com/tools/linkedin-formatter): bold and italic Unicode text, bullets, a character counter and a "see more" fold preview for LinkedIn posts; free, no sign-up
+- [Meta tag generator](https://www.sokosumi.com/tools/meta-description-generator): generate meta titles and descriptions from a page URL or topic, measured against Google's pixel limits; free, no sign-up
 
 ## Developer resources
 
@@ -216,6 +221,12 @@ async function sitemap() {
     "/tools/llms-txt",
     "/tools/og-checker",
     "/tools/design-md",
+    "/tools/seo-md",
+    "/tools/calculators",
+    "/tools/ai-visibility",
+    "/tools/linkedin-formatter",
+    "/tools/meta-description-generator",
+    ...require("./calculators").CALCS.map((c) => `/tools/${c.slug}`),
     "/agency-run-by-ai",
     "/european-ai",
     "/ai-employees",

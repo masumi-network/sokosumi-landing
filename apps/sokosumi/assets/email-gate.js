@@ -19,11 +19,16 @@
     seoMdForm: "seo-md",
     ogcForm: "og-checker",
     ltForm: "llms-txt",
+    calcForm: "calculators",
+    calcBreakevenForm: "calculators",
+    aivForm: "ai-visibility",
+    mtgForm: "meta-tags",
   };
-  // click targets on the analysis pages, where there is no form
+  // click targets on pages where the tool has no form to intercept
   var BUTTONS = {
     designMdDownload: "design-md",
     designMdCopy: "design-md",
+    lifCopy: "linkedin-formatter",
   };
 
   function subscribed() {

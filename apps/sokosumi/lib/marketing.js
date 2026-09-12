@@ -11,7 +11,16 @@ const { neon } = require("@neondatabase/serverless");
 const CONSENT =
   "By submitting, you agree to receive marketing emails from Sokosumi. Unsubscribe anytime.";
 
-const TOOLS = new Set(["design-md", "og-checker", "llms-txt", "seo-md"]);
+const TOOLS = new Set([
+  "design-md",
+  "og-checker",
+  "llms-txt",
+  "seo-md",
+  "calculators",
+  "ai-visibility",
+  "linkedin-formatter",
+  "meta-tags",
+]);
 
 // Same deliberately permissive shape as lib/leads.js.
 const EMAIL_RE = /^[^\s@]+@[^\s@.]+\.[^\s@]{2,}$/;

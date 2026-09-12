@@ -1709,3 +1709,124 @@
 /* Every saved analysis ships in the HTML so each one has a link pointing at it;
    past the first twelve they are hidden until "Show all". */
 .dm-gallery.is-collapsed > :nth-child(n + 13) { display: none; }
+
+/* --- tools index previews for the calculator/visibility/formatter/meta
+   cards. Same miniature language as the tp-file/tp-card previews above:
+   each card shows what its tool hands back. ---------------------------- */
+
+.tp-calc-formula {
+  display: block;
+  padding: 12px 14px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  font-family: var(--mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+  font-size: 11px;
+  color: var(--muted-foreground);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tp-calc-result {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+.tp-calc-result b {
+  font-size: 30px;
+  font-weight: 300;
+  color: var(--foreground);
+}
+.tp-calc-result i {
+  font-style: normal;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--muted-foreground);
+}
+
+.tp-calc .tp-verdict,
+.tp-aiv .tp-verdict {
+  flex-wrap: wrap;
+}
+
+.tp-aiv-q {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.tp-aiv-brands {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.tp-li {
+  padding: 12px 14px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  gap: 8px;
+}
+.tp-li-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.tp-li-dot {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--muted);
+  border: 1px solid var(--border);
+}
+.tp-li-name {
+  display: grid;
+  line-height: 1.3;
+}
+.tp-li-name b {
+  font-size: 11px;
+}
+.tp-li-name i {
+  font-style: normal;
+  font-size: 9.5px;
+  color: var(--muted-foreground);
+}
+.tp-li-line {
+  font-size: 11.5px;
+  line-height: 1.45;
+  color: var(--foreground);
+}
+.tp-li-more {
+  font-size: 11px;
+  color: var(--muted-foreground);
+}
+
+.tp-mtg {
+  padding: 14px 16px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  gap: 3px;
+}
+.tp-mtg-url {
+  font-size: 9.5px;
+  color: var(--muted-foreground);
+}
+.tp-mtg-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: #1a0dab;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.tp-mtg-desc {
+  font-size: 10.5px;
+  color: var(--muted-foreground);
+  line-height: 1.4;
+}
+.tp-mtg .tp-verdict {
+  margin-top: 8px;
+}

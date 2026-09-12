@@ -11,39 +11,27 @@ const UA =
 
 // Pull the response body as text but stop after maxBytes so a hostile or huge
 // page can't exhaust memory. Follows redirects and reports the final URL.
+// All page reads go through lib/safeFetch, the site's one SSRF boundary:
+// every hostname is resolved and checked against private ranges, and
+// redirects are re-validated hop by hop. The earlier version here used
+// fetch(redirect: "follow"), which let a public URL redirect to a private
+// address unchecked.
+const { safeFetch, readCapped } = require("./safeFetch");
+
 async function fetchCapped(url, { maxBytes = 2 * 1024 * 1024, timeoutMs = 12000 } = {}) {
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), timeoutMs);
-  try {
-    const res = await fetch(url, {
-      redirect: "follow",
-      signal: controller.signal,
-      headers: { "User-Agent": UA, Accept: "text/html,application/xhtml+xml" },
-    });
-    const reader = res.body && res.body.getReader ? res.body.getReader() : null;
-    let text = "";
-    let bytes = 0;
-    if (reader) {
-      const decoder = new TextDecoder("utf-8", { fatal: false });
-      // eslint-disable-next-line no-constant-condition
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        bytes += value.length;
-        text += decoder.decode(value, { stream: true });
-        if (bytes >= maxBytes) {
-          try { await reader.cancel(); } catch { /* ignore */ }
-          break;
-        }
-      }
-      text += decoder.decode();
-    } else {
-      text = (await res.text()).slice(0, maxBytes);
-    }
-    return { finalUrl: res.url || url, status: res.status, headers: res.headers, text, truncated: bytes >= maxBytes };
-  } finally {
-    clearTimeout(timer);
-  }
+  const { response, url: finalUrl } = await safeFetch(
+    url,
+    { headers: { "User-Agent": UA, Accept: "text/html,application/xhtml+xml" } },
+    timeoutMs,
+  );
+  const buf = await readCapped(response, maxBytes);
+  return {
+    finalUrl,
+    status: response.status,
+    headers: response.headers,
+    text: buf.toString("utf-8"),
+    truncated: buf.length >= maxBytes,
+  };
 }
 
 const decodeEntities = (s) =>
@@ -876,4 +864,39 @@ async function analyze(inputUrl) {
   return d;
 }
 
-module.exports = { analyze, renderSeoMd };
+// A light read of one page for the meta tag generator: current title and
+// description, the headings, and enough visible text for a model to know
+// what the page is about. No robots.txt, no discovery probes — analyze()
+// stays the full audit, this is one fetch.
+async function signals(inputUrl) {
+  const { finalUrl, status, text } = await fetchCapped(inputUrl, { timeoutMs: 10000 });
+  if (status >= 400) {
+    const err = new Error(`The site returned HTTP ${status}.`);
+    err.statusCode = status;
+    throw err;
+  }
+  if (!/</.test(text)) throw new Error("That URL did not return an HTML page.");
+  const head = (/[\s\S]*?<\/head>/i.exec(text) || [text])[0];
+  const meta = collectMeta(text);
+  const titleMatch = /<title\b[^>]*>([\s\S]*?)<\/title>/i.exec(head);
+  const headings = collectHeadings(text);
+  // collectHeadings keeps only h1 text; the generator wants the h2s too.
+  const h2 = [];
+  const h2re = /<h2\b[^>]*>([\s\S]*?)<\/h2>/gi;
+  let m;
+  while ((m = h2re.exec(text)) && h2.length < 8) {
+    const line = visibleText(m[1]).slice(0, 160);
+    if (line) h2.push(line);
+  }
+  const bodyHtml = (/[\s\S]*?<body[^>]*>([\s\S]*)<\/body>/i.exec(text) || [null, text])[1] || text;
+  return {
+    finalUrl,
+    title: titleMatch ? clean(titleMatch[1]) : "",
+    description: meta["description"] || "",
+    h1: headings.h1,
+    h2,
+    text: visibleText(bodyHtml).slice(0, 2400),
+  };
+}
+
+module.exports = { analyze, renderSeoMd, signals };

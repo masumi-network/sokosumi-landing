@@ -47,6 +47,12 @@ const ogCheckerTpl = require("./templates/ogChecker");
 const ogCheck = require("./lib/ogCheck");
 const llmsTxtTpl = require("./templates/llmsTxt");
 const llmsCheck = require("./lib/llmsCheck");
+const calculatorsTpl = require("./templates/calculators");
+const aiVisibilityTpl = require("./templates/aiVisibility");
+const aiVisibility = require("./lib/aiVisibility");
+const linkedinFormatterTpl = require("./templates/linkedinFormatter");
+const metaTagsTpl = require("./templates/metaTags");
+const metaTags = require("./lib/metaTags");
 
 const port = process.env.PORT || 3000;
 const root = __dirname;
@@ -75,6 +81,13 @@ const ogCheckRequests = new Map();
 // their own site will reach.
 const LLMS_CHECK_RATE_LIMIT = Number(process.env.LLMS_CHECK_RATE_LIMIT) || 30;
 const llmsCheckRequests = new Map();
+// The two model-backed tools pay per run, so their ceilings are the lowest.
+// The visibility checker fans out five model calls per run; the meta tag
+// generator is one call plus one page fetch.
+const AI_VISIBILITY_RATE_LIMIT = Number(process.env.AI_VISIBILITY_RATE_LIMIT) || 8;
+const aiVisibilityRequests = new Map();
+const META_TAGS_RATE_LIMIT = Number(process.env.META_TAGS_RATE_LIMIT) || 15;
+const metaTagsRequests = new Map();
 
 function publicWebsiteUrl(value) {
   let parsed;
@@ -152,6 +165,8 @@ const designMdRateLimited = (ip) => hourlyRateLimited(designMdRequests, DESIGN_M
 const seoMdRateLimited = (ip) => hourlyRateLimited(seoMdRequests, SEO_MD_RATE_LIMIT, ip);
 const ogCheckRateLimited = (ip) => hourlyRateLimited(ogCheckRequests, OG_CHECK_RATE_LIMIT, ip);
 const llmsCheckRateLimited = (ip) => hourlyRateLimited(llmsCheckRequests, LLMS_CHECK_RATE_LIMIT, ip);
+const aiVisibilityRateLimited = (ip) => hourlyRateLimited(aiVisibilityRequests, AI_VISIBILITY_RATE_LIMIT, ip);
+const metaTagsRateLimited = (ip) => hourlyRateLimited(metaTagsRequests, META_TAGS_RATE_LIMIT, ip);
 
 async function designMdFetch(pathname, options = {}) {
   const response = await fetch(`${DESIGN_MD_API_BASE}${pathname}`, {
@@ -623,6 +638,11 @@ const routes = [
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "design-md" && {}, h: designMdTpl.render },
   { m: (s) => s.length === 4 && s[0] === "tools" && s[1] === "design-md" && s[2] === "analysis" && { slug: s[3] }, h: designMdTpl.analysis },
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "seo-md" && {}, h: seoMdTpl.render },
+  { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "calculators" && {}, h: calculatorsTpl.hub },
+  { m: (s) => s.length === 2 && s[0] === "tools" && calculatorsTpl.isCalc(s[1]) && { slug: s[1] }, h: calculatorsTpl.page },
+  { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "ai-visibility" && {}, h: aiVisibilityTpl.render },
+  { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "linkedin-formatter" && {}, h: linkedinFormatterTpl.render },
+  { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "meta-description-generator" && {}, h: metaTagsTpl.render },
   { m: (s) => s.length === 1 && s[0] === "product" && {}, h: pagesTpl.productHub },
   { m: (s) => s.length === 1 && s[0] === "pricing" && {}, h: pricingTpl.render },
   // The entity page for Sokosumi itself lives in code so its JSON-LD is
@@ -1222,6 +1242,75 @@ ${productDemoTpl.demoStage()}
                 : error.message && /HTML page|did not return/i.test(error.message)
                   ? error.message
                   : "That site could not be reached. Check the URL and try again.";
+            return send(req, res, timeout ? 504 : 502, jsonHead, JSON.stringify({ error: message }));
+          }
+        }
+
+        // The AI visibility checker: five model calls per run, so it has the
+        // tightest rate limit of the tools and answers from a one-hour cache
+        // for repeated brand+category runs (see lib/aiVisibility.js).
+        if (urlPath === "/api/ai-visibility" && req.method === "POST") {
+          const jsonHead = { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" };
+          let body;
+          try {
+            body = await readJsonBody(req);
+          } catch (error) {
+            const message = error.message === "too-large" ? "The request is too large." : "Send a valid JSON request.";
+            return send(req, res, 400, jsonHead, JSON.stringify({ error: message }));
+          }
+          if (!body || typeof body !== "object" || Array.isArray(body)) {
+            return send(req, res, 400, jsonHead, JSON.stringify({ error: "Send a valid JSON request." }));
+          }
+          if (aiVisibilityRateLimited(clientIp(req))) {
+            return send(req, res, 429, { ...jsonHead, "Retry-After": "3600" }, JSON.stringify({ error: "You have reached the hourly limit. Try again later." }));
+          }
+          try {
+            const report = await aiVisibility.check(body);
+            return send(req, res, 200, jsonHead, JSON.stringify(report));
+          } catch (error) {
+            if (error.code === "no-key") {
+              return send(req, res, 503, jsonHead, JSON.stringify({ error: "The checker is temporarily unavailable." }));
+            }
+            const status = /brand|category/i.test(error.message || "") ? 400 : 502;
+            return send(req, res, status, jsonHead, JSON.stringify({ error: error.message || "The check did not work. Try again in a moment." }));
+          }
+        }
+
+        if (urlPath === "/api/meta-tags" && req.method === "POST") {
+          const jsonHead = { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" };
+          let body;
+          try {
+            body = await readJsonBody(req);
+          } catch (error) {
+            const message = error.message === "too-large" ? "The request is too large." : "Send a valid JSON request.";
+            return send(req, res, 400, jsonHead, JSON.stringify({ error: message }));
+          }
+          if (!body || typeof body !== "object" || Array.isArray(body)) {
+            return send(req, res, 400, jsonHead, JSON.stringify({ error: "Send a valid JSON request." }));
+          }
+          let targetUrl = null;
+          if (body.url) {
+            targetUrl = publicWebsiteUrl(body.url);
+            if (!targetUrl) {
+              return send(req, res, 400, jsonHead, JSON.stringify({ error: "Enter a complete public page URL, or leave the URL empty and describe the page." }));
+            }
+          }
+          if (metaTagsRateLimited(clientIp(req))) {
+            return send(req, res, 429, { ...jsonHead, "Retry-After": "3600" }, JSON.stringify({ error: "You have reached the hourly limit. Try again later." }));
+          }
+          try {
+            const result = await metaTags.generate({ ...body, url: targetUrl });
+            return send(req, res, 200, jsonHead, JSON.stringify(result));
+          } catch (error) {
+            if (error.code === "no-key") {
+              return send(req, res, 503, jsonHead, JSON.stringify({ error: "The generator is temporarily unavailable." }));
+            }
+            const timeout = error.name === "AbortError" || /aborted|timeout/i.test(error.message || "");
+            const message = timeout
+              ? "That site took too long to respond. Try again in a moment."
+              : error.statusCode
+                ? `That site returned an error (HTTP ${error.statusCode}).`
+                : error.message || "The generator did not work. Try again in a moment.";
             return send(req, res, timeout ? 504 : 502, jsonHead, JSON.stringify({ error: message }));
           }
         }

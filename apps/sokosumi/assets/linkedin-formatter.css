@@ -1,0 +1,160 @@
+/* LinkedIn text formatter — additions on top of design-md.css. The preview
+   card is deliberately generic feed furniture: gray avatar, name placeholder,
+   fold. It must read as "a post", not as LinkedIn's trade dress. */
+
+.lif-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  gap: clamp(20px, 3vw, 32px);
+  align-items: start;
+}
+
+.lif-toolbar {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+.lif-toolbar button {
+  border: 1px solid var(--border);
+  background: var(--card);
+  border-radius: 8px;
+  min-width: 40px;
+  height: 36px;
+  padding: 0 12px;
+  font-size: 14px;
+  color: var(--foreground);
+  cursor: pointer;
+  transition: border-color 160ms ease;
+}
+.lif-toolbar button:hover {
+  border-color: var(--foreground);
+}
+
+#lifInput {
+  width: 100%;
+  min-height: 280px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--card);
+  color: var(--foreground);
+  font: inherit;
+  font-size: 15px;
+  line-height: 1.6;
+  padding: 14px 16px;
+  resize: vertical;
+  outline: 0;
+  transition: border-color 160ms ease;
+}
+#lifInput:focus {
+  border-color: var(--foreground);
+}
+
+.lif-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 10px 0 14px;
+  font-size: 13px;
+  color: var(--muted-foreground);
+}
+#lifCount.is-over {
+  color: #d1443b;
+  font-weight: 600;
+}
+
+.lif-preview-label {
+  font-size: 12px;
+  font-weight: 550;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted-foreground);
+  margin: 0 0 10px;
+}
+
+.lif-card {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--card);
+  padding: 16px;
+}
+.lif-card-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.lif-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--border) 70%, transparent);
+  flex: none;
+}
+.lif-id strong {
+  display: block;
+  font-size: 14px;
+}
+.lif-id small {
+  color: var(--muted-foreground);
+  font-size: 12px;
+}
+.lif-text {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.lif-seemore {
+  border: 0;
+  background: none;
+  padding: 0;
+  margin-top: 2px;
+  color: var(--muted-foreground);
+  font-size: 14px;
+  cursor: pointer;
+}
+.lif-preview-note {
+  margin: 12px 0 0;
+  font-size: 13px;
+  color: var(--muted-foreground);
+}
+
+.lif-section {
+  border-top: 1px solid var(--border);
+  padding: clamp(40px, 6vw, 64px) 0;
+  max-width: 720px;
+}
+.lif-section h2 {
+  margin: 0 0 16px;
+}
+.lif-table-wrap {
+  overflow-x: auto;
+  margin-bottom: 12px;
+}
+.lif-table {
+  border-collapse: collapse;
+  width: 100%;
+  max-width: 520px;
+  font-size: 14.5px;
+}
+.lif-table th,
+.lif-table td {
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  padding: 9px 16px 9px 0;
+}
+.lif-table th {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted-foreground);
+}
+
+@media (max-width: 860px) {
+  .lif-grid {
+    grid-template-columns: 1fr;
+  }
+}

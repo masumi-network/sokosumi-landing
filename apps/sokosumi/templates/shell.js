@@ -1034,6 +1034,10 @@ function footerHtml(opts) {
                 <li><a href="/tools/og-checker">${esc(t("Open Graph checker"))}</a></li>
                 <li><a href="/tools/design-md">${esc(t("DESIGN.md generator"))}</a></li>
                 <li><a href="/tools/seo-md">${esc(t("SEO.md generator"))}</a></li>
+                <li><a href="/tools/calculators">${esc(t("Marketing calculators"))}</a></li>
+                <li><a href="/tools/ai-visibility">${esc(t("AI visibility checker"))}</a></li>
+                <li><a href="/tools/linkedin-formatter">${esc(t("LinkedIn text formatter"))}</a></li>
+                <li><a href="/tools/meta-description-generator">${esc(t("Meta tag generator"))}</a></li>
                 <li><a href="/tools">${esc(t("All tools"))}</a></li>
               </ul>
             </div>
