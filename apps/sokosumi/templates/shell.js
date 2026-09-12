@@ -1137,13 +1137,13 @@ function crumbs(items) {
 const READ_WITH_SKIP = /^\/(tools|contact|legal)(\/|$)/;
 
 // Claude and ChatGPT prefill from ?q= on their new-chat route. Gemini has no
-// working equivalent - ?q=, ?text= and /?q= were all checked and none of them
-// put anything in the input - so that one copies the prompt and opens Gemini
-// for the reader to paste. Without JS it still opens Gemini, just empty.
+// working equivalent - ?q=, ?text=, ?prompt= and /?q= were all checked (last
+// re-test 2026-09-12) and none of them put anything in the input - so Gemini
+// gets no button. The old copy-the-prompt fallback opened an empty Gemini,
+// which read as broken.
 const READ_WITH_TARGETS = [
   { slug: "claude", name: "Claude", url: (q) => `https://claude.ai/new?q=${q}` },
   { slug: "openai", name: "ChatGPT", url: (q) => `https://chatgpt.com/?q=${q}` },
-  { slug: "gemini", name: "Gemini", url: () => "https://gemini.google.com/app", copy: true },
 ];
 
 function readWithPrompt(opts) {
@@ -1160,10 +1160,8 @@ function readWithPrompt(opts) {
 function readWith(opts) {
   if (!opts || !opts.path || READ_WITH_SKIP.test(opts.path)) return "";
   const q = encodeURIComponent(readWithPrompt(opts));
-  const prompt = readWithPrompt(opts);
   const links = READ_WITH_TARGETS.map(
     (a) => `<a class="read-with-btn" href="${attr(a.url(q))}" target="_blank" rel="noopener nofollow"
-        ${a.copy ? `data-copy-prompt="${attr(prompt)}" data-copied-label="${attr(t("Prompt copied — paste it in"))}"` : ""}
         data-analytics="read_with_click" data-analytics-assistant="${attr(a.slug)}">
         <img src="/assets/logos/models/${attr(a.slug)}.svg" alt="" width="16" height="16" loading="lazy" decoding="async" />
         <span class="rw-long">${esc(t("Read with {name}", { name: a.name }))}</span><span class="rw-short" aria-hidden="true">${esc(a.name)}</span>
