@@ -21,7 +21,7 @@ const FAQ = [
   {
     question: "Why does Google show a different title than the one I set?",
     answer:
-      "Google rewrites titles it considers too long, keyword-stuffed, boilerplate, or mismatched with the query. Titles that describe the page plainly and match the H1 mostly get kept. This is also why three honest options beat one clever one.",
+      "Google rewrites titles it considers too long, keyword-stuffed, boilerplate, or mismatched with the query. Titles that describe the page plainly and match the H1 mostly get kept — which is the reason this tool gives you plain options rather than clever ones.",
   },
 ];
 
@@ -70,7 +70,7 @@ function render() {
     `<section class="dm-tool" id="generator">
       <header class="dm-tool-head">
         <div>
-          <p class="dm-overline">Free tool · No sign-up</p>
+          <p class="dm-overline">Tool · Free</p>
           <h1>Meta Title &amp; Description Generator</h1>
         </div>
         <p class="dm-tool-meta"><span class="dm-live">Live</span></p>

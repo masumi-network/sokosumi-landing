@@ -2,12 +2,12 @@
    The SERP preview is generic search-result furniture, not Google's exact
    trade dress: blue link, green-less URL line, two-line snippet. */
 
+/* Full content column, like the other tools' input furniture. */
 .mtg-form {
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: 14px;
   padding: clamp(20px, 3vw, 28px);
-  max-width: 760px;
 }
 .mtg-fields {
   display: grid;
@@ -48,7 +48,6 @@
   margin-top: 28px;
   display: grid;
   gap: 28px;
-  max-width: 860px;
 }
 
 .mtg-serp-label {

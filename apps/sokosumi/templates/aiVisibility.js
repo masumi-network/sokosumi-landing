@@ -16,7 +16,7 @@ const FAQ = [
   {
     question: "Why does an AI assistant not mention my brand?",
     answer:
-      "Models recommend brands they saw named, described and compared in their training data and in the sources they retrieve. Sparse or inconsistent public information about what your product is and who it is for usually means no mention. Clear category wording on your site, entity pages, comparison pages and an llms.txt file all help.",
+      "Models recommend brands they saw named, described and compared in their training data and in the sources they retrieve. If the public record of what you sell is thin or contradictory, the model has nothing to hang a recommendation on. Clear category wording on your site, entity pages, comparison pages and an llms.txt file all help.",
   },
   {
     question: "How do I improve my AI visibility?",
@@ -70,7 +70,7 @@ function render() {
     `<section class="dm-tool" id="checker">
       <header class="dm-tool-head">
         <div>
-          <p class="dm-overline">Free tool · No sign-up</p>
+          <p class="dm-overline">Tool · Free</p>
           <h1>AI Visibility Checker</h1>
         </div>
         <p class="dm-tool-meta"><span class="dm-live">Live</span></p>
@@ -119,7 +119,7 @@ function render() {
         <li><strong>Say your category in one line.</strong> "Acme is a CRM for small construction firms" on your homepage and about page — in text, not in an image.</li>
         <li><strong>Publish an llms.txt.</strong> A file that tells AI crawlers what your site is and where the important pages are. <a href="/tools/llms-txt">Check yours here</a>.</li>
         <li><strong>Build comparison pages.</strong> Models learn categories from pages that compare products. If nobody compares you to the leaders, do it yourself.</li>
-        <li><strong>Keep your name consistent.</strong> One spelling, everywhere — the model cannot merge "Acme", "AcmeCRM" and "Acme Software" into one reputation.</li>
+        <li><strong>One spelling, everywhere.</strong> A model cannot merge "Acme", "AcmeCRM" and "Acme Software" into one reputation, so pick a name and hold it.</li>
       </ul>
     </section>
 

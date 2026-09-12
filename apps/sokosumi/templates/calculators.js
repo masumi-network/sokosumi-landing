@@ -29,14 +29,14 @@ const CALCS = [
     formula: "CPM = ad spend ÷ impressions × 1,000",
     what: [
       "CPM is what 1,000 ad impressions cost. The M is the Roman numeral for 1,000 — “cost per mille”.",
-      "Buying: it tells you what a platform charges for reach. Reporting: spend and impressions come out of every ads manager, and CPM makes them comparable across campaigns, platforms and countries.",
+      "Media buyers use it to compare what platforms charge for reach. It also works the other way: since every ads manager reports spend and impressions, CPM lets you put two campaigns from different platforms next to each other and see which reach was cheaper.",
     ],
     example:
       "You spent $500 and got 125,000 impressions. 500 ÷ 125,000 × 1,000 = <strong>$4.00 CPM</strong>. The same formula backwards: at a $4.00 CPM, a $2,000 budget buys 500,000 impressions.",
     faq: [
       {
         q: "What is a good CPM?",
-        a: "There is no single number — CPM depends on the platform, the country, the audience and the season. Display inventory is cheapest, social feeds sit in the middle, and narrow B2B audiences cost the most. Q4 is more expensive everywhere. The useful comparison is your own history: the same audience on the same platform, month over month.",
+        a: "Anyone quoting one number is guessing. Display inventory is cheapest, social feeds sit in the middle, narrow B2B audiences cost the most, and Q4 is pricier everywhere. The comparison that holds up is your own history: the same audience on the same platform, month over month.",
       },
       {
         q: "What is the difference between CPM and eCPM?",
@@ -188,8 +188,8 @@ const CALCS = [
     ],
     formula: "CPA = ad spend ÷ conversions",
     what: [
-      "CPA is what one conversion cost — a purchase, a lead, a signup, whatever the campaign counts.",
-      "It is the number that decides whether a campaign scales: as long as a conversion is worth more than it costs, you can buy more of them.",
+      "Divide spend by conversions and you have CPA: the price of one purchase, lead, signup, or whatever else the campaign counts as a conversion.",
+      "This is the number that decides whether a campaign scales. As long as a conversion is worth more than it costs, you can keep buying them.",
     ],
     example:
       "You spent $3,000 and got 60 signups. 3,000 ÷ 60 = <strong>$50 CPA</strong>.",
@@ -210,6 +210,7 @@ const CALCS = [
   },
   {
     slug: "ltv-calculator",
+    whatHeading: "What is customer lifetime value?",
     calc: "ltv",
     name: "LTV Calculator",
     short: "Customer lifetime value from order value, frequency and lifespan.",
@@ -247,6 +248,7 @@ const CALCS = [
   },
   {
     slug: "cac-calculator",
+    whatHeading: "What is customer acquisition cost?",
     calc: "cac",
     name: "CAC Calculator",
     short: "Customer acquisition cost, plus your LTV:CAC ratio.",
@@ -261,19 +263,19 @@ const CALCS = [
     ],
     formula: "CAC = sales & marketing spend ÷ new customers",
     what: [
-      "CAC is what one new paying customer cost, all-in: ad spend, tools, agencies, and the salaries of the people doing sales and marketing, divided by customers won in the same period.",
-      "Add your customer lifetime value and the calculator also returns the LTV:CAC ratio — the number investors and finance teams actually ask for.",
+      "CAC answers a blunt question: what did one paying customer cost to win? Count everything it took — ad spend, tools, agencies, and the salaries of the people doing sales and marketing — and divide by the customers won in the same period.",
+      "Add your customer lifetime value and the calculator also returns the LTV:CAC ratio, which is the number investors and finance teams actually ask for.",
     ],
     example:
       "Last quarter cost $40,000 in sales and marketing and closed 80 new customers. 40,000 ÷ 80 = <strong>$500 CAC</strong>. With a $1,500 LTV that is a 3:1 ratio.",
     faq: [
       {
         q: "What counts as spend in CAC?",
-        a: "Everything it took to win the customer: media, tools, agencies and freelancers, content production, and the loaded salaries of sales and marketing. Ad-spend-only versions exist (sometimes called paid CAC), but the fully loaded number is the honest one.",
+        a: "Everything it took to win the customer: media, tools, agencies and freelancers, content production, and the loaded salaries of sales and marketing. Ad-spend-only versions exist (sometimes called paid CAC), but leaving out salaries makes the number flatter you.",
       },
       {
         q: "What is a good CAC?",
-        a: "There is no absolute number — a good CAC is small next to LTV. The common benchmark is an LTV at least 3× CAC, with payback inside 12 months for subscription businesses.",
+        a: "On its own, a CAC figure says nothing; it only means something next to LTV. The common benchmark is an LTV of at least 3× CAC, with payback inside 12 months for subscription businesses.",
       },
       {
         q: "Why did my CAC go up when I scaled spend?",
@@ -283,6 +285,7 @@ const CALCS = [
   },
   {
     slug: "engagement-rate-calculator",
+    whatHeading: "What is engagement rate?",
     calc: "engagement",
     name: "Engagement Rate Calculator",
     short: "Engagement rate by followers, reach or views — for any platform.",
@@ -318,12 +321,12 @@ const CALCS = [
       </section>
       <section class="calc-section" aria-labelledby="er-tt-h">
         <h2 id="er-tt-h">TikTok engagement rate</h2>
-        <p>TikTok distributes by video, not by follower graph, so views-based engagement rate (likes + comments + shares ÷ views) is the honest measure there. Follower counts say little about how many people actually saw a video.</p>
+        <p>TikTok distributes by video, not by follower graph, so views-based engagement rate (likes + comments + shares ÷ views) is the measure that means something there. Follower counts say little about how many people actually saw a video.</p>
       </section>`,
     faq: [
       {
         q: "What is a good engagement rate?",
-        a: "It varies by platform, audience size and how you measure. Follower-based rates shrink as accounts grow, and reach-based rates run higher than follower-based ones by construction. Track your own trend and compare accounts of similar size on the same formula — a single universal number would be misleading.",
+        a: "Whatever number you have heard is probably measured differently than yours. Follower-based rates shrink as accounts grow, and reach-based rates run higher than follower-based ones by construction, so a rate is only comparable to another rate on the same formula, on the same platform, at a similar audience size. Track your own trend first.",
       },
       {
         q: "Do I count shares and saves?",
@@ -415,8 +418,8 @@ function page(ctx) {
   };
   const hint =
     c.mode === "solve"
-      ? "Fill any two fields. The empty one is calculated."
-      : "Fill the fields, then calculate.";
+      ? "Fill any two fields — we calculate the third."
+      : "Fill in what you know, then calculate.";
 
   return (
     pageStart({
@@ -433,7 +436,7 @@ function page(ctx) {
     `<section class="dm-tool" id="calculator">
       <header class="dm-tool-head">
         <div>
-          <p class="dm-overline">Free tool · No sign-up</p>
+          <p class="dm-overline">Tool · Free</p>
           <h1>${esc(c.name)}</h1>
         </div>
       </header>
@@ -451,7 +454,7 @@ function page(ctx) {
     </section>
 
     <section class="calc-section" aria-labelledby="calc-what-h">
-      <h2 id="calc-what-h">What ${esc(c.name.replace(" Calculator", ""))} means</h2>
+      <h2 id="calc-what-h">${esc(c.whatHeading || `What is ${c.name.replace(" Calculator", "")}?`)}</h2>
       ${c.what.map((p) => `<p>${esc(p)}</p>`).join("")}
       <h3>Worked example</h3>
       <p>${c.example}</p>

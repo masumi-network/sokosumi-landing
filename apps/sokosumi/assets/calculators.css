@@ -3,12 +3,13 @@
    rows, the prose sections and the hub cards. Colours come from the shared
    design tokens. */
 
+/* The form spans the full content column, like the seo-md/og-checker input
+   furniture — a narrower card left the right half of the page empty. */
 .calc-form {
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: 14px;
   padding: clamp(20px, 3vw, 28px);
-  max-width: 720px;
 }
 
 .calc-hint {
@@ -118,17 +119,26 @@
   background: transparent;
 }
 
-/* Prose sections between the tool and the FAQ. */
+/* Prose sections between the tool and the FAQ. The border-top spans the
+   full column (house rule: dividers never stop mid-page); the text inside
+   stays at a readable measure. */
 .calc-section {
   border-top: 1px solid var(--border);
-  padding: clamp(40px, 6vw, 64px) 0;
+  padding: clamp(48px, 7vw, 80px) 0;
+}
+.calc-section > * {
   max-width: 720px;
 }
 .calc-section h2 {
   margin: 0 0 16px;
+  font-size: clamp(22px, 2.6vw, 30px);
+  font-weight: 400;
+  letter-spacing: -0.03em;
 }
 .calc-section h3 {
   margin: 24px 0 8px;
+  font-size: 17px;
+  font-weight: 550;
 }
 .calc-section p {
   margin: 0 0 12px;
@@ -146,8 +156,12 @@
   padding: clamp(32px, 5vw, 48px) 0;
 }
 .calc-related h2 {
-  font-size: 15px;
   margin: 0 0 14px;
+  font-size: 12px;
+  font-weight: 550;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
 }
 .calc-related-links {
   display: flex;

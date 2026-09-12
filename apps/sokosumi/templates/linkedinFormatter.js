@@ -70,7 +70,7 @@ function render() {
     `<section class="dm-tool" id="formatter">
       <header class="dm-tool-head">
         <div>
-          <p class="dm-overline">Free tool · No sign-up</p>
+          <p class="dm-overline">Tool · Free</p>
           <h1>LinkedIn Text Formatter</h1>
         </div>
       </header>

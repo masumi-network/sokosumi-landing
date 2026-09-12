@@ -1,11 +1,11 @@
 /* AI visibility checker — additions on top of design-md.css. */
 
+/* Full content column, like the other tools' input furniture. */
 .aiv-form {
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: 14px;
   padding: clamp(20px, 3vw, 28px);
-  max-width: 760px;
 }
 
 .aiv-fields {
@@ -51,7 +51,6 @@
   margin-top: 28px;
   display: grid;
   gap: 28px;
-  max-width: 760px;
 }
 
 .aiv-verdict {
@@ -185,10 +184,15 @@
 .aiv-improve {
   border-top: 1px solid var(--border);
   padding: clamp(48px, 7vw, 80px) 0;
+}
+.aiv-improve > * {
   max-width: 720px;
 }
 .aiv-improve h2 {
   margin: 0 0 12px;
+  font-size: clamp(22px, 2.6vw, 30px);
+  font-weight: 400;
+  letter-spacing: -0.03em;
 }
 .aiv-improve ul {
   margin: 16px 0 0;
