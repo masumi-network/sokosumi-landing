@@ -21,7 +21,6 @@
     ltForm: "llms-txt",
     calcForm: "calculators",
     calcBreakevenForm: "calculators",
-    aivForm: "ai-visibility",
     mtgForm: "meta-tags",
   };
   // click targets on pages where the tool has no form to intercept

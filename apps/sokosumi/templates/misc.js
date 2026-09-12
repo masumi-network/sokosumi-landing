@@ -123,7 +123,6 @@ Humans sign up at https://app.sokosumi.com/signup (free plan, no card).
 - [DESIGN.md generator](https://www.sokosumi.com/tools/design-md): analyze a public website and create a portable design-system file for AI coding agents; free, no sign-up
 - [SEO.md generator](https://www.sokosumi.com/tools/seo-md): turn any public URL into an AI-readable SEO specification with scores and fixes; free, no sign-up
 - [Marketing calculators](https://www.sokosumi.com/tools/calculators): CPM, ROAS, CTR, CPC, CPA, LTV, CAC and engagement rate calculators, each with the formula and a worked example; free, no sign-up
-- [AI visibility checker](https://www.sokosumi.com/tools/ai-visibility): ask an AI model five buyer questions about a category and see whether it names your brand; free, no sign-up
 - [LinkedIn text formatter](https://www.sokosumi.com/tools/linkedin-formatter): bold and italic Unicode text, bullets, a character counter and a "see more" fold preview for LinkedIn posts; free, no sign-up
 - [Meta tag generator](https://www.sokosumi.com/tools/meta-description-generator): generate meta titles and descriptions from a page URL or topic, measured against Google's pixel limits; free, no sign-up
 
@@ -223,7 +222,6 @@ async function sitemap() {
     "/tools/design-md",
     "/tools/seo-md",
     "/tools/calculators",
-    "/tools/ai-visibility",
     "/tools/linkedin-formatter",
     "/tools/meta-description-generator",
     ...require("./calculators").CALCS.map((c) => `/tools/${c.slug}`),

@@ -1745,21 +1745,8 @@
   color: var(--muted-foreground);
 }
 
-.tp-calc .tp-verdict,
-.tp-aiv .tp-verdict {
+.tp-calc .tp-verdict {
   flex-wrap: wrap;
-}
-
-.tp-aiv-q {
-  font-size: 12.5px;
-  font-weight: 600;
-  color: var(--foreground);
-}
-
-.tp-aiv-brands {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
 }
 
 .tp-li {

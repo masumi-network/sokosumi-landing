@@ -96,21 +96,6 @@ const calcPreview = () => `
     </span>
   </span>`;
 
-// The visibility checker hands back "who the model named", so the preview is
-// a buyer question and the answer chips, with you in green.
-const aivPreview = () => `
-  <span class="tp tp-aiv">
-    <span class="tp-aiv-q">“What are the best CRM tools?”</span>
-    <span class="tp-aiv-brands">
-      <span class="tp-chip">Competitor A</span>
-      <span class="tp-chip is-pass">Your brand</span>
-      <span class="tp-chip">Competitor B</span>
-    </span>
-    <span class="tp-verdict">
-      <span class="tp-chip is-pass">Mentioned in 3/5 answers</span>
-    </span>
-  </span>`;
-
 // The formatter hands back a post, so the preview is the feed card with the
 // fold.
 const lifPreview = () => `
@@ -167,13 +152,6 @@ const TOOLS = [
     text: "CPM, ROAS, CTR, CPC, CPA, LTV, CAC and engagement rate — with formulas and worked examples.",
     meta: "Free · no sign-up",
     preview: calcPreview,
-  },
-  {
-    href: "/tools/ai-visibility",
-    name: "AI visibility checker",
-    text: "Ask an AI five buyer questions about your category and see if it names you.",
-    meta: "Free · no sign-up",
-    preview: aivPreview,
   },
   {
     href: "/tools/linkedin-formatter",

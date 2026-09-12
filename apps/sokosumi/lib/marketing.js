@@ -17,7 +17,6 @@ const TOOLS = new Set([
   "llms-txt",
   "seo-md",
   "calculators",
-  "ai-visibility",
   "linkedin-formatter",
   "meta-tags",
 ]);
