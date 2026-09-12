@@ -59,7 +59,7 @@ function render() {
       englishOnly: true,
       breadcrumb: crumbs,
       mainClass: "design-tool-page",
-      stylesheets: ["/assets/design-md.css", "/assets/seo-md.css"],
+      stylesheets: ["/assets/design-md.css", "/assets/seo-md.css", "/assets/email-gate.css"],
       jsonld: [appJsonLd, faqJsonLd],
       og: {
         type: "page",
@@ -156,7 +156,7 @@ function render() {
         ).join("")}
       </div>
     </section>` +
-    pageEnd({ scripts: ["/assets/seo-md.js"], englishOnly: true })
+    pageEnd({ scripts: ["/assets/seo-md.js", "/assets/email-gate.js"], englishOnly: true })
   );
 }
 

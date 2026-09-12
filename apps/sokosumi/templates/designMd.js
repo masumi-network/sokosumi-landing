@@ -72,7 +72,7 @@ async function render() {
       englishOnly: true,
       breadcrumb: crumbs,
       mainClass: "design-tool-page",
-      stylesheets: ["/assets/design-md.css"],
+      stylesheets: ["/assets/design-md.css", "/assets/email-gate.css"],
       jsonld: [appJsonLd, faqJsonLd],
       og: {
         type: "page",
@@ -181,7 +181,7 @@ async function render() {
         ).join("")}
       </div>
     </section>` +
-    pageEnd({ scripts: ["/assets/design-md.js"], englishOnly: true })
+    pageEnd({ scripts: ["/assets/design-md.js", "/assets/email-gate.js"], englishOnly: true })
   );
 }
 
@@ -358,7 +358,7 @@ async function analysis(ctx) {
       <header class="dm-section-head"><h2 id="dm-related-title">More analyses</h2><a class="dm-gallery-all" href="/tools/design-md#analyzed-pages">All ${all.length} →</a></header>
       <div class="dm-gallery">${related.map(galleryCard).join("")}</div>
     </section>` : ""}` +
-    pageEnd({ scripts: ["/assets/design-md-analysis.js"], englishOnly: true })
+    pageEnd({ scripts: ["/assets/design-md-analysis.js", "/assets/email-gate.js"], englishOnly: true })
   );
 }
 

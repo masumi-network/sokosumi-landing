@@ -172,7 +172,7 @@ function render() {
       englishOnly: true,
       breadcrumb: crumbs,
       mainClass: "og-tool-page",
-      stylesheets: ["/assets/og-checker.css"],
+      stylesheets: ["/assets/og-checker.css", "/assets/email-gate.css"],
       jsonld: [appJsonLd, faqJsonLd],
       og: {
         type: "page",
@@ -267,7 +267,7 @@ function render() {
         "Sokosumi's AI coworkers turn a brief into a finished file: the launch copy, the social set, the landing page.",
       ctaLabel: "Sign up free",
     }) +
-    pageEnd({ scripts: ["/assets/og-checker.js"], englishOnly: true })
+    pageEnd({ scripts: ["/assets/og-checker.js", "/assets/email-gate.js"], englishOnly: true })
   );
 }
 

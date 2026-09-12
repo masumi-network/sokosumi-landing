@@ -143,7 +143,7 @@ function render() {
       englishOnly: true,
       breadcrumb: crumbs,
       mainClass: "llms-tool-page",
-      stylesheets: ["/assets/llms-txt.css"],
+      stylesheets: ["/assets/llms-txt.css", "/assets/email-gate.css"],
       jsonld: [appJsonLd, faqJsonLd],
       og: {
         type: "page",
@@ -240,7 +240,7 @@ function render() {
         "Sokosumi's AI coworkers turn a brief into a finished file: the launch copy, the social set, the landing page.",
       ctaLabel: "Sign up free",
     }) +
-    pageEnd({ scripts: ["/assets/llms-txt.js"], englishOnly: true })
+    pageEnd({ scripts: ["/assets/llms-txt.js", "/assets/email-gate.js"], englishOnly: true })
   );
 }
 

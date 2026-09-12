@@ -556,6 +556,7 @@ const i18n = require("./lib/i18n");
 const { t } = i18n;
 const { buildNav } = require("./lib/nav");
 const leads = require("./lib/leads");
+const marketing = require("./lib/marketing");
 const salesTpl = require("./templates/sales");
 const pricingTpl = require("./templates/pricing");
 const aboutTpl = require("./templates/about");
@@ -1341,6 +1342,30 @@ ${productDemoTpl.demoStage()}
             "Set-Cookie": "soko_preview=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0",
           });
           return res.end();
+        }
+
+        // The free-tools email popup (assets/email-gate.js). Stores the
+        // address with its consent wording in the marketing database.
+        if (urlPath === "/api/tool-email" && req.method === "POST") {
+          const jsonHead = { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" };
+          let body;
+          try {
+            body = await readJsonBody(req);
+          } catch (error) {
+            const message = error.message === "too-large" ? "The request is too large." : "Send a valid JSON request.";
+            return send(req, res, 400, jsonHead, JSON.stringify({ error: message }));
+          }
+          if (marketing.rateLimited(clientIp(req))) {
+            return send(req, res, 429, { ...jsonHead, "Retry-After": "3600" }, JSON.stringify({ error: "Too many submissions. Try again later." }));
+          }
+          try {
+            const out = await marketing.save(body);
+            if (!out.ok) return send(req, res, out.error === "spam" ? 200 : 400, jsonHead, JSON.stringify(out.error === "spam" ? { ok: true } : { error: out.error }));
+            return send(req, res, 200, jsonHead, JSON.stringify({ ok: true }));
+          } catch (e) {
+            console.error("[tool-email] save failed:", e.message);
+            return send(req, res, 502, jsonHead, JSON.stringify({ error: "We could not save that right now. Try again in a moment." }));
+          }
         }
 
         // Talk-to-Sales submissions. Plain form POST so the page keeps
