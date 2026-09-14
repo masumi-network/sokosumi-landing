@@ -16,11 +16,15 @@ import GenerateEncryptionKey from '../../../snippets/generate-encryption-key.mdx
 
 Choose your preferred installation method to get the Masumi Node up and running.
 
+<Callout type="info">
+**Docker Compose vs manual setup:** The Docker tab uses [`masumi-services-dev-quickstart`](https://github.com/masumi-network/masumi-services-dev-quickstart), a bundled compose stack (Payment Service, optional Registry, PostgreSQL). The **Manual Setup** tab clones [`masumi-payment-service`](https://github.com/masumi-network/masumi-payment-service) directly and follows that repository's install flow.
+</Callout>
+
 <Tabs items={['Docker Compose (Recommended)', 'Manual Setup', 'Railway Templates']}>
 
 <Tab value="Docker Compose (Recommended)">
 
-The quickest way to get started with Masumi Node using Docker Compose.
+The quickest way to get started with Masumi Node using Docker Compose. This path uses the **dev quickstart** repository (not a clone of `masumi-payment-service`), so you can run the full local stack without building Node services yourself.
 
 **Prerequisites**
 
@@ -74,17 +78,16 @@ docker compose up -d
 
 <Tab value="Manual Setup">
 
-Manual setup is recommended for development mode or more complex configurations.
+Manual setup clones and builds the [Masumi Payment Service](https://github.com/masumi-network/masumi-payment-service) repository directly. Use this path when you want to run from source, pin a release tag, or customize the service, not when you only need the Docker quickstart bundle.
 
 **Prerequisites**
 
-* Node.js v18.x or later
-* PostgreSQL 15 database
+* Node.js ≥ 20
+* [pnpm](https://pnpm.io/installation)
+* PostgreSQL ≥ 13 (PostgreSQL 15 is a common choice)
 * Blockfrost API Key (to interact with the Cardano blockchain)
 
-The node consists of two different repositories. We start with the [Payment Service](https://github.com/masumi-network/masumi-payment-service), which is key to getting started.
-
-The Registry Service is not required and is optional to run.
+The Registry Service is optional and not required to get started.
 
 <Steps>
 
@@ -107,7 +110,7 @@ Ensure you're using the latest stable release and install dependencies:
 ```bash
 git fetch --tags
 git checkout $(git tag -l | sort -V | tail -n 1)
-npm install
+pnpm install
 ```
 </Step>
 
@@ -161,9 +164,13 @@ BLOCKFROST_API_KEY_PREPROD="your_blockfrost_api_key"
 Run the following commands to configure the database schema:
 
 ```bash
-npm run prisma:migrate
-npm run prisma:seed
+pnpm run prisma:migrate
+pnpm run prisma:seed
 ```
+
+<Callout type="info">
+`pnpm run prisma:migrate` applies existing migrations (`migrate deploy`) and is the right choice for an install from a release tag. If you are actively developing on the default branch and need to create new migrations locally, use `pnpm run prisma:migrate:dev` instead.
+</Callout>
 
 <Callout type="warn">
 If you already seeded your database, but you would like to change the Admin Key:
@@ -176,23 +183,22 @@ That way, the change of the admin key will propagate to the DB.
 </Step>
 
 <Step>
-**Install and Build the Admin Interface (Frontend)**
+**Build the Admin Interface (Frontend)**
 
-To build the Admin Interface, navigate to /frontend, install the requirements and then navigate back
+The admin dashboard at `/admin` is served from the built Next.js bundle in `frontend/dist`. Build it before starting the API in production mode:
 
 ```bash
-cd frontend
-npm install
-npm run build
-cd ..
+pnpm -C frontend run build
 ```
+
+Root `pnpm install` already installs frontend dependencies, so you do not need a separate install step in `frontend/`.
 </Step>
 
 <Step>
 **Start the Masumi Node**
 
 ```bash
-npm run build && npm start
+pnpm run build && pnpm start
 ```
 </Step>
 
