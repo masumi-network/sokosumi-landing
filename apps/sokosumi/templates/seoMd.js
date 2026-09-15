@@ -9,7 +9,7 @@ const FAQ = [
       "SEO.md is a plain-text SEO specification for AI agents and developers. It captures a page's real search signals — title, meta description, canonical, Open Graph, structured data, heading structure, keywords, brand entities, navigation and indexing rules — plus SEO, content, brand-clarity and AI-readiness scores and prioritized fixes, in one file you can drop into a repo.",
   },
   {
-    question: "How does the Website SEO Analyzer work?",
+    question: "How does the Website Analyzer work?",
     answer:
       "Paste a public URL. The analyzer fetches the page and its robots.txt on the server, parses the on-page SEO signals directly from the HTML, scores them against best-practice rules, and produces a structured SEO.md you can review, edit, copy, or download. No sign-up, no browser extension, no API key.",
   },
@@ -26,8 +26,8 @@ const FAQ = [
 ];
 
 function render() {
-  const path = "/tools/seo-md";
-  const crumbs = [{ label: "Home", href: "/" }, { label: "Free tools", href: "/tools" }, { label: "Website SEO Analyzer" }];
+  const path = "/tools/website-analyzer";
+  const crumbs = [{ label: "Home", href: "/" }, { label: "Free tools", href: "/tools" }, { label: "Website Analyzer" }];
   const faqJsonLd = {
     "@type": "FAQPage",
     "@id": `${SITE}${path}#faq`,
@@ -40,7 +40,7 @@ function render() {
   const appJsonLd = {
     "@type": "SoftwareApplication",
     "@id": `${SITE}${path}#software`,
-    name: "Sokosumi Website SEO Analyzer",
+    name: "Sokosumi Website Analyzer",
     applicationCategory: "DeveloperApplication",
     operatingSystem: "Web",
     url: `${SITE}${path}`,
@@ -52,7 +52,7 @@ function render() {
 
   return (
     pageStart({
-      title: "Free Website SEO Analyzer | Sokosumi",
+      title: "Free Website Analyzer | Sokosumi",
       description:
         "Analyze any website's on-page SEO: title, meta description, canonical, Open Graph, structured data, headings and a scored checklist — exported as an SEO.md for Claude Code, Cursor and other AI agents.",
       path,
@@ -63,7 +63,7 @@ function render() {
       jsonld: [appJsonLd, faqJsonLd],
       og: {
         type: "page",
-        title: "Free Website SEO Analyzer",
+        title: "Free Website Analyzer",
         sub: "Turn any website into an AI-readable SEO specification.",
       },
     }) +
@@ -71,7 +71,7 @@ function render() {
       <header class="dm-tool-head">
         <div>
           <p class="dm-overline">Tool · Free</p>
-          <h1>Website SEO Analyzer</h1>
+          <h1>Website Analyzer</h1>
         </div>
         <p class="dm-tool-meta"><span class="dm-live">Live</span></p>
       </header>

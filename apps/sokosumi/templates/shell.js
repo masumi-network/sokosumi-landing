@@ -1029,7 +1029,7 @@ function footerHtml(opts) {
                 <li><a href="/tools/llms-txt">${esc(t("llms.txt checker"))}</a></li>
                 <li><a href="/tools/og-checker">${esc(t("Open Graph checker"))}</a></li>
                 <li><a href="/tools/design-md">${esc(t("DESIGN.md generator"))}</a></li>
-                <li><a href="/tools/seo-md">${esc(t("Website SEO Analyzer"))}</a></li>
+                <li><a href="/tools/website-analyzer">${esc(t("Website Analyzer"))}</a></li>
                 <li><a href="/tools">${esc(t("All tools"))}</a></li>
               </ul>
             </div>

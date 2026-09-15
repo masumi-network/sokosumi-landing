@@ -148,21 +148,75 @@
     return block;
   }
 
-  function renderScore(data) {
-    var block = el("section", "dm-preview-block seo-score-block");
-    var scoreClass = data.score >= 80 ? "good" : data.score >= 55 ? "ok" : "bad";
-    var ring = el("div", "seo-score seo-score-" + scoreClass);
-    ring.appendChild(el("strong", "", data.score));
-    ring.appendChild(el("small", "", "/ 100"));
-    block.appendChild(ring);
-    var meta = el("div", "seo-score-meta");
+  function scoreClassFor(value) {
+    return value >= 80 ? "good" : value >= 55 ? "ok" : "bad";
+  }
+
+  // One category meter: label, a proportional progress bar, and — when the
+  // server sent them — the individual pass/fail factors behind the score.
+  function scoreMeter(label, value, factors, caption) {
+    var cls = scoreClassFor(value);
+    var wrap = el("div", "seo-meter");
+    var head = el("div", "seo-meter-head");
+    head.appendChild(el("span", "seo-meter-label", label));
+    head.appendChild(el("b", "seo-meter-value seo-meter-value-" + cls, value));
+    wrap.appendChild(head);
+    var bar = el("div", "seo-bar");
+    var fill = el("i", "seo-bar-fill seo-bar-" + cls);
+    fill.style.width = Math.max(0, Math.min(100, value)) + "%";
+    bar.appendChild(fill);
+    wrap.appendChild(bar);
+    if (Array.isArray(factors) && factors.length) {
+      var list = el("ul", "seo-factors");
+      factors.forEach(function (factor) {
+        var item = el("li", "seo-factor seo-factor-" + (factor.ok ? "ok" : "no"));
+        var mark = el("span", "seo-factor-mark", factor.ok ? "✓" : "✕");
+        mark.setAttribute("aria-hidden", "true");
+        item.appendChild(mark);
+        item.appendChild(el("span", "seo-factor-label", factor.label));
+        list.appendChild(item);
+      });
+      wrap.appendChild(list);
+    } else if (caption) {
+      wrap.appendChild(el("p", "seo-meter-note", caption));
+    }
+    return wrap;
+  }
+
+  function renderScorecard(data) {
+    var sc = data.scores || null;
+    var overall = sc ? sc.overall : data.score;
+    var block = el("section", "dm-preview-block seo-scorecard");
+
+    // Overall score as a filled gauge — the conic gradient shows the value.
+    var top = el("div", "seo-overall");
+    var gauge = el("div", "seo-gauge seo-gauge-" + scoreClassFor(overall));
+    gauge.style.setProperty("--seo-val", Math.max(0, Math.min(100, overall)) * 3.6 + "deg");
+    var inner = el("div", "seo-gauge-inner");
+    inner.appendChild(el("strong", "", overall));
+    inner.appendChild(el("small", "", "/ 100"));
+    gauge.appendChild(inner);
+    top.appendChild(gauge);
+
+    var meta = el("div", "seo-overall-meta");
+    meta.appendChild(el("p", "seo-overall-label", "Overall score"));
     meta.appendChild(el("h3", "", data.hostname || "SEO report"));
     var tally = el("p", "seo-tally");
     tally.appendChild(el("span", "seo-pill seo-pill-pass", data.pass + " passed"));
     tally.appendChild(el("span", "seo-pill seo-pill-warn", data.warn + " warnings"));
     tally.appendChild(el("span", "seo-pill seo-pill-fail", data.fail + " failing"));
     meta.appendChild(tally);
-    block.appendChild(meta);
+    top.appendChild(meta);
+    block.appendChild(top);
+
+    var meters = el("div", "seo-meters");
+    meters.appendChild(scoreMeter("SEO", data.score, null, "Full breakdown in the checklist below."));
+    if (sc) {
+      meters.appendChild(scoreMeter("Content", sc.content.score, sc.content.factors));
+      meters.appendChild(scoreMeter("Brand clarity", sc.brand.score, sc.brand.factors));
+      meters.appendChild(scoreMeter("AI readiness", sc.ai.score, sc.ai.factors));
+    }
+    block.appendChild(meters);
     preview.appendChild(block);
   }
 
@@ -240,15 +294,7 @@
     clearError();
     preview.replaceChildren();
 
-    renderScore(data);
-    var sc = data.scores || null;
-    renderFields("Scores", [
-      ["Overall", sc ? sc.overall + " / 100" : ""],
-      ["SEO", data.score + " / 100"],
-      ["Content", sc ? sc.content.score + " / 100" : ""],
-      ["Brand clarity", sc ? sc.brand.score + " / 100" : ""],
-      ["AI readiness", sc ? sc.ai.score + " / 100 (proxy)" : ""],
-    ]);
+    renderScorecard(data);
     renderChecks(data.checks);
     renderFields("Identity", [
       ["Title", data.title],

@@ -2,43 +2,145 @@
    shell and only styles the SEO-specific report pieces: score, checklist and
    recommendations. Colours come from the shared design tokens. */
 
-.seo-score-block {
-  display: flex;
-  align-items: center;
-  gap: 20px;
+/* Scorecard: overall gauge + a grid of category meters. */
+.seo-scorecard {
+  display: grid;
+  gap: 22px;
 }
 
-.seo-score {
+.seo-overall {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+
+/* The conic gradient fills the ring in proportion to the score; the inner
+   disc masks it back to a ring and holds the number. */
+.seo-gauge {
+  --seo-val: 0deg;
+  --seo-gauge-color: var(--border);
   flex: none;
+  display: grid;
+  place-items: center;
+  width: 112px;
+  height: 112px;
+  border-radius: 999px;
+  background: conic-gradient(var(--seo-gauge-color) var(--seo-val), var(--muted) 0);
+}
+.seo-gauge-inner {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 92px;
-  height: 92px;
+  width: 84px;
+  height: 84px;
   border-radius: 999px;
-  border: 3px solid var(--border);
+  background: var(--card);
   line-height: 1;
 }
-.seo-score strong {
+.seo-gauge-inner strong {
   font-size: 30px;
   font-weight: 650;
   color: var(--foreground);
 }
-.seo-score small {
+.seo-gauge-inner small {
   margin-top: 3px;
   font-size: 11px;
   color: var(--muted-foreground);
 }
-.seo-score-good { border-color: #1f9d55; }
-.seo-score-good strong { color: #1f9d55; }
-.seo-score-ok { border-color: #c67c05; }
-.seo-score-ok strong { color: #c67c05; }
-.seo-score-bad { border-color: #d1443b; }
-.seo-score-bad strong { color: #d1443b; }
+.seo-gauge-good { --seo-gauge-color: #1f9d55; }
+.seo-gauge-good .seo-gauge-inner strong { color: #1f9d55; }
+.seo-gauge-ok { --seo-gauge-color: #c67c05; }
+.seo-gauge-ok .seo-gauge-inner strong { color: #c67c05; }
+.seo-gauge-bad { --seo-gauge-color: #d1443b; }
+.seo-gauge-bad .seo-gauge-inner strong { color: #d1443b; }
 
-.seo-score-meta h3 {
-  margin: 0 0 6px;
+.seo-overall-label {
+  margin: 0 0 2px;
+  font-size: 12px;
+  color: var(--muted-foreground);
+}
+.seo-overall-meta h3 {
+  margin: 0 0 8px;
+  font-size: 18px;
+}
+
+.seo-meters {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+.seo-meter {
+  min-width: 0;
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  background: var(--background);
+}
+.seo-meter-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 9px;
+}
+.seo-meter-label {
+  font-size: 13px;
+  font-weight: 550;
+  color: var(--foreground);
+}
+.seo-meter-value {
+  font-size: 18px;
+  font-weight: 650;
+}
+.seo-meter-value-good { color: #1f9d55; }
+.seo-meter-value-ok { color: #c67c05; }
+.seo-meter-value-bad { color: #d1443b; }
+
+.seo-bar {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--muted);
+  overflow: hidden;
+}
+.seo-bar-fill {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.5s ease;
+}
+.seo-bar-good { background: #1f9d55; }
+.seo-bar-ok { background: #c67c05; }
+.seo-bar-bad { background: #d1443b; }
+
+.seo-factors {
+  list-style: none;
+  margin: 12px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 5px;
+}
+.seo-factor {
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  font-size: 12px;
+  color: var(--muted-foreground);
+}
+.seo-factor-mark {
+  flex: none;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.45;
+}
+.seo-factor-ok .seo-factor-mark { color: #1f9d55; }
+.seo-factor-no .seo-factor-mark { color: #d1443b; }
+.seo-factor-no .seo-factor-label { color: var(--foreground); }
+
+.seo-meter-note {
+  margin: 12px 0 0;
+  font-size: 12px;
+  color: var(--muted-foreground);
 }
 .seo-tally {
   display: flex;
@@ -130,12 +232,38 @@
   display: none;
 }
 
-/* Field values (title, description, canonical) can be long — let them wrap
-   rather than stretching the definition list. */
+/* On this full-width report the shared single-column definition list strands
+   each short label far from its value with a wide empty gutter. Repack the
+   field groups (Identity, Social, Structure…) into compact key/value cards
+   across two balanced columns, matching the scorecard and checklist cards. */
+.dm-preview .dm-type-list {
+  margin-top: 0;
+  border-top: 0;
+  column-count: 2;
+  column-gap: 12px;
+}
+.dm-preview .dm-type-row {
+  display: block;
+  break-inside: avoid;
+  margin-bottom: 12px;
+  padding: 11px 13px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  background: var(--background);
+}
+.dm-preview .dm-type-row dt {
+  margin-bottom: 4px;
+  font-size: 12px;
+  color: var(--muted-foreground);
+}
 .dm-preview .dm-type-row dd {
+  font-size: 13px;
+  color: var(--foreground);
   overflow-wrap: anywhere;
 }
 
 @media (max-width: 560px) {
-  .seo-score-block { flex-direction: column; align-items: flex-start; }
+  .seo-overall { flex-direction: column; align-items: flex-start; }
+  .seo-meters { grid-template-columns: minmax(0, 1fr); }
+  .dm-preview .dm-type-list { column-count: 1; }
 }

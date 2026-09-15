@@ -112,21 +112,6 @@ const imageAuditPreview = () => `
     </span>
   </span>`;
 
-// The video script checker scores a short-form video script, so the preview
-// is a vertical reel frame with a caption — the shape of the thing it's
-// actually grading, the way the social post checker draws its post.
-const videoScriptPreview = () => `
-  <span class="tp tp-vsc">
-    <span class="tp-reel">
-      <span class="tp-reel-play" aria-hidden="true">▶</span>
-      <span class="tp-reel-caption">"Nobody tells you this before your first launch."</span>
-      <span class="tp-reel-bar"><i style="width:62%"></i></span>
-    </span>
-    <span class="tp-verdict">
-      <span class="tp-chip is-pass">83/100 overall</span>
-    </span>
-  </span>`;
-
 // The image compressor's whole point is a smaller file, so the preview is a
 // literal before/after size bar rather than a text readout of the same fact.
 const imageCompressorPreview = () => `
@@ -506,8 +491,8 @@ const TOOLS = [
     preview: designMdPreview,
   },
   {
-    href: "/tools/seo-md",
-    name: "Website SEO Analyzer",
+    href: "/tools/website-analyzer",
+    name: "Website Analyzer",
     text: "Turn any website into an AI-readable SEO specification.",
     meta: "Free · no sign-up",
     preview: seoMdPreview,
@@ -518,13 +503,6 @@ const TOOLS = [
     text: "Score a post's hook, CTA, formatting and timing before you publish.",
     meta: "Free · no sign-up",
     preview: postCheckerPreview,
-  },
-  {
-    href: "/tools/video-script-checker",
-    name: "Video Script Checker",
-    text: "Score a Reels, TikTok or Shorts script's hook, pacing and CTA before you film.",
-    meta: "Free · no sign-up",
-    preview: videoScriptPreview,
   },
   {
     href: "/tools/image-compressor",

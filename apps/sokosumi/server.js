@@ -49,8 +49,6 @@ const postCheckerTpl = require("./templates/postChecker");
 const postCheck = require("./lib/postCheck");
 const imageAuditTpl = require("./templates/imageAudit");
 const imageAudit = require("./lib/imageAudit");
-const videoScriptCheckerTpl = require("./templates/videoScriptChecker");
-const videoScriptCheck = require("./lib/videoScriptCheck");
 const imageCompressorTpl = require("./templates/imageCompressor");
 const imageCompress = require("./lib/imageCompress");
 const utmBuilderTpl = require("./templates/utmBuilder");
@@ -137,10 +135,6 @@ const postCheckRequests = new Map();
 // is the lowest of any of them.
 const IMAGE_AUDIT_RATE_LIMIT = Number(process.env.IMAGE_AUDIT_RATE_LIMIT) || 6;
 const imageAuditRequests = new Map();
-// Pure in-process text scoring, no fetch — same cost profile as the post
-// checker, so the same generous ceiling.
-const VIDEO_SCRIPT_CHECK_RATE_LIMIT = Number(process.env.VIDEO_SCRIPT_CHECK_RATE_LIMIT) || 40;
-const videoScriptCheckRequests = new Map();
 // Each run re-encodes an image in-process — costlier than text scoring, so a
 // lower ceiling, but no page fetch involved so still higher than the audit.
 const IMAGE_COMPRESS_RATE_LIMIT = Number(process.env.IMAGE_COMPRESS_RATE_LIMIT) || 20;
@@ -294,7 +288,6 @@ const ogCheckRateLimited = (ip) => hourlyRateLimited(ogCheckRequests, OG_CHECK_R
 const llmsCheckRateLimited = (ip) => hourlyRateLimited(llmsCheckRequests, LLMS_CHECK_RATE_LIMIT, ip);
 const postCheckRateLimited = (ip) => hourlyRateLimited(postCheckRequests, POST_CHECK_RATE_LIMIT, ip);
 const imageAuditRateLimited = (ip) => hourlyRateLimited(imageAuditRequests, IMAGE_AUDIT_RATE_LIMIT, ip);
-const videoScriptCheckRateLimited = (ip) => hourlyRateLimited(videoScriptCheckRequests, VIDEO_SCRIPT_CHECK_RATE_LIMIT, ip);
 const imageCompressRateLimited = (ip) => hourlyRateLimited(imageCompressRequests, IMAGE_COMPRESS_RATE_LIMIT, ip);
 const headlineCheckRateLimited = (ip) => hourlyRateLimited(headlineCheckRequests, HEADLINE_CHECK_RATE_LIMIT, ip);
 const qrCodeRateLimited = (ip) => hourlyRateLimited(qrCodeRequests, QR_CODE_RATE_LIMIT, ip);
@@ -783,10 +776,11 @@ const routes = [
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "llms-txt" && {}, h: llmsTxtTpl.render },
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "design-md" && {}, h: designMdTpl.render },
   { m: (s) => s.length === 4 && s[0] === "tools" && s[1] === "design-md" && s[2] === "analysis" && { slug: s[3] }, h: designMdTpl.analysis },
-  { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "seo-md" && {}, h: seoMdTpl.render },
+  { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "website-analyzer" && {}, h: seoMdTpl.render },
+  // renamed from /tools/seo-md — 301 so old links and the indexed footprint carry over
+  { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "seo-md" && {}, h: () => ({ redirect: "/tools/website-analyzer" }) },
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "social-post-checker" && {}, h: postCheckerTpl.render },
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "image-audit" && {}, h: imageAuditTpl.render },
-  { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "video-script-checker" && {}, h: videoScriptCheckerTpl.render },
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "image-compressor" && {}, h: imageCompressorTpl.render },
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "utm-builder" && {}, h: utmBuilderTpl.render },
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "robots-txt-generator" && {}, h: robotsGeneratorTpl.render },
@@ -1394,27 +1388,6 @@ const assetsDir = path.join(root, "assets");
           } catch (error) {
             const status = error.status && error.status >= 400 && error.status < 600 ? error.status : 502;
             return send(req, res, status, jsonHead, JSON.stringify({ error: error.message || "That site could not be audited. Try again." }));
-          }
-        }
-
-        if (urlPath === "/api/video-script-check" && req.method === "POST") {
-          const jsonHead = { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" };
-          let body;
-          try {
-            body = await readJsonBody(req, 24576);
-          } catch (error) {
-            const message = error.message === "too-large" ? "The request is too large." : "Send a valid JSON request.";
-            return send(req, res, 400, jsonHead, JSON.stringify({ error: message }));
-          }
-          if (videoScriptCheckRateLimited(clientIp(req))) {
-            return send(req, res, 429, { ...jsonHead, "Retry-After": "3600" }, JSON.stringify({ error: "You have reached the hourly limit. Try again later." }));
-          }
-          try {
-            const data = videoScriptCheck.analyze(body);
-            return send(req, res, 200, jsonHead, JSON.stringify(data));
-          } catch (error) {
-            const status = error.status && error.status >= 400 && error.status < 600 ? error.status : 500;
-            return send(req, res, status, jsonHead, JSON.stringify({ error: error.message || "That check did not work. Try again." }));
           }
         }
 
