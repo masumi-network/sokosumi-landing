@@ -1,35 +1,14 @@
 const shell = require("./shell");
 
-const { esc, attr, pageStart, pageEnd, SITE } = shell;
+const { esc, pageStart, pageEnd, SITE } = shell;
 
-const PATH = "/tools/social-post-checker";
-
-const DAY_OPTIONS = [
-  ["mon", "Monday"],
-  ["tue", "Tuesday"],
-  ["wed", "Wednesday"],
-  ["thu", "Thursday"],
-  ["fri", "Friday"],
-  ["sat", "Saturday"],
-  ["sun", "Sunday"],
-];
-
-const TIME_OPTIONS = [
-  ["6-8", "Early morning (6–8am)"],
-  ["8-10", "Mid-morning (8–10am)"],
-  ["10-12", "Late morning (10am–12pm)"],
-  ["12-14", "Midday (12–2pm)"],
-  ["14-16", "Afternoon (2–4pm)"],
-  ["16-18", "Late afternoon (4–6pm)"],
-  ["18-24", "Evening (6pm–12am)"],
-  ["0-6", "Overnight (12–6am)"],
-];
+const PATH = "/tools/linkedin-post-checker";
 
 const FAQ = [
   {
-    question: "What does this social post checker look at?",
+    question: "What does this LinkedIn post checker look at?",
     answer:
-      "Paste a post — as text, or as a link to one that's already live — and it reads the text for six things: hook quality (does the first line earn a click before \"see more\" cuts it), CTA clarity (is there a specific ask at the end), engagement-shaping formatting (length, paragraph rhythm, outbound links, hashtag count, tone), readability (sentence length, active vs passive voice), specificity and credibility (concrete numbers, cited evidence), and — if you give it a planned day and time — timing against general posting-pattern data.",
+      "Paste a post — as text, or as a link to one that's already live — and it reads the text for five things: hook quality (does the first line earn a click before \"see more\" cuts it), CTA clarity (is there a specific ask at the end), engagement-shaping formatting (length, paragraph rhythm, outbound links, hashtag count, tone), readability (sentence length, active vs passive voice), and specificity and credibility (concrete numbers, cited evidence).",
   },
   {
     question: "How does the LinkedIn link option work?",
@@ -44,12 +23,7 @@ const FAQ = [
   {
     question: "Does it work for platforms other than LinkedIn?",
     answer:
-      "The hook-truncation length and the timing table are tuned for LinkedIn's B2B feed specifically. The rest — a clear CTA, short skimmable paragraphs, not burying the post under hashtags, watching for shouting — applies to short-form posts on most platforms.",
-  },
-  {
-    question: "Where does the timing guidance come from?",
-    answer:
-      "General, widely observed B2B posting patterns — not your account's actual audience data, which this tool has no access to. Treat the timing score as a reasonable default, not a personalized recommendation. If you have your own analytics on when your audience is active, trust that instead.",
+      "The hook-truncation length is tuned for LinkedIn's B2B feed specifically. The rest — a clear CTA, short skimmable paragraphs, not burying the post under hashtags, watching for shouting — applies to short-form posts on most platforms.",
   },
   {
     question: "Is my post text stored anywhere?",
@@ -62,18 +36,18 @@ function render() {
   const crumbs = [
     { label: "Home", href: "/" },
     { label: "Free tools", href: "/tools" },
-    { label: "Social post checker" },
+    { label: "LinkedIn post checker" },
   ];
 
   const appJsonLd = {
     "@type": "SoftwareApplication",
     "@id": `${SITE}${PATH}#software`,
-    name: "Sokosumi Social Post Checker",
+    name: "Sokosumi LinkedIn Post Checker",
     applicationCategory: "DeveloperApplication",
     operatingSystem: "Web",
     url: `${SITE}${PATH}`,
     description:
-      "A free social post checker that scores a pasted LinkedIn-style post — or a link to one that's already live — on hook quality, CTA clarity, engagement-shaping formatting, readability, specificity/credibility, and optional posting-time fit.",
+      "A free LinkedIn post checker that scores a pasted LinkedIn post — or a link to one that's already live — on hook quality, CTA clarity, engagement-shaping formatting, readability, and specificity/credibility.",
     featureList: [
       "Score a draft by pasting its text, or a live post by pasting its link",
       "Hook quality scoring against LinkedIn's truncation point",
@@ -81,7 +55,6 @@ function render() {
       "Formatting, link and hashtag checks",
       "Readability scoring (sentence length, active vs passive voice)",
       "Specificity and cited-evidence detection",
-      "Optional day/time timing score",
     ],
     offers: { "@type": "Offer", price: "0", priceCurrency: "EUR" },
     creator: { "@id": `${SITE}/#organization` },
@@ -99,9 +72,9 @@ function render() {
 
   return (
     pageStart({
-      title: "Social post checker — score your LinkedIn post before you publish | Sokosumi",
+      title: "LinkedIn post checker — score your post before you publish | Sokosumi",
       description:
-        "Free social post checker. Paste a LinkedIn-style post — or a link to one already live — and get scores on hook quality, CTA clarity, engagement-shaping formatting, readability, specificity/credibility, and timing. No sign-up.",
+        "Free LinkedIn post checker. Paste a LinkedIn post — or a link to one already live — and get scores on hook quality, CTA clarity, engagement-shaping formatting, readability, and specificity/credibility. No sign-up.",
       path: PATH,
       englishOnly: true,
       breadcrumb: crumbs,
@@ -110,14 +83,14 @@ function render() {
       jsonld: [appJsonLd, faqJsonLd],
       og: {
         type: "page",
-        title: "Social post checker",
-        sub: "Score your post's hook, CTA, formatting and timing before you publish.",
+        title: "LinkedIn post checker",
+        sub: "Score your post's hook, CTA, formatting and readability before you publish.",
       },
     }) +
     `<section class="psc-head" id="checker">
       <p class="psc-overline">Free · no sign-up</p>
-      <h1>Social post checker</h1>
-      <p class="psc-lede">Paste a draft, or a link to a post that's already live, and get a score on its hook, its call to action, its formatting, and — if you tell us when you're posting — its timing.</p>
+      <h1>LinkedIn post checker</h1>
+      <p class="psc-lede">Paste a draft, or a link to a post that's already live, and get a score on its hook, its call to action, and its formatting.</p>
 
       <form class="psc-form" id="pscForm" novalidate>
         <div class="psc-mode" role="tablist" aria-label="How to give us the post">
@@ -131,21 +104,7 @@ function render() {
         <label class="sr-only" for="pscUrl">LinkedIn post link</label>
         <input id="pscUrl" name="url" type="text" inputmode="url" autocomplete="url" spellcheck="false" placeholder="https://www.linkedin.com/posts/…" aria-describedby="pscError" hidden />
 
-        <div class="psc-timing-row">
-          <div class="psc-field">
-            <label for="pscDay">Planned day <span>(optional)</span></label>
-            <select id="pscDay" name="day">
-              <option value="">— Day —</option>
-              ${DAY_OPTIONS.map(([value, label]) => `<option value="${attr(value)}">${esc(label)}</option>`).join("")}
-            </select>
-          </div>
-          <div class="psc-field">
-            <label for="pscTime">Planned time <span>(optional)</span></label>
-            <select id="pscTime" name="timeBucket">
-              <option value="">— Time —</option>
-              ${TIME_OPTIONS.map(([value, label]) => `<option value="${attr(value)}">${esc(label)}</option>`).join("")}
-            </select>
-          </div>
+        <div class="psc-actions">
           <button class="psc-submit" id="pscSubmit" type="submit">Score my post</button>
         </div>
       </form>
@@ -175,14 +134,13 @@ function render() {
 
     <section class="psc-section" aria-labelledby="psc-how">
       <h2 id="psc-how">What gets scored</h2>
-      <p class="psc-sub">Four dimensions, each built from concrete, checkable signals — not a guess at what a reader will feel.</p>
+      <p class="psc-sub">Five dimensions, each built from concrete, checkable signals — not a guess at what a reader will feel.</p>
       <div class="psc-cards">
         <div class="psc-card"><h3>Hook quality</h3><p>Does the first line fit before LinkedIn's "see more" truncation, and does it give a reader a reason to keep reading — a question, a number, a claim — rather than opening with a cliché.</p></div>
         <div class="psc-card"><h3>CTA clarity</h3><p>Is there one clear, specific ask near the end — comment, reply, follow, tag someone — or does the post just stop.</p></div>
         <div class="psc-card"><h3>Engagement potential</h3><p>Length, paragraph rhythm, outbound links in the body, hashtag count, and tone — the formatting signals that shape how far a post travels.</p></div>
         <div class="psc-card"><h3>Readability</h3><p>Sentence length and active-vs-passive voice — how fast the post reads in a scrolling feed.</p></div>
         <div class="psc-card"><h3>Specificity &amp; credibility</h3><p>Does it back its claim with a concrete number or cited evidence, or ask the reader to take it on faith.</p></div>
-        <div class="psc-card"><h3>Timing</h3><p>Optional: tell it a planned day and time and it scores that slot against general B2B posting patterns — not your own audience data.</p></div>
       </div>
     </section>
 

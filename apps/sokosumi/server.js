@@ -779,7 +779,9 @@ const routes = [
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "website-analyzer" && {}, h: seoMdTpl.render },
   // renamed from /tools/seo-md — 301 so old links and the indexed footprint carry over
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "seo-md" && {}, h: () => ({ redirect: "/tools/website-analyzer" }) },
-  { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "social-post-checker" && {}, h: postCheckerTpl.render },
+  { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "linkedin-post-checker" && {}, h: postCheckerTpl.render },
+  // renamed from /tools/social-post-checker — 301 so old links and the indexed footprint carry over
+  { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "social-post-checker" && {}, h: () => ({ redirect: "/tools/linkedin-post-checker" }) },
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "image-audit" && {}, h: imageAuditTpl.render },
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "image-compressor" && {}, h: imageCompressorTpl.render },
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "utm-builder" && {}, h: utmBuilderTpl.render },

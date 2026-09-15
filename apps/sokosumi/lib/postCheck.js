@@ -1,10 +1,9 @@
 "use strict";
 
-// Deterministic social-post scorer for /tools/social-post-checker. Given a
-// pasted post draft (and, optionally, a planned day/time to post it) this
-// scores six dimensions — hook quality, CTA clarity, engagement-shaping
-// formatting, readability, specificity/credibility, and timing — from static
-// rules against the text alone. The scoring itself makes no network calls,
+// Deterministic social-post scorer for /tools/linkedin-post-checker. Given a
+// pasted post draft this scores five dimensions — hook quality, CTA clarity,
+// engagement-shaping formatting, readability, and specificity/credibility —
+// from static rules against the text alone. The scoring itself makes no network calls,
 // no LLM: every check here is a regex or a threshold, the same way
 // seoExtract.js and ogCheck.js score their own inputs. fetchPostText() below
 // is the one exception — it turns a public LinkedIn post URL into the same
@@ -16,7 +15,7 @@ const MAX_TEXT_LENGTH = 5000;
 const HOOK_TRUNCATE = 210; // LinkedIn's desktop "see more" cutoff, roughly
 
 const LINKEDIN_UA =
-  "Mozilla/5.0 (compatible; SokosumiPostChecker/1.0; +https://sokosumi.com/tools/social-post-checker)";
+  "Mozilla/5.0 (compatible; SokosumiPostChecker/1.0; +https://sokosumi.com/tools/linkedin-post-checker)";
 const LINKEDIN_PAGE_BYTES = 1.5 * 1024 * 1024;
 const LINKEDIN_TIMEOUT = 8000;
 
@@ -45,32 +44,9 @@ const CTA_PATTERNS = [
   /\?\s*$/,
 ];
 
-// General, widely observed B2B posting patterns — not personalized to any
-// one account's actual audience data. Surfaced honestly as a proxy, the same
-// way seoExtract.js labels its ai_readiness_score a proxy rather than a
-// measurement.
-const DAY_SCORE = { mon: 70, tue: 95, wed: 95, thu: 90, fri: 55, sat: 30, sun: 35 };
-const DAY_LABEL = { mon: "Monday", tue: "Tuesday", wed: "Wednesday", thu: "Thursday", fri: "Friday", sat: "Saturday", sun: "Sunday" };
-
-const TIME_SCORE = { "0-6": 20, "6-8": 65, "8-10": 95, "10-12": 80, "12-14": 75, "14-16": 65, "16-18": 55, "18-24": 35 };
-const TIME_LABEL = {
-  "0-6": "overnight (12–6am)",
-  "6-8": "early morning (6–8am)",
-  "8-10": "mid-morning (8–10am)",
-  "10-12": "late morning (10am–12pm)",
-  "12-14": "midday (12–2pm)",
-  "14-16": "afternoon (2–4pm)",
-  "16-18": "late afternoon (4–6pm)",
-  "18-24": "evening (6pm–12am)",
-};
-
-const DIMENSION_WEIGHT = { hook: 20, cta: 15, engagement: 25, readability: 15, specificity: 15, timing: 10 };
+const DIMENSION_WEIGHT = { hook: 20, cta: 15, engagement: 25, readability: 15, specificity: 15 };
 
 const CREDIBILITY_PATTERN = /\bwe (surveyed|analyzed|studied|tracked)\b|according to|data (shows|from)|\b\d+% of\b|\bcase study\b|\bcustomers? (told|said)\b/i;
-
-function band(score) {
-  return score >= 80 ? "pass" : score >= 50 ? "warn" : "error";
-}
 
 // ---------------------------------------------------------------------------
 // Dimension builders — each returns an array of { level, title, tag, detail,
@@ -229,29 +205,6 @@ function buildSpecificityChecks(text) {
   return checks;
 }
 
-function buildTimingChecks(day, timeBucket) {
-  if (!day && !timeBucket) return null;
-  const checks = [];
-  const add = (level, title, tag, detail, weight = 1) => checks.push({ level, title, tag, detail, weight });
-
-  if (day) {
-    const score = DAY_SCORE[day];
-    const level = band(score);
-    const title =
-      level === "pass" ? `${DAY_LABEL[day]} is a strong day to post` : level === "warn" ? `${DAY_LABEL[day]} is a middling day to post` : `${DAY_LABEL[day]} tends to underperform`;
-    add(level, title, "day", "Based on widely observed B2B posting patterns, not this account's own audience data — Tuesday through Thursday tends to outperform Friday and weekends.", 1);
-  }
-  if (timeBucket) {
-    const score = TIME_SCORE[timeBucket];
-    const level = band(score);
-    const label = TIME_LABEL[timeBucket];
-    const title = level === "pass" ? `${label} is a strong slot` : level === "warn" ? `${label} is a middling slot` : `${label} tends to underperform`;
-    add(level, title, "time", "General best practice, not adjusted for your audience's specific timezone or habits — mid-morning local time tends to catch people at the start of their scroll.", 1);
-  }
-
-  return checks;
-}
-
 // ---------------------------------------------------------------------------
 // Fetching a post's text from a public LinkedIn URL, for a post that's
 // already live. LinkedIn server-renders the full post body into a plain
@@ -373,9 +326,6 @@ function analyze(input) {
     throw error;
   }
 
-  const day = input && Object.prototype.hasOwnProperty.call(DAY_SCORE, input.day) ? input.day : null;
-  const timeBucket = input && Object.prototype.hasOwnProperty.call(TIME_SCORE, input.timeBucket) ? input.timeBucket : null;
-
   const dimensions = [
     { key: "hook", label: "Hook quality", checks: buildHookChecks(trimmed) },
     { key: "cta", label: "CTA clarity", checks: buildCtaChecks(trimmed) },
@@ -383,8 +333,6 @@ function analyze(input) {
     { key: "readability", label: "Readability", checks: buildReadabilityChecks(trimmed) },
     { key: "specificity", label: "Specificity & credibility", checks: buildSpecificityChecks(trimmed) },
   ];
-  const timingChecks = buildTimingChecks(day, timeBucket);
-  if (timingChecks) dimensions.push({ key: "timing", label: "Timing", checks: timingChecks });
 
   const scored = dimensions.map((d) => ({ ...d, score: scoreFromChecks(d.checks), weight: DIMENSION_WEIGHT[d.key] }));
   const totalWeight = scored.reduce((sum, d) => sum + d.weight, 0);
@@ -392,8 +340,6 @@ function analyze(input) {
 
   return {
     length: trimmed.length,
-    day,
-    timeBucket,
     overall,
     dimensions: scored.map(({ weight, ...rest }) => rest),
     recommendations: buildRecommendations(scored),

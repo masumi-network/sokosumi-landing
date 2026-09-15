@@ -80,7 +80,7 @@ const seoMdPreview = () => `
     </span>
   </span>`;
 
-// The Social post checker scores a LinkedIn-style post, so the preview is a
+// The LinkedIn post checker scores a LinkedIn post, so the preview is a
 // miniature of that post itself, the way the OG checker draws its card.
 const postCheckerPreview = () => `
   <span class="tp tp-psc">
@@ -219,7 +219,7 @@ const landingCopyPreview = () => `
   </span>`;
 
 // The X algorithm analyzer scores a short post, so the preview borrows the
-// social post checker's post mockup, sized like a single-line tweet.
+// LinkedIn post checker's post mockup, sized like a single-line tweet.
 const xAlgorithmPreview = () => `
   <span class="tp tp-psc">
     <span class="tp-post">
@@ -498,9 +498,9 @@ const TOOLS = [
     preview: seoMdPreview,
   },
   {
-    href: "/tools/social-post-checker",
-    name: "Social post checker",
-    text: "Score a post's hook, CTA, formatting and timing before you publish.",
+    href: "/tools/linkedin-post-checker",
+    name: "LinkedIn post checker",
+    text: "Score a post's hook, CTA and formatting before you publish.",
     meta: "Free · no sign-up",
     preview: postCheckerPreview,
   },

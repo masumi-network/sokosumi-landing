@@ -1,4 +1,4 @@
-/* /tools/social-post-checker — client.
+/* /tools/linkedin-post-checker — client.
  *
  * The server does all the scoring (and, in link mode, the fetch that turns a
  * LinkedIn URL into text); this file only renders what comes back, switches
@@ -17,8 +17,6 @@
   var urlInput = document.getElementById("pscUrl");
   var modeTextBtn = document.getElementById("pscModeText");
   var modeUrlBtn = document.getElementById("pscModeUrl");
-  var dayInput = document.getElementById("pscDay");
-  var timeInput = document.getElementById("pscTime");
   var submit = document.getElementById("pscSubmit");
   var errorBox = document.getElementById("pscError");
   var loading = document.getElementById("pscLoading");
@@ -82,7 +80,7 @@
   // A plain-text version of the report, for the copy button — same content
   // as the on-page cards, but readable pasted into a doc or a chat message.
   function reportText() {
-    var lines = ["Social post checker — " + data.overall + "/100 (" + bandLabel(data.overall) + ")", ""];
+    var lines = ["LinkedIn post checker — " + data.overall + "/100 (" + bandLabel(data.overall) + ")", ""];
     data.dimensions.forEach(function (d) {
       lines.push(d.label + ": " + d.score + "/100");
       d.checks.forEach(function (c) {
@@ -173,7 +171,7 @@
     result.hidden = false;
   }
 
-  function run(payload, day, timeBucket) {
+  function run(payload) {
     var isUrl = mode === "url";
     var value = payload;
     if (!value || !String(value).trim()) return;
@@ -182,13 +180,11 @@
     } else {
       textInput.value = value;
     }
-    if (day != null) dayInput.value = day;
-    if (timeBucket != null) timeInput.value = timeBucket;
     errorBox.hidden = true;
     result.hidden = true;
     setBusy(true);
 
-    var body = { day: dayInput.value || undefined, timeBucket: timeInput.value || undefined };
+    var body = {};
     if (isUrl) {
       body.url = value;
     } else {
@@ -222,7 +218,7 @@
 
   form.addEventListener("submit", function (event) {
     event.preventDefault();
-    run(mode === "url" ? urlInput.value : textInput.value, dayInput.value, timeInput.value);
+    run(mode === "url" ? urlInput.value : textInput.value);
   });
 
   modeTextBtn.addEventListener("click", function () {
@@ -261,6 +257,6 @@
     var example = EXAMPLES[button.getAttribute("data-try")];
     if (!example) return;
     setMode("text");
-    run(example.text, "", "");
+    run(example.text);
   });
 })();

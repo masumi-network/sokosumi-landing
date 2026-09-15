@@ -1,4 +1,4 @@
-/* /tools/social-post-checker — same language as the other tools: a workbench
+/* /tools/linkedin-post-checker — same language as the other tools: a workbench
  * above the fold, hairline borders, one accent, Inter Light for headings. No
  * platform-imitation cards here (unlike og-checker) — this tool never fetches
  * anything, so the result surface is just the checks.
@@ -123,51 +123,16 @@
   outline-offset: -1px;
 }
 
-.psc-timing-row {
+.psc-actions {
   display: flex;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  gap: 12px;
+  justify-content: flex-end;
   margin-top: 12px;
-}
-
-.psc-field {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  min-width: 160px;
-}
-
-.psc-field label {
-  color: var(--muted-foreground);
-  font-size: 12.5px;
-}
-
-.psc-field label span {
-  opacity: 0.75;
-}
-
-.psc-field select {
-  height: 40px;
-  padding: 0 10px;
-  border: 1px solid var(--border);
-  border-radius: var(--r-md);
-  background: var(--background);
-  color: var(--foreground);
-  font: inherit;
-  font-size: 14px;
-}
-
-.psc-field select:focus {
-  outline: 2px solid var(--primary);
-  outline-offset: -1px;
 }
 
 .psc-submit {
   flex-shrink: 0;
   height: 44px;
   padding: 0 22px;
-  margin-left: auto;
   border: 0;
   border-radius: var(--r-md);
   background: var(--primary);
@@ -540,12 +505,10 @@
 }
 
 @media (max-width: 620px) {
-  .psc-timing-row {
-    flex-direction: column;
+  .psc-actions {
     align-items: stretch;
   }
   .psc-submit {
-    margin-left: 0;
     width: 100%;
   }
   .psc-check {
