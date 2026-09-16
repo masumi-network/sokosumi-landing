@@ -35,6 +35,9 @@
     },
     examples: {
       sokosumi: "https://sokosumi.com",
+      stripe: "https://stripe.com",
+      vercel: "https://vercel.com",
+      notion: "https://notion.so",
     },
   });
 })();
