@@ -112,27 +112,6 @@ const imageAuditPreview = () => `
     </span>
   </span>`;
 
-// The image compressor's whole point is a smaller file, so the preview is a
-// literal before/after size bar rather than a text readout of the same fact.
-const imageCompressorPreview = () => `
-  <span class="tp tp-ic">
-    <span class="tp-bars">
-      <span class="tp-bar">
-        <span class="tp-bar-label">Before</span>
-        <span class="tp-bar-track"><i style="width:100%"></i></span>
-        <span class="tp-bar-size">4.8 MB</span>
-      </span>
-      <span class="tp-bar is-after">
-        <span class="tp-bar-label">After</span>
-        <span class="tp-bar-track"><i style="width:15%"></i></span>
-        <span class="tp-bar-size">720 KB</span>
-      </span>
-    </span>
-    <span class="tp-verdict">
-      <span class="tp-chip is-pass">85% smaller</span>
-    </span>
-  </span>`;
-
 // The UTM builder appends query params to a URL, so the preview is the
 // address bar itself with the tagged part picked out in the accent color.
 const utmBuilderPreview = () => `
@@ -503,13 +482,6 @@ const TOOLS = [
     text: "Score a post's hook, CTA and formatting before you publish.",
     meta: "Free · no sign-up",
     preview: postCheckerPreview,
-  },
-  {
-    href: "/tools/image-compressor",
-    name: "Image Compressor",
-    text: "Shrink a JPEG, PNG, WebP or AVIF, with a real before/after size comparison.",
-    meta: "Free · no sign-up",
-    preview: imageCompressorPreview,
   },
   {
     href: "/tools/image-audit",

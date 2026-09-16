@@ -49,8 +49,6 @@ const postCheckerTpl = require("./templates/postChecker");
 const postCheck = require("./lib/postCheck");
 const imageAuditTpl = require("./templates/imageAudit");
 const imageAudit = require("./lib/imageAudit");
-const imageCompressorTpl = require("./templates/imageCompressor");
-const imageCompress = require("./lib/imageCompress");
 const utmBuilderTpl = require("./templates/utmBuilder");
 const robotsGeneratorTpl = require("./templates/robotsGenerator");
 const headlineCheckerTpl = require("./templates/headlineChecker");
@@ -135,16 +133,11 @@ const postCheckRequests = new Map();
 // is the lowest of any of them.
 const IMAGE_AUDIT_RATE_LIMIT = Number(process.env.IMAGE_AUDIT_RATE_LIMIT) || 6;
 const imageAuditRequests = new Map();
-// Each run re-encodes an image in-process — costlier than text scoring, so a
-// lower ceiling, but no page fetch involved so still higher than the audit.
-const IMAGE_COMPRESS_RATE_LIMIT = Number(process.env.IMAGE_COMPRESS_RATE_LIMIT) || 20;
-const imageCompressRequests = new Map();
 // Pure in-process text scoring, no fetch — same cost profile as the other
 // text checkers, so the same generous ceiling.
 const HEADLINE_CHECK_RATE_LIMIT = Number(process.env.HEADLINE_CHECK_RATE_LIMIT) || 40;
 const headlineCheckRequests = new Map();
-// Cheap, in-process image encoding, no fetch — generous ceiling, same as the
-// image compressor.
+// Cheap, in-process image encoding, no fetch — generous ceiling.
 const QR_CODE_RATE_LIMIT = Number(process.env.QR_CODE_RATE_LIMIT) || 40;
 const qrCodeRequests = new Map();
 // Pure in-process text scoring, no fetch — same ceiling as the headline checker.
@@ -288,7 +281,6 @@ const ogCheckRateLimited = (ip) => hourlyRateLimited(ogCheckRequests, OG_CHECK_R
 const llmsCheckRateLimited = (ip) => hourlyRateLimited(llmsCheckRequests, LLMS_CHECK_RATE_LIMIT, ip);
 const postCheckRateLimited = (ip) => hourlyRateLimited(postCheckRequests, POST_CHECK_RATE_LIMIT, ip);
 const imageAuditRateLimited = (ip) => hourlyRateLimited(imageAuditRequests, IMAGE_AUDIT_RATE_LIMIT, ip);
-const imageCompressRateLimited = (ip) => hourlyRateLimited(imageCompressRequests, IMAGE_COMPRESS_RATE_LIMIT, ip);
 const headlineCheckRateLimited = (ip) => hourlyRateLimited(headlineCheckRequests, HEADLINE_CHECK_RATE_LIMIT, ip);
 const qrCodeRateLimited = (ip) => hourlyRateLimited(qrCodeRequests, QR_CODE_RATE_LIMIT, ip);
 const landingCopyCheckRateLimited = (ip) => hourlyRateLimited(landingCopyCheckRequests, LANDING_COPY_CHECK_RATE_LIMIT, ip);
@@ -783,7 +775,6 @@ const routes = [
   // renamed from /tools/social-post-checker — 301 so old links and the indexed footprint carry over
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "social-post-checker" && {}, h: () => ({ redirect: "/tools/linkedin-post-checker" }) },
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "image-audit" && {}, h: imageAuditTpl.render },
-  { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "image-compressor" && {}, h: imageCompressorTpl.render },
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "utm-builder" && {}, h: utmBuilderTpl.render },
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "robots-txt-generator" && {}, h: robotsGeneratorTpl.render },
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "headline-analyzer" && {}, h: headlineCheckerTpl.render },
@@ -1390,49 +1381,6 @@ const assetsDir = path.join(root, "assets");
           } catch (error) {
             const status = error.status && error.status >= 400 && error.status < 600 ? error.status : 502;
             return send(req, res, status, jsonHead, JSON.stringify({ error: error.message || "That site could not be audited. Try again." }));
-          }
-        }
-
-        if (urlPath === "/api/image-compress" && req.method === "POST") {
-          const jsonHead = { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" };
-          const contentType = String(req.headers["content-type"] || "").split(";")[0].trim().toLowerCase();
-          if (!imageCompress.ALLOWED_INPUT.has(contentType)) {
-            return send(req, res, 400, jsonHead, JSON.stringify({ error: "Upload a JPEG, PNG, WebP, AVIF or GIF image." }));
-          }
-          if (imageCompressRateLimited(clientIp(req))) {
-            return send(req, res, 429, { ...jsonHead, "Retry-After": "3600" }, JSON.stringify({ error: "You have reached the hourly limit. Try again later." }));
-          }
-          let buffer;
-          try {
-            buffer = await readRawBody(req, imageCompress.MAX_INPUT_BYTES);
-          } catch (error) {
-            const message = error.message === "too-large" ? "That image is larger than 15MB." : "Could not read the upload.";
-            return send(req, res, 400, jsonHead, JSON.stringify({ error: message }));
-          }
-          if (!buffer.length) {
-            return send(req, res, 400, jsonHead, JSON.stringify({ error: "The upload was empty." }));
-          }
-          const query = new URL(req.url, "http://x").searchParams;
-          try {
-            const result = await imageCompress.compress(buffer, { format: query.get("format"), quality: query.get("quality") });
-            return send(
-              req,
-              res,
-              200,
-              {
-                "Content-Type": result.mime,
-                "Cache-Control": "no-store",
-                "X-Input-Bytes": String(result.inputBytes),
-                "X-Output-Bytes": String(result.outputBytes),
-                "X-Input-Format": result.inputFormat || "",
-                "X-Output-Format": result.outputFormat,
-                "X-Image-Width": String(result.width || ""),
-                "X-Image-Height": String(result.height || ""),
-              },
-              result.buffer,
-            );
-          } catch (error) {
-            return send(req, res, 422, jsonHead, JSON.stringify({ error: "That file could not be read as an image." }));
           }
         }
 

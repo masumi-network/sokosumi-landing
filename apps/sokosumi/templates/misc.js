@@ -123,7 +123,6 @@ Humans sign up at https://app.sokosumi.com/signup (free plan, no card).
 - [Website Analyzer](https://www.sokosumi.com/tools/website-analyzer): score a public URL's on-page SEO signals and generate an SEO.md specification for AI agents; free, no sign-up
 - [LinkedIn post checker](https://www.sokosumi.com/tools/linkedin-post-checker): score a pasted LinkedIn post, or a link to one already live, on hook, CTA and formatting; free, no sign-up
 - [Image audit](https://www.sokosumi.com/tools/image-audit): crawl a site and list every image missing alt text or still served as legacy JPEG/PNG/GIF; free, no sign-up
-- [Image Compressor](https://www.sokosumi.com/tools/image-compressor): re-encode a JPEG, PNG, WebP, AVIF or GIF to a smaller file with a before/after size comparison; free, no sign-up
 - [UTM / Campaign URL Builder](https://www.sokosumi.com/tools/utm-builder): build a UTM-tagged campaign link entirely client-side; free, no sign-up
 - [Headline Analyzer](https://www.sokosumi.com/tools/headline-analyzer): score a headline or ad line on length, emotional pull, specificity and clarity; free, no sign-up
 - [QR Code Generator](https://www.sokosumi.com/tools/qr-code-generator): turn any URL or text into a scannable PNG or SVG QR code; free, no sign-up
@@ -226,7 +225,6 @@ async function sitemap() {
     "/tools/website-analyzer",
     "/tools/linkedin-post-checker",
     "/tools/image-audit",
-    "/tools/image-compressor",
     "/tools/utm-builder",
     "/tools/headline-analyzer",
     "/tools/qr-code-generator",
