@@ -10,7 +10,7 @@
 // tools points our server at a URL a stranger typed, so none of them get to
 // skip the SSRF guard.
 
-const { safeFetch, readCapped, fetchErrorMessage } = require("./safeFetch");
+const { safeFetch, readCapped, fetchErrorMessage, normalizeUrl } = require("./safeFetch");
 
 const UA = "Mozilla/5.0 (compatible; SokosumiToolsBot/1.0; +https://sokosumi.com/tools)";
 
@@ -247,4 +247,5 @@ module.exports = {
   extractH2Sections,
   collectDateMeta,
   fetchPage,
+  normalizeUrl,
 };

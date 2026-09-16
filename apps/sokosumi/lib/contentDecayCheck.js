@@ -8,7 +8,7 @@
 // "thin" is relative to the other URLs in this same batch, not an absolute
 // rule.
 
-const { fetchPage, collectTitle, collectJsonLd, visibleText, wordCount, collectDateMeta } = require("./htmlExtract");
+const { fetchPage, collectTitle, collectJsonLd, visibleText, wordCount, collectDateMeta , normalizeUrl } = require("./htmlExtract");
 
 const MAX_URLS = 20;
 const DAY_MS = 24 * 60 * 60 * 1000;
@@ -46,7 +46,7 @@ function analyzePages(pages) {
 
 async function analyze(input) {
   const rawUrls = Array.isArray(input && input.urls) ? input.urls : [];
-  const urls = rawUrls.map((u) => String(u || "").trim()).filter(Boolean);
+  const urls = rawUrls.map((u) => normalizeUrl(u)).filter(Boolean);
 
   if (!urls.length) {
     const error = new Error("Paste at least one content URL to check.");

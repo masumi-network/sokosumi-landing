@@ -11,7 +11,7 @@
 // lib/llmsCheck.js. Client-side-rendered images that only appear after JS
 // runs will not be counted.
 
-const { publicUrl, safeFetch, readCapped, fetchErrorMessage } = require("./safeFetch");
+const { publicUrl, safeFetch, readCapped, fetchErrorMessage, normalizeUrl } = require("./safeFetch");
 
 const UA =
   "Mozilla/5.0 (compatible; SokosumiImageAudit/1.0; +https://sokosumi.com/tools/image-audit)";
@@ -662,6 +662,7 @@ function originFor(raw) {
 }
 
 async function analyze(rawUrl) {
+  rawUrl = normalizeUrl(rawUrl);
   const origin = originFor(rawUrl);
   if (!origin) {
     const error = new Error("Enter a public website URL, like example.com.");

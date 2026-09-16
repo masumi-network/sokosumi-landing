@@ -13,7 +13,7 @@ const FAQ = [
   {
     question: "So what does it actually check?",
     answer:
-      "Three things this tool CAN see: whether your own robots.txt blocks the crawlers that feed these engines (GPTBot, ClaudeBot, PerplexityBot, Google-Extended and others), whether your homepage gives an engine a clean brand signal to work with (title, Organization schema with sameAs links, a meta description), and whether you have a sitemap.xml and llms.txt for discovery. It's a readiness proxy, not a visibility measurement.",
+      "Three groups of signals this tool CAN see. AI crawler access: whether your robots.txt blocks the crawlers that feed these engines (GPTBot, ClaudeBot, PerplexityBot, Google-Extended and others), whether it blocks all crawlers site-wide, and whether the homepage is set to noindex. Brand disambiguation: whether the homepage gives an engine a clean brand signal — title, a single H1, meta description, canonical URL, Organization and WebSite schema, sameAs links, and a declared logo. Discoverability: a sitemap.xml, a Sitemap: line in robots.txt, llms.txt and llms-full.txt, and HTTPS. It's a readiness proxy, not a visibility measurement.",
   },
   {
     question: "Why does it check for llms.txt?",
@@ -80,6 +80,9 @@ function render() {
       <div class="tk-try">
         <span>Try</span>
         <button type="button" data-try="sokosumi">sokosumi.com</button>
+        <button type="button" data-try="stripe">stripe.com</button>
+        <button type="button" data-try="notion">notion.so</button>
+        <button type="button" data-try="vercel">vercel.com</button>
       </div>
 
       <p class="tk-error" id="asvError" role="alert" hidden></p>
@@ -96,15 +99,27 @@ function render() {
         <div class="tk-scores" id="asvScores" role="group" aria-label="Filter checks"></div>
         <button class="tk-copy" id="asvCopy" type="button">Copy report</button>
       </div>
-      <div class="tk-dims" id="asvDims" data-filter=""></div>
+      <div class="tk-dims tk-dims-balanced tk-dims-notag" id="asvDims" data-filter=""></div>
     </section>
 
     <section class="tk-section" aria-labelledby="asv-how">
       <h2 id="asv-how">What gets checked</h2>
-      <div class="tk-cards">
-        <div class="tk-card"><h3>AI crawler access</h3><p>Whether robots.txt blocks GPTBot, ClaudeBot, PerplexityBot, Google-Extended and other known AI crawlers.</p></div>
-        <div class="tk-card"><h3>Brand disambiguation</h3><p>Title, meta description, and Organization schema with sameAs links.</p></div>
-        <div class="tk-card"><h3>Discoverability</h3><p>A sitemap.xml and an llms.txt at your site root.</p></div>
+      <div class="tk-cards tk-cards-features">
+        <div class="tk-card">
+          <span class="tk-card-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg></span>
+          <h3>AI crawler access</h3>
+          <p>Whether robots.txt blocks GPTBot, ClaudeBot, PerplexityBot, Google-Extended and other known AI crawlers.</p>
+        </div>
+        <div class="tk-card">
+          <span class="tk-card-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><path d="m9 12 2 2 4-4"/></svg></span>
+          <h3>Brand disambiguation</h3>
+          <p>Title, meta description, and Organization schema with sameAs links.</p>
+        </div>
+        <div class="tk-card">
+          <span class="tk-card-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg></span>
+          <h3>Discoverability</h3>
+          <p>A sitemap.xml and an llms.txt at your site root.</p>
+        </div>
       </div>
     </section>
 

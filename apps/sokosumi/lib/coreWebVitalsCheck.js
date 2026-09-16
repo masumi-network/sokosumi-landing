@@ -4,11 +4,14 @@
 // This has no headless browser and no access to real field data (CrUX) or
 // lab data (Lighthouse) — both would need infrastructure this free tool
 // doesn't have. Instead it reads structural signals from the fetched HTML
-// document itself that are well-documented drivers of LCP, CLS and INP, and
-// translates them into plain English. Stated as a proxy, not a measurement,
-// the same honesty pattern seoExtract.js uses for its own ai_readiness_score.
+// document itself that are well-documented drivers of LCP, CLS and INP —
+// document weight, render-blocking CSS, resource hints, a lazy hero image,
+// image/iframe dimensions, viewport, font-display, script count, parser-
+// blocking and third-party scripts — and translates them into plain English.
+// Stated as a proxy, not a measurement, the same honesty pattern seoExtract.js
+// uses for its own ai_readiness_score.
 
-const { fetchPage, collectTitle } = require("./htmlExtract");
+const { fetchPage, collectTitle , normalizeUrl } = require("./htmlExtract");
 
 const DIMENSION_WEIGHT = { lcp: 34, cls: 33, inp: 33 };
 
@@ -51,8 +54,51 @@ function imageDimensionStats(html) {
   return { total: imgs.length, missing: missing.length };
 }
 
+function hasResourceHints(html) {
+  return /<link\b[^>]*\brel\s*=\s*["'](?:preconnect|preload|dns-prefetch)["']/i.test(html);
+}
+
+// A lazy-loaded first image is a common LCP mistake — if it's the hero, the
+// browser holds off fetching the largest paint.
+function firstImageLazy(html) {
+  const m = /<img\b[^>]*>/i.exec(html);
+  return m ? /\bloading\s*=\s*["']lazy["']/i.test(m[0]) : false;
+}
+
+function iframeStats(html) {
+  const frames = html.match(/<iframe\b[^>]*>/gi) || [];
+  const missing = frames.filter((tag) => !/\bwidth\s*=/.test(tag) || !/\bheight\s*=/.test(tag));
+  return { total: frames.length, missing: missing.length };
+}
+
+// External <script src> tags: how many, how many are cross-origin, and how many
+// use async/defer/module (so the rest run render/parse-blocking).
+function scriptSrcInfo(html, origin) {
+  const host = (() => {
+    try {
+      return new URL(origin).hostname;
+    } catch (_e) {
+      return "";
+    }
+  })();
+  const tags = html.match(/<script\b[^>]*\bsrc\s*=\s*["'][^"']+["'][^>]*>/gi) || [];
+  let thirdParty = 0;
+  let deferred = 0;
+  tags.forEach((tag) => {
+    const m = /\bsrc\s*=\s*["']([^"']+)["']/i.exec(tag);
+    try {
+      const u = new URL(m[1], origin);
+      if (u.hostname && host && u.hostname !== host) thirdParty += 1;
+    } catch (_e) {
+      /* skip unparseable src */
+    }
+    if (/\basync\b|\bdefer\b|type\s*=\s*["']module["']/i.test(tag)) deferred += 1;
+  });
+  return { external: tags.length, thirdParty, deferred };
+}
+
 async function analyze(input) {
-  const url = String((input && input.url) || "").trim();
+  const url = normalizeUrl((input && input.url) || "");
   if (!url) {
     const error = new Error("Enter the URL you want explained.");
     error.status = 400;
@@ -75,6 +121,10 @@ async function analyze(input) {
   else addLcp("error", "HTML document is heavy", "lcp", `${weightKb} KB of markup, before a single image or script loads — this alone delays first paint.`, 2);
   if (stylesheetCount <= 2) addLcp("pass", "Few render-blocking stylesheets", "lcp", `${stylesheetCount} blocking <link rel="stylesheet"> tag(s).`, 2);
   else addLcp("warn", "Several render-blocking stylesheets", "lcp", `${stylesheetCount} blocking stylesheet(s) — each one delays first paint until it downloads.`, 2);
+  if (hasResourceHints(html)) addLcp("pass", "Uses resource hints", "lcp", "Found preconnect/preload/dns-prefetch hints — these warm up connections to the origins your key assets load from.", 1);
+  else addLcp("warn", "No resource hints", "lcp", "No preconnect, preload, or dns-prefetch hints — adding them for your font and CDN origins can shave time off the largest paint.", 1);
+  if (images.total > 0 && firstImageLazy(html)) addLcp("warn", "First image is lazy-loaded", "lcp", 'The first <img> has loading="lazy" — if that\'s your hero image, lazy-loading delays the largest paint. Only lazy-load below-the-fold images.', 1);
+  else addLcp("pass", "Hero image not lazy-loaded", "lcp", "The first image isn't marked loading=lazy, so the browser can start fetching it right away.", 1);
 
   const clsChecks = [];
   const addCls = (level, t, tag, detail, weight = 1) => clsChecks.push({ level, title: t, tag, detail, weight });
@@ -88,6 +138,12 @@ async function analyze(input) {
   }
   if (hasViewport) addCls("pass", "Has a viewport meta tag", "cls", "Mobile browsers won't apply a desktop-width layout and then rescale.", 1);
   else addCls("error", "No viewport meta tag", "cls", "Without one, mobile browsers render a desktop-width layout and zoom out — a common source of layout jank.", 1);
+  if (/font-display\s*:/i.test(html)) addCls("pass", "Declares font-display", "cls", "A font-display value is set — the browser can show text right away and swap the web font in without a reflow.", 1);
+  else addCls("warn", "No font-display found", "cls", "No font-display declaration detected — a custom font can flash and shift the layout when it finishes loading. font-display: swap avoids the reflow.", 1);
+  const frames = iframeStats(html);
+  if (frames.total === 0) addCls("pass", "No iframes to check", "cls", "No <iframe> embeds that could shift the layout as they load.", 1);
+  else if (frames.missing === 0) addCls("pass", "Iframes have explicit dimensions", "cls", `All ${frames.total} iframe(s) declare width and height.`, 1);
+  else addCls("warn", "Iframes missing dimensions", "cls", `${frames.missing} of ${frames.total} iframe(s) have no width/height — embeds (video, maps, ads) shift the layout as they load unless space is reserved.`, 1);
 
   const inpChecks = [];
   const addInp = (level, t, tag, detail, weight = 1) => inpChecks.push({ level, title: t, tag, detail, weight });
@@ -96,6 +152,17 @@ async function analyze(input) {
   else addInp("error", "Very script-heavy page", "inp", `${totalScripts} <script> tags — a lot of JavaScript competing for the main thread before the page responds to input.`, 2);
   if (renderBlockingScripts === 0) addInp("pass", "No parser-blocking scripts in <head>", "inp", "Scripts in the head are async, deferred, or modules.", 2);
   else addInp(renderBlockingScripts > 3 ? "error" : "warn", "Parser-blocking scripts in <head>", "inp", `${renderBlockingScripts} script(s) in <head> without async/defer — these block HTML parsing and delay interactivity.`, 2);
+  const scriptInfo = scriptSrcInfo(html, new URL(finalUrl).origin);
+  if (scriptInfo.thirdParty <= 4) addInp("pass", "Few third-party scripts", "inp", `${scriptInfo.thirdParty} script(s) load from a third-party origin.`, 1);
+  else if (scriptInfo.thirdParty <= 8) addInp("warn", "Several third-party scripts", "inp", `${scriptInfo.thirdParty} third-party scripts — analytics, chat and ad tags each run on the main thread and can delay the response to input.`, 1);
+  else addInp("error", "Many third-party scripts", "inp", `${scriptInfo.thirdParty} third-party scripts — a heavy load of external tags competing for the main thread is a common INP culprit.`, 1);
+  if (scriptInfo.external === 0) {
+    addInp("pass", "No external scripts", "inp", "No external <script src> tags to block the main thread.", 1);
+  } else {
+    const blocking = scriptInfo.external - scriptInfo.deferred;
+    if (blocking === 0) addInp("pass", "External scripts are async or deferred", "inp", `All ${scriptInfo.external} external script(s) use async, defer, or type=module.`, 1);
+    else addInp(blocking > 3 ? "error" : "warn", "Some external scripts block", "inp", `${blocking} of ${scriptInfo.external} external script(s) load without async/defer — they run before the page can respond to input.`, 1);
+  }
 
   const dimensions = [
     { key: "lcp", label: "Largest Contentful Paint (proxy)", checks: lcpChecks },

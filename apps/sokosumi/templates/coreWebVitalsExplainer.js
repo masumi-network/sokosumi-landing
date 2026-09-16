@@ -8,7 +8,7 @@ const FAQ = [
   {
     question: "Is this real Core Web Vitals data?",
     answer:
-      "No. Real Core Web Vitals come from Chrome's field data (CrUX) or a lab tool like Lighthouse running an actual browser — this tool has neither. It fetches the page's HTML document and reads structural signals well-documented to affect LCP, CLS and INP: document weight, render-blocking stylesheets and scripts, images missing explicit dimensions, and a viewport tag. Treat it as a plain-English proxy, not a report card.",
+      "No. Real Core Web Vitals come from Chrome's field data (CrUX) or a lab tool like Lighthouse running an actual browser — this tool has neither. It fetches the page's HTML document and reads structural signals well-documented to affect LCP, CLS and INP: document weight, render-blocking CSS, resource hints, a lazy-loaded hero image, images and iframes missing explicit dimensions, the viewport tag, font-display, total and parser-blocking scripts, and third-party tags. Treat it as a plain-English proxy, not a report card.",
   },
   {
     question: "Why doesn't it measure image or font download time?",
@@ -95,15 +95,28 @@ function render() {
         <div class="tk-scores" id="cwvScores" role="group" aria-label="Filter checks"></div>
         <button class="tk-copy" id="cwvCopy" type="button">Copy report</button>
       </div>
-      <div class="tk-dims" id="cwvDims" data-filter=""></div>
+      <div class="tk-dims tk-dims-balanced tk-dims-notag" id="cwvDims" data-filter=""></div>
     </section>
 
     <section class="tk-section" aria-labelledby="cwv-how">
       <h2 id="cwv-how">What gets checked</h2>
-      <div class="tk-cards">
-        <div class="tk-card"><h3>LCP (proxy)</h3><p>Document weight and render-blocking stylesheets — both delay first paint.</p></div>
-        <div class="tk-card"><h3>CLS (proxy)</h3><p>Images missing explicit dimensions and a missing viewport tag — both cause layout jank.</p></div>
-        <div class="tk-card"><h3>INP (proxy)</h3><p>Total script count and parser-blocking scripts in the head — both compete for the main thread.</p></div>
+      <p class="tk-sub">Three vitals, each read from structural signals in the page's HTML.</p>
+      <div class="tk-cards tk-cards-features">
+        <div class="tk-card">
+          <span class="tk-card-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m13 2-3 7h5l-3 7"/><path d="M4 14a8 8 0 0 0 14 5"/><path d="M20 10a8 8 0 0 0-14-5"/></svg></span>
+          <h3>LCP (proxy)</h3>
+          <p>Document weight, render-blocking CSS, resource hints, and whether the hero image is lazy-loaded — what delays first paint.</p>
+        </div>
+        <div class="tk-card">
+          <span class="tk-card-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg></span>
+          <h3>CLS (proxy)</h3>
+          <p>Images and iframes missing dimensions, a missing viewport tag, and no font-display — what makes the layout jump.</p>
+        </div>
+        <div class="tk-card">
+          <span class="tk-card-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H5a2 2 0 0 0-2 2v4"/><path d="M15 3h4a2 2 0 0 1 2 2v4"/><path d="M9 21H5a2 2 0 0 1-2-2v-4"/><path d="M15 21h4a2 2 0 0 0 2-2v-4"/><path d="m9 9 3 3-3 3"/></svg></span>
+          <h3>INP (proxy)</h3>
+          <p>Total scripts, parser-blocking scripts in the head, and third-party tags — what competes for the main thread.</p>
+        </div>
       </div>
     </section>
 

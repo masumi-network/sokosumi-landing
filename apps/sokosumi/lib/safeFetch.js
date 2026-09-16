@@ -72,6 +72,16 @@ function publicUrl(value) {
   return parsed.href;
 }
 
+// Default a bare domain ("example.com") to https:// so a visitor doesn't have
+// to type the scheme. Empty input and already-schemed URLs pass through
+// untouched. Callers should run this on the raw user input before they either
+// fetch it or parse it with `new URL()`.
+function normalizeUrl(value) {
+  const v = String(value || "").trim();
+  if (!v) return v;
+  return /^https?:\/\//i.test(v) ? v : "https://" + v;
+}
+
 // "ok" | "blocked" | "dns" — the caller needs to tell "this host does not
 // exist" from "this host resolves somewhere we refuse to connect to", because
 // those are very different messages to put in front of a user.
@@ -161,4 +171,4 @@ function fetchErrorMessage(error) {
   return "We could not reach that URL. It may be blocking automated requests.";
 }
 
-module.exports = { publicUrl, safeFetch, readCapped, fetchErrorMessage, privateAddress };
+module.exports = { publicUrl, safeFetch, readCapped, fetchErrorMessage, privateAddress, normalizeUrl };

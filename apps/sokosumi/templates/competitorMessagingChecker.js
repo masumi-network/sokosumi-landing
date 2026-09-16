@@ -10,8 +10,8 @@ const FAQ = [
     answer: "Between 2 and 5. Paste one URL per line.",
   },
   {
-    question: "What does \"tone\" mean here?",
-    answer: "A contraction-rate-based label (Casual, Neutral, or Formal), plus average sentence length and how many well-known copywriting \"power words\" (free, proven, guaranteed…) show up. It's a proxy built from word counts, not a subjective read.",
+    question: "What gets compared?",
+    answer: "For each site: its headline (the H1), tone (a contraction-rate label — Casual, Neutral, or Formal), average sentence length, customer focus (how often it says \"you\" vs \"we\"), power-word density (free, proven, guaranteed…) per 100 words, and specificity (how often it reaches for a concrete number). Every signal is a proxy built from word counts, not a subjective read.",
   },
   {
     question: "What are \"shared themes\" vs \"unique vocabulary\"?",
@@ -37,7 +37,7 @@ function render() {
     applicationCategory: "DeveloperApplication",
     operatingSystem: "Web",
     url: `${SITE}${PATH}`,
-    description: "A free tool that compares 2-5 competitor URLs' tone, sentence length, and recurring vocabulary — shared themes and each site's unique angle.",
+    description: "A free tool that compares 2-5 competitor URLs' headlines, tone, customer focus, power-word density, specificity and recurring vocabulary — shared themes and each site's unique angle.",
     offers: { "@type": "Offer", price: "0", priceCurrency: "EUR" },
     creator: { "@id": `${SITE}/#organization` },
   };
@@ -67,7 +67,7 @@ function render() {
     `<section class="tk-head" id="analyzer">
       <p class="tk-overline">Free · no sign-up</p>
       <h1>Competitor Messaging Comparison</h1>
-      <p class="tk-lede">Paste 2-5 competitor URLs, one per line, and see how their tone, sentence length and vocabulary compare — the themes the whole category shares, and the angle each one is taking alone.</p>
+      <p class="tk-lede">Paste 2-5 competitor URLs, one per line, and see how their messaging compares — each site's headline, tone, customer focus, power-word density and specificity, plus the themes the whole category shares and the angle each one takes alone.</p>
 
       <form class="tk-form is-stacked" id="cmcForm" novalidate>
         <label class="sr-only" for="cmcUrls">URLs, one per line</label>
@@ -85,8 +85,12 @@ function render() {
 
     <section class="tk-result" id="cmcResult" aria-label="Results" hidden>
       <div class="tk-output">
-        <div class="tk-output-head"><h2>Tone and sentence style</h2></div>
-        <div id="cmcTable"></div>
+        <div class="tk-output-head"><h2>Positioning at a glance</h2></div>
+        <div class="cmc-sites" id="cmcSites"></div>
+      </div>
+      <div class="tk-output">
+        <div class="tk-output-head"><h2>How their messaging compares</h2></div>
+        <div class="cmc-metrics" id="cmcMetrics"></div>
       </div>
       <div class="tk-output">
         <div class="tk-output-head"><h2>Shared themes</h2></div>

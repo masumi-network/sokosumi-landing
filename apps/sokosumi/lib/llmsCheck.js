@@ -17,7 +17,7 @@
 // an agent away with nothing, and the site owner never finds out because
 // nothing in their stack ever fetches it.
 
-const { publicUrl, safeFetch, readCapped, fetchErrorMessage } = require("./safeFetch");
+const { publicUrl, safeFetch, readCapped, fetchErrorMessage, normalizeUrl } = require("./safeFetch");
 
 const UA =
   "Mozilla/5.0 (compatible; SokosumiLLMsTxt/1.0; +https://www.sokosumi.com/tools/llms-txt)";
@@ -332,6 +332,7 @@ async function fetchText(url, timeout) {
 }
 
 async function inspect(rawUrl) {
+  rawUrl = normalizeUrl(rawUrl);
   const target = llmsUrlFor(rawUrl);
   if (!target) {
     const error = new Error("Enter a site, like example.com — we will look for its /llms.txt");

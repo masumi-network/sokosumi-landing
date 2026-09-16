@@ -7,7 +7,7 @@
 // itself, is flagged as an orphan: reachable only through the sitemap, not
 // through the site's own navigation.
 
-const { fetchPage, collectLinks } = require("./htmlExtract");
+const { fetchPage, collectLinks , normalizeUrl } = require("./htmlExtract");
 const { discoverPages } = require("./siteCrawl");
 
 const MAX_PAGES = 20;
@@ -17,7 +17,7 @@ function normalize(url) {
 }
 
 async function analyze(input) {
-  const url = String((input && input.url) || "").trim();
+  const url = normalizeUrl((input && input.url) || "");
   if (!url) {
     const error = new Error("Enter the site URL you want checked.");
     error.status = 400;

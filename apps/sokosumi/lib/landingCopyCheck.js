@@ -1,12 +1,13 @@
 "use strict";
 
 // Deterministic landing-page-copy scorer for /tools/landing-page-copy-analyzer.
-// Given pasted landing page copy, this scores four dimensions — clarity,
-// benefit focus, specificity, and CTA strength — from static rules against
-// the text alone, the same approach headlineCheck.js and postCheck.js use.
-// No network call, no LLM.
+// Given a landing page URL, fetches it (through lib/safeFetch.js) and scores
+// the page's visible copy on four dimensions — clarity, benefit focus,
+// specificity, and CTA strength — from static rules against the text alone,
+// the same tolerant-regex approach headlineCheck.js and postCheck.js use.
 
-const MAX_TEXT_LENGTH = 6000;
+const { fetchPage, visibleText, collectTitle, normalizeUrl } = require("./htmlExtract");
+const { fetchErrorMessage } = require("./safeFetch");
 
 const JARGON = /\b(synergy|synergies|leverage|leveraging|paradigm|holistic|ecosystem|seamlessly|seamless|robust|turnkey|best-in-class|cutting-edge|state-of-the-art|world-class|game-chang(?:er|ers|ing)|disruptive|revolutionary|unlock(?:ing)? (?:your|the) potential|frictionless|next-generation)\b/gi;
 
@@ -154,26 +155,36 @@ function buildRecommendations(dimensions) {
     .map((c) => `${c.dimension} — ${c.title}: ${c.detail}`);
 }
 
-function analyze(input) {
-  const text = String((input && input.text) || "");
-  const trimmed = text.trim();
-
-  if (!trimmed) {
-    const error = new Error("Paste the landing page copy you want scored.");
+async function analyze(input) {
+  const url = normalizeUrl((input && input.url) || "");
+  if (!url) {
+    const error = new Error("Enter the landing page URL you want analyzed.");
     error.status = 400;
     throw error;
   }
-  if (trimmed.length > MAX_TEXT_LENGTH) {
-    const error = new Error(`That's ${trimmed.length} characters — keep it under ${MAX_TEXT_LENGTH}.`);
-    error.status = 400;
+
+  let html, finalUrl;
+  try {
+    ({ html, finalUrl } = await fetchPage(url));
+  } catch (error) {
+    const err = new Error(fetchErrorMessage(error) || error.message || "Could not fetch that URL.");
+    err.status = 422;
+    throw err;
+  }
+
+  const title = collectTitle(html);
+  const text = visibleText(html).replace(/\s+/g, " ").trim();
+  if (!text) {
+    const error = new Error("That page had no readable text to analyze — it may render its copy with JavaScript after load.");
+    error.status = 422;
     throw error;
   }
 
   const dimensions = [
-    { key: "clarity", label: "Clarity", checks: buildClarityChecks(trimmed) },
-    { key: "benefit", label: "Benefit focus", checks: buildBenefitChecks(trimmed) },
-    { key: "specificity", label: "Specificity", checks: buildSpecificityChecks(trimmed) },
-    { key: "cta", label: "CTA strength", checks: buildCtaChecks(trimmed) },
+    { key: "clarity", label: "Clarity", checks: buildClarityChecks(text) },
+    { key: "benefit", label: "Benefit focus", checks: buildBenefitChecks(text) },
+    { key: "specificity", label: "Specificity", checks: buildSpecificityChecks(text) },
+    { key: "cta", label: "CTA strength", checks: buildCtaChecks(text) },
   ];
 
   const scored = dimensions.map((d) => ({ ...d, score: scoreFromChecks(d.checks), weight: DIMENSION_WEIGHT[d.key] }));
@@ -181,7 +192,9 @@ function analyze(input) {
   const overall = totalWeight ? Math.round(scored.reduce((sum, d) => sum + d.weight * d.score, 0) / totalWeight) : 0;
 
   return {
-    length: trimmed.length,
+    url: finalUrl,
+    title,
+    length: text.length,
     overall,
     dimensions: scored.map(({ weight, ...rest }) => rest),
     recommendations: buildRecommendations(scored),

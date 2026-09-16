@@ -7,7 +7,7 @@
 // the vocabulary each emphasizes that the other doesn't. No LLM — every
 // signal here is a word count, a regex, or a set difference.
 
-const { fetchPage, collectTitle, collectMeta, collectHeadings, collectLinks, visibleText, wordCount } = require("./htmlExtract");
+const { fetchPage, collectTitle, collectMeta, collectHeadings, collectLinks, visibleText, wordCount , normalizeUrl } = require("./htmlExtract");
 
 const CTA_PATTERN = /\b(get started|sign up|start (?:your |a )?(?:free )?trial|book a demo|try (?:it )?free|buy now|contact us|request a demo|schedule a call|subscribe)\b/gi;
 const PRICING_PATTERN = /\$\d|\bpricing\b|\bplans?\b.{0,20}\b(month|year|user|seat)\b/i;
@@ -75,8 +75,8 @@ function gapsFor(mine, theirs, myLabel, theirLabel) {
 }
 
 async function analyze(input) {
-  const urlA = String((input && input.urlA) || "").trim();
-  const urlB = String((input && input.urlB) || "").trim();
+  const urlA = normalizeUrl((input && input.urlA) || "");
+  const urlB = normalizeUrl((input && input.urlB) || "");
   if (!urlA || !urlB) {
     const error = new Error("Enter both URLs you want to compare.");
     error.status = 400;

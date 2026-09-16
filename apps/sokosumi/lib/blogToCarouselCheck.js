@@ -8,7 +8,7 @@
 // closing CTA slide. No LLM — every slide's text is lifted directly from
 // the page, not generated.
 
-const { fetchPage, collectTitle, collectMeta, visibleText, wordCount, extractH2Sections } = require("./htmlExtract");
+const { fetchPage, collectTitle, collectMeta, visibleText, wordCount, extractH2Sections , normalizeUrl } = require("./htmlExtract");
 
 const MAX_SECTION_SLIDES = 8;
 const SLIDE_BODY_WORDS = 32;
@@ -25,7 +25,7 @@ function firstSentence(text) {
 }
 
 async function analyze(input) {
-  const url = String((input && input.url) || "").trim();
+  const url = normalizeUrl((input && input.url) || "");
   if (!url) {
     const error = new Error("Enter the blog post URL you want turned into a carousel.");
     error.status = 400;

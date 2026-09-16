@@ -3,11 +3,12 @@
 // Deterministic multi-site messaging comparison for
 // /tools/competitor-messaging. Fetches 2-5 public URLs (through
 // lib/safeFetch.js) and compares the tone and recurring vocabulary each one
-// uses: sentence length, contraction rate, "power word" density, and top
-// keywords, plus which themes are shared across all of them vs unique to
-// one. No LLM — every signal is a word count, a regex, or a set operation.
+// uses: each site's headline, tone (contraction rate), sentence length,
+// customer focus (you/we ratio), power-word density, specificity (numbers),
+// and top keywords — plus which themes are shared across all of them vs
+// unique to one. No LLM — every signal is a word count, regex, or set op.
 
-const { fetchPage, collectTitle, visibleText, wordCount } = require("./htmlExtract");
+const { fetchPage, collectTitle, collectHeadings, visibleText, wordCount, normalizeUrl } = require("./htmlExtract");
 
 const MAX_SITES = 5;
 const MIN_SITES = 2;
@@ -42,6 +43,7 @@ function sentences(text) {
 async function profileSite(url) {
   const { html, finalUrl } = await fetchPage(url);
   const title = collectTitle(html);
+  const headings = collectHeadings(html);
   const text = visibleText(html);
   const words = wordCount(text);
   const sents = sentences(text);
@@ -49,13 +51,35 @@ async function profileSite(url) {
   const contractions = (text.match(/\b\w+'\w+\b/g) || []).length;
   const contractionsPer100Words = words ? Math.round((contractions / words) * 1000) / 10 : 0;
   const powerWordMatches = (text.match(POWER_WORDS) || []).length;
+  const powerPer100 = words ? Math.round((powerWordMatches / words) * 1000) / 10 : 0;
+  // Customer-centric vs company-centric: the you/we ratio, a documented proxy.
+  const youCount = (text.match(/\b(?:you|your|you're|yours)\b/gi) || []).length;
+  const weCount = (text.match(/\b(?:we|our|us|ours)\b/gi) || []).length;
+  const customerFocus = youCount + weCount ? Math.round((youCount / (youCount + weCount)) * 100) : 0;
+  // Specificity: how often the copy reaches for a concrete number.
+  const numberCount = (text.match(/\b\d+(?:[.,]\d+)?%?\b/g) || []).length;
+  const numbersPer100 = words ? Math.round((numberCount / words) * 1000) / 10 : 0;
   const toneLabel = contractionsPer100Words >= 1.5 ? "Casual" : contractionsPer100Words > 0 ? "Neutral" : "Formal";
-  return { url: finalUrl, title, avgSentenceLength, contractionsPer100Words, powerWordMatches, toneLabel, keywords: topKeywords(text) };
+  const headline = (headings.h1 && headings.h1[0]) || title || finalUrl;
+  return {
+    url: finalUrl,
+    title,
+    headline,
+    words,
+    avgSentenceLength,
+    contractionsPer100Words,
+    powerWordMatches,
+    powerPer100,
+    customerFocus,
+    numbersPer100,
+    toneLabel,
+    keywords: topKeywords(text),
+  };
 }
 
 async function analyze(input) {
   const rawUrls = Array.isArray(input && input.urls) ? input.urls : [];
-  const urls = rawUrls.map((u) => String(u || "").trim()).filter(Boolean);
+  const urls = rawUrls.map((u) => normalizeUrl(u)).filter(Boolean);
 
   if (urls.length < MIN_SITES) {
     const error = new Error(`Enter at least ${MIN_SITES} URLs to compare.`);

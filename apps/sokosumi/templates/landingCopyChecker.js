@@ -8,11 +8,15 @@ const FAQ = [
   {
     question: "What does the landing page copy analyzer check?",
     answer:
-      "Paste the copy from a landing page — the hero, a section, or the whole page — and it scores four things: clarity (sentence length, jargon, passive voice), benefit focus (whether the copy talks to the reader or about the company), specificity (concrete numbers vs vague qualifiers), and CTA strength (whether there's a clear, specific next step).",
+      "Enter a landing page URL and it fetches the page and reads its visible copy, then scores four things: clarity (sentence length, jargon, passive voice), benefit focus (whether the copy talks to the reader or about the company), specificity (concrete numbers vs vague qualifiers), and CTA strength (whether there's a clear, specific next step).",
   },
   {
     question: "Does it check design or layout?",
-    answer: "No — it only reads the text you paste. It has no idea what the page looks like, where the CTA button sits, or how it's styled. Pair it with the Landing Page Conversion Teardown for a layout-aware pass.",
+    answer: "No — it only reads the page's text, not how it looks: where the CTA button sits, how it's styled, or what's above the fold. Pair it with the Landing Page Conversion Teardown for a layout-aware pass.",
+  },
+  {
+    question: "It couldn't read my page — why?",
+    answer: "It reads the HTML the server returns, so copy that only appears after JavaScript runs in the browser won't be counted. If a page comes back empty, its copy is likely client-rendered — the Landing Page Conversion Teardown has the same limitation, noted there too.",
   },
   {
     question: "Why does it flag \"we/our\" language?",
@@ -20,8 +24,8 @@ const FAQ = [
       "Copy that talks about the company (\"we built\", \"our platform\") converts worse than copy that talks about the reader's outcome (\"you'll save\", \"your team gets\"). The ratio of you/your to we/our is a simple, well-documented proxy for that.",
   },
   {
-    question: "Is my copy stored anywhere?",
-    answer: "No. It's scored in memory for that one request only.",
+    question: "Is the page stored anywhere?",
+    answer: "No. The page is fetched and scored in memory for that one request only — nothing is written to disk or a log.",
   },
 ];
 
@@ -40,7 +44,7 @@ function render() {
     operatingSystem: "Web",
     url: `${SITE}${PATH}`,
     description:
-      "A free landing page copy analyzer that scores pasted copy on clarity, benefit focus, specificity, and CTA strength, with a full breakdown and fixes.",
+      "A free landing page copy analyzer: enter a URL and it scores the page's copy on clarity, benefit focus, specificity, and CTA strength, with a full breakdown and fixes.",
     featureList: [
       "Sentence length, jargon, and passive-voice detection",
       "You/your vs we/our benefit-focus ratio",
@@ -64,9 +68,9 @@ function render() {
 
   return (
     pageStart({
-      title: "Landing Page Copy Analyzer — score your copy | Sokosumi",
+      title: "Landing Page Copy Analyzer — score your page copy | Sokosumi",
       description:
-        "Free landing page copy analyzer. Paste your hero copy or full page and get scores on clarity, benefit focus, specificity, and CTA strength, plus a ranked list of fixes. No sign-up.",
+        "Free landing page copy analyzer. Enter a URL and get scores on the page's clarity, benefit focus, specificity, and CTA strength, plus a ranked list of fixes. No sign-up.",
       path: PATH,
       englishOnly: true,
       breadcrumb: crumbs,
@@ -82,18 +86,19 @@ function render() {
     `<section class="tk-head" id="analyzer">
       <p class="tk-overline">Free · no sign-up</p>
       <h1>Landing Page Copy Analyzer</h1>
-      <p class="tk-lede">Paste your hero copy, a section, or the whole page and get a score on its clarity, its benefit focus, its specificity, and its CTA — with the exact lines that are costing you conversions.</p>
+      <p class="tk-lede">Enter a landing page URL and get a score on its copy's clarity, its benefit focus, its specificity, and its CTA — with the exact lines that are costing you conversions.</p>
 
-      <form class="tk-form is-stacked" id="lcaForm" novalidate>
-        <label class="sr-only" for="lcaText">Landing page copy</label>
-        <textarea id="lcaText" name="text" maxlength="6000" placeholder="Paste your landing page copy here…" aria-describedby="lcaError" required></textarea>
-        <button class="tk-submit" id="lcaSubmit" type="submit">Score my copy</button>
+      <form class="tk-form" id="lcaForm" novalidate>
+        <label class="sr-only" for="lcaUrl">Landing page URL</label>
+        <input id="lcaUrl" name="url" type="url" placeholder="https://example.com/landing-page" aria-describedby="lcaError" required />
+        <button class="tk-submit" id="lcaSubmit" type="submit">Analyze copy</button>
       </form>
 
       <div class="tk-try">
         <span>Try</span>
-        <button type="button" data-try="weak">Weak copy</button>
-        <button type="button" data-try="strong">Strong copy</button>
+        <button type="button" data-try="stripe">stripe.com</button>
+        <button type="button" data-try="linear">linear.app</button>
+        <button type="button" data-try="vercel">vercel.com</button>
       </div>
 
       <p class="tk-error" id="lcaError" role="alert" hidden></p>
@@ -101,7 +106,7 @@ function render() {
 
     <div class="tk-loading" id="lcaLoading" hidden>
       <span class="tk-spin" aria-hidden="true"></span>
-      <span>Scoring your copy…</span>
+      <span>Fetching the page and analyzing its copy…</span>
     </div>
 
     <section class="tk-result" id="lcaResult" aria-label="Results" hidden>
@@ -110,7 +115,7 @@ function render() {
         <div class="tk-scores" id="lcaScores" role="group" aria-label="Filter checks"></div>
         <button class="tk-copy" id="lcaCopy" type="button">Copy report</button>
       </div>
-      <div class="tk-dims" id="lcaDims" data-filter=""></div>
+      <div class="tk-dims tk-dims-notag" id="lcaDims" data-filter=""></div>
     </section>
 
     <section class="tk-section" aria-labelledby="lca-how">

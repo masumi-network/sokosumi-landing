@@ -9,7 +9,7 @@
 // feature phrased differently on two sites won't be recognized as the same
 // row — stated plainly in the FAQ.
 
-const { fetchPage, visibleText } = require("./htmlExtract");
+const { fetchPage, visibleText , normalizeUrl } = require("./htmlExtract");
 
 const MAX_SITES = 5;
 const MIN_SITES = 2;
@@ -50,7 +50,7 @@ async function profileSite(url) {
 
 async function analyze(input) {
   const rawUrls = Array.isArray(input && input.urls) ? input.urls : [];
-  const urls = rawUrls.map((u) => String(u || "").trim()).filter(Boolean);
+  const urls = rawUrls.map((u) => normalizeUrl(u)).filter(Boolean);
 
   if (urls.length < MIN_SITES) {
     const error = new Error(`Enter at least ${MIN_SITES} URLs to compare.`);

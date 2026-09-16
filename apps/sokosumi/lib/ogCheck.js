@@ -9,7 +9,7 @@
 // SSRF surface; the guard for that lives in lib/safeFetch.js, shared with the
 // llms.txt checker, and re-validates every hop after its hostname resolves.
 
-const { publicUrl, safeFetch, readCapped, fetchErrorMessage } = require("./safeFetch");
+const { publicUrl, safeFetch, readCapped, fetchErrorMessage, normalizeUrl } = require("./safeFetch");
 
 const UA =
   "Mozilla/5.0 (compatible; SokosumiOG/1.0; +https://www.sokosumi.com/tools/og-checker)";
@@ -538,6 +538,7 @@ function htmlSource(data) {
 // ---------------------------------------------------------------------------
 
 async function inspect(rawUrl) {
+  rawUrl = normalizeUrl(rawUrl);
   const target = publicUrl(rawUrl);
   if (!target) {
     const error = new Error("Enter a complete public URL, starting with https://");

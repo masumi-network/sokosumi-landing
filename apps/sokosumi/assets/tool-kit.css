@@ -234,7 +234,7 @@
 .tk-summary {
   display: flex;
   flex-wrap: wrap;
-  align-items: baseline;
+  align-items: center;
   gap: 10px 20px;
   padding: 22px 0;
 }
@@ -242,15 +242,71 @@
 .tk-summary-score {
   flex: 1;
   min-width: 220px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
   color: var(--muted-foreground);
   font-size: 14.5px;
 }
 
-.tk-summary-score strong {
-  display: inline-block;
-  margin-right: 10px;
+/* Overall score gauge — a conic ring fills in proportion to the score, so the
+   headline number reads as a visual at a glance, not just text. */
+.tk-gauge {
+  --tk-val: 0deg;
+  --tk-color: var(--muted-foreground);
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 66px;
+  height: 66px;
+  border-radius: 999px;
+  background: conic-gradient(var(--tk-color) var(--tk-val), var(--muted) 0);
+}
+
+.tk-gauge-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 51px;
+  height: 51px;
+  border-radius: 999px;
+  background: var(--card);
+  line-height: 1;
+}
+
+.tk-gauge-inner b {
+  font-size: 17px;
+  font-weight: 600;
   color: var(--foreground);
-  font-size: 20px;
+}
+
+.tk-gauge-inner i {
+  margin-top: 2px;
+  font-size: 9px;
+  font-style: normal;
+  color: var(--muted-foreground);
+}
+
+.tk-gauge.is-strong {
+  --tk-color: #2f6b45;
+}
+.tk-gauge.is-needs-work {
+  --tk-color: #8a6100;
+}
+.tk-gauge.is-weak {
+  --tk-color: #b02a2a;
+}
+
+.tk-gauge-label {
+  color: var(--muted-foreground);
+  font-size: 14px;
+}
+
+.tk-gauge-label strong {
+  display: block;
+  color: var(--foreground);
+  font-size: 16px;
   font-weight: 500;
 }
 
@@ -332,6 +388,34 @@
   }
 }
 
+/* Balanced variant for tools with exactly three dimensions: a 2-column grid
+   leaves an orphan card on a second row, so stack until there's room for all
+   three side by side, sized to their own content. The per-check tag just
+   repeats the dimension name here, so drop it for a cleaner row. */
+@media (min-width: 760px) {
+  .tk-dims-balanced {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (min-width: 1000px) {
+  .tk-dims-balanced {
+    grid-template-columns: repeat(3, 1fr);
+    align-items: start;
+  }
+}
+
+/* For tools whose per-check tag just repeats the dimension name, hide it and
+   left-align the title for a cleaner row. (Some tools use distinct sub-tags —
+   those keep the tag, so this is opt-in per tool, not global.) */
+.tk-dims-notag .tk-check-tag {
+  display: none;
+}
+
+.tk-dims-notag .tk-check-title {
+  justify-content: flex-start;
+}
+
 .tk-dim {
   min-width: 0;
   background: var(--card);
@@ -367,6 +451,55 @@
 }
 .tk-dim-score.is-weak {
   color: #b02a2a;
+}
+
+/* Per-dimension score meter — a filled bar under the head so the score is
+   visible without reading the number. Colour tracks the band. */
+.tk-dim-meter {
+  height: 6px;
+  background: var(--muted);
+  overflow: hidden;
+}
+
+.tk-dim-meter i {
+  display: block;
+  height: 100%;
+  border-radius: 0 999px 999px 0;
+  background: var(--muted-foreground);
+  transition: width 500ms ease;
+}
+
+.tk-dim-meter i.is-strong {
+  background: #2f6b45;
+}
+.tk-dim-meter i.is-needs-work {
+  background: #8a6100;
+}
+.tk-dim-meter i.is-weak {
+  background: #b02a2a;
+}
+
+.tk-dim-tally {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 18px 0;
+}
+
+.tk-dim-tally-pass {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--muted-foreground);
+}
+
+.tk-dim-tally-pass::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #2f6b45;
 }
 
 .tk-checks {
@@ -738,6 +871,46 @@
   line-height: 1.55;
 }
 
+/* Icon feature cards — scoped variant: an accent-tinted icon tile, a 3-up
+   grid and a subtle hover lift, so the "what gets checked" grid reads as a
+   set of features rather than plain text boxes. */
+@media (min-width: 760px) {
+  .tk-cards-features {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Any card with an icon gets the feature treatment — extra padding and a hover
+   lift — regardless of how many columns the grid uses (3-up for the AI search
+   tool, 2×2 for the teardown). */
+.tk-card:has(.tk-card-icon) {
+  padding: 24px 22px;
+  transition: border-color 160ms ease, transform 160ms ease, box-shadow 160ms ease;
+}
+
+.tk-card:has(.tk-card-icon):hover {
+  border-color: var(--foreground);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px -14px rgba(0, 0, 0, 0.3);
+}
+
+.tk-card-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  margin-bottom: 16px;
+  border-radius: 12px;
+  color: var(--primary);
+  background: color-mix(in srgb, var(--primary) 12%, transparent);
+}
+
+.tk-card-icon svg {
+  width: 22px;
+  height: 22px;
+}
+
 @media (max-width: 620px) {
   .tk-submit {
     width: 100%;
@@ -749,4 +922,135 @@
   .tk-table td {
     white-space: normal;
   }
+}
+
+/* ---- Competitor messaging comparison: custom visual result ---------------- */
+
+.cmc-sites {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.cmc-site {
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--c);
+  border-radius: var(--r-md);
+  background: var(--card);
+}
+
+.cmc-site-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cmc-dot {
+  flex: none;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--c);
+}
+
+.cmc-site-head b {
+  font-size: 14px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cmc-tone {
+  margin-left: auto;
+  flex: none;
+  padding: 2px 9px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-size: 11px;
+  color: var(--muted-foreground);
+}
+
+.cmc-headline {
+  margin-top: 12px;
+  color: var(--foreground);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.cmc-mini {
+  margin-top: 12px;
+  color: var(--muted-foreground);
+  font-size: 12px;
+}
+
+.cmc-metrics {
+  display: grid;
+  gap: 22px;
+}
+
+.cmc-metric-label {
+  margin-bottom: 12px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.cmc-metric-label small {
+  color: var(--muted-foreground);
+  font-weight: 400;
+}
+
+.cmc-bar-row {
+  display: grid;
+  grid-template-columns: minmax(84px, 150px) 1fr auto;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.cmc-bar-name {
+  overflow: hidden;
+  font-size: 12.5px;
+  color: var(--muted-foreground);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cmc-bar-track {
+  height: 8px;
+  border-radius: 999px;
+  background: var(--muted);
+  overflow: hidden;
+}
+
+.cmc-bar-track i {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.5s ease;
+}
+
+.cmc-bar-val {
+  min-width: 42px;
+  font-size: 12.5px;
+  font-weight: 500;
+  text-align: right;
+}
+
+.cmc-uniq {
+  margin-bottom: 14px;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--c);
+  border-radius: var(--r-md);
+  background: var(--card);
+}
+
+.cmc-uniq-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  font-size: 13px;
+  font-weight: 500;
 }

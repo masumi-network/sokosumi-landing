@@ -9,7 +9,7 @@
 // measurement of how any specific model actually behaves — stated plainly
 // in the FAQ.
 
-const { fetchPage, collectTitle, collectHeadings, collectJsonLd, visibleText, wordCount } = require("./htmlExtract");
+const { fetchPage, collectTitle, collectHeadings, collectJsonLd, visibleText, wordCount , normalizeUrl } = require("./htmlExtract");
 
 const DEFINITION_PATTERN = /\b[A-Z][a-zA-Z0-9 '-]{2,40}\b (?:is|are|means|refers to) /g;
 const DIMENSION_WEIGHT = { headings: 25, definitions: 25, structured: 25, chunking: 25 };
@@ -50,7 +50,7 @@ function paragraphStats(html) {
 }
 
 async function analyze(input) {
-  const url = String((input && input.url) || "").trim();
+  const url = normalizeUrl((input && input.url) || "");
   if (!url) {
     const error = new Error("Enter the URL you want scored.");
     error.status = 400;

@@ -8,7 +8,7 @@ const FAQ = [
   {
     question: "What does the conversion teardown check?",
     answer:
-      "Enter a landing page URL and it fetches the page and audits four things from the real markup: headline clarity (a single clear H1, sequential heading levels), CTA presence and how early it appears, social proof (testimonials, customer counts, press mentions), and trust signals (guarantees, security language, form length).",
+      "Enter a landing page URL and it fetches the page and audits four conversion dimensions from the real markup. Headline clarity: a single, concise H1, a supporting subheadline, and a sequential heading outline. Call to action: whether a real button exists, how early the CTA appears, and whether it's repeated. Social proof: testimonials, customer counts, case studies, press mentions, and star ratings. Trust signals: risk-reversal language (guarantees, no-credit-card, cancel-anytime), HTTPS, privacy/terms links, and form length.",
   },
   {
     question: "Does it actually see the rendered page, like a screenshot?",
@@ -109,17 +109,33 @@ function render() {
         <div class="tk-scores" id="ltcScores" role="group" aria-label="Filter checks"></div>
         <button class="tk-copy" id="ltcCopy" type="button">Copy report</button>
       </div>
-      <div class="tk-dims" id="ltcDims" data-filter=""></div>
+      <div class="tk-dims tk-dims-notag" id="ltcDims" data-filter=""></div>
     </section>
 
     <section class="tk-section" aria-labelledby="ltc-how">
       <h2 id="ltc-how">What gets checked</h2>
-      <p class="tk-sub">Four dimensions pulled from the page's actual markup.</p>
+      <p class="tk-sub">Four conversion dimensions, each pulled from the page's actual markup.</p>
       <div class="tk-cards">
-        <div class="tk-card"><h3>Headline clarity</h3><p>A single clear H1 and a heading outline with no skipped levels.</p></div>
-        <div class="tk-card"><h3>Call to action</h3><p>Whether a CTA exists, and how early it appears in the page.</p></div>
-        <div class="tk-card"><h3>Social proof</h3><p>Testimonials, customer counts, or press mentions.</p></div>
-        <div class="tk-card"><h3>Trust signals</h3><p>Guarantees, security language, and form length.</p></div>
+        <div class="tk-card">
+          <span class="tk-card-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7V5h16v2"/><path d="M9 20h6"/><path d="M12 5v15"/></svg></span>
+          <h3>Headline clarity</h3>
+          <p>A single, concise H1, a supporting subheadline, and a heading outline with no skipped levels.</p>
+        </div>
+        <div class="tk-card">
+          <span class="tk-card-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m9 11 3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span>
+          <h3>Call to action</h3>
+          <p>Whether a real CTA button exists, how early it appears, and whether it's repeated down the page.</p>
+        </div>
+        <div class="tk-card">
+          <span class="tk-card-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 17.75l-6.172 3.245 1.179-6.873-4.993-4.867 6.9-1.002L12 2l3.086 6.253 6.9 1.002-4.993 4.867 1.179 6.873z"/></svg></span>
+          <h3>Social proof</h3>
+          <p>Testimonials, customer counts, case studies, press mentions, and star ratings or review counts.</p>
+        </div>
+        <div class="tk-card">
+          <span class="tk-card-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg></span>
+          <h3>Trust signals</h3>
+          <p>Risk-reversal language, HTTPS, privacy/terms links, and how long the form is.</p>
+        </div>
       </div>
     </section>
 

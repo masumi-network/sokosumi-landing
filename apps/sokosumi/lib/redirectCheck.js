@@ -8,7 +8,7 @@
 // gets a suggested replacement from the site's own known-good pages, ranked
 // by path-word overlap.
 
-const { safeFetch, fetchErrorMessage } = require("./safeFetch");
+const { safeFetch, fetchErrorMessage, normalizeUrl } = require("./safeFetch");
 const { fetchPage, collectLinks } = require("./htmlExtract");
 const { discoverPages } = require("./siteCrawl");
 
@@ -60,7 +60,7 @@ async function checkStatus(url) {
 }
 
 async function analyze(input) {
-  const url = String((input && input.url) || "").trim();
+  const url = normalizeUrl((input && input.url) || "");
   if (!url) {
     const error = new Error("Enter the site URL you want checked.");
     error.status = 400;

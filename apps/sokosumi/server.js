@@ -1418,7 +1418,7 @@ const assetsDir = path.join(root, "assets");
             return send(req, res, 429, { ...jsonHead, "Retry-After": "3600" }, JSON.stringify({ error: "You have reached the hourly limit. Try again later." }));
           }
           try {
-            const data = landingCopyCheck.analyze(body);
+            const data = await landingCopyCheck.analyze(body);
             return send(req, res, 200, jsonHead, JSON.stringify(data));
           } catch (error) {
             const status = error.status && error.status >= 400 && error.status < 600 ? error.status : 500;

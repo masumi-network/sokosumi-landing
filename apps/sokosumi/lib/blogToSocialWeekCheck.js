@@ -7,7 +7,7 @@
 // pointing back at the source post. No LLM: every draft is built from text
 // already on the page, not generated.
 
-const { fetchPage, collectTitle, collectMeta, visibleText, extractH2Sections } = require("./htmlExtract");
+const { fetchPage, collectTitle, collectMeta, visibleText, extractH2Sections , normalizeUrl } = require("./htmlExtract");
 
 const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 const STAT_PATTERN = /\b\d[\d,.]*%?[^.?!]{0,80}/g;
@@ -25,7 +25,7 @@ function truncateWords(text, limit) {
 }
 
 async function analyze(input) {
-  const url = String((input && input.url) || "").trim();
+  const url = normalizeUrl((input && input.url) || "");
   if (!url) {
     const error = new Error("Enter the blog post URL you want turned into a week of posts.");
     error.status = 400;

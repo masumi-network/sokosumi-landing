@@ -756,6 +756,10 @@ function buildRecommendations(checks) {
 }
 
 async function analyze(inputUrl) {
+  // Accept a bare domain ("example.com") from API-direct callers; the browser
+  // client already defaults the scheme, but analyze() must not assume that.
+  inputUrl = String(inputUrl || "").trim();
+  if (inputUrl && !/^https?:\/\//i.test(inputUrl)) inputUrl = "https://" + inputUrl;
   // The page and robots.txt are independent, so fetch them together instead of
   // back-to-back. robots is requested against the input origin; fetchCapped
   // follows redirects, so an http→https or apex→www hop still lands on the file.

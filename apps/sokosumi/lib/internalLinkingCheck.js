@@ -9,7 +9,7 @@
 // opportunity. No LLM: similarity is a Jaccard set overlap on each page's
 // top keywords, capped and timed out so a large site can't hang the request.
 
-const { fetchPage, collectTitle, collectLinks, visibleText } = require("./htmlExtract");
+const { fetchPage, collectTitle, collectLinks, visibleText , normalizeUrl } = require("./htmlExtract");
 const { discoverPages } = require("./siteCrawl");
 
 const MAX_PAGES = 12;
@@ -47,7 +47,7 @@ function jaccard(a, b) {
 }
 
 async function analyze(input) {
-  const url = String((input && input.url) || "").trim();
+  const url = normalizeUrl((input && input.url) || "");
   if (!url) {
     const error = new Error("Enter the site URL you want checked.");
     error.status = 400;

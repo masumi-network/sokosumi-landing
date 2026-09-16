@@ -5,7 +5,7 @@
   "use strict";
   if (!window.SokosumiToolKit) return;
 
-  var textInput = document.getElementById("lcaText");
+  var urlInput = document.getElementById("lcaUrl");
 
   window.SokosumiToolKit.wireScorer({
     formId: "lcaForm",
@@ -19,23 +19,24 @@
     copyId: "lcaCopy",
     endpoint: "/api/landing-copy-check",
     method: "POST",
-    submitLabel: "Score my copy",
-    busyLabel: "Scoring…",
+    submitLabel: "Analyze copy",
+    busyLabel: "Analyzing…",
     reportTitle: function (data) {
-      return "Landing page copy analyzer — " + data.overall + "/100";
+      return "Landing page copy analyzer — " + (data.url || "") + " — " + data.overall + "/100";
     },
     getValue: function () {
-      return textInput.value;
+      return urlInput.value;
     },
     setValue: function (value) {
-      textInput.value = value;
+      urlInput.value = value;
     },
     buildBody: function (value) {
-      return { text: value };
+      return { url: value };
     },
     examples: {
-      weak: "We are a leading provider of innovative, best-in-class solutions. Our platform leverages cutting-edge technology to deliver a seamless, holistic experience. Various industries rely on our robust ecosystem. Learn more about what we do.",
-      strong: "You'll cut campaign setup time in half. Most teams save 6 hours a week once they hand the busywork to an AI coworker — no new software to learn, no migration. Start your free trial and ship your first campaign today.",
+      stripe: "https://stripe.com",
+      linear: "https://linear.app",
+      vercel: "https://vercel.com",
     },
   });
 })();

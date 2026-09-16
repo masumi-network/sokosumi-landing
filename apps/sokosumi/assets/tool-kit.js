@@ -22,6 +22,12 @@
 
   var MARK = { error: "!", warn: "!", pass: "✓" };
 
+  // "Strong" -> "strong", "Needs work" -> "needs-work" — the band as a CSS
+  // modifier class, shared by the gauge, the meters and the dim scores.
+  function bandClass(score) {
+    return bandLabel(score).toLowerCase().replace(" ", "-");
+  }
+
   // config: {
   //   formId, submitId, errorId, loadingId, resultId,
   //   summaryScoreId, scoresId, dimsId, copyId,          // all optional if renderResult is supplied
@@ -102,17 +108,30 @@
         })
         .join("");
 
+      var pass = (dim.checks || []).filter(function (c) { return c.level === "pass"; }).length;
+      var total = (dim.checks || []).length;
+
       return (
         '<div class="tk-dim">' +
         '<div class="tk-dim-head"><h3>' +
         esc(dim.label) +
         '</h3><span class="tk-dim-score is-' +
-        bandLabel(dim.score).toLowerCase().replace(" ", "-") +
+        bandClass(dim.score) +
         '">' +
         dim.score +
         "/100 · " +
         esc(bandLabel(dim.score)) +
         "</span></div>" +
+        '<div class="tk-dim-meter"><i class="is-' +
+        bandClass(dim.score) +
+        '" style="width:' +
+        Math.max(0, Math.min(100, dim.score)) +
+        '%"></i></div>' +
+        '<div class="tk-dim-tally"><span class="tk-dim-tally-pass">' +
+        pass +
+        " of " +
+        total +
+        " passing</span></div>" +
         '<div class="tk-checks">' +
         checksHtml +
         "</div></div>"
@@ -121,7 +140,20 @@
 
     function render() {
       if (summaryScore) {
-        summaryScore.innerHTML = "<strong>" + data.overall + "/100</strong>" + esc(bandLabel(data.overall)) + " overall";
+        var overallVal = Math.max(0, Math.min(100, data.overall));
+        summaryScore.innerHTML =
+          '<span class="tk-gauge is-' +
+          bandClass(data.overall) +
+          '" style="--tk-val:' +
+          (overallVal * 3.6).toFixed(1) +
+          'deg" role="img" aria-label="' +
+          data.overall +
+          ' out of 100"><span class="tk-gauge-inner"><b>' +
+          data.overall +
+          "</b><i>/100</i></span></span>" +
+          '<span class="tk-gauge-label"><strong>' +
+          esc(bandLabel(data.overall)) +
+          "</strong>overall readiness</span>";
       }
 
       if (scores) {
