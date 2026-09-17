@@ -225,7 +225,31 @@ function onIdle(fn) {
     root.style.scrollBehavior = prev;
   }
 
+  // The drawer covers the page. Keep its links out of the tab order and
+  // accessibility tree until it closes. Leave the header and cookie controls
+  // available, and preserve any content that was already inert.
+  var coveredContent = [];
+  function setCoveredContentInert(open) {
+    if (open) {
+      document.querySelectorAll("main, footer, .skip-link").forEach(function (el) {
+        if (el.inert) return;
+        el.inert = true;
+        coveredContent.push(el);
+      });
+    } else {
+      coveredContent.forEach(function (el) { el.inert = false; });
+      coveredContent = [];
+    }
+  }
+
   function setOpen(open) {
+    // A resize can hide the drawer while one of its links still has focus.
+    if (!open && panel.contains(document.activeElement)) {
+      var target = window.innerWidth > 900 && bar ? bar.querySelector("a[href]") : btn;
+      if (target) target.focus({ preventScroll: true });
+    }
+    if (open) btn.focus({ preventScroll: true });
+    setCoveredContentInert(open);
     btn.setAttribute("aria-expanded", open ? "true" : "false");
     btn.setAttribute("aria-label", open ? (document.documentElement.lang === "de" ? "Menü schließen" : "Close menu") : (document.documentElement.lang === "de" ? "Menü öffnen" : "Open menu"));
     panel.hidden = !open;
