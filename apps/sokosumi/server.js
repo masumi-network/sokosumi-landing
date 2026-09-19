@@ -114,6 +114,12 @@ const DESIGN_MD_RATE_LIMIT = Number(process.env.DESIGN_MD_RATE_LIMIT) || 6;
 const designMdRequests = new Map();
 const SEO_MD_RATE_LIMIT = Number(process.env.SEO_MD_RATE_LIMIT) || 20;
 const seoMdRequests = new Map();
+// Email captures on the Website Analyzer's lead gate. Kept low: a real user
+// submits their address once, so anything busier than this is abuse.
+const SEO_LEAD_RATE_LIMIT = Number(process.env.SEO_LEAD_RATE_LIMIT) || 5;
+const seoLeadRequests = new Map();
+// Same onboarding sink the DESIGN.md generator forwards leads to; overridable.
+const ONBOARDING_URL = process.env.ONBOARDING_WEBHOOK_URL || "https://elena.serviceplan-agents.com/onboarding/submit";
 // The OG checker is cheap (one page fetch plus a ranged image read) so its
 // ceiling is far higher than the generator's — high enough that nobody
 // checking their own site in a normal session will ever meet it.
@@ -275,8 +281,29 @@ function hourlyRateLimited(store, limit, ip) {
   return false;
 }
 
+const LEAD_EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+// Fire the Website Analyzer lead at the onboarding webhook. Never throws and
+// never blocks the user-facing response — a delivery failure is logged, not
+// surfaced, because the analysis should still run.
+async function forwardSeoLead(email, websiteUrl) {
+  try {
+    const res = await fetch(ONBOARDING_URL, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ email, website_url: websiteUrl }),
+      signal: AbortSignal.timeout(8000),
+      redirect: "follow",
+    });
+    if (!res.ok) console.error(`[seo-lead] onboarding webhook responded ${res.status} for ${email} / ${websiteUrl}`);
+  } catch (error) {
+    console.error("[seo-lead] onboarding webhook error:", error);
+  }
+}
+
 const designMdRateLimited = (ip) => hourlyRateLimited(designMdRequests, DESIGN_MD_RATE_LIMIT, ip);
 const seoMdRateLimited = (ip) => hourlyRateLimited(seoMdRequests, SEO_MD_RATE_LIMIT, ip);
+const seoLeadRateLimited = (ip) => hourlyRateLimited(seoLeadRequests, SEO_LEAD_RATE_LIMIT, ip);
 const ogCheckRateLimited = (ip) => hourlyRateLimited(ogCheckRequests, OG_CHECK_RATE_LIMIT, ip);
 const llmsCheckRateLimited = (ip) => hourlyRateLimited(llmsCheckRequests, LLMS_CHECK_RATE_LIMIT, ip);
 const postCheckRateLimited = (ip) => hourlyRateLimited(postCheckRequests, POST_CHECK_RATE_LIMIT, ip);
@@ -1296,6 +1323,31 @@ const assetsDir = path.join(root, "assets");
           } catch {
             return send(req, res, 502, { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" }, JSON.stringify({ error: "This saved analysis is unavailable right now." }));
           }
+        }
+
+        if (urlPath === "/api/seo-lead" && req.method === "POST") {
+          const jsonHead = { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" };
+          let body;
+          try {
+            body = await readJsonBody(req);
+          } catch (error) {
+            const message = error.message === "too-large" ? "The request is too large." : "Send a valid JSON request.";
+            return send(req, res, 400, jsonHead, JSON.stringify({ error: message }));
+          }
+          const email = typeof body.email === "string" ? body.email.trim() : "";
+          const targetUrl = publicWebsiteUrl(body.url);
+          if (!LEAD_EMAIL_RE.test(email)) {
+            return send(req, res, 400, jsonHead, JSON.stringify({ error: "Enter a valid email address." }));
+          }
+          if (!targetUrl) {
+            return send(req, res, 400, jsonHead, JSON.stringify({ error: "Enter a complete public website URL." }));
+          }
+          if (seoLeadRateLimited(clientIp(req))) {
+            return send(req, res, 429, { ...jsonHead, "Retry-After": "3600" }, JSON.stringify({ error: "Too many submissions. Try again later." }));
+          }
+          // Don't make the browser wait on the webhook — record and respond.
+          forwardSeoLead(email, targetUrl);
+          return send(req, res, 200, jsonHead, JSON.stringify({ ok: true }));
         }
 
         if (urlPath === "/api/seo-md" && req.method === "POST") {

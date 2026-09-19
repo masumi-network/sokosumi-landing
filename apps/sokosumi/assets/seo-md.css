@@ -1,4 +1,4 @@
-/* SEO.md generator — additions on top of design-md.css. Reuses the dm-* tool
+/* Website Analyzer — additions on top of design-md.css. Reuses the dm-* tool
    shell and only styles the SEO-specific report pieces: score, checklist and
    recommendations. Colours come from the shared design tokens. */
 
@@ -72,53 +72,73 @@
 }
 .seo-meter {
   min-width: 0;
-  padding: 14px;
+  padding: 16px 16px 16px 18px;
   border: 1px solid var(--border);
+  border-left: 3px solid var(--seo-accent, var(--border));
   border-radius: var(--r-md);
   background: var(--background);
 }
+.seo-meter-good { --seo-accent: #1f9d55; }
+.seo-meter-ok { --seo-accent: #c67c05; }
+.seo-meter-bad { --seo-accent: #d1443b; }
+
 .seo-meter-head {
   display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 10px;
-  margin-bottom: 9px;
+  align-items: center;
+  gap: 13px;
+}
+.seo-meter-htext {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
 }
 .seo-meter-label {
-  font-size: 13px;
-  font-weight: 550;
+  font-size: 14px;
+  font-weight: 600;
   color: var(--foreground);
 }
-.seo-meter-value {
-  font-size: 18px;
+.seo-meter-band {
+  font-size: 11px;
   font-weight: 650;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--seo-accent, var(--muted-foreground));
 }
-.seo-meter-value-good { color: #1f9d55; }
-.seo-meter-value-ok { color: #c67c05; }
-.seo-meter-value-bad { color: #d1443b; }
 
-.seo-bar {
-  height: 6px;
+/* Mini score ring — same conic-gradient technique as the overall gauge. */
+.seo-ring {
+  --seo-val: 0deg;
+  --seo-ring-color: var(--border);
+  flex: none;
+  display: grid;
+  place-items: center;
   border-radius: 999px;
-  background: var(--muted);
-  overflow: hidden;
+  background: conic-gradient(var(--seo-ring-color) var(--seo-val), var(--muted) 0);
 }
-.seo-bar-fill {
-  display: block;
-  height: 100%;
+.seo-ring-sm { width: 54px; height: 54px; }
+.seo-ring-inner {
+  display: grid;
+  place-items: center;
   border-radius: 999px;
-  transition: width 0.5s ease;
+  background: var(--background);
 }
-.seo-bar-good { background: #1f9d55; }
-.seo-bar-ok { background: #c67c05; }
-.seo-bar-bad { background: #d1443b; }
+.seo-ring-sm .seo-ring-inner { width: 40px; height: 40px; }
+.seo-ring-inner strong { font-size: 15px; font-weight: 650; line-height: 1; }
+.seo-ring-good { --seo-ring-color: #1f9d55; }
+.seo-ring-good .seo-ring-inner strong { color: #1f9d55; }
+.seo-ring-ok { --seo-ring-color: #c67c05; }
+.seo-ring-ok .seo-ring-inner strong { color: #c67c05; }
+.seo-ring-bad { --seo-ring-color: #d1443b; }
+.seo-ring-bad .seo-ring-inner strong { color: #d1443b; }
 
 .seo-factors {
   list-style: none;
-  margin: 12px 0 0;
-  padding: 0;
+  margin: 14px 0 0;
+  padding: 14px 0 0;
+  border-top: 1px solid var(--border);
   display: grid;
-  gap: 5px;
+  gap: 6px;
 }
 .seo-factor {
   display: flex;
@@ -138,7 +158,9 @@
 .seo-factor-no .seo-factor-label { color: var(--foreground); }
 
 .seo-meter-note {
-  margin: 12px 0 0;
+  margin: 14px 0 0;
+  padding: 14px 0 0;
+  border-top: 1px solid var(--border);
   font-size: 12px;
   color: var(--muted-foreground);
 }
@@ -266,4 +288,125 @@
   .seo-overall { flex-direction: column; align-items: flex-start; }
   .seo-meters { grid-template-columns: minmax(0, 1fr); }
   .dm-preview .dm-type-list { column-count: 1; }
+}
+
+/* Lead-capture modal — mirrors the DESIGN.md generator's email gate. */
+.dm-lead {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.dm-lead[hidden] { display: none; }
+.dm-lead-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(3px);
+}
+.dm-lead-card {
+  position: relative;
+  width: 100%;
+  max-width: 460px;
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.18);
+  overflow: hidden;
+}
+.dm-lead-accent {
+  display: block;
+  height: 3px;
+  background: var(--primary);
+}
+.dm-lead-body { padding: 28px; }
+.dm-lead-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+.dm-lead-x {
+  margin: -6px -6px 0 0;
+  width: 32px;
+  height: 32px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted-foreground);
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+}
+.dm-lead-x:hover { background: var(--muted); color: var(--foreground); }
+.dm-lead-card h2 {
+  margin: 4px 0 12px;
+  font-size: 23px;
+  font-weight: 400;
+  letter-spacing: -0.4px;
+  line-height: 1.25;
+  color: var(--foreground);
+}
+.dm-lead-card h2 span { color: var(--primary); }
+.dm-lead-lede {
+  margin: 0 0 22px;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--muted-foreground);
+}
+.dm-lead-form { display: flex; flex-direction: column; gap: 16px; }
+.dm-lead-form > label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.dm-lead-form > label > span {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--muted-foreground);
+}
+.dm-lead-form input[type="url"],
+.dm-lead-form input[type="email"] {
+  width: 100%;
+  padding: 11px 14px;
+  font-size: 15px;
+  color: var(--foreground);
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+}
+.dm-lead-form input[type="url"]:focus,
+.dm-lead-form input[type="email"]:focus {
+  outline: none;
+  border-color: var(--foreground);
+}
+.dm-lead-check {
+  flex-direction: row !important;
+  align-items: flex-start;
+  gap: 10px !important;
+  cursor: pointer;
+}
+.dm-lead-check span {
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--muted-foreground);
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+}
+.dm-lead-check input { margin-top: 3px; accent-color: var(--primary); }
+.dm-lead #seoMdLeadSubmit { width: 100%; justify-content: center; }
+.dm-lead-fine {
+  margin: 4px 0 0;
+  font-size: 11px;
+  line-height: 1.6;
+  color: var(--muted-foreground);
+}
+.dm-lead-fine a { color: var(--foreground); text-decoration: underline; text-underline-offset: 2px; }
+
+@media (max-width: 480px) {
+  .dm-lead { align-items: flex-end; padding: 0; }
+  .dm-lead-card { max-width: none; border-radius: var(--r-lg) var(--r-lg) 0 0; }
 }

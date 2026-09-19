@@ -24,6 +24,38 @@
   var submittedUrl = "";
   var phaseTimer = null;
 
+  // Lead-capture modal elements (mirrors the DESIGN.md generator's email gate).
+  var lead = document.getElementById("seoMdLead");
+  var leadForm = document.getElementById("seoMdLeadForm");
+  var leadUrl = document.getElementById("seoMdLeadUrl");
+  var leadEmail = document.getElementById("seoMdLeadEmail");
+  var leadAgree = document.getElementById("seoMdLeadAgree");
+  var leadError = document.getElementById("seoMdLeadError");
+  var leadSubmit = document.getElementById("seoMdLeadSubmit");
+  var leadSubmitLabel = leadSubmit && leadSubmit.querySelector(".dm-submit-label");
+  var leadSubmitLoading = leadSubmit && leadSubmit.querySelector(".dm-submit-loading");
+  var leadClose = document.getElementById("seoMdLeadClose");
+  var leadX = document.getElementById("seoMdLeadX");
+
+  var LEAD_STORAGE_KEY = "seo-md-lead-v1";
+  var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  function hasLead() {
+    try {
+      return !!window.localStorage.getItem(LEAD_STORAGE_KEY);
+    } catch (_error) {
+      return false;
+    }
+  }
+
+  function saveLead(email) {
+    try {
+      window.localStorage.setItem(LEAD_STORAGE_KEY, JSON.stringify({ email: email, ts: Date.now() }));
+    } catch (_error) {
+      /* private mode — fall through, the analysis still runs */
+    }
+  }
+
   function el(tag, className, text) {
     var node = document.createElement(tag);
     if (className) node.className = className;
@@ -103,7 +135,7 @@
         setPhase("running", "Reading titles, meta, Open Graph and structured data…");
       }, 1200),
       window.setTimeout(function () {
-        setPhase("finishing", "Scoring against the checklist and writing SEO.md…");
+        setPhase("finishing", "Scoring against the checklist and building the report…");
       }, 3200),
     ];
   }
@@ -152,20 +184,31 @@
     return value >= 80 ? "good" : value >= 55 ? "ok" : "bad";
   }
 
-  // One category meter: label, a proportional progress bar, and — when the
-  // server sent them — the individual pass/fail factors behind the score.
+  var BAND_LABEL = { good: "Strong", ok: "Needs work", bad: "Weak" };
+
+  // A conic-gradient donut whose fill tracks the score. Shared by the overall
+  // gauge and the smaller per-category rings via the `size` class suffix.
+  function ringGauge(value, cls, size) {
+    var ring = el("div", "seo-ring seo-ring-" + size + " seo-ring-" + cls);
+    ring.style.setProperty("--seo-val", Math.max(0, Math.min(100, value)) * 3.6 + "deg");
+    var inner = el("div", "seo-ring-inner");
+    inner.appendChild(el("strong", "", value));
+    ring.appendChild(inner);
+    return ring;
+  }
+
+  // One category meter: a mini score ring, a band label, and — when the server
+  // sent them — the individual pass/fail factors behind the score.
   function scoreMeter(label, value, factors, caption) {
     var cls = scoreClassFor(value);
-    var wrap = el("div", "seo-meter");
+    var wrap = el("div", "seo-meter seo-meter-" + cls);
     var head = el("div", "seo-meter-head");
-    head.appendChild(el("span", "seo-meter-label", label));
-    head.appendChild(el("b", "seo-meter-value seo-meter-value-" + cls, value));
+    head.appendChild(ringGauge(value, cls, "sm"));
+    var htext = el("div", "seo-meter-htext");
+    htext.appendChild(el("span", "seo-meter-label", label));
+    htext.appendChild(el("span", "seo-meter-band seo-meter-band-" + cls, BAND_LABEL[cls]));
+    head.appendChild(htext);
     wrap.appendChild(head);
-    var bar = el("div", "seo-bar");
-    var fill = el("i", "seo-bar-fill seo-bar-" + cls);
-    fill.style.width = Math.max(0, Math.min(100, value)) + "%";
-    bar.appendChild(fill);
-    wrap.appendChild(bar);
     if (Array.isArray(factors) && factors.length) {
       var list = el("ul", "seo-factors");
       factors.forEach(function (factor) {
@@ -350,12 +393,11 @@
       return p.path + (p.anchor ? " — " + p.anchor : "") + " (" + p.count + "×)";
     }));
     renderList("Navigation", (data.nav || []).map(function (n) { return n.label + " → " + n.path; }));
-    var disc = data.discovery || { llmsTxt: {}, seoMd: {}, sitemap: {} };
+    var disc = data.discovery || { llmsTxt: {}, sitemap: {} };
     renderFields("Discoverability", [
       ["Sections", (data.sections || []).map(function (s) { return s.label; }).join(", ")],
       ["Sitemap", disc.sitemap && disc.sitemap.found ? (disc.sitemap.count + (disc.sitemap.isIndex ? " child sitemaps" : " URLs")) : ""],
       ["llms.txt", disc.llmsTxt && disc.llmsTxt.found ? "found" : "not found"],
-      ["SEO.md", disc.seoMd && disc.seoMd.found ? "found" : "not found"],
     ]);
     renderList("Entities", (data.entities || []).map(function (e) { return e.type + ": " + e.name; }));
     renderAnswers(data.answers);
@@ -396,15 +438,106 @@
     renderResult(data);
   }
 
-  form.addEventListener("submit", function (event) {
-    event.preventDefault();
-    submitUrl(urlInput.value).catch(function (caught) {
+  function runAnalysis(value) {
+    submitUrl(value).catch(function (caught) {
       stopPhases();
       setBusy(false);
       progress.hidden = true;
       showError(caught.message || "The website could not be analyzed.");
     });
+  }
+
+  function openLead(prefillUrl) {
+    if (!lead) return;
+    leadError.hidden = true;
+    try {
+      leadUrl.value = normalizeUrl(prefillUrl);
+    } catch (_error) {
+      leadUrl.value = String(prefillUrl || "").trim();
+    }
+    lead.hidden = false;
+    lead.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+    (leadEmail || leadUrl).focus();
+  }
+
+  function closeLead() {
+    if (!lead) return;
+    lead.hidden = true;
+    lead.setAttribute("aria-hidden", "true");
+    document.body.style.overflow = "";
+  }
+
+  function setLeadBusy(busy) {
+    leadSubmit.disabled = busy;
+    if (leadSubmitLabel) leadSubmitLabel.hidden = busy;
+    if (leadSubmitLoading) leadSubmitLoading.hidden = !busy;
+  }
+
+  form.addEventListener("submit", function (event) {
+    event.preventDefault();
+    // First-time visitors trade an email for the analysis; after that the
+    // saved lead lets the tool run straight away.
+    if (lead && !hasLead()) {
+      clearError();
+      openLead(urlInput.value);
+      return;
+    }
+    runAnalysis(urlInput.value);
   });
+
+  if (leadForm) {
+    leadForm.addEventListener("submit", async function (event) {
+      event.preventDefault();
+      leadError.hidden = true;
+
+      var email = String(leadEmail.value || "").trim();
+      var targetUrl;
+      try {
+        targetUrl = normalizeUrl(leadUrl.value);
+      } catch (caught) {
+        leadError.textContent = caught.message;
+        leadError.hidden = false;
+        return;
+      }
+      if (!EMAIL_RE.test(email)) {
+        leadError.textContent = "Enter a valid email address.";
+        leadError.hidden = false;
+        return;
+      }
+      if (!leadAgree.checked) {
+        leadError.textContent = "Please agree to receive the free analysis.";
+        leadError.hidden = false;
+        return;
+      }
+
+      setLeadBusy(true);
+      try {
+        await jsonFetch("/api/seo-lead", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: email, url: targetUrl }),
+        });
+      } catch (caught) {
+        setLeadBusy(false);
+        leadError.textContent = caught.message || "Couldn't record your email. Try again.";
+        leadError.hidden = false;
+        return;
+      }
+
+      saveLead(email);
+      setLeadBusy(false);
+      closeLead();
+      urlInput.value = targetUrl;
+      runAnalysis(targetUrl);
+    });
+
+    if (leadClose) leadClose.addEventListener("click", closeLead);
+    if (leadX) leadX.addEventListener("click", closeLead);
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "Escape" && lead && !lead.hidden) closeLead();
+    });
+  }
 
   previewTab.addEventListener("click", function () {
     switchTab("preview");
@@ -430,11 +563,11 @@
   });
 
   download.addEventListener("click", function () {
-    var blob = new Blob([editor.value], { type: "text/markdown;charset=utf-8" });
+    var blob = new Blob([editor.value], { type: "text/plain;charset=utf-8" });
     var href = URL.createObjectURL(blob);
     var link = document.createElement("a");
     link.href = href;
-    link.download = "SEO.md";
+    link.download = "seo-report.txt";
     document.body.appendChild(link);
     link.click();
     link.remove();
