@@ -570,6 +570,56 @@
   text-wrap: pretty;
 }
 
+/* Collapsed evidence: the reader opens it only if they want to see the exact
+   sentences on the page behind a verdict. Pinned to the text column (col 2). */
+.tk-evi {
+  grid-column: 2;
+  margin-top: 8px;
+}
+.tk-evi-summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  width: fit-content;
+  padding: 3px 10px 3px 8px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-size: 12px;
+  color: var(--muted-foreground);
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+}
+.tk-evi-summary::-webkit-details-marker { display: none; }
+.tk-evi-summary::before {
+  content: "›";
+  display: inline-block;
+  font-size: 14px;
+  line-height: 1;
+  transition: transform 0.15s ease;
+}
+.tk-evi[open] > .tk-evi-summary::before { transform: rotate(90deg); }
+.tk-evi-summary:hover { color: var(--foreground); border-color: var(--foreground); }
+.tk-evi-list {
+  margin: 8px 0 2px;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 6px;
+}
+.tk-evi-item {
+  padding: 8px 11px;
+  border-left: 2px solid var(--border);
+  background: color-mix(in srgb, var(--muted) 45%, transparent);
+  border-radius: 0 6px 6px 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--foreground);
+  overflow-wrap: anywhere;
+}
+.tk-evi-item::before { content: "\201C"; }
+.tk-evi-item::after { content: "\201D"; }
+
 .tk-dims[data-filter="error"] .tk-check:not(.is-error),
 .tk-dims[data-filter="warn"] .tk-check:not(.is-warn),
 .tk-dims[data-filter="pass"] .tk-check:not(.is-pass) {

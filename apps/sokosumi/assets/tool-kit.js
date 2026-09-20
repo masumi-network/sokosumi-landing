@@ -77,6 +77,9 @@
         lines.push(d.label + ": " + d.score + "/100");
         (d.checks || []).forEach(function (c) {
           lines.push("  [" + c.level + "] " + c.title + " — " + c.detail);
+          (c.evidence || []).forEach(function (e) {
+            lines.push("      • " + e);
+          });
         });
         lines.push("");
       });
@@ -92,6 +95,19 @@
     function renderDim(dim) {
       var checksHtml = (dim.checks || [])
         .map(function (check) {
+          var evi = "";
+          if (check.evidence && check.evidence.length) {
+            var n = check.evidence.length;
+            var items = check.evidence
+              .map(function (e) { return '<li class="tk-evi-item">' + esc(e) + "</li>"; })
+              .join("");
+            evi =
+              '<details class="tk-evi"><summary class="tk-evi-summary">' +
+              (check.level === "pass" ? "Show examples" : "Show " + n + " example" + (n > 1 ? "s" : "")) +
+              " from the page</summary><ul class=\"tk-evi-list\">" +
+              items +
+              "</ul></details>";
+          }
           return (
             '<div class="tk-check is-' +
             check.level +
@@ -103,7 +119,9 @@
             esc(check.tag || "") +
             '</code></p><p class="tk-check-detail">' +
             esc(check.detail) +
-            "</p></div>"
+            "</p>" +
+            evi +
+            "</div>"
           );
         })
         .join("");
