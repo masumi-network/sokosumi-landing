@@ -1196,6 +1196,9 @@
   text-decoration: none;
   color: var(--foreground);
 }
+/* The card's own display:grid outranks the UA [hidden] rule, so filtering had
+   to hide cards explicitly — otherwise search/category filters did nothing. */
+.tools-list .tool-card[hidden] { display: none; }
 
 /* The preview stage. Light, hairlined, the same surface language as the rest
    of the site — the old ink panel was the heaviest thing on the page and it
