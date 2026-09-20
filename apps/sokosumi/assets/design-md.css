@@ -2049,3 +2049,28 @@
   font-size: 14px;
   color: var(--muted-foreground);
 }
+
+/* /tools category filter tabs — pill row under the search box. */
+.tools-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 22px;
+}
+.tools-tab {
+  padding: 7px 15px;
+  font: inherit;
+  font-size: 13.5px;
+  color: var(--muted-foreground);
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: color 0.12s ease, border-color 0.12s ease, background 0.12s ease;
+}
+.tools-tab:hover { color: var(--foreground); border-color: var(--foreground); }
+.tools-tab.is-active {
+  color: var(--background);
+  background: var(--foreground);
+  border-color: var(--foreground);
+}

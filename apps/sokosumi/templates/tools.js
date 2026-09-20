@@ -506,9 +506,38 @@ const TOOLS = [
   },
 ];
 
+// Filter-tab categories. Order here is the order the tabs render in.
+const TOOL_CATEGORIES = ["SEO", "Content", "Conversion", "Dev & Data"];
+const CATEGORY_BY_HREF = {
+  "/tools/llms-txt": "SEO",
+  "/tools/website-analyzer": "SEO",
+  "/tools/robots-txt-generator": "SEO",
+  "/tools/internal-linking-finder": "SEO",
+  "/tools/redirect-checker": "SEO",
+  "/tools/orphan-pages": "SEO",
+  "/tools/core-web-vitals": "SEO",
+  "/tools/ai-search-visibility": "SEO",
+  "/tools/schema-generator": "SEO",
+  "/tools/keyword-extractor": "SEO",
+  "/tools/keyword-clusters": "SEO",
+  "/tools/linkedin-post-checker": "Content",
+  "/tools/x-algorithm-analyzer": "Content",
+  "/tools/blog-to-social-week": "Content",
+  "/tools/hashtag-generator": "Content",
+  "/tools/case-study-outline": "Content",
+  "/tools/re-engagement-builder": "Content",
+  "/tools/landing-page-copy-analyzer": "Conversion",
+  "/tools/landing-page-teardown": "Conversion",
+  "/tools/competitor-positioning": "Conversion",
+  "/tools/og-checker": "Conversion",
+  "/tools/design-md": "Dev & Data",
+  "/tools/csv-dashboard": "Dev & Data",
+};
+const toolCat = (t) => CATEGORY_BY_HREF[t.href] || "Other";
+
 function toolCard(t) {
   const hay = `${t.name} ${t.text} ${t.meta || ""}`.toLowerCase();
-  return `<a class="card tool-card" href="${attr(t.href)}" data-search="${attr(hay)}">
+  return `<a class="card tool-card" href="${attr(t.href)}" data-search="${attr(hay)}" data-cat="${attr(toolCat(t))}">
     <span class="tool-card-doc" aria-hidden="true">${t.preview()}</span>
     <span class="tool-card-copy">
       <span class="eyebrow">${esc(t.meta)}</span>
@@ -545,6 +574,12 @@ function render() {
       <div class="tools-search">
         <svg class="tools-search-ico" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         <input type="search" id="toolsSearch" class="tools-search-input" placeholder="Search tools by name or keyword…" aria-label="Search tools" autocomplete="off" spellcheck="false" />
+      </div>
+      <div class="tools-tabs" id="toolsTabs" role="tablist" aria-label="Filter tools by category">
+        <button class="tools-tab is-active" type="button" data-cat="" role="tab" aria-selected="true">All</button>
+        ${TOOL_CATEGORIES.map(
+          (c) => `<button class="tools-tab" type="button" data-cat="${attr(c)}" role="tab" aria-selected="false">${esc(c)}</button>`,
+        ).join("")}
       </div>
       <div class="${shell.gridCls(TOOLS.length)} tools-list">${TOOLS.map(toolCard).join("")}</div>
       <p class="tools-search-empty" id="toolsSearchEmpty" hidden>No tools match your search.</p>

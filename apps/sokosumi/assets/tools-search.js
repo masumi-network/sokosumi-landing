@@ -1,25 +1,45 @@
-/* /tools — live client-side filter over the tool cards. Matches the typed
- * query against each card's data-search (name + description + meta). */
+/* /tools — live client-side filtering. Cards show when they match BOTH the
+ * active category tab and the typed search query (name + description + meta). */
 (function () {
   "use strict";
   var input = document.getElementById("toolsSearch");
-  if (!input) return;
+  var tabsEl = document.getElementById("toolsTabs");
+  if (!input && !tabsEl) return;
   var empty = document.getElementById("toolsSearchEmpty");
   var cards = Array.prototype.slice.call(document.querySelectorAll(".tool-card"));
+  var activeCat = "";
 
   function apply() {
-    var q = input.value.trim().toLowerCase();
+    var q = input ? input.value.trim().toLowerCase() : "";
     var shown = 0;
     for (var i = 0; i < cards.length; i++) {
-      var hay = cards[i].getAttribute("data-search") || "";
-      var match = !q || hay.indexOf(q) !== -1;
-      cards[i].hidden = !match;
-      if (match) shown++;
+      var card = cards[i];
+      var matchQ = !q || (card.getAttribute("data-search") || "").indexOf(q) !== -1;
+      var matchCat = !activeCat || card.getAttribute("data-cat") === activeCat;
+      var show = matchQ && matchCat;
+      card.hidden = !show;
+      if (show) shown++;
     }
     if (empty) empty.hidden = shown !== 0;
   }
 
-  input.addEventListener("input", apply);
-  // Clearing via the native search "x" fires "search"; keep the list in sync.
-  input.addEventListener("search", apply);
+  if (input) {
+    input.addEventListener("input", apply);
+    input.addEventListener("search", apply);
+  }
+
+  if (tabsEl) {
+    var tabs = Array.prototype.slice.call(tabsEl.querySelectorAll(".tools-tab"));
+    tabsEl.addEventListener("click", function (event) {
+      var btn = event.target.closest(".tools-tab");
+      if (!btn) return;
+      activeCat = btn.getAttribute("data-cat") || "";
+      for (var i = 0; i < tabs.length; i++) {
+        var on = tabs[i] === btn;
+        tabs[i].classList.toggle("is-active", on);
+        tabs[i].setAttribute("aria-selected", on ? "true" : "false");
+      }
+      apply();
+    });
+  }
 })();
