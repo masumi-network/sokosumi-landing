@@ -571,15 +571,17 @@ function render() {
       <p class="sub">Small, single-purpose tools we built for our own marketing and design work. No sign-up, no credits, nothing to install.</p>
     </div>
     <section class="page-section flush" data-reveal aria-label="Tools">
-      <div class="tools-search">
-        <svg class="tools-search-ico" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="search" id="toolsSearch" class="tools-search-input" placeholder="Search tools by name or keyword…" aria-label="Search tools" autocomplete="off" spellcheck="false" />
-      </div>
-      <div class="tools-tabs" id="toolsTabs" role="tablist" aria-label="Filter tools by category">
-        <button class="tools-tab is-active" type="button" data-cat="" role="tab" aria-selected="true">All</button>
-        ${TOOL_CATEGORIES.map(
-          (c) => `<button class="tools-tab" type="button" data-cat="${attr(c)}" role="tab" aria-selected="false">${esc(c)}</button>`,
-        ).join("")}
+      <div class="tools-controls">
+        <div class="tools-search">
+          <svg class="tools-search-ico" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="search" id="toolsSearch" class="tools-search-input" placeholder="Search tools…" aria-label="Search tools" autocomplete="off" spellcheck="false" />
+        </div>
+        <div class="tools-tabs" id="toolsTabs" role="tablist" aria-label="Filter tools by category">
+          <button class="tools-tab is-active" type="button" data-cat="" role="tab" aria-selected="true">All</button>
+          ${TOOL_CATEGORIES.map(
+            (c) => `<button class="tools-tab" type="button" data-cat="${attr(c)}" role="tab" aria-selected="false">${esc(c)}</button>`,
+          ).join("")}
+        </div>
       </div>
       <div class="${shell.gridCls(TOOLS.length)} tools-list">${TOOLS.map(toolCard).join("")}</div>
       <p class="tools-search-empty" id="toolsSearchEmpty" hidden>No tools match your search.</p>

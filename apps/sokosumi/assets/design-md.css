@@ -2015,11 +2015,18 @@
    past the first twelve they are hidden until "Show all". */
 .dm-gallery.is-collapsed > :nth-child(n + 13) { display: none; }
 
-/* /tools search box — a live filter over the tool cards. */
+/* /tools controls — search box on the left, category tabs filling the right. */
+.tools-controls {
+  display: flex;
+  align-items: center;
+  gap: 16px 20px;
+  flex-wrap: wrap;
+  margin: 0 0 22px;
+}
 .tools-search {
   position: relative;
-  margin: 0 0 20px;
-  max-width: 460px;
+  flex: 0 1 320px;
+  margin: 0;
 }
 .tools-search-ico {
   position: absolute;
@@ -2055,7 +2062,13 @@
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin: 0 0 22px;
+  margin: 0;
+  flex: 1 1 auto;
+  justify-content: flex-end;
+}
+@media (max-width: 640px) {
+  .tools-search { flex-basis: 100%; }
+  .tools-tabs { justify-content: flex-start; }
 }
 .tools-tab {
   padding: 7px 15px;
