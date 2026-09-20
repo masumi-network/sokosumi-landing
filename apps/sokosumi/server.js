@@ -47,34 +47,17 @@ const llmsTxtTpl = require("./templates/llmsTxt");
 const llmsCheck = require("./lib/llmsCheck");
 const postCheckerTpl = require("./templates/postChecker");
 const postCheck = require("./lib/postCheck");
-const imageAuditTpl = require("./templates/imageAudit");
-const imageAudit = require("./lib/imageAudit");
-const utmBuilderTpl = require("./templates/utmBuilder");
 const robotsGeneratorTpl = require("./templates/robotsGenerator");
-const headlineCheckerTpl = require("./templates/headlineChecker");
-const headlineCheck = require("./lib/headlineCheck");
-const qrCodeGeneratorTpl = require("./templates/qrCodeGenerator");
-const qrCode = require("./lib/qrCode");
 const landingCopyCheckerTpl = require("./templates/landingCopyChecker");
 const landingCopyCheck = require("./lib/landingCopyCheck");
 const xAlgorithmCheckerTpl = require("./templates/xAlgorithmChecker");
 const xAlgorithmCheck = require("./lib/xAlgorithmCheck");
-const brandVoiceCheckerTpl = require("./templates/brandVoiceChecker");
-const brandVoiceCheck = require("./lib/brandVoiceCheck");
 const landingTeardownCheckerTpl = require("./templates/landingTeardownChecker");
 const landingTeardownCheck = require("./lib/landingTeardownCheck");
 const competitorPositioningCheckerTpl = require("./templates/competitorPositioningChecker");
 const competitorPositioningCheck = require("./lib/competitorPositioningCheck");
-const competitorMessagingCheckerTpl = require("./templates/competitorMessagingChecker");
-const competitorMessagingCheck = require("./lib/competitorMessagingCheck");
-const competitorFeatureGapCheckerTpl = require("./templates/competitorFeatureGapChecker");
-const competitorFeatureGapCheck = require("./lib/competitorFeatureGapCheck");
-const answerReadinessCheckerTpl = require("./templates/answerReadinessChecker");
-const answerReadinessCheck = require("./lib/answerReadinessCheck");
 const internalLinkingCheckerTpl = require("./templates/internalLinkingChecker");
 const internalLinkingCheck = require("./lib/internalLinkingCheck");
-const blogToCarouselCheckerTpl = require("./templates/blogToCarouselChecker");
-const blogToCarouselCheck = require("./lib/blogToCarouselCheck");
 const blogToSocialWeekCheckerTpl = require("./templates/blogToSocialWeekChecker");
 const blogToSocialWeekCheck = require("./lib/blogToSocialWeekCheck");
 const keywordExtractorTpl = require("./templates/keywordExtractor");
@@ -88,12 +71,8 @@ const redirectCheckerTpl = require("./templates/redirectChecker");
 const redirectCheck = require("./lib/redirectCheck");
 const orphanPageFinderTpl = require("./templates/orphanPageFinder");
 const orphanPageCheck = require("./lib/orphanPageCheck");
-const contentDecayDetectorTpl = require("./templates/contentDecayDetector");
-const contentDecayCheck = require("./lib/contentDecayCheck");
 const coreWebVitalsExplainerTpl = require("./templates/coreWebVitalsExplainer");
 const coreWebVitalsCheck = require("./lib/coreWebVitalsCheck");
-const codePilerTpl = require("./templates/codePiler");
-const codePilerCheck = require("./lib/codePilerCheck");
 const aiSearchVisibilityCheckerTpl = require("./templates/aiSearchVisibilityChecker");
 const aiSearchVisibilityCheck = require("./lib/aiSearchVisibilityCheck");
 
@@ -137,22 +116,14 @@ const postCheckRequests = new Map();
 // This is the most expensive tool on the site — up to 20 page fetches plus a
 // handful of image probes per run, all inside one request — so its ceiling
 // is the lowest of any of them.
-const IMAGE_AUDIT_RATE_LIMIT = Number(process.env.IMAGE_AUDIT_RATE_LIMIT) || 6;
-const imageAuditRequests = new Map();
 // Pure in-process text scoring, no fetch — same cost profile as the other
 // text checkers, so the same generous ceiling.
-const HEADLINE_CHECK_RATE_LIMIT = Number(process.env.HEADLINE_CHECK_RATE_LIMIT) || 40;
-const headlineCheckRequests = new Map();
 // Cheap, in-process image encoding, no fetch — generous ceiling.
-const QR_CODE_RATE_LIMIT = Number(process.env.QR_CODE_RATE_LIMIT) || 40;
-const qrCodeRequests = new Map();
 // Pure in-process text scoring, no fetch — same ceiling as the headline checker.
 const LANDING_COPY_CHECK_RATE_LIMIT = Number(process.env.LANDING_COPY_CHECK_RATE_LIMIT) || 40;
 const landingCopyCheckRequests = new Map();
 const X_ALGORITHM_CHECK_RATE_LIMIT = Number(process.env.X_ALGORITHM_CHECK_RATE_LIMIT) || 40;
 const xAlgorithmCheckRequests = new Map();
-const BRAND_VOICE_CHECK_RATE_LIMIT = Number(process.env.BRAND_VOICE_CHECK_RATE_LIMIT) || 30;
-const brandVoiceCheckRequests = new Map();
 // One page fetch, same cost profile as the OG checker / llms.txt checker.
 const LANDING_TEARDOWN_CHECK_RATE_LIMIT = Number(process.env.LANDING_TEARDOWN_CHECK_RATE_LIMIT) || 30;
 const landingTeardownCheckRequests = new Map();
@@ -160,17 +131,9 @@ const landingTeardownCheckRequests = new Map();
 const COMPETITOR_POSITIONING_CHECK_RATE_LIMIT = Number(process.env.COMPETITOR_POSITIONING_CHECK_RATE_LIMIT) || 15;
 const competitorPositioningCheckRequests = new Map();
 // Up to 5 page fetches per request.
-const COMPETITOR_MESSAGING_CHECK_RATE_LIMIT = Number(process.env.COMPETITOR_MESSAGING_CHECK_RATE_LIMIT) || 10;
-const competitorMessagingCheckRequests = new Map();
-const COMPETITOR_FEATURE_GAP_CHECK_RATE_LIMIT = Number(process.env.COMPETITOR_FEATURE_GAP_CHECK_RATE_LIMIT) || 10;
-const competitorFeatureGapCheckRequests = new Map();
-const ANSWER_READINESS_CHECK_RATE_LIMIT = Number(process.env.ANSWER_READINESS_CHECK_RATE_LIMIT) || 30;
-const answerReadinessCheckRequests = new Map();
 // Crawls up to 12 pages per request — a much lower ceiling than a single fetch.
 const INTERNAL_LINKING_CHECK_RATE_LIMIT = Number(process.env.INTERNAL_LINKING_CHECK_RATE_LIMIT) || 8;
 const internalLinkingCheckRequests = new Map();
-const BLOG_TO_CAROUSEL_CHECK_RATE_LIMIT = Number(process.env.BLOG_TO_CAROUSEL_CHECK_RATE_LIMIT) || 20;
-const blogToCarouselCheckRequests = new Map();
 const BLOG_TO_SOCIAL_WEEK_CHECK_RATE_LIMIT = Number(process.env.BLOG_TO_SOCIAL_WEEK_CHECK_RATE_LIMIT) || 20;
 const blogToSocialWeekCheckRequests = new Map();
 // Crawls seed pages plus up to 40 link checks per request — a low ceiling.
@@ -179,15 +142,11 @@ const redirectCheckRequests = new Map();
 const ORPHAN_PAGES_CHECK_RATE_LIMIT = Number(process.env.ORPHAN_PAGES_CHECK_RATE_LIMIT) || 8;
 const orphanPageCheckRequests = new Map();
 // Up to 20 page fetches per request.
-const CONTENT_DECAY_CHECK_RATE_LIMIT = Number(process.env.CONTENT_DECAY_CHECK_RATE_LIMIT) || 8;
-const contentDecayCheckRequests = new Map();
 const CORE_WEB_VITALS_CHECK_RATE_LIMIT = Number(process.env.CORE_WEB_VITALS_CHECK_RATE_LIMIT) || 30;
 const coreWebVitalsCheckRequests = new Map();
 // GitHub's unauthenticated 60 req/hour limit is shared across every visitor
 // hitting this tool from our server's IP (3 GitHub calls per analysis), so
 // this ceiling is much lower than the other checkers'.
-const CODEPILER_CHECK_RATE_LIMIT = Number(process.env.CODEPILER_CHECK_RATE_LIMIT) || 10;
-const codePilerCheckRequests = new Map();
 const AI_SEARCH_VISIBILITY_CHECK_RATE_LIMIT = Number(process.env.AI_SEARCH_VISIBILITY_CHECK_RATE_LIMIT) || 20;
 const aiSearchVisibilityCheckRequests = new Map();
 
@@ -307,25 +266,15 @@ const seoLeadRateLimited = (ip) => hourlyRateLimited(seoLeadRequests, SEO_LEAD_R
 const ogCheckRateLimited = (ip) => hourlyRateLimited(ogCheckRequests, OG_CHECK_RATE_LIMIT, ip);
 const llmsCheckRateLimited = (ip) => hourlyRateLimited(llmsCheckRequests, LLMS_CHECK_RATE_LIMIT, ip);
 const postCheckRateLimited = (ip) => hourlyRateLimited(postCheckRequests, POST_CHECK_RATE_LIMIT, ip);
-const imageAuditRateLimited = (ip) => hourlyRateLimited(imageAuditRequests, IMAGE_AUDIT_RATE_LIMIT, ip);
-const headlineCheckRateLimited = (ip) => hourlyRateLimited(headlineCheckRequests, HEADLINE_CHECK_RATE_LIMIT, ip);
-const qrCodeRateLimited = (ip) => hourlyRateLimited(qrCodeRequests, QR_CODE_RATE_LIMIT, ip);
 const landingCopyCheckRateLimited = (ip) => hourlyRateLimited(landingCopyCheckRequests, LANDING_COPY_CHECK_RATE_LIMIT, ip);
 const xAlgorithmCheckRateLimited = (ip) => hourlyRateLimited(xAlgorithmCheckRequests, X_ALGORITHM_CHECK_RATE_LIMIT, ip);
-const brandVoiceCheckRateLimited = (ip) => hourlyRateLimited(brandVoiceCheckRequests, BRAND_VOICE_CHECK_RATE_LIMIT, ip);
 const landingTeardownCheckRateLimited = (ip) => hourlyRateLimited(landingTeardownCheckRequests, LANDING_TEARDOWN_CHECK_RATE_LIMIT, ip);
 const competitorPositioningCheckRateLimited = (ip) => hourlyRateLimited(competitorPositioningCheckRequests, COMPETITOR_POSITIONING_CHECK_RATE_LIMIT, ip);
-const competitorMessagingCheckRateLimited = (ip) => hourlyRateLimited(competitorMessagingCheckRequests, COMPETITOR_MESSAGING_CHECK_RATE_LIMIT, ip);
-const competitorFeatureGapCheckRateLimited = (ip) => hourlyRateLimited(competitorFeatureGapCheckRequests, COMPETITOR_FEATURE_GAP_CHECK_RATE_LIMIT, ip);
-const answerReadinessCheckRateLimited = (ip) => hourlyRateLimited(answerReadinessCheckRequests, ANSWER_READINESS_CHECK_RATE_LIMIT, ip);
 const internalLinkingCheckRateLimited = (ip) => hourlyRateLimited(internalLinkingCheckRequests, INTERNAL_LINKING_CHECK_RATE_LIMIT, ip);
-const blogToCarouselCheckRateLimited = (ip) => hourlyRateLimited(blogToCarouselCheckRequests, BLOG_TO_CAROUSEL_CHECK_RATE_LIMIT, ip);
 const blogToSocialWeekCheckRateLimited = (ip) => hourlyRateLimited(blogToSocialWeekCheckRequests, BLOG_TO_SOCIAL_WEEK_CHECK_RATE_LIMIT, ip);
 const redirectCheckRateLimited = (ip) => hourlyRateLimited(redirectCheckRequests, REDIRECT_CHECK_RATE_LIMIT, ip);
 const orphanPageCheckRateLimited = (ip) => hourlyRateLimited(orphanPageCheckRequests, ORPHAN_PAGES_CHECK_RATE_LIMIT, ip);
-const contentDecayCheckRateLimited = (ip) => hourlyRateLimited(contentDecayCheckRequests, CONTENT_DECAY_CHECK_RATE_LIMIT, ip);
 const coreWebVitalsCheckRateLimited = (ip) => hourlyRateLimited(coreWebVitalsCheckRequests, CORE_WEB_VITALS_CHECK_RATE_LIMIT, ip);
-const codePilerCheckRateLimited = (ip) => hourlyRateLimited(codePilerCheckRequests, CODEPILER_CHECK_RATE_LIMIT, ip);
 const aiSearchVisibilityCheckRateLimited = (ip) => hourlyRateLimited(aiSearchVisibilityCheckRequests, AI_SEARCH_VISIBILITY_CHECK_RATE_LIMIT, ip);
 
 async function designMdFetch(pathname, options = {}) {
@@ -801,21 +750,12 @@ const routes = [
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "linkedin-post-checker" && {}, h: postCheckerTpl.render },
   // renamed from /tools/social-post-checker — 301 so old links and the indexed footprint carry over
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "social-post-checker" && {}, h: () => ({ redirect: "/tools/linkedin-post-checker" }) },
-  { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "image-audit" && {}, h: imageAuditTpl.render },
-  { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "utm-builder" && {}, h: utmBuilderTpl.render },
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "robots-txt-generator" && {}, h: robotsGeneratorTpl.render },
-  { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "headline-analyzer" && {}, h: headlineCheckerTpl.render },
-  { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "qr-code-generator" && {}, h: qrCodeGeneratorTpl.render },
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "landing-page-copy-analyzer" && {}, h: landingCopyCheckerTpl.render },
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "x-algorithm-analyzer" && {}, h: xAlgorithmCheckerTpl.render },
-  { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "brand-voice-analyzer" && {}, h: brandVoiceCheckerTpl.render },
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "landing-page-teardown" && {}, h: landingTeardownCheckerTpl.render },
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "competitor-positioning" && {}, h: competitorPositioningCheckerTpl.render },
-  { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "competitor-messaging" && {}, h: competitorMessagingCheckerTpl.render },
-  { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "competitor-feature-gap" && {}, h: competitorFeatureGapCheckerTpl.render },
-  { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "answer-readiness" && {}, h: answerReadinessCheckerTpl.render },
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "internal-linking-finder" && {}, h: internalLinkingCheckerTpl.render },
-  { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "blog-to-carousel" && {}, h: blogToCarouselCheckerTpl.render },
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "blog-to-social-week" && {}, h: blogToSocialWeekCheckerTpl.render },
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "keyword-extractor" && {}, h: keywordExtractorTpl.render },
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "hashtag-generator" && {}, h: hashtagGeneratorTpl.render },
@@ -826,9 +766,7 @@ const routes = [
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "csv-dashboard" && {}, h: csvDashboardTpl.render },
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "redirect-checker" && {}, h: redirectCheckerTpl.render },
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "orphan-pages" && {}, h: orphanPageFinderTpl.render },
-  { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "content-decay" && {}, h: contentDecayDetectorTpl.render },
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "core-web-vitals" && {}, h: coreWebVitalsExplainerTpl.render },
-  { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "codepiler" && {}, h: codePilerTpl.render },
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "ai-search-visibility" && {}, h: aiSearchVisibilityCheckerTpl.render },
   { m: (s) => s.length === 1 && s[0] === "product" && {}, h: pagesTpl.productHub },
   { m: (s) => s.length === 1 && s[0] === "pricing" && {}, h: pricingTpl.render },
@@ -1411,52 +1349,6 @@ const assetsDir = path.join(root, "assets");
           }
         }
 
-        if (urlPath === "/api/image-audit" && req.method === "POST") {
-          const jsonHead = { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" };
-          let body;
-          try {
-            body = await readJsonBody(req);
-          } catch (error) {
-            const message = error.message === "too-large" ? "The request is too large." : "Send a valid JSON request.";
-            return send(req, res, 400, jsonHead, JSON.stringify({ error: message }));
-          }
-          const targetUrl = publicWebsiteUrl(body.url);
-          if (!targetUrl) {
-            return send(req, res, 400, jsonHead, JSON.stringify({ error: "Enter a complete public website URL." }));
-          }
-          if (imageAuditRateLimited(clientIp(req))) {
-            return send(req, res, 429, { ...jsonHead, "Retry-After": "3600" }, JSON.stringify({ error: "You have reached the hourly limit. Try again later." }));
-          }
-          try {
-            const data = await imageAudit.analyze(targetUrl);
-            return send(req, res, 200, jsonHead, JSON.stringify(data));
-          } catch (error) {
-            const status = error.status && error.status >= 400 && error.status < 600 ? error.status : 502;
-            return send(req, res, status, jsonHead, JSON.stringify({ error: error.message || "That site could not be audited. Try again." }));
-          }
-        }
-
-        if (urlPath === "/api/headline-check" && req.method === "POST") {
-          const jsonHead = { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" };
-          let body;
-          try {
-            body = await readJsonBody(req, 8192);
-          } catch (error) {
-            const message = error.message === "too-large" ? "The request is too large." : "Send a valid JSON request.";
-            return send(req, res, 400, jsonHead, JSON.stringify({ error: message }));
-          }
-          if (headlineCheckRateLimited(clientIp(req))) {
-            return send(req, res, 429, { ...jsonHead, "Retry-After": "3600" }, JSON.stringify({ error: "You have reached the hourly limit. Try again later." }));
-          }
-          try {
-            const data = headlineCheck.analyze(body);
-            return send(req, res, 200, jsonHead, JSON.stringify(data));
-          } catch (error) {
-            const status = error.status && error.status >= 400 && error.status < 600 ? error.status : 500;
-            return send(req, res, status, jsonHead, JSON.stringify({ error: error.message || "That check did not work. Try again." }));
-          }
-        }
-
         if (urlPath === "/api/landing-copy-check" && req.method === "POST") {
           const jsonHead = { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" };
           let body;
@@ -1492,27 +1384,6 @@ const assetsDir = path.join(root, "assets");
           }
           try {
             const data = xAlgorithmCheck.analyze(body);
-            return send(req, res, 200, jsonHead, JSON.stringify(data));
-          } catch (error) {
-            const status = error.status && error.status >= 400 && error.status < 600 ? error.status : 500;
-            return send(req, res, status, jsonHead, JSON.stringify({ error: error.message || "That check did not work. Try again." }));
-          }
-        }
-
-        if (urlPath === "/api/brand-voice-check" && req.method === "POST") {
-          const jsonHead = { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" };
-          let body;
-          try {
-            body = await readJsonBody(req, 20480);
-          } catch (error) {
-            const message = error.message === "too-large" ? "The request is too large." : "Send a valid JSON request.";
-            return send(req, res, 400, jsonHead, JSON.stringify({ error: message }));
-          }
-          if (brandVoiceCheckRateLimited(clientIp(req))) {
-            return send(req, res, 429, { ...jsonHead, "Retry-After": "3600" }, JSON.stringify({ error: "You have reached the hourly limit. Try again later." }));
-          }
-          try {
-            const data = brandVoiceCheck.analyze(body);
             return send(req, res, 200, jsonHead, JSON.stringify(data));
           } catch (error) {
             const status = error.status && error.status >= 400 && error.status < 600 ? error.status : 500;
@@ -1562,69 +1433,6 @@ const assetsDir = path.join(root, "assets");
           }
         }
 
-        if (urlPath === "/api/competitor-messaging-check" && req.method === "POST") {
-          const jsonHead = { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" };
-          let body;
-          try {
-            body = await readJsonBody(req, 4096);
-          } catch (error) {
-            const message = error.message === "too-large" ? "The request is too large." : "Send a valid JSON request.";
-            return send(req, res, 400, jsonHead, JSON.stringify({ error: message }));
-          }
-          if (competitorMessagingCheckRateLimited(clientIp(req))) {
-            return send(req, res, 429, { ...jsonHead, "Retry-After": "3600" }, JSON.stringify({ error: "You have reached the hourly limit. Try again later." }));
-          }
-          try {
-            const data = await competitorMessagingCheck.analyze(body);
-            return send(req, res, 200, jsonHead, JSON.stringify(data));
-          } catch (error) {
-            const status = error.status && error.status >= 400 && error.status < 600 ? error.status : 500;
-            return send(req, res, status, jsonHead, JSON.stringify({ error: error.message || "That check did not work. Try again." }));
-          }
-        }
-
-        if (urlPath === "/api/competitor-feature-gap-check" && req.method === "POST") {
-          const jsonHead = { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" };
-          let body;
-          try {
-            body = await readJsonBody(req, 4096);
-          } catch (error) {
-            const message = error.message === "too-large" ? "The request is too large." : "Send a valid JSON request.";
-            return send(req, res, 400, jsonHead, JSON.stringify({ error: message }));
-          }
-          if (competitorFeatureGapCheckRateLimited(clientIp(req))) {
-            return send(req, res, 429, { ...jsonHead, "Retry-After": "3600" }, JSON.stringify({ error: "You have reached the hourly limit. Try again later." }));
-          }
-          try {
-            const data = await competitorFeatureGapCheck.analyze(body);
-            return send(req, res, 200, jsonHead, JSON.stringify(data));
-          } catch (error) {
-            const status = error.status && error.status >= 400 && error.status < 600 ? error.status : 500;
-            return send(req, res, status, jsonHead, JSON.stringify({ error: error.message || "That check did not work. Try again." }));
-          }
-        }
-
-        if (urlPath === "/api/answer-readiness-check" && req.method === "POST") {
-          const jsonHead = { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" };
-          let body;
-          try {
-            body = await readJsonBody(req, 4096);
-          } catch (error) {
-            const message = error.message === "too-large" ? "The request is too large." : "Send a valid JSON request.";
-            return send(req, res, 400, jsonHead, JSON.stringify({ error: message }));
-          }
-          if (answerReadinessCheckRateLimited(clientIp(req))) {
-            return send(req, res, 429, { ...jsonHead, "Retry-After": "3600" }, JSON.stringify({ error: "You have reached the hourly limit. Try again later." }));
-          }
-          try {
-            const data = await answerReadinessCheck.analyze(body);
-            return send(req, res, 200, jsonHead, JSON.stringify(data));
-          } catch (error) {
-            const status = error.status && error.status >= 400 && error.status < 600 ? error.status : 500;
-            return send(req, res, status, jsonHead, JSON.stringify({ error: error.message || "That check did not work. Try again." }));
-          }
-        }
-
         if (urlPath === "/api/internal-linking-check" && req.method === "POST") {
           const jsonHead = { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" };
           let body;
@@ -1639,27 +1447,6 @@ const assetsDir = path.join(root, "assets");
           }
           try {
             const data = await internalLinkingCheck.analyze(body);
-            return send(req, res, 200, jsonHead, JSON.stringify(data));
-          } catch (error) {
-            const status = error.status && error.status >= 400 && error.status < 600 ? error.status : 500;
-            return send(req, res, status, jsonHead, JSON.stringify({ error: error.message || "That check did not work. Try again." }));
-          }
-        }
-
-        if (urlPath === "/api/blog-to-carousel-check" && req.method === "POST") {
-          const jsonHead = { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" };
-          let body;
-          try {
-            body = await readJsonBody(req, 4096);
-          } catch (error) {
-            const message = error.message === "too-large" ? "The request is too large." : "Send a valid JSON request.";
-            return send(req, res, 400, jsonHead, JSON.stringify({ error: message }));
-          }
-          if (blogToCarouselCheckRateLimited(clientIp(req))) {
-            return send(req, res, 429, { ...jsonHead, "Retry-After": "3600" }, JSON.stringify({ error: "You have reached the hourly limit. Try again later." }));
-          }
-          try {
-            const data = await blogToCarouselCheck.analyze(body);
             return send(req, res, 200, jsonHead, JSON.stringify(data));
           } catch (error) {
             const status = error.status && error.status >= 400 && error.status < 600 ? error.status : 500;
@@ -1730,27 +1517,6 @@ const assetsDir = path.join(root, "assets");
           }
         }
 
-        if (urlPath === "/api/content-decay-check" && req.method === "POST") {
-          const jsonHead = { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" };
-          let body;
-          try {
-            body = await readJsonBody(req, 4096);
-          } catch (error) {
-            const message = error.message === "too-large" ? "The request is too large." : "Send a valid JSON request.";
-            return send(req, res, 400, jsonHead, JSON.stringify({ error: message }));
-          }
-          if (contentDecayCheckRateLimited(clientIp(req))) {
-            return send(req, res, 429, { ...jsonHead, "Retry-After": "3600" }, JSON.stringify({ error: "You have reached the hourly limit. Try again later." }));
-          }
-          try {
-            const data = await contentDecayCheck.analyze(body);
-            return send(req, res, 200, jsonHead, JSON.stringify(data));
-          } catch (error) {
-            const status = error.status && error.status >= 400 && error.status < 600 ? error.status : 500;
-            return send(req, res, status, jsonHead, JSON.stringify({ error: error.message || "That check did not work. Try again." }));
-          }
-        }
-
         if (urlPath === "/api/core-web-vitals-check" && req.method === "POST") {
           const jsonHead = { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" };
           let body;
@@ -1765,27 +1531,6 @@ const assetsDir = path.join(root, "assets");
           }
           try {
             const data = await coreWebVitalsCheck.analyze(body);
-            return send(req, res, 200, jsonHead, JSON.stringify(data));
-          } catch (error) {
-            const status = error.status && error.status >= 400 && error.status < 600 ? error.status : 500;
-            return send(req, res, status, jsonHead, JSON.stringify({ error: error.message || "That check did not work. Try again." }));
-          }
-        }
-
-        if (urlPath === "/api/codepiler-check" && req.method === "POST") {
-          const jsonHead = { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" };
-          let body;
-          try {
-            body = await readJsonBody(req, 2048);
-          } catch (error) {
-            const message = error.message === "too-large" ? "The request is too large." : "Send a valid JSON request.";
-            return send(req, res, 400, jsonHead, JSON.stringify({ error: message }));
-          }
-          if (codePilerCheckRateLimited(clientIp(req))) {
-            return send(req, res, 429, { ...jsonHead, "Retry-After": "3600" }, JSON.stringify({ error: "You have reached the hourly limit. Try again later." }));
-          }
-          try {
-            const data = await codePilerCheck.analyze(body);
             return send(req, res, 200, jsonHead, JSON.stringify(data));
           } catch (error) {
             const status = error.status && error.status >= 400 && error.status < 600 ? error.status : 500;
@@ -1811,30 +1556,6 @@ const assetsDir = path.join(root, "assets");
           } catch (error) {
             const status = error.status && error.status >= 400 && error.status < 600 ? error.status : 500;
             return send(req, res, status, jsonHead, JSON.stringify({ error: error.message || "That check did not work. Try again." }));
-          }
-        }
-
-        if (urlPath === "/api/qr-code") {
-          const jsonHead = { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" };
-          if (req.method !== "GET" && req.method !== "HEAD") {
-            return send(req, res, 405, jsonHead, JSON.stringify({ error: "Use GET." }));
-          }
-          if (qrCodeRateLimited(clientIp(req))) {
-            return send(req, res, 429, { ...jsonHead, "Retry-After": "3600" }, JSON.stringify({ error: "You have reached the hourly limit. Try again later." }));
-          }
-          const query = new URL(req.url, "http://x").searchParams;
-          try {
-            const result = await qrCode.generate(query.get("data"), {
-              format: query.get("format"),
-              size: query.get("size"),
-              ecLevel: query.get("ec"),
-              fg: query.get("fg"),
-              bg: query.get("bg"),
-            });
-            return send(req, res, 200, { "Content-Type": result.mime, "Cache-Control": "no-store" }, result.body);
-          } catch (error) {
-            const status = error.status && error.status >= 400 && error.status < 600 ? error.status : 500;
-            return send(req, res, status, jsonHead, JSON.stringify({ error: error.message || "That code could not be generated. Try again." }));
           }
         }
 

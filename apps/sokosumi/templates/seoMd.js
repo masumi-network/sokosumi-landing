@@ -4,14 +4,14 @@ const { esc, pageStart, pageEnd, SITE } = shell;
 
 const FAQ = [
   {
-    question: "What's in the SEO report?",
+    question: "What's in the Website report?",
     answer:
       "A structured breakdown of a page's real search signals — title, meta description, canonical, Open Graph, structured data, heading structure, keywords, brand entities, navigation and indexing rules — plus SEO, content, brand-clarity and AI-readiness scores and prioritized fixes. Read it on screen, copy it, or download it.",
   },
   {
     question: "How does the Website Analyzer work?",
     answer:
-      "Paste a public URL. The analyzer fetches the page and its robots.txt on the server, parses the on-page SEO signals directly from the HTML, scores them against best-practice rules, and produces a structured SEO report you can review, edit, copy, or download. No sign-up, no browser extension, no API key.",
+      "Paste a public URL. The analyzer fetches the page and its robots.txt on the server, parses the on-page SEO signals directly from the HTML, scores them against best-practice rules, and produces a structured Website report you can review, edit, copy, or download. No sign-up, no browser extension, no API key.",
   },
   {
     question: "Can I use the report with AI coding agents?",
@@ -45,7 +45,7 @@ function render() {
     operatingSystem: "Web",
     url: `${SITE}${path}`,
     description:
-      "A free website SEO analyzer that scores a public URL's on-page signals — title, meta, Open Graph, structured data, headings — and generates a detailed SEO report for use with AI agents.",
+      "A free website SEO analyzer that scores a public URL's on-page signals — title, meta, Open Graph, structured data, headings — and generates a detailed Website report for use with AI agents.",
     offers: { "@type": "Offer", price: "0", priceCurrency: "EUR" },
     creator: { "@id": `${SITE}/#organization` },
   };
@@ -54,7 +54,7 @@ function render() {
     pageStart({
       title: "Free Website Analyzer | Sokosumi",
       description:
-        "Analyze any website's on-page SEO: title, meta description, canonical, Open Graph, structured data, headings and a scored checklist — a detailed SEO report for Claude Code, Cursor and other AI agents.",
+        "Analyze any website's on-page SEO: title, meta description, canonical, Open Graph, structured data, headings and a scored checklist — a detailed Website report for Claude Code, Cursor and other AI agents.",
       path,
       englishOnly: true,
       breadcrumb: crumbs,
@@ -97,7 +97,7 @@ function render() {
         <div class="dm-output-empty" id="seoMdEmpty">
           <span aria-hidden="true">↑</span>
           <strong>Output will appear here.</strong>
-          <small>Paste a URL to read its title, meta, Open Graph, headings, keywords, important pages and declared entities, score them, and get an SEO report you can edit, copy or download.</small>
+          <small>Paste a URL to read its title, meta, Open Graph, headings, keywords, important pages and declared entities, score them, and get a Website report you can edit, copy or download.</small>
         </div>
 
         <div class="dm-progress" id="seoMdProgress" aria-live="polite" hidden>
@@ -115,7 +115,7 @@ function render() {
             <span id="seoMdBrand"></span>
             <div>
               <p class="dm-result-label">Website Analyzer</p>
-              <h2 id="seoMdResultTitle">SEO report</h2>
+              <h2 id="seoMdResultTitle">Website report</h2>
               <a id="seoMdSource" href="#" target="_blank" rel="noopener noreferrer nofollow"></a>
             </div>
             <div class="dm-result-actions">
@@ -123,13 +123,13 @@ function render() {
               <button class="btn btn-primary" id="seoMdDownload" type="button">Download</button>
             </div>
           </header>
-          <div class="dm-tabs" role="tablist" aria-label="SEO report views">
+          <div class="dm-tabs" role="tablist" aria-label="Website report views">
             <button id="seoMdPreviewTab" type="button" role="tab" aria-selected="true" aria-controls="seoMdPreview">Report</button>
             <button id="seoMdFileTab" type="button" role="tab" aria-selected="false" aria-controls="seoMdFile">Edit</button>
           </div>
           <div class="dm-preview" id="seoMdPreview" role="tabpanel" aria-labelledby="seoMdPreviewTab"></div>
           <div class="dm-file" id="seoMdFile" role="tabpanel" aria-labelledby="seoMdFileTab" hidden>
-            <label for="seoMdEditor" class="sr-only">SEO report contents</label>
+            <label for="seoMdEditor" class="sr-only">Website report contents</label>
             <textarea id="seoMdEditor" spellcheck="false" aria-describedby="seoMdEditorHelp"></textarea>
             <p id="seoMdEditorHelp">Edit, then copy or download.</p>
           </div>
@@ -147,8 +147,8 @@ function render() {
             <p class="dm-overline">Almost there</p>
             <button class="dm-lead-x" id="seoMdLeadX" type="button" aria-label="Close">&times;</button>
           </div>
-          <h2 id="seoMdLeadTitle">Free competitive analysis <span>+</span> your SEO report</h2>
-          <p class="dm-lead-lede">Enter your website and email — our AI coworker sends a free competitive analysis to your inbox, and we generate your SEO report right now.</p>
+          <h2 id="seoMdLeadTitle">Free competitive analysis <span>+</span> your Website report</h2>
+          <p class="dm-lead-lede">Enter your website and email — our AI coworker sends a free competitive analysis to your inbox, and we generate your Website report right now.</p>
           <form class="dm-lead-form" id="seoMdLeadForm" novalidate>
             <label>
               <span>Website URL</span>

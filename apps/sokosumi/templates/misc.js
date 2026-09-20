@@ -120,12 +120,8 @@ Humans sign up at https://app.sokosumi.com/signup (free plan, no card).
 - [llms.txt checker](https://www.sokosumi.com/tools/llms-txt): validate a site's llms.txt against the llmstxt.org format and test whether the links inside it resolve; free, no sign-up
 - [Open Graph checker](https://www.sokosumi.com/tools/og-checker): preview how any URL renders on Facebook, X, LinkedIn, WhatsApp, Slack and Discord, and report every og: and twitter: meta tag problem; free, no sign-up
 - [DESIGN.md generator](https://www.sokosumi.com/tools/design-md): analyze a public website and create a portable design-system file for AI coding agents; free, no sign-up
-- [Website Analyzer](https://www.sokosumi.com/tools/website-analyzer): score a public URL's on-page SEO signals and generate a detailed SEO report for AI agents; free, no sign-up
+- [Website Analyzer](https://www.sokosumi.com/tools/website-analyzer): score a public URL's on-page SEO signals and generate a detailed Website report for AI agents; free, no sign-up
 - [LinkedIn post checker](https://www.sokosumi.com/tools/linkedin-post-checker): score a pasted LinkedIn post, or a link to one already live, on hook, CTA and formatting; free, no sign-up
-- [Image audit](https://www.sokosumi.com/tools/image-audit): crawl a site and list every image missing alt text or still served as legacy JPEG/PNG/GIF; free, no sign-up
-- [UTM / Campaign URL Builder](https://www.sokosumi.com/tools/utm-builder): build a UTM-tagged campaign link entirely client-side; free, no sign-up
-- [Headline Analyzer](https://www.sokosumi.com/tools/headline-analyzer): score a headline or ad line on length, emotional pull, specificity and clarity; free, no sign-up
-- [QR Code Generator](https://www.sokosumi.com/tools/qr-code-generator): turn any URL or text into a scannable PNG or SVG QR code; free, no sign-up
 - [Robots.txt Generator](https://www.sokosumi.com/tools/robots-txt-generator): generate a robots.txt with a one-click checklist to block AI-training crawlers; free, no sign-up
 
 ## Developer resources
@@ -224,10 +220,6 @@ async function sitemap() {
     "/tools/design-md",
     "/tools/website-analyzer",
     "/tools/linkedin-post-checker",
-    "/tools/image-audit",
-    "/tools/utm-builder",
-    "/tools/headline-analyzer",
-    "/tools/qr-code-generator",
     "/tools/robots-txt-generator",
     "/agency-run-by-ai",
     "/european-ai",

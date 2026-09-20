@@ -97,36 +97,6 @@ const postCheckerPreview = () => `
     </span>
   </span>`;
 
-// The image audit returns a list of flagged images, so the preview is a mini
-// contact sheet — three thumbnails carrying the flags the real list shows.
-const imageAuditPreview = () => `
-  <span class="tp tp-ia">
-    <span class="tp-thumbs">
-      <span class="tp-thumb is-flag"><i>no alt</i></span>
-      <span class="tp-thumb is-flag"><i>legacy</i></span>
-      <span class="tp-thumb is-ok"><i>ok</i></span>
-    </span>
-    <span class="tp-verdict">
-      <span class="tp-chip is-warn">6 missing alt</span>
-      <span class="tp-chip is-warn">14 legacy</span>
-    </span>
-  </span>`;
-
-// The UTM builder appends query params to a URL, so the preview is the
-// address bar itself with the tagged part picked out in the accent color.
-const utmBuilderPreview = () => `
-  <span class="tp tp-ub">
-    <span class="tp-urlbar">
-      <span class="tp-urlbar-dot"></span>
-      <span class="tp-urlbar-text">example.com/page<b>?utm_source=newsletter&amp;utm_medium=email</b></span>
-    </span>
-    <span class="tp-verdict">
-      <span class="tp-chip is-pass">source</span>
-      <span class="tp-chip is-pass">medium</span>
-      <span class="tp-chip is-pass">campaign</span>
-    </span>
-  </span>`;
-
 // The robots.txt generator hands back a text file, the same shape as the
 // llms.txt checker's file card — a genuine match, since both are files a
 // crawler reads, rather than a reused shortcut.
@@ -141,45 +111,6 @@ const robotsGeneratorPreview = () => `
     </span>
     <span class="tp-verdict">
       <span class="tp-chip is-warn">3 bots blocked</span>
-    </span>
-  </span>`;
-
-// The headline analyzer scores the headline itself, so the preview is the
-// headline as a pull quote plus a Lighthouse-style score ring — the same
-// gauge device the SEO Analyzer uses, since both hand back a single score.
-const headlineCheckerPreview = () => `
-  <span class="tp tp-ha">
-    <span class="tp-headline">
-      <span class="tp-headline-text">7 Free Marketing Tools That Cut Setup Time in Half</span>
-    </span>
-    <span class="tp-verdict">
-      <span class="tp-gauge" style="--score:88"><b>88</b></span>
-      <span class="tp-chip is-pass">3 passing</span>
-      <span class="tp-chip is-warn">1 warning</span>
-    </span>
-  </span>`;
-
-// The QR code generator's output is the code itself, so the preview is a
-// decorative pattern in the same finder-corner shape as a real one.
-const QR_PATTERN = [
-  [1, 1, 1, 1, 1, 0, 1, 1, 1],
-  [1, 0, 0, 0, 1, 0, 1, 0, 1],
-  [1, 0, 1, 0, 1, 0, 1, 0, 1],
-  [1, 0, 0, 0, 1, 0, 1, 0, 1],
-  [1, 1, 1, 1, 1, 0, 1, 1, 1],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [1, 0, 1, 1, 0, 1, 0, 1, 0],
-  [0, 1, 0, 0, 1, 0, 1, 0, 1],
-  [1, 0, 1, 0, 1, 1, 0, 1, 0],
-];
-const qrCodeGeneratorPreview = () => `
-  <span class="tp tp-qr">
-    <span class="tp-qr-code">
-      <span class="tp-qr-grid">${QR_PATTERN.flatMap((row) => row.map((cell) => `<i${cell ? ' class="is-on"' : ""}></i>`)).join("")}</span>
-    </span>
-    <span class="tp-verdict">
-      <span class="tp-chip is-pass">PNG</span>
-      <span class="tp-chip is-pass">SVG</span>
     </span>
   </span>`;
 
@@ -211,21 +142,6 @@ const xAlgorithmPreview = () => `
     </span>
     <span class="tp-verdict">
       <span class="tp-chip is-pass">86/100 overall</span>
-    </span>
-  </span>`;
-
-// The brand voice analyzer returns a spec, not a score, so the preview is a
-// small tag cloud plus the top-line voice label it extracted.
-const brandVoicePreview = () => `
-  <span class="tp tp-lt">
-    <span class="tp-file">
-      <span class="tp-file-name">Voice spec</span>
-      <span class="tp-file-line"><b>Voice</b><i>Reader-directed</i></span>
-      <span class="tp-file-line"><b>Style</b><i>Short and punchy</i></span>
-      <span class="tp-file-line is-quote">Ships, dashboard, onboarding, teams…</span>
-    </span>
-    <span class="tp-verdict">
-      <span class="tp-chip is-pass">8 posts read</span>
     </span>
   </span>`;
 
@@ -261,52 +177,6 @@ const competitorPositioningPreview = () => `
     </span>
   </span>`;
 
-// The messaging comparison spans several sites, so the preview is a row of
-// small tags — the shared-vs-unique vocabulary the real tool surfaces.
-const competitorMessagingPreview = () => `
-  <span class="tp tp-lt">
-    <span class="tp-file">
-      <span class="tp-file-name">Messaging comparison</span>
-      <span class="tp-file-line"><b>Shared</b><i>onboarding, teams</i></span>
-      <span class="tp-file-line is-quote">yoursite.com → "workflow"</span>
-      <span class="tp-file-line is-quote">competitor.com → "enterprise"</span>
-    </span>
-    <span class="tp-verdict">
-      <span class="tp-chip is-pass">3 sites compared</span>
-    </span>
-  </span>`;
-
-// The feature gap tool's output is a yes/no matrix, so the preview mimics
-// that grid directly rather than borrowing another tool's device.
-const competitorFeatureGapPreview = () => `
-  <span class="tp tp-lt">
-    <span class="tp-file">
-      <span class="tp-file-name">Feature matrix</span>
-      <span class="tp-file-line"><b>API access</b><i>✓ ✓ —</i></span>
-      <span class="tp-file-line"><b>SSO</b><i>✓ — —</i></span>
-      <span class="tp-file-line"><b>Free tier</b><i>— ✓ ✓</i></span>
-    </span>
-    <span class="tp-verdict">
-      <span class="tp-chip is-warn">1 gap found</span>
-    </span>
-  </span>`;
-
-// Answer-readiness scores the page itself, so the preview reuses the
-// SEO analyzer's search-snippet-plus-gauge device.
-const answerReadinessPreview = () => `
-  <span class="tp tp-seo">
-    <span class="tp-serp">
-      <span class="tp-serp-url">example.com<i>›</i>guide</span>
-      <span class="tp-serp-title">A clear H1, a table, three FAQ blocks</span>
-      <span class="tp-serp-desc">Chunk-friendly paragraphs and JSON-LD, checked directly against the markup.</span>
-    </span>
-    <span class="tp-verdict">
-      <span class="tp-gauge" style="--score:74"><b>74</b></span>
-      <span class="tp-chip is-pass">3 passing</span>
-      <span class="tp-chip is-warn">1 warning</span>
-    </span>
-  </span>`;
-
 // The internal linking finder hands back a list of page pairs, so the
 // preview is a small file-style listing of suggested link rows.
 const internalLinkingPreview = () => `
@@ -319,21 +189,6 @@ const internalLinkingPreview = () => `
     </span>
     <span class="tp-verdict">
       <span class="tp-chip is-pass">9 pages crawled</span>
-    </span>
-  </span>`;
-
-// The carousel generator's output is a stack of slides, so the preview is a
-// tiny deck peeking out from behind itself.
-const blogToCarouselPreview = () => `
-  <span class="tp tp-lt">
-    <span class="tp-file">
-      <span class="tp-file-name">Carousel outline</span>
-      <span class="tp-file-line"><b>1</b><i>Hook</i></span>
-      <span class="tp-file-line"><b>2</b><i>Section one</i></span>
-      <span class="tp-file-line is-quote">… 6 more slides</span>
-    </span>
-    <span class="tp-verdict">
-      <span class="tp-chip is-pass">8 slides built</span>
     </span>
   </span>`;
 
@@ -395,19 +250,6 @@ const orphanPageFinderPreview = () => `
     </span>
   </span>`;
 
-const contentDecayPreview = () => `
-  <span class="tp tp-lt">
-    <span class="tp-file">
-      <span class="tp-file-name">Content decay</span>
-      <span class="tp-file-line"><b>/blog/2022-tips</b><i>3y old</i></span>
-      <span class="tp-file-line is-quote">thin vs batch average</span>
-    </span>
-    <span class="tp-verdict">
-      <span class="tp-chip is-warn">4 stale</span>
-      <span class="tp-chip is-pass">11 fresh</span>
-    </span>
-  </span>`;
-
 const coreWebVitalsPreview = () => `
   <span class="tp tp-seo">
     <span class="tp-serp">
@@ -418,19 +260,6 @@ const coreWebVitalsPreview = () => `
     <span class="tp-verdict">
       <span class="tp-gauge" style="--score:58"><b>58</b></span>
       <span class="tp-chip is-warn">2 warnings</span>
-    </span>
-  </span>`;
-
-const codePilerPreview = () => `
-  <span class="tp tp-lt">
-    <span class="tp-file">
-      <span class="tp-file-name">System prompt</span>
-      <span class="tp-file-line"><b>Lang</b><i>TypeScript 82%</i></span>
-      <span class="tp-file-line"><b>Tests</b><i>Vitest</i></span>
-      <span class="tp-file-line is-quote">Match existing code style…</span>
-    </span>
-    <span class="tp-verdict">
-      <span class="tp-chip is-pass">3 API calls</span>
     </span>
   </span>`;
 
@@ -484,34 +313,6 @@ const TOOLS = [
     preview: postCheckerPreview,
   },
   {
-    href: "/tools/image-audit",
-    name: "Image audit",
-    text: "Every image on your site missing alt text, and every one still in a legacy format.",
-    meta: "Free · no sign-up",
-    preview: imageAuditPreview,
-  },
-  {
-    href: "/tools/utm-builder",
-    name: "UTM / Campaign URL Builder",
-    text: "Tag a campaign link in seconds — nothing leaves your browser.",
-    meta: "Free · no sign-up",
-    preview: utmBuilderPreview,
-  },
-  {
-    href: "/tools/headline-analyzer",
-    name: "Headline Analyzer",
-    text: "Score a headline or ad line's length, emotional pull, specificity and clarity.",
-    meta: "Free · no sign-up",
-    preview: headlineCheckerPreview,
-  },
-  {
-    href: "/tools/qr-code-generator",
-    name: "QR Code Generator",
-    text: "Turn any URL or text into a scannable PNG or SVG QR code.",
-    meta: "Free · no sign-up",
-    preview: qrCodeGeneratorPreview,
-  },
-  {
     href: "/tools/robots-txt-generator",
     name: "Robots.txt Generator",
     text: "Custom crawl rules, plus a one-click checklist to block AI-training bots.",
@@ -533,13 +334,6 @@ const TOOLS = [
     preview: xAlgorithmPreview,
   },
   {
-    href: "/tools/brand-voice-analyzer",
-    name: "Brand Voice Analyzer",
-    text: "Paste 5-10 posts and get a reusable voice spec: sentence style, pronoun balance, vocabulary.",
-    meta: "Free · no sign-up",
-    preview: brandVoicePreview,
-  },
-  {
     href: "/tools/landing-page-teardown",
     name: "Landing Page Conversion Teardown",
     text: "Enter a URL and audit its headline, CTA, social proof and trust signals.",
@@ -554,39 +348,11 @@ const TOOLS = [
     preview: competitorPositioningPreview,
   },
   {
-    href: "/tools/competitor-messaging",
-    name: "Competitor Messaging Comparison",
-    text: "Paste 2-5 competitor URLs and compare tone, sentence style and shared vs unique vocabulary.",
-    meta: "Free · no sign-up",
-    preview: competitorMessagingPreview,
-  },
-  {
-    href: "/tools/competitor-feature-gap",
-    name: "Competitor Feature Gap",
-    text: "Paste 2-5 competitor URLs and get a yes/no feature matrix built from their own list items.",
-    meta: "Free · no sign-up",
-    preview: competitorFeatureGapPreview,
-  },
-  {
-    href: "/tools/answer-readiness",
-    name: "Answer-Readiness Score",
-    text: "Score how easily an LLM could lift a clean answer from a page — headings, FAQ, tables, chunk length.",
-    meta: "Free · no sign-up",
-    preview: answerReadinessPreview,
-  },
-  {
     href: "/tools/internal-linking-finder",
     name: "Internal Linking Opportunity Finder",
     text: "Crawl up to 12 pages and find ones that should link to each other, with anchor text suggestions.",
     meta: "Free · no sign-up",
     preview: internalLinkingPreview,
-  },
-  {
-    href: "/tools/blog-to-carousel",
-    name: "Blog to LinkedIn Carousel",
-    text: "Turn a blog post's own headings into a slide-by-slide carousel outline.",
-    meta: "Free · no sign-up",
-    preview: blogToCarouselPreview,
   },
   {
     href: "/tools/blog-to-social-week",
@@ -725,25 +491,11 @@ const TOOLS = [
     preview: orphanPageFinderPreview,
   },
   {
-    href: "/tools/content-decay",
-    name: "Content Decay Detector",
-    text: "Paste up to 20 content URLs and find the ones that look stale relative to the batch.",
-    meta: "Free · no sign-up",
-    preview: contentDecayPreview,
-  },
-  {
     href: "/tools/core-web-vitals",
     name: "Core Web Vitals Explainer",
     text: "Plain-English fixes for structural signals tied to LCP, CLS and INP. Not real CrUX data.",
     meta: "Free · no sign-up",
     preview: coreWebVitalsPreview,
-  },
-  {
-    href: "/tools/codepiler",
-    name: "CodePiler",
-    text: "Turn a public GitHub repo into a starter system prompt matching its own conventions.",
-    meta: "Free · no sign-up",
-    preview: codePilerPreview,
   },
   {
     href: "/tools/ai-search-visibility",

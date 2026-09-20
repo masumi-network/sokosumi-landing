@@ -243,7 +243,7 @@
 
     var meta = el("div", "seo-overall-meta");
     meta.appendChild(el("p", "seo-overall-label", "Overall score"));
-    meta.appendChild(el("h3", "", data.hostname || "SEO report"));
+    meta.appendChild(el("h3", "", data.hostname || "Website report"));
     var tally = el("p", "seo-tally");
     tally.appendChild(el("span", "seo-pill seo-pill-pass", data.pass + " passed"));
     tally.appendChild(el("span", "seo-pill seo-pill-warn", data.warn + " warnings"));
@@ -266,6 +266,31 @@
   function renderChecks(checks) {
     if (!Array.isArray(checks) || !checks.length) return;
     var block = addPreviewBlock("Checklist");
+
+    // Graphical summary: a stacked proportion bar plus a dotted legend, so the
+    // pass/warn/fail split reads at a glance before the detailed rows.
+    var counts = { pass: 0, warn: 0, fail: 0 };
+    checks.forEach(function (c) { if (counts[c.level] !== undefined) counts[c.level]++; });
+    var total = checks.length;
+    var summary = el("div", "seo-check-summary");
+    var bar = el("div", "seo-check-bar");
+    ["pass", "warn", "fail"].forEach(function (level) {
+      if (!counts[level]) return;
+      var seg = el("span", "seo-check-seg seo-check-seg-" + level);
+      seg.style.width = (counts[level] / total) * 100 + "%";
+      bar.appendChild(seg);
+    });
+    summary.appendChild(bar);
+    var legend = el("div", "seo-check-legend");
+    [["pass", "passed"], ["warn", "warnings"], ["fail", "failing"]].forEach(function (pair) {
+      var item = el("span", "seo-check-legend-item seo-check-legend-" + pair[0]);
+      item.appendChild(el("b", "", counts[pair[0]]));
+      item.appendChild(el("span", "", " " + pair[1]));
+      legend.appendChild(item);
+    });
+    summary.appendChild(legend);
+    block.appendChild(summary);
+
     var list = el("ul", "seo-checks");
     checks.forEach(function (check) {
       var item = el("li", "seo-check seo-check-" + check.level);
@@ -281,6 +306,51 @@
     block.appendChild(list);
   }
 
+  // Lucide (ISC) line-icon paths, drawn at 24-viewBox with currentColor.
+  var ICON = {
+    link: '<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>',
+    globe: '<circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>',
+    device: '<rect width="14" height="20" x="5" y="2" rx="2"/><path d="M12 18h.01"/>',
+    image: '<rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.09-3.09a2 2 0 0 0-2.82 0L6 21"/>',
+    heading: '<polyline points="4 7 4 4 20 4 20 7"/><line x1="9" x2="15" y1="20" y2="20"/><line x1="12" x2="12" y1="4" y2="20"/>',
+    text: '<line x1="21" x2="3" y1="6" y2="6"/><line x1="15" x2="3" y1="12" y2="12"/><line x1="17" x2="3" y1="18" y2="18"/>',
+    hash: '<line x1="4" x2="20" y1="9" y2="9"/><line x1="4" x2="20" y1="15" y2="15"/><line x1="10" x2="8" y1="3" y2="21"/><line x1="16" x2="14" y1="3" y2="21"/>',
+    star: '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>',
+    menu: '<line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="18" y2="18"/>',
+    layout: '<rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/>',
+    tag: '<path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.4 2.4 0 0 0 3.42 0l6.58-6.58a2.4 2.4 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r="1"/>',
+    file: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/>',
+    help: '<circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/>',
+    dot: '<circle cx="12" cy="12" r="3.5"/>',
+  };
+  function iconFor(label) {
+    var l = String(label).toLowerCase();
+    if (/length|chars|count|word/.test(l)) return ICON.hash;
+    if (/canonical|url|link|sitemap|http/.test(l)) return ICON.link;
+    if (/lang|hreflang/.test(l)) return ICON.globe;
+    if (/viewport|mobile|device/.test(l)) return ICON.device;
+    if (/favicon|icon/.test(l)) return ICON.star;
+    if (/image|card|twitter|og:image/.test(l)) return ICON.image;
+    if (/title|heading|og:title/.test(l)) return ICON.heading;
+    if (/description|meta|copy|snippet/.test(l)) return ICON.text;
+    if (/nav/.test(l)) return ICON.menu;
+    if (/section/.test(l)) return ICON.layout;
+    if (/entit|brand|keyword|phrase/.test(l)) return ICON.tag;
+    if (/llms|robots|file|txt/.test(l)) return ICON.file;
+    if (/page/.test(l)) return ICON.file;
+    return ICON.dot;
+  }
+  function fieldIcon(label) {
+    var span = document.createElement("span");
+    span.className = "dm-field-ico";
+    span.setAttribute("aria-hidden", "true");
+    span.innerHTML =
+      '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">' +
+      iconFor(label) +
+      "</svg>";
+    return span;
+  }
+
   function renderFields(title, rows) {
     var present = rows.filter(function (r) {
       return r[1] !== "" && r[1] !== null && r[1] !== undefined;
@@ -290,8 +360,11 @@
     var list = el("dl", "dm-type-list");
     present.forEach(function (row) {
       var line = el("div", "dm-type-row");
-      line.appendChild(el("dt", "", row[0]));
-      line.appendChild(el("dd", "", String(row[1])));
+      line.appendChild(fieldIcon(row[0]));
+      var text = el("div", "dm-field-text");
+      text.appendChild(el("dt", "", row[0]));
+      text.appendChild(el("dd", "", String(row[1])));
+      line.appendChild(text);
       list.appendChild(line);
     });
     block.appendChild(list);
@@ -313,8 +386,18 @@
     var list = el("dl", "dm-type-list");
     items.forEach(function (a) {
       var row = el("div", "dm-type-row");
-      row.appendChild(el("dt", "", a.q));
-      row.appendChild(el("dd", "", a.a || "—"));
+      var ico = document.createElement("span");
+      ico.className = "dm-field-ico";
+      ico.setAttribute("aria-hidden", "true");
+      ico.innerHTML =
+        '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">' +
+        ICON.help +
+        "</svg>";
+      row.appendChild(ico);
+      var text = el("div", "dm-field-text");
+      text.appendChild(el("dt", "", a.q));
+      text.appendChild(el("dd", "", a.a || "—"));
+      row.appendChild(text);
       list.appendChild(row);
     });
     block.appendChild(list);
