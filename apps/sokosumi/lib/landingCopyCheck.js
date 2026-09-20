@@ -111,13 +111,13 @@ function looksNoisy(s) {
 // Up to `limit` distinct sentences the reader can actually find on the page,
 // each carrying a match — the evidence behind a verdict. Clean marketing lines
 // come first; noisy UI/log lines only fill in if nothing cleaner matched.
-function matchingSentences(sents, re, limit, max) {
+function matchingSentences(ev, re, limit, max) {
   const clean = [];
   const noisy = [];
   const seen = new Set();
   const cap = limit || 4;
   const width = max || 160;
-  for (const s of sents) {
+  for (const s of ev) {
     re.lastIndex = 0;
     if (!re.test(s)) continue;
     const t = s
@@ -137,11 +137,12 @@ function wordCount(text) {
   return (text.match(/\b[\w'-]+\b/g) || []).length;
 }
 
-function buildClarityChecks(text) {
+function buildClarityChecks(text, evSents) {
   const checks = [];
   const add = (level, title, tag, detail, weight = 1, evidence) =>
     checks.push({ level, title, tag, detail, weight, evidence: evidence && evidence.length ? evidence : undefined });
   const sents = sentences(text);
+  const ev = evSents && evSents.length ? evSents : sents;
   const words = wordCount(text);
   const avgWords = sents.length ? words / sents.length : words;
 
@@ -159,9 +160,9 @@ function buildClarityChecks(text) {
   const jargonMatches = text.match(JARGON) || [];
   const jargonWords = uniqueMatches(jargonMatches);
   if (jargonMatches.length >= 3) {
-    add("warn", "Heavy on corporate jargon", "clarity", `Corporate jargon appears ${jargonMatches.length} times across ${jargonWords.length} term(s): ${jargonWords.map((w) => `"${w}"`).join(", ")}. These read as filler rather than a concrete claim.`, 2, matchingSentences(sents, JARGON, 5));
+    add("warn", "Heavy on corporate jargon", "clarity", `Corporate jargon appears ${jargonMatches.length} times across ${jargonWords.length} term(s): ${jargonWords.map((w) => `"${w}"`).join(", ")}. These read as filler rather than a concrete claim.`, 2, matchingSentences(ev, JARGON, 8));
   } else if (jargonMatches.length > 0) {
-    add("pass", "Jargon is under control", "clarity", `Only ${jargonMatches.length} jargon term(s) — ${jargonWords.map((w) => `"${w}"`).join(", ")} — not enough to drown out the actual claim.`, 1, matchingSentences(sents, JARGON, 3));
+    add("pass", "Jargon is under control", "clarity", `Only ${jargonMatches.length} jargon term(s) — ${jargonWords.map((w) => `"${w}"`).join(", ")} — not enough to drown out the actual claim.`, 1, matchingSentences(ev, JARGON, 8));
   } else {
     add("pass", "No jargon filler", "clarity", "No overused corporate jargon (synergy, leverage, best-in-class, seamless…) found in the copy.", 1);
   }
@@ -170,7 +171,7 @@ function buildClarityChecks(text) {
   const passiveMatches = text.match(PASSIVE) || [];
   const passiveRatio = sents.length ? passiveMatches.length / sents.length : 0;
   if (passiveRatio > 0.35) {
-    add("warn", "Heavy on passive voice", "clarity", `About ${Math.round(passiveRatio * 100)}% of sentences read as passive (${passiveMatches.length} of ${sents.length}). Active voice reads faster and more confident.`, 1, matchingSentences(sents, PASSIVE, 5));
+    add("warn", "Heavy on passive voice", "clarity", `About ${Math.round(passiveRatio * 100)}% of sentences read as passive (${passiveMatches.length} of ${sents.length}). Active voice reads faster and more confident.`, 1, matchingSentences(ev, PASSIVE, 8));
   } else {
     add("pass", "Mostly active voice", "clarity", `Only ${passiveMatches.length} passive construction(s) across ${sents.length} sentence(s).`, 1);
   }
@@ -178,11 +179,12 @@ function buildClarityChecks(text) {
   return checks;
 }
 
-function buildBenefitChecks(text) {
+function buildBenefitChecks(text, evSents) {
   const checks = [];
   const add = (level, title, tag, detail, weight = 1, evidence) =>
     checks.push({ level, title, tag, detail, weight, evidence: evidence && evidence.length ? evidence : undefined });
   const sents = sentences(text);
+  const ev = evSents && evSents.length ? evSents : sents;
   const youCount = (text.match(/\b(you|your|you're|yours)\b/gi) || []).length;
   const weCount = (text.match(/\b(we|our|us|ours|i|my|i'm)\b/gi) || []).length;
   const total = youCount + weCount;
@@ -193,40 +195,41 @@ function buildBenefitChecks(text) {
   if (total === 0) {
     add("warn", "No first- or second-person language", "benefit", "The copy doesn't address the reader directly at all — hard to tell whose problem it's solving.", 3);
   } else if (ratio >= 0.6) {
-    add("pass", "Reads customer-centric", "benefit", `"You/your" outnumbers "we/our" ${youCount}-to-${weCount} — the copy is talking about the reader's outcome, not the company.`, 3, matchingSentences(sents, YOU, 3));
+    add("pass", "Reads customer-centric", "benefit", `"You/your" outnumbers "we/our" ${youCount}-to-${weCount} — the copy is talking about the reader's outcome, not the company.`, 3, matchingSentences(ev, YOU, 8));
   } else if (ratio >= 0.3) {
-    add("warn", "Mixed focus", "benefit", `"You/your" appears ${youCount} times against "we/our" ${weCount} times — leaning company-centric. These "we/our" sentences are the ones to consider rewriting as "you" sentences.`, 3, matchingSentences(sents, WE, 5));
+    add("warn", "Mixed focus", "benefit", `"You/your" appears ${youCount} times against "we/our" ${weCount} times — leaning company-centric. These "we/our" sentences are the ones to consider rewriting as "you" sentences.`, 3, matchingSentences(ev, WE, 8));
   } else {
-    add("error", "Reads company-centric", "benefit", `"We/our" (${weCount}) heavily outnumbers "you/your" (${youCount}) — this reads like an about-us page, not a pitch to the reader.`, 3, matchingSentences(sents, WE, 5));
+    add("error", "Reads company-centric", "benefit", `"We/our" (${weCount}) heavily outnumbers "you/your" (${youCount}) — this reads like an about-us page, not a pitch to the reader.`, 3, matchingSentences(ev, WE, 8));
   }
 
   const verbMatches = text.match(BENEFIT_VERB) || [];
   if (verbMatches.length === 0) {
     add("warn", "No outcome verbs", "benefit", 'No words like "save", "grow", "reduce" or "unlock" — nothing here names the outcome the reader gets.', 2);
   } else {
-    add("pass", "Names an outcome", "benefit", `Uses outcome verbs: ${uniqueMatches(verbMatches).slice(0, 5).join(", ")}.`, 2, matchingSentences(sents, BENEFIT_VERB, 4));
+    add("pass", "Names an outcome", "benefit", `Uses outcome verbs: ${uniqueMatches(verbMatches).slice(0, 5).join(", ")}.`, 2, matchingSentences(ev, BENEFIT_VERB, 8));
   }
 
   return checks;
 }
 
-function buildSpecificityChecks(text) {
+function buildSpecificityChecks(text, evSents) {
   const checks = [];
   const add = (level, title, tag, detail, weight = 1, evidence) =>
     checks.push({ level, title, tag, detail, weight, evidence: evidence && evidence.length ? evidence : undefined });
   const sents = sentences(text);
+  const ev = evSents && evSents.length ? evSents : sents;
   const numberMatches = (text.match(STAT_NUMBER) || []).map((m) => m.replace(/\s+/g, " ").trim());
   if (numberMatches.length === 0) {
     add("warn", "No concrete numbers", "specificity", "No stats, prices, timeframes or counts (e.g. \"40% faster\", \"$9/mo\", \"10,000 teams\") — every claim is qualitative, which is easy to skim past.", 3);
   } else {
     const shown = uniqueMatches(numberMatches).slice(0, 6);
-    add("pass", "Backs claims with numbers", "specificity", `Uses ${numberMatches.length} concrete figure(s) — e.g. ${shown.join(", ")}.`, 3, matchingSentences(sents, STAT_NUMBER, 5));
+    add("pass", "Backs claims with numbers", "specificity", `Uses ${numberMatches.length} concrete figure(s) — e.g. ${shown.join(", ")}.`, 3, matchingSentences(ev, STAT_NUMBER, 8));
   }
 
   const vagueMatches = text.match(VAGUE_QUALIFIER) || [];
   const vagueWords = uniqueMatches(vagueMatches);
   if (vagueMatches.length >= 3) {
-    add("warn", "Heavy on vague qualifiers", "specificity", `Vague qualifiers appear ${vagueMatches.length} times across ${vagueWords.length} term(s): ${vagueWords.map((w) => `"${w}"`).join(", ")}. These stand in for a real claim rather than making one.`, 2, matchingSentences(sents, VAGUE_QUALIFIER, 5));
+    add("warn", "Heavy on vague qualifiers", "specificity", `Vague qualifiers appear ${vagueMatches.length} times across ${vagueWords.length} term(s): ${vagueWords.map((w) => `"${w}"`).join(", ")}. These stand in for a real claim rather than making one.`, 2, matchingSentences(ev, VAGUE_QUALIFIER, 8));
   } else {
     add("pass", "Light on vague qualifiers", "specificity", "No pile-up of vague filler qualifiers (various, several, world-class…).", 2);
   }
@@ -234,11 +237,12 @@ function buildSpecificityChecks(text) {
   return checks;
 }
 
-function buildCtaChecks(text) {
+function buildCtaChecks(text, evSents) {
   const checks = [];
   const add = (level, title, tag, detail, weight = 1, evidence) =>
     checks.push({ level, title, tag, detail, weight, evidence: evidence && evidence.length ? evidence : undefined });
   const sents = sentences(text);
+  const ev = evSents && evSents.length ? evSents : sents;
   const strongMatch = text.match(CTA_STRONG);
   const anyMatch = text.match(CTA_ANY);
   const weakMatch = text.match(CTA_WEAK_ONLY);
@@ -249,11 +253,11 @@ function buildCtaChecks(text) {
   if (!hasAny) {
     add("error", "No call to action found", "cta", 'No CTA phrasing detected (no "get started", "sign up", "book a demo" or similar) — a reader who is convinced has nothing to click.', 4);
   } else if (hasStrong) {
-    add("pass", "Clear, specific call to action", "cta", `Found a concrete, low-friction CTA — "${strongMatch[0].trim()}".`, 4, matchingSentences(sents, CTA_STRONG, 3));
+    add("pass", "Clear, specific call to action", "cta", `Found a concrete, low-friction CTA — "${strongMatch[0].trim()}".`, 4, matchingSentences(ev, CTA_STRONG, 8));
   } else if (weakOnly) {
-    add("warn", "CTA is generic", "cta", `The strongest CTA phrasing found is "${weakMatch[0].trim()}" — naming the actual next step ("start your free trial", "book a 15-minute demo") usually converts better.`, 4, matchingSentences(sents, CTA_WEAK_ONLY, 3));
+    add("warn", "CTA is generic", "cta", `The strongest CTA phrasing found is "${weakMatch[0].trim()}" — naming the actual next step ("start your free trial", "book a 15-minute demo") usually converts better.`, 4, matchingSentences(ev, CTA_WEAK_ONLY, 8));
   } else {
-    add("pass", "Has a call to action", "cta", `The copy includes CTA-style phrasing — "${anyMatch[0].trim()}".`, 4, matchingSentences(sents, CTA_ANY, 3));
+    add("pass", "Has a call to action", "cta", `The copy includes CTA-style phrasing — "${anyMatch[0].trim()}".`, 4, matchingSentences(ev, CTA_ANY, 8));
   }
 
   return checks;
@@ -302,12 +306,19 @@ async function analyze(input) {
     error.status = 422;
     throw error;
   }
+  // Scoring runs on the strict copy blocks (`text`). Evidence is drawn from a
+  // wider, still prose-filtered pool — the copy blocks first, then any other
+  // real sentences from the full page — so a verdict can show several examples
+  // even when the strict extraction is sparse. Copy-block sentences rank first.
+  const evPool = Array.from(
+    new Set(sentences(text).concat(sentences(copyText(visibleText(html).replace(/\s+/g, " ").trim())))),
+  );
 
   const dimensions = [
-    { key: "clarity", label: "Clarity", checks: buildClarityChecks(text) },
-    { key: "benefit", label: "Benefit focus", checks: buildBenefitChecks(text) },
-    { key: "specificity", label: "Specificity", checks: buildSpecificityChecks(text) },
-    { key: "cta", label: "CTA strength", checks: buildCtaChecks(text) },
+    { key: "clarity", label: "Clarity", checks: buildClarityChecks(text, evPool) },
+    { key: "benefit", label: "Benefit focus", checks: buildBenefitChecks(text, evPool) },
+    { key: "specificity", label: "Specificity", checks: buildSpecificityChecks(text, evPool) },
+    { key: "cta", label: "CTA strength", checks: buildCtaChecks(text, evPool) },
   ];
 
   const scored = dimensions.map((d) => ({ ...d, score: scoreFromChecks(d.checks), weight: DIMENSION_WEIGHT[d.key] }));
