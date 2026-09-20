@@ -2014,3 +2014,38 @@
 /* Every saved analysis ships in the HTML so each one has a link pointing at it;
    past the first twelve they are hidden until "Show all". */
 .dm-gallery.is-collapsed > :nth-child(n + 13) { display: none; }
+
+/* /tools search box — a live filter over the tool cards. */
+.tools-search {
+  position: relative;
+  margin: 0 0 20px;
+  max-width: 460px;
+}
+.tools-search-ico {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--muted-foreground);
+  pointer-events: none;
+}
+.tools-search-input {
+  width: 100%;
+  padding: 12px 16px 12px 42px;
+  font: inherit;
+  font-size: 15px;
+  color: var(--foreground);
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+}
+.tools-search-input::placeholder { color: var(--muted-foreground); }
+.tools-search-input:focus {
+  outline: none;
+  border-color: var(--foreground);
+}
+.tools-search-empty {
+  margin: 8px 2px 0;
+  font-size: 14px;
+  color: var(--muted-foreground);
+}
