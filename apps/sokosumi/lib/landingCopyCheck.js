@@ -160,11 +160,11 @@ function buildClarityChecks(text, evSents) {
   const jargonMatches = text.match(JARGON) || [];
   const jargonWords = uniqueMatches(jargonMatches);
   if (jargonMatches.length >= 3) {
-    add("warn", "Heavy on corporate jargon", "clarity", `Corporate jargon appears ${jargonMatches.length} times across ${jargonWords.length} term(s): ${jargonWords.map((w) => `"${w}"`).join(", ")}. These read as filler rather than a concrete claim.`, 2, matchingSentences(ev, JARGON, 8));
+    add("warn", "Heavy on corporate buzzwords", "clarity", `Corporate buzzwords appear ${jargonMatches.length} times across ${jargonWords.length} term(s): ${jargonWords.map((w) => `"${w}"`).join(", ")}. These read as filler rather than a concrete claim.`, 2, matchingSentences(ev, JARGON, 8));
   } else if (jargonMatches.length > 0) {
-    add("pass", "Jargon is under control", "clarity", `Only ${jargonMatches.length} jargon term(s) — ${jargonWords.map((w) => `"${w}"`).join(", ")} — not enough to drown out the actual claim.`, 1, matchingSentences(ev, JARGON, 8));
+    add("pass", "Buzzwords under control", "clarity", `Only ${jargonMatches.length} buzzword(s) — ${jargonWords.map((w) => `"${w}"`).join(", ")} — not enough to drown out the actual claim.`, 1, matchingSentences(ev, JARGON, 8));
   } else {
-    add("pass", "No jargon filler", "clarity", "No overused corporate jargon (synergy, leverage, best-in-class, seamless…) found in the copy.", 1);
+    add("pass", "Plain, concrete wording", "clarity", "No overused corporate buzzwords (synergy, leverage, best-in-class, seamless…) in the copy.", 1);
   }
 
   const PASSIVE = /\b(?:is|are|was|were|be|been|being)\s+\w+ed\b/gi;
