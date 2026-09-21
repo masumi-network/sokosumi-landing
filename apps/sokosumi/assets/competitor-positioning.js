@@ -1,6 +1,7 @@
-/* /tools/competitor-positioning — client. A head-to-head "VS" comparison:
- * a versus banner with per-side lead counts, then a table that highlights,
- * signal by signal, which site leads and where one has a gap.
+/* /tools/competitor-positioning — client. A head-to-head comparison in three
+ * scannable zones: a verdict hero (who leads, big numbers), side-by-side
+ * messaging panels (the actual copy), and an icon scoreboard that marks the
+ * winner of each measurable signal. Built to be read at a glance, not parsed.
  */
 (function () {
   "use strict";
@@ -12,6 +13,20 @@
   var tableEl = document.getElementById("cptTable");
   var groupsEl = document.getElementById("cptGroups");
 
+  var ICON = {
+    words:
+      '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/>',
+    links:
+      '<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>',
+    cta: '<path d="M9 11.5 4.5 3l8.5 4.5-3.5 1.2z"/><path d="m13 13 6 6"/><path d="M16 16v4h4"/>',
+    pricing:
+      '<path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.4 2.4 0 0 0 3.42 0l6.58-6.58a2.4 2.4 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r="1"/>',
+    proof:
+      '<path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/>',
+  };
+  function svg(p) {
+    return '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">' + p + "</svg>";
+  }
   function host(u) {
     try {
       return new URL(u).hostname.replace(/^www\./, "");
@@ -22,33 +37,24 @@
   function present(v) {
     return !!(v && String(v).trim());
   }
-  function yn(bool) {
-    return bool ? '<span class="yes">Yes</span>' : '<span class="no">No</span>';
-  }
-  // Who leads this row: "a", "b", or "" for a tie.
-  function presenceCmp(a, b) {
-    if (present(a) === present(b)) return "";
-    return present(a) ? "a" : "b";
+  function num(n) {
+    return Number(n).toLocaleString();
   }
   function numCmp(a, b) {
-    if (a === b) return "";
-    return a > b ? "a" : "b";
+    return a === b ? "" : a > b ? "a" : "b";
   }
   function boolCmp(a, b) {
-    if (a === b) return "";
-    return a ? "a" : "b";
+    return a === b ? "" : a ? "a" : "b";
   }
-
-  // A single site's profile column for the side-by-side view.
+  function pill(on) {
+    return on ? '<span class="cpt-pill is-yes">Yes</span>' : '<span class="cpt-pill is-no">No</span>';
+  }
   function field(label, val) {
     var ok = present(val);
     return (
       '<div class="cpt-f"><span class="cpt-f-label">' + tk.esc(label) + "</span>" +
       '<p class="cpt-f-val' + (ok ? "" : " is-empty") + '">' + tk.esc(ok ? val : "Not set") + "</p></div>"
     );
-  }
-  function chip(label, on) {
-    return '<span class="cpt-chip ' + (on ? "is-on" : "is-off") + '">' + tk.esc(label) + " " + (on ? "✓" : "✗") + "</span>";
   }
   function profileCard(site, tag) {
     return (
@@ -57,13 +63,16 @@
       field("Title", site.title) +
       field("H1 heading", site.h1) +
       field("Meta description", site.description) +
-      '<div class="cpt-profile-stats">' +
-      '<span class="cpt-stat">' + site.words + " words</span>" +
-      '<span class="cpt-stat">' + site.internalLinks + " links</span>" +
-      chip("CTA", site.ctaCount > 0) +
-      chip("Pricing", site.hasPricing) +
-      chip("Proof", site.hasProof) +
-      "</div></div>"
+      "</div>"
+    );
+  }
+  function boardRow(iconPath, label, aHtml, bHtml, cmp) {
+    return (
+      '<div class="cpt-row">' +
+      '<span class="cpt-row-label"><span class="cpt-ico">' + svg(iconPath) + "</span>" + tk.esc(label) + "</span>" +
+      '<span class="cpt-cell' + (cmp === "a" ? " is-win" : "") + '">' + aHtml + "</span>" +
+      '<span class="cpt-cell' + (cmp === "b" ? " is-win" : "") + '">' + bHtml + "</span>" +
+      "</div>"
     );
   }
 
@@ -92,50 +101,58 @@
       var hostA = host(a.url);
       var hostB = host(b.url);
 
-      var rows = [
-        { label: "Title", a: a.title, b: b.title, cmp: presenceCmp(a.title, b.title), gap: true },
-        { label: "Meta description", a: a.description, b: b.description, cmp: presenceCmp(a.description, b.description), gap: true },
-        { label: "H1 heading", a: a.h1, b: b.h1, cmp: presenceCmp(a.h1, b.h1), gap: true },
-        { label: "Word count", a: String(a.words), b: String(b.words), cmp: numCmp(a.words, b.words) },
-        { label: "Internal links", a: String(a.internalLinks), b: String(b.internalLinks), cmp: numCmp(a.internalLinks, b.internalLinks) },
-        { label: "Call to action", a: yn(a.ctaCount > 0), b: yn(b.ctaCount > 0), cmp: boolCmp(a.ctaCount > 0, b.ctaCount > 0), raw: true },
-        { label: "Pricing shown", a: yn(a.hasPricing), b: yn(b.hasPricing), cmp: boolCmp(a.hasPricing, b.hasPricing), raw: true },
-        { label: "Social proof", a: yn(a.hasProof), b: yn(b.hasProof), cmp: boolCmp(a.hasProof, b.hasProof), raw: true },
+      var signals = [
+        { icon: ICON.words, label: "Word count", a: num(a.words), b: num(b.words), cmp: numCmp(a.words, b.words) },
+        { icon: ICON.links, label: "Internal links", a: num(a.internalLinks), b: num(b.internalLinks), cmp: numCmp(a.internalLinks, b.internalLinks) },
+        { icon: ICON.cta, label: "Call to action", a: pill(a.ctaCount > 0), b: pill(b.ctaCount > 0), cmp: boolCmp(a.ctaCount > 0, b.ctaCount > 0) },
+        { icon: ICON.pricing, label: "Pricing shown", a: pill(a.hasPricing), b: pill(b.hasPricing), cmp: boolCmp(a.hasPricing, b.hasPricing) },
+        { icon: ICON.proof, label: "Social proof", a: pill(a.hasProof), b: pill(b.hasProof), cmp: boolCmp(a.hasProof, b.hasProof) },
       ];
+      // Include the presence of title/meta/H1 in the lead tally, even though the
+      // copy itself lives in the messaging panels rather than the scoreboard.
+      var presence = [
+        boolCmp(present(a.title), present(b.title)),
+        boolCmp(present(a.description), present(b.description)),
+        boolCmp(present(a.h1), present(b.h1)),
+      ];
+      var allCmp = signals.map(function (s) { return s.cmp; }).concat(presence);
+      var total = allCmp.length;
+      var leadA = allCmp.filter(function (c) { return c === "a"; }).length;
+      var leadB = allCmp.filter(function (c) { return c === "b"; }).length;
+      var winner = leadA > leadB ? hostA : leadB > leadA ? hostB : null;
 
-      var leadA = rows.filter(function (r) { return r.cmp === "a"; }).length;
-      var leadB = rows.filter(function (r) { return r.cmp === "b"; }).length;
-
-      function cell(row, side) {
-        var val = side === "a" ? row.a : row.b;
-        var cls = "is-wrap";
-        if (row.cmp === side) cls += " cpt-win";
-        var display = row.raw ? val : tk.esc(present(val) ? val : "—");
-        if (row.gap && !present(val)) cls += " cpt-gap";
-        return '<td class="' + cls + '">' + display + "</td>";
+      function heroSide(tag, hostName, lead, isWin) {
+        return (
+          '<div class="cpt-hero-side' + (isWin ? " is-winner" : "") + '">' +
+          '<span class="cpt-hero-tag">' + tag + "</span>" +
+          '<span class="cpt-hero-host">' + tk.esc(hostName) + "</span>" +
+          '<span class="cpt-hero-score">' + lead + "</span>" +
+          '<span class="cpt-hero-sub">of ' + total + " signals" + (isWin ? " · leads" : "") + "</span>" +
+          "</div>"
+        );
       }
 
-      var body = rows
-        .map(function (r) {
-          return '<tr><td class="cpt-label">' + tk.esc(r.label) + "</td>" + cell(r, "a") + cell(r, "b") + "</tr>";
-        })
-        .join("");
+      var hero =
+        '<div class="cpt-hero">' +
+        heroSide("A", hostA, leadA, winner === hostA) +
+        '<div class="cpt-hero-mid"><span class="cpt-hero-vs">VS</span><span class="cpt-hero-crown">' +
+        (winner ? tk.esc(winner) + " leads" : "Even match") +
+        "</span></div>" +
+        heroSide("B", hostB, leadB, winner === hostB) +
+        "</div>";
+
+      var board =
+        '<p class="cpt-sec">Signal scoreboard</p>' +
+        '<div class="cpt-board">' +
+        '<div class="cpt-row cpt-row-head"><span></span><span>' + tk.esc(hostA) + "</span><span>" + tk.esc(hostB) + "</span></div>" +
+        signals.map(function (s) { return boardRow(s.icon, s.label, s.a, s.b, s.cmp); }).join("") +
+        "</div>";
 
       tableEl.innerHTML =
+        hero +
+        '<p class="cpt-sec">How each page positions itself</p>' +
         '<div class="cpt-profiles">' + profileCard(a, "A") + profileCard(b, "B") + "</div>" +
-        '<div class="cpt-versus">' +
-        '<div class="cpt-vs-side"><span class="cpt-vs-host">' + tk.esc(hostA) + '</span><span class="cpt-vs-lead">leads on ' + leadA + " of " + rows.length + "</span></div>" +
-        '<span class="cpt-vs-badge">VS</span>' +
-        '<div class="cpt-vs-side cpt-vs-b"><span class="cpt-vs-host">' + tk.esc(hostB) + '</span><span class="cpt-vs-lead">leads on ' + leadB + " of " + rows.length + "</span></div>" +
-        "</div>" +
-        '<div class="tk-table-wrap"><table class="tk-table cpt-table"><thead><tr><th>Signal</th><th>' +
-        tk.esc(hostA) +
-        "</th><th>" +
-        tk.esc(hostB) +
-        "</th></tr></thead><tbody>" +
-        body +
-        "</tbody></table></div>" +
-        '<p class="cpt-legend"><span class="cpt-legend-dot"></span>Green marks the side that leads on that signal.</p>';
+        board;
 
       tk.renderGroups(groupsEl, [
         { title: "Where " + hostA + " has gaps", items: data.gapsA },
