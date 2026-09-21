@@ -1,0 +1,332 @@
+# CMS review
+
+Reviewed on 21 August 2026.
+
+## Scope and result
+
+- Downloaded all 171 documents in all 10 CMS collections in English, German, and German with fallback disabled.
+- Reviewed the 146 documents rendered on sokosumi.com. The remaining 25 shared-CMS documents belong to Masumi and were screened but not edited.
+- Applied 260 localized PATCH requests across 109 CMS documents and 210 document-locale pairs.
+- Crawled all 286 sitemap routes: 143 English and 143 German. Every route returned HTTP 200.
+- Final automated checks found no broken internal links, missing indexable canonicals, missing titles or descriptions, locale mismatches, placeholder values, or flagged stale phrases.
+- The German dictionary check passes with 620 keys, no duplicates, and no accidental English pass-throughs.
+- No slugs, statuses, source fields, catalog-synced fields, testimonials, or Git history were changed. Generated HTML was left to the CMS save hooks.
+
+## Changed
+
+### CMS editorial fields
+
+- comparisons/sokosumi-vs-lindy/de/description → Replaced the summary. Why: plain German comparison.
+- comparisons/sokosumi-vs-lindy/de/layout → Rewrote the affected page blocks. Why: natural German comparison.
+- comparisons/sokosumi-vs-lindy/en/layout → Rewrote the affected page blocks. Why: plain verifiable comparison.
+- comparisons/sokosumi-vs-manus/de/description → Replaced the summary. Why: plain German comparison.
+- comparisons/sokosumi-vs-manus/de/layout → Rewrote the affected page blocks. Why: natural German comparison.
+- comparisons/sokosumi-vs-manus/en/layout → Rewrote the affected page blocks. Why: plain verifiable comparison.
+- comparisons/sokosumi-vs-relevance-ai/de/description → Replaced the summary. Why: plain German comparison.
+- comparisons/sokosumi-vs-relevance-ai/de/layout → Rewrote the affected page blocks. Why: natural German comparison.
+- comparisons/sokosumi-vs-relevance-ai/en/layout → Rewrote the affected page blocks. Why: plain verifiable comparison.
+- comparisons/vs-hiring-a-freelancer/de/description → Replaced the summary. Why: plain German comparison.
+- comparisons/vs-hiring-a-freelancer/de/layout → Rewrote the affected page blocks. Why: accurate German comparison.
+- coworkers/ad-campaign-generator/de/seoDescription → Replaced the search and card summary. Why: natural German summary.
+- coworkers/ad-campaign-generator/en/seoDescription → Replaced the search and card summary. Why: plain capability summary.
+- coworkers/ad-visual-animator/de/seoDescription → Replaced the search and card summary. Why: natural German summary.
+- coworkers/ad-visual-animator/en/seoDescription → Replaced the search and card summary. Why: plain capability summary.
+- coworkers/advanced-web-research/de/seoDescription → Replaced the search and card summary. Why: natural German summary.
+- coworkers/advanced-web-research/en/seoDescription → Replaced the search and card summary. Why: plain capability summary.
+- coworkers/alex/de/seoDescription → Replaced the search and card summary. Why: natural German summary.
+- coworkers/alex/de/longBio → Rewrote the biography. Why: natural German biography.
+- coworkers/alex/en/seoDescription → Replaced the search and card summary. Why: plain capability summary.
+- coworkers/alex/en/longBio → Rewrote the biography. Why: plain factual biography.
+- coworkers/apol/de/seoDescription → Replaced the search and card summary. Why: natural German summary.
+- coworkers/apol/de/longBio → Rewrote the biography. Why: natural German biography.
+- coworkers/apol/en/seoDescription → Replaced the search and card summary. Why: plain capability summary.
+- coworkers/apol/en/longBio → Rewrote the biography. Why: plain factual biography.
+- coworkers/ask-the-crowd-opinion/de/seoDescription → Replaced the search and card summary. Why: natural German summary.
+- coworkers/ask-the-crowd-opinion/en/seoDescription → Replaced the search and card summary. Why: plain capability summary.
+- coworkers/ask-the-crowd-survey/de/seoDescription → Replaced the search and card summary. Why: natural German summary.
+- coworkers/ask-the-crowd-survey/en/seoDescription → Replaced the search and card summary. Why: plain capability summary.
+- coworkers/attentioninsight-analysis-agent/de/seoDescription → Replaced the search and card summary. Why: natural German summary.
+- coworkers/attentioninsight-analysis-agent/en/seoDescription → Replaced the search and card summary. Why: plain capability summary.
+- coworkers/bront/de/seoDescription → Replaced the search and card summary. Why: natural German summary.
+- coworkers/bront/de/longBio → Rewrote the biography. Why: natural German biography.
+- coworkers/bront/en/seoDescription → Replaced the search and card summary. Why: plain capability summary.
+- coworkers/bront/en/longBio → Rewrote the biography. Why: plain factual biography.
+- coworkers/company-researcher/de/seoDescription → Replaced the search and card summary. Why: natural German summary.
+- coworkers/company-researcher/en/seoDescription → Replaced the search and card summary. Why: plain capability summary.
+- coworkers/deepfake-detector-knight/de/seoDescription → Replaced the search and card summary. Why: natural German summary.
+- coworkers/deepfake-detector-knight/en/seoDescription → Replaced the search and card summary. Why: plain capability summary.
+- coworkers/digital-mockup-generator/de/seoDescription → Replaced the search and card summary. Why: natural German summary.
+- coworkers/digital-mockup-generator/en/seoDescription → Replaced the search and card summary. Why: plain capability summary.
+- coworkers/dite/de/seoDescription → Replaced the search and card summary. Why: natural German summary.
+- coworkers/dite/de/longBio → Rewrote the biography. Why: natural German biography.
+- coworkers/dite/en/seoDescription → Replaced the search and card summary. Why: plain capability summary.
+- coworkers/dite/en/longBio → Rewrote the biography. Why: plain factual biography.
+- coworkers/dpa-research-agent/de/seoDescription → Replaced the search and card summary. Why: natural German summary.
+- coworkers/dpa-research-agent/en/seoDescription → Replaced the search and card summary. Why: plain capability summary.
+- coworkers/elena/de/seoDescription → Replaced the search and card summary. Why: natural German summary.
+- coworkers/elena/de/longBio → Rewrote the biography. Why: natural German biography.
+- coworkers/elena/en/seoDescription → Replaced the search and card summary. Why: plain capability summary.
+- coworkers/elena/en/longBio → Rewrote the biography. Why: plain factual biography.
+- coworkers/emotional-sensing/de/seoDescription → Replaced the search and card summary. Why: natural German summary.
+- coworkers/emotional-sensing/en/seoDescription → Replaced the search and card summary. Why: plain capability summary.
+- coworkers/extended-audience-profiles/de/seoDescription → Replaced the search and card summary. Why: natural German summary.
+- coworkers/extended-audience-profiles/en/seoDescription → Replaced the search and card summary. Why: plain capability summary.
+- coworkers/facebook-page-analysis/de/seoDescription → Replaced the search and card summary. Why: natural German summary.
+- coworkers/facebook-page-analysis/en/seoDescription → Replaced the search and card summary. Why: plain capability summary.
+- coworkers/geo-sniffer/de/seoDescription → Replaced the search and card summary. Why: natural German summary.
+- coworkers/geo-sniffer/en/seoDescription → Replaced the search and card summary. Why: plain capability summary.
+- coworkers/google-maps-intelligence/de/seoDescription → Replaced the search and card summary. Why: natural German summary.
+- coworkers/google-maps-intelligence/en/seoDescription → Replaced the search and card summary. Why: plain capability summary.
+- coworkers/gwi-spark/de/seoDescription → Replaced the search and card summary. Why: natural German summary.
+- coworkers/gwi-spark/en/seoDescription → Replaced the search and card summary. Why: plain capability summary.
+- coworkers/hannah/de/seoDescription → Replaced the search and card summary. Why: natural German summary.
+- coworkers/hannah/de/longBio → Rewrote the biography. Why: natural German biography.
+- coworkers/hannah/en/seoDescription → Replaced the search and card summary. Why: plain capability summary.
+- coworkers/hannah/en/longBio → Rewrote the biography. Why: plain factual biography.
+- coworkers/headline-finder/de/seoDescription → Replaced the search and card summary. Why: natural German summary.
+- coworkers/headline-finder/en/seoDescription → Replaced the search and card summary. Why: plain capability summary.
+- coworkers/hepha/de/seoDescription → Replaced the search and card summary. Why: natural German summary.
+- coworkers/hepha/de/longBio → Rewrote the biography. Why: natural German biography.
+- coworkers/hepha/en/seoDescription → Replaced the search and card summary. Why: plain capability summary.
+- coworkers/hepha/en/longBio → Rewrote the biography. Why: plain factual biography.
+- coworkers/hermes/de/seoDescription → Replaced the search and card summary. Why: natural German summary.
+- coworkers/hermes/en/seoDescription → Replaced the search and card summary. Why: plain capability summary.
+- coworkers/igni/de/seoDescription → Replaced the search and card summary. Why: natural German summary.
+- coworkers/igni/de/longBio → Rewrote the biography. Why: natural German biography.
+- coworkers/igni/en/seoDescription → Replaced the search and card summary. Why: plain capability summary.
+- coworkers/igni/en/longBio → Rewrote the biography. Why: plain factual biography.
+- coworkers/instagram-page-analysis/de/seoDescription → Replaced the search and card summary. Why: natural German summary.
+- coworkers/instagram-page-analysis/en/seoDescription → Replaced the search and card summary. Why: plain capability summary.
+- coworkers/jamal/de/seoDescription → Replaced the search and card summary. Why: natural German summary.
+- coworkers/jamal/de/longBio → Rewrote the biography. Why: natural German biography.
+- coworkers/jamal/en/seoDescription → Replaced the search and card summary. Why: plain capability summary.
+- coworkers/jamal/en/longBio → Rewrote the biography. Why: plain factual biography.
+- coworkers/let-the-crowd-decide/de/seoDescription → Replaced the search and card summary. Why: natural German summary.
+- coworkers/let-the-crowd-decide/en/seoDescription → Replaced the search and card summary. Why: plain capability summary.
+- coworkers/mass-image-generator/de/seoDescription → Replaced the search and card summary. Why: natural German summary.
+- coworkers/mass-image-generator/en/seoDescription → Replaced the search and card summary. Why: plain capability summary.
+- coworkers/maya/de/seoDescription → Replaced the search and card summary. Why: natural German summary.
+- coworkers/maya/de/longBio → Rewrote the biography. Why: natural German biography.
+- coworkers/maya/en/seoDescription → Replaced the search and card summary. Why: plain capability summary.
+- coworkers/maya/en/longBio → Rewrote the biography. Why: plain factual biography.
+- coworkers/meme-creator-agent/de/seoDescription → Replaced the search and card summary. Why: natural German summary.
+- coworkers/meme-creator-agent/en/seoDescription → Replaced the search and card summary. Why: plain capability summary.
+- coworkers/meta-ads-library/de/seoDescription → Replaced the search and card summary. Why: natural German summary.
+- coworkers/meta-ads-library/en/seoDescription → Replaced the search and card summary. Why: plain capability summary.
+- coworkers/midesk-market-intelligence/de/seoDescription → Replaced the search and card summary. Why: natural German summary.
+- coworkers/midesk-market-intelligence/en/seoDescription → Replaced the search and card summary. Why: plain capability summary.
+- coworkers/movie-production-agent/de/seoDescription → Replaced the search and card summary. Why: natural German summary.
+- coworkers/movie-production-agent/en/seoDescription → Replaced the search and card summary. Why: plain capability summary.
+- coworkers/news-research/de/seoDescription → Replaced the search and card summary. Why: natural German summary.
+- coworkers/news-research/en/seoDescription → Replaced the search and card summary. Why: plain capability summary.
+- coworkers/organization-analysis/de/seoDescription → Replaced the search and card summary. Why: natural German summary.
+- coworkers/organization-analysis/en/seoDescription → Replaced the search and card summary. Why: plain capability summary.
+- coworkers/page-copy-assessment/de/seoDescription → Replaced the search and card summary. Why: natural German summary.
+- coworkers/page-copy-assessment/en/seoDescription → Replaced the search and card summary. Why: plain capability summary.
+- coworkers/page-design-analysis/de/seoDescription → Replaced the search and card summary. Why: natural German summary.
+- coworkers/page-design-analysis/en/seoDescription → Replaced the search and card summary. Why: plain capability summary.
+- coworkers/page-ranking-insights/de/seoDescription → Replaced the search and card summary. Why: natural German summary.
+- coworkers/page-ranking-insights/en/seoDescription → Replaced the search and card summary. Why: plain capability summary.
+- coworkers/pheme-beta/de/seoDescription → Replaced the search and card summary. Why: natural German summary.
+- coworkers/pheme-beta/de/longBio → Rewrote the biography. Why: natural German biography.
+- coworkers/pheme-beta/en/seoDescription → Replaced the search and card summary. Why: plain capability summary.
+- coworkers/pheme-beta/en/longBio → Rewrote the biography. Why: plain factual biography.
+- coworkers/product-reality-check-bansumi/de/seoDescription → Replaced the search and card summary. Why: natural German summary.
+- coworkers/product-reality-check-bansumi/en/seoDescription → Replaced the search and card summary. Why: plain capability summary.
+- coworkers/prompt-engineering-coach/de/seoDescription → Replaced the search and card summary. Why: natural German summary.
+- coworkers/prompt-engineering-coach/en/seoDescription → Replaced the search and card summary. Why: plain capability summary.
+- coworkers/reddit-research/de/seoDescription → Replaced the search and card summary. Why: natural German summary.
+- coworkers/reddit-research/en/seoDescription → Replaced the search and card summary. Why: plain capability summary.
+- coworkers/seo-geo-researcher/de/seoDescription → Replaced the search and card summary. Why: natural German summary.
+- coworkers/seo-geo-researcher/en/seoDescription → Replaced the search and card summary. Why: plain capability summary.
+- coworkers/soupie/de/seoDescription → Replaced the search and card summary. Why: natural German summary.
+- coworkers/soupie/de/longBio → Rewrote the biography. Why: natural German biography.
+- coworkers/soupie/en/seoDescription → Replaced the search and card summary. Why: plain capability summary.
+- coworkers/statista-key-insight/de/seoDescription → Replaced the search and card summary. Why: natural German summary.
+- coworkers/statista-key-insight/en/seoDescription → Replaced the search and card summary. Why: plain capability summary.
+- coworkers/statista-research/de/seoDescription → Replaced the search and card summary. Why: natural German summary.
+- coworkers/statista-research/en/seoDescription → Replaced the search and card summary. Why: plain capability summary.
+- coworkers/tiktok-profile-analysis/de/seoDescription → Replaced the search and card summary. Why: natural German summary.
+- coworkers/tiktok-profile-analysis/en/seoDescription → Replaced the search and card summary. Why: plain capability summary.
+- coworkers/vulc/de/seoDescription → Replaced the search and card summary. Why: natural German summary.
+- coworkers/vulc/de/longBio → Rewrote the biography. Why: natural German biography.
+- coworkers/vulc/en/seoDescription → Replaced the search and card summary. Why: plain capability summary.
+- coworkers/vulc/en/longBio → Rewrote the biography. Why: plain factual biography.
+- coworkers/web-single-answer/de/seoDescription → Replaced the search and card summary. Why: natural German summary.
+- coworkers/web-single-answer/en/seoDescription → Replaced the search and card summary. Why: plain capability summary.
+- coworkers/website-content-clustering/de/seoDescription → Replaced the search and card summary. Why: natural German summary.
+- coworkers/website-content-clustering/en/seoDescription → Replaced the search and card summary. Why: plain capability summary.
+- coworkers/website-traffic-analysis/de/seoDescription → Replaced the search and card summary. Why: natural German summary.
+- coworkers/website-traffic-analysis/en/seoDescription → Replaced the search and card summary. Why: plain capability summary.
+- coworkers/youtube-channel-analysis/de/seoDescription → Replaced the search and card summary. Why: natural German summary.
+- coworkers/youtube-channel-analysis/en/seoDescription → Replaced the search and card summary. Why: plain capability summary.
+- guides/writing-your-first-briefing/de/description → Replaced the summary. Why: natural German guidance.
+- guides/writing-your-first-briefing/de/content → Rewrote the rich text. Why: natural German guidance.
+- guides/writing-your-first-briefing/en/description → Replaced the summary. Why: plain briefing guidance.
+- guides/writing-your-first-briefing/en/content → Rewrote the rich text. Why: plain briefing guidance.
+- industries/agencies/de/description → Replaced the summary. Why: plain factual description.
+- industries/agencies/en/description → Replaced the summary. Why: plain factual description.
+- industries/e-commerce-retail/de/description → Replaced the summary. Why: plain factual description.
+- industries/e-commerce-retail/en/description → Replaced the summary. Why: plain factual description.
+- industries/financial-services/de/description → Replaced the summary. Why: plain factual description.
+- industries/financial-services/en/description → Replaced the summary. Why: plain factual description.
+- industries/media-publishing/de/description → Replaced the summary. Why: plain factual description.
+- industries/media-publishing/en/description → Replaced the summary. Why: plain factual description.
+- industries/saas-technology/de/description → Replaced the summary. Why: plain factual description.
+- industries/saas-technology/en/description → Replaced the summary. Why: plain factual description.
+- industries/travel-hospitality/de/description → Replaced the summary. Why: plain factual description.
+- industries/travel-hospitality/en/description → Replaced the summary. Why: plain factual description.
+- offers/ad-copy-pack/de/description → Replaced the summary. Why: plain deliverable description.
+- offers/ad-copy-pack/en/description → Replaced the summary. Why: plain deliverable description.
+- offers/brand-guidelines/de/description → Replaced the summary. Why: plain deliverable description.
+- offers/brand-guidelines/en/description → Replaced the summary. Why: plain deliverable description.
+- offers/code-review/de/description → Replaced the summary. Why: plain deliverable description.
+- offers/code-review/en/description → Replaced the summary. Why: plain deliverable description.
+- offers/cohort-report/de/description → Replaced the summary. Why: plain deliverable description.
+- offers/cohort-report/en/description → Replaced the summary. Why: plain deliverable description.
+- offers/competitor-deep-dive/en/description → Replaced the summary. Why: plain deliverable description.
+- offers/content-plan/de/description → Replaced the summary. Why: plain deliverable description.
+- offers/content-plan/en/description → Replaced the summary. Why: plain deliverable description.
+- offers/dashboard-spec/de/description → Replaced the summary. Why: plain deliverable description.
+- offers/dashboard-spec/en/description → Replaced the summary. Why: plain deliverable description.
+- offers/data-deep-dive/de/description → Replaced the summary. Why: plain deliverable description.
+- offers/data-deep-dive/de/description → Replaced the summary. Why: plain deliverable description.
+- offers/data-deep-dive/en/description → Replaced the summary. Why: plain deliverable description.
+- offers/data-deep-dive/en/description → Replaced the summary. Why: plain deliverable description.
+- offers/design-review/de/description → Replaced the summary. Why: plain deliverable description.
+- offers/design-review/en/description → Replaced the summary. Why: plain deliverable description.
+- offers/financial-model/de/description → Replaced the summary. Why: plain deliverable description.
+- offers/financial-model/en/description → Replaced the summary. Why: plain deliverable description.
+- offers/funnel-analysis/de/description → Replaced the summary. Why: plain deliverable description.
+- offers/funnel-analysis/en/description → Replaced the summary. Why: plain deliverable description.
+- offers/keyword-map/de/description → Replaced the summary. Why: plain deliverable description.
+- offers/keyword-map/en/description → Replaced the summary. Why: plain deliverable description.
+- offers/landing-page-copy/de/description → Replaced the summary. Why: plain deliverable description.
+- offers/landing-page-copy/en/description → Replaced the summary. Why: plain deliverable description.
+- offers/logo-concepts/en/description → Replaced the summary. Why: plain deliverable description.
+- offers/market-sizing/de/description → Replaced the summary. Why: plain deliverable description.
+- offers/market-sizing/en/description → Replaced the summary. Why: plain deliverable description.
+- offers/naming-sprint/de/description → Replaced the summary. Why: plain deliverable description.
+- offers/naming-sprint/en/description → Replaced the summary. Why: plain deliverable description.
+- offers/newsletter-draft/de/description → Replaced the summary. Why: plain deliverable description.
+- offers/newsletter-draft/en/description → Replaced the summary. Why: plain deliverable description.
+- offers/pricing-benchmark/de/description → Replaced the summary. Why: plain deliverable description.
+- offers/pricing-benchmark/en/description → Replaced the summary. Why: plain deliverable description.
+- offers/ui-concepts/de/description → Replaced the summary. Why: plain deliverable description.
+- offers/ui-concepts/en/description → Replaced the summary. Why: plain deliverable description.
+- pages/product/ai-coworkers/de/description → Replaced the summary. Why: natural German summary.
+- pages/product/ai-coworkers/de/layout → Rewrote the affected page blocks. Why: natural German product copy.
+- pages/product/briefing/de/description → Replaced the summary. Why: natural German summary.
+- pages/product/briefing/de/layout → Rewrote the affected page blocks. Why: natural German product copy.
+- pages/product/briefing/en/layout → Rewrote the affected page blocks. Why: restore missing English content.
+- pages/product/chat/de/description → Replaced the summary. Why: natural German summary.
+- pages/product/chat/de/layout → Rewrote the affected page blocks. Why: natural German product copy.
+- pages/product/outputs/de/description → Replaced the summary. Why: natural German summary.
+- pages/product/outputs/de/layout → Rewrote the affected page blocks. Why: natural German product copy.
+- pages/product/scheduled-tasks/de/description → Replaced the summary. Why: natural German summary.
+- pages/product/scheduled-tasks/de/layout → Rewrote the affected page blocks. Why: natural German product copy.
+- pages/product/task-board/de/description → Replaced the summary. Why: natural German summary.
+- pages/product/task-board/de/layout → Rewrote the affected page blocks. Why: natural German product copy.
+- pages/product/task-board/en/layout → Rewrote the affected page blocks. Why: restore missing English FAQ.
+- posts/introducing-sokosumi/de/description → Replaced the summary. Why: natural German announcement.
+- posts/introducing-sokosumi/de/content → Rewrote the rich text. Why: natural German announcement.
+- posts/introducing-sokosumi/en/description → Replaced the summary. Why: remove unsupported launch claims.
+- posts/introducing-sokosumi/en/content → Rewrote the rich text. Why: remove unsupported launch claims.
+- releases/chat-with-your-coworkers/de/title → Replaced the title. Why: natural German release copy.
+- releases/chat-with-your-coworkers/de/description → Replaced the summary. Why: natural German release copy.
+- use-cases/agency-new-business-research/de/description → Replaced the summary. Why: natural German summary.
+- use-cases/agency-new-business-research/de/layout → Rewrote the affected page blocks. Why: natural German page copy.
+- use-cases/agency-new-business-research/en/description → Replaced the summary. Why: plain factual summary.
+- use-cases/agency-new-business-research/en/layout → Rewrote the affected page blocks. Why: remove unsupported spend claim.
+- use-cases/always-on-social-listening/de/description → Replaced the summary. Why: natural German summary.
+- use-cases/always-on-social-listening/de/layout → Rewrote the affected page blocks. Why: natural German page copy.
+- use-cases/always-on-social-listening/en/description → Replaced the summary. Why: plain factual summary.
+- use-cases/always-on-social-listening/en/layout → Rewrote the affected page blocks. Why: fix English typo.
+- use-cases/audience-research-sprint/de/description → Replaced the summary. Why: natural German summary.
+- use-cases/audience-research-sprint/de/layout → Rewrote the affected page blocks. Why: natural German page copy.
+- use-cases/audience-research-sprint/de/title → Replaced the title. Why: remove unsupported timing claim.
+- use-cases/audience-research-sprint/en/description → Replaced the summary. Why: plain factual summary.
+- use-cases/audience-research-sprint/en/title → Replaced the title. Why: remove unsupported timing claims.
+- use-cases/audience-research-sprint/en/layout → Rewrote the affected page blocks. Why: remove unsupported timing claims.
+- use-cases/competitor-monitoring/de/description → Replaced the summary. Why: natural German summary.
+- use-cases/competitor-monitoring/de/layout → Rewrote the affected page blocks. Why: natural German page copy.
+- use-cases/competitor-monitoring/en/description → Replaced the summary. Why: plain factual summary.
+- use-cases/launch-content-engine/de/description → Replaced the summary. Why: natural German summary.
+- use-cases/launch-content-engine/de/layout → Rewrote the affected page blocks. Why: natural German page copy.
+- use-cases/launch-content-engine/de/title → Replaced the title. Why: remove unsupported volume claim.
+- use-cases/launch-content-engine/en/description → Replaced the summary. Why: plain factual summary.
+- use-cases/launch-content-engine/en/title → Replaced the title. Why: remove unsupported volume claim.
+- use-cases/launch-content-engine/en/layout → Rewrote the affected page blocks. Why: remove unsupported volume claim.
+- use-cases/market-intelligence-briefings/de/description → Replaced the summary. Why: natural German summary.
+- use-cases/market-intelligence-briefings/de/layout → Rewrote the affected page blocks. Why: natural German page copy.
+- use-cases/market-intelligence-briefings/en/description → Replaced the summary. Why: plain factual summary.
+- use-cases/seasonal-campaign-planning/de/description → Replaced the summary. Why: natural German summary.
+- use-cases/seasonal-campaign-planning/de/layout → Rewrote the affected page blocks. Why: natural German page copy.
+- use-cases/seasonal-campaign-planning/de/title → Replaced the title. Why: natural German title.
+- use-cases/seasonal-campaign-planning/en/description → Replaced the summary. Why: plain factual summary.
+- use-cases/seo-and-ai-visibility/de/description → Replaced the summary. Why: natural German summary.
+- use-cases/seo-and-ai-visibility/de/layout → Rewrote the affected page blocks. Why: natural German page copy.
+- use-cases/seo-and-ai-visibility/en/description → Replaced the summary. Why: plain factual summary.
+- vendors/attention-insight/de/description → Replaced the summary. Why: plain factual description.
+- vendors/attention-insight/en/description → Replaced the summary. Why: plain factual description.
+- vendors/factor168/de/description → Replaced the summary. Why: plain factual description.
+- vendors/factor168/en/description → Replaced the summary. Why: plain factual description.
+- vendors/hybridai/de/description → Replaced the summary. Why: plain factual description.
+- vendors/hybridai/en/description → Replaced the summary. Why: plain factual description.
+- vendors/nmkr/de/description → Replaced the summary. Why: plain factual description.
+- vendors/nmkr/en/description → Replaced the summary. Why: plain factual description.
+- vendors/nuauth-utxo-ag/de/description → Replaced the summary. Why: plain factual description.
+- vendors/nuauth-utxo-ag/en/description → Replaced the summary. Why: plain factual description.
+- vendors/resomnium/de/description → Replaced the summary. Why: plain factual description.
+- vendors/resomnium/en/description → Replaced the summary. Why: plain factual description.
+- vendors/serviceplan-group/de/description → Replaced the summary. Why: plain factual description.
+- vendors/serviceplan-group/en/description → Replaced the summary. Why: plain factual description.
+- vendors/utxo-ag/de/description → Replaced the summary. Why: plain factual description.
+- vendors/utxo-ag/en/description → Replaced the summary. Why: plain factual description.
+
+### Repository-owned pages
+
+- `/ai-coworkers/*/en+de/card-and-profile-summary` → Prefer the editorial `seoDescription` over locked catalog prose. Why: show reviewed copy.
+- `/ai-coworkers/en+de/agent-coworker-comparison` → Replaced behavioral guesses with observable product differences. Why: remove unsupported claims.
+- `/vendors/*/en+de/agent-summary` → Prefer the editorial summary on vendor pages. Why: show reviewed copy.
+- `/pricing/en+de/heading-and-plan-copy` → Replaced audience guesses with exact monthly credit amounts. Why: state published facts.
+- `/pricing/en+de/featured-label` → Removed “Most popular” while retaining the existing visual plan emphasis. Why: unsupported ranking claim.
+- `/compare/en+de/meta-and-cta` → Added German metadata and a direct free-credit CTA. Why: complete localization.
+- `/press/en+de/intro-facts-and-cta` → Stated the Serviceplan Group and NMKR relationship without superlatives. Why: remove unverified praise.
+- `/contact/en+de/guides-link-copy` → Replaced “get the most” wording with a literal description. Why: remove filler.
+- `/contact/support/en+de/self-service-section` → Replaced the dismissive heading and claim with a list description. Why: clearer support copy.
+- `/guides/en+de/meta-intro-and-cta` → Replaced generic benefit language with concrete instructions. Why: plain guidance.
+- `/list-your-agent/en+de/form-copy` → Corrected grammar and reduced the introduction and submission note. Why: concise form copy.
+- `/list-your-agent/en+de/docs-and-support-links` → Updated Masumi docs to `https://www.masumi.network/dev/masumi` and linked local support. Why: current destinations.
+- `/use-cases/*/en+de/secondary-cta` → Normalize legacy `/coworkers` links to `/ai-coworkers`. Why: fix broken links.
+- `/use-cases/industries/agencies/en+de/intro` → Removed an unverified Serviceplan superlative. Why: factual attribution.
+- `German dictionary/template strings` → Added every new German key and improved vendor, pricing, support, guide, comparison, press, and coworker wording. Why: natural German.
+
+## Missing
+
+- `offers/manual/*/en+de/deliverable`: all 22 manual offers have an empty deliverable field. Add the exact returned artifact and format for each task, for example “PDF report” or “HTML dashboard”; do not infer it from the output category.
+- `coworkers/*/en+de/longBio`: 41 of 54 coworker documents have no editorial biography. Add one factual paragraph covering input, process, output, vendor, and limits. The reviewed `seoDescription` now prevents empty or promotional cards in the meantime.
+- `coworkers/*/profileHosting`: 50 of 54 catalog records have no hosting value, and 44 have no model list. Ask each vendor to supply both or explicitly state “not provided”; these are procurement facts, not editorial copy.
+- `vendors/plan-net-studios` and `vendors/default-author`: inactive placeholder records have no description. Delete them from the source system if obsolete or complete them before activation.
+- `vendors/nmkr`: the vendor is active but has no associated listings; its copy explains that utxo AG owns the listings. Deactivate NMKR or attach the intended catalog records.
+- `legal/terms-of-service`: the marketplace terms contain the literal placeholder `( LINK )` for the Data Processing Agreement. Counsel should replace it with the approved DPA URL.
+- `legal/dpa`: the agent list is not synchronized with the 54 live coworker records. It contains duplicate “News Research” and retired or unlisted names such as FRED Economic Data Agent, Mass Video Generator, Quote Extractor Agent, and X Analyst For Businesses. Legal and catalog owners should reconcile the list and its agreement links.
+- `legal/imprint`: the three managing-director names render without separators as “Florian HallerSebastian KuepersDr. Ingo Stein”. Add explicit line breaks or list markup in the legal source.
+- `/de/legal/*`: the German routes intentionally render English legal text and are noindex. Approved German legal versions are missing for Terms, Privacy, Cookies, DPA, Acceptable Use, and Imprint.
+- `/de/list-your-agent`: the EU AI Act classification and confirmation declarations intentionally remain English. A legally approved German declaration is missing.
+- Synced offer descriptions remain controlled by the catalog. Several are still promotional or vague on task pages; clean them in the source catalog because the CMS guardrail forbids editing `source: synced`.
+- Pricing amounts, plan credit allocations, homepage positioning, product-demo claims, contact response times, forms, and legal text live only in repository templates. Move commercial values and frequently revised public claims into an owned CMS/global configuration, or document code owners and review dates.
+- The repository-wide documentation-link audit still reports one legacy URL in `CONTENT-AUDIT.md` and 56 existing documentation targets without matching local MDX routes. The sokosumi.com Masumi docs link fixed in this review is current.
+- Content depth is sparse: Sokosumi currently has one guide, one blog post, and one release entry. Add entries only when there is concrete product or operating information; no filler calendar is recommended.
+
+## Decisions needed
+
+- Legal owner: approve German legal documents and the German vendor declaration, or keep the current English/noindex policy.
+- Legal and product owners: supply the DPA link, reconcile the DPA agent list, and correct the imprint name formatting.
+- Product owner: confirm whether NMKR should remain an active empty vendor.
+- Product and vendor owners: decide whether model and hosting disclosure is mandatory for every listing.
+- Catalog owner: define the exact deliverable field for all 22 manual offers and clean synced task descriptions upstream.
+- Growth and legal owners: confirm the one-day sales/support response commitments; remove them if they are not contractual operating targets.
+- Product owner: verify claims that credits are refunded for incomplete tasks, that EU hosting is available, and that named hosting/model details are current.
+- Comparison owner: verify and date competitor feature and pricing claims against primary sources before removing noindex from the Relevance AI, Lindy, and Manus pages.
+- Content owner: decide whether pricing, homepage positioning, product claims, and contact commitments should become CMS-managed globals.

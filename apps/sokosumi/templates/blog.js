@@ -43,7 +43,7 @@ async function index(ctx) {
   const cr = [{ label: "Home", href: "/" }, { label: "Blog" }];
   return (
     pageStart({
-      title: "Blog | Sokosumi",
+      title: t("Blog: AI marketing, agents and coworkers | Sokosumi"),
       description: "Articles, announcements, and press from the team behind your AI coworkers \u2014 how the marketplace works, what teams brief, and what shipped recently.",
       path: "/blog",
       breadcrumb: cr,
@@ -58,6 +58,7 @@ async function index(ctx) {
           <div class="${shell.gridCls(posts.length)}">${posts.map(postCard).join("")}</div>
         </div>`
       : `<div class="page-section flush"><p class="muted">${esc(t("Posts are on the way. In the meantime,"))} <a href="/guides" style="text-decoration:underline">${esc(t("read the guides"))}</a>.</p></div>`) +
+    shell.logoRow() +
     shell.ctaBand({
       heading: t("Meet the coworkers we write about"),
       subheading: t("Every specialist on the marketplace has a public profile and work you can inspect first."),
@@ -84,9 +85,10 @@ async function detail(ctx) {
   const cr = [{ label: "Home", href: "/" }, { label: "Blog", href: "/blog" }, { label: p.title }];
   return (
     pageStart({
-      title: t("{title} | Sokosumi blog", { title: p.title }),
+      title: t("{title} | Sokosumi", { title: p.title }),
       description: (p.description || "").slice(0, 155),
       path: `/blog/${p.slug}`,
+      og: { type: "article", eyebrow: t("Blog"), title: p.title, sub: p.description || "", img: cover || "" },
       breadcrumb: cr,
       ogImage: cover || undefined,
       article: { published: p.date || undefined, modified: p.updatedAt || p.date || undefined },
@@ -123,9 +125,10 @@ async function detail(ctx) {
     <div class="page-section">
       <a class="muted" href="/blog" style="display:inline-flex;align-items:center;gap:8px;font-size:14px">${icon("arrow-left", 15)} ${esc(t("All posts"))}</a>
     </div>` +
+    shell.logoRow() +
     shell.ctaBand({
-      heading: t("See it for yourself"),
-      subheading: t("Run one real task and judge the output for yourself."),
+      heading: t("Try one task"),
+      subheading: t("Brief a coworker and judge the output."),
       ctaLabel: t("Start free"),
       seed: p.title.length,
     }) +

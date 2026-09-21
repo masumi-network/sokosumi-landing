@@ -3,7 +3,8 @@ import { concepts, deepDives, glossary, patterns } from "../library-data";
 import { LibraryHeader } from "../library-header";
 import { TrackedLink } from "../learner-actions";
 
-export const metadata = { title: "Knowledge base", description: "Concepts, deep dives, operating patterns, and a shared glossary for the Masumi agent economy." };
+export const metadata = {  alternates: { canonical: "/learn/library" },
+ title: "Knowledge base", description: "Concepts, deep dives, operating patterns, and a shared glossary for the Masumi agent economy." };
 
 export default function LibraryPage() {
   return <div className="pt-10">

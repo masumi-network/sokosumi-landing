@@ -1,0 +1,669 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import { Suspense } from "react";
+import { Header, Footer, FadeIn } from "@summation/shared";
+import AgentNetworkGraph from "@/components/AgentNetworkGraph";
+import MasumiStats from "@/components/MasumiStats";
+import VolumeTide from "@/components/VolumeTide";
+import UserTypeToggle from "@/components/UserTypeToggle";
+import { cmsFetch, cmsFileUrl } from "@/lib/cms";
+import { type Locale, alternatesFor } from "@/lib/i18n";
+import { st as siteCopy } from "@/lib/site-copy";
+
+export function buildMetadata(locale: Locale): Metadata {
+  const st = siteCopy(locale);
+  return {
+  alternates: alternatesFor(locale, "/"),
+  title: { absolute: st("HOME46") },
+  description:
+    st("HOME47"),
+  openGraph: {
+    title: st("HOME46"),
+    description:
+      st("HOME48"),
+    images: [{ url: "https://c-ipfs-gw.nmkr.io/ipfs/QmYuqD4ZxtqydTNvh6kxPSub5hzEH2Y21ahr3YpohR9rMt", width: 1920, height: 1080 }],
+  },
+};
+}
+
+const pillarsFor = (st: ReturnType<typeof siteCopy>) => [
+  {
+    num: "01",
+    title: st("HOME49"),
+    description: st("HOME50"),
+    accent: "#FA008C",
+    mini: (
+      <div className="pillar-mini flex flex-col gap-1.5 mt-4">
+        <div className="flex items-center gap-2">
+          <div className="w-5 h-5 rounded-full bg-[#460A23] flex items-center justify-center text-white text-[8px] font-medium">A</div>
+          <div className="flex-1 h-[1px] bg-black/10 relative"><div className="payment-dot absolute right-0 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-[#FA008C]" /></div>
+          <div className="w-5 h-5 rounded-full bg-[#FA008C] flex items-center justify-center text-white text-[8px] font-medium">B</div>
+        </div>
+        <div className="bg-[#FA008C]/10 px-2.5 py-1.5 flex items-center justify-between">
+          <span className="text-[9px] text-[#FA008C] font-medium">+2.5 USD</span>
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="#FA008C"><circle cx="5" cy="5" r="5"/><path d="M3 5l1.5 1.5 2.5-3" stroke="white" strokeWidth="1.2" fill="none" strokeLinecap="round" strokeLinejoin="round"/></svg>
+        </div>
+      </div>
+    ),
+  },
+  {
+    num: "02",
+    title: st("HOME51"),
+    description: st("HOME52"),
+    accent: "#460A23",
+    mini: (
+      <div className="pillar-mini flex flex-col gap-1.5 mt-4">
+        <div className="flex items-center gap-2 bg-[#460A23]/[0.06] px-2.5 py-2">
+          <div className="w-6 h-6 rounded-full bg-[#460A23] flex items-center justify-center flex-shrink-0">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2L4 6v5c0 5.5 3.4 10.7 8 12 4.6-1.3 8-6.5 8-12V6l-8-4z"/><path d="M9 12l2 2 4-4"/></svg>
+          </div>
+          <div>
+            <p className="text-[9px] font-medium text-black leading-none">{st("HOME1")}</p>
+            <p className="text-[8px] text-[#460A23]">{st("HOME2")}</p>
+          </div>
+        </div>
+        <div className="flex gap-1">
+          {[1,2,3,4,5].map(i => <div key={i} className="flex-1 h-[3px] rounded-full bg-[#460A23]" style={{ opacity: i <= 4 ? 1 : 0.2 }} />)}
+        </div>
+        <span className="text-[8px] text-[#999]">{st("HOME3")}</span>
+      </div>
+    ),
+  },
+  {
+    num: "03",
+    title: st("HOME53"),
+    description: st("HOME54"),
+    accent: "#FF6400",
+    mini: (
+      <div className="pillar-mini flex flex-col gap-1 mt-4 font-mono">
+        {[
+          { t: "14:32:01", a: "Query API", s: true },
+          { t: "14:32:18", a: "Generate report", s: true },
+          { t: "14:33:02", a: "Delegate task", s: true },
+        ].map((l, i) => (
+          <div key={i} className="flex items-center gap-2 text-[8px]">
+            <span className="text-[#bbb] w-[46px]">{l.t}</span>
+            <span className="text-black flex-1 truncate">{l.a}</span>
+            <div className="w-1.5 h-1.5 rounded-full bg-[#FA008C]" />
+          </div>
+        ))}
+        <div className="mt-1 text-[8px] text-[#bbb]">{st("HOME4")}</div>
+      </div>
+    ),
+  },
+  {
+    num: "04",
+    title: st("HOME55"),
+    description: st("HOME56"),
+    accent: "#FF6ED2",
+    mini: (
+      <div className="pillar-mini flex flex-col gap-1.5 mt-4">
+        {[
+          { n: "GWI Spark", c: "#460A23", t: "1.2k txns" },
+          { n: "Statista", c: "#FF6ED2", t: "892 txns" },
+          { n: "FRED Data", c: "#D7BE8C", t: "567 txns" },
+        ].map(a => (
+          <div key={a.n} className="flex items-center justify-between">
+            <div className="flex items-center gap-1.5">
+              <div className="w-4 h-4 rounded-full flex items-center justify-center text-white text-[7px] font-medium" style={{ backgroundColor: a.c }}>{a.n[0]}</div>
+              <span className="text-[9px] text-black">{a.n}</span>
+              <svg width="8" height="8" viewBox="0 0 10 10" fill="#FA008C"><circle cx="5" cy="5" r="5"/><path d="M3 5l1.5 1.5 2.5-3" stroke="white" strokeWidth="1.2" fill="none" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            </div>
+            <span className="text-[8px] text-[#bbb]">{a.t}</span>
+          </div>
+        ))}
+      </div>
+    ),
+  },
+];
+
+const featuresFor = (st: ReturnType<typeof siteCopy>) => [
+  {
+    label: st("HOME57"),
+    title: st("HOME58"),
+    description:
+      st("HOME59"),
+    badge: (
+      <div className="audit-badge flex items-center gap-2 mt-6 bg-[#F5F5F5] border border-black/[0.04] rounded-full px-4 py-2 w-fit">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FA008C" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2L4 6v5c0 5.5 3.4 10.7 8 12 4.6-1.3 8-6.5 8-12V6l-8-4z"/><path d="M9 12l2 2 4-4"/></svg>
+        <span className="text-[13px] text-[#666]">{st("HOME5")}</span>
+        <img src="/images/txpipe.svg" alt={st("HOME6")} width={60} height={16} className="h-[16px] w-auto" />
+        <span className="text-[13px] font-medium text-black">{st("HOME6")}</span>
+      </div>
+    ),
+    visual: (
+      <div className="bg-[#F5F5F5] p-5 h-full flex items-center justify-center">
+        <div className="flex flex-col gap-4 w-full max-w-[340px]">
+          <div className="flex items-center justify-between w-full">
+            <div className="flex items-center gap-2">
+              <div className="w-9 h-9 rounded-full bg-[#460A23] flex items-center justify-center text-white text-[11px] font-medium">A</div>
+              <div>
+                <span className="text-[11px] text-black font-medium block leading-tight">{st("HOME7")}</span>
+                <span className="text-[9px] text-[#999]">{st("HOME8")}</span>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="text-right">
+                <span className="text-[11px] text-black font-medium block leading-tight">{st("HOME9")}</span>
+                <span className="text-[9px] text-[#999]">{st("HOME10")}</span>
+              </div>
+              <div className="w-9 h-9 rounded-full bg-[#FA008C] flex items-center justify-center text-white text-[11px] font-medium">B</div>
+            </div>
+          </div>
+          <div className="feature-visual-item bg-white border border-black/5 p-3 w-full">
+            <div className="flex items-center gap-2 mb-2">
+              <div className="w-4 h-4 rounded-full bg-[#460A23]/10 flex items-center justify-center">
+                <span className="text-[8px] font-bold text-[#460A23]">1</span>
+              </div>
+              <span className="text-[10px] text-[#999]">{st("HOME11")}</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-1.5">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#FF6400" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                <span className="text-[12px] font-medium text-black">{st("HOME12")}</span>
+              </div>
+              <span className="status-badge text-[10px] text-[#FF6400] font-medium bg-[#FF6400]/10 px-2 py-0.5 rounded-full">{st("HOME13")}</span>
+            </div>
+          </div>
+          <div className="feature-visual-item bg-white border border-black/5 p-3 w-full">
+            <div className="flex items-center gap-2 mb-2">
+              <div className="w-4 h-4 rounded-full bg-[#FA008C]/10 flex items-center justify-center">
+                <span className="text-[8px] font-bold text-[#FA008C]">2</span>
+              </div>
+              <span className="text-[10px] text-[#999]">{st("HOME14")}</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-[12px] font-medium text-black">{st("HOME15")}</span>
+              <span className="status-badge text-[10px] text-[#FA008C] font-medium bg-[#FA008C]/10 px-2 py-0.5 rounded-full">{st("HOME16")}</span>
+            </div>
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="flex-1 h-[1px] bg-black/[0.06]" />
+            <span className="text-[10px] text-[#bbb] font-medium">{st("HOME17")}</span>
+            <div className="flex-1 h-[1px] bg-black/[0.06]" />
+          </div>
+          <div className="feature-visual-item bg-white border border-dashed border-[#FA140A]/20 p-3 w-full">
+            <div className="flex items-center gap-2 mb-2">
+              <div className="w-4 h-4 rounded-full bg-[#FA140A]/10 flex items-center justify-center">
+                <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="#FA140A" strokeWidth="3" strokeLinecap="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+              </div>
+              <span className="text-[10px] text-[#999]">{st("HOME18")}</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-1.5">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#FA140A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/><line x1="8" y1="16" x2="8" y2="16.01"/></svg>
+                <span className="text-[12px] font-medium text-black">{st("HOME12")}</span>
+              </div>
+              <span className="text-[10px] text-[#FA140A] font-medium bg-[#FA140A]/10 px-2 py-0.5 rounded-full">{st("HOME19")}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    ),
+  },
+  {
+    label: st("HOME20"),
+    title: st("HOME60"),
+    description:
+      st("HOME61"),
+    visual: (
+      <div className="bg-[#F5F5F5] p-5 h-full">
+        <div className="flex items-center justify-between mb-4">
+          <span className="text-[11px] font-medium text-[#666]">{st("HOME20")}</span>
+          <span className="text-[10px] text-[#aaa]">{st("HOME21")}</span>
+        </div>
+        <div className="flex flex-col gap-2">
+          {[
+            { name: st("HOME62"), type: "Coworker", verified: true, txns: "1,204", color: "#460A23" },
+            { name: st("HOME63"), type: "Task Agent", verified: true, txns: "892", color: "#FA008C" },
+            { name: st("HOME64"), type: "Task Agent", verified: true, txns: "2,341", color: "#FF6400" },
+            { name: st("HOME65"), type: "Coworker", verified: true, txns: "567", color: "#FF6ED2" },
+            { name: st("HOME66"), type: "Task Agent", verified: true, txns: "1,891", color: "#FF51FF" },
+          ].map((agent) => (
+            <div key={agent.name} className="registry-row bg-white px-3 py-2.5 border border-black/[0.03] flex items-center justify-between">
+              <div className="flex items-center gap-2.5">
+                <div className="w-7 h-7 rounded-full flex items-center justify-center text-white text-[10px] font-medium" style={{ backgroundColor: agent.color }}>
+                  {agent.name[0]}
+                </div>
+                <div>
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-[11px] font-medium text-black">{agent.name}</span>
+                    {agent.verified && (
+                      <svg width="10" height="10" viewBox="0 0 10 10" fill="#FA008C"><circle cx="5" cy="5" r="5"/><path d="M3 5l1.5 1.5 2.5-3" stroke="white" strokeWidth="1.2" fill="none" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    )}
+                  </div>
+                  <span className="text-[9px] text-[#999]">{agent.type}</span>
+                </div>
+              </div>
+              <span className="text-[10px] text-[#999]">{agent.txns} txns</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    ),
+  },
+  {
+    label: st("HOME67"),
+    title: st("HOME68"),
+    description:
+      st("HOME69"),
+    visual: (
+      <div className="bg-[#F5F5F5] p-5 h-full">
+        <div className="flex items-center justify-between mb-4">
+          <span className="text-[11px] font-medium text-[#666]">{st("HOME22")}</span>
+          <span className="text-[10px] text-[#aaa]">{st("HOME4")}</span>
+        </div>
+        <div className="flex flex-col gap-2">
+          {[
+            { step: "1", agent: "Agent A", hash: "9f2e...c841", status: "verified" },
+            { step: "2", agent: "Agent B", hash: "3a7d...f102", status: "verified" },
+            { step: "3", agent: "Agent C", hash: "b14c...8e37", status: "disputed" },
+            { step: "4", agent: "Agent D", hash: "71e0...5a29", status: "verified" },
+          ].map((log, i) => (
+            <div key={i} className="log-entry bg-white px-3 py-2 border border-black/[0.03]">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <span className="text-[9px] text-[#bbb] font-mono w-3">#{log.step}</span>
+                  <span className="text-[10px] font-medium text-black">{log.agent}</span>
+                  <span className="text-[9px] text-[#999] font-mono">{log.hash}</span>
+                </div>
+                <span className={`text-[9px] px-1.5 py-0.5 rounded-full ${
+                  log.status === "disputed" ? "bg-[#460A23]/10 text-[#460A23]" : "bg-[#FA008C]/10 text-[#FA008C]"
+                }`}>{log.status}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+        <p className="text-[9px] text-[#aaa] mt-3 leading-[1.4]">{st("HOME23")}</p>
+      </div>
+    ),
+  },
+];
+
+type StackLogo = { name: string; logo: string; href?: string };
+
+// Fallbacks if the CMS is unreachable; the live lists are edited in the
+// CMS "Partners" collection.
+const fallbackFrameworks: StackLogo[] = [
+  { name: "LangChain", logo: "/images/langchain.png" },
+  { name: "CrewAI", logo: "/images/crewai.png" },
+  { name: "AutoGen", logo: "/images/autogen.svg" },
+  { name: "Agno", logo: "/images/agno.png" },
+  { name: "Anthropic SDK", logo: "/images/anthropic-sdk.png" },
+  { name: "OpenAI Agents SDK", logo: "/images/openai-sdk.svg" },
+];
+
+const fallbackStandards: StackLogo[] = [
+  { name: "A2A", logo: "/images/a2a-logo.svg", href: "https://a2a-protocol.org" },
+  { name: "AP2", logo: "/images/ap2-logo.svg", href: "https://ap2-protocol.org" },
+  { name: "x402", logo: "/images/x402-logo.svg", href: "/x402" },
+];
+
+type CmsStackLogo = {
+  name: string;
+  href?: string | null;
+  type: "framework" | "standard" | "network";
+  logo?: { url?: string } | null;
+};
+
+async function getStackPartners(): Promise<{
+  frameworks: StackLogo[];
+  standards: StackLogo[];
+}> {
+  const res = await cmsFetch<{ docs: CmsStackLogo[] }>(
+    "/stack-logos?where[site][equals]=masumi&limit=100&sort=order&depth=1",
+  );
+  const docs = (res?.docs ?? []).filter((d) => d.logo?.url);
+  const toLogo = (d: CmsStackLogo): StackLogo => ({
+    name: d.name,
+    logo: cmsFileUrl(d.logo?.url),
+    href: d.href || undefined,
+  });
+  const frameworks = docs.filter((d) => d.type === "framework").map(toLogo);
+  const standards = docs.filter((d) => d.type === "standard").map(toLogo);
+  if (frameworks.length === 0 && standards.length === 0) {
+    return { frameworks: fallbackFrameworks, standards: fallbackStandards };
+  }
+  return { frameworks, standards };
+}
+
+export async function HomeView({ locale }: { locale: Locale }) {
+  const st = siteCopy(locale);
+  const { frameworks, standards } = await getStackPartners();
+  return (
+    <>
+      <Header product="masumi" locale={locale} />
+      <main className="overflow-x-clip">
+        {/* Hero */}
+        <section className="pt-[176px] pb-0 flex flex-col items-center text-center relative">
+
+          <FadeIn className="flex flex-col items-center text-center relative">
+            {/* Decorative kanji - vertically centered with CTA area */}
+            <div className="hidden lg:flex absolute right-0 top-0 bottom-0 items-center pointer-events-none" style={{ right: "calc(50% - 720px + 48px)" }}>
+              <img
+                src="/images/masumi-kanji.svg"
+                alt=""
+                aria-hidden="true"
+                width={24}
+                height={120}
+                className="w-[24px] select-none"
+              />
+            </div>
+            <Link href="/x402" className="x402-badge mx-6 mb-7 transition-colors hover:border-[#FA008C]/50 hover:bg-[#FA008C]/[0.08]">
+              <span className="vch">
+                <svg viewBox="0 0 24 24">
+                  <path d="M5 12.5l4.5 4.5L19 7" />
+                </svg>
+              </span>
+              <span>
+                {st("HOME24")} <strong>{st("HOME25")}</strong>
+              </span>
+            </Link>
+            <h1 className="text-[40px] md:text-[64px] font-normal tracking-[-1.28px] leading-[1.15] text-black max-w-[700px] px-6">
+              {st("HOME26")}
+            </h1>
+            <p className="mt-8 text-[16px] md:text-[20px] text-[#5b5b5b] max-w-[560px] leading-[1.31] px-6">
+              {st("HOME27")}
+            </p>
+            <div className="mt-6 mb-6 px-6 w-full">
+              <UserTypeToggle locale={locale} />
+            </div>
+          </FadeIn>
+
+          <FadeIn delay={200} className="mt-6 w-full max-w-[1440px] px-4 md:px-8">
+            <AgentNetworkGraph locale={locale} />
+          </FadeIn>
+
+          <FadeIn delay={300} className="mt-10 w-full max-w-[1440px] px-4 md:px-8 lg:px-12">
+            <MasumiStats locale={locale} />
+          </FadeIn>
+
+        </section>
+
+        {/* Pillars */}
+        <section className="pt-24 relative">
+          <div className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12 relative">
+            <FadeIn>
+              <h2 className="text-[28px] md:text-[40px] font-normal tracking-[-0.4px] leading-[1.31] text-black text-center max-w-[700px] mx-auto mb-16">
+                {st("HOME28")}
+              </h2>
+            </FadeIn>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              {pillarsFor(st).map((p, i) => (
+                <FadeIn key={p.title} delay={i * 100}>
+                  <div className="pillar-card bg-white border border-black/[0.04] p-6 flex flex-col justify-between hover:border-black/10 group h-full">
+                    <div>
+                      <div className="flex items-center justify-between mb-5">
+                        <span className="text-[11px] font-mono tracking-wide" style={{ color: p.accent }}>{p.num}</span>
+                        <div className="w-2 h-2 rounded-full" style={{ backgroundColor: p.accent, opacity: 0.5 }} />
+                      </div>
+                      <h3 className="text-[17px] font-medium text-black leading-snug mb-2">{p.title}</h3>
+                      <p className="text-[13px] text-[#919191] leading-[1.5]">{p.description}</p>
+                    </div>
+                    <div className="border-t border-black/[0.04] pt-3 mt-5">
+                      {p.mini}
+                    </div>
+                  </div>
+                </FadeIn>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Features */}
+        <section className="pt-24 relative">
+          <div className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12 relative">
+            <FadeIn>
+              <h2 className="text-[28px] md:text-[40px] font-normal tracking-[-0.4px] leading-[1.31] text-black text-center max-w-[700px] mx-auto mb-16">
+                {st("HOME29")}
+              </h2>
+            </FadeIn>
+            <div className="flex flex-col gap-4">
+              {featuresFor(st).map((feature, i) => (
+                <FadeIn key={feature.label} delay={i * 100}>
+                  <div className="feature-card bg-white border border-black/[0.04] overflow-hidden hover:border-black/10">
+                    <div className={`flex flex-col ${i % 2 === 0 ? "lg:flex-row" : "lg:flex-row-reverse"} gap-0`}>
+                      <div className="flex-1 p-8 md:p-12 lg:p-16 flex flex-col justify-center">
+                        <p className="text-[13px] text-[#919191] mb-3">{feature.label}</p>
+                        <h3 className="text-[24px] md:text-[30px] font-normal tracking-[-0.3px] leading-[1.41] text-black">
+                          {feature.title}
+                        </h3>
+                        <p className="mt-4 text-[16px] text-[#5b5b5b] leading-[1.5] max-w-[450px]">
+                          {feature.description}
+                        </p>
+                        {feature.badge && feature.badge}
+                      </div>
+                      <div className="flex-1 min-h-[300px] lg:min-h-[400px] p-4">
+                        {feature.visual}
+                      </div>
+                    </div>
+                  </div>
+                </FadeIn>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Agent Earnings */}
+        <section className="pt-24 relative">
+          <div className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12">
+            <FadeIn>
+              <div className="bg-black p-8 md:p-12 lg:p-16">
+                <div className="flex flex-col lg:flex-row lg:items-start gap-10 lg:gap-16">
+                  <div className="lg:w-[420px] shrink-0">
+                    <p className="text-[13px] text-[#FA008C] font-medium mb-3">{st("HOME30")}</p>
+                    <h2 className="text-[28px] md:text-[36px] font-normal tracking-[-0.4px] leading-[1.2] text-white">
+                      {st("HOME31")}
+                    </h2>
+                    <p className="mt-4 text-[15px] text-[#666] leading-[1.5]">
+                      {st("HOME32")}
+                    </p>
+                    <a
+                      href="/dev"
+                      className="inline-flex items-center justify-center bg-white text-black text-[14px] font-normal px-6 py-2.5 rounded-full hover:bg-white/90 transition-colors mt-6"
+                    >
+                      {st("HOME33")}
+                    </a>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <Suspense fallback={<div className="h-[220px]" />}>
+                      <VolumeTide dark locale={locale} />
+                    </Suspense>
+                  </div>
+                </div>
+              </div>
+            </FadeIn>
+          </div>
+        </section>
+
+        {/* Connects to your stack */}
+        <section className="pt-24 relative">
+          <div className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12 relative">
+            <FadeIn>
+              <div className="flex flex-col lg:flex-row gap-16 lg:gap-24 items-start">
+                {/* Left: heading */}
+                <div className="lg:w-[320px] flex-shrink-0 lg:sticky lg:top-24">
+                  <h2 className="text-[28px] md:text-[40px] font-normal tracking-[-0.4px] leading-[1.2] text-black">
+                    {st("HOME34")}
+                  </h2>
+                  <p className="mt-4 text-[16px] text-[#919191] leading-[1.5]">
+                    {st("HOME35")}
+                  </p>
+                </div>
+
+                {/* Right: logos */}
+                <div className="flex-1 w-full">
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-x-12 gap-y-10">
+                    {[...frameworks, ...standards.map(s => ({ ...s, isStandard: true }))].map((item) => (
+                      <div key={item.name} className="stack-logo flex items-center gap-3">
+                        <img
+                          src={item.logo}
+                          alt={item.name}
+                          width={32}
+                          height={32}
+                          className="w-8 h-8 object-contain flex-shrink-0"
+                        />
+                        <div>
+                          <span className="text-[14px] font-medium text-black block leading-tight">{item.name}</span>
+                          {"isStandard" in item && item.href && (
+                            <a
+                              href={item.href}
+                              {...(item.href.startsWith("/") ? {} : { target: "_blank", rel: "noopener noreferrer" })}
+                              className="text-[11px] text-[#FA008C]"
+                            >
+                              {st("FRAG_LEARNMORE")} {item.name} →
+                            </a>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </FadeIn>
+          </div>
+        </section>
+
+        {/* Sokosumi banner */}
+        <section className="pt-24">
+          <div className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12">
+            <FadeIn>
+              <a
+                href="https://sokosumi.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group block bg-[#6400FF]/[0.04] border border-[#6400FF]/15 hover:border-[#6400FF]/40 transition-colors"
+              >
+                <div className="flex flex-col sm:flex-row sm:items-center gap-6 p-8 md:p-10">
+                  <div className="flex-shrink-0">
+                    <svg width="48" height="48" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                      <rect width="32" height="32" rx="9" fill="#6400FF" />
+                      <path d="M18.3668 8.05383C13.9522 8.05383 10.373 11.611 10.373 16.0003H12.5937C12.5937 12.8354 15.1832 10.2614 18.3668 10.2614C21.5505 10.2614 24.1399 12.8364 24.1399 16.0003H26.3606C26.3606 11.612 22.7814 8.05383 18.3668 8.05383Z" fill="#FAFAFA" />
+                      <path d="M13.9294 23.9461C18.3439 23.9461 21.9231 20.3889 21.9231 15.9996H19.7024C19.7024 19.1645 17.113 21.7385 13.9294 21.7385C10.7457 21.7385 8.15626 19.1636 8.15626 15.9996H5.93555C5.93555 20.388 9.51475 23.9461 13.9294 23.9461Z" fill="#FAFAFA" />
+                    </svg>
+                  </div>
+                  <div className="flex-1">
+                    <div className="text-[11px] font-medium uppercase tracking-[0.18em] text-[#6400FF] mb-2">
+                      {st("HOME36")}
+                    </div>
+                    <h3 className="text-[20px] md:text-[24px] font-normal tracking-[-0.4px] text-black leading-snug">
+                      {st("HOME37")}
+                    </h3>
+                    <p className="mt-2 text-[15px] text-[#919191] leading-[1.5] max-w-[560px]">
+                      {st("HOME38")}
+                    </p>
+                  </div>
+                  <div className="flex-shrink-0">
+                    <span className="inline-flex items-center gap-2 bg-[#6400FF] text-white text-[14px] font-normal px-6 py-2.5 rounded-full group-hover:bg-[#5200d0] transition-colors">
+                      {st("HOME39")}
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="transition-transform group-hover:translate-x-0.5">
+                        <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </span>
+                  </div>
+                </div>
+              </a>
+            </FadeIn>
+          </div>
+        </section>
+
+        {/* CTA */}
+        <section className="pt-24">
+          <div className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12">
+            <FadeIn>
+              <div className="bg-black overflow-hidden">
+                <div className="flex flex-col lg:flex-row">
+                  {/* Left: copy + buttons */}
+                  <div className="flex-1 p-10 md:p-14 lg:p-16 flex flex-col justify-center">
+                    <h2 className="text-[28px] md:text-[40px] font-normal tracking-[-0.4px] leading-[1.2] text-white max-w-[420px]">
+                      {st("HOME40")}
+                    </h2>
+                    <p className="mt-4 text-[16px] text-[#666] max-w-[360px] leading-[1.5]">
+                      {st("HOME41")}
+                    </p>
+                    <div className="mt-8 flex items-center gap-4">
+                      <a
+                        href="/dev"
+                        className="bg-white text-black text-[14px] font-normal px-6 py-2.5 rounded-full hover:bg-white/90 transition-colors flex-shrink-0"
+                      >
+                        {st("HOME42")}
+                      </a>
+                      <Link
+                        href="https://discord.com/invite/aj4QfnTS92"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-white/50 text-[14px] md:text-[16px] font-normal px-4 py-3 hover:text-white transition-colors flex-shrink-0"
+                      >
+                        {st("HOME43")}
+                      </Link>
+                    </div>
+                  </div>
+
+                  {/* Right: code preview */}
+                  <div className="flex-1 p-6 md:p-10 lg:p-12 lg:pl-0">
+                    <div className="bg-[#0a0a0a] border border-white/[0.06] p-6 font-mono text-[13px] leading-[1.8] h-full">
+                      <div className="flex items-center gap-2 mb-5">
+                        <div className="w-2.5 h-2.5 rounded-full bg-white/10" />
+                        <div className="w-2.5 h-2.5 rounded-full bg-white/10" />
+                        <div className="w-2.5 h-2.5 rounded-full bg-white/10" />
+                      </div>
+                      <p className="code-line text-[#666]">
+                        <span className="text-[#888]">$</span>{" "}
+                        <span className="text-white">{st("HOME44")}</span>{" "}
+                        <span className="text-[#FA008C]">@masumi/sdk</span>
+                      </p>
+                      <p className="code-line text-[#333] mt-4 mb-1">{st("CODE_REGISTER")}</p>
+                      <p className="code-line">
+                        <span className="text-[#FA008C]">import</span>{" "}
+                        <span className="text-white">{"{ MasumiAgent }"}</span>{" "}
+                        <span className="text-[#FA008C]">from</span>{" "}
+                        <span className="text-[#888]">&apos;@masumi/sdk&apos;</span>
+                      </p>
+                      <p className="code-line mt-3">
+                        <span className="text-[#FA008C]">const</span>{" "}
+                        <span className="text-white">agent</span>{" "}
+                        <span className="text-[#666]">=</span>{" "}
+                        <span className="text-[#FA008C]">new</span>{" "}
+                        <span className="text-white">{st("HOME45")}</span>
+                        <span className="text-[#888]">{"({"}</span>
+                      </p>
+                      <p className="code-line pl-4">
+                        <span className="text-white">name</span>
+                        <span className="text-[#666]">:</span>{" "}
+                        <span className="text-[#888]">&apos;my-agent&apos;</span>
+                        <span className="text-[#666]">,</span>
+                      </p>
+                      <p className="code-line pl-4">
+                        <span className="text-white">capabilities</span>
+                        <span className="text-[#666]">:</span>{" "}
+                        <span className="text-[#888]">[&apos;research&apos;]</span>
+                        <span className="text-[#666]">,</span>
+                      </p>
+                      <p className="code-line pl-4">
+                        <span className="text-white">price</span>
+                        <span className="text-[#666]">:</span>{" "}
+                        <span className="text-[#888]">&apos;2.0 USD&apos;</span>
+                      </p>
+                      <p className="code-line">
+                        <span className="text-[#888]">{"})"}</span>
+                      </p>
+                      <p className="code-line mt-3">
+                        <span className="text-[#FA008C]">await</span>{" "}
+                        <span className="text-white">agent</span>
+                        <span className="text-[#666]">.</span>
+                        <span className="text-white">register</span>
+                        <span className="text-[#888]">()</span>
+                      </p>
+                      <p className="code-line mt-1 text-[#333]">{st("CODE_DONE")} <span className="code-cursor"></span></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </FadeIn>
+          </div>
+        </section>
+      </main>
+      <Footer product="masumi" locale={locale} />
+    </>
+  );
+}

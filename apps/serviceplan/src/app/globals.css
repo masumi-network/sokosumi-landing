@@ -23,23 +23,25 @@ html {
   font-family: var(--_serviceplan-styles---demi), 'Avenir LT Pro', sans-serif;
 }
 
+.language-toggle a,
 .language-toggle span {
   cursor: pointer;
   transition: opacity 0.2s ease;
   line-height: 1;
+  text-decoration: none;
 }
 
-.language-toggle span.active {
+.language-toggle .active {
   font-weight: 700;
   color: #fff;
 }
 
-.language-toggle span.inactive {
+.language-toggle .inactive {
   font-weight: 400;
   color: rgba(255, 255, 255, 0.5);
 }
 
-.language-toggle span.inactive:hover {
+.language-toggle .inactive:hover {
   color: rgba(255, 255, 255, 0.75);
 }
 
@@ -1740,7 +1742,7 @@ margin: 0rem !important;
             margin-bottom: 20px;
         }
 
-        .chat-welcome h1 {
+        .chat-welcome > div:first-child {
             font-size: 22px;
             font-weight: 400;
             color: #171717;
@@ -2953,5 +2955,386 @@ margin: 0rem !important;
 
   .sp-testimonial-role {
     font-size: 11px;
+  }
+}
+/* ---------------------------------------------------------------
+   Landing pages (.lp-*)
+   Layout primitives for the SEO landing pages. Deliberately scoped
+   so they cannot collide with the imported Webflow stylesheet.
+   --------------------------------------------------------------- */
+
+.lp-hero {
+  max-width: 60rem;
+  margin: 0 auto;
+  padding: 6rem 2.5rem 7rem;
+  color: #fff;
+  text-align: left;
+}
+
+.lp-eyebrow {
+  font-family: var(--_serviceplan-styles---demi), 'Avenir LT Pro', sans-serif;
+  font-size: 0.8125rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #ff4b4f;
+  margin: 0 0 1.25rem;
+}
+
+.lp-h1 {
+  /* German compounds overflow narrow viewports without this. */
+  overflow-wrap: break-word;
+  hyphens: auto;
+  font-size: clamp(2.25rem, 5vw, 3.75rem);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  margin: 0;
+  color: #fff;
+}
+
+.lp-lede {
+  font-size: clamp(1.0625rem, 1.6vw, 1.375rem);
+  line-height: 1.55;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.82);
+  margin: 1.5rem 0 0;
+  max-width: 44rem;
+}
+
+.lp-main {
+  max-width: 60rem;
+  margin: 0 auto;
+  padding: 4.5rem 2.5rem 1rem;
+  color: #0a0a0a;
+}
+
+.lp-section {
+  margin-bottom: 4rem;
+}
+
+.lp-h2 {
+  overflow-wrap: break-word;
+  hyphens: auto;
+  font-size: clamp(1.5rem, 2.6vw, 2rem);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  text-align: left;
+  color: #0a0a0a;
+  margin: 0 0 1.25rem;
+}
+
+.lp-body {
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  font-weight: 300;
+  color: #333;
+  margin: 0 0 1.125rem;
+  max-width: 46rem;
+}
+
+.lp-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+  gap: 1.25rem;
+  margin-top: 1.75rem;
+}
+
+.lp-card {
+  border: 1px solid #e6e6e6;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  background: #fafafa;
+}
+
+.lp-card-link {
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.lp-card-link:hover {
+  border-color: #ff4b4f;
+  background: #fff;
+}
+
+.lp-card-title {
+  font-size: 1.0625rem;
+  font-weight: 700;
+  line-height: 1.3;
+  margin: 0 0 0.5rem;
+  color: #0a0a0a;
+}
+
+.lp-card-text {
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  font-weight: 300;
+  color: #555;
+  margin: 0;
+}
+
+.lp-steps {
+  list-style: none;
+  margin: 1.75rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 1.5rem;
+}
+
+.lp-step {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.lp-step-num {
+  flex: 0 0 auto;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
+  background: #ff4b4f;
+  color: #fff;
+  font-size: 0.875rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 0.1rem;
+}
+
+.lp-spec {
+  margin: 1.75rem 0 0;
+  border-top: 1px solid #e6e6e6;
+}
+
+.lp-spec-row {
+  display: grid;
+  grid-template-columns: minmax(9rem, 15rem) 1fr;
+  gap: 1.5rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid #e6e6e6;
+}
+
+.lp-spec-row dt {
+  font-weight: 700;
+  font-size: 0.9375rem;
+  color: #0a0a0a;
+}
+
+.lp-spec-row dd {
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  font-weight: 300;
+  color: #555;
+}
+
+.lp-faq {
+  margin-top: 1.75rem;
+  border-top: 1px solid #e6e6e6;
+}
+
+.lp-faq-item {
+  padding: 1.5rem 0;
+  border-bottom: 1px solid #e6e6e6;
+}
+
+.lp-faq-q {
+  font-size: 1.0625rem;
+  font-weight: 700;
+  line-height: 1.35;
+  margin: 0 0 0.625rem;
+  color: #0a0a0a;
+}
+
+.lp-quote {
+  margin: 0 0 4rem;
+  padding: 1.75rem 0 1.75rem 1.75rem;
+  border-left: 3px solid #ff4b4f;
+}
+
+.lp-quote blockquote {
+  border-left: 0;
+  margin: 0;
+  padding: 0;
+  font-size: 1.25rem;
+  line-height: 1.5;
+  font-weight: 300;
+  text-align: left;
+  color: #0a0a0a;
+}
+
+.lp-quote figcaption {
+  margin-top: 0.875rem;
+  font-size: 0.875rem;
+  text-align: left;
+  color: #777;
+}
+
+/* Matches .div-block-36, the homepage CTA band: same radius, same rhythm. */
+.lp-cta {
+  background: #0a0a0a;
+  color: #fff;
+  border-radius: var(--_serviceplan-styles---20px, 1.25rem);
+}
+
+.lp-cta-inner {
+  max-width: 62rem;
+  padding: 3.75rem;
+}
+
+.lp-cta-heading {
+  font-size: clamp(1.75rem, 3.2vw, 2.5rem);
+  text-align: left;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  margin: 0 0 1rem;
+  color: #fff;
+}
+
+.lp-cta-text {
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.75);
+  margin: 0 0 2.25rem;
+  max-width: 40rem;
+}
+
+.lp-form-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  max-width: 46rem;
+  margin-bottom: 1.5rem;
+}
+
+.lp-form .form_label {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.lp-form-legal {
+  font-size: 0.75rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.55);
+  margin: 1rem 0 0;
+}
+
+.lp-form-legal a {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.lp-form-done {
+  font-size: 1.125rem;
+  font-weight: 300;
+  color: #fff;
+}
+
+@media screen and (max-width: 767px) {
+  .lp-hero {
+    padding: 3.5rem 1.25rem 4rem;
+  }
+  .lp-main {
+    padding: 3rem 1.25rem 1rem;
+  }
+  .lp-cta-inner {
+    padding: 2.5rem 1.5rem;
+  }
+  .lp-form-fields,
+  .lp-spec-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Hallmark · section redesign: "Where our agents live" · scope: section
+ * system: preserved (project Webflow tokens) · theme: none introduced
+ * motion: none (motion-cut project — no motion library installed)
+ * pre-emit critique: P4 H4 E5 S4 R5 V3
+ * ---------------------------------------------------------------------
+   Every value below is a named token from the project's own ladder; the
+   rhythm matches what the other section heads on this page already use.
+
+   What was wrong: the description's bottom edge and the demo's top edge
+   were both at 7052px - the copy was touching the frame. The head was also
+   768px wide where every other section head on the page is 644px, and the
+   internal gaps (38/16/32/0/20/32) were not on any scale. */
+.sp-sokosumi {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+/* The head is the page's, not this section's: 644px, same as
+   "Popular Use Cases", "How Serviceplan Agents Work", "Plans That Grow". */
+.sp-sokosumi .sokosumi-content {
+  padding-bottom: 0;
+  gap: 0;
+}
+.sp-sokosumi .max-width-large {
+  max-width: 644px;
+}
+/* Head -> demo. The neighbouring sections run 120-144px here; this was 0. */
+.sp-sokosumi .sp-demo {
+  margin-top: var(--_serviceplan-styles---120px);
+  max-width: 1200px;
+  width: 100%;
+  padding-inline: var(--_serviceplan-styles---40px);
+}
+.sp-sokosumi .sp-demo-frame {
+  display: block;
+  width: 100%;
+  /* Holds the layout until the embed posts its real height - the demo
+     clamps its scale on narrow screens and stops being 16:9 there. */
+  aspect-ratio: 1440 / 810;
+  /* Depth from a hairline, not a drop shadow: the demo's own canvas is
+     white on a white section, so it needs an edge, not a lift. */
+  border: 1px solid var(--base-color-brand--black-20);
+  border-radius: var(--_serviceplan-styles---16px);
+  background: var(--base-color-neutral--white);
+  overflow: hidden;
+  color-scheme: light;
+}
+/* Caption belongs to the frame, so it sits close to it and far from the
+   link below - uneven on purpose, so the eye groups them correctly. */
+.sp-sokosumi .sokosumi-demo-cap {
+  max-width: 52ch;
+  margin: var(--_serviceplan-styles---24px) auto 0;
+  padding-inline: var(--_serviceplan-styles---40px);
+  text-align: center;
+  font-family: var(--_serviceplan-styles---regular);
+  font-size: var(--_serviceplan-styles---16px);
+  line-height: 1.6;
+  color: var(--base-color-brand--text-light);
+}
+.sp-sokosumi .link-with-arrow {
+  margin-top: var(--_serviceplan-styles---48px);
+}
+
+/* The wordmark ships as a fixed 312px SVG, which with .sokosumi-content's
+   2.5rem side padding needs 392px - wider than a 320px viewport, so it was
+   being clipped at the narrow end. */
+.sp-sokosumi .sokosumi-content svg {
+  max-width: 100%;
+  height: auto;
+}
+
+@media screen and (max-width: 767px) {
+  .sp-sokosumi .sokosumi-content {
+    padding-left: var(--_serviceplan-styles---20px);
+    padding-right: var(--_serviceplan-styles---20px);
+  }
+  .sp-sokosumi .sp-demo {
+    margin-top: var(--_serviceplan-styles---72px);
+    padding-inline: var(--_serviceplan-styles---20px);
+  }
+  .sp-sokosumi .sp-demo-frame {
+    border-radius: var(--_serviceplan-styles---12px);
+  }
+  .sp-sokosumi .sokosumi-demo-cap {
+    padding-inline: var(--_serviceplan-styles---20px);
+  }
+  .sp-sokosumi .link-with-arrow {
+    margin-top: var(--_serviceplan-styles---40px);
   }
 }

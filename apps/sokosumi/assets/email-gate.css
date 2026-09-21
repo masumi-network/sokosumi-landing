@@ -1,0 +1,87 @@
+/* Email popup shown once when a visitor runs a free tool (email-gate.js). */
+
+.eg-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(15, 14, 13, 0.45);
+}
+
+.eg-card {
+  width: 100%;
+  max-width: 440px;
+  background: #fff;
+  border: 1px solid var(--border, rgba(15, 14, 13, 0.12));
+  border-radius: var(--r-lg, 14px);
+  padding: 28px;
+}
+
+.eg-card h2 {
+  margin: 0 0 8px;
+  font-size: 22px;
+  font-weight: 300;
+  letter-spacing: -0.01em;
+}
+
+.eg-card > p {
+  margin: 0 0 18px;
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: rgba(15, 14, 13, 0.7);
+}
+
+.eg-hp {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.eg-row {
+  display: flex;
+  gap: 8px;
+}
+
+.eg-row input[type="email"] {
+  flex: 1;
+  min-width: 0;
+  padding: 10px 12px;
+  font: inherit;
+  font-size: 14.5px;
+  border: 1px solid var(--border, rgba(15, 14, 13, 0.12));
+  border-radius: var(--r-md, 10px);
+  background: #fff;
+}
+
+.eg-row input[type="email"]:focus-visible {
+  outline: 2px solid var(--ink, #0f0e0d);
+  outline-offset: 1px;
+}
+
+.eg-row .btn {
+  white-space: nowrap;
+}
+
+.eg-error {
+  margin: 10px 0 0;
+  font-size: 13.5px;
+  color: #a4231d;
+}
+
+.eg-consent {
+  margin: 12px 0 0;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: rgba(15, 14, 13, 0.55);
+}
+
+@media (max-width: 480px) {
+  .eg-row {
+    flex-direction: column;
+  }
+}

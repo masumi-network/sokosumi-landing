@@ -1,0 +1,301 @@
+/* /european-ai — trust page.
+   Every colour references a token in styles.css. The page alternates the site's
+   own ink bands against paper, and each section has a different structure, so
+   nothing here is another white card grid. */
+
+/* ── ink hero ───────────────────────────────────────────────────────────── */
+.eu-hero {
+  background: #0f1c25 var(--stage-deep);
+  color: #fff;
+  border-top: none;
+  padding: clamp(34px, 6vw, 76px) 0 clamp(44px, 6vw, 76px);
+  /* the ring is deliberately bled past the right edge, so the band clips it
+     itself rather than leaning on html{overflow-x:clip} — without this it
+     added 15px of horizontal scroll at 375px */
+  overflow: hidden;
+}
+.eu-hero-in { position: relative; }
+/* the 12-star ring, large and faint, bled off the right edge */
+.eu-ring {
+  position: absolute;
+  top: 50%;
+  right: -6%;
+  width: min(460px, 52vw);
+  height: auto;
+  transform: translateY(-50%);
+  color: #ffcc00;
+  opacity: 0.14;
+  pointer-events: none;
+}
+@media (max-width: 759px) { .eu-ring { right: -22%; width: 300px; opacity: 0.1; } }
+/* `ch` here resolved against the 15px body font, not the 51px headline, so
+   30ch was 284px and the h1 broke onto four lines. An explicit measure, and
+   the copy yields room for the ring only once there is room to yield. */
+.eu-hero-copy { position: relative; max-width: 100%; }
+@media (min-width: 760px) { .eu-hero-copy { max-width: 62%; } }
+@media (min-width: 1100px) { .eu-hero-copy { max-width: 56%; } }
+.eu-hero h1 {
+  font-weight: 300;
+  font-size: clamp(30px, 5vw, 54px);
+  line-height: 1.06;
+  letter-spacing: -0.03em;
+  margin: 10px 0 16px;
+  /* styles.css turns on hyphens:auto for h1-h3 under 860px as a guard for long
+     German compounds. On a 30px display line it hyphenated "marketing" into
+     "market-ing", so this one headline opts out; overflow-wrap:break-word is
+     still inherited and still rescues a compound that genuinely cannot fit. */
+  hyphens: manual;
+  overflow-wrap: break-word;
+  min-width: 0;
+}
+.eu-hero-copy p {
+  font-size: clamp(15px, 1.6vw, 17px);
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.66);
+  max-width: 56ch;
+}
+
+/* the four facts as a spec strip, not four cards */
+.eu-spec {
+  position: relative;
+  margin-top: clamp(34px, 5vw, 54px);
+  display: grid;
+  gap: 0;
+  grid-template-columns: 1fr;
+  border-top: 1px solid var(--hairline-dark);
+}
+.eu-spec > div { padding: 16px 0; border-bottom: 1px solid var(--hairline-dark); }
+.eu-spec dt {
+  font-size: 13.5px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: #fff;
+  margin-bottom: 3px;
+}
+.eu-spec dd { font-size: 12.5px; line-height: 1.5; color: rgba(255, 255, 255, 0.6); }
+
+/* ── where it runs ──────────────────────────────────────────────────────── */
+/* the ink band above is separation enough: .page-section's hairline sat
+   directly under it and read as an artefact, and an extra padding-top made
+   this the only paper section with asymmetric vertical padding */
+.eu-run { border-top: none; }
+.eu-run-grid { display: grid; gap: 0; grid-template-columns: 1fr; margin-top: 8px; }
+.eu-run-item { display: grid; gap: 6px; padding: 18px 0; border-top: 1px solid var(--border); }
+.eu-run-item:first-child { border-top: none; padding-top: 0; }
+.eu-run-k {
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--primary);
+}
+.eu-run-item p { font-size: 15px; line-height: 1.6; margin: 0; max-width: 62ch; }
+
+/* ── model row ──────────────────────────────────────────────────────────── */
+.eu-model-row {
+  list-style: none;
+  padding-inline-start: 0;
+  display: grid;
+  gap: 0;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.eu-model {
+  /* left, like every other block on the page — a centred island in a
+     left-aligned column was the one thing reading as off */
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 24px 20px 24px 0;
+  border-bottom: 1px solid var(--border);
+}
+.eu-model:nth-child(odd) { border-right: 1px solid var(--border); }
+.eu-model:nth-last-child(-n + 2) { border-bottom: none; }
+.eu-model-logo { height: 22px; width: 22px; object-fit: contain; }
+.eu-model-logo-none { height: 22px; }
+/* keeps the four cells on one baseline when a mark is missing (OpenAI is not
+   in simple-icons, so it renders name-only) */
+.eu-model-logo-none { display: block; }
+.eu-model-name {
+  margin-top: 12px;
+  font-size: clamp(17px, 1.8vw, 20px);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+.eu-model-by { font-size: 11.5px; letter-spacing: 0.02em; color: var(--muted-foreground); }
+
+.eu-note {
+  margin-top: 18px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--muted-foreground);
+  max-width: 66ch;
+}
+.eu-note a { color: var(--primary); text-decoration: underline; text-underline-offset: 2px; }
+.eu-note a .icon { vertical-align: -2px; }
+
+/* ── EU AI Act: numbered rows ───────────────────────────────────────────── */
+.eu-tier-track { list-style: none; padding-inline-start: 0; border-top: 1px solid var(--border); margin-top: 8px; }
+.eu-tier {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-areas: "n body" ". note";
+  column-gap: 20px;
+  row-gap: 8px;
+  padding: 22px 0;
+  border-bottom: 1px solid var(--border);
+}
+.eu-tier:last-child { border-bottom: none; padding-bottom: 4px; }
+.eu-tier-n {
+  grid-area: n;
+  font-family: var(--mono);
+  font-size: clamp(22px, 3vw, 30px);
+  font-weight: 300;
+  line-height: 1;
+  color: rgba(15, 14, 13, 0.18);
+  letter-spacing: -0.02em;
+}
+.eu-tier-body { grid-area: body; display: grid; gap: 4px; }
+.eu-tier strong { font-size: 17px; font-weight: 400; letter-spacing: -0.015em; }
+.eu-tier-eg { font-size: 13.5px; line-height: 1.55; color: var(--muted-foreground); max-width: 46ch; }
+.eu-tier-note {
+  grid-area: note;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--foreground);
+  padding-left: 14px;
+  border-left: 2px solid var(--primary);
+}
+
+/* ── open source: ink band ──────────────────────────────────────────────── */
+.eu-oss {
+  background: var(--ink);
+  color: #fff;
+  border-top: none;
+  padding: clamp(48px, 7vw, 88px) 0;
+}
+.eu-oss h2 {
+  font-weight: 300;
+  font-size: clamp(24px, 2.8vw, 34px);
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin: 8px 0 10px;
+}
+.eu-oss-sub { font-size: 15px; color: rgba(255, 255, 255, 0.6); max-width: 60ch; margin-bottom: 26px; }
+.eu-repo-list { list-style: none; padding-inline-start: 0; display: grid; gap: 14px; grid-template-columns: 1fr; }
+.eu-repo-list a {
+  display: grid;
+  gap: 10px;
+  align-content: start;
+  padding: 24px;
+  border: 1px solid var(--hairline-dark);
+  border-radius: var(--r-lg);
+  color: #fff;
+  text-decoration: none;
+  transition: border-color 0.3s var(--ease), background 0.3s var(--ease);
+}
+.eu-repo-list a:hover { border-color: rgba(255, 255, 255, 0.4); background: rgba(255, 255, 255, 0.03); }
+.eu-repo-lic {
+  justify-self: start;
+  padding: 3px 9px;
+  border: 1px solid var(--hairline-dark);
+  border-radius: 999px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.02em;
+  color: rgba(255, 255, 255, 0.75);
+}
+.eu-repo-list code {
+  font-family: var(--mono);
+  font-size: 15px;
+  letter-spacing: -0.01em;
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+.eu-repo-what { font-size: 13.5px; line-height: 1.55; color: rgba(255, 255, 255, 0.6); }
+.eu-repo-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 4px;
+  padding-top: 14px;
+  border-top: 1px solid var(--hairline-dark);
+}
+.eu-repo-stars { display: inline-flex; align-items: center; gap: 5px; font-size: 12.5px; color: rgba(255, 255, 255, 0.5); }
+.eu-repo-go { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; color: var(--primary-on-dark); }
+
+/* ── legal: inline chips ────────────────────────────────────────────────── */
+.eu-legal-list { list-style: none; padding-inline-start: 0; display: flex; flex-wrap: wrap; gap: 10px; margin-top: 6px; }
+.eu-legal-list a {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 10px 16px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--card);
+  font-size: 13.5px;
+  color: var(--foreground);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: border-color 0.3s var(--ease), color 0.3s var(--ease);
+}
+.eu-legal-list a .icon { color: var(--muted-foreground); }
+.eu-legal-list a:hover { border-color: rgba(43, 92, 120, 0.45); color: var(--primary); }
+.eu-legal-list a:hover .icon { color: var(--primary); }
+
+
+/* ── the stack ──────────────────────────────────────────────────────────── */
+.eu-infra-row {
+  list-style: none;
+  padding-inline-start: 0;
+  display: grid;
+  gap: 14px;
+  grid-template-columns: 1fr;
+  margin-top: 8px;
+}
+.eu-infra-item {
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  grid-template-areas: "logo name" "logo role" ". where";
+  column-gap: 16px;
+  row-gap: 2px;
+  align-content: center;
+  padding: 22px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+}
+.eu-infra-logo { grid-area: logo; align-self: center; height: 28px; width: 28px; object-fit: contain; }
+/* Microsoft marks are not in simple-icons, so Azure renders name-only; the
+   empty slot keeps the three cells on one baseline */
+.eu-infra-logo-none { display: block; }
+.eu-infra-name { grid-area: name; font-size: 16px; font-weight: 500; letter-spacing: -0.01em; }
+.eu-infra-role { grid-area: role; font-size: 13.5px; color: var(--muted-foreground); }
+.eu-infra-where {
+  grid-area: where;
+  margin-top: 6px;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--primary);
+}
+/* ── responsive ─────────────────────────────────────────────────────────── */
+@media (min-width: 620px) {
+  .eu-spec { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 32px; }
+  .eu-model-row { grid-template-columns: repeat(4, minmax(0, 1fr)); border-bottom: 1px solid var(--border); }
+  .eu-model { border-bottom: none; }
+  .eu-model:nth-child(odd) { border-right: none; }
+  .eu-model + .eu-model { border-left: 1px solid var(--border); padding-left: 22px; }
+  .eu-repo-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .eu-infra-row { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (min-width: 900px) {
+  .eu-spec { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .eu-run-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 30px; }
+  .eu-run-item { border-top: none; border-left: 1px solid var(--border); padding: 2px 0 2px 22px; }
+}

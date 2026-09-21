@@ -1,13 +1,17 @@
 "use client";
 
 import type { DesignSystem, Frontmatter } from "./lib/design-md";
+import { type Locale } from "@/lib/i18n";
+import { st as siteCopy } from "@/lib/site-copy";
 
 type Props = {
   system: DesignSystem;
   onChange: (next: DesignSystem) => void;
+  locale?: Locale;
 };
 
-export default function Editor({ system, onChange }: Props) {
+export default function Editor({ system, onChange, locale = "en" }: Props) {
+  const st = siteCopy(locale);
   const fm = system.frontmatter;
 
   const update = (next: Frontmatter) => {
@@ -25,7 +29,7 @@ export default function Editor({ system, onChange }: Props) {
       </div>
 
       <div>
-        <Label>Description</Label>
+        <Label>{st("EDT1")}</Label>
         <Textarea
           value={fm.description ?? ""}
           onChange={(v) => update({ ...fm, description: v })}
@@ -34,7 +38,7 @@ export default function Editor({ system, onChange }: Props) {
 
       {fm.colors && (
         <div>
-          <Label>Colors</Label>
+          <Label>{st("EDT2")}</Label>
           <div className="flex flex-col gap-2">
             {Object.entries(fm.colors).map(([name, hex]) => (
               <div key={name} className="flex items-center gap-2">
@@ -73,7 +77,7 @@ export default function Editor({ system, onChange }: Props) {
 
       {fm.typography && (
         <div>
-          <Label>Typography (font family)</Label>
+          <Label>{st("EDT3")}</Label>
           <div className="flex flex-col gap-2">
             {Object.entries(fm.typography).map(([name, t]) => (
               <div key={name} className="flex items-center gap-2">

@@ -256,12 +256,24 @@ const getVendor = (slug, opts) =>
     (v) => v.slug === slug,
   );
 
-const getCoworkers = (opts) =>
-  findAll("coworkers", { ...siteWhere({ active: "true" }), limit: 500, depth: 1, sort: "order" }, opts);
+function withCoworkerImage(coworker) {
+  const override = mediaUrl(coworker.imageOverride);
+  return override ? { ...coworker, image: override } : coworker;
+}
+
+const getCoworkers = async (opts) => {
+  const coworkers = await findAll(
+    "coworkers",
+    { ...siteWhere({ active: "true" }), limit: 500, depth: 1, sort: "order" },
+    opts,
+  );
+  return coworkers.map(withCoworkerImage);
+};
 
 const getCoworker = (slug, opts) =>
   findOne(
-    () => findAll("coworkers", { ...siteWhere({ slug }), limit: 1, depth: 1 }, opts),
+    async () =>
+      (await findAll("coworkers", { ...siteWhere({ slug }), limit: 1, depth: 1 }, opts)).map(withCoworkerImage),
     () => getCoworkers(opts),
     (c) => c.slug === slug,
   );
@@ -270,7 +282,8 @@ const getCoworker = (slug, opts) =>
 // to 301 old URLs after a public slug diverges from the catalog slug.
 const getCoworkerByCatalogSlug = (catalogSlug, opts) =>
   findOne(
-    () => findAll("coworkers", { ...siteWhere({ catalogSlug }), limit: 1, depth: 0 }, opts),
+    async () =>
+      (await findAll("coworkers", { ...siteWhere({ catalogSlug }), limit: 1, depth: 1 }, opts)).map(withCoworkerImage),
     () => getCoworkers(opts),
     (c) => c.catalogSlug === catalogSlug,
   );
@@ -363,6 +376,25 @@ const getPage = (slug, opts) =>
 
 const getFaqs = (opts) => findAll("faqs", { ...siteWhere(), limit: 200, depth: 0 }, opts);
 
+// The sokosumi-site-config global: commercial values (plans), positioning,
+// and response commitments an editor owns. Globals answer a bare object, not
+// { docs }, so this rides rawFetch through its own tiny cache entry.
+const getSiteConfig = async (opts) => {
+  const pathname = withLocale("/api/globals/sokosumi-site-config?depth=0");
+  const hit = cache[pathname];
+  if (hit && Date.now() - hit.at < TTL_MS) return hit.data;
+  try {
+    const data = await rawFetch(pathname, false);
+    if (data && typeof data === "object" && !data.message) {
+      remember(pathname, { at: Date.now(), data });
+      return data;
+    }
+  } catch (e) {
+    if (hit) return hit.data;
+  }
+  return (hit && hit.data) || null;
+};
+
 const getTestimonials = (opts) =>
   findAll("testimonials", { ...siteWhere({ active: "true" }), limit: 50, depth: 1, sort: "order" }, opts);
 
@@ -394,4 +426,5 @@ module.exports = {
   getPage,
   getFaqs,
   getTestimonials,
+  getSiteConfig,
 };

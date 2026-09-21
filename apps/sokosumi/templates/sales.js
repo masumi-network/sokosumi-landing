@@ -3,6 +3,7 @@
 // disabled, and the endpoint redirects back here with ?sent=1 or ?error=.
 
 const shell = require("./shell");
+const cms = require("../lib/cms");
 const { t } = require("../lib/i18n");
 const { esc, attr, icon, pageStart, pageEnd, APP } = shell;
 
@@ -67,10 +68,10 @@ function form(values, error) {
 function sentState() {
   return `<div class="notice" data-reveal data-analytics="generate_lead" data-analytics-on="load" data-analytics-form-name="sales_inquiry">
     <span class="eyebrow">${esc(t("Request received"))}</span>
-    <h1>${esc(t("Thanks, that is on its way."))}</h1>
+    <h1>${esc(t("Request received."))}</h1>
     <p>${esc(t("We have your request and will come back to you within one working day. If it is urgent, write to"))} <a href="mailto:info@sokosumi.com">info@sokosumi.com</a> ${esc(t("and it reaches the same inbox."))}</p>
     <div class="form-actions" style="margin-top:8px">
-      <a class="btn btn-primary" href="${APP}">${esc(t("Start a task in the app"))}</a>
+      <a class="btn btn-primary" href="${APP}" data-analytics="sign_up_click" data-analytics-location="sales_success">${esc(t("Start a task in the app"))}</a>
       <a class="btn btn-outline" href="/ai-coworkers">${esc(t("Meet the coworkers"))}</a>
       ${shell.NO_CARD}
     </div>
@@ -84,7 +85,11 @@ function sentState() {
   </div>`;
 }
 
-function render(ctx) {
+async function render(ctx) {
+  const siteConfig = await cms.getSiteConfig().catch(() => null);
+  const salesResponseLine =
+    (siteConfig && siteConfig.commitments && siteConfig.commitments.salesResponse) ||
+    t("A reply within one working day, from someone who knows the product.");
   const q = ctx.query || {};
   const get = (k) => (typeof q.get === "function" ? q.get(k) : q[k]) || "";
   const sent = get("sent") === "1";
@@ -95,7 +100,7 @@ function render(ctx) {
     : `<div class="page-head" data-reveal>
         <span class="eyebrow">${esc(t("Talk to Sales"))}</span>
         <h1>${esc(t("Put AI coworkers to work in your team"))}</h1>
-        <p class="sub">${esc(t("Tell us what you want to get done and we will show you exactly how Sokosumi handles it. Book a walkthrough, or just ask your questions and we will answer by email."))}</p>
+        <p class="sub">${esc(t("Tell us what you want to get done. Book a walkthrough, or ask your questions and we will answer by email."))}</p>
       </div>
       <div class="lead-layout">
         ${form(
@@ -113,7 +118,7 @@ function render(ctx) {
           ${shell.shotFigure(shell.SHOTS.board, { caption: false })}
           <h2 class="section-title" style="font-size:20px;margin-top:22px">${esc(t("What to expect"))}</h2>
           <ul class="lead-list">
-            <li>${icon("check", 15)}<span>${esc(t("A reply within one working day, from someone who knows the product."))}</span></li>
+            <li>${icon("check", 15)}<span>${esc(salesResponseLine)}</span></li>
             <li>${icon("check", 15)}<span>${esc(t("A walkthrough against your own use case, not a generic demo."))}</span></li>
             <li>${icon("check", 15)}<span>${esc(t("Straight answers on pricing, data residency, and what coworkers can and cannot do."))}</span></li>
           </ul>
@@ -128,12 +133,13 @@ function render(ctx) {
     pageStart({
       title: "Talk to Sales | Sokosumi",
       description:
-        "Book a walkthrough of Sokosumi or ask us anything about putting AI coworkers to work in your marketing team.",
+        "Book a walkthrough of Sokosumi or ask us anything about putting AI coworkers to work in your marketing team. Seat pricing, EU hosting and vendor questions welcome.",
       path: shell.SALES_URL,
       breadcrumb: CRUMBS,
       jsonld: { "@context": "https://schema.org", "@type": "ContactPage", name: "Talk to Sales" },
     }) +
     body +
+    shell.logoRow() +
     pageEnd()
   );
 }

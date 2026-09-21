@@ -104,7 +104,7 @@ function sentState() {
     <h1>${esc(t("Thanks — that is with support."))}</h1>
     <p>${esc(t("We have it and will come back to you within one working day. If it is urgent, write to"))} <a href="mailto:${attr(leads.SUPPORT_TO)}">${esc(leads.SUPPORT_TO)}</a> ${esc(t("and it reaches the same inbox."))}</p>
     <div class="form-actions" style="margin-top:8px">
-      <a class="btn btn-primary" href="${APP}">${esc(t("Open the app"))}</a>
+      <a class="btn btn-primary" href="${APP}" data-analytics="sign_up_click" data-analytics-location="support_success">${esc(t("Open the app"))}</a>
       <a class="btn btn-outline" href="/guides">${esc(t("Read the guides"))}</a>
     </div>
   </div>`;
@@ -128,7 +128,7 @@ async function render(ctx) {
   const cr = [{ label: "Home", href: "/" }, { label: "Contact", href: "/contact" }, { label: "Support" }];
   return (
     pageStart({
-      title: "Support | Sokosumi",
+      title: t("Support and help for Sokosumi users | Sokosumi"),
       description:
         "Get help with Sokosumi: email product support, find the guides and release notes, or reach sales about a plan.",
       path: shell.SUPPORT_URL,
@@ -168,8 +168,8 @@ async function render(ctx) {
       </div>
     </section>`) +
     `<section class="page-section" data-reveal>
-      <h2>${esc(t("Answer it yourself, faster"))}</h2>
-      <p class="sub">${esc(t("Most of what people write in about is already written down."))}</p>
+      <h2>${esc(t("Find an answer"))}</h2>
+      <p class="sub">${esc(t("Guides, pricing, release notes, and task details are linked below."))}</p>
       <div class="row-list">${SELF_SERVE.map(row).join("")}</div>
     </section>` +
     shell.ctaBand({
@@ -179,6 +179,7 @@ async function render(ctx) {
       ctaHref: SALES_URL,
       seed: 11,
     }) +
+    shell.logoRow() +
     pageEnd()
   );
 }

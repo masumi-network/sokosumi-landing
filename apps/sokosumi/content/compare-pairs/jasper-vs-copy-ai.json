@@ -1,0 +1,238 @@
+{
+  "slug": "jasper-vs-copy-ai",
+  "a": {
+    "key": "jasper",
+    "name": "Jasper",
+    "url": "https://www.jasper.ai"
+  },
+  "b": {
+    "key": "copy-ai",
+    "name": "Copy.ai",
+    "url": "https://www.copy.ai"
+  },
+  "checked": "2026-08-26",
+  "published": "2026-08-26",
+  "en": {
+    "title": "Jasper or Copy.ai: which one for a marketing team?",
+    "metaTitle": "Jasper vs Copy.ai (2026): prices, agents, credits, who it fits",
+    "description": "Jasper and Copy.ai compared on price, agents, workflow credits, hosting and real limits. Plain facts checked in August 2026, plus who should pick which.",
+    "intro": "Jasper is a marketing content platform sold per seat, with brand voice, a canvas and marketing agents. Copy.ai is a go-to-market workflow platform sold per workspace, with a cheap chat tier and expensive workflow tiers. The deciding question is whether you buy a writing tool for a few people or a workflow engine for a whole sales and marketing org.",
+    "glance": [
+      [
+        "Who it is for",
+        "Marketing teams that write a lot and want on-brand output",
+        "Sales and marketing ops teams that run repeatable content and outreach workflows"
+      ],
+      [
+        "What you get",
+        "Chat, Canvas editor, images, marketing agents, brand voice, custom agent builder (Business)",
+        "Chat with OpenAI, Anthropic and Gemini models; workflows on paid tiers; API on Enterprise"
+      ],
+      [
+        "Price",
+        "Pro $69 per seat monthly or $59 annual; Business custom",
+        "Chat $29 per month ($24 annual) for 5 seats; Growth $1,000, Expansion $2,000, Scale $3,000 per month; Enterprise custom"
+      ],
+      [
+        "Free plan or trial",
+        "7-day free trial on Pro",
+        "No free plan shown on the pricing page at check"
+      ],
+      [
+        "EU hosting",
+        "No. Data hosted in US data centres (US-East)",
+        "Not published. SOC 2 report available"
+      ],
+      [
+        "Team features",
+        "Brand voices, knowledge assets, audiences; admin controls and groups on Business",
+        "Seat bundles per tier (5 to 200); designated support team on Enterprise"
+      ],
+      [
+        "Build your own agents",
+        "No-code custom agent builder on Business only",
+        "Workflow builder on Growth and up; unlimited custom workflows on Enterprise"
+      ],
+      [
+        "What is metered",
+        "Chat and Canvas are not metered; agents and GEO Hub use credits on Business",
+        "Workflow credits: 20K, 45K, 75K per month on Growth, Expansion, Scale"
+      ]
+    ],
+    "pickA": {
+      "heading": "Pick Jasper if…",
+      "points": [
+        "You have two to ten marketers who write daily and want one brand voice enforced across all of them.",
+        "You want a per-seat price you can start on a card today. Pro is $69 a month with a 7-day trial.",
+        "You want images, a long-form editor and marketing agents in one place rather than a workflow builder."
+      ]
+    },
+    "pickB": {
+      "heading": "Pick Copy.ai if…",
+      "points": [
+        "You run the same content or outreach process hundreds of times a month and want it as a workflow, not a chat.",
+        "You need 75 or more seats. Growth at $1,000 a month covers 75 seats, which is cheaper per head than Jasper Pro.",
+        "You only need a cheap multi-model chat for a small team. Chat is $29 a month for five seats."
+      ]
+    },
+    "limits": {
+      "a": [
+        "Business pricing is not public, and the custom agent builder, GEO, deep research and API all sit there. Budgeting means a sales call.",
+        "Trust gap between review sites: 4.7/5 on G2 but 3.4/5 on Trustpilot, where billing and cancellation complaints and the 2023 price rise for existing customers still come up."
+      ],
+      "b": [
+        "The jump from Chat ($29) to Growth ($1,000) is large. There is no mid-price plan for a team of ten that wants workflows.",
+        "Reviewers name workflow credits and support as the main pain. Trustpilot sits at 1.9/5 with billing and cancellation complaints and email-only support that can take days."
+      ]
+    },
+    "verdict": "Jasper wins for a small marketing team that writes on-brand content every day and wants a simple seat price. Copy.ai wins for a large go-to-market org that wants content and outreach as repeatable workflows and can pay four figures a month. Neither offers EU hosting today.",
+    "bridge": {
+      "heading": "If you want the work done, not a chat window",
+      "text": "Both tools above give a person a place to prompt or a workflow to build. A competitor report, a campaign plan or the Monday performance PDF is a different product. You brief a coworker, the team sees the board, and a file lands at the end. Sokosumi is a marketplace of named AI coworkers for marketing teams. Each has a role, a public profile, sample work and a named vendor that states its models and hosting.",
+      "points": [
+        "You brief in plain language or @mention in a channel; the task shows on a shared board and ends with a finished file.",
+        "Credits only when a task runs. Free: 250 credits per seat per month, no card. Paid seats €25, €75 or €200 per month.",
+        "EU hosting available, stated per coworker. Built by Serviceplan Group with NMKR, Munich."
+      ],
+      "links": [
+        "/compare/sokosumi-vs-jasper",
+        "/compare/sokosumi-vs-copy-ai"
+      ]
+    },
+    "faq": [
+      [
+        "Does Jasper have a free plan?",
+        "No. Jasper Pro has a 7-day free trial. After that it is $69 per seat monthly or $59 per seat on an annual plan."
+      ],
+      [
+        "What are Copy.ai workflow credits?",
+        "Workflow credits are the meter for running workflows. Growth includes 20,000 a month, Expansion 45,000 and Scale 75,000. Chat use is unlimited and does not use credits."
+      ],
+      [
+        "Can either tool host data in the EU?",
+        "Jasper states its data is hosted in US data centres. Copy.ai does not publish a hosting region on its security page. Ask sales and get it in writing if EU hosting matters to you."
+      ],
+      [
+        "Is there a third option that delivers finished files?",
+        "Yes. Sokosumi is a marketplace of AI coworkers that return finished files such as reports, decks and spreadsheets to a shared board. It has a free tier of 250 credits per seat per month and EU hosting stated per coworker."
+      ]
+    ]
+  },
+  "de": {
+    "title": "Jasper oder Copy.ai: welches Tool für ein Marketingteam?",
+    "metaTitle": "Jasper vs Copy.ai (2026): Preise, Agents, Credits",
+    "description": "Jasper und Copy.ai im Vergleich: Preis, Agents, Workflow Credits, Hosting und echte Grenzen. Faktenstand August 2026, mit Empfehlung.",
+    "intro": "Jasper ist eine Marketing-Content-Plattform pro Seat, mit Brand Voice, Canvas und Marketing-Agents. Copy.ai ist eine Go-to-Market-Workflow-Plattform pro Workspace, mit günstigem Chat-Tier und teuren Workflow-Stufen. Entscheidend ist, ob Sie ein Schreibtool für wenige Personen kaufen oder eine Workflow-Engine für eine ganze Sales- und Marketing-Organisation.",
+    "glance": [
+      [
+        "Für wen es passt",
+        "Marketingteams, die viel schreiben und markenkonformen Output wollen",
+        "Sales- und Marketing-Ops-Teams, die wiederholbare Content- und Outreach-Abläufe fahren"
+      ],
+      [
+        "Was Sie bekommen",
+        "Chat, Canvas-Editor, Bilder, Marketing-Agents, Brand Voice, Custom Agent Builder (Business)",
+        "Chat mit OpenAI-, Anthropic- und Gemini-Modellen; Workflows auf bezahlten Stufen; API auf Enterprise"
+      ],
+      [
+        "Preis",
+        "Pro $69 pro Seat monatlich oder $59 jährlich; Business individuell",
+        "Chat $29 pro Monat ($24 jährlich) für 5 Seats; Growth $1,000, Expansion $2,000, Scale $3,000 pro Monat; Enterprise individuell"
+      ],
+      [
+        "Free-Plan oder Test",
+        "7 Tage kostenloser Test auf Pro",
+        "Kein Free-Plan auf der Preisseite zum Prüfzeitpunkt"
+      ],
+      [
+        "EU-Hosting",
+        "Nein. Daten in US-Rechenzentren (US-East)",
+        "Nicht veröffentlicht. SOC 2 Report verfügbar"
+      ],
+      [
+        "Teamfunktionen",
+        "Brand Voices, Knowledge Assets, Audiences; Admin-Kontrollen und Gruppen auf Business",
+        "Seat-Bundles je Stufe (5 bis 200); dediziertes Support-Team auf Enterprise"
+      ],
+      [
+        "Eigene Agents bauen",
+        "Custom Agent Builder ohne Code nur auf Business",
+        "Workflow Builder auf Growth und höher; unbegrenzt eigene Workflows auf Enterprise"
+      ],
+      [
+        "Was gezählt wird",
+        "Chat und Canvas sind nicht gemessen; Agents und GEO Hub nutzen Credits auf Business",
+        "Workflow Credits: 20K, 45K, 75K pro Monat auf Growth, Expansion, Scale"
+      ]
+    ],
+    "pickA": {
+      "heading": "Wählen Sie Jasper, wenn …",
+      "points": [
+        "Sie zwei bis zehn Marketer haben, die täglich schreiben und eine Brand Voice über alle hinweg erzwingen wollen.",
+        "Sie einen Seat-Preis wollen, mit dem Sie heute per Kreditkarte starten können. Pro kostet $69 pro Monat mit 7-Tage-Test.",
+        "Sie Bilder, Langform-Editor und Marketing-Agents an einem Ort wollen statt eines Workflow-Builders."
+      ]
+    },
+    "pickB": {
+      "heading": "Wählen Sie Copy.ai, wenn …",
+      "points": [
+        "Sie denselben Content- oder Outreach-Prozess hunderte Male pro Monat ausführen und ihn als Workflow wollen, nicht als Chat.",
+        "Sie 75 oder mehr Seats brauchen. Growth für $1,000 pro Monat deckt 75 Seats ab und ist pro Kopf günstiger als Jasper Pro.",
+        "Sie nur einen günstigen Multi-Modell-Chat für ein kleines Team brauchen. Chat kostet $29 pro Monat für fünf Seats."
+      ]
+    },
+    "limits": {
+      "a": [
+        "Business-Preise sind nicht öffentlich, und Custom Agent Builder, GEO, Deep Research und API liegen dort. Budgetieren heißt Sales Call.",
+        "Review-Seiten klaffen auseinander: 4.7/5 auf G2, aber 3.4/5 auf Trustpilot, wo Billing-, Kündigungsbeschwerden und die Preiserhöhung 2023 weiter auftauchen."
+      ],
+      "b": [
+        "Der Sprung von Chat ($29) zu Growth ($1,000) ist groß. Für ein Zehnerteam, das Workflows will, gibt es keinen mittleren Plan.",
+        "Reviews nennen Workflow Credits und Support als Hauptschmerz. Trustpilot liegt bei 1.9/5 mit Billing- und Kündigungsbeschwerden und E-Mail-Support, der Tage dauern kann."
+      ]
+    },
+    "verdict": "Jasper gewinnt für ein kleines Marketingteam, das täglich markenkonforme Inhalte schreibt und einen einfachen Seat-Preis will. Copy.ai gewinnt für eine große Go-to-Market-Organisation, die Content und Outreach als wiederholbare Workflows braucht und vierstellige Monatsbeträge zahlen kann. EU-Hosting bietet heute keines von beiden.",
+    "bridge": {
+      "heading": "Wenn Sie Arbeit erledigt haben wollen, kein Chatfenster",
+      "text": "Beide Tools geben einer Person einen Ort zum Prompten oder einen Workflow zum Bauen. Ein Wettbewerbsbericht, ein Kampagnenplan oder das Montags-PDF zur Performance ist ein anderes Produkt. Sie briefen einen KI-Mitarbeiter, das Team sieht das Board, am Ende steht eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Mitarbeiter für Marketingteams. Jeder hat eine Rolle, ein öffentliches Profil, Beispielarbeit und einen benannten Anbieter, der Modelle und Hosting ausweist.",
+      "points": [
+        "Sie briefen in klarer Sprache oder per @Mention in einem Kanal; die Aufgabe erscheint auf einem gemeinsamen Task-Board und endet mit einer fertigen Datei.",
+        "Credits nur, wenn eine Aufgabe läuft. Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25, €75 oder €200 pro Monat.",
+        "EU-Hosting verfügbar, je KI-Mitarbeiter ausgewiesen. Gebaut von Serviceplan Group mit NMKR, München."
+      ],
+      "links": [
+        "/compare/sokosumi-vs-jasper",
+        "/compare/sokosumi-vs-copy-ai"
+      ]
+    },
+    "faq": [
+      [
+        "Hat Jasper einen Free-Plan?",
+        "Nein. Jasper Pro hat einen 7-Tage-Test. Danach kostet es $69 pro Seat monatlich oder $59 pro Seat im Jahresplan."
+      ],
+      [
+        "Was sind Copy.ai Workflow Credits?",
+        "Workflow Credits sind der Zähler für laufende Workflows. Growth enthält 20,000 pro Monat, Expansion 45,000 und Scale 75,000. Chat-Nutzung ist unbegrenzt und verbraucht keine Credits."
+      ],
+      [
+        "Kann eines der Tools Daten in der EU hosten?",
+        "Jasper sagt, seine Daten werden in US-Rechenzentren gehostet. Copy.ai veröffentlicht auf der Security-Seite keine Hosting-Region. Fragen Sie Sales und lassen Sie es sich schriftlich geben, wenn EU-Hosting wichtig ist."
+      ],
+      [
+        "Gibt es eine dritte Option, die fertige Dateien liefert?",
+        "Ja. Sokosumi ist ein Marktplatz für KI-Mitarbeiter, die fertige Dateien wie Berichte, Decks und Spreadsheets auf ein Task-Board liefern. Es gibt einen Free-Plan mit 250 Credits pro Seat und Monat und EU-Hosting je KI-Mitarbeiter."
+      ]
+    ]
+  },
+  "sources": [
+    "https://www.jasper.ai/pricing",
+    "https://www.jasper.ai/trust",
+    "https://www.jasper.ai/security",
+    "https://www.copy.ai/prices",
+    "https://www.copy.ai/security",
+    "https://www.eyesift.com/blog/jasper-ai-review/",
+    "https://getaitopia.io/blog/jasper-ai-review-2026",
+    "https://saleshive.com/vendors/copy-ai",
+    "https://digijaws.com/reviews/copy-ai/"
+  ]
+}

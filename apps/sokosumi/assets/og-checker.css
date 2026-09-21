@@ -1,0 +1,923 @@
+/* /tools/og-checker — the social-card checker.
+ *
+ * Same language as the DESIGN.md tool: a workbench above the fold, hairline
+ * borders, one accent, Inter Light for headings. The platform previews are the
+ * one place that deliberately breaks the system — a Discord embed has to look
+ * like a Discord embed or the preview is worthless — so each card carries its
+ * own local tokens and nothing leaks out of `.ogc-card`.
+ */
+
+.og-tool-page {
+  min-width: 0;
+}
+
+/* ---- head + input ------------------------------------------------------ */
+
+.ogc-head {
+  padding: clamp(40px, 6vw, 76px) 0 clamp(24px, 3vw, 36px);
+}
+
+.ogc-overline {
+  color: var(--primary);
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 14px;
+}
+
+.ogc-head h1 {
+  max-width: 18ch;
+  font-size: clamp(36px, 5.6vw, 62px);
+  font-weight: 300;
+  letter-spacing: -0.035em;
+  line-height: 1.04;
+  text-wrap: balance;
+}
+
+.ogc-lede {
+  max-width: 62ch;
+  margin-top: 22px;
+  font-size: clamp(16px, 1.8vw, 19px);
+  line-height: 1.55;
+  color: var(--muted-foreground);
+  text-wrap: pretty;
+}
+
+.ogc-bar {
+  display: flex;
+  gap: 10px;
+  margin-top: clamp(26px, 3.5vw, 40px);
+  padding: 10px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+}
+
+.ogc-bar input {
+  flex: 1;
+  min-width: 0;
+  height: 46px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: var(--r-md);
+  background: transparent;
+  color: var(--foreground);
+  font: inherit;
+  font-size: 16px;
+}
+
+.ogc-bar input::placeholder {
+  color: rgba(15, 14, 13, 0.38);
+}
+
+.ogc-bar input:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: -1px;
+}
+
+.ogc-submit {
+  flex-shrink: 0;
+  height: 46px;
+  padding: 0 22px;
+  border: 0;
+  border-radius: var(--r-md);
+  background: var(--primary);
+  color: #fff;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 160ms ease-out;
+}
+
+.ogc-submit:hover:not(:disabled) {
+  background: #24506a;
+}
+
+.ogc-submit:disabled {
+  opacity: 0.55;
+  cursor: progress;
+}
+
+.ogc-try {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 14px;
+  font-size: 13px;
+  color: var(--muted-foreground);
+}
+
+.ogc-try button {
+  padding: 4px 10px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted-foreground);
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  transition:
+    color 160ms ease-out,
+    border-color 160ms ease-out;
+}
+
+.ogc-try button:hover {
+  color: var(--foreground);
+  border-color: var(--primary);
+}
+
+.ogc-error {
+  margin-top: 16px;
+  padding: 12px 14px;
+  border: 1px solid rgba(176, 42, 42, 0.28);
+  border-radius: var(--r-md);
+  background: rgba(176, 42, 42, 0.05);
+  color: #8f2020;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* ---- loading ----------------------------------------------------------- */
+
+/* `display` in a class rule beats the UA sheet's `[hidden] { display: none }`,
+ * so without this the strip announces "Fetching the page…" on a page nobody
+ * has typed into yet. Same trap as .seat-submit and .plan-team-unit. */
+.ogc-loading[hidden] {
+  display: none;
+}
+
+.ogc-loading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: clamp(40px, 8vw, 80px) 0;
+  border-top: 1px solid var(--border);
+  color: var(--muted-foreground);
+  font-size: 14.5px;
+}
+
+.ogc-spin {
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--border);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: ogc-spin 700ms linear infinite;
+}
+
+@keyframes ogc-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ogc-spin {
+    animation-duration: 2s;
+  }
+}
+
+/* ---- result shell ------------------------------------------------------ */
+
+.ogc-result {
+  padding-bottom: clamp(40px, 6vw, 72px);
+  border-top: 1px solid var(--border);
+  /* the site header is sticky, so scrolling a result into view has to clear it */
+  scroll-margin-top: 88px;
+}
+
+.ogc-summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 10px 20px;
+  padding: 22px 0;
+}
+
+.ogc-summary-url {
+  flex: 1;
+  min-width: 220px;
+  overflow: hidden;
+  color: var(--muted-foreground);
+  font-size: 13.5px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ogc-summary-url strong {
+  display: block;
+  color: var(--foreground);
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.ogc-scores {
+  display: flex;
+  gap: 8px;
+}
+
+.ogc-score {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 12px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 500;
+  background: transparent;
+  color: var(--muted-foreground);
+  cursor: pointer;
+  transition:
+    border-color 160ms ease-out,
+    color 160ms ease-out;
+}
+
+.ogc-score[aria-pressed="true"] {
+  border-color: currentColor;
+}
+
+.ogc-score i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.ogc-score.is-error {
+  color: #b02a2a;
+}
+.ogc-score.is-warn {
+  color: #8a6100;
+}
+.ogc-score.is-pass {
+  color: #2f6b45;
+}
+.ogc-score.is-zero {
+  color: var(--muted-foreground);
+  opacity: 0.55;
+}
+
+.ogc-grid {
+  display: grid;
+  gap: clamp(24px, 3vw, 36px);
+  align-items: start;
+}
+
+@media (min-width: 1000px) {
+  .ogc-grid {
+    grid-template-columns: minmax(0, 1.05fr) minmax(340px, 0.95fr);
+  }
+}
+
+/* ---- preview panel ----------------------------------------------------- */
+
+.ogc-panel {
+  container: ogc-panel / inline-size;
+  min-width: 0;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+}
+
+.ogc-tabs {
+  display: flex;
+  overflow-x: auto;
+  gap: 2px;
+  padding: 8px 8px 0;
+  border-bottom: 1px solid var(--border);
+  scrollbar-width: none;
+}
+
+.ogc-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+/* The <symbol> sprite carries no visual weight of its own. */
+.ogc-sprite {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+.ogc-logo {
+  flex-shrink: 0;
+  fill: currentColor;
+}
+
+.ogc-plat {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ogc-tabs button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  position: relative;
+  padding: 10px 9px 12px;
+  border: 0;
+  background: transparent;
+  color: var(--muted-foreground);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 160ms ease-out;
+}
+
+/* Seven tabs with logos do not fit at every width, and the width that matters
+ * is the panel's, not the viewport's: on a 1440px screen the two-column grid
+ * still leaves this strip under 600px. A viewport media query gets that wrong
+ * in both directions, so this is a container query on .ogc-panel.
+ *
+ * When it is tight the labels drop and the marks carry the tabs, except for the
+ * selected one, which keeps its label so the current platform is always named. */
+@container ogc-panel (max-width: 640px) {
+  .ogc-tabs button[data-tab]:not([aria-selected="true"]) span {
+    display: none;
+  }
+  .ogc-tabs button {
+    padding: 10px 11px 12px;
+  }
+}
+
+.ogc-tabs button:hover {
+  color: var(--foreground);
+}
+
+.ogc-tabs button[aria-selected="true"] {
+  color: var(--foreground);
+}
+
+.ogc-tabs button[data-tab="html"] span {
+  display: inline !important;
+}
+
+.ogc-tabs button[aria-selected="true"]::after {
+  content: "";
+  position: absolute;
+  inset: auto 8px -1px;
+  height: 2px;
+  background: var(--primary);
+}
+
+.ogc-stage {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-items: center;
+  padding: clamp(20px, 3.5vw, 34px);
+  background: var(--muted);
+  border-radius: 0 0 var(--r-lg) var(--r-lg);
+}
+
+.ogc-stage-note {
+  align-self: stretch;
+  color: var(--muted-foreground);
+  font-size: 12.5px;
+  line-height: 1.5;
+  text-wrap: pretty;
+}
+
+/* ---- the platform cards ------------------------------------------------
+ * Each is a deliberate imitation, so the numbers are the platforms' own, not
+ * this site's tokens. Fonts fall back to Inter, which is close enough to the
+ * system stacks these products actually use.
+ */
+
+.ogc-card {
+  width: 100%;
+  max-width: 524px;
+  overflow: hidden;
+  background: #fff;
+  color: #0f1419;
+  text-align: left;
+}
+
+.ogc-card img,
+.ogc-card .ogc-noimg {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1200 / 630;
+  object-fit: cover;
+  background: #e4e6eb;
+}
+
+/* specificity has to match `.ogc-card .ogc-noimg` above, which sets display */
+.ogc-card .ogc-noimg {
+  display: grid;
+  place-items: center;
+  color: #8a8d91;
+  font-size: 12.5px;
+  letter-spacing: 0.02em;
+}
+
+.ogc-card .ogc-t {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.ogc-card .ogc-d {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+/* Facebook */
+.ogc-fb {
+  border: 1px solid #dadde1;
+  border-radius: 8px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+.ogc-fb .ogc-body {
+  padding: 10px 12px;
+  background: #f2f3f5;
+  border-top: 1px solid #dadde1;
+}
+.ogc-fb .ogc-host {
+  color: #65676b;
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+.ogc-fb .ogc-t {
+  margin-top: 3px;
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.24;
+}
+.ogc-fb .ogc-d {
+  margin-top: 3px;
+  color: #65676b;
+  font-size: 14px;
+  line-height: 1.32;
+  -webkit-line-clamp: 1;
+}
+
+/* X */
+.ogc-x {
+  position: relative;
+  border: 1px solid #cfd9de;
+  border-radius: 16px;
+}
+.ogc-x img,
+.ogc-x .ogc-noimg {
+  aspect-ratio: 1200 / 628;
+}
+/* X's own overlay: bottom-left, 12px in from both edges, ~20px tall.
+ * Measured values, not invented — see polypane.app's writeup of the redesign. */
+.ogc-x .ogc-host-pill {
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  height: 20px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 6px;
+  background: rgba(0, 0, 0, 0.62);
+  border-radius: 4px;
+  color: #fff;
+  font-size: 12.5px;
+}
+.ogc-x .ogc-body {
+  padding: 10px 12px;
+}
+.ogc-x .ogc-t {
+  font-size: 15px;
+  line-height: 1.3;
+  -webkit-line-clamp: 1;
+}
+.ogc-x .ogc-d {
+  margin-top: 2px;
+  color: #536471;
+  font-size: 15px;
+  line-height: 1.3;
+  -webkit-line-clamp: 1;
+}
+.ogc-x.is-small {
+  display: grid;
+  grid-template-columns: 128px minmax(0, 1fr);
+  align-items: stretch;
+}
+.ogc-x.is-small img,
+.ogc-x.is-small .ogc-noimg {
+  aspect-ratio: 1;
+  height: 100%;
+}
+.ogc-x.is-small .ogc-host-pill {
+  display: none;
+}
+.ogc-x.is-small .ogc-body {
+  align-self: center;
+}
+.ogc-x.is-small .ogc-host {
+  color: #536471;
+  font-size: 14px;
+}
+
+/* LinkedIn */
+.ogc-li {
+  border: 1px solid #e0dfdc;
+  border-radius: 4px;
+}
+.ogc-li .ogc-body {
+  padding: 10px 12px 12px;
+  background: #f4f2ee;
+}
+.ogc-li .ogc-t {
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.32;
+  color: #000000e6;
+}
+.ogc-li .ogc-d {
+  margin-top: 3px;
+  color: #00000099;
+  font-size: 13px;
+  line-height: 1.34;
+  -webkit-line-clamp: 2;
+}
+
+.ogc-li .ogc-host {
+  margin-top: 4px;
+  color: #00000099;
+  font-size: 12px;
+}
+
+/* WhatsApp */
+.ogc-wa {
+  max-width: 420px;
+  padding: 4px;
+  background: #d9fdd3;
+  border-radius: 8px;
+  box-shadow: 0 1px 0.5px rgba(11, 20, 26, 0.13);
+}
+.ogc-wa .ogc-inner {
+  overflow: hidden;
+  background: #dcf8c6;
+  border-radius: 6px;
+}
+.ogc-wa img,
+.ogc-wa .ogc-noimg {
+  border-radius: 6px 6px 0 0;
+}
+.ogc-wa .ogc-body {
+  padding: 8px 10px 10px;
+  background: rgba(0, 0, 0, 0.04);
+}
+.ogc-wa .ogc-t {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.32;
+  color: #111b21;
+}
+.ogc-wa .ogc-d {
+  margin-top: 2px;
+  color: #667781;
+  font-size: 13px;
+  line-height: 1.32;
+}
+.ogc-wa .ogc-host {
+  margin-top: 3px;
+  color: #8696a0;
+  font-size: 12.5px;
+}
+.ogc-wa .ogc-link {
+  padding: 6px 8px 4px;
+  color: #027eb5;
+  font-size: 14.2px;
+  overflow-wrap: anywhere;
+}
+
+/* Discord */
+.ogc-dc {
+  max-width: 440px;
+  padding: 10px 14px 14px;
+  background: #2b2d31;
+  border-left: 4px solid var(--ogc-accent, #5865f2);
+  border-radius: 4px;
+  color: #dbdee1;
+}
+.ogc-dc .ogc-host {
+  color: #dbdee1;
+  font-size: 12px;
+  line-height: 1.4;
+}
+.ogc-dc .ogc-t {
+  margin-top: 2px;
+  color: #00a8fc;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.35;
+}
+.ogc-dc .ogc-d {
+  margin-top: 6px;
+  color: #dbdee1;
+  font-size: 14px;
+  line-height: 1.38;
+  -webkit-line-clamp: 4;
+}
+.ogc-dc img,
+.ogc-dc .ogc-noimg {
+  margin-top: 12px;
+  border-radius: 4px;
+  background: #1e1f22;
+}
+.ogc-dc .ogc-noimg {
+  color: #949ba4;
+}
+
+/* Slack */
+.ogc-sl {
+  max-width: 460px;
+  padding-left: 14px;
+  border-left: 4px solid #dddddd;
+  border-radius: 2px;
+  background: transparent;
+}
+.ogc-sl .ogc-host {
+  color: #1d1c1d;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+.ogc-sl .ogc-t {
+  margin-top: 1px;
+  color: #1264a3;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+.ogc-sl .ogc-d {
+  margin-top: 2px;
+  color: #1d1c1d;
+  font-size: 15px;
+  line-height: 1.46;
+  -webkit-line-clamp: 3;
+}
+.ogc-sl img,
+.ogc-sl .ogc-noimg {
+  max-width: 360px;
+  margin-top: 8px;
+  border-radius: 8px;
+}
+
+/* ---- HTML tab ---------------------------------------------------------- */
+
+.ogc-source {
+  position: relative;
+  align-self: stretch;
+  width: 100%;
+}
+
+.ogc-source pre {
+  max-height: 460px;
+  margin: 0;
+  padding: 16px;
+  overflow: auto;
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  color: var(--foreground);
+  font-family: var(--mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+  font-size: 12.5px;
+  line-height: 1.65;
+  tab-size: 2;
+  white-space: pre;
+}
+
+.ogc-source .ogc-cmt {
+  color: var(--muted-foreground);
+}
+
+.ogc-copy {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 5px 11px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  background: var(--card);
+  color: var(--muted-foreground);
+  font: inherit;
+  font-size: 12.5px;
+  cursor: pointer;
+}
+
+.ogc-copy:hover {
+  color: var(--foreground);
+  border-color: var(--primary);
+}
+
+/* ---- inspector --------------------------------------------------------- */
+
+.ogc-inspector {
+  min-width: 0;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+}
+
+.ogc-inspector-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 18px;
+  border-bottom: 1px solid var(--border);
+}
+
+.ogc-inspector-head h2 {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.ogc-inspector-head span {
+  color: var(--muted-foreground);
+  font-size: 12.5px;
+}
+
+.ogc-checks {
+  max-height: 640px;
+  overflow-y: auto;
+}
+
+.ogc-check {
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr);
+  gap: 4px 12px;
+  padding: 15px 18px;
+  border-bottom: 1px solid var(--border);
+}
+
+.ogc-check:last-child {
+  border-bottom: 0;
+}
+
+.ogc-check-mark {
+  grid-row: span 2;
+  width: 18px;
+  height: 18px;
+  margin-top: 1px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.ogc-check.is-error .ogc-check-mark {
+  background: rgba(176, 42, 42, 0.12);
+  color: #b02a2a;
+}
+.ogc-check.is-warn .ogc-check-mark {
+  background: rgba(180, 130, 0, 0.14);
+  color: #8a6100;
+}
+.ogc-check.is-pass .ogc-check-mark {
+  background: rgba(47, 107, 69, 0.12);
+  color: #2f6b45;
+}
+
+.ogc-check-title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 4px 12px;
+  font-size: 14.5px;
+  font-weight: 500;
+}
+
+.ogc-check-tag {
+  color: var(--muted-foreground);
+  font-family: var(--mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+  font-size: 11.5px;
+  font-weight: 400;
+}
+
+.ogc-check-detail {
+  color: var(--muted-foreground);
+  font-size: 13.5px;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+  text-wrap: pretty;
+}
+
+.ogc-checks[data-filter="error"] .ogc-check:not(.is-error),
+.ogc-checks[data-filter="warn"] .ogc-check:not(.is-warn),
+.ogc-checks[data-filter="pass"] .ogc-check:not(.is-pass) {
+  display: none;
+}
+
+/* ---- prose sections ---------------------------------------------------- */
+
+.ogc-section {
+  padding: clamp(40px, 5.5vw, 72px) 0;
+  border-top: 1px solid var(--border);
+}
+
+.ogc-section > h2 {
+  max-width: 24ch;
+  font-size: clamp(26px, 3.4vw, 38px);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  line-height: 1.12;
+}
+
+.ogc-section > .ogc-sub {
+  max-width: 66ch;
+  margin-top: 14px;
+  color: var(--muted-foreground);
+  font-size: 15.5px;
+  line-height: 1.6;
+  text-wrap: pretty;
+}
+
+.ogc-table-wrap {
+  margin-top: 30px;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+}
+
+.ogc-table {
+  width: 100%;
+  min-width: 620px;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.ogc-table th,
+.ogc-table td {
+  padding: 13px 16px;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  vertical-align: top;
+}
+
+.ogc-table thead th {
+  background: var(--card);
+  color: var(--muted-foreground);
+  font-size: 12.5px;
+  font-weight: 500;
+}
+
+.ogc-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.ogc-table td:first-child {
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.ogc-table td {
+  color: var(--muted-foreground);
+}
+
+.ogc-table td:first-child {
+  color: var(--foreground);
+}
+
+.ogc-snippet {
+  margin-top: 26px;
+  padding: 18px;
+  overflow-x: auto;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  font-family: var(--mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+  font-size: 12.5px;
+  line-height: 1.7;
+  white-space: pre;
+}
+
+.ogc-snippet .ogc-cmt {
+  color: var(--muted-foreground);
+}
+
+@media (max-width: 620px) {
+  .ogc-bar {
+    flex-direction: column;
+  }
+  .ogc-bar input,
+  .ogc-submit {
+    width: 100%;
+  }
+  .ogc-stage {
+    padding: 16px 12px;
+  }
+  .ogc-check {
+    padding: 14px;
+  }
+}

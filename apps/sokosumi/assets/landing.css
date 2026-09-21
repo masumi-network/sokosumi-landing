@@ -4,7 +4,7 @@
    hero, Ken Burns shots, coworker intro, how-it-works tickets, shots
    carousel, trust band, org chart, and the Florian Haller quote. */
 
-.serif-accent { font-family: var(--serif); font-style: normal; font-weight: inherit; letter-spacing: inherit; }
+.serif-accent { font-family: var(--display); font-style: normal; font-weight: inherit; letter-spacing: inherit; }
 .eyebrow { font-size: 13px; font-weight: 400; letter-spacing: 0; text-transform: none; color: var(--primary); }
 
 /* ===== hero: left-aligned serif statement over a drifting product shot ===== */
@@ -132,7 +132,7 @@
 .hero.bg-duo .scrim {
   background:
     linear-gradient(to right, rgba(22, 4, 46, 0.85), rgba(22, 4, 46, 0.4) 65%, rgba(34, 5, 68, 0.55)),
-    linear-gradient(to bottom, rgba(100, 0, 255, 0.22), rgba(100, 0, 255, 0.14) 40%, rgba(16, 2, 34, 0.85) 100%);
+    linear-gradient(to bottom, rgba(43, 92, 120, 0.22), rgba(43, 92, 120, 0.14) 40%, rgba(16, 2, 34, 0.85) 100%);
 }
 .hero.bg-blur video { filter: blur(16px) saturate(1.05); transform: scale(1.12); opacity: 0.65; }
 .hero.bg-blur .scrim { background: rgba(10, 9, 8, 0.5); }
@@ -154,7 +154,7 @@
 .hero-social .avatars img:first-child { margin-left: 0; }
 .hero-social .count { font-size: 13px; font-weight: 400; letter-spacing: 0; color: rgba(255, 255, 255, 0.75); }
 .hero-title {
-  font-family: var(--serif); font-weight: 300;
+  font-family: var(--display); font-weight: 300;
   font-size: clamp(2.9rem, 6.4vw, 5.6rem); line-height: 1.05; letter-spacing: -0.03em;
   max-width: 20ch; text-wrap: balance; margin: 0 0 clamp(15px, 1.2vw, 17px);
   /* carries the contrast where the video is brightest, so the scrim does
@@ -249,8 +249,10 @@ section.band-dark {
 .band-dark .btn-outline { color: #fff; border-color: rgba(255, 255, 255, 0.35); }
 .band-dark .btn-outline:hover { border-color: rgba(255, 255, 255, 0.65); }
 .section-head { max-width: 760px; margin: 0 0 clamp(44px, 6vw, 68px); text-align: left; display: flex; flex-direction: column; gap: 16px; align-items: flex-start; }
+.link-arrow { display: inline-flex; align-items: center; gap: 6px; font-size: 15px; font-weight: 500; color: var(--primary); }
+.link-arrow:hover { text-decoration: underline; }
 .section-head h2 {
-  font-family: var(--serif); font-weight: 300;
+  font-family: var(--display); font-weight: 300;
   font-size: clamp(30px, 3.5vw, 48px); line-height: 1.1; letter-spacing: -0.025em; text-wrap: balance;
 }
 .section-head p { font-size: 16.5px; line-height: 1.6; color: var(--muted-foreground); max-width: 54ch; }
@@ -283,7 +285,7 @@ section.band-dark {
 .rot-word.is-active { opacity: 1; transform: none; }
 /* The rotating discipline carries the brand colour; the full stop stays
    white so the line still ends on the headline's own voice.
-   Not --primary itself: #6400ff has a relative luminance of 0.10, which
+   Not --primary itself: #2b5c78 has a relative luminance of 0.10, which
    against this hero measures 1.5:1 on the dark areas — invisible. Same
    hue, lifted for a dark surface, plus a stronger halo than the white
    text needs because a saturated colour loses more against the video. */
@@ -312,7 +314,7 @@ section.band-dark {
 }
 .intro-person .portrait img { width: 100%; height: 100%; object-fit: cover; display: block; transform: scale(1.14); transition: transform 0.8s var(--ease); }
 .intro-person:hover .portrait img { transform: scale(1.19); }
-.intro-person h3 { font-family: var(--serif); font-size: 21px; font-weight: 400; margin: 16px 0 3px; letter-spacing: -0.01em; }
+.intro-person h3 { font-family: var(--display); font-size: 21px; font-weight: 400; margin: 16px 0 3px; letter-spacing: -0.01em; }
 .intro-person .role { font-size: 12.5px; letter-spacing: 0; color: var(--muted-foreground); }
 .intro-person .blurb {
   margin-top: 9px; font-size: 13px; line-height: 1.5; color: var(--muted-foreground);
@@ -362,7 +364,7 @@ section.band-dark {
 .hiw-core > * { position: relative; }
 @media (min-width: 900px) { .hiw-core { grid-template-columns: 1fr 56px 1fr 56px 1fr; gap: 0; } }
 .hiw-col { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
-/* --primary-on-dark, never --primary: #6400ff is near-invisible on ink */
+/* --primary-on-dark, never --primary: #2b5c78 is near-invisible on ink */
 .hiw-step { font-family: var(--sans); font-size: 12.5px; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; color: var(--primary-on-dark); }
 .hiw-cap { font-size: 13.5px; line-height: 1.6; color: rgba(255, 255, 255, 0.55); margin: 0; padding-top: 2px; }
 
@@ -447,43 +449,6 @@ section.band-dark {
 .hiw-file-icon { color: rgba(255, 255, 255, 0.7); display: inline-flex; flex-shrink: 0; }
 .hiw-file-type { margin-left: auto; flex-shrink: 0; font-size: 11px; letter-spacing: 0.05em; color: rgba(255, 255, 255, 0.5); }
 
-/* ===== product screenshots: big shot with the next one peeking right,
-       arrows slide the track ===== */
-.shot-stage { position: relative; }
-.shot-viewport { overflow: hidden; }
-/* no frame: the renders already read as objects, so a box around them
-   only draws a hard edge the eye has to cross */
-.shot-frame { position: relative; border-radius: var(--r-lg); overflow: hidden; }
-.shot-track { display: flex; gap: 24px; transition: transform 0.6s var(--ease); }
-@media (prefers-reduced-motion: reduce) { .shot-track { transition: none; } }
-.shot-slide { flex: 0 0 88%; min-width: 0; }
-/* 16:9 matches the product renders exactly, so nothing is cropped. The
-   renders carry their own dark falloff, so the canvas stays paper and a
-   soft mask dissolves the last few percent of each edge into the page. */
-.shot-canvas {
-  aspect-ratio: 16 / 9; display: flex; align-items: center; justify-content: center;
-  background: var(--background); overflow: hidden;
-}
-.shot-canvas span { font-size: 13px; letter-spacing: 0.02em; color: var(--muted-foreground); }
-.shot-canvas img { width: 100%; height: 100%; object-fit: cover; display: block; }
-/* controls live below the frame on paper, never on top of a screenshot */
-.shot-nav {
-  width: 40px; height: 40px; border-radius: var(--r-md); flex-shrink: 0;
-  border: 1px solid var(--border); background: transparent;
-  color: var(--foreground); cursor: pointer;
-  display: inline-flex; align-items: center; justify-content: center;
-  transition: border-color 0.25s var(--ease), background-color 0.25s var(--ease), color 0.25s var(--ease), opacity 0.3s var(--ease);
-}
-.shot-nav:hover { border-color: var(--ink); background: var(--ink); color: #fff; }
-.shot-nav[disabled] { opacity: 0; pointer-events: none; }
-.shot-info { display: flex; align-items: center; justify-content: space-between; gap: 32px; margin-top: 20px; }
-.shot-info p { font-size: 14.5px; line-height: 1.6; color: var(--muted-foreground); max-width: 70ch; }
-.shot-controls { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
-.shot-count { font-size: 12.5px; letter-spacing: 0.04em; color: var(--muted-foreground); font-variant-numeric: tabular-nums; }
-@media (max-width: 620px) {
-  .shot-info { flex-direction: column; align-items: flex-start; gap: 16px; }
-}
-
 /* ===== trust band (dark) ===== */
 .band-dark .trust-logo { filter: brightness(0) invert(1); }
 /* a brand that ships its own white artwork keeps it: forcing Serviceplan
@@ -497,13 +462,15 @@ section.band-dark {
 .trust-media:hover img { transform: scale(1.03); }
 .trust-copy { display: flex; flex-direction: column; align-items: flex-start; gap: 20px; }
 .trust-logo { height: 22px; width: auto; }
-.trust-headline { font-family: var(--serif); font-size: clamp(26px, 3vw, 38px); font-weight: 300; line-height: 1.15; letter-spacing: -0.02em; text-wrap: balance; }
+.trust-headline { font-family: var(--display); font-size: clamp(26px, 3vw, 38px); font-weight: 300; line-height: 1.15; letter-spacing: -0.02em; text-wrap: balance; }
 .trust-copy p { font-size: 16px; line-height: 1.65; max-width: 46ch; }
 
 /* ===== org chart: coworkers slot in under your real team =====
    Connectors are drawn per column (never across the grid) so the rail
    always meets each branch stem exactly, whatever the gap resolves to. */
-.org { --org-gap: clamp(16px, 3vw, 36px); }
+.org { --org-gap: clamp(16px, 3vw, 36px); padding: clamp(18px, 3vw, 40px); border-radius: var(--r-lg); background: #ece6fb url(/assets/gradients/g5.webp) center / cover no-repeat; }
+.org .org-stem, .org .org-drop, .org .org-branch::before, .org .org-branch::after { background: rgba(15, 14, 13, 0.22); }
+.org .org-card { border-color: rgba(15, 14, 13, 0.1); }
 .org-root { display: flex; justify-content: center; }
 .org-root .org-card { min-width: min(320px, 100%); }
 .org-stem { width: 1px; height: 32px; background: var(--border); margin: 0 auto; }
@@ -557,7 +524,7 @@ section.band-dark {
 .quote-grid { display: grid; gap: clamp(36px, 5vw, 72px); grid-template-columns: 1fr; align-items: center; }
 @media (min-width: 880px) { .quote-grid { grid-template-columns: 1.15fr 1fr; } }
 .quote-text {
-  font-family: var(--serif); font-weight: 300;
+  font-family: var(--display); font-weight: 300;
   font-size: clamp(22px, 2.6vw, 34px); line-height: 1.35; letter-spacing: -0.015em;
   text-wrap: pretty; margin: 0;
 }
@@ -566,13 +533,6 @@ section.band-dark {
 .quote-attr small { font-size: 13px; color: var(--muted-foreground); }
 .quote-media { border-radius: var(--r-lg); overflow: hidden; aspect-ratio: 3 / 2; }
 .quote-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
-
-@media (max-width: 560px) {
-  /* .hero-inner is align-items:flex-start, so the row has to claim the
-     width itself before the buttons can stretch into it */
-  .hero-cta { flex-direction: column; align-items: stretch; align-self: stretch; max-width: 360px; }
-  .hero-cta .btn { width: 100%; justify-content: center; }
-}
 
 /* ===== the light hero: paper ground, ink type, photograph on the right =====
    Same hero as the default — same left-aligned composition, same type scale,
@@ -602,10 +562,10 @@ section.band-dark {
 .hero.is-aurora .hero-social,
 .hero.is-aurora .hero-note,
 .hero.is-aurora .hero-note .no-card { text-shadow: none; }
-/* The headline is ink; only the rotator word carries the accent, matching the dot. */
+/* The whole headline is ink — rotator word and dot included. */
 .hero.is-aurora .hero-title { color: var(--ink); }
-.hero.is-aurora .hero-title .rot-word { color: var(--primary); }
-.hero.is-aurora .hero-title .hero-dot { color: var(--primary); text-shadow: none; }
+.hero.is-aurora .hero-title .rot-word { color: var(--ink); }
+.hero.is-aurora .hero-title .hero-dot { color: var(--ink); text-shadow: none; }
 .hero.is-aurora .hero-sub { color: var(--muted-foreground); }
 .hero.is-aurora .hero-note,
 .hero.is-aurora .hero-note .no-card,
@@ -627,8 +587,9 @@ section.band-dark {
    paper; black at 0.41 lands on the same value, so it now sits with them
    instead of shouting. Applies to the trust band lower down too, which uses
    the same knockout asset. */
-.hero.is-aurora .hero-logos .is-brand,
-body.hero-aurora .trust-logo.is-brand { filter: brightness(0); opacity: 0.41; }
+/* Hero logos only. The trust band further down is band-dark and keeps its
+   white logo — blackening it there made it vanish into the background. */
+.hero.is-aurora .hero-logos .is-brand { filter: brightness(0); opacity: 0.41; }
 .hero.is-aurora .hl-label { color: var(--muted-foreground); }
 
 /* The overlay header is white-on-transparent for the dark hero; invisible on
@@ -719,6 +680,7 @@ body.hero-bg-photowelcome2 .hero.is-aurora { background-image: url("/assets/hero
      unreadable against the UI behind it.
      So the photograph stops being a background and becomes a band along the
      bottom, sized by height rather than cover, and the copy gets clean paper. */
+  body.hero-bg-photowelcome2 .hero.is-aurora { background-image: url("/assets/hero-photo/welcome-scene-mock-1080.webp"); }
   body[class*="hero-bg-photo"] .hero.is-aurora {
     background-size: auto 46%;
     background-position: 74% bottom;
@@ -735,3 +697,62 @@ body.hero-bg-photowelcome2 .hero.is-aurora { background-image: url("/assets/hero
      and leave the band more room */
   body[class*="hero-bg-photo"] .hero.is-aurora .hero-inner { padding-top: clamp(104px, 14vh, 150px); }
 }
+/* Connectors sit on the dark stage now */
+
+
+/* ===== org chart, second pass: no stage, quiet hairline tree ===== */
+.org { background: none !important; padding: clamp(8px, 2vw, 24px) 0 0; border-radius: 0; --org-gap: clamp(16px, 2.6vw, 28px); }
+.org .org-stem, .org .org-drop, .org .org-branch::before, .org .org-branch::after { background: rgba(15, 14, 13, 0.16); }
+.org-stem { height: 36px; }
+.org-branch { padding-top: 36px; }
+.org-drop { height: 24px; }
+.org .org-card {
+  background: #fff; border: 1px solid rgba(15, 14, 13, 0.08); border-radius: 12px;
+  box-shadow: none;
+  padding: 12px 14px; gap: 12px; align-items: center;
+}
+.org .org-card.org-human { background: #fff; }
+.org .org-ava { width: 40px; height: 40px; border-radius: 999px; font-size: 13px; font-weight: 500; color: var(--muted-foreground); background: var(--muted); box-shadow: none; }
+.org .org-card.org-human .org-ava { background: var(--muted); }
+.org .org-card:not(.org-human) .org-ava { outline: 2px solid var(--primary); outline-offset: 2px; }
+.org-root .org-card { min-width: min(360px, 100%); }
+.org .org-root .org-card .org-ava { background: var(--ink); color: #fff; }
+.org .org-who strong { font-size: 14px; }
+.org .org-who small { font-size: 12.5px; }
+.org .org-tag { background: var(--primary-soft); color: var(--primary); border: 0; font-size: 11px; font-weight: 600; letter-spacing: 0.04em; padding: 3px 8px; border-radius: 6px; }
+
+/* ---- live product demo embed (homepage "A look inside") ----------------
+   The stage itself is styled by product.css, which is fetched with the demo.
+   These rules only cover the poster it replaces and the caption, so the
+   section holds its shape before and after the swap. */
+.pd-embed {
+  position: relative;
+  border-radius: var(--r-lg);
+  overflow: hidden;
+}
+.pd-embed.is-live {
+  border-radius: 0;
+  overflow: visible;
+}
+.pd-embed-poster img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.pd-embed-cap {
+  margin: 20px auto 0;
+  max-width: 62ch;
+  text-align: center;
+  color: var(--muted-foreground);
+  font-size: 14.5px;
+  line-height: 1.6;
+}
+/* product.css breaks the stage out to the viewport edge, which is what /product
+   wants. Inside the homepage's container that reads as a misalignment, so keep
+   it within the column here. */
+.pd-embed .pd-stage {
+  width: 100%;
+  margin-left: 0;
+  margin-right: 0;
+}
+

@@ -65,20 +65,20 @@ function pricingLd() {
 const PLANS = [
   {
     name: "Free",
-    tagline: "Getting started to work with Marketing Agents.",
+    tagline: "250 credits per seat at no charge.",
     price: "Free",
     credits: "250 credits per seat",
   },
   {
     name: "Starter",
-    tagline: "For freelancers and micro companies.",
+    tagline: "1,500 credits per seat each month.",
     price: "€25",
     per: "per month",
     credits: "1,500 credits per seat",
   },
   {
     name: "Standard",
-    tagline: "Full set of marketing agents for small companies.",
+    tagline: "5,000 credits per seat each month.",
     price: "€75",
     per: "per month",
     credits: "5,000 credits per seat",
@@ -86,7 +86,7 @@ const PLANS = [
   },
   {
     name: "Pro",
-    tagline: "Get more access to our Marketing Agents and Services.",
+    tagline: "15,000 credits per seat each month.",
     price: "€200",
     per: "per month",
     credits: "15,000 credits per seat",
@@ -95,7 +95,7 @@ const PLANS = [
 
 const ENTERPRISE = {
   name: "Enterprise",
-  tagline: "Custom plan for organizations with tailored seats, credits, and support.",
+  tagline: "Custom seats, credits, and support.",
   price: "Custom",
   per: "per month",
 };
@@ -134,18 +134,27 @@ const fmtInt = (n) => new Intl.NumberFormat(intlLocale()).format(n);
 const fmtEur = (n) =>
   new Intl.NumberFormat(intlLocale(), { style: "currency", currency: "EUR", maximumFractionDigits: 0 }).format(n);
 
+// A slider, not a number field with presets: seat count is a magnitude people
+// scrub to see prices move, and the old row asked them to type or pick from
+// five fixed jumps. The range still submits as ?seats= so the no-script path is
+// unchanged, and its max stretches if the URL carries a bigger number.
+const SEAT_SLIDER_MAX = 50;
+
 function seatPicker(seats) {
-  const presets = SEAT_PRESETS.map(
-    (n) =>
-      `<a class="fchip${n === seats ? " active" : ""}" href="?seats=${n}" data-seats="${n}"${n === seats ? ' aria-current="true"' : ""} aria-label="${attr(tp(n, "{n} seat", "{n} seats"))}">${fmtInt(n)}</a>`,
-  ).join("");
+  const max = Math.max(SEAT_SLIDER_MAX, seats);
+  const ticks = SEAT_PRESETS.filter((n) => n <= max)
+    .map((n) => `<span class="seat-tick" style="--at:${((n - 1) / (max - 1)) * 100}%"><i></i><b>${fmtInt(n)}</b></span>`)
+    .join("");
   return `<form class="seat-picker" id="seatForm" method="get" data-one="${attr(t("For {n} seat"))}" data-many="${attr(t("For {n} seats"))}" data-free="${attr(t("Free"))}" data-seat="${attr(t("seat"))}" data-seats="${attr(t("seats"))}">
-      <label class="seat-label" for="seats" id="seatLabel">${esc(t("Team size"))}</label>
-      <span class="seat-field">
-        <input class="seat-input" id="seats" name="seats" type="number" inputmode="numeric" min="1" step="1" value="${seats}" autocomplete="off" />
-        <span class="seat-unit" data-seat-unit>${esc(tp(seats, "seat", "seats"))}</span>
-      </span>
-      <span class="seat-presets" role="group" aria-labelledby="seatLabel">${presets}</span>
+      <div class="seat-top">
+        <label class="seat-label" for="seats" id="seatLabel">${esc(t("Team size"))}</label>
+        <output class="seat-readout" for="seats"><strong data-seat-count>${fmtInt(seats)}</strong> <span data-seat-unit>${esc(tp(seats, "seat", "seats"))}</span></output>
+      </div>
+      <div class="seat-slider">
+        <input class="seat-range" id="seats" name="seats" type="range" min="1" max="${max}" step="1" value="${seats}"
+               style="--pct:${((seats - 1) / (max - 1)) * 100}%" aria-describedby="seatStatus" autocomplete="off" />
+        <span class="seat-ticks" aria-hidden="true">${ticks}</span>
+      </div>
       <button type="submit" class="btn btn-sm btn-outline seat-submit">${esc(t("Update"))}</button>
       <span class="sr-only" role="status" id="seatStatus"></span>
     </form>`;
@@ -179,7 +188,7 @@ function planCard(p, i, seats) {
   // same figure, the locale's thousands separator (1,500 → 1.500 on /de)
   const num = locale() === "de" ? m[1].replace(/,/g, ".") : m[1];
   return `<article class="plan-card${p.featured ? " featured" : ""}" data-reveal style="--i:${i}">
-    <h2 class="plan-name" id="${id}">${esc(p.name)}${p.featured ? `<span class="chip">${esc(t("Most popular"))}</span>` : ""}</h2>
+    <h2 class="plan-name" id="${id}">${esc(p.name)}</h2>
     <div class="plan-price">
       <span class="amount">${esc(priceAmount(p) ? fmtEur(priceAmount(p)) : t(p.price))}</span>
       <span class="per">${esc(t(p.per || "No credit card required"))}</span>
@@ -189,7 +198,7 @@ function planCard(p, i, seats) {
       <li>${icon("check", 16)}<span><strong>${esc(num)}</strong> ${esc(t(m[2]))}</span></li>
     </ul>
     ${teamBlock(p, seats)}
-    <a class="btn ${p.featured ? "btn-primary" : "btn-outline"}" href="${attr(APP_SIGNUP)}" aria-describedby="${id}" data-analytics="sign_up_click" data-analytics-location="pricing_plan">${esc(t("Get started"))}</a>
+    <a class="btn ${p.featured ? "btn-primary" : "btn-outline"}" href="${attr(APP_SIGNUP)}" aria-describedby="${id}" data-analytics="sign_up_click" data-analytics-location="pricing_plan" data-analytics-plan="${p.name.toLowerCase()}" data-analytics-seats="${seats}">${esc(t("Get started"))}</a>
   </article>`;
 }
 
@@ -207,40 +216,40 @@ function enterpriseBand(p) {
       <span class="amount">${esc(t(p.price))}</span>
       ${p.per ? `<span class="per">${esc(t(p.per))}</span>` : ""}
     </div>
-    <a class="btn btn-primary" href="${attr(SALES_URL)}" data-analytics="talk_to_sales_click" data-analytics-location="pricing_plan">${esc(t("Talk to sales"))}</a>
+    <a class="btn btn-primary" href="${attr(SALES_URL)}" data-analytics="talk_to_sales_click" data-analytics-location="pricing_plan" data-analytics-plan="enterprise">${esc(t("Talk to sales"))}</a>
   </article>`;
 }
 
-// The same client brands the homepage shows under its hero, in the same
-// order, on paper instead of ink. Nothing here is new: "In use at" and the
-// logos are lifted from index.html so the two surfaces can never disagree
-// about who is on the list.
-const LOGOS = [
-  { src: "/assets/logos/telekom.svg", alt: "Deutsche Telekom", tall: true },
-  { src: "/assets/logos/allianz.svg", alt: "Allianz" },
-  { src: "/assets/logos/lufthansa.svg", alt: "Lufthansa" },
-  { src: "/assets/logos/ard.svg", alt: "ARD" },
-  { src: "/assets/logos/tdk.svg", alt: "TDK" },
-  { src: "/assets/logos/stroer.svg", alt: "Ströer" },
-  { src: "/assets/serviceplan-logo.png", alt: "Serviceplan Group" },
-];
-function logoRow() {
-  const imgs = LOGOS.map(
-    (l) => `<img${l.tall ? ' class="logo-tall"' : ""} src="${attr(l.src)}" alt="${attr(l.alt)}" loading="lazy" decoding="async" />`,
-  ).join("");
-  return `<section class="page-section plan-logos" data-reveal>
-      <p class="plan-logos-label">${esc(t("In use at"))}</p>
-      <div class="blk-logos">${imgs}</div>
-    </section>`;
+// The CMS global overrides the built-in plans when an editor filled it.
+function plansFrom(config) {
+  const cp = config && Array.isArray(config.plans) && config.plans.length ? config.plans : null;
+  const plans = cp
+    ? cp.map((p) => ({
+        name: p.name,
+        tagline: p.tagline || "",
+        price: p.price,
+        per: p.per || undefined,
+        credits: p.credits || "",
+        featured: !!p.featured,
+      }))
+    : PLANS;
+  const ent = config && config.enterprise && config.enterprise.price
+    ? { ...ENTERPRISE, ...Object.fromEntries(Object.entries(config.enterprise).filter(([, v]) => v)) }
+    : ENTERPRISE;
+  return { plans, ent };
 }
 
 async function render(ctx) {
-  const testimonials = await cms.getTestimonials({ draft: ctx.preview }).catch(() => []);
+  const [testimonials, siteConfig] = await Promise.all([
+    cms.getTestimonials({ draft: ctx.preview }).catch(() => []),
+    cms.getSiteConfig().catch(() => null),
+  ]);
+  const { plans: PLANS_ACTIVE, ent: ENTERPRISE_ACTIVE } = plansFrom(siteConfig);
   const cr = [{ label: "Home", href: "/" }, { label: "Pricing" }];
   const seats = seatCount(ctx.query);
   return (
     pageStart({
-      title: "Pricing | Sokosumi",
+      title: "Pricing: credits per seat, free plan included | Sokosumi",
       description:
         "Sokosumi plans: a free tier with 250 credits per seat, Starter at €25, Standard at €75, Pro at €200 per month, and a tailored Enterprise plan.",
       path: "/pricing",
@@ -249,23 +258,23 @@ async function render(ctx) {
     }) +
     `<div class="page-head" data-reveal>
       <span class="eyebrow">${esc(t("Pricing"))}</span>
-      <h1>${esc(t("Plans that scale with the work"))}</h1>
-      <p class="sub">${esc(t("Every plan includes credits per seat. Start free, move up when your team runs more work, or talk to us about a tailored plan."))}</p>
+      <h1>${esc(t("Plans and credits"))}</h1>
+      <p class="sub">${esc(t("Credits per seat on every plan. Start free; upgrade when you run more work."))}</p>
     </div>
 
     <section class="page-section flush">
-      <div class="plan-board">
+      <div class="plan-board" data-analytics="view_pricing" data-analytics-on="load">
         ${seatPicker(seats)}
-        <div class="plan-grid">${PLANS.map((p, i) => planCard(p, i, seats)).join("")}</div>
-        ${enterpriseBand(ENTERPRISE)}
+        <div class="plan-grid">${PLANS_ACTIVE.map((p, i) => planCard(p, i, seats)).join("")}</div>
+        ${enterpriseBand(ENTERPRISE_ACTIVE)}
       </div>
       <script src="/assets/pricing.js" defer></script>
     </section>` +
-    logoRow() +
-    shell.quoteSection(shell.pickQuote(testimonials, 0), { heading: t("Teams already on a plan") }) +
+    shell.logoRow() +
+    shell.quoteSection(shell.pickQuote(testimonials, 0), { heading: t("What users say about the work") }) +
     shell.ctaBand({
       heading: t("Get started on the free plan"),
-      subheading: t("250 credits per seat, no card, and every agent on the marketplace to try them on."),
+      subheading: t("250 credits per seat. No credit card required."),
       ctaLabel: t("Get started"),
       ctaHref: APP_SIGNUP,
       seed: 5,

@@ -75,7 +75,9 @@ async function index(ctx) {
         taskCount: offers.filter((o) => keys.has(o.agentSlug)).length,
       };
     })
-    .filter((v) => v.curatedCount + v.agentCount > 0 || v.description)
+    // A vendor with nothing listed is not shown — an empty storefront reads
+    // as broken, and inactive/placeholder records never render.
+    .filter((v) => v.curatedCount + v.agentCount > 0)
     // CMS `order` first, so an editor can pin a vendor to the top. Everyone
     // still on the default (100) sorts by substance: curated roster, then
     // marketplace footprint.
@@ -116,6 +118,7 @@ async function index(ctx) {
           <div class="row-list vendor-list">${rows.map(vendorRow).join("")}</div>
         </div>`
       : `<div class="page-section flush"><p class="muted">${esc(t("Vendor profiles are on the way. In the meantime,"))} <a href="/ai-coworkers" style="text-decoration:underline">${esc(t("meet the coworkers"))}</a>.</p></div>`) +
+    shell.logoRow() +
     shell.ctaBand({
       heading: t("Hire from any of them, in one place"),
       subheading: t("One account, one credit balance, every vendor on the marketplace. Signing up is free."),
@@ -183,9 +186,10 @@ function agentRow(c) {
   if (Number.isFinite(runCount) && runCount > 0) stats.push(t("{n} runs", { n: runCount.toLocaleString(nf()) }));
   if (c.rating && c.ratingCount) stats.push(t("rated {r}/5", { r: Number(c.rating).toFixed(1) }));
   if (c.credits) stats.push(t("{n} credits per run", { n: c.credits }));
+  const summary = c.seoDescription || c.description || "";
   return `<a class="row-item" href="/ai-coworkers/${encodeURIComponent(c.slug)}">
     <span style="display:flex;align-items:center;gap:12px">${avatar(c, "sm")}<span class="row-title">${esc(c.name)}</span></span>
-    <p>${esc(truncate(c.description || "", 160))}${stats.length ? `<span class="row-stats">${esc(stats.join(" · "))}</span>` : ""}</p>
+    <p>${esc(truncate(summary, 160))}${stats.length ? `<span class="row-stats">${esc(stats.join(" · "))}</span>` : ""}</p>
     <span class="row-go">${esc(t("View"))} ${icon("arrow-up-right", 15)}</span>
   </a>`;
 }
@@ -323,11 +327,11 @@ async function detail(ctx) {
   // page is meant to answer for — computed from what the vendor actually ships.
   const titleKinds =
     curated.length && agents.length
-      ? "AI Coworkers & Agents"
+      ? t("AI Coworkers & Agents")
       : curated.length
-        ? "AI Coworkers"
+        ? t("AI Coworkers")
         : agents.length
-          ? "AI Agents"
+          ? t("AI Agents")
           : "";
   const title = titleKinds
     ? t("{vendor} {kinds} | Sokosumi", { vendor: v.name, kinds: titleKinds })
@@ -358,7 +362,7 @@ async function detail(ctx) {
   };
   const jsonld = [orgLd];
   const listLd = shell.itemListLd(
-    `AI coworkers and agents from ${v.name}`,
+    t("AI coworkers from {vendor}", { vendor: v.name }),
     `/vendors/${v.slug}`,
     [...curated, ...agents].map((c) => ({ name: c.name, path: `/ai-coworkers/${c.slug}` })),
   );
@@ -376,6 +380,27 @@ async function detail(ctx) {
       ? t("Run {vendor}’s AI agents on Sokosumi", { vendor: v.name })
       : t("Meet the AI coworkers on Sokosumi");
 
+  // The same counts as the stats row, as attribute/value pairs a person and a
+  // retrieval system read identically. Only what the catalog states.
+  const dlRows = [];
+  dlRows.push([t("Type"), t("Vendor on Sokosumi")]);
+  if (v.website) dlRows.push([t("Website"), `<a href="${attr(v.website)}" rel="noreferrer">${esc(v.website.replace(/^https?:\/\//, "").replace(/\/$/, ""))}</a>`]);
+  if (curated.length) dlRows.push([t("AI coworkers"), esc(String(curated.length))]);
+  if (agents.length) dlRows.push([t("Marketplace agents"), esc(String(agents.length))]);
+  if (myOffers.length) dlRows.push([t("Template tasks"), esc(String(myOffers.length))]);
+  if (totalRuns) dlRows.push([t("Tasks run"), esc(totalRuns.toLocaleString(nf))]);
+  dlRows.push([t("Marketplace"), `<a href="/">Sokosumi</a>`]);
+  const synced = v.syncedAt || v.updatedAt;
+  if (synced) {
+    const d = new Date(synced);
+    const label = new Intl.DateTimeFormat(locale() === "de" ? "de-DE" : "en-GB", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" }).format(d);
+    dlRows.push([t("Profile data as of"), `<time datetime="${d.toISOString().slice(0, 10)}">${esc(label)}</time>`]);
+  }
+  const factsDl = `<section class="page-section flush" data-reveal>
+      <h2>${esc(t("{name} at a glance", { name: v.name }))}</h2>
+      <dl class="data-grid">${dlRows.map(([k, val]) => `<div class="dg-row"><dt>${esc(k)}</dt><dd>${val}</dd></div>`).join("")}</dl>
+    </section>`;
+
   const cr = [
     { label: "Home", href: "/" },
     { label: "Vendors", href: "/vendors" },
@@ -390,18 +415,20 @@ async function detail(ctx) {
       jsonld,
     }) +
     `<div class="page-head" data-reveal>
-      <span class="eyebrow">${esc(t("Vendor on Sokosumi"))}</span>
+      <span class="eyebrow">${esc(t("Vendor on Sokosumi"))}${kindsH ? ` &middot; ${kindsH}` : ""}</span>
       ${vendorLogo(v, "lg")}
-      <h1>${esc(v.name)} ${kindsH || esc(t("on Sokosumi"))}</h1>
+      <h1>${esc(v.name)}</h1>
       ${sub ? `<p class="sub">${esc(sub)}</p>` : ""}
       ${facts.length ? `<div class="cw-stats vendor-facts">${facts.join("")}</div>` : ""}
       ${website}
     </div>
+    ${factsDl}
     ${coworkersSection}
     ${capabilitiesSection}
     ${stackSection}
     ${agentsSection}
     ${empty}` +
+    shell.logoRow() +
     shell.ctaBand({
       heading: ctaHeading,
       subheading: t("One free account covers every vendor on the marketplace. Credits only go on work you run."),

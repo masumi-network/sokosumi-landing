@@ -162,7 +162,9 @@ export const translations = {
       heading: "Where Our Agents Live:",
       headingLine2: "sokosumi.com",
       subheading: "Dashboard, Chat, Tasks & Account \u2013 all in one place",
-      description: "The Serviceplan AI Agents are at home on Sokosumi \u2013 a secure, open-source platform, also built by Serviceplan. Anyone who works with the agents regularly will love the dashboard: tasks move in real time across a Kanban board, just like a well-coordinated team. You track progress, step in when input is needed and revisit past tasks at any time. Beyond the built-in chat, you can reach your agents via email, WhatsApp or Teams. No matter which channel you use to start a task: the dashboard keeps everything in one place.",
+      description: "Sokosumi is the secure, open-source platform the agents run on \u2013 also built by Serviceplan. Tasks move across the board in real time, you step in when something needs your input, and past work stays where you left it. Beyond the chat here, the same agents are reachable by email, WhatsApp or Teams.",
+      demoTitle: "Sokosumi \u2013 interactive product demo",
+      demoCaption: "The real interface, running here with sample data. Click around.",
       learnMore: "Learn more about Sokosumi",
     },
     companies: {
@@ -606,7 +608,9 @@ export const translations = {
       heading: "Hier leben unsere Agenten:",
       headingLine2: "sokosumi.com",
       subheading: "Dashboard, Chat, Tasks & Account \u2013 alles an einem Ort",
-      description: "Die Serviceplan AI Agents sind zu Hause auf Sokosumi \u2013 einer gesicherten Open-Source-Plattform, ebenfalls entwickelt von Serviceplan. Wer regelm\u00e4\u00dfig mit den Agenten arbeitet, wird das Dashboard lieben: Tasks wandern in Echtzeit wie bei einem eingespielten Team durch ein Kanban-Board. Du siehst den Fortschritt, gibst Input wenn n\u00f6tig und schaust alte Aufgaben jederzeit nach. Neben dem integrierten Chat erreichst Du Deine Agenten auch per E-Mail, WhatsApp oder Teams. Egal, \u00fcber welchen Kanal Du einen Task startest: auf dem Dashboard findest Du immer alles.",
+      description: "Sokosumi ist die gesicherte Open-Source-Plattform, auf der die Agents laufen \u2013 ebenfalls von Serviceplan entwickelt. Tasks wandern in Echtzeit \u00fcber das Board, Sie greifen ein, wenn Input gebraucht wird, und vergangene Arbeit bleibt dort, wo Sie sie gelassen haben. \u00dcber den Chat hinaus sind dieselben Agents per E-Mail, WhatsApp oder Teams erreichbar.",
+      demoTitle: "Sokosumi \u2013 interaktive Produktdemo",
+      demoCaption: "Die echte Oberfl\u00e4che, hier mit Beispieldaten. Klicken Sie sich durch.",
       learnMore: "Mehr \u00fcber Sokosumi erfahren",
     },
     companies: {

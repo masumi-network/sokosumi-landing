@@ -1,0 +1,385 @@
+{
+  "checked": "2026-08-26",
+  "en": {
+    "title": "The best AI marketing tools in 2026 (US and DACH)",
+    "metaTitle": "Best AI marketing tools 2026: 16 picks, prices, EU hosting",
+    "description": "16 AI marketing tools compared by job: chat assistants, EU workspaces, copy, design, research, coworkers, builders. Prices and EU hosting checked Aug 2026.",
+    "intro": "In 2026 the question is no longer \"should we use AI\" but \"which kind\". Three kinds exist. Chat tools (ChatGPT, Claude, Gemini, Copilot) give each person a box to prompt. Builders (n8n, Zapier) let someone wire models into automations. Coworkers and agents (Sokosumi, Viktor, Whaaat) take a brief and hand back a finished file. Most teams end up with one from each group, so this list is sorted by job, not by rank.",
+    "howWeChose": "We shortlisted tools a marketing team in the US or in Germany, Austria and Switzerland would actually trial this year, then kept the ones with four things: a published price, a clear answer on EU hosting, a clear statement of what comes out (chat, files, automations), and team features such as shared workspaces or admin controls. Prices were read from each vendor's own pricing page on 26 August 2026; where a vendor blocks automated reads (OpenAI, Canva, Adobe, Perplexity, Dust) we used a dated third-party tracker and say so. Sokosumi is our own product; it is listed with the same fields and the same tone as everything else.",
+    "groups": [
+      {
+        "heading": "General assistants marketers already use",
+        "tools": [
+          {
+            "name": "ChatGPT",
+            "key": "chatgpt",
+            "url": "https://chatgpt.com",
+            "what": "OpenAI's chat assistant with Deep Research, agent mode, projects and custom GPTs.",
+            "bestFor": "One person who wants the widest set of features in a single box.",
+            "price": "Free $0; Go $8; Plus $20; Pro $100–200; Business $20/seat/month annual or $25 monthly; Enterprise on quote (third-party tracker, verify; openai.com blocks reads). Checked 26 Aug 2026.",
+            "euHosting": "ChatGPT Business data residency is rolling out by workspace and covers primary content at rest, with US safety-log exceptions; eligible Enterprise and Edu workspaces can add European at-rest and inference residency.",
+            "strengths": [
+              "Deep Research and agent mode can return spreadsheets, slides and PDFs from one prompt.",
+              "Scheduled tasks run a prompt on a timer, one-off or recurring."
+            ],
+            "limits": [
+              "Output lands in one person's chat history; there is no shared task board for a team.",
+              "EU data residency needs the Enterprise contract, not the $25 Business seat."
+            ]
+          },
+          {
+            "name": "Claude",
+            "key": "claude",
+            "url": "https://claude.com",
+            "what": "Anthropic's assistant with Projects, file creation and Cowork for multi-step tasks over folders and tools.",
+            "bestFor": "Long documents, careful writing, and turning a brief into a .docx, .xlsx or .pptx.",
+            "price": "Free $0; Pro $17/month annual or $20 monthly; Max from $100; Team $20/seat annual or $25 monthly (premium seat $100/$125); Enterprise $20/seat plus usage (claude.com/pricing). Checked 26 Aug 2026.",
+            "euHosting": "No on first-party plans; EU regions only through AWS Bedrock or Google Vertex, a separate cloud contract.",
+            "strengths": [
+              "Creates and edits Word, Excel, PowerPoint and PDF files on all plans, including Free.",
+              "Cowork can schedule recurring tasks that run unattended on paid plans."
+            ],
+            "limits": [
+              "claude.ai and the API store data in the US; there is no EU residency switch in the product (compound.law, Apr 2026).",
+              "Team plan has no shared board; each person's Cowork runs on their own desktop."
+            ]
+          },
+          {
+            "name": "Google Gemini",
+            "key": "gemini",
+            "url": "https://gemini.google",
+            "what": "Google's assistant inside Gmail, Docs, Sheets and Slides, plus the standalone Gemini app and NotebookLM.",
+            "bestFor": "Teams that already live in Google Workspace.",
+            "price": "Google AI Pro CHF 17/month, AI Ultra from CHF 100 (gemini.google, shown in CHF from Switzerland; US list $19.99 / $249.99). Workspace with Gemini: Starter CHF 7, Standard CHF 14, Plus CHF 22 per user/month. Checked 26 Aug 2026.",
+            "euHosting": "Yes for Workspace customers with data regions (basic policy from Business Standard); Gemini app follows data regions since June 2026.",
+            "strengths": [
+              "Writes straight into Docs, Sheets and Slides, so the file is where the team already works.",
+              "Deep Research and NotebookLM turn a pile of sources into a report or slides."
+            ],
+            "limits": [
+              "Weakest fit for companies on Microsoft 365, which is most of DACH mid-market.",
+              "Advanced data-region policies need Enterprise Plus or similar top editions (Google Workspace help)."
+            ]
+          },
+          {
+            "name": "Microsoft 365 Copilot",
+            "key": "copilot",
+            "url": "https://www.microsoft.com/en-us/microsoft-365-copilot",
+            "what": "Microsoft's assistant in Word, Excel, PowerPoint, Outlook and Teams, with Researcher and Analyst agents.",
+            "bestFor": "Companies already on Microsoft 365 that want AI inside Office files and Teams.",
+            "price": "Copilot Business add-on $18/user/month annual (promo through 31 Dec 2026) or $25.20 monthly; Business Standard with Copilot $23.50; Business Premium with Copilot $32; Enterprise Copilot $30/user/month (microsoft.com). Checked 26 Aug 2026.",
+            "euHosting": "Yes: an EU Data Boundary service for EU tenants, but calls can be routed to other regions at peak load and Anthropic models are excluded from the boundary (Microsoft Learn, updated Aug 2026).",
+            "strengths": [
+              "Reads your mail, files and meetings through Microsoft Graph with existing permissions.",
+              "Researcher and Analyst agents produce reports and data analysis inside Office."
+            ],
+            "limits": [
+              "Custom or autonomous agents need Copilot Studio credits on top of the seat price.",
+              "Microsoft's own docs say LLM calls \"can call into other regions where capacity is available\"."
+            ]
+          }
+        ]
+      },
+      {
+        "heading": "EU-hosted AI workspaces",
+        "tools": [
+          {
+            "name": "Langdock",
+            "key": "langdock",
+            "url": "https://www.langdock.com",
+            "what": "Berlin-based company workspace with chat, custom agents and workflows over 40+ models, hosted in the EU.",
+            "bestFor": "A German company rolling out one AI tool to every employee.",
+            "price": "Business €25/user/month (Standard seat) or €99 (Business Max); Enterprise for 1,000+ users; Workflows add-on from €539/month; 7-day trial with €5 model credits (langdock.com/pricing). Checked 26 Aug 2026.",
+            "euHosting": "Yes, EU hosting, ISO 27001 and SOC 2.",
+            "strengths": [
+              "One seat price covers chat, agents and 2,500 workflow runs a month.",
+              "SSO, SCIM and admin controls for company-wide rollouts."
+            ],
+            "limits": [
+              "Web and desktop only; no native Teams, WhatsApp or SMS channel (teamazing 90-day review, 2026).",
+              "Usage moved to token-based limits in April 2026, so heavy users can exceed the seat quota."
+            ]
+          },
+          {
+            "name": "Dust",
+            "key": "dust",
+            "url": "https://dust.tt",
+            "what": "Paris-based platform for building agents on company data from Notion, Drive, Slack and more.",
+            "bestFor": "Teams that want to build their own agents on internal knowledge, in Europe.",
+            "price": "Free $0 (500 lifetime credits); Pro $30/seat/month or $24 annual (8,000 credits); Max $150/seat (40,000 credits); Enterprise from 100 seats (UsagePricing capture of dust.tt, 24 Jun 2026; third-party, verify).",
+            "euHosting": "Yes, EU or US residency on Pro and Max; Enterprise can choose.",
+            "strengths": [
+              "Agents live in Slack and can pull from connected company sources.",
+              "Spaces with access controls decide which team sees which data."
+            ],
+            "limits": [
+              "Credits cover messages plus tool use and do not roll over; file generation costs 3 credits per action.",
+              "You build every agent yourself; there is no catalogue of ready marketing coworkers."
+            ]
+          },
+          {
+            "name": "nele.ai",
+            "key": "nele",
+            "url": "https://www.nele.ai",
+            "what": "German multi-model chat with prompt library and Word/Excel add-ins, priced by a company-wide credit pool.",
+            "bestFor": "A small German firm that wants a safe ChatGPT-style tool at low cost.",
+            "price": "Credit packs from 1,000 credits €10/month to 750,000 credits €3,750/month, net; knowledge database add-on €19.95/month (nele.ai/de/ki-preise). Checked 26 Aug 2026.",
+            "euHosting": "Yes, servers in the EU, ISO 27001.",
+            "strengths": [
+              "Company-wide credit pool instead of per-seat pricing; cheap to start.",
+              "Add-ins for Word and Excel keep work in Office."
+            ],
+            "limits": [
+              "Chat and prompts, not agents; no scheduled or autonomous tasks on the pricing page.",
+              "Knowledge databases are capped at 2 GB with a 20 MB per-file limit."
+            ]
+          }
+        ]
+      },
+      {
+        "heading": "Content and copy",
+        "tools": [
+          {
+            "name": "Jasper",
+            "key": "jasper",
+            "url": "https://www.jasper.ai",
+            "what": "Marketing content platform with brand voice, Canvas and 100+ marketing agents.",
+            "bestFor": "A content team that wants on-brand copy at volume.",
+            "price": "Pro $69/seat/month or $59 annual, 7-day trial; Business custom, 12-month minimum (jasper.ai/pricing). Checked 26 Aug 2026.",
+            "euHosting": "No; data is stored in US data centres (Jasper security page).",
+            "strengths": [
+              "Brand voice and style rules apply across every output.",
+              "Agents grouped by marketing task, from SEO briefs to email sequences."
+            ],
+            "limits": [
+              "Pro includes one seat; more users means the custom Business plan.",
+              "API, custom agents and admin controls are Business-only."
+            ]
+          }
+        ]
+      },
+      {
+        "heading": "Design and creative",
+        "tools": [
+          {
+            "name": "Canva",
+            "key": "canva",
+            "url": "https://www.canva.com",
+            "what": "Browser design tool with Magic Studio AI for images, copy, video and decks.",
+            "bestFor": "Non-designers making social posts, decks and ads fast.",
+            "price": "Free $0 (50 AI credits/month); Pro $18/month or $180/year (500 credits); Business $25/person/month or $250/year; AI Pass add-on $100/person/month (third-party trackers, Aug 2026; canva.com blocks reads; verify).",
+            "euHosting": "Not published.",
+            "strengths": [
+              "Brand kits and templates keep a whole team on one look.",
+              "One credit pool covers image generation, copy and background removal."
+            ],
+            "limits": [
+              "AI credits are shared across all features and run out fast for heavy users.",
+              "Per-seat pricing with no volume discount on Business."
+            ]
+          },
+          {
+            "name": "Adobe Firefly",
+            "key": "adobe",
+            "url": "https://www.adobe.com/products/firefly.html",
+            "what": "Adobe's generative image, video and audio models, sold standalone or inside Creative Cloud.",
+            "bestFor": "Brand teams that need commercially safe visuals and already use Adobe.",
+            "price": "Free (25 credits); Standard $9.99/month (2,000 credits); Pro $19.99 (4,000); Pro Plus $49.99 (10,000); Premium $199.99 (50,000) (third-party trackers checked against adobe.com, 25 Aug 2026; verify).",
+            "euHosting": "Not published for Firefly plans.",
+            "strengths": [
+              "Trained on licensed content, with an IP indemnity for enterprise customers.",
+              "Standard generations are unlimited on paid plans; credits go to video and premium models."
+            ],
+            "limits": [
+              "Credit use for video and partner models is hard to predict; reviewers report credits spent without output (costbench).",
+              "GenStudio and the coming Marketing Agent are enterprise quote-only, not self-serve."
+            ]
+          }
+        ]
+      },
+      {
+        "heading": "Research",
+        "tools": [
+          {
+            "name": "Perplexity",
+            "key": "perplexity",
+            "url": "https://www.perplexity.ai",
+            "what": "Search-first assistant with cited answers, Deep Research and Labs for reports and dashboards.",
+            "bestFor": "Fast, sourced market and competitor research.",
+            "price": "Free $0; Pro $20/month; Max $200/month; Enterprise Pro $40/seat/month; Enterprise Max $325/seat (third-party tracker 2026; perplexity.ai blocks reads; verify).",
+            "euHosting": "No; processing on US infrastructure, no EU data centre option (compound.law, 16 Apr 2026).",
+            "strengths": [
+              "Every answer carries sources you can click.",
+              "Labs on Max turns a research question into a spreadsheet, dashboard or slide deck."
+            ],
+            "limits": [
+              "Labs and unlimited research sit on the $200 Max tier, not Pro.",
+              "Sources are the open web; no licensed data such as Statista or GWI."
+            ]
+          }
+        ]
+      },
+      {
+        "heading": "AI coworkers and agents that deliver files",
+        "tools": [
+          {
+            "name": "Sokosumi",
+            "key": "sokosumi",
+            "url": "https://www.sokosumi.com",
+            "what": "Marketplace of named AI coworkers and specialist agents for marketing teams, each run by a named vendor with stated models and hosting.",
+            "bestFor": "A marketing team that wants a report, deck or dashboard delivered, not a chat window.",
+            "price": "Free 250 credits per seat per month, no card; Starter €25, Standard €75, Pro €200 per seat per month; Enterprise custom; credits only spent when a task runs (sokosumi.com/pricing). Checked 26 Aug 2026.",
+            "euHosting": "Yes, available and stated per coworker (for example Azure Frankfurt; Swiss-hosted open models).",
+            "strengths": [
+              "Brief in plain language or @mention in a channel; the task shows on a shared board and ends as a PDF, deck, spreadsheet or live dashboard.",
+              "Each coworker has a public profile with sample work, vendor, model and hosting region; scheduled tasks."
+            ],
+            "limits": [
+              "Catalogue is young: 52 coworkers and agents from 7 vendors, 5,300+ tasks run.",
+              "Not a chat assistant; quick one-line questions are better served by ChatGPT or Claude."
+            ]
+          },
+          {
+            "name": "Viktor",
+            "key": "viktor",
+            "url": "https://viktor.com",
+            "what": "AI employee that lives in Slack and Teams, connects to 3,200+ tools and returns reports, spreadsheets, dashboards and code.",
+            "bestFor": "Ops-heavy teams on Slack that want one general agent wired into their stack.",
+            "price": "Free $100 in credits, no card; Team from $50/month (20,000 credits) to $300 (125,000); larger packs to $50,000/month; Enterprise custom (viktor.com/pricing). Checked 26 Aug 2026.",
+            "euHosting": "Not published; SOC 2 Type 1, ISO 27001 in progress.",
+            "strengths": [
+              "@mention in a thread, get a file back; scheduled tasks and crons included on all plans.",
+              "Very wide integration list, with custom connectors on request."
+            ],
+            "limits": [
+              "One generic coworker, not specialists by marketing role; no vendor disclosure per task.",
+              "Warsaw/Munich company but hosting region is not stated on the site."
+            ]
+          },
+          {
+            "name": "Whaaat AI",
+            "key": "whaaat",
+            "url": "https://www.whaaat.ai",
+            "what": "Berlin-based set of 28 named marketing agents (LinkedIn, blog, landing page, SEO) with a shared brand voice.",
+            "bestFor": "A startup or small team that needs steady social and blog content for a flat fee.",
+            "price": "$25/month for all agents, unlimited use; 7-day trial, no card (whaaat.ai). Checked 26 Aug 2026.",
+            "euHosting": "Not published.",
+            "strengths": [
+              "Flat price with no credit meter.",
+              "Multi-brand support and a choice of GPT, Claude, Gemini and Mistral models."
+            ],
+            "limits": [
+              "Outputs are text and images to copy out; no task board, scheduling or file deliverables.",
+              "Single vendor with a small team (about 12 staff per ADZINE, June 2026); no enterprise tier or SSO listed."
+            ]
+          }
+        ]
+      },
+      {
+        "heading": "Automation builders",
+        "tools": [
+          {
+            "name": "n8n",
+            "key": "n8n",
+            "url": "https://n8n.io",
+            "what": "Berlin-based workflow and AI-agent builder, cloud-hosted in Frankfurt or self-hosted.",
+            "bestFor": "A team with one technical person who wants to own its automations and data.",
+            "price": "Cloud Starter €20/month annual (2,500 executions); Pro €50 (10,000); Business €667 (40,000, self-host option); Enterprise on quote; community self-host free (n8n.io/pricing). Checked 26 Aug 2026.",
+            "euHosting": "Yes; cloud data stored in Frankfurt, or wherever you self-host.",
+            "strengths": [
+              "Executions are billed per workflow, not per step, so long agent chains stay cheap.",
+              "Open source and self-hostable; a runbook, not a vendor lock."
+            ],
+            "limits": [
+              "You build and maintain every workflow; nothing marketing-specific out of the box.",
+              "Self-hosting means your team owns updates, backups and security."
+            ]
+          },
+          {
+            "name": "Zapier Agents",
+            "key": "zapier",
+            "url": "https://zapier.com/agents",
+            "what": "No-code agents on top of Zapier's 9,000-app catalogue, billed in activities separate from Zap tasks.",
+            "bestFor": "Non-technical marketers who already run Zaps and want light agents on top.",
+            "price": "Zapier Free (100 tasks, 400 agent activities/month); Professional from $19.99/month annual (750 tasks, 1,500 activities); Team from $69/month annual; Enterprise custom (zapier.com/pricing). Checked 26 Aug 2026.",
+            "euHosting": "Not published.",
+            "strengths": [
+              "Largest app catalogue; agents can trigger, browse, search and act.",
+              "No code and no servers to run."
+            ],
+            "limits": [
+              "Every agent step is a billable activity; costs climb with usage.",
+              "US-hosted SaaS with no stated EU data option."
+            ]
+          }
+        ]
+      }
+    ],
+    "faq": [
+      [
+        "What is an AI marketing agent?",
+        "A program that takes a goal in plain language, works through several steps on its own (search, read, draft, calculate) and hands back a result. In a chat tool the result is text in your window. In a coworker platform the result is a file, such as a PDF report or a deck, on a board your team can see."
+      ],
+      [
+        "Which AI marketing tool fits a small team in Germany?",
+        "Start with an EU-hosted workspace if you need one tool for everyone: Langdock at €25 per user, or nele.ai if budgets are tight. If you need finished reports and campaign work rather than a chat box, Sokosumi (EU hosting stated per coworker) or Whaaat AI (flat $25, hosting not published) are the two DACH options on this list. Check the vendor's hosting statement before you sign."
+      ],
+      [
+        "Do I need ChatGPT if I use a coworker marketplace?",
+        "Usually yes, for quick questions and drafts. Coworkers are for tasks with a deliverable: a competitor report, a monthly performance PDF, a campaign plan. Most teams keep a chat seat per person and add coworkers where they want work done, not answered."
+      ],
+      [
+        "Are AI marketing tools GDPR compliant?",
+        "Not automatically. The useful question is where data is stored and processed on the exact plan. Langdock, Dust, nele.ai, n8n cloud and Sokosumi state EU options. Microsoft documents an EU Data Boundary with exceptions. ChatGPT Business is rolling out at-rest residency with US safety-log exceptions; eligible Enterprise and Edu workspaces can add European inference residency. Claude stores first-party product data in the US, while AWS and Google Cloud offer separate regional deployments."
+      ],
+      [
+        "What do AI marketing tools cost in 2026?",
+        "Chat seats cluster at $20–25 per person per month (ChatGPT Business, Claude Team, Langdock, Sokosumi Starter). Content and design tools run $18–69 per seat. Agent platforms add usage: credits (Dust, Viktor, Sokosumi), executions (n8n) or activities (Zapier). Enterprise tiers are quote-only almost everywhere."
+      ]
+    ]
+  },
+  "sources": [
+    "https://langdock.com/pricing",
+    "https://www.teamazing.com/blog/langdock-enterprise-review-2026/",
+    "https://www.usagepricing.com/blueprint/dust",
+    "https://dust.tt/home/security",
+    "https://www.nele.ai/de/ki-preise",
+    "https://www.jasper.ai/pricing",
+    "https://www.jasper.ai/security",
+    "https://www.usecarly.com/blog/canva-pricing/",
+    "https://costbench.com/software/design/canva/",
+    "https://www.eesel.ai/blog/canva-ai-pricing",
+    "https://costbench.com/software/ai-image-generators/adobe-firefly/",
+    "https://aiproductivity.ai/pricing/adobe-firefly/",
+    "https://www.finout.io/blog/perplexity-pricing-in-2026",
+    "https://compound.law/en-DE/tools/perplexity/",
+    "https://www.whaaat.ai/",
+    "https://www.adzine.de/2026/06/berliner-startup-buendelt-ki-agenten-fuer-marketingaufgaben/",
+    "https://viktor.com/",
+    "https://viktor.com/pricing",
+    "https://fortune.com/2026/05/19/viktor-ai-startup-raises-75-million-for-virtual-coworker-exclusive/",
+    "https://www.sokosumi.com/pricing",
+    "https://www.sokosumi.com/product",
+    "https://n8n.io/pricing/",
+    "https://zapier.com/pricing",
+    "https://zapier.com/agents",
+    "https://claude.com/pricing",
+    "https://privacy.anthropic.com/en/articles/7996890-where-are-your-servers-located-do-you-host-your-models-on-eu-servers",
+    "https://help.openai.com/en/articles/20001418-where-your-chatgpt-business-content-is-stored",
+    "https://www.cloudzero.com/blog/how-much-does-chatgpt-cost/",
+    "https://www.microsoft.com/en-us/microsoft-365-copilot/pricing",
+    "https://learn.microsoft.com/en-us/copilot/microsoft-365/microsoft-365-copilot-privacy",
+    "https://gemini.google/subscriptions/",
+    "https://workspace.google.com/pricing",
+    "https://workspaceupdates.googleblog.com/2026/06/gemini-app-data-regions-support.html",
+    "https://knowledge.workspace.google.com/admin/compliance/choose-a-geographic-location-for-your-data",
+    "https://coworker.ai/pricing",
+    "https://sintra.ai/pricing",
+    "https://www.eesel.ai/blog/sintra-ai-review",
+    "https://www.lindy.ai/pricing",
+    "https://www.usecarly.com/blog/lindy-ai-review/",
+    "https://www.copy.ai/prices",
+    "https://www.eesel.ai/blog/writer-com-pricing"
+  ],
+  "notes": "16 tools. Dropped: Writer (writer.com/plans returns 403; only third-party prices; Starter capped at 5 users and the product is sold as enterprise governance, not a marketing-team trial). Copy.ai (Chat plan $29 for 5 seats is fine but the next step is $1,000/month for 75 seats; too steep a jump for the audience, and no free plan). Coworker.ai (US-hosted per its own pricing page, generic agent platform, overlaps Viktor which has more traction and a free tier). Sintra (2026 reviews agree it does not execute or deliver files; output is copy-pasted out; 250 credits reported to last 2–10 days). Lindy (no free plan since early 2026, credit costs only visible after the fact, Trustpilot 1.7/5 dominated by billing complaints per usecarly, Jul 2026; generic assistant rather than marketing). Could not verify on vendor pages (blocked): ChatGPT plan prices (cloudzero tracker), Canva prices (usecarly/costbench), Adobe Firefly prices (costbench/aiproductivity, both say checked against adobe.com 25 Aug 2026), Perplexity prices (finout) and hosting (compound.law), Dust prices (UsagePricing capture 24 Jun 2026). Gemini prices were served in CHF because the fetch came from Switzerland; US dollar list prices are from memory and should be confirmed. Whaaat AI and Zapier hosting regions are not published. Sokosumi live numbers (52 coworkers/7 vendors/5,300+ tasks) are from the brief, not re-verified on the site."
+}

@@ -6,7 +6,7 @@ import { TrackedLink } from "./learner-actions";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
-export const metadata = { title: "Learn", description: "Become a certified Masumi developer with the free Masumi Fundamentals course and a verifiable, optionally on-chain certificate." };
+export const metadata = { alternates: { canonical: "/learn" }, title: "Learn", description: "Become a certified Masumi developer with the free Masumi Fundamentals course and a verifiable, optionally on-chain certificate." };
 
 export default async function LearnPage({ searchParams }: { searchParams: Promise<{ signedOut?: string }> }) {
   const params = await searchParams;

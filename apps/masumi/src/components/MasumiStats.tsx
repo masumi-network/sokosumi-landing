@@ -1,4 +1,6 @@
 "use client";
+import { type Locale } from "@/lib/i18n";
+import { st as siteCopy } from "@/lib/site-copy";
 
 import { useEffect, useState, useRef, useCallback } from "react";
 import Link from "next/link";
@@ -116,7 +118,8 @@ function truncateHash(hash: string): string {
 
 // --- Transactions Panel ---
 
-function TransactionsPanel({ open }: { open: boolean }) {
+function TransactionsPanel({ open, locale }: { open: boolean; locale: Locale }) {
+  const st = siteCopy(locale);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [txs, setTxs] = useState<Transaction[]>([]);
@@ -201,7 +204,7 @@ function TransactionsPanel({ open }: { open: boolean }) {
                   disabled={page <= 1 || loading}
                   className="text-[12px] text-[#999] hover:text-black disabled:opacity-30 disabled:cursor-default px-3 py-1 rounded-full border border-black/[0.06] hover:border-black/[0.12] transition-colors"
                 >
-                  Prev
+                  {st("STATS1")}
                 </button>
                 <span className="text-[12px] text-[#bbb]">Page {page}</span>
                 <button
@@ -209,7 +212,7 @@ function TransactionsPanel({ open }: { open: boolean }) {
                   disabled={txs.length < 10 || loading}
                   className="text-[12px] text-[#999] hover:text-black disabled:opacity-30 disabled:cursor-default px-3 py-1 rounded-full border border-black/[0.06] hover:border-black/[0.12] transition-colors"
                 >
-                  Next
+                  {st("STATS2")}
                 </button>
               </div>
             </>
@@ -293,7 +296,8 @@ function AgentCard({ agent }: { agent: Agent }) {
   );
 }
 
-function AgentsPanel({ open }: { open: boolean }) {
+function AgentsPanel({ open, locale }: { open: boolean; locale: Locale }) {
+  const st = siteCopy(locale);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [agents, setAgents] = useState<Agent[]>([]);
@@ -349,7 +353,7 @@ function AgentsPanel({ open }: { open: boolean }) {
                   disabled={page <= 1 || loading}
                   className="text-[12px] text-[#999] hover:text-black disabled:opacity-30 disabled:cursor-default px-3 py-1 rounded-full border border-black/[0.06] hover:border-black/[0.12] transition-colors"
                 >
-                  Prev
+                  {st("STATS1")}
                 </button>
                 <span className="text-[12px] text-[#bbb]">Page {page}</span>
                 <button
@@ -357,7 +361,7 @@ function AgentsPanel({ open }: { open: boolean }) {
                   disabled={agents.length < 10 || loading}
                   className="text-[12px] text-[#999] hover:text-black disabled:opacity-30 disabled:cursor-default px-3 py-1 rounded-full border border-black/[0.06] hover:border-black/[0.12] transition-colors"
                 >
-                  Next
+                  {st("STATS2")}
                 </button>
               </div>
             </>
@@ -417,7 +421,8 @@ function SkeletonStat() {
   );
 }
 
-export default function MasumiStats() {
+export default function MasumiStats({ locale = "en" }: { locale?: Locale }) {
+  const st = siteCopy(locale);
   const [stats, setStats] = useState<Stats | null>(null);
   const [error, setError] = useState(false);
   const [activePanel, setActivePanel] = useState<PanelType>(null);
@@ -445,14 +450,14 @@ export default function MasumiStats() {
           <>
             <ClickableStat
               value={<AnimatedNumber value={stats.totalTransactions} duration={2200} />}
-              label="Transactions"
+              label={st("STATS4")}
               active={activePanel === "transactions"}
               onClick={() => toggle("transactions")}
             />
             <div className="hidden md:block w-px h-10 bg-black/[0.06]" />
             <ClickableStat
               value={<AnimatedNumber value={stats.registeredAgents} duration={1800} />}
-              label="Agents"
+              label={st("STATS5")}
               active={activePanel === "agents"}
               onClick={() => toggle("agents")}
             />
@@ -468,7 +473,7 @@ export default function MasumiStats() {
                   "\u2014"
                 )
               }
-              label="Volume"
+              label={st("STATS6")}
             />
             <div className="hidden md:block w-px h-10 bg-black/[0.06]" />
             <Stat
@@ -477,7 +482,7 @@ export default function MasumiStats() {
                   ? timeAgo(stats.lastTransactionTime)
                   : "\u2014"
               }
-              label="Last Tx"
+              label={st("STATS7")}
             />
           </>
         ) : (
@@ -494,7 +499,7 @@ export default function MasumiStats() {
         href="/explorer"
         className="text-[13px] text-[#999] hover:text-black transition-colors flex items-center gap-1"
       >
-        View Explorer
+        {st("STATS3")}
         <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
           <path d="M4.5 3l3 3-3 3" />
         </svg>
@@ -502,8 +507,8 @@ export default function MasumiStats() {
 
       {/* Expand panels */}
       <div className="w-full px-4">
-        <TransactionsPanel open={activePanel === "transactions"} />
-        <AgentsPanel open={activePanel === "agents"} />
+        <TransactionsPanel open={activePanel === "transactions"} locale={locale} />
+        <AgentsPanel open={activePanel === "agents"} locale={locale} />
       </div>
     </div>
   );

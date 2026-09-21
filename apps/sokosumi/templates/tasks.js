@@ -6,7 +6,7 @@
 
 const shell = require("./shell");
 const cms = require("../lib/cms");
-const { t, tp } = require("../lib/i18n");
+const { t, tp, locale } = require("../lib/i18n");
 const { esc, attr, icon, avatar, outputMeta, markdownLite, pageStart, pageEnd, APP, APP_SIGNUP } = shell;
 
 function offerOutputs(offer) {
@@ -214,6 +214,7 @@ async function browse(ctx) {
           <script src="/assets/tasks-filter.js"></script>
         </div>`
       : `<div class="page-section flush"><p class="muted">${esc(t("Template tasks are on the way. In the meantime,"))} <a href="/ai-coworkers" style="text-decoration:underline">${esc(t("meet the coworkers"))}</a>.</p></div>`) +
+    shell.logoRow() +
     shell.ctaBand({
       heading: t("Run your first task today"),
       subheading: t("Pick a template, add your brief, and get the finished file back. Signing up is free."),
@@ -268,6 +269,29 @@ function whatYouGet(offer, c, om, outs) {
   </div>`;
 }
 
+// The task as attribute/value pairs — the same facts the card and the
+// "what you get" block state, in the one structure people and retrieval
+// systems read identically. Only what the catalog provides; nothing inferred.
+function taskFacts(offer, c, om, vn, vs) {
+  const rows = [[t("Type"), t("Template task")]];
+  rows.push([t("Run by"), `<a href="/ai-coworkers/${encodeURIComponent(c.slug)}">${esc(c.name)}</a>${c.role ? `, ${esc(c.role)}` : ""}`]);
+  if (vn) rows.push([t("Vendor"), vs ? `<a href="/vendors/${encodeURIComponent(vs)}">${esc(vn)}</a>` : esc(vn)]);
+  if (offer.category) rows.push([t("Category"), esc(t(offer.category))]);
+  rows.push([t("Output format"), esc(om.label)]);
+  if (offer.deliverable) rows.push([t("Deliverable"), esc(offer.deliverable)]);
+  rows.push([t("Marketplace"), `<a href="/">Sokosumi</a>`]);
+  const synced = offer.syncedAt || offer.updatedAt;
+  if (synced) {
+    const d = new Date(synced);
+    const label = new Intl.DateTimeFormat(locale() === "de" ? "de-DE" : "en-GB", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" }).format(d);
+    rows.push([t("Task data as of"), `<time datetime="${d.toISOString().slice(0, 10)}">${esc(label)}</time>`]);
+  }
+  return `<section class="task-facts">
+        <h2 class="kicker" style="margin-bottom:8px">${esc(t("{title} at a glance", { title: offer.title }))}</h2>
+        <dl class="data-grid">${rows.map(([k, v]) => `<div class="dg-row"><dt>${esc(k)}</dt><dd>${v}</dd></div>`).join("")}</dl>
+      </section>`;
+}
+
 // ---- /ai-coworkers/<slug>/tasks/<offerSlug> (detail) ----
 
 async function detail(ctx) {
@@ -293,8 +317,12 @@ async function detail(ctx) {
   cr.push({ label: c.name, href: `/ai-coworkers/${c.slug}` }, { label: offer.title });
   return (
     pageStart({
-      title: t("{name} | {role} on Sokosumi", { name: offer.title, role: c.name }),
-      description: (offer.description || t("{title}, a template task run by {name} on Sokosumi.", { title: offer.title, name: c.name })).slice(0, 155),
+      title: t("{name} | {role}", { name: offer.title, role: c.name }),
+      description: shell.describe(offer.description || t("{title}, a template task run by {name} on Sokosumi.", { title: offer.title, name: c.name }), [
+        t("A template task by {name} on Sokosumi: brief it in plain language, follow it on the board, get the file back.", { name: c.name }),
+        t("A template task by {name} on Sokosumi: brief it and get the file back.", { name: c.name }),
+        t("A template task run by {name} on Sokosumi.", { name: c.name }),
+      ]),
       path: `/ai-coworkers/${c.slug}/tasks/${offer.slug}`,
       breadcrumb: cr,
       jsonld: {
@@ -316,6 +344,7 @@ async function detail(ctx) {
         </div>
         ${offer.description ? `<p class="lede">${esc(offer.description)}</p>` : ""}
         ${whatYouGet(offer, c, om, outs)}
+        ${taskFacts(offer, c, om, vn, vs)}
         <div>
           <div class="kicker" style="margin-bottom:8px">${esc(t("Delivered by"))}</div>
           <a class="by-row" href="/ai-coworkers/${encodeURIComponent(c.slug)}">
@@ -324,12 +353,13 @@ async function detail(ctx) {
           </a>
         </div>
         <div class="task-actions">
-          <a class="btn btn-primary btn-lg" href="${APP_SIGNUP}">${esc(t("Try this task on Sokosumi"))}</a>
+          <a class="btn btn-primary btn-lg" href="${APP_SIGNUP}" data-analytics="sign_up_click" data-analytics-location="task_detail">${esc(t("Try this task on Sokosumi"))}</a>
           ${openUrl ? `<a class="btn btn-outline" href="${attr(openUrl.url)}" target="_blank" rel="noreferrer">${esc(t("Open sample output"))} ${icon("arrow-up-right", 14)}</a>` : ""}
           ${shell.NO_CARD}
         </div>
       </aside>
     </div>` +
+    shell.logoRow() +
     shell.ctaBand({
       heading: t('Run "{title}" with {name}', { title: offer.title, name: c.name }),
       subheading: t("Pick a template, add your brief, and collect the finished file."),

@@ -16,7 +16,7 @@ const cms = require("./cms");
 const FEATURED_VENDOR = "serviceplan-group";
 const TOP_VENDORS = 3;
 const PICKS_PER_VENDOR = 4;
-const TOP_INDUSTRIES = 3;
+const TOP_INDUSTRIES = 6;
 const PICKS_PER_INDUSTRY = 3;
 // Six jobs is the whole Use cases menu: two columns of three face+title rows.
 const POPULAR_USE_CASES = 6;

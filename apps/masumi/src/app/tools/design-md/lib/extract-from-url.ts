@@ -3,6 +3,7 @@ import type { Frontmatter, Typography } from "./design-md";
 import { llmExtract, type LlmMeta } from "./llm-extract";
 import { preprocessSite } from "./preprocess";
 import { renderWithBrowserbase, type RenderedPage } from "./render";
+import { assertPublicUrl, normalizeUrl } from "./url-guard";
 
 const HEX_RE = /#[0-9a-fA-F]{6}\b|#[0-9a-fA-F]{3}\b/g;
 const RGB_RE = /rgba?\(\s*(\d+)[,\s]+(\d+)[,\s]+(\d+)/g;
@@ -20,6 +21,11 @@ export async function extractFromUrl(
   opts?: { force?: boolean },
 ): Promise<ExtractResult> {
   const url = normalizeUrl(rawUrl);
+  // Refuse anything that resolves to a private or link-local address before a
+  // single request goes out. The Browserbase path is someone else's network,
+  // but the fetch() fallback below runs on our own server, so an unguarded
+  // URL here is server-side request forgery.
+  await assertPublicUrl(url);
 
   // Primary path: Browserbase rendering. Captures HTML *after* JS runs +
   // viewport screenshot + computed styles of key elements.
@@ -142,12 +148,6 @@ export async function extractFromUrl(
   ];
 
   return { frontmatter, prose, source: "heuristic" };
-}
-
-function normalizeUrl(input: string): string {
-  const trimmed = input.trim();
-  if (!/^https?:\/\//i.test(trimmed)) return `https://${trimmed}`;
-  return trimmed;
 }
 
 function absolutize(href: string, base: string): string {

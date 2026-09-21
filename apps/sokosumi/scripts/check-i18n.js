@@ -30,6 +30,11 @@ const INTENTIONAL = new Set([
   "Design", "Marketing", "Engineering", "Prototyping", "Tech Stack", "Website",
   "Cookies", "Slides", "Text", "Web", "Hosting", "Workflows", "Guide",
   "Details", "Highlights", "Sokosumi Agent Listing",
+  "Strategy", "Coding", "Experience", "Designer", "Coworker", "Todo",
+  "Memory", "Board", "Output", "Outputs", "Workspace", "Channels", "Chat", "Brief",
+  "Agents", "Personal Assistant", "New Task", "Tasks", "Free", "Planning",
+  "Jobs", "Backlog", "Queued", "Agent", "Lead Generation Campaign",
+  "Interactive Social Media Monitoring Dashboard", "Marketing Analytics Dashboard",
   // Page titles keep the English section name before the brand.
   "Support | Sokosumi", "Guides | Sokosumi", "Blog | Sokosumi", "Releases | Sokosumi",
 ]);

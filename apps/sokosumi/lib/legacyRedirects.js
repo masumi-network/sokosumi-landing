@@ -44,13 +44,26 @@ const EXACT = {
   "/agents": "/ai-coworkers",
   "/ai-solutions": "/product",
   "/agentic-solutions": "/product",
+  "/docs": "https://api.sokosumi.com",
   "/sign-up": `${APP_ORIGIN}/signup`,
   "/thank-you": "/",
+  // Old Webflow landing-page variants still crawled by Google (GSC 404 report,
+  // 2026-08-26). Home variants go home; the two topical ones go to their hub.
+  "/home": "/",
+  "/Home": "/",
+  "/home-new": "/",
+  "/new-lp": "/",
+  "/marketing": "/use-cases",
+  "/research-agents": "/ai-coworkers",
   "/webinar": "/",
   "/webinar-b": "/",
   "/webinar-live": "/",
   "/webinar-thank-you": "/",
   "/register-for-webinar": "/",
+  // Promoted out of the Serviceplan dossier to a top-level URL: the buyer
+  // guide targets "ai marketing agency", where a /serviceplan-ai/ prefix reads
+  // as a page about Serviceplan rather than about the category.
+  "/serviceplan-ai/ai-marketing-agency": "/ai-marketing-agency",
 };
 
 // Prefixes whose children all collapse onto one hub. The old agent categories

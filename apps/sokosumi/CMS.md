@@ -455,3 +455,13 @@ the site locally against the healthy CMS with a clean `data/`
 (`rm -rf data && PORT=4460 node server.js`), fetch every `<loc>` in
 `/sitemap.xml` once, wait ~3 s for the debounced persist, then
 `cp data/cms-cache.json cms-seed.json` and commit.
+
+
+## /about is not a CMS page any more (2026-08-25)
+
+`/about` and `/de/about` render from `templates/about.js`, not from the CMS
+`about` page (the CMS doc still exists but is unreachable). The page is the
+site's entity page — h1 = "Sokosumi", a `<dl>` of facts, a Masumi/Kodosumi
+disambiguation, and JSON-LD generated from the same facts table — so the two
+layers cannot drift. To change a fact: edit `templates/about.js`, bump
+`REVIEWED`, deploy. `/llms.txt` is built from the same file.

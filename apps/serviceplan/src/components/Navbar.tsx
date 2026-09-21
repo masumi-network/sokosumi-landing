@@ -3,18 +3,34 @@
 import { useState, useRef, useEffect } from "react";
 import { Locale, t } from "@/lib/translations";
 import LanguageToggle from "@/components/LanguageToggle";
+import SpLogo from "@/components/SpLogo";
+
+import { ROUTES } from "@/lib/routes";
 
 const agents = [
-  { name: "Hannah", href: "#hannah", image: "/images/user-image.png" },
-  { name: "Elena", href: "#elena", image: "/images/elena.png" },
-  { name: "Alex", href: "#alex", image: "/images/alex-2.png" },
-];
+  { name: "Hannah", href: "#hannah", route: "agentHannah", image: "/images/user-image.png" },
+  { name: "Elena", href: "#elena", route: "agentElena", image: "/images/elena.png" },
+  { name: "Alex", href: "#alex", route: "agentAlex", image: "/images/alex-2.png" },
+] as const;
 
-export default function Navbar({ locale = "en" }: { locale?: Locale }) {
+export default function Navbar({
+  locale = "en",
+  /** Set on pages other than the homepage so #anchors resolve there. */
+  homeHref,
+  /** "sticky" is the homepage overlay bar; "static" sits in the flow. */
+  variant = "sticky",
+}: {
+  locale?: Locale;
+  homeHref?: string;
+  variant?: "sticky" | "static";
+}) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const tt = t(locale).navbar;
+  const home = homeHref ?? (locale === "de" ? "/de" : "/");
+  const isHome = homeHref === undefined;
+  const anchor = (hash: string) => (isHome ? hash : `${home}${hash}`);
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
@@ -27,6 +43,7 @@ export default function Navbar({ locale = "en" }: { locale?: Locale }) {
   }, []);
 
   function handleAgentClick(e: React.MouseEvent<HTMLAnchorElement>, href: string) {
+    if (!isHome) return;
     e.preventDefault();
     setDropdownOpen(false);
     setMenuOpen(false);
@@ -38,11 +55,13 @@ export default function Navbar({ locale = "en" }: { locale?: Locale }) {
   }
 
   return (
-    <div className="navbar_component up w-nav" data-collapse="medium" role="banner">
+    <div className={`navbar_component ${variant === "static" ? "jhn" : "up"} w-nav`} data-collapse="medium" role="banner">
       <div className="nabvar-header">
-        <a href={locale === "de" ? "/de" : "/"} className="logo_sokosumi w-nav-brand">
+        <a href={home} className="logo_sokosumi w-nav-brand">
           <div className="logo-component">
-            <img src="/images/sp-logo.png" loading="lazy" alt="Serviceplan Group logo" className="sp-logo" />
+            <div className="code-embed-4 w-embed">
+              <SpLogo />
+            </div>
           </div>
         </a>
         <nav role="navigation" className="navbar-menu-content-wrap w-nav-menu" {...(menuOpen ? { "data-nav-menu-open": "" } : {})}>
@@ -66,7 +85,7 @@ export default function Navbar({ locale = "en" }: { locale?: Locale }) {
                     {agents.map((agent) => (
                       <a
                         key={agent.name}
-                        href={agent.href}
+                        href={isHome ? agent.href : ROUTES[agent.route][locale]}
                         className="uui-navbar08_dropdown-link-2 w-inline-block"
                         onClick={(e) => handleAgentClick(e, agent.href)}
                       >
@@ -87,15 +106,15 @@ export default function Navbar({ locale = "en" }: { locale?: Locale }) {
                 </nav>
               )}
             </div>
-            <a href="https://www.sokosumi.com/#how-it-works" className="nav-menu w-nav-link">{tt.pricing}</a>
-            <a href="mailto:support@serviceplan-agents.com?subject=Reaching%20out%20to%20you%20reading%20Serviceplan-agents.com" className="nav-menu w-nav-link">{tt.contact}</a>
+            <a href={anchor("#pricing")} className="nav-menu is-white w-nav-link">{tt.pricing}</a>
+            <a href="mailto:support@serviceplan-agents.com?subject=Reaching%20out%20to%20you%20reading%20Serviceplan-agents.com" className="nav-menu is-white w-nav-link">{tt.contact}</a>
           </div>
           <div className="nav-cta-links">
             <div className="button-group nav-button" style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
-              <a href={tt.freeAnalysisHref} className="button is-cta-red w-inline-block">
+              <a href={anchor(tt.freeAnalysisHref)} className="button is-cta-red navigation w-inline-block">
                 <div>{tt.freeAnalysis}</div>
               </a>
-              <a href="https://app.sokosumi.com/register" className="button w-inline-block">
+              <a href={tt.requestDemoHref} className="button navigation w-inline-block">
                 <div>{tt.requestDemo}</div>
                 <div className="arrow-icon w-embed">
                   <svg width="45" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -108,7 +127,7 @@ export default function Navbar({ locale = "en" }: { locale?: Locale }) {
             <LanguageToggle locale={locale} />
           </div>
         </nav>
-        <div className="language-toggle-mobile">
+        <div className="language-toggle-mobile" style={{ display: "none" }}>
           <LanguageToggle locale={locale} />
         </div>
         <div
@@ -117,9 +136,9 @@ export default function Navbar({ locale = "en" }: { locale?: Locale }) {
           style={{ cursor: "pointer" }}
         >
           <div id="menu-button" className="menu-icon">
-            <div className="menu-line-top blk"></div>
-            <div className="menu-line-middle blk"><div className="menu-inner-line"></div></div>
-            <div className="menu-line-bottom blk"></div>
+            <div className="menu-line-top"></div>
+            <div className="menu-line-middle"><div className="menu-inner-line"></div></div>
+            <div className="menu-line-bottom"></div>
           </div>
         </div>
       </div>

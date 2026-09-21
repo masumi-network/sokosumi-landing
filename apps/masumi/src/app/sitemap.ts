@@ -9,47 +9,92 @@ import {
   getAllComparisons,
   industriesOf,
 } from "@/lib/content";
+import { localePath, type Locale } from "@/lib/i18n";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = "https://masumi.network";
+  // www, matching metadataBase in layout.tsx and the host the site actually
+  // serves on. This said "https://masumi.network" until 2026-09-01, so every
+  // one of the 45 URLs Google was handed 301'd to its www twin — a whole
+  // sitemap of redirects.
+  const baseUrl = "https://www.masumi.network";
+
+  // Routes that exist in both languages. Each entry is emitted twice, and both
+  // carry the same `alternates.languages` map, which is what tells Google the
+  // two URLs are translations rather than duplicates. The middleware
+  // deliberately does not redirect crawlers, so both are reachable.
+  const LOCALIZED_STATIC = [
+    "/",
+    "/x402-protocol",
+    "/x402",
+    "/tools/design-md",
+    "/glossary",
+    "/blogs",
+    "/press",
+    "/contact",
+  ];
+
+  const withAlternates = (path: string, locale: Locale, rest: Omit<MetadataRoute.Sitemap[number], "url" | "alternates">) => ({
+    url: `${baseUrl}${localePath(locale, path)}`,
+    alternates: {
+      languages: {
+        en: `${baseUrl}${localePath("en", path)}`,
+        de: `${baseUrl}${localePath("de", path)}`,
+      },
+    },
+    ...rest,
+  });
 
   const staticRoutes: MetadataRoute.Sitemap = [
-    { url: baseUrl, lastModified: new Date(), changeFrequency: "weekly", priority: 1 },
-    { url: `${baseUrl}/tools/design-md`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.9 },
-    { url: `${baseUrl}/x402`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
-    { url: `${baseUrl}/blogs`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.8 },
+    { url: `${baseUrl}/learn`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.8 },
     { url: `${baseUrl}/imprint`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.3 },
     { url: `${baseUrl}/privacy`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.3 },
-    { url: `${baseUrl}/press`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.5 },
-    { url: `${baseUrl}/contact`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.5 },
     { url: `${baseUrl}/register`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
   ];
 
   const posts = await getAllPosts();
-  const blogRoutes: MetadataRoute.Sitemap = posts.map((post) => ({
-    url: `${baseUrl}/blogs/${post.slug}`,
-    lastModified: new Date(post.date),
-    changeFrequency: "monthly" as const,
-    priority: 0.6,
-  }));
+  const blogRoutes: MetadataRoute.Sitemap = posts.flatMap((post) =>
+    (["en", "de"] as const).map((locale) =>
+      withAlternates(`/blogs/${post.slug}`, locale, {
+        lastModified: new Date(post.date),
+        changeFrequency: "monthly" as const,
+        priority: 0.6,
+      }),
+    ),
+  );
 
   const terms = await getAllTerms();
-  const glossaryRoutes: MetadataRoute.Sitemap = [
-    ...(terms.length > 0
-      ? [{ url: `${baseUrl}/glossary`, lastModified: new Date(), changeFrequency: "weekly" as const, priority: 0.7 }]
-      : []),
-    ...terms.map((t) => ({
-      url: `${baseUrl}/glossary/${t.slug}`,
-      lastModified: new Date(),
-      changeFrequency: "monthly" as const,
-      priority: 0.5,
-    })),
-  ];
+  const glossaryRoutes: MetadataRoute.Sitemap = terms.flatMap((t) =>
+    (["en", "de"] as const).map((locale) =>
+      withAlternates(`/glossary/${t.slug}`, locale, {
+        lastModified: new Date(),
+        changeFrequency: "monthly" as const,
+        priority: 0.5,
+      }),
+    ),
+  );
+
+  const localizedRoutes: MetadataRoute.Sitemap = LOCALIZED_STATIC.filter(
+    (p) => p !== "/glossary" || terms.length > 0,
+  ).flatMap((path) =>
+    (["en", "de"] as const).map((locale) =>
+      withAlternates(path, locale, {
+        lastModified: new Date(),
+        changeFrequency: "weekly" as const,
+        priority:
+          path === "/" ? 1 : path === "/x402-protocol" || path === "/tools/design-md" ? 0.9 : path === "/x402" ? 0.8 : 0.7,
+      }),
+    ),
+  );
 
   const cmsPages = await cmsFetch<{ docs: { slug: string; updatedAt?: string }[] }>(
     "/pages?where[site][equals]=masumi&limit=200&depth=0",
   );
-  const pageRoutes: MetadataRoute.Sitemap = (cmsPages?.docs ?? []).map((p) => ({
+  // Demo and scaffolding pages live in the CMS alongside real ones; they should
+  // not be handed to Google. example-landing-page was in the live sitemap.
+  const CMS_PAGE_DENYLIST = new Set(["example-landing-page"]);
+  const pageRoutes: MetadataRoute.Sitemap = (cmsPages?.docs ?? [])
+    .filter((p) => !CMS_PAGE_DENYLIST.has(p.slug))
+    .map((p) => ({
     url: `${baseUrl}/${p.slug}`,
     lastModified: p.updatedAt ? new Date(p.updatedAt) : new Date(),
     changeFrequency: "weekly" as const,
@@ -125,6 +170,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   return [
     ...staticRoutes,
+    ...localizedRoutes,
     ...blogRoutes,
     ...glossaryRoutes,
     ...pageRoutes,
