@@ -1165,3 +1165,60 @@
   background: color-mix(in srgb, #2f6b45 60%, transparent);
   box-shadow: inset 2px 0 0 #2f6b45;
 }
+
+/* Side-by-side profile panels above the difference table. */
+.cpt-profiles {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+@media (max-width: 640px) { .cpt-profiles { grid-template-columns: 1fr; } }
+.cpt-profile {
+  display: grid;
+  gap: 12px;
+  align-content: start;
+  padding: 16px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+}
+.cpt-profile-head { display: flex; align-items: center; gap: 9px; }
+.cpt-profile-tag {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  display: grid;
+  place-items: center;
+  border-radius: 6px;
+  background: var(--foreground);
+  color: var(--background);
+  font-size: 12px;
+  font-weight: 700;
+}
+.cpt-profile-host { font-size: 15px; font-weight: 600; overflow-wrap: anywhere; }
+.cpt-f-label {
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted-foreground);
+}
+.cpt-f-val {
+  margin: 3px 0 0;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--foreground);
+  overflow-wrap: anywhere;
+}
+.cpt-f-val.is-empty { color: #b02a2a; font-style: italic; }
+.cpt-profile-stats { display: flex; flex-wrap: wrap; gap: 6px; }
+.cpt-stat {
+  padding: 3px 9px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--muted-foreground);
+}
+.cpt-chip { padding: 3px 9px; border-radius: 999px; font-size: 12px; font-weight: 500; }
+.cpt-chip.is-on { background: color-mix(in srgb, #2f6b45 12%, transparent); color: #2f6b45; }
+.cpt-chip.is-off { background: color-mix(in srgb, #b02a2a 10%, transparent); color: #b02a2a; }

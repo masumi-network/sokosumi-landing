@@ -39,6 +39,34 @@
     return a ? "a" : "b";
   }
 
+  // A single site's profile column for the side-by-side view.
+  function field(label, val) {
+    var ok = present(val);
+    return (
+      '<div class="cpt-f"><span class="cpt-f-label">' + tk.esc(label) + "</span>" +
+      '<p class="cpt-f-val' + (ok ? "" : " is-empty") + '">' + tk.esc(ok ? val : "Not set") + "</p></div>"
+    );
+  }
+  function chip(label, on) {
+    return '<span class="cpt-chip ' + (on ? "is-on" : "is-off") + '">' + tk.esc(label) + " " + (on ? "✓" : "✗") + "</span>";
+  }
+  function profileCard(site, tag) {
+    return (
+      '<div class="cpt-profile">' +
+      '<div class="cpt-profile-head"><span class="cpt-profile-tag">' + tag + '</span><span class="cpt-profile-host">' + tk.esc(host(site.url)) + "</span></div>" +
+      field("Title", site.title) +
+      field("H1 heading", site.h1) +
+      field("Meta description", site.description) +
+      '<div class="cpt-profile-stats">' +
+      '<span class="cpt-stat">' + site.words + " words</span>" +
+      '<span class="cpt-stat">' + site.internalLinks + " links</span>" +
+      chip("CTA", site.ctaCount > 0) +
+      chip("Pricing", site.hasPricing) +
+      chip("Proof", site.hasProof) +
+      "</div></div>"
+    );
+  }
+
   tk.wireSimple({
     formId: "cptForm",
     submitId: "cptSubmit",
@@ -94,6 +122,7 @@
         .join("");
 
       tableEl.innerHTML =
+        '<div class="cpt-profiles">' + profileCard(a, "A") + profileCard(b, "B") + "</div>" +
         '<div class="cpt-versus">' +
         '<div class="cpt-vs-side"><span class="cpt-vs-host">' + tk.esc(hostA) + '</span><span class="cpt-vs-lead">leads on ' + leadA + " of " + rows.length + "</span></div>" +
         '<span class="cpt-vs-badge">VS</span>' +
