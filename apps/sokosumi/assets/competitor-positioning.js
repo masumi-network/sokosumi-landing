@@ -37,6 +37,16 @@
   function present(v) {
     return !!(v && String(v).trim());
   }
+  // The site's own favicon, resolved by hostname; falls back to the A/B letter
+  // badge if the icon can't load.
+  function favicon(hostName, letter) {
+    var src = "https://www.google.com/s2/favicons?sz=64&domain=" + encodeURIComponent(hostName);
+    return (
+      '<span class="cpt-fav"><img src="' + src + '" alt="" width="26" height="26" loading="lazy" ' +
+      "onerror=\"this.closest('.cpt-fav').classList.add('is-broken')\"/>" +
+      '<span class="cpt-fav-letter">' + letter + "</span></span>"
+    );
+  }
   function num(n) {
     return Number(n).toLocaleString();
   }
@@ -59,7 +69,7 @@
   function profileCard(site, tag) {
     return (
       '<div class="cpt-profile">' +
-      '<div class="cpt-profile-head"><span class="cpt-profile-tag">' + tag + '</span><span class="cpt-profile-host">' + tk.esc(host(site.url)) + "</span></div>" +
+      '<div class="cpt-profile-head">' + favicon(host(site.url), tag) + '<span class="cpt-profile-host">' + tk.esc(host(site.url)) + "</span></div>" +
       field("Title", site.title) +
       field("H1 heading", site.h1) +
       field("Meta description", site.description) +
@@ -124,7 +134,7 @@
       function heroSide(tag, hostName, lead, isWin) {
         return (
           '<div class="cpt-hero-side' + (isWin ? " is-winner" : "") + '">' +
-          '<span class="cpt-hero-tag">' + tag + "</span>" +
+          favicon(hostName, tag) +
           '<span class="cpt-hero-host">' + tk.esc(hostName) + "</span>" +
           '<span class="cpt-hero-score">' + lead + "</span>" +
           '<span class="cpt-hero-sub">of ' + total + " signals" + (isWin ? " · leads" : "") + "</span>" +
