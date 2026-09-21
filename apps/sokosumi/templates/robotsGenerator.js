@@ -4,17 +4,38 @@ const { esc, attr, pageStart, pageEnd, SITE } = shell;
 
 const PATH = "/tools/robots-txt-generator";
 
-// value, label, and the short "why block this one" line shown next to it.
+// name, provider (drives the coloured badge), group, and the short "why block
+// this one" line shown next to it.
 const AI_BOTS = [
-  ["GPTBot", "OpenAI's crawler for training data"],
-  ["ChatGPT-User", "OpenAI's live-browsing agent, used when ChatGPT fetches a page for a user"],
-  ["CCBot", "Common Crawl, whose dataset feeds many other models' training data"],
-  ["Google-Extended", "Controls use in Google's Gemini/AI features, separate from normal Googlebot search indexing"],
-  ["anthropic-ai", "Anthropic's crawler for training data"],
-  ["ClaudeBot", "Anthropic's crawler for training data (current identifier)"],
-  ["Bytespider", "ByteDance's crawler for training data"],
-  ["PerplexityBot", "Perplexity's crawler, used for both search and training"],
+  { name: "GPTBot", provider: "OpenAI", group: "training", why: "OpenAI's crawler for training data" },
+  { name: "CCBot", provider: "Common Crawl", group: "training", why: "Common Crawl, whose dataset feeds many other models' training data" },
+  { name: "Google-Extended", provider: "Google", group: "training", why: "Controls use in Google's Gemini/AI features, separate from Googlebot search indexing" },
+  { name: "anthropic-ai", provider: "Anthropic", group: "training", why: "Anthropic's crawler for training data" },
+  { name: "ClaudeBot", provider: "Anthropic", group: "training", why: "Anthropic's crawler for training data (current identifier)" },
+  { name: "Bytespider", provider: "ByteDance", group: "training", why: "ByteDance's crawler for training data" },
+  { name: "PerplexityBot", provider: "Perplexity", group: "training", why: "Perplexity's crawler, used for both search and training" },
+  { name: "ChatGPT-User", provider: "OpenAI", group: "agent", why: "OpenAI's live-browsing agent, used when ChatGPT fetches a page for a user" },
 ];
+
+const PROVIDER_COLOR = {
+  OpenAI: "#10a37f",
+  Anthropic: "#c9663b",
+  Google: "#4285f4",
+  "Common Crawl": "#5b6470",
+  ByteDance: "#111827",
+  Perplexity: "#20808d",
+};
+
+function botCard(b) {
+  const color = PROVIDER_COLOR[b.provider] || "#666";
+  const initial = b.provider.charAt(0).toUpperCase();
+  return `<label class="rg-bot">
+    <input type="checkbox" name="aiBot" value="${attr(b.name)}" />
+    <span class="rg-bot-badge" style="--rg-badge:${color}" title="${attr(b.provider)}" aria-hidden="true">${esc(initial)}</span>
+    <span class="rg-bot-text"><b>${esc(b.name)}</b><i>${esc(b.why)}</i></span>
+    <span class="rg-bot-check" aria-hidden="true">✓</span>
+  </label>`;
+}
 
 const FAQ = [
   {
@@ -118,18 +139,28 @@ function render() {
             </div>
           </div>
 
-          <fieldset class="rg-bots">
-            <legend>Block AI-training crawlers</legend>
-            ${AI_BOTS.map(
-              ([name, why]) =>
-                `<label class="rg-bot"><input type="checkbox" name="aiBot" value="${attr(name)}" /><span><b>${esc(name)}</b><i>${esc(why)}</i></span></label>`,
-            ).join("")}
-          </fieldset>
+          <div class="rg-bots" role="group" aria-label="Block AI crawlers">
+            <div class="rg-bots-head">
+              <span class="rg-bots-title">Block AI crawlers</span>
+              <div class="rg-bots-actions">
+                <span class="rg-bots-count" id="rgBotCount">None blocked</span>
+                <button class="rg-mini" id="rgBlockAll" type="button">Block all</button>
+                <button class="rg-mini" id="rgClearBots" type="button">Clear</button>
+              </div>
+            </div>
+            <p class="rg-bots-group">Training &amp; dataset crawlers</p>
+            ${AI_BOTS.filter((b) => b.group === "training").map(botCard).join("")}
+            <p class="rg-bots-group">Live browsing agents</p>
+            ${AI_BOTS.filter((b) => b.group === "agent").map(botCard).join("")}
+          </div>
         </form>
 
         <div class="rg-preview">
           <div class="rg-preview-head">
-            <span>robots.txt</span>
+            <span class="rg-preview-title">
+              <span class="rg-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+              <span class="rg-preview-name">robots.txt</span>
+            </span>
             <div class="rg-preview-actions">
               <button class="rg-btn" id="rgCopy" type="button">Copy</button>
               <button class="rg-btn" id="rgDownload" type="button">Download</button>

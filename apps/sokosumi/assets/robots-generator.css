@@ -123,41 +123,123 @@
   border-radius: var(--r-md);
 }
 
-.rg-bots legend {
-  padding: 0 4px;
-  color: var(--muted-foreground);
-  font-size: 12.5px;
-}
-
-.rg-bot {
+.rg-bots-head {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
+  justify-content: space-between;
   gap: 10px;
-  padding: 6px 4px;
+  flex-wrap: wrap;
+  margin-bottom: 2px;
+}
+.rg-bots-title {
+  font-size: 13px;
+  font-weight: 550;
+  color: var(--foreground);
+}
+.rg-bots-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.rg-bots-count {
+  font-size: 12px;
+  color: var(--muted-foreground);
+}
+.rg-mini {
+  padding: 4px 11px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--background);
+  color: var(--muted-foreground);
+  font: inherit;
+  font-size: 12px;
   cursor: pointer;
 }
-
-.rg-bot input {
-  margin-top: 3px;
-  accent-color: var(--primary);
+.rg-mini:hover {
+  color: var(--foreground);
+  border-color: var(--primary);
 }
 
-.rg-bot span {
+.rg-bots-group {
+  margin: 8px 2px 1px;
+  font-size: 10.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--muted-foreground);
+}
+
+/* Each bot is a selectable card that lights up when ticked. */
+.rg-bot {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  background: var(--background);
+  cursor: pointer;
+  transition: border-color 0.12s ease, background 0.12s ease;
+}
+.rg-bot:hover { border-color: color-mix(in srgb, var(--primary) 45%, var(--border)); }
+.rg-bot input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+}
+.rg-bot:has(input:checked) {
+  border-color: var(--primary);
+  background: color-mix(in srgb, var(--primary) 7%, transparent);
+}
+.rg-bot:has(input:focus-visible) { outline: 2px solid var(--primary); outline-offset: 1px; }
+
+.rg-bot-badge {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  background: var(--rg-badge, #666);
+  color: #fff;
+  font-family: var(--mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+  font-size: 14px;
+  font-weight: 600;
+}
+.rg-bot-text {
   display: grid;
   gap: 1px;
+  min-width: 0;
 }
-
-.rg-bot b {
-  font-size: 13.5px;
-  font-weight: 500;
+.rg-bot-text b {
+  font-family: var(--mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+  font-size: 13px;
+  font-weight: 600;
 }
-
-.rg-bot i {
+.rg-bot-text i {
   color: var(--muted-foreground);
   font-size: 12px;
   font-style: normal;
   line-height: 1.4;
 }
+.rg-bot-check {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--primary);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  opacity: 0;
+  transform: scale(0.7);
+  transition: opacity 0.12s ease, transform 0.12s ease;
+}
+.rg-bot:has(input:checked) .rg-bot-check { opacity: 1; transform: scale(1); }
 
 .rg-preview {
   display: flex;
@@ -178,6 +260,25 @@
   font-family: var(--mono, ui-monospace, SFMono-Regular, Menlo, monospace);
   font-size: 12.5px;
 }
+.rg-preview-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+.rg-dots {
+  display: inline-flex;
+  gap: 6px;
+}
+.rg-dots i {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--border);
+}
+.rg-dots i:nth-child(1) { background: #ff5f56; }
+.rg-dots i:nth-child(2) { background: #ffbd2e; }
+.rg-dots i:nth-child(3) { background: #27c93f; }
+.rg-preview-name { letter-spacing: 0.02em; }
 
 .rg-preview-actions {
   display: flex;
@@ -214,6 +315,9 @@
   white-space: pre-wrap;
   word-break: break-word;
 }
+.rg-preview-body .tok-key { color: var(--primary); font-weight: 600; }
+.rg-preview-body .tok-val { color: var(--foreground); }
+.rg-preview-body .tok-blank { display: block; height: 0.6em; }
 
 /* ---- prose sections -------------------------------------------------------- */
 
