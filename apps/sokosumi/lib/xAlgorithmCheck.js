@@ -9,7 +9,46 @@
 // call, no LLM — every check here is a regex or a threshold, the same
 // approach postCheck.js and headlineCheck.js use.
 
+const { decodeEntities } = require("./htmlExtract");
+
 const MAX_TEXT_LENGTH = 2000;
+
+const UA = "Mozilla/5.0 (compatible; SokosumiBot/1.0; +https://sokosumi.com/tools/x-algorithm-analyzer)";
+// A link to an already-published post on x.com / twitter.com.
+const X_STATUS_RE = /^https?:\/\/(?:www\.|mobile\.)?(?:twitter\.com|x\.com)\/[^/]+\/status(?:es)?\/\d+/i;
+
+// Read a published post's text (and whether it carries media) from X's public
+// oEmbed endpoint — no login, no API key. Only ever fetches publish.twitter.com,
+// never the user-supplied host directly, so there's no SSRF surface.
+async function fetchTweet(url) {
+  const oembed = "https://publish.twitter.com/oembed?omit_script=1&dnt=true&url=" + encodeURIComponent(url);
+  const fail = (msg) => {
+    const err = new Error(msg);
+    err.status = 422;
+    return err;
+  };
+  let res;
+  try {
+    res = await fetch(oembed, { headers: { "User-Agent": UA, Accept: "application/json" }, signal: AbortSignal.timeout(8000), redirect: "follow" });
+  } catch (_e) {
+    throw fail("Couldn't reach X to read that post. Paste the post text instead.");
+  }
+  if (res.status === 404) throw fail("That post couldn't be found — it may be deleted or from a private account. Paste the text instead.");
+  if (!res.ok) throw fail("X wouldn't return that post right now. Paste the post text instead.");
+  const data = await res.json().catch(() => null);
+  if (!data || !data.html) throw fail("Couldn't read that post from X. Paste the post text instead.");
+
+  const html = String(data.html);
+  const p = /<p[^>]*>([\s\S]*?)<\/p>/i.exec(html);
+  let text = (p ? p[1] : "")
+    .replace(/<br\s*\/?>(?=)/gi, " ")
+    .replace(/<[^>]+>/g, " ");
+  text = decodeEntities(text).replace(/\s+/g, " ").trim();
+  // The pic.twitter.com/… placeholder is native media, not an off-platform link.
+  const hasMedia = /pic\.(?:twitter|x)\.com|\/photo\/|\/video\/|video\.twimg/i.test(html);
+  text = text.replace(/\b(?:https?:\/\/)?pic\.(?:twitter|x)\.com\/\S+/gi, "").replace(/\s+/g, " ").trim();
+  return { text, hasMedia, author: data.author_name || "" };
+}
 
 const REPLY_TRIGGER = /\?\s*$|what do you think|reply with|agree or disagree|thoughts\?|curious (what|how|why)|anyone else|change my mind|hot take|unpopular opinion/i;
 const URL_PATTERN = /https?:\/\/\S+/gi;
@@ -115,13 +154,29 @@ function buildRecommendations(dimensions) {
     .map((c) => `${c.dimension} — ${c.title}: ${c.detail}`);
 }
 
-function analyze(input) {
-  const text = String((input && input.text) || "");
-  const hasMedia = Boolean(input && input.hasMedia);
-  const trimmed = text.trim();
+async function analyze(input) {
+  const raw = String((input && input.text) || "").trim();
+  let trimmed = raw;
+  let hasMedia = Boolean(input && input.hasMedia);
+  let source = "text";
+  let author = "";
+
+  // Paste a link to an already-published post and we fetch and score its text.
+  if (X_STATUS_RE.test(raw)) {
+    const tweet = await fetchTweet(raw);
+    trimmed = tweet.text;
+    hasMedia = tweet.hasMedia || hasMedia;
+    source = "url";
+    author = tweet.author;
+    if (!trimmed) {
+      const error = new Error("That post had no readable text to score (it may be media-only).");
+      error.status = 422;
+      throw error;
+    }
+  }
 
   if (!trimmed) {
-    const error = new Error("Paste the post you want scored.");
+    const error = new Error("Paste the post — or a link to one you've published — that you want scored.");
     error.status = 400;
     throw error;
   }
@@ -145,6 +200,10 @@ function analyze(input) {
   return {
     length: trimmed.length,
     overall,
+    source,
+    author,
+    hasMedia,
+    postText: source === "url" ? trimmed : undefined,
     dimensions: scored.map(({ weight, ...rest }) => rest),
     recommendations: buildRecommendations(scored),
     fetchedAt: new Date().toISOString(),

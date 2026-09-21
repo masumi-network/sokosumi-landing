@@ -82,13 +82,13 @@ function render() {
     `<section class="tk-head" id="analyzer">
       <p class="tk-overline">Free · no sign-up</p>
       <h1>X Algorithm Analyzer</h1>
-      <p class="tk-lede">Paste a post and get a score against the ranking signals documented in X's open-sourced recommendation algorithm — reply hooks, off-platform links, native media, and spam-shaped formatting.</p>
+      <p class="tk-lede">Paste a post — or a link to one you've already published on X — and get a score against the ranking signals documented in X's open-sourced recommendation algorithm: reply hooks, off-platform links, native media, and spam-shaped formatting.</p>
 
       <form class="tk-form is-stacked" id="xaaForm" novalidate>
-        <label class="sr-only" for="xaaText">Post text</label>
-        <textarea id="xaaText" name="text" maxlength="2000" placeholder="Paste your post here…" aria-describedby="xaaError" required></textarea>
+        <label class="sr-only" for="xaaText">Post text or x.com link</label>
+        <textarea id="xaaText" name="text" maxlength="2000" placeholder="Paste your post text, or an x.com link like https://x.com/you/status/123…" aria-describedby="xaaError" required></textarea>
         <label style="display:flex;align-items:center;gap:8px;font-size:13.5px;color:var(--muted-foreground)">
-          <input type="checkbox" id="xaaMedia" style="width:auto" /> This post has an image, GIF or video attached
+          <input type="checkbox" id="xaaMedia" style="width:auto" /> This post has an image, GIF or video attached <span style="opacity:.7">(auto-detected for pasted links)</span>
         </label>
         <button class="tk-submit" id="xaaSubmit" type="submit">Score my post</button>
       </form>
