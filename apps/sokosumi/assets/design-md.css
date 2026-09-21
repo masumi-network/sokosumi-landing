@@ -2090,3 +2090,114 @@
   background: var(--foreground);
   border-color: var(--foreground);
 }
+
+/* ---- Distinct /tools card illustrations ----------------------------------- */
+/* Keyword tag cloud (Keyword Extractor) */
+.tp-tags { align-items: center; }
+.tp-tagcloud {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  max-width: 244px;
+}
+.tp-tag {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 5px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: var(--background);
+  border: 1px solid var(--border);
+  font-size: calc(12px * var(--s, 1));
+  line-height: 1;
+  color: var(--foreground);
+}
+.tp-tag i { font-style: normal; font-size: 10px; color: var(--muted-foreground); }
+
+/* Node graph (Internal Linking, Orphan Page Finder) */
+.tp-graph { align-items: center; }
+.tp-graph-stage {
+  width: 244px;
+  padding: 10px;
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+.tp-graph-svg { display: block; width: 100%; height: auto; }
+.tp-graph-svg line { stroke: var(--border); stroke-width: 2; }
+.tp-graph-svg line.is-suggest { stroke: var(--primary); stroke-dasharray: 4 4; }
+.tp-graph-svg circle { fill: var(--background); stroke: var(--muted-foreground); stroke-width: 2; }
+.tp-graph-svg circle.is-orphan {
+  stroke: #d1443b;
+  stroke-dasharray: 3 3;
+  fill: color-mix(in srgb, #d1443b 8%, var(--background));
+}
+
+/* Bot allow/block list (AI Search Visibility) */
+.tp-bots { align-items: center; }
+.tp-botlist {
+  width: 244px;
+  display: grid;
+  gap: 9px;
+  padding: 13px 14px;
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+.tp-bot {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 12.5px;
+}
+.tp-bot-face {
+  flex: none;
+  width: 16px;
+  height: 14px;
+  border-radius: 4px;
+  background: var(--muted-foreground);
+  position: relative;
+}
+.tp-bot-face::before {
+  content: "";
+  position: absolute;
+  inset: 4px 3px;
+  border-radius: 2px;
+  background: var(--background);
+}
+.tp-bot b { font-weight: 500; font-family: var(--mono, ui-monospace, SFMono-Regular, Menlo, monospace); }
+.tp-bot > :last-child { margin-left: auto; }
+.tp-bot-ok,
+.tp-bot-no {
+  padding: 2px 9px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+}
+.tp-bot-ok { background: color-mix(in srgb, #1f9d55 13%, transparent); color: #1f9d55; }
+.tp-bot-no { background: color-mix(in srgb, #d1443b 12%, transparent); color: #d1443b; }
+
+/* Core Web Vitals bars */
+.tp-vitals { align-items: center; }
+.tp-vitalbox {
+  width: 244px;
+  display: grid;
+  gap: 12px;
+  padding: 15px 14px;
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+.tp-vital {
+  display: grid;
+  grid-template-columns: 32px 1fr auto;
+  align-items: center;
+  gap: 11px;
+}
+.tp-vital b { font-size: 11px; font-weight: 600; color: var(--muted-foreground); }
+.tp-vital-bar { height: 8px; border-radius: 999px; background: var(--muted); overflow: hidden; }
+.tp-vital-bar i { display: block; height: 100%; border-radius: 999px; }
+.tp-vital-bar i.is-pass { background: #1f9d55; }
+.tp-vital-bar i.is-warn { background: #c67c05; }
+.tp-vital em { font-style: normal; font-size: 11px; color: var(--foreground); font-variant-numeric: tabular-nums; }

@@ -177,69 +177,87 @@ const competitorPositioningPreview = () => `
     </span>
   </span>`;
 
-// The internal linking finder hands back a list of page pairs, so the
-// preview is a small file-style listing of suggested link rows.
+// The internal linking finder maps which pages should link to each other, so
+// the preview is a small node graph with the suggested links dashed in.
 const internalLinkingPreview = () => `
-  <span class="tp tp-lt">
-    <span class="tp-file">
-      <span class="tp-file-name">Suggested links</span>
-      <span class="tp-file-line"><b>Pricing</b><i>→ Guides</i></span>
-      <span class="tp-file-line is-quote">78% keyword overlap</span>
-      <span class="tp-file-line"><b>Blog post</b><i>→ Use cases</i></span>
+  <span class="tp tp-graph">
+    <span class="tp-graph-stage">
+      <svg viewBox="0 0 220 120" class="tp-graph-svg" preserveAspectRatio="xMidYMid meet">
+        <line x1="42" y1="34" x2="110" y2="62"/>
+        <line x1="110" y1="62" x2="182" y2="36"/>
+        <line x1="110" y1="62" x2="74" y2="102"/>
+        <line class="is-suggest" x1="42" y1="34" x2="182" y2="36"/>
+        <line class="is-suggest" x1="74" y1="102" x2="182" y2="36"/>
+        <circle cx="42" cy="34" r="9"/>
+        <circle cx="110" cy="62" r="11"/>
+        <circle cx="182" cy="36" r="9"/>
+        <circle cx="74" cy="102" r="9"/>
+      </svg>
     </span>
     <span class="tp-verdict">
-      <span class="tp-chip is-pass">9 pages crawled</span>
+      <span class="tp-chip is-pass">4 link opportunities</span>
     </span>
   </span>`;
 
-// Client-only generators (keyword extractor, hashtag generator, keyword
-// clusters, schema markup, case study outline, re-engagement builder, CSV
-// dashboard) reuse the UTM builder's tag-cloud-ish device: the output itself.
+// The keyword extractor ranks a page's own words, so the preview is a tag
+// cloud sized by frequency — the shape of the output itself.
 const keywordExtractorPreview = () => `
-  <span class="tp tp-lt">
-    <span class="tp-file">
-      <span class="tp-file-name">Top keywords</span>
-      <span class="tp-file-line"><b>onboarding</b><i>×14</i></span>
-      <span class="tp-file-line"><b>marketing team</b><i>×9</i></span>
-      <span class="tp-file-line is-quote">…23 more</span>
+  <span class="tp tp-tags">
+    <span class="tp-tagcloud">
+      <span class="tp-tag" style="--s:1.35">onboarding<i>24</i></span>
+      <span class="tp-tag" style="--s:1.15">marketing team<i>18</i></span>
+      <span class="tp-tag" style="--s:1">automation<i>12</i></span>
+      <span class="tp-tag" style="--s:.9">workflow<i>9</i></span>
+      <span class="tp-tag" style="--s:.8">agents<i>6</i></span>
     </span>
     <span class="tp-verdict">
       <span class="tp-chip is-pass">Nothing leaves your browser</span>
     </span>
   </span>`;
 
+// The orphan finder shows pages nothing links to, so the preview is a linked
+// cluster with one lonely node stranded off to the side.
 const orphanPageFinderPreview = () => `
-  <span class="tp tp-lt">
-    <span class="tp-file">
-      <span class="tp-file-name">Orphan pages</span>
-      <span class="tp-file-line is-quote">/promo/2024-launch</span>
-      <span class="tp-file-line is-quote">/legacy/pricing-old</span>
+  <span class="tp tp-graph">
+    <span class="tp-graph-stage">
+      <svg viewBox="0 0 220 120" class="tp-graph-svg" preserveAspectRatio="xMidYMid meet">
+        <line x1="46" y1="44" x2="96" y2="72"/>
+        <line x1="96" y1="72" x2="140" y2="46"/>
+        <line x1="96" y1="72" x2="128" y2="100"/>
+        <circle cx="46" cy="44" r="9"/>
+        <circle cx="96" cy="72" r="10"/>
+        <circle cx="140" cy="46" r="9"/>
+        <circle cx="128" cy="100" r="9"/>
+        <circle class="is-orphan" cx="192" cy="36" r="10"/>
+      </svg>
     </span>
     <span class="tp-verdict">
       <span class="tp-chip is-warn">2 orphans</span>
     </span>
   </span>`;
 
+// Core Web Vitals are three measured signals, so the preview is three labelled
+// bars — LCP, CLS, INP — not another search snippet.
 const coreWebVitalsPreview = () => `
-  <span class="tp tp-seo">
-    <span class="tp-serp">
-      <span class="tp-serp-url">example.com<i>›</i>page</span>
-      <span class="tp-serp-title">3 render-blocking scripts, 2 images missing size</span>
-      <span class="tp-serp-desc">Plain-English fixes for LCP, CLS and INP signals.</span>
+  <span class="tp tp-vitals">
+    <span class="tp-vitalbox">
+      <span class="tp-vital"><b>LCP</b><span class="tp-vital-bar"><i class="is-warn" style="width:60%"></i></span><em>2.8s</em></span>
+      <span class="tp-vital"><b>CLS</b><span class="tp-vital-bar"><i class="is-pass" style="width:88%"></i></span><em>0.04</em></span>
+      <span class="tp-vital"><b>INP</b><span class="tp-vital-bar"><i class="is-warn" style="width:52%"></i></span><em>210ms</em></span>
     </span>
     <span class="tp-verdict">
-      <span class="tp-gauge" style="--score:58"><b>58</b></span>
-      <span class="tp-chip is-warn">2 warnings</span>
+      <span class="tp-chip is-warn">2 need work</span>
     </span>
   </span>`;
 
+// The AI-search checker reports which AI crawlers you allow or block, so the
+// preview is a bot allow/block list with a visibility score.
 const aiSearchVisibilityPreview = () => `
-  <span class="tp tp-lt">
-    <span class="tp-file">
-      <span class="tp-file-name">robots.txt</span>
-      <span class="tp-file-line"><b>GPTBot</b><i>allowed</i></span>
-      <span class="tp-file-line"><b>ClaudeBot</b><i>allowed</i></span>
-      <span class="tp-file-line is-quote">Organization schema: missing sameAs</span>
+  <span class="tp tp-bots">
+    <span class="tp-botlist">
+      <span class="tp-bot"><span class="tp-bot-face"></span><b>GPTBot</b><span class="tp-bot-ok">allowed</span></span>
+      <span class="tp-bot"><span class="tp-bot-face"></span><b>ClaudeBot</b><span class="tp-bot-ok">allowed</span></span>
+      <span class="tp-bot"><span class="tp-bot-face"></span><b>CCBot</b><span class="tp-bot-no">blocked</span></span>
     </span>
     <span class="tp-verdict">
       <span class="tp-gauge" style="--score:67"><b>67</b></span>
