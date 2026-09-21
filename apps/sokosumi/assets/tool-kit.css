@@ -1440,3 +1440,42 @@
   letter-spacing: 0.08em;
   color: var(--muted-foreground);
 }
+
+/* ---- X Algorithm Analyzer: write / link input tabs ------------------------ */
+.xaa-tabs {
+  display: inline-flex;
+  gap: 4px;
+  margin: clamp(26px, 3.5vw, 40px) 0 12px;
+  padding: 4px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--card);
+}
+.xaa-tab {
+  padding: 8px 18px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted-foreground);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.12s ease, background 0.12s ease;
+}
+.xaa-tab:hover { color: var(--foreground); }
+.xaa-tab.is-active {
+  background: var(--primary);
+  color: #fff;
+}
+.xaa-tabs + .tk-form { margin-top: 0; }
+.xaa-panel { width: 100%; }
+.xaa-panel[hidden] { display: none; }
+.xaa-panel textarea,
+.xaa-panel input[type="url"] { width: 100%; }
+.xaa-hint {
+  margin: 10px 2px 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--muted-foreground);
+}
