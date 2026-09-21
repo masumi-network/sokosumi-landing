@@ -192,21 +192,6 @@ const internalLinkingPreview = () => `
     </span>
   </span>`;
 
-// The social-week tool hands back seven day-labeled drafts, matching the
-// carousel's file-listing device but with days instead of slide numbers.
-const blogToSocialWeekPreview = () => `
-  <span class="tp tp-lt">
-    <span class="tp-file">
-      <span class="tp-file-name">This week's posts</span>
-      <span class="tp-file-line"><b>Mon</b><i>Announce</i></span>
-      <span class="tp-file-line"><b>Wed</b><i>Lead with a stat</i></span>
-      <span class="tp-file-line is-quote">… 4 more days</span>
-    </span>
-    <span class="tp-verdict">
-      <span class="tp-chip is-pass">6 drafts built</span>
-    </span>
-  </span>`;
-
 // Client-only generators (keyword extractor, hashtag generator, keyword
 // clusters, schema markup, case study outline, re-engagement builder, CSV
 // dashboard) reuse the UTM builder's tag-cloud-ish device: the output itself.
@@ -220,21 +205,6 @@ const keywordExtractorPreview = () => `
     </span>
     <span class="tp-verdict">
       <span class="tp-chip is-pass">Nothing leaves your browser</span>
-    </span>
-  </span>`;
-
-// The redirect checker hands back a broken-link list, matching the file
-// listing device used by the llms.txt/robots.txt tools.
-const redirectCheckerPreview = () => `
-  <span class="tp tp-lt">
-    <span class="tp-file">
-      <span class="tp-file-name">Broken links</span>
-      <span class="tp-file-line"><b>404</b><i>/old-page</i></span>
-      <span class="tp-file-line is-quote">→ suggest /new-page</span>
-    </span>
-    <span class="tp-verdict">
-      <span class="tp-chip is-warn">3 broken</span>
-      <span class="tp-chip is-pass">37 OK</span>
     </span>
   </span>`;
 
@@ -355,85 +325,11 @@ const TOOLS = [
     preview: internalLinkingPreview,
   },
   {
-    href: "/tools/blog-to-social-week",
-    name: "Blog to a Week of Social Posts",
-    text: "Turn one blog post into up to 7 days of post drafts, built from its own stats and quotes.",
-    meta: "Free · no sign-up",
-    preview: blogToSocialWeekPreview,
-  },
-  {
     href: "/tools/keyword-extractor",
     name: "Keyword Extractor",
     text: "Paste an article and get its most frequent keywords and phrases, ranked by count.",
     meta: "Free · no sign-up",
     preview: keywordExtractorPreview,
-  },
-  {
-    href: "/tools/hashtag-generator",
-    name: "Hashtag Generator",
-    text: "Paste a post and get a shortlist of relevant hashtags, pulled from your own words.",
-    meta: "Free · no sign-up",
-    preview: () => `
-      <span class="tp tp-lt">
-        <span class="tp-file">
-          <span class="tp-file-name">Suggested hashtags</span>
-          <span class="tp-file-line is-quote">#marketing #AiCoworkers #onboarding</span>
-        </span>
-        <span class="tp-verdict">
-          <span class="tp-chip is-pass">Nothing leaves your browser</span>
-        </span>
-      </span>`,
-  },
-  {
-    href: "/tools/keyword-clusters",
-    name: "Keyword Cluster Generator",
-    text: "Paste up to 1,000 keywords and get them grouped into topical clusters with a suggested page each.",
-    meta: "Free · no sign-up",
-    preview: () => `
-      <span class="tp tp-lt">
-        <span class="tp-file">
-          <span class="tp-file-name">Clusters</span>
-          <span class="tp-file-line"><b>Email Marketing</b><i>×14</i></span>
-          <span class="tp-file-line"><b>Social Scheduling</b><i>×9</i></span>
-        </span>
-        <span class="tp-verdict">
-          <span class="tp-chip is-pass">Nothing leaves your browser</span>
-        </span>
-      </span>`,
-  },
-  {
-    href: "/tools/schema-generator",
-    name: "Schema Markup Generator",
-    text: "Build valid JSON-LD for Article, Product, FAQ, Organization, LocalBusiness, HowTo and Review.",
-    meta: "Free · no sign-up",
-    preview: () => `
-      <span class="tp tp-lt">
-        <span class="tp-file">
-          <span class="tp-file-name">schema.json</span>
-          <span class="tp-file-line"><b>@type</b><i>Article</i></span>
-          <span class="tp-file-line is-quote">"headline": "…"</span>
-        </span>
-        <span class="tp-verdict">
-          <span class="tp-chip is-pass">Nothing leaves your browser</span>
-        </span>
-      </span>`,
-  },
-  {
-    href: "/tools/case-study-outline",
-    name: "Case Study Outline Maker",
-    text: "Paste a customer win story and get a ready-to-write challenge/solution/results outline.",
-    meta: "Free · no sign-up",
-    preview: () => `
-      <span class="tp tp-lt">
-        <span class="tp-file">
-          <span class="tp-file-name">Outline</span>
-          <span class="tp-file-line"><b>1</b><i>The challenge</i></span>
-          <span class="tp-file-line"><b>3</b><i>The results</i></span>
-        </span>
-        <span class="tp-verdict">
-          <span class="tp-chip is-pass">Nothing leaves your browser</span>
-        </span>
-      </span>`,
   },
   {
     href: "/tools/re-engagement-builder",
@@ -477,13 +373,6 @@ const TOOLS = [
       </span>`,
   },
   {
-    href: "/tools/redirect-checker",
-    name: "404 & Redirect Checker",
-    text: "Crawl a site's internal links, find the truly broken ones, and get a suggested replacement.",
-    meta: "Free · no sign-up",
-    preview: redirectCheckerPreview,
-  },
-  {
     href: "/tools/orphan-pages",
     name: "Orphan Page Finder",
     text: "Find sitemap pages that no other page on the site actually links to.",
@@ -513,18 +402,12 @@ const CATEGORY_BY_HREF = {
   "/tools/website-analyzer": "SEO",
   "/tools/robots-txt-generator": "SEO",
   "/tools/internal-linking-finder": "SEO",
-  "/tools/redirect-checker": "SEO",
   "/tools/orphan-pages": "SEO",
   "/tools/core-web-vitals": "SEO",
   "/tools/ai-search-visibility": "SEO",
-  "/tools/schema-generator": "SEO",
   "/tools/keyword-extractor": "SEO",
-  "/tools/keyword-clusters": "SEO",
   "/tools/linkedin-post-checker": "Content",
   "/tools/x-algorithm-analyzer": "Content",
-  "/tools/blog-to-social-week": "Content",
-  "/tools/hashtag-generator": "Content",
-  "/tools/case-study-outline": "Content",
   "/tools/re-engagement-builder": "Content",
   "/tools/landing-page-copy-analyzer": "Conversion",
   "/tools/landing-page-teardown": "Conversion",

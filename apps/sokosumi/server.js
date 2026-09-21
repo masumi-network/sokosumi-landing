@@ -58,17 +58,9 @@ const competitorPositioningCheckerTpl = require("./templates/competitorPositioni
 const competitorPositioningCheck = require("./lib/competitorPositioningCheck");
 const internalLinkingCheckerTpl = require("./templates/internalLinkingChecker");
 const internalLinkingCheck = require("./lib/internalLinkingCheck");
-const blogToSocialWeekCheckerTpl = require("./templates/blogToSocialWeekChecker");
-const blogToSocialWeekCheck = require("./lib/blogToSocialWeekCheck");
 const keywordExtractorTpl = require("./templates/keywordExtractor");
-const hashtagGeneratorTpl = require("./templates/hashtagGenerator");
-const keywordClusterGeneratorTpl = require("./templates/keywordClusterGenerator");
-const schemaMarkupGeneratorTpl = require("./templates/schemaMarkupGenerator");
-const caseStudyOutlineMakerTpl = require("./templates/caseStudyOutlineMaker");
 const reEngagementBuilderTpl = require("./templates/reEngagementBuilder");
 const csvDashboardTpl = require("./templates/csvDashboard");
-const redirectCheckerTpl = require("./templates/redirectChecker");
-const redirectCheck = require("./lib/redirectCheck");
 const orphanPageFinderTpl = require("./templates/orphanPageFinder");
 const orphanPageCheck = require("./lib/orphanPageCheck");
 const coreWebVitalsExplainerTpl = require("./templates/coreWebVitalsExplainer");
@@ -134,11 +126,7 @@ const competitorPositioningCheckRequests = new Map();
 // Crawls up to 12 pages per request — a much lower ceiling than a single fetch.
 const INTERNAL_LINKING_CHECK_RATE_LIMIT = Number(process.env.INTERNAL_LINKING_CHECK_RATE_LIMIT) || 8;
 const internalLinkingCheckRequests = new Map();
-const BLOG_TO_SOCIAL_WEEK_CHECK_RATE_LIMIT = Number(process.env.BLOG_TO_SOCIAL_WEEK_CHECK_RATE_LIMIT) || 20;
-const blogToSocialWeekCheckRequests = new Map();
 // Crawls seed pages plus up to 40 link checks per request — a low ceiling.
-const REDIRECT_CHECK_RATE_LIMIT = Number(process.env.REDIRECT_CHECK_RATE_LIMIT) || 6;
-const redirectCheckRequests = new Map();
 const ORPHAN_PAGES_CHECK_RATE_LIMIT = Number(process.env.ORPHAN_PAGES_CHECK_RATE_LIMIT) || 8;
 const orphanPageCheckRequests = new Map();
 // Up to 20 page fetches per request.
@@ -271,8 +259,6 @@ const xAlgorithmCheckRateLimited = (ip) => hourlyRateLimited(xAlgorithmCheckRequ
 const landingTeardownCheckRateLimited = (ip) => hourlyRateLimited(landingTeardownCheckRequests, LANDING_TEARDOWN_CHECK_RATE_LIMIT, ip);
 const competitorPositioningCheckRateLimited = (ip) => hourlyRateLimited(competitorPositioningCheckRequests, COMPETITOR_POSITIONING_CHECK_RATE_LIMIT, ip);
 const internalLinkingCheckRateLimited = (ip) => hourlyRateLimited(internalLinkingCheckRequests, INTERNAL_LINKING_CHECK_RATE_LIMIT, ip);
-const blogToSocialWeekCheckRateLimited = (ip) => hourlyRateLimited(blogToSocialWeekCheckRequests, BLOG_TO_SOCIAL_WEEK_CHECK_RATE_LIMIT, ip);
-const redirectCheckRateLimited = (ip) => hourlyRateLimited(redirectCheckRequests, REDIRECT_CHECK_RATE_LIMIT, ip);
 const orphanPageCheckRateLimited = (ip) => hourlyRateLimited(orphanPageCheckRequests, ORPHAN_PAGES_CHECK_RATE_LIMIT, ip);
 const coreWebVitalsCheckRateLimited = (ip) => hourlyRateLimited(coreWebVitalsCheckRequests, CORE_WEB_VITALS_CHECK_RATE_LIMIT, ip);
 const aiSearchVisibilityCheckRateLimited = (ip) => hourlyRateLimited(aiSearchVisibilityCheckRequests, AI_SEARCH_VISIBILITY_CHECK_RATE_LIMIT, ip);
@@ -756,15 +742,9 @@ const routes = [
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "landing-page-teardown" && {}, h: landingTeardownCheckerTpl.render },
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "competitor-positioning" && {}, h: competitorPositioningCheckerTpl.render },
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "internal-linking-finder" && {}, h: internalLinkingCheckerTpl.render },
-  { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "blog-to-social-week" && {}, h: blogToSocialWeekCheckerTpl.render },
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "keyword-extractor" && {}, h: keywordExtractorTpl.render },
-  { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "hashtag-generator" && {}, h: hashtagGeneratorTpl.render },
-  { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "keyword-clusters" && {}, h: keywordClusterGeneratorTpl.render },
-  { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "schema-generator" && {}, h: schemaMarkupGeneratorTpl.render },
-  { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "case-study-outline" && {}, h: caseStudyOutlineMakerTpl.render },
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "re-engagement-builder" && {}, h: reEngagementBuilderTpl.render },
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "csv-dashboard" && {}, h: csvDashboardTpl.render },
-  { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "redirect-checker" && {}, h: redirectCheckerTpl.render },
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "orphan-pages" && {}, h: orphanPageFinderTpl.render },
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "core-web-vitals" && {}, h: coreWebVitalsExplainerTpl.render },
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "ai-search-visibility" && {}, h: aiSearchVisibilityCheckerTpl.render },
@@ -1447,48 +1427,6 @@ const assetsDir = path.join(root, "assets");
           }
           try {
             const data = await internalLinkingCheck.analyze(body);
-            return send(req, res, 200, jsonHead, JSON.stringify(data));
-          } catch (error) {
-            const status = error.status && error.status >= 400 && error.status < 600 ? error.status : 500;
-            return send(req, res, status, jsonHead, JSON.stringify({ error: error.message || "That check did not work. Try again." }));
-          }
-        }
-
-        if (urlPath === "/api/blog-to-social-week-check" && req.method === "POST") {
-          const jsonHead = { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" };
-          let body;
-          try {
-            body = await readJsonBody(req, 4096);
-          } catch (error) {
-            const message = error.message === "too-large" ? "The request is too large." : "Send a valid JSON request.";
-            return send(req, res, 400, jsonHead, JSON.stringify({ error: message }));
-          }
-          if (blogToSocialWeekCheckRateLimited(clientIp(req))) {
-            return send(req, res, 429, { ...jsonHead, "Retry-After": "3600" }, JSON.stringify({ error: "You have reached the hourly limit. Try again later." }));
-          }
-          try {
-            const data = await blogToSocialWeekCheck.analyze(body);
-            return send(req, res, 200, jsonHead, JSON.stringify(data));
-          } catch (error) {
-            const status = error.status && error.status >= 400 && error.status < 600 ? error.status : 500;
-            return send(req, res, status, jsonHead, JSON.stringify({ error: error.message || "That check did not work. Try again." }));
-          }
-        }
-
-        if (urlPath === "/api/redirect-check" && req.method === "POST") {
-          const jsonHead = { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" };
-          let body;
-          try {
-            body = await readJsonBody(req, 4096);
-          } catch (error) {
-            const message = error.message === "too-large" ? "The request is too large." : "Send a valid JSON request.";
-            return send(req, res, 400, jsonHead, JSON.stringify({ error: message }));
-          }
-          if (redirectCheckRateLimited(clientIp(req))) {
-            return send(req, res, 429, { ...jsonHead, "Retry-After": "3600" }, JSON.stringify({ error: "You have reached the hourly limit. Try again later." }));
-          }
-          try {
-            const data = await redirectCheck.analyze(body);
             return send(req, res, 200, jsonHead, JSON.stringify(data));
           } catch (error) {
             const status = error.status && error.status >= 400 && error.status < 600 ? error.status : 500;
