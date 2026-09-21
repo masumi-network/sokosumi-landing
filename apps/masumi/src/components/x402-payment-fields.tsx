@@ -81,6 +81,7 @@ function ChoiceButton({
   return (
     <button
       type="button"
+      aria-pressed={active}
       onClick={onClick}
       className={cn(
         "inline-flex items-center gap-2 rounded-lg border px-3.5 py-2 text-sm font-medium transition-colors",
@@ -112,7 +113,7 @@ export function X402PaymentFields({
   chainsLoading?: boolean;
 }) {
   const [humanAmount, setHumanAmount] = useState(() =>
-    formatBaseUnitsToHuman(value.amount, Number(value.decimals) || 6),
+    formatBaseUnitsToHuman(value.amount, Number(value.decimals)),
   );
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [useCustomToken, setUseCustomToken] = useState(false);
@@ -121,11 +122,12 @@ export function X402PaymentFields({
   >({});
 
   useEffect(() => {
+    if (parseHumanAmountToBaseUnits(humanAmount, Number(value.decimals)) === value.amount || value.amount === "0") return;
     // Keep the human-readable field in sync when presets or chain defaults update base units.
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional prop-to-local sync
     setHumanAmount(
-      formatBaseUnitsToHuman(value.amount, Number(value.decimals) || 6),
+      formatBaseUnitsToHuman(value.amount, Number(value.decimals)),
     );
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- retain incomplete input while typing
   }, [value.amount, value.decimals]);
 
   const tokenPresets = getEvmTokenPresetsForChain(value.network);
@@ -162,7 +164,7 @@ export function X402PaymentFields({
 
   const humanPreview = formatBaseUnitsToHuman(
     value.amount,
-    Number(value.decimals) || 6,
+    Number(value.decimals),
   );
   const tokenLabel = selectedPreset?.label ?? "token";
   const showCustomTokenField =
@@ -181,7 +183,7 @@ export function X402PaymentFields({
     touch("asset");
     touch("decimals");
     const baseUnits =
-      parseHumanAmountToBaseUnits(humanAmount, preset.decimals) ?? value.amount;
+      parseHumanAmountToBaseUnits(humanAmount, preset.decimals) ?? "0";
     patch({
       asset: preset.address,
       decimals: String(preset.decimals),
@@ -196,8 +198,8 @@ export function X402PaymentFields({
     const nextDecimals = defaults?.decimals ?? value.decimals;
     const nextAsset = defaults?.asset ?? "";
     const nextAmount =
-      parseHumanAmountToBaseUnits(humanAmount, Number(nextDecimals) || 6) ??
-      value.amount;
+      parseHumanAmountToBaseUnits(humanAmount, Number(nextDecimals)) ??
+      "0";
 
     patch({
       network,
@@ -220,7 +222,7 @@ export function X402PaymentFields({
   function handleHumanAmountChange(nextHuman: string) {
     touch("amount");
     setHumanAmount(nextHuman);
-    const decimals = Number(value.decimals) || 6;
+    const decimals = Number(value.decimals);
     const baseUnits = parseHumanAmountToBaseUnits(nextHuman, decimals);
     patch({ amount: baseUnits ?? "0" });
   }
@@ -272,6 +274,7 @@ export function X402PaymentFields({
           disabled={chainsLoading || availableChains.length === 0}
         >
           <SelectTrigger
+            aria-label="Network"
             className={cn(
               "h-auto min-h-[42px] py-2",
               visibleErrors.network ? "border-red-400 focus:ring-red-200" : undefined,
@@ -382,10 +385,14 @@ export function X402PaymentFields({
         {showCustomTokenField ? (
           <input
             className={cn(inputErrorClass(visibleErrors.asset), tokenPresets.length > 0 && "mt-2")}
+            aria-label="Token contract address"
             value={value.asset}
             onChange={(e) => {
               touch("asset");
-              patch({ asset: e.target.value.trim() });
+              const asset = e.target.value.trim();
+              const preset = tokenPresets.find((item) => item.address.toLowerCase() === asset.toLowerCase());
+              if (preset) applyTokenPreset(preset);
+              else patch({ asset });
             }}
             onBlur={() => touch("asset")}
             placeholder="0x contract address"
@@ -412,6 +419,7 @@ export function X402PaymentFields({
                 ? "pr-24"
                 : "pr-16",
             )}
+            aria-label="Price"
             value={humanAmount}
             onChange={(e) => handleHumanAmountChange(e.target.value)}
             onBlur={() => touch("amount")}
@@ -435,6 +443,7 @@ export function X402PaymentFields({
       >
         <input
           className={inputErrorClass(visibleErrors.payTo)}
+          aria-label="Receive payments at"
           value={value.payTo}
           onChange={(e) => {
             touch("payTo");
@@ -460,6 +469,7 @@ export function X402PaymentFields({
           >
             <input
               className={inputErrorClass(visibleErrors.resource)}
+              aria-label="Resource URL"
               value={value.resource}
               onChange={(e) => {
                 touch("resource");
@@ -488,6 +498,8 @@ export function X402PaymentFields({
                 >
                   <input
                     className={inputErrorClass(visibleErrors.decimals)}
+                    disabled={Boolean(selectedPreset)}
+                    aria-label="Token decimals"
                     value={value.decimals}
                     onChange={(e) => handleDecimalsChange(e.target.value)}
                     onBlur={() => touch("decimals")}
@@ -503,6 +515,7 @@ export function X402PaymentFields({
                 >
                   <input
                     className={inputErrorClass(visibleErrors.amount)}
+                    aria-label="Amount in base units"
                     value={value.amount}
                     onChange={(e) => {
                       touch("amount");
@@ -511,7 +524,7 @@ export function X402PaymentFields({
                       setHumanAmount(
                         formatBaseUnitsToHuman(
                           next,
-                          Number(value.decimals) || 6,
+                          Number(value.decimals),
                         ),
                       );
                     }}

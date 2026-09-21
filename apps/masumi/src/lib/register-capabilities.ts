@@ -1,4 +1,4 @@
-import { MASUMI_SAAS_URL } from "@/lib/config/register";
+import { registrationApiUrl } from "@/lib/config/register";
 
 export type RegisterSettleableX402Network = {
   caip2Id: string;
@@ -14,8 +14,9 @@ export type RegisterCapabilities = {
 
 export async function fetchRegisterCapabilities(): Promise<RegisterCapabilities> {
   const res = await fetch(
-    `${MASUMI_SAAS_URL}/api/public/network/register/capabilities`,
+    registrationApiUrl("/capabilities"),
     {
+      signal: AbortSignal.timeout(15_000),
       credentials: "include",
       headers: { Accept: "application/json" },
       cache: "no-store",

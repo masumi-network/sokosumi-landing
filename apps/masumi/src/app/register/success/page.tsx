@@ -4,8 +4,9 @@ import { MasumiMark } from "@/components/masumi-mark";
 import { RegisterSuccessContent } from "@/components/register-success-content";
 
 export const metadata: Metadata = {
-  title: "Registration Complete",
-  description: "Your Masumi agent registration is complete.",
+  title: "Registration Status",
+  description: "Check your Masumi agent registration status.",
+  referrer: "no-referrer",
   robots: { index: false, follow: false },
 };
 

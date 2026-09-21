@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import { X } from "lucide-react";
 
@@ -35,20 +35,34 @@ export function RegisterVerifyDialog({
   sendingCode,
   error,
 }: RegisterVerifyDialogProps) {
+  const dialogRef = useRef<HTMLDivElement>(null);
   const busy = verifying || sendingCode;
 
   useEffect(() => {
     if (!open) return;
+    const previousFocus = document.activeElement as HTMLElement | null;
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     return () => {
       document.body.style.overflow = previousOverflow;
+      previousFocus?.focus();
     };
   }, [open]);
 
   useEffect(() => {
     if (!open) return;
     function onKeyDown(event: KeyboardEvent) {
+      if (event.key === "Tab") {
+        const items = dialogRef.current?.querySelectorAll<HTMLElement>('button:not(:disabled), input:not(:disabled), [tabindex="0"]');
+        if (!items?.length) { event.preventDefault(); dialogRef.current?.focus(); return; }
+        const first = items[0];
+        const last = items[items.length - 1];
+        if (event.shiftKey && (document.activeElement === first || !dialogRef.current?.contains(document.activeElement))) {
+          event.preventDefault(); last.focus();
+        } else if (!event.shiftKey && (document.activeElement === last || !dialogRef.current?.contains(document.activeElement))) {
+          event.preventDefault(); first.focus();
+        }
+      }
       if (event.key === "Escape" && !busy) {
         onClose();
       }
@@ -60,7 +74,7 @@ export function RegisterVerifyDialog({
   if (!open || typeof document === "undefined") return null;
 
   return createPortal(
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-[150] flex items-center justify-center p-4">
       <button
         type="button"
         className="animate-dialog-overlay-in absolute inset-0 bg-black/30 backdrop-blur-sm"
@@ -69,6 +83,8 @@ export function RegisterVerifyDialog({
         onClick={onClose}
       />
       <div
+        ref={dialogRef}
+        tabIndex={-1}
         role="dialog"
         aria-modal="true"
         aria-labelledby="register-verify-title"
@@ -99,7 +115,7 @@ export function RegisterVerifyDialog({
           </div>
 
           {error ? (
-            <p className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
+            <p role="alert" className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
               {error}
             </p>
           ) : null}

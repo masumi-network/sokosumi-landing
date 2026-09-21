@@ -16,7 +16,7 @@ import {
 } from "@/lib/network-registration-poll";
 
 import {
-  MASUMI_SAAS_URL,
+  registrationApiUrl,
   MASUMI_SUPPORT_URL,
 } from "@/lib/config/register";
 
@@ -57,16 +57,16 @@ export function RegisterSuccessContent({
     () => pollToken?.trim() ?? "",
   );
   const [phase, setPhase] = useState<"pending" | "complete" | "error">(
-    trimmedDraftId && activePollToken
-      ? "pending"
-      : trimmedDraftId
-        ? "pending"
-        : "complete",
+    trimmedDraftId ? "pending" : initialAgentId?.trim() ? "complete" : "error",
   );
   const [agentId, setAgentId] = useState(initialAgentId?.trim() ?? "");
   const agentName = initialAgentName?.trim() ?? "";
-  const [error, setError] = useState<string | null>(null);
-  const [errorKind, setErrorKind] = useState<ErrorKind | null>(null);
+  const [error, setError] = useState<string | null>(
+    !trimmedDraftId && !initialAgentId?.trim() ? "No registration details were provided." : null,
+  );
+  const [errorKind, setErrorKind] = useState<ErrorKind | null>(
+    !trimmedDraftId && !initialAgentId?.trim() ? "failed" : null,
+  );
 
   const displayName = agentName || "Your agent";
 
@@ -78,6 +78,10 @@ export function RegisterSuccessContent({
     if (!trimmedDraftId || !activePollToken) return;
 
     let cancelled = false;
+    const controller = new AbortController();
+    const deadline = Date.now() + 10 * 60_000;
+    let delay: ReturnType<typeof setTimeout> | undefined;
+    let wake: (() => void) | undefined;
     let attempts = 0;
     let consecutiveFailures = 0;
     let inFlight = false;
@@ -110,7 +114,7 @@ export function RegisterSuccessContent({
       attempts += 1;
 
       try {
-        if (attempts > MAX_POLL_ATTEMPTS) {
+        if (attempts > MAX_POLL_ATTEMPTS || Date.now() >= deadline) {
           fail(
             "delayed",
             "This is taking longer than expected. We'll email you when it's done.",
@@ -119,9 +123,10 @@ export function RegisterSuccessContent({
         }
 
         const res = await fetch(
-          `${MASUMI_SAAS_URL}/api/public/network/register/status`,
+          registrationApiUrl("/status"),
           {
             method: "POST",
+            signal: AbortSignal.any([controller.signal, AbortSignal.timeout(15_000)]),
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
               draftId: trimmedDraftId,
@@ -130,7 +135,7 @@ export function RegisterSuccessContent({
           },
         );
 
-        const data = (await res.json()) as {
+        const data = (await res.json().catch(() => ({}))) as {
           status?: "registered" | "pending";
           agentId?: string;
           error?: string;
@@ -155,6 +160,8 @@ export function RegisterSuccessContent({
 
         if (data.status === "registered" && data.agentId) {
           markComplete(data.agentId);
+        } else if (data.status !== "pending") {
+          fail("failed", "The server returned an unknown registration status. Contact support before starting again.");
         }
       } catch (e) {
         if (cancelled) return;
@@ -175,7 +182,10 @@ export function RegisterSuccessContent({
       while (!cancelled) {
         await tick();
         if (cancelled) break;
-        await new Promise((resolve) => setTimeout(resolve, POLL_INTERVAL_MS));
+        await new Promise<void>((resolve) => {
+          wake = resolve;
+          delay = setTimeout(resolve, POLL_INTERVAL_MS);
+        });
       }
     };
 
@@ -183,17 +193,20 @@ export function RegisterSuccessContent({
 
     return () => {
       cancelled = true;
+      controller.abort();
+      clearTimeout(delay);
+      wake?.();
     };
   }, [activePollToken, agentName, trimmedDraftId]);
 
-  if (trimmedDraftId && !activePollToken) {
+  if (phase !== "complete" && trimmedDraftId && !activePollToken) {
     return (
       <div className="animate-fade-in-up animation-delay-100 text-center">
         <h1 className="text-3xl font-semibold tracking-tight">
           Registration session expired
         </h1>
         <p className="mt-3 text-masumi-muted">
-          Start again from the register page to continue.
+          Status tracking is unavailable. Check your email or contact support before starting another registration.
         </p>
         <div className="mt-8">
           <Link href="/register" className="btn-primary">
@@ -211,7 +224,7 @@ export function RegisterSuccessContent({
       <div className="animate-fade-in-up animation-delay-100 text-center">
         <h1 className="text-3xl font-semibold tracking-tight">
           {isFailed
-            ? `Registration failed${agentName ? ` for ${displayName}` : ""}`
+            ? `Could not confirm registration${agentName ? ` for ${displayName}` : ""}`
             : "Registration is still in progress"}
         </h1>
         <p className="mt-3 text-masumi-muted">{error}</p>

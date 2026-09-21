@@ -40,7 +40,7 @@ export function createRegisterWizardDefaultValues(
 }
 
 export const accountStepSchema = z.object({
-  name: z.string().trim().min(1, "Name is required."),
+  name: z.string().trim().min(1, "Name is required.").max(120),
   email: z.string().trim().email("Enter a valid email."),
   termsAccepted: z.literal(true, {
     message: "You must accept the Privacy Policy.",
@@ -49,9 +49,9 @@ export const accountStepSchema = z.object({
 
 export const agentStepSchema = z
   .object({
-    agentName: z.string().trim().min(1, "Agent name is required."),
-    description: z.string(),
-    apiBaseUrl: z.string().trim().url("Enter a valid API URL."),
+    agentName: z.string().trim().min(1, "Agent name is required.").max(250),
+    description: z.string().trim().max(250, "Use at most 250 characters."),
+    apiBaseUrl: z.httpUrl("Enter a valid HTTP or HTTPS API URL.").trim(),
     capabilityTags: z.string().trim().min(1, "Add at least one tag."),
     includeX402: z.boolean(),
     x402: z.custom<X402PaymentDraft>(),

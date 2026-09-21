@@ -16,21 +16,20 @@ export const positiveUintStringSchema = z
     /^\d+$/,
     "Enter a positive price. It is stored as token base units on-chain.",
   )
-  .refine((value) => value !== "0", {
+  .refine((value) => /[1-9]/.test(value), {
     message:
       "Enter a positive price. It is stored as token base units on-chain.",
   });
 
 export const tokenDecimalsStringSchema = z.string().refine((value) => {
   const decimals = Number(value);
-  return Number.isInteger(decimals) && decimals >= 0 && decimals <= 255;
+  return /^\d+$/.test(value) && Number.isInteger(decimals) && decimals >= 0 && decimals <= 255;
 }, "Decimals must be a whole number from 0 to 255.");
 
-export const optionalHttpUrlSchema = z
-  .string()
-  .refine((value) => value.trim() === "" || /^https?:\/\//.test(value.trim()), {
-    message: "Resource must be an http(s) URL when provided.",
-  });
+export const optionalHttpUrlSchema = z.union([
+  z.literal(""),
+  z.httpUrl("Resource must be a valid HTTP or HTTPS URL.").max(500),
+]).transform((value) => value.trim());
 
 export const x402PaymentDraftSchema = z.object({
   network: caip2Eip155Schema,

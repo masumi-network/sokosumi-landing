@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start -p 3001",
     "lint": "eslint",
+    "test:register": "node scripts/test-register.mjs",
     "test:learn": "node scripts/test-learn.mjs",
     "learn:oauth:create": "node scripts/create-sokosumi-oauth-client.mjs",
     "learn:db:verify": "node scripts/learn-db-maintenance.mjs verify",

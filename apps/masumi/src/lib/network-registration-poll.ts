@@ -13,13 +13,21 @@ export function storeNetworkRegistrationPollToken(
 
 export function readNetworkRegistrationPollToken(draftId: string): string {
   if (typeof window === "undefined") return "";
-  return (
-    sessionStorage.getItem(`${POLL_STORAGE_PREFIX}${draftId.trim()}`)?.trim() ??
-    ""
-  );
+  try {
+    return (
+      sessionStorage.getItem(`${POLL_STORAGE_PREFIX}${draftId.trim()}`)?.trim() ??
+      ""
+    );
+  } catch {
+    return "";
+  }
 }
 
 export function clearNetworkRegistrationPollToken(draftId: string): void {
   if (typeof window === "undefined") return;
-  sessionStorage.removeItem(`${POLL_STORAGE_PREFIX}${draftId.trim()}`);
+  try {
+    sessionStorage.removeItem(`${POLL_STORAGE_PREFIX}${draftId.trim()}`);
+  } catch {
+    // Storage may be disabled; successful registration must still be displayed.
+  }
 }

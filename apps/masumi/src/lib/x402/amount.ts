@@ -4,6 +4,7 @@ export function parseHumanAmountToBaseUnits(
   humanAmount: string,
   decimals: number,
 ): string | null {
+  if (!Number.isInteger(decimals) || decimals < 0 || decimals > 255) return null;
   const normalized = humanAmount.trim();
   if (!normalized || !HUMAN_AMOUNT.test(normalized)) return null;
 
@@ -22,7 +23,7 @@ export function formatBaseUnitsToHuman(
   decimals: number,
 ): string {
   const trimmed = baseUnits.trim();
-  if (!/^\d+$/.test(trimmed) || decimals <= 0) return trimmed;
+  if (!/^\d+$/.test(trimmed) || !Number.isInteger(decimals) || decimals <= 0 || decimals > 255) return trimmed;
 
   const padded = trimmed.padStart(decimals + 1, "0");
   const whole = padded.slice(0, -decimals) || "0";

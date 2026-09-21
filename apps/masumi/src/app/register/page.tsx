@@ -19,7 +19,7 @@ export const metadata: Metadata = {
       },
     ],
   },
-  alternates: { canonical: "https://masumi.network/register" },
+  alternates: { canonical: "https://www.masumi.network/register" },
 };
 
 export default function RegisterPage() {

@@ -2,7 +2,7 @@
 
 import { ArrowLeft, ArrowRight, X } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { Steps } from "@/components/ui/steps";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -14,6 +14,7 @@ import { X402PaymentFields } from "@/components/x402-payment-fields";
 import { PRIVACY_POLICY_URL } from "@/lib/config/privacy-policy-url";
 import {
   MASUMI_REGISTRY_NETWORK,
+  registrationApiUrl,
   MASUMI_SAAS_URL,
 } from "@/lib/config/register";
 import { formatBaseUnitsToHuman, shortenEvmAddress } from "@/lib/x402/amount";
@@ -29,6 +30,8 @@ import {
   firstZodErrorMessage,
   type RegisterWizardFormValues,
 } from "@/lib/register-wizard/schema";
+import { storeNetworkRegistrationPollToken } from "@/lib/network-registration-poll";
+import { registrationDestination } from "@/lib/register-response";
 import { fetchRegisterCapabilities } from "@/lib/register-capabilities";
 
 type StepId = "account" | "agent" | "review";
@@ -123,6 +126,7 @@ export function RegisterWizard() {
     control: form.control,
   }) as RegisterWizardFormValues;
 
+  const requestInFlight = useRef(false);
   const [step, setStep] = useState<StepId>("account");
   const [submitting, setSubmitting] = useState(false);
   const [verifying, setVerifying] = useState(false);
@@ -196,13 +200,17 @@ export function RegisterWizard() {
   }
 
   async function sendCode() {
+    if (requestInFlight.current) return;
+    if (!accountStepSchema.safeParse(getValues()).success) return;
+    requestInFlight.current = true;
     setSendingCode(true);
     setError(null);
     setVerifyError(null);
     const { name, email } = getValues();
     try {
-      const res = await fetch(`${MASUMI_SAAS_URL}/api/public/network/register`, {
+      const res = await fetch(registrationApiUrl(""), {
         ...NETWORK_REGISTER_FETCH,
+        signal: AbortSignal.timeout(30_000),
         method: "POST",
         body: JSON.stringify({
           name: name.trim(),
@@ -233,6 +241,7 @@ export function RegisterWizard() {
         e instanceof Error ? e.message : "Could not send verification code",
       );
     } finally {
+      requestInFlight.current = false;
       setSendingCode(false);
     }
   }
@@ -245,6 +254,7 @@ export function RegisterWizard() {
   }
 
   async function verifyCode(codeOverride?: string) {
+    if (requestInFlight.current) return;
     if (registrationToken) {
       setVerifyDialogOpen(false);
       setStep("agent");
@@ -255,18 +265,20 @@ export function RegisterWizard() {
       return;
     }
     const code = (codeOverride ?? otp).trim();
-    if (!code) {
+    if (!/^\d{6}$/.test(code)) {
       setVerifyError("Enter the 6-digit verification code.");
       return;
     }
 
+    requestInFlight.current = true;
     setVerifying(true);
     setVerifyError(null);
     try {
       const res = await fetch(
-        `${MASUMI_SAAS_URL}/api/public/network/register/verify`,
+        registrationApiUrl("/verify"),
         {
           ...NETWORK_REGISTER_FETCH,
+          signal: AbortSignal.timeout(30_000),
           method: "POST",
           body: JSON.stringify({
             email: sentEmail,
@@ -301,11 +313,13 @@ export function RegisterWizard() {
     } catch (e) {
       setVerifyError(e instanceof Error ? e.message : "Verification failed");
     } finally {
+      requestInFlight.current = false;
       setVerifying(false);
     }
   }
 
   async function submit() {
+    if (requestInFlight.current) return;
     if (!registrationToken || !sentEmail) {
       setError("Verify your email before submitting.");
       setStep("account");
@@ -314,6 +328,16 @@ export function RegisterWizard() {
 
     const values = getValues();
     clearErrors();
+    const accountValidation = accountStepSchema.safeParse(values);
+    if (!accountValidation.success || values.email.trim().toLowerCase() !== sentEmail.toLowerCase()) {
+      setError("Verify your email and accept the Privacy Policy before submitting.");
+      setStep("account");
+      return;
+    }
+    if (values.includeX402 && !x402SettleableCaip2Ids?.includes(values.x402.network)) {
+      setError("Select an available EVM payment network.");
+      return;
+    }
     const agentValidation = agentStepSchema.safeParse(values);
     if (!agentValidation.success) {
       applyZodErrors(agentValidation.error, setFieldError);
@@ -321,13 +345,15 @@ export function RegisterWizard() {
       return;
     }
 
+    requestInFlight.current = true;
     setSubmitting(true);
     setError(null);
     try {
       const res = await fetch(
-        `${MASUMI_SAAS_URL}/api/public/network/register/complete`,
+        registrationApiUrl("/complete"),
         {
           ...NETWORK_REGISTER_FETCH,
+          signal: AbortSignal.timeout(30_000),
           method: "POST",
           body: JSON.stringify({
             registrationToken,
@@ -346,7 +372,7 @@ export function RegisterWizard() {
                     network: values.x402.network,
                     asset: values.x402.asset.trim(),
                     amount: values.x402.amount.trim(),
-                    decimals: Number(values.x402.decimals) || 6,
+                    decimals: Number(values.x402.decimals),
                     payTo: values.x402.payTo.trim(),
                     ...(values.x402.resource.trim()
                       ? { resource: values.x402.resource.trim() }
@@ -370,6 +396,8 @@ export function RegisterWizard() {
         continueUrl?: string;
         status?: "registered" | "pending";
         agentId?: string;
+        draftId?: string;
+        pollToken?: string;
       };
 
       if (!res.ok) {
@@ -378,18 +406,19 @@ export function RegisterWizard() {
         );
       }
 
-      if (data.status === "pending" && data.continueUrl) {
-        window.location.assign(data.continueUrl);
-        return;
+      const destination = registrationDestination(data, values.agentName.trim());
+      if (data.status === "pending" && data.draftId && data.pollToken) {
+        storeNetworkRegistrationPollToken(data.draftId, data.pollToken);
       }
-
-      const path =
-        data.successPath ||
-        `/register/success?agentId=${encodeURIComponent(data.agentId ?? "")}&agentName=${encodeURIComponent(values.agentName.trim())}`;
-      window.location.assign(path);
+      window.location.assign(destination);
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Registration failed");
+      setError(
+        e instanceof DOMException && e.name === "TimeoutError"
+          ? "We could not confirm registration in time. Check your email or contact support before starting again."
+          : e instanceof Error ? e.message : "Could not confirm registration.",
+      );
     } finally {
+      requestInFlight.current = false;
       setSubmitting(false);
     }
   }
@@ -446,10 +475,10 @@ export function RegisterWizard() {
   }
 
   function handleNext() {
-    if (!validateCurrentStep()) return;
+    if (requestInFlight.current || !validateCurrentStep()) return;
 
     if (step === "account") {
-      if (registrationToken) {
+      if (registrationToken && sentEmail?.toLowerCase() === getValues("email").trim().toLowerCase()) {
         setStep("agent");
         return;
       }
@@ -529,8 +558,9 @@ export function RegisterWizard() {
             <p className="text-sm text-masumi-muted">{activeMeta.description}</p>
           </div>
 
+          {!MASUMI_SAAS_URL && <p role="alert">Registration is unavailable. Please try again later.</p>}
           {error ? (
-            <p className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
+            <p role="alert" className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
               {error}
             </p>
           ) : null}
@@ -542,6 +572,7 @@ export function RegisterWizard() {
                   className={inputClass}
                   autoComplete="name"
                   placeholder="Jane Doe"
+                  aria-label="Name"
                   {...register("name")}
                 />
               </Field>
@@ -551,6 +582,7 @@ export function RegisterWizard() {
                   type="email"
                   autoComplete="email"
                   placeholder="you@example.com"
+                  aria-label="Email"
                   {...register("email")}
                 />
               </Field>
@@ -593,13 +625,15 @@ export function RegisterWizard() {
                 <input
                   className={inputClass}
                   placeholder="Research Assistant"
+                  aria-label="Agent name"
                   {...register("agentName")}
                 />
               </Field>
-              <Field label="Short description">
+              <Field label="Short description" error={errors.description?.message}>
                 <textarea
                   className={`${inputClass} min-h-[88px] resize-y`}
                   placeholder="What your agent does and who it helps"
+                  aria-label="Short description"
                   {...register("description")}
                 />
               </Field>
@@ -607,6 +641,7 @@ export function RegisterWizard() {
                 <input
                   className={inputClass}
                   placeholder="https://api.example.com"
+                  aria-label="API base URL"
                   {...register("apiBaseUrl")}
                 />
               </Field>
@@ -623,6 +658,7 @@ export function RegisterWizard() {
                         handleAddTag();
                       }
                     }}
+                    aria-label="Tags"
                     placeholder="Enter a tag"
                   />
                   <button
@@ -793,7 +829,7 @@ export function RegisterWizard() {
                             <span>
                               {formatBaseUnitsToHuman(
                                 watched.x402.amount,
-                                Number(watched.x402.decimals) || 6,
+                                Number(watched.x402.decimals),
                               )}{" "}
                               {preset?.label ?? "token"} on{" "}
                               {chain?.displayName ?? watched.x402.network} to{" "}
@@ -832,7 +868,7 @@ export function RegisterWizard() {
           <button
             type="button"
             className="btn-primary group min-w-0 gap-2 px-5 disabled:opacity-50"
-            disabled={busy}
+            disabled={busy || !MASUMI_SAAS_URL}
             onClick={handleNext}
           >
             {nextLabel}
