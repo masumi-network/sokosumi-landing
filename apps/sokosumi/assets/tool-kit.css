@@ -1169,11 +1169,33 @@
 /* Side-by-side profile panels above the difference table. */
 .cpt-profiles {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 14px;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: stretch;
+  gap: 0 10px;
   margin-bottom: 20px;
 }
-@media (max-width: 640px) { .cpt-profiles { grid-template-columns: 1fr; } }
+@media (max-width: 640px) { .cpt-profiles { grid-template-columns: 1fr; gap: 0; } }
+
+/* "VS" jointer sitting between the two messaging panels. */
+.cpt-vs-join {
+  display: grid;
+  place-items: center;
+  align-self: center;
+}
+.cpt-vs-join span {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--foreground);
+  color: var(--background);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  box-shadow: 0 0 0 5px var(--background);
+}
+@media (max-width: 640px) { .cpt-vs-join { padding: 10px 0; } }
 .cpt-profile {
   display: grid;
   gap: 12px;
@@ -1406,3 +1428,15 @@
 }
 .cpt-fav.is-broken img { display: none; }
 .cpt-fav.is-broken .cpt-fav-letter { display: grid; }
+
+/* Subsection headers inside the scoreboard (Content depth / SEO / Conversion). */
+.cpt-group-label {
+  padding: 8px 14px;
+  background: color-mix(in srgb, var(--muted) 55%, transparent);
+  border-bottom: 1px solid var(--border);
+  font-size: 10.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted-foreground);
+}

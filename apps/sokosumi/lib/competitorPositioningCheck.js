@@ -7,7 +7,7 @@
 // the vocabulary each emphasizes that the other doesn't. No LLM — every
 // signal here is a word count, a regex, or a set difference.
 
-const { fetchPage, collectTitle, collectMeta, collectHeadings, collectLinks, visibleText, wordCount , normalizeUrl } = require("./htmlExtract");
+const { fetchPage, collectTitle, collectMeta, collectHeadings, collectLinks, collectImages, collectJsonLd, visibleText, wordCount, normalizeUrl } = require("./htmlExtract");
 
 const CTA_PATTERN = /\b(get started|sign up|start (?:your |a )?(?:free )?trial|book a demo|try (?:it )?free|buy now|contact us|request a demo|schedule a call|subscribe)\b/gi;
 const PRICING_PATTERN = /\$\d|\bpricing\b|\bplans?\b.{0,20}\b(month|year|user|seat)\b/i;
@@ -37,18 +37,33 @@ async function profileSite(url) {
   const meta = collectMeta(html);
   const headings = collectHeadings(html);
   const links = collectLinks(html, finalUrl);
+  const images = collectImages(html);
+  const jsonLd = collectJsonLd(html);
   const text = visibleText(html);
+  const description = meta.description || "";
   return {
     url: finalUrl,
     title,
-    description: meta.description || "",
+    titleLen: title.length,
+    description,
+    descLen: description.length,
     h1: headings.h1[0] || "",
     h1Count: headings.counts.h1,
+    h2Count: headings.counts.h2 || 0,
     words: wordCount(text),
+    images: images.total,
+    imagesWithAlt: images.withAlt,
+    internalLinks: links.internal,
+    externalLinks: links.external,
     ctaCount: (text.match(CTA_PATTERN) || []).length,
     hasPricing: PRICING_PATTERN.test(text),
     hasProof: PROOF_PATTERN.test(text),
-    internalLinks: links.internal,
+    hasSchema: jsonLd.length > 0,
+    schemaTypes: jsonLd.slice(0, 6),
+    hasOgImage: !!meta["og:image"],
+    hasTwitterCard: !!meta["twitter:card"],
+    hasViewport: !!meta.viewport,
+    hasCanonical: /<link\b[^>]*\brel\s*=\s*["']?canonical["']?[^>]*>/i.test(html),
     keywords: topKeywords(text),
   };
 }
@@ -63,6 +78,11 @@ function gapsFor(mine, theirs, myLabel, theirLabel) {
   if (!mine.ctaCount && theirs.ctaCount) add("error", "No CTA detected", `${theirLabel} has a clear call to action; ${myLabel} doesn't.`);
   if (!mine.hasPricing && theirs.hasPricing) add("warn", "No pricing shown", `${theirLabel} shows pricing or plan language; ${myLabel} doesn't.`);
   if (!mine.hasProof && theirs.hasProof) add("warn", "No social proof", `${theirLabel} has testimonials or customer counts; ${myLabel} doesn't.`);
+  if (!mine.hasSchema && theirs.hasSchema) add("warn", "No structured data", `${theirLabel} ships JSON-LD schema${theirs.schemaTypes.length ? ` (${theirs.schemaTypes.join(", ")})` : ""}; ${myLabel} doesn't — it powers rich results.`);
+  if (!mine.hasOgImage && theirs.hasOgImage) add("warn", "No Open Graph image", `${theirLabel} sets an og:image for link previews; ${myLabel} doesn't, so its shared links look bare.`);
+  if (mine.h2Count < theirs.h2Count * 0.5 && theirs.h2Count > 2) add("warn", "Thin heading structure", `${myLabel} has ${mine.h2Count} H2 section(s) vs ${theirs.h2Count} for ${theirLabel} — less scannable structure.`);
+  if (mine.images && theirs.images && mine.imagesWithAlt / mine.images < 0.5 && theirs.imagesWithAlt / theirs.images >= 0.6) add("warn", "Images missing alt text", `${myLabel} has alt text on ${mine.imagesWithAlt} of ${mine.images} images; ${theirLabel} covers most of theirs.`);
+  if (!mine.hasCanonical && theirs.hasCanonical) add("warn", "No canonical URL", `${theirLabel} sets a canonical link; ${myLabel} doesn't — a duplicate-content risk.`);
 
   const theirWords = new Set(theirs.keywords.map((k) => k.label));
   const myWords = new Set(mine.keywords.map((k) => k.label));
