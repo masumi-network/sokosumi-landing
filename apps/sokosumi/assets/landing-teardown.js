@@ -35,6 +35,11 @@
     },
     examples: {
       sokosumi: "https://sokosumi.com",
+      stripe: "https://stripe.com",
+      linear: "https://linear.app",
+      vercel: "https://vercel.com",
+      notion: "https://notion.so",
+      figma: "https://figma.com",
     },
   });
 })();

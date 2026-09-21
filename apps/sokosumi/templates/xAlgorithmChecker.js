@@ -118,7 +118,7 @@ function render() {
 
     <section class="tk-section" aria-labelledby="xaa-how">
       <h2 id="xaa-how">What gets scored</h2>
-      <p class="tk-sub">Four dimensions, drawn from the signals X's own open-sourced ranking code — and reporting since — documents.</p>
+      <p class="tk-sub">Four dimensions, drawn from the signals X's own <a href="https://github.com/twitter/the-algorithm" target="_blank" rel="noopener noreferrer">open-sourced ranking code</a> — and reporting since — documents.</p>
       <div class="tk-cards">
         <div class="tk-card"><h3>Conversation prompt</h3><p>Does it invite a reply? Reply engagement is weighted well above likes or reposts.</p></div>
         <div class="tk-card"><h3>Off-platform links</h3><p>A raw link in the post text is a documented reach penalty — the first reply is the workaround.</p></div>

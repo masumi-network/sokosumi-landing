@@ -93,6 +93,11 @@ function render() {
       <div class="tk-try">
         <span>Try</span>
         <button type="button" data-try="sokosumi">sokosumi.com</button>
+        <button type="button" data-try="stripe">stripe.com</button>
+        <button type="button" data-try="linear">linear.app</button>
+        <button type="button" data-try="vercel">vercel.com</button>
+        <button type="button" data-try="notion">notion.so</button>
+        <button type="button" data-try="figma">figma.com</button>
       </div>
 
       <p class="tk-error" id="ltcError" role="alert" hidden></p>
