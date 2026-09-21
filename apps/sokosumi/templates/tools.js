@@ -421,7 +421,7 @@ const toolCat = (t) => CATEGORY_BY_HREF[t.href] || "Other";
 function toolCard(t) {
   const hay = `${t.name} ${t.text} ${t.meta || ""}`.toLowerCase();
   return `<a class="card tool-card" href="${attr(t.href)}" data-search="${attr(hay)}" data-cat="${attr(toolCat(t))}">
-    <span class="tool-card-doc" aria-hidden="true"><span class="tool-card-cat">${esc(toolCat(t))}</span>${t.preview()}</span>
+    <span class="tool-card-doc" aria-hidden="true">${t.preview()}</span>
     <span class="tool-card-copy">
       <span class="eyebrow">${esc(t.meta)}</span>
       <strong>${esc(t.name)}</strong>

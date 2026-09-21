@@ -2090,34 +2090,3 @@
   background: var(--foreground);
   border-color: var(--foreground);
 }
-
-/* Category colour theming for the /tools cards — each category tints its
-   preview stage, chip, hover border and "Open" link, so the grid reads as
-   four distinct families instead of one uniform texture. */
-.tools-list .tool-card { --cat: var(--primary); }
-.tools-list .tool-card[data-cat="SEO"] { --cat: #2f6feb; }
-.tools-list .tool-card[data-cat="Content"] { --cat: #10a37f; }
-.tools-list .tool-card[data-cat="Conversion"] { --cat: #c67c05; }
-.tools-list .tool-card[data-cat="Dev & Data"] { --cat: #7c5cff; }
-
-.tool-card-doc {
-  position: relative;
-  background:
-    radial-gradient(135% 100% at 50% -12%, color-mix(in srgb, var(--cat) 17%, transparent), transparent 66%),
-    var(--muted);
-}
-.tool-card-cat {
-  position: absolute;
-  top: 13px;
-  left: 13px;
-  padding: 3px 11px;
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--cat) 16%, var(--background));
-  color: var(--cat);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  line-height: 1.5;
-}
-.tools-list .tool-card:hover { border-color: color-mix(in srgb, var(--cat) 55%, var(--border)); }
-.tool-card-copy em { color: var(--cat); }
