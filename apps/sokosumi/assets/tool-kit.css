@@ -425,11 +425,29 @@
 
 .tk-dim-head {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding: 16px 18px;
+  padding: 15px 18px;
   border-bottom: 1px solid var(--border);
+}
+
+.tk-dim-head-l {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.tk-dim-ico {
+  flex: none;
+  display: inline-grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  background: var(--muted);
+  color: var(--muted-foreground);
 }
 
 .tk-dim-head h3 {
@@ -1478,4 +1496,15 @@
   font-size: 13px;
   line-height: 1.5;
   color: var(--muted-foreground);
+}
+
+/* ---- Calmer check rows: passes recede, warnings/errors get an accent ------- */
+.tk-check.is-pass .tk-check-title { color: var(--muted-foreground); font-weight: 450; }
+.tk-check.is-warn {
+  background: color-mix(in srgb, #8a6100 7%, transparent);
+  box-shadow: inset 3px 0 0 #8a6100;
+}
+.tk-check.is-error {
+  background: color-mix(in srgb, #b02a2a 7%, transparent);
+  box-shadow: inset 3px 0 0 #b02a2a;
 }
