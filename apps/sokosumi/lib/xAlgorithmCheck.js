@@ -118,14 +118,18 @@ function buildSpamChecks(text) {
 
   if (hashtags.length >= 3) {
     add("warn", "Too many hashtags", "spam", `${hashtags.length} hashtags reads as spam to both readers and the ranking model — one or two focused tags outperform a stack of them.`, 2);
+  } else if (hashtags.length > 0) {
+    add("pass", "Hashtag use is restrained", "spam", `${hashtags.length} hashtag(s) — within the one or two that still work on X.`, 2);
   } else {
-    add("pass", "Hashtag use is restrained", "spam", `${hashtags.length} hashtag(s).`, 2);
+    add("pass", "No hashtags", "spam", "No hashtags — a safe default, since X ranks on the post itself, not tags.", 2);
   }
 
   if (mentions.length >= 5) {
     add("warn", "Mention-heavy", "spam", `${mentions.length} @mentions in one post reads as a tagging spree rather than a genuine reply to those people.`, 1);
+  } else if (mentions.length > 0) {
+    add("pass", "Mentions look genuine", "spam", `${mentions.length} @mention(s) — reads like a real reply, not a tagging spree.`, 1);
   } else {
-    add("pass", "Mentions look genuine", "spam", `${mentions.length} @mention(s).`, 1);
+    add("pass", "No mention stuffing", "spam", "No @mentions — nothing that reads as a tagging spree.", 1);
   }
 
   if (/[A-Z]{6,}/.test(text) || /!{2,}/.test(text)) {
