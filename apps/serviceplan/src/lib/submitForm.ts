@@ -27,17 +27,18 @@ export async function submitAnalysisForm(
   }
 }
 
-/** Primary conversion of the /agenturen ads LP: a started task. */
-export async function submitTaskForm(
+/** Primary conversion of the /agenturen ads LP: the free competitive
+ *  analysis (same endpoint as the homepage form). Pushes the LP's own
+ *  `task_start_request` event so the published GTM/Meta Lead tag fires. */
+export async function submitAgenturenAnalysis(
   email: string,
-  task: string,
-  topic: string
+  websiteUrl: string
 ): Promise<boolean> {
   try {
-    const res = await fetch("/api/task", {
+    const res = await fetch("/api/analysis", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, task, topic }),
+      body: JSON.stringify({ email, website_url: websiteUrl, source: "agenturen" }),
     });
     const data = await res.json();
     if (data.ok) pushDataLayerEvent("task_start_request");

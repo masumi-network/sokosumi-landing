@@ -1,58 +1,29 @@
 "use client";
 
 import { FormEvent, useState } from "react";
-import { submitTaskForm, sendDemoNotification } from "@/lib/submitForm";
+import { submitAgenturenAnalysis, sendDemoNotification } from "@/lib/submitForm";
 
-/* Copy: Textmanuskript v3 (2026-09-02) inkl. der stillen Korrekturen aus dem
-   Wireframe v3. "Sokosumi" bleibt gemäß Manuskript-Regel und LP-Briefing
-   draußen. Sektion 3 (Social Proof) und die Logo-Wand warten auf Freigaben
-   und sind deshalb noch nicht auf der Seite. */
+/* Copy: Textmanuskript v3 (2026-09-02) + LP-Briefing (advalyze, 2026-09-01).
+   "Sokosumi" bleibt gemäß Manuskript-Regel und LP-Briefing draußen.
+   Sektion 3 (Social Proof) und die Logo-Wand warten auf Freigaben.
+   Startbar ist ausschließlich die Wettbewerbsanalyse (gleicher Endpoint wie
+   die Startseite); die übrigen Themen sind sichtbar, aber nicht wählbar. */
 
 const TOPICS = [
-  {
-    key: "wettbewerb",
-    label: "Recherche für einen Pitch",
-    task: "Recherche für einen Neukundenpitch: [Kunde/Branche]. Erstens die relevantesten Wettbewerber mit Positionierung, Kernbotschaften und laufenden Kampagnen. Zweitens eine Zielgruppenanalyse. Drittens daraus abgeleitet ein Vorschlag für die Kampagnenstrategie. Als Dokument fürs Deck.",
-  },
-  {
-    key: "update",
-    label: "Kurzes Wettbewerbs-Update",
-    task: "Kurzes Wettbewerbs-Update für [Kunde]: was [Wettbewerber] aktuell macht. Zwei Seiten, direkt weiterleitbar, mit Quellen.",
-  },
-  {
-    key: "dashboard",
-    label: "Reporting-Dashboard",
-    task: "Reporting-Dashboard für [Kunde] aus Search Console und Analytics: Sichtbarkeit, Traffic und Top-Landingpages, filterbar nach Zeitraum, teilbar per Link.",
-  },
-  {
-    key: "markt",
-    label: "Marktüberblick & Trends",
-    task: "Marktüberblick für [Branche] in Deutschland: Marktvolumen, Wachstumsprognose und die drei Trends, die im nächsten Jahr für [Kunde] relevant werden. Mit Quellen.",
-  },
-  {
-    key: "zielgruppe",
-    label: "Zielgruppen-Insights",
-    task: "Zielgruppen-Insights für eine Kampagne für [Kunde]: Demografie, Einstellungen und Kaufverhalten der Kernzielgruppe, auf Basis echter Verbraucherdaten.",
-  },
-  {
-    key: "geo",
-    label: "GEO- & KI-Sichtbarkeit",
-    task: "GEO- und KI-Sichtbarkeitsanalyse für [Kunde]: wie sichtbar die Marke in Google und in KI-Suchsystemen ist, wo sie nicht auftaucht, und was sich daran ändern lässt.",
-  },
-  {
-    key: "content",
-    label: "Content- & Social-Media-Audit",
-    task: "Content- und Social-Media-Audit für [Kunde]: welche Formate und Themen laufen, wie das im Wettbewerbsvergleich aussieht, und wo die größten Lücken liegen.",
-  },
-  { key: "eigen", label: "Eigene Aufgabe", task: "" },
+  { key: "wettbewerb", label: "Wettbewerbsanalyse", available: true },
+  { key: "pitch", label: "Recherche für einen Pitch", available: false },
+  { key: "update", label: "Kurzes Wettbewerbs-Update", available: false },
+  { key: "dashboard", label: "Reporting-Dashboard", available: false },
+  { key: "markt", label: "Marktüberblick & Trends", available: false },
+  { key: "zielgruppe", label: "Zielgruppen-Insights", available: false },
+  { key: "geo", label: "GEO- & KI-Sichtbarkeit", available: false },
+  { key: "content", label: "Content- & Social-Media-Audit", available: false },
 ] as const;
-
-type TopicKey = (typeof TOPICS)[number]["key"];
 
 const FAQ: { q: string; a: string }[] = [
   {
     q: "Was kostet das, und was passiert, wenn die Credits aufgebraucht sind?",
-    a: "Der Einstieg ist kostenlos mit 250 Credits pro Monat. Danach gibt es Pakete ab 25 € im Monat mit größerem Kontingent, ab Starter lassen sich Credits bei Bedarf nachkaufen. Vor dem Start einer Aufgabe sehen Sie eine Kostenschätzung und können sie abbrechen oder ändern.",
+    a: "Der Einstieg ist kostenlos mit 200 Credits pro Monat. Danach gibt es Pakete ab 25 € im Monat mit größerem Kontingent, ab Starter lassen sich Credits bei Bedarf nachkaufen. Vor dem Start einer Aufgabe sehen Sie eine Kostenschätzung und können sie abbrechen oder ändern.",
   },
   {
     q: "Wo liegen unsere Daten, und wird damit trainiert?",
@@ -84,16 +55,37 @@ const FAQ: { q: string; a: string }[] = [
   },
 ];
 
+function normalizeUrl(url: string): string {
+  const trimmed = url.trim();
+  if (trimmed && !/^https?:\/\//i.test(trimmed)) return `https://${trimmed}`;
+  return trimmed;
+}
+
 function scrollToForm() {
   document
     .getElementById("starten")
     ?.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
+function ArrowCircle() {
+  return (
+    <span className="ag-arrow-circle" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none">
+        <path
+          d="M5 12h14m0 0-6-6m6 6-6 6"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    </span>
+  );
+}
+
 export default function AgenturenPage() {
-  const [topic, setTopic] = useState<TopicKey>("eigen");
-  const [task, setTask] = useState("");
   const [email, setEmail] = useState("");
+  const [websiteUrl, setWebsiteUrl] = useState("");
   const [taskState, setTaskState] = useState<
     "idle" | "sending" | "done" | "error"
   >("idle");
@@ -108,22 +100,11 @@ export default function AgenturenPage() {
     "idle" | "sending" | "done" | "error"
   >("idle");
 
-  function pickTopic(key: TopicKey) {
-    setTopic(key);
-    const t = TOPICS.find((x) => x.key === key);
-    setTask(t?.task ?? "");
-  }
-
-  function startCase(key: TopicKey) {
-    pickTopic(key);
-    scrollToForm();
-  }
-
-  async function handleTaskSubmit(e: FormEvent<HTMLFormElement>) {
+  async function handleAnalysisSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (taskState === "sending") return;
     setTaskState("sending");
-    const ok = await submitTaskForm(email, task, topic);
+    const ok = await submitAgenturenAnalysis(email, normalizeUrl(websiteUrl));
     setTaskState(ok ? "done" : "error");
   }
 
@@ -143,92 +124,101 @@ export default function AgenturenPage() {
 
   return (
     <div className="ag">
-      <div className="ag-topbar">
-        <div className="ag-wrap">
-          <span className="ag-wordmark">
-            Serviceplan <span>Agents</span>
-          </span>
+      {/* ===== 1 Header (dunkle Bühne wie die Startseite) ===== */}
+      <div className="ag-stage">
+        <div className="ag-stage-inner">
+          <div className="ag-topbar">
+            <span className="ag-wordmark">
+              Serviceplan <span>Agents</span>
+            </span>
+            <div className="ag-topbar-cta">
+              <a href="#demo" className="ag-navlink">
+                Demo-Termin
+              </a>
+              <a href="#starten" className="ag-btn ag-btn-red ag-btn-nav">
+                Kostenlos starten
+              </a>
+            </div>
+          </div>
+
+          <section className="ag-header">
+            <div className="ag-hdr">
+              <div className="ag-hdr-copy">
+                <p className="ag-eyebrow">Für Agenturen</p>
+                <h1>
+                  AI-Coworker, die Sie bei Ihren Aufgaben unterstützen.
+                  <span className="ag-soft">
+                    Recherche, Analysen, Reportings, interaktive Dashboards.
+                  </span>
+                </h1>
+                <ul className="ag-bullets">
+                  <li>
+                    Kommunikation per E-Mail.{" "}
+                    <span>Kein Prompt, keine Einarbeitung.</span>
+                  </li>
+                  <li>
+                    Entwickelt von Serviceplan.{" "}
+                    <span>Über 50 Jahre Marketing-Expertise.</span>
+                  </li>
+                  <li>
+                    Einfach ausprobieren.{" "}
+                    <span>200 Credits im Monat, ohne Kreditkarte.</span>
+                  </li>
+                </ul>
+                <div className="ag-btn-row">
+                  <a href="#starten" className="ag-btn ag-btn-red">
+                    Erste Aufgabe kostenlos starten
+                  </a>
+                  <a href="#demo" className="ag-btn ag-btn-white">
+                    Demo-Termin buchen
+                    <ArrowCircle />
+                  </a>
+                </div>
+                <div className="ag-badges">
+                  <span className="ag-badge">Hosting in Deutschland</span>
+                  <span className="ag-badge">DSGVO</span>
+                  <span className="ag-badge">EU AI Act</span>
+                </div>
+              </div>
+
+              <div className="ag-hdr-visual" aria-hidden="true">
+                <div className="ag-seq">
+                  <div className="ag-seq-node">
+                    <svg viewBox="0 0 24 24">
+                      <rect x="3" y="5" width="18" height="14" />
+                      <path d="M3 7l9 6 9-6" />
+                    </svg>
+                    Aufgabe per Mail
+                  </div>
+                  <div className="ag-seq-arrow">→</div>
+                  <div className="ag-seq-node">
+                    <svg viewBox="0 0 24 24">
+                      <circle cx="12" cy="8" r="3.5" />
+                      <path d="M5 20c1.2-3.4 3.9-5 7-5s5.8 1.6 7 5" />
+                    </svg>
+                    AI-Coworker arbeitet
+                  </div>
+                  <div className="ag-seq-arrow">→</div>
+                  <div className="ag-seq-node">
+                    <svg viewBox="0 0 24 24">
+                      <path d="M6 3h8l4 4v14H6z" />
+                      <path d="M14 3v4h4" />
+                      <path d="M9 13h6M9 16h6" />
+                    </svg>
+                    Ergebnis im Postfach
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
         </div>
       </div>
 
-      {/* ===== 1 Header ===== */}
-      <section className="ag-header">
-        <div className="ag-wrap">
-          <div className="ag-hdr">
-            <div>
-              <p className="ag-eyebrow">Für Agenturen</p>
-              <h1>
-                AI-Coworker, die Sie bei Ihren Aufgaben unterstützen.
-                <span className="ag-soft">
-                  Recherche, Analysen, Reportings, interaktive Dashboards.
-                </span>
-              </h1>
-              <ul className="ag-bullets">
-                <li>
-                  Kommunikation per E-Mail.{" "}
-                  <span>Kein Prompt, keine Einarbeitung.</span>
-                </li>
-                <li>
-                  Entwickelt von Serviceplan.{" "}
-                  <span>Über 50 Jahre Marketing-Expertise.</span>
-                </li>
-                <li>
-                  Einfach ausprobieren.{" "}
-                  <span>250 Credits im Monat, ohne Kreditkarte.</span>
-                </li>
-              </ul>
-              <div className="ag-btn-row">
-                <a href="#starten" className="ag-btn ag-btn-primary">
-                  Erste Aufgabe kostenlos starten
-                </a>
-                <a href="#demo" className="ag-btn ag-btn-secondary">
-                  Demo-Termin buchen
-                </a>
-              </div>
-              <div className="ag-badges">
-                <span className="ag-badge">Hosting in Deutschland</span>
-                <span className="ag-badge">DSGVO</span>
-                <span className="ag-badge">EU AI Act</span>
-              </div>
-            </div>
-
-            <div className="ag-hdr-visual">
-              <div className="ag-seq">
-                <div className="ag-seq-node">
-                  <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <rect x="3" y="5" width="18" height="14" />
-                    <path d="M3 7l9 6 9-6" />
-                  </svg>
-                  Aufgabe per Mail
-                </div>
-                <div className="ag-seq-arrow">→</div>
-                <div className="ag-seq-node">
-                  <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <circle cx="12" cy="8" r="3.5" />
-                    <path d="M5 20c1.2-3.4 3.9-5 7-5s5.8 1.6 7 5" />
-                  </svg>
-                  AI-Coworker arbeitet
-                </div>
-                <div className="ag-seq-arrow">→</div>
-                <div className="ag-seq-node">
-                  <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M6 3h8l4 4v14H6z" />
-                    <path d="M14 3v4h4" />
-                    <path d="M9 13h6M9 16h6" />
-                  </svg>
-                  Ergebnis im Postfach
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* ===== 2 Use Cases ===== */}
-      <section id="cases">
+      <section id="cases" className="ag-section">
         <div className="ag-wrap">
           <div className="ag-band">
-            <h2>Das kennt jede Agentur.</h2>
+            <h2 className="ag-h2">Das kennt jede Agentur.</h2>
             <p className="ag-lead">Der Auftragsbestand wächst. Das Team nicht.</p>
             <div className="ag-band-grid">
               <p className="ag-band-item">
@@ -252,7 +242,7 @@ export default function AgenturenPage() {
           </div>
 
           <div className="ag-rail-hint">
-            <h3 style={{ margin: 0 }}>Drei Fälle aus dem Agenturalltag</h3>
+            <h3 className="ag-h3">Drei Fälle aus dem Agenturalltag</h3>
             <span>seitlich scrollen →</span>
           </div>
 
@@ -261,7 +251,7 @@ export default function AgenturenPage() {
             <article className="ag-case">
               <div className="ag-case-head">
                 <p className="ag-case-num">Fall 1: Pitch-Vorbereitung</p>
-                <h3>Die komplette Recherche fürs Pitch-Deck</h3>
+                <h3 className="ag-h3">Die komplette Recherche fürs Pitch-Deck</h3>
                 <p className="ag-case-benefit">
                   Ein Auftrag: Wettbewerbsanalyse, Zielgruppe und strategische
                   Ableitung.
@@ -284,7 +274,7 @@ export default function AgenturenPage() {
                     Deck.“
                   </p>
                 </div>
-                <h4 style={{ marginTop: 20 }}>Was passiert</h4>
+                <h4>Was passiert</h4>
                 <ol className="ag-steps">
                   <li>
                     Hannah recherchiert Wettbewerber und Zielgruppe in Statista,
@@ -300,7 +290,7 @@ export default function AgenturenPage() {
                     um. Kein Neustart nötig.
                   </li>
                 </ol>
-                <h4 style={{ marginTop: 20 }}>Was zurückkommt</h4>
+                <h4>Was zurückkommt</h4>
                 <ul className="ag-result">
                   <li>Wettbewerber-Set mit Positionierung und Kernbotschaften</li>
                   <li>
@@ -321,10 +311,10 @@ export default function AgenturenPage() {
               <div className="ag-case-foot">
                 <button
                   type="button"
-                  className="ag-btn ag-btn-case"
-                  onClick={() => startCase("wettbewerb")}
+                  className="ag-btn ag-btn-red ag-btn-case"
+                  onClick={scrollToForm}
                 >
-                  Diesen Fall kostenlos starten
+                  Mit der Wettbewerbsanalyse starten
                 </button>
               </div>
             </article>
@@ -333,7 +323,9 @@ export default function AgenturenPage() {
             <article className="ag-case">
               <div className="ag-case-head">
                 <p className="ag-case-num">Fall 2: Die Anfrage zwischendurch</p>
-                <h3>Das Wettbewerbs-Update, das der Kunde nebenbei erwartet</h3>
+                <h3 className="ag-h3">
+                  Das Wettbewerbs-Update, das der Kunde nebenbei erwartet
+                </h3>
                 <p className="ag-case-benefit">
                   Kundenmail weiterleiten. Kein Prompt, kein neues Briefing.
                 </p>
@@ -358,7 +350,7 @@ export default function AgenturenPage() {
                     </span>
                   </p>
                 </div>
-                <h4 style={{ marginTop: 20 }}>Was passiert</h4>
+                <h4>Was passiert</h4>
                 <ol className="ag-steps">
                   <li>Die weitergeleitete Kundenmail ist das Briefing</li>
                   <li>
@@ -368,12 +360,10 @@ export default function AgenturenPage() {
                   </li>
                   <li>Den Stand fragen Sie zwischendurch per WhatsApp ab</li>
                 </ol>
-                <h4 style={{ marginTop: 20 }}>Was zurückkommt</h4>
+                <h4>Was zurückkommt</h4>
                 <ul className="ag-result">
                   <li>Zwei Seiten, direkt weiterleitbar</li>
-                  <li>
-                    Was der Wettbewerber aktuell kommuniziert, mit Belegen
-                  </li>
+                  <li>Was der Wettbewerber aktuell kommuniziert, mit Belegen</li>
                   <li>Einordnung: was davon für den Kunden zählt</li>
                   <li>Quellen für den nächsten Termin</li>
                 </ul>
@@ -389,10 +379,10 @@ export default function AgenturenPage() {
               <div className="ag-case-foot">
                 <button
                   type="button"
-                  className="ag-btn ag-btn-case"
-                  onClick={() => startCase("update")}
+                  className="ag-btn ag-btn-red ag-btn-case"
+                  onClick={scrollToForm}
                 >
-                  Diesen Fall kostenlos starten
+                  Mit der Wettbewerbsanalyse starten
                 </button>
               </div>
             </article>
@@ -401,7 +391,9 @@ export default function AgenturenPage() {
             <article className="ag-case">
               <div className="ag-case-head">
                 <p className="ag-case-num">Fall 3: Quick Dashboard</p>
-                <h3>Das Reporting-Dashboard für den monatlichen Jour Fixe</h3>
+                <h3 className="ag-h3">
+                  Das Reporting-Dashboard für den monatlichen Jour Fixe
+                </h3>
                 <p className="ag-case-benefit">
                   Einmal erstellt, danach immer aktuell.
                 </p>
@@ -421,7 +413,7 @@ export default function AgenturenPage() {
                     Link.“
                   </p>
                 </div>
-                <h4 style={{ marginTop: 20 }}>Was passiert</h4>
+                <h4>Was passiert</h4>
                 <ol className="ag-steps">
                   <li>
                     Google Search Console und Google Analytics einmal in wenigen
@@ -434,7 +426,7 @@ export default function AgenturenPage() {
                   </li>
                   <li>Jede Kennzahl ist bis zur Quelle nachvollziehbar</li>
                 </ol>
-                <h4 style={{ marginTop: 20 }}>Was zurückkommt</h4>
+                <h4>Was zurückkommt</h4>
                 <ul className="ag-result">
                   <li>Filterbares Dashboard statt statischem Report</li>
                   <li>
@@ -455,13 +447,13 @@ export default function AgenturenPage() {
                 </p>
               </div>
               <div className="ag-case-foot">
-                <button
-                  type="button"
-                  className="ag-btn ag-btn-case"
-                  onClick={() => startCase("dashboard")}
-                >
-                  Diesen Fall kostenlos starten
-                </button>
+                <p className="ag-case-later">
+                  In der Plattform beauftragbar — der kostenlose Einstieg
+                  startet mit der Wettbewerbsanalyse.
+                </p>
+                <a href="#demo" className="ag-textlink">
+                  Diesen Fall im Demo-Termin ansehen
+                </a>
               </div>
             </article>
           </div>
@@ -469,119 +461,133 @@ export default function AgenturenPage() {
       </section>
 
       {/* ===== 4 Kostenlos starten (primäre Conversion) ===== */}
-      <section id="starten">
+      <section id="starten" className="ag-section">
         <div className="ag-wrap">
-          <div className="ag-form-wrap">
-            <div className="ag-head ag-center" style={{ marginBottom: 30 }}>
-              <p className="ag-eyebrow">Kostenlos starten</p>
-              <h2>
-                Geben Sie den Serviceplan Agents eine Aufgabe aus Ihrem Alltag.
-              </h2>
-              <p className="ag-lead">
-                Zwei Felder. Kein Passwort, keine Firmendaten, keine
-                Kreditkarte.
-              </p>
-            </div>
-
-            {taskState === "done" ? (
-              <div className="ag-success">
-                <b>Ihre Aufgabe ist unterwegs.</b>
-                <p>
-                  Ihr AI-Coworker meldet sich per E-Mail an {email} — mit
-                  Rückfragen oder direkt mit dem Ergebnis. Ihr kostenloser
-                  Zugang mit 250 Credits pro Monat ist damit eingerichtet.
+          <div className="ag-form-stage">
+            <div className="ag-form-wrap">
+              <div className="ag-head ag-center">
+                <p className="ag-eyebrow">Kostenlos starten</p>
+                <h2 className="ag-h2 ag-h2-ondark">
+                  Ihre erste Aufgabe: eine Wettbewerbsanalyse.
+                </h2>
+                <p className="ag-lead ag-lead-ondark">
+                  Zwei Felder. Kein Passwort, keine Firmendaten, keine
+                  Kreditkarte.
                 </p>
               </div>
-            ) : (
-              <form onSubmit={handleTaskSubmit}>
-                <p className="ag-picker-label">
-                  Woran arbeiten Sie gerade? Ein Klick befüllt das Aufgabenfeld.
-                </p>
-                <div className="ag-chips">
-                  {TOPICS.map((t) => (
-                    <button
-                      key={t.key}
-                      type="button"
-                      className={`ag-chip${topic === t.key ? " is-active" : ""}`}
-                      onClick={() => pickTopic(t.key)}
-                    >
-                      {t.label}
-                    </button>
-                  ))}
-                </div>
 
-                <div className="ag-field">
-                  <label htmlFor="ag-mail">Ihre Arbeits-E-Mail</label>
-                  <input
-                    type="email"
-                    id="ag-mail"
-                    required
-                    maxLength={256}
-                    placeholder="vorname.nachname@ihre-agentur.de"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-                </div>
-                <div className="ag-field">
-                  <label htmlFor="ag-task">Was soll erledigt werden?</label>
-                  <textarea
-                    id="ag-task"
-                    required
-                    maxLength={4000}
-                    placeholder="Beschreiben Sie die Aufgabe so, wie Sie sie einem neuen Kollegen geben würden: was Sie brauchen, für wen, und in welcher Form Sie es bekommen möchten."
-                    value={task}
-                    onChange={(e) => setTask(e.target.value)}
-                  />
-                  <p className="ag-field-hint">
-                    Vorbefüllt und jederzeit änderbar. Je konkreter die Aufgabe,
-                    desto belastbarer das erste Ergebnis.
+              {taskState === "done" ? (
+                <div className="ag-success">
+                  <b>Ihre Wettbewerbsanalyse läuft.</b>
+                  <p>
+                    Ihr AI-Coworker hat die Aufgabe angenommen und meldet sich
+                    per E-Mail an {email} — in der Regel mit dem Ergebnis in
+                    etwa 15 Minuten. Ihr kostenloser Zugang mit 200 Credits pro
+                    Monat ist damit eingerichtet.
                   </p>
                 </div>
-                <button
-                  type="submit"
-                  className="ag-btn ag-btn-primary ag-btn-lg"
-                  style={{ width: "100%" }}
-                  disabled={taskState === "sending"}
-                >
-                  {taskState === "sending"
-                    ? "Wird gestartet …"
-                    : "Erste Aufgabe kostenlos starten"}
-                </button>
-                {taskState === "error" && (
-                  <p className="ag-error">
-                    Das hat gerade nicht geklappt. Bitte versuchen Sie es noch
-                    einmal, oder schreiben Sie direkt an
-                    hannah@serviceplan-agents.com.
+              ) : (
+                <form onSubmit={handleAnalysisSubmit}>
+                  <p className="ag-picker-label">
+                    Womit Sie starten — und was danach möglich ist:
                   </p>
-                )}
-              </form>
-            )}
+                  <div className="ag-chips">
+                    {TOPICS.map((t) =>
+                      t.available ? (
+                        <span key={t.key} className="ag-chip is-active">
+                          {t.label}
+                        </span>
+                      ) : (
+                        <span key={t.key} className="ag-chip is-locked">
+                          {t.label}
+                          <small>danach</small>
+                        </span>
+                      )
+                    )}
+                  </div>
+                  <p className="ag-picker-hint">
+                    Der kostenlose Einstieg startet mit der Wettbewerbsanalyse.
+                    Alle weiteren Aufgaben beauftragen Sie danach direkt per
+                    E-Mail — so wie in den drei Fällen oben.
+                  </p>
 
-            <div className="ag-form-trust">
-              <span className="ag-badge">Hosting in Deutschland</span>
-              <span className="ag-badge">DSGVO</span>
-              <span className="ag-badge">EU AI Act</span>
-              <span className="ag-badge">
-                Von einer Agentur gebaut. Für Agenturen.
-              </span>
+                  <div className="ag-form-fields">
+                    <div className="ag-field">
+                      <label htmlFor="ag-mail">Ihre Arbeits-E-Mail</label>
+                      <input
+                        type="email"
+                        id="ag-mail"
+                        required
+                        maxLength={256}
+                        placeholder="vorname.nachname@ihre-agentur.de"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                      />
+                    </div>
+                    <div className="ag-field">
+                      <label htmlFor="ag-url">
+                        Website, deren Wettbewerb analysiert werden soll
+                      </label>
+                      <input
+                        type="text"
+                        id="ag-url"
+                        required
+                        maxLength={256}
+                        placeholder="https://ihr-kunde.de"
+                        value={websiteUrl}
+                        onChange={(e) => setWebsiteUrl(e.target.value)}
+                      />
+                      <p className="ag-field-hint">
+                        Ihre eigene Website oder die eines Kunden.
+                      </p>
+                    </div>
+                  </div>
+                  <button
+                    type="submit"
+                    className="ag-btn ag-btn-red ag-btn-lg"
+                    disabled={taskState === "sending"}
+                  >
+                    {taskState === "sending"
+                      ? "Wird gestartet …"
+                      : "Kostenlose Wettbewerbsanalyse starten"}
+                  </button>
+                  {taskState === "error" && (
+                    <p className="ag-error">
+                      Das hat gerade nicht geklappt. Bitte versuchen Sie es noch
+                      einmal, oder buchen Sie unten einen Demo-Termin.
+                    </p>
+                  )}
+                </form>
+              )}
+
+              <div className="ag-form-trust">
+                <span className="ag-badge">Hosting in Deutschland</span>
+                <span className="ag-badge">DSGVO</span>
+                <span className="ag-badge">EU AI Act</span>
+                <span className="ag-badge">
+                  Von einer Agentur gebaut. Für Agenturen.
+                </span>
+              </div>
+              <p className="ag-form-note">
+                Kostenlos starten mit 200 Credits im Monat. Keine Kreditkarte,
+                keine Follow-up-Anrufe.
+              </p>
+              <p className="ag-demo-line ag-demo-line-ondark">
+                Lieber erst sprechen? <a href="#demo">Demo-Termin buchen</a>
+              </p>
             </div>
-            <p className="ag-field-hint" style={{ marginTop: 13 }}>
-              Kostenlos starten mit 250 Credits im Monat. Keine Kreditkarte,
-              keine Follow-up-Anrufe.
-            </p>
-            <p className="ag-demo-line">
-              Lieber erst sprechen? <a href="#demo">Demo-Termin buchen</a>
-            </p>
           </div>
         </div>
       </section>
 
       {/* ===== 5 Preise ===== */}
-      <section id="preise">
+      <section id="preise" className="ag-section">
         <div className="ag-wrap">
-          <div className="ag-head">
+          <div className="ag-head ag-center">
             <p className="ag-eyebrow">Preise</p>
-            <h2>Kostenlos anfangen. Danach ein Paket, das zum Volumen passt.</h2>
+            <h2 className="ag-h2">
+              Kostenlos anfangen. Danach ein Paket, das zum Volumen passt.
+            </h2>
             <p className="ag-lead">
               Jedes Paket enthält ein monatliches Credit-Kontingent. Vor dem
               Start jeder Aufgabe geben Ihnen die Agenten eine Kostenschätzung.
@@ -594,7 +600,7 @@ export default function AgenturenPage() {
               <p className="ag-plan-price">
                 0 €<small> / Monat</small>
               </p>
-              <p className="ag-plan-credits">250 Credits pro Monat*</p>
+              <p className="ag-plan-credits">200 Credits pro Monat*</p>
               <p className="ag-plan-claim">
                 Der Einstieg in die Arbeit mit Marketing-Agenten
               </p>
@@ -661,7 +667,7 @@ export default function AgenturenPage() {
             darunter.
           </p>
 
-          <h3 style={{ marginTop: 44 }}>
+          <h3 className="ag-h3 ag-tbl-heading">
             Was ist der Unterschied zu anderen AI-Lösungen?
           </h3>
           <div className="ag-tbl-scroll">
@@ -747,11 +753,13 @@ export default function AgenturenPage() {
       </section>
 
       {/* ===== 6 Verbreitung ===== */}
-      <section id="kunden">
+      <section id="kunden" className="ag-section ag-section-tight">
         <div className="ag-wrap">
-          <div className="ag-head" style={{ marginBottom: 0 }}>
+          <div className="ag-head ag-center">
             <p className="ag-eyebrow">Verbreitung</p>
-            <h2>Über 500 Unternehmen nutzen Serviceplan Agents.</h2>
+            <h2 className="ag-h2">
+              Über 500 Unternehmen nutzen Serviceplan Agents.
+            </h2>
             <p className="ag-lead">Kein Pilotprojekt mit drei Testkunden.</p>
           </div>
           <a href="#starten" className="ag-backlink">
@@ -761,15 +769,15 @@ export default function AgenturenPage() {
       </section>
 
       {/* ===== 7 Demo-Termin (sekundäre Conversion) ===== */}
-      <section id="demo">
+      <section id="demo" className="ag-section">
         <div className="ag-wrap">
           <div className="ag-demo-box">
             <p className="ag-eyebrow">Lieber sprechen?</p>
-            <h3 style={{ fontSize: "1.55rem" }}>
+            <h3 className="ag-h3 ag-demo-heading">
               No worries: Kein Pitch, keine Folien. Wir arbeiten an einer Ihrer
               Aufgaben.
             </h3>
-            <p className="ag-dim" style={{ marginTop: 10 }}>
+            <p className="ag-dim">
               Sie bringen eine Aufgabe mit, die gerade ansteht. Wir richten sie
               gemeinsam ein. Sie gehen mit dem Ergebnis aus dem Termin.
             </p>
@@ -780,12 +788,14 @@ export default function AgenturenPage() {
               </div>
               <div>
                 <b>Womit Sie rausgehen</b>
-                <span>Sie gehen mit einem konkreten Ergebnis aus dem Termin.</span>
+                <span>
+                  Sie gehen mit einem konkreten Ergebnis aus dem Termin.
+                </span>
               </div>
             </div>
 
             {demoState === "done" ? (
-              <div className="ag-success">
+              <div className="ag-success ag-success-light">
                 <b>Ihre Anfrage ist angekommen.</b>
                 <p>
                   Wir melden uns per E-Mail an {demo.email}, um einen Termin zu
@@ -795,7 +805,7 @@ export default function AgenturenPage() {
             ) : (
               <form onSubmit={handleDemoSubmit}>
                 <div className="ag-demo-fields">
-                  <div className="ag-field">
+                  <div className="ag-field ag-field-light">
                     <label htmlFor="ag-d-name">Name</label>
                     <input
                       type="text"
@@ -809,7 +819,7 @@ export default function AgenturenPage() {
                       }
                     />
                   </div>
-                  <div className="ag-field">
+                  <div className="ag-field ag-field-light">
                     <label htmlFor="ag-d-ag">Agentur</label>
                     <input
                       type="text"
@@ -824,7 +834,7 @@ export default function AgenturenPage() {
                     />
                   </div>
                 </div>
-                <div className="ag-field">
+                <div className="ag-field ag-field-light">
                   <label htmlFor="ag-d-mail">Arbeits-E-Mail</label>
                   <input
                     type="email"
@@ -838,7 +848,7 @@ export default function AgenturenPage() {
                     }
                   />
                 </div>
-                <div className="ag-field">
+                <div className="ag-field ag-field-light">
                   <label htmlFor="ag-d-thema">
                     Worüber möchten Sie sprechen?{" "}
                     <span className="ag-faint">(optional)</span>
@@ -856,8 +866,7 @@ export default function AgenturenPage() {
                 </div>
                 <button
                   type="submit"
-                  className="ag-btn ag-btn-secondary"
-                  style={{ width: "100%" }}
+                  className="ag-btn ag-btn-black ag-btn-lg"
                   disabled={demoState === "sending"}
                 >
                   {demoState === "sending"
@@ -881,11 +890,11 @@ export default function AgenturenPage() {
       </section>
 
       {/* ===== 8 FAQ ===== */}
-      <section id="faq">
-        <div className="ag-wrap">
-          <div className="ag-head">
+      <section id="faq" className="ag-section">
+        <div className="ag-wrap ag-wrap-narrow">
+          <div className="ag-head ag-center">
             <p className="ag-eyebrow">Offene Fragen</p>
-            <h2>Was Agenturen vorher wissen wollen.</h2>
+            <h2 className="ag-h2">Was Agenturen vorher wissen wollen.</h2>
           </div>
 
           {FAQ.map((item, i) => (
@@ -895,8 +904,8 @@ export default function AgenturenPage() {
             </details>
           ))}
 
-          <div style={{ marginTop: 34 }}>
-            <a href="#starten" className="ag-btn ag-btn-primary">
+          <div className="ag-faq-cta">
+            <a href="#starten" className="ag-btn ag-btn-red">
               Erste Aufgabe kostenlos starten
             </a>
             <p className="ag-demo-line">

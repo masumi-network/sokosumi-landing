@@ -16,7 +16,9 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     const { email, website_url } = body;
-    const locale = detectLocale(req);
+    // The /agenturen LP posts source:"agenturen" (German-only page).
+    const source = body.source === "agenturen" ? "agenturen" : "free-analysis";
+    const locale = source === "agenturen" ? "de" : detectLocale(req);
 
     appendSignupRow([
       new Date().toISOString(),
@@ -26,7 +28,7 @@ export async function POST(req: NextRequest) {
       website_url ?? "",
       "",
       locale,
-      "free-analysis",
+      source,
     ]).catch(() => {});
 
     // Submit to elena onboarding

@@ -9,7 +9,7 @@ import "./agenturen.css";
 export const metadata: Metadata = {
   title: "AI-Coworker für Agenturen | Serviceplan Agents",
   description:
-    "Recherche, Analysen, Reportings, interaktive Dashboards. Beauftragung per E-Mail, kein Prompt, keine Einarbeitung. Kostenlos starten mit 250 Credits im Monat.",
+    "Recherche, Analysen, Reportings, interaktive Dashboards. Beauftragung per E-Mail, kein Prompt, keine Einarbeitung. Kostenlos starten mit 200 Credits im Monat.",
   robots: { index: false, follow: false },
 };
 
