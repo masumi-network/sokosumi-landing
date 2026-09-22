@@ -1070,6 +1070,19 @@
 /* ===== Responsive ===== */
 
 @media (max-width: 991px) {
+  /* Das Mobile-Hero-Bild (min-width 610px, scale 1.2) bläht sonst den
+     Textcontainer über den Viewport — Startseiten-Erbe. Hier schrumpft
+     der Container auf Zellbreite und das Bild wird full-bleed geclippt,
+     damit Bullets, Buttons und Badges nicht abgeschnitten werden. */
+  .ag .hero-text-wrap {
+    min-width: 0;
+  }
+
+  .ag .hero-text-wrap .mobile-only {
+    max-width: 100%;
+    overflow: hidden;
+  }
+
   .ag-plans {
     grid-template-columns: repeat(2, 1fr);
   }
