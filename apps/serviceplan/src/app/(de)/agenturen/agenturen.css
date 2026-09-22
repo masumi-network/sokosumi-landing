@@ -204,7 +204,33 @@
 }
 
 .ag-section-tight .ag-head {
-  margin-bottom: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+/* Logo-Wand: nutzt .sp-logo-grid/.sp-logo-item der Startseite */
+.ag-logo-grid {
+  margin-bottom: 1.5rem;
+}
+
+@media (max-width: 991px) {
+  .ag-logo-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 36px 28px;
+    padding: 40px 28px;
+  }
+}
+
+@media (max-width: 767px) {
+  .ag-logo-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px 20px;
+    padding: 28px 20px;
+  }
+
+  .ag-logo-grid.sp-logo-grid .sp-logo-item img {
+    height: 22px;
+    max-width: 100%;
+  }
 }
 
 /* ===== 1 Dunkle Bühne (wie .hero-section-wrapper der Startseite) ===== */
@@ -233,17 +259,16 @@
   padding: 0.5rem 0 2.5rem;
 }
 
-.ag-wordmark {
-  font-family: var(--_serviceplan-styles---bold), Arial, sans-serif;
-  font-size: 1.25rem;
-  letter-spacing: -0.02em;
-  color: #fff;
-  white-space: nowrap;
+/* Das echte Serviceplan-Group-x-sokosumi-Lockup aus der Hauptnavigation */
+.ag-lockup {
+  display: inline-flex;
+  align-items: center;
+  min-width: 0;
 }
 
-.ag-wordmark span {
-  font-family: AvenirLTProLight, Arial, sans-serif;
-  font-weight: 300;
+.ag-lockup svg {
+  width: clamp(230px, 26vw, 340px);
+  height: auto;
 }
 
 .ag-topbar-cta {
@@ -348,39 +373,71 @@
   white-space: nowrap;
 }
 
-/* Icon-Sequenz (Briefing: schlicht, kein Screenshot) */
+/* Hero-Visual: das Agenten-Trio der Startseite über den Farb-Blobs */
 
 .ag-hdr-visual {
   display: flex;
   justify-content: center;
+  align-items: center;
+  min-width: 0;
 }
+
+.ag-hero-img {
+  position: relative;
+  width: 100%;
+  max-width: 34rem;
+}
+
+.ag-hero-blob {
+  position: absolute;
+  inset: -18% -22%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.ag-hero-blob svg {
+  width: 100%;
+  height: 100%;
+}
+
+.ag-agents-img {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Icon-Sequenz (Briefing: schlicht, kein Screenshot) — als Zeile unter dem Hero */
 
 .ag-seq {
   display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  align-items: stretch;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 2.5rem;
 }
 
 .ag-seq-node {
   display: flex;
   align-items: center;
-  gap: 0.9rem;
+  gap: 0.7rem;
   background: rgba(16, 16, 16, 0.35);
   border: 1px solid rgba(255, 255, 255, 0.16);
-  border-radius: var(--_serviceplan-styles---20px);
+  border-radius: 999px;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   color: #fff;
   font-family: var(--_serviceplan-styles---demi);
-  font-size: 1rem;
-  padding: 1.1rem 1.5rem;
-  min-width: 17rem;
+  font-size: 0.9375rem;
+  padding: 0.7rem 1.25rem;
+  white-space: nowrap;
 }
 
 .ag-seq-node svg {
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 1.25rem;
+  height: 1.25rem;
   stroke: var(--base-color-brand--red);
   fill: none;
   stroke-width: 1.6;
@@ -391,9 +448,7 @@
 
 .ag-seq-arrow {
   color: rgba(255, 255, 255, 0.55);
-  text-align: center;
   font-size: 1.1rem;
-  transform: rotate(90deg);
   line-height: 1;
 }
 
@@ -480,13 +535,52 @@
   border-bottom: 1px solid var(--base-color-neutral--neutral-lightest);
 }
 
+.ag-case-topline {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.6rem;
+}
+
 .ag-case-num {
   font-family: var(--_serviceplan-styles---regular);
   color: var(--base-color-brand--red);
   text-transform: uppercase;
   letter-spacing: 0.1em;
   font-size: 0.8125rem;
-  margin: 0 0 0.6rem;
+  margin: 0;
+}
+
+.ag-case-topline .ag-case-num {
+  padding-top: 0.35rem;
+}
+
+.ag-case-agents {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.ag-case-agents img {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+.ag-case-agents img + img {
+  margin-left: -0.55rem;
+}
+
+.ag-case-agents small {
+  margin-left: 0.5rem;
+  font-size: 0.75rem;
+  color: var(--base-color-brand--text-light);
+  font-family: var(--_serviceplan-styles---demi);
+  white-space: nowrap;
 }
 
 .ag-case-benefit {
@@ -744,11 +838,26 @@
   color: rgba(255, 255, 255, 0.8);
 }
 
+/* Trust-Logos der Startseite (weiß/grau, für dunklen Grund gebaut) */
+.ag-trust-logos {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.25rem 1.75rem;
+  margin-top: 2rem;
+}
+
+.ag-trust-logos img {
+  height: 1.125rem;
+  width: auto;
+  opacity: 0.85;
+}
+
 .ag-form-trust {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  margin-top: 1.75rem;
+  margin-top: 1rem;
 }
 
 .ag-form-note {
@@ -1100,6 +1209,15 @@
   }
 
   .ag-navlink {
+    display: none;
+  }
+
+  .ag-lockup svg {
+    width: 180px;
+  }
+
+  /* Briefing: kein Visual im Header auf Mobile — gilt auch für die Sequenz */
+  .ag-seq {
     display: none;
   }
 

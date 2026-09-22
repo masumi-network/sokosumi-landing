@@ -2,6 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import { submitAgenturenAnalysis, sendDemoNotification } from "@/lib/submitForm";
+import SpLogo from "@/components/SpLogo";
 
 /* Copy: Textmanuskript v3 (2026-09-02) + LP-Briefing (advalyze, 2026-09-01).
    "Sokosumi" bleibt gemäß Manuskript-Regel und LP-Briefing draußen.
@@ -19,6 +20,33 @@ const TOPICS = [
   { key: "geo", label: "GEO- & KI-Sichtbarkeit", available: false },
   { key: "content", label: "Content- & Social-Media-Audit", available: false },
 ] as const;
+
+/* Dieselbe Logo-Wand wie auf der Startseite (Companies.tsx) — dort bereits
+   öffentlich, also freigegeben. */
+const COMPANY_LOGOS = [
+  { name: "Allianz", src: "/images/logos/allianz.svg" },
+  { name: "BVG", src: "/images/logos/bvg.svg" },
+  { name: "Ströer", src: "/images/logos/stroer.svg" },
+  { name: "Pfisterer", src: "/images/logos/pfisterer.svg" },
+  { name: "Deutsche Telekom", src: "/images/logos/telekom.svg" },
+  { name: "Cardano Foundation", src: "/images/logos/cardano-foundation.svg" },
+  { name: "Serviceplan Group", src: "/images/logos/serviceplan-group.svg" },
+  { name: "Ravensburger", src: "/images/logos/ravensburger.svg" },
+  { name: "Lufthansa", src: "/images/logos/lufthansa.svg" },
+  { name: "OMR", src: "/images/logos/omr.svg" },
+  { name: "Lünendonk", src: "/images/logos/lunendonk.svg" },
+  { name: "Vion Food Group", src: "/images/logos/vion-food.svg" },
+  { name: "NMKR", src: "/images/logos/nmkr.svg" },
+  { name: "Input Output", src: "/images/logos/iohk.svg" },
+  { name: "Bizzlogic", src: "/images/logos/bizzlogic.svg" },
+  { name: "Emurgo", src: "/images/logos/emurgo.svg" },
+  { name: "TDK", src: "/images/logos/tdk.svg" },
+  { name: "ARD", src: "/images/logos/ard.svg" },
+  { name: "B/S/H/", src: "/images/logos/bsh.svg" },
+  { name: "Golden Touch", src: "/images/logos/golden-touch.svg" },
+  { name: "dpa", src: "/images/logos/dpa.svg" },
+  { name: "Samsung", src: "/images/logos/samsung.svg" },
+];
 
 const FAQ: { q: string; a: string }[] = [
   {
@@ -128,8 +156,8 @@ export default function AgenturenPage() {
       <div className="ag-stage">
         <div className="ag-stage-inner">
           <div className="ag-topbar">
-            <span className="ag-wordmark">
-              Serviceplan <span>Agents</span>
+            <span className="ag-lockup" aria-label="Serviceplan Group x sokosumi">
+              <SpLogo />
             </span>
             <div className="ag-topbar-cta">
               <a href="#demo" className="ag-navlink">
@@ -182,32 +210,68 @@ export default function AgenturenPage() {
               </div>
 
               <div className="ag-hdr-visual" aria-hidden="true">
-                <div className="ag-seq">
-                  <div className="ag-seq-node">
-                    <svg viewBox="0 0 24 24">
-                      <rect x="3" y="5" width="18" height="14" />
-                      <path d="M3 7l9 6 9-6" />
+                <div className="ag-hero-img">
+                  <div className="ag-hero-blob">
+                    <svg viewBox="0 0 1273 970" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <g filter="url(#ag_blob_green)">
+                        <circle cx="915.243" cy="638.244" r="238.301" transform="rotate(57.6859 915.243 638.244)" fill="#8FC49F" />
+                      </g>
+                      <g filter="url(#ag_blob_red)">
+                        <circle cx="500.467" cy="500.467" r="252.234" transform="rotate(57.6859 500.467 500.467)" fill="url(#ag_blob_red_grad)" />
+                      </g>
+                      <defs>
+                        <filter id="ag_blob_green" x="428.712" y="151.712" width="973.064" height="973.063" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
+                          <feFlood floodOpacity="0" result="BackgroundImageFix" />
+                          <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
+                          <feGaussianBlur stdDeviation="124.1" result="effect1_foregroundBlur" />
+                        </filter>
+                        <filter id="ag_blob_red" x="0" y="0" width="1000.93" height="1000.93" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
+                          <feFlood floodOpacity="0" result="BackgroundImageFix" />
+                          <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
+                          <feGaussianBlur stdDeviation="124.1" result="effect1_foregroundBlur" />
+                        </filter>
+                        <linearGradient id="ag_blob_red_grad" x1="406.101" y1="282.331" x2="616.487" y2="968.052" gradientUnits="userSpaceOnUse">
+                          <stop stopColor="#FF9194" />
+                          <stop offset="1" stopColor="#FF4B4F" />
+                        </linearGradient>
+                      </defs>
                     </svg>
-                    Aufgabe per Mail
                   </div>
-                  <div className="ag-seq-arrow">→</div>
-                  <div className="ag-seq-node">
-                    <svg viewBox="0 0 24 24">
-                      <circle cx="12" cy="8" r="3.5" />
-                      <path d="M5 20c1.2-3.4 3.9-5 7-5s5.8 1.6 7 5" />
-                    </svg>
-                    AI-Coworker arbeitet
-                  </div>
-                  <div className="ag-seq-arrow">→</div>
-                  <div className="ag-seq-node">
-                    <svg viewBox="0 0 24 24">
-                      <path d="M6 3h8l4 4v14H6z" />
-                      <path d="M14 3v4h4" />
-                      <path d="M9 13h6M9 16h6" />
-                    </svg>
-                    Ergebnis im Postfach
-                  </div>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src="/images/agents.webp"
+                    alt=""
+                    loading="eager"
+                    className="ag-agents-img"
+                  />
                 </div>
+              </div>
+            </div>
+
+            <div className="ag-seq" aria-hidden="true">
+              <div className="ag-seq-node">
+                <svg viewBox="0 0 24 24">
+                  <rect x="3" y="5" width="18" height="14" />
+                  <path d="M3 7l9 6 9-6" />
+                </svg>
+                Aufgabe per Mail
+              </div>
+              <div className="ag-seq-arrow">→</div>
+              <div className="ag-seq-node">
+                <svg viewBox="0 0 24 24">
+                  <circle cx="12" cy="8" r="3.5" />
+                  <path d="M5 20c1.2-3.4 3.9-5 7-5s5.8 1.6 7 5" />
+                </svg>
+                AI-Coworker arbeitet
+              </div>
+              <div className="ag-seq-arrow">→</div>
+              <div className="ag-seq-node">
+                <svg viewBox="0 0 24 24">
+                  <path d="M6 3h8l4 4v14H6z" />
+                  <path d="M14 3v4h4" />
+                  <path d="M9 13h6M9 16h6" />
+                </svg>
+                Ergebnis im Postfach
               </div>
             </div>
           </section>
@@ -250,7 +314,16 @@ export default function AgenturenPage() {
             {/* Fall 1 */}
             <article className="ag-case">
               <div className="ag-case-head">
-                <p className="ag-case-num">Fall 1: Pitch-Vorbereitung</p>
+                <div className="ag-case-topline">
+                  <p className="ag-case-num">Fall 1: Pitch-Vorbereitung</p>
+                  <span className="ag-case-agents">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src="/images/user-image.png" alt="Hannah" />
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src="/images/elena.png" alt="Elena" />
+                    <small>Hannah → Elena</small>
+                  </span>
+                </div>
                 <h3 className="ag-h3">Die komplette Recherche fürs Pitch-Deck</h3>
                 <p className="ag-case-benefit">
                   Ein Auftrag: Wettbewerbsanalyse, Zielgruppe und strategische
@@ -322,7 +395,14 @@ export default function AgenturenPage() {
             {/* Fall 2 */}
             <article className="ag-case">
               <div className="ag-case-head">
-                <p className="ag-case-num">Fall 2: Die Anfrage zwischendurch</p>
+                <div className="ag-case-topline">
+                  <p className="ag-case-num">Fall 2: Die Anfrage zwischendurch</p>
+                  <span className="ag-case-agents">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src="/images/user-image.png" alt="Hannah" />
+                    <small>Hannah</small>
+                  </span>
+                </div>
                 <h3 className="ag-h3">
                   Das Wettbewerbs-Update, das der Kunde nebenbei erwartet
                 </h3>
@@ -390,7 +470,14 @@ export default function AgenturenPage() {
             {/* Fall 3 */}
             <article className="ag-case">
               <div className="ag-case-head">
-                <p className="ag-case-num">Fall 3: Quick Dashboard</p>
+                <div className="ag-case-topline">
+                  <p className="ag-case-num">Fall 3: Quick Dashboard</p>
+                  <span className="ag-case-agents">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src="/images/alex-2.png" alt="Alex" />
+                    <small>Alex</small>
+                  </span>
+                </div>
                 <h3 className="ag-h3">
                   Das Reporting-Dashboard für den monatlichen Jour Fixe
                 </h3>
@@ -560,10 +647,17 @@ export default function AgenturenPage() {
                 </form>
               )}
 
+              <div className="ag-trust-logos">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/images/trust-serviceplan-group.svg" alt="Serviceplan Group" />
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/images/trust-microsoft-azure.svg" alt="Microsoft Azure — Hosting in Deutschland" />
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/images/trust-gdpr-compliant.svg" alt="DSGVO-konform" />
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/images/trust-eu-ai-act.svg" alt="EU AI Act" />
+              </div>
               <div className="ag-form-trust">
-                <span className="ag-badge">Hosting in Deutschland</span>
-                <span className="ag-badge">DSGVO</span>
-                <span className="ag-badge">EU AI Act</span>
                 <span className="ag-badge">
                   Von einer Agentur gebaut. Für Agenturen.
                 </span>
@@ -761,6 +855,14 @@ export default function AgenturenPage() {
               Über 500 Unternehmen nutzen Serviceplan Agents.
             </h2>
             <p className="ag-lead">Kein Pilotprojekt mit drei Testkunden.</p>
+          </div>
+          <div className="sp-logo-grid ag-logo-grid">
+            {COMPANY_LOGOS.map((logo) => (
+              <div key={logo.name} className="sp-logo-item">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={logo.src} alt={logo.name} loading="lazy" />
+              </div>
+            ))}
           </div>
           <a href="#starten" className="ag-backlink">
             Zurück zum Formular: kostenlos starten
