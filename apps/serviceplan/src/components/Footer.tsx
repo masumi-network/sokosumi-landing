@@ -21,6 +21,20 @@ export default function Footer({ locale = "en" }: { locale?: Locale }) {
                 <div className="fiiter-link-header">{tt.column1Header}</div>
                 <div className="spacer-large"></div>
                 {FOOTER_PRODUCT.map(link)}
+                {/* Audience-LPs: bewusst nicht in ROUTES (noindex, kein
+                    Sitemap-/hreflang-Eintrag), deshalb direkt verlinkt. */}
+                <a
+                  href={locale === "de" ? "/de/agencies" : "/agencies"}
+                  className="footer-links"
+                >
+                  {locale === "de" ? "Für Agenturen" : "For agencies"}
+                </a>
+                <a
+                  href={locale === "de" ? "/de/enterprise" : "/enterprise"}
+                  className="footer-links"
+                >
+                  {locale === "de" ? "Für Unternehmen" : "For enterprises"}
+                </a>
                 <a href={`${home}#pricing`} className="footer-links">
                   {tt.pricing}
                 </a>
