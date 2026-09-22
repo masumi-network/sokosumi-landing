@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import AgenturenPage from "@/components/agenturen/AgenturenPage";
-import "./agenturen.css";
+import LpPage from "@/components/lp/LpPage";
+import { agenciesDe } from "@/components/lp/content-agencies";
+import "@/components/lp/lp.css";
 
-/* Meta-Ads-Landingpage "Für Agenturen" (deutsch, ohne EN-Zwilling).
-   noindex: Die Seite ist für Kampagnen-Traffic gebaut und hängt nicht im
-   SEO-Gefüge der Website (kein Sitemap-Eintrag, keine hreflang-Alternates). */
+/* Meta-Ads-Landingpage "Für Agenturen" (deutsch). noindex: für
+   Kampagnen-Traffic gebaut, kein Sitemap-Eintrag, keine hreflang-Alternates. */
 
 export const metadata: Metadata = {
   title: "AI-Coworker für Agenturen | Serviceplan Agents",
@@ -14,5 +14,5 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  return <AgenturenPage />;
+  return <LpPage content={agenciesDe} />;
 }

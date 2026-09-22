@@ -23,7 +23,12 @@ function detectLocale(req: NextRequest): string {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const locale = body.source === "agenturen" ? "de" : detectLocale(req);
+    const locale =
+      body.locale === "de" || body.locale === "en"
+        ? body.locale
+        : body.source === "agenturen"
+          ? "de"
+          : detectLocale(req);
 
     appendSignupRow([
       new Date().toISOString(),
@@ -36,8 +41,13 @@ export async function POST(req: NextRequest) {
       body.source ?? "request-a-demo",
     ]).catch(() => {});
 
-    // On the /agenturen LP the second field is the agency name, not a URL.
-    const websiteLabel = body.source === "agenturen" ? "Agentur" : "Website";
+    // On the audience LPs the second field is an organization name, not a URL.
+    const websiteLabel =
+      body.source === "agenturen" || body.source === "agencies"
+        ? "Agency"
+        : body.source === "enterprise"
+          ? "Company"
+          : "Website";
     const rows: [string, string][] = [
       ["Name", body.name ?? ""],
       ["Email", body.email ?? ""],

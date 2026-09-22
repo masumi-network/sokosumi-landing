@@ -289,6 +289,11 @@
   opacity: 1;
 }
 
+.ag-langlink {
+  opacity: 0.55;
+  letter-spacing: 0.06em;
+}
+
 .ag-header {
   max-width: 84rem;
   margin: 0 auto;
@@ -1212,8 +1217,13 @@
     display: none;
   }
 
+  /* Der Sprachwechsel bleibt auch auf dem Telefon erreichbar */
+  .ag-navlink.ag-langlink {
+    display: inline;
+  }
+
   .ag-lockup svg {
-    width: 180px;
+    width: 168px;
   }
 
   /* Briefing: kein Visual im Header auf Mobile — gilt auch für die Sequenz */

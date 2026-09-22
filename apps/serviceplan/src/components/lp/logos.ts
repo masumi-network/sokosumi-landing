@@ -1,0 +1,26 @@
+/* Dieselbe Logo-Wand wie auf der Startseite (Companies.tsx) — dort bereits
+   öffentlich, also freigegeben. */
+export const COMPANY_LOGOS = [
+  { name: "Allianz", src: "/images/logos/allianz.svg" },
+  { name: "BVG", src: "/images/logos/bvg.svg" },
+  { name: "Ströer", src: "/images/logos/stroer.svg" },
+  { name: "Pfisterer", src: "/images/logos/pfisterer.svg" },
+  { name: "Deutsche Telekom", src: "/images/logos/telekom.svg" },
+  { name: "Cardano Foundation", src: "/images/logos/cardano-foundation.svg" },
+  { name: "Serviceplan Group", src: "/images/logos/serviceplan-group.svg" },
+  { name: "Ravensburger", src: "/images/logos/ravensburger.svg" },
+  { name: "Lufthansa", src: "/images/logos/lufthansa.svg" },
+  { name: "OMR", src: "/images/logos/omr.svg" },
+  { name: "Lünendonk", src: "/images/logos/lunendonk.svg" },
+  { name: "Vion Food Group", src: "/images/logos/vion-food.svg" },
+  { name: "NMKR", src: "/images/logos/nmkr.svg" },
+  { name: "Input Output", src: "/images/logos/iohk.svg" },
+  { name: "Bizzlogic", src: "/images/logos/bizzlogic.svg" },
+  { name: "Emurgo", src: "/images/logos/emurgo.svg" },
+  { name: "TDK", src: "/images/logos/tdk.svg" },
+  { name: "ARD", src: "/images/logos/ard.svg" },
+  { name: "B/S/H/", src: "/images/logos/bsh.svg" },
+  { name: "Golden Touch", src: "/images/logos/golden-touch.svg" },
+  { name: "dpa", src: "/images/logos/dpa.svg" },
+  { name: "Samsung", src: "/images/logos/samsung.svg" },
+];

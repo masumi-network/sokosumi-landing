@@ -16,9 +16,15 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     const { email, website_url } = body;
-    // The /agenturen LP posts source:"agenturen" (German-only page).
-    const source = body.source === "agenturen" ? "agenturen" : "free-analysis";
-    const locale = source === "agenturen" ? "de" : detectLocale(req);
+    // The audience LPs (/agencies, /enterprise) post their source and locale.
+    const LP_SOURCES = new Set(["agenturen", "agencies", "enterprise"]);
+    const source = LP_SOURCES.has(body.source) ? body.source : "free-analysis";
+    const locale =
+      body.locale === "de" || body.locale === "en"
+        ? body.locale
+        : source === "agenturen"
+          ? "de"
+          : detectLocale(req);
 
     appendSignupRow([
       new Date().toISOString(),
