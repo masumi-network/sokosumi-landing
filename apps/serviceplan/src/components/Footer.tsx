@@ -88,6 +88,9 @@ export default function Footer({ locale = "en" }: { locale?: Locale }) {
                 >
                   {tt.cookiePolicy}
                 </a>
+                <a href="#" data-cc-open className="footer-links">
+                  {locale === "de" ? "Cookie-Einstellungen" : "Cookie settings"}
+                </a>
                 <a
                   href="https://www.house-of-communication.com/de/en/brands/plan-net/landingpages/agentic-services/legal-ai-coworkers.html"
                   target="_blank"
