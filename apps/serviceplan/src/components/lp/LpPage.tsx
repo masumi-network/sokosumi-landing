@@ -82,9 +82,13 @@ export default function LpPage({ content: c }: { content: LpContent }) {
       <div className="ag-stage">
         <div className="ag-stage-inner">
           <div className="ag-topbar">
-            <span className="ag-lockup" aria-label="Serviceplan Group x sokosumi">
+            <a
+              href={c.locale === "de" ? "/de" : "/"}
+              className="ag-lockup"
+              aria-label="Serviceplan Agents Startseite"
+            >
               <SpLogo />
-            </span>
+            </a>
             <div className="ag-topbar-cta">
               <a href={c.paths[otherLocale]} className="ag-navlink ag-langlink">
                 {otherLocale.toUpperCase()}
