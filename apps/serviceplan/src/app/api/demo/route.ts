@@ -25,8 +25,11 @@ export async function POST(req: NextRequest) {
       body.websiteUrl ?? "",
       body.category ?? "",
       locale,
-      "request-a-demo",
+      body.source ?? "request-a-demo",
     ]).catch(() => {});
+
+    // On the /agenturen LP the second field is the agency name, not a URL.
+    const websiteLabel = body.source === "agenturen" ? "Agentur" : "Website";
 
     const res = await fetch(INBOUND_API_URL, {
       method: "POST",
@@ -43,10 +46,10 @@ export async function POST(req: NextRequest) {
 <table style="border-collapse:collapse;width:100%;max-width:500px;">
 <tr><td style="padding:8px;font-weight:bold;">Name</td><td style="padding:8px;">${body.name}</td></tr>
 <tr><td style="padding:8px;font-weight:bold;">Email</td><td style="padding:8px;">${body.email}</td></tr>
-<tr><td style="padding:8px;font-weight:bold;">Website</td><td style="padding:8px;">${body.websiteUrl}</td></tr>
+<tr><td style="padding:8px;font-weight:bold;">${websiteLabel}</td><td style="padding:8px;">${body.websiteUrl}</td></tr>
 <tr><td style="padding:8px;font-weight:bold;">Support Area</td><td style="padding:8px;">${body.category}</td></tr>
 </table>`,
-        text: `New Demo Request\n\nName: ${body.name}\nEmail: ${body.email}\nWebsite: ${body.websiteUrl}\nSupport Area: ${body.category}`,
+        text: `New Demo Request\n\nName: ${body.name}\nEmail: ${body.email}\n${websiteLabel}: ${body.websiteUrl}\nSupport Area: ${body.category}`,
       }),
     });
     const data = await res.json();

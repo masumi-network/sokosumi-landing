@@ -27,11 +27,32 @@ export async function submitAnalysisForm(
   }
 }
 
+/** Primary conversion of the /agenturen ads LP: a started task. */
+export async function submitTaskForm(
+  email: string,
+  task: string,
+  topic: string
+): Promise<boolean> {
+  try {
+    const res = await fetch("/api/task", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, task, topic }),
+    });
+    const data = await res.json();
+    if (data.ok) pushDataLayerEvent("task_start_request");
+    return data.ok;
+  } catch {
+    return false;
+  }
+}
+
 export async function sendDemoNotification(formData: {
   name: string;
   email: string;
   websiteUrl: string;
   category: string;
+  source?: string;
 }): Promise<boolean> {
   try {
     const res = await fetch("/api/demo", {
