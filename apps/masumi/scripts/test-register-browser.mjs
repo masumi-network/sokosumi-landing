@@ -1,4 +1,4 @@
-// Run the Masumi app locally on port 3109 with register.env.example first.
+// Run the Masumi app locally on port 3001 with register.env.example first.
 // All registration API requests are mocked; other external requests are blocked.
 // REGISTER_CHROMIUM_PATH may select an existing local Chromium installation.
 import { mkdirSync } from 'node:fs';
@@ -21,14 +21,14 @@ await context.route('**/*',async route=>{
   else throw new Error('Unexpected API '+suffix);
   return route.fulfill({json:body});
  }
- if(url.origin==='http://127.0.0.1:3109') return route.continue();
+ if(url.origin==='http://127.0.0.1:3001') return route.continue();
  return route.abort();
 });
 const page=await context.newPage(); page.setDefaultTimeout(10000);
 
 const errors=[];page.on('pageerror',e=>errors.push(e.message));
 const ready=page.waitForResponse(r=>r.url().endsWith('/register/capabilities'));
-await page.goto('http://127.0.0.1:3109/register',{waitUntil:'domcontentloaded'}); await ready;
+await page.goto('http://127.0.0.1:3001/register',{waitUntil:'domcontentloaded'}); await ready;
 await page.getByRole('button',{name:'Next',exact:true}).click();
 await page.getByRole('alert').filter({hasText:'Name is required.'}).waitFor();
 await page.getByLabel('Name',{exact:true}).fill('Fixture');
@@ -75,15 +75,15 @@ assert.equal(completeBodies[0].mint.destination,'managed');
 assert.equal(polls,2);
 assert.equal(new URL(page.url()).searchParams.has('pollToken'),false);
 await page.evaluate(()=>scrollTo(0,0));  await page.screenshot({path:'.review-evidence/mobile-success.png',fullPage:true});
-await page.goto('http://127.0.0.1:3109/register/success');
+await page.goto('http://127.0.0.1:3001/register/success');
 assert.equal(await page.getByText('Your agent is registered',{exact:true}).count(),0);
-await page.goto('http://127.0.0.1:3109/register/success?draftId=missing');
+await page.goto('http://127.0.0.1:3001/register/success?draftId=missing');
 await page.getByText('Registration session expired',{exact:true}).waitFor();
 assert.equal(polls,2);
 
 mode='dynamic';
 const readyAgain=page.waitForResponse(r=>r.url().endsWith('/register/capabilities'));
-await page.goto('http://127.0.0.1:3109/register'); await readyAgain;
+await page.goto('http://127.0.0.1:3001/register'); await readyAgain;
 await page.getByLabel('Name',{exact:true}).fill('Fixture');
 await page.getByLabel('Email',{exact:true}).fill('fixture@example.test');
 await page.getByRole('checkbox').check();
@@ -101,16 +101,16 @@ assert.equal('payment' in completeBodies[1],false);
 console.log('Dynamic registration without payment passed');
 mode='transient'; polls=0;
 await page.evaluate(()=>sessionStorage.setItem('masumi:network-reg-poll:fixture-draft','fixture-poll'));
-await page.goto('http://127.0.0.1:3109/register/success?draftId=fixture-draft&agentName=Fixture+agent');
+await page.goto('http://127.0.0.1:3001/register/success?draftId=fixture-draft&agentName=Fixture+agent');
 await page.getByText('Could not confirm registration',{exact:true}).waitFor({timeout:20000});
 assert.equal(polls,3);
 await page.waitForTimeout(5500); assert.equal(polls,3);
 console.log('Non-JSON 503 retries terminate after three failures');
 mode='endless'; polls=0;
 const pendingResponse=page.waitForResponse(r=>r.url().endsWith('/register/status'));
-await page.goto('http://127.0.0.1:3109/register/success?draftId=fixture-draft&agentName=Fixture+agent');
+await page.goto('http://127.0.0.1:3001/register/success?draftId=fixture-draft&agentName=Fixture+agent');
 await pendingResponse;
-await page.goto('http://127.0.0.1:3109/register');
+await page.goto('http://127.0.0.1:3001/register');
 const before=polls; await page.waitForTimeout(5500); assert.equal(polls,before);
 console.log('Polling stops after unmount');
 assert.deepEqual(errors,[]);

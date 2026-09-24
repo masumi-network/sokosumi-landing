@@ -10,11 +10,11 @@ const dryRun = process.argv.includes("--dry-run");
 
 const payload = {
   redirect_uris: [
-    "http://localhost:3109/api/learn/auth/callback",
+    "http://localhost:3001/api/learn/auth/callback",
     "https://www.masumi.network/api/learn/auth/callback",
   ],
   post_logout_redirect_uris: [
-    "http://localhost:3109/learn",
+    "http://localhost:3001/learn",
     "https://www.masumi.network/learn",
   ],
   scope: "openid",
