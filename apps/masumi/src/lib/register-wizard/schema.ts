@@ -16,7 +16,6 @@ export const registerWizardSchema = z.object({
   description: z.string(),
   apiBaseUrl: z.string(),
   capabilityTags: z.string(),
-  cardanoPayoutAddress: z.string(),
   includeX402: z.boolean(),
   x402: z.custom<X402PaymentDraft>(),
 });
@@ -35,28 +34,9 @@ export function createRegisterWizardDefaultValues(
     description: "",
     apiBaseUrl: "",
     capabilityTags: "",
-    cardanoPayoutAddress: "",
     includeX402: false,
     x402: emptyX402PaymentDraft(defaultChain),
   };
-}
-
-function cardanoPayoutAddressError(
-  network: "Preprod" | "Mainnet",
-): string {
-  return network === "Mainnet"
-    ? "Enter a Mainnet Cardano address (addr1…)."
-    : "Enter a Preprod Cardano address (addr_test…).";
-}
-
-function isValidCardanoPayoutAddress(
-  address: string,
-  network: "Preprod" | "Mainnet",
-): boolean {
-  const trimmed = address.trim();
-  if (!trimmed) return false;
-  if (network === "Preprod") return trimmed.startsWith("addr_test");
-  return trimmed.startsWith("addr1");
 }
 
 export const accountStepSchema = z.object({
@@ -67,51 +47,30 @@ export const accountStepSchema = z.object({
   }),
 });
 
-export function createAgentStepSchema(cardanoNetwork: "Preprod" | "Mainnet") {
-  return z
-    .object({
-      agentName: z.string().trim().min(1, "Agent name is required.").max(250),
-      description: z.string().trim().max(250, "Use at most 250 characters."),
-      apiBaseUrl: z.httpUrl("Enter a valid HTTP or HTTPS API URL.").trim(),
-      capabilityTags: z.string().trim().min(1, "Add at least one tag."),
-      cardanoPayoutAddress: z
-        .string()
-        .trim()
-        .min(1, "Cardano payout address is required."),
-      includeX402: z.boolean(),
-      x402: z.custom<X402PaymentDraft>(),
-    })
-    .superRefine((values, ctx) => {
-      if (
-        !isValidCardanoPayoutAddress(
-          values.cardanoPayoutAddress,
-          cardanoNetwork,
-        )
-      ) {
+export const agentStepSchema = z
+  .object({
+    agentName: z.string().trim().min(1, "Agent name is required.").max(250),
+    description: z.string().trim().max(250, "Use at most 250 characters."),
+    apiBaseUrl: z.httpUrl("Enter a valid HTTP or HTTPS API URL.").trim(),
+    capabilityTags: z.string().trim().min(1, "Add at least one tag."),
+    includeX402: z.boolean(),
+    x402: z.custom<X402PaymentDraft>(),
+  })
+  .superRefine((values, ctx) => {
+    if (!values.includeX402) return;
+    const result = x402PaymentDraftSchema.safeParse(values.x402);
+    if (result.success) return;
+    for (const issue of result.error.issues) {
+      const key = issue.path[0];
+      if (typeof key === "string") {
         ctx.addIssue({
           code: "custom",
-          message: cardanoPayoutAddressError(cardanoNetwork),
-          path: ["cardanoPayoutAddress"],
+          message: issue.message,
+          path: ["x402", key],
         });
       }
-      if (!values.includeX402) return;
-      const result = x402PaymentDraftSchema.safeParse(values.x402);
-      if (result.success) return;
-      for (const issue of result.error.issues) {
-        const key = issue.path[0];
-        if (typeof key === "string") {
-          ctx.addIssue({
-            code: "custom",
-            message: issue.message,
-            path: ["x402", key],
-          });
-        }
-      }
-    });
-}
-
-/** Preprod-shaped schema for scripts that do not pass a network. */
-export const agentStepSchema = createAgentStepSchema("Preprod");
+    }
+  });
 
 export function applyZodErrors(
   error: z.ZodError,
