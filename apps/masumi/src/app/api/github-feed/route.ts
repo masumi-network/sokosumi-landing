@@ -1,7 +1,23 @@
 import { NextResponse } from "next/server";
+import { getNetworkConfig } from "@/lib/network-config";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
+
+// Serve real data from the production backend when this instance has no
+// GitHub token (e.g. local dev) or GitHub errors — mirrors the explorer
+// data routes, which proxy `proxyBase` when there is no local data.
+async function proxyGithubFeed(): Promise<NextResponse | null> {
+  const base = getNetworkConfig("mainnet").proxyBase;
+  if (!base) return null;
+  try {
+    const res = await fetch(`${base}/api/github-feed`);
+    if (res.ok) return NextResponse.json(await res.json());
+  } catch {
+    /* fall through */
+  }
+  return null;
+}
 
 const ORG = "masumi-network";
 // How many repos to pull in total. Org currently has ~40 public repos;
@@ -356,6 +372,12 @@ export async function GET() {
     return NextResponse.json(cache.data);
   }
 
+  // No token locally → GitHub blocks us; serve the production backend's feed.
+  if (!process.env.GITHUB_TOKEN) {
+    const proxied = await proxyGithubFeed();
+    if (proxied) return proxied;
+  }
+
   if (!inflight) {
     inflight = buildFeed()
       .then((data) => {
@@ -372,6 +394,8 @@ export async function GET() {
     return NextResponse.json(data);
   } catch (e) {
     if (cache) return NextResponse.json(cache.data, { headers: { "x-cache-stale": "true" } });
+    const proxied = await proxyGithubFeed();
+    if (proxied) return proxied;
     const message = e instanceof Error ? e.message : "Failed to fetch GitHub feed";
     return NextResponse.json({ error: message }, { status: 502 });
   }

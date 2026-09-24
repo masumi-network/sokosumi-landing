@@ -1,5 +1,5 @@
 import { hasData, getTotalVolume, getDb } from "@/lib/explorer-db";
-import { parseNetworkParam } from "@/lib/network-config";
+import { parseNetworkParam, getNetworkConfig } from "@/lib/network-config";
 import { NextRequest } from "next/server";
 
 export const dynamic = "force-dynamic";
@@ -9,6 +9,16 @@ export async function GET(req: NextRequest) {
     const network = parseNetworkParam(req.nextUrl.searchParams);
 
     if (!hasData(network)) {
+      // No local data (e.g. local dev) → serve the production backend's stats.
+      const base = getNetworkConfig(network).proxyBase;
+      if (base) {
+        try {
+          const res = await fetch(`${base}/api/masumi-stats?network=${network}`);
+          if (res.ok) return Response.json(await res.json());
+        } catch {
+          /* fall through */
+        }
+      }
       return Response.json({ error: "No data available" }, { status: 503 });
     }
 
