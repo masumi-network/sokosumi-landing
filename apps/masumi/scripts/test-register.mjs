@@ -40,8 +40,7 @@ for (const change of [{ amount: "00" }, { decimals: "" }, { decimals: "256" }, {
   assert.equal(x402PaymentDraftSchema.safeParse({ ...payment, ...change }).success, false);
 }
 const { agentStepSchema, accountStepSchema } = load("lib/register-wizard/schema.ts");
-const agent = { agentName: "Fixture", description: "", apiBaseUrl: "https://example.test", capabilityTags: "research", cardanoPayoutAddress: "addr_test1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq", includeX402: false, x402: {} };
-assert.equal(agentStepSchema.safeParse({ ...agent, cardanoPayoutAddress: "addr1qqqq" }).success, false);
+const agent = { agentName: "Fixture", description: "", apiBaseUrl: "https://example.test", capabilityTags: "research", includeX402: false, x402: {} };
 assert.equal(agentStepSchema.safeParse(agent).success, true);
 assert.equal(agentStepSchema.safeParse({ ...agent, includeX402: true }).success, false);
 assert.equal(agentStepSchema.safeParse({ ...agent, description: "x".repeat(251) }).success, false);
