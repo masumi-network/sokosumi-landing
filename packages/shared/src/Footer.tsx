@@ -79,7 +79,7 @@ export default function Footer({ product = "sokosumi" }: { product?: "sokosumi" 
                 <h3 className={headingCls}>Protocol</h3>
                 <ul className={listCls}>
                   <li><Link href="/x402" className={linkCls}>x402</Link></li>
-                  <li><Link href="/explorer" className={linkCls}>Explorer</Link></li>
+                  <li><Link href="/agent-explorer" className={linkCls}>Agent Explorer</Link></li>
                   <li><Link href="/use-cases" className={linkCls}>Use cases</Link></li>
                   <li><Link href="/compare" className={linkCls}>Compare</Link></li>
                 </ul>

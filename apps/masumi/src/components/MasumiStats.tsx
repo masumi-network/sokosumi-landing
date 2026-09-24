@@ -491,10 +491,10 @@ export default function MasumiStats() {
       </div>
 
       <Link
-        href="/explorer"
+        href="/agent-explorer"
         className="text-[13px] text-[#999] hover:text-black transition-colors flex items-center gap-1"
       >
-        View Explorer
+        View Agent Explorer
         <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
           <path d="M4.5 3l3 3-3 3" />
         </svg>
