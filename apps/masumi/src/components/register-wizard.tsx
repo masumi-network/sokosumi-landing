@@ -32,7 +32,10 @@ import {
 } from "@/lib/register-wizard/schema";
 import { storeNetworkRegistrationPollToken } from "@/lib/network-registration-poll";
 import { registrationDestination } from "@/lib/register-response";
-import { storeNetworkRegistrationAgentDetails } from "@/lib/network-registration-details";
+import {
+  storeNetworkRegistrationAgentDetails,
+  storeNetworkRegistrationAgentDetailsForAgent,
+} from "@/lib/network-registration-details";
 import { fetchRegisterCapabilities } from "@/lib/register-capabilities";
 
 type StepId = "account" | "agent" | "review";
@@ -414,12 +417,19 @@ export function RegisterWizard() {
               .split(",")
               .map((tag) => tag.trim())
               .filter(Boolean);
-      storeNetworkRegistrationAgentDetails(data.draftId, {
+      const registrationDetails = {
         name: values.agentName.trim(),
         description: values.description.trim() || null,
         apiUrl: values.apiBaseUrl.trim(),
         tags: tagList,
-      });
+      };
+      storeNetworkRegistrationAgentDetails(data.draftId, registrationDetails);
+      if (data.status === "registered" && data.agentIdentifier?.trim()) {
+        storeNetworkRegistrationAgentDetailsForAgent(
+          data.agentIdentifier.trim(),
+          registrationDetails,
+        );
+      }
 
       const destination = registrationDestination(data, values.agentName.trim());
       if (data.status === "pending" && data.draftId && data.pollToken) {

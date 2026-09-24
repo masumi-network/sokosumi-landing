@@ -13,6 +13,7 @@ import { RegisterAgentDetailsCard } from "@/components/register-agent-details-ca
 import { RegisterProgress } from "@/components/register-mint-progress";
 import {
   readNetworkRegistrationAgentDetails,
+  storeNetworkRegistrationAgentDetailsForAgent,
   type NetworkRegistrationAgentDetails,
 } from "@/lib/network-registration-details";
 import {
@@ -89,9 +90,10 @@ export function RegisterSuccessContent({
   );
 
   useEffect(() => {
-    const stored = readNetworkRegistrationAgentDetails(
-      trimmedDraftId || undefined,
-    );
+    const stored = readNetworkRegistrationAgentDetails({
+      draftId: trimmedDraftId || undefined,
+      agentIdentifier: initialNetworkId || agentIdentifier || undefined,
+    });
     if (stored) {
       setAgentDetails(stored);
       return;
@@ -104,7 +106,7 @@ export function RegisterSuccessContent({
         tags: [],
       });
     }
-  }, [agentName, trimmedDraftId]);
+  }, [agentIdentifier, agentName, initialNetworkId, trimmedDraftId]);
 
   const registrationSummaryCards = (networkId?: string) => (
     <>
@@ -130,6 +132,19 @@ export function RegisterSuccessContent({
     const markComplete = (networkAgentId: string) => {
       cancelled = true;
       clearNetworkRegistrationPollToken(trimmedDraftId);
+      const detailsForPersist =
+        readNetworkRegistrationAgentDetails({
+          draftId: trimmedDraftId,
+        }) ??
+        readNetworkRegistrationAgentDetails({
+          agentIdentifier: networkAgentId,
+        });
+      if (detailsForPersist) {
+        storeNetworkRegistrationAgentDetailsForAgent(
+          networkAgentId,
+          detailsForPersist,
+        );
+      }
       setAgentIdentifier(networkAgentId);
       setPhase("complete");
       const url = new URL(window.location.href);
@@ -202,6 +217,12 @@ export function RegisterSuccessContent({
 
         if (data.agent) {
           setAgentDetails(data.agent);
+          if (data.agentIdentifier?.trim()) {
+            storeNetworkRegistrationAgentDetailsForAgent(
+              data.agentIdentifier.trim(),
+              data.agent,
+            );
+          }
         }
 
         if (data.status === "registered" && data.agentIdentifier?.trim()) {
