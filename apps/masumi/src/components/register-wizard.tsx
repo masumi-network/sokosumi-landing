@@ -24,7 +24,7 @@ import type { X402PaymentDraft } from "@/lib/x402/types";
 import { cn } from "@/lib/utils/cn";
 import {
   accountStepSchema,
-  agentStepSchema,
+  createAgentStepSchema,
   applyZodErrors,
   createRegisterWizardDefaultValues,
   firstZodErrorMessage,
@@ -62,6 +62,8 @@ const NETWORK_REGISTER_FETCH: RequestInit = {
   credentials: "include",
   headers: { "Content-Type": "application/json", Accept: "application/json" },
 };
+
+const agentStepSchema = createAgentStepSchema(MASUMI_REGISTRY_NETWORK);
 
 function Field({
   label,
@@ -386,6 +388,7 @@ export function RegisterWizard() {
               : {}),
             mint: {
               destination: "managed",
+              payoutAddress: values.cardanoPayoutAddress.trim(),
             },
             cardanoNetwork: MASUMI_REGISTRY_NETWORK,
           }),
@@ -721,6 +724,25 @@ export function RegisterWizard() {
                 ) : null}
               </div>
 
+              <Field
+                label="Cardano payout address"
+                hint={`Where ${MASUMI_REGISTRY_NETWORK === "Mainnet" ? "Mainnet" : "Preprod"} ADA payments for this agent should be sent.`}
+                error={errors.cardanoPayoutAddress?.message}
+              >
+                <input
+                  className={inputClass}
+                  placeholder={
+                    MASUMI_REGISTRY_NETWORK === "Mainnet"
+                      ? "addr1…"
+                      : "addr_test1…"
+                  }
+                  aria-label="Cardano payout address"
+                  autoComplete="off"
+                  spellCheck={false}
+                  {...register("cardanoPayoutAddress")}
+                />
+              </Field>
+
               <div className="rounded-lg border border-masumi-border bg-masumi-surface/60 p-3">
                 <p className="text-xs font-medium uppercase tracking-wide text-masumi-muted">
                   Pricing
@@ -814,6 +836,14 @@ export function RegisterWizard() {
                   ) : (
                     <span className="font-medium text-masumi-muted">None</span>
                   )}
+                </dd>
+              </div>
+              <div className="rounded-lg border border-masumi-border bg-masumi-surface/60 p-3 sm:col-span-2">
+                <dt className="text-xs text-masumi-muted">
+                  Cardano payout address
+                </dt>
+                <dd className="mt-1 break-all font-medium">
+                  {watched.cardanoPayoutAddress.trim()}
                 </dd>
               </div>
               <div className="rounded-lg border border-masumi-border bg-masumi-surface/60 p-3">
