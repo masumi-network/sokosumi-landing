@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 };
 
 type SearchParams = Promise<{
-  agentId?: string;
+  agentIdentifier?: string;
   agentName?: string;
   draftId?: string;
   pollToken?: string;
@@ -22,7 +22,7 @@ export default async function RegisterSuccessPage({
 }: {
   searchParams: SearchParams;
 }) {
-  const { agentId, agentName, draftId, pollToken } = await searchParams;
+  const { agentIdentifier, agentName, draftId, pollToken } = await searchParams;
 
   return (
     <>
@@ -33,7 +33,7 @@ export default async function RegisterSuccessPage({
             <MasumiMark size={56} />
           </div>
           <RegisterSuccessContent
-            agentId={agentId}
+            agentIdentifier={agentIdentifier}
             agentName={agentName}
             draftId={draftId}
             pollToken={pollToken}

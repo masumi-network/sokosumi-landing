@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 type SearchParams = Promise<{
   draftId?: string;
   pollToken?: string;
-  agentId?: string;
+  agentIdentifier?: string;
   agentName?: string;
 }>;
 
@@ -12,11 +12,11 @@ export default async function RegisterContinuePage({
 }: {
   searchParams: SearchParams;
 }) {
-  const { draftId, pollToken, agentId, agentName } = await searchParams;
+  const { draftId, pollToken, agentIdentifier, agentName } = await searchParams;
   const params = new URLSearchParams();
 
-  if (agentId?.trim()) {
-    params.set("agentId", agentId.trim());
+  if (agentIdentifier?.trim()) {
+    params.set("agentIdentifier", agentIdentifier.trim());
   }
   if (agentName?.trim()) {
     params.set("agentName", agentName.trim());

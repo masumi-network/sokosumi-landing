@@ -9,7 +9,13 @@ import {
 } from "react";
 
 import { CopyAgentId } from "@/app/register/success/copy-agent-id";
+import { RegisterAgentDetailsCard } from "@/components/register-agent-details-card";
 import { RegisterProgress } from "@/components/register-mint-progress";
+import {
+  readNetworkRegistrationAgentDetails,
+  storeNetworkRegistrationAgentDetailsForAgent,
+  type NetworkRegistrationAgentDetails,
+} from "@/lib/network-registration-details";
 import {
   clearNetworkRegistrationPollToken,
   readNetworkRegistrationPollToken,
@@ -27,7 +33,7 @@ const MAX_TRANSIENT_FAILURES = 3;
 type ErrorKind = "failed" | "delayed";
 
 type RegisterSuccessContentProps = {
-  agentId?: string;
+  agentIdentifier?: string;
   agentName?: string;
   draftId?: string;
   pollToken?: string;
@@ -45,7 +51,7 @@ function getPollTokenSnapshot(draftId: string, urlToken?: string): string {
 }
 
 export function RegisterSuccessContent({
-  agentId: initialAgentId,
+  agentIdentifier: initialAgentIdentifier,
   agentName: initialAgentName,
   draftId,
   pollToken,
@@ -56,22 +62,59 @@ export function RegisterSuccessContent({
     () => getPollTokenSnapshot(trimmedDraftId, pollToken),
     () => pollToken?.trim() ?? "",
   );
-  const [phase, setPhase] = useState<"pending" | "complete" | "error">(
-    trimmedDraftId ? "pending" : initialAgentId?.trim() ? "complete" : "error",
-  );
-  const [agentId, setAgentId] = useState(initialAgentId?.trim() ?? "");
+  const initialNetworkId = initialAgentIdentifier?.trim() ?? "";
+  const [phase, setPhase] = useState<"pending" | "complete" | "error">(() => {
+    if (trimmedDraftId) return "pending";
+    if (initialNetworkId) return "complete";
+    return "error";
+  });
+  const [agentIdentifier, setAgentIdentifier] = useState(initialNetworkId);
   const agentName = initialAgentName?.trim() ?? "";
-  const [error, setError] = useState<string | null>(
-    !trimmedDraftId && !initialAgentId?.trim() ? "No registration details were provided." : null,
-  );
-  const [errorKind, setErrorKind] = useState<ErrorKind | null>(
-    !trimmedDraftId && !initialAgentId?.trim() ? "failed" : null,
-  );
+  const [agentDetails, setAgentDetails] =
+    useState<NetworkRegistrationAgentDetails | null>(null);
+  const [error, setError] = useState<string | null>(() => {
+    if (!trimmedDraftId && !initialNetworkId) {
+      return "No registration details were provided.";
+    }
+    return null;
+  });
+  const [errorKind, setErrorKind] = useState<ErrorKind | null>(() => {
+    if (!trimmedDraftId && !initialNetworkId) return "failed";
+    return null;
+  });
 
   const displayName = agentName || "Your agent";
 
   const panelStack = (children: ReactNode) => (
     <div className="mx-auto mt-8 w-full space-y-4 text-left">{children}</div>
+  );
+
+  useEffect(() => {
+    const stored = readNetworkRegistrationAgentDetails({
+      draftId: trimmedDraftId || undefined,
+      agentIdentifier: initialNetworkId || agentIdentifier || undefined,
+    });
+    if (stored) {
+      setAgentDetails(stored);
+      return;
+    }
+    if (agentName) {
+      setAgentDetails({
+        name: agentName,
+        description: null,
+        apiUrl: "",
+        tags: [],
+      });
+    }
+  }, [agentIdentifier, agentName, initialNetworkId, trimmedDraftId]);
+
+  const registrationSummaryCards = (networkId?: string) => (
+    <>
+      {agentDetails ? (
+        <RegisterAgentDetailsCard details={agentDetails} />
+      ) : null}
+      {networkId ? <CopyAgentId agentId={networkId} /> : null}
+    </>
   );
 
   useEffect(() => {
@@ -86,15 +129,28 @@ export function RegisterSuccessContent({
     let consecutiveFailures = 0;
     let inFlight = false;
 
-    const markComplete = (id: string) => {
+    const markComplete = (networkAgentId: string) => {
       cancelled = true;
       clearNetworkRegistrationPollToken(trimmedDraftId);
-      setAgentId(id);
+      const detailsForPersist =
+        readNetworkRegistrationAgentDetails({
+          draftId: trimmedDraftId,
+        }) ??
+        readNetworkRegistrationAgentDetails({
+          agentIdentifier: networkAgentId,
+        });
+      if (detailsForPersist) {
+        storeNetworkRegistrationAgentDetailsForAgent(
+          networkAgentId,
+          detailsForPersist,
+        );
+      }
+      setAgentIdentifier(networkAgentId);
       setPhase("complete");
       const url = new URL(window.location.href);
       url.pathname = "/register/success";
       url.search = "";
-      url.searchParams.set("agentId", id);
+      url.searchParams.set("agentIdentifier", networkAgentId);
       if (agentName) {
         url.searchParams.set("agentName", agentName);
       }
@@ -122,22 +178,23 @@ export function RegisterSuccessContent({
           return;
         }
 
-        const res = await fetch(
-          registrationApiUrl("/status"),
-          {
-            method: "POST",
-            signal: AbortSignal.any([controller.signal, AbortSignal.timeout(15_000)]),
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              draftId: trimmedDraftId,
-              pollToken: activePollToken,
-            }),
-          },
-        );
+        const res = await fetch(registrationApiUrl("/status"), {
+          method: "POST",
+          signal: AbortSignal.any([
+            controller.signal,
+            AbortSignal.timeout(15_000),
+          ]),
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            draftId: trimmedDraftId,
+            pollToken: activePollToken,
+          }),
+        });
 
         const data = (await res.json().catch(() => ({}))) as {
           status?: "registered" | "pending";
-          agentId?: string;
+          agentIdentifier?: string;
+          agent?: NetworkRegistrationAgentDetails;
           error?: string;
           message?: string;
         };
@@ -158,10 +215,23 @@ export function RegisterSuccessContent({
 
         consecutiveFailures = 0;
 
-        if (data.status === "registered" && data.agentId) {
-          markComplete(data.agentId);
+        if (data.agent) {
+          setAgentDetails(data.agent);
+          if (data.agentIdentifier?.trim()) {
+            storeNetworkRegistrationAgentDetailsForAgent(
+              data.agentIdentifier.trim(),
+              data.agent,
+            );
+          }
+        }
+
+        if (data.status === "registered" && data.agentIdentifier?.trim()) {
+          markComplete(data.agentIdentifier.trim());
         } else if (data.status !== "pending") {
-          fail("failed", "The server returned an unknown registration status. Contact support before starting again.");
+          fail(
+            "failed",
+            "The server returned an unknown registration status. Contact support before starting again.",
+          );
         }
       } catch (e) {
         if (cancelled) return;
@@ -206,7 +276,8 @@ export function RegisterSuccessContent({
           Registration session expired
         </h1>
         <p className="mt-3 text-masumi-muted">
-          Status tracking is unavailable. Check your email or contact support before starting another registration.
+          Status tracking is unavailable. Check your email or contact support
+          before starting another registration.
         </p>
         <div className="mt-8">
           <Link href="/register" className="btn-primary">
@@ -228,7 +299,6 @@ export function RegisterSuccessContent({
             : "Registration is still in progress"}
         </h1>
         <p className="mt-3 text-masumi-muted">{error}</p>
-        {panelStack(agentId ? <CopyAgentId agentId={agentId} /> : null)}
         <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
           <Link href="/register" className="btn-primary">
             Register another
@@ -259,7 +329,7 @@ export function RegisterSuccessContent({
         </p>
         {panelStack(
           <>
-            {agentId ? <CopyAgentId agentId={agentId} /> : null}
+            {registrationSummaryCards()}
             <RegisterProgress step="processing" />
           </>,
         )}
@@ -278,7 +348,7 @@ export function RegisterSuccessContent({
       <p className="mt-3 text-masumi-muted">
         We&apos;ve sent a confirmation to your email. Save your agent ID below.
       </p>
-      {panelStack(agentId ? <CopyAgentId agentId={agentId} /> : null)}
+      {panelStack(registrationSummaryCards(agentIdentifier))}
       <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
         <Link href="/register" className="btn-primary">
           Register another
