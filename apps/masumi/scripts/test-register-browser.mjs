@@ -16,8 +16,8 @@ await context.route('**/*',async route=>{
   if(suffix==='/capabilities') body={x402SettleableNetworks:[{caip2Id:'eip155:84532',displayName:'Base Sepolia',isTestnet:true,defaultAsset:null}]};
   else if(suffix==='') body={success:true,email:route.request().postDataJSON().email};
   else if(suffix==='/verify') {verifies++; body={registrationToken:'fixture-ticket',email:'fixture@example.test'};}
-  else if(suffix==='/complete') {completeBodies.push(route.request().postDataJSON()); body=mode==='malformed'?{}:mode==='dynamic'?{status:'registered',agentId:'fixture-agent'}:{status:'pending',agentId:'fixture-agent',draftId:'fixture-draft',pollToken:'fixture-poll',continueUrl:'https://should-never-open.example.test/'};}
-  else if(suffix==='/status') {polls++; assert.equal(route.request().postDataJSON().pollToken,'fixture-poll');if(mode==='transient') return route.fulfill({status:503,body:'Service unavailable'}); body={status:mode==='endless'||polls===1?'pending':'registered',agentId:'fixture-agent'};}
+  else if(suffix==='/complete') {completeBodies.push(route.request().postDataJSON()); body=mode==='malformed'?{}:mode==='dynamic'?{status:'registered',agentId:'fixture-agent',agentIdentifier:'fixture-network-id'}:{status:'pending',agentId:'fixture-agent',draftId:'fixture-draft',pollToken:'fixture-poll',continueUrl:'https://should-never-open.example.test/'};}
+  else if(suffix==='/status') {polls++; assert.equal(route.request().postDataJSON().pollToken,'fixture-poll');if(mode==='transient') return route.fulfill({status:503,body:'Service unavailable'}); const agent={name:'Fixture agent',description:'Fixture description',apiUrl:'https://example.test',tags:['research']}; body=mode==='endless'||polls===1?{status:'pending',agent}:{status:'registered',agentIdentifier:'fixture-network-id',agent};}
   else throw new Error('Unexpected API '+suffix);
   return route.fulfill({json:body});
  }
@@ -101,14 +101,14 @@ assert.equal('payment' in completeBodies[1],false);
 console.log('Dynamic registration without payment passed');
 mode='transient'; polls=0;
 await page.evaluate(()=>sessionStorage.setItem('masumi:network-reg-poll:fixture-draft','fixture-poll'));
-await page.goto('http://127.0.0.1:3109/register/success?draftId=fixture-draft&agentId=fixture-agent');
+await page.goto('http://127.0.0.1:3109/register/success?draftId=fixture-draft&agentName=Fixture+agent');
 await page.getByText('Could not confirm registration',{exact:true}).waitFor({timeout:20000});
 assert.equal(polls,3);
 await page.waitForTimeout(5500); assert.equal(polls,3);
 console.log('Non-JSON 503 retries terminate after three failures');
 mode='endless'; polls=0;
 const pendingResponse=page.waitForResponse(r=>r.url().endsWith('/register/status'));
-await page.goto('http://127.0.0.1:3109/register/success?draftId=fixture-draft&agentId=fixture-agent');
+await page.goto('http://127.0.0.1:3109/register/success?draftId=fixture-draft&agentName=Fixture+agent');
 await pendingResponse;
 await page.goto('http://127.0.0.1:3109/register');
 const before=polls; await page.waitForTimeout(5500); assert.equal(polls,before);

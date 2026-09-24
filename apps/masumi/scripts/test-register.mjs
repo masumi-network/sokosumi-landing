@@ -49,11 +49,14 @@ assert.equal(accountStepSchema.safeParse({ name: "Fixture", email: "fixture@exam
 
 const { registrationDestination } = load("lib/register-response.ts");
 assert.throws(() => registrationDestination({}, "Fixture"));
-assert.throws(() => registrationDestination({ status: "pending", agentId: "a" }, "Fixture"));
-const pending = registrationDestination({ status: "pending", agentId: "a", draftId: "d", pollToken: "fixture-secret", continueUrl: "https://example.test" }, "Fixture");
-assert.equal(pending, "/register/success?agentId=a&agentName=Fixture&draftId=d");
+assert.throws(() => registrationDestination({ status: "pending", draftId: "d" }, "Fixture"));
+const pending = registrationDestination({ status: "pending", draftId: "d", pollToken: "fixture-secret", continueUrl: "https://example.test" }, "Fixture");
+assert.equal(pending, "/register/success?agentName=Fixture&draftId=d");
 assert.ok(!pending.includes("fixture-secret"));
-assert.equal(registrationDestination({ status: "registered", agentId: "a", successPath: "javascript:alert(1)" }, "Fixture"), "/register/success?agentId=a&agentName=Fixture");
+assert.equal(
+  registrationDestination({ status: "registered", agentIdentifier: "registry-hex-id", successPath: "javascript:alert(1)" }, "Fixture"),
+  "/register/success?agentName=Fixture&agentIdentifier=registry-hex-id",
+);
 const { parseSaasOrigin, parseRegistryNetwork } = load("lib/config/register.ts");
 for (const value of [undefined, "bad", "javascript:alert(1)", "https://u:p@example.test", "https://example.test/api"]) assert.equal(parseSaasOrigin(value), "");
 assert.equal(parseSaasOrigin(" https://example.test/ "), "https://example.test");

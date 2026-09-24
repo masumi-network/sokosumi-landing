@@ -32,6 +32,7 @@ import {
 } from "@/lib/register-wizard/schema";
 import { storeNetworkRegistrationPollToken } from "@/lib/network-registration-poll";
 import { registrationDestination } from "@/lib/register-response";
+import { storeNetworkRegistrationAgentDetails } from "@/lib/network-registration-details";
 import { fetchRegisterCapabilities } from "@/lib/register-capabilities";
 
 type StepId = "account" | "agent" | "review";
@@ -381,7 +382,6 @@ export function RegisterWizard() {
                 }
               : {}),
             mint: {
-              kyc: "skip",
               destination: "managed",
             },
             cardanoNetwork: MASUMI_REGISTRY_NETWORK,
@@ -396,6 +396,7 @@ export function RegisterWizard() {
         continueUrl?: string;
         status?: "registered" | "pending";
         agentId?: string;
+        agentIdentifier?: string;
         draftId?: string;
         pollToken?: string;
       };
@@ -405,6 +406,20 @@ export function RegisterWizard() {
           data.error || data.message || `Request failed (${res.status})`,
         );
       }
+
+      const tagList =
+        tags.length > 0
+          ? tags
+          : values.capabilityTags
+              .split(",")
+              .map((tag) => tag.trim())
+              .filter(Boolean);
+      storeNetworkRegistrationAgentDetails(data.draftId, {
+        name: values.agentName.trim(),
+        description: values.description.trim() || null,
+        apiUrl: values.apiBaseUrl.trim(),
+        tags: tagList,
+      });
 
       const destination = registrationDestination(data, values.agentName.trim());
       if (data.status === "pending" && data.draftId && data.pollToken) {

@@ -31,11 +31,24 @@ export function CopyAgentId({
         className,
       )}
     >
-      <p className="text-xs font-medium text-masumi-muted">Agent ID</p>
+      <p className="text-xs font-medium text-masumi-muted">Network agent ID</p>
       <div className="mt-1 flex items-center justify-between gap-3">
-        <p className="min-w-0 break-all font-mono text-sm text-masumi-ink">
-          {agentId}
-        </p>
+        <div className="group relative min-w-0 flex-1">
+          <p
+            tabIndex={0}
+            className="truncate font-mono text-sm text-masumi-ink outline-none focus-visible:ring-2 focus-visible:ring-masumi-pink/40 focus-visible:ring-offset-2 rounded-sm"
+            aria-describedby="network-agent-id-tooltip"
+          >
+            {agentId}
+          </p>
+          <div
+            id="network-agent-id-tooltip"
+            role="tooltip"
+            className="pointer-events-none absolute bottom-full left-0 z-10 mb-2 hidden max-w-[min(100vw-3rem,28rem)] rounded-lg border border-masumi-border bg-white px-3 py-2 text-xs leading-relaxed font-mono text-masumi-ink shadow-md break-all group-hover:block group-focus-within:block"
+          >
+            {agentId}
+          </div>
+        </div>
         <button
           type="button"
           onClick={() => void copy()}
