@@ -3,6 +3,7 @@
 import Link from "next/link";
 import {
   useEffect,
+  useLayoutEffect,
   useState,
   useSyncExternalStore,
   type ReactNode,
@@ -57,6 +58,11 @@ export function RegisterSuccessContent({
   pollToken,
 }: RegisterSuccessContentProps) {
   const trimmedDraftId = draftId?.trim() ?? "";
+  const [hasHydrated, setHasHydrated] = useState(false);
+  useLayoutEffect(() => {
+    setHasHydrated(true);
+  }, []);
+
   const activePollToken = useSyncExternalStore(
     () => () => {},
     () => getPollTokenSnapshot(trimmedDraftId, pollToken),
@@ -194,6 +200,7 @@ export function RegisterSuccessContent({
         const data = (await res.json().catch(() => ({}))) as {
           status?: "registered" | "pending";
           agentIdentifier?: string;
+          successPath?: string;
           agent?: NetworkRegistrationAgentDetails;
           error?: string;
           message?: string;
@@ -225,8 +232,24 @@ export function RegisterSuccessContent({
           }
         }
 
-        if (data.status === "registered" && data.agentIdentifier?.trim()) {
-          markComplete(data.agentIdentifier.trim());
+        if (data.status === "registered") {
+          const fromBody = data.agentIdentifier?.trim();
+          const fromSuccessPath = (() => {
+            if (!data.successPath?.trim()) return "";
+            try {
+              return (
+                new URL(data.successPath).searchParams
+                  .get("agentIdentifier")
+                  ?.trim() ?? ""
+              );
+            } catch {
+              return "";
+            }
+          })();
+          const networkId = fromBody || fromSuccessPath;
+          if (networkId) {
+            markComplete(networkId);
+          }
         } else if (data.status !== "pending") {
           fail(
             "failed",
@@ -269,25 +292,6 @@ export function RegisterSuccessContent({
     };
   }, [activePollToken, agentName, trimmedDraftId]);
 
-  if (phase !== "complete" && trimmedDraftId && !activePollToken) {
-    return (
-      <div className="animate-fade-in-up animation-delay-100 text-center">
-        <h1 className="text-3xl font-semibold tracking-tight">
-          Registration session expired
-        </h1>
-        <p className="mt-3 text-masumi-muted">
-          Status tracking is unavailable. Check your email or contact support
-          before starting another registration.
-        </p>
-        <div className="mt-8">
-          <Link href="/register" className="btn-primary">
-            Register an agent
-          </Link>
-        </div>
-      </div>
-    );
-  }
-
   if (phase === "error") {
     const isFailed = errorKind === "failed";
 
@@ -316,7 +320,10 @@ export function RegisterSuccessContent({
     );
   }
 
-  if (phase === "pending") {
+  const awaitingPollToken =
+    phase !== "complete" && Boolean(trimmedDraftId) && !activePollToken;
+
+  if (phase === "pending" || (awaitingPollToken && !hasHydrated)) {
     return (
       <div className="animate-fade-in-up animation-delay-100 text-center">
         <p className="text-sm font-medium text-masumi-pink">Almost there</p>
@@ -333,6 +340,25 @@ export function RegisterSuccessContent({
             <RegisterProgress step="processing" />
           </>,
         )}
+      </div>
+    );
+  }
+
+  if (awaitingPollToken && hasHydrated) {
+    return (
+      <div className="animate-fade-in-up animation-delay-100 text-center">
+        <h1 className="text-3xl font-semibold tracking-tight">
+          Registration session expired
+        </h1>
+        <p className="mt-3 text-masumi-muted">
+          Status tracking is unavailable. Check your email or contact support
+          before starting another registration.
+        </p>
+        <div className="mt-8">
+          <Link href="/register" className="btn-primary">
+            Register an agent
+          </Link>
+        </div>
       </div>
     );
   }
