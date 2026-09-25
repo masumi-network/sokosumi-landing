@@ -332,7 +332,7 @@ export function RegisterSuccessContent({
   const awaitingPollToken =
     phase !== "complete" && Boolean(trimmedDraftId) && !activePollToken;
 
-  if (phase === "pending" || (awaitingPollToken && !hasHydrated)) {
+  if (phase === "pending" && (!awaitingPollToken || !hasHydrated)) {
     return (
       <div className="animate-fade-in-up animation-delay-100 text-center">
         <p className="text-sm font-medium text-masumi-pink">Almost there</p>
