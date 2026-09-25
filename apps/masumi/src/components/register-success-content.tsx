@@ -133,6 +133,7 @@ export function RegisterSuccessContent({
     let wake: (() => void) | undefined;
     let attempts = 0;
     let consecutiveFailures = 0;
+    let registeredWithoutNetworkId = 0;
     let inFlight = false;
 
     const markComplete = (networkAgentId: string) => {
@@ -249,6 +250,14 @@ export function RegisterSuccessContent({
           const networkId = fromBody || fromSuccessPath;
           if (networkId) {
             markComplete(networkId);
+          } else {
+            registeredWithoutNetworkId += 1;
+            if (registeredWithoutNetworkId >= 3) {
+              fail(
+                "delayed",
+                "Registration is confirmed. Check your email for your agent ID, or sign in to the Masumi dashboard to copy it.",
+              );
+            }
           }
         } else if (data.status !== "pending") {
           fail(
