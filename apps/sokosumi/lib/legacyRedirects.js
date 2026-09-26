@@ -46,7 +46,6 @@ const EXACT = {
   "/agentic-solutions": "/product",
   "/docs": "https://api.sokosumi.com",
   "/sign-up": `${APP_ORIGIN}/signup`,
-  "/thank-you": "/",
   // Old Webflow landing-page variants still crawled by Google (GSC 404 report,
   // 2026-08-26). Home variants go home; the two topical ones go to their hub.
   "/home": "/",

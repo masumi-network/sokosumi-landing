@@ -89,6 +89,21 @@ Key events on the marketing side: `sign_up_click`, `talk_to_sales_click`,
 `generate_lead`. `talk_to_sales_click` must be starred in Admin → Events once it
 has fired for the first time (GA4 only lists events it has seen).
 
+## Internal traffic
+
+Team members open any page once with `?internal=1`. That sets
+`sokosumi_internal=1` on `.sokosumi.com` for a year, and GTM is not loaded
+while it is set (`?internal=0` clears it). Before this, a handful of team and
+QA browsers produced thousands of app pageviews a month (e.g. 14 users with
+9,142 app views from one town in Q3 2026). The app honours the same cookie.
+
+## Email confirmation (`doi_confirmed`)
+
+The confirmation link in our emails lands on `/thank-you`. GTM fires
+`doi_confirmed` on any page URL containing `thank-you`, so that route must stay
+a real (noindex) page. The August 2026 cutover redirected it to `/` and the
+event silently stopped for seven weeks.
+
 ## Reading the reports honestly
 
 - **Always split by `hostName`.** The landing page and the app share one
@@ -105,7 +120,9 @@ has fired for the first time (GA4 only lists events it has seen).
   then publish). `gtm-container.json` is a stale 2025 snapshot — the live
   container has ~50 tags; trust the GTM UI, not the file.
 
-`generate_lead` fires on the server-rendered `?sent=1` state, not on the submit
+GTM's `GA4 - generate_lead` tag fires on the `ce - generate_lead` custom
+event (since container v34; before that it only listened for the old Webflow
+form, so no lead ever reached GA4). `generate_lead` fires on the server-rendered `?sent=1` state, not on the submit
 click, so it counts submissions the server actually accepted. A click handler
 would also count the ones that failed validation.
 

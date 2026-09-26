@@ -661,6 +661,7 @@ const routes = [
     m: (s) => s.length === 1 && legalTpl.isLegal(s[0]) && { slug: s[0] },
     h: (ctx) => ({ redirect: `/legal/${ctx.params.slug}` }),
   },
+  { m: (s) => s.length === 1 && s[0] === "thank-you" && {}, h: () => misc.thankYou() },
   {
     m: (s) => s.length === 1 && s[0] === "press" && {},
     h: async (ctx) => (await pagesTpl.cmsPage({ ...ctx, params: { slug: "press" } })) || misc.press(),

@@ -44,6 +44,12 @@
       // filter. Nothing measures anything anywhere else.
       var TRACK_HOSTS = { "www.sokosumi.com": 1, "sokosumi.com": 1 };
       if (!TRACK_HOSTS[location.hostname]) return;
+      // Team members opt out once with ?internal=1 (undo with ?internal=0). The
+      // cookie is on .sokosumi.com so the app can honour it too; unfiltered team
+      // usage was a large share of all app pageviews.
+      var _i=/[?&]internal=([01])(?:&|$)/.exec(location.search);
+      if(_i)d.cookie="sokosumi_internal="+(_i[1]==="1"?"1; max-age=31536000":"; max-age=0")+"; path=/; domain=.sokosumi.com; SameSite=Lax";
+      if(/(?:^|; )sokosumi_internal=1/.test(d.cookie))return;
       w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});
       // Mirrors templates/shell.js ANALYTICS_HEAD — keep the two identical.
       // ~315KB of container competing with the hero for phone bandwidth, and

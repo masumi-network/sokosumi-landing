@@ -177,6 +177,32 @@ function press() {
   );
 }
 
+// Where the confirmation link in our emails lands. GTM's doi_confirmed tag
+// fires on any page URL containing "thank-you", so this page must stay a real
+// page: redirecting it (as the August cutover did) silently kills the event.
+function thankYou() {
+  return (
+    pageStart({
+      title: "Email confirmed | Sokosumi",
+      description: "Your email address is confirmed. Open Sokosumi to hand your first task to an AI coworker.",
+      path: "/thank-you",
+      noindex: true,
+    }) +
+    `<div class="notice">
+      <span class="eyebrow">${esc(t("Email confirmed"))}</span>
+      <h1>${esc(t("Thanks, you're all set"))}</h1>
+      <p>${esc(t("Your email address is confirmed. Open Sokosumi and give your first task to an AI coworker."))}</p>
+      <a class="btn btn-primary" href="${shell.APP}" data-analytics="open_app_click" data-analytics-location="thank_you">${esc(t("Open Sokosumi"))}</a>
+      <ul class="notice-links">
+        <li><a href="/ai-coworkers">${esc(t("AI coworkers"))}</a></li>
+        <li><a href="/use-cases">${esc(t("Use cases"))}</a></li>
+        <li><a href="/pricing">${esc(t("Pricing"))}</a></li>
+      </ul>
+    </div>` +
+    pageEnd()
+  );
+}
+
 function robots() {
   // The JSON endpoints exist to feed the landing page, not to be indexed —
   // /api/catalog alone is 250 KB of duplicate content. The form confirmation
@@ -327,4 +353,5 @@ async function sitemap() {
 }
 
 module.exports = {
+  thankYou,
   llmsTxt, notFound, serverError, serviceUnavailable, press, robots, sitemap };
