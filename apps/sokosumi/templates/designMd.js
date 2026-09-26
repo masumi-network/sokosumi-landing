@@ -4,6 +4,22 @@ const archive = require("../lib/designMdArchive");
 
 const { esc, attr, pageStart, pageEnd, SITE } = shell;
 
+// The tool's visitors are designers and developers who have never heard of
+// Sokosumi; without this band the page never said who made it or offered a
+// next step, and the tool produced emails but no sign-ups. The UTM tags let
+// GA4 attribute sign-ups to the tool.
+const SIGNUP_FROM_TOOL = `${shell.APP_SIGNUP}?utm_source=sokosumi.com&utm_medium=free-tool&utm_campaign=design-md`;
+function sokosumiBand(seed) {
+  return shell.ctaBand({
+    heading: "Made by Sokosumi: AI coworkers for marketing",
+    subheading: "This tool is free. Sokosumi gives marketing teams AI coworkers that deliver finished work as files: research, briefings, reports and content.",
+    ctaLabel: "Start free",
+    ctaHref: SIGNUP_FROM_TOOL,
+    seed,
+  });
+}
+
+
 const FAQ = [
   {
     question: "What is a DESIGN.md file?",
@@ -181,6 +197,7 @@ async function render() {
         ).join("")}
       </div>
     </section>` +
+    sokosumiBand(2) +
     pageEnd({ scripts: ["/assets/design-md.js", "/assets/email-gate.js"], englishOnly: true })
   );
 }
@@ -358,6 +375,7 @@ async function analysis(ctx) {
       <header class="dm-section-head"><h2 id="dm-related-title">More analyses</h2><a class="dm-gallery-all" href="/tools/design-md#analyzed-pages">All ${all.length} →</a></header>
       <div class="dm-gallery">${related.map(galleryCard).join("")}</div>
     </section>` : ""}` +
+    sokosumiBand(5) +
     pageEnd({ scripts: ["/assets/design-md-analysis.js", "/assets/email-gate.js"], englishOnly: true })
   );
 }
