@@ -106,8 +106,9 @@ the app; referrers show Gmail and Postmark's link tracker) lands on
 redirected the page to `/` and the event stopped for seven weeks; it is a real
 noindex page again.
 
-Read the event as "someone opened the confirmation link", not as a verified
-opt-in: a mail scanner, a repeat click or a typed URL counts too. A verified
+The page itself says only "Thanks for following the link"; it does not
+claim a confirmation it cannot see. Read the event as "someone opened the
+link", not as a verified opt-in: a mail scanner, a repeat click or a typed URL counts too. A verified
 count needs the sending system to confirm the token server-side.
 
 ## Reading the reports honestly
@@ -134,8 +135,24 @@ Only a stored lead counts. After the CMS accepts a submission the server adds a
 signed receipt (`&r=…`, `lib/leadReceipt.js`, valid 15 minutes) to the
 `?sent=1` redirect, and the success state renders the event attributes only
 when that receipt verifies. Spam and honeypot hits still see the thank-you text
-but carry no receipt, and a bare `?sent=1` URL fires nothing. `track.js`
-remembers each receipt in localStorage, so a reload does not count twice.
+but carry no receipt, and a bare `?sent=1` URL fires nothing. Load events
+(the receipt, `view_pricing`) wait for analytics consent: they fire at once
+when consent is stored, or when the banner reports a decision (`consent.js`
+dispatches `soko:consent`), so a visitor who accepts after the page loaded is
+still counted and one who refuses is not. Only then is the receipt marked as
+spent in localStorage, so a reload does not count twice. Clicking an element
+with `data-analytics-on="load"` never fires it again.
+
+**Sales vs other forms.** `generate_lead` fires for sales, support and agent
+listing forms; `form_name` tells them apart. Only a sales inquiry is a
+conversion: GTM (v36) sends a separate `sales_inquiry` GA4 event, and the Ads
+and LinkedIn lead tags fire on `generate_lead` with `form_name =
+sales_inquiry` only. `sales_inquiry` is the GA4 key event; `generate_lead` is
+not.
+
+**User-ID.** Every GA4 event tag carries `user_id = {{DLV - user_id}}` (v36).
+Re-firing the Google tag on `set_user_id` alone did not put `uid` on later
+hits; the event parameter does.
 `generate_lead` fires on the server-rendered `?sent=1` state, not on the submit
 click, so it counts submissions the server actually accepted. A click handler
 would also count the ones that failed validation.

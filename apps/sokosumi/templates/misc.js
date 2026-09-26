@@ -177,21 +177,22 @@ function press() {
   );
 }
 
-// Where the confirmation link in our emails lands. GTM's doi_confirmed tag
-// fires on any page URL containing "thank-you", so this page must stay a real
-// page: redirecting it (as the August cutover did) silently kills the event.
+// Where the link in our onboarding emails lands. GTM's doi_confirmed tag fires
+// on this exact path, so it must stay a real page: redirecting it (as the
+// August cutover did) silently killed the event. The page cannot see whether
+// the sender recorded a confirmation, so it does not claim one.
 function thankYou() {
   return (
     pageStart({
-      title: "Email confirmed | Sokosumi",
-      description: "Your email address is confirmed. Open Sokosumi to hand your first task to an AI coworker.",
+      title: "Thanks | Sokosumi",
+      description: "Thanks for following the link from our email. Open Sokosumi and give your first task to an AI coworker.",
       path: "/thank-you",
       noindex: true,
     }) +
     `<div class="notice">
-      <span class="eyebrow">${esc(t("Email confirmed"))}</span>
-      <h1>${esc(t("Thanks, you're all set"))}</h1>
-      <p>${esc(t("Your email address is confirmed. Open Sokosumi and give your first task to an AI coworker."))}</p>
+      <span class="eyebrow">${esc(t("Thanks"))}</span>
+      <h1>${esc(t("Thanks for following the link"))}</h1>
+      <p>${esc(t("Open Sokosumi and give your first task to an AI coworker. Your free plan includes 250 credits per seat each month."))}</p>
       <a class="btn btn-primary" href="${shell.APP}" data-analytics="open_app_click" data-analytics-location="thank_you">${esc(t("Open Sokosumi"))}</a>
       <ul class="notice-links">
         <li><a href="/ai-coworkers">${esc(t("AI coworkers"))}</a></li>

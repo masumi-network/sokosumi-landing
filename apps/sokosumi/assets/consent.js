@@ -134,7 +134,11 @@
       event: "consent_decision",
       consent_analytics: choice.analytics ? "granted" : "denied",
       consent_marketing: choice.marketing ? "granted" : "denied",
-    });
+    });    // track.js holds load events (a lead's success state) until analytics
+    // consent exists; tell it a decision was just made.
+    try {
+      document.dispatchEvent(new Event("soko:consent"));
+    } catch (_e) {}
   }
 
   function decide(choice) {
