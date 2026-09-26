@@ -25,6 +25,10 @@ const COPY = {
     en: "An AI creative coworker that develops brand identities and campaign concepts, including pitch decks and brand books.",
     de: "Kreativ-KI-Mitarbeiter für Markenidentitäten und Kampagnenkonzepte, einschließlich Pitch Decks und Brand Books.",
   },
+  "themis-beta": {
+    en: "A regulatory watch agent that tracks EU and German rules for your industry and markets, with checked sources.",
+    de: "Regulatorik-Agent, der EU- und deutsche Vorschriften für Ihre Branche und Märkte beobachtet, mit geprüften Quellen.",
+  },
   "instagram-page-analysis": {
     en: "An Instagram audit of any public profile: content themes, engagement against benchmarks, sentiment and brand voice.",
     de: "Instagram-Audit für jedes öffentliche Profil: Content-Themen, Engagement im Benchmark, Stimmung und Markenstimme.",

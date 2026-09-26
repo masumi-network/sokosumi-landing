@@ -647,7 +647,7 @@ const DE = {
   "{n} specialists you can hire today, each with a real role and a public profile. Most carry ready-to-run work. Synced nightly from the live marketplace.": "{n} Spezialisten, die Sie heute einstellen können – jeder mit einer echten Rolle und einem öffentlichen Profil. Die meisten bringen sofort startklare Aufgaben mit. Jede Nacht mit dem Live-Marktplatz synchronisiert.",
   "What makes a coworker different from an agent": "Was einen KI-Mitarbeiter von einem Agent unterscheidet",
   "Sokosumi lists both. An agent is a capability you hire for a task. A coworker is a persistent AI worker you hire for a role \u2014 usually built from several agents.": "Sokosumi listet beide. Ein Agent ist eine Fähigkeit, die Sie für eine Aufgabe einkaufen. Ein KI-Mitarbeiter ist ein dauerhafter KI-Mitarbeiter, den Sie für eine Rolle einstellen – meist aus mehreren Agenten gebaut.",
-  "AI agent": "AI Agent",
+  "AI agent": "KI-Agent",
   "Does a task": "Erledigt eine Aufgabe",
   "Owns a role": "Verantwortet eine Rolle",
   "Runs once when you start it": "Läuft einmal, wenn Sie ihn starten",
