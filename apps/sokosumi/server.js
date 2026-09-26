@@ -566,6 +566,7 @@ const i18n = require("./lib/i18n");
 const { t } = i18n;
 const { buildNav } = require("./lib/nav");
 const leads = require("./lib/leads");
+const leadReceipt = require("./lib/leadReceipt");
 const marketing = require("./lib/marketing");
 const salesTpl = require("./templates/sales");
 const pricingTpl = require("./templates/pricing");
@@ -1479,7 +1480,7 @@ ${productDemoTpl.demoStage()}
               requestType: body.requestType || "",
             });
           }
-          return back({ sent: "1" });
+          return back({ sent: "1", r: leadReceipt.issue("sales_inquiry") });
         }
 
         // Support requests. Same plain-form POST + redirect shape as sales,
@@ -1527,7 +1528,7 @@ ${productDemoTpl.demoStage()}
               message: body.message || "",
             });
           }
-          return back({ sent: "1" });
+          return back({ sent: "1", r: leadReceipt.issue("support_request") });
         }
 
         // Agent listing submissions. Larger body than the other two forms
@@ -1584,7 +1585,7 @@ ${productDemoTpl.demoStage()}
             }
             return back(echo);
           }
-          return back({ sent: "1" });
+          return back({ sent: "1", r: leadReceipt.issue("agent_listing") });
         }
 
         // Generated share images: everything comes from the query string so

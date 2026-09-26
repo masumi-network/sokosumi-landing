@@ -32,6 +32,15 @@
       var el = els[i];
       var name = el.getAttribute("data-analytics");
       if (!name || el.hasAttribute("data-fired")) continue;
+      // A lead's success page carries a one-off receipt; remember it so a
+      // reload or a back-navigation does not count the same lead again.
+      var once = el.getAttribute("data-once");
+      if (once) {
+        try {
+          if (localStorage.getItem("soko-fired:" + once)) continue;
+          localStorage.setItem("soko-fired:" + once, "1");
+        } catch (_e) {}
+      }
       window.dataLayer = window.dataLayer || [];
       var payload = paramsFrom(el);
       // `on` is the trigger switch, not a parameter. The guard attribute is

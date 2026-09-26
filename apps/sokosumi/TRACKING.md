@@ -99,10 +99,16 @@ QA browsers produced thousands of app pageviews a month (e.g. 14 users with
 
 ## Email confirmation (`doi_confirmed`)
 
-The confirmation link in our emails lands on `/thank-you`. GTM fires
-`doi_confirmed` on any page URL containing `thank-you`, so that route must stay
-a real (noindex) page. The August 2026 cutover redirected it to `/` and the
-event silently stopped for seven weeks.
+The confirmation link in our onboarding emails (sent from outside this repo and
+the app; referrers show Gmail and Postmark's link tracker) lands on
+`/thank-you`. GTM fires `doi_confirmed` on a pageview whose path is exactly
+`/thank-you` or `/de/thank-you` (container v35). The August 2026 cutover
+redirected the page to `/` and the event stopped for seven weeks; it is a real
+noindex page again.
+
+Read the event as "someone opened the confirmation link", not as a verified
+opt-in: a mail scanner, a repeat click or a typed URL counts too. A verified
+count needs the sending system to confirm the token server-side.
 
 ## Reading the reports honestly
 
@@ -122,7 +128,15 @@ event silently stopped for seven weeks.
 
 GTM's `GA4 - generate_lead` tag fires on the `ce - generate_lead` custom
 event (since container v34; before that it only listened for the old Webflow
-form, so no lead ever reached GA4). `generate_lead` fires on the server-rendered `?sent=1` state, not on the submit
+form, so no lead ever reached GA4).
+
+Only a stored lead counts. After the CMS accepts a submission the server adds a
+signed receipt (`&r=…`, `lib/leadReceipt.js`, valid 15 minutes) to the
+`?sent=1` redirect, and the success state renders the event attributes only
+when that receipt verifies. Spam and honeypot hits still see the thank-you text
+but carry no receipt, and a bare `?sent=1` URL fires nothing. `track.js`
+remembers each receipt in localStorage, so a reload does not count twice.
+`generate_lead` fires on the server-rendered `?sent=1` state, not on the submit
 click, so it counts submissions the server actually accepted. A click handler
 would also count the ones that failed validation.
 

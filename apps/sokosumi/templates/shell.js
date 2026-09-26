@@ -73,7 +73,8 @@ const ANALYTICS_HEAD = `<script>
     // cookie is on .sokosumi.com so the app can honour it too; unfiltered team
     // usage was a large share of all app pageviews.
     var _i=/[?&]internal=([01])(?:&|$)/.exec(location.search);
-    if(_i)d.cookie="sokosumi_internal="+(_i[1]==="1"?"1; max-age=31536000":"; max-age=0")+"; path=/; domain=.sokosumi.com; SameSite=Lax";
+    if(_i){d.cookie="sokosumi_internal="+(_i[1]==="1"?"1; max-age=31536000":"; max-age=0")+"; path=/; domain=.sokosumi.com; SameSite=Lax";
+      try{var _u=new URL(location.href);_u.searchParams.delete("internal");history.replaceState(history.state,"",_u.pathname+_u.search+_u.hash)}catch(_e){}}
     if(/(?:^|; )sokosumi_internal=1/.test(d.cookie))return;
     w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});
     // GTM and its gtag payload are ~315KB, and on a phone that bandwidth
@@ -664,7 +665,7 @@ function ctaBand(b) {
       <div class="cta-action">
         <a class="btn btn-primary btn-lg" href="${attr(href)}"${
           isSignupHref(href)
-            ? ' data-analytics="sign_up_click" data-analytics-location="cta_band"'
+            ? ` data-analytics="sign_up_click" data-analytics-location="${attr(b.location || "cta_band")}"`
             : href === SALES_URL
               ? ' data-analytics="talk_to_sales_click" data-analytics-location="cta_band"'
               : ""

@@ -48,7 +48,8 @@
       // cookie is on .sokosumi.com so the app can honour it too; unfiltered team
       // usage was a large share of all app pageviews.
       var _i=/[?&]internal=([01])(?:&|$)/.exec(location.search);
-      if(_i)d.cookie="sokosumi_internal="+(_i[1]==="1"?"1; max-age=31536000":"; max-age=0")+"; path=/; domain=.sokosumi.com; SameSite=Lax";
+      if(_i){d.cookie="sokosumi_internal="+(_i[1]==="1"?"1; max-age=31536000":"; max-age=0")+"; path=/; domain=.sokosumi.com; SameSite=Lax";
+        try{var _u=new URL(location.href);_u.searchParams.delete("internal");history.replaceState(history.state,"",_u.pathname+_u.search+_u.hash)}catch(_e){}}
       if(/(?:^|; )sokosumi_internal=1/.test(d.cookie))return;
       w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});
       // Mirrors templates/shell.js ANALYTICS_HEAD — keep the two identical.
