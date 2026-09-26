@@ -255,6 +255,7 @@ function render() {
           ["/legal/dpa", t("Data processing addendum")],
           ["/legal/terms-of-service", t("Terms of service")],
           ["/legal/acceptable-use", t("Acceptable use")],
+          ["/enterprise", t("Enterprise: the buying path")],
         ]
           .map(([href, label]) => `<li><a href="${attr(href)}">${esc(label)} ${icon("arrow-up-right", 13)}</a></li>`)
           .join("")}

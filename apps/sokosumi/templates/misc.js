@@ -254,6 +254,7 @@ async function sitemap() {
     ...require("./calculators").CALCS.map((c) => `/tools/${c.slug}`),
     "/agency-run-by-ai",
     "/european-ai",
+    "/enterprise",
     "/ai-employees",
     "/alternatives/copy-ai",
     "/alternatives/manus",

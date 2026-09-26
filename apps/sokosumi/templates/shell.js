@@ -1019,6 +1019,7 @@ function footerHtml(opts) {
                 <li><a href="/use-cases">${esc(t("Use cases"))}</a></li>
                 <li><a href="/pricing">${esc(t("Pricing"))}</a></li>
                 <li><a href="/compare">${esc(t("Compare"))}</a></li>
+                <li><a href="/enterprise">${esc(t("Enterprise"))}</a></li>
               </ul>
             </div>
             <div class="foot-col">

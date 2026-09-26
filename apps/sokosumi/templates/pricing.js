@@ -217,6 +217,7 @@ function enterpriseBand(p) {
       ${p.per ? `<span class="per">${esc(t(p.per))}</span>` : ""}
     </div>
     <a class="btn btn-primary" href="${attr(SALES_URL)}" data-analytics="talk_to_sales_click" data-analytics-location="pricing_plan" data-analytics-plan="enterprise">${esc(t("Talk to sales"))}</a>
+    <a class="plan-more" href="/enterprise">${esc(t("What Enterprise covers →"))}</a>
   </article>`;
 }
 

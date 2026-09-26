@@ -1011,6 +1011,8 @@ html[lang="de"] .prose blockquote::before { content: "Beispiel"; }
 .plan-enterprise .btn-primary { background: #fff; color: var(--ink); }
 .plan-enterprise .btn-primary:hover { background: #e9e8e6; }
 .plan-enterprise :focus-visible { outline-color: var(--primary-on-dark); }
+.plan-enterprise .plan-more { grid-column: 1 / -1; color: rgba(255, 255, 255, 0.72); font-size: 14px; text-decoration: underline; text-underline-offset: 3px; }
+.plan-enterprise .plan-more:hover { color: #fff; }
 @media (max-width: 639px) { .plan-enterprise .btn { width: 100%; } }
 @media (min-width: 640px) {
   .plan-enterprise { grid-template-columns: minmax(0, 1fr) auto; }

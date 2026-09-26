@@ -36,6 +36,7 @@ const pagesTpl = require("./templates/pagesCms");
 const productDemoTpl = require("./templates/productDemo");
 const agencyRunByAiTpl = require("./templates/agencyRunByAi");
 const europeanAiTpl = require("./templates/europeanAi");
+const enterpriseTpl = require("./templates/enterprise");
 const aiEmployeesTpl = require("./templates/aiEmployees");
 const contactTpl = require("./templates/contact");
 const designMdTpl = require("./templates/designMd");
@@ -609,6 +610,7 @@ const routes = [
   },
   { m: (s) => s.length === 1 && s[0] === "agency-run-by-ai" && {}, h: agencyRunByAiTpl.render },
   { m: (s) => s.length === 1 && s[0] === "european-ai" && {}, h: europeanAiTpl.render },
+  { m: (s) => s.length === 1 && s[0] === "enterprise" && {}, h: enterpriseTpl.render },
   { m: (s) => s.length === 1 && s[0] === "ai-employees" && {}, h: aiEmployeesTpl.render },
   { m: (s) => s.length === 1 && s[0] === "tasks" && {}, h: tasksTpl.browse },
   { m: (s) => s.length === 1 && s[0] === "vendors" && {}, h: vendorsTpl.index },
