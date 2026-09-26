@@ -37,13 +37,13 @@ function money(ctx) {
     median:
       credits.length % 2
         ? credits[(credits.length - 1) / 2]
-        : Math.round((credits[credits.length / 2 - 1] + credits[credits.length / 2]) / 2),
+        : (credits[credits.length / 2 - 1] + credits[credits.length / 2]) / 2,
   };
 }
 
 // Credits, not money: no per-credit rate is published (credits come with
 // seats, see /pricing), so a dollar figure here would be invented.
-const fmt = (n) => Number(n).toLocaleString(i18n.locale() === "de" ? "de-DE" : "en-US");
+const fmt = (n) => Number(n).toLocaleString(i18n.locale() === "de" ? "de-DE" : "en-US", { maximumFractionDigits: 1 });
 
 function render(ctx) {
   const path = "/agency-run-by-ai";

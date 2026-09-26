@@ -95,7 +95,8 @@ Team members open any page once with `?internal=1`. That sets
 `sokosumi_internal=1` on `.sokosumi.com` for a year, and GTM is not loaded
 while it is set (`?internal=0` clears it). Before this, a handful of team and
 QA browsers produced thousands of app pageviews a month (e.g. 14 users with
-9,142 app views from one town in Q3 2026). The app honours the same cookie.
+9,142 app views from one town in Q3 2026). The app will honour the same cookie
+once masumi-network/sokosumi#5259 is merged; until then only www is excluded.
 
 ## Email link landing (`confirmation_link_opened`, formerly `doi_confirmed`)
 
