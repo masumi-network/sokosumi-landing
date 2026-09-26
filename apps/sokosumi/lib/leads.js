@@ -28,10 +28,20 @@ function clean(v) {
   return String(v == null ? "" : v).trim().slice(0, MAX_FIELD);
 }
 
+// Contact-form spam services skip the honeypot and post their templates
+// straight to the endpoint; every inquiry stored before this filter was one of
+// these. They address the site by its domain ("Sokosumi Com Owner") or sell
+// links, lead widgets or scraped data.
+const SPAM_RE = /\bcom owner\b|\bsokosumi com\b|web visitors into leads|freeb2bdata|bonusbacklinks|daily (seo )?backlinks/i;
+
+function isSpam(body) {
+  return Boolean(clean(body.website)) || SPAM_RE.test(`${clean(body.name)} ${clean(body.email)} ${clean(body.company)} ${clean(body.message)}`);
+}
+
 // Returns { ok: true, lead } or { ok: false, error }.
 function validate(body) {
   // Honeypot: a real browser leaves this hidden field empty. Bots fill it.
-  if (clean(body.website)) return { ok: false, error: "spam" };
+  if (isSpam(body)) return { ok: false, error: "spam" };
 
   const name = clean(body.name);
   const email = clean(body.email);
@@ -50,7 +60,7 @@ function validate(body) {
 // Support asks for less than sales: what broke, who you are, and optionally
 // the task it happened on.
 function validateSupport(body) {
-  if (clean(body.website)) return { ok: false, error: "spam" };
+  if (isSpam(body)) return { ok: false, error: "spam" };
   const name = clean(body.name);
   const email = clean(body.email);
   const message = clean(body.message);
@@ -251,7 +261,7 @@ const LISTING_FIELDS = [
 // submission useless if wrong are checked properly; the rest only have to be
 // present, so a vendor is never blocked by our idea of a valid phone number.
 function validateListing(body) {
-  if (clean(body.website)) return { ok: false, error: "spam" };
+  if (isSpam(body)) return { ok: false, error: "spam" };
 
   const v = {};
   for (const [name] of LISTING_FIELDS) {
