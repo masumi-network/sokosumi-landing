@@ -31,7 +31,7 @@ const COPY = {
   },
   "instagram-page-analysis": {
     en: "An Instagram audit of any public profile: content themes, engagement against benchmarks, sentiment and brand voice.",
-    de: "Instagram-Audit für jedes öffentliche Profil: Content-Themen, Engagement im Benchmark, Stimmung und Markenstimme.",
+    de: "Instagram-Analyse für jedes öffentliche Profil: Content-Themen, Engagement im Benchmark, Stimmung und Markenstimme.",
   },
 };
 

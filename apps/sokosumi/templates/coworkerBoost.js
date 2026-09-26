@@ -128,29 +128,31 @@ const BOOST = {
     // audit" 350 / 1.1K global, KD 0; "instagram competitor analysis" 100,
     // KD 2. "instagram analyzer" (400, KD 61) is out of reach and drew
     // private-account searches this listing cannot serve, so the page says
-    // "public" everywhere it matters.
+    // "public" everywhere it matters. German demand differs (Ahrefs DE):
+    // "instagram analyse" 300, "instagram konkurrenzanalyse" 80, "instagram
+    // audit" 10, so the German copy says Analyse and Konkurrenzanalyse.
     seoTitle: {
       en: "Instagram audit: AI analysis of any public profile | Sokosumi",
-      de: "Instagram-Audit: KI-Analyse öffentlicher Profile | Sokosumi",
+      de: "Instagram-Analyse: öffentliche Profile vergleichen | Sokosumi",
     },
     seoDescription: {
       en: "An Instagram audit of any public profile: content themes, engagement rates against benchmarks, caption and comment sentiment, and brand voice across up to 100 recent posts. Use it on your own account or a competitor's.",
-      de: "Ein Instagram-Audit für jedes öffentliche Profil: Content-Themen, Engagement-Raten im Benchmark, Stimmung in Captions und Kommentaren und Markenstimme über bis zu 100 aktuelle Posts. Für das eigene Konto oder das eines Wettbewerbers.",
+      de: "Eine Instagram-Analyse für jedes öffentliche Profil: Content-Themen, Engagement-Raten im Benchmark, Stimmung in Captions und Kommentaren und Markenstimme über bis zu 100 aktuelle Posts. Für das eigene Konto oder für eine Konkurrenzanalyse.",
     },
     aboutHeading: {
       en: "What the Instagram audit covers",
-      de: "Was das Instagram-Audit abdeckt",
+      de: "Was die Instagram-Analyse abdeckt",
     },
     intro: {
       en: "Give it the handle of a public Instagram profile and a question, such as \"what content performs best?\" or \"is this creator a good partner for our campaign?\". It reads up to 100 recent posts and returns a report: the profile's themes and posting pattern, engagement rates against accounts of the same size, sentiment in captions and comments, and a post-by-post appendix. It analyses one profile per run, so for a competitor comparison you run each account and put the reports side by side.",
-      de: "Den Handle eines öffentlichen Instagram-Profils und eine Frage angeben, etwa „Welche Inhalte funktionieren am besten?“ oder „Passt dieser Creator zu unserer Kampagne?“. Er liest bis zu 100 aktuelle Posts und liefert einen Report: Themen und Posting-Muster des Profils, Engagement-Raten im Vergleich zu Konten ähnlicher Größe, Stimmung in Captions und Kommentaren und einen Anhang mit jedem Post. Pro Lauf wird ein Profil analysiert; für einen Wettbewerbsvergleich führen Sie jedes Konto einzeln aus und legen die Reports nebeneinander.",
+      de: "Den Handle eines öffentlichen Instagram-Profils und eine Frage angeben, etwa „Welche Inhalte funktionieren am besten?“ oder „Passt dieser Creator zu unserer Kampagne?“. Er liest bis zu 100 aktuelle Posts und liefert einen Report: Themen und Posting-Muster des Profils, Engagement-Raten im Vergleich zu Konten ähnlicher Größe, Stimmung in Captions und Kommentaren und einen Anhang mit jedem Post. Pro Lauf wird ein Profil analysiert; für eine Instagram-Konkurrenzanalyse führen Sie jedes Konto einzeln aus und legen die Reports nebeneinander.",
     },
     faq: [
       {
-        question: { en: "What is an Instagram audit?", de: "Was ist ein Instagram-Audit?" },
+        question: { en: "What is an Instagram audit?", de: "Was ist eine Instagram-Analyse?" },
         answer: {
           en: "A structured review of an Instagram profile: what it posts, how often, how the audience responds and whether the voice is consistent. Teams run one before a relaunch, before choosing an influencer, or to see what a competitor does that works.",
-          de: "Eine strukturierte Prüfung eines Instagram-Profils: was es postet, wie oft, wie das Publikum reagiert und ob die Markenstimme konsistent ist. Teams machen das vor einem Relaunch, vor der Wahl eines Influencers oder um zu sehen, was bei einem Wettbewerber funktioniert.",
+          de: "Eine strukturierte Auswertung eines Instagram-Profils: was es postet, wie oft, wie das Publikum reagiert und ob die Markenstimme konsistent ist. Teams machen das vor einem Relaunch, vor der Wahl eines Influencers oder um zu sehen, was bei einem Wettbewerber funktioniert.",
         },
       },
       {
@@ -161,7 +163,7 @@ const BOOST = {
         },
       },
       {
-        question: { en: "Can I use it for Instagram competitor analysis?", de: "Eignet es sich für eine Instagram-Wettbewerbsanalyse?" },
+        question: { en: "Can I use it for Instagram competitor analysis?", de: "Eignet es sich für eine Instagram-Konkurrenzanalyse?" },
         answer: {
           en: "Yes, one account per run. Run it on each competitor with the same question and compare the reports; the engagement benchmarks make the numbers comparable.",
           de: "Ja, ein Konto pro Lauf. Führen Sie es für jeden Wettbewerber mit derselben Frage aus und vergleichen Sie die Reports; die Engagement-Benchmarks machen die Zahlen vergleichbar.",
@@ -171,7 +173,7 @@ const BOOST = {
         question: { en: "What does a run cost?", de: "Was kostet ein Lauf?" },
         answer: {
           en: "The credit price is at the top of this page. Credits come with every seat, including 250 a month on the free plan, so you can run a first audit without paying.",
-          de: "Der Credit-Preis steht oben auf dieser Seite. Credits sind in jedem Seat enthalten, auch 250 im Monat im kostenlosen Plan, sodass Sie ein erstes Audit ohne Bezahlung ausführen können.",
+          de: "Der Credit-Preis steht oben auf dieser Seite. Credits sind in jedem Seat enthalten, auch 250 im Monat im kostenlosen Plan, sodass Sie eine erste Analyse ohne Bezahlung ausführen können.",
         },
       },
     ],

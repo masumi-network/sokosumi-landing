@@ -305,10 +305,11 @@ async function sitemap() {
 
   // Task URLs use the coworker's PUBLIC slug; offers join on catalogSlug.
   const publicSlugByAgent = new Map();
+  const { duplicateOf } = require("./coworkers");
   for (const c of coworkers) {
     if (c.active === false) continue;
     publicSlugByAgent.set(c.catalogSlug || c.slug, c.slug);
-    urls.add(`/ai-coworkers/${c.slug}`);
+    if (!duplicateOf(c, coworkers)) urls.add(`/ai-coworkers/${c.slug}`);
   }
   for (const o of offers) {
     const pub = publicSlugByAgent.get(o.agentSlug);

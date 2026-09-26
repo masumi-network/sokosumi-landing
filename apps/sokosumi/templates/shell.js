@@ -390,7 +390,9 @@ function head(opts) {
   };
   const desc = esc(clampDesc(t(opts.description || "")));
   // The canonical points at the page's OWN locale; hreflang links the pair.
-  const canonical = SITE + i18n.localizePath(opts.path);
+  // canonicalPath: this page defers to another URL (a duplicate listing), so
+  // it names that one as canonical and advertises no hreflang pair of its own.
+  const canonical = SITE + i18n.localizePath(opts.canonicalPath || opts.path);
   // A page-specific generated image unless the page brings a real one
   // (a post cover, a coworker portrait handled by its own layout). The
   // homepage keeps the hand-made og-image.jpg.
@@ -433,7 +435,7 @@ function head(opts) {
     ${ANALYTICS_HEAD}
     <title>${title}</title>
     <meta name="description" content="${desc}" />
-    ${opts.noindex || (locale === "de" && !i18n.deIndexable(opts.path)) ? '<meta name="robots" content="noindex,follow" />' : `<link rel="canonical" href="${attr(canonical)}" />\n    ${opts.englishOnly ? "" : hreflangLinks(opts.path)}`}
+    ${opts.noindex || (locale === "de" && !i18n.deIndexable(opts.path)) ? '<meta name="robots" content="noindex,follow" />' : `<link rel="canonical" href="${attr(canonical)}" />\n    ${opts.englishOnly || opts.canonicalPath ? "" : hreflangLinks(opts.path)}`}
     <meta property="og:site_name" content="Sokosumi" />
     <meta property="og:title" content="${title}" />
     <meta property="og:description" content="${desc}" />

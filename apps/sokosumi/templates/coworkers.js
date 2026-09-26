@@ -164,11 +164,13 @@ async function index(ctx) {
   // the CMS vendors collection (see templates/vendors.js). Joined by slug
   // below; the roster must render even if this extra call fails, so it
   // degrades to no descriptions rather than an error page.
-  const [coworkers, offers, cmsVendors] = await Promise.all([
+  const [allCoworkers, offers, cmsVendors] = await Promise.all([
     cms.getCoworkers(opts),
     cms.getOffers(opts),
     cms.getVendors(opts).catch(() => []),
   ]);
+  // One card per agent: a re-registered twin (see duplicateOf) is left out.
+  const coworkers = allCoworkers.filter((c) => !duplicateOf(c, allCoworkers));
   const vendorDescs = new Map(
     cmsVendors.filter((v) => v.slug && v.description).map((v) => [v.slug, v.description]),
   );
@@ -619,6 +621,26 @@ function boostFaqLd(b, c) {
   };
 }
 
+// The catalog sometimes holds the same agent twice: a re-registration arrives
+// as a new listing with the same name and a "-2" slug. Both are real app
+// listings, so neither redirects; the one with fewer runs points its
+// canonical at the other and stays out of the sitemap. If the original is
+// retired, the twin becomes the page again on its own.
+function duplicateOf(c, all) {
+  const name = String(c.name || "").trim().toLowerCase();
+  if (!name) return null;
+  const runs = (x) => Number(x.runs) || 0;
+  return (
+    (all || []).find(
+      (o) =>
+        o.slug !== c.slug &&
+        o.active !== false &&
+        String(o.name || "").trim().toLowerCase() === name &&
+        (runs(o) > runs(c) || (runs(o) === runs(c) && o.slug.length < c.slug.length)),
+    ) || null
+  );
+}
+
 async function profile(ctx) {
   const opts = { draft: ctx.preview };
   const c = await cms.getCoworker(ctx.params.slug, opts);
@@ -631,7 +653,9 @@ async function profile(ctx) {
   const cats = (cat && cat.categories) || [];
   // Editorial overlay for this slug; {} when there is none.
   const b = boostFor(c.slug, locale());
-  const siblings = cats.length ? await cms.getCoworkers(opts).catch(() => []) : [];
+  const all = await cms.getCoworkers(opts).catch(() => []);
+  const siblings = cats.length ? all : [];
+  const twin = duplicateOf(c, all);
 
   const offersSection = offers.length
     ? `<section class="page-section" id="tasks">
@@ -668,6 +692,7 @@ async function profile(ctx) {
         t("Hire {name} on Sokosumi.", { name: c.name }),
       ]),
       path: `/ai-coworkers/${c.slug}`,
+      canonicalPath: twin ? `/ai-coworkers/${twin.slug}` : undefined,
       og: { type: "coworker", title: c.name, sub: c.role || "", eyebrow: c.kind === "agent" ? t("Specialist agent on Sokosumi") : t("AI coworker on Sokosumi"), meta: [vn, c.profileHosting].filter(Boolean).join(" · "), img: c.image || "" },
       breadcrumb: cr,
       jsonld: [...[].concat(profileLd(c, vn, vs) || []), boostFaqLd(b, c)].filter(Boolean),
@@ -708,4 +733,4 @@ async function profile(ctx) {
   );
 }
 
-module.exports = { index, profile };
+module.exports = { index, profile, duplicateOf };
