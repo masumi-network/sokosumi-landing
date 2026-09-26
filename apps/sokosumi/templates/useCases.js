@@ -35,7 +35,8 @@ const UC_PHOTOS = new Set([
 function ucVisual(slug) {
   return UC_PHOTOS.has(slug) ? "/assets/use-case-img/" + slug + ".webp" : gradFor(slug);
 }
-const { t, tp } = require("../lib/i18n");
+const i18n = require("../lib/i18n");
+const { t, tp } = i18n;
 const { esc, attr, icon, avatar, pageStart, pageEnd } = shell;
 
 // Populated industry relations only (depth 1 gives objects; ids are skipped).
@@ -205,13 +206,18 @@ async function hub(ctx) {
 // for agencies") with real content: a query-led h1, what that industry uses
 // coworkers for, an FAQ (FAQPage JSON-LD), and the use-case cards as the path
 // to the long-tail pages ("AI for SEO automation" → seo-and-ai-visibility).
-// Copy is page content in the CMS style — English on both locales — and a CMS
+// German lives in templates/industryContentDe.js (same shape), because the /de
+// pages are indexed with hreflang and must not be English duplicates. A CMS
 // doc with the same slug keeps working underneath: name/description come from
 // the CMS, this layer wraps it. Facts stay Sokosumi-true: no invented stats.
+const INDUSTRY_CONTENT_DE = require("./industryContentDe");
+
 const INDUSTRY_CONTENT = {
   agencies: {
     why: "Where agencies use Sokosumi",
     cta: "Bring a coworker into your agency",
+    ctaLabel: "Prepare your next pitch",
+    ctaHref: "/use-cases/agency-new-business-research",
     metaTitle: "AI for agencies: AI coworkers for agency teams | Sokosumi",
     metaDesc: "AI coworkers for agencies: pitch research from public sources, competitive sets per client, and production at retainer scale.",
     h1: "AI coworkers for agencies",
@@ -227,7 +233,7 @@ const INDUSTRY_CONTENT = {
         "A prospect brief before every first call, as a sourced PDF",
         "Competitive sets per client, refreshed on a schedule",
         "Content calendars and variants in each client's voice",
-        "Coworkers cost credits per run, not salaries",
+        "Each task costs credits, shown before it runs",
       ], eg: "\u201cHannah — before the 11:00: their market, their vendors, and the procurement angle to lead with.\u201d" },
     },
     week: { heading: "What agencies put on a schedule", sub: "One way to set it up.", items: [
@@ -242,9 +248,9 @@ const INDUSTRY_CONTENT = {
     ] },
     faq: [
       ["What does AI for agencies actually look like on Sokosumi?", "Named AI coworkers join your channels and task board. Account leads brief them like junior colleagues — research, strategy drafts, production — and get finished files back per client."],
-      ["Can each client account get its own setup?", "Yes. Projects hold per-client context, briefs and outputs."],
+      ["Can we keep each client's work together?", "Yes. A project per client keeps that client's briefs, tasks and files in one place."],
       ["Who builds the coworkers agencies use?", "Sokosumi is built with Serviceplan Group. Every vendor builds and runs its own coworkers."],
-      ["How do agencies charge for coworker output?", "Coworkers run on credits. Review each output before it goes into client work. Start on the free plan with one live account."],
+      ["What does Sokosumi cost for an agency team?", "Each person on the team is a seat with monthly credits: 250 on the free plan, then 1,500, 5,000 or 15,000 for €25, €75 or €200 a month. Each task spends credits and shows its price before it runs. What you charge your clients is up to you."],
     ],
   },
   "e-commerce-retail": {
@@ -291,7 +297,7 @@ const INDUSTRY_CONTENT = {
     metaTitle: "AI for financial services marketing | Sokosumi",
     metaDesc: "AI coworkers for financial services: sourced market briefings on a schedule, run history on every task, and EU hosting stated up front.",
     h1: "AI coworkers for financial services",
-    sub: "Market intelligence and marketing production for teams that answer to compliance — with coworkers that state their models and hosting region before you hire them.",
+    sub: "Market intelligence and marketing production for teams that answer to compliance, with a run history for every task and the vendor named on every coworker.",
     split: {
       today: { label: "Your team today", line: "Every briefing costs analyst hours; every tool is a compliance question first.", items: [
         "Market briefings depend on scarce analyst time",
@@ -302,7 +308,7 @@ const INDUSTRY_CONTENT = {
       withS: { label: "With Sokosumi", line: "A sourced briefing on schedule, with the run history built in.", items: [
         "Recurring market briefings with sources attached",
         "Files reviewed in your flow — nothing publishes itself",
-        "Models and hosting region stated on every coworker profile; EU hosting available",
+        "Models and hosting region on the profile wherever the vendor states them",
         "Every run logged in History: brief, coworker, cost, output",
       ], eg: "\u201cWeekly market briefing: rates, competitors, regulation-driven shifts — with sources.\u201d" },
     },
@@ -317,7 +323,7 @@ const INDUSTRY_CONTENT = {
       { title: "Run history", text: "History keeps every run: who briefed it, which coworker ran it, what it cost, what came back." },
     ] },
     faq: [
-      ["Where does our data live?", "Coworker profiles state the models they run on and the hosting region before you hire them; EU hosting is available, and the Personal Assistant runs Swiss-hosted open-source models."],
+      ["Where does our data live?", "It depends on the coworker. Each vendor runs its own coworkers, and the profile shows the models and hosting region where the vendor states them. Check the profile before you brief it with client data."],
       ["Is every run logged?", "Yes. Every task run is logged in History with its status, coworker and credit cost, and files stay attached to the task that produced them."],
       ["Can compliance review the output before it ships?", "Outputs land on a shared board as files — nothing publishes itself. Review happens in your normal flow, with comments on the task."],
       ["What do financial teams start with?", "Market intelligence briefings on a schedule: one brief, a recurring sourced document."],
@@ -393,7 +399,7 @@ const INDUSTRY_CONTENT = {
       { title: "Launch kits", text: "Positioning doc, landing copy, social variants and a one-pager, from a single brief." },
     ] },
     faq: [
-      ["How is this different from hiring a contractor?", "Coworkers start in minutes, keep your context between tasks, and cost credits per run — with sample outputs you can inspect before spending anything."],
+      ["How is this different from hiring a contractor?", "Coworkers start in minutes, keep your context between tasks, and each task shows its credit price before it runs. Many tasks have a sample output you can look at first."],
       ["Can it track how AI assistants talk about us?", "Yes — AI visibility is part of the SEO workflow: how assistants answer questions about your category and where you appear."],
       ["Does it integrate with our stack?", "Work arrives as files and live web deliverables; the Personal Assistant connects mail, calendar, docs and chat tools."],
       ["What does a lean team start with?", "One scheduled task — usually the weekly competitor memo or the weekly performance report — then the launch workflows."],
@@ -457,7 +463,7 @@ async function industry(ctx) {
     { label: "Use cases", href: "/use-cases" },
     { label: ind.name },
   ];
-  const cc = INDUSTRY_CONTENT[ind.slug];
+  const cc = (i18n.locale() === "de" && INDUSTRY_CONTENT_DE[ind.slug]) || INDUSTRY_CONTENT[ind.slug];
   // The why: the industry's week today vs. with coworkers, as the same
   // paper/ink split panel /ai-coworkers uses — four contrasts that read
   // across, one example under each side.
@@ -480,7 +486,7 @@ async function industry(ctx) {
     ? blocks.renderBlocks([{ blockType: "featureGrid", heading: cc.deliver.heading, items: cc.deliver.items }])
     : "";
   const faqBlock = cc
-    ? blocks.renderBlocks([{ blockType: "faq", heading: "Questions we get", items: cc.faq.map(([q, a]) => ({ question: q, answer: a })) }])
+    ? blocks.renderBlocks([{ blockType: "faq", heading: t("Questions we get"), items: cc.faq.map(([q, a]) => ({ question: q, answer: a })) }])
     : "";
   return (
     pageStart({
@@ -501,7 +507,7 @@ async function industry(ctx) {
     splitBlock +
     weekBlock +
     `<div class="page-section">
-      ${cc ? `<h2>${esc("The workflows, ready to run")}</h2><p class="sub" style="margin-bottom:22px">${esc("Each card is a real workflow with the coworkers behind it — open one and start from its brief.")}</p>` : ""}
+      ${cc ? `<h2>${esc(t("The workflows, ready to run"))}</h2><p class="sub" style="margin-bottom:22px">${esc(t("Each card is a real workflow with the coworkers behind it. Open one and start from its brief."))}</p>` : ""}
       ${
         useCases.length
           ? `<div class="card-grid uc-grid">${useCases.map((uc, i) => useCaseCard(uc, crewOf(uc), i)).join("")}</div>`
@@ -513,9 +519,9 @@ async function industry(ctx) {
     faqBlock +
     blocks.ctaBand({
       heading: cc && cc.cta ? cc.cta : t("Bring a coworker into your {industry} team", { industry: ind.name }),
-      subheading: t("Create an account and hand over the first brief today."),
-      ctaLabel: t("Get started"),
-      ctaHref: shell.APP,
+      subheading: cc && cc.ctaHref ? t("Open the workflow, read the brief and see what comes back before you sign up.") : t("Create an account and hand over the first brief today."),
+      ctaLabel: cc && cc.ctaLabel ? cc.ctaLabel : t("Get started"),
+      ctaHref: (cc && cc.ctaHref) || shell.APP_SIGNUP,
     }) +
     pageEnd()
   );
