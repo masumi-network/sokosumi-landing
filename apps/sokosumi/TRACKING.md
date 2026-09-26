@@ -101,8 +101,9 @@ QA browsers produced thousands of app pageviews a month (e.g. 14 users with
 
 The confirmation link in our onboarding emails (sent from outside this repo and
 the app; referrers show Gmail and Postmark's link tracker) lands on
-`/thank-you`. GTM fires `doi_confirmed` on a pageview whose path is exactly
-`/thank-you` or `/de/thank-you` (container v35). The August 2026 cutover
+`/thank-you`. GTM fires `confirmation_link_opened` on a pageview whose path is
+exactly `/thank-you` or `/de/thank-you` (v35 path rule; the event was called
+`doi_confirmed` until v37 on 27 Sep 2026, so older reports use that name). The August 2026 cutover
 redirected the page to `/` and the event stopped for seven weeks; it is a real
 noindex page again.
 
