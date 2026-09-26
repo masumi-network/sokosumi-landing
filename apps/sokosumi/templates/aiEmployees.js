@@ -15,8 +15,7 @@
 // vocabulary, bridged instead of forked.
 //
 // EVIDENCE DISCIPLINE. Every number here is already published elsewhere on
-// this site: 250 free credits per seat and the €25/€75/€200 seats match
-// /pricing. Costs are stated in credits only — the repo carries an open
+// this site: the seat prices and credits per seat match /pricing. Costs are stated in credits only — the repo carries an open
 // contradiction on the credit→dollar rate (templates/pricing.js says none
 // is published; templates/coworkers.js prints one). The roster is a live
 // CMS join — published, active coworkers by their public slugs — so a renamed
@@ -28,6 +27,9 @@ const cms = require("../lib/cms");
 const { t } = require("../lib/i18n");
 
 const { esc, attr, pageStart, pageEnd, SITE } = shell;
+
+const MARKETING_FIRST = ["elena", "hannah", "maya", "pheme-beta", "jamal", "dite", "apol", "themis-beta"];
+const CODING_ROLE = /coding|codex|claude code|cline|grok build|developer/i;
 
 function faq() {
   return [
@@ -41,7 +43,7 @@ function faq() {
     },
     {
       question: t("How much does an AI employee cost?"),
-      answer: t("On Sokosumi you pay in credits only when a task runs. Every listing shows its credit price before you start, and the free plan includes 250 credits per seat each month — paid seats are €25, €75 or €200 a month. Seat-based products price differently; check each vendor's published pricing."),
+      answer: t("Sokosumi is sold per seat, and each seat comes with monthly credits: 250 on the free plan, then 1,500, 5,000 or 15,000 for €25, €75 or €200 a month. Every task spends credits, and each listing shows its credit price before you start."),
     },
     {
       question: t("Which is the best AI employee?"),
@@ -80,10 +82,17 @@ async function render(ctx) {
   ]);
   const counts = {};
   for (const o of offers) counts[o.agentSlug] = (counts[o.agentSlug] || 0) + 1;
+  // People searching "AI employee" run marketing teams. Sorting by task count
+  // put five coding agents in the top eight, so marketing roles lead in this
+  // order and coding coworkers stay on the full roster instead.
+  const rank = (c) => {
+    const i = MARKETING_FIRST.indexOf(c.slug);
+    return i === -1 ? MARKETING_FIRST.length : i;
+  };
   const roster = coworkers
-    .filter((c) => c.kind === "coworker" && c.active !== false && c.slug)
+    .filter((c) => c.kind === "coworker" && c.active !== false && c.slug && !CODING_ROLE.test(c.role || ""))
     .map((c) => ({ ...c, taskCount: counts[c.catalogSlug || c.slug] || 0 }))
-    .sort((a, b) => b.taskCount - a.taskCount || (a.order || 100) - (b.order || 100) || a.name.localeCompare(b.name))
+    .sort((a, b) => rank(a) - rank(b) || b.taskCount - a.taskCount || a.name.localeCompare(b.name))
     .slice(0, 8);
 
   const steps = [
@@ -115,7 +124,7 @@ async function render(ctx) {
     `<div class="page-head" data-reveal>
       <span class="eyebrow">${esc(t("AI employees"))}</span>
       <h1>${esc(t("AI employees that work as part of your team"))}</h1>
-      <p class="sub">${esc(t("An AI employee holds a role — research, creative, reporting — and does that role's recurring tasks from a brief. On Sokosumi they are called AI coworkers: same thing, hired by the task instead of by the seat."))}</p>
+      <p class="sub">${esc(t("An AI employee holds a role, such as research, strategy or reporting, and does that role's recurring tasks from a brief. On Sokosumi they are called AI coworkers."))}</p>
     </div>
 
     <section class="page-section flush" data-reveal>
@@ -126,7 +135,7 @@ async function render(ctx) {
 
     <section class="page-section" data-reveal>
       <h2>${esc(t("What one costs"))}</h2>
-      <p class="sub">${esc(t("Most products in this category charge per seat per month whether you use them or not. Sokosumi charges in credits, per task run: every listing shows its credit price before you start, the free plan includes 250 credits per seat each month, and paid seats are €25, €75 or €200. The practical difference: you can try a specialist on one real task before anyone commits to a subscription."))}</p>
+      <p class="sub">${esc(t("Sokosumi is sold per seat, and each seat comes with monthly credits: 250 on the free plan, then 1,500, 5,000 or 15,000 for €25, €75 or €200 a month. Every task spends credits, and each listing shows its credit price before you start. The free plan is enough to try a specialist on one real task before anyone pays."))}</p>
       <p class="sub"><a href="/pricing">${esc(t("The full pricing page →"))}</a></p>
     </section>
 
@@ -134,7 +143,7 @@ async function render(ctx) {
       roster.length
         ? `<section class="page-section" data-reveal>
       <h2>${esc(t("Who you can hire today"))}</h2>
-      <p class="sub">${esc(t("The most task-ready specialists on the marketplace, each with a public profile and a task list. Synced nightly from the live app."))}</p>
+      <p class="sub">${esc(t("Specialists for marketing work, each with a public profile and a task list. Synced nightly from the live app."))}</p>
       <div class="row-list">${roster
         .map(
           (c) => `<a class="row-item" href="/ai-coworkers/${encodeURIComponent(c.slug)}">

@@ -7,27 +7,27 @@ const BASE = "https://payload-production-6f43.up.railway.app/api";
 const COPY = {
   hannah: {
     en: "An AI research coworker that turns competitor, audience and market analysis into decision-ready reports and briefs.",
-    de: "KI-Research-Coworker für Wettbewerbs-, Zielgruppen- und Marktanalysen, geliefert als klare Reports und Briefings.",
+    de: "Research-KI-Mitarbeiter für Wettbewerbs-, Zielgruppen- und Marktanalysen, geliefert als klare Reports und Briefings.",
   },
   elena: {
     en: "An AI strategy coworker that turns messy briefs into lead-generation, go-to-market and brand-strategy plans.",
-    de: "KI-Strategie-Coworker, der unklare Briefings in Lead-Generation-, Go-to-Market- und Markenstrategiepläne übersetzt.",
+    de: "Strategie-KI-Mitarbeiter, der unklare Briefings in Lead-Generation-, Go-to-Market- und Markenstrategiepläne übersetzt.",
   },
   alex: {
     en: "An AI data coworker that turns spreadsheets and research into interactive dashboards for social, funnel and SEO teams.",
-    de: "KI-Daten-Coworker, der Tabellen und Research in interaktive Dashboards für Social, Funnel und SEO verwandelt.",
+    de: "Daten-KI-Mitarbeiter, der Tabellen und Research in interaktive Dashboards für Social, Funnel und SEO verwandelt.",
   },
   jamal: {
     en: "An AI experience coworker that maps customer journeys and creates media, nurturing and search plans from your brief.",
-    de: "KI-Experience-Coworker für Customer Journeys sowie Media-, Lead-Nurturing- und Search-Pläne aus Ihrem Briefing.",
+    de: "Experience-KI-Mitarbeiter für Customer Journeys sowie Media-, Lead-Nurturing- und Search-Pläne aus Ihrem Briefing.",
   },
   maya: {
     en: "An AI creative coworker that develops brand identities and campaign concepts, including pitch decks and brand books.",
-    de: "KI-Kreativ-Coworker für Markenidentitäten und Kampagnenkonzepte, einschließlich Pitch Decks und Brand Books.",
+    de: "Kreativ-KI-Mitarbeiter für Markenidentitäten und Kampagnenkonzepte, einschließlich Pitch Decks und Brand Books.",
   },
   "instagram-page-analysis": {
-    en: "An Instagram analyzer that finds themes, engagement patterns and content trends in public post metadata.",
-    de: "Instagram-Analyse für Themen, Engagement-Muster und Content-Trends in öffentlichen Post-Metadaten.",
+    en: "An Instagram audit of any public profile: content themes, engagement against benchmarks, sentiment and brand voice.",
+    de: "Instagram-Audit für jedes öffentliche Profil: Content-Themen, Engagement im Benchmark, Stimmung und Markenstimme.",
   },
 };
 

@@ -123,9 +123,63 @@ const BOOST = {
   },
 
   "instagram-page-analysis": {
-    // Was a hardcoded ternary in templates/coworkers.js. Same value, now
-    // sitting where the rest of the overrides live.
-    seoTitle: "Instagram analyzer for posts and pages | Sokosumi",
+    // The site's strongest marketing-intent page: 103 clicks in Q3 2026 across
+    // its old /ai-agents URL and this one. Ahrefs (US, 2026-09-27): "instagram
+    // audit" 350 / 1.1K global, KD 0; "instagram competitor analysis" 100,
+    // KD 2. "instagram analyzer" (400, KD 61) is out of reach and drew
+    // private-account searches this listing cannot serve, so the page says
+    // "public" everywhere it matters.
+    seoTitle: {
+      en: "Instagram audit: AI analysis of any public profile | Sokosumi",
+      de: "Instagram-Audit: KI-Analyse öffentlicher Profile | Sokosumi",
+    },
+    seoDescription: {
+      en: "An Instagram audit of any public profile: content themes, engagement rates against benchmarks, caption and comment sentiment, and brand voice across up to 100 recent posts. Use it on your own account or a competitor's.",
+      de: "Ein Instagram-Audit für jedes öffentliche Profil: Content-Themen, Engagement-Raten im Benchmark, Stimmung in Captions und Kommentaren und Markenstimme über bis zu 100 aktuelle Posts. Für das eigene Konto oder das eines Wettbewerbers.",
+    },
+    aboutHeading: {
+      en: "What the Instagram audit covers",
+      de: "Was das Instagram-Audit abdeckt",
+    },
+    intro: {
+      en: "Give it the handle of a public Instagram profile and a question, such as \"what content performs best?\" or \"is this creator a good partner for our campaign?\". It reads up to 100 recent posts and returns a report: the profile's themes and posting pattern, engagement rates against accounts of the same size, sentiment in captions and comments, and a post-by-post appendix. It analyses one profile per run, so for a competitor comparison you run each account and put the reports side by side.",
+      de: "Den Handle eines öffentlichen Instagram-Profils und eine Frage angeben, etwa „Welche Inhalte funktionieren am besten?“ oder „Passt dieser Creator zu unserer Kampagne?“. Er liest bis zu 100 aktuelle Posts und liefert einen Report: Themen und Posting-Muster des Profils, Engagement-Raten im Vergleich zu Konten ähnlicher Größe, Stimmung in Captions und Kommentaren und einen Anhang mit jedem Post. Pro Lauf wird ein Profil analysiert; für einen Wettbewerbsvergleich führen Sie jedes Konto einzeln aus und legen die Reports nebeneinander.",
+    },
+    faq: [
+      {
+        question: { en: "What is an Instagram audit?", de: "Was ist ein Instagram-Audit?" },
+        answer: {
+          en: "A structured review of an Instagram profile: what it posts, how often, how the audience responds and whether the voice is consistent. Teams run one before a relaunch, before choosing an influencer, or to see what a competitor does that works.",
+          de: "Eine strukturierte Prüfung eines Instagram-Profils: was es postet, wie oft, wie das Publikum reagiert und ob die Markenstimme konsistent ist. Teams machen das vor einem Relaunch, vor der Wahl eines Influencers oder um zu sehen, was bei einem Wettbewerber funktioniert.",
+        },
+      },
+      {
+        question: { en: "Can it analyse a private account?", de: "Kann es ein privates Konto analysieren?" },
+        answer: {
+          en: "No. It only reads what Instagram shows publicly, and it cannot see Instagram Insights. For a private account, ask the owner to share their analytics.",
+          de: "Nein. Es liest nur, was Instagram öffentlich zeigt, und sieht keine Instagram Insights. Bei einem privaten Konto bitten Sie den Inhaber, seine Statistiken zu teilen.",
+        },
+      },
+      {
+        question: { en: "Can I use it for Instagram competitor analysis?", de: "Eignet es sich für eine Instagram-Wettbewerbsanalyse?" },
+        answer: {
+          en: "Yes, one account per run. Run it on each competitor with the same question and compare the reports; the engagement benchmarks make the numbers comparable.",
+          de: "Ja, ein Konto pro Lauf. Führen Sie es für jeden Wettbewerber mit derselben Frage aus und vergleichen Sie die Reports; die Engagement-Benchmarks machen die Zahlen vergleichbar.",
+        },
+      },
+      {
+        question: { en: "What does a run cost?", de: "Was kostet ein Lauf?" },
+        answer: {
+          en: "The credit price is at the top of this page. Credits come with every seat, including 250 a month on the free plan, so you can run a first audit without paying.",
+          de: "Der Credit-Preis steht oben auf dieser Seite. Credits sind in jedem Seat enthalten, auch 250 im Monat im kostenlosen Plan, sodass Sie ein erstes Audit ohne Bezahlung ausführen können.",
+        },
+      },
+    ],
+    related: [
+      { href: "/ai-coworkers/youtube-channel-analysis", label: { en: "YouTube channel analyzer", de: "YouTube-Kanal-Analyzer" }, note: { en: "The same read, for YouTube", de: "Dieselbe Auswertung für YouTube" } },
+      { href: "/tools/engagement-rate-calculator", label: { en: "Engagement rate calculator", de: "Engagement-Rate-Rechner" }, note: { en: "Free, for a quick single number", de: "Kostenlos, für eine schnelle Kennzahl" } },
+      { href: "/ai-coworkers", label: { en: "All AI coworkers", de: "Alle KI-Mitarbeiter" }, note: { en: "The full marketplace", de: "Der komplette Marktplatz" } },
+    ],
   },
 
   "seo-geo-researcher": {
@@ -162,8 +216,8 @@ const BOOST = {
       {
         question: { en: "What does a run cost?", de: "Was kostet ein Lauf?" },
         answer: {
-          en: "The credit price is on this page before you start. A full audit is a deep run, so it costs more credits than the free plan's monthly allowance covers on its own — the free credits offset part of it. You pay per run, not per seat.",
-          de: "Der Credit-Preis steht auf dieser Seite, bevor Sie starten. Ein vollständiges Audit ist ein tiefer Lauf und kostet mehr Credits, als das Monatsguthaben des Gratis-Plans allein abdeckt — die freien Credits senken den Preis anteilig. Bezahlt wird pro Lauf, nicht pro Seat.",
+          en: "The credit price is on this page before you start. A full audit is a deep run, so it costs more credits than the free plan's monthly allowance covers on its own — the free credits offset part of it.",
+          de: "Der Credit-Preis steht auf dieser Seite, bevor Sie starten. Ein vollständiges Audit ist ein tiefer Lauf und kostet mehr Credits, als das Monatsguthaben des Gratis-Plans allein abdeckt — die freien Credits senken den Preis anteilig.",
         },
       },
     ],

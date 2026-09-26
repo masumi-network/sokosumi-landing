@@ -59,7 +59,7 @@ function render(ctx) {
             {
               title: t("A task, not a retainer"),
               text: t(
-                "The {n} coworkers on the marketplace charge between {low} and {high} per task. The middle of the catalogue is {median}. You pay per task run, not per month of availability.",
+                "The {n} coworkers on the marketplace charge between {low} and {high} per task. The middle of the catalogue is {median}.",
                 { n: m.n, low: usd(m.low), high: usd(m.high), median: usd(m.median) },
               ),
             },

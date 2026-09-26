@@ -234,7 +234,7 @@ async function detail(ctx) {
     agents.length ? tp(agents.length, "{n} specialist AI agent", "{n} specialist AI agents") : "",
   ].filter(Boolean);
   const computedSub = subParts.length
-    ? t("{vendor} builds and operates {what} on the Sokosumi marketplace — hire them with one free account and pay only for the work they run.", {
+    ? t("{vendor} builds and operates {what} on the Sokosumi marketplace — hire them with one Sokosumi account, free to start.", {
         vendor: v.name,
         what: subParts.join(t(" and ")),
       })

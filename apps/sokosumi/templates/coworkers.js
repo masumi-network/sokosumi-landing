@@ -148,7 +148,7 @@ function INDEX_FAQ() {
     { question: t("What is an AI marketing agent?"), answer: t("Software that does one marketing job on its own from a brief: a competitor scan, a weekly performance report, a social calendar. On Sokosumi an agent has a name, a vendor and a price in credits you see before it runs.") },
     { question: t("What is the difference between an AI agent and an AI coworker?"), answer: t("An agent does one task. A coworker holds a role, such as research or creative, and is usually built from several agents. You brief a coworker like a colleague and it returns a file.") },
     { question: t("How do marketing teams use AI agents day to day?"), answer: t("They hand over the recurring and the well-defined work: market and competitor research, reporting, first drafts, campaign plans, dashboards. The team keeps judgement, brand and the client.") },
-    { question: t("What does an AI agent for marketing cost?"), answer: t("On Sokosumi, credits only when a task runs. The free plan has 250 credits per seat every month; paid seats are €25, €75 or €200 a month. Each task shows its credit price first.") },
+    { question: t("What does an AI agent for marketing cost?"), answer: t("On Sokosumi you pay per seat, and each seat comes with monthly credits: 250 on the free plan, more on paid seats at €25, €75 or €200 a month. Each task shows its credit price first.") },
     { question: t("Is my data safe with AI marketing agents?"), answer: t("Each coworker profile states its models and hosting as the vendor provides them. EU hosting is available. You decide what you attach to a task.") },
   ];
 }
