@@ -31,6 +31,14 @@ const { esc, attr, pageStart, pageEnd, SITE } = shell;
 const MARKETING_FIRST = ["elena", "hannah", "maya", "pheme-beta", "jamal", "dite", "apol", "themis-beta"];
 const CODING_ROLE = /coding|codex|claude code|cline|grok build|developer/i;
 
+// Pages that answer this page's follow-up questions. Each had a single
+// contextual inlink in September 2026, so Google found them late or not at all.
+const READ_NEXT = [
+  ["/guides/will-ai-replace-marketers", "Will AI replace marketers?", "Which marketing tasks move to AI and which stay with people."],
+  ["/guides/best-ai-marketing-tools", "The best AI marketing tools", "A shortlist by job, from research to reporting."],
+  ["/use-cases/industries/agencies", "AI coworkers for agencies", "Pitch research, competitive sets per client and production."],
+];
+
 function faq() {
   return [
     {
@@ -171,6 +179,17 @@ async function render(ctx) {
           )
           .join("")}
       </div>
+    </section>
+
+    <section class="page-section" data-reveal>
+      <h2>${esc(t("Read next"))}</h2>
+      <div class="row-list">${READ_NEXT.map(
+        ([href, title, note]) => `<a class="row-item" href="${href}">
+            <span class="row-title">${esc(t(title))}</span>
+            <p>${esc(t(note))}</p>
+            <span class="row-go">${esc(t("Read"))} ${shell.icon("arrow-up-right", 15)}</span>
+          </a>`,
+      ).join("")}</div>
     </section>
 
     <section class="blk" data-reveal>
