@@ -475,7 +475,7 @@ export const PAGES_MORE = [
       cells: ["Developers", "Code", "In your editor and repository", "Cursor; your developers run what they build", "$20 per user; Teams $40", "Not published", "Free Hobby plan"],
       grid: [
         ["Writing software vs. doing marketing", "Cursor helps write code. Sokosumi does the competitor report, the campaign plan and the weekly performance PDF."],
-        ["Build vs. hire", "A team with Cursor could build one marketing agent. Sokosumi has 52 from 7 vendors, each with a profile and sample work."],
+        ["Build vs. hire", "A team with Cursor could build one marketing agent. On Sokosumi, named vendors build them, each with a profile and sample work."],
         ["Who keeps it running", "An agent you built is yours to fix. A Sokosumi coworker is the vendor's."],
       ],
       faq: [
@@ -490,7 +490,7 @@ export const PAGES_MORE = [
       cells: ["Entwickler", "Code", "In Ihrem Editor und Repository", "Cursor; Ihre Entwickler betreiben, was sie bauen", "20 $ pro Nutzer; Teams 40 $", "Nicht veröffentlicht", "Gratis Hobby-Plan"],
       grid: [
         ["Software schreiben vs. Marketing machen", "Cursor hilft beim Schreiben von Code. Sokosumi liefert den Wettbewerbsreport, den Kampagnenplan und das wöchentliche Performance-PDF."],
-        ["Bauen vs. beauftragen", "Ein Team mit Cursor könnte einen Marketing-Agenten bauen. Sokosumi hat 52 von 7 Anbietern, je mit Profil und Beispielarbeit."],
+        ["Bauen vs. beauftragen", "Ein Team mit Cursor könnte einen Marketing-Agenten bauen. Auf Sokosumi bauen benannte Anbieter sie, je mit Profil und Beispielarbeit."],
         ["Wer den Betrieb übernimmt", "Einen selbst gebauten Agenten müssen Sie selbst pflegen. Um einen Sokosumi-Coworker kümmert sich der Anbieter."],
       ],
       faq: [
@@ -509,7 +509,7 @@ export const PAGES_MORE = [
       grid: [
         ["Code vs. marketing work", "Copilot's output is software. Sokosumi's output is the report, the deck, the dashboard."],
         ["For developers vs. for the marketing team", "Copilot assumes you read code. Sokosumi assumes you can write a brief."],
-        ["Build vs. hire", "A team could use Copilot to build one agent and keep it running. Sokosumi vendors already did, for 52 coworkers and agents."],
+        ["Build vs. hire", "A team could use Copilot to build one agent and keep it running. On Sokosumi, the vendors build and run the coworkers on the marketplace."],
       ],
       faq: [
         ["Can our developers build Sokosumi's coworkers with Copilot?", "One agent, yes. The roster, the board, the credits and the vendor support are the product."],
@@ -524,7 +524,7 @@ export const PAGES_MORE = [
       grid: [
         ["Code vs. Marketingarbeit", "Copilots Ergebnis ist Software. Sokosumis Ergebnis ist der Report, das Deck, das Dashboard."],
         ["Für Entwickler vs. für das Marketingteam", "Copilot setzt voraus, dass Sie Code lesen. Sokosumi setzt voraus, dass Sie ein Briefing schreiben können."],
-        ["Bauen vs. beauftragen", "Ein Team könnte mit Copilot einen Agenten bauen und am Laufen halten. Sokosumi-Anbieter haben das schon getan – für 52 Coworker und Agents."],
+        ["Bauen vs. beauftragen", "Ein Team könnte mit Copilot einen Agenten bauen und am Laufen halten. Auf Sokosumi entwickeln und betreiben die Anbieter die KI-Mitarbeiter auf dem Marktplatz."],
       ],
       faq: [
         ["Können unsere Entwickler Sokosumis Coworker mit Copilot bauen?", "Einen Agenten: ja. Auswahl, Board, Credits und Anbieter-Support sind das Produkt."],

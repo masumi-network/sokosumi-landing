@@ -519,7 +519,7 @@ async function industry(ctx) {
     faqBlock +
     blocks.ctaBand({
       heading: cc && cc.cta ? cc.cta : t("Bring a coworker into your {industry} team", { industry: ind.name }),
-      subheading: cc && cc.ctaHref ? t("Open the workflow, read the brief and see what comes back before you sign up.") : t("Create an account and hand over the first brief today."),
+      subheading: cc && cc.ctaHref ? t("Read the workflow and its deliverables before you sign up.") : t("Create an account and hand over the first brief today."),
       ctaLabel: cc && cc.ctaLabel ? cc.ctaLabel : t("Get started"),
       ctaHref: (cc && cc.ctaHref) || shell.APP_SIGNUP,
     }) +

@@ -97,7 +97,7 @@ while it is set (`?internal=0` clears it). Before this, a handful of team and
 QA browsers produced thousands of app pageviews a month (e.g. 14 users with
 9,142 app views from one town in Q3 2026). The app honours the same cookie.
 
-## Email confirmation (`doi_confirmed`)
+## Email link landing (`confirmation_link_opened`, formerly `doi_confirmed`)
 
 The confirmation link in our onboarding emails (sent from outside this repo and
 the app; referrers show Gmail and Postmark's link tracker) lands on

@@ -14,7 +14,8 @@
 
 const shell = require("./shell");
 const blocks = require("./blocks");
-const { t } = require("../lib/i18n");
+const i18n = require("../lib/i18n");
+const { t } = i18n;
 
 const { esc, attr, pageStart, pageEnd, SITE } = shell;
 
@@ -32,13 +33,17 @@ function money(ctx) {
     n: credits.length,
     low: credits[0],
     high: credits[credits.length - 1],
-    median: credits[Math.floor(credits.length / 2)],
+    // The usual median: the mean of the two middle values for an even count.
+    median:
+      credits.length % 2
+        ? credits[(credits.length - 1) / 2]
+        : Math.round((credits[credits.length / 2 - 1] + credits[credits.length / 2]) / 2),
   };
 }
 
 // Credits, not money: no per-credit rate is published (credits come with
 // seats, see /pricing), so a dollar figure here would be invented.
-const fmt = (n) => Number(n).toLocaleString("en-US");
+const fmt = (n) => Number(n).toLocaleString(i18n.locale() === "de" ? "de-DE" : "en-US");
 
 function render(ctx) {
   const path = "/agency-run-by-ai";
@@ -55,7 +60,7 @@ function render(ctx) {
             {
               title: t("Priced per task, paid through seats"),
               text: t(
-                "Across the {n} listings with a published price, a task costs between {low} and {high} credits. The middle of the range is {median} credits.",
+                "Across the {n} listings with a published price, a task costs between {low} and {high} credits. The median is {median} credits.",
                 { n: m.n, low: fmt(m.low), high: fmt(m.high), median: fmt(m.median) },
               ),
             },
@@ -162,7 +167,7 @@ function render(ctx) {
           {
             title: t("Some work is not on the marketplace"),
             text: t(
-              "Media buying, film production, and anything needing a crew or a contract sit outside what a coworker delivers. Teams that use Sokosumi well keep an agency for those and stop paying one for the rest.",
+              "Media buying, film production, and anything needing a crew or a contract sit outside what a coworker delivers. Keep strategy, client relationships and final approval with people, and use coworkers for the research and production work you can review.",
             ),
           },
         ],
@@ -186,13 +191,13 @@ function render(ctx) {
           {
             question: t("What happens if the output is wrong?"),
             answer: t(
-              "You have spent the price of one task, and you can re-brief. That is the practical difference from a retainer: a bad result costs you a few dollars and an afternoon rather than a month of an engagement.",
+              "The task used the credits shown before it started, and you can re-brief. Review every result before it goes to a client.",
             ),
           },
           {
             question: t("Where does the work run?"),
             answer: t(
-              "Sokosumi is operated in the EU. Each coworker states its own model and data handling on its listing, which matters when the brief contains anything you would not paste into a public chatbot.",
+              "Sokosumi is operated in the EU. Check the coworker's published model and hosting information before you brief it; if it is missing, ask before sharing anything confidential.",
             ),
           },
         ],

@@ -139,6 +139,9 @@ const BOOST = {
       en: "An Instagram audit of any public profile: content themes, engagement rates against benchmarks, caption and comment sentiment, and brand voice across up to 100 recent posts. Use it on your own account or a competitor's.",
       de: "Eine Instagram-Analyse für jedes öffentliche Profil: Content-Themen, Engagement-Raten im Benchmark, Stimmung in Captions und Kommentaren und Markenstimme über bis zu 100 aktuelle Posts. Für das eigene Konto oder für eine Konkurrenzanalyse.",
     },
+    // German searchers type "Instagram Analyse"; the product name stays on the
+    // line under the heading. English keeps the product name as the H1.
+    h1: { de: "Instagram-Analyse für Marketingteams" },
     aboutHeading: {
       en: "What the Instagram audit covers",
       de: "Was die Instagram-Analyse abdeckt",

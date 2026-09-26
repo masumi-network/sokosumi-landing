@@ -621,24 +621,27 @@ function boostFaqLd(b, c) {
   };
 }
 
-// The catalog sometimes holds the same agent twice: a re-registration arrives
-// as a new listing with the same name and a "-2" slug. Both are real app
-// listings, so neither redirects; the one with fewer runs points its
-// canonical at the other and stays out of the sitemap. If the original is
-// retired, the twin becomes the page again on its own.
+// The catalog holds a few agents twice: a re-registration arrived as a second
+// listing with the same name, price and a "-2" slug (checked 2026-09-27: same
+// credits, UUID external ids, 2-6 runs against 30-150). Both are real app
+// listings, so neither redirects. Each twin below names its original as
+// canonical and stays out of the sitemap and the roster, but only while the
+// original is active: digital-mockup-generator is retired, so its -2 is the
+// page and is deliberately not listed. Add a pair only after checking that it
+// is the same service; a shared name alone is not enough.
+const DUPLICATE_OF = {
+  "mass-image-generator-2": "mass-image-generator",
+  "ad-campaign-generator-2": "ad-campaign-generator",
+  "ad-visual-animator-2": "ad-visual-animator",
+  "attentioninsight-analysis-agent-2": "attentioninsight-analysis-agent",
+  "meme-creator-agent-2": "meme-creator-agent",
+  "movie-production-agent-2": "movie-production-agent",
+};
+
 function duplicateOf(c, all) {
-  const name = String(c.name || "").trim().toLowerCase();
-  if (!name) return null;
-  const runs = (x) => Number(x.runs) || 0;
-  return (
-    (all || []).find(
-      (o) =>
-        o.slug !== c.slug &&
-        o.active !== false &&
-        String(o.name || "").trim().toLowerCase() === name &&
-        (runs(o) > runs(c) || (runs(o) === runs(c) && o.slug.length < c.slug.length)),
-    ) || null
-  );
+  const target = DUPLICATE_OF[c.slug];
+  if (!target) return null;
+  return (all || []).find((o) => o.slug === target && o.active !== false) || null;
 }
 
 async function profile(ctx) {
@@ -703,8 +706,8 @@ async function profile(ctx) {
         <span class="eyebrow">${esc(c.kind === "agent" ? t("On the marketplace") : t("Featured coworker"))}${
           vn ? ` &middot; <a href="/vendors/${attr(vs || "")}">${esc(vn)}</a>` : ""
         }</span>
-        <h1>${esc(c.name)}</h1>
-        ${c.role ? `<div class="role">${esc(c.role)}</div>` : ""}
+        <h1>${esc(b.h1 || c.name)}</h1>
+        ${b.h1 ? `<div class="role">${esc(c.name)}${c.role ? ` · ${esc(c.role)}` : ""}</div>` : c.role ? `<div class="role">${esc(c.role)}</div>` : ""}
         ${profileTags(c)}
         ${profileStats(c)}
         ${c.seoDescription || c.description ? `<p class="cw-desc">${esc(c.seoDescription || c.description)}</p>` : ""}

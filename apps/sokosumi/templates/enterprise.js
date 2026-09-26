@@ -81,7 +81,7 @@ function render() {
       <h1>${esc(t("AI coworkers for enterprise marketing teams"))}</h1>
       <p class="sub">${esc(t("Roll Sokosumi out to a marketing department with seats and credits sized to your team. Every coworker has a named vendor, and you can start with a pilot on one recurring job."))}</p>
       <div class="form-actions" style="margin-top:14px">
-        <a class="btn btn-primary btn-lg" href="${shell.SALES_URL}" data-analytics="talk_to_sales_click" data-analytics-location="enterprise_hero">${esc(t("Plan a pilot"))}</a>
+        <a class="btn btn-primary btn-lg" href="${shell.SALES_URL}" data-analytics="talk_to_sales_click" data-analytics-location="enterprise_hero">${esc(t("Discuss a marketing-team pilot"))}</a>
         <a class="btn btn-outline btn-lg" href="/pricing">${esc(t("See the plans"))}</a>
       </div>
     </div>
@@ -107,6 +107,19 @@ function render() {
       <p class="sub">${esc(t("Certifications, single sign-on and retention terms are not published on this site. Ask us and we answer in writing for your plan."))}</p>
     </section>` +
     blocks.renderBlocks([{ blockType: "steps", heading: t("How a pilot runs"), subheading: t("One way to set it up."), items: pilot }]) +
+    `<section class="page-section" data-reveal>
+      <h2>${esc(t("What to bring to the first conversation"))}</h2>
+      <div class="prose"><ul>${[
+        t("How many people would use it, and in which team"),
+        t("The one recurring job the pilot should cover"),
+        t("Which data the coworkers may see, and which they may not"),
+        t("The files you expect back, and who reviews them"),
+        t("How you will decide whether the pilot worked"),
+        t("A contact in procurement or IT, if they need to sign off"),
+      ]
+        .map((x) => `<li>${esc(x)}</li>`)
+        .join("")}</ul></div>
+    </section>` +
     `<section class="blk" data-reveal>
       <div class="blk-head"><h2>${esc(t("Enterprise: questions"))}</h2></div>
       <div class="blk-faq">${faq()
@@ -114,7 +127,7 @@ function render() {
         .join("")}</div>
     </section>` +
     shell.ctaBand({
-      heading: t("Plan a pilot with us"),
+      heading: t("Discuss a marketing-team pilot"),
       subheading: t("Tell us the job you want to hand over and the team that owns it. We reply within one working day."),
       ctaLabel: t("Talk to sales"),
       ctaHref: shell.SALES_URL,
