@@ -143,7 +143,7 @@ async function render(ctx) {
 
     <section class="page-section" data-reveal>
       <h2>${esc(t("What one costs"))}</h2>
-      <p class="sub">${esc(t("Sokosumi is sold per seat, and each seat comes with monthly credits: 250 on the free plan, then 1,500, 5,000 or 15,000 for €25, €75 or €200 a month. Every task spends credits, and each listing shows its credit price before you start. The free plan is enough to try a specialist on one real task before anyone pays."))}</p>
+      <p class="sub">${esc(t("Sokosumi is sold per seat, and each seat comes with monthly credits: 250 on the free plan, then 1,500, 5,000 or 15,000 for €25, €75 or €200 a month. Every task spends credits, and each listing shows its credit price before you start. About half of the priced listings cost 250 credits or less per task, so the free plan covers a first real task with one of them."))}</p>
       <p class="sub"><a href="/pricing">${esc(t("The full pricing page →"))}</a></p>
     </section>
 

@@ -36,8 +36,8 @@ const ROWS = {
   de: ["Für wen gedacht", "Was Sie erhalten", "Wo die Arbeit landet", "Wer es baut und betreibt", "Wofür Sie zahlen", "EU-Hosting", "Ausprobieren"],
 };
 const SOKO = {
-  en: ["Marketing teams", "A finished file on the task: report, deck, sheet, dashboard", "On a task board the whole team sees", "Named vendors, each with a public profile", "Per seat, with monthly credits that tasks spend", "Yes, stated per coworker", "250 free credits per seat, no card"],
-  de: ["Marketingteams", "Eine fertige Datei an der Aufgabe: Report, Deck, Tabelle oder Dashboard", "Auf einem Task-Board, das das ganze Team sieht", "Namentlich genannte Anbieter mit öffentlichem Profil", "Pro Seat, mit monatlichen Credits für die Aufgaben", "Ja, je Coworker angegeben", "250 Credits pro Seat gratis, ohne Kreditkarte"],
+  en: ["Marketing teams", "A finished file on the task: report, deck, sheet, dashboard", "On a task board the whole team sees", "Named vendors, each with a public profile", "Per seat, with monthly credits that tasks spend", "Depends on the coworker; check its profile", "250 free credits per seat, no card"],
+  de: ["Marketingteams", "Eine fertige Datei an der Aufgabe: Report, Deck, Tabelle oder Dashboard", "Auf einem Task-Board, das das ganze Team sieht", "Namentlich genannte Anbieter mit öffentlichem Profil", "Pro Seat, mit monatlichen Credits für die Aufgaben", "Abhängig vom KI-Mitarbeiter; Profil prüfen", "250 Credits pro Seat gratis, ohne Kreditkarte"],
 };
 const UI = {
   en: { eyebrow: "Compare", cta: "Start free", cta2: "Talk to sales", grid: "In practice", faq: "Questions we get", band: "See the difference on one task", bandSub: "250 free credits per seat. Brief a coworker, get the file back, and compare.", column: "Sokosumi" },

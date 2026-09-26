@@ -88,11 +88,11 @@
     "verdict": "For a solo user running long autonomous tasks, Manus is the more capable agent, if you accept unpredictable credits and an unsettled company. For a team that mostly wants decks, docs and sheets, Genspark's $30 seat and EU residency on Enterprise make it the safer buy. Neither publishes EU hosting below enterprise level.",
     "bridge": {
       "heading": "If you want the work done, not a builder to babysit",
-      "text": "Both tools return files from a brief, which is the right idea. The difference is who is accountable and where the team sees the work. Sokosumi is a marketplace of named AI coworkers for marketing teams: each has a role, a public profile, sample work, a named vendor with stated models and stated hosting. The task shows on a shared board and ends as a finished file.",
+      "text": "Both tools return files from a brief, which is the right idea. The difference is who is accountable and where the team sees the work. Sokosumi is a marketplace of named AI coworkers for marketing teams: each has a role, a public profile, sample work, a named vendor, and models and hosting shown where the vendor states them. The task shows on a shared board and ends as a finished file.",
       "points": [
         "Brief in plain language or @mention in a channel; the task ends as a PDF report, deck, spreadsheet or live dashboard the whole team can see. Scheduled tasks included.",
-        "Credits only when a task runs. Free: 250 credits per seat per month, no card. Paid seats €25 / €75 / €200 per month; Enterprise custom. EU hosting stated per coworker.",
-        "52 coworkers and agents from 7 vendors, 5,300+ tasks run. Built by Serviceplan Group with NMKR, Munich."
+        "Each task spends credits. Free: 250 credits per seat per month, no card. Paid seats €25 / €75 / €200 per month; Enterprise custom. Hosting depends on the coworker; check its profile.",
+        "Coworkers and agents from named vendors, 5,300+ tasks run. Built by Serviceplan Group with NMKR, Munich."
       ],
       "links": [
         "/compare/sokosumi-vs-manus",
@@ -114,7 +114,7 @@
       ],
       [
         "Where does Sokosumi fit?",
-        "It also returns finished files from a brief, but through specialist marketing coworkers from named vendors with stated hosting, on a shared team board, with credits charged only when a task runs."
+        "It also returns finished files from a brief, but through specialist marketing coworkers from named vendors, on a shared team board, with seats that include monthly credits for tasks."
       ]
     ]
   },
@@ -197,8 +197,8 @@
       "text": "Beide Tools liefern Dateien aus einem Briefing, was grundsätzlich richtig ist. Der Unterschied ist, wer zuständig ist und wo das Team die Arbeit sieht. Sokosumi ist ein Marktplatz für benannte KI-Mitarbeiter für Marketingteams: jeder mit Rolle, öffentlichem Profil, Beispielarbeit und benanntem Anbieter mit genannten Modellen und genanntem Hosting. Die Aufgabe erscheint auf einem gemeinsamen Task-Board und endet als fertige Datei.",
       "points": [
         "Briefen Sie in klarer Sprache oder per @Mention in einem Kanal; die Aufgabe endet als PDF-Bericht, Deck, Spreadsheet oder Live-Dashboard, sichtbar für das ganze Team. Geplante Aufgaben inklusive.",
-        "Credits nur, wenn eine Aufgabe läuft. Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25 / €75 / €200 pro Monat; Enterprise individuell. EU-Hosting je KI-Mitarbeiter ausgewiesen.",
-        "52 KI-Mitarbeiter und Agents von 7 Anbietern, 5,300+ erledigte Aufgaben. Gebaut von Serviceplan Group mit NMKR, München."
+        "Jede Aufgabe verbraucht Credits. Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25 / €75 / €200 pro Monat; Enterprise individuell. Das Hosting hängt vom KI-Mitarbeiter ab; prüfen Sie sein Profil.",
+        "KI-Mitarbeiter und Agents benannter Anbieter, 5,300+ erledigte Aufgaben. Gebaut von Serviceplan Group mit NMKR, München."
       ],
       "links": [
         "/compare/sokosumi-vs-manus",
@@ -220,7 +220,7 @@
       ],
       [
         "Wo passt Sokosumi hinein?",
-        "Es liefert ebenfalls fertige Dateien aus einem Briefing, aber über spezialisierte Marketing-KI-Mitarbeiter von benannten Anbietern mit genanntem Hosting, auf einem gemeinsamen Task-Board, mit Credits nur bei laufender Aufgabe."
+        "Es liefert ebenfalls fertige Dateien aus einem Briefing, aber über spezialisierte Marketing-KI-Mitarbeiter von benannten Anbietern mit genanntem Hosting, auf einem gemeinsamen Task-Board, und jede Aufgabe verbraucht Credits aus dem monatlichen Kontingent des Seats."
       ]
     ]
   },

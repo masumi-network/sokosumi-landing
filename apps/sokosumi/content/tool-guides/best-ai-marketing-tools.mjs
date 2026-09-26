@@ -70,10 +70,10 @@ const german = {
     hosting: "Standardverarbeitung auf US-Infrastruktur; keine veröffentlichte EU-Rechenzentrumsoption.",
   },
   sokosumi: {
-    what: "Marktplatz für benannte AI Coworker und Spezialagenten, die von ausgewiesenen Anbietern betrieben werden.",
+    what: "Marktplatz für benannte KI-Mitarbeiter und Spezialagenten, die von ausgewiesenen Anbietern betrieben werden.",
     best: "Marketingteams, die einen Bericht, ein Deck oder Dashboard zurückbekommen möchten statt eines weiteren Chats.",
     price: "250 Credits pro Nutzer und Monat kostenlos; Starter €25, Standard €75 und Pro €200 pro Nutzer und Monat; Enterprise auf Anfrage.",
-    hosting: "Je Coworker ausgewiesen; darunter EU- und Schweizer Hosting-Optionen.",
+    hosting: "Abhängig vom KI-Mitarbeiter; das Profil nennt Modelle und Hosting, wo der Anbieter sie angibt.",
   },
   viktor: {
     what: "Ein allgemeiner AI Employee in Slack und Teams mit Integrationen und Datei-Ausgaben.",
@@ -140,7 +140,7 @@ Choose the product category before the vendor. Use a general assistant for quick
 A small business rarely needs sixteen tools; it needs two, chosen so the monthly bill stays under about €50 while the recurring work still gets done. The path that survives contact with a real budget:
 
 1. **Start with one general assistant on its free tier** — ChatGPT, Claude or Gemini, whichever your team already opens. This covers drafts, rewrites and quick questions at $0 until usage proves a $20 seat.
-2. **Add one tool that produces your most recurring deliverable.** If that is social graphics, Canva's free tier. If it is a monthly competitor report or campaign research, a per-task marketplace like Sokosumi — the free plan's 250 credits per seat cover real runs (catalogue tasks cost 30–1,850 credits), so the recurring job can cost single dollars instead of another subscription.
+2. **Add one tool that produces your most recurring deliverable.** If that is social graphics, Canva's free tier. If it is a monthly competitor report or campaign research, an AI coworker marketplace like Sokosumi. It is sold per seat with monthly credits, and each task spends credits (30–1,850 per task today), so the free plan's 250 credits per seat cover a first real run before you pay for a seat.
 3. **Skip the automation builders until someone owns them.** n8n and Zapier reward a maintainer; without one, workflows break silently and nobody notices until the leads stop.
 
 The trap to avoid is stacking three $29 subscriptions that each do a fifth of the job. Decide the one deliverable that matters most, buy for that, and let the free tiers carry the rest until they visibly can't.
@@ -194,7 +194,7 @@ Wählen Sie zuerst die Produktkategorie. Für schnelle Einzelarbeit reicht oft e
 Ein kleines Unternehmen braucht selten sechzehn Tools, sondern zwei — so gewählt, dass die Monatsrechnung unter etwa 50 € bleibt und die wiederkehrende Arbeit trotzdem erledigt wird. Der Weg, der einem echten Budget standhält:
 
 1. **Mit einem allgemeinen Assistenten im Gratis-Tarif starten** — ChatGPT, Claude oder Gemini, je nachdem, was das Team ohnehin öffnet. Das deckt Entwürfe, Umformulierungen und schnelle Fragen ab, bis die Nutzung einen 20-Dollar-Seat rechtfertigt.
-2. **Ein Tool für das wichtigste wiederkehrende Deliverable ergänzen.** Sind es Social-Grafiken: Canvas Gratis-Tarif. Ist es ein monatlicher Wettbewerbsbericht oder Kampagnen-Research: ein Task-Marktplatz wie Sokosumi — die 250 Credits pro Seat im Gratis-Plan reichen für echte Läufe (Katalog-Tasks kosten 30–1.850 Credits), der wiederkehrende Job kostet also einzelne Dollar statt eines weiteren Abos.
+2. **Ein Tool für das wichtigste wiederkehrende Deliverable ergänzen.** Sind es Social-Grafiken: Canvas Gratis-Tarif. Ist es ein monatlicher Wettbewerbsbericht oder Kampagnen-Research: ein Marktplatz für KI-Mitarbeiter wie Sokosumi. Er wird pro Seat mit monatlichen Credits verkauft, und jede Aufgabe verbraucht Credits (heute 30–1.850 pro Aufgabe), sodass die 250 Credits pro Seat im Gratis-Plan einen ersten echten Lauf abdecken, bevor Sie für einen Seat zahlen.
 3. **Automation Builder erst, wenn jemand sie betreut.** n8n und Zapier belohnen einen Verantwortlichen; ohne ihn gehen Workflows still kaputt — und niemand merkt es, bis die Leads ausbleiben.
 
 Die Falle: drei 29-Dollar-Abos stapeln, die je ein Fünftel der Arbeit erledigen. Legen Sie das eine Deliverable fest, das zählt, kaufen Sie dafür — und lassen Sie die Gratis-Tarife den Rest tragen, bis es sichtbar nicht mehr reicht.
@@ -235,7 +235,7 @@ export default {
       ...data.en.faq,
       [
         "What are the best AI marketing tools for a small business?",
-        "Two tools, not sixteen: one general assistant on its free tier (ChatGPT, Claude or Gemini) for drafts and quick questions, plus one tool matched to your most recurring deliverable — Canva for graphics, or a per-task marketplace like Sokosumi for reports and research, where the free plan's 250 monthly credits cover real runs. Add automation builders only when someone owns their maintenance.",
+        "Two tools, not sixteen: one general assistant on its free tier (ChatGPT, Claude or Gemini) for drafts and quick questions, plus one tool matched to your most recurring deliverable — Canva for graphics, or an AI coworker marketplace like Sokosumi for reports and research, where the free plan's 250 monthly credits per seat cover a first real run. Add automation builders only when someone owns their maintenance.",
       ],
     ],
   },
@@ -250,7 +250,7 @@ export default {
       ["Brauche ich ChatGPT zusätzlich zu einer Coworker-Plattform?", "Oft ja. Chat-Assistenten eignen sich für schnelle Fragen und Entwürfe. Coworker sind für Aufgaben mit einem klaren Deliverable gedacht, etwa Wettbewerbsbericht, Kampagnenplan oder monatliches Dashboard."],
       ["Sind KI-Marketing-Tools DSGVO-konform?", "Eine allgemeine Zusage reicht nicht. Prüfen Sie Datenstandort, Unterauftragsverarbeiter, Aufbewahrung, Training und Löschung für Ihren Tarif und Ihren Anwendungsfall. Bei personenbezogenen oder regulierten Daten gehört die Rechts- und Datenschutzprüfung in den Einkauf."],
       ["Was kosten KI-Marketing-Tools 2026?", "Chat- und Workspace-Tarife beginnen häufig bei etwa 20 bis 25 Euro oder Dollar pro Nutzer und Monat. Kreativtools, Agenten und Automationen ergänzen oft Credits, Ausführungen oder Aktivitäten. Vergleichen Sie deshalb die Kosten eines echten Beispiel-Workflows, nicht nur den Einstiegspreis."],
-      ["Welche KI-Marketing-Tools passen zu kleinen Unternehmen?", "Zwei Tools statt sechzehn: ein allgemeiner Assistent im Gratis-Tarif (ChatGPT, Claude oder Gemini) für Entwürfe und schnelle Fragen, plus ein Tool für das wichtigste wiederkehrende Deliverable — Canva für Grafiken oder ein Task-Marktplatz wie Sokosumi für Berichte und Research, dessen Gratis-Plan 250 Credits pro Monat enthält. Automation Builder erst, wenn jemand ihre Pflege übernimmt."],
+      ["Welche KI-Marketing-Tools passen zu kleinen Unternehmen?", "Zwei Tools statt sechzehn: ein allgemeiner Assistent im Gratis-Tarif (ChatGPT, Claude oder Gemini) für Entwürfe und schnelle Fragen, plus ein Tool für das wichtigste wiederkehrende Deliverable — Canva für Grafiken oder ein Marktplatz für KI-Mitarbeiter wie Sokosumi für Berichte und Research, dessen Gratis-Plan 250 Credits pro Seat und Monat enthält. Automation Builder erst, wenn jemand ihre Pflege übernimmt."],
     ],
   },
 };

@@ -18,10 +18,6 @@ const { t } = require("../lib/i18n");
 
 const { esc, attr, pageStart, pageEnd, SITE } = shell;
 
-// 100 credits = US$1.00, the marketplace's stated credit price — the same
-// constant templates/coworkers.js derives listing prices from.
-const CREDITS_PER_USD = 100;
-
 // Real spread of task prices, read off the catalogue rather than asserted.
 // Returns null when the catalogue is unavailable so the page drops the money
 // section instead of printing a made-up number.
@@ -32,23 +28,23 @@ function money(ctx) {
     .filter((n) => Number.isFinite(n) && n > 0)
     .sort((a, b) => a - b);
   if (credits.length < 5) return null;
-  const usd = (c) => c / CREDITS_PER_USD;
   return {
     n: credits.length,
-    low: usd(credits[0]),
-    high: usd(credits[credits.length - 1]),
-    median: usd(credits[Math.floor(credits.length / 2)]),
-    medianCredits: credits[Math.floor(credits.length / 2)],
+    low: credits[0],
+    high: credits[credits.length - 1],
+    median: credits[Math.floor(credits.length / 2)],
   };
 }
 
-const usd = (n) => (n < 1 ? `$${n.toFixed(2)}` : `$${n.toFixed(2)}`);
+// Credits, not money: no per-credit rate is published (credits come with
+// seats, see /pricing), so a dollar figure here would be invented.
+const fmt = (n) => Number(n).toLocaleString("en-US");
 
 function render(ctx) {
   const path = "/agency-run-by-ai";
   const m = money(ctx);
   // 5,000 credits is the Standard seat (templates/pricing.js PLANS).
-  const perSeat = m ? Math.floor(5000 / m.medianCredits) : null;
+  const perSeat = m ? Math.floor(5000 / m.median) : null;
 
   const costSection = m
     ? blocks.renderBlocks([
@@ -57,16 +53,16 @@ function render(ctx) {
           heading: t("What the work costs"),
           items: [
             {
-              title: t("A task, not a retainer"),
+              title: t("Priced per task, paid through seats"),
               text: t(
-                "The {n} coworkers on the marketplace charge between {low} and {high} per task. The middle of the catalogue is {median}.",
-                { n: m.n, low: usd(m.low), high: usd(m.high), median: usd(m.median) },
+                "Across the {n} listings with a published price, a task costs between {low} and {high} credits. The middle of the range is {median} credits.",
+                { n: m.n, low: fmt(m.low), high: fmt(m.high), median: fmt(m.median) },
               ),
             },
             {
-              title: t("What a seat buys"),
+              title: t("What a seat covers"),
               text: t(
-                "A Standard seat is €75 a month and carries 5,000 credits, about {n} tasks at the catalogue's median price. The free tier gives every seat 250 credits, enough to run a real task first.",
+                "A Standard seat is €75 a month and comes with 5,000 credits, about {n} tasks at the catalogue's median price. The free plan gives every seat 250 credits a month.",
                 { n: perSeat },
               ),
             },
@@ -85,7 +81,7 @@ function render(ctx) {
     pageStart({
       title: t("An agency that runs on AI coworkers | Sokosumi"),
       description: t(
-        "Sokosumi does the work a marketing agency does: research, strategy drafts, content, reporting. Named AI coworkers, per-task pricing. What comes back, what it costs, what it does not replace.",
+        "Sokosumi does the work a marketing agency does: research, strategy drafts, content, reporting. Named AI coworkers, seats with monthly credits. What comes back, what it costs, what it does not replace.",
       ),
       path,
       breadcrumb: [{ label: t("Home"), href: "/" }, { label: t("An agency run by AI") }],

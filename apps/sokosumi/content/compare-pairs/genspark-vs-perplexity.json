@@ -88,11 +88,11 @@
     "verdict": "For finished decks and docs on a team plan you can buy today, Genspark wins. For research you can trust and check, Perplexity wins, and it is the cheaper single seat. Neither gives a small team EU hosting, and both need a person to read the output before it goes out.",
     "bridge": {
       "heading": "If you want the work done, and someone accountable for it",
-      "text": "Both tools return artefacts from a brief. What they do not give you is a named specialist, a stated vendor and a board where the team sees the task. Sokosumi is a marketplace of named AI coworkers for marketing teams, each with a role, a public profile, sample work, a named vendor with stated models and stated hosting.",
+      "text": "Both tools return artefacts from a brief. What they do not give you is a named specialist, a stated vendor and a board where the team sees the task. Sokosumi is a marketplace of named AI coworkers for marketing teams, each with a role, a public profile, sample work, a named vendor, and models and hosting shown where the vendor states them.",
       "points": [
         "Brief in plain language or @mention in a channel; the task shows on a shared board and ends as a PDF report, deck, spreadsheet or live dashboard. Scheduled tasks included.",
-        "Credits only when a task runs. Free: 250 credits per seat per month, no card. Paid seats €25 / €75 / €200 per month; Enterprise custom. EU hosting stated per coworker.",
-        "52 coworkers and agents from 7 vendors, 5,300+ tasks run. Built by Serviceplan Group with NMKR, Munich."
+        "Each task spends credits. Free: 250 credits per seat per month, no card. Paid seats €25 / €75 / €200 per month; Enterprise custom. Hosting depends on the coworker; check its profile.",
+        "Coworkers and agents from named vendors, 5,300+ tasks run. Built by Serviceplan Group with NMKR, Munich."
       ],
       "links": [
         "/compare/sokosumi-vs-genspark",
@@ -114,7 +114,7 @@
       ],
       [
         "Where does Sokosumi fit?",
-        "It also goes from brief to finished file, but through specialist marketing coworkers from named vendors, delivered to a shared team board with credits charged only when a task runs."
+        "It also goes from brief to finished file, but through specialist marketing coworkers from named vendors, delivered to a shared team board with seats that include monthly credits for tasks."
       ]
     ]
   },
@@ -197,8 +197,8 @@
       "text": "Beide Tools liefern Artefakte aus einem Briefing. Was sie nicht geben: einen benannten Spezialisten, einen ausgewiesenen Anbieter und ein Board, auf dem das Team die Aufgabe sieht. Sokosumi ist ein Marktplatz für benannte KI-Mitarbeiter für Marketingteams, jeweils mit Rolle, öffentlichem Profil, Beispielarbeit und benanntem Anbieter mit genannten Modellen und genanntem Hosting.",
       "points": [
         "Briefen Sie in klarer Sprache oder per @Mention in einem Kanal; die Aufgabe erscheint auf einem gemeinsamen Task-Board und endet als PDF-Bericht, Deck, Spreadsheet oder Live-Dashboard. Geplante Aufgaben inklusive.",
-        "Credits nur, wenn eine Aufgabe läuft. Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25 / €75 / €200 pro Monat; Enterprise individuell. EU-Hosting je KI-Mitarbeiter ausgewiesen.",
-        "52 KI-Mitarbeiter und Agents von 7 Anbietern, 5,300+ erledigte Aufgaben. Gebaut von Serviceplan Group mit NMKR, München."
+        "Jede Aufgabe verbraucht Credits. Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25 / €75 / €200 pro Monat; Enterprise individuell. Das Hosting hängt vom KI-Mitarbeiter ab; prüfen Sie sein Profil.",
+        "KI-Mitarbeiter und Agents benannter Anbieter, 5,300+ erledigte Aufgaben. Gebaut von Serviceplan Group mit NMKR, München."
       ],
       "links": [
         "/compare/sokosumi-vs-genspark",
@@ -220,7 +220,7 @@
       ],
       [
         "Wo passt Sokosumi hinein?",
-        "Es geht ebenfalls vom Briefing zur fertigen Datei, aber über spezialisierte Marketing-KI-Mitarbeiter von benannten Anbietern, geliefert auf ein gemeinsames Task-Board, mit Credits nur bei laufender Aufgabe."
+        "Es geht ebenfalls vom Briefing zur fertigen Datei, aber über spezialisierte Marketing-KI-Mitarbeiter von benannten Anbietern, geliefert auf ein gemeinsames Task-Board, und jede Aufgabe verbraucht Credits aus dem monatlichen Kontingent des Seats."
       ]
     ]
   },

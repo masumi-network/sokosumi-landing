@@ -174,7 +174,7 @@ function valueLine(coworkers) {
   const nf = (n) => n.toLocaleString(i18n.locale() === "de" ? "de-DE" : "en-US");
   const runsText = runs >= 1000 ? nf(Math.floor(runs / 100) * 100) + "+" : nf(runs);
   const b = (v) => `<strong>${esc(v)}</strong>`;
-  const line = t("Marketing teams have handed {runs} tasks to {coworkers} coworkers and agents from {vendors} vendors. Each one came back as a file.", {
+  const line = t("Marketing teams have handed {runs} tasks to {coworkers} coworkers and agents from {vendors} vendors.", {
     runs: b(runsText),
     coworkers: b(nf(live.length)),
     vendors: b(nf(vendors)),

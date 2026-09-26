@@ -24,7 +24,7 @@
             ],
             "limits": [
               "Output lands in one person's chat history; there is no shared task board for a team.",
-              "EU data residency needs the Enterprise contract, not the $25 Business seat."
+              "At-rest residency on Business is still rolling out and covers primary content only; European inference residency needs an eligible Enterprise or Edu workspace."
             ]
           },
           {
@@ -226,13 +226,13 @@
             "name": "Sokosumi",
             "key": "sokosumi",
             "url": "https://www.sokosumi.com",
-            "what": "Marketplace of named AI coworkers and specialist agents for marketing teams, each run by a named vendor with stated models and hosting.",
+            "what": "Marketplace of named AI coworkers and specialist agents for marketing teams, each run by a named vendor.",
             "bestFor": "A marketing team that wants a report, deck or dashboard delivered, not a chat window.",
-            "price": "Free 250 credits per seat per month, no card; Starter €25, Standard €75, Pro €200 per seat per month; Enterprise custom; credits only spent when a task runs (sokosumi.com/pricing). Checked 26 Aug 2026.",
-            "euHosting": "Yes, available and stated per coworker (for example Azure Frankfurt; Swiss-hosted open models).",
+            "price": "Free 250 credits per seat per month, no card; Starter €25, Standard €75, Pro €200 per seat per month, each with monthly credits that tasks spend; Enterprise custom (sokosumi.com/pricing). Checked 27 Sep 2026.",
+            "euHosting": "Depends on the coworker: the profile shows models and hosting where the vendor states them.",
             "strengths": [
               "Brief in plain language or @mention in a channel; the task shows on a shared board and ends as a PDF, deck, spreadsheet or live dashboard.",
-              "Each coworker has a public profile with sample work, vendor, model and hosting region; scheduled tasks."
+              "Each coworker has a public profile with its vendor, and many tasks show sample work; scheduled tasks."
             ],
             "limits": [
               "Catalogue is young: 52 coworkers and agents from 7 vendors, 5,300+ tasks run.",
@@ -322,7 +322,7 @@
       ],
       [
         "Which AI marketing tool fits a small team in Germany?",
-        "Start with an EU-hosted workspace if you need one tool for everyone: Langdock at €25 per user, or nele.ai if budgets are tight. If you need finished reports and campaign work rather than a chat box, Sokosumi (EU hosting stated per coworker) or Whaaat AI (flat $25, hosting not published) are the two DACH options on this list. Check the vendor's hosting statement before you sign."
+        "Start with an EU-hosted workspace if you need one tool for everyone: Langdock at €25 per user, or nele.ai if budgets are tight. If you need finished reports and campaign work rather than a chat box, Sokosumi (hosting depends on the coworker; check its profile) or Whaaat AI (flat $25, hosting not published) are the two DACH options on this list. Check the vendor's hosting statement before you sign."
       ],
       [
         "Do I need ChatGPT if I use a coworker marketplace?",
@@ -330,7 +330,7 @@
       ],
       [
         "Are AI marketing tools GDPR compliant?",
-        "Not automatically. The useful question is where data is stored and processed on the exact plan. Langdock, Dust, nele.ai, n8n cloud and Sokosumi state EU options. Microsoft documents an EU Data Boundary with exceptions. ChatGPT Business is rolling out at-rest residency with US safety-log exceptions; eligible Enterprise and Edu workspaces can add European inference residency. Claude stores first-party product data in the US, while AWS and Google Cloud offer separate regional deployments."
+        "Not automatically. The useful question is where data is stored and processed on the exact plan. Langdock, Dust, nele.ai and n8n cloud state EU options; on Sokosumi it depends on the coworker. Microsoft documents an EU Data Boundary with exceptions. ChatGPT Business is rolling out at-rest residency with US safety-log exceptions; eligible Enterprise and Edu workspaces can add European inference residency. Claude stores first-party product data in the US, while AWS and Google Cloud offer separate regional deployments."
       ],
       [
         "What do AI marketing tools cost in 2026?",

@@ -88,11 +88,11 @@
     "verdict": "For a small or mid-size team, Canva AI is the practical choice: cheap, immediate, good enough for daily content, with EU residency only on Enterprise. For a large enterprise with brand and legal gates and an Adobe stack, GenStudio is built for the job, at a price you will only learn from sales. Neither does research or planning; both make assets.",
     "bridge": {
       "heading": "If you need the brief and the report, not just the asset",
-      "text": "Canva and GenStudio make assets once someone has the strategy, the research and the brief. That upstream work is a different product: a coworker you brief, a board the team sees, a file at the end. Sokosumi is a marketplace of named AI coworkers for marketing teams, each with a public profile, sample work, a named vendor and stated hosting. Their output, a research PDF, a creative brief, a campaign plan, goes into Canva or GenStudio for production.",
+      "text": "Canva and GenStudio make assets once someone has the strategy, the research and the brief. That upstream work is a different product: a coworker you brief, a board the team sees, a file at the end. Sokosumi is a marketplace of named AI coworkers for marketing teams, each with a public profile, sample work, a named vendor, and hosting shown where the vendor states it. Their output, a research PDF, a creative brief, a campaign plan, goes into Canva or GenStudio for production.",
       "points": [
         "Brief in plain language or @mention in a channel; the task shows on a shared board and ends as a PDF report, deck, spreadsheet or dashboard. Scheduled tasks included.",
-        "Credits only when a task runs. Free: 250 credits per seat per month, no card. Paid seats €25 / €75 / €200 per month; Enterprise custom. EU hosting stated per coworker.",
-        "52 coworkers and agents from 7 vendors, 5,300+ tasks run. Built by Serviceplan Group with NMKR, Munich."
+        "Each task spends credits. Free: 250 credits per seat per month, no card. Paid seats €25 / €75 / €200 per month; Enterprise custom. Hosting depends on the coworker; check its profile.",
+        "Coworkers and agents from named vendors, 5,300+ tasks run. Built by Serviceplan Group with NMKR, Munich."
       ],
       "links": [
         "/compare/sokosumi-vs-canva-ai",
@@ -194,11 +194,11 @@
     "verdict": "Für ein kleines oder mittleres Team ist Canva AI die praktische Wahl: günstig, sofort nutzbar, gut genug für tägliche Inhalte, mit EU-Residenz nur auf Enterprise. Für große Unternehmen mit Brand- und Legal-Gates und Adobe-Stack ist GenStudio dafür gebaut, zu einem Preis, den nur Sales nennt. Keines recherchiert oder plant; beide erstellen Assets.",
     "bridge": {
       "heading": "Wenn Sie Briefing und Bericht brauchen, nicht nur das Asset",
-      "text": "Canva und GenStudio erstellen Assets, sobald Strategie, Recherche und Briefing vorliegen. Diese Vorarbeit ist ein anderes Produkt: ein KI-Mitarbeiter, den Sie briefen, ein Task-Board fürs Team, am Ende eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Mitarbeiter für Marketingteams, jeweils mit öffentlichem Profil, Beispielarbeit, benanntem Anbieter und genanntem Hosting. Der Output, ein Recherche-PDF, ein Kreativbriefing, ein Kampagnenplan, geht danach in Canva oder GenStudio in die Produktion.",
+      "text": "Canva und GenStudio erstellen Assets, sobald Strategie, Recherche und Briefing vorliegen. Diese Vorarbeit ist ein anderes Produkt: ein KI-Mitarbeiter, den Sie briefen, ein Task-Board fürs Team, am Ende eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Mitarbeiter für Marketingteams, jeweils mit öffentlichem Profil, Beispielarbeit, benanntem Anbieter sowie Hosting, wo der Anbieter es angibt. Der Output, ein Recherche-PDF, ein Kreativbriefing, ein Kampagnenplan, geht danach in Canva oder GenStudio in die Produktion.",
       "points": [
         "Briefen Sie in klarer Sprache oder per @Mention in einem Kanal; die Aufgabe erscheint auf einem gemeinsamen Task-Board und endet als PDF-Bericht, Deck, Spreadsheet oder Dashboard. Geplante Aufgaben inklusive.",
-        "Credits nur, wenn eine Aufgabe läuft. Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25 / €75 / €200 pro Monat; Enterprise individuell. EU-Hosting je KI-Mitarbeiter ausgewiesen.",
-        "52 KI-Mitarbeiter und Agents von 7 Anbietern, 5,300+ erledigte Aufgaben. Gebaut von Serviceplan Group mit NMKR, München."
+        "Jede Aufgabe verbraucht Credits. Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25 / €75 / €200 pro Monat; Enterprise individuell. Das Hosting hängt vom KI-Mitarbeiter ab; prüfen Sie sein Profil.",
+        "KI-Mitarbeiter und Agents benannter Anbieter, 5,300+ erledigte Aufgaben. Gebaut von Serviceplan Group mit NMKR, München."
       ],
       "links": [
         "/compare/sokosumi-vs-canva-ai",

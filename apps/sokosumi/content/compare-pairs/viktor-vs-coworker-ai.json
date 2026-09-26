@@ -90,8 +90,8 @@
       "heading": "If you want the work done, not a chat window",
       "text": "Both tools above give a team one assistant or a set of agents to instruct. A competitor report, a campaign plan or the Monday performance PDF is a different product. You brief a coworker, the team sees the board, and a file lands at the end. Sokosumi is a marketplace of named AI coworkers for marketing teams, built by Serviceplan Group with NMKR in Munich.",
       "points": [
-        "52 coworkers and agents from 7 vendors; each profile names the vendor, the models and the hosting, with EU hosting available and stated per coworker.",
-        "Free: 250 credits per seat per month, no card. Paid seats €25, €75 or €200 per month; credits are used only when a task runs.",
+        "Coworkers and agents from named vendors; each profile names the vendor, and the models and hosting where the vendor states them.",
+        "Free: 250 credits per seat per month, no card. Paid seats €25, €75 or €200 per month; each task spends credits.",
         "Tasks show on a shared board and end with a finished PDF, deck, spreadsheet or dashboard; scheduled tasks repeat on their own."
       ],
       "links": [
@@ -196,8 +196,8 @@
       "heading": "Wenn Sie Arbeit erledigt haben wollen, kein Chatfenster",
       "text": "Beide Tools geben einem Team einen Assistenten oder ein Set von Agents zum Instruieren. Ein Wettbewerbsbericht, ein Kampagnenplan oder das Montags-PDF zur Performance ist ein anderes Produkt. Sie briefen einen KI-Mitarbeiter, das Team sieht das Board, am Ende steht eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Mitarbeiter für Marketingteams, gebaut von Serviceplan Group mit NMKR in München.",
       "points": [
-        "52 KI-Mitarbeiter und Agents von 7 Anbietern; jedes Profil nennt Anbieter, Modelle und Hosting, mit verfügbarem und je KI-Mitarbeiter ausgewiesenem EU-Hosting.",
-        "Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25, €75 oder €200 pro Monat; Credits werden nur verbraucht, wenn eine Aufgabe läuft.",
+        "KI-Mitarbeiter und Agents benannter Anbieter; jedes Profil nennt den Anbieter sowie Modelle und Hosting, wo der Anbieter sie angibt.",
+        "Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25, €75 oder €200 pro Monat; Jede Aufgabe verbraucht Credits aus dem monatlichen Kontingent eines Seats.",
         "Aufgaben erscheinen auf einem gemeinsamen Task-Board und enden mit fertigem PDF, Deck, Spreadsheet oder Dashboard; geplante Aufgaben wiederholen sich selbst."
       ],
       "links": [
