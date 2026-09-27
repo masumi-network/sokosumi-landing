@@ -92,7 +92,7 @@
       "points": [
         "Brief in plain language or @mention in a channel; the task shows on a shared board and ends as a PDF report, deck, spreadsheet or dashboard.",
         "Free: 250 credits per seat per month, no card. Paid seats €25 / €75 / €200 per month; Enterprise custom. Hosting depends on the coworker; check its profile.",
-        "Coworkers and agents from named vendors, 5,300+ tasks run. Built by Serviceplan Group with NMKR, Munich."
+        "Coworkers and agents from named vendors, each with a public profile. Built by Serviceplan Group with NMKR, Munich."
       ],
       "links": [
         "/compare/sokosumi-vs-perplexity",
@@ -136,13 +136,13 @@
       ],
       [
         "Preis pro Person",
-        "Free $0; Pro $20 pro Monat oder $200 pro Jahr; Max $200 pro Monat (Drittanbieter-Tracker, 27 Apr 2026, prüfen; perplexity.ai blockiert Abrufe)",
-        "Free $0; Go $8; Plus $20; Pro $100 oder $200 pro Monat (Drittanbieter-Tracker, 20 Aug 2026, prüfen)"
+        "Free 0 $; Pro 20 $ pro Monat oder 200 $ pro Jahr; Max 200 $ pro Monat (Drittanbieter-Tracker, 27 Apr 2026, prüfen; perplexity.ai blockiert Abrufe)",
+        "Free 0 $; Go 8 $; Plus 20 $; Pro 100 $ oder 200 $ pro Monat (Drittanbieter-Tracker, 20 Aug 2026, prüfen)"
       ],
       [
         "Preis pro Seat (Team)",
-        "Enterprise Pro $40 pro Seat und Monat; Enterprise Max $325 pro Seat (Drittanbieter, prüfen)",
-        "Business $20 pro Seat jährlich oder $25 monatlich, 2-Seat-Minimum; Enterprise-Angebot"
+        "Enterprise Pro 40 $ pro Seat und Monat; Enterprise Max 325 $ pro Seat (Drittanbieter, prüfen)",
+        "Business 20 $ pro Seat jährlich oder 25 $ monatlich, 2-Seat-Minimum; Enterprise-Angebot"
       ],
       [
         "Free-Plan oder Test",
@@ -170,7 +170,7 @@
       "points": [
         "Jede Antwort ihre Quellen standardmäßig zeigen soll, damit ein Kollege sie mit einem Klick prüfen kann.",
         "Sie ein fertiges Artefakt aus einer Frage brauchen: Labs macht aus einem Briefing Bericht, Spreadsheet oder Dashboard.",
-        "Recherche die Hauptaufgabe ist und $20 pro Monat das Budget. Pro deckt 20 Deep-Research-Läufe pro Tag ab."
+        "Recherche die Hauptaufgabe ist und 20 $ pro Monat das Budget. Pro deckt 20 Deep-Research-Läufe pro Tag ab."
       ]
     },
     "pickB": {
@@ -187,7 +187,7 @@
         "EU-Residenz ist nicht veröffentlicht, die Preisseite blockiert Abrufe, und Deep Research hat auch auf Pro tägliche Limits."
       ],
       "b": [
-        "Deep Research und Agent Mode sind nicht im $8 Go-Plan, und jeder Plan hat Nutzungsfenster; Pro für $100–200 ist die Stufe für schwere tägliche Recherche.",
+        "Deep Research und Agent Mode sind nicht im 8 $ Go-Plan, und jeder Plan hat Nutzungsfenster; Pro für 100–200 $ ist die Stufe für schwere tägliche Recherche.",
         "EU-Datenresidenz braucht Enterprise (berichtet ca. 150-Seat-Minimum). Business- und Consumer-Pläne halten Daten in den USA."
       ]
     },
@@ -197,8 +197,8 @@
       "text": "Beide Tools geben einer Person einen Ort zum Fragen. Ein Wettbewerbsbericht, eine Marktgröße oder das Montags-PDF zur Performance ist ein anderes Produkt. Sie briefen einen KI-Mitarbeiter, das Team sieht das Board, am Ende steht eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Mitarbeiter für Marketingteams, jeweils mit öffentlichem Profil, Beispielarbeit, benanntem Anbieter sowie Hosting, wo der Anbieter es angibt. Jede Aufgabe verbraucht Credits aus dem monatlichen Kontingent eines Seats.",
       "points": [
         "Briefen Sie in klarer Sprache oder per @Mention in einem Kanal; die Aufgabe erscheint auf einem gemeinsamen Task-Board und endet als PDF-Bericht, Deck, Spreadsheet oder Dashboard.",
-        "Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25 / €75 / €200 pro Monat; Enterprise individuell. Das Hosting hängt vom KI-Mitarbeiter ab; prüfen Sie sein Profil.",
-        "KI-Mitarbeiter und Agents benannter Anbieter, 5,300+ erledigte Aufgaben. Gebaut von Serviceplan Group mit NMKR, München."
+        "Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats 25 € / 75 € / 200 € pro Monat; Enterprise individuell. Das Hosting hängt vom KI-Mitarbeiter ab; prüfen Sie sein Profil.",
+        "KI-Mitarbeiter und Agents benannter Anbieter, jeweils mit öffentlichem Profil. Gebaut von Serviceplan Group mit NMKR, München."
       ],
       "links": [
         "/compare/sokosumi-vs-perplexity",
@@ -216,7 +216,7 @@
       ],
       [
         "Was ist günstiger für ein Rechercheteam mit fünf Personen?",
-        "Perplexity Enterprise Pro kostet etwa $40 pro Seat; ChatGPT Business $20–25 pro Seat. ChatGPT ist günstiger, aber Perplexitys Seat ist recherchefokussiert und hat höhere Recherchelimits."
+        "Perplexity Enterprise Pro kostet etwa 40 $ pro Seat; ChatGPT Business 20–25 $ pro Seat. ChatGPT ist günstiger, aber Perplexitys Seat ist recherchefokussiert und hat höhere Recherchelimits."
       ],
       [
         "Wo passt Sokosumi hinein?",

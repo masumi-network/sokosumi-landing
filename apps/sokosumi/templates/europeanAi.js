@@ -53,7 +53,7 @@ const hasLogo = (slug) => {
 // Masumi side is the payment service; kodosumi (the runtime) is dropped here
 // and still reachable from GitHub.
 const REPOS = [
-  { repo: "sokosumi", licence: "MIT", stars: 12, what: "The marketplace itself — the web app, the roster, the task board." },
+  { repo: "sokosumi", licence: "MIT", stars: 12, what: "The marketplace itself: the web app, the roster, the task board." },
   { repo: "masumi-payment-service", licence: "MIT", stars: 14, what: "The Masumi payment layer that settles every agent run." },
 ];
 
@@ -61,7 +61,7 @@ const REPOS = [
 // headers (x-vercel-id: fra1 = Frankfurt); the Neon region is Sokosumi's own
 // configuration.
 const INFRA = [
-  { slug: "vercel", name: "Vercel", role: "Application hosting", where: "EU region — Frankfurt (fra1)" },
+  { slug: "vercel", name: "Vercel", role: "Application hosting", where: "EU region, Frankfurt (fra1)" },
   { slug: "neon", name: "Neon", role: "Database", where: "EU region" },
   { slug: "azure", name: "Microsoft Azure", role: "Serviceplan's own coworkers", where: "EU · Azure · Frankfurt" },
 ];

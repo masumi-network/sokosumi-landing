@@ -45,7 +45,7 @@ function faq() {
   return [
     {
       question: t("What is an AI employee?"),
-      answer: t("Software that holds a defined role on a team — research, creative, reporting — and does that role's recurring tasks from a brief. Unlike a chat assistant, it works without you in the loop: you brief it, it runs, you get a file back."),
+      answer: t("Software that holds a defined role on a team (research, creative, reporting) and does that role's recurring tasks from a brief. Unlike a chat assistant, it works without you in the loop: you brief it, it runs, you get a file back."),
     },
     {
       question: t("What is the difference between an AI employee and an AI agent?"),
@@ -61,7 +61,7 @@ function faq() {
     },
     {
       question: t("Which is the best AI employee?"),
-      answer: t("The one built for the job you need done — there is no best in general. Compare candidates on role, vendor, price per run and reviews the way you would compare contractors. The roster on this page lists specialists by role."),
+      answer: t("The one built for the job you need done. There is no best in general. Compare candidates on role, vendor, price per run and reviews the way you would compare contractors. The roster on this page lists specialists by role."),
     },
     {
       question: t("Can an AI employee replace a human employee?"),

@@ -30,7 +30,7 @@
       ],
       [
         "Price per user",
-        "Standard seat €29/month billed monthly or €23.20 billed annually; Business Max seat (5x usage) €119 or €99. Lower seat prices from 100 users. Excl. VAT",
+        "Standard seat €29/month billed monthly or €23.20 billed annually; Business Max seat (5x usage) €119 or €99. Tiered pricing for larger teams. Excl. VAT",
         "Standard seat $25/month billed monthly or $20 billed annually; Premium seat (5x usage) $125 or $100. 2-seat minimum. OpenAI says prices may vary by country and currency"
       ],
       [
@@ -85,10 +85,10 @@
         "Business has no SCIM, role-based access controls or Enterprise Key Management. Since 24 August 2026 a new Business subscription tops out at 200 paid seats (OpenAI pricing page and Business FAQ)."
       ]
     },
-    "verdict": "For a German company with a works council and a data protection officer, Langdock wins on the plain facts: the app and most models run in the EU on the standard plan, you can switch models, and workflows are included. ChatGPT Business wins if your team already works in ChatGPT and wants OpenAI's newest features first. Its new storage-region option is worth asking about, but it doesn't cover model processing, and a copy of prompts and responses still goes to the US for abuse monitoring. Neither one hands you finished work; both give each person a place to prompt.",
+    "verdict": "For a German company with a works council and a data protection officer, Langdock wins on the plain facts: the app and most models run in the EU on the standard plan, you can switch models, and workflows are included. ChatGPT Business wins if your team already works in ChatGPT and wants OpenAI's newest features first. Its new storage-region option is worth asking about, but it doesn't cover model processing, and a copy of prompts and responses still goes to the US for abuse monitoring. Both are workspaces where your team prompts and builds its own agents. If you'd rather commission a finished report, that's a different product.",
     "bridge": {
       "heading": "If you want the work done, not a chat window",
-      "text": "Both tools above give a person a place to prompt. A competitor report, a campaign plan or the Monday performance PDF is a different product. You brief a coworker, the team sees the board, and a file lands at the end. Sokosumi is a marketplace of named AI coworkers for marketing teams, built by Serviceplan Group with NMKR in Munich. You brief in plain language or @mention in a channel; the task shows on a shared board and ends with a PDF, deck, spreadsheet or dashboard.",
+      "text": "Both tools above are workspaces where your team prompts and builds its own agents. A competitor report, a campaign plan or the Monday performance PDF is a different product. You brief a coworker, the team sees the board, and a file lands at the end. Sokosumi is a marketplace of named AI coworkers for marketing teams, built by Serviceplan Group with NMKR in Munich. You brief in plain language or @mention in a channel; the task shows on a shared board and ends with a PDF, deck, spreadsheet or dashboard.",
       "points": [
         "Coworkers and agents from named vendors; each profile names the vendor, and the models and hosting where the vendor states them.",
         "Priced per seat per month, and every seat includes monthly credits: Free €0 with 250 credits, Starter €25, Standard €75, Pro €200. Each task shows its credit price before it runs.",
@@ -136,12 +136,12 @@
       ],
       [
         "Preis pro Nutzer",
-        "Standard-Lizenz €29 pro Monat bei monatlicher Abrechnung oder €23,20 bei jährlicher; Business-Max-Lizenz (5-fache Nutzung) €119 oder €99. Günstigere Preise ab 100 Nutzern. Zzgl. MwSt.",
-        "Standard-Lizenz $25 pro Monat bei monatlicher Abrechnung oder $20 bei jährlicher; Premium-Lizenz (5-fache Nutzung) $125 oder $100. Mindestens 2 Lizenzen. Laut OpenAI können die Preise je nach Land und Währung variieren"
+        "Standard-Seat 29 € pro Monat bei monatlicher Abrechnung oder 23,20 € bei jährlicher; Business-Max-Seat (5-fache Nutzung) 119 € oder 99 €. Staffelpreise für größere Teams. Zzgl. MwSt.",
+        "Standard-Seat 25 $ pro Monat bei monatlicher Abrechnung oder 20 $ bei jährlicher; Premium-Seat (5-fache Nutzung) 125 $ oder 100 $. Mindestens 2 Seats. Laut OpenAI können die Preise je nach Land und Währung variieren"
       ],
       [
         "Gratis-Plan oder Testphase",
-        "7 Tage Test, €5 Modell-Guthaben, keine Kreditkarte",
+        "7 Tage Test, 5 € Modell-Guthaben, keine Kreditkarte",
         "Kein Gratis-Plan für Teams. ChatGPT Free richtet sich an Einzelpersonen"
       ],
       [
@@ -151,12 +151,12 @@
       ],
       [
         "Teamfunktionen",
-        "SSO, SCIM, SAML im Business-Plan; gemeinsame Agents; bis zu 1.000 Nutzer; Governance-Add-on (kostenlos bis 1. Januar 2027, danach €3,50 pro Nutzer monatlich oder €2,80 jährlich)",
-        "SAML-SSO, Admin-Konsole und Admin-Rollen, Nutzungsanalysen und Ausgabenkontrolle, bis zu 200 bezahlte Lizenzen. Kein SCIM und keine rollenbasierten Zugriffsrechte im Business-Plan"
+        "SSO, SCIM, SAML im Business-Plan; gemeinsame Agents; bis zu 1.000 Nutzer; Governance-Add-on (kostenlos bis 1. Januar 2027, danach 3,50 € pro Nutzer monatlich oder 2,80 € jährlich)",
+        "SAML-SSO, Admin-Konsole und Admin-Rollen, Nutzungsanalysen und Ausgabenkontrolle, bis zu 200 bezahlte Seats. Kein SCIM und keine rollenbasierten Zugriffsrechte im Business-Plan"
       ],
       [
         "Eigene Agents bauen",
-        "Ja: Agents mit Wissen, Tools und Integrationen; Workflows mit 2.500 Läufen pro Monat inklusive, 40.000 Läufe für €539 pro Monat (€449 bei jährlicher Abrechnung)",
+        "Ja: Agents mit Wissen, Tools und Integrationen; Workflows mit 2.500 Läufen pro Monat inklusive, 40.000 Läufe für 539 € pro Monat (449 € bei jährlicher Abrechnung)",
         "Ja: Custom GPTs und Workspace Agents, die nach Zeitplan, in Slack oder per API-Trigger laufen"
       ],
       [
@@ -168,7 +168,7 @@
     "pickA": {
       "heading": "Wählen Sie Langdock, wenn …",
       "points": [
-        "Sie App und Modelle schon im Standardplan in der EU gehostet brauchen, ohne Enterprise-Vertrag.",
+        "Sie App und die meisten Modelle schon im Standardplan in der EU gehostet brauchen, ohne Enterprise-Vertrag.",
         "Sie Modelle von OpenAI, Anthropic, Google und Mistral an einem Ort wechseln oder vergleichen wollen.",
         "Sie Workflows mit Triggern und Freigabeschritten bauen und Agents in Slack oder Teams nutzen wollen."
       ]
@@ -188,16 +188,16 @@
       ],
       "b": [
         "Datenresidenz für Business wird schrittweise eingeführt und steht noch nicht allen Kunden zur Verfügung. Sie gilt für gespeicherte Inhalte, nicht dafür, wo ChatGPT Anfragen verarbeitet. Protokolle zur Missbrauchskontrolle bleiben in den USA, und bei einer Region außerhalb der USA wird dort trotzdem befristet eine Kopie jedes Prompts und jeder Antwort gespeichert (OpenAI Help Center, Speicherort bei ChatGPT Business).",
-        "Business bietet kein SCIM, keine rollenbasierten Zugriffsrechte und kein Enterprise Key Management. Seit dem 24. August 2026 umfasst ein neues Business-Abo höchstens 200 bezahlte Lizenzen (OpenAI-Preisseite und Business-FAQ)."
+        "Business bietet kein SCIM, keine rollenbasierten Zugriffsrechte und kein Enterprise Key Management. Seit dem 24. August 2026 umfasst ein neues Business-Abo höchstens 200 bezahlte Seats (OpenAI-Preisseite und Business-FAQ)."
       ]
     },
-    "verdict": "Für ein deutsches Unternehmen mit Betriebsrat und Datenschutzbeauftragtem liegt Langdock nach den Fakten vorn: App und die meisten Modelle laufen schon im Standardplan in der EU, Sie können Modelle wechseln, und Workflows sind enthalten. ChatGPT Business liegt vorn, wenn Ihr Team ohnehin mit ChatGPT arbeitet und neue OpenAI-Funktionen zuerst haben will. Die neue Wahl der Speicherregion lohnt eine Nachfrage, sie regelt aber nicht die Modellverarbeitung, und eine Kopie der Prompts und Antworten geht zur Missbrauchskontrolle weiter in die USA. Keines der beiden liefert fertige Arbeit; beide geben jeder Person einen Ort zum Prompten.",
+    "verdict": "Für ein deutsches Unternehmen mit Betriebsrat und Datenschutzbeauftragtem liegt Langdock für diese Anforderungen vorn: App und die meisten Modelle laufen schon im Standardplan in der EU, Sie können Modelle wechseln, und Workflows sind enthalten. ChatGPT Business liegt vorn, wenn Ihr Team ohnehin mit ChatGPT arbeitet und neue OpenAI-Funktionen zuerst haben will. Die neue Wahl der Speicherregion lohnt eine Nachfrage, sie regelt aber nicht die Modellverarbeitung, und eine Kopie der Prompts und Antworten geht zur Missbrauchskontrolle weiter in die USA. Beide sind Arbeitsumgebungen, in denen Ihr Team selbst promptet und Agenten baut. Wenn Sie stattdessen einen fertigen Report beauftragen wollen, ist das ein anderes Produkt.",
     "bridge": {
       "heading": "Wenn Sie erledigte Arbeit wollen, kein Chatfenster",
-      "text": "Beide Tools geben einer Person einen Ort zum Prompten. Ein Wettbewerbsbericht, ein Kampagnenplan oder das Performance-PDF am Montag ist ein anderes Produkt. Sie briefen einen KI-Mitarbeiter, das Team sieht das Board, am Ende steht eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Mitarbeiter für Marketingteams, gebaut von der Serviceplan Group mit NMKR in München. Sie briefen in normaler Sprache oder per @Erwähnung in einem Kanal; die Aufgabe erscheint auf einem gemeinsamen Board und endet mit PDF, Präsentation, Tabelle oder Dashboard.",
+      "text": "Beide Tools sind Arbeitsumgebungen, in denen Ihr Team selbst promptet und Agenten baut. Ein Wettbewerbsbericht, ein Kampagnenplan oder das Performance-PDF am Montag ist ein anderes Produkt. Sie briefen einen KI-Mitarbeiter, das Team sieht das Board, am Ende steht eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Mitarbeiter für Marketingteams, gebaut von der Serviceplan Group mit NMKR in München. Sie briefen in normaler Sprache oder per @Erwähnung in einem Kanal; die Aufgabe erscheint auf einem gemeinsamen Board und endet mit PDF, Präsentation, Tabelle oder Dashboard.",
       "points": [
         "KI-Mitarbeiter und Agents benannter Anbieter; jedes Profil nennt den Anbieter und, soweit der Anbieter sie angibt, Modelle und Hosting.",
-        "Abgerechnet pro Lizenz und Monat, jede Lizenz enthält monatliche Credits: Free €0 mit 250 Credits, Starter €25, Standard €75, Pro €200. Jede Aufgabe zeigt ihren Credit-Preis, bevor sie startet.",
+        "Abgerechnet pro Seat und Monat, jeder Seat enthält monatliche Credits: Free 0 € mit 250 Credits, Starter 25 €, Standard 75 €, Pro 200 €. Jede Aufgabe zeigt ihren Credit-Preis, bevor sie startet.",
         "Geplante Aufgaben, damit der Wochenbericht ohne neuen Prompt ankommt."
       ],
       "links": [
@@ -208,7 +208,7 @@
     "faq": [
       [
         "Ist ChatGPT Team dasselbe wie ChatGPT Business?",
-        "Ja. OpenAI hat ChatGPT Team am 29. August 2025 in ChatGPT Business umbenannt; bestehende Team-Workspaces wurden zu Business-Workspaces. Funktionen und Preise hat die Umbenennung nicht verändert. Ein Workspace braucht weiterhin mindestens zwei bezahlte Lizenzen."
+        "Ja. OpenAI hat ChatGPT Team am 29. August 2025 in ChatGPT Business umbenannt; bestehende Team-Workspaces wurden zu Business-Workspaces. Funktionen und Preise hat die Umbenennung nicht verändert. Ein Workspace braucht weiterhin mindestens zwei bezahlte Seats."
       ],
       [
         "Nutzt Langdock OpenAI-Modelle?",

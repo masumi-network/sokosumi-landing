@@ -92,7 +92,7 @@
       "points": [
         "Brief in plain language or @mention in a channel; the task shows on a shared board and ends as a PDF report, deck, spreadsheet or dashboard. Scheduled tasks included.",
         "Each task spends credits. Free: 250 credits per seat per month, no card. Paid seats €25 / €75 / €200 per month; Enterprise custom. Hosting depends on the coworker; check its profile.",
-        "Coworkers and agents from named vendors, 5,300+ tasks run. Built by Serviceplan Group with NMKR, Munich."
+        "Coworkers and agents from named vendors, each with a public profile. Built by Serviceplan Group with NMKR, Munich."
       ],
       "links": [
         "/compare/sokosumi-vs-canva-ai",
@@ -136,7 +136,7 @@
       ],
       [
         "Preis pro Person",
-        "Free $0 (50 KI-Credits); Pro $18 pro Monat oder $144 pro Jahr (500 Credits); Business $25 pro Seat monatlich oder $250 pro Jahr; Enterprise individuell (Drittanbieter-Tracker, 15 Jul 2026, prüfen; canva.com blockiert Abrufe)",
+        "Free 0 $ (50 KI-Credits); Pro 18 $ pro Monat oder 144 $ pro Jahr (500 Credits); Business 25 $ pro Seat monatlich oder 250 $ pro Jahr; Enterprise individuell (Drittanbieter-Tracker, 15 Jul 2026, prüfen; canva.com blockiert Abrufe)",
         "Nicht veröffentlicht. Enterprise-Angebote; Presse nennt Credit-basierte Ansprüche"
       ],
       [
@@ -156,7 +156,7 @@
       ],
       [
         "KI-Zählung",
-        "Monatliche Credits: Pro bis zu 2,000 Standard, 200 Premium, 20 Ultra; AI Pass Add-on $100 pro Person und Monat für mehr (Drittanbieter, prüfen)",
+        "Monatliche Credits: Pro bis zu 2.000 Standard, 200 Premium, 20 Ultra; AI Pass Add-on 100 $ pro Person und Monat für mehr (Drittanbieter, prüfen)",
         "Credit-basierter Anspruch pro Vertrag; nicht veröffentlicht"
       ],
       [
@@ -168,7 +168,7 @@
     "pickA": {
       "heading": "Wählen Sie Canva AI, wenn …",
       "points": [
-        "Ihr Team unter 50 Personen hat und heute per Kreditkarte starten will. Pro kostet $18 pro Monat; Business $25 pro Seat.",
+        "Ihr Team unter 50 Personen hat und heute per Kreditkarte starten will. Pro kostet 18 $ pro Monat; Business 25 $ pro Seat.",
         "Der meiste Output aus Social Posts, Decks und Kurzvideo besteht und von Menschen erstellt wird, die keine Designer sind.",
         "Sie einen Pauschalpreis wollen und mit monatlichen AI-Credit-Grenzen leben können."
       ]
@@ -183,7 +183,7 @@
     },
     "limits": {
       "a": [
-        "Credits sind beim Iterieren schnell verbraucht: Reviews nennen die kostenlosen 50 Credits 'a trial, not a plan' und sagen, dass Pro über Projekte hinweg knapp ist; der AI Pass dafür kostet $100 pro Person.",
+        "Credits sind beim Iterieren schnell verbraucht: Reviews nennen die kostenlosen 50 Credits 'a trial, not a plan' und sagen, dass Pro über Projekte hinweg knapp ist; der AI Pass dafür kostet 100 $ pro Person.",
         "EU-Datenresidenz gibt es nur auf Enterprise; Teams- und Business-Daten werden global verarbeitet, auch in den USA. Bildausgaben gelten als weniger fotorealistisch als bei Wettbewerbern und fein steuerbar nur begrenzt."
       ],
       "b": [
@@ -197,8 +197,8 @@
       "text": "Canva und GenStudio erstellen Assets, sobald Strategie, Recherche und Briefing vorliegen. Diese Vorarbeit ist ein anderes Produkt: ein KI-Mitarbeiter, den Sie briefen, ein Task-Board fürs Team, am Ende eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Mitarbeiter für Marketingteams, jeweils mit öffentlichem Profil, Beispielarbeit, benanntem Anbieter sowie Hosting, wo der Anbieter es angibt. Der Output, ein Recherche-PDF, ein Kreativbriefing, ein Kampagnenplan, geht danach in Canva oder GenStudio in die Produktion.",
       "points": [
         "Briefen Sie in klarer Sprache oder per @Mention in einem Kanal; die Aufgabe erscheint auf einem gemeinsamen Task-Board und endet als PDF-Bericht, Deck, Spreadsheet oder Dashboard. Geplante Aufgaben inklusive.",
-        "Jede Aufgabe verbraucht Credits. Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25 / €75 / €200 pro Monat; Enterprise individuell. Das Hosting hängt vom KI-Mitarbeiter ab; prüfen Sie sein Profil.",
-        "KI-Mitarbeiter und Agents benannter Anbieter, 5,300+ erledigte Aufgaben. Gebaut von Serviceplan Group mit NMKR, München."
+        "Jede Aufgabe verbraucht Credits. Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats 25 € / 75 € / 200 € pro Monat; Enterprise individuell. Das Hosting hängt vom KI-Mitarbeiter ab; prüfen Sie sein Profil.",
+        "KI-Mitarbeiter und Agents benannter Anbieter, jeweils mit öffentlichem Profil. Gebaut von Serviceplan Group mit NMKR, München."
       ],
       "links": [
         "/compare/sokosumi-vs-canva-ai",
@@ -208,11 +208,11 @@
     "faq": [
       [
         "Was kostet Adobe GenStudio?",
-        "Adobe veröffentlicht keinen Preis. GenStudio wird als Enterprise-Vertrag mit Credit-basierten Ansprüchen verkauft; Review-Seiten listen 'contact vendor'. Firefly-Consumer-Pläne sind separat und starten bei etwa $10 pro Monat."
+        "Adobe veröffentlicht keinen Preis. GenStudio wird als Enterprise-Vertrag mit Credit-basierten Ansprüchen verkauft; Review-Seiten listen 'contact vendor'. Firefly-Consumer-Pläne sind separat und starten bei etwa 10 $ pro Monat."
       ],
       [
         "Was sind Canva KI-Credits?",
-        "Jede KI-Aktion kostet Credits nach Stufe: Standard (Magic Write), Premium (Dream Lab Bilder, Magic Design) und Ultra (konversationelles Design, Text-zu-Video). Pro enthält bis zu 2,000 Standard-, 200 Premium- und 20 Ultra-Credits pro Monat; der AI Pass vervielfacht das für $100 pro Person (Drittanbieter-Zahlen)."
+        "Jede KI-Aktion kostet Credits nach Stufe: Standard (Magic Write), Premium (Dream Lab Bilder, Magic Design) und Ultra (konversationelles Design, Text-zu-Video). Pro enthält bis zu 2.000 Standard-, 200 Premium- und 20 Ultra-Credits pro Monat; der AI Pass vervielfacht das für 100 $ pro Person (Drittanbieter-Zahlen)."
       ],
       [
         "Welches Produkt hält Daten in der EU?",

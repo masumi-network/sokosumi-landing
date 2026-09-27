@@ -92,7 +92,7 @@
       "points": [
         "Brief in plain language or @mention in a channel; the task shows on a shared board and ends as a PDF report, deck, spreadsheet or live dashboard. Scheduled tasks included.",
         "Each task spends credits. Free: 250 credits per seat per month, no card. Paid seats €25 / €75 / €200 per month; Enterprise custom. Hosting depends on the coworker; check its profile.",
-        "Coworkers and agents from named vendors, 5,300+ tasks run. Built by Serviceplan Group with NMKR, Munich."
+        "Coworkers and agents from named vendors, each with a public profile. Built by Serviceplan Group with NMKR, Munich."
       ],
       "links": [
         "/compare/sokosumi-vs-genspark",
@@ -136,13 +136,13 @@
       ],
       [
         "Preis pro Person",
-        "Free (100 tägliche Credits); Plus ab 10,000 und Pro ab 125,000 Credits pro Monat, Dollarpreise nach Login sichtbar (Drittanbieter-Capture, 2 Jun 2026, prüfen)",
-        "Free $0; Pro $20 pro Monat; Max $200 pro Monat mit unbegrenzten Labs (Drittanbieter-Tracker, 27 Apr 2026, prüfen; perplexity.ai blockiert Abrufe)"
+        "Free (100 tägliche Credits); Plus ab 10.000 und Pro ab 125.000 Credits pro Monat, Dollarpreise nach Login sichtbar (Drittanbieter-Capture, 2 Jun 2026, prüfen)",
+        "Free 0 $; Pro 20 $ pro Monat; Max 200 $ pro Monat mit unbegrenzten Labs (Drittanbieter-Tracker, 27 Apr 2026, prüfen; perplexity.ai blockiert Abrufe)"
       ],
       [
         "Preis pro Seat (Team)",
-        "Team $30 pro Seat und Monat, 12,000 Credits pro Seat, 2–150 Seats; Enterprise ab 151+ Seats individuell",
-        "Enterprise Pro $40 pro Seat und Monat; Enterprise Max $325 pro Seat (Drittanbieter, prüfen)"
+        "Team 30 $ pro Seat und Monat, 12.000 Credits pro Seat, 2–150 Seats; Enterprise ab 151+ Seats individuell",
+        "Enterprise Pro 40 $ pro Seat und Monat; Enterprise Max 325 $ pro Seat (Drittanbieter, prüfen)"
       ],
       [
         "Free-Plan oder Test",
@@ -169,7 +169,7 @@
       "heading": "Wählen Sie Genspark, wenn …",
       "points": [
         "Das Ergebnis ein Slide Deck oder formatiertes Dokument ist und Sie es in einem Lauf wollen.",
-        "Sie einen Teamplan mit veröffentlichtem Seat-Preis ohne Sales Call wollen: $30 pro Seat, 2 bis 150 Seats.",
+        "Sie einen Teamplan mit veröffentlichtem Seat-Preis ohne Sales Call wollen: 30 $ pro Seat, 2 bis 150 Seats.",
         "Sie Top-Chat- und Bildmodelle ohne Credit-Verbrauch wollen, mindestens bis Ende 2026."
       ]
     },
@@ -177,7 +177,7 @@
       "heading": "Wählen Sie Perplexity, wenn …",
       "points": [
         "Belegte Antworten wichtiger sind als poliertes Layout. Jede Antwort nennt standardmäßig Quellen.",
-        "Sie ein bekanntes Limit statt eines Credit-Zählers wollen: 20 Deep-Research-Läufe pro Tag auf Pro für $20.",
+        "Sie ein bekanntes Limit statt eines Credit-Zählers wollen: 20 Deep-Research-Läufe pro Tag auf Pro für 20 $.",
         "Sie einen Browser wollen, der für Sie handelt. Comet ist enthalten."
       ]
     },
@@ -188,7 +188,7 @@
       ],
       "b": [
         "Quellen können schwach sein, und Studien finden, dass ein Teil der URLs in Deep-Research-Ausgaben erfunden ist. Prüfen Sie Links, bevor Sie einen Bericht weiterleiten.",
-        "EU-Hosting ist nicht veröffentlicht, die Preisseite blockiert Abrufe, und Labs ist auf 50 pro Monat begrenzt, außer Sie zahlen $200 für Max."
+        "EU-Hosting ist nicht veröffentlicht, die Preisseite blockiert Abrufe, und Labs ist auf 50 pro Monat begrenzt, außer Sie zahlen 200 $ für Max."
       ]
     },
     "verdict": "Für fertige Decks und Docs auf einem Teamplan, den Sie heute kaufen können, gewinnt Genspark. Für Recherche, die Sie prüfen und nachvollziehen können, gewinnt Perplexity und ist als einzelner Seat günstiger. Keines bietet einem kleinen Team EU-Hosting, und beide brauchen einen Menschen, der die Ausgabe liest, bevor sie rausgeht.",
@@ -197,8 +197,8 @@
       "text": "Beide Tools liefern Artefakte aus einem Briefing. Was sie nicht geben: einen benannten Spezialisten, einen ausgewiesenen Anbieter und ein Board, auf dem das Team die Aufgabe sieht. Sokosumi ist ein Marktplatz für benannte KI-Mitarbeiter für Marketingteams, jeweils mit Rolle, öffentlichem Profil, Beispielarbeit und benanntem Anbieter mit genannten Modellen und genanntem Hosting.",
       "points": [
         "Briefen Sie in klarer Sprache oder per @Mention in einem Kanal; die Aufgabe erscheint auf einem gemeinsamen Task-Board und endet als PDF-Bericht, Deck, Spreadsheet oder Live-Dashboard. Geplante Aufgaben inklusive.",
-        "Jede Aufgabe verbraucht Credits. Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25 / €75 / €200 pro Monat; Enterprise individuell. Das Hosting hängt vom KI-Mitarbeiter ab; prüfen Sie sein Profil.",
-        "KI-Mitarbeiter und Agents benannter Anbieter, 5,300+ erledigte Aufgaben. Gebaut von Serviceplan Group mit NMKR, München."
+        "Jede Aufgabe verbraucht Credits. Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats 25 € / 75 € / 200 € pro Monat; Enterprise individuell. Das Hosting hängt vom KI-Mitarbeiter ab; prüfen Sie sein Profil.",
+        "KI-Mitarbeiter und Agents benannter Anbieter, jeweils mit öffentlichem Profil. Gebaut von Serviceplan Group mit NMKR, München."
       ],
       "links": [
         "/compare/sokosumi-vs-genspark",
@@ -216,7 +216,7 @@
       ],
       [
         "Was zahlt ein Team mit fünf Personen?",
-        "Genspark Team: $150 pro Monat für 60,000 Credits. Perplexity Enterprise Pro: etwa $200 pro Monat mit Abfragelimits statt Credits (Drittanbieter-Zahlen)."
+        "Genspark Team: 150 $ pro Monat für 60.000 Credits. Perplexity Enterprise Pro: etwa 200 $ pro Monat mit Abfragelimits statt Credits (Drittanbieter-Zahlen)."
       ],
       [
         "Wo passt Sokosumi hinein?",

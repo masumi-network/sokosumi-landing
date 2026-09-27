@@ -578,7 +578,7 @@ function logoRow(opts) {
     (l) => `<img${l.tall || l.ink ? ` class="${[l.tall ? "logo-tall" : "", l.ink ? "logo-ink" : ""].filter(Boolean).join(" ")}"` : ""} src="${attr(l.src)}" alt="${attr(l.alt)}" loading="lazy" decoding="async" />`,
   ).join("");
   return `<section class="page-section plan-logos${o.flush ? " flush" : ""}" data-reveal>
-      <p class="plan-logos-label">${esc(t("In use at"))}</p>
+      <p class="plan-logos-label">${esc(t("Sokosumi is used at"))}</p>
       <div class="blk-logos">${imgs}</div>
     </section>`;
 }

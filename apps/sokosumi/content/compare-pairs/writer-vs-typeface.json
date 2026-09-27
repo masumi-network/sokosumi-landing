@@ -136,7 +136,7 @@
       ],
       [
         "Preis",
-        "Starter $39 pro Nutzer monatlich oder $29 jährlich, max 5 Seats; Enterprise individuell (Drittanbieter, prüfen)",
+        "Starter 39 $ pro Nutzer monatlich oder 29 $ jährlich, max 5 Seats; Enterprise individuell (Drittanbieter, prüfen)",
         "Nicht veröffentlicht. Nur Demo und individueller Vertrag"
       ],
       [
@@ -170,7 +170,7 @@
       "points": [
         "Sie eine KI-Plattform für viele Abteilungen wollen, nicht nur Marketing.",
         "Modellkontrolle zählt: eigene Modelle, Single-Tenant-Option, externe Modelle auf Enterprise.",
-        "Sie günstig einsteigen wollen. Starter kostet $29 bis $39 pro Nutzer für bis zu fünf Personen."
+        "Sie günstig einsteigen wollen. Starter kostet 29 $ bis 39 $ pro Nutzer für bis zu fünf Personen."
       ]
     },
     "pickB": {
@@ -187,7 +187,7 @@
         "Palmyra-Modelle liegen laut unabhängigen Reviews auf allgemeinen Benchmarks unter Frontier-Modellen. Sie tauschen Top-Fähigkeit gegen Kontrolle."
       ],
       "b": [
-        "Keine öffentlichen Preise, kein Self-Serve, kein Test. Drittanbieter-Guides widersprechen sich bei Kosten (einer nennt $49 bis $99 pro Nutzer; ein anderer sechsstellige Jahresbeträge). Behandeln Sie alles als ungeprüft.",
+        "Keine öffentlichen Preise, kein Self-Serve, kein Test. Drittanbieter-Guides widersprechen sich bei Kosten (einer nennt 49 $ bis 99 $ pro Nutzer; ein anderer sechsstellige Jahresbeträge). Behandeln Sie alles als ungeprüft.",
         "Gebaut für Fortune-500-Marketingorganisationen. Ein mittelgroßes Team wird Sales Motion und Setup schwer für seine Größe finden."
       ]
     },
@@ -197,7 +197,7 @@
       "text": "Beide Plattformen brauchen einen Rollout: Konnektoren, Playbooks, Brand Graphs, Freigaben. Ein Wettbewerbsbericht, ein Kampagnenplan oder das Montags-PDF zur Performance ist ein anderes Produkt. Sie briefen einen KI-Mitarbeiter, das Team sieht das Board, am Ende steht eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Mitarbeiter für Marketingteams, jeweils mit Rolle, Beispielarbeit und einem benannten Anbieter, der Modelle und Hosting ausweist.",
       "points": [
         "Briefen Sie in klarer Sprache oder per @Mention in einem Kanal; die Aufgabe erscheint auf einem gemeinsamen Task-Board und endet mit einer fertigen Datei.",
-        "Jede Aufgabe verbraucht Credits. Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25, €75 oder €200 pro Monat.",
+        "Jede Aufgabe verbraucht Credits. Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats 25 €, 75 € oder 200 € pro Monat.",
         "Das Hosting hängt vom KI-Mitarbeiter ab; prüfen Sie sein Profil. Gebaut von Serviceplan Group mit NMKR, München."
       ],
       "links": [

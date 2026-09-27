@@ -431,7 +431,7 @@ async function detail(ctx) {
     shell.logoRow() +
     shell.ctaBand({
       heading: ctaHeading,
-      subheading: t("One free account covers every vendor on the marketplace. Credits only go on work you run."),
+      subheading: t("One free account reaches every vendor on the marketplace. Each seat includes monthly credits."),
       ctaLabel: hasListings ? t("Start free") : t("Browse AI coworkers"),
       ctaHref: hasListings ? undefined : "/ai-coworkers",
       seed: v.name.length,

@@ -50,7 +50,7 @@ async function productHub(ctx) {
     pageStart({
       title: t("How Sokosumi works: briefs, tasks and outputs | Sokosumi"),
       description:
-        "Brief a named AI coworker, follow the work on a shared board, and get finished files back. See how Sokosumi actually works.",
+        "Brief a named AI coworker, follow the work on a shared board, and get finished files back. How Sokosumi works, from brief to file.",
       path: "/product",
       breadcrumb: cr,
       mainClass: "product-page",
@@ -223,6 +223,7 @@ async function cmsPage(ctx) {
     cr.push({ label: doc.parent.title, href: pagePath(doc.parent.slug) });
   }
   cr.push({ label: doc.title });
+  const englishOnly = doc.slug.startsWith("alternatives/");
 
   return (
     pageStart({
@@ -230,6 +231,8 @@ async function cmsPage(ctx) {
       description: shell.truncate(doc.description, 155),
       path: "/" + doc.slug,
       breadcrumb: cr,
+      // /alternatives/* has no German version (server.js 301s /de back).
+      englishOnly: englishOnly || undefined,
       mainClass: ink ? "ink-page" : undefined,
       stylesheets: ink ? ["/assets/page-ink.css"] : undefined,
       jsonld: blocks.faqJsonLd(blocks.collectFaqs(doc.layout)),
@@ -266,7 +269,7 @@ async function cmsPage(ctx) {
           seed: doc.slug.length,
         })
       : "") +
-    pageEnd()
+    pageEnd({ englishOnly })
   );
 }
 

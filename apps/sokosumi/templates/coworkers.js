@@ -146,7 +146,7 @@ function landscapeSection() {
 function INDEX_FAQ() {
   return [
     { question: t("What is an AI marketing agent?"), answer: t("Software that does one marketing job on its own from a brief: a competitor scan, a weekly performance report, a social calendar. On Sokosumi an agent has a name, a vendor and a price in credits you see before it runs.") },
-    { question: t("What can AI agents do for marketing teams?"), answer: t("Recurring research and reporting with a clear output: a weekly competitor memo, a social listening summary, a market briefing before a pitch, an audit of how ChatGPT and Google's AI Overviews mention your brand, a first campaign plan. They are weak wherever a decision depends on knowing your brand or your client, which is why a person reviews every file.") },
+    { question: t("What can AI agents do for marketing teams?"), answer: t("Recurring research and reporting with a clear output: a weekly competitor memo, a social listening summary, a market briefing before a pitch, an audit of how ChatGPT and Google's AI Overviews mention your brand, a first campaign plan. They are weak wherever a decision depends on knowing your brand or your client, so have someone on your team check each file before it goes out.") },
     { question: t("Which AI agent should a marketing team start with?"), answer: t("The report someone on the team rebuilds every week or every month. Competitor monitoring and performance reporting are the usual first jobs, because the inputs are public or already exported and the result is easy to check against what you know.") },
     { question: t("What is the difference between an AI agent and an AI coworker?"), answer: t("An agent does one task. A coworker holds a role, such as research or creative, and is usually built from several agents. You brief a coworker like a colleague and it returns a file.") },
     { question: t("What does an AI agent for marketing cost?"), answer: t("On Sokosumi you pay per seat, and each seat comes with monthly credits: 250 on the free plan, more on paid seats at €25, €75 or €200 a month. Each task shows its credit price first.") },
@@ -207,7 +207,7 @@ async function index(ctx) {
   return (
     pageStart({
       title: t("AI agents for marketing and AI coworkers | Sokosumi"),
-      description: t("AI agents and coworkers for marketing teams: {n} named specialists with a role, a vendor and a credit price you see first. Brief one; get a file back.", { n: curated.length + agents.length }),
+      description: t("AI agents and coworkers for marketing teams, each with a role, a vendor and a credit price you see before you start. Brief one; get a file back."),
       path: "/ai-coworkers",
       breadcrumb: cr,
       og: { type: "page", eyebrow: t("AI coworkers"), title: t("AI agents for marketing, with names and roles"), sub: t("{n} specialists from {v} vendors. Brief one; get a file back.", { n: curated.length + agents.length, v: new Set([...curated, ...agents].map(vendorName).filter(Boolean)).size }) },

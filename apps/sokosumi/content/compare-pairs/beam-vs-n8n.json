@@ -136,8 +136,8 @@
       ],
       [
         "Preis",
-        "Free $0 (20 Aufgaben); Pro $50 pro Monat (200 Aufgaben); Scale $3,990 pro Monat; Custom",
-        "Cloud Starter €20, Pro €50 pro Monat; Business €667 pro Monat jährlich; Enterprise individuell; Community Edition kostenlos"
+        "Free 0 $ (20 Aufgaben); Pro 50 $ pro Monat (200 Aufgaben); Scale 3.990 $ pro Monat; Custom",
+        "Cloud Starter 20 €, Pro 50 € pro Monat; Business 667 € pro Monat jährlich; Enterprise individuell; Community Edition kostenlos"
       ],
       [
         "Free-Plan oder Test",
@@ -162,7 +162,7 @@
       [
         "Was gezählt wird",
         "Aufgaben: 20 Free, 200 Pro, hohes Volumen auf Scale. Die Preisseite definiert nicht, was als eine Aufgabe zählt",
-        "Workflow-Ausführungen: 2,500 / 10,000 / 40,000 pro Monat; eine Ausführung ist ein kompletter Lauf"
+        "Workflow-Ausführungen: 2.500 / 10.000 / 40.000 pro Monat; eine Ausführung ist ein kompletter Lauf"
       ]
     ],
     "pickA": {
@@ -170,25 +170,25 @@
       "points": [
         "Ihr Prozess dokumentenlastig und regelgebunden ist (Rechnungen, Schadenfälle, Auftragsbearbeitung) und ein Anbieter die Agents verantworten soll.",
         "Sie deutsches Hosting wollen und Modellaufrufe laut Beams Datensicherheitsrichtlinie in EU-Regionen bleiben sollen.",
-        "Sie Budget für einen gemanagten Service haben. Scale startet bei $3,990 pro Monat."
+        "Sie Budget für einen gemanagten Service haben. Scale startet bei 3.990 $ pro Monat."
       ]
     },
     "pickB": {
       "heading": "Wählen Sie n8n, wenn …",
       "points": [
         "Sie einen Entwickler haben und volle Kontrolle über Integrationen, Modelle und Hosting wollen.",
-        "Sie planbare, niedrige Preise wollen: €20 bis €50 pro Monat in der Cloud oder kostenlos selbst gehostet.",
+        "Sie planbare, niedrige Preise wollen: 20 € bis 50 € pro Monat in der Cloud oder kostenlos selbst gehostet.",
         "Ihre Automatisierungen vielfältig sind und sich oft ändern; das kann ein allgemeiner Workflow-Builder besser als feste Prozess-Agents."
       ]
     },
     "limits": {
       "a": [
-        "Der Preis springt von $50 Pro auf $3,990 Scale, ohne Zwischenstufe, und die Seite definiert eine Aufgabe nicht. Gartner- und G2-Reviews nennen außerdem Preistransparenz als Problem für schnell wachsende Mid-Market-Firmen.",
+        "Der Preis springt von 50 $ Pro auf 3.990 $ Scale, ohne Zwischenstufe, und die Seite definiert eine Aufgabe nicht. Gartner- und G2-Reviews nennen außerdem Preistransparenz als Problem für schnell wachsende Mid-Market-Firmen.",
         "Reviews berichten von holprigem Onboarding, dünner Dokumentation für eigene Webhooks und Randfällen bei Dokumentformaten, die weiter Menschen brauchen."
       ],
       "b": [
         "Die Lernkurve ist der wichtigste G2-Nachteil; Fehlerbehandlung und Datenmapping brauchen oft JavaScript.",
-        "Kein dauerhafter kostenloser Cloud-Plan, und SSO sowie erweiterte Rollen starten erst bei Business (€667 pro Monat). Self-Hosting in Produktion heißt Docker, SSL und Updates auf Ihrer Seite."
+        "Kein dauerhafter kostenloser Cloud-Plan, und SSO sowie erweiterte Rollen starten erst bei Business (667 € pro Monat). Self-Hosting in Produktion heißt Docker, SSL und Updates auf Ihrer Seite."
       ]
     },
     "verdict": "Beam AI gewinnt für ein Operations-Team mit hohem Volumen, klar definiertem Prozess und Budget für einen gemanagten Anbieter. n8n gewinnt für ein technisches Team, das eine günstige, flexible Engine unter eigener Kontrolle will. Beide können Daten in Deutschland halten, was in dieser Kategorie selten ist.",
@@ -197,7 +197,7 @@
       "text": "Beide Tools automatisieren Prozesse: eines gemanagt, eines selbst gebaut. Ein Wettbewerbsbericht, ein Kampagnenplan oder das Montags-PDF zur Performance ist ein anderes Produkt. Sie briefen einen KI-Mitarbeiter, das Team sieht das Board, am Ende steht eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Mitarbeiter für Marketingteams, jeweils mit Rolle, Beispielarbeit und benanntem Anbieter, der Modelle und Hosting ausweist.",
       "points": [
         "Briefen Sie in klarer Sprache oder per @Mention in einem Kanal; die Aufgabe erscheint auf einem gemeinsamen Task-Board und endet mit einer fertigen Datei.",
-        "Jede Aufgabe verbraucht Credits. Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25, €75 oder €200 pro Monat.",
+        "Jede Aufgabe verbraucht Credits. Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats 25 €, 75 € oder 200 € pro Monat.",
         "Das Hosting hängt vom KI-Mitarbeiter ab; prüfen Sie sein Profil. Gebaut von Serviceplan Group mit NMKR, München."
       ],
       "links": [
@@ -216,7 +216,7 @@
       ],
       [
         "Wie zählt n8n Ausführungen?",
-        "Eine Ausführung ist ein kompletter Workflow-Lauf, unabhängig von der Zahl der Schritte. Starter hat 2,500 pro Monat, Pro 10,000, Business 40,000. Workflows laufen über das Kontingent hinaus weiter; Mehrverbrauch kann anfallen."
+        "Eine Ausführung ist ein kompletter Workflow-Lauf, unabhängig von der Zahl der Schritte. Starter hat 2.500 pro Monat, Pro 10.000, Business 40.000. Workflows laufen über das Kontingent hinaus weiter; Mehrverbrauch kann anfallen."
       ],
       [
         "Gibt es eine fertige Option für Marketing-Ergebnisse?",

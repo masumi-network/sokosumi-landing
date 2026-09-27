@@ -99,7 +99,7 @@ async function index(ctx) {
   }
   const toolSection = tool.length
     ? `<div class="page-section tg-index" id="tool-guides">
-      <div class="blk-head"><h2>${esc(t("How to use AI tools for marketing and sales"))}</h2><p class="sub">${esc(t("Honest how-tos for the tools you already have: what each one does well for a marketing job, real prompts, real limits, and where a coworker takes over."))}</p></div>
+      <div class="blk-head"><h2>${esc(t("How to use AI tools for marketing and sales"))}</h2><p class="sub">${esc(t("How-tos for the tools you already have: what each one does for a marketing job, concrete prompts, limits, and where an AI coworker takes over."))}</p></div>
       ${[...byTool.entries()].map(([name, list]) => `<h3 class="tg-tool-head">${esc(name)}</h3><div class="${shell.gridCls(list.length)}">${list.map(toolGuideCard).join("")}</div>`).join("")}
     </div>`
     : "";
@@ -137,7 +137,7 @@ async function index(ctx) {
       <div class="shot-split">
         <div class="copy">
           <h2>${esc(t("It starts with one good brief"))}</h2>
-          <p>${esc(t("Say what you want done in plain language. Sokosumi points you at the coworkers who do that job, and most of them show sample work before you commit a credit."))}</p>
+          <p>${esc(t("Say what you want done in plain language. Sokosumi points you at the coworkers who do that job, and many profiles show sample work before you commit a credit."))}</p>
           <a class="btn btn-outline" href="/tasks">${esc(t("Browse template tasks"))}</a>
         </div>
         ${shell.shotFigure(shell.SHOTS.brief, { caption: false })}

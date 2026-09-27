@@ -121,8 +121,8 @@
   "de": {
     "title": "The NEED oder Sintra: KI-Mitarbeiter-Flatrates für kleine Unternehmen",
     "metaTitle": "The NEED vs Sintra (2026): Preise, Credits, EU-Hosting",
-    "description": "The NEED KI-Mitarbeiter vs Sintra KI-Helfer: €40-Flatrate oder Credit-Pläne, EU-Hosting, Aufgaben der Agents und Grenzen. Stand August 2026.",
-    "intro": "The NEED verkauft 'KI-Mitarbeiter': hunderte vorkonfigurierte KI-Agents für Sales, Support, Admin und Operations für pauschal €40 pro Monat, gehostet in der EU. Sintra verkauft 12 benannte 'AI helpers' (Soshie für Social, Penn für Copy, Seomi für SEO) an kleine Unternehmer in einer vergünstigten Subscription mit 250 Credits pro Monat. Unterschied: The NEED ist ein deutsches Ops- und Support-Toolkit; Sintra ist ein Marketing- und Admin-Chatpaket mit Credit-Zähler und US-Datenverarbeitung.",
+    "description": "The NEED KI-Mitarbeiter vs Sintra KI-Helfer: 40-€-Flatrate oder Credit-Pläne, EU-Hosting, Aufgaben der Agents und Grenzen. Stand August 2026.",
+    "intro": "The NEED verkauft 'KI-Mitarbeiter': hunderte vorkonfigurierte KI-Agents für Sales, Support, Admin und Operations für pauschal 40 € pro Monat, gehostet in der EU. Sintra verkauft 12 benannte 'AI helpers' (Soshie für Social, Penn für Copy, Seomi für SEO) an kleine Unternehmer in einer vergünstigten Subscription mit 250 Credits pro Monat. Unterschied: The NEED ist ein deutsches Ops- und Support-Toolkit; Sintra ist ein Marketing- und Admin-Chatpaket mit Credit-Zähler und US-Datenverarbeitung.",
     "glance": [
       [
         "Für wen es passt",
@@ -131,13 +131,13 @@
       ],
       [
         "Was Sie bekommen",
-        "700+ vorkonfigurierte Agents (Seite sagt auch 400+), 1,500+ automatisierbare Aufgaben, Human-in-the-loop-Prüfung, Audit Trails, rollenbasierte Rechte",
+        "700+ vorkonfigurierte Agents (Seite sagt auch 400+), 1.500+ automatisierbare Aufgaben, Human-in-the-loop-Prüfung, Audit Trails, rollenbasierte Rechte",
         "12 Helfer mit gemeinsamem 'Brain'-Wissensspeicher, 15+ Integrationen (Gmail, Notion, Shopify, QuickBooks), Bildgenerierung"
       ],
       [
         "Preis pro Nutzer",
-        "€40/Monat pauschal für die Plattform; keine Seat-Gebühren genannt",
-        "Liste $97/Monat; verkauft für $48.50 monatlich, $23.60 bei 3 Monaten, $15.60 bei 12 Monaten (Stand 26 Aug 2026). Einzelner Helfer $39/Monat"
+        "40 €/Monat pauschal für die Plattform; keine Seat-Gebühren genannt",
+        "Liste 97 $/Monat; verkauft für 48,50 $ monatlich, 23,60 $ bei 3 Monaten, 15,60 $ bei 12 Monaten (Stand 26 Aug 2026). Einzelner Helfer 39 $/Monat"
       ],
       [
         "Free-Plan oder Test",
@@ -191,13 +191,13 @@
         "Helfer führen nicht aus: Sie posten nicht auf Social, senden keine E-Mails, aktualisieren kein CRM selbst und haben keine Helpdesk-Integrationen wie Zendesk (eesel Review, 17 Jul 2026)."
       ]
     },
-    "verdict": "Für ein deutsches Unternehmen mit Datenschutzregeln ist The NEED von beiden das passendere: EU-resident, flach €40, ops-fokussiert. Für Solo-Gründer, die schnell Marketingentwürfe wollen und US-Verarbeitung oder Credits akzeptieren, ist Sintra günstiger im Einstieg. Achten Sie aber auf Credit-Zähler und Verlängerungspreis. Keines liefert fertige Dateien auf ein gemeinsames Task-Board.",
+    "verdict": "Für ein deutsches Unternehmen mit Datenschutzregeln ist The NEED von beiden das passendere: EU-resident, flach 40 €, ops-fokussiert. Für Solo-Gründer, die schnell Marketingentwürfe wollen und US-Verarbeitung oder Credits akzeptieren, ist Sintra günstiger im Einstieg. Achten Sie aber auf Credit-Zähler und Verlängerungspreis. Keines liefert fertige Dateien auf ein gemeinsames Task-Board.",
     "bridge": {
       "heading": "Wenn Sie Arbeit erledigt haben wollen, kein Chatfenster",
       "text": "Beide Tools geben einer Person ein Set von Agents zum Chatten. Ein Wettbewerbsbericht, ein Kampagnenplan oder das Montags-PDF zur Performance ist ein anderes Produkt. Sie briefen einen KI-Mitarbeiter, das Team sieht das Board, am Ende steht eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Mitarbeiter für Marketingteams, gebaut von Serviceplan Group mit NMKR in München.",
       "points": [
         "KI-Mitarbeiter und Agents benannter Anbieter; jedes Profil nennt den Anbieter sowie Modelle und Hosting, wo der Anbieter sie angibt.",
-        "Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25, €75 oder €200 pro Monat; jede Aufgabe verbraucht Credits aus dem monatlichen Kontingent eines Seats.",
+        "Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats 25 €, 75 € oder 200 € pro Monat; jede Aufgabe verbraucht Credits aus dem monatlichen Kontingent eines Seats.",
         "Aufgaben enden mit einem fertigen PDF, Deck, Spreadsheet oder Dashboard; geplante Aufgaben wiederholen sich selbst."
       ],
       "links": [
@@ -211,7 +211,7 @@
         "Es wurde in Litauen gegründet und hat eine litauische Tochter (Monkai, UAB), aber der Vertragspartner in der Privacy Policy ist PlayOS, Inc. in Delaware, und Daten können in den USA verarbeitet werden."
       ],
       [
-        "Was deckt €40 bei The NEED ab?",
+        "Was deckt 40 € bei The NEED ab?",
         "Die Seite sagt: die komplette Plattform, vorkonfigurierte Agents, unbegrenzte Nutzung und Updates, monatliche Kündigung, keine Setupgebühr. Seat-Zahl und Limits sind nicht veröffentlicht; schriftlich bestätigen lassen."
       ],
       [

@@ -136,8 +136,8 @@
       ],
       [
         "Preis",
-        "Pro $69 pro Seat monatlich oder $59 jährlich; Business individuell",
-        "Starter $39 pro Nutzer monatlich oder $29 jährlich, max 5 Seats; Enterprise individuell (Drittanbieter, prüfen: writer.com blockierte Abruf)"
+        "Pro 69 $ pro Seat monatlich oder 59 $ jährlich; Business individuell",
+        "Starter 39 $ pro Nutzer monatlich oder 29 $ jährlich, max 5 Seats; Enterprise individuell (Drittanbieter, prüfen: writer.com blockierte Abruf)"
       ],
       [
         "Free-Plan oder Test",
@@ -170,7 +170,7 @@
       "points": [
         "Der Käufer die Marketingleitung ist, nicht IT, und die Aufgabe Content ist: Blogs, Ads, E-Mail, Social, Bilder.",
         "Sie Brand Voice und Langform-Editor für Marketer wollen statt eines allgemeinen Agent Studio.",
-        "US-Hosting und ein Seat-Preis von $59 bis $69 für Sie passen."
+        "US-Hosting und ein Seat-Preis von 59 $ bis 69 $ für Sie passen."
       ]
     },
     "pickB": {
@@ -178,13 +178,13 @@
       "points": [
         "Sie eine Plattform für viele Abteilungen mit SSO, Audit und Knowledge Graph über Unternehmensdaten wollen.",
         "Modellkontrolle wichtig ist: Writer betreibt eigene Palmyra-Modelle und bietet Single-Tenant-Deployment auf Enterprise.",
-        "Sie günstig testen wollen. Starter kostet $29 bis $39 pro Nutzer für bis zu fünf Personen mit 14-Tage-Test."
+        "Sie günstig testen wollen. Starter kostet 29 $ bis 39 $ pro Nutzer für bis zu fünf Personen mit 14-Tage-Test."
       ]
     },
     "limits": {
       "a": [
         "Die Funktionen, die Jasper 'agentic' machen (eigene Agents, Deep Research, GEO, API), brauchen Business ohne öffentlichen Preis.",
-        "Reviews sind gespalten: 4.7/5 auf G2, aber 3.4/5 auf Trustpilot, wo Billing, Kündigung und die Preiserhöhung 2023 weiter Kritik auslösen."
+        "Reviews sind gespalten: 4,7/5 auf G2, aber 3,4/5 auf Trustpilot, wo Billing, Kündigung und die Preiserhöhung 2023 weiter Kritik auslösen."
       ],
       "b": [
         "Starter ist hart begrenzt: fünf Seats, fünf Playbooks, drei aktive Konnektoren, 1 GB Knowledge-Graph-Speicher. Ernsthafte Nutzung bedeutet Enterprise und Sales-Zyklus.",
@@ -197,7 +197,7 @@
       "text": "Beide Tools geben einer Person einen Ort zum Prompten oder einen Agent zum Bauen. Ein Wettbewerbsbericht, ein Kampagnenplan oder das Montags-PDF zur Performance ist ein anderes Produkt. Sie briefen einen KI-Mitarbeiter, das Team sieht das Board, am Ende steht eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Mitarbeiter für Marketingteams, jeweils mit Rolle, Beispielarbeit und einem benannten Anbieter, der Modelle und Hosting ausweist.",
       "points": [
         "Briefen Sie in klarer Sprache oder per @Mention in einem Kanal; die Aufgabe erscheint auf einem gemeinsamen Task-Board und endet mit einer fertigen Datei (PDF, Deck, Spreadsheet, Dashboard).",
-        "Jede Aufgabe verbraucht Credits. Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25, €75 oder €200 pro Monat.",
+        "Jede Aufgabe verbraucht Credits. Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats 25 €, 75 € oder 200 € pro Monat.",
         "Das Hosting hängt vom KI-Mitarbeiter ab; prüfen Sie sein Profil. Gebaut von Serviceplan Group mit NMKR, München."
       ],
       "links": [
@@ -208,7 +208,7 @@
     "faq": [
       [
         "Veröffentlicht Writer seine Preise?",
-        "Nur teilweise. writer.com blockierte unseren Abruf; ein Drittanbieter-Guide vom May 2026 nennt Starter mit $39 pro Nutzer monatlich oder $29 jährlich, begrenzt auf fünf Seats. Enterprise ist individuell. Prüfen Sie writer.com/plans."
+        "Nur teilweise. writer.com blockierte unseren Abruf; ein Drittanbieter-Guide vom May 2026 nennt Starter mit 39 $ pro Nutzer monatlich oder 29 $ jährlich, begrenzt auf fünf Seats. Enterprise ist individuell. Prüfen Sie writer.com/plans."
       ],
       [
         "Welches Tool hat eigene KI-Modelle?",

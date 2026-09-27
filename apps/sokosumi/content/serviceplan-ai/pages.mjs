@@ -847,12 +847,12 @@ Serviceplan nannte die Umsetzung des House of AI, Luma AI, Behave.AI, Plus.AI un
 
   page(
     "serviceplan-ai/ai-marketing-agency",
-    "AI marketing agency: buyer guide",
+    "AI marketing agency: services and how to choose",
     "What an AI marketing agency delivers, how the delivery models differ, and what to check on data, rights, measurement and approvals before you sign.",
     [
       hero(
         "AI marketing agency guide",
-        "Choose the operating model, not the AI label",
+        "What to compare before you hire an AI agency",
         "A buyer-first guide to AI-enabled agencies, AI coworkers, custom agent systems and enterprise marketing transformation.",
       ),
       richText(`## What is an AI marketing agency?
@@ -1191,7 +1191,7 @@ Das [Data-&-AI-Portfolio](${SOURCE.dataAi}) von Mediaplus gruppiert Strategie, A
 
   page(
     "serviceplan-ai/ai-search-geo",
-    "AI search visibility and GEO guide",
+    "Serviceplan GEO cases: AI search visibility",
     "How AI search visibility and generative engine optimization differ from SEO, what Mediaplus Search.AI measures, and how brands can build sourceable authority.",
     [
       hero(
@@ -1235,11 +1235,11 @@ This does not replace technical SEO. Pages still need stable URLs, crawlable HTM
         ["Can a company guarantee a ChatGPT ranking?", "No stable universal rank exists. Models, retrieval, prompts and time change the answer. A credible provider reports probability, sample design, variance and citations."],
       ]),
     ],
-    "AI-Search-Sichtbarkeit und GEO",
+    "KI-Suche: Sichtbarkeit und GEO bei Serviceplan",
     "Wie sich AI-Search-Sichtbarkeit und GEO von SEO unterscheiden, was Mediaplus Search.AI misst und wie Marken belegbare Autorität aufbauen.",
     [
       hero(
-        "AI-Search-Sichtbarkeit und GEO",
+        "KI-Suche: Sichtbarkeit und GEO bei Serviceplan",
         "Modellbeobachtungen messen, dauerhafte Autorität aufbauen",
         "Ein Praxisguide zur Markensichtbarkeit in ChatGPT, Claude, Gemini und Perplexity ohne das Versprechen eines festen Rankings.",
       ),

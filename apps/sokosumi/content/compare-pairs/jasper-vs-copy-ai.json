@@ -136,8 +136,8 @@
       ],
       [
         "Preis",
-        "Pro $69 pro Seat monatlich oder $59 jährlich; Business individuell",
-        "Chat $29 pro Monat ($24 jährlich) für 5 Seats; Growth $1,000, Expansion $2,000, Scale $3,000 pro Monat; Enterprise individuell"
+        "Pro 69 $ pro Seat monatlich oder 59 $ jährlich; Business individuell",
+        "Chat 29 $ pro Monat (24 $ jährlich) für 5 Seats; Growth 1.000 $, Expansion 2.000 $, Scale 3.000 $ pro Monat; Enterprise individuell"
       ],
       [
         "Free-Plan oder Test",
@@ -169,7 +169,7 @@
       "heading": "Wählen Sie Jasper, wenn …",
       "points": [
         "Sie zwei bis zehn Marketer haben, die täglich schreiben und eine Brand Voice über alle hinweg erzwingen wollen.",
-        "Sie einen Seat-Preis wollen, mit dem Sie heute per Kreditkarte starten können. Pro kostet $69 pro Monat mit 7-Tage-Test.",
+        "Sie einen Seat-Preis wollen, mit dem Sie heute per Kreditkarte starten können. Pro kostet 69 $ pro Monat mit 7-Tage-Test.",
         "Sie Bilder, Langform-Editor und Marketing-Agents an einem Ort wollen statt eines Workflow-Builders."
       ]
     },
@@ -177,18 +177,18 @@
       "heading": "Wählen Sie Copy.ai, wenn …",
       "points": [
         "Sie denselben Content- oder Outreach-Prozess hunderte Male pro Monat ausführen und ihn als Workflow wollen, nicht als Chat.",
-        "Sie 75 oder mehr Seats brauchen. Growth für $1,000 pro Monat deckt 75 Seats ab und ist pro Kopf günstiger als Jasper Pro.",
-        "Sie nur einen günstigen Multi-Modell-Chat für ein kleines Team brauchen. Chat kostet $29 pro Monat für fünf Seats."
+        "Sie 75 oder mehr Seats brauchen. Growth für 1.000 $ pro Monat deckt 75 Seats ab und ist pro Kopf günstiger als Jasper Pro.",
+        "Sie nur einen günstigen Multi-Modell-Chat für ein kleines Team brauchen. Chat kostet 29 $ pro Monat für fünf Seats."
       ]
     },
     "limits": {
       "a": [
         "Business-Preise sind nicht öffentlich, und Custom Agent Builder, GEO, Deep Research und API liegen dort. Budgetieren heißt Sales Call.",
-        "Review-Seiten klaffen auseinander: 4.7/5 auf G2, aber 3.4/5 auf Trustpilot, wo Billing-, Kündigungsbeschwerden und die Preiserhöhung 2023 weiter auftauchen."
+        "Review-Seiten klaffen auseinander: 4,7/5 auf G2, aber 3,4/5 auf Trustpilot, wo Billing-, Kündigungsbeschwerden und die Preiserhöhung 2023 weiter auftauchen."
       ],
       "b": [
-        "Der Sprung von Chat ($29) zu Growth ($1,000) ist groß. Für ein Zehnerteam, das Workflows will, gibt es keinen mittleren Plan.",
-        "Reviews nennen Workflow Credits und Support als Hauptschmerz. Trustpilot liegt bei 1.9/5 mit Billing- und Kündigungsbeschwerden und E-Mail-Support, der Tage dauern kann."
+        "Der Sprung von Chat (29 $) zu Growth (1.000 $) ist groß. Für ein Zehnerteam, das Workflows will, gibt es keinen mittleren Plan.",
+        "Reviews nennen Workflow Credits und Support als Hauptschmerz. Trustpilot liegt bei 1,9/5 mit Billing- und Kündigungsbeschwerden und E-Mail-Support, der Tage dauern kann."
       ]
     },
     "verdict": "Jasper gewinnt für ein kleines Marketingteam, das täglich markenkonforme Inhalte schreibt und einen einfachen Seat-Preis will. Copy.ai gewinnt für eine große Go-to-Market-Organisation, die Content und Outreach als wiederholbare Workflows braucht und vierstellige Monatsbeträge zahlen kann. EU-Hosting bietet heute keines von beiden.",
@@ -197,7 +197,7 @@
       "text": "Beide Tools geben einer Person einen Ort zum Prompten oder einen Workflow zum Bauen. Ein Wettbewerbsbericht, ein Kampagnenplan oder das Montags-PDF zur Performance ist ein anderes Produkt. Sie briefen einen KI-Mitarbeiter, das Team sieht das Board, am Ende steht eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Mitarbeiter für Marketingteams. Jeder hat eine Rolle, ein öffentliches Profil, Beispielarbeit und einen benannten Anbieter, der Modelle und Hosting ausweist.",
       "points": [
         "Sie briefen in klarer Sprache oder per @Mention in einem Kanal; die Aufgabe erscheint auf einem gemeinsamen Task-Board und endet mit einer fertigen Datei.",
-        "Jede Aufgabe verbraucht Credits. Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25, €75 oder €200 pro Monat.",
+        "Jede Aufgabe verbraucht Credits. Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats 25 €, 75 € oder 200 € pro Monat.",
         "Das Hosting hängt vom KI-Mitarbeiter ab; prüfen Sie sein Profil. Gebaut von Serviceplan Group mit NMKR, München."
       ],
       "links": [
@@ -208,11 +208,11 @@
     "faq": [
       [
         "Hat Jasper einen Free-Plan?",
-        "Nein. Jasper Pro hat einen 7-Tage-Test. Danach kostet es $69 pro Seat monatlich oder $59 pro Seat im Jahresplan."
+        "Nein. Jasper Pro hat einen 7-Tage-Test. Danach kostet es 69 $ pro Seat monatlich oder 59 $ pro Seat im Jahresplan."
       ],
       [
         "Was sind Copy.ai Workflow Credits?",
-        "Workflow Credits sind der Zähler für laufende Workflows. Growth enthält 20,000 pro Monat, Expansion 45,000 und Scale 75,000. Chat-Nutzung ist unbegrenzt und verbraucht keine Credits."
+        "Workflow Credits sind der Zähler für laufende Workflows. Growth enthält 20.000 pro Monat, Expansion 45.000 und Scale 75.000. Chat-Nutzung ist unbegrenzt und verbraucht keine Credits."
       ],
       [
         "Kann eines der Tools Daten in der EU hosten?",

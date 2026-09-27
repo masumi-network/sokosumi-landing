@@ -27,7 +27,7 @@ export default {
     description:
       "Which marketing tasks AI can support today, and where human review remains necessary.",
     body: [
-      "The honest answer has two halves. Tasks are being replaced, visibly and today. The job itself (deciding what a brand should say, to whom, and whether the work is good) shows no sign of going the same way. Anyone selling you a cleaner answer than that, in either direction, is selling.",
+      "The answer has two halves. Tasks are being replaced, visibly and today. The job itself (deciding what a brand should say, to whom, and whether the work is good) shows no sign of going the same way. Anyone selling you a cleaner answer than that, in either direction, is selling.",
       "This page separates what can be checked from what is opinion, and labels which is which.",
       "## What can be checked",
       "The task half is not a prediction; it is observable. On this marketplace alone, competitor and company research has been run more than two hundred times as a delegated task (the [Company Researcher](https://www.sokosumi.com/ai-coworkers/company-researcher) listing shows its live run count), and SEO audits, social-account analysis, ad-campaign drafts and market-research reports run the same way: briefed, executed by an AI agent, returned as a file, at a credit price shown before the run. That is the replacement that has already happened: tasks, priced individually, not people. The [full roster](https://www.sokosumi.com/ai-coworkers) and the [AI employees explainer](https://www.sokosumi.com/ai-employees) show what is delegable today.",
@@ -66,7 +66,7 @@ export default {
     description:
       "Welche Marketingaufgaben KI heute unterstützen kann und wo Menschen die Ergebnisse prüfen müssen.",
     body: [
-      "Die ehrliche Antwort hat zwei Hälften. Aufgaben werden ersetzt, sichtbar und schon heute. Der Job selbst (zu entscheiden, was eine Marke wem sagen soll und ob die Arbeit gut ist) zeigt keinerlei Anzeichen, denselben Weg zu gehen. Wer eine glattere Antwort verkauft, in welche Richtung auch immer, verkauft.",
+      "Die Antwort hat zwei Teile. Aufgaben werden ersetzt, sichtbar und schon heute. Der Job selbst (zu entscheiden, was eine Marke wem sagen soll und ob die Arbeit gut ist) zeigt keinerlei Anzeichen, denselben Weg zu gehen. Wer eine glattere Antwort verkauft, in welche Richtung auch immer, verkauft.",
       "Diese Seite trennt das Überprüfbare von der Meinung und kennzeichnet beides.",
       "## Was sich tatsächlich prüfen lässt",
       "Die Aufgaben-Hälfte ist keine Prognose, sondern beobachtbar. Allein auf diesem Marktplatz lief Wettbewerber- und Unternehmens-Research bereits über zweihundert Mal als delegierter Task (das [Company-Researcher-Listing](https://www.sokosumi.com/ai-coworkers/company-researcher) zeigt seine aktuelle Laufzahl), und SEO-Audits, Social-Account-Analysen, Kampagnenentwürfe und Marktforschungsberichte laufen genauso: gebrieft, von einem KI-Agenten ausgeführt, als Datei zurückgeliefert, zu einem Credit-Preis, der vor dem Lauf sichtbar ist. Ersetzt wurden also bereits Aufgaben, einzeln bepreist, nicht Menschen. Was heute delegierbar ist, zeigen die [komplette Übersicht](https://www.sokosumi.com/de/ai-coworkers) und der [KI-Mitarbeiter-Erklärer](https://www.sokosumi.com/de/ai-employees).",

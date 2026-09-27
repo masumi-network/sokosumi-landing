@@ -136,8 +136,8 @@
       ],
       [
         "Preis pro Nutzer",
-        "Pro $30/Seat/Monat ($24 jährlich) mit 8,000 Credits; Max $150 ($120 jährlich) mit 40,000; Enterprise individuell (Drittanbieter-Capture von dust.tt Pricing, 24 Jun 2026; prüfen)",
-        "Plus $10, Business $20 pro Mitglied/Monat (jährlich); Enterprise individuell. Custom Agents werden mit $10 pro 1,000 Credits gezählt (seit 4 May 2026)"
+        "Pro 30 $/Seat/Monat (24 $ jährlich) mit 8.000 Credits; Max 150 $ (120 $ jährlich) mit 40.000; Enterprise individuell (Drittanbieter-Capture von dust.tt Pricing, 24 Jun 2026; prüfen)",
+        "Plus 10 $, Business 20 $ pro Mitglied/Monat (jährlich); Enterprise individuell. Custom Agents werden mit 10 $ pro 1.000 Credits gezählt (seit 4 May 2026)"
       ],
       [
         "Free-Plan oder Test",
@@ -197,7 +197,7 @@
       "text": "Beide Tools geben einem Team einen Builder und einen Ort zum Prompten. Ein Wettbewerbsbericht, ein Kampagnenplan oder das Montags-PDF zur Performance ist ein anderes Produkt. Sie briefen einen KI-Mitarbeiter, das Team sieht das Board, am Ende steht eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Mitarbeiter für Marketingteams, gebaut von Serviceplan Group mit NMKR in München.",
       "points": [
         "KI-Mitarbeiter und Agents benannter Anbieter; jedes Profil nennt den Anbieter sowie Modelle und Hosting, wo der Anbieter sie angibt.",
-        "Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25, €75 oder €200 pro Monat; jede Aufgabe verbraucht Credits aus dem monatlichen Kontingent eines Seats.",
+        "Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats 25 €, 75 € oder 200 € pro Monat; jede Aufgabe verbraucht Credits aus dem monatlichen Kontingent eines Seats.",
         "Aufgaben enden mit einem fertigen PDF, Deck, Spreadsheet oder Dashboard auf einem gemeinsamen Task-Board; geplante Aufgaben wiederholen sich selbst."
       ],
       "links": [
@@ -208,7 +208,7 @@
     "faq": [
       [
         "Wie werden Notion Custom Agents abgerechnet?",
-        "Custom Agents laufen auf Business und Enterprise und nutzen Notion Credits zu $10 pro 1,000 pro Monat. Credits werden im Workspace geteilt, monatlich zurückgesetzt und nicht übertragen. Notion Agent, AI Meeting Notes und Enterprise Search sind auf Business enthalten."
+        "Custom Agents laufen auf Business und Enterprise und nutzen Notion Credits zu 10 $ pro 1.000 pro Monat. Credits werden im Workspace geteilt, monatlich zurückgesetzt und nicht übertragen. Notion Agent, AI Meeting Notes und Enterprise Search sind auf Business enthalten."
       ],
       [
         "Kann Dust mein Notion lesen?",

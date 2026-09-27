@@ -92,7 +92,7 @@
       "points": [
         "Brief in plain language or @mention in a channel; the task shows on a shared board and ends as a PDF, deck, spreadsheet or dashboard.",
         "Each task spends credits. Free: 250 credits per seat per month, no card. Paid seats €25 / €75 / €200 per month.",
-        "Coworkers and agents from named vendors, 5,300+ tasks run. Built by Serviceplan Group with NMKR, Munich."
+        "Coworkers and agents from named vendors, each with a public profile. Built by Serviceplan Group with NMKR, Munich."
       ],
       "links": [
         "/compare/sokosumi-vs-claude",
@@ -136,13 +136,13 @@
       ],
       [
         "Preis pro Person",
-        "Free $0; Pro $17 jährlich oder $20 monatlich; Max ab $100 (claude.com, 26 Aug 2026)",
+        "Free 0 $; Pro 17 $ jährlich oder 20 $ monatlich; Max ab 100 $ (claude.com, 26 Aug 2026)",
         "Free; Google AI Plus CHF 5; AI Pro CHF 17; AI Ultra CHF 100 oder CHF 170 pro Monat (gemini.google, Schweizer Preise, 26 Aug 2026)"
       ],
       [
         "Preis pro Seat (Team)",
-        "Team Standard $20 jährlich oder $25 monatlich, Premium $100 oder $125, 2–150 Seats; Enterprise $20 pro Seat plus API-Nutzung oder individuell",
-        "Workspace Starter CHF 7, Standard CHF 14, Plus CHF 22 pro Nutzer und Monat, Enterprise individuell (Gemini enthalten); Gemini Enterprise Platform $21 / $30 / $50+ pro Seat (Drittanbieter, prüfen)"
+        "Team Standard 20 $ jährlich oder 25 $ monatlich, Premium 100 $ oder 125 $, 2–150 Seats; Enterprise 20 $ pro Seat plus API-Nutzung oder individuell",
+        "Workspace Starter CHF 7, Standard CHF 14, Plus CHF 22 pro Nutzer und Monat, Enterprise individuell (Gemini enthalten); Gemini Enterprise Platform 21 $ / 30 $ / 50 $+ pro Seat (Drittanbieter, prüfen)"
       ],
       [
         "Free-Plan oder Test",
@@ -194,11 +194,11 @@
     "verdict": "Wenn Sie auf Google Workspace sind, ist Gemini der sinnvolle Standard: Es ist bereits in Ihren Dokumenten, und EU-Datenregionen kommen ab Business Standard. Wenn Sie auf Microsoft arbeiten oder portable Office-Dateien und geplante unbeaufsichtigte Aufgaben wollen, ist Claude stärker, bringt aber US-Hosting und Nutzungslimits mit.",
     "bridge": {
       "heading": "Wenn Sie Arbeit erledigt haben wollen, kein Chatfenster",
-      "text": "Beide Tools geben einer Person einen Ort zum Prompten. Ein Wettbewerbsbericht, ein Kampagnenplan oder das Montags-PDF zur Performance ist ein anderes Produkt. Sie briefen einen KI-Mitarbeiter, das Team sieht das Board, am Ende steht eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Mitarbeiter für Marketingteams, jeweils mit öffentlichem Profil, Beispielarbeit, benanntem Anbieter sowie Hosting, wo der Anbieter es angibt. Das Hosting hängt vom KI-Mitarbeiter ab; prüfen Sie sein Profil.",
+      "text": "Beide Tools sind Arbeitsumgebungen, in denen Ihr Team selbst promptet und Agenten baut. Ein Wettbewerbsbericht, ein Kampagnenplan oder das Montags-PDF zur Performance ist ein anderes Produkt. Sie briefen einen KI-Mitarbeiter, das Team sieht das Board, am Ende steht eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Mitarbeiter für Marketingteams, jeweils mit öffentlichem Profil, Beispielarbeit, benanntem Anbieter sowie Hosting, wo der Anbieter es angibt. Das Hosting hängt vom KI-Mitarbeiter ab; prüfen Sie sein Profil.",
       "points": [
         "Briefen Sie in klarer Sprache oder per @Mention in einem Kanal; die Aufgabe erscheint auf einem gemeinsamen Task-Board und endet als PDF, Deck, Spreadsheet oder Dashboard.",
-        "Jede Aufgabe verbraucht Credits. Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25 / €75 / €200 pro Monat.",
-        "KI-Mitarbeiter und Agents benannter Anbieter, 5,300+ erledigte Aufgaben. Gebaut von Serviceplan Group mit NMKR, München."
+        "Jede Aufgabe verbraucht Credits. Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats 25 € / 75 € / 200 € pro Monat.",
+        "KI-Mitarbeiter und Agents benannter Anbieter, jeweils mit öffentlichem Profil. Gebaut von Serviceplan Group mit NMKR, München."
       ],
       "links": [
         "/compare/sokosumi-vs-claude",

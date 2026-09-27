@@ -92,7 +92,7 @@
       "points": [
         "Brief in plain language or @mention in a channel; the task shows on a shared board and ends as a PDF report, deck, spreadsheet or dashboard. Scheduled tasks included.",
         "Each task spends credits. Free: 250 credits per seat per month, no card. Paid seats €25 / €75 / €200 per month; Enterprise custom. Hosting depends on the coworker; check its profile.",
-        "Coworkers and agents from named vendors, 5,300+ tasks run. Built by Serviceplan Group with NMKR, Munich."
+        "Coworkers and agents from named vendors, each with a public profile. Built by Serviceplan Group with NMKR, Munich."
       ],
       "links": [
         "/compare/sokosumi-vs-cursor",
@@ -136,23 +136,23 @@
       ],
       [
         "Preis pro Person",
-        "Hobby kostenlos; Pro $20; Pro+ $60; Ultra $200 pro Monat (Pro von cursor.com; andere Drittanbieter, prüfen)",
-        "Free $0; Pro $10 ($15 Credits); Pro+ $39 ($70 Credits); Max $100 ($200 Credits) pro Monat (github.com, 26 Aug 2026)"
+        "Hobby kostenlos; Pro 20 $; Pro+ 60 $; Ultra 200 $ pro Monat (Pro von cursor.com; andere Drittanbieter, prüfen)",
+        "Free 0 $; Pro 10 $ (15 $ Credits); Pro+ 39 $ (70 $ Credits); Max 100 $ (200 $ Credits) pro Monat (github.com, 26 Aug 2026)"
       ],
       [
         "Preis pro Seat (Team)",
-        "Teams $40 pro Nutzer und Monat; Premium Seat $120 monatlich (Drittanbieter, prüfen); Enterprise individuell",
-        "Business $19 pro Nutzer (1,900 KI-Credits); Enterprise $39 pro Nutzer (3,900 Credits), benötigt GitHub Enterprise Cloud (docs.github.com)"
+        "Teams 40 $ pro Nutzer und Monat; Premium Seat 120 $ monatlich (Drittanbieter, prüfen); Enterprise individuell",
+        "Business 19 $ pro Nutzer (1.900 KI-Credits); Enterprise 39 $ pro Nutzer (3.900 Credits), benötigt GitHub Enterprise Cloud (docs.github.com)"
       ],
       [
         "Free-Plan oder Test",
         "Hobby-Plan, kostenlos, keine Kreditkarte",
-        "Free-Plan: 2,000 Completions und 50 Chat-Anfragen pro Monat"
+        "Free-Plan: 2.000 Completions und 50 Chat-Anfragen pro Monat"
       ],
       [
         "Nutzungsmodell",
         "Monatlicher Credit-Pool; Auto Mode ungemessen; Frontier-Modelle verbrauchen ihn; Ratenlimits pro Minute und Stunde",
-        "KI-Credits seit 1 Jun 2026, 1 Credit = $0.01; Completions unbegrenzt auf bezahlten Plänen; Chat, Agents, Review und CLI nutzen Credits; Mehrverbrauch $0.01 pro Credit mit Budgets"
+        "KI-Credits seit 1 Jun 2026, 1 Credit = 0,01 $; Completions unbegrenzt auf bezahlten Plänen; Chat, Agents, Review und CLI nutzen Credits; Mehrverbrauch 0,01 $ pro Credit mit Budgets"
       ],
       [
         "EU-Hosting",
@@ -169,7 +169,7 @@
       "heading": "Wählen Sie Cursor, wenn …",
       "points": [
         "Ihre Entwickler den stärksten In-Editor-Agent wollen und bereit sind, auf einen VS-Code-Fork zu wechseln.",
-        "Sie Routinearbeit über Auto Mode ungemessen und einen festen $20-Pool für Frontier-Modelle wollen.",
+        "Sie Routinearbeit über Auto Mode ungemessen und einen festen 20-$-Pool für Frontier-Modelle wollen.",
         "Sie Code-Review und Cloud-Agents vom selben Anbieter wie den Editor wollen."
       ]
     },
@@ -178,7 +178,7 @@
       "points": [
         "Ihr Code auf GitHub liegt und der Agent Issues übernehmen und Pull Requests dort öffnen soll.",
         "Sie EU-Datenresidenz für Code und Prompts brauchen. Copilot hat sie; Cursor veröffentlicht sie nicht.",
-        "Sie den günstigsten bezahlten Seat wollen: $10 für Pro, $19 für Business."
+        "Sie den günstigsten bezahlten Seat wollen: 10 $ für Pro, 19 $ für Business."
       ]
     },
     "limits": {
@@ -187,18 +187,18 @@
         "Keine veröffentlichte EU-Residenz und keine Einbindung in GitHubs PR-Workflow wie beim Cloud-Agent von Copilot."
       ],
       "b": [
-        "Die Umstellung auf KI-Credits im Juni 2026 führte zu Beschwerden, dass Agent-Arbeit ein $10- oder $39-Kontingent schnell verbraucht; Code-Review nutzt jetzt zusätzlich GitHub-Actions-Minuten.",
+        "Die Umstellung auf KI-Credits im Juni 2026 führte zu Beschwerden, dass Agent-Arbeit ein 10-$- oder 39-$-Kontingent schnell verbraucht; Code-Review nutzt jetzt zusätzlich GitHub-Actions-Minuten.",
         "Enterprise-Funktionen brauchen GitHub Enterprise Cloud, und EU-Residenz ist aus, bis ein Admin Modelle einschränkt; das begrenzt die Modellauswahl."
       ]
     },
-    "verdict": "Cursor gewinnt bei der In-Editor-Erfahrung; Copilot gewinnt bei Preis, GitHub-Integration und EU-Residenz. Ein GitHub-basiertes Team mit Compliance-Anforderungen sollte mit Copilot Business für $19 starten. Ein Team, das im Editor lebt und Credit-Schwankungen tragen kann, wird Cursor für $40 bevorzugen.",
+    "verdict": "Cursor gewinnt bei der In-Editor-Erfahrung; Copilot gewinnt bei Preis, GitHub-Integration und EU-Residenz. Ein GitHub-basiertes Team mit Compliance-Anforderungen sollte mit Copilot Business für 19 $ starten. Ein Team, das im Editor lebt und Credit-Schwankungen tragen kann, wird Cursor für 40 $ bevorzugen.",
     "bridge": {
       "heading": "Wenn Sie gerade einen Marketing-Agent selbst bauen wollten",
       "text": "Sokosumi ist kein Coding-Tool und konkurriert nicht mit diesen Produkten. Ein Grund für den Vergleich ist aber oft der Plan, intern einen Recherche- oder Reporting-Agent für Marketing zu bauen. Dann besitzt ein Entwickler Prompts, Datenlizenzen, Hosting und Wartung. Es gibt eine Mietoption: Sokosumi ist ein Marktplatz für benannte KI-Mitarbeiter für Marketingteams, jeweils mit öffentlichem Profil, benanntem Anbieter sowie Modellen und Hosting, wo der Anbieter sie angibt.",
       "points": [
         "Briefen Sie in klarer Sprache oder per @Mention in einem Kanal; die Aufgabe erscheint auf einem gemeinsamen Task-Board und endet als PDF-Bericht, Deck, Spreadsheet oder Dashboard. Geplante Aufgaben inklusive.",
-        "Jede Aufgabe verbraucht Credits. Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25 / €75 / €200 pro Monat; Enterprise individuell. Das Hosting hängt vom KI-Mitarbeiter ab; prüfen Sie sein Profil.",
-        "KI-Mitarbeiter und Agents benannter Anbieter, 5,300+ erledigte Aufgaben. Gebaut von Serviceplan Group mit NMKR, München."
+        "Jede Aufgabe verbraucht Credits. Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats 25 € / 75 € / 200 € pro Monat; Enterprise individuell. Das Hosting hängt vom KI-Mitarbeiter ab; prüfen Sie sein Profil.",
+        "KI-Mitarbeiter und Agents benannter Anbieter, jeweils mit öffentlichem Profil. Gebaut von Serviceplan Group mit NMKR, München."
       ],
       "links": [
         "/compare/sokosumi-vs-cursor",
@@ -212,7 +212,7 @@
       ],
       [
         "Was zahlt ein Team mit zehn Personen?",
-        "Cursor Teams: $400 pro Monat plus Mehrverbrauch. Copilot Business: $190 pro Monat mit 19,000 KI-Credits pro Nutzer-Pool, plus $0.01 pro zusätzlichem Credit."
+        "Cursor Teams: 400 $ pro Monat plus Mehrverbrauch. Copilot Business: 190 $ pro Monat mit 19.000 KI-Credits pro Nutzer-Pool, plus 0,01 $ pro zusätzlichem Credit."
       ],
       [
         "Welches Produkt hält Code in der EU?",

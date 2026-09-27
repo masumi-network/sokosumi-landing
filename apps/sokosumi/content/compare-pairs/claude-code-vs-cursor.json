@@ -92,7 +92,7 @@
       "points": [
         "Brief in plain language or @mention in a channel; the task shows on a shared board and ends as a PDF report, deck, spreadsheet or dashboard. Scheduled tasks included.",
         "Each task spends credits. Free: 250 credits per seat per month, no card. Paid seats €25 / €75 / €200 per month; Enterprise custom. Hosting depends on the coworker; check its profile.",
-        "Coworkers and agents from named vendors, 5,300+ tasks run. Built by Serviceplan Group with NMKR, Munich."
+        "Coworkers and agents from named vendors, each with a public profile. Built by Serviceplan Group with NMKR, Munich."
       ],
       "links": [
         "/compare/sokosumi-vs-claude-code",
@@ -136,13 +136,13 @@
       ],
       [
         "Preis pro Person",
-        "In Claude-Plänen enthalten: Free (limitiert), Pro $17 jährlich oder $20 monatlich, Max 5x ab $100, Max 20x $200 pro Monat; oder pro Token über API (claude.com, 26 Aug 2026)",
-        "Hobby kostenlos; Pro $20; Pro+ $60; Ultra $200 pro Monat (cursor.com zeigt Pro $20; Pro+ und Ultra aus Drittanbieter-Trackern, prüfen)"
+        "In Claude-Plänen enthalten: Free (limitiert), Pro 17 $ jährlich oder 20 $ monatlich, Max 5x ab 100 $, Max 20x 200 $ pro Monat; oder pro Token über API (claude.com, 26 Aug 2026)",
+        "Hobby kostenlos; Pro 20 $; Pro+ 60 $; Ultra 200 $ pro Monat (cursor.com zeigt Pro 20 $; Pro+ und Ultra aus Drittanbieter-Trackern, prüfen)"
       ],
       [
         "Preis pro Seat (Team)",
-        "Team Premium Seat $100 jährlich oder $125 monatlich enthält Claude Code; Standard Seat $20/$25 nicht; Enterprise individuell",
-        "Teams $40 pro Nutzer und Monat (Standard); Premium Seat $120 monatlich oder $96 jährlich (Drittanbieter, prüfen); Enterprise individuell mit gepoolter Nutzung"
+        "Team Premium Seat 100 $ jährlich oder 125 $ monatlich enthält Claude Code; Standard Seat 20 $/25 $ nicht; Enterprise individuell",
+        "Teams 40 $ pro Nutzer und Monat (Standard); Premium Seat 120 $ monatlich oder 96 $ jährlich (Drittanbieter, prüfen); Enterprise individuell mit gepoolter Nutzung"
       ],
       [
         "Free-Plan oder Test",
@@ -170,21 +170,21 @@
       "points": [
         "Ihre Entwickler ganze Aufgaben abgeben und das Ergebnis prüfen, egal ob im Editor oder Terminal.",
         "Sie den Agent in CI, Slack und nach Zeitplan wollen: PR-Reviews, nächtliche Fixes, Doku-Syncs.",
-        "Eine Subscription Chat, Cowork und Coding abdecken soll. Max für $100–200 tut das."
+        "Eine Subscription Chat, Cowork und Coding abdecken soll. Max für 100–200 $ tut das."
       ]
     },
     "pickB": {
       "heading": "Wählen Sie Cursor, wenn …",
       "points": [
         "Ihre Entwickler schnelle Completions und Inline-Edits beim Tippen wollen, in einem VS-Code-ähnlichen Editor.",
-        "Sie einen planbaren $20-Credit-Pool pro Seat und einen ungemessenen Auto Mode für Routinearbeit wollen.",
+        "Sie einen planbaren 20-$-Credit-Pool pro Seat und einen ungemessenen Auto Mode für Routinearbeit wollen.",
         "Sie automatisierte Code-Reviews (Bugbot) und Cloud-Agents im selben Produkt wollen."
       ]
     },
     "limits": {
       "a": [
         "Ratenlimits sind der häufigste Kritikpunkt: Fünf-Stunden- und Wochenlimits werden mit Chat und Cowork geteilt, und Heavy User auf Pro erreichen sie regelmäßig. Anthropic fährt seit Mai 2026 temporär 50% mehr.",
-        "Keine EU-Residenz auf Anthropic-Plänen, und Team Standard Seats enthalten Claude Code nicht; Sie brauchen Premium für $100–125."
+        "Keine EU-Residenz auf Anthropic-Plänen, und Team Standard Seats enthalten Claude Code nicht; Sie brauchen Premium für 100–125 $."
       ],
       "b": [
         "Die Preise wurden seit Juni 2025 mehrfach geändert; Nutzer berichteten, dass Pro-Credits an einem Tag leer waren und hohe Mehrkosten anfielen, der CEO entschuldigte sich. Minuten- und Stundenlimits treffen aktive Entwickler weiterhin.",
@@ -197,8 +197,8 @@
       "text": "Sokosumi ist kein Coding-Tool und konkurriert nicht mit diesen Produkten. Ein Grund für den Vergleich ist aber oft der Plan, intern einen Recherche- oder Reporting-Agent für Marketing zu bauen. Dann besitzt ein Entwickler Prompts, Datenlizenzen, Hosting und Wartung. Es gibt eine Mietoption: Sokosumi ist ein Marktplatz für benannte KI-Mitarbeiter für Marketingteams, jeweils mit öffentlichem Profil, benanntem Anbieter sowie Modellen und Hosting, wo der Anbieter sie angibt.",
       "points": [
         "Briefen Sie in klarer Sprache oder per @Mention in einem Kanal; die Aufgabe erscheint auf einem gemeinsamen Task-Board und endet als PDF-Bericht, Deck, Spreadsheet oder Dashboard. Geplante Aufgaben inklusive.",
-        "Jede Aufgabe verbraucht Credits. Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25 / €75 / €200 pro Monat; Enterprise individuell. Das Hosting hängt vom KI-Mitarbeiter ab; prüfen Sie sein Profil.",
-        "KI-Mitarbeiter und Agents benannter Anbieter, 5,300+ erledigte Aufgaben. Gebaut von Serviceplan Group mit NMKR, München."
+        "Jede Aufgabe verbraucht Credits. Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats 25 € / 75 € / 200 € pro Monat; Enterprise individuell. Das Hosting hängt vom KI-Mitarbeiter ab; prüfen Sie sein Profil.",
+        "KI-Mitarbeiter und Agents benannter Anbieter, jeweils mit öffentlichem Profil. Gebaut von Serviceplan Group mit NMKR, München."
       ],
       "links": [
         "/compare/sokosumi-vs-claude-code",
@@ -212,7 +212,7 @@
       ],
       [
         "Was zahlt ein Team mit fünf Personen?",
-        "Claude Code: fünf Team Premium Seats zu je $100 jährlich, also $500 pro Monat. Cursor: fünf Teams-Seats zu je $40, also $200 pro Monat, plus Nutzung über die enthaltenen Credits hinaus."
+        "Claude Code: fünf Team Premium Seats zu je 100 $ jährlich, also 500 $ pro Monat. Cursor: fünf Teams-Seats zu je 40 $, also 200 $ pro Monat, plus Nutzung über die enthaltenen Credits hinaus."
       ],
       [
         "Welches Produkt hält Code in der EU?",

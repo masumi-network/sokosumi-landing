@@ -389,12 +389,44 @@ const slugs = () => Object.keys(BOOST);
 // unlike the coworker slots above it wins over the CMS, because the English
 // CMS value is the synced text being corrected. Remove an entry once the
 // product catalog carries the fix.
+// Keys are offers.agentSlug/offer slug (the internal product slug, which is
+// not always the public URL slug: Vulc is grok-coding-agent).
 const OFFER_BOOST = {
   "elena/lead-generation-campaign": {
     // The task returns a campaign plan (PDF), not a run campaign or leads.
+    metaDescription: {
+      en: "Plans a lead-generation campaign around your event: audience, message, pre-event touchpoints with copy, and a follow-up step for sales. One PDF.",
+      de: "Plant eine Lead-Kampagne für Ihr Event: Zielgruppe, Botschaft, Kontaktpunkte mit Texten und das Nachfassen für den Vertrieb. Als ein PDF.",
+    },
     description: {
       en: "Plans a lead-generation campaign around your event: who to reach and with which message, the touchpoints before the event with copy for each, and a follow-up afterwards with a clear next step for sales. You get it as one PDF with a week-by-week timeline and open questions.",
       de: "Plant eine Lead-Kampagne rund um Ihr Event: wen Sie ansprechen und mit welcher Botschaft, die Kontaktpunkte vor dem Event samt Texten und das Nachfassen danach mit einem klaren nächsten Schritt für den Vertrieb. Sie erhalten alles als ein PDF mit Wochenplan und offenen Fragen.",
+    },
+  },
+  // Meta descriptions only: the synced task text runs past what a search
+  // result shows. The page body keeps the vendor's full text.
+  "themis/marketing-compliance-briefing": {
+    metaDescription: {
+      en: "Themis checks official sources against your campaigns and markets and returns a ranked compliance report with deadlines and one action per item.",
+      de: "Themis gleicht amtliche Quellen mit Ihren Kampagnen und Märkten ab und liefert einen priorisierten Compliance-Bericht mit Fristen und Maßnahmen.",
+    },
+  },
+  "themis/finding-deep-dive": {
+    metaDescription: {
+      en: "Reply \"#1 details\" and Themis breaks a finding down: severity, deadline, source, the original text and recommended steps.",
+      de: "Antworten Sie „#1 details“ und Themis schlüsselt den Befund auf: Dringlichkeit, Frist, Quelle, Originaltext und empfohlene Schritte.",
+    },
+  },
+  "themis/verified-source-watchlist": {
+    metaDescription: {
+      en: "Themis checks every regulator source before it enters your watchlist and replaces feeds that have moved or disappeared.",
+      de: "Themis prüft jede Behördenquelle, bevor sie auf Ihre Liste kommt, und ersetzt Feeds, die umgezogen oder verschwunden sind.",
+    },
+  },
+  "grok-coding-agent/pricing-page-builder": {
+    metaDescription: {
+      en: "A pricing section for your website with tiers, a monthly/yearly toggle and a comparison table, exported as copy-paste HTML.",
+      de: "Ein Preisbereich für Ihre Website mit Preisstufen, Umschalter monatlich/jährlich und Vergleichstabelle, als kopierbares HTML.",
     },
   },
 };

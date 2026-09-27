@@ -28,6 +28,8 @@ const COMPARE_TITLES = {
   "sokosumi-vs-langdock": { de: "Langdock vs. Sokosumi: Preise und Unterschiede" },
   "sokosumi-vs-nele-ai": { de: "nele.ai vs. Sokosumi: Preise und Unterschiede" },
   "sokosumi-vs-jasper": { en: "Jasper alternative for marketing teams: Jasper vs Sokosumi" },
+  "sokosumi-vs-neuroflash": { en: "neuroflash alternative? neuroflash vs Sokosumi compared", de: "neuroflash-Alternative? neuroflash und Sokosumi im Vergleich" },
+  "sokosumi-vs-marblism": { en: "Marblism alternative? Marblism vs Sokosumi compared", de: "Marblism-Alternative? Marblism und Sokosumi im Vergleich" },
 };
 const { t } = i18n;
 const { esc, attr, icon, pageStart, pageEnd } = shell;
@@ -178,28 +180,6 @@ async function index(ctx) {
 // The competitor-specific copy comes from the CMS doc; these come from the
 // catalog and the site so they are always current and never invented.
 
-// One sentence that says what the numbers mean, built from the live catalog.
-// Counts only what the marketplace records: coworkers, vendors, tasks run.
-// No hours-saved figure, because nothing measures it yet.
-function valueLine(coworkers) {
-  const live = (coworkers || []).filter((c) => c.active !== false);
-  if (!live.length) return "";
-  const runs = live.reduce((a, c) => a + (Number(c.runs) || 0), 0);
-  const vendors = new Set(live.map((c) => (c.vendor && typeof c.vendor === "object" ? c.vendor.slug : c.vendor)).filter(Boolean)).size;
-  const nf = (n) => n.toLocaleString(i18n.locale() === "de" ? "de-DE" : "en-US");
-  const runsText = runs >= 1000 ? nf(Math.floor(runs / 100) * 100) + "+" : nf(runs);
-  const b = (v) => `<strong>${esc(v)}</strong>`;
-  const line = t("Marketing teams have handed {runs} tasks to {coworkers} coworkers and agents from {vendors} vendors.", {
-    runs: b(runsText),
-    coworkers: b(nf(live.length)),
-    vendors: b(nf(vendors)),
-  });
-  return `<section class="page-section flush cmp-value" data-reveal>
-    <p class="cmp-value-line">${line}</p>
-    <p class="cmp-value-note">${esc(t("Live numbers from the marketplace."))}</p>
-  </section>`;
-}
-
 // The three "in practice" points from the CMS doc, competitor-specific, each
 // next to the product view it talks about: roster, board, chat.
 const SHOT_ORDER = ["roster", "board", "chat"];
@@ -307,9 +287,9 @@ function neighbours(slug, groups, universe, kind) {
 }
 
 const RELATED = [
-  { href: "/ai-coworkers", title: "Meet the coworkers", text: "Every coworker and agent on the marketplace, with role, vendor, models and sample work." },
+  { href: "/ai-coworkers", title: "Meet the coworkers", text: "Browse coworkers and agents by role and vendor. Profiles show models, hosting and sample work where the vendor provides them." },
   { href: "/tasks", title: "Template tasks", text: "Ready-to-run work with a fixed brief, a known deliverable and the credit price up front." },
-  { href: "/pricing", title: "Pricing", text: "Free with 250 credits per seat. Paid seats from €25 a month; credits only go on work that runs." },
+  { href: "/pricing", title: "Pricing", text: "Free with 250 credits per seat. Paid seats from €25 a month, each with monthly credits." },
 ];
 
 function related() {
@@ -323,9 +303,8 @@ function related() {
 
 async function detail(ctx) {
   const opts = { draft: ctx.preview };
-  const [doc, coworkers, testimonials, allCmp] = await Promise.all([
+  const [doc, testimonials, allCmp] = await Promise.all([
     cms.getComparison(ctx.params.slug, opts),
-    cms.getCoworkers(opts).catch(() => []),
     cms.getTestimonials(opts).catch(() => []),
     cms.getComparisons(opts).catch(() => []),
   ]);
@@ -365,7 +344,6 @@ async function detail(ctx) {
     }) +
     `<div class="cmp-versus-head" data-reveal>${versus(doc, "lg")}</div>` +
     blocks.renderBlocks(hero) +
-    valueLine(coworkers) +
     blocks.renderBlocks(table) +
     different(name, grid.flatMap((g) => g.items || [])) +
     shell.proof(testimonials, name.length, { heading: t("Teams already on Sokosumi") }) +

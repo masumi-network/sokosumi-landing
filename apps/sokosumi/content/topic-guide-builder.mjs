@@ -6,7 +6,7 @@
 
 const headings = {
   en: {
-    state: "What is actually established",
+    state: "What the sources say",
     work: "How to run it",
     measure: "How to measure it",
     risks: "Where teams get this wrong",

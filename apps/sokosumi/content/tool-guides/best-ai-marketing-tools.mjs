@@ -241,13 +241,13 @@ export default {
   },
   de: {
     title: "Die besten KI-Marketing-Tools 2026: 16 Empfehlungen",
-    description: "16 KI-Marketing-Tools nach Aufgabe, Ergebnis, Preis und EU-Hosting: Assistenten, Workspaces, Kreativtools, Agenten, Coworker und Builder.",
+    description: "16 KI-Marketing-Tools nach Aufgabe, Ergebnis, Preis und EU-Hosting: Assistenten, Workspaces, Kreativtools, Agenten, KI-Mitarbeiter und Builder.",
     body: germanBody(),
     faqHeading: "Häufige Fragen zu KI-Marketing-Tools",
     faq: [
       ["Was ist ein KI-Agent im Marketing?", "Ein KI-Agent erhält ein Ziel, arbeitet mehrere Schritte selbstständig ab und liefert ein Ergebnis. Ein Chat-Tool zeigt meist Text im persönlichen Verlauf. Eine KI-Mitarbeiter-Plattform kann stattdessen eine Datei oder einen Task auf einem gemeinsamen Board zurückgeben."],
       ["Welches KI-Marketing-Tool passt zu einem kleinen Team in Deutschland?", "Für einen sicheren Chat-Einstieg kommen EU-gehostete Workspaces wie Langdock oder nele.ai infrage. Wenn fertige Marketingdateien statt Chats gefragt sind, vergleichen Sie spezialisierte KI-Mitarbeiter-Plattformen. Prüfen Sie Hosting und Vertrag immer für den konkreten Tarif."],
-      ["Brauche ich ChatGPT zusätzlich zu einer KI-Mitarbeiter-Plattform?", "Oft ja. Chat-Assistenten eignen sich für schnelle Fragen und Entwürfe. Coworker sind für Aufgaben mit einem klaren Deliverable gedacht, etwa Wettbewerbsbericht, Kampagnenplan oder monatliches Dashboard."],
+      ["Brauche ich ChatGPT zusätzlich zu einer KI-Mitarbeiter-Plattform?", "Oft ja. Chat-Assistenten eignen sich für schnelle Fragen und Entwürfe. KI-Mitarbeiter eignen sich für Aufgaben mit einem klar definierten Ergebnis, etwa Wettbewerbsbericht, Kampagnenplan oder monatliches Dashboard."],
       ["Sind KI-Marketing-Tools DSGVO-konform?", "Eine allgemeine Zusage reicht nicht. Prüfen Sie Datenstandort, Unterauftragsverarbeiter, Aufbewahrung, Training und Löschung für Ihren Tarif und Ihren Anwendungsfall. Bei personenbezogenen oder regulierten Daten gehört die Rechts- und Datenschutzprüfung in den Einkauf."],
       ["Was kosten KI-Marketing-Tools 2026?", "Chat- und Workspace-Tarife beginnen häufig bei etwa 20 bis 25 Euro oder Dollar pro Nutzer und Monat. Kreativtools, Agenten und Automationen ergänzen oft Credits, Ausführungen oder Aktivitäten. Vergleichen Sie deshalb die Kosten eines echten Beispiel-Workflows, nicht nur den Einstiegspreis."],
       ["Welche KI-Marketing-Tools passen zu kleinen Unternehmen?", "Zwei Tools statt sechzehn: ein allgemeiner Assistent im Gratis-Tarif (ChatGPT, Claude oder Gemini) für Entwürfe und schnelle Fragen, plus ein Tool für das wichtigste wiederkehrende Deliverable: Canva für Grafiken oder ein Marktplatz für KI-Mitarbeiter wie Sokosumi für Berichte und Research, dessen Gratis-Plan 250 Credits pro Seat und Monat enthält. Automation Builder erst, wenn jemand ihre Pflege übernimmt."],

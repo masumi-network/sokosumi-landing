@@ -6,7 +6,7 @@ const FAQ = [
   {
     question: "How does bold text work on LinkedIn?",
     answer:
-      "LinkedIn has no bold button for posts, so formatters swap normal letters for Unicode characters that look bold — 𝗹𝗶𝗸𝗲 𝘁𝗵𝗶𝘀. They are different characters, not styling, which is why they survive pasting into LinkedIn, X, WhatsApp or anywhere else text goes.",
+      "LinkedIn has no bold button for posts, so formatters swap normal letters for Unicode characters that look bold: 𝗹𝗶𝗸𝗲 𝘁𝗵𝗶𝘀. They are different characters, not styling, which is why they survive pasting into LinkedIn, X, WhatsApp or anywhere else text goes.",
   },
   {
     question: "Does formatted text hurt reach or accessibility?",
@@ -21,7 +21,7 @@ const FAQ = [
   {
     question: "Why do my line breaks disappear on LinkedIn?",
     answer:
-      "LinkedIn keeps single line breaks but collapses runs of blank lines. Write with one empty line between paragraphs and check the preview — what you see there is what the feed shows.",
+      "LinkedIn keeps single line breaks but collapses runs of blank lines. Write with one empty line between paragraphs and check the preview: what you see there is what the feed shows.",
   },
 ];
 
@@ -52,7 +52,7 @@ function render() {
 
   return (
     pageStart({
-      title: "LinkedIn Text Formatter — bold, italics & post preview",
+      title: "LinkedIn Text Formatter: bold, italics & post preview",
       description:
         "Free LinkedIn text formatter: make text bold or italic, add bullets, preview the “…see more” fold and count characters against the 3,000 limit. Works for posts, comments and your headline. No sign-up.",
       path,
@@ -64,7 +64,7 @@ function render() {
       og: {
         type: "page",
         title: "LinkedIn text formatter",
-        sub: "Bold, italics, bullets — with the “see more” fold preview.",
+        sub: "Bold, italics, bullets and the “see more” fold preview.",
       },
     }) +
     `<section class="dm-tool" id="formatter">
@@ -74,7 +74,7 @@ function render() {
           <h1>LinkedIn Text Formatter</h1>
         </div>
       </header>
-      <p class="dm-tool-sub">Select text, make it bold or italic, and see the post the way the feed shows it — fold included. Then copy and paste into LinkedIn.</p>
+      <p class="dm-tool-sub">Select text, make it bold or italic, and see the post the way the feed shows it, fold included. Then copy and paste into LinkedIn.</p>
 
       <div class="lif-grid">
         <div class="lif-editor-col">
@@ -136,7 +136,7 @@ function render() {
     </section>` +
     shell.ctaBand({
       heading: "Formatting is the easy part.",
-      subheading: "Sokosumi's AI coworkers draft the LinkedIn posts — you make the final call.",
+      subheading: "Sokosumi's AI coworkers draft the LinkedIn posts. You make the final call.",
       ctaLabel: "Start free",
     }) +
     pageEnd({ scripts: ["/assets/linkedin-formatter.js", "/assets/email-gate.js"], englishOnly: true })

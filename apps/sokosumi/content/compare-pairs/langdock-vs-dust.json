@@ -136,12 +136,12 @@
       ],
       [
         "Preis pro Nutzer",
-        "€29/Monat Standard-Seat (€23,20 bei jährlicher Abrechnung); €119/Monat Business Max (€99 jährlich)",
-        "Pro $30/Seat/Monat ($24 jährlich) mit 8,000 Credits; Max $150 ($120 jährlich) mit 40,000 Credits; Enterprise individuell (Drittanbieter-Capture von dust.tt Pricing, 24 Jun 2026; prüfen)"
+        "29 €/Monat Standard-Seat (23,20 € bei jährlicher Abrechnung); 119 €/Monat Business Max (99 € jährlich)",
+        "Pro 30 $/Seat/Monat (24 $ jährlich) mit 8.000 Credits; Max 150 $ (120 $ jährlich) mit 40.000 Credits; Enterprise individuell (Drittanbieter-Capture von dust.tt Pricing, 24 Jun 2026; prüfen)"
       ],
       [
         "Free-Plan oder Test",
-        "7 Tage Test, €5 Modell-Credits, keine Kreditkarte",
+        "7 Tage Test, 5 € Modell-Credits, keine Kreditkarte",
         "Free-Plan mit 500 Credits, einmalig, kein monatlicher Reset"
       ],
       [
@@ -151,18 +151,18 @@
       ],
       [
         "Teamfunktionen",
-        "SSO, SCIM, SAML; gemeinsame Agents; Governance Add-on; bis zu 1,000 Nutzer auf Business",
+        "SSO, SCIM, SAML; gemeinsame Agents; Governance Add-on; bis zu 1.000 Nutzer auf Business",
         "Workspace-Admin, gemeinsame Agents, SCIM und Audit Logs auf Enterprise, Single-Tenant-Option"
       ],
       [
         "Eigene Agents bauen",
-        "Ja: Agents mit Wissen und Tools; Workflows mit 2,500 Läufen/Monat enthalten, mehr ab €539/Monat",
+        "Ja: Agents mit Wissen und Tools; Workflows mit 2.500 Läufen/Monat enthalten, mehr ab 539 €/Monat",
         "Ja: Agents mit Datenquellen, Tools und MCP-Servern; keine separate Workflow-Stufe, Credits zählen jeden Lauf"
       ],
       [
         "Abrechnungslogik",
         "Seat-Preis; Nutzung in 5-Stunden- und Wochenfenstern; Zusatznutzung Pay-as-you-go",
-        "Seat-Preis plus Credits; Credits resetten monatlich und werden nicht übertragen; API-Nutzung $0.01 pro Credit"
+        "Seat-Preis plus Credits; Credits resetten monatlich und werden nicht übertragen; API-Nutzung 0,01 $ pro Credit"
       ]
     ],
     "pickA": {
@@ -197,7 +197,7 @@
       "text": "Beide Tools geben einer Person einen Ort zum Prompten und einen Builder für Agents. Ein Wettbewerbsbericht, ein Kampagnenplan oder das Montags-PDF zur Performance ist ein anderes Produkt. Sie briefen einen KI-Mitarbeiter, das Team sieht das Board, am Ende steht eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Mitarbeiter für Marketingteams, gebaut von Serviceplan Group mit NMKR in München.",
       "points": [
         "KI-Mitarbeiter und Agents benannter Anbieter, jeweils mit öffentlichem Profil, Beispielarbeit, genannten Modellen und Hosting.",
-        "Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25, €75 oder €200 pro Monat; jede Aufgabe verbraucht Credits aus dem monatlichen Kontingent eines Seats.",
+        "Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats 25 €, 75 € oder 200 € pro Monat; jede Aufgabe verbraucht Credits aus dem monatlichen Kontingent eines Seats.",
         "Aufgaben enden mit einer fertigen Datei: PDF-Bericht, Deck, Spreadsheet oder Live-Dashboard."
       ],
       "links": [
@@ -208,7 +208,7 @@
     "faq": [
       [
         "Wie funktionieren Dust Credits?",
-        "Jeder Seat bekommt einen monatlichen Credit-Pool: 8,000 auf Pro, 40,000 auf Max. Stärkere Modelle nutzen mehr Credits pro Nachricht. Ungenutzte Credits verfallen am Monatsende. Enterprise poolt Credits über den Workspace."
+        "Jeder Seat bekommt einen monatlichen Credit-Pool: 8.000 auf Pro, 40.000 auf Max. Stärkere Modelle nutzen mehr Credits pro Nachricht. Ungenutzte Credits verfallen am Monatsende. Enterprise poolt Credits über den Workspace."
       ],
       [
         "Hat Langdock ein Credit-System?",

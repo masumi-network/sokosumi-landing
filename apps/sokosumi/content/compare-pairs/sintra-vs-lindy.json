@@ -136,8 +136,8 @@
       ],
       [
         "Preis",
-        "Alle Helfer: $97 regulär monatlich, im Sale $48.50; 3-Monatsplan $23.60 pro Monat; 12-Monatsplan $15.60 pro Monat. Einzelner Helfer $39 pro Monat",
-        "Plus $29.99, Pro $99.99, Max $199.99 pro Nutzer und Monat; Enterprise individuell"
+        "Alle Helfer: 97 $ regulär monatlich, im Sale 48,50 $; 3-Monatsplan 23,60 $ pro Monat; 12-Monatsplan 15,60 $ pro Monat. Einzelner Helfer 39 $ pro Monat",
+        "Plus 29,99 $, Pro 99,99 $, Max 199,99 $ pro Nutzer und Monat; Enterprise individuell"
       ],
       [
         "Free-Plan oder Test",
@@ -161,8 +161,8 @@
       ],
       [
         "Was gezählt wird",
-        "250 Credits pro Monat auf jedem Plan, gleich bei $97 und $15.60; Helfer stoppen, wenn Credits leer sind",
-        "Credits pro Nutzer: 3,000 / 15,000 / 35,000 pro Monat. Einfache Aufgabe 2 bis 250 Credits; Deep Work 250 bis 1,000"
+        "250 Credits pro Monat auf jedem Plan, gleich bei 97 $ und 15,60 $; Helfer stoppen, wenn Credits leer sind",
+        "Credits pro Nutzer: 3.000 / 15.000 / 35.000 pro Monat. Einfache Aufgabe 2 bis 250 Credits; Deep Work 250 bis 1.000"
       ]
     ],
     "pickA": {
@@ -170,25 +170,25 @@
       "points": [
         "Sie allein ein kleines Unternehmen führen und günstig Hilfe für Posts, E-Mails und Ideen wollen.",
         "Sie lieber mit benannten Rollen sprechen, statt etwas zu bauen.",
-        "Preis der wichtigste Faktor ist. Der 12-Monatsdeal liegt bei $15.60 pro Monat."
+        "Preis der wichtigste Faktor ist. Der 12-Monatsdeal liegt bei 15,60 $ pro Monat."
       ]
     },
     "pickB": {
       "heading": "Wählen Sie Lindy, wenn …",
       "points": [
         "Sie einen Assistenten wollen, der Dinge tut: E-Mails triagiert, Meetings bucht, CRM aktualisiert, recherchiert.",
-        "Sie das Tool täglich nutzen und ein echtes Credit-Budget brauchen. Plus hat 3,000 Credits pro Nutzer; Sintra hat 250 für den ganzen Workspace.",
+        "Sie das Tool täglich nutzen und ein echtes Credit-Budget brauchen. Plus hat 3.000 Credits pro Nutzer; Sintra hat 250 für den ganzen Workspace.",
         "Sie ein Team haben und Seats pro Nutzer mit gemeinsamem Pool wollen."
       ]
     },
     "limits": {
       "a": [
         "250 Credits pro Monat sind das Limit auf jedem Plan; Reviews berichten, dass sie in zwei bis zehn Tagen leer sind, und Helfer stoppen dann. Nutzer mit früheren 'unlimited'-Plänen wurden auf das gemessene Modell verschoben.",
-        "Trustpilot liegt bei etwa 2.4/5 mit Billing- und Refund-Beschwerden; Reviews sagen, die Helfer seien gut für Ideen, aber schwach bei fertiger, nutzbarer Arbeit."
+        "Trustpilot liegt bei etwa 2,4/5 mit Billing- und Refund-Beschwerden; Reviews sagen, die Helfer seien gut für Ideen, aber schwach bei fertiger, nutzbarer Arbeit."
       ],
       "b": [
         "Kosten sind der wichtigste G2-Kritikpunkt (Dutzende 'expensive'-Nennungen). Credits resetten monatlich, und eine fehlerhafte Schleife kann tausende verbrauchen, bevor es auffällt.",
-        "Keine Hosting-Region veröffentlicht; Reviews beschreiben US-Hosting als Standard. Trustpilot-Bewertung niedrig (1.7/5), meist Billing und Support."
+        "Keine Hosting-Region veröffentlicht; Reviews beschreiben US-Hosting als Standard. Trustpilot-Bewertung niedrig (1,7/5), meist Billing und Support."
       ]
     },
     "verdict": "Sintra gewinnt für Solo-Owner, die günstige Chat-Hilfe wollen und mit 250 Credits leben. Lindy gewinnt für alle, die einen Assistenten brauchen, der in Tools handelt und täglich genutzt wird, zu drei- bis zwölfmal höherem Preis. Keines veröffentlicht EU-Hosting.",
@@ -197,7 +197,7 @@
       "text": "Beide Tools geben einer Person einen Helfer zum Chatten oder einen Assistenten zum Konfigurieren. Ein Wettbewerbsbericht, ein Kampagnenplan oder das Montags-PDF zur Performance ist ein anderes Produkt. Sie briefen einen KI-Mitarbeiter, das Team sieht das Board, am Ende steht eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Mitarbeiter für Marketingteams, jeweils mit Rolle, öffentlichem Profil, Beispielarbeit und einem benannten Anbieter, der Modelle und Hosting ausweist.",
       "points": [
         "Briefen Sie in klarer Sprache oder per @Mention in einem Kanal; die Aufgabe erscheint auf einem gemeinsamen Task-Board und endet mit einer fertigen Datei.",
-        "Jede Aufgabe verbraucht Credits. Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25, €75 oder €200 pro Monat.",
+        "Jede Aufgabe verbraucht Credits. Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats 25 €, 75 € oder 200 € pro Monat.",
         "Das Hosting hängt vom KI-Mitarbeiter ab; prüfen Sie sein Profil. Gebaut von Serviceplan Group mit NMKR, München."
       ],
       "links": [
@@ -208,7 +208,7 @@
     "faq": [
       [
         "Was kostet Sintra wirklich?",
-        "Der reguläre Monatspreis für alle Helfer ist $97, im Sale $48.50. Der 3-Monatsplan kostet $23.60 pro Monat, der 12-Monatsplan $15.60 pro Monat. Ein einzelner Helfer kostet $39 pro Monat. Jeder Plan hat dieselben 250 Credits."
+        "Der reguläre Monatspreis für alle Helfer ist 97 $, im Sale 48,50 $. Der 3-Monatsplan kostet 23,60 $ pro Monat, der 12-Monatsplan 15,60 $ pro Monat. Ein einzelner Helfer kostet 39 $ pro Monat. Jeder Plan hat dieselben 250 Credits."
       ],
       [
         "Hat Sintra einen kostenlosen Test?",
@@ -216,7 +216,7 @@
       ],
       [
         "Wie vergleichen sich Lindy Credits?",
-        "Lindy Plus enthält 3,000 Credits pro Nutzer und Monat, Pro 15,000, Max 35,000. Einfache Aufgaben kosten 2 bis 250 Credits und Deep Work 250 bis 1,000. Credits resetten monatlich."
+        "Lindy Plus enthält 3.000 Credits pro Nutzer und Monat, Pro 15.000, Max 35.000. Einfache Aufgaben kosten 2 bis 250 Credits und Deep Work 250 bis 1.000. Credits resetten monatlich."
       ],
       [
         "Gibt es eine Fertigarbeits-Option für Marketingteams?",

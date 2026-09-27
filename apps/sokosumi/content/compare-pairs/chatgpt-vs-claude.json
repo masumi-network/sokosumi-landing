@@ -92,7 +92,7 @@
       "points": [
         "Brief in plain language or @mention in a channel; the task shows on a shared board and ends as a PDF, deck, spreadsheet or dashboard.",
         "Free: 250 credits per seat per month, no card. Paid seats €25 / €75 / €200 per month; Enterprise custom.",
-        "Coworkers and agents from named vendors, 5,300+ tasks run. Built by Serviceplan Group with NMKR, Munich."
+        "Coworkers and agents from named vendors, each with a public profile. Built by Serviceplan Group with NMKR, Munich."
       ],
       "links": [
         "/compare/sokosumi-vs-chatgpt",
@@ -136,13 +136,13 @@
       ],
       [
         "Preis pro Person",
-        "Free $0; Go $8; Plus $20; Pro $100 oder $200 pro Monat (Drittanbieter-Tracker, 20 Aug 2026, prüfen)",
-        "Free $0; Pro $17 jährlich oder $20 monatlich; Max ab $100 pro Monat (claude.com, 26 Aug 2026)"
+        "Free 0 $; Go 8 $; Plus 20 $; Pro 100 $ oder 200 $ pro Monat (Drittanbieter-Tracker, 20 Aug 2026, prüfen)",
+        "Free 0 $; Pro 17 $ jährlich oder 20 $ monatlich; Max ab 100 $ pro Monat (claude.com, 26 Aug 2026)"
       ],
       [
         "Preis pro Seat (Team)",
-        "Business $20 pro Seat jährlich oder $25 monatlich, 2-Seat-Minimum; Enterprise-Angebot, Berichte nennen ca. $45–75 pro Seat mit ca. 150-Seat-Minimum (Drittanbieter, prüfen)",
-        "Team Standard Seat $20 jährlich oder $25 monatlich, Premium Seat $100 oder $125, 2–150 Seats; Enterprise $20 pro Seat plus API-Nutzung oder individuell"
+        "Business 20 $ pro Seat jährlich oder 25 $ monatlich, 2-Seat-Minimum; Enterprise-Angebot, Berichte nennen ca. 45–75 $ pro Seat mit ca. 150-Seat-Minimum (Drittanbieter, prüfen)",
+        "Team Standard Seat 20 $ jährlich oder 25 $ monatlich, Premium Seat 100 $ oder 125 $, 2–150 Seats; Enterprise 20 $ pro Seat plus API-Nutzung oder individuell"
       ],
       [
         "Free-Plan oder Test",
@@ -191,14 +191,14 @@
         "Keine EU-Residenz auf Anthropic-Plänen. Consumer-Pläne (Free, Pro, Max) nutzen Chats fürs Training, wenn Sie nicht in den Einstellungen widersprechen; Team und Enterprise nicht."
       ]
     },
-    "verdict": "Bei $20 pro Person kosten beide gleich viel. Wählen Sie ChatGPT für Bilder, Voice und das breiteste Ökosystem oder für EU-Residenz über Enterprise. Wählen Sie Claude für langes Schreiben, fertige Office-Dateien und geplante Cowork-Aufgaben, und akzeptieren Sie US-Hosting und Nutzungslimits.",
+    "verdict": "Bei 20 $ pro Person kosten beide gleich viel. Wählen Sie ChatGPT für Bilder, Voice und das breiteste Ökosystem oder für EU-Residenz über Enterprise. Wählen Sie Claude für langes Schreiben, fertige Office-Dateien und geplante Cowork-Aufgaben, und akzeptieren Sie US-Hosting und Nutzungslimits.",
     "bridge": {
       "heading": "Wenn Sie Arbeit erledigt haben wollen, kein Chatfenster",
-      "text": "Beide Tools geben einer Person einen Ort zum Prompten. Ein Wettbewerbsbericht, ein Kampagnenplan oder das Montags-PDF zur Performance ist ein anderes Produkt. Sie briefen einen KI-Mitarbeiter, das Team sieht das Board, am Ende steht eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Mitarbeiter für Marketingteams, jeweils mit öffentlichem Profil, benanntem Anbieter sowie Hosting, wo der Anbieter es angibt. Jede Aufgabe verbraucht Credits; das Hosting hängt vom KI-Mitarbeiter ab.",
+      "text": "Beide Tools sind Arbeitsumgebungen, in denen Ihr Team selbst promptet und Agenten baut. Ein Wettbewerbsbericht, ein Kampagnenplan oder das Montags-PDF zur Performance ist ein anderes Produkt. Sie briefen einen KI-Mitarbeiter, das Team sieht das Board, am Ende steht eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Mitarbeiter für Marketingteams, jeweils mit öffentlichem Profil, benanntem Anbieter sowie Hosting, wo der Anbieter es angibt. Jede Aufgabe verbraucht Credits; das Hosting hängt vom KI-Mitarbeiter ab.",
       "points": [
         "Briefen Sie in klarer Sprache oder per @Mention in einem Kanal; die Aufgabe erscheint auf einem gemeinsamen Task-Board und endet als PDF, Deck, Spreadsheet oder Dashboard.",
-        "Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25 / €75 / €200 pro Monat; Enterprise individuell.",
-        "KI-Mitarbeiter und Agents benannter Anbieter, 5,300+ erledigte Aufgaben. Gebaut von Serviceplan Group mit NMKR, München."
+        "Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats 25 € / 75 € / 200 € pro Monat; Enterprise individuell.",
+        "KI-Mitarbeiter und Agents benannter Anbieter, jeweils mit öffentlichem Profil. Gebaut von Serviceplan Group mit NMKR, München."
       ],
       "links": [
         "/compare/sokosumi-vs-chatgpt",
@@ -208,7 +208,7 @@
     "faq": [
       [
         "Was ist günstiger für ein Team mit zehn Personen?",
-        "Gleich teuer. ChatGPT Business kostet $20 pro Seat jährlich oder $25 monatlich; Claude Team Standard kostet $20 jährlich oder $25 monatlich. Claudes Premium Seat ($100–125) bringt mehr Nutzung und Claude Code."
+        "Gleich teuer. ChatGPT Business kostet 20 $ pro Seat jährlich oder 25 $ monatlich; Claude Team Standard kostet 20 $ jährlich oder 25 $ monatlich. Claudes Premium Seat (100–125 $) bringt mehr Nutzung und Claude Code."
       ],
       [
         "Welches Produkt hält Daten in der EU?",

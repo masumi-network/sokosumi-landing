@@ -16,7 +16,7 @@ const CALCS = [
     slug: "cpm-calculator",
     calc: "cpm",
     name: "CPM Calculator",
-    short: "Cost per 1,000 impressions — from spend and impressions, or backwards.",
+    short: "Cost per 1,000 impressions, from spend and impressions or backwards.",
     title: "CPM Calculator: cost per 1,000 impressions",
     description:
       "Free CPM calculator: enter any two of ad spend, impressions and CPM, and it solves the third. CPM = spend ÷ impressions × 1,000. No sign-up.",
@@ -28,7 +28,7 @@ const CALCS = [
     ],
     formula: "CPM = ad spend ÷ impressions × 1,000",
     what: [
-      "CPM is what 1,000 ad impressions cost. The M is the Roman numeral for 1,000 — “cost per mille”.",
+      "CPM is what 1,000 ad impressions cost. The M is the Roman numeral for 1,000 (“cost per mille”).",
       "Media buyers use it to compare what platforms charge for reach. It also works the other way: since every ads manager reports spend and impressions, CPM lets you put two campaigns from different platforms next to each other and see which reach was cheaper.",
     ],
     example:
@@ -40,7 +40,7 @@ const CALCS = [
       },
       {
         q: "What is the difference between CPM and eCPM?",
-        a: "CPM is a price you agree to before buying. eCPM (effective CPM) is calculated afterwards from whatever you actually paid — including clicks or conversions bought on other models — normalized to 1,000 impressions so campaigns can be compared.",
+        a: "CPM is a price you agree to before buying. eCPM (effective CPM) is calculated afterwards from whatever you actually paid (including clicks or conversions bought on other models), normalized to 1,000 impressions so campaigns can be compared.",
       },
       {
         q: "How do I lower my CPM?",
@@ -65,7 +65,7 @@ const CALCS = [
     formula: "ROAS = revenue ÷ ad spend",
     what: [
       "ROAS is revenue divided by ad spend. A ROAS of 4 means every $1 of ads brought back $4 of revenue.",
-      "It is the fastest health check for paid campaigns, but it is a revenue number, not a profit number — that is what break-even ROAS below is for.",
+      "It is the fastest health check for paid campaigns, but it is a revenue number, not a profit number. That is what break-even ROAS below is for.",
     ],
     example:
       "Ads cost $3,000 and drove $12,000 in revenue. 12,000 ÷ 3,000 = <strong>4.0× ROAS</strong> (also written as 400%).",
@@ -92,11 +92,11 @@ const CALCS = [
       },
       {
         q: "What is the difference between ROAS and ROI?",
-        a: "ROAS compares revenue to ad spend only. ROI compares profit to total cost — goods, shipping, tooling, people. A campaign can have a strong ROAS and a negative ROI when margins are thin.",
+        a: "ROAS compares revenue to ad spend only. ROI compares profit to total cost: goods, shipping, tooling, people. A campaign can have a strong ROAS and a negative ROI when margins are thin.",
       },
       {
         q: "Should ROAS include VAT or sales tax?",
-        a: "Use net revenue (without tax) — the tax was never yours. Most ads platforms report gross order values, so ROAS in the ads manager often looks better than the ROAS in your books.",
+        a: "Use net revenue (without tax). The tax was never yours. Most ads platforms report gross order values, so ROAS in the ads manager often looks better than the ROAS in your books.",
       },
     ],
   },
@@ -124,11 +124,11 @@ const CALCS = [
     faq: [
       {
         q: "What is a good CTR?",
-        a: "It depends on where the click happens. Search ads, shown to people already looking, click far better than display banners. Position matters most in organic search — the first result takes a large multiple of the tenth. Compare like with like: the same channel, the same position, your own history.",
+        a: "It depends on where the click happens. Search ads, shown to people already looking, click far better than display banners. Position matters most in organic search: the first result takes a large multiple of the tenth. Compare like with like: the same channel, the same position, your own history.",
       },
       {
         q: "Why is my CTR high but conversions low?",
-        a: "The ad promises something the page does not deliver, or it attracts the wrong clickers — curiosity, sweepstakes wording and clickbait raise CTR and lower conversion. Match the ad's promise to the landing page and judge the pair on cost per conversion, not CTR.",
+        a: "The ad promises something the page does not deliver, or it attracts the wrong clickers. Curiosity, sweepstakes wording and clickbait raise CTR and lower conversion. Match the ad's promise to the landing page and judge the pair on cost per conversion, not CTR.",
       },
       {
         q: "Does CTR affect what I pay per click?",
@@ -143,7 +143,7 @@ const CALCS = [
     short: "Cost per click from spend and clicks.",
     title: "CPC Calculator: cost per click",
     description:
-      "Free CPC calculator: ad spend ÷ clicks. Enter any two of spend, clicks and CPC, and it solves the third — or budgets clicks from a target CPC. No sign-up.",
+      "Free CPC calculator: ad spend ÷ clicks. Enter any two of spend, clicks and CPC, and it solves the third, or budgets clicks from a target CPC. No sign-up.",
     mode: "solve",
     fields: [
       { key: "cost", label: "Ad spend", unit: "$", placeholder: "3000" },
@@ -153,7 +153,7 @@ const CALCS = [
     formula: "CPC = ad spend ÷ clicks",
     what: [
       "CPC is what one click cost you: total spend divided by clicks.",
-      "The same formula plans budgets. If clicks cost about $2.50 and you need 1,200 visits, that is a $3,000 budget — fill any two fields and the calculator works in whichever direction you need.",
+      "The same formula plans budgets. If clicks cost about $2.50 and you need 1,200 visits, that is a $3,000 budget. Fill any two fields and the calculator works in whichever direction you need.",
     ],
     example:
       "You spent $3,000 and got 1,200 clicks. 3,000 ÷ 1,200 = <strong>$2.50 CPC</strong>.",
@@ -168,7 +168,7 @@ const CALCS = [
       },
       {
         q: "Is a lower CPC always better?",
-        a: "No — the cheapest clicks are often the least likely to buy. Judge traffic by cost per conversion (CPA). A $5 click that converts at 10% beats a $1 click that converts at 0.5%.",
+        a: "No. The cheapest clicks are often the least likely to buy. Judge traffic by cost per conversion (CPA). A $5 click that converts at 10% beats a $1 click that converts at 0.5%.",
       },
     ],
   },
@@ -196,11 +196,11 @@ const CALCS = [
     faq: [
       {
         q: "What is the difference between CPA and CAC?",
-        a: "CPA prices one conversion from one campaign, and the conversion can be anything — a lead, a trial, a demo. CAC prices one new paying customer across all sales and marketing spend. A $50 CPA per lead can sit inside a $2,000 CAC.",
+        a: "CPA prices one conversion from one campaign, and the conversion can be anything: a lead, a trial, a demo. CAC prices one new paying customer across all sales and marketing spend. A $50 CPA per lead can sit inside a $2,000 CAC.",
       },
       {
         q: "What is a good CPA?",
-        a: "Anything comfortably below what the conversion is worth. For e-commerce that is the order margin; for leads it is lead value — deal size × close rate. If a customer is worth $400 in margin, a $50 CPA is excellent and a $500 CPA is a loss.",
+        a: "Anything comfortably below what the conversion is worth. For e-commerce that is the order margin; for leads it is lead value (deal size × close rate). If a customer is worth $400 in margin, a $50 CPA is excellent and a $500 CPA is a loss.",
       },
       {
         q: "Why do the ads platform and my analytics report different CPAs?",
@@ -230,11 +230,11 @@ const CALCS = [
       "It sets the ceiling on what you can pay to acquire a customer. A shop that only looks at first-order profit will underbid competitors who know the customer comes back for three years.",
     ],
     example:
-      "Customers spend $80 per order, buy 4 times a year, and stay 3 years. 80 × 4 × 3 = <strong>$960 LTV</strong>. At a 60% gross margin that is $576 of lifetime profit — the number to hold your CAC against.",
+      "Customers spend $80 per order, buy 4 times a year, and stay 3 years. 80 × 4 × 3 = <strong>$960 LTV</strong>. At a 60% gross margin that is $576 of lifetime profit, the number to hold your CAC against.",
     faq: [
       {
         q: "Should LTV use revenue or profit?",
-        a: "Both are used; know which one you are looking at. Revenue LTV is easier to measure. Profit LTV (multiply by gross margin — the optional field above) is the one that can be compared against acquisition cost.",
+        a: "Both are used; know which one you are looking at. Revenue LTV is easier to measure. Profit LTV (multiply by gross margin, the optional field above) is the one that can be compared against acquisition cost.",
       },
       {
         q: "How do I know the average customer lifespan?",
@@ -242,7 +242,7 @@ const CALCS = [
       },
       {
         q: "What is a good LTV to CAC ratio?",
-        a: "The convention is 3:1 — a customer worth three times what they cost to acquire. Below ~1.5:1 growth burns money; far above 3:1 often means you could grow faster by spending more.",
+        a: "The convention is 3:1, meaning a customer worth three times what they cost to acquire. Below ~1.5:1 growth burns money; far above 3:1 often means you could grow faster by spending more.",
       },
     ],
   },
@@ -263,7 +263,7 @@ const CALCS = [
     ],
     formula: "CAC = sales & marketing spend ÷ new customers",
     what: [
-      "CAC answers a blunt question: what did one paying customer cost to win? Count everything it took — ad spend, tools, agencies, and the salaries of the people doing sales and marketing — and divide by the customers won in the same period.",
+      "CAC answers a blunt question: what did one paying customer cost to win? Count everything it took (ad spend, tools, agencies, and the salaries of the people doing sales and marketing) and divide by the customers won in the same period.",
       "Add your customer lifetime value and the calculator also returns the LTV:CAC ratio, which is the number investors and finance teams actually ask for.",
     ],
     example:
@@ -288,7 +288,7 @@ const CALCS = [
     whatHeading: "What is engagement rate?",
     calc: "engagement",
     name: "Engagement Rate Calculator",
-    short: "Engagement rate by followers, reach or views — for any platform.",
+    short: "Engagement rate by followers, reach or views, for any platform.",
     title: "Engagement Rate Calculator for Instagram & TikTok",
     description:
       "Free engagement rate calculator: engagements ÷ followers (or reach, or views) × 100, per post or across a period. Works for Instagram, TikTok, LinkedIn and X. No sign-up.",
@@ -309,7 +309,7 @@ const CALCS = [
     ],
     formula: "Engagement rate = engagements ÷ followers × 100",
     what: [
-      "Engagement rate is the share of your audience that did something with a post — liked, commented, shared or saved it.",
+      "Engagement rate is the share of your audience that did something with a post: liked, commented, shared or saved it.",
       "Divide by followers to judge an account, by reach to judge content (it ignores how many followers never saw the post), or by views for video. On the followers basis, add a post count to average a whole period.",
     ],
     example:
@@ -317,7 +317,7 @@ const CALCS = [
     extra: `
       <section class="calc-section" aria-labelledby="er-ig-h">
         <h2 id="er-ig-h">Instagram engagement rate</h2>
-        <p>On Instagram, count likes, comments, saves and shares. Saves and shares weigh more in the algorithm than likes, so two posts with the same rate can perform very differently. Follower-based rates fall as accounts grow — a big account with a modest rate can still out-engage a small one — so compare accounts of similar size, or switch the calculator to reach.</p>
+        <p>On Instagram, count likes, comments, saves and shares. Saves and shares weigh more in the algorithm than likes, so two posts with the same rate can perform very differently. Follower-based rates fall as accounts grow (a big account with a modest rate can still out-engage a small one), so compare accounts of similar size, or switch the calculator to reach.</p>
       </section>
       <section class="calc-section" aria-labelledby="er-tt-h">
         <h2 id="er-tt-h">TikTok engagement rate</h2>
@@ -330,11 +330,11 @@ const CALCS = [
       },
       {
         q: "Do I count shares and saves?",
-        a: "Count every interaction the platform reports: likes, comments, shares, saves — and on X, reposts and bookmarks. Just keep the definition constant, because a rate that counts saves cannot be compared with one that does not.",
+        a: "Count every interaction the platform reports: likes, comments, shares and saves, plus reposts and bookmarks on X. Just keep the definition constant, because a rate that counts saves cannot be compared with one that does not.",
       },
       {
         q: "Engagement rate by followers or by reach?",
-        a: "Followers for judging an account (that is what most influencer tools and rate cards use). Reach for judging content, because it only counts people who actually saw the post. Report which one you used — the two differ a lot.",
+        a: "Followers for judging an account (that is what most influencer tools and rate cards use). Reach for judging content, because it only counts people who actually saw the post. Report which one you used; the two differ a lot.",
       },
     ],
   },
@@ -418,7 +418,7 @@ function page(ctx) {
   };
   const hint =
     c.mode === "solve"
-      ? "Fill any two fields — we calculate the third."
+      ? "Fill any two fields and we calculate the third."
       : "Fill in what you know, then calculate.";
 
   return (
@@ -489,7 +489,7 @@ function hub() {
     `<div class="page-head" data-reveal>
       <span class="eyebrow">Free tools</span>
       <h1>Marketing calculators</h1>
-      <p class="sub">The numbers marketers work out every week, each with the formula and a worked example. The ad-metric calculators solve in any direction — enter what you have, get what you need.</p>
+      <p class="sub">The numbers marketers work out every week, each with the formula and a worked example. The ad-metric calculators solve in any direction: enter what you have, get what you need.</p>
     </div>
     <section class="page-section flush" data-reveal aria-label="Calculators">
       <div class="card-grid calc-hub">${CALCS.map(

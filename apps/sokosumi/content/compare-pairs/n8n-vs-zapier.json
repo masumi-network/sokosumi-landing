@@ -122,7 +122,7 @@
     "title": "n8n oder Zapier Agents: welche Automationsplattform für ein europäisches Team?",
     "metaTitle": "n8n vs Zapier Agents (2026): Preise, Ausführungen, EU-Hosting",
     "description": "n8n und Zapier Agents im Vergleich: Preise, Zählung von Ausführungen, Tasks und Activities, EU-Hosting und Grenzen. Stand August 2026.",
-    "intro": "n8n ist eine in Berlin gebaute Workflow-Engine mit KI-Agent-Knoten, verkauft pro Ausführung in EU-gehosteter Cloud oder kostenlos selbst betreibbar. Zapier Agents sind KI-Agents auf Zapiers 8,000+ App-Verbindungen, verkauft in 'Activities' zusätzlich zu Zapiers Task-Plänen. Entscheidend ist EU-Hosting und Kontrolle gegenüber breitem App-Katalog und geringstem Setup.",
+    "intro": "n8n ist eine in Berlin gebaute Workflow-Engine mit KI-Agent-Knoten, verkauft pro Ausführung in EU-gehosteter Cloud oder kostenlos selbst betreibbar. Zapier Agents sind KI-Agents auf Zapiers 8.000+ App-Verbindungen, verkauft in 'Activities' zusätzlich zu Zapiers Task-Plänen. Entscheidend ist EU-Hosting und Kontrolle gegenüber breitem App-Katalog und geringstem Setup.",
     "glance": [
       [
         "Für wen es passt",
@@ -132,12 +132,12 @@
       [
         "Was Sie bekommen",
         "Visueller Workflow-Builder, KI-Agent-Knoten, Code-Knoten, 400+ Integrationen, Self-Host-Option",
-        "Agents mit Triggern, Wissensquellen, Web-Browsing plus klassische Zaps über 8,000+ Apps"
+        "Agents mit Triggern, Wissensquellen, Web-Browsing plus klassische Zaps über 8.000+ Apps"
       ],
       [
         "Preis",
-        "Cloud Starter €20, Pro €50 pro Monat; Business €667 pro Monat jährlich; Enterprise individuell; Community Edition kostenlos",
-        "Free $0; Professional ab $19.99 pro Monat jährlich ($29.99 monatlich); Team ab $69 jährlich ($103.50 monatlich) für 25 Nutzer; Enterprise individuell"
+        "Cloud Starter 20 €, Pro 50 € pro Monat; Business 667 € pro Monat jährlich; Enterprise individuell; Community Edition kostenlos",
+        "Free 0 $; Professional ab 19,99 $ pro Monat jährlich (29,99 $ monatlich); Team ab 69 $ jährlich (103,50 $ monatlich) für 25 Nutzer; Enterprise individuell"
       ],
       [
         "Free-Plan oder Test",
@@ -161,8 +161,8 @@
       ],
       [
         "Was gezählt wird",
-        "Workflow-Ausführungen: 2,500 / 10,000 / 40,000 pro Monat; eine Ausführung ist ein kompletter Lauf",
-        "Zwei Zähler: Zap Tasks (100 / 750+ / 2,000+ pro Monat) und Agent Activities (400 Free, 1,500 Pro, gemeinsamer Pool auf Team). Eine Activity ist Trigger, Wissensantwort, Action, Web Browse, Web Search oder Chrome-Nachricht"
+        "Workflow-Ausführungen: 2.500 / 10.000 / 40.000 pro Monat; eine Ausführung ist ein kompletter Lauf",
+        "Zwei Zähler: Zap Tasks (100 / 750+ / 2.000+ pro Monat) und Agent Activities (400 Free, 1.500 Pro, gemeinsamer Pool auf Team). Eine Activity ist Trigger, Wissensantwort, Action, Web Browse, Web Search oder Chrome-Nachricht"
       ]
     ],
     "pickA": {
@@ -184,7 +184,7 @@
     "limits": {
       "a": [
         "Die Lernkurve ist der wichtigste G2-Nachteil; Fehlerbehandlung und Datenmapping brauchen oft JavaScript.",
-        "Kein dauerhafter kostenloser Cloud-Plan, und SSO sowie erweiterte Rollen erst ab Business für €667 pro Monat. Self-Hosting heißt Docker, SSL und Updates selbst betreiben."
+        "Kein dauerhafter kostenloser Cloud-Plan, und SSO sowie erweiterte Rollen erst ab Business für 667 € pro Monat. Self-Hosting heißt Docker, SSL und Updates selbst betreiben."
       ],
       "b": [
         "Agent Activities sind ein separates Kontingent neben Tasks und werden über das ganze Team-Konto geteilt; ein Heavy User kann den Monat aller verbrauchen. Recherchelastige Anweisungen nutzen viele Activities pro Lauf.",
@@ -197,7 +197,7 @@
       "text": "Beide Tools geben einem Builder eine Leinwand. Jemand muss den Ablauf entwerfen, Apps verbinden und reparieren, wenn ein Auth-Token abläuft. Ein Wettbewerbsbericht, ein Kampagnenplan oder das Montags-PDF zur Performance ist ein anderes Produkt. Sie briefen einen KI-Mitarbeiter, das Team sieht das Board, am Ende steht eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Mitarbeiter für Marketingteams, jeweils mit Rolle, Beispielarbeit und einem benannten Anbieter, der Modelle und Hosting ausweist.",
       "points": [
         "Briefen Sie in klarer Sprache oder per @Mention in einem Kanal; die Aufgabe erscheint auf einem gemeinsamen Task-Board und endet mit einer fertigen Datei.",
-        "Jede Aufgabe verbraucht Credits. Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25, €75 oder €200 pro Monat.",
+        "Jede Aufgabe verbraucht Credits. Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats 25 €, 75 € oder 200 € pro Monat.",
         "Das Hosting hängt vom KI-Mitarbeiter ab; prüfen Sie sein Profil. Gebaut von Serviceplan Group mit NMKR, München."
       ],
       "links": [
@@ -208,11 +208,11 @@
     "faq": [
       [
         "Was ist eine Zapier Agent Activity?",
-        "Jeder abrechenbare Agent-Schritt: Trigger nutzen, aus Wissensquelle antworten, Action ausführen, Seite browsen oder scrapen, Websuche oder Nachricht über die Chrome-Erweiterung. Free enthält 400 pro Monat, Pro 1,500; Team teilt einen Pool über das Konto."
+        "Jeder abrechenbare Agent-Schritt: Trigger nutzen, aus Wissensquelle antworten, Action ausführen, Seite browsen oder scrapen, Websuche oder Nachricht über die Chrome-Erweiterung. Free enthält 400 pro Monat, Pro 1.500; Team teilt einen Pool über das Konto."
       ],
       [
         "Wie zählt n8n Ausführungen?",
-        "Eine Ausführung ist ein kompletter Workflow-Lauf, unabhängig von der Zahl der Schritte. Starter hat 2,500 pro Monat, Pro 10,000, Business 40,000. Workflows laufen über das Kontingent hinaus weiter; Mehrverbrauch kann berechnet werden."
+        "Eine Ausführung ist ein kompletter Workflow-Lauf, unabhängig von der Zahl der Schritte. Starter hat 2.500 pro Monat, Pro 10.000, Business 40.000. Workflows laufen über das Kontingent hinaus weiter; Mehrverbrauch kann berechnet werden."
       ],
       [
         "Welches Produkt wird in der EU gehostet?",

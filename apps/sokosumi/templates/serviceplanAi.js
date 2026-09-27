@@ -435,8 +435,8 @@ function bridge() {
       <span class="eyebrow">${esc(ui("From agency practice to a product", "Von der Agenturpraxis zum Produkt"))}</span>
       <h2>${esc(ui("Put the operating model to work", "Setzen Sie das Betriebsmodell praktisch ein"))}</h2>
       <p>${esc(ui(
-        "Sokosumi gives teams direct access to named AI coworkers built for bounded marketing work — with briefs, deliverables and costs visible on one shared board.",
-        "Sokosumi gibt Teams direkten Zugang zu benannten KI-Mitarbeitern für klar abgegrenzte Marketingaufgaben – mit Briefings, Ergebnissen und Kosten auf einem gemeinsamen Board.",
+        "Sokosumi gives teams direct access to named AI coworkers built for bounded marketing work. Briefs, deliverables and costs are visible on one shared board.",
+        "Sokosumi gibt Teams direkten Zugang zu benannten KI-Mitarbeitern für klar abgegrenzte Marketingaufgaben. Briefings, Ergebnisse und Kosten stehen auf einem gemeinsamen Board.",
       ))}</p>
     </div>
     <div class="sp-bridge-actions">
