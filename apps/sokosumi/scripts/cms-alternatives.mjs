@@ -116,12 +116,12 @@ const PAGES = [
     description:
       "Copy.ai alternatives compared: Jasper, Writer, HubSpot Breeze and Sokosumi side by side on price, free plans, EU hosting and what each tool meters.",
     heroSub:
-      "Copy.ai's self-serve tiers jump from $29 to $1,000 a month, and workflows are metered in credits. Here's the field, with prices as we checked them.",
+      "Copy.ai's self-serve tiers jump from $29 to $1,000 a month, and workflows are metered in credits.",
     intro: [
       "Copy.ai sells chat across OpenAI, Anthropic and Gemini models, plus workflows, and markets itself to go-to-market teams. Two things are worth checking.",
       "**The price step.** Chat costs $29 a month ($24 billed annually) and covers 5 seats. The next tier, Growth, is $1,000 a month billed annually ($12,000 a year) for 75 seats, with nothing in between. Workflows start on Growth, so a ten-person team that wants them pays for a plan sized for 75. The pricing page shows no free plan.",
       `**The credit maths.** Workflows are metered at 20,000, 45,000 or 75,000 credits a month depending on the tier, and Copy.ai says a run costs more the more steps and content it has. On ${CHECKED}, Copy.ai's Trustpilot score was 1.8 out of 5 from 196 reviews.`,
-      "If neither of those bothers you, staying put is a fair choice. Switching has a cost.",
+      "If neither of those bothers you, staying put is a fair choice.",
     ],
     columns: ["Sokosumi", "Copy.ai", "Jasper", "Writer", "HubSpot Breeze"],
     rows: [
@@ -256,12 +256,12 @@ const PAGES = [
     description:
       "Compare Sintra AI with Lindy, Motion, Relevance AI and Sokosumi on price, credit limits, free plans and where each one hosts your data.",
     heroSub:
-      "Sintra's promotional price is low. Three things are worth checking before you renew. Here's the field, with prices as we checked them.",
+      "Sintra's promotional price is low. Three things are worth checking before you renew.",
     intro: [
       "Sintra sells twelve role-named AI helpers for support, copywriting, SEO, social, email, sales and more, plus Brain AI, which you feed with your business data. It's marketed to entrepreneurs.",
       "**What the credits cover.** Every plan includes 250 credits a month for advanced AI actions, whichever term you pay for. Top-ups cost extra, and unused credits don't roll over.",
       `**The price depends on the promotion.** On ${CHECKED}, the pricing page showed $97 struck through to $48.50 on the 1-month plan. The 3-month plan was $23.60 a month and the 12-month plan $15.60 a month. Check what renewal will cost before you budget.`,
-      "**No free plan, and no published EU hosting.** Sintra offers a 14-day money-back guarantee instead of a trial, and its terms limit refunds to products that are faulty or not as described. The legal entity is playOS, Inc. in Delaware, and the privacy policy says data may be transferred to and processed in the US. No EU data residency is published.",
+      "**No free plan, and no published EU hosting.** Sintra offers a 14-day money-back guarantee instead of a trial: a full refund if you ask within 14 days of subscribing. The legal entity is playOS, Inc. in Delaware, and the privacy policy says data may be transferred to and processed in the US. No EU data residency is published.",
       "If 250 credits cover your advanced actions and you locked in a good price, staying is reasonable. Here's the field for everyone else.",
     ],
     columns: ["Sokosumi", "Sintra", "Lindy", "Motion", "Relevance AI"],
@@ -277,7 +277,7 @@ const PAGES = [
         "Pro AI $19 per seat monthly billed annually ($29 monthly); Business AI $29 annual ($49 monthly)",
         RELEVANCE.price]],
       ["Free plan or trial", [SOKO.free,
-        "No free plan; 14-day money-back guarantee, limited by the terms to faulty or not-as-described products",
+        "No free plan; full refund if requested within 14 days",
         LINDY.free,
         "Free trial; no free plan on the pricing page",
         RELEVANCE.free]],
@@ -289,7 +289,7 @@ const PAGES = [
       ["What is metered", [SOKO.metered,
         "250 credits a month for advanced AI actions on every plan; top-ups extra; no rollover",
         LINDY.metered,
-        "AI credits per seat: 7,500 Pro AI, 15,000 Business AI; extra credits $0.25 or $0.19 per 100",
+        "AI credits per seat: 7,500 Pro AI, 15,000 Business AI; extra credits sold as top-ups",
         RELEVANCE.metered]],
     ],
     pick: [
@@ -301,7 +301,7 @@ const PAGES = [
     ],
     faq: [
       ["How much does Sintra AI cost?", `On ${CHECKED}, the all-helpers plan cost $48.50 a month on the 1-month plan (listed as $97), $23.60 a month on a 3-month term and $15.60 a month on a 12-month term. Sintra sells it only as the all-helpers bundle. Every plan includes the same 250 monthly credits. Promotional prices change, so check the current price before you budget.`],
-      ["Does Sintra have a free plan?", "No. Sintra offers a 14-day money-back guarantee instead of a trial, and its terms limit refunds to products that are faulty or not as described. Lindy and Motion have no free plan either, and Relevance AI has closed its free plan to new signups. Sokosumi's free plan includes 250 credits per seat each month."],
+      ["Does Sintra have a free plan?", "No. Sintra offers a 14-day money-back guarantee instead of a trial: a full refund if you ask within 14 days of subscribing. Lindy and Motion have no free plan either, and Relevance AI has closed its free plan to new signups. Sokosumi's free plan includes 250 credits per seat each month."],
       ["How do Sintra's credits work?", "Every plan includes 250 credits a month, used for advanced AI actions. When they run out you can buy top-ups; unused credits reset monthly."],
       ["Does Sintra host data in the EU?", "Sintra's legal entity is playOS, Inc. in Delaware. Its privacy policy says data may be transferred to and processed in the US, with safeguards such as standard contractual clauses, and it doesn't publish an EU residency option. If EU hosting is a requirement, Relevance AI can run your projects in its EU region."],
       ["How does Sokosumi compare to Sintra directly?", "Sintra sells a bundle of helpers on a subscription. Sokosumi is a marketplace where you brief a named specialist for each task. Seats include monthly credits, and you see a task's credit price before it runs. The full side-by-side is at sokosumi.com/compare/sokosumi-vs-sintra."],
@@ -309,6 +309,7 @@ const PAGES = [
     sources: [
       ["Sintra pricing", "https://sintra.ai/pricing"],
       ["Sintra terms and conditions (refunds)", "https://sintra.ai/legal/terms-and-conditions"],
+      ["Sintra money-back guarantee", "https://sintra.ai/legal/money-back-guarantee"],
       ["Sintra privacy policy", "https://sintra.ai/legal/privacy-policy"],
       ...LINDY_SOURCES,
       ["Motion pricing", "https://www.usemotion.com/pricing"],

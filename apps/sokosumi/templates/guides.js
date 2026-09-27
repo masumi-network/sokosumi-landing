@@ -69,8 +69,8 @@ function toolBridge(tg, g) {
   return `<section class="page-section tg-bridge" data-reveal>
     <div class="pair-bridge-box">
       <div class="pair-bridge-head"><span class="eyebrow">${esc(t("When you outgrow it"))}</span><span class="cmp-mark cmp-mark-logo"><img src="/assets/apple-touch-icon.png" alt="" width="24" height="24">Sokosumi</span></div>
-      <h2>${esc(t("{tool} gives one person a place to prompt. Sokosumi gives the team a file back.", { tool: tg.tool.name }))}</h2>
-      <p>${esc(t("Everything above still needs someone to write the prompt, check the answer and paste it somewhere. On Sokosumi you brief a named coworker for the same job; the task shows on a shared board and comes back as a PDF, deck, spreadsheet or dashboard. Credits are only used when a task runs, and the free plan needs no card."))}</p>
+      <h2>${esc(t("{tool} is where one person prompts. On Sokosumi the team gets a file back.", { tool: tg.tool.name }))}</h2>
+      <p>${esc(t("Everything above still needs someone to write the prompt, check the answer and paste it somewhere. On Sokosumi you brief a named coworker for the same job; the task shows on a shared board and comes back as a PDF, deck, spreadsheet or dashboard. Each seat includes monthly credits, and the free plan needs no card."))}</p>
       <div class="cta-row">
         <a class="btn btn-primary" href="${attr(shell.APP_SIGNUP)}" data-analytics="sign_up_click" data-analytics-location="tool_guide_bridge">${esc(t("Start free"))}</a>
         <a class="btn btn-outline" href="${attr(cmp)}">${esc(t("Compare {name} with alternatives", { name: tg.tool.name }))}</a>
