@@ -277,7 +277,9 @@ async function analysis(ctx) {
   const fm = data.frontmatter || {};
   const colorCount = Object.keys(fm.colors || {}).length;
   const fontFamilies = [...new Set(Object.values(fm.typography || {}).map((t) => t && t.fontFamily).filter(Boolean))];
-  const description = `${name} DESIGN.md: ${colorCount} color tokens${fontFamilies.length ? `, ${fontFamilies.slice(0, 2).join(" and ")} typography` : ""}, spacing, shapes and component rules extracted from ${entry.hostname} for AI coding agents. Copy or download the file.`;
+  const created = data.createdAt ? new Date(Number(data.createdAt)) : null;
+  const month = created && !Number.isNaN(created.getTime()) ? created.toLocaleDateString("en-GB", { month: "long", year: "numeric", timeZone: "UTC" }) : "";
+  const description = `Download ${name}'s extracted colors, typography and component guidance as a DESIGN.md file for AI coding tools. Unofficial, captured from ${entry.hostname}${month ? ` in ${month}` : ""}.`;
   // A rotating window, not the first eight every time: taking the head of the
   // list gave those eight entries every inbound link on the site and left the
   // rest with one apiece. Starting after this entry and wrapping around spreads
@@ -287,7 +289,6 @@ async function analysis(ctx) {
   const others = all.filter((e) => e.id !== entry.id);
   const start = others.length ? here % others.length : 0;
   const related = others.length ? others.slice(start).concat(others.slice(0, start)).slice(0, 8) : [];
-  const created = data.createdAt ? new Date(Number(data.createdAt)) : null;
   const jsonld = [
     {
       "@type": "CreativeWork",
@@ -322,7 +323,7 @@ async function analysis(ctx) {
         // even the bare form can overflow if the brand name itself is long
         return `${shell.truncate(name, 60 - " DESIGN.md".length)} DESIGN.md`;
       })(),
-      description: description.slice(0, 160),
+      description: shell.truncate(description, 160),
       path,
       englishOnly: true,
       // Only curated, recognizable brands are worth a slot in the index;

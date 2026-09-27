@@ -54,7 +54,7 @@ function render() {
     pageStart({
       title: "Free Meta Description Generator (with titles & SERP preview)",
       description:
-        "Generate meta descriptions and meta titles from your page URL or a topic: three options each, pixel-width checks against Google's limits, and a live SERP preview. Free, no sign-up.",
+        "Generate meta titles and descriptions from a URL or a topic. You get three options each, checked against Google's pixel limits, with a live SERP preview.",
       path,
       englishOnly: true,
       breadcrumb: crumbs,

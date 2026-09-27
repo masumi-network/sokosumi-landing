@@ -19,7 +19,7 @@ export default {
     description: "Set up brand controls, build one approved campaign system, and scale channel variants in Canva without multiplying mistakes.",
     body: article("en", {
       intro: [
-        "Canva can turn an approved campaign system into many channel-ready assets. The leverage comes from Brand Kit, controlled templates and structured variant data—not from generating dozens of unrelated designs.",
+        "Canva can turn an approved campaign system into many channel-ready assets. The gain comes from Brand Kit, controlled templates and structured variant data—not from generating dozens of unrelated designs.",
         "Approve one master message and visual direction before bulk production. Automation amplifies whatever is in the template, including errors.",
       ],
       fit: [
@@ -74,11 +74,11 @@ export default {
   },
   de: {
     title: "Canva für die Produktion von Kampagnen-Assets nutzen",
-    description: "Richte Markenkontrollen ein, baue ein freigegebenes Kampagnensystem und skaliere Varianten in Canva ohne Fehler zu vervielfachen.",
+    description: "Richten Sie Markenkontrollen ein, bauen Sie ein freigegebenes Kampagnensystem und skalieren Sie Varianten in Canva, ohne Fehler zu vervielfachen.",
     body: article("de", {
       intro: [
         "Canva kann aus einem freigegebenen Kampagnensystem viele kanalfertige Assets erstellen. Der Hebel liegt in Brand Kit, kontrollierten Vorlagen und strukturierten Variantendaten – nicht in beliebig vielen unterschiedlichen Designs.",
-        "Gib eine Leitbotschaft und visuelle Richtung vor der Massenproduktion frei. Automation vervielfacht auch Fehler in der Vorlage.",
+        "Geben Sie Leitbotschaft und visuelle Richtung vor der Massenproduktion frei. Automation vervielfacht auch Fehler in der Vorlage.",
       ],
       fit: [
         "Freigegebene Logos, Farben, Schriften, Bilder und kontextuelle Markenrichtlinien zentralisieren.",
@@ -87,18 +87,18 @@ export default {
         "Ein freigegebenes Konzept für Kanäle skalieren, lokalisieren und exportieren.",
       ],
       setup: [
-        "Konfiguriere das richtige Brand Kit und entferne alte Logos, Farben und Vorlagen. Ergänze Hinweise bei möglichen Missverständnissen.",
-        "Liste Kanäle, Maße, Safe Zones, Textlimits, Sprachen, Formate und Benennungsregeln.",
-        "Erstelle eine Mastervorlage mit gesperrten Marken- und Rechtselementen sowie editierbaren Feldern.",
-        "Bereite ein Quell-Sheet mit einer Zeile je freigegebener Variante und festen Spalten für Text, CTA, Bild und Locale vor.",
+        "Konfigurieren Sie das richtige Brand Kit und entfernen Sie alte Logos, Farben und Vorlagen. Ergänzen Sie Hinweise bei möglichen Missverständnissen.",
+        "Listen Sie Kanäle, Maße, Safe Zones, Textlimits, Sprachen, Formate und Benennungsregeln auf.",
+        "Erstellen Sie eine Mastervorlage mit gesperrten Marken- und Rechtselementen sowie editierbaren Feldern.",
+        "Bereiten Sie ein Quell-Sheet mit einer Zeile je freigegebener Variante und festen Spalten für Text, CTA, Bild und Locale vor.",
       ],
       workflow: [
-        "Gestalte und genehmige zuerst ein repräsentatives Master-Asset im schwierigsten Format.",
-        "Verbinde die Variantentabelle und erzeuge eine kleine Bulk-Create-Stichprobe. Prüfe Mapping und Überläufe.",
-        "Passe Formate an und prüfe jedes Layout; andere Maße verändern Hierarchie und Bildausschnitt.",
-        "Lokalisiere mit freigegebenen Übersetzungen und prüfe Umbrüche sowie Rechtstext erneut.",
-        "Prüfe je Format und Sprache eine Stichprobe auf Marke, Barrierefreiheit, Plattformregeln und Aussagen.",
-        "Exportiere konsistent benannt und bewahre Vorlage und Datenquelle für Revisionen auf.",
+        "Gestalten und genehmigen Sie zuerst ein repräsentatives Master-Asset im schwierigsten Format.",
+        "Verbinden Sie die Variantentabelle und erzeugen Sie eine kleine Bulk-Create-Stichprobe. Prüfen Sie Mapping und Überläufe.",
+        "Passen Sie Formate an und prüfen Sie jedes Layout; andere Maße verändern Hierarchie und Bildausschnitt.",
+        "Lokalisieren Sie mit freigegebenen Übersetzungen und prüfen Sie Umbrüche sowie Rechtstext erneut.",
+        "Prüfen Sie je Format und Sprache eine Stichprobe auf Marke, Barrierefreiheit, Plattformregeln und Aussagen.",
+        "Exportieren Sie mit konsistenter Benennung und bewahren Sie Vorlage und Datenquelle für Revisionen auf.",
       ],
       prompt: [
         "Erstelle einen ersten Kampagnenlayout-Entwurf für [Kanal und Größe] ausschließlich mit diesem Brand Kit und freigegebenem Text.",
@@ -107,25 +107,25 @@ export default {
         "Dies ist ein Prüfentwurf. Erzeuge keine Varianten, bevor Richtung und Vorlagenfelder freigegeben sind.",
       ],
       checks: [
-        "Prüfe Brand Kit, Logoversion, Farbkontrast und Schriftlizenz.",
-        "Kontrolliere Bildausschnitt, Safe Zone, Leserichtung und Textgröße in jedem Maß.",
-        "Vergleiche jede generierte Zeile mit dem Quell-Sheet und suche verschobene Spalten.",
-        "Prüfe Übersetzungen, Preise, Daten, Rechtstext und CTA je Locale.",
-        "Öffne Exporte außerhalb von Canva und kontrolliere Maße, Format, Kompression und Namen.",
+        "Prüfen Sie Brand Kit, Logoversion, Farbkontrast und Schriftlizenz.",
+        "Kontrollieren Sie Bildausschnitt, Safe Zone, Leserichtung und Textgröße in jedem Maß.",
+        "Vergleichen Sie jede generierte Zeile mit dem Quell-Sheet und suchen Sie verschobene Spalten.",
+        "Prüfen Sie Übersetzungen, Preise, Daten, Rechtstext und CTA je Locale.",
+        "Öffnen Sie Exporte außerhalb von Canva und kontrollieren Sie Maße, Format, Kompression und Namen.",
       ],
       limitIntro: ["Marken- und Skalierungsfunktionen hängen vom Tarif ab. KI-Texte und -Bilder benötigen weiterhin Rechte-, Fakten- und Markenprüfung."],
       limits: [
         "Ein skaliertes Layout ist nicht automatisch für jede Platzierung fertig.",
         "Bulk-Produktion beginnt erst mit freigegebenen strukturierten Daten und getesteter Vorlage.",
-        "Prüfe Lizenz und Exklusivität, bevor Stock- oder KI-Elemente in geschützten Kennzeichen landen.",
-        "Bewahre die freigegebene Textquelle außerhalb der Designdatei für nachvollziehbare Änderungen.",
+        "Prüfen Sie Lizenz und Exklusivität, bevor Stock- oder KI-Elemente in geschützten Kennzeichen landen.",
+        "Bewahren Sie die freigegebene Textquelle außerhalb der Designdatei für nachvollziehbare Änderungen.",
       ],
       sources,
     }),
     faqHeading: "Häufige Fragen zu Canva für Kampagnenproduktion",
     faq: [
-      ["Was gehört ins Brand Kit?", "Aktuelle Logos, Farben, Schriften, freigegebene Bilder, Vorlagen und Hinweise. Entferne alte Assets."],
-      ["Wann ist Bulk Create sinnvoll?", "Wenn Vorlage und kleine Datenstichprobe freigegeben sind. Skaliere aus sauberen Feldern und prüfe jedes Format und jede Sprache."],
+      ["Was gehört ins Brand Kit?", "Aktuelle Logos, Farben, Schriften, freigegebene Bilder, Vorlagen und Hinweise. Entfernen Sie alte Assets."],
+      ["Wann ist Bulk Create sinnvoll?", "Wenn Vorlage und kleine Datenstichprobe freigegeben sind. Skalieren Sie aus sauberen Feldern und prüfen Sie jedes Format und jede Sprache."],
       ["Ersetzt Resize die Designprüfung?", "Nein. Jedes Seitenverhältnis kann Ausschnitt, Hierarchie, Umbrüche und Safe Zones verändern."],
       ["Kann Canva den Kampagnentext schreiben?", "Es kann Entwürfe unterstützen. Freigegebene Aussagen, Rechtstexte und Übersetzungen bleiben unter menschlicher Kontrolle."],
     ],

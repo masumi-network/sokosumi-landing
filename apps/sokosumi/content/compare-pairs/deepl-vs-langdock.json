@@ -16,7 +16,7 @@
     "title": "DeepL Agent or Langdock: a German agent versus a German AI workspace",
     "metaTitle": "DeepL Agent vs Langdock (2026): what each does, prices",
     "description": "DeepL Agent (Cologne) vs Langdock (Berlin): what each is, published prices, EU hosting, agent building and known limits. Checked August 2026.",
-    "intro": "DeepL Agent is an autonomous agent from the Cologne translation company: you give it a task in plain words and it works through browser, email and CRM like a person would. Langdock is an AI workspace where every employee gets chat, custom agents and workflows across many models. The deciding difference: DeepL sells one agent through its sales team with no public price; Langdock sells a self-serve platform at €25 per seat.",
+    "intro": "DeepL Agent is an autonomous agent from the Cologne translation company: you give it a task in plain words and it works through browser, email and CRM like a person would. Langdock is an AI workspace where every employee gets chat, custom agents and workflows across many models. The deciding difference: DeepL sells one agent through its sales team with no public price; Langdock sells a self-serve platform from €23.20 per seat a month, billed annually.",
     "glance": [
       [
         "Who it is for",
@@ -31,7 +31,7 @@
       [
         "Price per user",
         "Not published. Sold via DeepL sales or customer success. DeepL translator plans for reference: Starter €8.99, Advanced €29.99, Ultimate €59.99 per user/month annual (third-party pages; deepl.com blocked fetch)",
-        "€25/month Standard; €99/month Business Max. Annual billing saves 20%"
+        "€29/month Standard seat (€23.20 billed annually); €119/month Business Max (€99 annually)"
       ],
       [
         "Free plan or trial",
@@ -122,7 +122,7 @@
     "title": "DeepL Agent oder Langdock: deutscher Agent oder deutscher KI-Arbeitsbereich?",
     "metaTitle": "DeepL Agent vs Langdock (2026): Aufgaben, Preise, EU-Hosting",
     "description": "DeepL Agent (Köln) vs Langdock (Berlin): was beide sind, veröffentlichte Preise, EU-Hosting, Agent-Bau und Grenzen. Stand August 2026.",
-    "intro": "DeepL Agent ist ein autonomer Agent des Kölner Übersetzungsunternehmens: Sie geben eine Aufgabe in klaren Worten, und er arbeitet per Browser, E-Mail und CRM wie ein Mensch. Langdock ist ein KI-Arbeitsbereich, in dem jeder Mitarbeitende Chat, eigene Agents und Workflows über viele Modelle bekommt. Der Unterschied: DeepL verkauft einen Agent über Sales ohne öffentlichen Preis; Langdock verkauft eine Self-Serve-Plattform für €25 pro Seat.",
+    "intro": "DeepL Agent ist ein autonomer Agent des Kölner Übersetzungsunternehmens: Sie geben eine Aufgabe in klaren Worten, und er arbeitet per Browser, E-Mail und CRM wie ein Mensch. Langdock ist ein KI-Arbeitsbereich, in dem jeder Mitarbeitende Chat, eigene Agents und Workflows über viele Modelle bekommt. Der Unterschied: DeepL verkauft einen Agent über Sales ohne öffentlichen Preis; Langdock verkauft eine Self-Serve-Plattform ab €23,20 pro Seat und Monat bei jährlicher Abrechnung.",
     "glance": [
       [
         "Für wen es passt",
@@ -137,7 +137,7 @@
       [
         "Preis pro Nutzer",
         "Nicht veröffentlicht. Verkauf über DeepL Sales oder Customer Success. DeepL-Übersetzerpläne als Referenz: Starter €8.99, Advanced €29.99, Ultimate €59.99 pro Nutzer/Monat jährlich (Drittanbieter-Seiten; deepl.com blockiert Abruf)",
-        "€25/Monat Standard; €99/Monat Business Max. Jährliche Abrechnung spart 20%"
+        "€29/Monat Standard-Seat (€23,20 bei jährlicher Abrechnung); €119/Monat Business Max (€99 jährlich)"
       ],
       [
         "Free-Plan oder Test",
@@ -197,7 +197,7 @@
       "text": "DeepL Agent und Langdock geben jeweils einer Person ein Tool: einen Agent zum Instruieren oder einen Arbeitsbereich zum Prompten. Ein Wettbewerbsbericht, ein Kampagnenplan oder das Montags-PDF zur Performance ist ein anderes Produkt. Sie briefen einen KI-Mitarbeiter, das Team sieht das Board, am Ende steht eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Mitarbeiter für Marketingteams, gebaut von Serviceplan Group mit NMKR in München.",
       "points": [
         "KI-Mitarbeiter und Agents benannter Anbieter; jedes Profil nennt den Anbieter sowie Modelle und Hosting, wo der Anbieter sie angibt.",
-        "Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25, €75 oder €200 pro Monat; Jede Aufgabe verbraucht Credits aus dem monatlichen Kontingent eines Seats.",
+        "Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25, €75 oder €200 pro Monat; jede Aufgabe verbraucht Credits aus dem monatlichen Kontingent eines Seats.",
         "Aufgaben enden mit einer fertigen Datei auf einem gemeinsamen Task-Board; geplante Aufgaben laufen ohne neuen Prompt."
       ],
       "links": [

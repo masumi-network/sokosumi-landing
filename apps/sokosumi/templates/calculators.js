@@ -17,7 +17,7 @@ const CALCS = [
     calc: "cpm",
     name: "CPM Calculator",
     short: "Cost per 1,000 impressions — from spend and impressions, or backwards.",
-    title: "CPM Calculator — cost per 1,000 impressions",
+    title: "CPM Calculator: cost per 1,000 impressions",
     description:
       "Free CPM calculator: enter any two of ad spend, impressions and CPM, and it solves the third. CPM = spend ÷ impressions × 1,000. No sign-up.",
     mode: "solve",
@@ -53,7 +53,7 @@ const CALCS = [
     calc: "roas",
     name: "ROAS Calculator",
     short: "Return on ad spend, plus the break-even ROAS for your margin.",
-    title: "ROAS Calculator — return on ad spend, with break-even",
+    title: "ROAS Calculator: return on ad spend and break-even",
     description:
       "Free ROAS calculator: revenue ÷ ad spend, solved in any direction. Includes a break-even ROAS calculator based on your gross margin. No sign-up.",
     mode: "solve",
@@ -105,7 +105,7 @@ const CALCS = [
     calc: "ctr",
     name: "CTR Calculator",
     short: "Click-through rate from clicks and impressions.",
-    title: "CTR Calculator — click-through rate",
+    title: "CTR Calculator: click-through rate",
     description:
       "Free CTR calculator: clicks ÷ impressions × 100. Enter any two of clicks, impressions and CTR, and it solves the third. No sign-up.",
     mode: "solve",
@@ -141,7 +141,7 @@ const CALCS = [
     calc: "cpc",
     name: "CPC Calculator",
     short: "Cost per click from spend and clicks.",
-    title: "CPC Calculator — cost per click",
+    title: "CPC Calculator: cost per click",
     description:
       "Free CPC calculator: ad spend ÷ clicks. Enter any two of spend, clicks and CPC, and it solves the third — or budgets clicks from a target CPC. No sign-up.",
     mode: "solve",
@@ -177,7 +177,7 @@ const CALCS = [
     calc: "cpa",
     name: "CPA Calculator",
     short: "Cost per acquisition from spend and conversions.",
-    title: "CPA Calculator — cost per acquisition",
+    title: "CPA Calculator: cost per acquisition",
     description:
       "Free CPA calculator: ad spend ÷ conversions. Enter any two of spend, conversions and CPA, and it solves the third. No sign-up.",
     mode: "solve",
@@ -214,7 +214,7 @@ const CALCS = [
     calc: "ltv",
     name: "LTV Calculator",
     short: "Customer lifetime value from order value, frequency and lifespan.",
-    title: "LTV Calculator — customer lifetime value",
+    title: "LTV Calculator: customer lifetime value",
     description:
       "Free customer lifetime value calculator: average order value × purchases per year × years as a customer, with an optional margin-adjusted LTV. No sign-up.",
     mode: "derive",
@@ -252,7 +252,7 @@ const CALCS = [
     calc: "cac",
     name: "CAC Calculator",
     short: "Customer acquisition cost, plus your LTV:CAC ratio.",
-    title: "CAC Calculator — customer acquisition cost",
+    title: "CAC Calculator: customer acquisition cost",
     description:
       "Free CAC calculator: sales and marketing spend ÷ new customers, plus the LTV:CAC ratio when you add lifetime value. No sign-up.",
     mode: "derive",
@@ -289,7 +289,7 @@ const CALCS = [
     calc: "engagement",
     name: "Engagement Rate Calculator",
     short: "Engagement rate by followers, reach or views — for any platform.",
-    title: "Engagement Rate Calculator — Instagram, TikTok & more",
+    title: "Engagement Rate Calculator for Instagram & TikTok",
     description:
       "Free engagement rate calculator: engagements ÷ followers (or reach, or views) × 100, per post or across a period. Works for Instagram, TikTok, LinkedIn and X. No sign-up.",
     mode: "derive",
@@ -475,7 +475,7 @@ function hub() {
   const path = "/tools/calculators";
   return (
     pageStart({
-      title: "Marketing calculators — CPM, ROAS, CTR, LTV & more | Sokosumi",
+      title: "Marketing calculators: CPM, ROAS, CTR, LTV & more | Sokosumi",
       description:
         "Eight free marketing calculators: CPM, ROAS, CTR, CPC, CPA, LTV, CAC and engagement rate. Each shows the formula and a worked example. No sign-up.",
       path,

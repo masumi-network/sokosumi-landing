@@ -215,10 +215,17 @@ async function hub(ctx) {
 // a search result shows, so it can lead with the term people type (keyword
 // research 2026-09-27, Ahrefs + Google Trends). A slug with no entry uses the
 // CMS title and description.
+// Guides that go deeper on the same job, linked under the FAQ.
+const USE_CASE_GUIDES = {
+  "competitor-monitoring": [["/guides/competitor-analysis", "How to do a competitor analysis (with template)", "A method, a CSV template and a worked example."]],
+  "seo-and-ai-visibility": [["/guides/best-ai-visibility-tools", "Best AI visibility tools in 2026: what each one measures", "Prices, engines covered and limits of the main trackers."]],
+  "market-intelligence-briefings": [["/guides/ai-in-marketing", "How to use AI in marketing: 11 examples by job", "Where AI helps in research, content and reporting, and where it doesn't."]],
+};
+
 const USE_CASE_SEO = {
   "competitor-monitoring": {
     en: ["Competitor monitoring tool: a weekly sourced report", "Competitor monitoring that runs every week: your competitors' launches, pricing changes, ads and messaging in one sourced report your team can forward."],
-    de: ["Konkurrenzanalyse mit KI: Wettbewerber jede Woche im Blick", "Wettbewerbsbeobachtung, die jede Woche läuft: Launches, Preisänderungen, Anzeigen und Botschaften Ihrer Konkurrenz in einem Report mit Quellen."],
+    de: ["Wettbewerbsbeobachtung mit KI: wöchentliche Reports", "Wettbewerbsbeobachtung, die jede Woche läuft: Launches, Preisänderungen, Anzeigen und Botschaften Ihrer Konkurrenz in einem Report mit Quellen."],
   },
   "always-on-social-listening": {
     en: ["Social listening tool that writes the weekly report", "Social listening without another dashboard: public posts read for sentiment, recurring themes and posts that need a reply, delivered as a weekly report."],
@@ -226,23 +233,23 @@ const USE_CASE_SEO = {
   },
   "market-intelligence-briefings": {
     en: ["AI for market research: a recurring market briefing", "Use AI for market research that stays current: a recurring briefing on what changed in your market, who drove it and what it may mean for you, with sources."],
-    de: ["Markt- und Wettbewerbsanalyse als laufendes Briefing", "Markt- und Wettbewerbsanalyse, die aktuell bleibt: ein wiederkehrendes Briefing, was sich in Ihrem Markt geändert hat, wer dahintersteckt und was es bedeutet."],
+    de: ["Marktbeobachtung mit KI: regelmäßige Briefings", "Marktbeobachtung, die aktuell bleibt: ein regelmäßiges Briefing, was sich in Ihrem Markt geändert hat, wer dahintersteckt und was es bedeuten kann."],
   },
   "seo-and-ai-visibility": {
-    en: ["AI visibility: how ChatGPT and AI Overviews cite you", "Measure your AI visibility next to your search rankings: the topics where ChatGPT and Google's AI Overviews cite you, where they name a competitor, and what to fix."],
-    de: ["KI-Sichtbarkeit und GEO: wo KI-Antworten Sie nennen", "KI-Sichtbarkeit neben Ihren Rankings messen: zu welchen Themen ChatGPT und Googles AI Overviews Sie zitieren, wo stattdessen ein Wettbewerber auftaucht."],
+    en: ["SEO and AI visibility workflow: audit, prioritize, repeat", "Measure AI visibility next to search rankings: where ChatGPT and Google's AI Overviews cite you, where they name a competitor, and what to fix first."],
+    de: ["SEO und KI-Sichtbarkeit: Audit und Maßnahmen planen", "KI-Sichtbarkeit neben Ihren Rankings messen: zu welchen Themen ChatGPT und Googles AI Overviews Sie zitieren, wo stattdessen ein Wettbewerber auftaucht."],
   },
   "audience-research-sprint": {
     en: ["Audience research: sourced profiles and message tests", "Audience research that ends in a deck: sourced audience profiles, messages tested with a synthetic panel, and the findings summarised for your team."],
-    de: ["Zielgruppenanalyse mit KI: Profile und Botschaftstests", "Zielgruppenanalyse, die in einem Deck endet: Zielgruppenprofile mit Quellen, Botschaften im synthetischen Panel getestet und die Ergebnisse fürs Team zusammengefasst."],
+    de: ["Zielgruppenanalyse mit KI: Profile und Botschaftstests", "Zielgruppenanalyse bis zum fertigen Deck: Profile mit Quellen und Botschaften, die in einem synthetischen Panel getestet wurden."],
   },
   "launch-content-engine": {
-    en: ["AI content strategy for a launch, from one brief", "An AI content strategy for your launch: one brief turns into positioning, landing-page copy, social variants and visuals that your team edits before anything ships."],
-    de: ["KI-Content-Erstellung für den Launch, aus einem Briefing", "KI-Content-Erstellung für Ihren Launch: Aus einem Briefing entstehen Positionierung, Landingpage-Texte, Social-Varianten und Visuals, die Ihr Team vor dem Start bearbeitet."],
+    en: ["AI launch content: copy and visuals from one brief", "Launch content from one brief: positioning, landing-page copy, social variants and visuals that your team edits before anything ships."],
+    de: ["KI-Content-Erstellung für den Launch, aus einem Briefing", "KI-Content für Ihren Launch: Aus einem Briefing entstehen Positionierung, Landingpage-Texte, Social-Varianten und Visuals, die Ihr Team prüft."],
   },
   "seasonal-campaign-planning": {
     en: ["Seasonal campaign planning from search demand", "Plan seasonal campaigns from current search demand and audience signals, then get the plan, the calendar and the supporting content as files."],
-    de: ["Kampagnenplanung für die Saison, aus der Suchnachfrage", "Saisonkampagnen aus aktueller Suchnachfrage und Zielgruppensignalen planen und Plan, Kalender und begleitende Inhalte als Dateien bekommen."],
+    de: ["Saisonkampagnen nach Suchnachfrage planen", "Saisonkampagnen aus aktueller Suchnachfrage und Zielgruppensignalen planen und Plan, Kalender und begleitende Inhalte als Dateien bekommen."],
   },
 };
 
@@ -331,7 +338,7 @@ const INDUSTRY_CONTENT = {
     why: "Where financial teams use Sokosumi",
     cta: "Bring a coworker into your marketing team",
     metaTitle: "AI for financial services marketing | Sokosumi",
-    metaDesc: "AI coworkers for financial services: sourced market briefings on a schedule, run history on every task, and EU hosting stated up front.",
+    metaDesc: "AI coworkers for financial services: scheduled market briefings with source links, and a run history for every task your team starts.",
     h1: "AI coworkers for financial services",
     sub: "Market intelligence and marketing production for teams that answer to compliance, with a run history for every task and the vendor named on every coworker.",
     split: {
@@ -527,7 +534,7 @@ async function industry(ctx) {
   return (
     pageStart({
       title: cc ? t(cc.metaTitle) : t("{name} use cases | Sokosumi", { name: ind.name }),
-      description: cc ? t(cc.metaDesc) : (ind.description || t("How {name} teams put AI coworkers to work on Sokosumi.", { name: ind.name })).slice(0, 155),
+      description: cc ? t(cc.metaDesc) : shell.truncate(ind.description || t("How {name} teams put AI coworkers to work on Sokosumi.", { name: ind.name }), 155),
       path: `/use-cases/industries/${ind.slug}`,
       breadcrumb: cr,
       jsonld: cc ? blocks.faqJsonLd(cc.faq.map(([q, a]) => ({ question: q, answer: a }))) : undefined,
@@ -806,6 +813,7 @@ async function detail(ctx) {
     midCta(doc, heroBlock) +
     teamSection(crew, offers) +
     (faqBlock ? blocks.renderBlocks([faqBlock]) : "") +
+    shell.readNext(USE_CASE_GUIDES[doc.slug]) +
     relatedSection(doc, inds, allCases, crewOf) +
     shell.proof(testimonials, doc.slug.length, { mode: "quote" }) +
     band +

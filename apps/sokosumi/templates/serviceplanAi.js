@@ -229,7 +229,7 @@ function groupedChapters(list) {
       <h2 id="sp-directory-title">${esc(ui("Choose a way into the system", "Wählen Sie Ihren Einstieg ins System"))}</h2>
       <p>${esc(ui(
         "The chapters move from organisational architecture to usable products, buyer guidance and primary-source evidence. The source count on each card is the number of distinct primary documents that chapter links to.",
-        "Die Kapitel führen von der Organisationsarchitektur über nutzbare Produkte und Buyer-Guides bis zu den Primärquellen. Die Quellenzahl auf jeder Karte ist die Anzahl der verlinkten Primärdokumente.",
+        "Die Kapitel führen von der Organisationsarchitektur über nutzbare Produkte und Ratgeber für den Einkauf bis zu den Primärquellen. Die Quellenzahl auf jeder Karte ist die Anzahl der verlinkten Primärdokumente.",
       ))}</p>
     </header>
     <div class="sp-groups">
@@ -507,7 +507,7 @@ async function render(doc, ctx) {
   const head =
     pageStart({
       title: doc.metaTitle || `${doc.title} | Sokosumi`,
-      description: (doc.description || "").slice(0, 160),
+      description: shell.truncate(doc.description, 160),
       path: `/${doc.slug}`,
       breadcrumb: breadcrumbs,
       mainClass: "sp-page",

@@ -14,6 +14,7 @@
 const fs = require("fs");
 const path = require("path");
 const i18n = require("./i18n");
+const { forOffer } = require("../templates/coworkerBoost");
 
 const CMS_URL = process.env.CMS_URL || "https://payload-production-6f43.up.railway.app";
 const CMS_PREVIEW_KEY = process.env.CMS_PREVIEW_KEY || "";
@@ -288,12 +289,18 @@ const getCoworkerByCatalogSlug = (catalogSlug, opts) =>
     (c) => c.catalogSlug === catalogSlug,
   );
 
-const getOffers = (opts) =>
-  findAll("offers", { ...siteWhere({ active: "true" }), limit: 500, depth: 0, sort: "order" }, opts);
+// Editorial fixes to synced task copy (templates/coworkerBoost.js OFFER_BOOST).
+function withOfferBoost(offer) {
+  const boost = forOffer(offer.agentSlug, offer.slug, i18n.locale());
+  return Object.keys(boost).length ? { ...offer, ...boost } : offer;
+}
+
+const getOffers = async (opts) =>
+  (await findAll("offers", { ...siteWhere({ active: "true" }), limit: 500, depth: 0, sort: "order" }, opts)).map(withOfferBoost);
 
 const getOffersFor = async (agentSlug, opts) => {
   try {
-    return await findAll("offers", { ...siteWhere({ agentSlug, active: "true" }), limit: 100, depth: 0, sort: "order" }, opts);
+    return (await findAll("offers", { ...siteWhere({ agentSlug, active: "true" }), limit: 100, depth: 0, sort: "order" }, opts)).map(withOfferBoost);
   } catch (e) {
     if (!isCmsUnavailable(e)) throw e;
     const all = await getOffers(opts).catch(() => null);
@@ -303,12 +310,14 @@ const getOffersFor = async (agentSlug, opts) => {
   }
 };
 
-const getOffer = (agentSlug, slug, opts) =>
-  findOne(
+const getOffer = async (agentSlug, slug, opts) => {
+  const offer = await findOne(
     () => findAll("offers", { ...siteWhere({ agentSlug, slug }), limit: 1, depth: 0 }, opts),
     () => getOffers(opts),
     (o) => o.agentSlug === agentSlug && o.slug === slug,
   );
+  return offer && withOfferBoost(offer);
+};
 
 const getIndustries = (opts) => findAll("industries", { limit: 200, depth: 0, sort: "name" }, opts);
 

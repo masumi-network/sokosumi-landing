@@ -150,9 +150,14 @@ function truncate(s, n) {
   const str = String(s || "").trim();
   const max = n || 155;
   if (str.length <= max) return str;
-  const cut = str.slice(0, max + 1);
+  const cut = str.slice(0, max);
+  // Prefer ending on a whole sentence. "Copy.ai" is not a sentence end: the
+  // period must be followed by a space.
+  const ends = [...str.slice(0, max + 1).matchAll(/[.!?](?=\s)/g)].map((m) => m.index + 1);
+  const lastEnd = ends.length ? ends[ends.length - 1] : 0;
+  if (lastEnd >= 70) return cut.slice(0, lastEnd);
   const atWord = cut.slice(0, cut.lastIndexOf(" "));
-  return (atWord || cut.slice(0, max)).replace(/[\s,;:.–—-]+$/, "");
+  return `${(atWord || cut.slice(0, max - 1)).replace(/[\s,;:.–—-]+$/, "")}…`;
 }
 
 function slugify(s) {
@@ -382,13 +387,7 @@ function hreflangLinks(path) {
 function head(opts) {
   const locale = i18n.locale();
   const title = esc(t(opts.title));
-  const clampDesc = (text) => {
-    const value = String(text || "").trim();
-    if (value.length <= 160) return value;
-    const cut = value.slice(0, 157);
-    return cut.slice(0, Math.max(cut.lastIndexOf(" "), 120)).replace(/[,;:\s]+$/, "") + "…";
-  };
-  const desc = esc(clampDesc(t(opts.description || "")));
+  const desc = esc(truncate(t(opts.description || ""), 160));
   // The canonical points at the page's OWN locale; hreflang links the pair.
   // canonicalPath: this page defers to another URL (a duplicate listing), so
   // it names that one as canonical and advertises no hreflang pair of its own.
@@ -1278,7 +1277,25 @@ function vendorLogo(v, cls) {
   return `<span class="vendor-logo ${cls || ""}${invert}"><img${thumbSrc(url, 256)} alt="" loading="lazy" decoding="async" /></span>`;
 }
 
+// A short "Read next" list of guides: [href, title, note] rows, localised.
+function readNext(items, heading) {
+  if (!items || !items.length) return "";
+  return `<section class="page-section" data-reveal>
+      <h2>${esc(t(heading || "Read next"))}</h2>
+      <div class="row-list">${items
+        .map(
+          ([href, title, note]) => `<a class="row-item" href="${attr(href)}">
+            <span class="row-title">${esc(t(title))}</span>
+            <p>${esc(t(note))}</p>
+            <span class="row-go">${esc(t("Read"))} ${icon("arrow-up-right", 15)}</span>
+          </a>`,
+        )
+        .join("")}</div>
+    </section>`;
+}
+
 module.exports = {
+  readNext,
   describe,
   ORGANIZATION,
   APP,

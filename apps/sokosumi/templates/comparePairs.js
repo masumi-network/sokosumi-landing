@@ -119,7 +119,7 @@ async function detail(ctx) {
   return (
     pageStart({
       title: c.metaTitle || c.title,
-      description: (c.description || "").slice(0, 155),
+      description: shell.truncate(c.description, 155),
       path: `/compare/${p.slug}`,
       breadcrumb: cr,
       noindex: !translated,
@@ -196,9 +196,10 @@ async function detail(ctx) {
       const universe = cmp.comparisonUniverse(cmsComparisons, all());
       return cmp.relatedRail(p.slug, cmp.neighbours(p.slug, groups, universe, "pair"), {
         heading: t("Other comparisons"),
-        sub: t("The same seven rows, against the other tools teams weigh up."),
+        sub: t("Pick another tool to compare."),
       });
     })() +
+    shell.readNext(p.slug.startsWith("langdock-vs-") ? [["/guides/langdock-alternatives", "Langdock alternatives: 6 options for EU companies", "Prices, hosting and fit for six workspaces EU companies consider."]] : null) +
     shell.ctaBand({
       heading: t("See the difference on one task"),
       subheading: t("250 free credits per seat. Brief a coworker, get the file back, and compare."),

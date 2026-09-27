@@ -48,7 +48,7 @@ async function productHub(ctx) {
   const cr = [{ label: "Home", href: "/" }, { label: "Product" }];
   return (
     pageStart({
-      title: t("AI coworker for marketing teams | Sokosumi"),
+      title: t("How Sokosumi works: briefs, tasks and outputs | Sokosumi"),
       description:
         "Brief a named AI coworker, follow the work on a shared board, and get finished files back. See how Sokosumi actually works.",
       path: "/product",
@@ -87,7 +87,7 @@ async function productHub(ctx) {
 const SURFACES = {
   "product/ai-coworkers": {
     feat: "home",
-    metaTitle: "What is an AI coworker? | Sokosumi",
+    metaTitle: "AI coworker roles on Sokosumi | Sokosumi",
     related: [["product/briefing", "How you brief one"], ["product/task-board", "Where the work shows up"], ["ai-coworkers", "Meet the roster"]],
   },
   "product/briefing": {
@@ -227,7 +227,7 @@ async function cmsPage(ctx) {
   return (
     pageStart({
       title: t("{title} | Sokosumi", { title: doc.title }),
-      description: (doc.description || "").slice(0, 155),
+      description: shell.truncate(doc.description, 155),
       path: "/" + doc.slug,
       breadcrumb: cr,
       mainClass: ink ? "ink-page" : undefined,

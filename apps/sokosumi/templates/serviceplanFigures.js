@@ -361,8 +361,8 @@ const FIGURES = {
     after: -1,
     html: figure(
       "chips",
-      L("Product map", "Produktkarte"),
-      L("Every named Mediaplus product by House-of-AI layer", "Jedes benannte Mediaplus-Produkt nach House-of-AI-Ebene"),
+      L("Product map", "Produktübersicht"),
+      L("Every named Mediaplus product by House-of-AI layer", "Alle genannten Mediaplus-Produkte, geordnet nach House-of-AI-Ebene"),
       chips([
         { label: "Insight.AI", text: L("Research, visibility, audiences, journeys, behaviour", "Research, Sichtbarkeit, Zielgruppen, Journeys, Verhalten"), items: ["Research.AI", "Search.AI", "Persona.AI", "Touchpoint.AI", "Behave.AI"] },
         { label: "Creative.AI", text: L("Creative validation before launch", "Kreativ-Validierung vor dem Start"), items: ["Pretest.AI"] },
@@ -421,10 +421,10 @@ const FIGURES = {
     after: -1,
     html: figure(
       "matrix",
-      L("Delivery models compared", "Liefermodelle im Vergleich"),
+      L("Delivery models compared", "Die vier Wege im Vergleich"),
       L("Four ways to buy AI marketing work", "Vier Wege, KI-Marketingarbeit einzukaufen"),
       matrix(
-        [L("Time to start", "Startzeit"), L("Integration", "Integration"), L("Governance sits with", "Governance liegt bei"), L("Serviceplan route", "Serviceplan-Weg")],
+        [L("Time to start", "Startzeit"), L("Integration", "Integration"), L("Governance sits with", "Verantwortung liegt bei"), L("Serviceplan route", "Serviceplan-Weg")],
         [
           { label: L("Single AI tool", "Einzelnes KI-Tool"), cells: [L("Days", "Tage"), L("Buyer", "Käufer"), L("Buyer", "Käufer"), "Mediaplus Pretest.AI, Search.AI"] },
           { label: L("AI coworker", "KI-Mitarbeiter"), cells: [L("Minutes", "Minuten"), L("None required", "Keine nötig"), L("Shared: brief and approval", "Geteilt: Briefing und Freigabe"), "Sokosumi"] },
@@ -459,7 +459,7 @@ const FIGURES = {
     html: figure(
       "ledger",
       L("Case ledger", "Case-Verzeichnis"),
-      L("Every public case, with the evidence boundary kept visible", "Jeder öffentliche Case, mit sichtbarer Evidenzgrenze"),
+      L("Every public case, with the evidence boundary kept visible", "Alle öffentlichen Cases und was davon belegt ist"),
       ledger(
         [L("Client", "Kunde"), L("Work", "Arbeit"), L("AI in the workflow", "KI im Workflow"), L("Reported result", "Berichtetes Ergebnis")],
         [

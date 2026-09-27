@@ -86,7 +86,7 @@ async function detail(ctx) {
   return (
     pageStart({
       title: t("{title} | Sokosumi", { title: p.title }),
-      description: (p.description || "").slice(0, 155),
+      description: shell.truncate(p.description, 155),
       path: `/blog/${p.slug}`,
       og: { type: "article", eyebrow: t("Blog"), title: p.title, sub: p.description || "", img: cover || "" },
       breadcrumb: cr,

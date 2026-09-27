@@ -286,6 +286,7 @@ async function index(ctx) {
     landscapeSection() +
     shell.logoRow() +
     indexFaqSection() +
+    shell.readNext([["/guides/ai-in-marketing", "How to use AI in marketing: 11 examples by job", "Where AI helps in research, content and reporting, and where it doesn't."], ["/guides/best-ai-visibility-tools", "Best AI visibility tools in 2026: what each one measures", "Prices, engines covered and limits of the main trackers."]]) +
     shell.ctaBand({
       heading: t("Hire your first AI coworker"),
       subheading: t("One account, one balance, and every specialist on the marketplace."),
@@ -708,7 +709,7 @@ async function profile(ctx) {
           vn ? ` &middot; <a href="/vendors/${attr(vs || "")}">${esc(vn)}</a>` : ""
         }</span>
         <h1>${esc(b.h1 || c.name)}</h1>
-        ${b.h1 ? `<div class="role">${esc(c.name)}${c.role ? ` · ${esc(c.role)}` : ""}</div>` : c.role ? `<div class="role">${esc(c.role)}</div>` : ""}
+        ${b.h1 ? `<div class="role">${esc(c.name)}${c.role ? ` · ${esc(c.role)}` : ""}</div>` : b.role || c.role ? `<div class="role">${esc(b.role || c.role)}</div>` : ""}
         ${profileTags(c)}
         ${profileStats(c)}
         ${c.seoDescription || c.description ? `<p class="cw-desc">${esc(c.seoDescription || c.description)}</p>` : ""}
@@ -728,8 +729,13 @@ async function profile(ctx) {
     shell.logoRow() +
     shell.ctaBand({
       heading: t("Put {name} to work", { name: c.name }),
-      subheading: t("Sign up free, brief the task, and collect the finished file. Credits only go on work you run."),
-      ctaLabel: t("Try {name} free", { name: c.name }),
+      // "Try free" only where one run fits in the free plan's 250 monthly
+      // credits; a pricier run gets an honest label and its price.
+      subheading:
+        Number(c.credits) > 250
+          ? t("A run costs {credits} credits, more than the free plan's 250 a month. Create a free account to look around, then pick a plan that covers it.", { credits: String(c.credits) })
+          : t("Sign up free, brief the task, and collect the finished file. The free plan includes 250 credits a month."),
+      ctaLabel: Number(c.credits) > 250 ? t("Create a free account") : t("Try {name} free", { name: c.name }),
       ctaHref: tryUrl(c),
       seed: c.name.length,
     }) +

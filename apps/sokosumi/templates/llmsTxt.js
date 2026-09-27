@@ -138,7 +138,7 @@ function render() {
     pageStart({
       title: "llms.txt checker — validate your llms.txt file free | Sokosumi",
       description:
-        "Free llms.txt checker and validator. Paste a domain to see whether its /llms.txt exists, follows the llmstxt.org format, and whether the links inside it actually resolve. No sign-up.",
+        "Free llms.txt checker. Paste a domain to see whether its /llms.txt exists, follows the llmstxt.org format and links to pages that resolve.",
       path: PATH,
       englishOnly: true,
       breadcrumb: crumbs,

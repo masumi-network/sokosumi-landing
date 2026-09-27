@@ -124,7 +124,7 @@ async function detail(ctx) {
   return (
     pageStart({
       title: t("{title} | Sokosumi releases", { title: r.title }),
-      description: (r.description || "").slice(0, 155),
+      description: shell.truncate(r.description, 155),
       path: `/releases/${r.slug}`,
       breadcrumb: cr,
       article: { published: r.date || undefined, modified: r.updatedAt || r.date || undefined },

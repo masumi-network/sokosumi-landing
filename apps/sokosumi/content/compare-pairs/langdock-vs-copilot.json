@@ -30,7 +30,7 @@
       ],
       [
         "Price per user",
-        "€25/month Standard seat; €99/month Business Max. Annual billing saves 20%",
+        "€29/month Standard seat (€23.20 billed annually); €119/month Business Max (€99 annually)",
         "Copilot Business add-on $21/user/month list ($18 promo 1 Jul–31 Dec 2026, first year, annual); $30/user/month for enterprise Microsoft 365 Copilot. Needs a qualifying Microsoft 365 plan"
       ],
       [
@@ -136,7 +136,7 @@
       ],
       [
         "Preis pro Nutzer",
-        "€25/Monat Standard Seat; €99/Monat Business Max. Jährliche Abrechnung spart 20%",
+        "€29/Monat Standard-Seat (€23,20 bei jährlicher Abrechnung); €119/Monat Business Max (€99 jährlich)",
         "Copilot Business Add-on $21/Nutzer/Monat Liste ($18 Promo 1 Jul–31 Dec 2026, erstes Jahr, jährlich); $30/Nutzer/Monat für Enterprise Microsoft 365 Copilot. Benötigt passenden Microsoft 365-Plan"
       ],
       [
@@ -197,7 +197,7 @@
       "text": "Beide Tools geben einer Person einen Ort zum Prompten. Ein Wettbewerbsbericht, ein Kampagnenplan oder das Montags-PDF zur Performance ist ein anderes Produkt. Sie briefen einen KI-Mitarbeiter, das Team sieht das Board, am Ende steht eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Mitarbeiter für Marketingteams, gebaut von Serviceplan Group mit NMKR in München. KI-Mitarbeiter können per @Mention in einem Kanal briefed werden; die Aufgabe erscheint auf einem Task-Board und endet mit PDF, Deck, Spreadsheet oder Dashboard.",
       "points": [
         "KI-Mitarbeiter und Agents benannter Anbieter; jedes Profil nennt Anbieter, Modelle und Hosting-Region.",
-        "Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25, €75 oder €200 pro Monat; Jede Aufgabe verbraucht Credits aus dem monatlichen Kontingent eines Seats.",
+        "Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25, €75 oder €200 pro Monat; jede Aufgabe verbraucht Credits aus dem monatlichen Kontingent eines Seats.",
         "Geplante Aufgaben und fertige Dateien, damit niemand am Montag neu prompten muss."
       ],
       "links": [

@@ -498,12 +498,12 @@ All read on the vendors' own sites on 2026-09-27 (OpenAI and Marblism pages via 
 ### Marblism (Marblism, Inc and Marblism UK Ltd)
 - What: "AI Employees to Scale Your Business": Eva (exec assistant), Sonny (social media), Stan (lead gen), Penny (SEO), Rachel (receptionist), Walter (website builder), Linda (legal assistant). Works in inbox, social accounts, phone line, website; can auto-post and auto-publish. Targets small businesses, solopreneurs, agencies. https://www.marblism.com/ , https://www.marblism.com/pricing
 - Pricing: one plan, "Plans start at $24/month on the yearly option", includes 50 hours of work per month (resets monthly), unlimited businesses and team members; 7-day money-back guarantee. The FAQ says "all 6 AI Employees" while the pricing table lists 7. Monthly price not verified. https://www.marblism.com/pricing
-- Hosting: not published (only "We store your data securely in the cloud using advanced encryption protocols"). https://www.marblism.com/pricing
+- Hosting: not specified on the pricing page checked (only "We store your data securely in the cloud using advanced encryption protocols"). https://www.marblism.com/pricing
 - Overlap vs difference: same "AI employees" framing as Sintra; SMB operations (inbox, calls, posting) rather than marketing research and reporting. Single vendor.
 
 ### Langdock (update)
 - Langdock GmbH, Greifswalder Str. 212, 10405 Berlin. https://www.langdock.com/imprint
-- Pricing unchanged vs 2026-08-25: Business €25 Standard / €99 Business Max per user/month excl. VAT, 20% off yearly, up to 1,000 users; Enterprise custom (1,000+ users, dedicated deployment); 7-day trial, no card, €5 model credits; Workflows €539/month (40k runs) or €1,199 (100k); Governance free until 1 Jan 2027, then €3.50/user/month. "GDPR-compliant, hosted in the EU"; ISO 27001 and SOC 2 Type II; managed, cloud or on-premises. https://langdock.com/pricing
+- Pricing unchanged vs 2026-08-25: Business €25 Standard / €99 Business Max per user/month excl. VAT, 20% off yearly, up to 1,000 users; Enterprise custom (1,000+ users, dedicated deployment); 7-day trial, no card, €5 model credits; Workflows: Starter package with 2,500 runs/month included, larger packages €539/month (40k runs) or €1,199 (100k), model use in workflows billed at API prices; chat and agents have no usage-based model costs; Enterprise 1,000+ users, "Dedicated deployment possible"; Governance free until 1 Jan 2027, then €3.50/user/month. "GDPR-compliant, hosted in the EU"; ISO 27001 and SOC 2 Type II; managed, cloud or on-premises. https://langdock.com/pricing
 - Reviews: G2 shows 5/5 from 8 reviews; OMR Reviews shows 0 ratings ("Noch nicht genügend Bewertungen vorhanden"). https://www.g2.com/products/langdock/reviews , https://omr.com/de/reviews/product/langdock
 
 ### nele.ai (update)
@@ -515,7 +515,8 @@ All read on the vendors' own sites on 2026-09-27 (OpenAI and Marblism pages via 
 
 ### ChatGPT Business / Enterprise (update)
 - Business: Standard seat $20/user/month billed yearly, $25 monthly; Premium seat $100/$125; teams of 2 to 200. Enterprise: custom. https://openai.com/business/pricing/
-- Data residency: "Eligible API customers and new ChatGPT Enterprise/Edu customers" can store content at rest in Europe (EEA + Switzerland) among other regions; not offered for Business. https://help.openai.com/en/articles/9903489-data-residency-and-inference-residency-for-chatgpt
+- Enterprise/Edu data residency: "Eligible API customers and new ChatGPT Enterprise/Edu customers" can store content at rest in Europe (EEA + Switzerland) among other regions; inference residency for EU/US/UAE. https://help.openai.com/en/articles/9903489-data-residency-and-inference-residency-for-chatgpt
+- Business data residency (corrected 2026-09-27 after review round 5; the earlier "not offered for Business" was wrong): "Data residency for ChatGPT Business is rolling out gradually and is not yet available to all customers." The region is chosen at checkout and covers primary customer content at rest; it "does not include inference residency". Abuse-monitoring logs stay in the US, and with a non-US region "a copy of every prompt and response is also stored in the United States for a limited time". Shopping is unavailable with residency. Enterprise/Edu have separate policies. https://help.openai.com/en/articles/20001418-where-your-chatgpt-business-content-is-stored
 
 ### Dust (update)
 - Now read directly from dust.tt: Free €0 (500 lifetime credits); Pro €24/seat/month yearly or €30 monthly (8,000 credits); Max €120 yearly / €150 monthly (40,000); Enterprise custom, pooled credits, single-tenant option. "US & EU data residency". https://dust.tt/home/pricing , https://dust.tt/home/security
@@ -524,4 +525,4 @@ All read on the vendors' own sites on 2026-09-27 (OpenAI and Marblism pages via 
 ### Mistral Vibe (formerly Le Chat)
 - Assistant and coding agent for individuals, teams, enterprises; integrations with email, calendar, Slack, GitHub. https://mistral.ai/products/le-chat
 - Pricing (USD): Free $0; Pro $14.99/month; Team $24.99/user/month, $50/month minimum; Enterprise custom. https://mistral.ai/pricing
-- Hosting: "By default, your data is hosted in the European Union", unless the US API endpoint is used explicitly. https://help.mistral.ai/en/articles/347629-where-do-you-store-my-data-or-my-organization-s-data
+- Hosting: "By default, your data is hosted in the European Union"; hosted in the US if the US API endpoint is used explicitly. Also (added after review round 5): "Depending on the feature you use, your data can be temporarily transferred outside of the European Union", to locations in the Trust Center's Subprocessors tab, under SCCs; Enterprise customers can deactivate some such features. So "EU by default" is not "EU only". https://help.mistral.ai/en/articles/347629-where-do-you-store-my-data-or-my-organization-s-data , https://trust.mistral.ai/subprocessors

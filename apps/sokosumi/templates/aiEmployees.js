@@ -36,6 +36,7 @@ const CODING_ROLE = /coding|codex|claude code|cline|grok build|developer/i;
 const READ_NEXT = [
   ["/guides/will-ai-replace-marketers", "Will AI replace marketing jobs?", "Which marketing tasks move to AI and which stay with people."],
   ["/guides/best-ai-marketing-tools", "The best AI marketing tools", "A shortlist by job, from research to reporting."],
+  ["/guides/ai-in-marketing", "How to use AI in marketing: 11 examples by job", "Where AI helps in research, content and reporting, and where it doesn't."],
   ["/use-cases/industries/agencies", "AI coworkers for agencies", "Pitch research, competitive sets per client and production."],
   ["/compare/sokosumi-vs-sintra", "Sokosumi vs Sintra", "Two ways to buy AI employees, side by side."],
 ];
@@ -117,7 +118,7 @@ async function render(ctx) {
   return (
     pageStart({
       title: t("AI employees: what they are, what they cost | Sokosumi"),
-      description: t("What an AI employee is, how it differs from an agent or a copilot, what one costs, and a roster of specialists you can brief today, each with a public profile and a task list."),
+      description: t("What an AI employee is, how it differs from an agent or a copilot, what one costs, and which specialists you can brief today."),
       path: here,
       breadcrumb: [{ label: t("Home"), href: "/" }, { label: t("AI employees") }],
       jsonld: [

@@ -5,7 +5,7 @@ const sources = [
   ["Meta: New Features and Additional Transparency Measures as the Digital Services Act Comes Into Effect (August 2023)", "https://about.fb.com/news/2023/08/new-features-and-additional-transparency-measures-as-the-digital-services-act-comes-into-effect/"],
   ["Google Ads Transparency Center", "https://adstransparency.google.com/"],
   ["Ads transparency (Germany): Google Advertising Policies Help", "https://support.google.com/adspolicy/answer/13733850?hl=en&co=GENIE.CountryCode%3DDE"],
-  ["Verify your site ownership: Google Search Console Help", "https://support.google.com/webmasters/answer/9008080"],
+  ["Managing owners, users, and permissions: Google Search Console Help", "https://support.google.com/webmasters/answer/7687615"],
   ["Michael E. Porter: The Five Competitive Forces That Shape Strategy, Harvard Business Review, January 2008", "https://hbr.org/2008/01/the-five-competitive-forces-that-shape-strategy"],
   ["Michael E. Porter: How Competitive Forces Shape Strategy, Harvard Business Review, March 1979", "https://hbr.org/1979/03/how-competitive-forces-shape-strategy"],
   ["Kalai, Nachum, Vempala, Zhang: Why Language Models Hallucinate (arXiv, September 2025)", "https://arxiv.org/abs/2509.04664"],
@@ -16,7 +16,7 @@ const quellen = [
   ["Meta: New Features and Additional Transparency Measures as the Digital Services Act Comes Into Effect (August 2023)", "https://about.fb.com/news/2023/08/new-features-and-additional-transparency-measures-as-the-digital-services-act-comes-into-effect/"],
   ["Google Ads Transparency Center", "https://adstransparency.google.com/"],
   ["Transparenz bei Anzeigen (Deutschland): Google-Hilfe zu Werberichtlinien", "https://support.google.com/adspolicy/answer/13733850?hl=de&co=GENIE.CountryCode%3DDE"],
-  ["Inhaberschaft der Website bestätigen: Search Console-Hilfe", "https://support.google.com/webmasters/answer/9008080?hl=de"],
+  ["Inhaber, Nutzer und Berechtigungen verwalten: Search Console-Hilfe", "https://support.google.com/webmasters/answer/7687615?hl=de"],
   ["Michael E. Porter: The Five Competitive Forces That Shape Strategy, Harvard Business Review, Januar 2008", "https://hbr.org/2008/01/the-five-competitive-forces-that-shape-strategy"],
   ["Michael E. Porter: How Competitive Forces Shape Strategy, Harvard Business Review, März 1979", "https://hbr.org/1979/03/how-competitive-forces-shape-strategy"],
   ["Kalai, Nachum, Vempala, Zhang: Why Language Models Hallucinate (arXiv, September 2025)", "https://arxiv.org/abs/2509.04664"],
@@ -29,12 +29,12 @@ export default {
   de: {
     title: "Konkurrenzanalyse: Methode, Vorlage und Beispiel",
     description:
-      "Konkurrenzanalyse in sieben Schritten: welche Quellen zählen, wann Porter und SWOT helfen, eine Vorlage zum Kopieren, ein Beispiel und wie sie aktuell bleibt.",
+      "Konkurrenzanalyse in sieben Schritten: welche Quellen zählen, wann Porter und SWOT helfen, eine Vorlage zum Download, ein Beispiel und wie sie aktuell bleibt.",
     body: topic("de", {
       intro: [
         "Eine Konkurrenzanalyse hält fest, was Ihre Wettbewerber anbieten, zu welchem Preis, mit welcher Botschaft und über welche Kanäle, und was daraus für Ihr eigenes Marketing folgt. „Wettbewerbsanalyse“ meint im Marketing-Alltag dasselbe. Eine Markt- und Wettbewerbsanalyse nimmt zusätzlich den Markt selbst dazu: Größe, Trends, Kundengruppen.",
         "Jede Analyse ist eine Momentaufnahme. Die **Wettbewerbsbeobachtung** ist der laufende Teil davon: dieselben Wettbewerber und dieselben Fragen, jede Woche oder jeden Monat neu geprüft. Preise, Anzeigen und Claims ändern sich ohne Ankündigung, und eine Analyse vom letzten Jahr beschreibt deshalb den Markt vom letzten Jahr.",
-        "Dieser Leitfaden behandelt beides. Sie finden die Methode in sieben Schritten, eine Vorlage zum Kopieren, ein durchgespieltes Beispiel und eine ehrliche Antwort auf die Frage, was KI dabei übernehmen kann.",
+        "Dieser Leitfaden behandelt beides. Sie finden die Methode in sieben Schritten, eine Vorlage zum Herunterladen und ein durchgespieltes Beispiel.",
       ],
       stateIntro: [
         "Die Angaben zu Quellen und Modellen stammen aus der Dokumentation von Meta und Google und aus Porters eigenen Artikeln. Alle Links stehen unten unter „Quellen“.",
@@ -43,14 +43,14 @@ export default {
         "**Öffentliche Quellen reichen für den Großteil der Arbeit.** Website, Preisseite, Stellenanzeigen, Bewertungen und Social-Kanäle kosten nichts, und jeder im Team kann sie nachprüfen. Was hinter einem Login oder in Vertriebsgesprächen passiert, sehen Sie nicht; eine gute Analyse sagt das offen, statt die Lücke mit Vermutungen zu füllen.",
         "**Die Meta Ad Library zeigt Anzeigen, die in der EU laufen.** Seit August 2023 archiviert Meta alle Anzeigen, die sich an Menschen in der EU richten, mit Laufzeit, Targeting-Parametern wie Alter, Geschlecht und Ort und Angaben dazu, wer die Anzeige gesehen hat. Laut Meta bleiben sie ein Jahr in der öffentlichen Bibliothek.",
         "**Das Google Ads Transparency Center zeigt Google-Anzeigen.** Google beschreibt es als durchsuchbares Verzeichnis der Werbetreibenden und ihrer Anzeigen auf Search, Display, Gmail und YouTube, filterbar nach Zeitraum und Region. Für Anzeigen im EWR stellt Google außerdem Targeting-Informationen und die Zahl der Empfänger je Anzeige bereit.",
-        "**Suchsichtbarkeit lässt sich bei Wettbewerbern nur schätzen.** Die Google Search Console zeigt Suchdaten nur für Websites, deren Inhaberschaft Sie nachgewiesen haben. Rankings und Traffic eines Wettbewerbers stammen deshalb immer aus Tools, die hochrechnen, und gehören im Bericht als Schätzung gekennzeichnet.",
+        "**Rankings lassen sich beobachten, Traffic nur schätzen.** Halten Sie bei beobachteten Rankings Suchbegriff, Land, Gerät und Datum fest. Kennzeichnen Sie Traffic-Schätzungen gesondert. Search-Console-Daten sehen Sie nur für Properties, auf die Sie Zugriff haben; das sind Ihre eigenen oder solche, für die ein Inhaber Ihnen Zugriff gegeben hat, in der Regel also keine Wettbewerber-Websites.",
         "**Porters Five Forces beschreiben eine Branche, keinen einzelnen Wettbewerber.** Porter hat das Modell 1979 in der Harvard Business Review vorgestellt und 2008 überarbeitet. Die fünf Kräfte sind Kunden, Lieferanten, potenzielle neue Anbieter, Ersatzprodukte und die etablierten Rivalen; zusammen, schreibt er, bestimmen sie die Struktur einer Branche. Als Checkliste für Wettbewerber X taugt das Modell nicht. Nützlich ist es vorher, bei der Auswahl, denn Porter warnt ausdrücklich davor, Wettbewerb zu eng zu fassen, als fände er nur zwischen den heutigen direkten Konkurrenten statt.",
         "**Sprachmodelle raten, wenn sie etwas nicht wissen.** Ein Paper von Kalai und Kollegen (2025) beschreibt, dass Sprachmodelle bei Unsicherheit plausible, aber falsche Aussagen erzeugen, statt die Unsicherheit zuzugeben. Für eine Konkurrenzanalyse heißt das: Jede Preisangabe und jede Kennzahl aus einem KI-Tool braucht eine Quelle, die ein Mensch geöffnet hat.",
       ],
       workIntro: [
         "Die Methode funktioniert für fünf Wettbewerber genauso wie für fünfzehn; der Aufwand wächst mit jedem Namen auf der Liste. Beginnen Sie mit der Vorlage, damit von Anfang an jede Angabe am richtigen Platz landet.",
         "### Konkurrenzanalyse-Vorlage zum Kopieren",
-        "Eine Zeile pro Wettbewerber, eine Spalte pro Frage. Die letzten beiden Spalten sind die wichtigsten: Ohne Quelle lässt sich keine Angabe prüfen, und ohne Datum weiß in drei Monaten niemand mehr, ob der Preis noch stimmt. Diese Kopfzeile können Sie in Excel oder Google Sheets einfügen und mit „Text in Spalten“ am Semikolon aufteilen:",
+        "Eine Zeile pro Wettbewerber, eine Spalte pro Frage. Die letzten beiden Spalten sind die wichtigsten: Ohne Quelle lässt sich keine Angabe prüfen, und ohne Datum weiß in drei Monaten niemand mehr, ob der Preis noch stimmt. Die leere Vorlage mit fünf Zeilen gibt es als [CSV-Datei zum Herunterladen](/assets/downloads/konkurrenzanalyse-vorlage.csv); sie öffnet sich in Excel und Google Sheets. Alternativ fügen Sie diese Kopfzeile ein und teilen sie mit „Text in Spalten“ am Semikolon auf:",
         "`Wettbewerber;Zielgruppe;Angebot;Preis;Positionierung/Botschaft;Kanäle;Stärken;Schwächen;Quelle;Datum`",
         "Was in die Spalten gehört:",
         [
@@ -84,12 +84,12 @@ export default {
       ],
       work: [
         "**Die Frage festlegen.** Schreiben Sie in einem Satz auf, welche Entscheidung die Analyse vorbereiten soll, etwa eine Preisänderung, einen Pitch oder eine Kampagne. Ohne diese Frage sammeln Sie alles und entscheiden nichts.",
-        "**Wettbewerber auswählen.** Nehmen Sie die direkten Wettbewerber mit demselben Angebot für dieselbe Zielgruppe, dazu die indirekten, die dasselbe Problem anders lösen, und die Namen, die bei Ihren wichtigsten Suchbegriffen oben stehen. Fünf bis acht reichen für die erste Runde; bei zwanzig schaffen Sie keinen gründlich.",
+        "**Wettbewerber auswählen.** Nehmen Sie die direkten Wettbewerber mit demselben Angebot für dieselbe Zielgruppe, dazu die indirekten, die dasselbe Problem anders lösen, und die Namen, die bei Ihren wichtigsten Suchbegriffen oben stehen. Beginnen Sie mit fünf bis acht Wettbewerbern, wenn die Zeit für die Recherche knapp ist.",
         "**Website und Preisseite lesen.** Tragen Sie Zielgruppe, Angebot, Preis und den Claim der Startseite ein, den Claim wörtlich. Speichern Sie einen Screenshot oder ein PDF, denn die Seite kann morgen anders aussehen.",
-        "**Anzeigen prüfen.** Suchen Sie jeden Wettbewerber in der [Meta Ad Library](https://www.facebook.com/ads/library/) und im [Google Ads Transparency Center](https://adstransparency.google.com/). Notieren Sie, welche Angebote beworben werden, welche Botschaft wiederkehrt und seit wann eine Anzeige läuft. Eine Anzeige, die seit Monaten unverändert läuft, bringt dem Wettbewerber vermutlich etwas.",
+        "**Anzeigen prüfen.** Suchen Sie jeden Wettbewerber in der [Meta Ad Library](https://www.facebook.com/ads/library/) und im [Google Ads Transparency Center](https://adstransparency.google.com/). Notieren Sie, welche Angebote beworben werden und welche Botschaft wiederkehrt. Halten Sie fest, wie lange eine Anzeige schon läuft; ob sie sich rechnet, zeigt die Bibliothek nicht.",
         "**Stellenanzeigen, Bewertungen und Social-Kanäle lesen.** Stellenanzeigen zeigen, wo ein Unternehmen investiert: ein neuer Markt, ein neues Produkt, ein eigenes Performance-Team. Bewertungen liefern die Schwächen in den Worten der Kunden. Auf Social Media zählt die Frage, welche Themen Reaktionen bekommen, mehr als die Followerzahl.",
-        "**Suchsichtbarkeit schätzen.** Prüfen Sie, bei welchen Ihrer wichtigsten Begriffe ein Wettbewerber vor Ihnen steht, und kennzeichnen Sie Tool-Werte als Schätzung. Der [SEO & GEO Researcher](/ai-coworkers/seo-geo-researcher) nimmt zusätzlich die Sichtbarkeit in KI-Antworten dazu.",
-        "**Bewerten und entscheiden.** Machen Sie pro Wettbewerber eine SWOT: Stärken und Schwächen gehören dem Wettbewerber, Chancen und Risiken beschreiben, was das für Sie heißt. Legen Sie dann eine Merkmal-Preis-Matrix an, mit den Merkmalen, die Kunden beim Kauf vergleichen, als Zeilen und allen Anbietern als Spalten, Ihr eigenes Angebot eingeschlossen. Schließen Sie mit einer halben Seite: was Sie gesehen haben, was es bedeutet und was Sie jetzt tun.",
+        "**Suchsichtbarkeit prüfen.** Sehen Sie nach, bei welchen Ihrer wichtigsten Begriffe ein Wettbewerber vor Ihnen steht. Halten Sie bei beobachteten Rankings Suchbegriff, Land, Gerät und Datum fest. Kennzeichnen Sie Traffic-Schätzungen gesondert. Der [SEO & GEO Researcher](/ai-coworkers/seo-geo-researcher) nimmt zusätzlich die Sichtbarkeit in KI-Antworten dazu.",
+        "**Bewerten und entscheiden.** Halten Sie zuerst die Fakten zu jedem Wettbewerber in der Vorlage fest. Machen Sie danach eine eigene SWOT für Ihr Unternehmen: Ihre Stärken und Schwächen, und die Chancen und Risiken, die sich aus dem ergeben, was Sie bei den Wettbewerbern gesehen haben. Legen Sie dann eine Merkmal-Preis-Matrix an, mit den Merkmalen, die Kunden beim Kauf vergleichen, als Zeilen und allen Anbietern als Spalten, Ihr eigenes Angebot eingeschlossen. Schließen Sie mit einer halben Seite: was Sie gesehen haben, was es bedeutet und was Sie jetzt tun.",
       ],
       measureIntro: [
         "Eine Analyse veraltet an dem Tag, an dem ein Wettbewerber seine Preisseite ändert. Legen Sie deshalb gleich fest, wer sie wie oft aktualisiert. Wöchentlich lohnt sich in Märkten, in denen viel über Paid Social und Aktionen läuft; monatlich reicht, wenn sich Angebote und Preise langsam bewegen. Die vollständige Analyse mit SWOT und Matrix wiederholen Sie seltener, etwa vor der Jahresplanung, vor einem Launch oder wenn ein neuer Anbieter auftaucht.",
@@ -97,10 +97,10 @@ export default {
         "KI nimmt Ihnen das Sammeln ab: Seiten lesen, Anzeigen zusammenfassen, Änderungen gegenüber dem letzten Stand finden. Das ist der Teil, der Stunden kostet und für den im Alltag selten jemand Zeit hat.",
         "Prüfen und entscheiden kann sie nicht für Sie. Findet ein Modell eine Preisangabe nicht, erfindet es unter Umständen eine plausible. Verlangen Sie deshalb zu jeder Aussage einen Link und öffnen Sie ihn bei allem, was in eine Entscheidung eingeht. Ob Sie auf einen Preisschritt des Wettbewerbers reagieren, entscheidet Ihr Team.",
         "### Den wiederkehrenden Teil an KI-Mitarbeiter abgeben",
-        "Auf Sokosumi läuft [Wettbewerbsbeobachtung](/use-cases/competitor-monitoring) als wiederkehrendes Briefing. Sie nennen die Wettbewerber, die Bewegungen, die Sie interessieren (Preise, Launches, Paid Social, Stellenausschreibungen, Messaging), und den Rhythmus. Vier KI-Mitarbeiter sammeln aus öffentlichen Quellen: [Meta Ads Library](/ai-coworkers/meta-ads-library) liest die Paid-Social-Creatives, [Website Traffic Analysis](/ai-coworkers/website-traffic-analysis) schätzt Traffic, Quellen, Engagement und Geografie für mehrere Domains in einem Lauf, [News Research](/ai-coworkers/news-research) liest aktuelle englischsprachige Berichterstattung mit Stimmung auf Schlagzeilenebene, und [Hannah](/ai-coworkers/hannah) übernimmt eine vollständige Analyse, wenn ein Wettbewerber sie verdient.",
+        "Auf Sokosumi läuft [Wettbewerbsbeobachtung](/use-cases/competitor-monitoring) als wiederkehrendes Briefing. Sie nennen die Wettbewerber, die Bewegungen, die Sie interessieren (Preise, Launches, Paid Social, Stellenausschreibungen, Messaging), und den Rhythmus. Vier KI-Mitarbeiter sammeln aus öffentlichen Quellen: [Meta Ads Library](/ai-coworkers/meta-ads-library) liest die Paid-Social-Creatives, [Website Traffic Analysis](/ai-coworkers/website-traffic-analysis) schätzt Traffic, Quellen, Engagement und Geografie für mehrere Domains in einem Lauf, [News Research](/ai-coworkers/news-research) liest aktuelle englischsprachige Berichterstattung mit Stimmung auf Schlagzeilenebene, und [Hannah](/ai-coworkers/hannah) übernimmt eine vollständige Analyse, wenn Sie einen Wettbewerber genauer untersuchen möchten.",
         "Zurück kommt ein fertiges Dokument mit den Veränderungen seit dem letzten Lauf: Änderungen an Positionierung und Botschaften wörtlich zitiert, neue Kampagnen, Traffic- und Kanalverschiebungen, Preis- und Paketänderungen mit Link auf die Seite, von der sie stammen, und ein kurzes „Was heißt das?“ für Ihre Roadmap. Die eigene Domain können Sie auf die Liste setzen, dann steht Ihre Website in derselben Tabelle. Inhalte hinter einem Login und aus Vertriebsgesprächen deckt der Workflow nicht ab.",
-        "Für ein einzelnes Unternehmen gibt es den [Company Researcher](/ai-coworkers/company-researcher). Er recherchiert eine Firma pro Lauf aus öffentlichen Quellen und liefert einen Report zu Markt, Wettbewerb und Positionierung mit Quelle zu jeder Aussage (30 Credits pro Lauf, Stand September 2026). Wer mehrere Firmen vergleichen will, startet ihn mehrmals und legt die Reports nebeneinander.",
-        "Ein Konto ist kostenlos. Jeder Lauf kostet Credits, und der Preis steht auf der Task-Seite, bevor der Lauf startet; eine Liste mit zwanzig Wettbewerbern kostet mehr als eine mit fünf. Die Pläne und die enthaltenen Credits pro Seat stehen unter [Preise](/pricing).",
+        "Für ein einzelnes Unternehmen gibt es den [Company Researcher](/ai-coworkers/company-researcher). Er recherchiert eine Firma pro Lauf aus öffentlichen Quellen und liefert einen Report zu Markt, Wettbewerb und Positionierung mit Quellenangaben; prüfen Sie die Belege für jede Aussage, die Sie übernehmen (30 Credits pro Lauf, Stand September 2026). Wer mehrere Firmen vergleichen will, startet ihn mehrmals und legt die Reports nebeneinander.",
+        "Ein Konto ist kostenlos. Jeder Lauf kostet Credits. Die Kosten hängen davon ab, welche KI-Mitarbeiter laufen und wie oft; prüfen Sie den angezeigten Credit-Preis, bevor Sie starten. Die Pläne und die enthaltenen Credits pro Seat stehen unter [Preise](/pricing).",
         "### Was Sie bei jeder Aktualisierung prüfen",
       ],
       measure: [
@@ -108,7 +108,7 @@ export default {
         "Neue oder beendete Anzeigen in der Meta Ad Library und im Google Ads Transparency Center, samt der Botschaft, die sie tragen.",
         "Geänderte Claims auf Startseite und Landingpages, wörtlich.",
         "Neue Stellenanzeigen, die auf einen neuen Markt oder ein neues Produkt hindeuten.",
-        "Bewegungen bei Ihren wichtigsten Suchbegriffen, als Schätzung gekennzeichnet.",
+        "Rankings bei Ihren wichtigsten Suchbegriffen, mit Suchbegriff, Land, Gerät und Datum.",
         "Eine Zeile dazu, was Sie tun und wer es tut. Fehlt diese Zeile, war die Aktualisierung Lektüre und keine Arbeit.",
       ],
       risks: [
@@ -116,7 +116,7 @@ export default {
         "Angaben ohne Quelle und Datum eintragen. Nach drei Monaten kann niemand mehr sagen, ob ein Preis noch stimmt oder je gestimmt hat.",
         "Die Five Forces als Wettbewerber-Checkliste ausfüllen. Das Modell beantwortet, wie eine Branche funktioniert und wo der Gewinn hingeht, und sagt nichts darüber, was Wettbewerber X nächste Woche bewirbt.",
         "Zahlen aus einem KI-Chat ungeprüft übernehmen, vor allem Umsätze, Marktanteile und Preise.",
-        "Traffic- und Ranking-Schätzungen aus Tools als gemessene Werte berichten.",
+        "Traffic-Schätzungen aus Tools als gemessene Werte berichten, oder Rankings ohne Suchbegriff, Land, Gerät und Datum festhalten.",
         "Die Analyse einmal machen und danach nie wieder öffnen.",
       ],
       sources: quellen,
@@ -144,11 +144,11 @@ export default {
       ],
       [
         "Welche Tools gibt es für die Konkurrenzanalyse?",
-        "Kostenlos und für jeden zugänglich sind die Meta Ad Library und das Google Ads Transparency Center, dazu die Websites, Stellenanzeigen und Bewertungsprofile der Wettbewerber. SEO-Tools schätzen Rankings und Traffic fremder Domains. Auf Sokosumi übernehmen [KI-Mitarbeiter](/ai-coworkers) das wiederkehrende Sammeln und liefern einen Report mit Quellen.",
+        "Kostenlos und für jeden zugänglich sind die Meta Ad Library und das Google Ads Transparency Center, dazu die Websites, Stellenanzeigen und Bewertungsprofile der Wettbewerber. SEO-Tools zeigen beobachtete Rankings fremder Domains und schätzen deren Traffic; halten Sie Suchbegriff, Land, Gerät und Datum fest und kennzeichnen Sie Traffic-Schätzungen gesondert. Die Search Console hilft hier nicht, denn sie zeigt nur Properties, auf die Sie Zugriff haben. Auf Sokosumi übernehmen [KI-Mitarbeiter](/ai-coworkers) das wiederkehrende Sammeln und liefern einen Report mit Quellen.",
       ],
       [
         "Hilft die Five-Forces-Analyse nach Porter bei der Konkurrenzanalyse?",
-        "Bei der Auswahl, ja. Porters fünf Kräfte (Kunden, Lieferanten, neue Anbieter, Ersatzprodukte, etablierte Rivalen) zeigen, wer außer den direkten Konkurrenten Druck auf Ihre Preise macht. Für den Vergleich einzelner Wettbewerber sind SWOT und eine Merkmal-Preis-Matrix das bessere Werkzeug.",
+        "Bei der Auswahl, ja. Porters fünf Kräfte (Kunden, Lieferanten, neue Anbieter, Ersatzprodukte, etablierte Rivalen) zeigen, wer außer den direkten Konkurrenten Druck auf Ihre Preise macht. Für den Vergleich einzelner Wettbewerber sind die Vorlage und eine Merkmal-Preis-Matrix das bessere Werkzeug; die SWOT machen Sie danach für Ihr eigenes Unternehmen.",
       ],
       [
         "Kann KI eine Konkurrenzanalyse erstellen?",
@@ -159,12 +159,12 @@ export default {
   en: {
     title: "How to do a competitor analysis (with template)",
     description:
-      "A competitor analysis in seven steps: which sources to check, when Porter and SWOT help, a copyable template, a worked example, and how to keep it current.",
+      "A competitor analysis in seven steps: which sources to check, when Porter and SWOT help, a downloadable template, a worked example and how to keep it current.",
     body: topic("en", {
       intro: [
         "A competitor analysis records what your competitors sell, at what price, with which message and through which channels, and what that means for your own marketing. \"Competitive analysis\" means the same thing in day-to-day marketing. A market and competitive analysis adds the market itself: size, trends, customer segments.",
         "Every analysis is a snapshot. **Competitor monitoring** is the ongoing part: the same competitors and the same questions, checked again every week or every month. Prices, ads and taglines change without notice, so last year's analysis describes last year's market.",
-        "This guide covers both. You'll get the method in seven steps, a template to copy, a worked example, and a straight answer on what AI can and can't take off your plate.",
+        "This guide covers both. You'll get the method in seven steps, a template to download and a worked example.",
       ],
       stateIntro: [
         "The statements about sources and frameworks come from Meta's and Google's own documentation and from Porter's own articles. Every link is listed under \"Sources\" below.",
@@ -173,14 +173,14 @@ export default {
         "**Public sources cover most of the work.** Websites, pricing pages, job ads, reviews and social channels cost nothing, and anyone on the team can check them. You won't see what happens behind a login or in sales calls; a good analysis says so instead of filling the gap with guesses.",
         "**The Meta Ad Library shows ads running in the EU.** Since August 2023, Meta has archived all ads that target people in the EU, with the dates they ran, targeting parameters such as age, gender and location, and information on who was served the ad. Meta says these ads stay in the public library for a year.",
         "**The Google Ads Transparency Center shows Google ads.** Google describes it as a searchable repository of advertisers and the ads they've served on Search, Display, Gmail and YouTube, filterable by date and targeted location. For ads in the EEA, Google also discloses targeting information and the total number of recipients per ad.",
-        "**A competitor's search visibility can only be estimated.** Google Search Console shows search data only for sites whose ownership you've verified. Any competitor ranking or traffic figure therefore comes from a tool that extrapolates, and your report should label it as an estimate.",
+        "**Rankings can be observed; traffic can only be estimated.** Record observed rankings with the query, country, device and date. Label third-party traffic estimates separately. Search Console data is available only for properties you can access, meaning your own or ones an owner has granted you access to, which rules out competitors' sites in almost every case.",
         "**Porter's Five Forces describe an industry, not a competitor.** Porter introduced the model in Harvard Business Review in 1979 and revised it in 2008. The five forces are customers, suppliers, potential entrants, substitute products and established rivals; together, he writes, they define an industry's structure. That makes it a poor checklist for competitor X. It's useful earlier, when you choose whom to analyse, because Porter warns that managers often define competition too narrowly, \"as if it occurred only among today's direct competitors.\"",
         "**Language models guess when they don't know.** A 2025 paper by Kalai and colleagues describes how language models produce plausible but incorrect statements instead of admitting uncertainty. For a competitor analysis, that means every price and every metric from an AI tool needs a source a person has actually opened.",
       ],
       workIntro: [
         "The method works for five competitors as well as for fifteen; the effort grows with every name on the list. Start with the template so every finding lands in the right place from day one.",
         "### Competitive analysis template to copy",
-        "One row per competitor, one column per question. The last two columns matter most: without a source nobody can check a finding, and without a date nobody knows in three months whether the price still holds. Paste this header row into Excel or Google Sheets and split it at the semicolons (Data, then \"Text to Columns\" in Excel or \"Split text to columns\" in Sheets):",
+        "One row per competitor, one column per question. The last two columns matter most: without a source nobody can check a finding, and without a date nobody knows in three months whether the price still holds. The blank template with five rows is a [CSV file to download](/assets/downloads/competitor-analysis-template.csv) that opens in Excel or Google Sheets. Or paste this header row and split it at the semicolons (Data, then \"Text to Columns\" in Excel or \"Split text to columns\" in Sheets):",
         "`Competitor;Audience;Offer;Price;Positioning/message;Channels;Strengths;Weaknesses;Source;Date`",
         "What goes in each column:",
         [
@@ -214,12 +214,12 @@ export default {
       ],
       work: [
         "**Write down the question.** Put in one sentence which decision the analysis should inform, such as a price change, a pitch or a campaign. Without that question you'll collect everything and decide nothing.",
-        "**Choose the competitors.** Take the direct competitors with the same offer for the same audience, add the indirect ones who solve the same problem differently, and include whoever ranks at the top for your most important search terms. Five to eight is enough for the first round; with twenty you won't do any of them properly.",
+        "**Choose the competitors.** Take the direct competitors with the same offer for the same audience, add the indirect ones who solve the same problem differently, and include whoever ranks at the top for your most important search terms. Start with five to eight competitors if research time is limited.",
         "**Read the website and pricing page.** Fill in audience, offer, price and the homepage tagline, the tagline verbatim. Save a screenshot or PDF, because the page may look different tomorrow.",
-        "**Check the ads.** Look up each competitor in the [Meta Ad Library](https://www.facebook.com/ads/library/) and the [Google Ads Transparency Center](https://adstransparency.google.com/). Note which offers they promote, which message keeps coming back, and how long each ad has been running. An ad that has run unchanged for months is probably earning its keep.",
+        "**Check the ads.** Look up each competitor in the [Meta Ad Library](https://www.facebook.com/ads/library/) and the [Google Ads Transparency Center](https://adstransparency.google.com/). Note which offers they promote and which message keeps coming back. Record how long an ad has run; the library does not show whether it is profitable.",
         "**Read job ads, reviews and social channels.** Job ads show where a company is investing: a new market, a new product, an in-house performance team. Reviews give you the weaknesses in customers' own words. On social media, which topics get a reaction tells you more than the follower count.",
-        "**Estimate search visibility.** Check which of your key terms a competitor outranks you on, and label tool figures as estimates. The [SEO & GEO Researcher](/ai-coworkers/seo-geo-researcher) adds visibility in AI answers to that picture.",
-        "**Assess and decide.** Do a SWOT per competitor: strengths and weaknesses belong to the competitor, opportunities and threats describe what that means for you. Then build a feature and price matrix, with the features customers compare when they buy as rows and every vendor as a column, yours included. Close with half a page: what you saw, what it means, and what you'll do now.",
+        "**Check search visibility.** See which of your key terms a competitor outranks you on. Record observed rankings with the query, country, device and date. Label third-party traffic estimates separately. The [SEO & GEO Researcher](/ai-coworkers/seo-geo-researcher) adds visibility in AI answers to that picture.",
+        "**Assess and decide.** Record the facts about each competitor in the template first. Then do a separate SWOT for your own company: your strengths and weaknesses, and the opportunities and threats that follow from what you found about the competitors. Then build a feature and price matrix, with the features customers compare when they buy as rows and every vendor as a column, yours included. Close with half a page: what you saw, what it means, and what you'll do now.",
       ],
       measureIntro: [
         "An analysis goes stale the day a competitor changes their pricing page. So decide up front who updates it and how often. Weekly pays off in markets that run heavily on paid social and promotions; monthly is enough where offers and prices move slowly. Repeat the full analysis with SWOT and matrix less often, for example before annual planning, before a launch, or when a new player shows up.",
@@ -227,10 +227,10 @@ export default {
         "AI takes the gathering off your hands: reading pages, summarising ads, spotting what changed since last time. That's the part that eats hours and that rarely has an owner.",
         "It can't check or decide for you. When a model can't find a price, it may invent a plausible one. So ask for a link behind every claim, and open it for anything that feeds a decision. Whether you respond to a competitor's price move is still your team's call.",
         "### Hand the recurring part to AI coworkers",
-        "On Sokosumi, [competitor monitoring](/use-cases/competitor-monitoring) runs as a standing brief. You name the competitors, the moves you care about (pricing, launches, paid social, hiring, messaging) and the rhythm. Four coworkers gather from public sources: [Meta Ads Library](/ai-coworkers/meta-ads-library) reads the paid social creative, [Website Traffic Analysis](/ai-coworkers/website-traffic-analysis) estimates traffic, sources, engagement and geography for several domains in one run, [News Research](/ai-coworkers/news-research) reads recent English-language coverage with headline-level sentiment, and [Hannah](/ai-coworkers/hannah) runs a full competitive analysis when one rival deserves it.",
+        "On Sokosumi, [competitor monitoring](/use-cases/competitor-monitoring) runs as a standing brief. You name the competitors, the moves you care about (pricing, launches, paid social, hiring, messaging) and the rhythm. Four coworkers gather from public sources: [Meta Ads Library](/ai-coworkers/meta-ads-library) reads the paid social creative, [Website Traffic Analysis](/ai-coworkers/website-traffic-analysis) estimates traffic, sources, engagement and geography for several domains in one run, [News Research](/ai-coworkers/news-research) reads recent English-language coverage with headline-level sentiment, and [Hannah](/ai-coworkers/hannah) runs a full competitive analysis when you want to look at one competitor in more depth.",
         "What comes back is a finished document with what changed since the last run: positioning and messaging changes quoted verbatim, new campaigns, traffic and channel shifts, pricing and packaging moves linked to the page they came from, and a short \"so what\" for your own roadmap. You can add your own domain to the list so your site sits in the same table. Anything behind a login, or said in a private sales conversation, is out of scope.",
-        "For a single company there's the [Company Researcher](/ai-coworkers/company-researcher). It researches one company per run from public sources and returns a report on its market, competitors and positioning, with a source for every claim (30 credits per run as of September 2026). To compare several companies, run it once per company and put the reports side by side.",
-        "An account is free. Each run costs credits, and the price shows on the task page before it starts; a list of twenty competitors costs more than a list of five. Plans and the credits included per seat are on the [pricing page](/pricing).",
+        "For a single company there's the [Company Researcher](/ai-coworkers/company-researcher). It researches one company per run from public sources and returns a report on its market, competitors and positioning with source citations; check the evidence for each claim you use (30 credits per run as of September 2026). To compare several companies, run it once per company and put the reports side by side.",
+        "An account is free. Each run costs credits. Costs depend on the coworkers and number of runs; check the displayed credit price before starting. Plans and the credits included per seat are on the [pricing page](/pricing).",
         "### What to check at every update",
       ],
       measure: [
@@ -238,7 +238,7 @@ export default {
         "New or ended ads in the Meta Ad Library and the Google Ads Transparency Center, and the message they carry.",
         "Changed taglines on the homepage and landing pages, verbatim.",
         "New job ads that point to a new market or product.",
-        "Movement on your most important search terms, labelled as estimates.",
+        "Rankings for your most important search terms, with query, country, device and date.",
         "One line on what you'll do and who does it. Without that line, the update was reading, not work.",
       ],
       risks: [
@@ -246,7 +246,7 @@ export default {
         "Entering findings without a source and a date. Three months later nobody can tell whether a price is still right, or ever was.",
         "Filling in the Five Forces as a competitor checklist. The model explains how an industry works and where the profit goes; it says nothing about what competitor X will advertise next week.",
         "Copying numbers from an AI chat without checking them, especially revenue, market share and prices.",
-        "Reporting traffic and ranking estimates from tools as measured values.",
+        "Reporting third-party traffic estimates as measured values, or recording rankings without the query, country, device and date.",
         "Doing the analysis once and never opening it again.",
       ],
       sources,
@@ -274,11 +274,11 @@ export default {
       ],
       [
         "What tools can I use for competitor analysis?",
-        "The Meta Ad Library and the Google Ads Transparency Center are free and open to anyone, and so are competitors' websites, job ads and review profiles. SEO tools estimate rankings and traffic for other people's domains. On Sokosumi, [AI coworkers](/ai-coworkers) do the recurring gathering and return a report with sources.",
+        "The Meta Ad Library and the Google Ads Transparency Center are free and open to anyone, and so are competitors' websites, job ads and review profiles. SEO tools show observed rankings for other domains and estimate their traffic; record the query, country, device and date, and label traffic estimates separately. Search Console won't help here, since it only covers properties you can access. On Sokosumi, [AI coworkers](/ai-coworkers) do the recurring gathering and return a report with sources.",
       ],
       [
         "Is Porter's Five Forces useful for competitor analysis?",
-        "For choosing whom to analyse, yes. Porter's five forces (customers, suppliers, new entrants, substitutes, established rivals) show who besides your direct competitors puts pressure on your prices. For comparing individual competitors, a SWOT and a feature and price matrix are the better tools.",
+        "For choosing whom to analyse, yes. Porter's five forces (customers, suppliers, new entrants, substitutes, established rivals) show who besides your direct competitors puts pressure on your prices. For comparing individual competitors, the template and a feature and price matrix are the better tools; the SWOT comes afterwards, for your own company.",
       ],
       [
         "Can AI do a competitor analysis?",

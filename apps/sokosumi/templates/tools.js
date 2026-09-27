@@ -186,7 +186,7 @@ function render() {
   return (
     pageStart({
       title: "Free tools | Sokosumi",
-      description: "Free, no-sign-up tools from Sokosumi for marketing and design work, starting with the DESIGN.md generator that turns any website into design context for AI coding agents.",
+      description: "Free Sokosumi tools for marketing and design work, no sign-up. The DESIGN.md generator turns any website into design context for AI coding agents.",
       path,
       englishOnly: true,
       breadcrumb: [{ label: "Home", href: "/" }, { label: "Free tools" }],

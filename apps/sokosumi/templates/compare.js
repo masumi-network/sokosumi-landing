@@ -19,6 +19,11 @@ const i18n = require("../lib/i18n");
 // (Ahrefs 2026-09-27): DE "langdock preise" 350, DE "nele ai" 700, EN
 // "jasper alternative" 150. Their titles lead with that; both pages show the
 // prices the title promises.
+const COMPARE_GUIDES = {
+  "sokosumi-vs-langdock": [["/guides/langdock-alternatives", "Langdock alternatives: 6 options for EU companies", "Prices, hosting and fit for six workspaces EU companies consider."]],
+  "sokosumi-vs-nele-ai": [["/guides/langdock-alternatives", "Langdock alternatives: 6 options for EU companies", "Prices, hosting and fit for six workspaces EU companies consider."]],
+};
+
 const COMPARE_TITLES = {
   "sokosumi-vs-langdock": { de: "Langdock vs. Sokosumi: Preise und Unterschiede" },
   "sokosumi-vs-nele-ai": { de: "nele.ai vs. Sokosumi: Preise und Unterschiede" },
@@ -345,7 +350,10 @@ async function detail(ctx) {
     pageStart({
       // The search phrase people type, then the promise. The h1 asks the question.
       title: (COMPARE_TITLES[doc.slug] && COMPARE_TITLES[doc.slug][i18n.locale() === "de" ? "de" : "en"]) || t("{name} vs Sokosumi for marketing teams", { name }),
-      description: shell.describe(t("{name} vs Sokosumi for marketing teams: {desc}", { name, desc: (doc.description || "").trim() }), [
+      // The "X vs Sokosumi" prefix only when the whole sentence still fits.
+      description: shell.describe(
+        [t("{name} vs Sokosumi for marketing teams: {desc}", { name, desc: (doc.description || "").trim() }), t("{name} vs Sokosumi: {desc}", { name, desc: (doc.description || "").trim() })].find((d) => d.length <= 158) || (doc.description || "").trim(),
+        [
         t("Who each one fits, what you get back and what you pay, in seven rows."),
         t("Who each one fits and what you get back, in seven rows."),
         t("Compared in seven rows on Sokosumi."),
@@ -366,8 +374,9 @@ async function detail(ctx) {
     relatedRail(
       doc.slug,
       neighbours(doc.slug, [groupOf(doc.slug.replace("sokosumi-vs-", "")).id], comparisonUniverse(allCmp, pairs.all()), "soko"),
-      { heading: t("Other comparisons"), sub: t("The same seven rows, against the other tools teams weigh up.") },
+      { heading: t("Other comparisons"), sub: t("Pick another tool to compare.") },
     ) +
+    shell.readNext(COMPARE_GUIDES[doc.slug]) +
     related() +
     (bandBlock ? blocks.renderBlocks([bandBlock]) : "") +
     pageEnd()

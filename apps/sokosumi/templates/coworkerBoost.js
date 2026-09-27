@@ -42,8 +42,8 @@ const BOOST = {
       de: "YouTube-Kanal-Analyse für jeden öffentlichen Kanal | Sokosumi",
     },
     seoDescription: {
-      en: "A YouTube channel analyzer that reads a public channel's 30 most recent videos and returns views, engagement, posting cadence and title patterns as a file you can hand on.",
-      de: "Ein YouTube-Kanal-Analyzer, der die 30 neuesten Videos eines öffentlichen Kanals ausliest und Views, Engagement, Posting-Rhythmus und Titelmuster als fertige Datei zurückgibt.",
+      en: "Analyzes the 30 most recent videos of any public YouTube channel and returns views, engagement, posting cadence and title patterns as a file.",
+      de: "Analysiert die 30 neuesten Videos eines öffentlichen YouTube-Kanals und liefert Views, Engagement, Posting-Rhythmus und Titelmuster als Datei.",
     },
     // Replaces the templated "What {name} does" heading, which carries no
     // keyword surface at all.
@@ -52,8 +52,8 @@ const BOOST = {
       de: "Was der YouTube-Kanal-Analyzer misst",
     },
     intro: {
-      en: "Point it at any public YouTube channel and it pulls the 30 most recent uploads by default, reads the performance signals off them, and writes the result to a file. Ask for more and it takes more. No login to the channel, no API key of your own, nothing to install — it reads what YouTube already shows publicly.",
-      de: "Auf einen beliebigen öffentlichen YouTube-Kanal richten: Er liest standardmäßig die 30 neuesten Uploads, wertet ihre Performance-Signale aus und schreibt das Ergebnis in eine Datei. Auf Wunsch auch mehr. Kein Kanal-Login, kein eigener API-Key, nichts zu installieren — er liest nur, was YouTube ohnehin öffentlich zeigt.",
+      en: "Point it at any public YouTube channel and it pulls the 30 most recent uploads by default, reads the performance signals off them, and writes the result to a file. Ask for more and it takes more. No login to the channel, no API key of your own, nothing to install: it reads what YouTube already shows publicly.",
+      de: "Auf einen beliebigen öffentlichen YouTube-Kanal richten: Er liest standardmäßig die 30 neuesten Uploads, wertet ihre Performance-Signale aus und schreibt das Ergebnis in eine Datei. Auf Wunsch auch mehr. Kein Kanal-Login, kein eigener API-Key, nichts zu installieren. Er liest nur, was YouTube ohnehin öffentlich zeigt.",
     },
     // A real table of what comes back. This is the substance the templated
     // page was missing; it is also the part most likely to be quoted by an
@@ -74,15 +74,15 @@ const BOOST = {
       {
         question: { en: "What does a YouTube channel analyzer do?", de: "Was macht ein YouTube-Kanal-Analyzer?" },
         answer: {
-          en: "It reads the public data on a channel — recent uploads, views, likes, comments, titles and upload dates — and turns it into a summary you can act on: what is working, how often they post, and which videos beat the channel's own average. This one covers the 30 most recent uploads by default, on any public channel, and takes a higher number if you ask for one.",
-          de: "Er liest die öffentlichen Daten eines Kanals — aktuelle Uploads, Views, Likes, Kommentare, Titel und Veröffentlichungsdaten — und macht daraus eine Zusammenfassung, mit der sich arbeiten lässt: was funktioniert, wie oft veröffentlicht wird und welche Videos über dem Schnitt des Kanals liegen. Dieser hier deckt standardmäßig die 30 neuesten Uploads jedes öffentlichen Kanals ab — auf Wunsch auch mehr.",
+          en: "It reads the public data on a channel (recent uploads, views, likes, comments, titles and upload dates) and turns it into a summary you can act on: what is working, how often they post, and which videos beat the channel's own average. This one covers the 30 most recent uploads by default, on any public channel, and takes a higher number if you ask for one.",
+          de: "Er liest die öffentlichen Daten eines Kanals (aktuelle Uploads, Views, Likes, Kommentare, Titel und Veröffentlichungsdaten) und macht daraus eine Zusammenfassung, mit der sich arbeiten lässt: was funktioniert, wie oft veröffentlicht wird und welche Videos über dem Schnitt des Kanals liegen. Dieser hier deckt standardmäßig die 30 neuesten Uploads jedes öffentlichen Kanals ab, auf Wunsch auch mehr.",
         },
       },
       {
         question: { en: "Do I need access to the channel to analyse it?", de: "Brauche ich Zugang zum Kanal?" },
         answer: {
           en: "No. It only reads what YouTube already shows publicly, so you can point it at a competitor's channel as easily as your own. There is nothing to connect and no API key to supply.",
-          de: "Nein. Er liest nur, was YouTube ohnehin öffentlich zeigt — der Kanal eines Wettbewerbers geht also genauso wie der eigene. Es gibt nichts zu verbinden und keinen API-Key anzugeben.",
+          de: "Nein. Er liest nur, was YouTube ohnehin öffentlich zeigt. Der Kanal eines Wettbewerbers geht also genauso wie der eigene. Es gibt nichts zu verbinden und keinen API-Key anzugeben.",
         },
       },
       {
@@ -100,7 +100,7 @@ const BOOST = {
         },
       },
       {
-        question: { en: "What do I get back — a dashboard or a file?", de: "Was bekomme ich zurück — ein Dashboard oder eine Datei?" },
+        question: { en: "What do I get back: a dashboard or a file?", de: "Was bekomme ich zurück: ein Dashboard oder eine Datei?" },
         answer: {
           en: "A file. The task runs on a shared board and comes back as a document you can put in front of a client or paste into a deck. There is no dashboard to log into and no seat to keep paying for.",
           de: "Eine Datei. Die Aufgabe läuft auf einem gemeinsamen Board und kommt als Dokument zurück, das direkt zum Kunden oder in eine Präsentation kann. Kein Dashboard zum Einloggen und kein Seat, der weiterläuft.",
@@ -109,8 +109,8 @@ const BOOST = {
       {
         question: { en: "What does it cost to run?", de: "Was kostet ein Lauf?" },
         answer: {
-          en: "It is priced per run in credits, shown on this page before you start, and the free plan includes credits — so the first runs cost nothing. You only spend on work you actually run.",
-          de: "Der Preis gilt pro Lauf in Credits und steht auf dieser Seite, bevor Sie starten. Der kostenlose Plan enthält Credits, die ersten Läufe kosten also nichts. Bezahlt wird nur, was tatsächlich läuft.",
+          en: "Each run costs credits, and the price is shown on this page before you start. Every seat includes a monthly credit allowance, the free plan 250 credits.",
+          de: "Jeder Lauf kostet Credits, und der Preis steht auf dieser Seite, bevor Sie starten. Jeder Seat enthält ein monatliches Credit-Kontingent, der kostenlose Plan 250 Credits.",
         },
       },
     ],
@@ -194,6 +194,10 @@ const BOOST = {
     // "ai seo agent" (400 US, KD 0, 2026-09-12). The listing
     // audits organic rankings AND AI-answer visibility, which is exactly
     // what that searcher wants and what the product name doesn't say.
+    role: {
+      en: "Audits your Google rankings and your brand's visibility in AI answers",
+      de: "Prüft Ihre Google-Rankings und die Sichtbarkeit Ihrer Marke in KI-Antworten",
+    },
     seoTitle: {
       en: "AI search visibility audit, LLM mentions included | Sokosumi",
       de: "KI-Sichtbarkeit prüfen: Rankings und LLM-Nennungen | Sokosumi",
@@ -204,14 +208,14 @@ const BOOST = {
     },
     intro: {
       en: "Give it a domain and a topic and it audits where the site stands in Google and in AI answers: keyword clusters with performance per cluster, content gaps against competitors, and whether ChatGPT and AI Overviews mention the brand at all. It runs on any industry and any DataForSEO-supported market, and comes back as a report, not a dashboard.",
-      de: "Domain und Thema angeben, und er prüft, wo die Website in Google und in KI-Antworten steht: Keyword-Cluster mit Performance pro Cluster, Content-Lücken gegenüber Wettbewerbern und ob ChatGPT und AI Overviews die Marke überhaupt erwähnen. Er läuft für jede Branche und jeden von DataForSEO abgedeckten Markt — und liefert einen Report, kein Dashboard.",
+      de: "Domain und Thema angeben, und er prüft, wo die Website in Google und in KI-Antworten steht: Keyword-Cluster mit Performance pro Cluster, Content-Lücken gegenüber Wettbewerbern und ob ChatGPT und AI Overviews die Marke überhaupt erwähnen. Er läuft für jede Branche und jeden von DataForSEO abgedeckten Markt und liefert einen Report, kein Dashboard.",
     },
     faq: [
       {
         question: { en: "What is an AI SEO agent?", de: "Was ist ein KI-SEO-Agent?" },
         answer: {
-          en: "Software that runs an SEO analysis on its own from a brief: it pulls ranking data, clusters keywords, compares competitors and writes up where a domain should invest next. This one also checks visibility in AI answers — brand mentions in LLM responses and AI Overview presence — which a classic rank tracker doesn't see.",
-          de: "Software, die eine SEO-Analyse eigenständig nach Briefing durchführt: Sie zieht Ranking-Daten, clustert Keywords, vergleicht Wettbewerber und schreibt auf, wo eine Domain als Nächstes investieren sollte. Dieser hier prüft zusätzlich die Sichtbarkeit in KI-Antworten — Markennennungen in LLM-Antworten und AI-Overview-Präsenz — was ein klassischer Rank-Tracker nicht sieht.",
+          en: "Software that runs an SEO analysis on its own from a brief: it pulls ranking data, clusters keywords, compares competitors and writes up where a domain should invest next. This one also checks visibility in AI answers (brand mentions in LLM responses and presence in AI Overviews), which a classic rank tracker doesn't see.",
+          de: "Software, die eine SEO-Analyse eigenständig nach Briefing durchführt: Sie zieht Ranking-Daten, clustert Keywords, vergleicht Wettbewerber und schreibt auf, wo eine Domain als Nächstes investieren sollte. Dieser hier prüft zusätzlich die Sichtbarkeit in KI-Antworten, also Markennennungen in LLM-Antworten und die Präsenz in AI Overviews. Das sieht ein klassischer Rank-Tracker nicht.",
         },
       },
       {
@@ -224,8 +228,8 @@ const BOOST = {
       {
         question: { en: "What does a run cost?", de: "Was kostet ein Lauf?" },
         answer: {
-          en: "The credit price is on this page before you start. A full audit is a deep run, so it costs more credits than the free plan's monthly allowance covers on its own — the free credits offset part of it.",
-          de: "Der Credit-Preis steht auf dieser Seite, bevor Sie starten. Ein vollständiges Audit ist ein tiefer Lauf und kostet mehr Credits, als das Monatsguthaben des Gratis-Plans allein abdeckt — die freien Credits senken den Preis anteilig.",
+          en: "The credit price is on this page before you start. A full audit is a deep run, so it costs more credits than the free plan's monthly allowance covers on its own; the free credits cover part of it.",
+          de: "Der Credit-Preis steht auf dieser Seite, bevor Sie starten. Ein vollständiges Audit ist ein tiefer Lauf und kostet mehr Credits, als das Monatsguthaben des Gratis-Plans allein abdeckt. Die Gratis-Credits decken einen Teil davon.",
         },
       },
     ],
@@ -237,41 +241,43 @@ const BOOST = {
   },
 
   "company-researcher": {
-    // The query is "ai competitor analysis" (200 US, KD 12, 2026-09-12).
+    // 2026-09-27: "competitor analysis" now belongs to /guides/competitor-analysis
+    // and /use-cases/competitor-monitoring; this page is the company-research
+    // product (one company per run). Earlier target: "ai competitor analysis".
     // The listing's own copy leads with due-diligence profiles; the
     // competitive-landscape section is the part that query wants surfaced.
     seoTitle: {
-      en: "AI competitor analysis and company research | Sokosumi",
-      de: "KI-Wettbewerbsanalyse und Unternehmens-Research | Sokosumi",
+      en: "AI company research: Company Researcher | Sokosumi",
+      de: "Unternehmensrecherche mit KI: Company Researcher | Sokosumi",
     },
     aboutHeading: {
       en: "What comes back from a company or competitor run",
       de: "Was ein Unternehmens- oder Wettbewerber-Lauf zurückliefert",
     },
     intro: {
-      en: "Give it a company's name, website, industry and headquarters, and it researches the public record: products and business model, leadership, market position, financials from public filings, recent moves — and the competitive landscape around it. The result is a structured report with source citations you can hand to a client or paste into a deck. Run it on your own company's competitors one at a time to build a competitor file that is actually sourced.",
-      de: "Name, Website, Branche und Hauptsitz eines Unternehmens angeben, und er recherchiert die öffentliche Faktenlage: Produkte und Geschäftsmodell, Führung, Marktposition, Finanzkennzahlen aus öffentlichen Quellen, jüngste Schritte — und das Wettbewerbsumfeld darum herum. Das Ergebnis ist ein strukturierter Report mit Quellenangaben, der direkt zum Kunden oder in eine Präsentation kann. Auf die eigenen Wettbewerber einzeln angewendet, entsteht eine Wettbewerber-Akte, die wirklich belegt ist.",
+      en: "Give it a company's name, website, industry and headquarters, and it researches the public record: products and business model, leadership, market position, financials from public filings, recent moves, and the competitors around it. The result is a structured report with source citations you can hand to a client or paste into a deck. Run it on your own company's competitors one at a time to build a competitor file where every claim has a source.",
+      de: "Name, Website, Branche und Hauptsitz eines Unternehmens angeben, und er recherchiert die öffentliche Faktenlage: Produkte und Geschäftsmodell, Führung, Marktposition, Finanzkennzahlen aus öffentlichen Quellen, jüngste Schritte und das Wettbewerbsumfeld. Das Ergebnis ist ein strukturierter Report mit Quellenangaben, der direkt zum Kunden oder in eine Präsentation kann. Auf die eigenen Wettbewerber einzeln angewendet, entsteht eine Wettbewerber-Akte, in der jede Aussage belegt ist.",
     },
     faq: [
       {
         question: { en: "Can AI do competitor analysis?", de: "Kann KI eine Wettbewerbsanalyse erstellen?" },
         answer: {
-          en: "For the research half, yes: collecting what is publicly known about a competitor — offering, positioning, leadership, financial signals — and writing it up with sources. What it does not replace is deciding what your team should do about it; the report ends where your strategy starts.",
-          de: "Für die Research-Hälfte ja: sammeln, was über einen Wettbewerber öffentlich bekannt ist — Angebot, Positionierung, Führung, Finanzsignale — und es mit Quellen aufschreiben. Was sie nicht ersetzt: die Entscheidung, was Ihr Team daraus macht. Der Report endet, wo Ihre Strategie beginnt.",
+          en: "For the research half, yes: collecting what is publicly known about a competitor (offering, positioning, leadership, financial signals) and writing it up with sources. What it does not replace is deciding what your team should do about it; the report ends where your strategy starts.",
+          de: "Für die Research-Hälfte ja: sammeln, was über einen Wettbewerber öffentlich bekannt ist (Angebot, Positionierung, Führung, Finanzsignale), und es mit Quellen aufschreiben. Was sie nicht ersetzt: die Entscheidung, was Ihr Team daraus macht. Der Report endet, wo Ihre Strategie beginnt.",
         },
       },
       {
         question: { en: "Where does the information come from?", de: "Woher stammen die Informationen?" },
         answer: {
-          en: "Public sources only — company sites, filings, news, directories — and every claim in the report carries its citation, so you can check anything before it goes in front of a client.",
-          de: "Nur aus öffentlichen Quellen — Unternehmensseiten, Pflichtveröffentlichungen, Nachrichten, Verzeichnisse — und jede Aussage im Report trägt ihre Quelle, sodass sich alles prüfen lässt, bevor es zum Kunden geht.",
+          en: "Public sources only, such as company sites, filings, news and directories, and every claim in the report carries its citation, so you can check anything before it goes in front of a client.",
+          de: "Nur aus öffentlichen Quellen wie Unternehmensseiten, Pflichtveröffentlichungen, Nachrichten und Verzeichnissen, und jede Aussage im Report trägt ihre Quelle, sodass sich alles prüfen lässt, bevor es zum Kunden geht.",
         },
       },
       {
         question: { en: "What does a run cost?", de: "Was kostet ein Lauf?" },
         answer: {
-          en: "The credit price is shown on this page before you start — currently a fraction of an hour of anyone's time — and the free plan includes credits for the first runs.",
-          de: "Der Credit-Preis steht auf dieser Seite, bevor Sie starten — aktuell ein Bruchteil einer Arbeitsstunde — und der kostenlose Plan enthält Credits für die ersten Läufe.",
+          en: "The credit price is shown on this page before you start, and the free plan's 250 monthly credits cover several runs.",
+          de: "Der Credit-Preis steht auf dieser Seite, bevor Sie starten, und die 250 monatlichen Credits des kostenlosen Plans reichen für mehrere Läufe.",
         },
       },
     ],
@@ -294,11 +300,11 @@ const BOOST = {
     },
     aboutHeading: {
       en: "What Pheme does, and what it doesn't yet",
-      de: "Was Pheme kann — und was noch nicht",
+      de: "Was Pheme kann und was noch nicht",
     },
     intro: {
-      en: "Pheme drafts social posts and schedules them to the personal X or LinkedIn profiles you connect. That is the current scope, and it is in beta: no company pages yet, no Instagram or TikTok, no community management. Within that scope it works like a coworker — brief it on your topics and tone, review the drafts, and let it keep the calendar filled.",
-      de: "Pheme entwirft Social-Media-Posts und plant sie auf den persönlichen X- oder LinkedIn-Profilen ein, die Sie verbinden. Das ist der aktuelle Umfang, und er ist Beta: noch keine Unternehmensseiten, kein Instagram oder TikTok, kein Community-Management. Innerhalb dieses Rahmens arbeitet Pheme wie ein Mitarbeiter — Themen und Tonalität briefen, Entwürfe prüfen, Kalender gefüllt halten.",
+      en: "Pheme drafts social posts and schedules them to the personal X or LinkedIn profiles you connect. That is the current scope, and it is in beta: no company pages yet, no Instagram or TikTok, no community management. Within that scope it works like a coworker: brief it on your topics and tone, review the drafts, and let it keep the calendar filled.",
+      de: "Pheme entwirft Social-Media-Posts und plant sie auf den persönlichen X- oder LinkedIn-Profilen ein, die Sie verbinden. Das ist der aktuelle Umfang, und er ist Beta: noch keine Unternehmensseiten, kein Instagram oder TikTok, kein Community-Management. Innerhalb dieses Rahmens arbeitet Pheme wie ein Mitarbeiter: Sie briefen Themen und Tonalität, prüfen die Entwürfe, und Pheme hält den Kalender gefüllt.",
     },
     faq: [
       {
@@ -311,8 +317,8 @@ const BOOST = {
       {
         question: { en: "Which platforms does Pheme support?", de: "Welche Plattformen unterstützt Pheme?" },
         answer: {
-          en: "Connected personal X and LinkedIn profiles, in beta. Company pages and other networks are not supported yet — if you need those today, Pheme is not the right hire yet.",
-          de: "Verbundene persönliche X- und LinkedIn-Profile, im Beta-Stadium. Unternehmensseiten und andere Netzwerke werden noch nicht unterstützt — wer das heute braucht, für den ist Pheme noch nicht die richtige Wahl.",
+          en: "Connected personal X and LinkedIn profiles, in beta. Company pages and other networks are not supported yet, so if you need those today, Pheme isn't the right hire.",
+          de: "Verbundene persönliche X- und LinkedIn-Profile, im Beta-Stadium. Unternehmensseiten und andere Netzwerke werden noch nicht unterstützt. Wer das heute braucht, ist mit Pheme noch nicht richtig bedient.",
         },
       },
       {
@@ -376,4 +382,26 @@ function forSlug(slug, locale) {
 
 const slugs = () => Object.keys(BOOST);
 
-module.exports = { forSlug, slugs };
+// Task (offer) copy the nightly sync would otherwise overwrite. The sync writes
+// English only, so German fixes normally go straight into the CMS de locale;
+// an entry here is for when the synced English itself is wrong. Keyed by
+// "<agentSlug>/<offerSlug>" (agentSlug is the product's catalog slug), and
+// unlike the coworker slots above it wins over the CMS, because the English
+// CMS value is the synced text being corrected. Remove an entry once the
+// product catalog carries the fix.
+const OFFER_BOOST = {
+  "elena/lead-generation-campaign": {
+    // The task returns a campaign plan (PDF), not a run campaign or leads.
+    description: {
+      en: "Plans a lead-generation campaign around your event: who to reach and with which message, the touchpoints before the event with copy for each, and a follow-up afterwards with a clear next step for sales. You get it as one PDF with a week-by-week timeline and open questions.",
+      de: "Plant eine Lead-Kampagne rund um Ihr Event: wen Sie ansprechen und mit welcher Botschaft, die Kontaktpunkte vor dem Event samt Texten und das Nachfassen danach mit einem klaren nächsten Schritt für den Vertrieb. Sie erhalten alles als ein PDF mit Wochenplan und offenen Fragen.",
+    },
+  },
+};
+
+function forOffer(agentSlug, offerSlug, locale) {
+  const entry = OFFER_BOOST[`${agentSlug}/${offerSlug}`];
+  return entry ? localise(entry, locale === "de" ? "de" : "en") : {};
+}
+
+module.exports = { forSlug, slugs, forOffer };

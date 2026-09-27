@@ -16,10 +16,10 @@ export default {
   en: {
     title: "AI in crisis communications: the rules that apply",
     description:
-      "One clause of the EU AI Act decides whether an AI-drafted public statement is legal without a label, and the disclosure clocks are shorter than most drafting cycles. What applies, from when, and where the profession draws the line.",
+      "When an AI-drafted public statement needs a label under the EU AI Act, from which date the rule applies, and what PR codes add.",
     body: topic("en", {
       intro: [
-        "A crisis compresses everything: the statement, the legal review, the sign-off. That is exactly the pressure under which teams reach for a model — and exactly when regulation is least forgiving. The good news is that the binding rules are narrow and quotable, and one of them contains an exemption that most comms teams already satisfy without knowing it.",
+        "A crisis compresses everything: the statement, the legal review, the sign-off. Teams reach for a model under exactly that pressure, which is also when regulation is least forgiving. The good news is that the binding rules are narrow and quotable, and one of them contains an exemption that most comms teams already satisfy without knowing it.",
         "Two clocks matter more than any of it. If you are drafting past them, the drafting method was never the problem.",
       ],
       stateIntro: ["From the regulations and the profession's published ethics guidance."],
@@ -34,23 +34,23 @@ export default {
         "**High-risk breaches must reach the people affected.** GDPR Article 34 requires communication to data subjects without undue delay and \"in clear and plain language,\" unless the data was rendered unintelligible, for instance by encryption.",
         "**The profession puts crisis outside the automation boundary.** PRSA: \"Use AI for drafting, summarizing, trend spotting, and brainstorming — but let human judgment lead strategy, ethics, crisis response, and reputation management.\"",
         "**Some uses are named as unethical outright.** PRSA lists creating \"fake accounts, chatbots, or impostors that pose as authentic voices,\" and leaving inaccurate AI-amplified information uncorrected on a website or in a media kit.",
-        "**Fabricated endorsements now carry civil penalties in the US.** The FTC's Fake Reviews Rule makes it a deceptive practice to create or disseminate a review or testimonial misrepresenting \"that the reviewer or testimonialist exists\" — the FTC names AI-generated fake reviews explicitly.",
+        "**Fabricated endorsements now carry civil penalties in the US.** The FTC's Fake Reviews Rule makes it a deceptive practice to create or disseminate a review or testimonial misrepresenting \"that the reviewer or testimonialist exists,\" and the FTC names AI-generated fake reviews explicitly.",
         "**Sensitive material stays in closed systems.** PRSA advises closed AI systems for sensitive client work, and public tools only where the tool does not store or reuse inputs and no confidential data is entered.",
       ],
       workIntro: ["Decide this before the incident, because none of it can be decided during one."],
       work: [
         "Write down now who holds editorial responsibility for public statements. That named person is what moves an AI-assisted statement into the Article 50(4) exemption.",
-        "Make human review a recorded step, not an assumption — the exemption turns on a review process existing, so log who reviewed and when.",
+        "Make human review a recorded step, not an assumption. The exemption turns on a review process existing, so log who reviewed and when.",
         "Map your clocks first: 72 hours for a GDPR notification, four business days after a materiality determination for an SEC 8-K. Build the drafting process to fit inside them.",
         "Pre-approve a closed AI environment for incident work, and ban public tools for anything containing personal data, unreleased facts or legal analysis.",
         "Never synthesise a spokesperson. Deepfake disclosure is mandatory regardless of review, and PRSA treats impostor voices as unethical outright.",
-        "Prepare a verification routine for inbound synthetic material — trace the original source, reverse image search, check for corroborating reports from trusted outlets — because a crisis is when fabricated assets arrive.",
+        "Prepare a verification routine for inbound synthetic material (trace the original source, run a reverse image search, check for corroborating reports from trusted outlets), because a crisis is when fabricated assets arrive.",
         "Keep a correction path open. Leaving inaccurate AI-amplified information uncorrected is itself named as improper conduct.",
       ],
       measureIntro: ["In a crisis the useful measures are about time and traceability, not sentiment."],
       measure: [
         "Time from materiality determination to filed disclosure, against the four-business-day and 72-hour clocks.",
-        "Proportion of public statements with a logged human review and a named responsible person — your Article 50(4) evidence.",
+        "Proportion of public statements with a logged human review and a named responsible person. This is your Article 50(4) evidence.",
         "Number of statements published with an AI-generation label where no review was recorded, which should be zero.",
         "Time to correct any inaccurate published information, tracked to closure.",
         "Verification turnaround on inbound suspect media, from receipt to a provenance verdict.",
@@ -58,7 +58,7 @@ export default {
       risks: [
         "Assuming an AI label is always required. With recorded human review and a named responsible publisher, Article 50(4) does not require one for text.",
         "Assuming a label is never required. Deep-fake image, audio and video disclosure applies regardless of review.",
-        "Pasting incident detail — personal data, unreleased facts, legal analysis — into a public chatbot.",
+        "Pasting incident detail such as personal data, unreleased facts or legal analysis into a public chatbot.",
         "Letting an AI-drafted holding statement go out without a recorded reviewer, which forfeits the exemption and the accountability at once.",
         "Publishing synthetic audio or video of a real spokesperson.",
         "Treating the Commission's Code of Practice as optional in substance. Signing is voluntary; the Article 50 obligations are law from 2 August 2026.",
@@ -94,28 +94,28 @@ export default {
   de: {
     title: "KI in der Krisenkommunikation: welche Regeln gelten",
     description:
-      "Ein Absatz des EU AI Act entscheidet, ob ein KI-entworfenes Statement ohne Kennzeichnung zulässig ist — und die Meldefristen sind kürzer als die meisten Abstimmungsschleifen. Was gilt, ab wann, und wo die Branche die Grenze zieht.",
+      "Wann ein mit KI entworfenes Statement nach dem EU AI Act gekennzeichnet werden muss, ab wann die Pflicht gilt und was PR-Kodizes ergänzen.",
     body: topic("de", {
       intro: [
-        "Eine Krise komprimiert alles: das Statement, die rechtliche Prüfung, die Freigabe. Genau unter diesem Druck greifen Teams zum Modell — und genau dann ist die Regulierung am wenigsten nachsichtig. Die gute Nachricht: Die bindenden Regeln sind eng und zitierbar, und eine davon enthält eine Ausnahme, die viele Teams ohnehin erfüllen.",
+        "Eine Krise komprimiert alles: das Statement, die rechtliche Prüfung, die Freigabe. Genau unter diesem Druck greifen Teams zum Modell, und genau dann ist die Regulierung am wenigsten nachsichtig. Die gute Nachricht: Die bindenden Regeln sind eng und zitierbar, und eine davon enthält eine Ausnahme, die viele Teams ohnehin erfüllen.",
         "Zwei Fristen wiegen schwerer als alles andere. Wer daran vorbei textet, hatte nie ein Methodenproblem.",
       ],
       stateIntro: ["Aus den Verordnungen und der veröffentlichten Ethik-Leitlinie der Branche."],
       state: [
         "**Der EU AI Act hat eine Pressemitteilungs-Klausel.** Artikel 50(4): Betreiber eines Systems, das Text erzeugt oder verändert, der zur Information der Öffentlichkeit über Angelegenheiten von öffentlichem Interesse veröffentlicht wird, müssen offenlegen, dass der Text künstlich erzeugt oder verändert wurde.",
         "**Die menschliche Prüfung ist die Ausnahme.** Dieselbe Klausel gilt nicht, wenn der Inhalt einer menschlichen Überprüfung oder redaktionellen Kontrolle unterzogen wurde und eine natürliche oder juristische Person die redaktionelle Verantwortung trägt.",
-        "**Deepfakes sind immer offenzulegen.** Artikel 50(4) Unterabsatz 1 verlangt die Offenlegung bei Bild-, Audio- oder Videoinhalten, die einen Deepfake darstellen — unabhängig von einer Prüfung.",
+        "**Deepfakes sind immer offenzulegen.** Artikel 50(4) Unterabsatz 1 verlangt die Offenlegung bei Bild-, Audio- oder Videoinhalten, die einen Deepfake darstellen, und zwar unabhängig von einer Prüfung.",
         "**Die Offenlegung hat eine Frist innerhalb der Interaktion.** Artikel 50(5): klar und unterscheidbar, spätestens zum Zeitpunkt der ersten Interaktion oder Exposition.",
         "**Stichtag ist der 2. August 2026.** Artikel 50 steht in Kapitel IV, das nach Artikel 113 ab diesem Datum gilt.",
         "**Der Verhaltenskodex der Kommission ist freiwillig, die Pflicht nicht.** Die Transparenzanforderungen aus Artikel 50 sind rechtliche Verpflichtungen; Nicht-Unterzeichner müssen die Angemessenheit ihrer Maßnahmen nachweisen.",
         "**Die Meldefristen sind kürzer als eine Abstimmungsschleife.** Ein wesentlicher Cybersicherheitsvorfall gehört in SEC Form 8-K Item 1.05, in der Regel vier Geschäftstage nach der Wesentlichkeitsfeststellung. DSGVO Artikel 33 verlangt die Meldung an die Aufsichtsbehörde unverzüglich und möglichst binnen 72 Stunden nach Bekanntwerden.",
-        "**Risikoreiche Verletzungen müssen die Betroffenen erreichen.** DSGVO Artikel 34: unverzüglich und in klarer, einfacher Sprache — außer die Daten waren unverständlich gemacht, etwa durch Verschlüsselung.",
-        "**Die Branche stellt Krisen außerhalb der Automatisierungsgrenze.** PRSA: KI für Entwürfe, Zusammenfassungen und Ideen — menschliches Urteil führt bei Strategie, Ethik, Krisenreaktion und Reputationsmanagement.",
+        "**Risikoreiche Verletzungen müssen die Betroffenen erreichen.** DSGVO Artikel 34 verlangt die Benachrichtigung unverzüglich und in klarer, einfacher Sprache, es sei denn, die Daten wurden unverständlich gemacht, etwa durch Verschlüsselung.",
+        "**Die Branche stellt Krisen außerhalb der Automatisierungsgrenze.** Die PRSA sieht KI bei Entwürfen, Zusammenfassungen und Ideen; bei Strategie, Ethik, Krisenreaktion und Reputationsmanagement soll das menschliche Urteil führen.",
         "**Manches gilt ausdrücklich als unethisch:** gefälschte Accounts, Chatbots oder Doppelgänger, die sich als authentische Stimmen ausgeben, sowie unkorrigierte, KI-verstärkte Falschinformationen auf Website oder im Presseraum.",
-        "**Erfundene Empfehlungen sind in den USA bußgeldbewehrt.** Die FTC-Regel zu Fake Reviews erfasst Bewertungen, die vortäuschen, dass die bewertende Person existiert — KI-generierte Fake-Bewertungen werden ausdrücklich genannt.",
+        "**Erfundene Empfehlungen sind in den USA bußgeldbewehrt.** Die FTC-Regel zu Fake Reviews erfasst Bewertungen, die vortäuschen, dass die bewertende Person existiert. KI-generierte Fake-Bewertungen nennt die FTC ausdrücklich.",
         "**Sensibles bleibt in geschlossenen Systemen.** Die PRSA empfiehlt geschlossene KI-Systeme für sensible Kundenarbeit.",
       ],
-      workIntro: ["Vor dem Vorfall entscheiden — währenddessen geht es nicht mehr."],
+      workIntro: ["Vor dem Vorfall entscheiden, denn währenddessen geht es nicht mehr."],
       work: [
         "Jetzt schriftlich festhalten, wer die redaktionelle Verantwortung für öffentliche Statements trägt. Diese Person trägt die Ausnahme nach Artikel 50(4).",
         "Die menschliche Prüfung als dokumentierten Schritt führen, nicht als Annahme: wer hat wann geprüft.",
@@ -128,7 +128,7 @@ export default {
       measureIntro: ["In der Krise zählen Zeit und Nachvollziehbarkeit, nicht Sentiment."],
       measure: [
         "Zeit von der Wesentlichkeitsfeststellung bis zur eingereichten Offenlegung, gegen die Vier-Tage- und 72-Stunden-Frist.",
-        "Anteil öffentlicher Statements mit dokumentierter menschlicher Prüfung und benannter verantwortlicher Person — die Evidenz für Artikel 50(4).",
+        "Anteil öffentlicher Statements mit dokumentierter menschlicher Prüfung und benannter verantwortlicher Person. Das ist Ihr Nachweis für Artikel 50(4).",
         "Zahl veröffentlichter Statements mit KI-Kennzeichnung ohne dokumentierte Prüfung; sie sollte null sein.",
         "Zeit bis zur Korrektur unrichtiger veröffentlichter Informationen.",
         "Bearbeitungszeit für eingehendes Verdachtsmaterial bis zum Provenienz-Urteil.",
@@ -143,7 +143,7 @@ export default {
       ],
       sources,
       related: [
-        ["Answer Engine Optimization: was Google wirklich dokumentiert", "/de/guides/answer-engine-optimization"],
+        ["Answer Engine Optimization (AEO): was Google dazu schreibt", "/de/guides/answer-engine-optimization"],
         ["KI-Markenmonitoring: was Google und Bing auswerten", "/de/guides/ai-brand-monitoring"],
         ["KI in der Medienarbeit: was Redaktionen untersagen", "/de/guides/ai-media-relations"],
       ],

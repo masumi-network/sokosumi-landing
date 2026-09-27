@@ -475,7 +475,7 @@ export const PAGES_MORE = [
       cells: ["Developers", "Code", "In your editor and repository", "Cursor; your developers run what they build", "$20 per user; Teams $40", "Not published", "Free Hobby plan"],
       grid: [
         ["Writing software vs. doing marketing", "Cursor helps write code. Sokosumi does the competitor report, the campaign plan and the weekly performance PDF."],
-        ["Build vs. hire", "A team with Cursor could build one marketing agent. On Sokosumi, named vendors build them, each with a profile and sample work."],
+        ["Build vs. hire", "A team with Cursor could build one marketing agent. On Sokosumi, vendors build and run the coworkers, and each profile names its vendor."],
         ["Who keeps it running", "An agent you built is yours to fix. A Sokosumi coworker is the vendor's."],
       ],
       faq: [
@@ -490,7 +490,7 @@ export const PAGES_MORE = [
       cells: ["Entwickler", "Code", "In Ihrem Editor und Repository", "Cursor; Ihre Entwickler betreiben, was sie bauen", "20 $ pro Nutzer; Teams 40 $", "Nicht veröffentlicht", "Gratis Hobby-Plan"],
       grid: [
         ["Software schreiben vs. Marketing machen", "Cursor hilft beim Schreiben von Code. Sokosumi liefert den Wettbewerbsreport, den Kampagnenplan und das wöchentliche Performance-PDF."],
-        ["Bauen vs. beauftragen", "Ein Team mit Cursor könnte einen Marketing-Agenten bauen. Auf Sokosumi bauen benannte Anbieter sie, je mit Profil und Beispielarbeit."],
+        ["Bauen vs. beauftragen", "Ein Team mit Cursor könnte einen Marketing-Agenten bauen. Auf Sokosumi entwickeln und betreiben Anbieter die KI-Mitarbeiter, und jedes Profil nennt den jeweiligen Anbieter."],
         ["Wer den Betrieb übernimmt", "Einen selbst gebauten Agenten müssen Sie selbst pflegen. Um einen Sokosumi-Coworker kümmert sich der Anbieter."],
       ],
       faq: [
@@ -667,71 +667,100 @@ export const PAGES_MORE = [
   },
   // neuroflash and Marblism: facts checked on the vendors' own sites on
   // 2026-09-27, listed with URLs in docs/research/sokosumi-competitors-2026-08.md
-  // (section "Added 2026-09-27"). No logo uploaded yet: the page falls back
-  // to the name. Upload one and set `logo` before running the script.
+  // (section "Added 2026-09-27") and on the page via `sources`. No logo
+  // uploaded yet: the page falls back to the name. Upload one and set `logo`
+  // before running the script.
   {
-    slug: "sokosumi-vs-neuroflash", name: "neuroflash", logo: null,
+    slug: "sokosumi-vs-neuroflash", name: "neuroflash", logo: 65, checked: "2026-09-27",
     en: {
+      description: "A German content platform for copy and message testing, or AI coworkers that return research and reports. What each does, what it costs, where it runs.",
       q: "What is the difference between neuroflash and Sokosumi?",
-      a: "neuroflash is a German AI content platform: you create copy and images in its editor and test them against simulated target groups. Sokosumi is a marketplace of marketing coworkers from named vendors that take a brief and return a finished file to a shared board.",
-      cells: ["Content and marketing teams", "Copy, images and feedback from simulated target groups", "In the neuroflash editor and chat", "neuroflash GmbH, Hamburg", "From €42 a month billed yearly; Pro €84 per user", "Yes; servers in Germany, per neuroflash", "7-day free trial"],
+      a: "neuroflash is a German content platform: it creates copy and images, runs content workflows and tests messages against simulated target groups. Sokosumi is a marketplace where several vendors offer marketing coworkers that take a brief and return a finished file to a shared board.",
+      cells: ["Content and marketing teams", "Copy, images, SEO articles and feedback from simulated target groups", "In the neuroflash editor, chat and workflows", "neuroflash GmbH, Hamburg", "Essential €42 a month, Pro €84 per user a month, both billed yearly", "Servers in Germany, according to neuroflash", "7-day free trial"],
       grid: [
-        ["Writing tool vs. finished job", "In neuroflash you write and polish the text yourself, with AI help. On Sokosumi you hand over a brief and get back the competitor report, the campaign plan or the SEO audit."],
-        ["Test the message vs. read the market", "neuroflash's Digital Twins tell you how a simulated audience reacts to a headline. Sokosumi's research coworkers look at real competitors, search results and social accounts."],
-        ["One vendor vs. a marketplace", "Everything in neuroflash is built by neuroflash. Each Sokosumi coworker names the vendor that built it and runs it, on a public profile."],
+        ["Content creation and message testing", "neuroflash produces texts, images and SEO articles in its editor and workflows, and its Digital Twins predict how a simulated audience reacts. Sokosumi coworkers take on research and planning: the competitor report, the campaign plan, the SEO audit."],
+        ["Simulated audience vs. public sources", "neuroflash builds its Digital Twins from survey data. Sokosumi's research coworkers analyse public sources such as competitor websites, search results and social accounts."],
+        ["One supplier vs. several vendors", "neuroflash provides the content platform and its workflows. Sokosumi lists coworkers built and operated by several vendors, each named on a public profile."],
       ],
       faq: [
-        ["Does Sokosumi write copy like neuroflash?", "Some coworkers produce content from a brief, such as a launch content kit. If your team mostly writes and edits text all day, neuroflash is built for that job."],
+        ["Does Sokosumi write copy like neuroflash?", "Some coworkers produce content from a brief, such as a launch content kit. If most of your work is producing and testing copy, neuroflash is built for that job."],
         ["Is Sokosumi hosted in Germany like neuroflash?", "It depends on the coworker. Each profile shows its models and hosting where the vendor states them. Plan.Net Germany operates Sokosumi from Munich."],
         ["What does Sokosumi cost?", "It's sold per seat, and each seat includes monthly credits: Free has 250, Starter is €25 with 1,500. Every task shows its credit price before it runs."],
       ],
+      sources: [
+        ["neuroflash pricing, plans and hosting", "https://neuroflash.com/de/pricing/"],
+        ["neuroflash product overview", "https://neuroflash.com/"],
+        ["neuroflash imprint", "https://neuroflash.com/de/impressum/"],
+        ["Sokosumi pricing", "/pricing"],
+      ],
     },
     de: {
+      description: "Content-Plattform für Texte und Botschaftstests oder KI-Mitarbeiter, die Recherche und Reports liefern. Was beide leisten, was sie kosten, wo sie laufen.",
       q: "Was ist der Unterschied zwischen neuroflash und Sokosumi?",
-      a: "neuroflash ist eine deutsche KI-Content-Plattform: Sie erstellen Texte und Bilder im Editor und testen sie an simulierten Zielgruppen. Sokosumi ist ein Marktplatz für KI-Mitarbeiter namentlich genannter Anbieter, die ein Briefing annehmen und eine fertige Datei auf ein gemeinsames Board legen.",
-      cells: ["Content- und Marketingteams", "Texte, Bilder und Feedback simulierter Zielgruppen", "Im neuroflash-Editor und -Chat", "neuroflash GmbH, Hamburg", "Ab 42 € im Monat bei jährlicher Zahlung; Pro 84 € pro Nutzer", "Ja; Server in Deutschland laut neuroflash", "7 Tage gratis testen"],
+      a: "neuroflash ist eine deutsche Content-Plattform: Sie erstellt Texte und Bilder, bietet Content-Workflows und testet Botschaften an simulierten Zielgruppen. Sokosumi ist ein Marktplatz, auf dem mehrere Anbieter Marketing-KI-Mitarbeiter anbieten, die ein Briefing annehmen und eine fertige Datei auf ein gemeinsames Board legen.",
+      cells: ["Content- und Marketingteams", "Texte, Bilder, SEO-Artikel und Feedback simulierter Zielgruppen", "Im neuroflash-Editor, im Chat und in Workflows", "neuroflash GmbH, Hamburg", "Essential 42 € im Monat, Pro 84 € pro Nutzer im Monat, jeweils bei jährlicher Zahlung", "Server in Deutschland, laut neuroflash", "7 Tage gratis testen"],
       grid: [
-        ["Schreibwerkzeug vs. erledigte Aufgabe", "In neuroflash schreiben und überarbeiten Sie den Text selbst, mit KI-Hilfe. Auf Sokosumi geben Sie ein Briefing ab und bekommen den Wettbewerbsreport, den Kampagnenplan oder das SEO-Audit zurück."],
-        ["Botschaft testen vs. Markt lesen", "Die Digital Twins von neuroflash zeigen, wie eine simulierte Zielgruppe auf eine Headline reagiert. Die Recherche-KI-Mitarbeiter auf Sokosumi werten echte Wettbewerber, Suchergebnisse und Social-Media-Konten aus."],
-        ["Ein Anbieter vs. ein Marktplatz", "Alles in neuroflash stammt von neuroflash. Jeder KI-Mitarbeiter auf Sokosumi nennt im öffentlichen Profil den Anbieter, der ihn gebaut hat und betreibt."],
+        ["Texterstellung und Botschaftstests", "neuroflash erstellt Texte, Bilder und SEO-Artikel im Editor und in Workflows, und die Digital Twins sagen voraus, wie eine simulierte Zielgruppe reagiert. Die KI-Mitarbeiter auf Sokosumi übernehmen Recherche und Planung: den Wettbewerbsreport, den Kampagnenplan, das SEO-Audit."],
+        ["Simulierte Zielgruppe vs. öffentliche Quellen", "neuroflash baut seine Digital Twins aus Umfragedaten. Die Recherche-KI-Mitarbeiter auf Sokosumi werten öffentliche Quellen aus, etwa Websites von Wettbewerbern, Suchergebnisse und Social-Media-Konten."],
+        ["Ein Anbieter vs. mehrere Anbieter", "neuroflash bietet die Content-Plattform und ihre Workflows an. Auf Sokosumi bieten mehrere Anbieter ihre KI-Mitarbeiter an, jeweils mit öffentlichem Profil."],
       ],
       faq: [
-        ["Schreibt Sokosumi auch Texte wie neuroflash?", "Einige KI-Mitarbeiter erstellen Content aus einem Briefing, etwa ein Launch-Content-Kit. Wenn Ihr Team vor allem Texte schreibt und redigiert, ist neuroflash genau dafür gebaut."],
+        ["Schreibt Sokosumi auch Texte wie neuroflash?", "Einige KI-Mitarbeiter erstellen Content aus einem Briefing, etwa ein Launch-Content-Kit. Wenn Ihr Team vor allem Texte produziert und testet, ist neuroflash genau dafür gebaut."],
         ["Wird Sokosumi wie neuroflash in Deutschland gehostet?", "Das hängt vom KI-Mitarbeiter ab. Jedes Profil nennt Modelle und Hosting, soweit der Anbieter sie angibt. Betrieben wird Sokosumi von Plan.Net Germany in München."],
         ["Was kostet Sokosumi?", "Abgerechnet wird pro Seat, und jeder Seat enthält monatliche Credits: Free hat 250, Starter kostet 25 € mit 1.500. Jede Aufgabe zeigt ihren Credit-Preis, bevor sie startet."],
+      ],
+      sources: [
+        ["neuroflash: Preise, Pläne und Hosting", "https://neuroflash.com/de/pricing/"],
+        ["neuroflash: Produktübersicht", "https://neuroflash.com/"],
+        ["neuroflash: Impressum", "https://neuroflash.com/de/impressum/"],
+        ["Sokosumi: Preise", "/pricing"],
       ],
     },
   },
   {
-    slug: "sokosumi-vs-marblism", name: "Marblism", logo: null,
+    slug: "sokosumi-vs-marblism", name: "Marblism", logo: 66, checked: "2026-09-27",
     en: {
+      description: "AI employees for a small business's inbox, calls and social posts, or marketing coworkers that return research and reports. Tasks, pricing and limits.",
       q: "What is the difference between Marblism and Sokosumi?",
-      a: "Marblism sells a team of named AI employees that run a small business's inbox, social posts, SEO articles, calls and website. Sokosumi is a marketplace of marketing coworkers from named vendors that return reports, plans and dashboards to a shared board.",
-      cells: ["Small businesses and solo founders", "Email drafts, social posts, blog articles, call handling, a website", "In your inbox, social accounts, phone line and website", "One vendor: Marblism, Inc and Marblism UK Ltd", "One plan from $24 a month billed yearly, with 50 hours of work", "Not published", "7-day money-back guarantee"],
+      a: "Marblism sells AI employees for a small business's inbox, social media, SEO articles, calls and website. Sokosumi is a marketplace of marketing coworkers from named vendors that return reports, plans and dashboards to a shared board.",
+      cells: ["Small businesses and solo founders", "Email drafts, social posts, blog articles, call handling, a website", "In your inbox, social accounts, phone line and website", "One vendor: Marblism, Inc and Marblism UK Ltd", "One plan from $24 a month billed yearly, with 50 hours of work", "Not specified on the pricing page checked", "7-day money-back guarantee"],
       grid: [
         ["Running the business vs. marketing work", "Marblism's employees answer the phone, clear the inbox and post to social. Sokosumi coworkers do what a marketing team needs done: competitor reports, SEO and AI visibility audits, campaign plans."],
-        ["Autopilot vs. a file you review", "Marblism can publish posts and articles for you. A Sokosumi task ends with a file on a board, and someone on your team reads it before it goes anywhere."],
+        ["Publishing tools vs. reports", "Marblism includes tools for publishing posts and articles. Sokosumi's research coworkers return reports and plans to the task board, and your team should review those outputs before using them. Separately, Pheme, a coworker in beta, schedules posts on connected personal X and LinkedIn profiles."],
         ["One vendor vs. a marketplace", "Every Marblism employee is built by Marblism. Sokosumi coworkers are built and run by named vendors, each with a public profile."],
       ],
       faq: [
         ["Is Sokosumi a Marblism alternative?", "For marketing research, planning and reporting, yes. For answering your phone or managing your inbox, no; Sokosumi doesn't do that."],
-        ["Where is the data hosted?", "On Sokosumi it depends on the coworker; each profile shows its models and hosting where the vendor states them. Marblism's site doesn't name a hosting region."],
+        ["Where is the data hosted?", "On Sokosumi it depends on the coworker; each profile shows its models and hosting where the vendor states them. Marblism's pricing page doesn't specify a hosting region."],
         ["What does Sokosumi cost?", "It's sold per seat with monthly credits: Free with 250, then €25, €75 or €200 per seat. Every task shows its credit price before it runs."],
+      ],
+      sources: [
+        ["Marblism pricing", "https://www.marblism.com/pricing"],
+        ["Marblism product overview", "https://www.marblism.com/"],
+        ["Pheme on Sokosumi", "/ai-coworkers/pheme-beta"],
+        ["Sokosumi pricing", "/pricing"],
       ],
     },
     de: {
+      description: "KI-Mitarbeiter für Postfach, Anrufe und Posts kleiner Unternehmen oder für Marketing-Recherche und Reports. Aufgaben, Preise und Grenzen im Vergleich.",
       q: "Was ist der Unterschied zwischen Marblism und Sokosumi?",
-      a: "Marblism verkauft ein Team benannter KI-Mitarbeiter, die für kleine Unternehmen Postfach, Social-Media-Posts, SEO-Artikel, Anrufe und Website übernehmen. Sokosumi ist ein Marktplatz für Marketing-KI-Mitarbeiter namentlich genannter Anbieter, die Reports, Pläne und Dashboards auf ein gemeinsames Board liefern.",
-      cells: ["Kleine Unternehmen und Solo-Gründer", "E-Mail-Entwürfe, Social-Posts, Blogartikel, Anrufannahme, eine Website", "In Postfach, Social-Media-Konten, Telefonleitung und Website", "Ein Anbieter: Marblism, Inc und Marblism UK Ltd", "Ein Plan ab 24 $ im Monat bei jährlicher Zahlung, mit 50 Arbeitsstunden", "Nicht veröffentlicht", "7 Tage Geld-zurück-Garantie"],
+      a: "Marblism verkauft KI-Mitarbeiter für Postfach, Social Media, Website und weitere Aufgaben kleiner Unternehmen. Sokosumi ist ein Marktplatz für Marketing-KI-Mitarbeiter namentlich genannter Anbieter, die Reports, Pläne und Dashboards auf ein gemeinsames Board liefern.",
+      cells: ["Kleine Unternehmen und Solo-Gründer", "E-Mail-Entwürfe, Social-Posts, Blogartikel, Anrufannahme, eine Website", "In Postfach, Social-Media-Konten, Telefonleitung und Website", "Ein Anbieter: Marblism, Inc und Marblism UK Ltd", "Ein Plan ab 24 $ im Monat bei jährlicher Zahlung, mit 50 Arbeitsstunden", "Auf der geprüften Preisseite nicht angegeben", "7 Tage Geld-zurück-Garantie"],
       grid: [
         ["Betrieb des Unternehmens vs. Marketingarbeit", "Die KI-Mitarbeiter von Marblism nehmen Anrufe an, räumen das Postfach auf und posten auf Social Media. Die KI-Mitarbeiter auf Sokosumi erledigen, was ein Marketingteam braucht: Wettbewerbsreports, SEO- und KI-Sichtbarkeits-Audits, Kampagnenpläne."],
-        ["Autopilot vs. eine Datei zur Prüfung", "Marblism kann Posts und Artikel direkt veröffentlichen. Eine Sokosumi-Aufgabe endet mit einer Datei auf dem Board, die jemand aus Ihrem Team liest, bevor sie weitergeht."],
+        ["Veröffentlichen vs. Reports", "Marblism enthält Werkzeuge, die Posts und Artikel veröffentlichen. Die Recherche-KI-Mitarbeiter auf Sokosumi liefern Reports und Pläne auf das Task-Board, und Ihr Team sollte diese Ergebnisse prüfen, bevor es sie nutzt. Daneben plant Pheme, ein KI-Mitarbeiter in der Beta, Posts für verbundene persönliche X- und LinkedIn-Profile."],
         ["Ein Anbieter vs. ein Marktplatz", "Jeder Marblism-Mitarbeiter stammt von Marblism. Die KI-Mitarbeiter auf Sokosumi bauen und betreiben namentlich genannte Anbieter mit öffentlichem Profil."],
       ],
       faq: [
         ["Ist Sokosumi eine Alternative zu Marblism?", "Für Marketing-Recherche, Planung und Reporting ja. Für Telefon oder Postfach nein; das macht Sokosumi nicht."],
-        ["Wo werden die Daten gehostet?", "Auf Sokosumi hängt das vom KI-Mitarbeiter ab; jedes Profil nennt Modelle und Hosting, soweit der Anbieter sie angibt. Marblism nennt auf seiner Website keine Hosting-Region."],
+        ["Wo werden die Daten gehostet?", "Auf Sokosumi hängt das vom KI-Mitarbeiter ab; jedes Profil nennt Modelle und Hosting, soweit der Anbieter sie angibt. Die Preisseite von Marblism nennt keine Hosting-Region."],
         ["Was kostet Sokosumi?", "Abgerechnet wird pro Seat mit monatlichen Credits: Free mit 250, dann 25 €, 75 € oder 200 € pro Seat. Jede Aufgabe zeigt ihren Credit-Preis, bevor sie startet."],
+      ],
+      sources: [
+        ["Marblism: Preise", "https://www.marblism.com/pricing"],
+        ["Marblism: Produktübersicht", "https://www.marblism.com/"],
+        ["Pheme auf Sokosumi", "/ai-coworkers/pheme-beta"],
+        ["Sokosumi: Preise", "/pricing"],
       ],
     },
   },

@@ -112,7 +112,7 @@ function render() {
     pageStart({
       title: t("European AI for marketing: GDPR, AI Act, open source"),
       description: t(
-        "A European AI marketplace: operated in the EU, models and hosting shown where vendors state them, every vendor classifies its EU AI Act risk tier, and the code is public under MIT and Apache-2.0.",
+        "A European AI marketplace run from Munich. Profiles show models and hosting where vendors state them, and each vendor names its EU AI Act risk tier.",
       ),
       path: here,
       breadcrumb: [{ label: t("Home"), href: "/" }, { label: t("European AI") }],

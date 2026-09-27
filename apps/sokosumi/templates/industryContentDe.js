@@ -10,7 +10,7 @@ module.exports = {
     ctaLabel: "Den nächsten Pitch vorbereiten",
     ctaHref: "/use-cases/agency-new-business-research",
     metaTitle: "KI für Agenturen: KI-Mitarbeiter für Agenturteams | Sokosumi",
-    metaDesc: "KI-Mitarbeiter für Agenturen: Pitch-Recherche aus öffentlichen Quellen, Wettbewerbs-Sets pro Kunde und Produktion im Retainer-Maßstab.",
+    metaDesc: "KI-Mitarbeiter für Agenturen: Pitch-Recherche aus öffentlichen Quellen, Wettbewerbervergleiche je Kunde und wiederkehrende Content-Aufgaben.",
     h1: "KI für Agenturen: vom Briefing zum prüfbaren Ergebnis",
     sub: "Lassen Sie KI-Mitarbeiter Wettbewerber recherchieren, Kampagnen vorbereiten und erste Inhalte erstellen. Ihr Team prüft die Ergebnisse, bevor sie zum Kunden gehen. Sokosumi wurde mit der Serviceplan Group entwickelt.",
     split: {
@@ -22,7 +22,7 @@ module.exports = {
       ], eg: "Drei Leute, zwei Abende, ein Deck für einen Interessenten." },
       withS: { label: "Mit Sokosumi", line: "Einmal briefen. Eine Datei mit Quellen kommt als Aufgabe zurück, die Sie prüfen.", items: [
         "Vor jedem Erstgespräch ein Briefing zum Interessenten, als PDF mit Quellen",
-        "Wettbewerbs-Sets pro Kunde, nach Zeitplan aktualisiert",
+        "Wettbewerbervergleiche je Kunde, nach Zeitplan aktualisiert",
         "Redaktionspläne und Varianten im Ton des jeweiligen Kunden",
         "Jede Aufgabe kostet Credits, der Preis steht vor dem Start fest",
       ], eg: "„Hannah, vor dem Termin um 11: ihr Markt, ihre Dienstleister und der Einkaufsaspekt, mit dem wir einsteigen.“" },
@@ -34,7 +34,7 @@ module.exports = {
     ] },
     deliver: { heading: "Was Ihr Team zurückbekommt", items: [
       { title: "Briefings zu Interessenten", text: "Zwei Seiten vor dem ersten Gespräch: Markt, eingesetzte Tools, der Aufhänger, mit Quellen." },
-      { title: "Wettbewerbs-Sets pro Kunde", text: "Preise, Positionierung und Lücken als PDF, das Ihre Strategen kommentieren statt neu bauen." },
+      { title: "Wettbewerbervergleiche je Kunde", text: "Preise, Positionierung und Lücken als PDF, das Ihre Strategen kommentieren statt neu bauen." },
       { title: "Produktionsdateien", text: "Redaktionspläne, Textvarianten und Kampagnenpläne als Dokumente im Format des Kunden." },
     ] },
     faq: [
@@ -48,7 +48,7 @@ module.exports = {
     why: "Wo E-Commerce-Teams Sokosumi einsetzen",
     cta: "Holen Sie einen KI-Mitarbeiter in Ihr E-Commerce-Team",
     metaTitle: "KI für E-Commerce-Marketing | Sokosumi",
-    metaDesc: "KI-Mitarbeiter für E-Commerce und Handel: wöchentliche Preis-Memos zu Wettbewerbern, eine schriftliche Auswertung Ihrer Kunden und Saisonkampagnen-Pläne vor der Hochphase.",
+    metaDesc: "KI-Mitarbeiter für E-Commerce und Handel: wöchentliche Preis-Memos zu Wettbewerbern, Kundenauswertungen und Pläne für Saisonkampagnen.",
     h1: "KI-Mitarbeiter für E-Commerce und Handel",
     sub: "Behalten Sie Markt, Wettbewerber und Saisons im Blick, mit KI-Spezialisten, die Berichte und Kampagnenpläne liefern statt Dashboards, die Sie noch lesen müssen.",
     split: {
@@ -124,7 +124,7 @@ module.exports = {
     why: "Wo Verlage Sokosumi einsetzen",
     cta: "Holen Sie einen KI-Mitarbeiter in Ihre Redaktion",
     metaTitle: "KI für Medien und Verlage | Sokosumi",
-    metaDesc: "KI-Mitarbeiter für Medien und Verlage: Entwürfe zur Launch-Berichterstattung aus einem Briefing, Sichtbarkeit in Suche und KI-Antworten gemessen, die Redaktion behält die Freigabe.",
+    metaDesc: "KI-Mitarbeiter für Medien und Verlage: Entwürfe aus einem Briefing und gemessene Sichtbarkeit in Suche und KI-Antworten. Die Redaktion gibt frei.",
     h1: "KI-Mitarbeiter für Medien und Verlage",
     sub: "Mehr Menge, ohne die Redaktion zu verlieren: KI-Mitarbeiter entwerfen, recherchieren und messen, Ihre Redaktion entscheidet, was erscheint.",
     split: {
@@ -200,7 +200,7 @@ module.exports = {
     why: "Wo Reise- und Hotelteams Sokosumi einsetzen",
     cta: "Holen Sie einen KI-Mitarbeiter in Ihr Team",
     metaTitle: "KI für das Marketing in Reise und Gastgewerbe | Sokosumi",
-    metaDesc: "KI-Mitarbeiter für Reise und Gastgewerbe: Saisonkampagnen-Pläne vor dem Buchungsfenster, eine wöchentliche Auswertung der Gäste-Stimmung, Nachfragesignale als Pläne.",
+    metaDesc: "KI-Mitarbeiter für Reise und Gastgewerbe: Saisonkampagnen vor dem Buchungsfenster planen und die Stimmung der Gäste jede Woche auswerten.",
     h1: "KI-Mitarbeiter für Reise und Gastgewerbe",
     sub: "Saisons, Bewertungen und Nachfragesignale, ausgewertet und in Pläne verwandelt, bevor das Buchungsfenster schließt. Der Credit-Preis steht vor jeder Aufgabe fest.",
     split: {

@@ -12,6 +12,7 @@
 
 import { readFileSync } from "node:fs";
 import { homedir } from "node:os";
+import { lexical } from "./lib/lexical.mjs";
 
 const BASE = process.env.CMS_URL || "https://payload-production-6f43.up.railway.app";
 const SIGNUP = "https://app.sokosumi.com/signup";
@@ -45,7 +46,9 @@ const UI = {
 };
 
 // name, logo media id, then per locale: q (h1), a (two lines), cells (7),
-// grid (3 × [title, text]), faq (3 × [q, a]).
+// grid (3 × [title, text]), faq (3 × [q, a]). Optional per locale: title
+// and description (authored metadata; otherwise "Sokosumi vs. <name>" and a
+// summary of `a`), sources ([label, url] pairs, rendered as a dated list).
 import { PAGES_MORE } from "./cms-compare-pages-more.mjs";
 
 const PAGES_BASE = [
@@ -53,7 +56,7 @@ const PAGES_BASE = [
     slug: "sokosumi-vs-chatgpt", name: "ChatGPT", logo: 28, noindex: false,
     en: {
       q: "What is the difference between ChatGPT and Sokosumi?",
-      a: "ChatGPT is a chat window. You write the prompt, judge the answer, and paste it somewhere. Sokosumi is a team of named coworkers you brief; the finished file lands on a board your colleagues can see.",
+      a: "ChatGPT is a general assistant for one person's work: chat, agents and connected tools. Sokosumi is a team of named coworkers you brief; the finished file lands on a board your colleagues can see.",
       cells: ["Anyone; one person per chat", "Answers in the chat; files in Agent mode", "In your own chat history", "OpenAI", "A flat seat, $20–25 and up", "Enterprise plan only", "Free tier with limits"],
       grid: [
         ["You pick a specialist, not a prompt", "Hannah does research, Maya does creative. Each has a role, a profile, and sample work you can open before you spend a credit."],
@@ -68,7 +71,7 @@ const PAGES_BASE = [
     },
     de: {
       q: "Was ist der Unterschied zwischen ChatGPT und Sokosumi?",
-      a: "ChatGPT ist ein Chatfenster. Sie schreiben den Prompt, prüfen die Antwort und kopieren sie weiter. Sokosumi ist ein Team namentlich genannter Coworker, die Sie briefen. Die fertige Datei landet auf einem Task-Board, das Ihre Kollegen sehen.",
+      a: "ChatGPT ist ein allgemeiner Assistent für die Arbeit einer Person: Chat, Agenten und angebundene Tools. Sokosumi ist ein Team namentlich genannter Coworker, die Sie briefen. Die fertige Datei landet auf einem Task-Board, das Ihre Kollegen sehen.",
       cells: ["Alle; eine Person pro Chat", "Antworten im Chat; Dateien im Agent-Modus", "In Ihrem eigenen Chatverlauf", "OpenAI", "Pauschale pro Seat, ab 20–25 $", "Nur im Enterprise-Plan", "Kostenlose Version mit Limits"],
       grid: [
         ["Sie wählen einen Spezialisten, keinen Prompt", "Hannah recherchiert, Maya entwickelt Kreation. Jede hat eine Rolle, ein Profil und Beispielarbeit, die Sie vor dem ersten Credit öffnen können."],
@@ -153,14 +156,14 @@ const PAGES_BASE = [
     en: {
       q: "What is the difference between Microsoft 365 Copilot and Sokosumi?",
       a: "Copilot is a general assistant inside Word, Excel, PowerPoint, and Teams, paid per user. Sokosumi adds marketing specialists that post into your Teams channels; it's also paid per seat, and each seat's credits go on the tasks you run.",
-      cells: ["Microsoft 365 users", "Word, Excel, and PowerPoint files; Researcher and Analyst reports", "In Office apps and Teams", "Microsoft", "A flat add-on, $21–30 per user", "EU Data Boundary; flex routing can send inference outside the EU", "Paid add-on, no free plan"],
+      cells: ["Microsoft 365 users", "Word, Excel, and PowerPoint files; Researcher and Analyst reports", "In Office apps and Teams", "Microsoft", "An add-on per user; Business from $18 a month on annual billing (promotion until 31 Dec 2026)", "EU Data Boundary, with documented exceptions such as Anthropic models", "Paid add-on, no free plan"],
       grid: [
         ["Complementary, not either-or", "Coworkers deliver Office files into a Teams channel. Teams that run Copilot keep it for their own documents and add Sokosumi for the work that needs a specialist."],
         ["A specialist beats a generalist for this", "Copilot's Researcher is one agent for everything. Sokosumi has a coworker for competitor research, one for SEO audits, one for the weekly report, each with a vendor behind it."],
-        ["Where inference runs", "Microsoft's flex routing can move Copilot inference outside the EU at peak times. On Sokosumi the marketplace runs in the EU and each coworker's hosting depends on its vendor, shown on the profile where the vendor states it."],
+        ["Where inference runs", "Microsoft keeps Copilot data for EU customers inside its EU Data Boundary, with documented exceptions such as Anthropic models. On Sokosumi the marketplace runs in the EU and each coworker's hosting depends on its vendor, shown on the profile where the vendor states it."],
       ],
       faq: [
-        ["We already pay $30 per seat for Copilot. Why add this?", "Both are a monthly fee per person. Copilot helps with documents you're already writing; a Sokosumi seat (from €25, with credits) buys finished reports from specialists. Teams that add Sokosumi usually do it for the reports, not to save on Copilot."],
+        ["We already pay for Copilot. Why add this?", "Both are a monthly fee per person. Copilot helps with documents you're already writing; a Sokosumi seat (from €25, with credits) buys finished reports from specialists."],
         ["Does it work in Teams?", "Yes. Mention a coworker in a channel and it answers in the thread; the file lands on the task board."],
         ["Can we build our own agents instead?", "Copilot Studio lets you, for credits. Sokosumi's vendors have already built and operate theirs, and custom coworkers can be listed for your workspace."],
       ],
@@ -168,14 +171,14 @@ const PAGES_BASE = [
     de: {
       q: "Was ist der Unterschied zwischen Microsoft 365 Copilot und Sokosumi?",
       a: "Copilot ist ein allgemeiner Assistent in Word, Excel, PowerPoint und Teams, bezahlt pro Nutzer. Sokosumi ergänzt Marketing-Spezialisten, die in Ihre Teams-Kanäle posten; bezahlt wird ebenfalls pro Seat, und die Credits des Seats gehen auf die Aufgaben, die Sie starten.",
-      cells: ["Microsoft-365-Nutzer", "Word-, Excel- und PowerPoint-Dateien; Researcher- und Analyst-Reports", "In den Office-Apps und in Teams", "Microsoft", "Pauschales Add-on, 21–30 $ pro Nutzer", "EU Data Boundary; Flex Routing kann Inferenz außerhalb der EU ausführen", "Bezahltes Add-on, kein Free-Plan"],
+      cells: ["Microsoft-365-Nutzer", "Word-, Excel- und PowerPoint-Dateien; Researcher- und Analyst-Reports", "In den Office-Apps und in Teams", "Microsoft", "Add-on pro Nutzer; Business ab 15,60 € im Monat bei jährlicher Zahlung (Aktionspreis bis 31.12.2026)", "EU Data Boundary, mit dokumentierten Ausnahmen wie Anthropic-Modellen", "Bezahltes Add-on, kein Free-Plan"],
       grid: [
         ["Ergänzung, kein Entweder-oder", "Coworker liefern Office-Dateien in einen Teams-Kanal. Teams mit Copilot behalten ihn für die eigenen Dokumente und nutzen Sokosumi für Arbeit, die einen Spezialisten braucht."],
         ["Spezialist statt Generalist", "Copilots Researcher ist ein Agent für vieles. Sokosumi hat einen Coworker für Wettbewerbsrecherche, einen für SEO-Audits und einen für den Wochenreport. Hinter jedem steht ein Anbieter."],
-        ["Wo die Inferenz läuft", "Microsofts Flex Routing kann Copilot-Inferenz zu Spitzenzeiten außerhalb der EU ausführen. Bei Sokosumi läuft der Marktplatz in der EU, und das Hosting jedes KI-Mitarbeiters hängt vom Anbieter ab; das Profil zeigt es, wo der Anbieter es angibt."],
+        ["Wo die Inferenz läuft", "Microsoft hält Copilot-Daten von EU-Kunden innerhalb seiner EU Data Boundary, mit dokumentierten Ausnahmen wie Anthropic-Modellen. Bei Sokosumi läuft der Marktplatz in der EU, und das Hosting jedes KI-Mitarbeiters hängt vom Anbieter ab; das Profil zeigt es, wo der Anbieter es angibt."],
       ],
       faq: [
-        ["Wir zahlen schon 30 $ pro Seat für Copilot. Warum zusätzlich Sokosumi?", "Beides ist eine monatliche Gebühr pro Person. Copilot hilft bei Dokumenten, die Sie ohnehin schreiben; ein Sokosumi-Seat (ab 25 €, mit Credits) liefert fertige Reports von Spezialisten. Teams nehmen Sokosumi meist für die Reports dazu, nicht um bei Copilot zu sparen."],
+        ["Wir zahlen schon für Copilot. Warum zusätzlich Sokosumi?", "Beides ist eine monatliche Gebühr pro Person. Copilot hilft bei Dokumenten, die Sie ohnehin schreiben; ein Sokosumi-Seat (ab 25 €, mit Credits) liefert fertige Reports von Spezialisten."],
         ["Funktioniert es in Teams?", "Ja. Erwähnen Sie einen Coworker in einem Kanal, antwortet er im Thread. Die Datei landet auf dem Task-Board."],
         ["Können wir stattdessen eigene Agenten bauen?", "Ja, mit Copilot Studio und Credits. Sokosumis Anbieter haben ihre Agenten bereits gebaut und betreiben sie. Individuelle Coworker können für Ihren Arbeitsbereich angeboten werden."],
       ],
@@ -188,9 +191,9 @@ const PAGES_BASE = [
       a: "Gemini is strongest inside Google Docs, Sheets, and Slides. Sokosumi returns Office and PDF files to a team board whatever suite you run, from coworkers with a named vendor behind each one.",
       cells: ["Google Workspace users", "Docs, Sheets, Slides; NotebookLM reports", "In Google Workspace", "Google", "A flat seat, about $21–50 per user", "EU regions, with some features excluded", "Free tier with limits"],
       grid: [
-        ["Works with the suite you have", "Most DACH companies run Microsoft. Sokosumi's files are PDFs and Office documents on a board, independent of Google or Microsoft."],
+        ["Works with the suite you have", "Sokosumi's files are PDFs and Office documents on a board, so they work whether your company runs Google Workspace or Microsoft 365."],
         ["Agents with an owner", "Gemini Enterprise has an agent gallery. On Sokosumi every coworker has a vendor whose name, models, and hosting are on the profile."],
-        ["EU hosting without footnotes", "Google's EU residency excludes some Gemini features. On Sokosumi the marketplace runs in the EU and each coworker's hosting depends on its vendor, shown on the profile where the vendor states it."],
+        ["Hosting depends on the service", "Google's EU residency excludes some Gemini features. On Sokosumi the marketplace runs in the EU and each coworker's hosting depends on its vendor, shown on the profile where the vendor states it."],
       ],
       faq: [
         ["We are a Google Workspace company. Does Sokosumi fit?", "Yes. Files download and share like any other; connect your Google account to hand a coworker context."],
@@ -203,9 +206,9 @@ const PAGES_BASE = [
       a: "Gemini ist am stärksten in Google Docs, Sheets und Slides. Sokosumi liefert Office- und PDF-Dateien auf ein gemeinsames Task-Board, egal welche Suite Sie nutzen. Hinter jedem Coworker steht ein namentlich genannter Anbieter.",
       cells: ["Google-Workspace-Nutzer", "Docs, Sheets, Slides; NotebookLM-Reports", "In Google Workspace", "Google", "Pauschale pro Seat, etwa 21–50 $ pro Nutzer", "EU-Regionen, einige Funktionen ausgenommen", "Kostenlose Version mit Limits"],
       grid: [
-        ["Passt zur Suite, die Sie haben", "Die meisten DACH-Unternehmen arbeiten mit Microsoft. Sokosumi-Dateien sind PDFs und Office-Dokumente auf einem Board – unabhängig von Google oder Microsoft."],
+        ["Passt zur Suite, die Sie haben", "Sokosumi-Dateien sind PDFs und Office-Dokumente auf einem Board; sie funktionieren, ob Ihr Unternehmen Google Workspace oder Microsoft 365 nutzt."],
         ["Agents mit klarem Anbieter", "Gemini Enterprise hat eine Agent-Galerie. Auf Sokosumi hat jeder Coworker einen Anbieter, dessen Name, Modelle und Hosting im Profil stehen."],
-        ["EU-Hosting ohne Fußnoten", "Googles EU-Datenresidenz schließt einige Gemini-Funktionen aus. Bei Sokosumi läuft der Marktplatz in der EU, und das Hosting jedes KI-Mitarbeiters hängt vom Anbieter ab; das Profil zeigt es, wo der Anbieter es angibt."],
+        ["Hosting je Dienst prüfen", "Googles EU-Datenresidenz schließt einige Gemini-Funktionen aus. Bei Sokosumi läuft der Marktplatz in der EU, und das Hosting jedes KI-Mitarbeiters hängt vom Anbieter ab; das Profil zeigt es, wo der Anbieter es angibt."],
       ],
       faq: [
         ["Wir sind ein Google-Workspace-Unternehmen. Passt Sokosumi?", "Ja. Dateien lassen sich wie alle anderen herunterladen und teilen; verbinden Sie Ihr Google-Konto, um einem Coworker Kontext zu geben."],
@@ -219,11 +222,11 @@ const PAGES_BASE = [
     en: {
       q: "What is the difference between Langdock and Sokosumi?",
       a: "Langdock is an EU-hosted AI workspace where every employee chats with models and builds their own agents. Sokosumi is a marketplace of ready-made marketing coworkers, built and run by vendors, that return finished files.",
-      cells: ["Every employee; chat and build your own agents", "Chat answers; agents you configure", "In Langdock", "You build them; Langdock hosts", "A flat seat, €25–99 per user", "Yes", "7-day trial"],
+      cells: ["Every employee; chat and build your own agents", "Chat answers; agents you configure", "In Langdock", "You build them; Langdock hosts", "A flat seat, €23.20–119 per user a month", "Yes", "7-day trial"],
       grid: [
         ["Build vs. hire", "On Langdock your team writes the agent's instructions and keeps them current. On Sokosumi a vendor did that, and stays responsible for it."],
         ["Company-wide chat vs. marketing deliverables", "Langdock is for everyone in the company. Sokosumi is for the marketing team and ends each task with a file."],
-        ["Same price point", "Langdock charges €25 per user per month. Sokosumi's Starter is €25 per seat and includes 1,500 credits a month that tasks spend."],
+        ["A similar price point", "Langdock charges €29 per user a month, or €23.20 billed annually. Sokosumi's Starter is €25 per seat and includes 1,500 credits a month that tasks spend."],
       ],
       faq: [
         ["We already have Langdock. Why add Sokosumi?", "Keep Langdock for general chat across the company. Add Sokosumi where marketing needs a specialist and a deliverable, not a conversation."],
@@ -234,11 +237,11 @@ const PAGES_BASE = [
     de: {
       q: "Was ist der Unterschied zwischen Langdock und Sokosumi?",
       a: "Langdock ist eine EU-gehostete KI-Arbeitsumgebung, in der alle Mitarbeitenden mit Modellen chatten und eigene Agenten bauen. Sokosumi ist ein Marktplatz fertiger Marketing-Coworker, gebaut und betrieben von Anbietern. Sie liefern fertige Dateien.",
-      cells: ["Alle Mitarbeitenden; chatten und eigene Agenten bauen", "Chat-Antworten; Agenten, die Sie konfigurieren", "In Langdock", "Sie bauen sie; Langdock hostet", "Pauschale pro Seat, 25–99 € pro Nutzer", "Ja", "7 Tage testen"],
+      cells: ["Alle Mitarbeitenden; chatten und eigene Agenten bauen", "Chat-Antworten; Agenten, die Sie konfigurieren", "In Langdock", "Sie bauen sie; Langdock hostet", "Pauschale pro Seat, 23,20–119 € pro Nutzer und Monat", "Ja", "7 Tage testen"],
       grid: [
         ["Bauen vs. beauftragen", "Auf Langdock schreibt Ihr Team die Anweisungen des Agenten und hält sie aktuell. Auf Sokosumi hat das ein Anbieter getan – und bleibt dafür verantwortlich."],
         ["Firmenweiter Chat vs. Marketing-Ergebnisse", "Langdock ist für alle im Unternehmen. Sokosumi ist für das Marketingteam und beendet jede Aufgabe mit einer Datei."],
-        ["Gleiches Preisniveau", "Langdock berechnet 25 € pro Nutzer und Monat. Sokosumis Starter kostet 25 € pro Seat und enthält 1.500 Credits im Monat, die Aufgaben verbrauchen."],
+        ["Ähnliches Preisniveau", "Langdock berechnet 29 € pro Nutzer und Monat, bei jährlicher Zahlung 23,20 €. Sokosumis Starter kostet 25 € pro Seat und enthält 1.500 Credits im Monat, die Aufgaben verbrauchen."],
       ],
       faq: [
         ["Wir haben schon Langdock. Warum zusätzlich Sokosumi?", "Behalten Sie Langdock für den allgemeinen Chat im Unternehmen. Nutzen Sie Sokosumi dort, wo Marketing einen Spezialisten und ein Ergebnis braucht, kein Gespräch."],
@@ -318,7 +321,7 @@ const PAGES_BASE = [
     en: {
       q: "What is the difference between Dust and Sokosumi?",
       a: "Dust is a European workspace where you build agents on your own company data. Sokosumi is a marketplace where vendors have already built marketing coworkers that return finished files.",
-      cells: ["Companies building agents on their data", "Agents you configure, in chat", "In Dust and Slack", "You build them; Dust hosts", "A seat with credits, $30–150", "Yes, French company", "Free, 500 lifetime credits"],
+      cells: ["Companies building agents on their data", "Agents you configure, in chat", "In Dust and Slack", "You build them; Dust hosts", "A seat with credits, $30–150", "US and EU data residency options; check your plan", "Free, 500 lifetime credits"],
       grid: [
         ["Build vs. hire", "Dust hands you the tools to build. Sokosumi hands you the coworker: a role, sample work, a vendor responsible for it."],
         ["Company knowledge vs. marketing work", "Dust is strongest on answering questions from your Notion, Drive, and Slack. Sokosumi is for marketing tasks that end as a report, a deck, or a dashboard."],
@@ -333,11 +336,11 @@ const PAGES_BASE = [
     de: {
       q: "Was ist der Unterschied zwischen Dust und Sokosumi?",
       a: "Dust ist eine europäische Arbeitsumgebung, in der Sie Agenten auf Ihren eigenen Unternehmensdaten bauen. Sokosumi ist ein Marktplatz für bereits gebaute Marketing-Coworker von Anbietern. Sie liefern fertige Dateien.",
-      cells: ["Unternehmen, die Agenten auf ihren Daten bauen", "Agenten, die Sie konfigurieren, im Chat", "In Dust und Slack", "Sie bauen sie; Dust hostet", "Seat mit Credits, 30–150 $", "Ja, französisches Unternehmen", "Gratis, 500 Credits einmalig"],
+      cells: ["Unternehmen, die Agenten auf ihren Daten bauen", "Agenten, die Sie konfigurieren, im Chat", "In Dust und Slack", "Sie bauen sie; Dust hostet", "Seat mit Credits, 30–150 $", "Datenhaltung in USA oder EU wählbar; Plan prüfen", "Gratis, 500 Credits einmalig"],
       grid: [
         ["Bauen vs. beauftragen", "Dust gibt Ihnen Werkzeuge zum Bauen. Sokosumi gibt Ihnen den Coworker: eine Rolle, Beispielarbeit und einen Anbieter, der dafür verantwortlich ist."],
         ["Firmenwissen vs. Marketingarbeit", "Dust ist am stärksten beim Beantworten von Fragen aus Notion, Drive und Slack. Sokosumi ist für Marketingaufgaben, die als Report, Deck oder Dashboard enden."],
-        ["Credits in beiden Modellen", "Beide zählen Credits auf einem Seat. Auf Sokosumi zeigt jede Aufgabe ihren Preis vorab, und der Free-Plan erneuert monatlich 250 Credits pro Seat."],
+        ["Credits in beiden Modellen", "Beide bieten Nutzerplätze mit Credits an. Auf Sokosumi zeigt jede Aufgabe ihren Preis vorab, und der kostenlose Plan erneuert monatlich 250 Credits pro Seat."],
       ],
       faq: [
         ["Können Sokosumi-Coworker unsere Dokumente nutzen?", "Ja. Hängen Sie sie als Kontext an eine Aufgabe oder ein Projekt."],
@@ -353,9 +356,9 @@ const PAGES_BASE = [
       a: "Jasper is a content platform with agents for copy, campaigns, and brand voice, all from Jasper. Sokosumi is a marketplace of coworkers from several vendors that also do research, analysis, and reporting, and return files to a shared board.",
       cells: ["Marketing and content teams", "Copy and content from 100+ agents", "In Jasper Canvas", "Jasper", "A flat seat, $59–69", "US hosting", "Trial"],
       grid: [
-        ["Content vs. the whole job", "Jasper writes. Sokosumi coworkers also research the market, build the spreadsheet, and ship the dashboard."],
+        ["Content vs. the whole job", "Jasper's agents center on content and campaigns. Sokosumi coworkers also research the market, build the spreadsheet, and ship the dashboard."],
         ["One vendor vs. many", "Every Jasper agent is Jasper's. Sokosumi coworkers come from named vendors with public profiles, so you can compare."],
-        ["Two kinds of seat", "Both charge per seat each month. A Sokosumi seat comes with credits that specialist tasks spend, and the free plan gives 250 credits per seat."],
+        ["Seat pricing and included usage", "Both charge per seat each month. A Sokosumi seat comes with credits that specialist tasks spend, and the free plan gives 250 credits per seat."],
       ],
       faq: [
         ["Can Sokosumi write copy too?", "Yes. Creative and content coworkers are on the marketplace, with sample work on their profiles."],
@@ -368,9 +371,9 @@ const PAGES_BASE = [
       a: "Jasper ist eine Content-Plattform mit Agenten für Texte, Kampagnen und Markenstimme – alle von Jasper. Sokosumi ist ein Marktplatz für Coworker mehrerer Anbieter, die auch Recherche, Analyse und Reporting übernehmen und Dateien auf ein gemeinsames Task-Board liefern.",
       cells: ["Marketing- und Content-Teams", "Texte und Content von 100+ Agenten", "In Jasper Canvas", "Jasper", "Pauschale pro Seat, 59–69 $", "US-Hosting", "Testphase"],
       grid: [
-        ["Content vs. ganze Aufgabe", "Jasper schreibt. Sokosumi-Coworker recherchieren auch den Markt, bauen die Tabelle und liefern das Dashboard."],
+        ["Content vs. ganze Aufgabe", "Jaspers Agenten konzentrieren sich auf Content und Kampagnen. Sokosumi-KI-Mitarbeiter recherchieren auch den Markt, bauen die Tabelle und liefern das Dashboard."],
         ["Ein Anbieter vs. viele", "Jeder Jasper-Agent ist von Jasper. Sokosumi-Coworker kommen von namentlich genannten Anbietern mit öffentlichem Profil – Sie können vergleichen."],
-        ["Zwei Arten von Seat", "Beide berechnen pro Seat und Monat. Ein Sokosumi-Seat enthält Credits, die Spezialisten-Aufgaben verbrauchen, und der kostenlose Plan gibt 250 Credits pro Seat."],
+        ["Nutzerplätze und enthaltene Nutzung", "Beide berechnen pro Seat und Monat. Ein Sokosumi-Seat enthält Credits, die Spezialisten-Aufgaben verbrauchen, und der kostenlose Plan gibt 250 Credits pro Seat."],
       ],
       faq: [
         ["Kann Sokosumi auch Texte schreiben?", "Ja. Kreations- und Content-Coworker sind auf dem Marktplatz, mit Beispielarbeit im Profil."],
@@ -552,12 +555,12 @@ const PAGES_BASE = [
       cells: ["Solo founders and small businesses", "Chat outputs from 12 named helpers", "In Sintra", "One vendor: Sintra, Vilnius", "A bundle from $97 list, often discounted", "Not published", "Trial"],
       grid: [
         ["Chat vs. files", "Sintra's helpers answer in chat. Sokosumi tasks end with a report, a deck, or a dashboard on the board."],
-        ["One vendor vs. a marketplace", "All twelve helpers are Sintra's. Sokosumi coworkers come from named vendors with public profiles and stated hosting."],
+        ["One vendor vs. a marketplace", "All twelve helpers are Sintra's. Sokosumi coworkers come from named vendors with public profiles; hosting is shown where the vendor states it."],
         ["Solo vs. team", "Sintra is built for one owner. Sokosumi has organizations, roles, a shared board, and enterprise contracts."],
       ],
       faq: [
         ["Is Sokosumi too big for a small team?", "No. The free plan is one seat with 250 credits; paid seats start at €25."],
-        ["Do the coworkers have personalities like Sintra's?", "They have names, roles, and profiles. What matters is the sample work you can open before you spend a credit."],
+        ["Do the coworkers have personalities like Sintra's?", "They have names, roles, and profiles. What matters is what comes back, and many tasks have a sample you can open before you spend a credit."],
         ["Where is it hosted?", "The marketplace runs in the EU. Each coworker runs where its vendor hosts it; the profile shows the region when the vendor states it, so check before you send sensitive data."],
       ],
     },
@@ -567,12 +570,12 @@ const PAGES_BASE = [
       cells: ["Solo-Gründer und kleine Unternehmen", "Chat-Ausgaben von 12 benannten Helfern", "In Sintra", "Ein Anbieter: Sintra, Vilnius", "Bündel ab 97 $ Listenpreis, oft rabattiert", "Nicht veröffentlicht", "Testphase"],
       grid: [
         ["Chat vs. Dateien", "Sintras Helfer antworten im Chat. Sokosumi-Aufgaben enden mit einem Report, einem Deck oder einem Dashboard auf dem Board."],
-        ["Ein Anbieter vs. ein Marktplatz", "Alle zwölf Helfer sind von Sintra. Sokosumi-Coworker kommen von namentlich genannten Anbietern mit öffentlichem Profil und angegebenem Hosting."],
+        ["Ein Anbieter vs. ein Marktplatz", "Alle zwölf Helfer sind von Sintra. Sokosumi-KI-Mitarbeiter kommen von namentlich genannten Anbietern mit öffentlichem Profil; das Hosting steht dort, wo der Anbieter es angibt."],
         ["Solo vs. Team", "Sintra ist für eine Einzelperson gebaut. Sokosumi hat Organisationen, Rollen, ein gemeinsames Board und Enterprise-Verträge."],
       ],
       faq: [
         ["Ist Sokosumi zu groß für ein kleines Team?", "Nein. Der Free-Plan ist ein Seat mit 250 Credits; kostenpflichtige Seats beginnen bei 25 €."],
-        ["Haben die Coworker Persönlichkeiten wie bei Sintra?", "Sie haben Namen, Rollen und Profile. Entscheidend ist die Beispielarbeit, die Sie vor dem ersten Credit öffnen können."],
+        ["Haben die Coworker Persönlichkeiten wie bei Sintra?", "Sie haben Namen, Rollen und Profile. Entscheidend ist, was zurückkommt, und für viele Aufgaben gibt es ein Beispiel, das Sie vor dem ersten Credit öffnen können."],
         ["Wo wird gehostet?", "Der Marktplatz läuft in der EU. Jeder KI-Mitarbeiter läuft dort, wo sein Anbieter ihn hostet; das Profil zeigt die Region, wenn der Anbieter sie angibt. Prüfen Sie das, bevor Sie sensible Daten senden."],
       ],
     },
@@ -594,18 +597,29 @@ function layout(p, loc) {
     },
     { blockType: "featureGrid", heading: ui.grid, items: d.grid.map(([title, text]) => ({ title, text })) },
     { blockType: "faq", heading: loc === "de" ? `${p.name} und Sokosumi: häufige Fragen` : `${p.name} vs. Sokosumi: questions`, items: d.faq.map(([question, answer]) => ({ question, answer })) },
+    ...(d.sources?.length ? [{ blockType: "richText", content: lexical(sourcesMd(d.sources, loc, p.checked)) }] : []),
     { blockType: "ctaBand", heading: ui.band, subheading: ui.bandSub, ctaLabel: ui.cta, ctaHref: SIGNUP },
   ];
+}
+
+// "Sources (checked 27 September 2026)" plus one link per line.
+function sourcesMd(sources, loc, checked) {
+  const date = new Date(`${checked}T12:00:00Z`).toLocaleDateString(loc === "de" ? "de-DE" : "en-GB", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" });
+  const heading = loc === "de" ? `Quellen (geprüft am ${date})` : `Sources (checked ${date})`;
+  return [`## ${heading}`, sources.map(([label, url]) => `- [${label}](${url})`).join("\n")].join("\n\n");
 }
 
 // Meta description / card text: whole sentences, at most ~155 characters.
 function summary(text) {
   const out = [];
-  for (const sentence of text.match(/[^.!?]+[.!?]+/g) || [text]) {
+  // A period only ends a sentence before whitespace, so "Copy.ai" stays whole.
+  for (const sentence of text.match(/.+?[.!?](?=\s|$)/g) || [text]) {
     if ((out.join(" ") + " " + sentence).trim().length > 155) break;
     out.push(sentence.trim());
   }
-  return out.join(" ") || text.slice(0, 155);
+  if (out.length) return out.join(" ");
+  const cut = text.slice(0, 156);
+  return cut.slice(0, cut.lastIndexOf(" ")).replace(/[\s,;:.–—-]+$/, "");
 }
 
 async function api(path, init = {}) {
@@ -624,7 +638,7 @@ for (const p of PAGES.filter((x) => !ONLY || ONLY.has(x.slug))) {
   const found = await api(`/api/comparisons?where[slug][equals]=${p.slug}&limit=1&depth=0&draft=true`);
   const en = {
     site: "sokosumi", slug: p.slug, competitor: p.name, competitorLogo: p.logo,
-    title: `Sokosumi vs. ${p.name}`, description: summary(p.en.a), layout: layout(p, "en"), _status: status,
+    title: p.en.title || `Sokosumi vs. ${p.name}`, description: p.en.description || summary(p.en.a), layout: layout(p, "en"), _status: status,
   };
   let id = found.docs?.[0]?.id;
   if (id) {
@@ -640,7 +654,7 @@ for (const p of PAGES.filter((x) => !ONLY || ONLY.has(x.slug))) {
   // empty English text.
   const saved = await api(`/api/comparisons/${id}?locale=en&depth=0&draft=true`);
   const de = withIds(saved.layout, layout(p, "de"));
-  await api(`/api/comparisons/${id}?locale=de`, { method: "PATCH", body: JSON.stringify({ title: `Sokosumi vs. ${p.name}`, description: summary(p.de.a), layout: de, _status: status }) });
+  await api(`/api/comparisons/${id}?locale=de`, { method: "PATCH", body: JSON.stringify({ title: p.de.title || `Sokosumi vs. ${p.name}`, description: p.de.description || summary(p.de.a), layout: de, _status: status }) });
 }
 
 function withIds(from, to) {

@@ -252,7 +252,7 @@ async function render(ctx) {
     pageStart({
       title: "Pricing: credits per seat, free plan included | Sokosumi",
       description:
-        "Sokosumi plans: a free tier with 250 credits per seat, Starter at €25, Standard at €75, Pro at €200 per month, and a tailored Enterprise plan.",
+        "Sokosumi is priced per seat and month: Free with 250 credits, Starter €25, Standard €75, Pro €200, each with monthly credits. Enterprise on request.",
       path: "/pricing",
       breadcrumb: cr,
       jsonld: pricingLd(),

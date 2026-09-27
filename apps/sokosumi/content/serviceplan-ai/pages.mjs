@@ -848,7 +848,7 @@ Serviceplan nannte die Umsetzung des House of AI, Luma AI, Behave.AI, Plus.AI un
   page(
     "serviceplan-ai/ai-marketing-agency",
     "AI marketing agency: buyer guide",
-    "What an AI marketing agency does, how delivery models differ, and what buyers should verify across data, rights, governance, measurement and human approval.",
+    "What an AI marketing agency delivers, how the delivery models differ, and what to check on data, rights, measurement and approvals before you sign.",
     [
       hero(
         "AI marketing agency guide",
@@ -890,32 +890,32 @@ Serviceplan's [Business Partner Code of Conduct](${SOURCE.partnerCode}) requires
         ["How should AI agency work be priced?", "Common models include project fees, retainers, usage-based software, credits and transformation programmes. Compare the complete delivery scope and measured outcome, not only model or token cost."],
       ]),
     ],
-    "KI-Marketing-Agentur: Buyer-Guide",
-    "Was eine KI-Marketing-Agentur leistet und was Käufer bei Delivery-Modellen, Daten, Rechten, Governance, Messung und Freigaben prüfen sollten.",
+    "KI-Marketing-Agentur: Leistungen und Auswahl",
+    "Was eine KI-Marketing-Agentur liefert und was Sie vor der Beauftragung vergleichen sollten: gelieferte Arbeit, Verantwortung, Preis und Freigaben.",
     [
       hero(
         "Guide zur KI-Marketing-Agentur",
-        "Wählen Sie das Betriebsmodell, nicht das KI-Label",
-        "Ein Buyer-Guide zu KI-gestützten Agenturen, AI Coworkern, individuellen Agent-Systemen und Enterprise-Transformation.",
+        "Was Sie vergleichen sollten, bevor Sie eine KI-Agentur beauftragen",
+        "Ob KI-gestützte Agentur, KI-Mitarbeiter, eigenes Agent-System oder Umbau der ganzen Organisation: Entscheidend ist, welche Arbeit Sie bekommen, wer wofür verantwortlich ist, was es kostet und wer freigibt.",
       ),
       richText(`## Was ist eine KI-Marketing-Agentur?
-Eine **KI-Marketing-Agentur** setzt KI in echter Marketing-Delivery ein: Insights, Kreation, Produktion, Media-Aktivierung, Messung oder laufender Betrieb. Das ist mehr als der Weiterverkauf eines Tools und verbindlicher als Entwürfe in einem Chatfenster. Ein belastbarer Partner sollte für jede Leistung Inputs, Workflow, Output, menschliche Freigaben und Messplan benennen.
+Eine **KI-Marketing-Agentur** setzt KI in der tatsächlichen Marketingarbeit ein: Insights, Kreation, Produktion, Media-Aktivierung, Messung oder laufender Betrieb. Das ist mehr als der Weiterverkauf eines Tools und verbindlicher als Entwürfe in einem Chatfenster. Ein seriöser Partner sagt Ihnen für jede Leistung, welche Daten er braucht, wie die Arbeit abläuft, was Sie am Ende bekommen, wer freigibt und wie der Erfolg gemessen wird.
 
-Serviceplans [House of AI](${SOURCE.house}) ist ein dokumentiertes Beispiel für dieses breitere Modell. Es verbindet Insight.AI, Creative.AI, Activate.AI und Agentic.AI auf einer gemeinsamen Datenbasis. Trotzdem ist nicht jedes Projekt gleich. Der richtige Einkaufsweg hängt davon ab, ob eine einzelne Aufgabe, ein wiederholbarer Workflow, ein individuelles System oder eine Veränderung des Enterprise-Betriebsmodells gebraucht wird.`),
-      featureGrid("Vier Delivery-Modelle", [
-        ["Einzelnes KI-Tool", "Ein Team bedient ein fokussiertes Produkt für Research, Text, Produktion oder Optimierung. Schnell einsetzbar; Integration und Governance bleiben beim Käufer."],
+Serviceplans [House of AI](${SOURCE.house}) ist ein dokumentiertes Beispiel für dieses breitere Modell. Es verbindet Insight.AI, Creative.AI, Activate.AI und Agentic.AI auf einer gemeinsamen Datenbasis. Trotzdem ist nicht jedes Projekt gleich. Welcher Weg passt, hängt davon ab, ob Sie eine einzelne Aufgabe, einen wiederkehrenden Ablauf, ein eigenes System oder einen Umbau der ganzen Organisation brauchen.`),
+      featureGrid("Vier Wege, KI-Marketingarbeit zu beauftragen", [
+        ["Einzelnes KI-Tool", "Ein Team bedient ein fokussiertes Produkt für Research, Text, Produktion oder Optimierung. Schnell einsetzbar; die Anbindung an Ihre Systeme und die Kontrolle bleiben bei Ihnen."],
         ["AI Coworker", "Eine benannte Rolle nimmt ein Briefing an und liefert ein definiertes Ergebnis. Sokosumi ist der Self-Service-Weg für solche begrenzten Arbeiten."],
         ["Individuelles Agent-System", "Agents verbinden private Daten, Tools und Freigaben in einem firmenspezifischen Workflow. Plan.Net Agentic Services gehört in diese Kategorie."],
         ["Enterprise-Transformation", "Betriebsmodell, Architektur, Implementierung, Produktion und laufender Betrieb verändern sich gemeinsam. Dafür ist Plan.Net Agentic AI positioniert."],
       ]),
-      steps("So bewerten Sie eine KI-Marketing-Agentur", "Machen Sie aus einem breiten Capability-Claim einen prüfbaren Delivery-Plan.", [
-        ["Mit der Entscheidung starten", "Definieren Sie Business-Entscheidung oder fertiges Asset, Nutzer, Deadline, Baseline und Erfolgsmaß vor der Modelldiskussion."],
+      steps("So bewerten Sie eine KI-Marketing-Agentur", "Lassen Sie sich statt allgemeiner Versprechen einen konkreten Plan zeigen, den Sie prüfen können.", [
+        ["Mit der Entscheidung starten", "Legen Sie fest, welche Entscheidung oder welches fertige Asset Sie brauchen, für wen, bis wann, von welchem Ausgangswert aus und woran Sie den Erfolg messen. Erst dann geht es um KI-Modelle."],
         ["Daten und Rechte abbilden", "Listen Sie Quellsysteme, personenbezogene und vertrauliche Daten, Trainingsgrenzen, Lizenzen, Persönlichkeitsrechte und erlaubte Anbieter."],
-        ["Menschliche Kontrolle planen", "Benennen Sie Freigaben für Evidenz, Strategie, Marke, rechtliche Claims und Veröffentlichung sowie Eskalation und Incident Handling."],
-        ["Ergebnis belegen", "Fordern Sie Testdesign, Vergleichsbasis, Fehlerprotokoll und Outcome-Metrik. Geschwindigkeit allein ist keine Marketingwirkung."],
+        ["Menschliche Kontrolle planen", "Legen Sie fest, wer Quellen, Strategie, Markenauftritt, rechtliche Aussagen und die Veröffentlichung freigibt und wer eingreift, wenn etwas schiefgeht."],
+        ["Ergebnis belegen", "Fragen Sie nach Testaufbau, Vergleichswert, Fehlerprotokoll und der Kennzahl, an der das Ergebnis gemessen wird. Schneller heißt noch nicht wirksamer."],
       ]),
       checklist("Fragen für den Einkauf", "Die Antworten müssen zum konkreten System und Einsatz passen.", [
-        "Welches Ergebnis, welcher Workflow und welches Service Level sind enthalten",
+        "Welche Arbeit zu welchem Preis geliefert wird und welches Service Level gilt",
         "Welche Modelle, Subprozessoren, Hosting-Regionen und Aufbewahrungsregeln gelten",
         "Wem Prompts, Workflows, Fine-Tunes, Quellassets und generierte Arbeit gehören",
         "Wo menschliches Review Pflicht ist und wie Korrekturen dokumentiert werden",
@@ -927,8 +927,8 @@ Nach Angaben der Europäischen Kommission gelten die Transparenzpflichten aus Ar
 
 Serviceplans [Business Partner Code of Conduct](${SOURCE.partnerCode}) verlangt von Partnern beim KI-Einsatz die Einhaltung von Datenschutz- und Sicherheitsregeln. Das ist ein Governance-Beleg, aber keine vollständige öffentliche Responsible-AI-Policy oder Produktsicherheitsdokumentation. Diese Details sollten Käufer für ihr Projekt anfordern.`),
       faq("Fragen zur KI-Marketing-Agentur", [
-        ["Was macht eine KI-Marketing-Agentur?", "Sie nutzt KI in verantwortbaren Marketing-Workflows wie Research, Strategie, Produktion, Media-Aktivierung, Messung und Operations — mit definierten Inputs, Outputs und Freigaben."],
-        ["Ist eine KI-Marketing-Agentur dasselbe wie ein KI-Tool?", "Nein. Ein Tool liefert eine Fähigkeit. Eine Agentur oder ein Delivery-Partner verantwortet die Verbindung mit Daten, Prozessen, Expertise, Freigaben und Messung."],
+        ["Was macht eine KI-Marketing-Agentur?", "Sie setzt KI in der Marketingarbeit ein, etwa in Research, Strategie, Produktion, Media-Aktivierung, Messung und im laufenden Betrieb. Dabei ist festgelegt, welche Daten hineingehen, was herauskommt und wer freigibt."],
+        ["Ist eine KI-Marketing-Agentur dasselbe wie ein KI-Tool?", "Nein. Ein Tool liefert eine Fähigkeit. Eine Agentur ist dafür verantwortlich, diese Fähigkeit mit Ihren Daten, Abläufen, Fachwissen, Freigaben und der Erfolgsmessung zu verbinden."],
         ["Wann passt ein AI Coworker besser?", "Für eine begrenzte Aufgabe mit definiertem Ergebnis ohne Sonderentwicklung. Individuelle Integration passt, wenn private Daten, Tools oder organisationsspezifische Freigaben zentral sind."],
         ["Wie wird KI-Agenturarbeit bepreist?", "Üblich sind Projektpreise, Retainer, nutzungsbasierte Software, Credits und Transformationsprogramme. Vergleichen Sie den vollständigen Leistungsumfang und das gemessene Ergebnis."],
       ]),
@@ -982,12 +982,12 @@ THE MARCOM ENGINE says its AI-supported [BMW and MINI Content Factory](${SOURCE.
       ]),
     ],
     "Serviceplan KI-Marketing-Cases",
-    "Eine belegte Sammlung von Serviceplan-KI-Cases, die Workflow, Anbieterergebnis, Evidenzinhaber und bekannte Grenzen getrennt darstellt.",
+    "Überblick über Serviceplans KI-Cases: wofür KI eingesetzt wurde, welche Ergebnisse die Agentur meldet und wer die Zahlen veröffentlicht hat.",
     [
       hero(
         "Serviceplan KI-Cases",
         "Was gemacht, berichtet und nicht bewiesen wurde",
-        "Kampagnen-, Content-Supply-Chain-, Validierungs- und Betriebsmodell-Cases mit sichtbarer Evidenzgrenze.",
+        "Cases aus Kampagnen, Content-Produktion, Validierung und Betriebsmodellen, jeweils mit dem, was belegt ist und was nicht.",
       ),
       featureGrid("Fünf Arten von Cases", [
         ["Campaign Craft", "Coca-Cola, BMW Motorrad, Grana Padano, Swisscom und EFFIE A.I.WARDS nutzten KI in Kreativ- oder Produktionsworkflows."],
@@ -997,7 +997,7 @@ THE MARCOM ENGINE says its AI-supported [BMW and MINI Content Factory](${SOURCE.
         ["Betriebsmodell-Transformation", "BMW/MINI Content Factory und MediaMarktSaturn MOMENTUM organisieren marktübergreifende Produktion neu."],
       ]),
       richText(`## Kreative Kampagnen-Cases
-Für Coca-Colas **Holidays Are Coming** 2024 beschreibt Serviceplan individuelle generative Workflows mit historischen Markenassets vom Skript bis zum finalen Edit sowie mehr als 100 lokalisierte Versionen in 24 Märkten. Die [Case-Seite](${SOURCE.cocaCola}) meldet acht Wochen Produktion, 20 Prozent des üblichen Budgets und 90 Prozent schnellere Delivery. Mehrere dort gezeigte Impression-Zahlen sind nicht aufgelöst; dieser Guide führt sie deshalb nicht zu einem Wert zusammen.
+Für Coca-Colas **Holidays Are Coming** 2024 beschreibt Serviceplan individuelle generative Workflows mit historischen Markenassets vom Skript bis zum finalen Edit sowie mehr als 100 lokalisierte Versionen in 24 Märkten. Die [Case-Seite](${SOURCE.cocaCola}) meldet acht Wochen Produktion, 20 Prozent des üblichen Budgets und 90 Prozent schnellere Auslieferung. Mehrere dort gezeigte Impression-Zahlen sind nicht aufgelöst; dieser Guide führt sie deshalb nicht zu einem Wert zusammen.
 
 BMW Motorrads [Discover the world](${SOURCE.bmwMotorrad}) kombinierte Studiofotografie, CGI und Serviceplan Generate.AI; eine Ergebniskennzahl fehlt. Grana Padanos [Our Future has AI History](${SOURCE.grana}) nutzte KI-generierte Gesichter und Stimmen. Serviceplan meldet 260 Millionen Reichweite und 332 Millionen Views. [Swisscom sure](${SOURCE.swisscom}) und [EFFIE A.I.WARDS](${SOURCE.effie}) dokumentieren KI-gestützte Kreation, ohne zu beweisen, dass KI allein die Kampagnenwirkung verursacht hat.`),
       stats("Veröffentlichte Anbieterzahlen", [
@@ -1010,7 +1010,7 @@ BMW Motorrads [Discover the world](${SOURCE.bmwMotorrad}) kombinierte Studiofoto
 Der [MAKELINE-Case für L'Oréal Belgien und Niederlande](${SOURCE.makeline}) umfasst vier Divisionen, 35 Marken und mehr als 200 Stakeholder. Serviceplan meldet über 50.000 Assets, mehr als 5.500 Projekte jährlich, 50 Prozent schnellere Produktion und 30 Prozent Kosteneinsparung. Eine unabhängige Methodik oder Vergleichsperiode fehlt; die Werte bleiben Anbieterangaben.
 
 THE MARCOM ENGINE zufolge versorgt die KI-gestützte [BMW und MINI Content Factory](${SOURCE.bmwContent}) 26 europäische Märkte mit MAKELINE als zentraler Plattform, veröffentlicht aber kein Kosten- oder Zeitergebnis. [MOMENTUM](${SOURCE.momentum}) ist eine neu angekündigte gemeinsame Produktionsorganisation für MediaMarktSaturn in elf geplanten Märkten — ein Rollout, kein abgeschlossener Ergebnis-Case.`),
-      checklist("Wie dieser Guide Evidenz bewertet", "KI-Nutzung und Business-Ergebnis werden getrennt erfasst.", [
+      checklist("Wie wir die Angaben einordnen", "Wir trennen, wofür KI eingesetzt wurde, von dem, was geschäftlich dabei herauskam.", [
         "Kunde, Workflow, Märkte und Zeitraum nennen, wenn die Quelle sie nennt",
         "Alle Case-Kennzahlen Serviceplan, Mediaplus oder dem genannten Anbieter zuschreiben",
         "Nicht ableiten, dass KI Reichweite, Kaufabsicht, ROI oder Awards verursacht hat",
@@ -1147,34 +1147,34 @@ Mediaplus' [Data & AI portfolio](${SOURCE.dataAi}) groups four core workflows: s
       ]),
     ],
     "Mediaplus KI-Produkte erklärt",
-    "Eine belegte Karte der Mediaplus-KI-Produkte in Insight.AI, Creative.AI und Activate.AI mit öffentlichen Claims, Inputs, Outputs und Evidenzlücken.",
+    "Überblick über die KI-Produkte von Mediaplus in Insight.AI, Creative.AI und Activate.AI: Aufgaben, benötigte Daten, Ergebnisse und veröffentlichte Belege.",
     [
       hero(
-        "Mediaplus KI-Produktkarte",
+        "Mediaplus KI-Produkte im Überblick",
         "Die Produkte hinter Insight, Kreativtests und Aktivierung",
-        "Eine gepflegte Karte des öffentlichen Portfolios statt einer dünnen Seite für jeden .AI-Namen.",
+        "Das öffentliche Portfolio auf einer Seite, statt einer dünnen Seite für jeden .AI-Namen.",
       ),
       richText(`## Was die benannten Produkte leisten
-Das [Data-&-AI-Portfolio](${SOURCE.dataAi}) von Mediaplus gruppiert Strategie, Audience, Media-Modellierung und Messung. **Research.AI** erzeugt synthetische Profile und führt agentenbasierte Interviews. Die [Produktseite](${SOURCE.researchAi}) nennt 100 Profile als Standard und beansprucht über 90 Prozent Genauigkeit gegenüber realen Stichproben. Human- und Hybrid-Panels werden dort als zukünftige Erweiterung genannt; das aktuelle öffentliche Angebot ist daher synthetisches Panel-Research.
+Das [Data-&-AI-Portfolio](${SOURCE.dataAi}) von Mediaplus gruppiert Strategie, Audience, Media-Modellierung und Messung. **Research.AI** erzeugt synthetische Profile und führt agentenbasierte Interviews. Die [Produktseite](${SOURCE.researchAi}) nennt 100 Profile als Standard und gibt über 90 Prozent Genauigkeit gegenüber realen Stichproben an. Human- und Hybrid-Panels werden dort als zukünftige Erweiterung genannt; das aktuelle öffentliche Angebot ist daher synthetisches Panel-Research.
 
-**Search.AI** erstellt statistisch plausible Digital Twins aus GWI-Verhaltensdaten und simuliert Journeys über ChatGPT, Claude, Gemini und Perplexity. Die [öffentliche Seite](${SOURCE.searchAi}) nennt Mention Rate, Tonalität, Wettbewerbsposition und Content-Empfehlungen als Outputs. Das sind wiederholte Modellbeobachtungen, kein stabiler universeller Rang.
+**Search.AI** erstellt statistisch plausible Digital Twins aus GWI-Verhaltensdaten und simuliert Journeys über ChatGPT, Claude, Gemini und Perplexity. Die [öffentliche Seite](${SOURCE.searchAi}) nennt Mention Rate, Tonalität, Wettbewerbsposition und Content-Empfehlungen als Ergebnisse. Das sind wiederholte Modellbeobachtungen, kein stabiler universeller Rang.
 
 **Pretest.AI** bewertet Video- und Static-Assets gegen mehr als 250.000 Benchmark-Evaluationen und 15 Metriken. Mediaplus nennt 15 bis 30 Minuten Ergebniszeit, mehr als 20 Märkte und 1.500 Euro für ein einzelnes Asset. Laut [Seite](${SOURCE.pretestAi}) betreibt ein nicht genannter Spezialanbieter das Tool; Mediaplus liefert Integration und Interpretation.`),
       stats("Von Mediaplus gemeldete Portfoliozahlen", [
-        ["80%", "weniger Zeit für Insights beansprucht"],
-        ["18%", "durchschnittlich höherer Media-ROI in Piloten beansprucht"],
-        ["40%", "schnellere Strategiezyklen beansprucht"],
+        ["80%", "weniger Zeit für Insights"],
+        ["18%", "durchschnittlich höherer Media-ROI in Piloten"],
+        ["40%", "schnellere Strategiezyklen"],
         ["250k+", "angegebene Pretest.AI-Benchmark-Evaluationen"],
       ]),
-      steps("So bewerten Sie ein Mediaplus-KI-Produkt", "Ordnen Sie die Evidenzfrage dem Produkt zu statt der Suite einen Gesamtscore zu geben.", [
+      steps("So bewerten Sie ein Mediaplus-KI-Produkt", "Prüfen Sie jedes Produkt einzeln, statt der ganzen Suite eine Gesamtnote zu geben.", [
         ["Entscheidung definieren", "Geht es um Marktforschung, Zielgruppenauswahl, Kreativvalidierung, Mediaplanung, Targeting oder Messung?"],
-        ["Daten prüfen", "Klären Sie, ob Inputs beobachtete Menschen, synthetische Profile, First-Party-Daten, lizenzierte Panels, Inhalte oder Modelloutputs sind."],
-        ["Metrik validieren", "Fordern Sie Vergleichsset, Stichprobe, Fehlerbereich und Methode hinter Genauigkeits-, Prognose- oder ROI-Claims."],
+        ["Daten prüfen", "Klären Sie, ob die Daten von beobachteten Menschen stammen oder aus synthetischen Profilen, eigenen Kundendaten, lizenzierten Panels, Inhalten oder Modellausgaben."],
+        ["Metrik validieren", "Fragen Sie bei Angaben zu Genauigkeit, Prognosen oder ROI nach Vergleichsgruppe, Stichprobe, Fehlerspanne und Methode."],
         ["Betrieb planen", "Dokumentieren Sie Interpretation, Freigabe und Drift-Kontrolle nach Änderungen von Markt, Modell oder Creative."],
       ]),
-      checklist("Öffentliche Evidenzlücken", "Das Portfolio beschreibt Funktionen ausführlicher als Validierungsmethoden.", [
+      checklist("Was öffentlich nicht belegt ist", "Die Portfolioseiten erklären ausführlich, was die Produkte tun, aber kaum, wie die Ergebnisse geprüft wurden.", [
         "Stichprobe und Methode hinter dem portfolioweiten 18-Prozent-ROI-Wert",
-        "Externe Validierung für den Research.AI-Genauigkeitsclaim",
+        "Externe Prüfung der Genauigkeitsangabe von Research.AI",
         "Betreiber- und Modelldetails für Pretest.AI",
         "Kontrolle von Prompt-, Modell-, Orts- und Zeitvarianz in Search.AI",
         "Produktspezifische Aufbewahrung, Subprozessoren, Security und Audits",

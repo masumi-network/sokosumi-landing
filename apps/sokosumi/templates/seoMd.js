@@ -54,7 +54,7 @@ function render() {
     pageStart({
       title: "Free SEO.md generator for AI agents | Sokosumi",
       description:
-        "Generate an SEO.md from any website URL: title, meta description, canonical, Open Graph, structured data, headings and a scored checklist for Claude Code, Cursor and other AI agents.",
+        "Generate an SEO.md from any URL: title, meta description, canonical, Open Graph, structured data, headings and a scored checklist for AI coding agents.",
       path,
       englishOnly: true,
       breadcrumb: crumbs,

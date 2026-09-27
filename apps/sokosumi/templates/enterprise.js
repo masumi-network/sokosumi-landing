@@ -67,7 +67,7 @@ function render() {
   return (
     pageStart({
       title: t("AI coworkers for enterprise marketing teams | Sokosumi"),
-      description: t("Roll AI coworkers out to a marketing department: seats and credits sized to your team, a named vendor behind every coworker, EU operation from Munich, and a pilot first."),
+      description: t("Roll AI coworkers out to a marketing department: seats and credits sized to your team, a named vendor behind each coworker, operated from Munich."),
       path,
       breadcrumb: [{ label: t("Home"), href: "/" }, { label: t("Enterprise") }],
       jsonld: [
