@@ -925,13 +925,12 @@ const assetsDir = path.join(root, "assets");
   function heroSocialHtml() {
     const faces = (catalog.coworkers || []).filter((c) => c && c.image).slice(0, 5);
     if (!faces.length) return "";
-    const count = (catalog.agents || []).length || (catalog.coworkers || []).length;
     const imgs = faces
       .map((c, i) => `<img${shell.thumbSrc(c.image, 96)} alt="" width="40" height="40" decoding="async"${i === 0 ? ' fetchpriority="high"' : ""} />`)
       .join("");
     return `<div class="hero-social in" id="heroSocial" data-reveal>
           <span class="avatars" id="heroAvatars">${imgs}</span>
-          <span class="count" id="heroCount">${count}+ ${t("Agents")}</span>
+          <span class="count" id="heroCount">${t("Named AI coworkers")}</span>
         </div>`;
   }
 

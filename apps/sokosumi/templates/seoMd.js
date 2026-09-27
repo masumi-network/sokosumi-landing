@@ -6,7 +6,7 @@ const FAQ = [
   {
     question: "What is an SEO.md file?",
     answer:
-      "SEO.md is a plain-text SEO specification for AI agents and developers. It captures a page's real search signals — title, meta description, canonical, Open Graph, structured data, heading structure, keywords, brand entities, navigation and indexing rules — plus SEO, content, brand-clarity and AI-readiness scores and prioritized fixes, in one file you can drop into a repo.",
+      "SEO.md is a plain-text SEO specification for AI agents and developers. It captures a page's real search signals (title, meta description, canonical, Open Graph, structured data, heading structure, keywords, brand entities, navigation and indexing rules) plus SEO, content, brand-clarity and AI-readiness scores and prioritized fixes, in one file you can drop into a repo.",
   },
   {
     question: "How does the SEO.md generator work?",
@@ -16,12 +16,12 @@ const FAQ = [
   {
     question: "Which AI agents can use SEO.md?",
     answer:
-      "Any coding or content agent that reads repository files — Claude Code, Cursor, Codex, Copilot, Gemini CLI. Commit SEO.md to your project and tell your agent to follow it when writing metadata, titles, or on-page copy, so its output matches your actual SEO state.",
+      "Any coding or content agent that reads repository files: Claude Code, Cursor, Codex, Copilot, Gemini CLI. Commit SEO.md to your project and tell your agent to follow it when writing metadata, titles, or on-page copy, so its output matches your actual SEO state.",
   },
   {
     question: "Is the analysis accurate?",
     answer:
-      "The generator reports exactly what the page's HTML contains at fetch time — it does not guess or invent values. It reads the raw markup, so client-side-rendered content that only appears after JavaScript runs may not be counted. The score is a deterministic rule-based check, not a Google ranking prediction.",
+      "The generator reports exactly what the page's HTML contains at fetch time. It does not guess or invent values. It reads the raw markup, so client-side-rendered content that only appears after JavaScript runs may not be counted. The score is a deterministic rule-based check, not a Google ranking prediction.",
   },
 ];
 
@@ -45,7 +45,7 @@ function render() {
     operatingSystem: "Web",
     url: `${SITE}${path}`,
     description:
-      "A free web tool that generates an SEO.md specification from a public website URL — title, meta, Open Graph, structured data, headings and a scored checklist — for use with AI agents.",
+      "A free web tool that generates an SEO.md specification from a public website URL (title, meta, Open Graph, structured data, headings and a scored checklist) for use with AI agents.",
     offers: { "@type": "Offer", price: "0", priceCurrency: "EUR" },
     creator: { "@id": `${SITE}/#organization` },
   };
@@ -143,7 +143,7 @@ function render() {
       <h2 id="seo-md-how">One file that tells your AI agents the real SEO state.</h2>
       <ol>
         <li><span>01</span><h3>Paste a URL</h3><p>The page and its robots.txt are fetched server-side and parsed straight from the HTML.</p></li>
-        <li><span>02</span><h3>Get the report</h3><p>Title, meta, Open Graph, headings, keywords, important pages, brand entities, navigation and discoverability — with SEO, content, brand and AI-readiness scores.</p></li>
+        <li><span>02</span><h3>Get the report</h3><p>Title, meta, Open Graph, headings, keywords, important pages, brand entities, navigation and discoverability, with SEO, content, brand and AI-readiness scores.</p></li>
         <li><span>03</span><h3>Edit and download</h3><p>Drop SEO.md in your repo. Claude Code, Cursor, Codex and Copilot follow it when writing metadata and copy.</p></li>
       </ol>
     </section>

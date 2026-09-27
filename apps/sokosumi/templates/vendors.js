@@ -6,7 +6,7 @@
 
 const shell = require("./shell");
 const cms = require("../lib/cms");
-const { t, tp, locale } = require("../lib/i18n");
+const { t, tp, tCategory, locale } = require("../lib/i18n");
 const { esc, attr, icon, avatar, vendorLogo, truncate, pageStart, pageEnd } = shell;
 
 function vendorSlugOf(c) {
@@ -173,7 +173,7 @@ function capabilityCol(category, offers, ownerOf, i) {
     })
     .join("");
   return `<div class="cap-col" data-reveal style="--i:${i % 4}">
-    <span class="cap-label">${esc(category)} <em>${offers.length}</em></span>
+    <span class="cap-label">${esc(tCategory(category))} <em>${offers.length}</em></span>
     ${links}
     ${rest > 0 ? `<span class="cap-more">${esc(t("+ {n} more", { n: rest }))}</span>` : ""}
   </div>`;
@@ -184,8 +184,8 @@ function agentRow(c) {
   const nf = () => (locale() === "de" ? "de-DE" : "en-US");
   const runCount = Number(c.runs);
   if (Number.isFinite(runCount) && runCount > 0) stats.push(t("{n} runs", { n: runCount.toLocaleString(nf()) }));
-  if (c.rating && c.ratingCount) stats.push(t("rated {r}/5", { r: Number(c.rating).toFixed(1) }));
-  if (c.credits) stats.push(t("{n} credits per run", { n: c.credits }));
+  if (c.rating && c.ratingCount) stats.push(t("rated {r}/5", { r: Number(c.rating).toLocaleString(nf(), { minimumFractionDigits: 1, maximumFractionDigits: 1 }) }));
+  if (c.credits) stats.push(t("{n} credits per run", { n: Number.isFinite(Number(c.credits)) ? Number(c.credits).toLocaleString(nf()) : c.credits }));
   const summary = c.seoDescription || c.description || "";
   return `<a class="row-item" href="/ai-coworkers/${encodeURIComponent(c.slug)}">
     <span style="display:flex;align-items:center;gap:12px">${avatar(c, "sm")}<span class="row-title">${esc(c.name)}</span></span>
@@ -227,7 +227,7 @@ async function detail(ctx) {
   if (curated.length) facts.push(`<span><strong>${curated.length}</strong> ${esc(factWord(curated.length, "{n} AI coworker", "{n} AI coworkers"))}</span>`);
   if (agents.length) facts.push(`<span><strong>${agents.length}</strong> ${esc(factWord(agents.length, "{n} marketplace agent", "{n} marketplace agents"))}</span>`);
   if (myOffers.length) facts.push(`<span><strong>${myOffers.length}</strong> ${esc(factWord(myOffers.length, "{n} template task", "{n} template tasks"))}</span>`);
-  if (totalRuns) facts.push(`<span><strong>${totalRuns.toLocaleString(nf)}</strong> ${esc(t("tasks run"))}</span>`);
+  if (totalRuns) facts.push(`<span><strong>${totalRuns.toLocaleString(nf)}</strong> ${esc(factWord(totalRuns, "{n} task run", "{n} tasks run"))}</span>`);
 
   const subParts = [
     curated.length ? tp(curated.length, "{n} named AI coworker", "{n} named AI coworkers") : "",
@@ -306,10 +306,10 @@ async function detail(ctx) {
     ? `<section class="page-section${flush()}">
         <h2>${esc(t("{vendor} AI agents on the marketplace", { vendor: v.name }))}</h2>
         <p class="sub">${esc(
-          t("{agents} from {vendor}{runs}. Each one does one job and shows its price in credits before you start.", {
+          tp(agents.length, "{agents} from {vendor}{runs}. It does one job and shows its price in credits before you start.", "{agents} from {vendor}{runs}. Each one does one job and shows its price in credits before you start.", {
             agents: tp(agents.length, "{n} single-purpose specialist agent", "{n} single-purpose specialist agents"),
             vendor: v.name,
-            runs: totalRuns ? t(", with {n} tasks run between them", { n: totalRuns.toLocaleString(nf) }) : "",
+            runs: totalRuns ? tp(totalRuns, ", with {n} task run", ", with {n} tasks run between them", { n: totalRuns.toLocaleString(nf) }) : "",
           }),
         )}</p>
         <div class="row-list">${agents.map(agentRow).join("")}</div>

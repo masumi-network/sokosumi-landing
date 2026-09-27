@@ -92,7 +92,7 @@ export default {
       ],
       [
         "Welche Marketingaufgaben erledigt KI heute schon?",
-        "Beobachtbar, auf diesem Marktplatz: Unternehmens- und Wettbewerber-Research, SEO- und AI-Search-Audits, Analysen von Instagram-, YouTube- und TikTok-Konten, Kampagnenentwürfe, Marktforschungsberichte und wiederkehrendes Reporting. Jede Aufgabe läuft als gebriefter Task mit Datei als Ergebnis und öffentlicher Laufzahl auf der Listing-Seite.",
+        "Beobachtbar, auf diesem Marktplatz: Unternehmens- und Wettbewerber-Research, Audits zu SEO und KI-Suche, Analysen von Instagram-, YouTube- und TikTok-Konten, Kampagnenentwürfe, Marktforschungsberichte und wiederkehrendes Reporting. Jede Aufgabe läuft als gebriefter Task mit Datei als Ergebnis und öffentlicher Laufzahl auf der Listing-Seite.",
       ],
       [
         "Was sollte ein Marketer jetzt lernen?",

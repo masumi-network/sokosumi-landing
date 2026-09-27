@@ -954,7 +954,7 @@ function header(currentPath, opts) {
       <div class="container-app bar">
         <div class="nav-left">
           <a href="/" aria-label="Sokosumi"><img class="mark" src="/assets/sokosumi-wordmark.svg" alt="Sokosumi" width="144" height="17" /></a>
-          <nav class="site-nav" aria-label="Primary">
+          <nav class="site-nav" aria-label="${attr(t("Primary"))}">
             ${navItems(currentPath)}
           </nav>
         </div>
@@ -986,7 +986,7 @@ function langSwitcher() {
     cur === loc
       ? `<span aria-current="true" lang="${loc}">${label}</span>`
       : `<a href="${attr(href)}" hreflang="${loc}" lang="${loc}" rel="alternate">${label}</a>`;
-  return `<nav class="foot-lang" aria-label="Language">
+  return `<nav class="foot-lang" aria-label="${attr(t("Language"))}">
             ${link("en", enHref, "English")}
             <span class="sep" aria-hidden="true">/</span>
             ${link("de", deHref, "Deutsch")}
@@ -1003,7 +1003,7 @@ function footerHtml(opts) {
             </a>
             <p class="foot-tag">${esc(t("Hire AI coworkers that work as part of your team."))}</p>
           </div>
-          <nav class="foot-cols" aria-label="Footer">
+          <nav class="foot-cols" aria-label="${attr(t("Footer"))}">
             <div class="foot-col">
               <h2 class="foot-h">${esc(t("Marketplace"))}</h2>
               <ul>
@@ -1065,7 +1065,7 @@ function footerHtml(opts) {
         </div>
         <div class="foot-meta">
           <div class="foot-ai">
-            <img src="/assets/ai-generated.png" alt="AI-generated content mark" width="32" height="32" loading="lazy" />
+            <img src="/assets/ai-generated.png" alt="${attr(t("AI-generated content mark"))}" width="32" height="32" loading="lazy" />
             <p>${esc(t("Some of the content on this site is AI generated."))}</p>
           </div>
           <a class="foot-pref" href="https://www.google.com/preferences/source?q=sokosumi.com" target="_blank" rel="noreferrer">
@@ -1127,7 +1127,7 @@ function crumbs(items) {
         : `<a href="${attr(it.href)}">${label}</a>`;
     })
     .join(' <span class="sep">/</span> ');
-  return `<nav class="crumbs container-app" aria-label="Breadcrumb">${parts}</nav>`;
+  return `<nav class="crumbs container-app" aria-label="${attr(t("Breadcrumb"))}">${parts}</nav>`;
 }
 
 // Standard page opening: head + skip link + header + breadcrumbs + <main>.

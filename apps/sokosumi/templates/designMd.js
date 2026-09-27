@@ -34,7 +34,7 @@ const FAQ = [
   {
     question: "Which AI coding agents can use DESIGN.md?",
     answer:
-      "DESIGN.md is designed as durable repository context for coding agents and tools. Add the file to your project and tell your agent—such as Claude Code, Cursor, Codex, Copilot, or Gemini CLI—to follow it when implementing interface work.",
+      "DESIGN.md is designed as durable repository context for coding agents and tools. Add the file to your project and tell your agent (Claude Code, Cursor, Codex, Copilot or Gemini CLI) to follow it when implementing interface work.",
   },
 ];
 

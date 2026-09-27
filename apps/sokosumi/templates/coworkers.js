@@ -6,7 +6,7 @@ const shell = require("./shell");
 const blocks = require("./blocks");
 const cms = require("../lib/cms");
 const boostFor = require("./coworkerBoost").forSlug;
-const { t, tp, locale } = require("../lib/i18n");
+const { t, tp, tCategory, locale } = require("../lib/i18n");
 const { esc, attr, icon, avatar, vendorLogo, pageStart, pageEnd, APP } = shell;
 
 // The vendor that leads /ai-coworkers. Serviceplan Group builds the curated roster.
@@ -489,7 +489,7 @@ function offerCard(agentSlug, o) {
   const om = shell.outputMeta(o.output);
   const href = `/ai-coworkers/${encodeURIComponent(agentSlug)}/tasks/${encodeURIComponent(o.slug)}`;
   return `<a class="offer-card" href="${attr(href)}" data-out="${attr(o.output || "text")}">
-    <div class="offer-meta"><span>${esc(o.category || t("Task"))}</span><span class="offer-type" data-out="${attr(o.output || "text")}">${icon(om.icon, 12)}${esc(om.label)}</span></div>
+    <div class="offer-meta"><span>${esc(o.category ? tCategory(o.category) : t("Task"))}</span><span class="offer-type" data-out="${attr(o.output || "text")}">${icon(om.icon, 12)}${esc(om.label)}</span></div>
     <div class="offer-title">${esc(o.title)}</div>
     ${o.description ? `<div class="offer-desc">${esc(o.description)}</div>` : ""}
     <div class="offer-foot"><span>${esc(t("View task"))}</span><span class="go">${icon("arrow-up-right", 15)}</span></div>

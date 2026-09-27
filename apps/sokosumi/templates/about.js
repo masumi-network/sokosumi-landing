@@ -196,7 +196,7 @@ async function render() {
     .join("");
 
   const siblings = SIBLINGS.map(
-    (s) => `<li><strong><a href="${attr(s.url)}"${s.url.startsWith(SITE) ? "" : ' rel="noreferrer"'}>${esc(s.name)}</a></strong> — ${esc(t(s.what))}</li>`,
+    (s) => `<li><strong><a href="${attr(s.url)}"${s.url.startsWith(SITE) ? "" : ' rel="noreferrer"'}>${esc(s.name)}</a></strong>: ${esc(t(s.what))}</li>`,
   ).join("");
 
   const cr = [{ label: "Home", href: "/" }, { label: t("About") }];

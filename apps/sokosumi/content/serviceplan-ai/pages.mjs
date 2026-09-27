@@ -95,7 +95,7 @@ export const pages = [
         "A sourced guide to the House of AI, the work inside Serviceplan, Mediaplus and Plan.Net, and the products that make it usable.",
       ),
       richText(`## One system, several kinds of work
-Serviceplan Group describes the **House of AI** as the digital twin of its House of Communication: a connected operating system for insight, creative work, media activation and specialised agents. It is not one chatbot and it is not one agency. The public structure spans the group's three main brands — Serviceplan, Mediaplus and Plan.Net — plus a data foundation, partner technologies and products such as Sokosumi.
+Serviceplan Group describes the **House of AI** as the digital twin of its House of Communication: a connected operating system for insight, creative work, media activation and specialised agents. It is not one chatbot and it is not one agency. The public structure spans the group's three main brands (Serviceplan, Mediaplus and Plan.Net) plus a data foundation, partner technologies and products such as Sokosumi.
 
 This guide separates those layers. It is published by Sokosumi, which is operated by Plan.Net Germany and belongs to the Serviceplan AI ecosystem. Claims are linked to Serviceplan Group, partner and product sources so readers can distinguish the group's statements from independent facts. Start with the [official House of AI overview](${SOURCE.house}) and the [latest group results](${SOURCE.results}).`),
       stats("Serviceplan Group in 2026", [
@@ -705,7 +705,7 @@ The wider network won Independent Network of the Year at Cannes Lions 2025 and r
         ["Akkio", "Technologiepartner hinter Mediaplus' Plus.AI-Betriebssystem für Mediaplanung."],
         ["Microsoft Azure", "Serviceplan Agents nennt Hosting in Deutschland auf Azure. Das ist Hosting, kein Beleg für eine weitergehende Microsoft-KI-Partnerschaft."],
       ]),
-      richText(`## Was ein Logo belegt — und was nicht
+      richText(`## Was ein Logo belegt und was nicht
 Partnerlogos können strategische Beziehungen, Technologieanbieter, Datenabonnements und normale Integrationen vermischen. Diese Seite nimmt nur Beziehungen auf, für die eine öffentliche Quelle die Zusammenarbeit beschreibt. Die Agentic-Services-Seite zeigt außerdem Logos von Adobe, Google, Salesforce, OpenAI, SAP und Microsoft. Ein Logo allein belegt jedoch keine formelle KI-Partnerschaft.
 
 Die klarste gruppenweite Technologieankündigung betrifft [Luma AI](${SOURCE.luma}). Die deutlichste Infrastrukturzusammenarbeit ist die Arbeit von NMKR und Serviceplan an Masumi und Sokosumi, ergänzt durch die [Partnerschaft mit der Cardano Foundation](${SOURCE.masumiPartner}). Die [GWI-Mitteilung](${SOURCE.gwi}) dokumentiert Konsumentendaten und Agent-to-Agent-Orchestrierung auf Sokosumi.`),
@@ -1236,7 +1236,7 @@ This does not replace technical SEO. Pages still need stable URLs, crawlable HTM
       ]),
     ],
     "KI-Suche: Sichtbarkeit und GEO bei Serviceplan",
-    "Wie sich AI-Search-Sichtbarkeit und GEO von SEO unterscheiden, was Mediaplus Search.AI misst und wie Marken belegbare Autorität aufbauen.",
+    "Wie sich die Sichtbarkeit in der KI-Suche und GEO von SEO unterscheiden, was Mediaplus Search.AI misst und wie Marken belegbare Autorität aufbauen.",
     [
       hero(
         "KI-Suche: Sichtbarkeit und GEO bei Serviceplan",
@@ -1253,7 +1253,7 @@ Mediaplus [Search.AI](${SOURCE.searchAi}) nutzt GWI-Verhaltensdaten für statist
         ["Framing", "Wie die Antwort Passung, Kategorie, Stärken, Grenzen und Wettbewerber beschreibt; unbelegte Aussagen separat erfassen."],
         ["Konsistenz", "Varianz über Modell, Prompt-Formulierung, Account-Status, Region und Zeit. Ein Screenshot ist kein Benchmark."],
       ]),
-      steps("Ein Programm für AI-Search-Autorität", "Die stärkste GEO-Arbeit verbessert auch klassisches SEO und Buyer-Verständnis.", [
+      steps("Ein Programm für Autorität in der KI-Suche", "Die stärkste GEO-Arbeit verbessert auch klassisches SEO und Buyer-Verständnis.", [
         ["Entities klären", "Namen, Beziehungen, Daten, Rollen und Produktgrenzen über Kernseiten und strukturierte Daten konsistent halten."],
         ["Zitierbare Fakten veröffentlichen", "Klare Definitionen, eigene Vergleiche, Methoden, Daten und Evidenzhinweise schaffen, die korrekt zitiert werden können."],
         ["Thementiefe aufbauen", "Hub-, Explainer-, Case- und How-to-Seiten mit beschreibenden internen Links verbinden statt isolierte Keyword-Seiten zu erzeugen."],
@@ -1263,7 +1263,7 @@ Mediaplus [Search.AI](${SOURCE.searchAi}) nutzt GWI-Verhaltensdaten für statist
       richText(`## Was Mediaplus über Topical Authority sagt
 Ein Mediaplus-[Beitrag zu AI Search](${SOURCE.aiSearch}) nennt semantische Kohärenz, Information Gain und Trust Signals als wichtig, wenn Suche sich von Linklisten zu generierten Antworten entwickelt. Das passt zu guter Informationsarchitektur: Eine klare Entity-Seite, unterstützende Evidenzseiten, eigene Fakten und explizite Quellen sind für Menschen und Retrieval-Systeme leichter einzuordnen als wiederholte generische Texte.
 
-Technisches SEO wird dadurch nicht ersetzt. Seiten brauchen weiterhin stabile URLs, crawlbares HTML, Canonical- und Sprachsignale, beschreibende Titel, interne Links und gute Performance. AI-Search-Monitoring gehört neben Search Console und Analytics, nicht an deren Stelle.`),
+Technisches SEO wird dadurch nicht ersetzt. Seiten brauchen weiterhin stabile URLs, crawlbares HTML, Canonical- und Sprachsignale, beschreibende Titel, interne Links und gute Performance. KI-Such-Monitoring gehört neben Search Console und Analytics, nicht an deren Stelle.`),
       checklist("Ein belastbares GEO-Messdesign", "Schreiben Sie das Protokoll vor dem ersten Ergebnis.", [
         "Prompt-Set, Sprache, Markt, Persona und Intent-Kategorie festlegen",
         "Modell, Produkttarif, Datum, Account-Status und Web-Retrieval dokumentieren",
@@ -1273,7 +1273,7 @@ Technisches SEO wird dadurch nicht ersetzt. Seiten brauchen weiterhin stabile UR
         "Tool-Empfehlungen als zu testende Hypothesen behandeln, nicht als automatische Publishing-Befehle",
       ]),
       faq("Fragen zu AI Search und GEO", [
-        ["Was ist AI-Search-Sichtbarkeit?", "Die beobachtete Präsenz und Darstellung einer Marke oder Quelle in generierten Antworten für ein definiertes Set aus Prompts, Modellen, Märkten und Daten."],
+        ["Was ist Sichtbarkeit in der KI-Suche?", "Die beobachtete Präsenz und Darstellung einer Marke oder Quelle in generierten Antworten für ein definiertes Set aus Prompts, Modellen, Märkten und Daten."],
         ["Was ist Generative Engine Optimization?", "GEO macht Entities, Fakten und nützliche Inhalte für Antwortsysteme leichter auffindbar, verständlich und zitierbar und misst zugleich die Varianz der Outputs."],
         ["Ersetzt GEO das SEO?", "Nein. Crawlability, Indexierung, Links, Seitenqualität und Suchnachfrage bleiben wesentlich. GEO ergänzt Modellbeobachtung, Zitierbarkeit und Entity-Klarheit."],
         ["Kann eine Agentur ein ChatGPT-Ranking garantieren?", "Nein. Es gibt keinen stabilen universellen Rang. Ein seriöser Anbieter berichtet Wahrscheinlichkeit, Stichprobendesign, Varianz und Zitate."],

@@ -109,7 +109,7 @@ const lifPreview = () => `
 const mtgPreview = () => `
   <span class="tp tp-mtg">
     <span class="tp-mtg-url">your-site.com</span>
-    <span class="tp-mtg-title">Project management pricing — plans from…</span>
+    <span class="tp-mtg-title">Project management pricing: plans from…</span>
     <span class="tp-mtg-desc">Compare plans, see what each tier includes, and start free.</span>
     <span class="tp-verdict">
       <span class="tp-chip is-pass">548px / 580px</span>
@@ -121,7 +121,7 @@ const TOOLS = [
   {
     href: "/tools/llms-txt",
     name: "llms.txt checker",
-    text: "Validate your llms.txt — and find the links inside it that no longer resolve.",
+    text: "Validate your llms.txt and find the links inside it that no longer resolve.",
     meta: "Free · no sign-up",
     preview: llmsPreview,
   },
@@ -149,7 +149,7 @@ const TOOLS = [
   {
     href: "/tools/calculators",
     name: "Marketing calculators",
-    text: "CPM, ROAS, CTR, CPC, CPA, LTV, CAC and engagement rate — with formulas and worked examples.",
+    text: "CPM, ROAS, CTR, CPC, CPA, LTV, CAC and engagement rate, with formulas and worked examples.",
     meta: "Free · no sign-up",
     preview: calcPreview,
   },

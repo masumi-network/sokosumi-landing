@@ -235,7 +235,7 @@ const BOOST = {
     ],
     related: [
       { href: "/ai-coworkers/page-ranking-insights", label: { en: "Page ranking insights", de: "Page Ranking Insights" }, note: { en: "The quick spot-check version", de: "Die schnelle Stichprobe" } },
-      { href: "/tools/llms-txt", label: { en: "llms.txt checker", de: "llms.txt-Checker" }, note: { en: "Free tool for AI-search readiness", de: "Kostenloses Tool für AI-Search-Readiness" } },
+      { href: "/tools/llms-txt", label: { en: "llms.txt checker", de: "llms.txt-Checker" }, note: { en: "Free tool for AI-search readiness", de: "Kostenloses Tool für Bereitschaft für die KI-Suche" } },
       { href: "/ai-coworkers", label: { en: "All AI coworkers", de: "Alle KI-Mitarbeiter" }, note: { en: "The full marketplace", de: "Der komplette Marktplatz" } },
     ],
   },
@@ -427,6 +427,32 @@ const OFFER_BOOST = {
     metaDescription: {
       en: "A pricing section for your website with tiers, a monthly/yearly toggle and a comparison table, exported as copy-paste HTML.",
       de: "Ein Preisbereich für Ihre Website mit Preisstufen, Umschalter monatlich/jährlich und Vergleichstabelle, als kopierbares HTML.",
+    },
+  },
+  "apol/branded-team-avatars": {
+    metaDescription: {
+      de: "Laden Sie Ihre Teamfotos hoch und erhalten Sie einheitliche Avatare in Markenoptik: gleiche Form, Farbe und Gesichtsgröße, dazu bearbeitbare PSD-Dateien.",
+    },
+  },
+  "apol/creative-background-swap": {
+    metaDescription: {
+      de: "Neuer Hintergrund per KI, das Motiv bleibt unangetastet. Licht und Stimmung passen sich an, das Ergebnis ist fotorealistisch in voller Auflösung.",
+    },
+  },
+  "dite/press-and-media-kit-page": {
+    metaDescription: {
+      de: "Eine markenkonforme Presskit-Seite mit Boilerplate, Kernfakten, Biografien der Geschäftsführung, Logopaket, Farbpalette und Medienkontakten.",
+    },
+  },
+  "hepha/utm-campaign-link-toolkit": {
+    metaDescription: {
+      de: "Ein Marketing-Ops-Tool zum Bauen, Prüfen und Kopieren von UTM-Kampagnenlinks, mit Presets und einer Liste gespeicherter Links.",
+    },
+  },
+  "elena/go-to-market-and-sales-plan": {
+    metaDescription: {
+      en: "A go-to-market and sales plan for a new offering: positioning, target segments, outreach channels, sales motion and a 90-day action plan.",
+      de: "Ein Go-to-Market- und Vertriebsplan für ein neues Angebot: Positionierung, Zielsegmente, Ansprachekanäle, Vertriebsablauf und ein 90-Tage-Aktionsplan.",
     },
   },
 };

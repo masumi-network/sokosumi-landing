@@ -619,8 +619,7 @@
               document.getElementById("heroAvatars").innerHTML = faces
                 .map(function (c) { return "<img" + thumbSet(c.image, 96) + ' alt="" width="40" height="40" decoding="async" />'; })
                 .join("");
-              var agentCount = (d.agents || []).length || coworkers.length;
-              document.getElementById("heroCount").textContent = agentCount + "+ Agents";
+              document.getElementById("heroCount").textContent = "Named AI coworkers";
               social.hidden = false;
               revealNow(social);
             }

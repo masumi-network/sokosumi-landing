@@ -6,7 +6,7 @@ const FAQ = [
   {
     question: "How long should a meta title be?",
     answer:
-      "Google truncates titles by pixel width, not characters — roughly 580 pixels, which is usually 50 to 60 characters. This generator measures both and marks anything that would be cut. Shorter is fine; a title that gets cut mid-claim is not.",
+      "Google truncates titles by pixel width, not characters: roughly 580 pixels, which is usually 50 to 60 characters. This generator measures both and marks anything that would be cut. Shorter is fine; a title that gets cut mid-claim is not.",
   },
   {
     question: "How long should a meta description be?",
@@ -16,12 +16,12 @@ const FAQ = [
   {
     question: "Does the meta description affect rankings?",
     answer:
-      "Not directly — Google has said so for years. It affects clicks: the description is your ad copy on the results page, and a better one raises click-through rate on the position you already have.",
+      "Not directly, and Google has said so for years. It affects clicks: the description is your ad copy on the results page, and a better one raises click-through rate on the position you already have.",
   },
   {
     question: "Why does Google show a different title than the one I set?",
     answer:
-      "Google rewrites titles it considers too long, keyword-stuffed, boilerplate, or mismatched with the query. Titles that describe the page plainly and match the H1 mostly get kept — which is the reason this tool gives you plain options rather than clever ones.",
+      "Google rewrites titles it considers too long, keyword-stuffed, boilerplate, or mismatched with the query. Titles that describe the page plainly and match the H1 mostly get kept. That is why this tool gives you plain options rather than clever ones.",
   },
 ];
 
@@ -75,7 +75,7 @@ function render() {
         </div>
         <p class="dm-tool-meta"><span class="dm-live">Live</span></p>
       </header>
-      <p class="dm-tool-sub">Point it at a page and it writes tags that match what is actually on it — three titles, three descriptions, each measured against Google's real pixel limits. No page yet? Describe it instead.</p>
+      <p class="dm-tool-sub">Point it at a page and it writes tags that match what is actually on it: three titles and three descriptions, each measured against Google's real pixel limits. No page yet? Describe it instead.</p>
 
       <form class="mtg-form" id="mtgForm" novalidate>
         <div class="mtg-fields">
@@ -105,7 +105,7 @@ function render() {
 
       <div class="mtg-output" id="mtgOutput" hidden>
         <div class="mtg-serp" aria-label="Google result preview">
-          <p class="mtg-serp-label">Result preview — click any option below to load it</p>
+          <p class="mtg-serp-label">Result preview: click any option below to load it</p>
           <div class="mtg-serp-card">
             <span class="mtg-serp-url" id="mtgSerpUrl">your-site.com</span>
             <span class="mtg-serp-title" id="mtgSerpTitle"></span>
@@ -135,7 +135,7 @@ function render() {
       <p class="dm-overline">How it works</p>
       <h2 id="mtg-how">Written from the page, measured like Google measures.</h2>
       <ol>
-        <li><span>01</span><h3>It reads the page</h3><p>Title, headings and body text are fetched server-side, so the tags describe what is really there — no invented claims.</p></li>
+        <li><span>01</span><h3>It reads the page</h3><p>Title, headings and body text are fetched server-side, so the tags describe what is really there, with no invented claims.</p></li>
         <li><span>02</span><h3>Three angles each</h3><p>What it is, what you get, who it is for. Three honest options beat one clever one, because Google rewrites titles it distrusts.</p></li>
         <li><span>03</span><h3>Pixels, not just characters</h3><p>Google cuts titles near 580px and descriptions near 990px. Every option is measured, and anything that would be cut is flagged.</p></li>
       </ol>
@@ -151,7 +151,7 @@ function render() {
     </section>` +
     shell.ctaBand({
       heading: "Meta tags for one page, or for all of them.",
-      subheading: "Sokosumi's AI coworkers rewrite metadata across a whole site — and check it with the SEO.md tool.",
+      subheading: "Sokosumi's AI coworkers rewrite metadata across a whole site and check it with the SEO.md tool.",
       ctaLabel: "Start free",
     }) +
     pageEnd({ scripts: ["/assets/meta-tags.js", "/assets/email-gate.js"], englishOnly: true })
