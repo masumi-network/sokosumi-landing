@@ -210,6 +210,42 @@ async function hub(ctx) {
 // pages are indexed with hreflang and must not be English duplicates. A CMS
 // doc with the same slug keeps working underneath: name/description come from
 // the CMS, this layer wraps it. Facts stay Sokosumi-true: no invented stats.
+// Search titles and descriptions for the use-case pages, per locale. The CMS
+// title stays the page's H1, card title and breadcrumb; this only changes what
+// a search result shows, so it can lead with the term people type (keyword
+// research 2026-09-27, Ahrefs + Google Trends). A slug with no entry uses the
+// CMS title and description.
+const USE_CASE_SEO = {
+  "competitor-monitoring": {
+    en: ["Competitor monitoring tool: a weekly sourced report", "Competitor monitoring that runs every week: your competitors' launches, pricing changes, ads and messaging in one sourced report your team can forward."],
+    de: ["Konkurrenzanalyse mit KI: Wettbewerber jede Woche im Blick", "Wettbewerbsbeobachtung, die jede Woche läuft: Launches, Preisänderungen, Anzeigen und Botschaften Ihrer Konkurrenz in einem Report mit Quellen."],
+  },
+  "always-on-social-listening": {
+    en: ["Social listening tool that writes the weekly report", "Social listening without another dashboard: public posts read for sentiment, recurring themes and posts that need a reply, delivered as a weekly report."],
+    de: ["Social-Listening-Tool: Stimmung und Themen jede Woche", "Social Listening ohne weiteres Dashboard: öffentliche Posts nach Stimmung, Themen und Beiträgen mit Antwortbedarf ausgewertet, als schriftlicher Wochenreport."],
+  },
+  "market-intelligence-briefings": {
+    en: ["AI for market research: a recurring market briefing", "Use AI for market research that stays current: a recurring briefing on what changed in your market, who drove it and what it may mean for you, with sources."],
+    de: ["Markt- und Wettbewerbsanalyse als laufendes Briefing", "Markt- und Wettbewerbsanalyse, die aktuell bleibt: ein wiederkehrendes Briefing, was sich in Ihrem Markt geändert hat, wer dahintersteckt und was es bedeutet."],
+  },
+  "seo-and-ai-visibility": {
+    en: ["AI visibility: how ChatGPT and AI Overviews cite you", "Measure your AI visibility next to your search rankings: the topics where ChatGPT and Google's AI Overviews cite you, where they name a competitor, and what to fix."],
+    de: ["KI-Sichtbarkeit und GEO: wo KI-Antworten Sie nennen", "KI-Sichtbarkeit neben Ihren Rankings messen: zu welchen Themen ChatGPT und Googles AI Overviews Sie zitieren, wo stattdessen ein Wettbewerber auftaucht."],
+  },
+  "audience-research-sprint": {
+    en: ["Audience research: sourced profiles and message tests", "Audience research that ends in a deck: sourced audience profiles, messages tested with a synthetic panel, and the findings summarised for your team."],
+    de: ["Zielgruppenanalyse mit KI: Profile und Botschaftstests", "Zielgruppenanalyse, die in einem Deck endet: Zielgruppenprofile mit Quellen, Botschaften im synthetischen Panel getestet und die Ergebnisse fürs Team zusammengefasst."],
+  },
+  "launch-content-engine": {
+    en: ["AI content strategy for a launch, from one brief", "An AI content strategy for your launch: one brief turns into positioning, landing-page copy, social variants and visuals that your team edits before anything ships."],
+    de: ["KI-Content-Erstellung für den Launch, aus einem Briefing", "KI-Content-Erstellung für Ihren Launch: Aus einem Briefing entstehen Positionierung, Landingpage-Texte, Social-Varianten und Visuals, die Ihr Team vor dem Start bearbeitet."],
+  },
+  "seasonal-campaign-planning": {
+    en: ["Seasonal campaign planning from search demand", "Plan seasonal campaigns from current search demand and audience signals, then get the plan, the calendar and the supporting content as files."],
+    de: ["Kampagnenplanung für die Saison, aus der Suchnachfrage", "Saisonkampagnen aus aktueller Suchnachfrage und Zielgruppensignalen planen und Plan, Kalender und begleitende Inhalte als Dateien bekommen."],
+  },
+};
+
 const INDUSTRY_CONTENT_DE = require("./industryContentDe");
 
 const INDUSTRY_CONTENT = {
@@ -749,11 +785,12 @@ async function detail(ctx) {
     cr.push({ label: inds[0].name, href: `/use-cases/industries/${inds[0].slug}` });
   }
   cr.push({ label: doc.title });
+  const seoFor = USE_CASE_SEO[doc.slug] && USE_CASE_SEO[doc.slug][i18n.locale() === "de" ? "de" : "en"];
 
   return (
     pageStart({
-      title: doc.title,
-      description: shell.describe(doc.description, [
+      title: seoFor ? seoFor[0] : doc.title,
+      description: seoFor ? seoFor[1] : shell.describe(doc.description, [
         t("A Sokosumi use case: which coworker does it, what you brief, what comes back as a file."),
         t("A Sokosumi use case: who does it and what comes back as a file."),
         t("A use case for AI coworkers on Sokosumi."),

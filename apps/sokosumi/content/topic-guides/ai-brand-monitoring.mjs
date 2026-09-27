@@ -35,7 +35,7 @@ export default {
       state: [
         "**Google reports impressions only.** The Generative AI performance report counts \"how many times links to your site were shown to a user in a generative AI feature on Google Search,\" across AI Overviews and AI Mode. It breaks down by pages, countries, dates and devices.",
         "**Google gives you no query data there.** The report has no clicks, no CTR, no position and no query dimension. AI-feature traffic is also folded into the ordinary Performance report under search type \"Web\" rather than split out.",
-        "**Not every property has it.** Google states the report is rolling out over time, so an empty report is not evidence of zero visibility.",
+        "**It should be there now.** Google says it rolled the report out to all websites worldwide on 31 August 2026, though its help page still warns that some properties may not have it yet. An empty report is therefore not proof of zero visibility.",
         "**Microsoft reports citations, and one share metric.** Bing Webmaster Tools' AI Performance covers Copilot, AI-generated summaries in Bing and select partner integrations, with Total Citations, Average Cited Pages and page-level citation activity.",
         "**\"Grounding queries\" are not user prompts.** Microsoft defines them as the phrases the AI used when retrieving content — the retrieval layer, not what a person typed. Treating them as keyword data is a category error.",
         "**Citation Share is the closest thing to share of voice** — \"the percentage of citations attributed to your site out of all citations shown across all sites for that same grounding query.\" Microsoft is explicit that it is \"designed as an observational metric – not a ranking system or a competitive scoreboard. It does not expose competitor domains, represent traffic share, or assign quality scores.\"",
@@ -65,7 +65,7 @@ export default {
       risks: [
         "Reporting citations as \"mentions.\" Neither platform reports whether a model said your name in the answer text; both report link citations.",
         "Buying a \"competitor share of voice in LLM answers\" number and treating it as platform data. Microsoft explicitly does not expose competitor domains, and Google exposes nothing at query level — so a named-competitor figure comes from a vendor's own prompt sampling, with that vendor's prompt set and sampling error.",
-        "Reading an empty Google report as zero visibility while the feature is still rolling out to properties.",
+        "Reading an empty Google report as zero visibility; Google itself warns that some properties may not have the report yet.",
         "Treating grounding queries as search keywords and briefing content against them.",
         "Blocking crawlers to \"protect\" the brand without checking which surface each token governs — the controls are not interchangeable, and one of them costs you search visibility while another does not.",
       ],
@@ -110,7 +110,7 @@ export default {
       state: [
         "**Google berichtet ausschließlich Impressionen.** Der Bericht zur Leistung generativer KI zählt, wie oft Links auf die eigene Seite in einer generativen KI-Funktion der Google Suche gezeigt wurden — über AI Overviews und AI Mode. Aufschlüsselung nach Seiten, Ländern, Daten und Geräten.",
         "**Query-Daten gibt es dort nicht.** Keine Klicks, keine CTR, keine Position, keine Suchanfragen. Traffic aus KI-Funktionen läuft im normalen Leistungsbericht unter dem Suchtyp „Web“ mit und wird nicht separat ausgewiesen.",
-        "**Nicht jede Property hat den Bericht.** Laut Google erfolgt der Rollout schrittweise. Ein leerer Bericht ist also kein Beleg für fehlende Sichtbarkeit.",
+        "**Er sollte inzwischen da sein.** Laut Google wurde der Bericht am 31. August 2026 für alle Websites weltweit freigeschaltet; die Hilfeseite warnt aber weiterhin, dass manche Properties ihn noch nicht haben. Ein leerer Bericht ist also kein Beleg für fehlende Sichtbarkeit.",
         "**Microsoft berichtet Zitationen und eine Share-Metrik.** AI Performance in den Bing Webmaster Tools deckt Copilot, KI-Zusammenfassungen in Bing und ausgewählte Partnerintegrationen ab: Total Citations, Average Cited Pages und Zitationen auf Seitenebene.",
         "**„Grounding Queries“ sind keine Nutzer-Prompts.** Microsoft definiert sie als die Phrasen, mit denen die KI Inhalte abgerufen hat — die Retrieval-Ebene, nicht die Eingabe eines Menschen.",
         "**Citation Share kommt Share of Voice am nächsten:** der Anteil der Zitationen der eigenen Seite an allen Zitationen zur selben Grounding Query. Microsoft stellt ausdrücklich klar, dass es sich um eine beobachtende Kennzahl handelt, nicht um ein Ranking oder eine Wettbewerbstabelle, und dass keine Wettbewerber-Domains offengelegt werden.",
@@ -136,7 +136,7 @@ export default {
       risks: [
         "Zitationen als „Erwähnungen“ berichten. Keine der Plattformen misst, ob ein Modell den Markennamen im Antworttext nennt.",
         "Eine gekaufte „Wettbewerbs-Share-of-Voice in LLM-Antworten“ für Plattformdaten halten. Microsoft legt keine Wettbewerber-Domains offen, Google gibt auf Query-Ebene gar nichts heraus — eine solche Zahl stammt aus dem Prompt-Sampling eines Anbieters.",
-        "Einen leeren Google-Bericht als Null-Sichtbarkeit lesen, während der Rollout noch läuft.",
+        "Einen leeren Google-Bericht als Null-Sichtbarkeit lesen; Google warnt selbst, dass manche Properties den Bericht noch nicht haben.",
         "Grounding Queries als Such-Keywords behandeln und Content danach briefen.",
         "Crawler blockieren, ohne zu prüfen, welche Fläche das jeweilige Token überhaupt steuert.",
       ],

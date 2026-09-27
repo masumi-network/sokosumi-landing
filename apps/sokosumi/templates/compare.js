@@ -14,6 +14,16 @@ const cms = require("../lib/cms");
 const blocks = require("./blocks");
 const pairs = require("./comparePairs");
 const i18n = require("../lib/i18n");
+
+// A few comparison pages sit on a bigger query than "<tool> vs sokosumi"
+// (Ahrefs 2026-09-27): DE "langdock preise" 350, DE "nele ai" 700, EN
+// "jasper alternative" 150. Their titles lead with that; both pages show the
+// prices the title promises.
+const COMPARE_TITLES = {
+  "sokosumi-vs-langdock": { de: "Langdock vs. Sokosumi: Preise und Unterschiede" },
+  "sokosumi-vs-nele-ai": { de: "nele.ai vs. Sokosumi: Preise und Unterschiede" },
+  "sokosumi-vs-jasper": { en: "Jasper alternative for marketing teams: Jasper vs Sokosumi" },
+};
 const { t } = i18n;
 const { esc, attr, icon, pageStart, pageEnd } = shell;
 
@@ -334,7 +344,7 @@ async function detail(ctx) {
   return (
     pageStart({
       // The search phrase people type, then the promise. The h1 asks the question.
-      title: t("{name} vs Sokosumi for marketing teams", { name }),
+      title: (COMPARE_TITLES[doc.slug] && COMPARE_TITLES[doc.slug][i18n.locale() === "de" ? "de" : "en"]) || t("{name} vs Sokosumi for marketing teams", { name }),
       description: shell.describe(t("{name} vs Sokosumi for marketing teams: {desc}", { name, desc: (doc.description || "").trim() }), [
         t("Who each one fits, what you get back and what you pay, in seven rows."),
         t("Who each one fits and what you get back, in seven rows."),

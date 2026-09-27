@@ -16,42 +16,21 @@ const TTL = 5 * 60 * 1000;
 // indexation is opt-in: only the hosts below keep an indexable page. Every
 // other analysis still renders and works — it just carries noindex.
 // Add a host here when its "<brand> design md" query is one we want.
+//
+// 2026-09-27: cut from ~150 hosts to 30. The analysis pages drew designers and
+// developers searching brand names, not the marketing teams Sokosumi sells
+// to, and 150 thin brand pages made the site read as a design-tools site. What
+// stays: brands with measured "<brand> design md" searches in GSC (linear,
+// shadcn, duolingo, apple, cloudflare, shopify, notion, airbnb), brands a
+// marketing team studies as a reference, and our own two sites.
 const INDEXED_HOSTS = new Set([
-  // dev, design and AI tools
-  "linear.app", "figma.com", "notion.so", "stripe.com", "slack.com",
-  "shopify.com", "cloudflare.com", "supabase.com", "tailwindcss.com",
-  "anthropic.com", "claude.ai", "openai.com", "chatgpt.com", "perplexity.ai",
-  "mistral.ai", "grok.com", "cursor.com", "zed.dev", "jetbrains.com",
-  "raycast.com", "retool.com", "posthog.com", "prisma.io", "laravel.com",
-  "obsidian.md", "devin.ai", "elevenlabs.io", "leonardo.ai", "ideogram.ai",
-  "modal.com", "hex.tech", "attio.com", "clay.com", "cal.com", "n8n.io",
-  "crewai.com", "llamaindex.ai", "firecrawl.dev", "resend.com", "twilio.com",
-  "intercom.com", "zendesk.com", "mailchimp.com", "monday.com",
-  "personio.com", "lattice.com", "wix.com", "zapier.com", "dribbble.com",
-  "awwwards.com", "mobbin.com", "huly.io", "betterstack.com",
-  "composio.dev", "openrouter.ai", "scale.com", "palantir.com",
-  "databricks.com", "glean.com", "harvey.ai", "ramp.com", "descript.com",
-  "ant.design", "lucide.dev", "heroui.com", "untitledui.com", "tremor.so",
-  "alignui.com", "shadcn.io", "mcp.so", "hermes-agent.nousresearch.com",
-  // consumer and enterprise brands
-  "apple.com", "microsoft.com", "samsung.com", "amazon.com", "youtube.com",
-  "instagram.com", "facebook.com", "pinterest.com", "linkedin.com",
-  "threads.com", "spotify.com", "duolingo.com", "udemy.com",
-  "skillshare.com", "codecademy.com", "brilliant.org", "airbnb.it",
-  "adidas.pt", "allbirds.com", "patagonia.com", "porsche.com", "bmw-m.com",
-  "mercedes-benz.com", "rolls-roycemotorcars.com", "tagheuer.com",
-  "bang-olufsen.com", "leica-camera.com", "isseymiyake.com", "redbull.com",
-  "marvel.com", "rockstargames.com", "spacex.com", "klarna.com", "wise.com",
-  "binance.com", "tradingview.com", "roblox.com", "premierleague.com",
-  "flightradar24.com", "garmin.com", "ouraring.com", "beatsbydre.com",
-  "moma.org", "ycombinator.com", "medium.com", "tripadvisor.com",
-  "polymarket.com", "kalshi.com", "gemini.com", "phantom.com",
-  "tbank.ru", "bancamediolanum.it", "pwc.com", "kpmg.com", "bcg.com",
-  "capgemini.com", "globant.com", "sap.com", "odoo.com",
-  // our own ecosystem
-  "sokosumi.com", "masumi.network", "kodosumi.io", "serviceplan-agents.com",
-  "house-of-communication.com", "open-design.ai", "cardano.org",
-  "midnight.network", "nmkr.io",
+  "linear.app", "notion.so", "stripe.com", "figma.com", "shopify.com",
+  "cloudflare.com", "shadcn.io", "apple.com", "airbnb.it", "duolingo.com",
+  "spotify.com", "samsung.com", "mercedes-benz.com", "porsche.com",
+  "redbull.com", "patagonia.com", "klarna.com", "wise.com", "mailchimp.com",
+  "linkedin.com", "instagram.com", "youtube.com", "openai.com", "chatgpt.com",
+  "anthropic.com", "perplexity.ai", "pwc.com", "kpmg.com",
+  "sokosumi.com", "masumi.network",
 ]);
 
 // Piracy mirrors, porn, follower panels and "private profile viewers" run

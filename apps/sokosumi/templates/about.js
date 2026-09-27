@@ -202,8 +202,8 @@ async function render() {
   const cr = [{ label: "Home", href: "/" }, { label: t("About") }];
   return (
     pageStart({
-      title: "About Sokosumi: AI coworkers by Serviceplan and NMKR",
-      description: "Sokosumi is a marketplace where marketing teams hire AI coworkers and AI agents. Built by Serviceplan Group with NMKR in Munich. Facts, pricing, contact.",
+      title: t("About Sokosumi: AI coworkers by Serviceplan and NMKR"),
+      description: t("Sokosumi is a marketplace where marketing teams hire AI coworkers and AI agents. Built by Serviceplan Group with NMKR in Munich. Facts, pricing, contact."),
       path: "/about",
       breadcrumb: cr,
       organization: organizationLd(f),

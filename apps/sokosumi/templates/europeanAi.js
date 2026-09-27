@@ -112,7 +112,7 @@ function render() {
     pageStart({
       title: t("European AI for marketing: GDPR, AI Act, open source"),
       description: t(
-        "A European AI marketplace: operated in the EU, every coworker states its model and hosting region, every vendor classifies its EU AI Act risk tier, and the code is public under MIT and Apache-2.0.",
+        "A European AI marketplace: operated in the EU, models and hosting shown where vendors state them, every vendor classifies its EU AI Act risk tier, and the code is public under MIT and Apache-2.0.",
       ),
       path: here,
       breadcrumb: [{ label: t("Home"), href: "/" }, { label: t("European AI") }],
@@ -287,7 +287,7 @@ function render() {
           {
             question: t("Is everything hosted in Europe?"),
             answer: t(
-              "The marketplace is operated in the EU. The coworkers are not all ours: independent vendors build and run them, so each listing states its own hosting region instead of us promising on their behalf.",
+              "The marketplace is operated in the EU. Most coworkers aren't ours: independent vendors build and run them, so we don't promise a hosting region on their behalf. Where a vendor states one, it's on the listing; Serviceplan's own coworkers run on Azure in Frankfurt.",
             ),
           },
           {

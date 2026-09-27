@@ -34,11 +34,12 @@
 
 const BOOST = {
   "youtube-channel-analysis": {
-    // The query is "youtube channel analyzer" (200 US / 1.1K global, KD 3),
-    // not the product's name.
+    // Queries (Ahrefs 2026-09-27): "youtube channel analysis" 200 KD 9,
+    // "youtube channel analyzer" 200 KD 3, "youtube channel audit" 150 KD 2;
+    // DE "YouTube-Kanal-Analyse" 150. Runs cost credits, so no "free".
     seoTitle: {
-      en: "YouTube channel analyzer: free metrics from any public channel | Sokosumi",
-      de: "YouTube-Kanal-Analyzer: Kennzahlen für jeden öffentlichen Kanal | Sokosumi",
+      en: "YouTube channel analysis: audit any public channel | Sokosumi",
+      de: "YouTube-Kanal-Analyse für jeden öffentlichen Kanal | Sokosumi",
     },
     seoDescription: {
       en: "A YouTube channel analyzer that reads a public channel's 30 most recent videos and returns views, engagement, posting cadence and title patterns as a file you can hand on.",
@@ -188,12 +189,14 @@ const BOOST = {
   },
 
   "seo-geo-researcher": {
-    // The query is "ai seo agent" (400 US, KD 0, 2026-09-12). The listing
+    // Retargeted 2026-09-27 to "llm visibility" (1,200, KD 2) / "ai search
+    // visibility" (2,800, KD 0); DE "KI-Sichtbarkeit". Earlier target was
+    // "ai seo agent" (400 US, KD 0, 2026-09-12). The listing
     // audits organic rankings AND AI-answer visibility, which is exactly
     // what that searcher wants and what the product name doesn't say.
     seoTitle: {
-      en: "AI SEO agent: rankings, content gaps, AI visibility | Sokosumi",
-      de: "KI-SEO-Agent: Rankings, Content-Lücken, KI-Sichtbarkeit | Sokosumi",
+      en: "AI search visibility audit, LLM mentions included | Sokosumi",
+      de: "KI-Sichtbarkeit prüfen: Rankings und LLM-Nennungen | Sokosumi",
     },
     aboutHeading: {
       en: "What this AI SEO agent audits",

@@ -481,3 +481,47 @@ German: "KI-Mitarbeiter Marketing Plattform Agenten mieten" → The NEED GmbH, m
 - https://checkthat.ai/brands/canva/pricing
 - https://helpx.adobe.com/creative-cloud/apps/generative-ai/generative-credits-faq.html
 - https://costbench.com/software/ai-image-generators/adobe-firefly/
+
+---
+
+## Added 2026-09-27: Langdock alternatives, neuroflash, Marblism
+
+All read on the vendors' own sites on 2026-09-27 (OpenAI and Marblism pages via a browser because they block fetchers). Used by `apps/sokosumi/content/topic-guides/langdock-alternatives.mjs` and the `sokosumi-vs-neuroflash` / `sokosumi-vs-marblism` entries in `apps/sokosumi/scripts/cms-compare-pages-more.mjs`.
+
+### neuroflash (Hamburg)
+- What: AI content platform (editor, ChatFlash, images) plus "Digital Twins", simulated target-group members used to test copy before launch. Tagline "Stop guessing. Start predicting." https://neuroflash.com/ , https://neuroflash.com/de/pricing/
+- Company: neuroflash GmbH, Wulfsdorfer Weg 100, 22359 Hamburg. https://neuroflash.com/de/impressum/
+- Pricing (billed yearly, excl. VAT): Essential €42/month (25,000 credits/day, 1 target group, 1 brand voice); Pro €84/month per user (250,000 credits/day per user, API/MCP, team workspace); Enterprise custom. Monthly billing costs about 16% more. 7-day free trial on Essential and Pro. https://neuroflash.com/de/pricing/
+- Hosting: "Server in Deutschland", GDPR-compliant, ISO/IEC 27001:2022. https://neuroflash.com/de/pricing/
+- Overlap vs difference: German, marketing-copy buyer; a writing and message-testing tool the user operates, not delegated deliverables. Single vendor.
+
+### Marblism (Marblism, Inc and Marblism UK Ltd)
+- What: "AI Employees to Scale Your Business": Eva (exec assistant), Sonny (social media), Stan (lead gen), Penny (SEO), Rachel (receptionist), Walter (website builder), Linda (legal assistant). Works in inbox, social accounts, phone line, website; can auto-post and auto-publish. Targets small businesses, solopreneurs, agencies. https://www.marblism.com/ , https://www.marblism.com/pricing
+- Pricing: one plan, "Plans start at $24/month on the yearly option", includes 50 hours of work per month (resets monthly), unlimited businesses and team members; 7-day money-back guarantee. The FAQ says "all 6 AI Employees" while the pricing table lists 7. Monthly price not verified. https://www.marblism.com/pricing
+- Hosting: not published (only "We store your data securely in the cloud using advanced encryption protocols"). https://www.marblism.com/pricing
+- Overlap vs difference: same "AI employees" framing as Sintra; SMB operations (inbox, calls, posting) rather than marketing research and reporting. Single vendor.
+
+### Langdock (update)
+- Langdock GmbH, Greifswalder Str. 212, 10405 Berlin. https://www.langdock.com/imprint
+- Pricing unchanged vs 2026-08-25: Business €25 Standard / €99 Business Max per user/month excl. VAT, 20% off yearly, up to 1,000 users; Enterprise custom (1,000+ users, dedicated deployment); 7-day trial, no card, €5 model credits; Workflows €539/month (40k runs) or €1,199 (100k); Governance free until 1 Jan 2027, then €3.50/user/month. "GDPR-compliant, hosted in the EU"; ISO 27001 and SOC 2 Type II; managed, cloud or on-premises. https://langdock.com/pricing
+- Reviews: G2 shows 5/5 from 8 reviews; OMR Reviews shows 0 ratings ("Noch nicht genügend Bewertungen vorhanden"). https://www.g2.com/products/langdock/reviews , https://omr.com/de/reviews/product/langdock
+
+### nele.ai (update)
+- GAL Digital GmbH, Hungen (Mittelhessen). Models from OpenAI, Microsoft Azure, Anthropic; Word and Excel add-ins. Credit volume 1,000 credits €10/month net up to 750,000 credits €3,750; knowledge bases +€19.95/month. "All data and application components are hosted on servers within the European Union." https://www.nele.ai/de/ki-preise , https://www.nele.ai/de
+
+### Microsoft 365 Copilot (update)
+- Renamed "Microsoft Copilot" (transition period). EU customers: "Microsoft Copilot is an EU Data Boundary service"; "Models provided by Anthropic as a subprocessor are currently excluded from the EU Data Boundary." https://learn.microsoft.com/en-us/copilot/microsoft-365/microsoft-365-copilot-privacy
+- Copilot Business: US $18/user/month yearly (was $21, discount through 31 Dec 2026), $25.20 monthly; Germany €15.60 yearly (was €18.20, same promotion), €21.84 monthly. Enterprise (DE): €26.00/user/month annual billing, €27.30 paid monthly on an annual subscription. Qualifying Microsoft 365 licence required. https://www.microsoft.com/en-us/microsoft-365-copilot/pricing , https://www.microsoft.com/de-de/microsoft-365-copilot/pricing , https://www.microsoft.com/de-de/microsoft-365-copilot/enterprise
+
+### ChatGPT Business / Enterprise (update)
+- Business: Standard seat $20/user/month billed yearly, $25 monthly; Premium seat $100/$125; teams of 2 to 200. Enterprise: custom. https://openai.com/business/pricing/
+- Data residency: "Eligible API customers and new ChatGPT Enterprise/Edu customers" can store content at rest in Europe (EEA + Switzerland) among other regions; not offered for Business. https://help.openai.com/en/articles/9903489-data-residency-and-inference-residency-for-chatgpt
+
+### Dust (update)
+- Now read directly from dust.tt: Free €0 (500 lifetime credits); Pro €24/seat/month yearly or €30 monthly (8,000 credits); Max €120 yearly / €150 monthly (40,000); Enterprise custom, pooled credits, single-tenant option. "US & EU data residency". https://dust.tt/home/pricing , https://dust.tt/home/security
+- HQ not stated on the pages read.
+
+### Mistral Vibe (formerly Le Chat)
+- Assistant and coding agent for individuals, teams, enterprises; integrations with email, calendar, Slack, GitHub. https://mistral.ai/products/le-chat
+- Pricing (USD): Free $0; Pro $14.99/month; Team $24.99/user/month, $50/month minimum; Enterprise custom. https://mistral.ai/pricing
+- Hosting: "By default, your data is hosted in the European Union", unless the US API endpoint is used explicitly. https://help.mistral.ai/en/articles/347629-where-do-you-store-my-data-or-my-organization-s-data

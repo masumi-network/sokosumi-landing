@@ -124,7 +124,7 @@ function landscapeSection() {
     { name: "Sintra", line: t("Personality-led AI helpers on a subscription, aimed at solo founders."), href: "/compare/sokosumi-vs-sintra" },
     { name: "Lindy", line: t("Build-your-own AI automations, priced by usage."), href: "/compare/sokosumi-vs-lindy" },
     { name: "Relevance AI", line: t("A platform for building agent teams yourself, developer-leaning."), href: "/compare/sokosumi-vs-relevance-ai" },
-    { name: "Sokosumi", line: t("A marketplace of ready specialists you hire per task, in credits."), href: "/ai-employees" },
+    { name: "Sokosumi", line: t("Ready specialists from named vendors, on seats with monthly credits."), href: "/ai-employees" },
   ];
   return `<section class="page-section" data-reveal>
     <h2>${esc(t("Where Sokosumi sits among the tools"))}</h2>
@@ -146,10 +146,11 @@ function landscapeSection() {
 function INDEX_FAQ() {
   return [
     { question: t("What is an AI marketing agent?"), answer: t("Software that does one marketing job on its own from a brief: a competitor scan, a weekly performance report, a social calendar. On Sokosumi an agent has a name, a vendor and a price in credits you see before it runs.") },
+    { question: t("What can AI agents do for marketing teams?"), answer: t("Recurring research and reporting with a clear output: a weekly competitor memo, a social listening summary, a market briefing before a pitch, an audit of how ChatGPT and Google's AI Overviews mention your brand, a first campaign plan. They are weak wherever a decision depends on knowing your brand or your client, which is why a person reviews every file.") },
+    { question: t("Which AI agent should a marketing team start with?"), answer: t("The report someone on the team rebuilds every week or every month. Competitor monitoring and performance reporting are the usual first jobs, because the inputs are public or already exported and the result is easy to check against what you know.") },
     { question: t("What is the difference between an AI agent and an AI coworker?"), answer: t("An agent does one task. A coworker holds a role, such as research or creative, and is usually built from several agents. You brief a coworker like a colleague and it returns a file.") },
-    { question: t("How do marketing teams use AI agents day to day?"), answer: t("They hand over the recurring and the well-defined work: market and competitor research, reporting, first drafts, campaign plans, dashboards. The team keeps judgement, brand and the client.") },
     { question: t("What does an AI agent for marketing cost?"), answer: t("On Sokosumi you pay per seat, and each seat comes with monthly credits: 250 on the free plan, more on paid seats at €25, €75 or €200 a month. Each task shows its credit price first.") },
-    { question: t("Is my data safe with AI marketing agents?"), answer: t("Each coworker profile states its models and hosting as the vendor provides them. EU hosting is available. You decide what you attach to a task.") },
+    { question: t("Is my data safe with AI marketing agents?"), answer: t("It depends on the agent. Each one is built and run by its vendor, and the profile names the models and hosting region where the vendor provides them. Check that before you attach client data, and attach only what the task needs.") },
   ];
 }
 function indexFaqSection() {
@@ -226,7 +227,7 @@ async function index(ctx) {
         <h1>${esc(t("AI agents for marketing, with names and roles"))}</h1>
         <p class="sub">${
           curated.length
-            ? esc(t("{n} specialists you can hire today, each with a real role and a public profile. Most carry ready-to-run work. Synced nightly from the live marketplace.", { n: curated.length }))
+            ? esc(t("{n} specialists you can hire today. Each AI marketing agent here has a name, a job and a vendor you can look up, and shows its credit price before it runs; brief it like a freelancer and it sends back a finished file.", { n: curated.length }))
             : esc(t("Named specialists you can hire today, each with a real role and a public profile. Synced nightly from the live marketplace."))
         }</p>
     </div>

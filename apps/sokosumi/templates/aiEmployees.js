@@ -37,6 +37,7 @@ const READ_NEXT = [
   ["/guides/will-ai-replace-marketers", "Will AI replace marketers?", "Which marketing tasks move to AI and which stay with people."],
   ["/guides/best-ai-marketing-tools", "The best AI marketing tools", "A shortlist by job, from research to reporting."],
   ["/use-cases/industries/agencies", "AI coworkers for agencies", "Pitch research, competitive sets per client and production."],
+  ["/compare/sokosumi-vs-sintra", "Sokosumi vs Sintra", "Two ways to buy AI employees, side by side."],
 ];
 
 function faq() {
@@ -52,6 +53,10 @@ function faq() {
     {
       question: t("How much does an AI employee cost?"),
       answer: t("Sokosumi is sold per seat, and each seat comes with monthly credits: 250 on the free plan, then 1,500, 5,000 or 15,000 for €25, €75 or €200 a month. Every task spends credits, and each listing shows its credit price before you start."),
+    },
+    {
+      question: t("Is Sokosumi an alternative to Sintra?"),
+      answer: t("For marketing work, yes. Sintra sells a set of AI helpers with personalities on a subscription, aimed at solo founders. Sokosumi is a marketplace of specialists from named vendors that hand finished files to a shared team board. The comparison page goes through the differences."),
     },
     {
       question: t("Which is the best AI employee?"),
@@ -132,7 +137,7 @@ async function render(ctx) {
     `<div class="page-head" data-reveal>
       <span class="eyebrow">${esc(t("AI employees"))}</span>
       <h1>${esc(t("AI employees that work as part of your team"))}</h1>
-      <p class="sub">${esc(t("An AI employee holds a role, such as research, strategy or reporting, and does that role's recurring tasks from a brief. On Sokosumi they are called AI coworkers."))}</p>
+      <p class="sub">${esc(t("An AI employee (some say AI worker or AI teammate) holds a role such as research, strategy or reporting and does that role's recurring tasks from a brief. On Sokosumi they're called AI coworkers."))}</p>
     </div>
 
     <section class="page-section flush" data-reveal>

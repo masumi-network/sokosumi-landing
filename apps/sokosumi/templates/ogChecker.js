@@ -165,7 +165,7 @@ function render() {
 
   return (
     pageStart({
-      title: "Open Graph checker — free OG image and social preview tester | Sokosumi",
+      title: "Open Graph checker: free OG image and preview test | Sokosumi",
       description:
         "Free Open Graph checker. Paste a URL to see how it looks on Facebook, X, LinkedIn, WhatsApp, Slack and Discord, and get every og:image, og:title and twitter:card problem in one report. No sign-up.",
       path: PATH,
