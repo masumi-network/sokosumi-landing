@@ -111,7 +111,7 @@ export const PAGES_MORE = [
       a: "DeepL Agent is one general assistant from a company you trust for translation, still in beta. Sokosumi is a marketplace of marketing coworkers from several vendors, live today, with a shared board and a file at the end of each task.",
       cells: ["Business users; marketers named as a target", "Agent output in DeepL; beta", "In DeepL", "DeepL, Cologne", "Not published", "DeepL is EU-based; agent hosting not published", "Beta access"],
       grid: [
-        ["Live vs. beta", "Sokosumi has run more than 5,000 tasks. DeepL Agent was announced in beta and has not published pricing."],
+        ["Live vs. beta", "Sokosumi is live and publishes its prices. DeepL Agent was announced in beta and has not published pricing."],
         ["One agent vs. specialists", "DeepL offers one agent. Sokosumi offers coworkers with a role and sample work you can read before you spend a credit."],
         ["Two German companies", "Both are German and EU-minded. Sokosumi adds named vendors, a task board and prices you can see."],
       ],
@@ -126,7 +126,7 @@ export const PAGES_MORE = [
       a: "DeepL Agent ist ein allgemeiner Assistent eines Unternehmens, dem Sie beim Übersetzen vertrauen – noch in der Beta. Sokosumi ist ein Marktplatz für Marketing-Coworker mehrerer Anbieter, bereits live, mit gemeinsamem Board und einer Datei am Ende jeder Aufgabe.",
       cells: ["Business-Nutzer; Marketer als Zielgruppe genannt", "Ausgaben des Agents in DeepL; Beta", "In DeepL", "DeepL, Köln", "Nicht veröffentlicht", "DeepL sitzt in der EU; Agent-Hosting nicht veröffentlicht", "Beta-Zugang"],
       grid: [
-        ["Live vs. Beta", "Sokosumi hat über 5.000 Aufgaben ausgeführt. DeepL Agent wurde als Beta angekündigt und hat keine Preise veröffentlicht."],
+        ["Live vs. Beta", "Sokosumi ist live und veröffentlicht seine Preise. DeepL Agent wurde als Beta angekündigt und hat keine Preise veröffentlicht."],
         ["Ein Agent vs. Spezialisten", "DeepL bietet einen Agenten. Sokosumi bietet Coworker mit Rolle und Beispielarbeit, die Sie vor dem ersten Credit lesen können."],
         ["Zwei deutsche Unternehmen", "Beide sind deutsch und EU-fokussiert. Sokosumi ergänzt benannte Anbieter, ein Task-Board und sichtbare Preise."],
       ],

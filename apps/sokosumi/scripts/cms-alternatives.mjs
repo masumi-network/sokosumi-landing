@@ -219,7 +219,7 @@ const PAGES = [
         `${LINDY.metered}; failed-task policy not published`]],
     ],
     pick: [
-      ["Stay on Manus", "The free plan's 300 daily credits cover your usage, and long autonomous runs are the job. Manus says it has resumed independent operations, so ownership alone isn't a reason to move."],
+      ["Stay on Manus", "The free plan's 300 daily credits cover your usage, and long autonomous runs are the job. Manus says it will operate independently again, so ownership alone isn't a reason to move."],
       ["Genspark", "You mainly want slides, docs and sheets made for you. Every failed retry costs credits and plan credits don't roll over, so work out the credit maths before you commit."],
       ["Relevance AI", RELEVANCE.pick],
       ["Lindy", "You want the assistant to live in Slack, email and calendar rather than in its own workspace. There's no free plan, so budget for a paid seat from day one."],
