@@ -16,7 +16,7 @@ export default {
   category: "advanced",
   order: 202,
   en: {
-    title: "Answer engine optimization: what Google actually says",
+    title: "Answer engine optimization (AEO): Google's own guidance",
     description:
       "Google publishes a guide to generative AI features and it contradicts most AEO advice being sold. What the documentation states, which controls really govern AI answers, and what each crawler token does.",
     body: topic("en", {
@@ -69,7 +69,7 @@ export default {
       sources,
 
       related: [
-        ["AI brand monitoring: what Google and Microsoft actually report", "/guides/ai-brand-monitoring"],
+        ["AI brand monitoring: what Google and Bing report", "/guides/ai-brand-monitoring"],
         ["AI in media relations: what newsrooms forbid", "/guides/ai-media-relations"],
         ["AI in crisis communications: the rules that bind", "/guides/ai-crisis-communications"],
       ],
@@ -95,7 +95,7 @@ export default {
     ],
   },
   de: {
-    title: "Answer Engine Optimization: was Google tatsächlich sagt",
+    title: "Answer Engine Optimization (AEO): was Google dazu schreibt",
     description:
       "Google dokumentiert seine generativen KI-Funktionen — und widerspricht damit dem meisten, was als AEO verkauft wird. Was in der Doku steht, welche Regler KI-Antworten wirklich steuern und was jedes Crawler-Token bewirkt.",
     body: topic("de", {
@@ -144,7 +144,7 @@ export default {
       sources: quellen,
 
       related: [
-        ["KI-Markenmonitoring: was die Plattformen wirklich berichten", "/de/guides/ai-brand-monitoring"],
+        ["KI-Markenmonitoring: was Google und Bing auswerten", "/de/guides/ai-brand-monitoring"],
         ["KI in der Medienarbeit: was Redaktionen untersagen", "/de/guides/ai-media-relations"],
         ["KI in der Krisenkommunikation: die verbindlichen Regeln", "/de/guides/ai-crisis-communications"],
       ],

@@ -34,7 +34,7 @@ const CODING_ROLE = /coding|codex|claude code|cline|grok build|developer/i;
 // Pages that answer this page's follow-up questions. Each had a single
 // contextual inlink in September 2026, so Google found them late or not at all.
 const READ_NEXT = [
-  ["/guides/will-ai-replace-marketers", "Will AI replace marketers?", "Which marketing tasks move to AI and which stay with people."],
+  ["/guides/will-ai-replace-marketers", "Will AI replace marketing jobs?", "Which marketing tasks move to AI and which stay with people."],
   ["/guides/best-ai-marketing-tools", "The best AI marketing tools", "A shortlist by job, from research to reporting."],
   ["/use-cases/industries/agencies", "AI coworkers for agencies", "Pitch research, competitive sets per client and production."],
   ["/compare/sokosumi-vs-sintra", "Sokosumi vs Sintra", "Two ways to buy AI employees, side by side."],

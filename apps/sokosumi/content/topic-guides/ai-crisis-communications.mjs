@@ -14,7 +14,7 @@ export default {
   category: "advanced",
   order: 204,
   en: {
-    title: "AI in crisis communications: the rules that actually bind",
+    title: "AI in crisis communications: the rules that apply",
     description:
       "One clause of the EU AI Act decides whether an AI-drafted public statement is legal without a label, and the disclosure clocks are shorter than most drafting cycles. What applies, from when, and where the profession draws the line.",
     body: topic("en", {
@@ -66,8 +66,8 @@ export default {
       sources,
 
       related: [
-        ["Answer engine optimization: what Google's documentation actually says", "/guides/answer-engine-optimization"],
-        ["AI brand monitoring: what Google and Microsoft actually report", "/guides/ai-brand-monitoring"],
+        ["Answer engine optimization (AEO): Google's own guidance", "/guides/answer-engine-optimization"],
+        ["AI brand monitoring: what Google and Bing report", "/guides/ai-brand-monitoring"],
         ["AI in media relations: what newsrooms forbid", "/guides/ai-media-relations"],
       ],
     }),
@@ -92,7 +92,7 @@ export default {
     ],
   },
   de: {
-    title: "KI in der Krisenkommunikation: die Regeln, die wirklich binden",
+    title: "KI in der Krisenkommunikation: welche Regeln gelten",
     description:
       "Ein Absatz des EU AI Act entscheidet, ob ein KI-entworfenes Statement ohne Kennzeichnung zulässig ist — und die Meldefristen sind kürzer als die meisten Abstimmungsschleifen. Was gilt, ab wann, und wo die Branche die Grenze zieht.",
     body: topic("de", {
@@ -144,7 +144,7 @@ export default {
       sources,
       related: [
         ["Answer Engine Optimization: was Google wirklich dokumentiert", "/de/guides/answer-engine-optimization"],
-        ["KI-Markenmonitoring: was die Plattformen wirklich berichten", "/de/guides/ai-brand-monitoring"],
+        ["KI-Markenmonitoring: was Google und Bing auswerten", "/de/guides/ai-brand-monitoring"],
         ["KI in der Medienarbeit: was Redaktionen untersagen", "/de/guides/ai-media-relations"],
       ],
     }),

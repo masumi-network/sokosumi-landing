@@ -26,17 +26,17 @@ const sources = [
 const list = (items) => items.map(([label, url]) => `- [${label}](${url})`).join("\n");
 
 const relatedEn = [
-  ["Will AI replace marketers? What is real in 2026", "/guides/will-ai-replace-marketers"],
+  ["Will AI replace marketing jobs? What's changing in 2026", "/guides/will-ai-replace-marketers"],
   ["Best AI marketing tools in 2026: 16 picks", "/guides/best-ai-marketing-tools"],
-  ["Answer engine optimization: what Google actually says", "/guides/answer-engine-optimization"],
-  ["AI brand monitoring: what the platforms actually report", "/guides/ai-brand-monitoring"],
+  ["Answer engine optimization (AEO): Google's own guidance", "/guides/answer-engine-optimization"],
+  ["AI brand monitoring: what Google and Bing report", "/guides/ai-brand-monitoring"],
 ];
 
 const relatedDe = [
-  ["Ersetzt KI Marketer? Was 2026 wirklich stimmt", "/guides/will-ai-replace-marketers"],
+  ["Ersetzt KI Marketing-Jobs? Was sich 2026 ändert", "/guides/will-ai-replace-marketers"],
   ["Die besten KI-Marketing-Tools 2026: 16 Empfehlungen", "/guides/best-ai-marketing-tools"],
-  ["Answer Engine Optimization: was Google tatsächlich sagt", "/guides/answer-engine-optimization"],
-  ["KI-Markenmonitoring: was die Plattformen wirklich berichten", "/guides/ai-brand-monitoring"],
+  ["Answer Engine Optimization (AEO): was Google dazu schreibt", "/guides/answer-engine-optimization"],
+  ["KI-Markenmonitoring: was Google und Bing auswerten", "/guides/ai-brand-monitoring"],
 ];
 
 export default {

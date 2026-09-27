@@ -159,6 +159,7 @@ const DE = {
   "AI workspaces and agent builders": "KI-Workspaces und Agent-Builder",
   "Company-wide chat with your data, or a canvas to build your own agents. Someone has to build and maintain them.": "Unternehmensweiter Chat mit Ihren Daten oder eine Fläche, um eigene Agenten zu bauen. Jemand muss sie bauen und pflegen.",
   "AI employees": "KI-Mitarbeiter",
+  "Will AI replace marketing jobs?": "Ersetzt KI Marketing-Jobs?",
   "Sokosumi is a marketplace where marketing teams hire AI coworkers and AI agents. Built by Serviceplan Group with NMKR in Munich. Facts, pricing, contact.": "Sokosumi ist ein Marktplatz für KI-Mitarbeiter und KI-Agenten im Marketing, entwickelt von der Serviceplan Group mit NMKR in München. Fakten, Preise, Kontakt.",
   "Two ways to buy AI employees, side by side.": "Zwei Wege, KI-Mitarbeiter einzusetzen, im direkten Vergleich.",
   "Sokosumi vs Sintra": "Sokosumi vs. Sintra",

@@ -15,7 +15,7 @@ export default {
   category: "workflows",
   order: 101,
   en: {
-    title: "How to use ChatGPT for marketing strategy",
+    title: "ChatGPT for marketing: a workflow for strategy work",
     description: "Build a sourced marketing brief in ChatGPT, turn it into a campaign plan, and review every claim before your team ships the work.",
     body: article("en", {
       intro: [
@@ -74,7 +74,7 @@ export default {
     ],
   },
   de: {
-    title: "ChatGPT für die Marketingstrategie nutzen",
+    title: "ChatGPT fürs Marketing: ein Ablauf für die Strategiearbeit",
     description: "Erstelle mit ChatGPT ein belegtes Marketing-Briefing, entwickle daraus einen Kampagnenplan und prüfe jede Aussage vor der Veröffentlichung.",
     body: article("de", {
       intro: [

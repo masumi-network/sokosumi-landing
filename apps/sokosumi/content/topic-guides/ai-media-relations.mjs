@@ -14,7 +14,7 @@ export default {
   category: "advanced",
   order: 203,
   en: {
-    title: "AI in media relations: what newsrooms actually forbid",
+    title: "AI in media relations: what newsroom policies forbid",
     description:
       "Newsrooms have published AI policies, and they constrain what you can send them. What AP, the BBC and the Guardian permit, what PRSA requires you to disclose, and what journalists say about AI-written pitches.",
     body: topic("en", {
@@ -65,8 +65,8 @@ export default {
       sources,
 
       related: [
-        ["Answer engine optimization: what Google's documentation actually says", "/guides/answer-engine-optimization"],
-        ["AI brand monitoring: what Google and Microsoft actually report", "/guides/ai-brand-monitoring"],
+        ["Answer engine optimization (AEO): Google's own guidance", "/guides/answer-engine-optimization"],
+        ["AI brand monitoring: what Google and Bing report", "/guides/ai-brand-monitoring"],
         ["AI in crisis communications: the rules that bind", "/guides/ai-crisis-communications"],
       ],
     }),
@@ -91,7 +91,7 @@ export default {
     ],
   },
   de: {
-    title: "KI in der Medienarbeit: was Redaktionen tatsächlich untersagen",
+    title: "KI in der Medienarbeit: was Redaktionsrichtlinien verbieten",
     description:
       "Redaktionen haben KI-Richtlinien veröffentlicht, die bestimmen, was man ihnen überhaupt schicken kann. Was AP, BBC und Guardian erlauben, was die PRSA an Offenlegung verlangt und wie Journalisten zu KI-Pitches stehen.",
     body: topic("de", {
@@ -142,7 +142,7 @@ export default {
       sources,
       related: [
         ["Answer Engine Optimization: was Google wirklich dokumentiert", "/de/guides/answer-engine-optimization"],
-        ["KI-Markenmonitoring: was die Plattformen wirklich berichten", "/de/guides/ai-brand-monitoring"],
+        ["KI-Markenmonitoring: was Google und Bing auswerten", "/de/guides/ai-brand-monitoring"],
         ["KI in der Krisenkommunikation: die verbindlichen Regeln", "/de/guides/ai-crisis-communications"],
       ],
     }),

@@ -21,7 +21,7 @@ export default {
   category: "advanced",
   order: 201,
   en: {
-    title: "AI brand monitoring: what the platforms actually report",
+    title: "AI brand monitoring: what Google and Bing report",
     description:
       "Google and Microsoft both publish AI-answer visibility data, and they measure different things. What each report contains, what neither contains, and how to build a defensible baseline.",
     body: topic("en", {
@@ -72,7 +72,7 @@ export default {
       sources,
 
       related: [
-        ["Answer engine optimization: what Google's documentation actually says", "/guides/answer-engine-optimization"],
+        ["Answer engine optimization (AEO): Google's own guidance", "/guides/answer-engine-optimization"],
         ["AI in media relations: what newsrooms forbid", "/guides/ai-media-relations"],
         ["AI in crisis communications: the rules that bind", "/guides/ai-crisis-communications"],
       ],
@@ -98,7 +98,7 @@ export default {
     ],
   },
   de: {
-    title: "KI-Markenmonitoring: was die Plattformen wirklich berichten",
+    title: "KI-Markenmonitoring: was Google und Bing auswerten",
     description:
       "Google und Microsoft veröffentlichen beide Daten zur Sichtbarkeit in KI-Antworten — und messen Unterschiedliches. Was in den Berichten steht, was in keinem steht, und wie eine belastbare Baseline entsteht.",
     body: topic("de", {

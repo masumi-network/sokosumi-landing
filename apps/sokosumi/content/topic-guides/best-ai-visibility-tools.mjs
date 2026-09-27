@@ -111,8 +111,8 @@ export default {
       ],
       sources,
       related: [
-        ["AI brand monitoring: what the platforms actually report", "/guides/ai-brand-monitoring"],
-        ["Answer engine optimization: what Google actually says", "/guides/answer-engine-optimization"],
+        ["AI brand monitoring: what Google and Bing report", "/guides/ai-brand-monitoring"],
+        ["Answer engine optimization (AEO): Google's own guidance", "/guides/answer-engine-optimization"],
         ["SEO and AI visibility with AI coworkers", "/use-cases/seo-and-ai-visibility"],
         ["Best AI marketing tools", "/guides/best-ai-marketing-tools"],
       ],
@@ -198,8 +198,8 @@ export default {
       ],
       sources: quellen,
       related: [
-        ["KI-Markenmonitoring: was die Plattformen wirklich berichten", "/guides/ai-brand-monitoring"],
-        ["Answer Engine Optimization: was Google tatsächlich sagt", "/guides/answer-engine-optimization"],
+        ["KI-Markenmonitoring: was Google und Bing auswerten", "/guides/ai-brand-monitoring"],
+        ["Answer Engine Optimization (AEO): was Google dazu schreibt", "/guides/answer-engine-optimization"],
         ["SEO und KI-Sichtbarkeit mit KI-Mitarbeitern", "/use-cases/seo-and-ai-visibility"],
         ["Die besten KI-Tools fürs Marketing", "/guides/best-ai-marketing-tools"],
       ],

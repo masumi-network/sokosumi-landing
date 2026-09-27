@@ -23,7 +23,7 @@ export default {
   category: "advanced",
   order: 210,
   en: {
-    title: "Will AI replace marketers? What is real in 2026",
+    title: "Will AI replace marketing jobs? What's changing in 2026",
     description:
       "No forecast theater: which marketing tasks are demonstrably delegated to AI today, which parts of the job show no sign of moving, and what a working marketer should actually do about it.",
     body: [
@@ -62,7 +62,7 @@ export default {
     ],
   },
   de: {
-    title: "Ersetzt KI Marketer? Was 2026 wirklich stimmt",
+    title: "Ersetzt KI Marketing-Jobs? Was sich 2026 ändert",
     description:
       "Kein Prognosetheater: welche Marketingaufgaben heute nachweisbar an KI delegiert werden, welcher Teil des Jobs sich nicht bewegt — und was ein Marketer jetzt konkret tun sollte.",
     body: [
