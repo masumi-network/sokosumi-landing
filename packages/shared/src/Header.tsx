@@ -391,7 +391,7 @@ export default function Header({
               <Link href={joinHref(siteRootHref, "/x402")} className="text-[14px] font-normal text-black hover:text-black/60 transition-colors px-[15px] h-full flex items-center">
                 x402
               </Link>
-              <Link href={joinHref(siteRootHref, "/explorer")} className="text-[14px] font-normal text-black hover:text-black/60 transition-colors px-[15px] h-full flex items-center">
+              <Link href={joinHref(siteRootHref, "/agent-explorer")} className="text-[14px] font-normal text-black hover:text-black/60 transition-colors px-[15px] h-full flex items-center">
                 {nav("H8")}
               </Link>
               <Link href={joinHref(siteRootHref, "/register")} className="text-[14px] font-normal text-black hover:text-black/60 transition-colors px-[15px] h-full flex items-center">
@@ -499,7 +499,7 @@ export default function Header({
                 <Link href={joinHref(siteRootHref, "/x402")} onClick={() => setMobileMenuOpen(false)} className="text-[18px] text-black py-3 border-b border-black/[0.06]">
                   x402
                 </Link>
-                <Link href={joinHref(siteRootHref, "/explorer")} onClick={() => setMobileMenuOpen(false)} className="text-[18px] text-black py-3 border-b border-black/[0.06]">
+                <Link href={joinHref(siteRootHref, "/agent-explorer")} onClick={() => setMobileMenuOpen(false)} className="text-[18px] text-black py-3 border-b border-black/[0.06]">
                   {nav("H8")}
                 </Link>
                 <Link href={joinHref(siteRootHref, "/register")} onClick={() => setMobileMenuOpen(false)} className="text-[18px] text-black py-3 border-b border-black/[0.06]">

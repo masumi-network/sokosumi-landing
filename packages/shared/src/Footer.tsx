@@ -88,7 +88,7 @@ export default function Footer({
                 <h3 className={headingCls}>{nav("F38")}</h3>
                 <ul className={listCls}>
                   <li><Link href="/x402" className={linkCls}>x402</Link></li>
-                  <li><Link href="/explorer" className={linkCls}>{nav("H8")}</Link></li>
+                  <li><Link href="/agent-explorer" className={linkCls}>{nav("H8")}</Link></li>
                   <li><Link href="/use-cases" className={linkCls}>{nav("H9")}</Link></li>
                   <li><Link href="/compare" className={linkCls}>{nav("H20")}</Link></li>
                 </ul>

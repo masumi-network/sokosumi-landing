@@ -18,7 +18,7 @@ const NAV = {
   H5: { en: "Press", de: "Presse" },
   H6: { en: "Developer Hub", de: "Developer Hub" },
   H7: { en: "Explore the ecosystem, ask Nori, or open the documentation.", de: "Erkunden Sie das Ökosystem, fragen Sie Nori oder öffnen Sie die Dokumentation." },
-  H8: { en: "Explorer", de: "Explorer" },
+  H8: { en: "Agent Explorer", de: "Agent Explorer" },
   H9: { en: "Use cases", de: "Anwendungsfälle" },
   H10: { en: "Blog", de: "Blog" },
   H11: { en: "GitHub", de: "GitHub" },

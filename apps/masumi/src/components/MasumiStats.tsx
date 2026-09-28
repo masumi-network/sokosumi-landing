@@ -496,7 +496,7 @@ export default function MasumiStats({ locale = "en" }: { locale?: Locale }) {
       </div>
 
       <Link
-        href="/explorer"
+        href="/agent-explorer"
         className="text-[13px] text-[#999] hover:text-black transition-colors flex items-center gap-1"
       >
         {st("STATS3")}
