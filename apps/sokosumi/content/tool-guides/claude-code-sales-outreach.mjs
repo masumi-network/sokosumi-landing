@@ -74,11 +74,11 @@ export default {
   },
   de: {
     title: "Claude Code für Sales-Outreach-Prozesse nutzen",
-    description: "Baue eine kontrollierte lokale Pipeline, die Account-Daten prüft und Entwürfe vorbereitet, ohne den Agenten zum riskanten Versender zu machen.",
+    description: "Bauen Sie eine kontrollierte lokale Pipeline, die Account-Daten prüft und Entwürfe vorbereitet, ohne den Agenten zum riskanten Versender zu machen.",
     body: article("de", {
       intro: [
         "Claude Code kann auch Nichtentwicklern helfen, wiederholbare Datenabläufe in einem Repository zu betreiben. Für Outreach ist das sichere Einsatzfeld die Vorbereitung und Prüfung von Recherche- oder Entwurfsdateien – nicht unkontrolliertes Scraping oder selbstständiger Versand.",
-        "Halte den Ablauf zunächst lokal und prüfbar. Für jeden Account müssen Quelle, Transformation und Ablehnungsgrund erhalten bleiben.",
+        "Halten Sie den Ablauf zunächst lokal und prüfbar. Für jeden Account müssen Quelle, Transformation und Ablehnungsgrund erhalten bleiben.",
       ],
       fit: [
         "Account-CSVs gegen ein dokumentiertes Schema prüfen und abgelehnte Zeilen ausgeben.",
@@ -87,18 +87,18 @@ export default {
         "Eng begrenzte interne Tools über MCP verbinden, wenn Sicherheitsverantwortliche zustimmen.",
       ],
       setup: [
-        "Lege ein Repository mit CLAUDE.md für Feldbedeutung, erlaubte Quellen, verbotene Aktionen, Ausgabeschema und Prüfkommandos an.",
-        "Nutze anonymisierte Testdaten. Halte CRM-, Enrichment- und E-Mail-Zugänge aus dem Repository und verbinde sie erst nach Offline-Prüfung.",
-        "Definiere deterministische Regeln vor Modellarbeit: Pflichtfelder, Regionen, Sperrstatus, Quellen-URL, Datum und Textlänge.",
-        "Nutze für Automation Print- oder strukturierte Ausgabe, damit ein weiterer Prozess das Ergebnis validieren kann.",
+        "Legen Sie ein Repository mit CLAUDE.md für Feldbedeutung, erlaubte Quellen, verbotene Aktionen, Ausgabeschema und Prüfkommandos an.",
+        "Nutzen Sie anonymisierte Testdaten. Halten Sie CRM-, Enrichment- und E-Mail-Zugänge aus dem Repository heraus und verbinden Sie sie erst nach der Offline-Prüfung.",
+        "Definieren Sie deterministische Regeln vor Modellarbeit: Pflichtfelder, Regionen, Sperrstatus, Quellen-URL, Datum und Textlänge.",
+        "Nutzen Sie für Automation Print- oder strukturierte Ausgabe, damit ein weiterer Prozess das Ergebnis validieren kann.",
       ],
       workflow: [
-        "Lass Claude Code Schema und Tests für gültige, unvollständige, veraltete und gesperrte Datensätze erstellen.",
-        "Normalisiere freigegebene Felder, ohne fehlende Firma, Rolle oder URL zu raten. Fehler gehen in eine Prüfdatei.",
-        "Erstelle je gültiger Zeile ein Recherchebriefing, das Quellenfakt und Geschäftshypothese trennt.",
-        "Erzeuge je Account einen strukturierten Entwurf mit Zeichenzahl, Beleg-URL und Prüfstatus.",
-        "Führe Tests aus und gleiche Mengen ab: Eingang entspricht Freigaben plus Ablehnungen, ohne stillen Verlust.",
-        "Importiere nur freigegebene Entwürfe über den verwalteten Prozess ins Versandsystem.",
+        "Lassen Sie Claude Code Schema und Tests für gültige, unvollständige, veraltete und gesperrte Datensätze erstellen.",
+        "Normalisieren Sie freigegebene Felder, ohne fehlende Firma, Rolle oder URL zu raten. Fehler gehen in eine Prüfdatei.",
+        "Erstellen Sie je gültiger Zeile ein Recherchebriefing, das Quellenfakt und Geschäftshypothese trennt.",
+        "Erzeugen Sie je Account einen strukturierten Entwurf mit Zeichenzahl, Beleg-URL und Prüfstatus.",
+        "Führen Sie Tests aus und gleichen Sie Mengen ab: Eingang entspricht Freigaben plus Ablehnungen, ohne stillen Verlust.",
+        "Importieren Sie nur freigegebene Entwürfe über den verwalteten Prozess ins Versandsystem.",
       ],
       prompt: [
         "Baue eine lokale, nur zur Prüfung gedachte Outreach-Pipeline für [input.csv]. Befolge CLAUDE.md, versende nichts und greife nicht auf Produktion zu.",
@@ -107,15 +107,15 @@ export default {
         "Ergänze Tests für gültige, alte, fehlende und gesperrte Datensätze. Melde Ein-, Freigabe- und Ablehnungszahlen und stoppe bei Differenzen.",
       ],
       checks: [
-        "Prüfe Kommandorechte und jeden MCP-Server vor der Verbindung; erlaube nur benötigte Tools.",
-        "Teste zuerst mit Beispieldaten und bestätige, dass kein versteckter Netzwerk- oder Versandschritt existiert.",
-        "Gleiche Mengen ab und prüfe Stichproben jeder Ablehnungskategorie.",
-        "Öffne jede Entwurfsquelle und stelle Hypothesen nicht als Fakten dar.",
-        "Belasse Kontakt-Compliance und Versandkontrollen im CRM oder Outreach-System.",
+        "Prüfen Sie Kommandorechte und jeden MCP-Server vor der Verbindung; erlauben Sie nur benötigte Tools.",
+        "Testen Sie zuerst mit Beispieldaten und bestätigen Sie, dass kein versteckter Netzwerk- oder Versandschritt existiert.",
+        "Gleichen Sie Mengen ab und prüfen Sie Stichproben jeder Ablehnungskategorie.",
+        "Öffnen Sie jede Entwurfsquelle und stellen Sie Hypothesen nicht als Fakten dar.",
+        "Belassen Sie Kontakt-Compliance und Versandkontrollen im CRM oder Outreach-System.",
       ],
       limitIntro: ["Ein CLI-Agent kann Dateien ändern und verbundene Tools aufrufen. Konfiguration und Berechtigungen sind deshalb Teil des Marketingprozesses."],
       limits: [
-        "Verbinde nicht aus Bequemlichkeit uneingeschränkte CRM- oder E-Mail-Tools.",
+        "Verbinden Sie nicht aus Bequemlichkeit uneingeschränkte CRM- oder E-Mail-Tools.",
         "MCP standardisiert Verbindungen, macht aber nicht jeden Server oder jede Aktion vertrauenswürdig.",
         "Strukturierte Ausgabe erleichtert Prüfung, bestätigt aber nicht den zugrunde liegenden Fakt.",
         "Identität, Relevanz, Aussagen, Compliance und Versand brauchen menschliche Freigabe.",
@@ -127,7 +127,7 @@ export default {
       ["Warum Claude Code statt Claude Chat?", "Claude Code eignet sich für wiederholbare Arbeit mit lokalen Dateien, Skripten, Tests oder begrenzt verbundenen Tools. Chat genügt für einen einzelnen Entwurf."],
       ["Soll Claude Code E-Mails versenden?", "Dieser Ablauf trennt den Versand. Nur menschlich freigegebene Entwürfe kommen in ein verwaltetes System mit Sperr- und Compliance-Kontrollen."],
       ["Was gehört in CLAUDE.md?", "Schema, Quellenregeln, verbotene Aktionen, Stilvorgaben, Ausgabevertrag, Tests und Prüfprozess."],
-      ["Ist MCP automatisch sicher?", "Nein. Prüfe jeden Server und jedes Tool, authentifiziere genehmigt und vergebe nur die nötigen Rechte."],
+      ["Ist MCP automatisch sicher?", "Nein. Prüfen Sie jeden Server und jedes Tool, nutzen Sie nur genehmigte Authentifizierung und vergeben Sie nur die nötigen Rechte."],
     ],
   },
 };

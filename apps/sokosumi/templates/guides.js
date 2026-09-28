@@ -69,8 +69,8 @@ function toolBridge(tg, g) {
   return `<section class="page-section tg-bridge" data-reveal>
     <div class="pair-bridge-box">
       <div class="pair-bridge-head"><span class="eyebrow">${esc(t("When you outgrow it"))}</span><span class="cmp-mark cmp-mark-logo"><img src="/assets/apple-touch-icon.png" alt="" width="24" height="24">Sokosumi</span></div>
-      <h2>${esc(t("{tool} gives one person a place to prompt. Sokosumi gives the team a file back.", { tool: tg.tool.name }))}</h2>
-      <p>${esc(t("Everything above still needs someone to write the prompt, check the answer and paste it somewhere. On Sokosumi you brief a named coworker for the same job; the task shows on a shared board and comes back as a PDF, deck, spreadsheet or dashboard. Credits are only used when a task runs, and the free plan needs no card."))}</p>
+      <h2>${esc(t("{tool} is where one person prompts. On Sokosumi the team gets a file back.", { tool: tg.tool.name }))}</h2>
+      <p>${esc(t("Everything above still needs someone to write the prompt, check the answer and paste it somewhere. On Sokosumi you brief a named coworker for the same job; the task shows on a shared board and comes back as a PDF, deck, spreadsheet or dashboard. Each seat includes monthly credits, and the free plan needs no card."))}</p>
       <div class="cta-row">
         <a class="btn btn-primary" href="${attr(shell.APP_SIGNUP)}" data-analytics="sign_up_click" data-analytics-location="tool_guide_bridge">${esc(t("Start free"))}</a>
         <a class="btn btn-outline" href="${attr(cmp)}">${esc(t("Compare {name} with alternatives", { name: tg.tool.name }))}</a>
@@ -99,7 +99,7 @@ async function index(ctx) {
   }
   const toolSection = tool.length
     ? `<div class="page-section tg-index" id="tool-guides">
-      <div class="blk-head"><h2>${esc(t("How to use AI tools for marketing and sales"))}</h2><p class="sub">${esc(t("Honest how-tos for the tools you already have: what each one does well for a marketing job, real prompts, real limits, and where a coworker takes over."))}</p></div>
+      <div class="blk-head"><h2>${esc(t("How to use AI tools for marketing and sales"))}</h2><p class="sub">${esc(t("How-tos for the tools you already have: what each one does for a marketing job, concrete prompts, limits, and where an AI coworker takes over."))}</p></div>
       ${[...byTool.entries()].map(([name, list]) => `<h3 class="tg-tool-head">${esc(name)}</h3><div class="${shell.gridCls(list.length)}">${list.map(toolGuideCard).join("")}</div>`).join("")}
     </div>`
     : "";
@@ -123,8 +123,8 @@ async function index(ctx) {
   const cr = [{ label: "Home", href: "/" }, { label: "Guides" }];
   return (
     pageStart({
-      title: t("Guides | Sokosumi"),
-      description: t("Guides for marketing teams on Sokosumi: set up a workspace, write a briefing that works, run and schedule AI coworkers, use the files that come back."),
+      title: t("Guides to AI marketing and AI coworkers | Sokosumi"),
+      description: t("Guides for marketing teams: choosing AI tools, applying AI to research, content and reporting, and getting finished work out of Sokosumi."),
       path: "/guides",
       breadcrumb: cr,
       jsonld: shell.itemListLd("Sokosumi guides", "/guides", guides.map((g) => ({ name: g.title, path: `/guides/${g.slug}` }))),
@@ -137,7 +137,7 @@ async function index(ctx) {
       <div class="shot-split">
         <div class="copy">
           <h2>${esc(t("It starts with one good brief"))}</h2>
-          <p>${esc(t("Say what you want done in plain language. Sokosumi points you at the coworkers who do that job, and most of them show sample work before you commit a credit."))}</p>
+          <p>${esc(t("Say what you want done in plain language. Sokosumi points you at the coworkers who do that job, and many profiles show sample work before you commit a credit."))}</p>
           <a class="btn btn-outline" href="/tasks">${esc(t("Browse template tasks"))}</a>
         </div>
         ${shell.shotFigure(shell.SHOTS.brief, { caption: false })}

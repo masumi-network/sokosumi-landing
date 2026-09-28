@@ -1,4 +1,5 @@
 import { cmsFetch, isDraftModeEnabled } from "./cms";
+import { DEFAULT_LOCALE, type Locale } from "./i18n";
 import type { PageBlock } from "@/components/CmsBlocks";
 
 // Loaders for the programmatic-SEO content collections: use cases, guides,
@@ -50,43 +51,47 @@ export function categoriesOf(uc: UseCase): UseCaseCategory[] {
   return populated(uc.categories);
 }
 
-export async function getAllUseCases(): Promise<UseCase[]> {
+export async function getAllUseCases(locale: Locale = DEFAULT_LOCALE): Promise<UseCase[]> {
   const res = await cmsFetch<{ docs: UseCase[] }>(
     `/use-cases?limit=200&depth=1&sort=title${SITE}`,
+    { locale },
   );
   return res?.docs ?? [];
 }
 
-export async function getUseCaseBySlug(slug: string): Promise<UseCase | null> {
+export async function getUseCaseBySlug(slug: string, locale: Locale = DEFAULT_LOCALE): Promise<UseCase | null> {
   const res = await cmsFetch<{ docs: UseCase[] }>(
     `/use-cases?where[slug][equals]=${encodeURIComponent(slug)}${SITE}&limit=1&depth=1`,
-    { draft: await isDraftModeEnabled() },
+    { draft: await isDraftModeEnabled(), locale },
   );
   return res?.docs?.[0] ?? null;
 }
 
 export async function getUseCasesByIndustry(
   industryId: string | number,
+  locale: Locale = DEFAULT_LOCALE,
 ): Promise<UseCase[]> {
   const res = await cmsFetch<{ docs: UseCase[] }>(
     `/use-cases?where[industries][in]=${encodeURIComponent(String(industryId))}${SITE}&limit=200&depth=1&sort=title`,
+    { locale },
   );
   return res?.docs ?? [];
 }
 
-export async function getAllIndustries(): Promise<Industry[]> {
-  const res = await cmsFetch<{ docs: Industry[] }>("/industries?limit=200&sort=name");
+export async function getAllIndustries(locale: Locale = DEFAULT_LOCALE): Promise<Industry[]> {
+  const res = await cmsFetch<{ docs: Industry[] }>("/industries?limit=200&sort=name", { locale });
   return res?.docs ?? [];
 }
 
-export async function getIndustryBySlug(slug: string): Promise<Industry | null> {
+export async function getIndustryBySlug(slug: string, locale: Locale = DEFAULT_LOCALE): Promise<Industry | null> {
   const res = await cmsFetch<{ docs: Industry[] }>(
     `/industries?where[slug][equals]=${encodeURIComponent(slug)}&limit=1`,
+    { locale },
   );
   return res?.docs?.[0] ?? null;
 }
 
-export async function getAllUseCaseCategories(): Promise<UseCaseCategory[]> {
+export async function getAllUseCaseCategories(locale: Locale = DEFAULT_LOCALE): Promise<UseCaseCategory[]> {
   const res = await cmsFetch<{ docs: UseCaseCategory[] }>(
     "/use-case-categories?limit=200&sort=name",
   );
@@ -126,17 +131,18 @@ export function relatedGuides(g: Guide): { title: string; slug: string }[] {
   return populated(g.related);
 }
 
-export async function getAllGuides(): Promise<Guide[]> {
+export async function getAllGuides(locale: Locale = DEFAULT_LOCALE): Promise<Guide[]> {
   const res = await cmsFetch<{ docs: Guide[] }>(
     `/guides?limit=200&depth=1&sort=order${SITE}`,
+    { locale },
   );
   return res?.docs ?? [];
 }
 
-export async function getGuideBySlug(slug: string): Promise<Guide | null> {
+export async function getGuideBySlug(slug: string, locale: Locale = DEFAULT_LOCALE): Promise<Guide | null> {
   const res = await cmsFetch<{ docs: Guide[] }>(
     `/guides?where[slug][equals]=${encodeURIComponent(slug)}${SITE}&limit=1&depth=1`,
-    { draft: await isDraftModeEnabled() },
+    { draft: await isDraftModeEnabled(), locale },
   );
   return res?.docs?.[0] ?? null;
 }
@@ -168,17 +174,18 @@ export type Release = {
   updatedAt?: string;
 };
 
-export async function getAllReleases(): Promise<Release[]> {
+export async function getAllReleases(locale: Locale = DEFAULT_LOCALE): Promise<Release[]> {
   const res = await cmsFetch<{ docs: Release[] }>(
     `/releases?limit=200&sort=-date${SITE}`,
+    { locale },
   );
   return res?.docs ?? [];
 }
 
-export async function getReleaseBySlug(slug: string): Promise<Release | null> {
+export async function getReleaseBySlug(slug: string, locale: Locale = DEFAULT_LOCALE): Promise<Release | null> {
   const res = await cmsFetch<{ docs: Release[] }>(
     `/releases?where[slug][equals]=${encodeURIComponent(slug)}${SITE}&limit=1`,
-    { draft: await isDraftModeEnabled() },
+    { draft: await isDraftModeEnabled(), locale },
   );
   return res?.docs?.[0] ?? null;
 }
@@ -201,17 +208,18 @@ export function comparisonLogo(c: Comparison): { url?: string; alt?: string } | 
     : null;
 }
 
-export async function getAllComparisons(): Promise<Comparison[]> {
+export async function getAllComparisons(locale: Locale = DEFAULT_LOCALE): Promise<Comparison[]> {
   const res = await cmsFetch<{ docs: Comparison[] }>(
     `/comparisons?limit=200&depth=1&sort=competitor${SITE}`,
+    { locale },
   );
   return res?.docs ?? [];
 }
 
-export async function getComparisonBySlug(slug: string): Promise<Comparison | null> {
+export async function getComparisonBySlug(slug: string, locale: Locale = DEFAULT_LOCALE): Promise<Comparison | null> {
   const res = await cmsFetch<{ docs: Comparison[] }>(
     `/comparisons?where[slug][equals]=${encodeURIComponent(slug)}${SITE}&limit=1&depth=1`,
-    { draft: await isDraftModeEnabled() },
+    { draft: await isDraftModeEnabled(), locale },
   );
   return res?.docs?.[0] ?? null;
 }

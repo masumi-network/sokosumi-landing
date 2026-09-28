@@ -11,6 +11,7 @@
     "url": "https://n8n.io"
   },
   "checked": "2026-08-26",
+  "published": "2026-08-26",
   "en": {
     "title": "Beam AI or n8n: managed process agents or your own workflow engine?",
     "metaTitle": "Beam AI vs n8n (2026): prices, tasks vs executions, EU hosting",
@@ -87,11 +88,11 @@
     "verdict": "Beam AI wins for an operations team with a high-volume, well-defined process and the budget for a managed vendor. n8n wins for a technical team that wants a cheap, flexible engine it controls. Both can keep data in Germany, which is rare in this category.",
     "bridge": {
       "heading": "If you want marketing work done, not a process automated",
-      "text": "Both tools above automate processes: one managed, one self-built. If the team's real need is a competitor report, a campaign plan or the Monday performance PDF, that is a different product: a coworker you brief, a board the team sees, a file at the end. Sokosumi is a marketplace of named AI coworkers for marketing teams, each with a role, sample work and a named vendor that states its models and hosting.",
+      "text": "Both tools above automate processes: one managed, one self-built. A competitor report, a campaign plan or the Monday performance PDF is a different product. You brief a coworker, the team sees the board, and a file lands at the end. Sokosumi is a marketplace of named AI coworkers for marketing teams, each with a role, sample work and a named vendor that states its models and hosting.",
       "points": [
         "Brief in plain language or @mention in a channel; the task shows on a shared board and ends with a finished file.",
-        "Credits only when a task runs. Free: 250 credits per seat per month, no card. Paid seats €25, €75 or €200 per month.",
-        "EU hosting available, stated per coworker. Built by Serviceplan Group with NMKR, Munich."
+        "Each task spends credits. Free: 250 credits per seat per month, no card. Paid seats €25, €75 or €200 per month.",
+        "Hosting depends on the coworker; check its profile. Built by Serviceplan Group with NMKR, Munich."
       ],
       "links": [
         "/compare/sokosumi-vs-beam-ai",
@@ -113,7 +114,7 @@
       ],
       [
         "Is there a ready-made option for marketing deliverables?",
-        "Sokosumi is a marketplace of AI coworkers that return finished files to a shared board. Free tier of 250 credits per seat per month; EU hosting stated per coworker."
+        "Sokosumi is a marketplace of AI coworkers that return finished files to a shared board. Free tier of 250 credits per seat per month; hosting depends on the coworker."
       ]
     ]
   },
@@ -135,8 +136,8 @@
       ],
       [
         "Preis",
-        "Free $0 (20 Aufgaben); Pro $50 pro Monat (200 Aufgaben); Scale $3,990 pro Monat; Custom",
-        "Cloud Starter €20, Pro €50 pro Monat; Business €667 pro Monat jährlich; Enterprise individuell; Community Edition kostenlos"
+        "Free 0 $ (20 Aufgaben); Pro 50 $ pro Monat (200 Aufgaben); Scale 3.990 $ pro Monat; Custom",
+        "Cloud Starter 20 €, Pro 50 € pro Monat; Business 667 € pro Monat jährlich; Enterprise individuell; Community Edition kostenlos"
       ],
       [
         "Free-Plan oder Test",
@@ -161,7 +162,7 @@
       [
         "Was gezählt wird",
         "Aufgaben: 20 Free, 200 Pro, hohes Volumen auf Scale. Die Preisseite definiert nicht, was als eine Aufgabe zählt",
-        "Workflow-Ausführungen: 2,500 / 10,000 / 40,000 pro Monat; eine Ausführung ist ein kompletter Lauf"
+        "Workflow-Ausführungen: 2.500 / 10.000 / 40.000 pro Monat; eine Ausführung ist ein kompletter Lauf"
       ]
     ],
     "pickA": {
@@ -169,35 +170,35 @@
       "points": [
         "Ihr Prozess dokumentenlastig und regelgebunden ist (Rechnungen, Schadenfälle, Auftragsbearbeitung) und ein Anbieter die Agents verantworten soll.",
         "Sie deutsches Hosting wollen und Modellaufrufe laut Beams Datensicherheitsrichtlinie in EU-Regionen bleiben sollen.",
-        "Sie Budget für einen gemanagten Service haben. Scale startet bei $3,990 pro Monat."
+        "Sie Budget für einen gemanagten Service haben. Scale startet bei 3.990 $ pro Monat."
       ]
     },
     "pickB": {
       "heading": "Wählen Sie n8n, wenn …",
       "points": [
         "Sie einen Entwickler haben und volle Kontrolle über Integrationen, Modelle und Hosting wollen.",
-        "Sie planbare, niedrige Preise wollen: €20 bis €50 pro Monat in der Cloud oder kostenlos selbst gehostet.",
+        "Sie planbare, niedrige Preise wollen: 20 € bis 50 € pro Monat in der Cloud oder kostenlos selbst gehostet.",
         "Ihre Automatisierungen vielfältig sind und sich oft ändern; das kann ein allgemeiner Workflow-Builder besser als feste Prozess-Agents."
       ]
     },
     "limits": {
       "a": [
-        "Der Preis springt von $50 Pro auf $3,990 Scale, ohne Zwischenstufe, und die Seite definiert eine Aufgabe nicht. Gartner- und G2-Reviews nennen außerdem Preistransparenz als Problem für schnell wachsende Mid-Market-Firmen.",
+        "Der Preis springt von 50 $ Pro auf 3.990 $ Scale, ohne Zwischenstufe, und die Seite definiert eine Aufgabe nicht. Gartner- und G2-Reviews nennen außerdem Preistransparenz als Problem für schnell wachsende Mid-Market-Firmen.",
         "Reviews berichten von holprigem Onboarding, dünner Dokumentation für eigene Webhooks und Randfällen bei Dokumentformaten, die weiter Menschen brauchen."
       ],
       "b": [
         "Die Lernkurve ist der wichtigste G2-Nachteil; Fehlerbehandlung und Datenmapping brauchen oft JavaScript.",
-        "Kein dauerhafter kostenloser Cloud-Plan, und SSO sowie erweiterte Rollen starten erst bei Business (€667 pro Monat). Self-Hosting in Produktion heißt Docker, SSL und Updates auf Ihrer Seite."
+        "Kein dauerhafter kostenloser Cloud-Plan, und SSO sowie erweiterte Rollen starten erst bei Business (667 € pro Monat). Self-Hosting in Produktion heißt Docker, SSL und Updates auf Ihrer Seite."
       ]
     },
     "verdict": "Beam AI gewinnt für ein Operations-Team mit hohem Volumen, klar definiertem Prozess und Budget für einen gemanagten Anbieter. n8n gewinnt für ein technisches Team, das eine günstige, flexible Engine unter eigener Kontrolle will. Beide können Daten in Deutschland halten, was in dieser Kategorie selten ist.",
     "bridge": {
       "heading": "Wenn Sie Marketingarbeit erledigt haben wollen, nicht Prozesse automatisieren",
-      "text": "Beide Tools automatisieren Prozesse: eines gemanagt, eines selbst gebaut. Wenn das Team eigentlich einen Wettbewerbsbericht, einen Kampagnenplan oder das Montags-PDF zur Performance braucht, ist das ein anderes Produkt: ein Coworker, den Sie briefen, ein Task-Board fürs Team, am Ende eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Coworker für Marketingteams, jeweils mit Rolle, Beispielarbeit und benanntem Anbieter, der Modelle und Hosting ausweist.",
+      "text": "Beide Tools automatisieren Prozesse: eines gemanagt, eines selbst gebaut. Ein Wettbewerbsbericht, ein Kampagnenplan oder das Montags-PDF zur Performance ist ein anderes Produkt. Sie briefen einen KI-Mitarbeiter, das Team sieht das Board, am Ende steht eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Mitarbeiter für Marketingteams, jeweils mit Rolle, Beispielarbeit und benanntem Anbieter, der Modelle und Hosting ausweist.",
       "points": [
         "Briefen Sie in klarer Sprache oder per @Mention in einem Kanal; die Aufgabe erscheint auf einem gemeinsamen Task-Board und endet mit einer fertigen Datei.",
-        "Credits nur, wenn eine Aufgabe läuft. Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25, €75 oder €200 pro Monat.",
-        "EU-Hosting verfügbar, je Coworker ausgewiesen. Gebaut von Serviceplan Group mit NMKR, München."
+        "Jede Aufgabe verbraucht Credits. Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats 25 €, 75 € oder 200 € pro Monat.",
+        "Das Hosting hängt vom KI-Mitarbeiter ab; prüfen Sie sein Profil. Gebaut von Serviceplan Group mit NMKR, München."
       ],
       "links": [
         "/compare/sokosumi-vs-beam-ai",
@@ -215,11 +216,11 @@
       ],
       [
         "Wie zählt n8n Ausführungen?",
-        "Eine Ausführung ist ein kompletter Workflow-Lauf, unabhängig von der Zahl der Schritte. Starter hat 2,500 pro Monat, Pro 10,000, Business 40,000. Workflows laufen über das Kontingent hinaus weiter; Mehrverbrauch kann anfallen."
+        "Eine Ausführung ist ein kompletter Workflow-Lauf, unabhängig von der Zahl der Schritte. Starter hat 2.500 pro Monat, Pro 10.000, Business 40.000. Workflows laufen über das Kontingent hinaus weiter; Mehrverbrauch kann anfallen."
       ],
       [
         "Gibt es eine fertige Option für Marketing-Ergebnisse?",
-        "Sokosumi ist ein Marktplatz für KI-Coworker, die fertige Dateien auf ein gemeinsames Task-Board liefern. Free-Plan mit 250 Credits pro Seat und Monat; EU-Hosting je Coworker ausgewiesen."
+        "Sokosumi ist ein Marktplatz für KI-Mitarbeiter, die fertige Dateien auf ein gemeinsames Task-Board liefern. Free-Plan mit 250 Credits pro Seat und Monat; das Hosting hängt vom KI-Mitarbeiter ab."
       ]
     ]
   },

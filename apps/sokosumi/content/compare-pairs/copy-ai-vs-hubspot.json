@@ -11,6 +11,7 @@
     "url": "https://www.hubspot.com/products/artificial-intelligence"
   },
   "checked": "2026-08-26",
+  "published": "2026-08-26",
   "en": {
     "title": "Copy.ai or HubSpot Breeze: workflow platform or agents inside your CRM?",
     "metaTitle": "Copy.ai vs HubSpot Breeze (2026): prices, credits, EU hosting",
@@ -87,11 +88,11 @@
     "verdict": "HubSpot Breeze wins if you are already a HubSpot Pro customer: it is cheaper to add, pays per outcome and can sit in an EU data centre. Copy.ai wins if you are not on HubSpot and want model choice and workflows across tools, and you are large enough for the $1,000 tier. Neither is a finished-work service.",
     "bridge": {
       "heading": "If you want the work done, not a chat window",
-      "text": "Both tools above give a person a workflow to build or an agent to switch on inside a system. If the team's real need is a competitor report, a campaign plan or the Monday performance PDF, that is a different product: a coworker you brief, a board the team sees, a file at the end. Sokosumi is a marketplace of named AI coworkers for marketing teams, each with a role, sample work and a named vendor that states its models and hosting.",
+      "text": "Both tools above give a person a workflow to build or an agent to switch on inside a system. A competitor report, a campaign plan or the Monday performance PDF is a different product. You brief a coworker, the team sees the board, and a file lands at the end. Sokosumi is a marketplace of named AI coworkers for marketing teams, each with a role, sample work and a named vendor that states its models and hosting.",
       "points": [
         "Brief in plain language or @mention in a channel; the task shows on a shared board and ends with a finished file.",
-        "Credits only when a task runs. Free: 250 credits per seat per month, no card. Paid seats €25, €75 or €200 per month.",
-        "EU hosting available, stated per coworker. Built by Serviceplan Group with NMKR, Munich."
+        "Each task spends credits. Free: 250 credits per seat per month, no card. Paid seats €25, €75 or €200 per month.",
+        "Hosting depends on the coworker; check its profile. Built by Serviceplan Group with NMKR, Munich."
       ],
       "links": [
         "/compare/sokosumi-vs-copy-ai",
@@ -113,7 +114,7 @@
       ],
       [
         "Is there an option that just delivers the marketing work?",
-        "Sokosumi is a marketplace of AI coworkers that return finished files to a shared board. Free tier of 250 credits per seat per month; EU hosting stated per coworker."
+        "Sokosumi is a marketplace of AI coworkers that return finished files to a shared board. Free tier of 250 credits per seat per month; hosting depends on the coworker."
       ]
     ]
   },
@@ -135,8 +136,8 @@
       ],
       [
         "Preis",
-        "Chat $29 pro Monat ($24 jährlich) für 5 Seats; Growth $1,000, Expansion $2,000, Scale $3,000 pro Monat; Enterprise individuell",
-        "Benötigt einen Pro- oder Enterprise-Hub (Marketing Hub Pro ab $800 pro Monat, Drittanbieter, prüfen). Credits etwa $10 pro 1,000 (Drittanbieter, prüfen)"
+        "Chat 29 $ pro Monat (24 $ jährlich) für 5 Seats; Growth 1.000 $, Expansion 2.000 $, Scale 3.000 $ pro Monat; Enterprise individuell",
+        "Benötigt einen Pro- oder Enterprise-Hub (Marketing Hub Pro ab 800 $ pro Monat, Drittanbieter, prüfen). Credits etwa 10 $ pro 1.000 (Drittanbieter, prüfen)"
       ],
       [
         "Free-Plan oder Test",
@@ -161,7 +162,7 @@
       [
         "Was gezählt wird",
         "Workflow Credits: 20K, 45K, 75K pro Monat je Stufe",
-        "Ergebnisse seit 14 Apr 2026: 50 Credits ($0.50) pro gelöstem Gespräch, 100 Credits ($1) pro empfohlenem Lead; enthaltene Credits je Stufe"
+        "Ergebnisse seit 14 Apr 2026: 50 Credits (0,50 $) pro gelöstem Gespräch, 100 Credits (1 $) pro empfohlenem Lead; enthaltene Credits je Stufe"
       ]
     ],
     "pickA": {
@@ -169,7 +170,7 @@
       "points": [
         "Sie HubSpot nicht nutzen oder AI-Workflows wollen, die über CRM, E-Mail- und Content-Tools hinweg arbeiten.",
         "Sie das Modell je Aufgabe wählen wollen (OpenAI, Anthropic, Gemini) aus einem Chat.",
-        "Sie ein großes Team haben. Growth deckt 75 Seats für $1,000 pro Monat ab."
+        "Sie ein großes Team haben. Growth deckt 75 Seats für 1.000 $ pro Monat ab."
       ]
     },
     "pickB": {
@@ -182,22 +183,22 @@
     },
     "limits": {
       "a": [
-        "Preislücke: nichts zwischen Chat für $29 und Growth für $1,000. Ein zehnköpfiges Team, das Workflows will, bezahlt für 75 Seats.",
-        "Reviews nennen Credits, Abrechnung und Support als Hauptschmerz. Trustpilot 1.9/5; Support nur per E-Mail, mit berichteten langsamen Antworten."
+        "Preislücke: nichts zwischen Chat für 29 $ und Growth für 1.000 $. Ein zehnköpfiges Team, das Workflows will, bezahlt für 75 Seats.",
+        "Reviews nennen Credits, Abrechnung und Support als Hauptschmerz. Trustpilot 1,9/5; Support nur per E-Mail, mit berichteten langsamen Antworten."
       ],
       "b": [
         "Agents sind an Pro- und Enterprise-Stufen gebunden, daher ist der echte Einstiegspreis die Hub-Subscription, nicht die Credits.",
         "Ein Credit-Pool speist jede KI-Funktion. Eine Kampagne mit Gesprächsspitzen lässt die Rechnung steigen; HubSpot empfiehlt ein monatliches Credit-Limit. Standardanweisungen und Tools vorgefertigter Agents können nicht editiert werden (Drittanbieter, prüfen)."
       ]
     },
-    "verdict": "HubSpot Breeze gewinnt, wenn Sie bereits HubSpot-Pro-Kunde sind: günstiger zu ergänzen, pro Ergebnis bezahlt und mit deutschem Datenzentrum möglich. Copy.ai gewinnt, wenn Sie nicht auf HubSpot sind, Modellwahl und Workflows über Tools hinweg wollen und groß genug für die $1,000-Stufe sind. Keines ist ein Fertigarbeits-Service.",
+    "verdict": "HubSpot Breeze gewinnt, wenn Sie bereits HubSpot-Pro-Kunde sind: günstiger zu ergänzen, pro Ergebnis bezahlt und mit deutschem Datenzentrum möglich. Copy.ai gewinnt, wenn Sie nicht auf HubSpot sind, Modellwahl und Workflows über Tools hinweg wollen und groß genug für die 1.000-$-Stufe sind. Keines ist ein Fertigarbeits-Service.",
     "bridge": {
       "heading": "Wenn Sie Arbeit erledigt haben wollen, kein Chatfenster",
-      "text": "Beide Tools geben einer Person einen Workflow zum Bauen oder einen Agent, den sie in einem System einschaltet. Wenn das Team eigentlich einen Wettbewerbsbericht, einen Kampagnenplan oder das Montags-PDF zur Performance braucht, ist das ein anderes Produkt: ein Coworker, den Sie briefen, ein Task-Board fürs Team, am Ende eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Coworker für Marketingteams, jeweils mit Rolle, Beispielarbeit und einem benannten Anbieter, der Modelle und Hosting ausweist.",
+      "text": "Beide Tools geben einer Person einen Workflow zum Bauen oder einen Agent, den sie in einem System einschaltet. Ein Wettbewerbsbericht, ein Kampagnenplan oder das Montags-PDF zur Performance ist ein anderes Produkt. Sie briefen einen KI-Mitarbeiter, das Team sieht das Board, am Ende steht eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Mitarbeiter für Marketingteams, jeweils mit Rolle, Beispielarbeit und einem benannten Anbieter, der Modelle und Hosting ausweist.",
       "points": [
         "Briefen Sie in klarer Sprache oder per @Mention in einem Kanal; die Aufgabe erscheint auf einem gemeinsamen Task-Board und endet mit einer fertigen Datei.",
-        "Credits nur, wenn eine Aufgabe läuft. Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25, €75 oder €200 pro Monat.",
-        "EU-Hosting verfügbar, je Coworker ausgewiesen. Gebaut von Serviceplan Group mit NMKR, München."
+        "Jede Aufgabe verbraucht Credits. Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats 25 €, 75 € oder 200 € pro Monat.",
+        "Das Hosting hängt vom KI-Mitarbeiter ab; prüfen Sie sein Profil. Gebaut von Serviceplan Group mit NMKR, München."
       ],
       "links": [
         "/compare/sokosumi-vs-copy-ai",
@@ -207,7 +208,7 @@
     "faq": [
       [
         "Was kostet ein HubSpot Breeze Agent?",
-        "Seit 14 April 2026 kostet der Customer Agent 50 Credits ($0.50) pro gelöstem Gespräch und der Prospecting Agent 100 Credits ($1.00) pro empfohlenem Lead. Credits kosten etwa $10 pro 1,000, und jede Hub-Stufe enthält einige Credits (Drittanbieter, prüfen)."
+        "Seit 14 April 2026 kostet der Customer Agent 50 Credits (0,50 $) pro gelöstem Gespräch und der Prospecting Agent 100 Credits (1,00 $) pro empfohlenem Lead. Credits kosten etwa 10 $ pro 1.000, und jede Hub-Stufe enthält einige Credits (Drittanbieter, prüfen)."
       ],
       [
         "Kann ich Breeze ohne bezahlten HubSpot-Plan nutzen?",
@@ -215,11 +216,11 @@
       ],
       [
         "Hat Copy.ai einen Free-Plan?",
-        "Die von uns geprüfte Preisseite zeigt Chat für $29 pro Monat als Einstiegsplan. Drittanbieter-Guides widersprechen sich, ob für neue Nutzer noch ein Free-Plan existiert."
+        "Die von uns geprüfte Preisseite zeigt Chat für 29 $ pro Monat als Einstiegsplan. Drittanbieter-Guides widersprechen sich, ob für neue Nutzer noch ein Free-Plan existiert."
       ],
       [
         "Gibt es eine Option, die Marketingarbeit einfach liefert?",
-        "Sokosumi ist ein Marktplatz für KI-Coworker, die fertige Dateien auf ein gemeinsames Task-Board liefern. Free-Plan mit 250 Credits pro Seat und Monat; EU-Hosting je Coworker ausgewiesen."
+        "Sokosumi ist ein Marktplatz für KI-Mitarbeiter, die fertige Dateien auf ein gemeinsames Task-Board liefern. Free-Plan mit 250 Credits pro Seat und Monat; das Hosting hängt vom KI-Mitarbeiter ab."
       ]
     ]
   },

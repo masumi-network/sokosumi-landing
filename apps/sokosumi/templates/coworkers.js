@@ -5,7 +5,8 @@
 const shell = require("./shell");
 const blocks = require("./blocks");
 const cms = require("../lib/cms");
-const { t, tp, locale } = require("../lib/i18n");
+const boostFor = require("./coworkerBoost").forSlug;
+const { t, tp, tCategory, locale } = require("../lib/i18n");
 const { esc, attr, icon, avatar, vendorLogo, pageStart, pageEnd, APP } = shell;
 
 // The vendor that leads /ai-coworkers. Serviceplan Group builds the curated roster.
@@ -77,15 +78,79 @@ function cmpSplit() {
   </div></div>`;
 }
 
+// The jobs marketing teams hand over first, each resolved against the live
+// roster so a renamed or retired listing drops its row instead of leaving a
+// dead link. Candidate slugs in order of preference; first one present wins.
+// Keyword surface, validated 2026-09-12: "ai competitor analysis" (200, KD 12),
+// "ai seo agent" (400, KD 0), "ai market research" (600) — the row labels say
+// the job in the searcher's words, the links go to the specialist that does it.
+const JOBS = [
+  { label: () => t("Competitor and company analysis"), note: () => t("Who a company is, what it ships, how it positions itself."), slugs: ["company-researcher"] },
+  { label: () => t("Social media analysis"), note: () => t("What performs on a public Instagram account — yours or a competitor's. Sibling analysts cover YouTube and TikTok."), slugs: ["instagram-page-analysis", "youtube-channel-analysis", "tiktok-profile-analysis"] },
+  { label: () => t("SEO and AI-search research"), note: () => t("Keyword opportunities and how a site shows up in AI answers."), slugs: ["seo-geo-researcher", "page-ranking-insights"] },
+  { label: () => t("Ad campaigns"), note: () => t("Visual campaign concepts drafted from a brand brief."), slugs: ["ad-campaign-generator", "meta-ads-library"] },
+  { label: () => t("Market research"), note: () => t("Market sizes, trends and sourced statistics, returned as a report."), slugs: ["statista-research", "midesk-market-intelligence"] },
+  { label: () => t("Design and creative production"), note: () => t("Landing pages, decks and brand graphics from a brief."), slugs: ["dite", "mass-image-generator"] },
+];
+
+function jobsSection(coworkers) {
+  const bySlug = new Map(coworkers.filter((c) => c.active !== false && c.slug).map((c) => [c.slug, c]));
+  const rows = JOBS.map((j) => {
+    const hit = j.slugs.map((s) => bySlug.get(s)).find(Boolean);
+    return hit ? { job: j.label(), note: j.note(), c: hit } : null;
+  }).filter(Boolean);
+  if (!rows.length) return "";
+  return `<section class="page-section" data-reveal>
+    <h2>${esc(t("What marketing teams hand over first"))}</h2>
+    <p class="sub">${esc(t("The jobs that move to an AI agent earliest, and the specialist on the marketplace that does each one."))}</p>
+    <div class="row-list">${rows
+      .map(
+        (r) => `<a class="row-item" href="/ai-coworkers/${encodeURIComponent(r.c.slug)}">
+        <span class="row-title">${esc(r.job)}</span>
+        <p>${esc(r.note)}</p>
+        <span class="row-go">${esc(r.c.name)} ${icon("arrow-up-right", 15)}</span>
+      </a>`,
+      )
+      .join("")}</div>
+  </section>`;
+}
+
+// Where this marketplace sits among the products a buyer will also look at.
+// One honest line each, linking to the pages that do the detailed comparing.
+// Naming competitors here is deliberate: the reader is comparing anyway, and
+// the compare pages are where Sokosumi makes its case with numbers.
+function landscapeSection() {
+  const rows = [
+    { name: "Sintra", line: t("Personality-led AI helpers on a subscription, aimed at solo founders."), href: "/compare/sokosumi-vs-sintra" },
+    { name: "Lindy", line: t("Build-your-own AI automations, priced by usage."), href: "/compare/sokosumi-vs-lindy" },
+    { name: "Relevance AI", line: t("A platform for building agent teams yourself, developer-leaning."), href: "/compare/sokosumi-vs-relevance-ai" },
+    { name: "Sokosumi", line: t("Ready specialists from named vendors, on seats with monthly credits."), href: "/ai-employees" },
+  ];
+  return `<section class="page-section" data-reveal>
+    <h2>${esc(t("Where Sokosumi sits among the tools"))}</h2>
+    <p class="sub">${esc(t("You are probably comparing a few products. The short version, with the detailed comparisons one click away:"))}</p>
+    <div class="row-list">${rows
+      .map(
+        (r) => `<a class="row-item" href="${attr(r.href)}">
+        <span class="row-title">${esc(r.name)}</span>
+        <p>${esc(r.line)}</p>
+        <span class="row-go">${esc(r.href.startsWith("/compare") ? t("Compare") : t("AI employees, explained"))} ${icon("arrow-up-right", 15)}</span>
+      </a>`,
+      )
+      .join("")}</div>
+  </section>`;
+}
+
 // The questions people type before they search for a product. Answered in
 // plain words here and mirrored as FAQPage data.
 function INDEX_FAQ() {
   return [
     { question: t("What is an AI marketing agent?"), answer: t("Software that does one marketing job on its own from a brief: a competitor scan, a weekly performance report, a social calendar. On Sokosumi an agent has a name, a vendor and a price in credits you see before it runs.") },
+    { question: t("What can AI agents do for marketing teams?"), answer: t("Recurring research and reporting with a clear output: a weekly competitor memo, a social listening summary, a market briefing before a pitch, an audit of how ChatGPT and Google's AI Overviews mention your brand, a first campaign plan. They are weak wherever a decision depends on knowing your brand or your client, so have someone on your team check each file before it goes out.") },
+    { question: t("Which AI agent should a marketing team start with?"), answer: t("The report someone on the team rebuilds every week or every month. Competitor monitoring and performance reporting are the usual first jobs, because the inputs are public or already exported and the result is easy to check against what you know.") },
     { question: t("What is the difference between an AI agent and an AI coworker?"), answer: t("An agent does one task. A coworker holds a role, such as research or creative, and is usually built from several agents. You brief a coworker like a colleague and it returns a file.") },
-    { question: t("How do marketing teams use AI agents day to day?"), answer: t("They hand over the recurring and the well-defined work: market and competitor research, reporting, first drafts, campaign plans, dashboards. The team keeps judgement, brand and the client.") },
-    { question: t("What does an AI agent for marketing cost?"), answer: t("On Sokosumi, credits only when a task runs. The free plan has 250 credits per seat every month; paid seats are €25, €75 or €200 a month. Each task shows its credit price first.") },
-    { question: t("Is my data safe with AI marketing agents?"), answer: t("Each coworker profile states its models and hosting as the vendor provides them. EU hosting is available. You decide what you attach to a task.") },
+    { question: t("What does an AI agent for marketing cost?"), answer: t("On Sokosumi you pay per seat, and each seat comes with monthly credits: 250 on the free plan, more on paid seats at €25, €75 or €200 a month. Each task shows its credit price first.") },
+    { question: t("Is my data safe with AI marketing agents?"), answer: t("It depends on the agent. Each one is built and run by its vendor, and the profile names the models and hosting region where the vendor provides them. Check that before you attach client data, and attach only what the task needs.") },
   ];
 }
 function indexFaqSection() {
@@ -100,11 +165,13 @@ async function index(ctx) {
   // the CMS vendors collection (see templates/vendors.js). Joined by slug
   // below; the roster must render even if this extra call fails, so it
   // degrades to no descriptions rather than an error page.
-  const [coworkers, offers, cmsVendors] = await Promise.all([
+  const [allCoworkers, offers, cmsVendors] = await Promise.all([
     cms.getCoworkers(opts),
     cms.getOffers(opts),
     cms.getVendors(opts).catch(() => []),
   ]);
+  // One card per agent: a re-registered twin (see duplicateOf) is left out.
+  const coworkers = allCoworkers.filter((c) => !duplicateOf(c, allCoworkers));
   const vendorDescs = new Map(
     cmsVendors.filter((v) => v.slug && v.description).map((v) => [v.slug, v.description]),
   );
@@ -140,7 +207,7 @@ async function index(ctx) {
   return (
     pageStart({
       title: t("AI agents for marketing and AI coworkers | Sokosumi"),
-      description: t("AI agents and coworkers for marketing teams: {n} named specialists with a role, a vendor and a credit price you see first. Brief one; get a file back.", { n: curated.length + agents.length }),
+      description: t("AI agents and coworkers for marketing teams, each with a role, a vendor and a credit price you see before you start. Brief one; get a file back."),
       path: "/ai-coworkers",
       breadcrumb: cr,
       og: { type: "page", eyebrow: t("AI coworkers"), title: t("AI agents for marketing, with names and roles"), sub: t("{n} specialists from {v} vendors. Brief one; get a file back.", { n: curated.length + agents.length, v: new Set([...curated, ...agents].map(vendorName).filter(Boolean)).size }) },
@@ -160,7 +227,7 @@ async function index(ctx) {
         <h1>${esc(t("AI agents for marketing, with names and roles"))}</h1>
         <p class="sub">${
           curated.length
-            ? esc(t("{n} specialists you can hire today, each with a real role and a public profile. Most carry ready-to-run work. Synced nightly from the live marketplace.", { n: curated.length }))
+            ? esc(t("{n} specialists you can hire today. Each AI marketing agent here has a name, a job and a vendor you can look up, and shows its credit price before it runs; brief it like a freelancer and it sends back a finished file.", { n: curated.length }))
             : esc(t("Named specialists you can hire today, each with a real role and a public profile. Synced nightly from the live marketplace."))
         }</p>
     </div>
@@ -179,6 +246,7 @@ async function index(ctx) {
       <p class="sub">${esc(t("Sokosumi lists both. An agent is a capability you hire for a task. A coworker is a persistent AI worker you hire for a role \u2014 usually built from several agents."))}</p>
       ${cmpSplit()}
     </section>
+    ${jobsSection(coworkers)}
     ${groups
       .map((g, gi) => {
         const slug = g.vendor ? g.vendor.slug : null;
@@ -195,7 +263,7 @@ async function index(ctx) {
           ${gi === 0 && g.vendor ? `<span class="chip">${esc(t("Featured"))}</span>` : ""}
         </div>
         ${desc ? `<p class="vendor-desc">${esc(desc)}</p>` : ""}
-        <p class="sub">${esc(countLine)}</p>
+        <p class="sub">${esc(countLine)}${slug === FEATURED_VENDOR ? ` <a href="/serviceplan-ai">${esc(t("How Serviceplan builds AI →"))}</a>` : ""}</p>
         <div class="cw-grid">${g.items.map(tile).join("")}</div>
       </section>`;
       })
@@ -215,8 +283,10 @@ async function index(ctx) {
           }
         </div>`
       : "") +
+    landscapeSection() +
     shell.logoRow() +
     indexFaqSection() +
+    shell.readNext([["/guides/ai-in-marketing", "How to use AI in marketing: 11 examples by job", "Where AI helps in research, content and reporting, and where it doesn't."], ["/guides/best-ai-visibility-tools", "Best AI visibility tools in 2026: what each one measures", "Prices, engines covered and limits of the main trackers."]]) +
     shell.ctaBand({
       heading: t("Hire your first AI coworker"),
       subheading: t("One account, one balance, and every specialist on the marketplace."),
@@ -231,7 +301,11 @@ function profileStats(c) {
   const stats = [];
   if (c.runs) stats.push(`<span><strong>${esc(String(c.runs))}</strong> ${esc(t("runs"))}</span>`);
   if (c.rating) stats.push(`<span><strong>${esc(Number(c.rating).toFixed(1))}</strong> ${esc(t("rating"))}${c.ratingCount ? ` (${esc(String(c.ratingCount))})` : ""}</span>`);
-  if (c.credits) stats.push(`<span><strong>${esc(String(c.credits))}</strong> ${esc(t("credits per run"))}</span>`);
+  if (c.credits) {
+    stats.push(
+      `<span><strong>${esc(String(c.credits))}</strong> ${esc(t("credits per run"))}</span>`,
+    );
+  }
   return stats.length ? `<div class="cw-stats">${stats.join("")}</div>` : "";
 }
 
@@ -286,6 +360,87 @@ function profileLd(c, vendorName, vendorSlug) {
   return ld;
 }
 
+
+// ---- vendor-written listing copy -------------------------------------------
+// The marketplace record carries the maker's own markdown description. It is
+// third-party text, so it is escaped first and only a fixed set of constructs
+// is rebuilt afterwards — headings, emphasis, lists, links and paragraphs.
+// Anything else survives as plain text rather than as markup.
+function vendorMarkdown(src) {
+  const raw = String(src || "").trim();
+  if (!raw) return "";
+  const inline = (line) =>
+    esc(line)
+      .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
+      .replace(/(^|[\s(])\*([^*\n]+)\*/g, "$1<em>$2</em>")
+      .replace(/`([^`]+)`/g, "<code>$1</code>")
+      // only absolute http(s) targets become links
+      .replace(/\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g, '<a href="$2" rel="nofollow noopener">$1</a>');
+  const out = [];
+  let list = null;
+  const closeList = () => { if (list) { out.push(`</${list}>`); list = null; } };
+  const cells = (line) => line.replace(/^\||\|$/g, "").split("|").map((x) => x.trim());
+  const isDivider = (line) => /^\|?\s*:?-{2,}:?\s*(\|\s*:?-{2,}:?\s*)*\|?$/.test(line);
+  const lines = raw.split(/\r?\n/);
+  for (let i = 0; i < lines.length; i++) {
+    const lineRaw = lines[i];
+    const line = lineRaw.trim();
+    if (!line) { closeList(); continue; }
+    // GFM table: a header row, a divider, then body rows. Makers use these for
+    // the facts worth having — hosting, retention, models — so they are worth
+    // rebuilding rather than dumping as pipes.
+    if (line.includes("|") && lines[i + 1] && isDivider(lines[i + 1].trim())) {
+      closeList();
+      const head = cells(line);
+      const body = [];
+      let j = i + 2;
+      for (; j < lines.length; j++) {
+        const row = lines[j].trim();
+        if (!row || !row.includes("|")) break;
+        body.push(cells(row));
+      }
+      i = j - 1;
+      out.push(
+        `<div class="cw-table-wrap"><table><thead><tr>${head.map((x) => `<th>${inline(x)}</th>`).join("")}</tr></thead>` +
+          `<tbody>${body.map((r) => `<tr>${head.map((_, k) => `<td>${inline(r[k] || "")}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`,
+      );
+      continue;
+    }
+    const h = /^(#{1,6})\s+(.*)$/.exec(line);
+    if (h) {
+      closeList();
+      // the section owns the h2, so the maker's own top level nests beneath it
+      const level = Math.min(5, Math.max(3, h[1].length + 1));
+      out.push(`<h${level}>${inline(h[2].replace(/[:\s]+$/, ""))}</h${level}>`);
+      continue;
+    }
+    const ul = /^[-*+]\s+(.*)$/.exec(line);
+    const ol = /^\d+[.)]\s+(.*)$/.exec(line);
+    if (ul || ol) {
+      const want = ul ? "ul" : "ol";
+      if (list !== want) { closeList(); out.push(`<${want}>`); list = want; }
+      out.push(`<li>${inline((ul || ol)[1])}</li>`);
+      continue;
+    }
+    closeList();
+    out.push(`<p>${inline(line)}</p>`);
+  }
+  closeList();
+  return out.join("\n");
+}
+
+// The catalog record behind a CMS listing. The CMS stores a short summary; the
+// maker's full copy, its categories and its legal links only exist here.
+function catalogAgent(c, ctx) {
+  const agents = (ctx && ctx.catalog && ctx.catalog.agents) || [];
+  if (!c || !agents.length) return null;
+  return agents.find((a) => a.id && a.id === c.externalId) || agents.find((a) => a.name === c.name) || null;
+}
+
+// Prices are shown in credits only. No per-credit money rate is published
+// (credits come with seats, see /pricing), so converting to dollars next to
+// euro plans would invent a price.
+
 function profileTags(c) {
   const tags = [];
   const llm = Array.isArray(c.profileLlm) ? c.profileLlm : [];
@@ -297,7 +452,7 @@ function profileTags(c) {
 // The facts a profile states, as a <dl>: the same attributes the chips and
 // stats show, in a form a person and a retrieval system read identically.
 // Only what the catalog actually provides appears; nothing is inferred.
-function profileFacts(c, vn, vs) {
+function profileFacts(c, vn, vs, cat, cats) {
   const rows = [];
   rows.push([t("Type"), c.kind === "agent" ? t("AI agent (single-purpose)") : t("AI coworker")]);
   if (c.role) rows.push([t("Role"), esc(c.role)]);
@@ -305,9 +460,19 @@ function profileFacts(c, vn, vs) {
   const llm = Array.isArray(c.profileLlm) ? c.profileLlm.filter(Boolean) : [];
   if (llm.length) rows.push([t("Models"), esc(llm.join(", "))]);
   if (c.profileHosting) rows.push([t("Hosting"), esc(c.profileHosting)]);
+  if (c.credits) {
+    rows.push([t("Price per run"), esc(t("{credits} credits", { credits: String(c.credits) }))]);
+  }
   if (c.runs) rows.push([t("Tasks run"), esc(Number(c.runs).toLocaleString(locale() === "de" ? "de-DE" : "en-US"))]);
   if (c.rating && c.ratingCount) rows.push([t("Rating"), esc(`${Number(c.rating).toFixed(1)} / 5 (${c.ratingCount})`)]);
-  rows.push([t("Marketplace"), `<a href="/">Sokosumi</a>`]);
+  if (cats && cats.length) rows.push([t("Category"), esc(cats.map((x) => x.name).join(", "))]);
+  if (cat && cat.legal && (cat.legal.terms || cat.legal.privacy)) {
+    const links = [
+      cat.legal.terms ? `<a href="${attr(cat.legal.terms)}" rel="nofollow noopener">${esc(t("Terms"))}</a>` : "",
+      cat.legal.privacy ? `<a href="${attr(cat.legal.privacy)}" rel="nofollow noopener">${esc(t("Privacy"))}</a>` : "",
+    ].filter(Boolean);
+    rows.push([t("Vendor policies"), links.join(" &middot; ")]);
+  }
   const synced = c.syncedAt || c.updatedAt;
   if (synced) {
     const d = new Date(synced);
@@ -324,11 +489,161 @@ function offerCard(agentSlug, o) {
   const om = shell.outputMeta(o.output);
   const href = `/ai-coworkers/${encodeURIComponent(agentSlug)}/tasks/${encodeURIComponent(o.slug)}`;
   return `<a class="offer-card" href="${attr(href)}" data-out="${attr(o.output || "text")}">
-    <div class="offer-meta"><span>${esc(o.category || t("Task"))}</span><span class="offer-type" data-out="${attr(o.output || "text")}">${icon(om.icon, 12)}${esc(om.label)}</span></div>
+    <div class="offer-meta"><span>${esc(o.category ? tCategory(o.category) : t("Task"))}</span><span class="offer-type" data-out="${attr(o.output || "text")}">${icon(om.icon, 12)}${esc(om.label)}</span></div>
     <div class="offer-title">${esc(o.title)}</div>
     ${o.description ? `<div class="offer-desc">${esc(o.description)}</div>` : ""}
     <div class="offer-foot"><span>${esc(t("View task"))}</span><span class="go">${icon("arrow-up-right", 15)}</span></div>
   </a>`;
+}
+
+
+// The maker's own description of the listing. Rendered under its own heading so
+// it reads as the vendor's words rather than as Sokosumi copy.
+// `alt` is set when the editorial overlay already opened the page with its own
+// "what this does" section. Both are legitimate — ours targets the query, this
+// one is the maker's own words — but they cannot both be called the same thing.
+function vendorSection(c, cat, alt) {
+  const md = cat && cat.description ? String(cat.description) : "";
+  // A stub like "## Overview" on its own carries nothing; require real prose.
+  const body = md.replace(/^#+.*$/gm, "").trim().length > 80 ? vendorMarkdown(md) : "";
+  if (!body) return "";
+  const who = c.vendorName || (c.vendor && c.vendor.name) || "";
+  const heading = alt
+    ? who
+      ? t("How {vendor} describes it", { vendor: who })
+      : t("How the maker describes it")
+    : t("What {name} does", { name: c.name });
+  return `<section class="page-section" id="about">
+      <h2>${esc(heading)}</h2>
+      <p class="sub">${esc(who ? t("As described by {vendor}, the maker of this listing.", { vendor: who }) : t("As described by the maker of this listing."))}</p>
+      <div class="prose cw-vendor-copy">${body}</div>
+    </section>`;
+}
+
+// Other listings in the same category. Gives a thin listing somewhere to go and
+// the category a second route in, instead of every agent page being a dead end.
+// Categories come from the catalog, slugs from the CMS, joined on externalId.
+function relatedAgents(c, cats, ctx, siblings) {
+  const all = (ctx && ctx.catalog && ctx.catalog.agents) || [];
+  const names = new Set(cats.map((x) => x.name));
+  if (!names.size || !all.length) return "";
+  const inCategory = new Set(
+    all.filter((a) => (a.categories || []).some((x) => names.has(x.name))).map((a) => a.id),
+  );
+  const near = (siblings || [])
+    .filter((s) => s.slug !== c.slug && s.externalId && inCategory.has(s.externalId))
+    .slice(0, 6);
+  if (near.length < 2) return "";
+  const label = cats[0].name;
+  return `<section class="page-section" id="related">
+      <h2>${esc(t("More in {category}", { category: label }))}</h2>
+      <div class="row-list">${near
+        .map(
+          (a) => `<a class="row-item" href="/ai-coworkers/${encodeURIComponent(a.slug)}">
+            <span class="row-title">${esc(a.name)}</span>
+            <p>${esc(String(a.seoDescription || a.description || "").slice(0, 150))}</p>
+            <span class="row-go">${esc(vendorName(a) || t("View"))} ${icon("arrow-up-right", 15)}</span>
+          </a>`,
+        )
+        .join("")}</div>
+    </section>`;
+}
+
+// ---------------------------------------------------------------------------
+// Enrichment slots (templates/coworkerBoost.js). Every one of these returns an
+// empty string when the overlay has nothing for that slug, which is what keeps
+// the other 50-odd profiles byte-identical to what they render today.
+
+function boostIntro(b, c) {
+  if (!b.intro) return "";
+  return `<section class="page-section cw-boost" data-reveal>
+      <h2>${esc(b.aboutHeading || t("What {name} does", { name: c.name }))}</h2>
+      <p class="sub">${esc(b.intro)}</p>
+    </section>`;
+}
+
+function boostSpec(b) {
+  const spec = b.spec;
+  if (!spec || !Array.isArray(spec.rows) || !spec.rows.length) return "";
+  return `<section class="page-section cw-boost" data-reveal>
+      ${spec.heading ? `<h2>${esc(spec.heading)}</h2>` : ""}
+      <div class="cw-spec-wrap">
+        <table class="cw-spec">
+          ${
+            spec.columns
+              ? `<thead><tr>${spec.columns.map((h) => `<th scope="col">${esc(h)}</th>`).join("")}</tr></thead>`
+              : ""
+          }
+          <tbody>${spec.rows
+            .map((r) => `<tr>${r.map((cell, i) => (i === 0 ? `<th scope="row">${esc(cell)}</th>` : `<td>${esc(cell)}</td>`)).join("")}</tr>`)
+            .join("")}</tbody>
+        </table>
+      </div>
+    </section>`;
+}
+
+function boostFaq(b) {
+  if (!Array.isArray(b.faq) || !b.faq.length) return "";
+  return `<section class="page-section cw-boost" id="faq" data-reveal>
+      <h2>${esc(t("Questions"))}</h2>
+      <div class="faq-list">${b.faq
+        .map(
+          (f) =>
+            `<details class="faq-item"><summary>${esc(f.question)}<span class="faq-x">+</span></summary><p class="faq-a">${esc(f.answer)}</p></details>`,
+        )
+        .join("")}</div>
+    </section>`;
+}
+
+function boostRelated(b) {
+  if (!Array.isArray(b.related) || !b.related.length) return "";
+  return `<section class="page-section cw-boost" data-reveal>
+      <h2>${esc(t("Related"))}</h2>
+      <div class="cw-boost-links">${b.related
+        .map(
+          (l) =>
+            `<a class="cw-boost-link" href="${attr(l.href)}"><strong>${esc(l.label)}</strong>${l.note ? `<span>${esc(l.note)}</span>` : ""}</a>`,
+        )
+        .join("")}</div>
+    </section>`;
+}
+
+// The overlay's FAQ is only worth having if it is also the page's FAQPage
+// entity, which is what makes it eligible for the rich result.
+function boostFaqLd(b, c) {
+  if (!Array.isArray(b.faq) || !b.faq.length) return null;
+  return {
+    "@type": "FAQPage",
+    "@id": `${shell.SITE}/ai-coworkers/${c.slug}#faq`,
+    mainEntity: b.faq.map((f) => ({
+      "@type": "Question",
+      name: f.question,
+      acceptedAnswer: { "@type": "Answer", text: f.answer },
+    })),
+  };
+}
+
+// The catalog holds a few agents twice: a re-registration arrived as a second
+// listing with the same name, price and a "-2" slug (checked 2026-09-27: same
+// credits, UUID external ids, 2-6 runs against 30-150). Both are real app
+// listings, so neither redirects. Each twin below names its original as
+// canonical and stays out of the sitemap and the roster, but only while the
+// original is active: digital-mockup-generator is retired, so its -2 is the
+// page and is deliberately not listed. Add a pair only after checking that it
+// is the same service; a shared name alone is not enough.
+const DUPLICATE_OF = {
+  "mass-image-generator-2": "mass-image-generator",
+  "ad-campaign-generator-2": "ad-campaign-generator",
+  "ad-visual-animator-2": "ad-visual-animator",
+  "attentioninsight-analysis-agent-2": "attentioninsight-analysis-agent",
+  "meme-creator-agent-2": "meme-creator-agent",
+  "movie-production-agent-2": "movie-production-agent",
+};
+
+function duplicateOf(c, all) {
+  const target = DUPLICATE_OF[c.slug];
+  if (!target) return null;
+  return (all || []).find((o) => o.slug === target && o.active !== false) || null;
 }
 
 async function profile(ctx) {
@@ -338,6 +653,14 @@ async function profile(ctx) {
   const offers = c.kind === "coworker" ? await cms.getOffersFor(c.catalogSlug || c.slug, opts) : [];
   const vn = vendorName(c);
   const vs = vendorSlug(c);
+  // Marketplace listings carry the maker's own copy in the catalog, not the CMS.
+  const cat = catalogAgent(c, ctx);
+  const cats = (cat && cat.categories) || [];
+  // Editorial overlay for this slug; {} when there is none.
+  const b = boostFor(c.slug, locale());
+  const all = await cms.getCoworkers(opts).catch(() => []);
+  const siblings = cats.length ? all : [];
+  const twin = duplicateOf(c, all);
 
   const offersSection = offers.length
     ? `<section class="page-section" id="tasks">
@@ -361,15 +684,23 @@ async function profile(ctx) {
   cr.push({ label: c.name });
   return (
     pageStart({
+      // An editor's title wins, then the overlay's, then the generated one.
+      // c.seoTitle is read even though the CMS collection has no such field
+      // yet: adding it later is then a pure addition with no code change here.
       title:
-        c.slug === "instagram-page-analysis"
-          ? t("Instagram analyzer for posts and pages | Sokosumi")
-          : t("{name} | {role} on Sokosumi", { name: c.name, role: c.role || t("AI coworker") }),
-      description: shell.describe(c.seoDescription || c.description || t("Hire {name}, an AI coworker on Sokosumi.", { name: c.name }), t("Brief {name} in plain language; the task shows on a shared board and comes back as a file. Credit price shown first.", { name: c.name })),
+        c.seoTitle ||
+        b.seoTitle ||
+        t("{name} | {role} on Sokosumi", { name: c.name, role: c.role || t("AI coworker") }),
+      description: shell.describe(c.seoDescription || b.seoDescription || c.description || t("Hire {name}, an AI coworker on Sokosumi.", { name: c.name }), [
+        t("Brief {name} in plain language; the task shows on a shared board and comes back as a file. Credit price shown first.", { name: c.name }),
+        t("Brief {name} in plain language and get a finished file back.", { name: c.name }),
+        t("Hire {name} on Sokosumi.", { name: c.name }),
+      ]),
       path: `/ai-coworkers/${c.slug}`,
+      canonicalPath: twin ? `/ai-coworkers/${twin.slug}` : undefined,
       og: { type: "coworker", title: c.name, sub: c.role || "", eyebrow: c.kind === "agent" ? t("Specialist agent on Sokosumi") : t("AI coworker on Sokosumi"), meta: [vn, c.profileHosting].filter(Boolean).join(" · "), img: c.image || "" },
       breadcrumb: cr,
-      jsonld: profileLd(c, vn, vs),
+      jsonld: [...[].concat(profileLd(c, vn, vs) || []), boostFaqLd(b, c)].filter(Boolean),
     }) +
     `<div class="cw-hero">
       <div class="cw-portrait${c.kind === "agent" ? " is-icon" : ""}" data-reveal>${c.image ? `<img${shell.thumbSrc(c.image, 512, "src", 100)} alt="${attr(c.name)}" decoding="async" />` : ""}</div>
@@ -377,8 +708,8 @@ async function profile(ctx) {
         <span class="eyebrow">${esc(c.kind === "agent" ? t("On the marketplace") : t("Featured coworker"))}${
           vn ? ` &middot; <a href="/vendors/${attr(vs || "")}">${esc(vn)}</a>` : ""
         }</span>
-        <h1>${esc(c.name)}</h1>
-        ${c.role ? `<div class="role">${esc(c.role)}</div>` : ""}
+        <h1>${esc(b.h1 || c.name)}</h1>
+        ${b.h1 ? `<div class="role">${esc(c.name)}${c.role ? ` · ${esc(c.role)}` : ""}</div>` : b.role || c.role ? `<div class="role">${esc(b.role || c.role)}</div>` : ""}
         ${profileTags(c)}
         ${profileStats(c)}
         ${c.seoDescription || c.description ? `<p class="cw-desc">${esc(c.seoDescription || c.description)}</p>` : ""}
@@ -386,14 +717,25 @@ async function profile(ctx) {
         ${shell.NO_CARD}
       </div>
     </div>
-    ${profileFacts(c, vn, vs)}
+    ${profileFacts(c, vn, vs, cat, cats)}
+    ${boostIntro(b, c)}
+    ${boostSpec(b)}
+    ${vendorSection(c, cat, Boolean(b.intro))}
     ${longBio}
-    ${offersSection}` +
+    ${offersSection}
+    ${boostFaq(b)}
+    ${boostRelated(b)}
+    ${relatedAgents(c, cats, ctx, siblings)}` +
     shell.logoRow() +
     shell.ctaBand({
       heading: t("Put {name} to work", { name: c.name }),
-      subheading: t("Sign up free, brief the task, and collect the finished file. Credits only go on work you run."),
-      ctaLabel: t("Try {name} free", { name: c.name }),
+      // "Try free" only where one run fits in the free plan's 250 monthly
+      // credits; a pricier run gets an honest label and its price.
+      subheading:
+        Number(c.credits) > 250
+          ? t("A run costs {credits} credits, more than the free plan's 250 a month. Create a free account to look around, then pick a plan that covers it.", { credits: String(c.credits) })
+          : t("Sign up free, brief the task, and collect the finished file. The free plan includes 250 credits a month."),
+      ctaLabel: Number(c.credits) > 250 ? t("Create a free account") : t("Try {name} free", { name: c.name }),
       ctaHref: tryUrl(c),
       seed: c.name.length,
     }) +
@@ -401,4 +743,4 @@ async function profile(ctx) {
   );
 }
 
-module.exports = { index, profile };
+module.exports = { index, profile, duplicateOf };

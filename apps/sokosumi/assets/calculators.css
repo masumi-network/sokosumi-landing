@@ -1,0 +1,204 @@
+/* Marketing calculators — additions on top of design-md.css. The dm-* shell
+   provides the page frame; this file styles the calculator form, the result
+   rows, the prose sections and the hub cards. Colours come from the shared
+   design tokens. */
+
+/* The form spans the full content column, like the seo-md/og-checker input
+   furniture — a narrower card left the right half of the page empty. */
+.calc-form {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: clamp(20px, 3vw, 28px);
+}
+
+.calc-hint {
+  margin: 0 0 16px;
+  font-size: 14px;
+  color: var(--muted-foreground);
+}
+
+.calc-fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+}
+
+.calc-field label {
+  display: block;
+  font-size: 13px;
+  font-weight: 550;
+  margin-bottom: 6px;
+  color: var(--foreground);
+}
+
+.calc-input {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0 12px;
+  background: var(--background, #fff);
+  transition: border-color 160ms ease;
+}
+.calc-input:focus-within {
+  border-color: var(--foreground);
+}
+.calc-input span {
+  color: var(--muted-foreground);
+  font-size: 14px;
+  flex: none;
+}
+.calc-input input,
+.calc-input select {
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--foreground);
+  font-size: 16px;
+  height: 44px;
+  width: 100%;
+  min-width: 0;
+}
+
+.calc-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 18px;
+}
+.calc-go {
+  min-height: 44px;
+}
+
+.calc-error {
+  margin: 14px 0 0;
+  font-size: 14px;
+  color: #d1443b;
+}
+
+.calc-result {
+  margin-top: 18px;
+  border-top: 1px solid var(--border);
+  padding-top: 18px;
+  display: grid;
+  gap: 16px;
+}
+.calc-result-row .calc-result-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 550;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted-foreground);
+}
+.calc-result-row strong {
+  display: block;
+  font-size: clamp(28px, 5vw, 40px);
+  font-weight: 300;
+  line-height: 1.15;
+  margin: 4px 0 6px;
+  color: var(--foreground);
+}
+.calc-result-row p {
+  margin: 0;
+  font-size: 15px;
+  color: var(--muted-foreground);
+}
+
+.calc-formula-chip {
+  margin: 14px 0 0;
+}
+.calc-formula-chip code {
+  display: inline-block;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 4px 14px;
+  font-size: 13px;
+  color: var(--muted-foreground);
+  background: transparent;
+}
+
+/* Prose sections between the tool and the FAQ. The border-top spans the
+   full column (house rule: dividers never stop mid-page); the text inside
+   stays at a readable measure. */
+.calc-section {
+  border-top: 1px solid var(--border);
+  padding: clamp(48px, 7vw, 80px) 0;
+}
+.calc-section > * {
+  max-width: 720px;
+}
+.calc-section h2 {
+  margin: 0 0 16px;
+  font-size: clamp(22px, 2.6vw, 30px);
+  font-weight: 400;
+  letter-spacing: -0.03em;
+}
+.calc-section h3 {
+  margin: 24px 0 8px;
+  font-size: 17px;
+  font-weight: 550;
+}
+.calc-section p {
+  margin: 0 0 12px;
+  line-height: 1.65;
+}
+.calc-section code {
+  font-size: 0.95em;
+}
+.calc-mini {
+  margin-top: 8px;
+}
+
+.calc-related {
+  border-top: 1px solid var(--border);
+  padding: clamp(32px, 5vw, 48px) 0;
+}
+.calc-related h2 {
+  margin: 0 0 14px;
+  font-size: 12px;
+  font-weight: 550;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+.calc-related-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 10px;
+}
+.calc-related-links a {
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-size: 13.5px;
+  color: var(--foreground);
+  text-decoration: none;
+  transition: border-color 160ms ease;
+}
+.calc-related-links a:hover {
+  border-color: var(--foreground);
+}
+
+/* Hub cards: the formula is the preview. */
+.calc-hub-card code {
+  display: block;
+  font-size: 12.5px;
+  color: var(--muted-foreground);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-bottom: 14px;
+  background: transparent;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+.calc-hub-card strong {
+  display: block;
+  margin-bottom: 4px;
+}
+.calc-hub-card span {
+  font-size: 14px;
+  color: var(--muted-foreground);
+}

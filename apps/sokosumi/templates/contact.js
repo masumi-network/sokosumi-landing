@@ -46,7 +46,7 @@ async function render(ctx) {
   const cr = [{ label: "Home", href: "/" }, { label: "Contact" }];
   return (
     pageStart({
-      title: "Contact | Sokosumi",
+      title: "Contact Sokosumi: sales, support and press | Sokosumi",
       description:
         "Get in touch with Sokosumi: sales for teams and vendors, product support for everyone already working with a coworker.",
       path: "/contact",

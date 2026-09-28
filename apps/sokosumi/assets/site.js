@@ -61,3 +61,8 @@
     })(lists[i]);
   }
 })();
+
+/* The "Read with Gemini" copy-the-prompt fallback used to live here. Gemini
+   still has no URL that prefills a prompt (?q=, ?text= and ?prompt= all
+   ignored, re-tested 2026-09-12), and a button that opens an empty Gemini
+   read as broken, so the button was removed with it. */

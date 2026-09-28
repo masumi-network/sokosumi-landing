@@ -18,7 +18,7 @@ export const PAGES_MORE = [
       ],
       faq: [
         ["Does Sokosumi also make decks and dashboards?", "Yes. That is what a task ends with: a PDF, a deck, a spreadsheet or a live dashboard on the board."],
-        ["Is Sokosumi hosted in the EU?", "EU hosting is available and each coworker profile says where it runs."],
+        ["Is Sokosumi hosted in the EU?", "The marketplace runs in the EU. Each coworker runs where its vendor hosts it; the profile shows the region when the vendor states it, so check before you send sensitive data."],
         ["Which is cheaper?", "Both use credits. Sokosumi's free plan renews 250 credits per seat every month; each task shows its price before it runs."],
       ],
     },
@@ -33,7 +33,7 @@ export const PAGES_MORE = [
       ],
       faq: [
         ["Macht Sokosumi auch Decks und Dashboards?", "Ja. Damit endet eine Aufgabe: PDF, Deck, Tabelle oder Live-Dashboard auf dem Board."],
-        ["Ist Sokosumi in der EU gehostet?", "EU-Hosting ist verfügbar, und jedes Coworker-Profil nennt, wo es läuft."],
+        ["Ist Sokosumi in der EU gehostet?", "Der Marktplatz läuft in der EU. Jeder KI-Mitarbeiter läuft dort, wo sein Anbieter ihn hostet; das Profil zeigt die Region, wenn der Anbieter sie angibt. Prüfen Sie das, bevor Sie sensible Daten senden."],
         ["Was ist günstiger?", "Beide nutzen Credits. Sokosumis Free-Plan erneuert monatlich 250 Credits pro Seat; jede Aufgabe zeigt ihren Preis vor dem Start."],
       ],
     },
@@ -47,7 +47,7 @@ export const PAGES_MORE = [
       grid: [
         ["One agent vs. many specialists", "Coworker.ai is a single agent with a context graph. Sokosumi has a researcher, a strategist, a creative and 40 specialist agents, each with sample work."],
         ["Made for marketing", "Sokosumi coworkers do marketing jobs: competitor reports, campaign plans, SEO checks, the weekly report. Not a general agent pointed at marketing."],
-        ["Built in Munich", "Serviceplan Group built Sokosumi. EU hosting is available; vendors say on each profile where a coworker runs."],
+        ["Built in Munich", "Serviceplan Group built Sokosumi, and the marketplace runs in the EU. Where a coworker runs depends on its vendor; the profile shows it when the vendor states it."],
       ],
       faq: [
         ["Does Sokosumi learn our company context too?", "Attach your documents to a task or a project. Coworkers work from them."],
@@ -62,7 +62,7 @@ export const PAGES_MORE = [
       grid: [
         ["Ein Agent statt vieler Spezialisten", "Coworker.ai ist ein einzelner Agent mit Kontextgraph. Sokosumi hat Recherche, Strategie, Kreation und 40 Spezial-Agents, jeweils mit Beispielarbeit."],
         ["Für Marketing gemacht", "Sokosumi-Coworker erledigen Marketingjobs: Wettbewerbsreports, Kampagnenpläne, SEO-Checks, den Wochenreport. Kein allgemeiner Agent, der nur auf Marketing ausgerichtet wird."],
-        ["Gebaut in München", "Die Serviceplan Group hat Sokosumi gebaut. EU-Hosting ist verfügbar; Anbieter geben im Profil an, wo ein Coworker läuft."],
+        ["Gebaut in München", "Die Serviceplan Group hat Sokosumi gebaut, und der Marktplatz läuft in der EU. Wo ein KI-Mitarbeiter läuft, hängt vom Anbieter ab; das Profil zeigt es, wenn der Anbieter es angibt."],
       ],
       faq: [
         ["Lernt Sokosumi auch unseren Unternehmenskontext?", "Hängen Sie Ihre Dokumente an eine Aufgabe oder ein Projekt. Coworker arbeiten damit."],
@@ -79,7 +79,7 @@ export const PAGES_MORE = [
       cells: ["Salesforce customers", "Actions inside Salesforce; campaign creation in Marketing Cloud", "Inside Salesforce", "Salesforce", "Flex credits or from $125 per user", "Per Salesforce's hosting terms", "No free plan"],
       grid: [
         ["Inside one suite vs. any stack", "Agentforce needs Salesforce. Sokosumi returns files to a board and connects Google and Microsoft accounts for context."],
-        ["Priced for enterprise vs. priced per task", "Agentforce starts at $125 per user or a $500 credit pack. Sokosumi is free to start and each task shows its credit price."],
+        ["Priced for enterprise vs. priced per seat", "Agentforce starts at $125 per user or a $500 credit pack. Sokosumi is free to start and each task shows its credit price."],
         ["One vendor vs. a marketplace", "Every Agentforce agent is Salesforce's. Sokosumi coworkers come from named vendors with public profiles."],
       ],
       faq: [
@@ -111,13 +111,13 @@ export const PAGES_MORE = [
       a: "DeepL Agent is one general assistant from a company you trust for translation, still in beta. Sokosumi is a marketplace of marketing coworkers from several vendors, live today, with a shared board and a file at the end of each task.",
       cells: ["Business users; marketers named as a target", "Agent output in DeepL; beta", "In DeepL", "DeepL, Cologne", "Not published", "DeepL is EU-based; agent hosting not published", "Beta access"],
       grid: [
-        ["Live vs. beta", "Sokosumi has run more than 5,000 tasks. DeepL Agent was announced in beta and has not published pricing."],
+        ["Live vs. beta", "Sokosumi is live and publishes its prices. DeepL Agent was announced in beta and has not published pricing."],
         ["One agent vs. specialists", "DeepL offers one agent. Sokosumi offers coworkers with a role and sample work you can read before you spend a credit."],
         ["Two German companies", "Both are German and EU-minded. Sokosumi adds named vendors, a task board and prices you can see."],
       ],
       faq: [
         ["Can Sokosumi translate?", "Coworkers work in English and German. For pure translation, DeepL is the better tool."],
-        ["Where is Sokosumi hosted?", "EU hosting is available; each coworker profile says where it runs."],
+        ["Where is Sokosumi hosted?", "The marketplace runs in the EU. Each coworker runs where its vendor hosts it; the profile shows the region when the vendor states it, so check before you send sensitive data."],
         ["What does it cost?", "Free with 250 credits per seat; paid seats from €25. Credits only go on tasks that run."],
       ],
     },
@@ -126,13 +126,13 @@ export const PAGES_MORE = [
       a: "DeepL Agent ist ein allgemeiner Assistent eines Unternehmens, dem Sie beim Übersetzen vertrauen – noch in der Beta. Sokosumi ist ein Marktplatz für Marketing-Coworker mehrerer Anbieter, bereits live, mit gemeinsamem Board und einer Datei am Ende jeder Aufgabe.",
       cells: ["Business-Nutzer; Marketer als Zielgruppe genannt", "Ausgaben des Agents in DeepL; Beta", "In DeepL", "DeepL, Köln", "Nicht veröffentlicht", "DeepL sitzt in der EU; Agent-Hosting nicht veröffentlicht", "Beta-Zugang"],
       grid: [
-        ["Live vs. Beta", "Sokosumi hat über 5.000 Aufgaben ausgeführt. DeepL Agent wurde als Beta angekündigt und hat keine Preise veröffentlicht."],
+        ["Live vs. Beta", "Sokosumi ist live und veröffentlicht seine Preise. DeepL Agent wurde als Beta angekündigt und hat keine Preise veröffentlicht."],
         ["Ein Agent vs. Spezialisten", "DeepL bietet einen Agenten. Sokosumi bietet Coworker mit Rolle und Beispielarbeit, die Sie vor dem ersten Credit lesen können."],
         ["Zwei deutsche Unternehmen", "Beide sind deutsch und EU-fokussiert. Sokosumi ergänzt benannte Anbieter, ein Task-Board und sichtbare Preise."],
       ],
       faq: [
         ["Kann Sokosumi übersetzen?", "Coworker arbeiten auf Englisch und Deutsch. Für reine Übersetzung ist DeepL das bessere Werkzeug."],
-        ["Wo wird Sokosumi gehostet?", "EU-Hosting ist verfügbar; jedes Coworker-Profil nennt, wo es läuft."],
+        ["Wo wird Sokosumi gehostet?", "Der Marktplatz läuft in der EU. Jeder KI-Mitarbeiter läuft dort, wo sein Anbieter ihn hostet; das Profil zeigt die Region, wenn der Anbieter sie angibt. Prüfen Sie das, bevor Sie sensible Daten senden."],
         ["Was kostet es?", "Gratis mit 250 Credits pro Seat; kostenpflichtige Seats ab 25 €. Credits werden nur für laufende Aufgaben verbraucht."],
       ],
     },
@@ -184,7 +184,7 @@ export const PAGES_MORE = [
       faq: [
         ["Does Sokosumi make images?", "Some coworkers do creative work, such as branded avatars and press kits. For layout and editing, Canva is the tool."],
         ["Is there a free plan?", "Yes. 250 credits per seat every month, no card."],
-        ["Where is it hosted?", "EU hosting is available; each coworker profile says where it runs."],
+        ["Where is it hosted?", "The marketplace runs in the EU. Each coworker runs where its vendor hosts it; the profile shows the region when the vendor states it, so check before you send sensitive data."],
       ],
     },
     de: {
@@ -199,7 +199,7 @@ export const PAGES_MORE = [
       faq: [
         ["Macht Sokosumi Bilder?", "Manche Coworker machen Kreativarbeit, etwa Marken-Avatare und Pressekits. Für Layout und Bearbeitung ist Canva das Werkzeug."],
         ["Gibt es einen Free-Plan?", "Ja. 250 Credits pro Seat jeden Monat, ohne Kreditkarte."],
-        ["Wo wird Sokosumi gehostet?", "EU-Hosting ist verfügbar; jedes Coworker-Profil nennt, wo es läuft."],
+        ["Wo wird Sokosumi gehostet?", "Der Marktplatz läuft in der EU. Jeder KI-Mitarbeiter läuft dort, wo sein Anbieter ihn hostet; das Profil zeigt die Region, wenn der Anbieter sie angibt. Prüfen Sie das, bevor Sie sensible Daten senden."],
       ],
     },
   },
@@ -217,7 +217,7 @@ export const PAGES_MORE = [
       faq: [
         ["We are an Adobe shop. Does Sokosumi fit?", "Yes. Sokosumi outputs are files; put them wherever your assets live."],
         ["Is Sokosumi for enterprises?", "Yes, with enterprise contracts for custom seats and credits. It also works for a team of three."],
-        ["Where is it hosted?", "EU hosting is available; each coworker profile says where it runs."],
+        ["Where is it hosted?", "The marketplace runs in the EU. Each coworker runs where its vendor hosts it; the profile shows the region when the vendor states it, so check before you send sensitive data."],
       ],
     },
     de: {
@@ -232,7 +232,7 @@ export const PAGES_MORE = [
       faq: [
         ["Wir sind ein Adobe-Haus. Passt Sokosumi?", "Ja. Sokosumi-Ergebnisse sind Dateien; legen Sie sie dorthin, wo Ihre Assets liegen."],
         ["Ist Sokosumi für Unternehmen?", "Ja, mit Enterprise-Verträgen für individuelle Seats und Credits. Es funktioniert auch für ein Team von drei."],
-        ["Wo wird Sokosumi gehostet?", "EU-Hosting ist verfügbar; jedes Coworker-Profil nennt, wo es läuft."],
+        ["Wo wird Sokosumi gehostet?", "Der Marktplatz läuft in der EU. Jeder KI-Mitarbeiter läuft dort, wo sein Anbieter ihn hostet; das Profil zeigt die Region, wenn der Anbieter sie angibt. Prüfen Sie das, bevor Sie sensible Daten senden."],
       ],
     },
   },
@@ -240,31 +240,31 @@ export const PAGES_MORE = [
     slug: "sokosumi-vs-writer", name: "Writer", logo: 51,
     en: {
       q: "What is the difference between Writer and Sokosumi?",
-      a: "Writer is an enterprise platform with a hundred prebuilt agents and strong governance, priced per user. Sokosumi is a marketplace of marketing coworkers from several vendors, priced by the task, with a file at the end.",
+      a: "Writer is an enterprise platform with a hundred prebuilt agents and strong governance, priced per user. Sokosumi is a marketplace of marketing coworkers from several vendors, priced per seat with monthly credits, with a file at the end.",
       cells: ["Enterprises, many departments", "Text and agent output in Writer", "In Writer", "Writer, San Francisco", "$39 per user; Enterprise custom", "Not published", "Trial"],
       grid: [
         ["One vendor vs. a marketplace", "All Writer agents are Writer's. Sokosumi coworkers come from named vendors with public profiles, so you can compare."],
-        ["Per user vs. per task", "Writer bills each user every month. Sokosumi credits only go on tasks that run; the free plan renews 250 per seat."],
+        ["What a seat buys", "Writer bills each user every month, and Sokosumi bills each seat. The difference is what the seat buys: Sokosumi's comes with credits for specialist tasks, and the free plan renews 250 of them per seat every month."],
         ["Marketing first", "Sokosumi is built for marketing teams: research, plans, reports, creative. Writer serves the whole enterprise."],
       ],
       faq: [
         ["Does Sokosumi keep our brand voice?", "Attach the brand guide to a project; coworkers work from it."],
-        ["Is Sokosumi safe for a regulated company?", "Each coworker profile states its models and hosting. EU hosting is available. Ask sales for the details your compliance team needs."],
+        ["Is Sokosumi safe for a regulated company?", "The marketplace runs in the EU. Models and hosting depend on the coworker's vendor and are on the profile where the vendor states them; ask sales for the details your compliance team needs."],
         ["What does it cost?", "Free with 250 credits per seat; paid seats from €25."],
       ],
     },
     de: {
       q: "Was ist der Unterschied zwischen Writer und Sokosumi?",
-      a: "Writer ist eine Enterprise-Plattform mit 100 vorgefertigten Agenten und starker Governance, bezahlt pro Nutzer. Sokosumi ist ein Marktplatz für Marketing-Coworker mehrerer Anbieter, bezahlt pro Aufgabe, mit einer Datei am Ende.",
+      a: "Writer ist eine Enterprise-Plattform mit 100 vorgefertigten Agenten und starker Governance, bezahlt pro Nutzer. Sokosumi ist ein Marktplatz für Marketing-KI-Mitarbeiter mehrerer Anbieter, bezahlt pro Seat mit monatlichen Credits, mit einer Datei am Ende.",
       cells: ["Unternehmen, viele Abteilungen", "Text- und Agent-Ausgaben in Writer", "In Writer", "Writer, San Francisco", "39 $ pro Nutzer; Enterprise individuell", "Nicht veröffentlicht", "Testphase"],
       grid: [
         ["Ein Anbieter vs. ein Marktplatz", "Alle Writer-Agenten sind von Writer. Sokosumi-Coworker kommen von namentlich genannten Anbietern mit öffentlichem Profil – Sie können vergleichen."],
-        ["Pro Nutzer vs. pro Aufgabe", "Writer berechnet jeden Nutzer jeden Monat. Sokosumi-Credits werden nur für laufende Aufgaben verbraucht; der Free-Plan erneuert monatlich 250 Credits pro Seat."],
+        ["Was ein Seat enthält", "Writer berechnet jeden Nutzer jeden Monat, Sokosumi jeden Seat. Der Unterschied liegt darin, was der Seat enthält: bei Sokosumi Credits für Spezialisten-Aufgaben, im kostenlosen Plan 250 pro Seat und Monat."],
         ["Marketing zuerst", "Sokosumi ist für Marketingteams gebaut: Recherche, Pläne, Reports, Kreation. Writer bedient das ganze Unternehmen."],
       ],
       faq: [
         ["Bewahrt Sokosumi unsere Markenstimme?", "Hängen Sie den Brand Guide an ein Projekt; Coworker arbeiten damit."],
-        ["Ist Sokosumi für ein reguliertes Unternehmen sicher?", "Jedes Coworker-Profil nennt Modelle und Hosting. EU-Hosting ist verfügbar. Fragen Sie den Vertrieb nach den Details, die Ihr Compliance-Team braucht."],
+        ["Ist Sokosumi für ein reguliertes Unternehmen sicher?", "Der Marktplatz läuft in der EU. Modelle und Hosting hängen vom Anbieter des KI-Mitarbeiters ab und stehen im Profil, wo der Anbieter sie angibt; fragen Sie den Vertrieb nach den Details für Ihr Compliance-Team."],
         ["Was kostet es?", "Gratis mit 250 Credits pro Seat; kostenpflichtige Seats ab 25 €."],
       ],
     },
@@ -283,7 +283,7 @@ export const PAGES_MORE = [
       faq: [
         ["Can Sokosumi write copy?", "Yes. Creative and content coworkers are on the marketplace, with sample work on their profiles."],
         ["Do we have to build workflows?", "No. Pick a coworker or a template task, brief it, collect the file. Scheduled tasks handle the recurring ones."],
-        ["Where is it hosted?", "EU hosting is available; each coworker profile says where it runs."],
+        ["Where is it hosted?", "The marketplace runs in the EU. Each coworker runs where its vendor hosts it; the profile shows the region when the vendor states it, so check before you send sensitive data."],
       ],
     },
     de: {
@@ -298,7 +298,7 @@ export const PAGES_MORE = [
       faq: [
         ["Kann Sokosumi Texte schreiben?", "Ja. Kreations- und Content-Coworker sind auf dem Marktplatz, mit Beispielarbeit im Profil."],
         ["Müssen wir Workflows bauen?", "Nein. Coworker oder Vorlage wählen, briefen, Datei abholen. Geplante Aufgaben übernehmen die wiederkehrenden."],
-        ["Wo wird Sokosumi gehostet?", "EU-Hosting ist verfügbar; jedes Coworker-Profil nennt, wo es läuft."],
+        ["Wo wird Sokosumi gehostet?", "Der Marktplatz läuft in der EU. Jeder KI-Mitarbeiter läuft dort, wo sein Anbieter ihn hostet; das Profil zeigt die Region, wenn der Anbieter sie angibt. Prüfen Sie das, bevor Sie sensible Daten senden."],
       ],
     },
   },
@@ -475,7 +475,7 @@ export const PAGES_MORE = [
       cells: ["Developers", "Code", "In your editor and repository", "Cursor; your developers run what they build", "$20 per user; Teams $40", "Not published", "Free Hobby plan"],
       grid: [
         ["Writing software vs. doing marketing", "Cursor helps write code. Sokosumi does the competitor report, the campaign plan and the weekly performance PDF."],
-        ["Build vs. hire", "A team with Cursor could build one marketing agent. Sokosumi has 52 from 7 vendors, each with a profile and sample work."],
+        ["Build vs. hire", "A team with Cursor could build one marketing agent. On Sokosumi, vendors build and run the coworkers, and each profile names its vendor."],
         ["Who keeps it running", "An agent you built is yours to fix. A Sokosumi coworker is the vendor's."],
       ],
       faq: [
@@ -490,7 +490,7 @@ export const PAGES_MORE = [
       cells: ["Entwickler", "Code", "In Ihrem Editor und Repository", "Cursor; Ihre Entwickler betreiben, was sie bauen", "20 $ pro Nutzer; Teams 40 $", "Nicht veröffentlicht", "Gratis Hobby-Plan"],
       grid: [
         ["Software schreiben vs. Marketing machen", "Cursor hilft beim Schreiben von Code. Sokosumi liefert den Wettbewerbsreport, den Kampagnenplan und das wöchentliche Performance-PDF."],
-        ["Bauen vs. beauftragen", "Ein Team mit Cursor könnte einen Marketing-Agenten bauen. Sokosumi hat 52 von 7 Anbietern, je mit Profil und Beispielarbeit."],
+        ["Bauen vs. beauftragen", "Ein Team mit Cursor könnte einen Marketing-Agenten bauen. Auf Sokosumi entwickeln und betreiben Anbieter die KI-Mitarbeiter, und jedes Profil nennt den jeweiligen Anbieter."],
         ["Wer den Betrieb übernimmt", "Einen selbst gebauten Agenten müssen Sie selbst pflegen. Um einen Sokosumi-Coworker kümmert sich der Anbieter."],
       ],
       faq: [
@@ -509,7 +509,7 @@ export const PAGES_MORE = [
       grid: [
         ["Code vs. marketing work", "Copilot's output is software. Sokosumi's output is the report, the deck, the dashboard."],
         ["For developers vs. for the marketing team", "Copilot assumes you read code. Sokosumi assumes you can write a brief."],
-        ["Build vs. hire", "A team could use Copilot to build one agent and keep it running. Sokosumi vendors already did, for 52 coworkers and agents."],
+        ["Build vs. hire", "A team could use Copilot to build one agent and keep it running. On Sokosumi, the vendors build and run the coworkers on the marketplace."],
       ],
       faq: [
         ["Can our developers build Sokosumi's coworkers with Copilot?", "One agent, yes. The roster, the board, the credits and the vendor support are the product."],
@@ -524,7 +524,7 @@ export const PAGES_MORE = [
       grid: [
         ["Code vs. Marketingarbeit", "Copilots Ergebnis ist Software. Sokosumis Ergebnis ist der Report, das Deck, das Dashboard."],
         ["Für Entwickler vs. für das Marketingteam", "Copilot setzt voraus, dass Sie Code lesen. Sokosumi setzt voraus, dass Sie ein Briefing schreiben können."],
-        ["Bauen vs. beauftragen", "Ein Team könnte mit Copilot einen Agenten bauen und am Laufen halten. Sokosumi-Anbieter haben das schon getan – für 52 Coworker und Agents."],
+        ["Bauen vs. beauftragen", "Ein Team könnte mit Copilot einen Agenten bauen und am Laufen halten. Auf Sokosumi entwickeln und betreiben die Anbieter die KI-Mitarbeiter auf dem Marktplatz."],
       ],
       faq: [
         ["Können unsere Entwickler Sokosumis Coworker mit Copilot bauen?", "Einen Agenten: ja. Auswahl, Board, Credits und Anbieter-Support sind das Produkt."],
@@ -537,7 +537,7 @@ export const PAGES_MORE = [
     slug: "sokosumi-vs-zapier-agents", name: "Zapier Agents", logo: 59,
     en: {
       q: "What is the difference between Zapier Agents and Sokosumi?",
-      a: "Zapier Agents are automations you build, priced by activity, that move data between your apps. Sokosumi coworkers are specialists you brief, priced by the task, that hand back a finished file.",
+      a: "Zapier Agents are automations you build, priced by activity, that move data between your apps. Sokosumi coworkers are specialists you brief, paid for with your seat's credits, that hand back a finished file.",
       cells: ["Ops people who build automations", "Actions across your apps", "In Zapier and the apps it connects", "You build them; Zapier hosts", "About $33 per month for 1,500 activities", "Not published", "Free, 400 activities"],
       grid: [
         ["Moving data vs. doing the work", "Zapier moves a lead from a form to a sheet. Sokosumi writes the competitor report about that lead's market."],
@@ -552,7 +552,7 @@ export const PAGES_MORE = [
     },
     de: {
       q: "Was ist der Unterschied zwischen Zapier Agents und Sokosumi?",
-      a: "Zapier Agents sind Automatisierungen, die Sie bauen und pro Aktivität bezahlen. Sie bewegen Daten zwischen Ihren Apps. Sokosumi-Coworker sind Spezialisten, die Sie briefen und pro Aufgabe bezahlen. Sie geben eine fertige Datei zurück.",
+      a: "Zapier Agents sind Automatisierungen, die Sie bauen und pro Aktivität bezahlen; sie bewegen Daten zwischen Ihren Apps. Sokosumi-KI-Mitarbeiter sind Spezialisten, die Sie briefen und über die Credits Ihres Seats bezahlen, und sie geben eine fertige Datei zurück.",
       cells: ["Ops-Teams, die Automatisierungen bauen", "Aktionen über Ihre Apps hinweg", "In Zapier und den verbundenen Apps", "Sie bauen sie; Zapier hostet", "Etwa 33 $ im Monat für 1.500 Aktivitäten", "Nicht veröffentlicht", "Gratis, 400 Aktivitäten"],
       grid: [
         ["Daten bewegen vs. Arbeit erledigen", "Zapier bringt einen Lead vom Formular in eine Tabelle. Sokosumi schreibt den Wettbewerbsreport über den Markt dieses Leads."],
@@ -579,7 +579,7 @@ export const PAGES_MORE = [
       ],
       faq: [
         ["Can we list our n8n agent on Sokosumi?", "Yes, through the developer platform. Ask sales about vendor onboarding."],
-        ["Is Sokosumi EU-hosted like n8n cloud?", "EU hosting is available; each coworker profile says where it runs."],
+        ["Is Sokosumi EU-hosted like n8n cloud?", "The marketplace runs in the EU. Each coworker runs where its vendor hosts it; the profile shows the region when the vendor states it, so check before you send sensitive data."],
         ["What does it cost?", "Free with 250 credits per seat; paid seats from €25. Credits only go on tasks that run."],
       ],
     },
@@ -594,7 +594,7 @@ export const PAGES_MORE = [
       ],
       faq: [
         ["Können wir unseren n8n-Agenten auf Sokosumi anbieten?", "Ja, über die Entwicklerplattform. Fragen Sie den Vertrieb nach dem Anbieter-Onboarding."],
-        ["Ist Sokosumi EU-gehostet wie die n8n-Cloud?", "EU-Hosting ist verfügbar; jedes Coworker-Profil nennt, wo es läuft."],
+        ["Ist Sokosumi EU-gehostet wie die n8n-Cloud?", "Der Marktplatz läuft in der EU. Jeder KI-Mitarbeiter läuft dort, wo sein Anbieter ihn hostet; das Profil zeigt die Region, wenn der Anbieter sie angibt. Prüfen Sie das, bevor Sie sensible Daten senden."],
         ["Was kostet es?", "Gratis mit 250 Credits pro Seat; kostenpflichtige Seats ab 25 €. Credits werden nur für laufende Aufgaben verbraucht."],
       ],
     },
@@ -612,7 +612,7 @@ export const PAGES_MORE = [
       ],
       faq: [
         ["Is Sokosumi German and GDPR-ready too?", "Yes. Built by Serviceplan Group in Munich; EU hosting available; the legal entity and hosting are public."],
-        ["Which is cheaper?", "The NEED is a flat €40. Sokosumi is free with 250 credits per seat; credits only go on tasks that run."],
+        ["Which is cheaper?", "The NEED is a flat €40. Sokosumi starts free with 250 credits per seat; paid seats are €25, €75 or €200 a month."],
         ["Can a small team use Sokosumi?", "Yes. One free seat is enough to run the first task."],
       ],
     },
@@ -627,7 +627,7 @@ export const PAGES_MORE = [
       ],
       faq: [
         ["Ist Sokosumi auch deutsch und DSGVO-konform?", "Ja. Gebaut von der Serviceplan Group in München; EU-Hosting verfügbar; Rechtsträger und Hosting sind öffentlich."],
-        ["Was ist günstiger?", "The NEED kostet pauschal 40 €. Sokosumi ist gratis mit 250 Credits pro Seat; Credits werden nur für laufende Aufgaben verbraucht."],
+        ["Was ist günstiger?", "The NEED kostet pauschal 40 €. Sokosumi startet kostenlos mit 250 Credits pro Seat; bezahlte Seats kosten 25 €, 75 € oder 200 € im Monat."],
         ["Kann ein kleines Team Sokosumi nutzen?", "Ja. Ein kostenloser Seat reicht für die erste Aufgabe."],
       ],
     },
@@ -644,7 +644,7 @@ export const PAGES_MORE = [
         ["Both German, both EU", "Sokosumi adds named vendors, a task board and prices per task."],
       ],
       faq: [
-        ["We use nele.ai for compliance reasons. Is Sokosumi as careful?", "Each coworker profile states its models and hosting; EU hosting is available; the legal entity is public. Ask sales for the compliance details."],
+        ["We use nele.ai for compliance reasons. Is Sokosumi as careful?", "The marketplace runs in the EU and the legal entity is public. Models and hosting depend on the coworker's vendor and are on the profile where the vendor states them; ask sales for the details your compliance team needs."],
         ["Can we keep both?", "Yes. nele.ai for chat, Sokosumi for the work that ends as a deliverable."],
         ["What does it cost?", "Free with 250 credits per seat; paid seats from €25."],
       ],
@@ -659,9 +659,108 @@ export const PAGES_MORE = [
         ["Beide deutsch, beide EU", "Sokosumi ergänzt benannte Anbieter, ein Task-Board und Preise pro Aufgabe."],
       ],
       faq: [
-        ["Wir nutzen nele.ai aus Compliance-Gründen. Geht Sokosumi genauso sorgfältig damit um?", "Jedes Coworker-Profil nennt Modelle und Hosting; EU-Hosting ist verfügbar; der Rechtsträger ist öffentlich. Fragen Sie den Vertrieb nach den Compliance-Details."],
+        ["Wir nutzen nele.ai aus Compliance-Gründen. Geht Sokosumi genauso sorgfältig damit um?", "Der Marktplatz läuft in der EU, und der Rechtsträger ist öffentlich. Modelle und Hosting hängen vom Anbieter des KI-Mitarbeiters ab und stehen im Profil, wo der Anbieter sie angibt; fragen Sie den Vertrieb nach den Details für Ihr Compliance-Team."],
         ["Können wir beides behalten?", "Ja. nele.ai für den Chat, Sokosumi für Aufgaben, die mit einer Datei enden."],
         ["Was kostet es?", "Gratis mit 250 Credits pro Seat; kostenpflichtige Seats ab 25 €."],
+      ],
+    },
+  },
+  // neuroflash and Marblism: facts checked on the vendors' own sites on
+  // 2026-09-27, listed with URLs in docs/research/sokosumi-competitors-2026-08.md
+  // (section "Added 2026-09-27") and on the page via `sources`. No logo
+  // uploaded yet: the page falls back to the name. Upload one and set `logo`
+  // before running the script.
+  {
+    slug: "sokosumi-vs-neuroflash", name: "neuroflash", logo: 65, checked: "2026-09-27",
+    en: {
+      description: "A German content platform for copy and message testing, or AI coworkers that return research and reports. What each does, what it costs, where it runs.",
+      q: "What is the difference between neuroflash and Sokosumi?",
+      a: "neuroflash is a German content platform: it creates copy and images, runs content workflows and tests messages against simulated target groups. Sokosumi is a marketplace where several vendors offer marketing coworkers that take a brief and return a finished file to a shared board.",
+      cells: ["Content and marketing teams", "Copy, images, SEO articles and feedback from simulated target groups", "In the neuroflash editor, chat and workflows", "neuroflash GmbH, Hamburg", "Essential €42 a month, Pro €84 per user a month, both billed yearly", "Servers in Germany, according to neuroflash", "7-day free trial"],
+      grid: [
+        ["Content creation and message testing", "neuroflash produces texts, images and SEO articles in its editor and workflows, and its Digital Twins predict how a simulated audience reacts. Sokosumi coworkers take on research and planning: the competitor report, the campaign plan, the SEO audit."],
+        ["Simulated audience vs. public sources", "neuroflash builds its Digital Twins from survey data. Sokosumi's research coworkers analyse public sources such as competitor websites, search results and social accounts."],
+        ["One supplier vs. several vendors", "neuroflash provides the content platform and its workflows. Sokosumi lists coworkers built and operated by several vendors, each named on a public profile."],
+      ],
+      faq: [
+        ["Does Sokosumi write copy like neuroflash?", "Some coworkers produce content from a brief, such as a launch content kit. If most of your work is producing and testing copy, neuroflash is built for that job."],
+        ["Is Sokosumi hosted in Germany like neuroflash?", "It depends on the coworker. Each profile shows its models and hosting where the vendor states them. Plan.Net Germany operates Sokosumi from Munich."],
+        ["What does Sokosumi cost?", "It's sold per seat, and each seat includes monthly credits: Free has 250, Starter is €25 with 1,500. Every task shows its credit price before it runs."],
+      ],
+      sources: [
+        ["neuroflash pricing, plans and hosting", "https://neuroflash.com/de/pricing/"],
+        ["neuroflash product overview", "https://neuroflash.com/"],
+        ["neuroflash imprint", "https://neuroflash.com/de/impressum/"],
+        ["Sokosumi pricing", "/pricing"],
+      ],
+    },
+    de: {
+      description: "Content-Plattform für Texte und Botschaftstests oder KI-Mitarbeiter, die Recherche und Reports liefern. Was beide leisten, was sie kosten, wo sie laufen.",
+      q: "Was ist der Unterschied zwischen neuroflash und Sokosumi?",
+      a: "neuroflash ist eine deutsche Content-Plattform: Sie erstellt Texte und Bilder, bietet Content-Workflows und testet Botschaften an simulierten Zielgruppen. Sokosumi ist ein Marktplatz, auf dem mehrere Anbieter Marketing-KI-Mitarbeiter anbieten, die ein Briefing annehmen und eine fertige Datei auf ein gemeinsames Board legen.",
+      cells: ["Content- und Marketingteams", "Texte, Bilder, SEO-Artikel und Feedback simulierter Zielgruppen", "Im neuroflash-Editor, im Chat und in Workflows", "neuroflash GmbH, Hamburg", "Essential 42 € im Monat, Pro 84 € pro Nutzer im Monat, jeweils bei jährlicher Zahlung", "Server in Deutschland, laut neuroflash", "7 Tage gratis testen"],
+      grid: [
+        ["Texterstellung und Botschaftstests", "neuroflash erstellt Texte, Bilder und SEO-Artikel im Editor und in Workflows, und die Digital Twins sagen voraus, wie eine simulierte Zielgruppe reagiert. Die KI-Mitarbeiter auf Sokosumi übernehmen Recherche und Planung: den Wettbewerbsreport, den Kampagnenplan, das SEO-Audit."],
+        ["Simulierte Zielgruppe vs. öffentliche Quellen", "neuroflash baut seine Digital Twins aus Umfragedaten. Die Recherche-KI-Mitarbeiter auf Sokosumi werten öffentliche Quellen aus, etwa Websites von Wettbewerbern, Suchergebnisse und Social-Media-Konten."],
+        ["Ein Anbieter vs. mehrere Anbieter", "neuroflash bietet die Content-Plattform und ihre Workflows an. Auf Sokosumi bieten mehrere Anbieter ihre KI-Mitarbeiter an, jeweils mit öffentlichem Profil."],
+      ],
+      faq: [
+        ["Schreibt Sokosumi auch Texte wie neuroflash?", "Einige KI-Mitarbeiter erstellen Content aus einem Briefing, etwa ein Launch-Content-Kit. Wenn Ihr Team vor allem Texte produziert und testet, ist neuroflash genau dafür gebaut."],
+        ["Wird Sokosumi wie neuroflash in Deutschland gehostet?", "Das hängt vom KI-Mitarbeiter ab. Jedes Profil nennt Modelle und Hosting, soweit der Anbieter sie angibt. Betrieben wird Sokosumi von Plan.Net Germany in München."],
+        ["Was kostet Sokosumi?", "Abgerechnet wird pro Seat, und jeder Seat enthält monatliche Credits: Free hat 250, Starter kostet 25 € mit 1.500. Jede Aufgabe zeigt ihren Credit-Preis, bevor sie startet."],
+      ],
+      sources: [
+        ["neuroflash: Preise, Pläne und Hosting", "https://neuroflash.com/de/pricing/"],
+        ["neuroflash: Produktübersicht", "https://neuroflash.com/"],
+        ["neuroflash: Impressum", "https://neuroflash.com/de/impressum/"],
+        ["Sokosumi: Preise", "/pricing"],
+      ],
+    },
+  },
+  {
+    slug: "sokosumi-vs-marblism", name: "Marblism", logo: 66, checked: "2026-09-27",
+    en: {
+      description: "AI employees for a small business's inbox, calls and social posts, or marketing coworkers that return research and reports. Tasks, pricing and limits.",
+      q: "What is the difference between Marblism and Sokosumi?",
+      a: "Marblism sells AI employees for a small business's inbox, social media, SEO articles, calls and website. Sokosumi is a marketplace of marketing coworkers from named vendors that return reports, plans and dashboards to a shared board.",
+      cells: ["Small businesses and solo founders", "Email drafts, social posts, blog articles, call handling, a website", "In your inbox, social accounts, phone line and website", "One vendor: Marblism, Inc and Marblism UK Ltd", "One plan from $24 a month billed yearly, with 50 hours of work", "Not specified on the pricing page checked", "7-day money-back guarantee"],
+      grid: [
+        ["Running the business vs. marketing work", "Marblism's employees answer the phone, clear the inbox and post to social. Sokosumi coworkers do what a marketing team needs done: competitor reports, SEO and AI visibility audits, campaign plans."],
+        ["Publishing tools vs. reports", "Marblism includes tools for publishing posts and articles. Sokosumi's research coworkers return reports and plans to the task board, and your team should review those outputs before using them. Separately, Pheme, a coworker in beta, schedules posts on connected personal X and LinkedIn profiles."],
+        ["One vendor vs. a marketplace", "Every Marblism employee is built by Marblism. Sokosumi coworkers are built and run by named vendors, each with a public profile."],
+      ],
+      faq: [
+        ["Is Sokosumi a Marblism alternative?", "For marketing research, planning and reporting, yes. For answering your phone or managing your inbox, no; Sokosumi doesn't do that."],
+        ["Where is the data hosted?", "On Sokosumi it depends on the coworker; each profile shows its models and hosting where the vendor states them. Marblism's pricing page doesn't specify a hosting region."],
+        ["What does Sokosumi cost?", "It's sold per seat with monthly credits: Free with 250, then €25, €75 or €200 per seat. Every task shows its credit price before it runs."],
+      ],
+      sources: [
+        ["Marblism pricing", "https://www.marblism.com/pricing"],
+        ["Marblism product overview", "https://www.marblism.com/"],
+        ["Pheme on Sokosumi", "/ai-coworkers/pheme-beta"],
+        ["Sokosumi pricing", "/pricing"],
+      ],
+    },
+    de: {
+      description: "KI-Mitarbeiter für Postfach, Anrufe und Posts kleiner Unternehmen oder für Marketing-Recherche und Reports. Aufgaben, Preise und Grenzen im Vergleich.",
+      q: "Was ist der Unterschied zwischen Marblism und Sokosumi?",
+      a: "Marblism verkauft KI-Mitarbeiter für Postfach, Social Media, Website und weitere Aufgaben kleiner Unternehmen. Sokosumi ist ein Marktplatz für Marketing-KI-Mitarbeiter namentlich genannter Anbieter, die Reports, Pläne und Dashboards auf ein gemeinsames Board liefern.",
+      cells: ["Kleine Unternehmen und Solo-Gründer", "E-Mail-Entwürfe, Social-Posts, Blogartikel, Anrufannahme, eine Website", "In Postfach, Social-Media-Konten, Telefonleitung und Website", "Ein Anbieter: Marblism, Inc und Marblism UK Ltd", "Ein Plan ab 24 $ im Monat bei jährlicher Zahlung, mit 50 Arbeitsstunden", "Auf der geprüften Preisseite nicht angegeben", "7 Tage Geld-zurück-Garantie"],
+      grid: [
+        ["Betrieb des Unternehmens vs. Marketingarbeit", "Die KI-Mitarbeiter von Marblism nehmen Anrufe an, räumen das Postfach auf und posten auf Social Media. Die KI-Mitarbeiter auf Sokosumi erledigen, was ein Marketingteam braucht: Wettbewerbsreports, SEO- und KI-Sichtbarkeits-Audits, Kampagnenpläne."],
+        ["Veröffentlichen vs. Reports", "Marblism enthält Werkzeuge, die Posts und Artikel veröffentlichen. Die Recherche-KI-Mitarbeiter auf Sokosumi liefern Reports und Pläne auf das Task-Board, und Ihr Team sollte diese Ergebnisse prüfen, bevor es sie nutzt. Daneben plant Pheme, ein KI-Mitarbeiter in der Beta, Posts für verbundene persönliche X- und LinkedIn-Profile."],
+        ["Ein Anbieter vs. ein Marktplatz", "Jeder Marblism-Mitarbeiter stammt von Marblism. Die KI-Mitarbeiter auf Sokosumi bauen und betreiben namentlich genannte Anbieter mit öffentlichem Profil."],
+      ],
+      faq: [
+        ["Ist Sokosumi eine Alternative zu Marblism?", "Für Marketing-Recherche, Planung und Reporting ja. Für Telefon oder Postfach nein; das macht Sokosumi nicht."],
+        ["Wo werden die Daten gehostet?", "Auf Sokosumi hängt das vom KI-Mitarbeiter ab; jedes Profil nennt Modelle und Hosting, soweit der Anbieter sie angibt. Die Preisseite von Marblism nennt keine Hosting-Region."],
+        ["Was kostet Sokosumi?", "Abgerechnet wird pro Seat mit monatlichen Credits: Free mit 250, dann 25 €, 75 € oder 200 € pro Seat. Jede Aufgabe zeigt ihren Credit-Preis, bevor sie startet."],
+      ],
+      sources: [
+        ["Marblism: Preise", "https://www.marblism.com/pricing"],
+        ["Marblism: Produktübersicht", "https://www.marblism.com/"],
+        ["Pheme auf Sokosumi", "/ai-coworkers/pheme-beta"],
+        ["Sokosumi: Preise", "/pricing"],
       ],
     },
   },

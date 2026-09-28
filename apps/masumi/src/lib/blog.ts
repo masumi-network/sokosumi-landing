@@ -1,4 +1,5 @@
 import { cmsFetch, isDraftModeEnabled } from "./cms";
+import { DEFAULT_LOCALE, type Locale } from "./i18n";
 
 const categories = ["announcements", "articles", "press-releases"] as const;
 export type Category = (typeof categories)[number];
@@ -39,29 +40,38 @@ function toMeta(doc: CmsPost): PostMeta {
   };
 }
 
-export async function getAllPosts(): Promise<PostMeta[]> {
+export async function getAllPosts(locale: Locale = DEFAULT_LOCALE): Promise<PostMeta[]> {
   const res = await cmsFetch<CmsList>(
     "/posts?where[site][equals]=masumi&limit=100&sort=-date&depth=0",
+    { locale },
   );
   return (res?.docs ?? []).map(toMeta);
 }
 
-export async function getPostsByCategory(category: Category): Promise<PostMeta[]> {
-  return (await getAllPosts()).filter((p) => p.category === category);
+export async function getPostsByCategory(
+  category: Category,
+  locale: Locale = DEFAULT_LOCALE,
+): Promise<PostMeta[]> {
+  return (await getAllPosts(locale)).filter((p) => p.category === category);
 }
 
-export async function getCategories(): Promise<{ name: Category; count: number }[]> {
-  const all = await getAllPosts();
+export async function getCategories(
+  locale: Locale = DEFAULT_LOCALE,
+): Promise<{ name: Category; count: number }[]> {
+  const all = await getAllPosts(locale);
   return categories.map((name) => ({
     name,
     count: all.filter((p) => p.category === name).length,
   }));
 }
 
-export async function getPostBySlug(slug: string): Promise<Post | null> {
+export async function getPostBySlug(
+  slug: string,
+  locale: Locale = DEFAULT_LOCALE,
+): Promise<Post | null> {
   const res = await cmsFetch<CmsList>(
     `/posts?where[slug][equals]=${encodeURIComponent(slug)}&limit=1&depth=0`,
-    { draft: await isDraftModeEnabled() },
+    { draft: await isDraftModeEnabled(), locale },
   );
   const doc = res?.docs?.[0];
   if (!doc) return null;

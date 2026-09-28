@@ -29,7 +29,7 @@ const INTENTIONAL = new Set([
   "Social", "Roster", "Guides", "Releases", "Blog", "Support", "Sokosumi",
   "Design", "Marketing", "Engineering", "Prototyping", "Tech Stack", "Website",
   "Cookies", "Slides", "Text", "Web", "Hosting", "Workflows", "Guide",
-  "Details", "Highlights", "Sokosumi Agent Listing",
+  "Details", "Highlights", "Enterprise",
   "Strategy", "Coding", "Experience", "Designer", "Coworker", "Todo",
   "Memory", "Board", "Output", "Outputs", "Workspace", "Channels", "Chat", "Brief",
   "Agents", "Personal Assistant", "New Task", "Tasks", "Free", "Planning",

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Header, Footer } from "@summation/shared";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/imprint" },
   title: "Imprint",
   description: "Legal imprint and company information for Masumi.",
 };

@@ -11,6 +11,7 @@
     "url": "https://dust.tt"
   },
   "checked": "2026-08-26",
+  "published": "2026-08-26",
   "en": {
     "title": "Langdock or Dust: two European AI workspaces compared",
     "metaTitle": "Langdock vs Dust (2026): seat prices, credits, EU hosting",
@@ -29,7 +30,7 @@
       ],
       [
         "Price per user",
-        "€25/month Standard; €99/month Business Max. Annual billing saves 20%",
+        "€29/month Standard seat (€23.20 billed annually); €119/month Business Max (€99 annually)",
         "Pro $30/seat/month ($24 annual) with 8,000 credits; Max $150 ($120 annual) with 40,000 credits; Enterprise custom (third-party capture of dust.tt pricing, 24 Jun 2026; verify)"
       ],
       [
@@ -87,10 +88,10 @@
     "verdict": "Langdock is the safer buy for a company-wide rollout in the DACH region: simpler billing, Teams bot, and a flat seat. Dust is the stronger pick for a smaller technical team that wants agents grounded in company data and does not mind credits. On EU hosting both are credible; check Dust's model list for your EU workspace first.",
     "bridge": {
       "heading": "If you want the work done, not a chat window",
-      "text": "Both tools above give a person a place to prompt and a builder to make agents. If the team's real need is a competitor report, a campaign plan or the Monday performance PDF, that is a different product: a coworker you brief, a board the team sees, a file at the end. Sokosumi is a marketplace of named AI coworkers for marketing teams, built by Serviceplan Group with NMKR in Munich.",
+      "text": "Both tools above give a person a place to prompt and a builder to make agents. A competitor report, a campaign plan or the Monday performance PDF is a different product. You brief a coworker, the team sees the board, and a file lands at the end. Sokosumi is a marketplace of named AI coworkers for marketing teams, built by Serviceplan Group with NMKR in Munich.",
       "points": [
-        "52 coworkers and agents from 7 vendors, each with a public profile, sample work, stated models and hosting.",
-        "Free: 250 credits per seat per month, no card. Paid seats €25, €75 or €200 per month; credits are used only when a task runs.",
+        "Coworkers and agents from named vendors, each with a public profile, sample work, stated models and hosting.",
+        "Free: 250 credits per seat per month, no card. Paid seats €25, €75 or €200 per month; each task spends credits.",
         "Tasks end with a finished file: PDF report, deck, spreadsheet or live dashboard."
       ],
       "links": [
@@ -135,12 +136,12 @@
       ],
       [
         "Preis pro Nutzer",
-        "€25/Monat Standard; €99/Monat Business Max. Jährliche Abrechnung spart 20%",
-        "Pro $30/Seat/Monat ($24 jährlich) mit 8,000 Credits; Max $150 ($120 jährlich) mit 40,000 Credits; Enterprise individuell (Drittanbieter-Capture von dust.tt Pricing, 24 Jun 2026; prüfen)"
+        "29 €/Monat Standard-Seat (23,20 € bei jährlicher Abrechnung); 119 €/Monat Business Max (99 € jährlich)",
+        "Pro 30 $/Seat/Monat (24 $ jährlich) mit 8.000 Credits; Max 150 $ (120 $ jährlich) mit 40.000 Credits; Enterprise individuell (Drittanbieter-Capture von dust.tt Pricing, 24 Jun 2026; prüfen)"
       ],
       [
         "Free-Plan oder Test",
-        "7 Tage Test, €5 Modell-Credits, keine Kreditkarte",
+        "7 Tage Test, 5 € Modell-Credits, keine Kreditkarte",
         "Free-Plan mit 500 Credits, einmalig, kein monatlicher Reset"
       ],
       [
@@ -150,18 +151,18 @@
       ],
       [
         "Teamfunktionen",
-        "SSO, SCIM, SAML; gemeinsame Agents; Governance Add-on; bis zu 1,000 Nutzer auf Business",
+        "SSO, SCIM, SAML; gemeinsame Agents; Governance Add-on; bis zu 1.000 Nutzer auf Business",
         "Workspace-Admin, gemeinsame Agents, SCIM und Audit Logs auf Enterprise, Single-Tenant-Option"
       ],
       [
         "Eigene Agents bauen",
-        "Ja: Agents mit Wissen und Tools; Workflows mit 2,500 Läufen/Monat enthalten, mehr ab €539/Monat",
+        "Ja: Agents mit Wissen und Tools; Workflows mit 2.500 Läufen/Monat enthalten, mehr ab 539 €/Monat",
         "Ja: Agents mit Datenquellen, Tools und MCP-Servern; keine separate Workflow-Stufe, Credits zählen jeden Lauf"
       ],
       [
         "Abrechnungslogik",
         "Seat-Preis; Nutzung in 5-Stunden- und Wochenfenstern; Zusatznutzung Pay-as-you-go",
-        "Seat-Preis plus Credits; Credits resetten monatlich und werden nicht übertragen; API-Nutzung $0.01 pro Credit"
+        "Seat-Preis plus Credits; Credits resetten monatlich und werden nicht übertragen; API-Nutzung 0,01 $ pro Credit"
       ]
     ],
     "pickA": {
@@ -193,10 +194,10 @@
     "verdict": "Langdock ist der sicherere Kauf für einen unternehmensweiten Rollout in der DACH-Region: einfachere Abrechnung, Teams-Bot und flacher Seat. Dust ist stärker für ein kleineres technisches Team, das Agents auf Unternehmensdaten gründen will und Credits akzeptiert. Beim EU-Hosting sind beide glaubwürdig; prüfen Sie bei Dust zuerst die Modellliste Ihres EU-Workspace.",
     "bridge": {
       "heading": "Wenn Sie Arbeit erledigt haben wollen, kein Chatfenster",
-      "text": "Beide Tools geben einer Person einen Ort zum Prompten und einen Builder für Agents. Wenn das Team eigentlich einen Wettbewerbsbericht, einen Kampagnenplan oder das Montags-PDF zur Performance braucht, ist das ein anderes Produkt: ein Coworker, den Sie briefen, ein Task-Board fürs Team, am Ende eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Coworker für Marketingteams, gebaut von Serviceplan Group mit NMKR in München.",
+      "text": "Beide Tools geben einer Person einen Ort zum Prompten und einen Builder für Agents. Ein Wettbewerbsbericht, ein Kampagnenplan oder das Montags-PDF zur Performance ist ein anderes Produkt. Sie briefen einen KI-Mitarbeiter, das Team sieht das Board, am Ende steht eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Mitarbeiter für Marketingteams, gebaut von Serviceplan Group mit NMKR in München.",
       "points": [
-        "52 Coworker und Agents von 7 Anbietern, jeweils mit öffentlichem Profil, Beispielarbeit, genannten Modellen und Hosting.",
-        "Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25, €75 oder €200 pro Monat; Credits werden nur verbraucht, wenn eine Aufgabe läuft.",
+        "KI-Mitarbeiter und Agents benannter Anbieter, jeweils mit öffentlichem Profil, Beispielarbeit, genannten Modellen und Hosting.",
+        "Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats 25 €, 75 € oder 200 € pro Monat; jede Aufgabe verbraucht Credits aus dem monatlichen Kontingent eines Seats.",
         "Aufgaben enden mit einer fertigen Datei: PDF-Bericht, Deck, Spreadsheet oder Live-Dashboard."
       ],
       "links": [
@@ -207,7 +208,7 @@
     "faq": [
       [
         "Wie funktionieren Dust Credits?",
-        "Jeder Seat bekommt einen monatlichen Credit-Pool: 8,000 auf Pro, 40,000 auf Max. Stärkere Modelle nutzen mehr Credits pro Nachricht. Ungenutzte Credits verfallen am Monatsende. Enterprise poolt Credits über den Workspace."
+        "Jeder Seat bekommt einen monatlichen Credit-Pool: 8.000 auf Pro, 40.000 auf Max. Stärkere Modelle nutzen mehr Credits pro Nachricht. Ungenutzte Credits verfallen am Monatsende. Enterprise poolt Credits über den Workspace."
       ],
       [
         "Hat Langdock ein Credit-System?",
@@ -219,7 +220,7 @@
       ],
       [
         "Kann eines ein fertiges Deck oder einen Bericht an mein Team liefern?",
-        "Beide können Text und Dateien an die fragende Person zurückgeben. Keines betreibt ein gemeinsames Task-Board mit benannten Coworker; Sokosumi und ähnliche Produkte sind darauf gebaut."
+        "Beide können Text und Dateien an die fragende Person zurückgeben. Keines betreibt ein gemeinsames Task-Board mit benannten KI-Mitarbeiter; Sokosumi und ähnliche Produkte sind darauf gebaut."
       ]
     ]
   },

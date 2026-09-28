@@ -20,6 +20,13 @@
   };
   if (search && state.q) search.value = state.q;
 
+  function catLabel(cat) {
+    for (var i = 0; i < chips.length; i++) {
+      if (chips[i].getAttribute("data-cat") === cat) return chips[i].getAttribute("data-label") || cat;
+    }
+    return cat;
+  }
+
   function apply() {
     var q = state.q.trim().toLowerCase();
     var n = 0;
@@ -37,7 +44,9 @@
     if (countEl) {
       countEl.textContent =
         state.cat || q
-          ? n + " task" + (n === 1 ? "" : "s") + (state.cat ? " in " + state.cat : "") + (q ? ' for "' + state.q.trim() + '"' : "")
+          ? (n === 1 ? init.one || "{n} task" : init.many || "{n} tasks").replace("{n}", n) +
+            (state.cat ? (init.inCat || " in {cat}").replace("{cat}", catLabel(state.cat)) : "") +
+            (q ? (init.forQ || " for “{q}”").replace("{q}", state.q.trim()) : "")
           : totalText;
     }
     var u = new URL(location.href);

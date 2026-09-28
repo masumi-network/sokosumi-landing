@@ -11,6 +11,7 @@
     "url": "https://www.microsoft.com/en-us/microsoft-365-copilot"
   },
   "checked": "2026-08-26",
+  "published": "2026-08-26",
   "en": {
     "title": "Langdock or Microsoft 365 Copilot: which one for a company on Microsoft 365?",
     "metaTitle": "Langdock vs Microsoft 365 Copilot (2026): prices, EU data",
@@ -29,7 +30,7 @@
       ],
       [
         "Price per user",
-        "€25/month Standard seat; €99/month Business Max. Annual billing saves 20%",
+        "€29/month Standard seat (€23.20 billed annually); €119/month Business Max (€99 annually)",
         "Copilot Business add-on $21/user/month list ($18 promo 1 Jul–31 Dec 2026, first year, annual); $30/user/month for enterprise Microsoft 365 Copilot. Needs a qualifying Microsoft 365 plan"
       ],
       [
@@ -87,10 +88,10 @@
     "verdict": "If you are a Microsoft shop and want AI in the apps people already open, Copilot is the natural buy; the price sits near Langdock's and the admin story is deeper. If you need a strict EU hosting promise, model choice, or workflow automation without a second credit system, Langdock is the cleaner choice. Many DACH companies run both: Copilot in Office, Langdock as the model-agnostic workspace.",
     "bridge": {
       "heading": "If you want the work done, not a chat window",
-      "text": "Both tools above give a person a place to prompt. If the team's real need is a competitor report, a campaign plan or the Monday performance PDF, that is a different product: a coworker you brief, a board the team sees, a file at the end. Sokosumi is a marketplace of named AI coworkers for marketing teams, built by Serviceplan Group with NMKR in Munich. Coworkers can be @mentioned in a channel; the task shows on a shared board and ends with a PDF, deck, spreadsheet or dashboard.",
+      "text": "Both tools above are workspaces where your team prompts and builds its own agents. A competitor report, a campaign plan or the Monday performance PDF is a different product. You brief a coworker, the team sees the board, and a file lands at the end. Sokosumi is a marketplace of named AI coworkers for marketing teams, built by Serviceplan Group with NMKR in Munich. Coworkers can be @mentioned in a channel; the task shows on a shared board and ends with a PDF, deck, spreadsheet or dashboard.",
       "points": [
-        "52 coworkers and agents from 7 vendors; each profile names the vendor, the models and the hosting region.",
-        "Free: 250 credits per seat per month, no card. Paid seats €25, €75 or €200 per month; credits are used only when a task runs.",
+        "Coworkers and agents from named vendors; each profile names the vendor, the models and the hosting region.",
+        "Free: 250 credits per seat per month, no card. Paid seats €25, €75 or €200 per month; each task spends credits.",
         "Scheduled tasks and finished files, so nobody has to re-prompt on Monday."
       ],
       "links": [
@@ -135,13 +136,13 @@
       ],
       [
         "Preis pro Nutzer",
-        "€25/Monat Standard Seat; €99/Monat Business Max. Jährliche Abrechnung spart 20%",
-        "Copilot Business Add-on $21/Nutzer/Monat Liste ($18 Promo 1 Jul–31 Dec 2026, erstes Jahr, jährlich); $30/Nutzer/Monat für Enterprise Microsoft 365 Copilot. Benötigt passenden Microsoft 365-Plan"
+        "29 €/Monat Standard-Seat (23,20 € bei jährlicher Abrechnung); 119 €/Monat Business Max (99 € jährlich)",
+        "Copilot Business Add-on 21 $/Nutzer/Monat Liste (18 $ Promo 1 Jul–31 Dec 2026, erstes Jahr, jährlich); 30 $/Nutzer/Monat für Enterprise Microsoft 365 Copilot. Benötigt passenden Microsoft 365-Plan"
       ],
       [
         "Free-Plan oder Test",
-        "7 Tage Test, €5 Modell-Credits, keine Kreditkarte",
-        "1 Monat kostenloser Test von Copilot Business; Copilot-Studio-Test mit $200 Azure Credit"
+        "7 Tage Test, 5 € Modell-Credits, keine Kreditkarte",
+        "1 Monat kostenloser Test von Copilot Business; Copilot-Studio-Test mit 200 $ Azure Credit"
       ],
       [
         "EU-Hosting",
@@ -150,13 +151,13 @@
       ],
       [
         "Teamfunktionen",
-        "SSO, SCIM, SAML; gemeinsame Agents; Governance Add-on (gratis bis 1 Jan 2027, danach €3.50/Nutzer)",
+        "SSO, SCIM, SAML; gemeinsame Agents; Governance Add-on (gratis bis 1 Jan 2027, danach 3,50 €/Nutzer)",
         "Volle Microsoft 365-Administration, Purview, DLP, Retention; Agents im Microsoft 365 Agent Store veröffentlichen"
       ],
       [
         "Eigene Agents bauen",
-        "Ja: Agents mit Wissen und Tools; Workflows mit 2,500 Läufen/Monat enthalten, mehr ab €539/Monat",
-        "Ja: Copilot Studio, für interne Agents enthalten; eigenständige Nutzung $200 pro 25,000 Credits oder Pay-as-you-go"
+        "Ja: Agents mit Wissen und Tools; Workflows mit 2.500 Läufen/Monat enthalten, mehr ab 539 €/Monat",
+        "Ja: Copilot Studio, für interne Agents enthalten; eigenständige Nutzung 200 $ pro 25.000 Credits oder Pay-as-you-go"
       ],
       [
         "Deep Research",
@@ -193,10 +194,10 @@
     "verdict": "Wenn Sie ein Microsoft-Unternehmen sind und KI in den Apps wollen, die Menschen ohnehin öffnen, ist Copilot der natürliche Kauf; der Preis liegt nahe bei Langdock und die Admin-Story ist tiefer. Wenn Sie ein striktes EU-Hosting-Versprechen, Modellauswahl oder Workflow-Automation ohne zweites Credit-System brauchen, ist Langdock sauberer. Viele DACH-Unternehmen nutzen beides: Copilot in Office, Langdock als modellagnostischen Arbeitsbereich.",
     "bridge": {
       "heading": "Wenn Sie Arbeit erledigt haben wollen, kein Chatfenster",
-      "text": "Beide Tools geben einer Person einen Ort zum Prompten. Wenn das Team eigentlich einen Wettbewerbsbericht, einen Kampagnenplan oder das Montags-PDF zur Performance braucht, ist das ein anderes Produkt: ein Coworker, den Sie briefen, ein Task-Board fürs Team, am Ende eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Coworker für Marketingteams, gebaut von Serviceplan Group mit NMKR in München. Coworker können per @Mention in einem Kanal briefed werden; die Aufgabe erscheint auf einem Task-Board und endet mit PDF, Deck, Spreadsheet oder Dashboard.",
+      "text": "Beide Tools sind Arbeitsumgebungen, in denen Ihr Team selbst promptet und Agenten baut. Ein Wettbewerbsbericht, ein Kampagnenplan oder das Montags-PDF zur Performance ist ein anderes Produkt. Sie briefen einen KI-Mitarbeiter, das Team sieht das Board, am Ende steht eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Mitarbeiter für Marketingteams, gebaut von Serviceplan Group mit NMKR in München. KI-Mitarbeiter können per @Mention in einem Kanal briefed werden; die Aufgabe erscheint auf einem Task-Board und endet mit PDF, Deck, Spreadsheet oder Dashboard.",
       "points": [
-        "52 Coworker und Agents von 7 Anbietern; jedes Profil nennt Anbieter, Modelle und Hosting-Region.",
-        "Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25, €75 oder €200 pro Monat; Credits werden nur verbraucht, wenn eine Aufgabe läuft.",
+        "KI-Mitarbeiter und Agents benannter Anbieter; jedes Profil nennt Anbieter, Modelle und Hosting-Region.",
+        "Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats 25 €, 75 € oder 200 € pro Monat; jede Aufgabe verbraucht Credits aus dem monatlichen Kontingent eines Seats.",
         "Geplante Aufgaben und fertige Dateien, damit niemand am Montag neu prompten muss."
       ],
       "links": [
@@ -207,7 +208,7 @@
     "faq": [
       [
         "Brauche ich eine Microsoft 365-Lizenz für Copilot?",
-        "Ja. Copilot Business ist ein Add-on zu einem passenden Microsoft 365-Plan. Microsoft verkauft auch Bundles: Business Standard mit Copilot für $23.50 und Business Premium mit Copilot für $32 pro Nutzer und Monat, jährlich."
+        "Ja. Copilot Business ist ein Add-on zu einem passenden Microsoft 365-Plan. Microsoft verkauft auch Bundles: Business Standard mit Copilot für 23,50 $ und Business Premium mit Copilot für 32 $ pro Nutzer und Monat, jährlich."
       ],
       [
         "Bleiben Copilot-Daten in der EU?",

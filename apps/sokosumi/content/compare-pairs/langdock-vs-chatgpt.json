@@ -7,50 +7,51 @@
   },
   "b": {
     "key": "chatgpt",
-    "name": "ChatGPT Team",
+    "name": "ChatGPT Business",
     "url": "https://chatgpt.com"
   },
-  "checked": "2026-08-26",
+  "checked": "2026-09-27",
+  "published": "2026-08-26",
   "en": {
-    "title": "Langdock or ChatGPT Team: which one for a German company?",
-    "metaTitle": "Langdock vs ChatGPT Team (2026): prices, EU hosting",
-    "description": "Langdock and ChatGPT Team (now ChatGPT Business) compared: seat prices, EU hosting, agents, team features and real limits. Checked August 2026.",
-    "intro": "Langdock is a Berlin-built AI workspace that gives every employee chat, agents and workflows across many models, hosted in the EU. ChatGPT Team (OpenAI now calls it ChatGPT Business) is the company version of the world's best-known chat tool. The deciding difference: Langdock keeps data in the EU on its standard plan and lets you switch models; ChatGPT only offers EU data residency on Enterprise and runs OpenAI models only.",
+    "title": "Langdock or ChatGPT Business: which one for a German company?",
+    "metaTitle": "Langdock vs ChatGPT Business (2026): prices, EU hosting",
+    "description": "We compare Langdock and ChatGPT Business on seat prices, EU data storage, agents and limits. Every figure comes from the vendors' own pages.",
+    "intro": "Langdock is a Berlin-built AI workspace that gives every employee chat, agents and workflows across many models, hosted in the EU. ChatGPT Business (formerly ChatGPT Team) is OpenAI's workspace plan for companies. The deciding difference: Langdock runs the app and most models in the EU on its standard plan and lets you switch models. ChatGPT Business is gradually adding a choice of storage region, but that doesn't cover where the model runs, and it offers OpenAI models only.",
     "glance": [
       [
         "Who it is for",
         "Companies in the DACH region that want one AI workspace for all staff, with EU hosting and model choice",
-        "Teams that already use ChatGPT and want a shared workspace, admin controls and no training on their data"
+        "Teams of 2 to 200 people who already use ChatGPT and want a shared workspace, admin controls and no training on their data by default"
       ],
       [
         "What you get",
-        "Chat with 40+ models, custom agents, workflows with triggers, Slack and Teams bots, scheduled tasks, API",
-        "Chat with OpenAI models, shared projects, custom GPTs, connectors, agent mode, scheduled tasks, workspace agents"
+        "Chat with 40+ models, custom agents, workflows with triggers and approval steps, Slack and Teams bots, scheduled tasks, API",
+        "Chat with OpenAI models, shared projects, custom GPTs, connectors to Google Workspace, Slack and Microsoft 365, deep research, scheduled tasks, workspace agents, Codex"
       ],
       [
         "Price per user",
-        "€25/month Standard seat; €99/month Business Max (5x usage). Annual billing saves 20%",
-        "$25/seat monthly or $20/seat annual, 2-seat minimum (third-party tracker, 20 Aug 2026; openai.com blocked fetch)"
+        "Standard seat €29/month billed monthly or €23.20 billed annually; Business Max seat (5x usage) €119 or €99. Tiered pricing for larger teams. Excl. VAT",
+        "Standard seat $25/month billed monthly or $20 billed annually; Premium seat (5x usage) $125 or $100. 2-seat minimum. OpenAI says prices may vary by country and currency"
       ],
       [
         "Free plan or trial",
         "7-day trial, €5 model credits, no card",
-        "No free team plan. ChatGPT Free exists for individuals"
+        "No free team plan. ChatGPT Free is for individuals"
       ],
       [
         "EU hosting",
         "Yes. App and most models hosted in the EU on Microsoft Azure. ISO 27001, SOC 2 Type II",
-        "No on Business. Data residency in Europe is limited to Enterprise and Edu workspaces"
+        "Partly, and not for every customer yet. A storage region is picked at checkout and covers stored prompts and responses, not model processing. A copy of every prompt and response stays in the US for a limited time for abuse monitoring"
       ],
       [
         "Team features",
-        "SSO, SCIM, SAML on Business; shared agents; up to 1,000 users; Governance add-on (free until 1 Jan 2027, then €3.50/user)",
-        "Shared projects, admin console with analytics, agent sharing in Slack. No SCIM or role-based access on Business"
+        "SSO, SCIM, SAML on Business; shared agents; up to 1,000 users; Governance add-on (free until 1 Jan 2027, then €3.50/user monthly or €2.80 annually)",
+        "SAML SSO, admin console and admin roles, usage analytics and spend controls, up to 200 paid seats. No SCIM or role-based access controls on Business"
       ],
       [
         "Build your own agents",
-        "Yes: agents with knowledge, tools and integrations; workflows with 2,500 runs/month included, more from €539/month",
-        "Yes: custom GPTs and workspace agents with scheduled runs; no multi-step workflow builder"
+        "Yes: agents with knowledge, tools and integrations; workflows with 2,500 runs/month included, 40,000 runs for €539/month (€449 billed annually)",
+        "Yes: custom GPTs and workspace agents that run on a schedule, in Slack or through an API trigger"
       ],
       [
         "Models",
@@ -61,36 +62,36 @@
     "pickA": {
       "heading": "Pick Langdock if…",
       "points": [
-        "You need EU hosting on the standard plan, not on an Enterprise contract with a seat minimum.",
+        "You need the app and most models hosted in the EU on the standard plan, without an Enterprise contract.",
         "You want to switch between OpenAI, Anthropic, Google and Mistral models in one place, or to compare them.",
         "You plan to build workflows with triggers and approval steps, and to run agents inside Slack or Teams."
       ]
     },
     "pickB": {
-      "heading": "Pick ChatGPT Team if…",
+      "heading": "Pick ChatGPT Business if…",
       "points": [
-        "Your staff already use ChatGPT and you mainly want admin control and a no-training guarantee.",
-        "You want the newest OpenAI features on day one: agent mode, deep research, scheduled tasks, voice.",
-        "EU data residency is not a hard rule for you, or you are ready to move to Enterprise later."
+        "Your staff already use ChatGPT and you mainly want admin control and no training on your data by default.",
+        "You want OpenAI's newest features as they ship: ChatGPT Work, Codex, deep research, workspace agents, voice.",
+        "Where the model runs isn't a hard rule for you, or you're ready to move to Enterprise, which offers EU inference residency to eligible customers."
       ]
     },
     "limits": {
       "a": [
-        "Usage is metered in 5-hour and weekly windows. When you hit the limit, Langdock drops you to a lighter model unless the admin turns on pay-as-you-go extra usage (Langdock docs, fair usage policy).",
-        "A 90-day test by teamazing (updated 17 Aug 2026) found Mistral model errors during use and a 6–10 week path to a polished company-wide rollout."
+        "Chat usage is metered in 5-hour and weekly windows. When you hit a limit, Langdock switches you to a fallback model (GPT-5.6 Luna on Langdock Cloud) unless the admin turns on pay-as-you-go Extra Usage (Langdock docs, usage limits).",
+        "Workflows include 2,500 runs a month. Unused runs expire at the end of each billing cycle, and model use inside workflows is billed at API prices (Langdock pricing page)."
       ],
       "b": [
-        "EU data residency is not available on the Business plan; it needs Enterprise or Edu (OpenAI help centre, data residency article).",
-        "Business lacks SCIM group sync and custom role-based access; those are Enterprise features (ChatGPT Work admin FAQ). The seat price changed three times in 2026, so re-check before you sign."
+        "Data residency for Business is rolling out gradually and isn't available to every customer yet. It covers content stored at rest, not where ChatGPT processes requests. Abuse-monitoring logs stay in the US, and with a non-US region a copy of every prompt and response is still kept there for a limited time (OpenAI help centre, Business content storage).",
+        "Business has no SCIM, role-based access controls or Enterprise Key Management. Since 24 August 2026 a new Business subscription tops out at 200 paid seats (OpenAI pricing page and Business FAQ)."
       ]
     },
-    "verdict": "For a German company with a works council and a data protection officer, Langdock wins on the plain facts: EU hosting at €25, model choice, and workflow tools. ChatGPT Team wins if your team lives in ChatGPT already and you value first access to OpenAI features over residency. Neither one gives you finished work; both give each person a place to prompt.",
+    "verdict": "For a German company with a works council and a data protection officer, Langdock wins on the plain facts: the app and most models run in the EU on the standard plan, you can switch models, and workflows are included. ChatGPT Business wins if your team already works in ChatGPT and wants OpenAI's newest features first. Its new storage-region option is worth asking about, but it doesn't cover model processing, and a copy of prompts and responses still goes to the US for abuse monitoring. Both are workspaces where your team prompts and builds its own agents. If you'd rather commission a finished report, that's a different product.",
     "bridge": {
       "heading": "If you want the work done, not a chat window",
-      "text": "Both tools above give a person a place to prompt. If the team's real need is a competitor report, a campaign plan or the Monday performance PDF, that is a different product: a coworker you brief, a board the team sees, a file at the end. Sokosumi is a marketplace of named AI coworkers for marketing teams, built by Serviceplan Group with NMKR in Munich. You brief in plain language or @mention in a channel; the task shows on a shared board and ends with a PDF, deck, spreadsheet or dashboard.",
+      "text": "A competitor report, a campaign plan or the Monday performance PDF is a different product. You brief a coworker, the team sees the board, and a file lands at the end. Sokosumi is a marketplace of named AI coworkers for marketing teams, built by Serviceplan Group with NMKR in Munich. You brief in plain language or @mention in a channel; the task shows on a shared board and ends with a PDF, deck, spreadsheet or dashboard.",
       "points": [
-        "52 coworkers and agents from 7 vendors; each profile names the vendor, the models and the hosting. EU hosting is stated per coworker.",
-        "Free: 250 credits per seat per month, no card. Paid seats €25, €75 or €200 per month; credits are only used when a task runs.",
+        "Coworkers and agents from named vendors; each profile names the vendor, and the models and hosting where the vendor states them.",
+        "Priced per seat per month, and every seat includes monthly credits: Free €0 with 250 credits, Starter €25, Standard €75, Pro €200. Each task shows its credit price before it runs.",
         "Scheduled tasks, so the weekly report arrives without a prompt."
       ],
       "links": [
@@ -101,102 +102,102 @@
     "faq": [
       [
         "Is ChatGPT Team the same as ChatGPT Business?",
-        "Yes. OpenAI renamed Team to Business in 2025. The plan still has a 2-seat minimum and the same workspace features; the price was cut by $5 per seat on 2 April 2026."
+        "Yes. OpenAI renamed ChatGPT Team to ChatGPT Business on 29 August 2025, and existing Team workspaces became Business workspaces. The rename didn't change features or prices. A workspace still needs at least two paid seats."
       ],
       [
         "Does Langdock use OpenAI models?",
-        "Yes, among others. Langdock offers OpenAI, Anthropic, Google, Mistral, Meta and DeepSeek models. The app and most models run on EU servers; some models can be routed elsewhere and the admin can configure this."
+        "Yes, among others. Langdock offers OpenAI, Anthropic, Google, Mistral, Meta and DeepSeek models. The app and most models run on EU servers; the admin can configure which models are used."
       ],
       [
-        "Can I get EU data residency on ChatGPT?",
-        "Only on ChatGPT Enterprise or Edu. Business data sits in the US. OpenAI does not train on Business or Enterprise data by default."
+        "Can I get EU data residency on ChatGPT Business?",
+        "Partly, and not everyone can yet. OpenAI is rolling out a choice of storage region for Business gradually, picked at checkout. It covers stored prompts and responses, not where the model runs, and a copy of every prompt and response is kept in the US for a limited time for abuse monitoring. OpenAI's pricing page still lists data residency in ten regions, Europe included, as an Enterprise feature, and EU inference residency is for eligible Enterprise and Edu customers. OpenAI doesn't train on Business data by default."
       ],
       [
         "Can either tool hand me a finished report on a schedule?",
-        "Both can run a saved prompt on a schedule and return text or a file to one person. Neither puts the result on a shared team board. If that is the need, Sokosumi coworkers and similar products are built for it."
+        "Both can run a saved prompt or agent on a schedule, and both can work inside Slack. Neither is built around a shared task board where the whole team sees each brief and its finished file. If that's the need, Sokosumi coworkers and similar products are built for it."
       ]
     ]
   },
   "de": {
-    "title": "Langdock oder ChatGPT Team: was passt zu einem deutschen Unternehmen?",
-    "metaTitle": "Langdock vs ChatGPT Team (2026): Preise, EU-Hosting",
-    "description": "Langdock und ChatGPT Team, heute ChatGPT Business, im Vergleich: Seat-Preise, EU-Hosting, Agents, Teamfunktionen und Grenzen. Stand August 2026.",
-    "intro": "Langdock ist ein in Berlin gebauter KI-Arbeitsbereich, der jedem Mitarbeitenden Chat, Agents und Workflows über viele Modelle gibt, gehostet in der EU. ChatGPT Team, von OpenAI inzwischen ChatGPT Business genannt, ist die Unternehmensversion des bekanntesten Chat-Tools. Der Unterschied: Langdock hält Daten schon im Standardplan in der EU und lässt Modelle wechseln; ChatGPT bietet EU-Datenresidenz nur auf Enterprise und nutzt nur OpenAI-Modelle.",
+    "title": "Langdock oder ChatGPT Business: Was passt zu einem deutschen Unternehmen?",
+    "metaTitle": "Langdock vs ChatGPT Business (2026): Preise, EU-Hosting",
+    "description": "Wir vergleichen Langdock und ChatGPT Business bei Preisen pro Nutzer, EU-Datenspeicherung, Agents und Grenzen. Alle Angaben stammen von den Anbietern.",
+    "intro": "Langdock ist ein in Berlin entwickelter KI-Arbeitsbereich, der allen Mitarbeitenden Chat, Agents und Workflows mit vielen Modellen bietet, gehostet in der EU. ChatGPT Business (früher ChatGPT Team) ist der Workspace-Plan von OpenAI für Unternehmen. Der entscheidende Unterschied: Bei Langdock laufen App und die meisten Modelle schon im Standardplan in der EU, und Sie können Modelle wechseln. ChatGPT Business führt schrittweise die Wahl einer Speicherregion ein, die aber nicht regelt, wo das Modell rechnet. Zudem bietet es nur OpenAI-Modelle.",
     "glance": [
       [
         "Für wen es passt",
-        "Unternehmen in der DACH-Region, die einen KI-Arbeitsbereich für alle Mitarbeitenden mit EU-Hosting und Modellauswahl wollen",
-        "Teams, die ChatGPT bereits nutzen und gemeinsamen Arbeitsbereich, Admin-Kontrollen und kein Training auf ihren Daten wollen"
+        "Unternehmen in der DACH-Region, die einen KI-Arbeitsbereich für alle Mitarbeitenden mit EU-Hosting und Modellauswahl suchen",
+        "Teams von 2 bis 200 Personen, die ChatGPT bereits nutzen und einen gemeinsamen Arbeitsbereich, Admin-Kontrollen und standardmäßig kein Training auf ihren Daten wollen"
       ],
       [
         "Was Sie bekommen",
-        "Chat mit 40+ Modellen, eigene Agents, Workflows mit Triggern, Slack- und Teams-Bots, geplante Aufgaben, API",
-        "Chat mit OpenAI-Modellen, gemeinsame Projekte, Custom GPTs, Konnektoren, Agent Mode, geplante Aufgaben, Workspace Agents"
+        "Chat mit über 40 Modellen, eigene Agents, Workflows mit Triggern und Freigabeschritten, Bots für Slack und Teams, geplante Aufgaben, API",
+        "Chat mit OpenAI-Modellen, gemeinsame Projekte, Custom GPTs, Konnektoren zu Google Workspace, Slack und Microsoft 365, Deep Research, geplante Aufgaben, Workspace Agents, Codex"
       ],
       [
         "Preis pro Nutzer",
-        "€25/Monat Standard Seat; €99/Monat Business Max (5x Nutzung). Jährliche Abrechnung spart 20%",
-        "$25/Seat monatlich oder $20/Seat jährlich, 2-Seat-Minimum (Drittanbieter-Tracker, 20 Aug 2026; openai.com blockiert Abruf)"
+        "Standard-Seat 29 € pro Monat bei monatlicher Abrechnung oder 23,20 € bei jährlicher; Business-Max-Seat (5-fache Nutzung) 119 € oder 99 €. Staffelpreise für größere Teams. Zzgl. MwSt.",
+        "Standard-Seat 25 $ pro Monat bei monatlicher Abrechnung oder 20 $ bei jährlicher; Premium-Seat (5-fache Nutzung) 125 $ oder 100 $. Mindestens 2 Seats. Laut OpenAI können die Preise je nach Land und Währung variieren"
       ],
       [
-        "Free-Plan oder Test",
-        "7 Tage Test, €5 Modell-Credits, keine Kreditkarte",
-        "Kein Free-Plan für Teams. ChatGPT Free gibt es für Einzelpersonen"
+        "Gratis-Plan oder Testphase",
+        "7 Tage Test, 5 € Modell-Guthaben, keine Kreditkarte",
+        "Kein Gratis-Plan für Teams. ChatGPT Free richtet sich an Einzelpersonen"
       ],
       [
         "EU-Hosting",
-        "Ja. App und die meisten Modelle in der EU auf Microsoft Azure gehostet. ISO 27001, SOC 2 Type II",
-        "Nein auf Business. Datenresidenz in Europa ist auf Enterprise- und Edu-Workspaces begrenzt"
+        "Ja. App und die meisten Modelle laufen in der EU auf Microsoft Azure. ISO 27001, SOC 2 Type II",
+        "Teilweise, und noch nicht für alle Kunden. Die Speicherregion wird beim Abschluss gewählt und gilt für gespeicherte Prompts und Antworten, nicht für die Modellverarbeitung. Eine Kopie jedes Prompts und jeder Antwort bleibt zur Missbrauchskontrolle befristet in den USA"
       ],
       [
         "Teamfunktionen",
-        "SSO, SCIM, SAML auf Business; gemeinsame Agents; bis zu 1,000 Nutzer; Governance Add-on (gratis bis 1 Jan 2027, danach €3.50/Nutzer)",
-        "Gemeinsame Projekte, Admin Console mit Analytics, Agent Sharing in Slack. Kein SCIM oder rollenbasierter Zugriff auf Business"
+        "SSO, SCIM, SAML im Business-Plan; gemeinsame Agents; bis zu 1.000 Nutzer; Governance-Add-on (kostenlos bis 1. Januar 2027, danach 3,50 € pro Nutzer monatlich oder 2,80 € jährlich)",
+        "SAML-SSO, Admin-Konsole und Admin-Rollen, Nutzungsanalysen und Ausgabenkontrolle, bis zu 200 bezahlte Seats. Kein SCIM und keine rollenbasierten Zugriffsrechte im Business-Plan"
       ],
       [
         "Eigene Agents bauen",
-        "Ja: Agents mit Wissen, Tools und Integrationen; Workflows mit 2,500 Läufen/Monat enthalten, mehr ab €539/Monat",
-        "Ja: Custom GPTs und Workspace Agents mit geplanten Läufen; kein mehrstufiger Workflow-Builder"
+        "Ja: Agents mit Wissen, Tools und Integrationen; Workflows mit 2.500 Läufen pro Monat inklusive, 40.000 Läufe für 539 € pro Monat (449 € bei jährlicher Abrechnung)",
+        "Ja: Custom GPTs und Workspace Agents, die nach Zeitplan, in Slack oder per API-Trigger laufen"
       ],
       [
         "Modelle",
-        "OpenAI, Anthropic, Google, Mistral, Meta, DeepSeek; eigene Keys mitbringen",
+        "OpenAI, Anthropic, Google, Mistral, Meta, DeepSeek; eigene API-Schlüssel möglich",
         "Nur OpenAI-Modelle"
       ]
     ],
     "pickA": {
       "heading": "Wählen Sie Langdock, wenn …",
       "points": [
-        "Sie EU-Hosting im Standardplan brauchen, nicht in einem Enterprise-Vertrag mit Seat-Minimum.",
-        "Sie OpenAI-, Anthropic-, Google- und Mistral-Modelle an einem Ort wechseln oder vergleichen wollen.",
+        "Sie App und die meisten Modelle schon im Standardplan in der EU gehostet brauchen, ohne Enterprise-Vertrag.",
+        "Sie Modelle von OpenAI, Anthropic, Google und Mistral an einem Ort wechseln oder vergleichen wollen.",
         "Sie Workflows mit Triggern und Freigabeschritten bauen und Agents in Slack oder Teams nutzen wollen."
       ]
     },
     "pickB": {
-      "heading": "Wählen Sie ChatGPT Team, wenn …",
+      "heading": "Wählen Sie ChatGPT Business, wenn …",
       "points": [
-        "Ihre Mitarbeitenden ChatGPT bereits nutzen und Sie vor allem Admin-Kontrolle und No-Training-Garantie wollen.",
-        "Sie die neuesten OpenKI-Funktionen am ersten Tag wollen: Agent Mode, Deep Research, Scheduled Tasks, Voice.",
-        "EU-Datenresidenz keine harte Regel ist oder Sie später auf Enterprise wechseln können."
+        "Ihre Mitarbeitenden ChatGPT bereits nutzen und Sie vor allem Admin-Kontrolle wollen und dass Ihre Daten standardmäßig nicht zum Training dienen.",
+        "Sie neue OpenAI-Funktionen sofort nutzen wollen: ChatGPT Work, Codex, Deep Research, Workspace Agents, Sprachmodus.",
+        "Der Ort der Modellverarbeitung für Sie keine feste Vorgabe ist oder Sie später zu Enterprise wechseln, wo berechtigte Kunden EU-Inferenz-Residenz bekommen."
       ]
     },
     "limits": {
       "a": [
-        "Nutzung wird in 5-Stunden- und Wochenfenstern gemessen. Wenn Sie das Limit erreichen, fällt Langdock auf ein leichteres Modell zurück, sofern der Admin Pay-as-you-go-Zusatznutzung nicht aktiviert (Langdock Docs, Fair Usage Policy).",
-        "Ein 90-Tage-Test von teamazing (aktualisiert 17 Aug 2026) fand Mistral-Modellfehler während der Nutzung und einen 6–10-wöchigen Weg zu einem sauberen unternehmensweiten Rollout."
+        "Die Chat-Nutzung wird in 5-Stunden- und Wochenfenstern gemessen. Ist ein Limit erreicht, wechselt Langdock auf ein Ersatzmodell (GPT-5.6 Luna in Langdock Cloud), sofern der Admin keine nutzungsabhängige Extra Usage freischaltet (Langdock-Doku, Nutzungslimits).",
+        "Workflows enthalten 2.500 Läufe pro Monat. Nicht genutzte Läufe verfallen am Ende jedes Abrechnungszeitraums, und die Modellnutzung in Workflows wird zu API-Preisen abgerechnet (Langdock-Preisseite)."
       ],
       "b": [
-        "EU-Datenresidenz ist auf Business nicht verfügbar; sie braucht Enterprise oder Edu (OpenAI Help Center, Data Residency).",
-        "Business fehlen SCIM-Gruppensync und eigene rollenbasierte Zugriffe; das sind Enterprise-Funktionen (ChatGPT Work Admin FAQ). Der Seat-Preis änderte sich 2026 dreimal, also vor Unterschrift neu prüfen."
+        "Datenresidenz für Business wird schrittweise eingeführt und steht noch nicht allen Kunden zur Verfügung. Sie gilt für gespeicherte Inhalte, nicht dafür, wo ChatGPT Anfragen verarbeitet. Protokolle zur Missbrauchskontrolle bleiben in den USA, und bei einer Region außerhalb der USA wird dort trotzdem befristet eine Kopie jedes Prompts und jeder Antwort gespeichert (OpenAI Help Center, Speicherort bei ChatGPT Business).",
+        "Business bietet kein SCIM, keine rollenbasierten Zugriffsrechte und kein Enterprise Key Management. Seit dem 24. August 2026 umfasst ein neues Business-Abo höchstens 200 bezahlte Seats (OpenAI-Preisseite und Business-FAQ)."
       ]
     },
-    "verdict": "Für ein deutsches Unternehmen mit Betriebsrat und Datenschutzbeauftragtem gewinnt Langdock auf den harten Fakten: EU-Hosting für €25, Modellauswahl und Workflow-Tools. ChatGPT Team gewinnt, wenn Ihr Team ohnehin in ChatGPT lebt und Sie ersten Zugriff auf OpenKI-Funktionen höher bewerten als Residenz. Keines liefert fertige Arbeit; beide geben jeder Person einen Ort zum Prompten.",
+    "verdict": "Für ein deutsches Unternehmen mit Betriebsrat und Datenschutzbeauftragtem liegt Langdock für diese Anforderungen vorn: App und die meisten Modelle laufen schon im Standardplan in der EU, Sie können Modelle wechseln, und Workflows sind enthalten. ChatGPT Business liegt vorn, wenn Ihr Team ohnehin mit ChatGPT arbeitet und neue OpenAI-Funktionen zuerst haben will. Die neue Wahl der Speicherregion lohnt eine Nachfrage, sie regelt aber nicht die Modellverarbeitung, und eine Kopie der Prompts und Antworten geht zur Missbrauchskontrolle weiter in die USA. Beide sind Arbeitsumgebungen, in denen Ihr Team selbst promptet und Agenten baut. Wenn Sie stattdessen einen fertigen Report beauftragen wollen, ist das ein anderes Produkt.",
     "bridge": {
-      "heading": "Wenn Sie Arbeit erledigt haben wollen, kein Chatfenster",
-      "text": "Beide Tools geben einer Person einen Ort zum Prompten. Wenn das Team eigentlich einen Wettbewerbsbericht, einen Kampagnenplan oder das Montags-PDF zur Performance braucht, ist das ein anderes Produkt: ein Coworker, den Sie briefen, ein Task-Board fürs Team, am Ende eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Coworker für Marketingteams, gebaut von Serviceplan Group mit NMKR in München. Sie briefen in klarer Sprache oder per @Mention in einem Kanal; die Aufgabe erscheint auf einem gemeinsamen Task-Board und endet mit PDF, Deck, Spreadsheet oder Dashboard.",
+      "heading": "Wenn Sie erledigte Arbeit wollen, kein Chatfenster",
+      "text": "Ein Wettbewerbsbericht, ein Kampagnenplan oder das Performance-PDF am Montag ist ein anderes Produkt. Sie briefen einen KI-Mitarbeiter, das Team sieht das Board, am Ende steht eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Mitarbeiter für Marketingteams, gebaut von der Serviceplan Group mit NMKR in München. Sie briefen in normaler Sprache oder per @Erwähnung in einem Kanal; die Aufgabe erscheint auf einem gemeinsamen Board und endet mit PDF, Präsentation, Tabelle oder Dashboard.",
       "points": [
-        "52 Coworker und Agents von 7 Anbietern; jedes Profil nennt Anbieter, Modelle und Hosting. EU-Hosting ist je Coworker ausgewiesen.",
-        "Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25, €75 oder €200 pro Monat; Credits werden nur verbraucht, wenn eine Aufgabe läuft.",
+        "KI-Mitarbeiter und Agents benannter Anbieter; jedes Profil nennt den Anbieter und, soweit der Anbieter sie angibt, Modelle und Hosting.",
+        "Abgerechnet pro Seat und Monat, jeder Seat enthält monatliche Credits: Free 0 € mit 250 Credits, Starter 25 €, Standard 75 €, Pro 200 €. Jede Aufgabe zeigt ihren Credit-Preis, bevor sie startet.",
         "Geplante Aufgaben, damit der Wochenbericht ohne neuen Prompt ankommt."
       ],
       "links": [
@@ -207,36 +208,35 @@
     "faq": [
       [
         "Ist ChatGPT Team dasselbe wie ChatGPT Business?",
-        "Ja. OpenAI hat Team 2025 in Business umbenannt. Der Plan hat weiterhin ein 2-Seat-Minimum und dieselben Workspace-Funktionen; der Preis wurde am 2 April 2026 um $5 pro Seat gesenkt."
+        "Ja. OpenAI hat ChatGPT Team am 29. August 2025 in ChatGPT Business umbenannt; bestehende Team-Workspaces wurden zu Business-Workspaces. Funktionen und Preise hat die Umbenennung nicht verändert. Ein Workspace braucht weiterhin mindestens zwei bezahlte Seats."
       ],
       [
         "Nutzt Langdock OpenAI-Modelle?",
-        "Ja, neben anderen. Langdock bietet OpenAI, Anthropic, Google, Mistral, Meta und DeepSeek. App und die meisten Modelle laufen auf EU-Servern; einige Modelle können anders geroutet werden, und der Admin kann das konfigurieren."
+        "Ja, neben anderen. Langdock bietet Modelle von OpenAI, Anthropic, Google, Mistral, Meta und DeepSeek. App und die meisten Modelle laufen auf EU-Servern; der Admin legt fest, welche Modelle genutzt werden."
       ],
       [
-        "Bekomme ich EU-Datenresidenz auf ChatGPT?",
-        "Nur auf ChatGPT Enterprise oder Edu. Business-Daten liegen in den USA. OpenAI trainiert standardmäßig nicht auf Business- oder Enterprise-Daten."
+        "Bekomme ich EU-Datenresidenz mit ChatGPT Business?",
+        "Teilweise, und noch nicht jeder Kunde. OpenAI führt für Business schrittweise die Wahl einer Speicherregion ein, die beim Abschluss festgelegt wird. Sie gilt für gespeicherte Prompts und Antworten, nicht dafür, wo das Modell rechnet, und eine Kopie jedes Prompts und jeder Antwort wird zur Missbrauchskontrolle befristet in den USA gespeichert. Die Preisseite von OpenAI führt Datenresidenz in zehn Regionen, darunter Europa, weiterhin als Enterprise-Funktion, und EU-Inferenz-Residenz gibt es für berechtigte Enterprise- und Edu-Kunden. OpenAI trainiert standardmäßig nicht mit Business-Daten."
       ],
       [
         "Kann eines der Tools mir nach Zeitplan einen fertigen Bericht liefern?",
-        "Beide können einen gespeicherten Prompt nach Zeitplan ausführen und Text oder eine Datei an eine Person zurückgeben. Keines legt das Ergebnis auf ein gemeinsames Task-Board. Wenn das der Bedarf ist, sind Sokosumi-Coworker und ähnliche Produkte dafür gebaut."
+        "Beide können einen gespeicherten Prompt oder Agent nach Zeitplan ausführen, und beide funktionieren in Slack. Keines ist um ein gemeinsames Task-Board gebaut, auf dem das ganze Team jedes Briefing und die fertige Datei sieht. Wenn Sie genau das brauchen, sind Sokosumi-KI-Mitarbeiter und ähnliche Produkte dafür gebaut."
       ]
     ]
   },
   "sources": [
     "https://www.langdock.com/pricing",
     "https://www.langdock.com/security",
-    "https://www.langdock.com/",
     "https://docs.langdock.com/en/using-langdock/models-and-limits/fair-usage-policy.md",
-    "https://docs.langdock.com/en/using-langdock/agents/introduction.md",
     "https://docs.langdock.com/en/using-langdock/models-and-limits/models.md",
-    "https://docs.langdock.com/llms.txt",
-    "https://www.teamazing.com/blog/langdock-enterprise-review-2026/",
-    "https://www.cloudzero.com/blog/how-much-does-chatgpt-cost/",
+    "https://docs.langdock.com/en/using-langdock/agents/introduction.md",
+    "https://docs.langdock.com/en/using-langdock/workflows/fundamentals/human-in-the-loop.md",
+    "https://docs.langdock.com/en/using-langdock/chat/scheduled.md",
+    "https://openai.com/business/pricing/",
+    "https://help.openai.com/en/articles/8542115-chatgpt-business-faq",
+    "https://help.openai.com/en/articles/20001418-where-your-chatgpt-business-content-is-stored",
     "https://help.openai.com/en/articles/9903489-data-residency-and-inference-residency-for-chatgpt",
     "https://openai.com/index/expanding-data-residency-access-to-business-customers-worldwide/",
-    "https://learn.chatgpt.com/docs/enterprise/work-admin-faq",
-    "https://help.openai.com/en/articles/20001143-chatgpt-workspace-agents-for-enterprise-and-business",
-    "https://www.hungyichen.com/en/insights/chatgpt-enterprise-guide"
+    "https://help.openai.com/en/articles/20001143-chatgpt-workspace-agents-for-enterprise-and-business"
   ]
 }

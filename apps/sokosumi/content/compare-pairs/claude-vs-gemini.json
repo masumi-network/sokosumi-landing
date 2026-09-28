@@ -11,6 +11,7 @@
     "url": "https://gemini.google"
   },
   "checked": "2026-08-26",
+  "published": "2026-08-26",
   "en": {
     "title": "Claude or Google Gemini: which one for a team that writes and reports?",
     "metaTitle": "Claude vs Google Gemini (2026): prices, Workspace, EU hosting",
@@ -87,11 +88,11 @@
     "verdict": "If you are on Google Workspace, Gemini is the sensible default: it is already in your documents and EU data regions come with Business Standard. If you are on Microsoft or want portable Office files and scheduled unattended tasks, Claude is the stronger tool, but you carry US hosting and usage caps.",
     "bridge": {
       "heading": "If you want the work done, not a chat window",
-      "text": "Both tools give one person a place to prompt. If the team's real need is a competitor report, a campaign plan or the Monday performance PDF, that is a different product: a coworker you brief, a board the team sees, a file at the end. Sokosumi is a marketplace of named AI coworkers for marketing teams, each with a public profile, sample work, a named vendor and stated hosting. EU hosting is stated per coworker.",
+      "text": "Both tools give one person a place to prompt. A competitor report, a campaign plan or the Monday performance PDF is a different product. You brief a coworker, the team sees the board, and a file lands at the end. Sokosumi is a marketplace of named AI coworkers for marketing teams, each with a public profile, sample work, a named vendor, and hosting shown where the vendor states it. Hosting depends on the coworker; check its profile.",
       "points": [
         "Brief in plain language or @mention in a channel; the task shows on a shared board and ends as a PDF, deck, spreadsheet or dashboard.",
-        "Credits only when a task runs. Free: 250 credits per seat per month, no card. Paid seats €25 / €75 / €200 per month.",
-        "52 coworkers and agents from 7 vendors, 5,300+ tasks run. Built by Serviceplan Group with NMKR, Munich."
+        "Each task spends credits. Free: 250 credits per seat per month, no card. Paid seats €25 / €75 / €200 per month.",
+        "Coworkers and agents from named vendors, each with a public profile. Built by Serviceplan Group with NMKR, Munich."
       ],
       "links": [
         "/compare/sokosumi-vs-claude",
@@ -113,7 +114,7 @@
       ],
       [
         "Where does Sokosumi fit?",
-        "It is not a chat assistant. It is a marketplace of specialist marketing coworkers that return finished files to a team board, with EU hosting stated per coworker. Teams keep Claude or Gemini for daily chat and hire a coworker for recurring reports."
+        "It is not a chat assistant. It is a marketplace of specialist marketing coworkers that return finished files to a team board, and hosting depends on the coworker. Teams keep Claude or Gemini for daily chat and hire a coworker for recurring reports."
       ]
     ]
   },
@@ -135,13 +136,13 @@
       ],
       [
         "Preis pro Person",
-        "Free $0; Pro $17 jährlich oder $20 monatlich; Max ab $100 (claude.com, 26 Aug 2026)",
+        "Free 0 $; Pro 17 $ jährlich oder 20 $ monatlich; Max ab 100 $ (claude.com, 26 Aug 2026)",
         "Free; Google AI Plus CHF 5; AI Pro CHF 17; AI Ultra CHF 100 oder CHF 170 pro Monat (gemini.google, Schweizer Preise, 26 Aug 2026)"
       ],
       [
         "Preis pro Seat (Team)",
-        "Team Standard $20 jährlich oder $25 monatlich, Premium $100 oder $125, 2–150 Seats; Enterprise $20 pro Seat plus API-Nutzung oder individuell",
-        "Workspace Starter CHF 7, Standard CHF 14, Plus CHF 22 pro Nutzer und Monat, Enterprise individuell (Gemini enthalten); Gemini Enterprise Platform $21 / $30 / $50+ pro Seat (Drittanbieter, prüfen)"
+        "Team Standard 20 $ jährlich oder 25 $ monatlich, Premium 100 $ oder 125 $, 2–150 Seats; Enterprise 20 $ pro Seat plus API-Nutzung oder individuell",
+        "Workspace Starter CHF 7, Standard CHF 14, Plus CHF 22 pro Nutzer und Monat, Enterprise individuell (Gemini enthalten); Gemini Enterprise Platform 21 $ / 30 $ / 50 $+ pro Seat (Drittanbieter, prüfen)"
       ],
       [
         "Free-Plan oder Test",
@@ -193,11 +194,11 @@
     "verdict": "Wenn Sie auf Google Workspace sind, ist Gemini der sinnvolle Standard: Es ist bereits in Ihren Dokumenten, und EU-Datenregionen kommen ab Business Standard. Wenn Sie auf Microsoft arbeiten oder portable Office-Dateien und geplante unbeaufsichtigte Aufgaben wollen, ist Claude stärker, bringt aber US-Hosting und Nutzungslimits mit.",
     "bridge": {
       "heading": "Wenn Sie Arbeit erledigt haben wollen, kein Chatfenster",
-      "text": "Beide Tools geben einer Person einen Ort zum Prompten. Wenn das Team eigentlich einen Wettbewerbsbericht, einen Kampagnenplan oder das Montags-PDF zur Performance braucht, ist das ein anderes Produkt: ein Coworker, den Sie briefen, ein Task-Board fürs Team, am Ende eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Coworker für Marketingteams, jeweils mit öffentlichem Profil, Beispielarbeit, benanntem Anbieter und genanntem Hosting. EU-Hosting ist je Coworker ausgewiesen.",
+      "text": "Beide Tools sind Arbeitsumgebungen, in denen Ihr Team selbst promptet und Agenten baut. Ein Wettbewerbsbericht, ein Kampagnenplan oder das Montags-PDF zur Performance ist ein anderes Produkt. Sie briefen einen KI-Mitarbeiter, das Team sieht das Board, am Ende steht eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Mitarbeiter für Marketingteams, jeweils mit öffentlichem Profil, Beispielarbeit, benanntem Anbieter sowie Hosting, wo der Anbieter es angibt. Das Hosting hängt vom KI-Mitarbeiter ab; prüfen Sie sein Profil.",
       "points": [
         "Briefen Sie in klarer Sprache oder per @Mention in einem Kanal; die Aufgabe erscheint auf einem gemeinsamen Task-Board und endet als PDF, Deck, Spreadsheet oder Dashboard.",
-        "Credits nur, wenn eine Aufgabe läuft. Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25 / €75 / €200 pro Monat.",
-        "52 Coworker und Agents von 7 Anbietern, 5,300+ erledigte Aufgaben. Gebaut von Serviceplan Group mit NMKR, München."
+        "Jede Aufgabe verbraucht Credits. Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats 25 € / 75 € / 200 € pro Monat.",
+        "KI-Mitarbeiter und Agents benannter Anbieter, jeweils mit öffentlichem Profil. Gebaut von Serviceplan Group mit NMKR, München."
       ],
       "links": [
         "/compare/sokosumi-vs-claude",
@@ -219,7 +220,7 @@
       ],
       [
         "Wo passt Sokosumi hinein?",
-        "Es ist kein Chat-Assistent. Es ist ein Marktplatz für spezialisierte Marketing-Coworker, die fertige Dateien auf ein Task-Board liefern, mit EU-Hosting je Coworker. Teams behalten Claude oder Gemini für täglichen Chat und mieten einen Coworker für wiederkehrende Berichte."
+        "Es ist kein Chat-Assistent. Es ist ein Marktplatz für spezialisierte Marketing-KI-Mitarbeiter, die fertige Dateien auf ein Task-Board liefern, das Hosting hängt vom KI-Mitarbeiter ab. Teams behalten Claude oder Gemini für täglichen Chat und mieten einen KI-Mitarbeiter für wiederkehrende Berichte."
       ]
     ]
   },

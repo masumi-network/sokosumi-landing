@@ -20,6 +20,7 @@ const path = require("path");
 const zlib = require("zlib");
 const vm = require("vm");
 const crypto = require("crypto");
+const net = require("net");
 
 const shell = require("./templates/shell");
 const misc = require("./templates/misc");
@@ -32,7 +33,25 @@ const blogTpl = require("./templates/blog");
 const releasesTpl = require("./templates/releases");
 const compareTpl = require("./templates/compare");
 const pagesTpl = require("./templates/pagesCms");
+const productDemoTpl = require("./templates/productDemo");
+const agencyRunByAiTpl = require("./templates/agencyRunByAi");
+const europeanAiTpl = require("./templates/europeanAi");
+const enterpriseTpl = require("./templates/enterprise");
+const aiEmployeesTpl = require("./templates/aiEmployees");
 const contactTpl = require("./templates/contact");
+const designMdTpl = require("./templates/designMd");
+const designMdArchive = require("./lib/designMdArchive");
+const seoMdTpl = require("./templates/seoMd");
+const seoExtract = require("./lib/seoExtract");
+const toolsTpl = require("./templates/tools");
+const ogCheckerTpl = require("./templates/ogChecker");
+const ogCheck = require("./lib/ogCheck");
+const llmsTxtTpl = require("./templates/llmsTxt");
+const llmsCheck = require("./lib/llmsCheck");
+const calculatorsTpl = require("./templates/calculators");
+const linkedinFormatterTpl = require("./templates/linkedinFormatter");
+const metaTagsTpl = require("./templates/metaTags");
+const metaTags = require("./lib/metaTags");
 
 const port = process.env.PORT || 3000;
 const root = __dirname;
@@ -45,6 +64,133 @@ const CORE_URL = process.env.SOKOSUMI_CORE_URL || "https://api.sokosumi.com";
 const CORE_KEY = process.env.SOKOSUMI_CORE_KEY || "";
 const REFRESH_MS = Number(process.env.CATALOG_REFRESH_MS) || 10 * 60 * 1000;
 const PREVIEW_SECRET = process.env.PREVIEW_SECRET || "";
+const DESIGN_MD_API_BASE = (process.env.MASUMI_DESIGN_MD_API_BASE || "https://www.masumi.network").replace(/\/+$/, "");
+const DESIGN_MD_API_KEY = process.env.MASUMI_DESIGN_MD_API_KEY || "";
+const DESIGN_MD_RATE_LIMIT = Number(process.env.DESIGN_MD_RATE_LIMIT) || 6;
+const designMdRequests = new Map();
+const SEO_MD_RATE_LIMIT = Number(process.env.SEO_MD_RATE_LIMIT) || 20;
+const seoMdRequests = new Map();
+// The OG checker is cheap (one page fetch plus a ranged image read) so its
+// ceiling is far higher than the generator's — high enough that nobody
+// checking their own site in a normal session will ever meet it.
+const OG_CHECK_RATE_LIMIT = Number(process.env.OG_CHECK_RATE_LIMIT) || 60;
+const ogCheckRequests = new Map();
+// The llms.txt check fans out to a dozen link probes per run, so its ceiling
+// is lower than the OG checker's — still far above anything a person doing
+// their own site will reach.
+const LLMS_CHECK_RATE_LIMIT = Number(process.env.LLMS_CHECK_RATE_LIMIT) || 30;
+const llmsCheckRequests = new Map();
+// The meta tag generator pays per run (one model call plus one page fetch),
+// so its ceiling is the lowest of the tools.
+const META_TAGS_RATE_LIMIT = Number(process.env.META_TAGS_RATE_LIMIT) || 15;
+const metaTagsRequests = new Map();
+
+function publicWebsiteUrl(value) {
+  let parsed;
+  try {
+    parsed = new URL(String(value || "").trim());
+  } catch {
+    return null;
+  }
+  if (!/^https?:$/.test(parsed.protocol) || parsed.username || parsed.password) return null;
+  const hostname = parsed.hostname.toLowerCase().replace(/^\[|\]$/g, "").replace(/\.$/, "");
+  if (!hostname || hostname === "localhost" || hostname.endsWith(".localhost") || hostname.endsWith(".local")) return null;
+  const ipVersion = net.isIP(hostname);
+  if (ipVersion === 4) {
+    const parts = hostname.split(".").map(Number);
+    const privateAddress =
+      parts[0] === 0 ||
+      parts[0] === 10 ||
+      parts[0] === 127 ||
+      (parts[0] === 100 && parts[1] >= 64 && parts[1] <= 127) ||
+      (parts[0] === 169 && parts[1] === 254) ||
+      (parts[0] === 172 && parts[1] >= 16 && parts[1] <= 31) ||
+      (parts[0] === 192 && parts[1] === 168) ||
+      (parts[0] === 198 && (parts[1] === 18 || parts[1] === 19)) ||
+      parts[0] >= 224;
+    if (privateAddress) return null;
+  }
+  if (
+    ipVersion === 6 &&
+    (hostname === "::" ||
+      hostname === "::1" ||
+      /^f[cd]/i.test(hostname) ||
+      /^fe[89ab]/i.test(hostname) ||
+      /^::ffff:/i.test(hostname))
+  ) return null;
+  parsed.hash = "";
+  return parsed.href;
+}
+
+function readJsonBody(req, maxBytes = 8192) {
+  return new Promise((resolve, reject) => {
+    let body = "";
+    let size = 0;
+    req.on("data", (chunk) => {
+      size += chunk.length;
+      if (size <= maxBytes) body += chunk;
+    });
+    req.on("end", () => {
+      if (size > maxBytes) return reject(new Error("too-large"));
+      try {
+        resolve(JSON.parse(body || "{}"));
+      } catch {
+        reject(new Error("invalid-json"));
+      }
+    });
+    req.on("error", reject);
+  });
+}
+
+function hourlyRateLimited(store, limit, ip) {
+  const now = Date.now();
+  const windowStart = now - 60 * 60 * 1000;
+  const hits = (store.get(ip) || []).filter((time) => time > windowStart);
+  if (hits.length >= limit) return true;
+  hits.push(now);
+  store.set(ip, hits);
+  if (store.size > 2000) {
+    for (const [key, times] of store) {
+      if (!times.some((time) => time > windowStart)) store.delete(key);
+    }
+  }
+  return false;
+}
+
+const designMdRateLimited = (ip) => hourlyRateLimited(designMdRequests, DESIGN_MD_RATE_LIMIT, ip);
+const seoMdRateLimited = (ip) => hourlyRateLimited(seoMdRequests, SEO_MD_RATE_LIMIT, ip);
+const ogCheckRateLimited = (ip) => hourlyRateLimited(ogCheckRequests, OG_CHECK_RATE_LIMIT, ip);
+const llmsCheckRateLimited = (ip) => hourlyRateLimited(llmsCheckRequests, LLMS_CHECK_RATE_LIMIT, ip);
+const metaTagsRateLimited = (ip) => hourlyRateLimited(metaTagsRequests, META_TAGS_RATE_LIMIT, ip);
+
+async function designMdFetch(pathname, options = {}) {
+  const response = await fetch(`${DESIGN_MD_API_BASE}${pathname}`, {
+    ...options,
+    headers: { Accept: "application/json", ...(options.headers || {}) },
+    signal: AbortSignal.timeout(12000),
+  });
+  const body = await response.text();
+  let data;
+  try {
+    data = JSON.parse(body);
+  } catch {
+    data = { error: "The analysis service returned an invalid response." };
+  }
+  return { data, status: response.status };
+}
+
+function absoluteDesignMdAssets(data) {
+  if (!data || typeof data !== "object") return data;
+  const rewrite = (value) =>
+    typeof value === "string" && value.startsWith("/") ? `${DESIGN_MD_API_BASE}${value}` : value;
+  const logoProxy = (entry) => (entry && entry.logoUrl && entry.id ? `${DESIGN_MD_API_BASE}/tools/design-md/api/logos/${entry.id}` : null);
+  if (Array.isArray(data.entries)) {
+    data.entries = data.entries.map((entry) => ({ ...entry, screenshotUrl: rewrite(entry.screenshotUrl), logoUrl: logoProxy(entry) }));
+  }
+  if (data.screenshotUrl) data.screenshotUrl = rewrite(data.screenshotUrl);
+  if (data.id && data.logoUrl) data.logoProxyUrl = logoProxy(data);
+  return data;
+}
 
 const TYPES = {
   ".html": "text/html; charset=utf-8",
@@ -415,12 +561,14 @@ function hasPreviewCookie(req) {
 
 // ── routing ──────────────────────────────────────────────────────────────
 // Each route: match(segments) → params or null, then handler(ctx) →
-// html string | { redirect } | null (404).
+// html string | { redirect } | { gone: true } (410) | null (404).
 const cms = require("./lib/cms");
 const i18n = require("./lib/i18n");
 const { t } = i18n;
 const { buildNav } = require("./lib/nav");
 const leads = require("./lib/leads");
+const leadReceipt = require("./lib/leadReceipt");
+const marketing = require("./lib/marketing");
 const salesTpl = require("./templates/sales");
 const pricingTpl = require("./templates/pricing");
 const aboutTpl = require("./templates/about");
@@ -460,6 +608,10 @@ const routes = [
     m: (s) => s[0] === "coworkers" && { rest: s.slice(1) },
     h: (ctx) => ({ redirect: ["/ai-coworkers", ...ctx.params.rest].join("/") }),
   },
+  { m: (s) => s.length === 1 && s[0] === "agency-run-by-ai" && {}, h: agencyRunByAiTpl.render },
+  { m: (s) => s.length === 1 && s[0] === "european-ai" && {}, h: europeanAiTpl.render },
+  { m: (s) => s.length === 1 && s[0] === "enterprise" && {}, h: enterpriseTpl.render },
+  { m: (s) => s.length === 1 && s[0] === "ai-employees" && {}, h: aiEmployeesTpl.render },
   { m: (s) => s.length === 1 && s[0] === "tasks" && {}, h: tasksTpl.browse },
   { m: (s) => s.length === 1 && s[0] === "vendors" && {}, h: vendorsTpl.index },
   { m: (s) => s.length === 2 && s[0] === "vendors" && { slug: s[1] }, h: vendorsTpl.detail },
@@ -477,6 +629,19 @@ const routes = [
   { m: (s) => s.length === 2 && s[0] === "releases" && { slug: s[1] }, h: releasesTpl.detail },
   { m: (s) => s.length === 1 && s[0] === "compare" && {}, h: compareTpl.index },
   { m: (s) => s.length === 2 && s[0] === "compare" && { slug: s[1] }, h: compareTpl.detail },
+  { m: (s) => s.length === 1 && s[0] === "tools" && {}, h: toolsTpl.render },
+  { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "og-checker" && {}, h: ogCheckerTpl.render },
+  { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "llms-txt" && {}, h: llmsTxtTpl.render },
+  { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "design-md" && {}, h: designMdTpl.render },
+  { m: (s) => s.length === 4 && s[0] === "tools" && s[1] === "design-md" && s[2] === "analysis" && { slug: s[3] }, h: designMdTpl.analysis },
+  { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "seo-md" && {}, h: seoMdTpl.render },
+  { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "calculators" && {}, h: calculatorsTpl.hub },
+  { m: (s) => s.length === 2 && s[0] === "tools" && calculatorsTpl.isCalc(s[1]) && { slug: s[1] }, h: calculatorsTpl.page },
+  // The AI visibility checker shipped on 2026-09-12 and was pulled the same
+  // day; the URL was briefly live, so it forwards instead of 404ing.
+  { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "ai-visibility" && {}, h: () => ({ redirect: "/tools" }) },
+  { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "linkedin-formatter" && {}, h: linkedinFormatterTpl.render },
+  { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "meta-description-generator" && {}, h: metaTagsTpl.render },
   { m: (s) => s.length === 1 && s[0] === "product" && {}, h: pagesTpl.productHub },
   { m: (s) => s.length === 1 && s[0] === "pricing" && {}, h: pricingTpl.render },
   // The entity page for Sokosumi itself lives in code so its JSON-LD is
@@ -499,6 +664,7 @@ const routes = [
     m: (s) => s.length === 1 && legalTpl.isLegal(s[0]) && { slug: s[0] },
     h: (ctx) => ({ redirect: `/legal/${ctx.params.slug}` }),
   },
+  { m: (s) => s.length === 1 && s[0] === "thank-you" && {}, h: () => misc.thankYou() },
   {
     m: (s) => s.length === 1 && s[0] === "press" && {},
     h: async (ctx) => (await pagesTpl.cmsPage({ ...ctx, params: { slug: "press" } })) || misc.press(),
@@ -623,8 +789,27 @@ const assetsDir = path.join(root, "assets");
     return (head ? head + "\n\n" : "") + s + "\n";
   }
 
+  // Only the production hostname may be indexed. Vercel preview builds, the
+  // *.vercel.app deployment URLs and any other alias serve this same code, so
+  // without this they are a full, crawlable duplicate of the site competing
+  // with it in search. robots.txt is per-host, so www's file cannot cover
+  // them — the host has to answer for itself.
+  const CANONICAL_HOST = (process.env.CANONICAL_HOST || "www.sokosumi.com").toLowerCase();
+  function isPublicHost(req) {
+    const host = String(req.headers["x-forwarded-host"] || req.headers.host || "").toLowerCase().split(":")[0];
+    if (!host) return true;
+    if (host === CANONICAL_HOST) return true;
+    // local development and the apex (which 301s to www) stay untouched
+    return host === "localhost" || host === "127.0.0.1" || host === "[::1]" || host === "sokosumi.com";
+  }
+
   function send(req, res, status, headers, body) {
     const head = { ...BASE_HEADERS, ...headers };
+    // A route opts out of an inherited base header by passing it as null,
+    // which matters for X-Frame-Options: it has no allow-list, so the only
+    // way to let one route be framed is to drop it and use frame-ancestors.
+    for (const k of Object.keys(head)) if (head[k] == null) delete head[k];
+    if (!isPublicHost(req)) head["X-Robots-Tag"] = "noindex, nofollow";
     let payload = Buffer.isBuffer(body) ? body : Buffer.from(body ?? "", "utf8");
     const type = String(head["Content-Type"] || "");
 
@@ -665,12 +850,19 @@ const assetsDir = path.join(root, "assets");
   // and mtime, so replacing a file changes its URL and the new one is fetched
   // immediately, while unchanged files stay cached.
   const assetVersions = new Map();
+  // Hash the bytes, not the stat. mtimeMs is NOT stable across Vercel lambda
+  // instances: the invocation that renders the HTML and the one that serves
+  // the asset can see different mtimes, so a size-and-mtime hash produced a
+  // `?v=` that never matched on the way back in. Every versioned asset then
+  // fell through to the `no-cache` branch and production revalidated all four
+  // stylesheets on every page view, while local dev looked perfectly fine.
+  // Content hashing is identical on every instance, and the result is memoised
+  // per process so each file is read at most once.
   function assetVersion(rel) {
     if (assetVersions.has(rel)) return assetVersions.get(rel);
     let v = "";
     try {
-      const st = fs.statSync(path.join(root, rel));
-      v = crypto.createHash("sha1").update(`${st.size}-${st.mtimeMs}`).digest("hex").slice(0, 8);
+      v = crypto.createHash("sha1").update(fs.readFileSync(path.join(root, rel))).digest("hex").slice(0, 8);
     } catch {
       /* referenced but missing — leave the URL alone */
     }
@@ -727,6 +919,21 @@ const assetsDir = path.join(root, "assets");
 
 
 
+  // Hero social proof, rendered with the document instead of hydrated after a
+  // fetch. Falls back to an empty string (the row simply does not appear) when
+  // the catalog has no portraits yet.
+  function heroSocialHtml() {
+    const faces = (catalog.coworkers || []).filter((c) => c && c.image).slice(0, 5);
+    if (!faces.length) return "";
+    const imgs = faces
+      .map((c, i) => `<img${shell.thumbSrc(c.image, 96)} alt="" width="40" height="40" decoding="async"${i === 0 ? ' fetchpriority="high"' : ""} />`)
+      .join("");
+    return `<div class="hero-social in" id="heroSocial" data-reveal>
+          <span class="avatars" id="heroAvatars">${imgs}</span>
+          <span class="count" id="heroCount">${t("Named AI coworkers")}</span>
+        </div>`;
+  }
+
   async function serveIndex(req, res) {
     const file = path.join(root, "index.html");
     const stat = fs.statSync(file);
@@ -748,7 +955,11 @@ const assetsDir = path.join(root, "assets");
           ctaLabel: t("Sign Up"),
         }),
       )
-      .replace("<!--SSR:FOOTER-->", shell.footerHtml());
+      .replace("<!--SSR:FOOTER-->", shell.footerHtml())
+      // The hero's face row used to wait for /api/catalog, so the first thing
+      // above the headline popped in a second late. The catalog is already in
+      // memory here — render it with the document.
+      .replace("<!--SSR:HERO_SOCIAL-->", heroSocialHtml());
     // Editor-owned hero positioning: when the sokosumi-site-config global has
     // a hero subtitle, it replaces the built-in line (per locale via cms's
     // locale-aware fetch). Empty global = the file's own copy stands.
@@ -868,6 +1079,24 @@ const assetsDir = path.join(root, "assets");
 
       return i18n.run({ locale, path: urlPath }, async () => {
       try {
+        // Saved analyses used to be deep links into the tool (?analysis=ID);
+        // each now has its own page under /tools/design-md/analysis/<brand>.
+        if (urlPath === "/tools/design-md" && /(?:^|&)analysis=(\d+)(?:&|$)/.test(rawQuery || "")) {
+          const id = /(?:^|&)analysis=(\d+)/.exec(rawQuery)[1];
+          const entry = await designMdArchive.byId(id).catch(() => null);
+          if (entry) {
+            return send(req, res, 301, { Location: designMdArchive.pathFor(entry), "Cache-Control": "public, max-age=86400" }, "");
+          }
+        }
+        // /alternatives/* is English-only for the same reason as /tools (near-
+        // zero German demand; see DE_ENGLISH_PATHS) — without this, the CMS
+        // catch-all would serve English copy under a /de URL.
+        if (locale === "de" && (urlPath === "/tools" || urlPath.startsWith("/tools/") || urlPath === "/alternatives" || urlPath.startsWith("/alternatives/"))) {
+          return send(req, res, 301, {
+            Location: `${urlPath}${rawQuery ? `?${rawQuery}` : ""}`,
+            "Cache-Control": "public, max-age=86400",
+          }, "");
+        }
         // Shared files must live at ONE url: /de/assets/…, /de/robots.txt,
         // /de/sitemap.xml and friends would be crawlable duplicates, so they
         // bounce to the canonical un-prefixed copy. (Extension-less /de/api/*
@@ -881,11 +1110,279 @@ const assetsDir = path.join(root, "assets");
           return send(req, res, 200, { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "public, max-age=60" }, catalogJson());
         }
 
+        // The same replica as a standalone document, for framing on
+        // serviceplan-agents.com. It mirrors /product's stylesheet stack so the
+        // demo renders identically, minus the site chrome, and strips the
+        // stage's padding and gradient so the frame contains just the app
+        // canvas. Height is posted to the parent because below 700px the demo
+        // clamps its scale and stops being 16:9.
+        if (urlPath === "/embed/product-demo") {
+          const body = `<!doctype html>
+<html lang="${i18n.locale()}">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Sokosumi product demo</title>
+<link rel="stylesheet" href="/assets/fonts.css" />
+<link rel="stylesheet" href="/assets/styles.css" />
+<link rel="stylesheet" href="/assets/product.css" />
+<style>
+  html, body { margin: 0; padding: 0; background: transparent; overflow: hidden; }
+  /* /product breaks the stage out to the viewport edge and paints a gradient
+     behind it. In a frame the host page owns that treatment. */
+  .pd-stage { width: 100%; margin: 0; padding: 0; border-radius: 0; background: none; }
+  .pd-sizer { border: 0; border-radius: 0; }
+</style>
+</head>
+<body>
+${productDemoTpl.demoStage()}
+<script src="/assets/product-demo.js" defer></script>
+<script>
+  (function () {
+    var last = 0;
+    function post() {
+      var el = document.getElementById("pd-sizer");
+      var h = el ? Math.ceil(el.getBoundingClientRect().height) : 0;
+      if (!h || h === last) return;
+      last = h;
+      parent.postMessage({ type: "sokosumi:demo-height", height: h }, "*");
+    }
+    addEventListener("load", post);
+    addEventListener("resize", post);
+    setInterval(post, 500);
+  })();
+</script>
+</body>
+</html>`;
+          return send(req, res, 200, {
+            "Content-Type": "text/html; charset=utf-8",
+            // X-Frame-Options has no allow-list, so it is dropped here and
+            // replaced by a frame-ancestors list scoped to this one route.
+            // Everything else on the site keeps SAMEORIGIN.
+            "X-Frame-Options": null,
+            "Content-Security-Policy":
+              "frame-ancestors 'self' https://www.serviceplan-agents.com https://serviceplan-agents.com",
+            "Cache-Control": "public, max-age=300, s-maxage=86400, stale-while-revalidate=604800",
+          }, body);
+        }
+
+        // The interactive app replica, as an HTML fragment. The homepage pulls
+        // it in only once the "A look inside" section nears the viewport:
+        // inlining it would have taken the homepage document from 17KB to 44KB
+        // gzipped for a section most visitors never scroll to. /product renders
+        // the same markup inline from templates/productDemo.js.
+        if (urlPath === "/api/product-demo") {
+          return send(req, res, 200, {
+            "Content-Type": "text/html; charset=utf-8",
+            "Cache-Control": "public, max-age=300, s-maxage=86400, stale-while-revalidate=604800",
+          }, productDemoTpl.demoStage());
+        }
+
         // Nav model for the landing page's dropdown menus (sub-pages render
         // it server-side). Same shape as templates/shell.js consumes.
         if (urlPath === "/api/nav") {
           const model = await buildNav({}).catch(() => ({ vendors: [], industries: [] }));
           return send(req, res, 200, { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "public, max-age=300" }, JSON.stringify(model));
+        }
+
+        if (urlPath === "/api/design-md/gallery") {
+          try {
+            // One entry per host, with the slug its analysis page lives at.
+            const entries = (await designMdArchive.list()).map((e) => ({ ...e, path: designMdArchive.pathFor(e) }));
+            return send(req, res, 200, {
+              "Content-Type": "application/json; charset=utf-8",
+              "Cache-Control": "public, max-age=60, s-maxage=300",
+            }, JSON.stringify({ entries, total: entries.length }));
+          } catch {
+            return send(req, res, 502, { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" }, JSON.stringify({ error: "The saved-analysis archive is unavailable right now." }));
+          }
+        }
+
+        const extractionMatch = /^\/api\/design-md\/extractions\/(\d+)$/.exec(urlPath);
+        if (extractionMatch) {
+          try {
+            const upstream = await designMdFetch(`/tools/design-md/api/extractions/${extractionMatch[1]}`);
+            const data = absoluteDesignMdAssets(upstream.data);
+            return send(req, res, upstream.status, {
+              "Content-Type": "application/json; charset=utf-8",
+              "Cache-Control": upstream.status === 200 ? "public, max-age=300" : "no-store",
+            }, JSON.stringify(data));
+          } catch {
+            return send(req, res, 502, { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" }, JSON.stringify({ error: "This saved analysis is unavailable right now." }));
+          }
+        }
+
+        if (urlPath === "/api/seo-md" && req.method === "POST") {
+          const jsonHead = { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" };
+          let body;
+          try {
+            body = await readJsonBody(req);
+          } catch (error) {
+            const message = error.message === "too-large" ? "The request is too large." : "Send a valid JSON request.";
+            return send(req, res, 400, jsonHead, JSON.stringify({ error: message }));
+          }
+          const targetUrl = publicWebsiteUrl(body.url);
+          if (!targetUrl) {
+            return send(req, res, 400, jsonHead, JSON.stringify({ error: "Enter a complete public website URL." }));
+          }
+          if (seoMdRateLimited(clientIp(req))) {
+            return send(req, res, 429, { ...jsonHead, "Retry-After": "3600" }, JSON.stringify({ error: "You have reached the hourly limit. Try again later." }));
+          }
+          try {
+            const data = await seoExtract.analyze(targetUrl);
+            return send(req, res, 200, jsonHead, JSON.stringify({ status: "done", ...data }));
+          } catch (error) {
+            const timeout = error.name === "AbortError" || /aborted|timeout/i.test(error.message || "");
+            const message = timeout
+              ? "That site took too long to respond. Try again in a moment."
+              : error.statusCode
+                ? `That site returned an error (HTTP ${error.statusCode}).`
+                : error.message && /HTML page|did not return/i.test(error.message)
+                  ? error.message
+                  : "That site could not be reached. Check the URL and try again.";
+            return send(req, res, timeout ? 504 : 502, jsonHead, JSON.stringify({ error: message }));
+          }
+        }
+
+        if (urlPath === "/api/meta-tags" && req.method === "POST") {
+          const jsonHead = { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" };
+          let body;
+          try {
+            body = await readJsonBody(req);
+          } catch (error) {
+            const message = error.message === "too-large" ? "The request is too large." : "Send a valid JSON request.";
+            return send(req, res, 400, jsonHead, JSON.stringify({ error: message }));
+          }
+          if (!body || typeof body !== "object" || Array.isArray(body)) {
+            return send(req, res, 400, jsonHead, JSON.stringify({ error: "Send a valid JSON request." }));
+          }
+          let targetUrl = null;
+          if (body.url) {
+            targetUrl = publicWebsiteUrl(body.url);
+            if (!targetUrl) {
+              return send(req, res, 400, jsonHead, JSON.stringify({ error: "Enter a complete public page URL, or leave the URL empty and describe the page." }));
+            }
+          }
+          if (metaTagsRateLimited(clientIp(req))) {
+            return send(req, res, 429, { ...jsonHead, "Retry-After": "3600" }, JSON.stringify({ error: "You have reached the hourly limit. Try again later." }));
+          }
+          try {
+            const result = await metaTags.generate({ ...body, url: targetUrl });
+            return send(req, res, 200, jsonHead, JSON.stringify(result));
+          } catch (error) {
+            if (error.code === "no-key") {
+              return send(req, res, 503, jsonHead, JSON.stringify({ error: "The generator is temporarily unavailable." }));
+            }
+            const timeout = error.name === "AbortError" || /aborted|timeout/i.test(error.message || "");
+            const message = timeout
+              ? "That site took too long to respond. Try again in a moment."
+              : error.statusCode
+                ? `That site returned an error (HTTP ${error.statusCode}).`
+                : error.message || "The generator did not work. Try again in a moment.";
+            return send(req, res, timeout ? 504 : 502, jsonHead, JSON.stringify({ error: message }));
+          }
+        }
+
+        if (urlPath === "/api/llms-check") {
+          const json = (status, payload, cache) =>
+            send(req, res, status, {
+              "Content-Type": "application/json; charset=utf-8",
+              "Cache-Control": cache || "no-store",
+            }, JSON.stringify(payload));
+
+          if (req.method !== "GET" && req.method !== "HEAD") return json(405, { error: "Use GET." });
+          if (llmsCheckRateLimited(clientIp(req))) {
+            return json(429, { error: "That is a lot of checks in one hour. Give it a few minutes." });
+          }
+          try {
+            return json(200, await llmsCheck.inspect(query.url), "public, max-age=60, s-maxage=300");
+          } catch (error) {
+            return json(error.status && error.status >= 400 && error.status < 600 ? error.status : 502, {
+              error: error.message || "That check did not work. Try again.",
+            });
+          }
+        }
+
+        // The OG checker's only backend. A GET so a result URL is shareable and
+        // so a CDN can collapse the stampede when one link goes round a team.
+        if (urlPath === "/api/og-check") {
+          const json = (status, payload, cache) =>
+            send(req, res, status, {
+              "Content-Type": "application/json; charset=utf-8",
+              "Cache-Control": cache || "no-store",
+            }, JSON.stringify(payload));
+
+          if (req.method !== "GET" && req.method !== "HEAD") {
+            return json(405, { error: "Use GET." });
+          }
+          if (ogCheckRateLimited(clientIp(req))) {
+            return json(429, { error: "That is a lot of checks in one hour. Give it a few minutes." });
+          }
+          try {
+            const report = await ogCheck.inspect(query.url);
+            return json(200, report, "public, max-age=60, s-maxage=300");
+          } catch (error) {
+            return json(error.status && error.status >= 400 && error.status < 600 ? error.status : 502, {
+              error: error.message || "That check did not work. Try again.",
+            });
+          }
+        }
+
+        if (urlPath === "/api/design-md" && req.method === "POST") {
+          if (!DESIGN_MD_API_KEY) {
+            return send(req, res, 503, { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" }, JSON.stringify({ error: "The generator is temporarily unavailable." }));
+          }
+          let body;
+          try {
+            body = await readJsonBody(req);
+          } catch (error) {
+            const message = error.message === "too-large" ? "The request is too large." : "Send a valid JSON request.";
+            return send(req, res, 400, { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" }, JSON.stringify({ error: message }));
+          }
+          const targetUrl = publicWebsiteUrl(body.url);
+          if (!targetUrl) {
+            return send(req, res, 400, { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" }, JSON.stringify({ error: "Enter a complete public website URL." }));
+          }
+          if (designMdRateLimited(clientIp(req))) {
+            return send(req, res, 429, { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store", "Retry-After": "3600" }, JSON.stringify({ error: "You have reached the hourly generation limit. Try again later or open a saved analysis below." }));
+          }
+          try {
+            const upstream = await designMdFetch("/api/v1/design-md", {
+              method: "POST",
+              headers: {
+                Authorization: `Bearer ${DESIGN_MD_API_KEY}`,
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ url: targetUrl }),
+            });
+            const data = absoluteDesignMdAssets(upstream.data);
+            if (data && data.jobId) data.pollUrl = `/api/design-md/jobs/${data.jobId}`;
+            if (data && data.status === "done" && !data.url) data.url = targetUrl;
+            const responseStatus = upstream.status === 401 || upstream.status === 403 ? 503 : upstream.status;
+            if (responseStatus === 503) data.error = "The generator is temporarily unavailable.";
+            return send(req, res, responseStatus, { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" }, JSON.stringify(data));
+          } catch {
+            return send(req, res, 502, { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" }, JSON.stringify({ error: "The generator could not reach its analysis service. Try again in a moment." }));
+          }
+        }
+
+        const designJobMatch = /^\/api\/design-md\/jobs\/([A-Za-z0-9-]{16,80})$/.exec(urlPath);
+        if (designJobMatch) {
+          if (!DESIGN_MD_API_KEY) {
+            return send(req, res, 503, { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" }, JSON.stringify({ error: "The generator is temporarily unavailable." }));
+          }
+          try {
+            const upstream = await designMdFetch(`/api/v1/design-md/jobs/${encodeURIComponent(designJobMatch[1])}`, {
+              headers: { Authorization: `Bearer ${DESIGN_MD_API_KEY}` },
+            });
+            const data = absoluteDesignMdAssets(upstream.data);
+            const responseStatus = upstream.status === 401 || upstream.status === 403 ? 503 : upstream.status;
+            if (responseStatus === 503) data.error = "The generator is temporarily unavailable.";
+            return send(req, res, responseStatus, { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" }, JSON.stringify(data));
+          } catch {
+            return send(req, res, 502, { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" }, JSON.stringify({ error: "The generator could not reach its analysis service. Try again in a moment." }));
+          }
         }
 
         // Draft preview: /api/preview?secret=…&path=/x sets the cookie and
@@ -908,6 +1405,30 @@ const assetsDir = path.join(root, "assets");
             "Set-Cookie": "soko_preview=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0",
           });
           return res.end();
+        }
+
+        // The free-tools email popup (assets/email-gate.js). Stores the
+        // address with its consent wording in the marketing database.
+        if (urlPath === "/api/tool-email" && req.method === "POST") {
+          const jsonHead = { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" };
+          let body;
+          try {
+            body = await readJsonBody(req);
+          } catch (error) {
+            const message = error.message === "too-large" ? "The request is too large." : "Send a valid JSON request.";
+            return send(req, res, 400, jsonHead, JSON.stringify({ error: message }));
+          }
+          if (marketing.rateLimited(clientIp(req))) {
+            return send(req, res, 429, { ...jsonHead, "Retry-After": "3600" }, JSON.stringify({ error: "Too many submissions. Try again later." }));
+          }
+          try {
+            const out = await marketing.save(body);
+            if (!out.ok) return send(req, res, out.error === "spam" ? 200 : 400, jsonHead, JSON.stringify(out.error === "spam" ? { ok: true } : { error: out.error }));
+            return send(req, res, 200, jsonHead, JSON.stringify({ ok: true }));
+          } catch (e) {
+            console.error("[tool-email] save failed:", e.message);
+            return send(req, res, 502, jsonHead, JSON.stringify({ error: "We could not save that right now. Try again in a moment." }));
+          }
         }
 
         // Talk-to-Sales submissions. Plain form POST so the page keeps
@@ -960,7 +1481,7 @@ const assetsDir = path.join(root, "assets");
               requestType: body.requestType || "",
             });
           }
-          return back({ sent: "1" });
+          return back({ sent: "1", r: leadReceipt.issue("sales_inquiry") });
         }
 
         // Support requests. Same plain-form POST + redirect shape as sales,
@@ -1008,7 +1529,7 @@ const assetsDir = path.join(root, "assets");
               message: body.message || "",
             });
           }
-          return back({ sent: "1" });
+          return back({ sent: "1", r: leadReceipt.issue("support_request") });
         }
 
         // Agent listing submissions. Larger body than the other two forms
@@ -1065,7 +1586,7 @@ const assetsDir = path.join(root, "assets");
             }
             return back(echo);
           }
-          return back({ sent: "1" });
+          return back({ sent: "1", r: leadReceipt.issue("agent_listing") });
         }
 
         // Generated share images: everything comes from the query string so
@@ -1085,7 +1606,8 @@ const assetsDir = path.join(root, "assets");
           return send(req, res, 200, { "Content-Type": "text/markdown; charset=utf-8", "Cache-Control": "public, max-age=0, s-maxage=3600, must-revalidate" }, misc.llmsTxt());
         }
         if (urlPath === "/robots.txt") {
-          return send(req, res, 200, { "Content-Type": "text/plain; charset=utf-8", "Cache-Control": "public, max-age=3600" }, misc.robots());
+          const body = isPublicHost(req) ? misc.robots() : "User-agent: *\nDisallow: /\n";
+          return send(req, res, 200, { "Content-Type": "text/plain; charset=utf-8", "Cache-Control": "public, max-age=3600" }, body);
         }
 
         if (urlPath === "/sitemap.xml") {
@@ -1213,6 +1735,9 @@ const assetsDir = path.join(root, "assets");
             const to = rawQuery ? target + sep + rawQuery : target;
             return send(req, res, out.status || 301, { Location: to, "Cache-Control": "public, max-age=3600" }, "");
           }
+          // 410, not 404: these URLs are removed on purpose (abusive
+          // design-md submissions) and Gone deindexes them faster.
+          if (out && out.gone) return sendHtml(misc.notFound(), 410);
           if (out) return sendHtml(out);
           return sendHtml(misc.notFound(), 404);
         }

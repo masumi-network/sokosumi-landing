@@ -11,11 +11,12 @@
     "url": "https://www.langdock.com"
   },
   "checked": "2026-08-26",
+  "published": "2026-08-26",
   "en": {
     "title": "DeepL Agent or Langdock: a German agent versus a German AI workspace",
     "metaTitle": "DeepL Agent vs Langdock (2026): what each does, prices",
     "description": "DeepL Agent (Cologne) vs Langdock (Berlin): what each is, published prices, EU hosting, agent building and known limits. Checked August 2026.",
-    "intro": "DeepL Agent is an autonomous agent from the Cologne translation company: you give it a task in plain words and it works through browser, email and CRM like a person would. Langdock is an AI workspace where every employee gets chat, custom agents and workflows across many models. The deciding difference: DeepL sells one agent through its sales team with no public price; Langdock sells a self-serve platform at €25 per seat.",
+    "intro": "DeepL Agent is an autonomous agent from the Cologne translation company: you give it a task in plain words and it works through browser, email and CRM like a person would. Langdock is an AI workspace where every employee gets chat, custom agents and workflows across many models. The deciding difference: DeepL sells one agent through its sales team with no public price; Langdock sells a self-serve platform from €23.20 per seat a month, billed annually.",
     "glance": [
       [
         "Who it is for",
@@ -30,7 +31,7 @@
       [
         "Price per user",
         "Not published. Sold via DeepL sales or customer success. DeepL translator plans for reference: Starter €8.99, Advanced €29.99, Ultimate €59.99 per user/month annual (third-party pages; deepl.com blocked fetch)",
-        "€25/month Standard; €99/month Business Max. Annual billing saves 20%"
+        "€29/month Standard seat (€23.20 billed annually); €119/month Business Max (€99 annually)"
       ],
       [
         "Free plan or trial",
@@ -87,10 +88,10 @@
     "verdict": "These are different products. Langdock is the clear pick for a company that wants an AI workspace now, with a price list and EU hosting facts. DeepL Agent is worth a call if you want a browser-driving agent from a German brand and can handle a sales process. If you cannot get a price or hosting statement in writing from DeepL, treat it as not yet comparable.",
     "bridge": {
       "heading": "If you want the work done, not a chat window",
-      "text": "DeepL Agent and Langdock each give one person a tool: an agent to instruct, or a workspace to prompt. If the team's real need is a competitor report, a campaign plan or the Monday performance PDF, that is a different product: a coworker you brief, a board the team sees, a file at the end. Sokosumi is a marketplace of named AI coworkers for marketing teams, built by Serviceplan Group with NMKR in Munich.",
+      "text": "DeepL Agent and Langdock each give one person a tool: an agent to instruct, or a workspace to prompt. A competitor report, a campaign plan or the Monday performance PDF is a different product. You brief a coworker, the team sees the board, and a file lands at the end. Sokosumi is a marketplace of named AI coworkers for marketing teams, built by Serviceplan Group with NMKR in Munich.",
       "points": [
-        "52 coworkers and agents from 7 vendors; each profile states the vendor, models and hosting, with EU hosting available.",
-        "Free: 250 credits per seat per month, no card. Paid seats €25, €75 or €200 per month; credits are used only when a task runs.",
+        "Coworkers and agents from named vendors; each profile states the vendor, models and hosting, with EU hosting available.",
+        "Free: 250 credits per seat per month, no card. Paid seats €25, €75 or €200 per month; each task spends credits.",
         "Tasks end with a finished file on a shared board; scheduled tasks repeat without a prompt."
       ],
       "links": [
@@ -121,7 +122,7 @@
     "title": "DeepL Agent oder Langdock: deutscher Agent oder deutscher KI-Arbeitsbereich?",
     "metaTitle": "DeepL Agent vs Langdock (2026): Aufgaben, Preise, EU-Hosting",
     "description": "DeepL Agent (Köln) vs Langdock (Berlin): was beide sind, veröffentlichte Preise, EU-Hosting, Agent-Bau und Grenzen. Stand August 2026.",
-    "intro": "DeepL Agent ist ein autonomer Agent des Kölner Übersetzungsunternehmens: Sie geben eine Aufgabe in klaren Worten, und er arbeitet per Browser, E-Mail und CRM wie ein Mensch. Langdock ist ein KI-Arbeitsbereich, in dem jeder Mitarbeitende Chat, eigene Agents und Workflows über viele Modelle bekommt. Der Unterschied: DeepL verkauft einen Agent über Sales ohne öffentlichen Preis; Langdock verkauft eine Self-Serve-Plattform für €25 pro Seat.",
+    "intro": "DeepL Agent ist ein autonomer Agent des Kölner Übersetzungsunternehmens: Sie geben eine Aufgabe in klaren Worten, und er arbeitet per Browser, E-Mail und CRM wie ein Mensch. Langdock ist ein KI-Arbeitsbereich, in dem jeder Mitarbeitende Chat, eigene Agents und Workflows über viele Modelle bekommt. Der Unterschied: DeepL verkauft einen Agent über Sales ohne öffentlichen Preis; Langdock verkauft eine Self-Serve-Plattform ab 23,20 € pro Seat und Monat bei jährlicher Abrechnung.",
     "glance": [
       [
         "Für wen es passt",
@@ -135,13 +136,13 @@
       ],
       [
         "Preis pro Nutzer",
-        "Nicht veröffentlicht. Verkauf über DeepL Sales oder Customer Success. DeepL-Übersetzerpläne als Referenz: Starter €8.99, Advanced €29.99, Ultimate €59.99 pro Nutzer/Monat jährlich (Drittanbieter-Seiten; deepl.com blockiert Abruf)",
-        "€25/Monat Standard; €99/Monat Business Max. Jährliche Abrechnung spart 20%"
+        "Nicht veröffentlicht. Verkauf über DeepL Sales oder Customer Success. DeepL-Übersetzerpläne als Referenz: Starter 8,99 €, Advanced 29,99 €, Ultimate 59,99 € pro Nutzer/Monat jährlich (Drittanbieter-Seiten; deepl.com blockiert Abruf)",
+        "29 €/Monat Standard-Seat (23,20 € bei jährlicher Abrechnung); 119 €/Monat Business Max (99 € jährlich)"
       ],
       [
         "Free-Plan oder Test",
         "Für den Agent nicht veröffentlicht",
-        "7 Tage Test, €5 Modell-Credits, keine Kreditkarte"
+        "7 Tage Test, 5 € Modell-Credits, keine Kreditkarte"
       ],
       [
         "EU-Hosting",
@@ -151,7 +152,7 @@
       [
         "Teamfunktionen",
         "Nutzerverwaltung für DeepL Agent über DeepL Admin (Help-Center-Artikel existiert; Details hinter Abrufblock)",
-        "SSO, SCIM, SAML; gemeinsame Agents; Governance Add-on; bis zu 1,000 Nutzer auf Business"
+        "SSO, SCIM, SAML; gemeinsame Agents; Governance Add-on; bis zu 1.000 Nutzer auf Business"
       ],
       [
         "Eigene Agents bauen",
@@ -160,8 +161,8 @@
       ],
       [
         "Status",
-        "Angekündigt 3 Sep 2025 (Beta), allgemein verfügbar seit 5 Nov 2025 nach 1,000+ Beta-Nutzern",
-        "Seit 2023 im Markt; nennt 10,000+ Unternehmen"
+        "Angekündigt 3 Sep 2025 (Beta), allgemein verfügbar seit 5 Nov 2025 nach 1.000+ Beta-Nutzern",
+        "Seit 2023 im Markt; nennt 10.000+ Unternehmen"
       ]
     ],
     "pickA": {
@@ -193,10 +194,10 @@
     "verdict": "Das sind unterschiedliche Produkte. Langdock ist die klare Wahl für ein Unternehmen, das jetzt einen KI-Arbeitsbereich mit Preisliste und EU-Hosting-Fakten will. DeepL Agent ist einen Call wert, wenn Sie einen browsersteuernden Agent von einer deutschen Marke wollen und einen Sales-Prozess akzeptieren. Wenn DeepL Preis oder Hosting nicht schriftlich nennt, ist es noch nicht vergleichbar.",
     "bridge": {
       "heading": "Wenn Sie Arbeit erledigt haben wollen, kein Chatfenster",
-      "text": "DeepL Agent und Langdock geben jeweils einer Person ein Tool: einen Agent zum Instruieren oder einen Arbeitsbereich zum Prompten. Wenn das Team eigentlich einen Wettbewerbsbericht, einen Kampagnenplan oder das Montags-PDF zur Performance braucht, ist das ein anderes Produkt: ein Coworker, den Sie briefen, ein Task-Board fürs Team, am Ende eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Coworker für Marketingteams, gebaut von Serviceplan Group mit NMKR in München.",
+      "text": "DeepL Agent und Langdock geben jeweils einer Person ein Tool: einen Agent zum Instruieren oder einen Arbeitsbereich zum Prompten. Ein Wettbewerbsbericht, ein Kampagnenplan oder das Montags-PDF zur Performance ist ein anderes Produkt. Sie briefen einen KI-Mitarbeiter, das Team sieht das Board, am Ende steht eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Mitarbeiter für Marketingteams, gebaut von Serviceplan Group mit NMKR in München.",
       "points": [
-        "52 Coworker und Agents von 7 Anbietern; jedes Profil nennt Anbieter, Modelle und Hosting, mit verfügbarem EU-Hosting.",
-        "Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25, €75 oder €200 pro Monat; Credits werden nur verbraucht, wenn eine Aufgabe läuft.",
+        "KI-Mitarbeiter und Agents benannter Anbieter; jedes Profil nennt den Anbieter sowie Modelle und Hosting, wo der Anbieter sie angibt.",
+        "Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats 25 €, 75 € oder 200 € pro Monat; jede Aufgabe verbraucht Credits aus dem monatlichen Kontingent eines Seats.",
         "Aufgaben enden mit einer fertigen Datei auf einem gemeinsamen Task-Board; geplante Aufgaben laufen ohne neuen Prompt."
       ],
       "links": [
@@ -219,7 +220,7 @@
       ],
       [
         "Welches Produkt gibt meinem Marketingteam fertige Berichte?",
-        "Keines ist darauf gebaut. DeepL Agent erledigt Aufgaben für eine Person; Langdock liefert Chat-Ausgaben und Dateien. Sokosumi und ähnliche Coworker-Produkte liefern Dateien auf ein Task-Board."
+        "Keines ist darauf gebaut. DeepL Agent erledigt Aufgaben für eine Person; Langdock liefert Chat-Ausgaben und Dateien. Sokosumi und ähnliche KI-Mitarbeiter-Produkte liefern Dateien auf ein Task-Board."
       ]
     ]
   },

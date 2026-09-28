@@ -58,7 +58,7 @@ async function index(ctx) {
   const cr = [{ label: "Home", href: "/" }, { label: "Legal" }];
   return (
     pageStart({
-      title: "Legal | Sokosumi",
+      title: "Legal: terms, privacy, DPA and imprint | Sokosumi",
       description:
         "Terms of Service, Privacy Policy, Cookie Policy, data processing agreements, acceptable use, and the imprint for Sokosumi.",
       path: "/legal",
@@ -103,7 +103,12 @@ async function detail(ctx) {
   return (
     pageStart({
       title: `${title} | Sokosumi`,
-      description: t(BLURB[slug] || `${title} for Sokosumi.`),
+      // The blurb doubles as the on-page sub, so it stays short there; the meta
+      // description gets a factual tail so it is long enough to be useful.
+      description: shell.describe(t(BLURB[slug] || `${title} for Sokosumi.`), [
+        t("Sokosumi is the AI coworker marketplace by Serviceplan Group, with named agents, stated hosting and credit pricing."),
+        t("Sokosumi is the AI coworker marketplace by Serviceplan Group."),
+      ]),
       path: `/legal/${slug}`,
       breadcrumb: cr,
     }) +

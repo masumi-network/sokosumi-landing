@@ -1,7 +1,15 @@
 import { Locale, t } from "@/lib/translations";
+import { ROUTES } from "@/lib/routes";
+import { NAV_LABEL, FOOTER_PRODUCT, FOOTER_RESOURCES } from "@/lib/landing/nav";
 
 export default function Footer({ locale = "en" }: { locale?: Locale }) {
   const tt = t(locale).footer;
+  const home = locale === "de" ? "/de" : "/";
+  const link = (key: (typeof FOOTER_PRODUCT)[number]) => (
+    <a key={key} href={ROUTES[key][locale]} className="footer-links">
+      {NAV_LABEL[key]![locale]}
+    </a>
+  );
 
   return (
     <div className="div-block-38">
@@ -12,19 +20,22 @@ export default function Footer({ locale = "en" }: { locale?: Locale }) {
               <div className="footer-content-wrat">
                 <div className="fiiter-link-header">{tt.column1Header}</div>
                 <div className="spacer-large"></div>
-                <a href="#" className="footer-links hide">
-                  {tt.about}
+                {FOOTER_PRODUCT.map(link)}
+                {/* Audience-LPs: bewusst nicht in ROUTES (noindex, kein
+                    Sitemap-/hreflang-Eintrag), deshalb direkt verlinkt. */}
+                <a
+                  href={locale === "de" ? "/de/agencies" : "/agencies"}
+                  className="footer-links"
+                >
+                  {locale === "de" ? "Für Agenturen" : "For agencies"}
                 </a>
-                <a href="#hannah" className="footer-links">
-                  Hannah
+                <a
+                  href={locale === "de" ? "/de/enterprise" : "/enterprise"}
+                  className="footer-links"
+                >
+                  {locale === "de" ? "Für Unternehmen" : "For enterprises"}
                 </a>
-                <a href="#elena" className="footer-links">
-                  Elena
-                </a>
-                <a href="#alex" className="footer-links">
-                  Alex
-                </a>
-                <a href="#pricing" className="footer-links">
+                <a href={`${home}#pricing`} className="footer-links">
                   {tt.pricing}
                 </a>
                 <a
@@ -38,13 +49,8 @@ export default function Footer({ locale = "en" }: { locale?: Locale }) {
               <div className="footer-content-wrat">
                 <div className="fiiter-link-header">{tt.column2Header}</div>
                 <div className="spacer-large"></div>
-                <a href="#" className="footer-links hide">
-                  Blog
-                </a>
-                <a href="#" className="footer-links hide">
-                  Webinar
-                </a>
-                <a href="#faq" className="footer-links">
+                {FOOTER_RESOURCES.map(link)}
+                <a href={`${home}#faq`} className="footer-links">
                   FAQ
                 </a>
                 <a href={tt.contactHref} className="footer-links">
@@ -81,6 +87,9 @@ export default function Footer({ locale = "en" }: { locale?: Locale }) {
                   className="footer-links"
                 >
                   {tt.cookiePolicy}
+                </a>
+                <a href="#" data-cc-open className="footer-links">
+                  {locale === "de" ? "Cookie-Einstellungen" : "Cookie settings"}
                 </a>
                 <a
                   href="https://www.house-of-communication.com/de/en/brands/plan-net/landingpages/agentic-services/legal-ai-coworkers.html"

@@ -6,6 +6,7 @@ const shell = require("./shell");
 const cms = require("../lib/cms");
 const { t } = require("../lib/i18n");
 const { esc, attr, icon, pageStart, pageEnd, APP } = shell;
+const leadReceipt = require("../lib/leadReceipt");
 
 const CRUMBS = [{ label: "Home", href: "/" }, { label: "Contact", href: "/contact" }, { label: "Sales" }];
 
@@ -65,8 +66,8 @@ function form(values, error) {
   </form>`;
 }
 
-function sentState() {
-  return `<div class="notice" data-reveal data-analytics="generate_lead" data-analytics-on="load" data-analytics-form-name="sales_inquiry">
+function sentState(receipt) {
+  return `<div class="notice" data-reveal${leadReceipt.analyticsAttrs(receipt, "sales_inquiry")}>
     <span class="eyebrow">${esc(t("Request received"))}</span>
     <h1>${esc(t("Request received."))}</h1>
     <p>${esc(t("We have your request and will come back to you within one working day. If it is urgent, write to"))} <a href="mailto:info@sokosumi.com">info@sokosumi.com</a> ${esc(t("and it reaches the same inbox."))}</p>
@@ -96,7 +97,7 @@ async function render(ctx) {
   const error = get("error");
 
   const body = sent
-    ? sentState()
+    ? sentState(get("r"))
     : `<div class="page-head" data-reveal>
         <span class="eyebrow">${esc(t("Talk to Sales"))}</span>
         <h1>${esc(t("Put AI coworkers to work in your team"))}</h1>
@@ -133,7 +134,7 @@ async function render(ctx) {
     pageStart({
       title: "Talk to Sales | Sokosumi",
       description:
-        "Book a walkthrough of Sokosumi or ask us anything about putting AI coworkers to work in your marketing team.",
+        "Book a walkthrough of Sokosumi or ask us anything about putting AI coworkers to work in your marketing team. Seat pricing, EU hosting and vendor questions welcome.",
       path: shell.SALES_URL,
       breadcrumb: CRUMBS,
       jsonld: { "@context": "https://schema.org", "@type": "ContactPage", name: "Talk to Sales" },

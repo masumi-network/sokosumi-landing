@@ -44,6 +44,13 @@
       // filter. Nothing measures anything anywhere else.
       var TRACK_HOSTS = { "www.sokosumi.com": 1, "sokosumi.com": 1 };
       if (!TRACK_HOSTS[location.hostname]) return;
+      // Team members opt out once with ?internal=1 (undo with ?internal=0). The
+      // cookie is on .sokosumi.com so the app can honour it too; unfiltered team
+      // usage was a large share of all app pageviews.
+      var _i=/[?&]internal=([01])(?:&|$)/.exec(location.search);
+      if(_i){d.cookie="sokosumi_internal="+(_i[1]==="1"?"1; max-age=31536000":"; max-age=0")+"; path=/; domain=.sokosumi.com; SameSite=Lax";
+        try{var _u=new URL(location.href);_u.searchParams.delete("internal");history.replaceState(history.state,"",_u.pathname+_u.search+_u.hash)}catch(_e){}}
+      if(/(?:^|; )sokosumi_internal=1/.test(d.cookie))return;
       w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});
       // Mirrors templates/shell.js ANALYTICS_HEAD — keep the two identical.
       // ~315KB of container competing with the hero for phone bandwidth, and
@@ -66,24 +73,24 @@
       ['pointerdown','keydown','touchstart'].forEach(function(e){w.addEventListener(e,boot,{once:true,passive:true});});
       setTimeout(boot,8000);
     })(window,document,'script','dataLayer','GTM-N7GC8SFT');</script>
-    <title>Sokosumi | AI Coworkers for your marketing team</title>
+    <title>Sokosumi | AI agents and coworkers for marketing teams</title>
     <meta name="description" content="Hire AI coworkers and run template marketing tasks on Sokosumi. A marketplace for marketing work that arrives as a file. Built by Serviceplan Group." />
     <link rel="canonical" href="https://www.sokosumi.com/" />
 
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Sokosumi" />
-    <meta property="og:title" content="Sokosumi | AI Coworkers for your marketing team" />
+    <meta property="og:title" content="Sokosumi | AI agents and coworkers for marketing teams" />
     <meta property="og:description" content="Hire AI coworkers and run template marketing tasks on Sokosumi. A marketplace for marketing work that arrives as a file. Built by Serviceplan Group." />
     <meta property="og:url" content="https://www.sokosumi.com/" />
-    <meta property="og:image" content="https://www.sokosumi.com/assets/og-image.jpg" />
+    <meta property="og:image" content="https://www.sokosumi.com/og/dHlwZT1wYWdlJnRpdGxlPUFJK0Nvd29ya2Vycytmb3IrTWFya2V0aW5nLiZzdWI9SGlyZStBSStjb3dvcmtlcnMrdGhhdCt3b3JrK2FzK3BhcnQrb2YreW91cit0ZWFtLiZleWVicm93PVNva29zdW1p.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="Sokosumi, AI coworkers for marketing teams" />
     <meta property="og:locale" content="en_US" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Sokosumi | AI Coworkers for your marketing team" />
+    <meta name="twitter:title" content="Sokosumi | AI agents and coworkers for marketing teams" />
     <meta name="twitter:description" content="Hire AI coworkers and run template marketing tasks on Sokosumi. A marketplace for marketing work that arrives as a file. Built by Serviceplan Group." />
-    <meta name="twitter:image" content="https://www.sokosumi.com/assets/og-image.jpg" />
+    <meta name="twitter:image" content="https://www.sokosumi.com/og/dHlwZT1wYWdlJnRpdGxlPUFJK0Nvd29ya2Vycytmb3IrTWFya2V0aW5nLiZzdWI9SGlyZStBSStjb3dvcmtlcnMrdGhhdCt3b3JrK2FzK3BhcnQrb2YreW91cit0ZWFtLiZleWVicm93PVNva29zdW1p.png" />
     <meta name="twitter:image:alt" content="Sokosumi, AI coworkers for marketing teams" />
 
     <script type="application/ld+json">
@@ -110,7 +117,10 @@
     <link rel="preload" as="image" href="/assets/hero-photo/welcome-scene-mock-4k.webp" media="(min-width: 900px)" fetchpriority="high" />
     <link rel="preload" href="/assets/fonts/inter-300-latin.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/assets/fonts/inter-400-latin.woff2" as="font" type="font/woff2" crossorigin />
-    <script defer src="/_vercel/insights/script.js"></script>
+    <!-- Vercel Web Analytics is not enabled for this project, so
+         /_vercel/insights/script.js 404s on every page. Re-add this tag after
+         turning Web Analytics on in the Vercel dashboard; traffic measurement
+         meanwhile runs through GTM/GA4. -->
     <link rel="stylesheet" href="/assets/fonts.css" />
     <link rel="stylesheet" href="/assets/styles.css" />
     <link rel="stylesheet" href="/assets/landing.css" />
@@ -137,15 +147,12 @@
 
 
       <div class="hero-inner">
-        <div class="hero-social" id="heroSocial" data-reveal hidden>
-          <span class="avatars" id="heroAvatars"></span>
-          <span class="count" id="heroCount"></span>
-        </div>
+        <!--SSR:HERO_SOCIAL-->
 
         <h1 class="hero-title" data-reveal style="--i: 1">AI Coworkers for Marketing.</h1>
 
         <p class="hero-sub" data-reveal style="--i: 2">
-          Hire AI coworkers that turn a brief into finished files.
+          Hire AI coworkers that work as part of your team.
         </p>
 
         <div class="hero-cta" data-reveal style="--i: 3">
@@ -168,14 +175,14 @@
             <img src="/assets/logos/ard.svg" alt="ARD" />
             <img src="/assets/logos/tdk.svg" alt="TDK" />
             <img src="/assets/logos/stroer.svg" alt="Ströer" />
-            <img class="is-brand" src="/assets/serviceplan-logo-white.png" alt="Serviceplan Group" />
+            <img class="is-brand" src="/assets/serviceplan-wordmark-white.png" alt="Serviceplan Group" />
             <img class="logo-tall" src="/assets/logos/telekom.svg" alt="" aria-hidden="true" />
             <img src="/assets/logos/allianz.svg" alt="" aria-hidden="true" />
             <img src="/assets/logos/lufthansa.svg" alt="" aria-hidden="true" />
             <img src="/assets/logos/ard.svg" alt="" aria-hidden="true" />
             <img src="/assets/logos/tdk.svg" alt="" aria-hidden="true" />
             <img src="/assets/logos/stroer.svg" alt="" aria-hidden="true" />
-            <img class="is-brand" src="/assets/serviceplan-logo-white.png" alt="" aria-hidden="true" />
+            <img class="is-brand" src="/assets/serviceplan-wordmark-white.png" alt="" aria-hidden="true" />
           </div>
         </div>
         </div>
@@ -313,58 +320,24 @@
       </div>
     </section>
 
-    <!-- ===== PRODUCT — large screenshots, arrows cycle the frames ===== -->
+    <!-- ===== PRODUCT — the live app replica, shared with /product ===== -->
     <section class="block" id="product">
       <div class="container-app">
         <div class="section-head" data-reveal>
           <h2>A look inside <span class="serif-accent">Sokosumi</span></h2>
           <p>A roster of named specialists and a board that shows who picked up what.</p>
-          <a class="link-arrow" href="/product">Try the interactive demo<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
+          <a class="link-arrow" href="/product">Open it full screen<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
         </div>
-        <div class="shot-carousel" data-reveal>
-          <div class="shot-stage">
-            <div class="shot-viewport">
-              <div class="shot-track" id="shotTrack">
-                <div class="shot-slide" data-caption="The roster. Names, roles, a profile. If a coworker lists models or a hosting region, that is where they show up.">
-                  <div class="shot-frame">
-                    <div class="shot-canvas">
-                      <img src="/assets/shot-roster.webp" alt="The Sokosumi roster: five named AI coworkers, with Elena's profile open beside them" width="2400" height="1350" loading="lazy" decoding="async" />
-                    </div>
-                  </div>
-                </div>
-                <div class="shot-slide" data-caption="Start from the job. Type what you want done and the bar points at coworkers who do that kind of work.">
-                  <div class="shot-frame">
-                    <div class="shot-canvas">
-                      <img src="/assets/shot-brief.webp" alt="The Sokosumi briefing bar asking what you want to get done, with suggested campaign tasks below it" width="2400" height="1350" loading="lazy" decoding="async" />
-                    </div>
-                  </div>
-                </div>
-                <div class="shot-slide" data-caption="A task on the board shows who has it and whether it is running, waiting on you, or done.">
-                  <div class="shot-frame">
-                    <div class="shot-canvas">
-                      <img src="/assets/shot-board.webp" alt="The Sokosumi task board: running tasks with the coworkers assigned to each" width="2400" height="1350" loading="lazy" decoding="async" />
-                    </div>
-                  </div>
-                </div>
-                <div class="shot-slide" data-caption="Mention a coworker in the channel and it answers in the same thread as everyone else.">
-                  <div class="shot-frame">
-                    <div class="shot-canvas">
-                      <img src="/assets/shot-chat2.webp" alt="The Sokosumi chat: a team channel where a coworker is mentioned and replies in the same thread" width="2400" height="1350" loading="lazy" decoding="async" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="shot-info">
-            <p id="shotCaption"></p>
-            <div class="shot-controls">
-              <span class="shot-count" id="shotCount"></span>
-              <button type="button" class="shot-nav prev" id="shotPrev" aria-label="Previous screenshot"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button>
-              <button type="button" class="shot-nav next" id="shotNext" aria-label="Next screenshot"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
-            </div>
+        <div class="pd-embed" id="pdEmbed" data-reveal>
+          <!-- Poster until the live demo is pulled in. It is what no-JS and
+               crawlers get, and it is the LCP-safe default: the demo fragment
+               is 27KB gzipped and most visitors never scroll this far. -->
+          <div class="pd-embed-poster" id="pdEmbedPoster">
+            <img src="/assets/shot-board.webp" alt="The Sokosumi task board: running tasks with the coworkers assigned to each" width="2400" height="1350" loading="lazy" decoding="async" />
+            <noscript><p class="hiw-cap">Open <a href="/product">the interactive demo</a> to click through the product.</p></noscript>
           </div>
         </div>
+        <p class="pd-embed-cap" id="pdEmbedCap">AI coworkers get the same channels, mentions and tasks as your colleagues &mdash; @mention one and it answers in the same thread as everyone else.</p>
       </div>
     </section>
 
@@ -405,7 +378,7 @@
           <div class="org-branches">
             <div class="org-branch">
               <div class="org-card org-human">
-                <span class="org-ava">L</span>
+                <span class="org-ava"><img src="/assets/team/lena.webp" alt="" width="40" height="40" loading="lazy" decoding="async" /></span>
                 <span class="org-who"><strong>Lena</strong><small>Brand &amp; Strategy</small></span>
               </div>
               <div class="org-drop" aria-hidden="true"></div>
@@ -423,7 +396,7 @@
             </div>
             <div class="org-branch">
               <div class="org-card org-human">
-                <span class="org-ava">J</span>
+                <span class="org-ava"><img src="/assets/team/jonas.webp" alt="" width="40" height="40" loading="lazy" decoding="async" /></span>
                 <span class="org-who"><strong>Jonas</strong><small>Content &amp; Social</small></span>
               </div>
               <div class="org-drop" aria-hidden="true"></div>
@@ -435,7 +408,7 @@
             </div>
             <div class="org-branch">
               <div class="org-card org-human">
-                <span class="org-ava">M</span>
+                <span class="org-ava"><img src="/assets/team/mara.webp" alt="" width="40" height="40" loading="lazy" decoding="async" /></span>
                 <span class="org-who"><strong>Mara</strong><small>Performance &amp; Data</small></span>
               </div>
               <div class="org-drop" aria-hidden="true"></div>
@@ -477,6 +450,14 @@
             <summary>How much does it cost?<span class="faq-x">+</span></summary>
             <p class="faq-a">The free plan is 250 credits per seat. Paid plans start at €25 a month for 1,500 credits per seat. Enterprise is quoted. The pricing page lists what sits in each plan.</p>
           </details>
+          <details class="faq-item">
+            <summary>Is an AI coworker the same as an AI employee?<span class="faq-x">+</span></summary>
+            <p class="faq-a">Yes. People also say AI employee or AI agent for marketing. On Sokosumi each one holds a role, such as research or strategy, and returns files. <a href="/ai-employees">What an AI employee is and what one costs</a>.</p>
+          </details>
+          <details class="faq-item">
+            <summary>Does Sokosumi work for agencies?<span class="faq-x">+</span></summary>
+            <p class="faq-a">Yes. Agencies use it for pitch research from public sources, competitive sets per client and production at retainer scale. <a href="/use-cases/industries/agencies">AI coworkers for agencies</a>.</p>
+          </details>
         </div>
       </div>
     </section>
@@ -486,7 +467,9 @@
       {"@type":"Question","name":"How is this different from a chatbot?","acceptedAnswer":{"@type":"Answer","text":"A chatbot answers in the window you're already in. A coworker can take a brief, split it, pass pieces to other coworkers, and return files. Most of the roster ships template tasks, and most of those tasks include a sample so you can see the output before you run them."}},
       {"@type":"Question","name":"Who builds the coworkers?","acceptedAnswer":{"@type":"Answer","text":"A named vendor builds and runs every coworker \u2014 Serviceplan Group, utxo AG, and others. Every coworker has a public profile. Some profiles list the models and hosting region."}},
       {"@type":"Question","name":"What do the template tasks cover?","acceptedAnswer":{"@type":"Answer","text":"Research, social, planning, writing, engineering, and prototyping. Open a task and you'll see the brief and the deliverable. Most of them include a sample you can look at before you run the task on your own brief."}},
-      {"@type":"Question","name":"How much does it cost?","acceptedAnswer":{"@type":"Answer","text":"The free plan is 250 credits per seat. Paid plans start at €25 a month for 1,500 credits per seat. Enterprise is quoted. The pricing page lists what sits in each plan."}}
+      {"@type":"Question","name":"How much does it cost?","acceptedAnswer":{"@type":"Answer","text":"The free plan is 250 credits per seat. Paid plans start at €25 a month for 1,500 credits per seat. Enterprise is quoted. The pricing page lists what sits in each plan."}},
+      {"@type": "Question", "name": "Is an AI coworker the same as an AI employee?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. People also say AI employee or AI agent for marketing. On Sokosumi each one holds a role, such as research or strategy, and returns files."}},
+      {"@type": "Question", "name": "Does Sokosumi work for agencies?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Agencies use it for pitch research from public sources, competitive sets per client and production at retainer scale."}}
     ]}
     </script>
 
@@ -523,6 +506,7 @@
          place of this placeholder. Do not hand-write a footer in this
          file. Styles live in /assets/nav.css, shared with every sub-page. -->
     <!--SSR:FOOTER-->
+
 
     <script>
       (function () {
@@ -570,31 +554,41 @@
         }
 
 
-        /* ---------- product screenshot carousel: next shot peeks right ---------- */
-        var shotTrack = document.getElementById("shotTrack");
-        if (shotTrack) {
-          var shotSlides = [].slice.call(shotTrack.children);
-          var shotPrev = document.getElementById("shotPrev");
-          var shotNext = document.getElementById("shotNext");
-          var shotIndex = 0;
-          var goShot = function (delta) {
-            shotIndex = Math.max(0, Math.min(shotSlides.length - 1, shotIndex + delta));
-            var viewport = shotTrack.parentElement.offsetWidth;
-            var slideW = shotSlides[0].offsetWidth;
-            var step = slideW + 24;
-            /* first slide hugs the left, last hugs the right, middle slides
-               center - so the shot you came from stays peeking at the edge */
-            var adj = shotIndex === 0 ? 0 : shotIndex === shotSlides.length - 1 ? viewport - slideW : (viewport - slideW) / 2;
-            shotTrack.style.transform = "translateX(" + (adj - shotIndex * step) + "px)";
-            document.getElementById("shotCaption").textContent = shotSlides[shotIndex].getAttribute("data-caption");
-            document.getElementById("shotCount").textContent = (shotIndex + 1) + " / " + shotSlides.length;
-            shotPrev.disabled = shotIndex === 0;
-            shotNext.disabled = shotIndex === shotSlides.length - 1;
+        /* ---------- live product demo: pulled in on approach ----------
+           The fragment is 27KB gzipped and product.css/product-demo.js another
+           39KB, so none of it is in the document. It loads once this section is
+           within a screen of the viewport, replacing the poster. /product
+           renders the same markup from templates/productDemo.js. */
+        var pdEmbed = document.getElementById("pdEmbed");
+        if (pdEmbed && "IntersectionObserver" in window && "fetch" in window) {
+          var pdLoaded = false;
+          var loadProductDemo = function () {
+            if (pdLoaded) return;
+            pdLoaded = true;
+            var css = document.createElement("link");
+            css.rel = "stylesheet";
+            css.href = "/assets/product.css";
+            document.head.appendChild(css);
+            fetch("/api/product-demo")
+              .then(function (r) { return r.ok ? r.text() : Promise.reject(r.status); })
+              .then(function (html) {
+                pdEmbed.innerHTML = html;
+                pdEmbed.classList.add("is-live");
+                /* product-demo.js reads the DOM as it evaluates and bails if the
+                   nodes are missing, so it can only be appended after the
+                   markup is in. */
+                var js = document.createElement("script");
+                js.src = "/assets/product-demo.js";
+                js.defer = true;
+                document.body.appendChild(js);
+              })
+              .catch(function () { pdLoaded = false; });
           };
-          shotPrev.addEventListener("click", function () { goShot(-1); });
-          shotNext.addEventListener("click", function () { goShot(1); });
-          window.addEventListener("resize", function () { goShot(0); });
-          goShot(0);
+          new IntersectionObserver(function (entries, obs) {
+            if (!entries.some(function (e) { return e.isIntersecting; })) return;
+            obs.disconnect();
+            loadProductDemo();
+          }, { rootMargin: "100% 0px" }).observe(pdEmbed);
         }
 
         /* the header's transparent-to-paper scroll flip lives in /assets/nav.js,
@@ -616,15 +610,16 @@
             var coworkers = d.coworkers || [];
             if (!coworkers.length) return;
 
-            /* hero social proof — real coworker faces + live agent count */
+            /* hero social proof is server-rendered (see heroSocialHtml in
+               server.js) so it paints with the document. Only fill it in here
+               if the server had no catalog to render from. */
             var social = document.getElementById("heroSocial");
             var faces = coworkers.filter(function (c) { return c.image; }).slice(0, 5);
-            if (social && faces.length) {
+            if (social && faces.length && !social.querySelector("img")) {
               document.getElementById("heroAvatars").innerHTML = faces
                 .map(function (c) { return "<img" + thumbSet(c.image, 96) + ' alt="" width="40" height="40" decoding="async" />'; })
                 .join("");
-              var agentCount = (d.agents || []).length || coworkers.length;
-              document.getElementById("heroCount").textContent = agentCount + "+ Agents";
+              document.getElementById("heroCount").textContent = "Named AI coworkers";
               social.hidden = false;
               revealNow(social);
             }

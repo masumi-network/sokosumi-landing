@@ -1,0 +1,1178 @@
+/* /agenturen — Meta-Ads-LP im Design der Hauptseite (webflow.css liegt
+   global darunter: Avenir-Fonts, Brand-Rot #ff4b4f, dunkle Bühne #363636,
+   flache Buttons ohne Radius, Glass-Panels). Alles ag-gescopet. */
+
+.ag {
+  font-family: var(--_serviceplan-styles---regular), "Avenir normal", Arial, sans-serif;
+  color: #000;
+  background: #fff;
+  font-size: 1rem;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+.ag * {
+  box-sizing: border-box;
+}
+
+.ag-wrap {
+  max-width: 89.8rem;
+  margin: 0 auto;
+  padding: 0 2.5rem;
+}
+
+.ag-wrap-narrow {
+  max-width: 56rem;
+}
+
+.ag-section {
+  padding: 5rem 0;
+}
+
+.ag-section-tight {
+  padding: 3rem 0;
+}
+
+/* ===== Typografie ===== */
+
+.ag-eyebrow {
+  font-family: var(--_serviceplan-styles---regular);
+  color: var(--base-color-brand--red);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.875rem;
+  margin: 0 0 1rem;
+}
+
+.ag .ag-h2 {
+  font-family: var(--_serviceplan-styles---bold), Arial, sans-serif;
+  font-size: var(--_serviceplan-styles---40px);
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+  font-weight: 700;
+  color: #000;
+  text-align: left;
+  margin: 0 0 1rem;
+}
+
+.ag .ag-h3 {
+  font-family: var(--_serviceplan-styles---bold), Arial, sans-serif;
+  font-size: 1.5rem;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+  font-weight: 700;
+  color: #000;
+  margin: 0;
+}
+
+.ag .ag-h2-ondark {
+  color: #fff;
+}
+
+.ag-lead {
+  font-family: var(--_serviceplan-styles---regular);
+  color: var(--base-color-brand--text-light);
+  font-size: 1.125rem;
+  margin: 0;
+}
+
+.ag-lead-ondark {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.ag-head {
+  max-width: 44rem;
+  margin-bottom: 3rem;
+}
+
+.ag-head.ag-center {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+.ag-head.ag-center .ag-h2 {
+  text-align: center;
+}
+
+.ag-dim {
+  color: var(--base-color-brand--text-light);
+  margin: 0.625rem 0 0;
+}
+
+.ag-faint {
+  color: #999;
+}
+
+/* ===== Buttons (Muster der Hauptseite: flach, Demi, kein Radius) ===== */
+
+.ag-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: var(--_serviceplan-styles---18px) 1.5rem;
+  font-family: var(--_serviceplan-styles---demi), Arial, sans-serif;
+  font-size: 1.0625rem;
+  font-weight: 400;
+  line-height: 1;
+  text-decoration: none;
+  border: none;
+  border-radius: 0;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+
+.ag-btn:hover {
+  opacity: 0.88;
+}
+
+.ag-btn-red {
+  background-color: var(--base-color-brand--red);
+  color: #fff;
+}
+
+.ag-btn-white {
+  background-color: #fff;
+  color: #000;
+}
+
+.ag-btn-black {
+  background-color: #000;
+  color: #fff;
+}
+
+.ag-btn-lg {
+  width: 100%;
+  justify-content: center;
+  padding: 1.25rem 1.5rem;
+}
+
+.ag-btn-nav {
+  padding: 0.625rem 1rem;
+  font-size: 0.9375rem;
+}
+
+.ag-btn:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.ag-arrow-circle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
+  background: #000;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.ag-arrow-circle svg {
+  width: 0.9rem;
+  height: 0.9rem;
+}
+
+.ag-textlink {
+  color: #000;
+  font-family: var(--_serviceplan-styles---demi);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.ag-textlink:hover {
+  color: var(--base-color-brand--red);
+}
+
+.ag-backlink {
+  display: inline-block;
+  margin-top: 2.25rem;
+  color: var(--base-color-brand--red);
+  font-family: var(--_serviceplan-styles---demi);
+  text-decoration: none;
+}
+
+.ag-backlink:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.ag-section-tight .ag-backlink {
+  margin-top: 0;
+}
+
+.ag-section-tight .ag-head {
+  margin-bottom: 2rem;
+}
+
+/* Logo-Wand: nutzt .sp-logo-grid/.sp-logo-item der Startseite */
+.ag-logo-grid {
+  margin-bottom: 1.5rem;
+}
+
+@media (max-width: 991px) {
+  .ag-logo-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 36px 28px;
+    padding: 40px 28px;
+  }
+}
+
+@media (max-width: 767px) {
+  .ag-logo-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px 20px;
+    padding: 28px 20px;
+  }
+
+  .ag-logo-grid.sp-logo-grid .sp-logo-item img {
+    height: 22px;
+    max-width: 100%;
+  }
+}
+
+/* ===== 1 Hero-Bühne: Navbar + Hero kommen 1:1 von der Startseite
+   (webflow.css: .section_demo-hero, .hero-section-wrapper, .navbar_component,
+   .hero-content, .heroimage-wrapper). Hier stehen nur die LP-Zutaten. */
+
+.ag .ag-eyebrow-hero,
+.ag .hero-text-wrap .ag-eyebrow {
+  margin-bottom: 0.75rem;
+}
+
+/* Die Startseite bricht ihre H1 manuell; hier begrenzt die Breite den
+   Lauf unter das Agenten-Bild. */
+.ag .hero-content h1 {
+  max-width: 11em;
+}
+
+.ag .hero-description {
+  max-width: 34rem;
+}
+
+.ag-bullets {
+  list-style: none;
+  margin: 1.75rem 0 2rem;
+  padding: 0;
+  color: #fff;
+  position: relative;
+  z-index: 1;
+}
+
+.ag-bullets li {
+  font-family: var(--_serviceplan-styles---demi), Arial, sans-serif;
+  padding: 0.45rem 0 0.45rem 1.4rem;
+  position: relative;
+}
+
+.ag-bullets li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 1.05rem;
+  width: 0.55rem;
+  height: 0.55rem;
+  background: var(--base-color-brand--red);
+}
+
+.ag-bullets li span {
+  font-family: var(--_serviceplan-styles---regular);
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.ag-btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1.75rem;
+  position: relative;
+  z-index: 1;
+}
+
+.ag-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  position: relative;
+  z-index: 1;
+}
+
+.ag-badge {
+  font-size: 0.8125rem;
+  font-family: var(--_serviceplan-styles---regular);
+  color: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 999px;
+  padding: 0.3rem 0.8rem;
+  white-space: nowrap;
+}
+
+/* Icon-Sequenz (Briefing: schlicht, kein Screenshot) — als Zeile unter dem Hero */
+
+.ag-seq {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin: 3.5rem 0 1.5rem;
+  position: relative;
+  z-index: 1;
+}
+
+.ag-seq-node {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  background: rgba(16, 16, 16, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 999px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: #fff;
+  font-family: var(--_serviceplan-styles---demi);
+  font-size: 0.9375rem;
+  padding: 0.7rem 1.25rem;
+  white-space: nowrap;
+}
+
+.ag-seq-node svg {
+  width: 1.25rem;
+  height: 1.25rem;
+  stroke: var(--base-color-brand--red);
+  fill: none;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  flex-shrink: 0;
+}
+
+.ag-seq-arrow {
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+/* ===== 2 Problem-Band + Karussell ===== */
+
+.ag-band {
+  background: var(--base-color-brand--bg-option);
+  border-radius: var(--_serviceplan-styles---20px);
+  padding: 3rem;
+  margin-bottom: 4rem;
+}
+
+.ag-band .ag-lead {
+  margin-bottom: 2rem;
+}
+
+.ag-band-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.ag-band-item {
+  background: #fff;
+  border-radius: var(--_serviceplan-styles---12px);
+  padding: 1.25rem 1.4rem;
+  margin: 0;
+  font-size: 0.9875rem;
+}
+
+.ag-band-item span {
+  display: block;
+  margin-top: 0.7rem;
+  color: var(--base-color-brand--red);
+  font-family: var(--_serviceplan-styles---demi);
+  font-size: 0.875rem;
+}
+
+.ag-bridge {
+  margin: 0;
+  max-width: 46rem;
+  font-family: var(--_serviceplan-styles---demi);
+}
+
+.ag-rail-hint {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.ag-rail-hint span {
+  color: var(--base-color-brand--text-light);
+  font-size: 0.875rem;
+  white-space: nowrap;
+}
+
+.ag-rail {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(21.5rem, 28rem);
+  gap: 1.5rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding-bottom: 1rem;
+  -webkit-overflow-scrolling: touch;
+}
+
+.ag-case {
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--base-color-brand--border);
+  border-radius: var(--_serviceplan-styles---20px);
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+}
+
+.ag-case-head {
+  padding: 1.75rem 1.75rem 1.25rem;
+  border-bottom: 1px solid var(--base-color-neutral--neutral-lightest);
+}
+
+.ag-case-topline {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.6rem;
+}
+
+.ag-case-num {
+  font-family: var(--_serviceplan-styles---regular);
+  color: var(--base-color-brand--red);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.8125rem;
+  margin: 0;
+}
+
+.ag-case-topline .ag-case-num {
+  padding-top: 0.35rem;
+}
+
+.ag-case-agents {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.ag-case-agents img {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+.ag-case-agents img + img {
+  margin-left: -0.55rem;
+}
+
+.ag-case-agents small {
+  margin-left: 0.5rem;
+  font-size: 0.75rem;
+  color: var(--base-color-brand--text-light);
+  font-family: var(--_serviceplan-styles---demi);
+  white-space: nowrap;
+}
+
+.ag-case-benefit {
+  color: var(--base-color-brand--text-light);
+  margin: 0.6rem 0 0;
+  font-size: 0.9875rem;
+}
+
+.ag-case-body {
+  padding: 1.5rem 1.75rem;
+  flex: 1;
+}
+
+.ag-case-body h4 {
+  font-family: var(--_serviceplan-styles---demi);
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #000;
+  margin: 1.5rem 0 0.6rem;
+}
+
+.ag-case-body h4:first-child {
+  margin-top: 0;
+}
+
+.ag-mail {
+  background: var(--base-color-brand--bg-option);
+  border-radius: var(--_serviceplan-styles---12px);
+  overflow: hidden;
+  font-size: 0.9125rem;
+}
+
+.ag-mail-hdr {
+  padding: 0.8rem 1.1rem;
+  border-bottom: 1px solid #dfdfdf;
+  color: var(--base-color-brand--text-light);
+  line-height: 1.6;
+}
+
+.ag-mail-hdr b {
+  color: #000;
+  font-family: var(--_serviceplan-styles---demi);
+  font-weight: 400;
+}
+
+.ag-mail-body {
+  padding: 0.9rem 1.1rem;
+  margin: 0;
+  line-height: 1.6;
+}
+
+.ag-steps {
+  margin: 0;
+  padding-left: 1.25rem;
+  font-size: 0.9375rem;
+}
+
+.ag-steps li {
+  margin-bottom: 0.45rem;
+}
+
+.ag-result {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 0.9375rem;
+}
+
+.ag-result li {
+  position: relative;
+  padding: 0.28rem 0 0.28rem 1.3rem;
+}
+
+.ag-result li::before {
+  content: "+";
+  position: absolute;
+  left: 0;
+  color: var(--base-color-brand--red);
+  font-family: var(--_serviceplan-styles---bold);
+}
+
+.ag-case-facts {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  margin: 1.5rem 0 0;
+  font-size: 0.875rem;
+  color: var(--base-color-brand--text-light);
+}
+
+.ag-case-facts b {
+  display: block;
+  font-family: var(--_serviceplan-styles---demi);
+  font-weight: 400;
+  color: #000;
+}
+
+.ag-case-foot {
+  padding: 1.25rem 1.75rem 1.75rem;
+  border-top: 1px solid var(--base-color-neutral--neutral-lightest);
+}
+
+.ag-btn-case {
+  width: 100%;
+  justify-content: center;
+  font-size: 0.9875rem;
+}
+
+.ag-case-later {
+  margin: 0 0 0.75rem;
+  font-size: 0.875rem;
+  color: var(--base-color-brand--text-light);
+}
+
+/* ===== 4 Kostenlos starten: dunkles Band + Glass-Form (wie Hero-Form) ===== */
+
+.ag-form-stage {
+  background-color: var(--base-color-brand--blue);
+  background-image: url("https://cdn.prod.website-files.com/6990b006d2c582acd039bf7e/699695f69f70bd820b61a011_Container%20(3).webp");
+  background-position: 50%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-radius: var(--_serviceplan-styles---20px);
+  padding: clamp(2rem, 5vw, 4.5rem);
+  overflow: hidden;
+}
+
+.ag-form-wrap {
+  max-width: 46rem;
+  margin: 0 auto;
+  background: rgba(16, 16, 16, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: var(--_serviceplan-styles---20px);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  padding: clamp(1.75rem, 4vw, 3rem);
+  color: #fff;
+}
+
+.ag-form-wrap .ag-head {
+  margin-bottom: 2rem;
+}
+
+.ag-picker-label {
+  font-family: var(--_serviceplan-styles---demi);
+  margin: 0 0 0.75rem;
+}
+
+.ag-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.ag-chip {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  border-radius: 999px;
+  padding: 0.45rem 0.95rem;
+  font-size: 0.875rem;
+  font-family: var(--_serviceplan-styles---demi);
+  line-height: 1.2;
+}
+
+.ag-chip.is-active {
+  background: var(--base-color-brand--red);
+  color: #fff;
+}
+
+.ag-chip.is-locked {
+  border: 1px dashed rgba(255, 255, 255, 0.3);
+  color: rgba(255, 255, 255, 0.55);
+  font-family: var(--_serviceplan-styles---regular);
+}
+
+.ag-chip.is-locked small {
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.ag-picker-hint {
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.65);
+  margin: 0.9rem 0 1.75rem;
+}
+
+.ag-form-fields {
+  margin-bottom: 1.5rem;
+}
+
+.ag-field {
+  margin-bottom: 1.1rem;
+}
+
+.ag-field label {
+  display: block;
+  font-family: var(--_serviceplan-styles---demi);
+  font-size: 0.9375rem;
+  margin-bottom: 0.3rem;
+}
+
+/* Feldstil der Hauptseite: transparent, nur untere Linie */
+.ag-field input {
+  width: 100%;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--base-color-brand--color);
+  color: #fff;
+  font-family: var(--_serviceplan-styles---regular);
+  font-size: 1rem;
+  min-height: 3rem;
+  padding: 0.5rem 0;
+  outline: none;
+  border-radius: 0;
+}
+
+.ag-field input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.ag-field input:focus {
+  border-bottom-color: var(--base-color-brand--red);
+}
+
+.ag-field-hint {
+  font-size: 0.8125rem;
+  color: rgba(255, 255, 255, 0.55);
+  margin: 0.4rem 0 0;
+}
+
+.ag-error {
+  margin: 0.9rem 0 0;
+  color: #ffb3b5;
+  font-size: 0.9375rem;
+}
+
+.ag-success {
+  background: rgba(16, 16, 16, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--_serviceplan-styles---12px);
+  padding: 1.5rem;
+}
+
+.ag-success b {
+  font-family: var(--_serviceplan-styles---bold);
+  font-size: 1.125rem;
+}
+
+.ag-success p {
+  margin: 0.6rem 0 0;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Trust-Logos der Startseite (weiß/grau, für dunklen Grund gebaut) */
+.ag-trust-logos {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.25rem 1.75rem;
+  margin-top: 2rem;
+}
+
+.ag-trust-logos img {
+  height: 1.125rem;
+  width: auto;
+  opacity: 0.85;
+}
+
+.ag-form-trust {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.ag-form-note {
+  font-size: 0.8125rem;
+  color: rgba(255, 255, 255, 0.55);
+  margin: 0.9rem 0 0;
+}
+
+.ag-demo-line {
+  margin: 1.25rem 0 0;
+  font-size: 0.9375rem;
+  color: var(--base-color-brand--text-light);
+}
+
+.ag-demo-line a {
+  color: var(--base-color-brand--red);
+  font-family: var(--_serviceplan-styles---demi);
+  text-decoration: none;
+}
+
+.ag-demo-line a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.ag-demo-line-ondark {
+  color: rgba(255, 255, 255, 0.65);
+}
+
+/* ===== 5 Preise ===== */
+
+.ag-plans {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1rem;
+  align-items: stretch;
+}
+
+.ag-plan {
+  border: 1px solid var(--base-color-brand--border);
+  border-radius: var(--_serviceplan-styles---18px);
+  background: #fff;
+  padding: 1.5rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.ag-plan.is-featured {
+  box-shadow: 2px 5px 18px #f55d5d40;
+  border-color: var(--base-color-brand--red);
+}
+
+.ag-plan-name {
+  font-family: var(--_serviceplan-styles---regular);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.8125rem;
+  margin: 0 0 1rem;
+}
+
+.ag-plan-price {
+  font-family: var(--_serviceplan-styles---bold);
+  font-size: 2rem;
+  letter-spacing: -0.03em;
+  margin: 0;
+}
+
+.ag-plan-price small {
+  font-family: var(--_serviceplan-styles---regular);
+  font-size: 0.875rem;
+  letter-spacing: 0;
+  color: var(--base-color-brand--text-light);
+}
+
+.ag-plan-credits {
+  font-style: italic;
+  color: var(--base-color-brand--text-light);
+  font-size: 0.875rem;
+  margin: 0.4rem 0 1rem;
+}
+
+.ag-plan-claim {
+  font-family: var(--_serviceplan-styles---demi);
+  font-size: 0.9375rem;
+  margin: 0 0 0.9rem;
+}
+
+.ag-plan-feats {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 0.875rem;
+  color: var(--base-color-brand--text-light);
+}
+
+.ag-plan-feats li {
+  position: relative;
+  padding: 0.25rem 0 0.25rem 1.2rem;
+}
+
+.ag-plan-feats li::before {
+  content: "+";
+  position: absolute;
+  left: 0;
+  color: var(--base-color-brand--red);
+  font-family: var(--_serviceplan-styles---bold);
+}
+
+.ag-plan-note {
+  color: var(--base-color-brand--text-light);
+  font-size: 0.8125rem;
+  margin: 1.25rem 0 0;
+}
+
+.ag-tbl-heading {
+  margin-top: 4rem;
+  margin-bottom: 1.5rem;
+}
+
+.ag-tbl-scroll {
+  overflow-x: auto;
+  border: 1px solid var(--base-color-brand--border);
+  border-radius: var(--_serviceplan-styles---18px);
+}
+
+.ag-tbl-scroll table {
+  width: 100%;
+  min-width: 46rem;
+  border-collapse: collapse;
+  font-size: 0.9375rem;
+}
+
+.ag-tbl-scroll th {
+  font-family: var(--_serviceplan-styles---demi);
+  font-weight: 400;
+  text-align: left;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--base-color-neutral--neutral-lightest);
+  background: var(--base-color-brand--bg-option);
+}
+
+.ag-tbl-scroll th:last-child {
+  color: var(--base-color-brand--red);
+}
+
+.ag-tbl-scroll td {
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--base-color-neutral--neutral-lightest);
+  vertical-align: top;
+}
+
+.ag-tbl-scroll tr:last-child td {
+  border-bottom: 0;
+}
+
+.ag-dimension {
+  font-family: var(--_serviceplan-styles---demi);
+  white-space: normal;
+}
+
+.ag-generic {
+  color: var(--base-color-brand--text-light);
+}
+
+/* ===== 7 Demo-Termin (sekundär: ruhiger, gerahmter Block) ===== */
+
+.ag-demo-box {
+  max-width: 46rem;
+  margin: 0 auto;
+  border: 1px solid var(--base-color-brand--border);
+  border-radius: var(--_serviceplan-styles---20px);
+  background: var(--base-color-brand--bg-option);
+  padding: clamp(1.75rem, 4vw, 3rem);
+}
+
+.ag-demo-heading {
+  max-width: 34rem;
+}
+
+.ag-demo-facts {
+  display: flex;
+  gap: 2.5rem;
+  flex-wrap: wrap;
+  margin: 1.5rem 0 2rem;
+  font-size: 0.9375rem;
+}
+
+.ag-demo-facts b {
+  display: block;
+  font-family: var(--_serviceplan-styles---demi);
+  font-weight: 400;
+}
+
+.ag-demo-facts span {
+  color: var(--base-color-brand--text-light);
+}
+
+.ag-demo-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 1.5rem;
+}
+
+.ag-field-light input {
+  color: #000;
+  border-bottom-color: #bbb;
+  background: transparent;
+}
+
+.ag-field-light input::placeholder {
+  color: #999;
+}
+
+.ag-field-light input:focus {
+  border-bottom-color: var(--base-color-brand--red);
+}
+
+.ag-demo-box .ag-error {
+  color: #b3261e;
+}
+
+.ag-success-light {
+  background: #fff;
+  border-color: var(--base-color-brand--border);
+  color: #000;
+}
+
+.ag-success-light p {
+  color: var(--base-color-brand--text-light);
+}
+
+/* ===== 8 FAQ ===== */
+
+.ag details {
+  border-top: 1px solid var(--base-color-neutral--neutral-lightest);
+  padding: 1.1rem 0;
+}
+
+.ag details:last-of-type {
+  border-bottom: 1px solid var(--base-color-neutral--neutral-lightest);
+}
+
+.ag summary {
+  font-family: var(--_serviceplan-styles---demi);
+  font-size: 1.0625rem;
+  cursor: pointer;
+  list-style: none;
+  position: relative;
+  padding-right: 2rem;
+}
+
+.ag summary::-webkit-details-marker {
+  display: none;
+}
+
+.ag summary::after {
+  content: "+";
+  position: absolute;
+  right: 0.25rem;
+  top: 0;
+  color: var(--base-color-brand--red);
+  font-family: var(--_serviceplan-styles---bold);
+  font-size: 1.25rem;
+  line-height: 1.2;
+}
+
+.ag details[open] summary::after {
+  content: "–";
+}
+
+.ag details p {
+  margin: 0.75rem 0 0;
+  color: var(--base-color-brand--text-light);
+  max-width: 48rem;
+}
+
+.ag-faq-cta {
+  margin-top: 2.5rem;
+  text-align: center;
+}
+
+.ag-faq-cta .ag-btn {
+  display: inline-flex;
+}
+
+/* ===== Footer ===== */
+
+.ag-legal {
+  padding: 2.5rem 1.5rem 3rem;
+  text-align: center;
+  font-size: 0.8125rem;
+  color: var(--base-color-brand--text-light);
+  border-top: 1px solid var(--base-color-neutral--neutral-lightest);
+  line-height: 2;
+}
+
+.ag-legal a {
+  color: var(--base-color-brand--text-light);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.ag-legal a:hover {
+  color: #000;
+}
+
+/* ===== Responsive ===== */
+
+@media (max-width: 991px) {
+  /* Das Mobile-Hero-Bild (min-width 610px, scale 1.2) bläht sonst den
+     Textcontainer über den Viewport — Startseiten-Erbe. Hier schrumpft
+     der Container auf Zellbreite und das Bild wird full-bleed geclippt,
+     damit Bullets, Buttons und Badges nicht abgeschnitten werden. */
+  .ag .hero-text-wrap {
+    min-width: 0;
+  }
+
+  .ag .hero-text-wrap .mobile-only {
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  .ag-plans {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .ag-band-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ag-wrap {
+    padding: 0 1.5rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .ag-section {
+    padding: 3.5rem 0;
+  }
+
+  /* Die Icon-Sequenz-Zeile passt nicht in die Telefonbreite */
+  .ag-seq {
+    display: none;
+  }
+
+  .ag-eyebrow {
+    font-size: 0.8125rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .ag-bullets {
+    margin: 1.25rem 0;
+  }
+
+  .ag-bullets li {
+    font-size: 0.9375rem;
+    padding: 0.3rem 0 0.3rem 1.2rem;
+  }
+
+  .ag-bullets li::before {
+    top: 0.85rem;
+    width: 0.5rem;
+    height: 0.5rem;
+  }
+
+  .ag-btn-row {
+    gap: 0.5rem;
+    margin-bottom: 1.1rem;
+  }
+
+  .ag-btn {
+    padding: 1rem 1.25rem;
+    font-size: 1rem;
+  }
+
+  .ag-badge {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.7rem;
+  }
+
+  .ag .ag-h2 {
+    font-size: 1.75rem;
+  }
+
+  .ag-band {
+    padding: 1.75rem 1.5rem;
+    margin-bottom: 3rem;
+  }
+
+  .ag-rail {
+    grid-auto-columns: 88%;
+  }
+
+  .ag-rail-hint {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .ag-plans {
+    grid-template-columns: 1fr;
+  }
+
+  .ag-demo-fields {
+    grid-template-columns: 1fr;
+  }
+
+  .ag-btn-row .ag-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .ag-wrap {
+    padding: 0 1.25rem;
+  }
+}

@@ -11,6 +11,7 @@
     "url": "https://www.typeface.ai"
   },
   "checked": "2026-08-26",
+  "published": "2026-08-26",
   "en": {
     "title": "Writer or Typeface: two enterprise AI platforms, two different jobs",
     "metaTitle": "Writer vs Typeface (2026): prices, agents, brand control",
@@ -87,11 +88,11 @@
     "verdict": "Writer wins for a company that wants governed AI everywhere and a low-cost way to start. Typeface wins for a large brand whose problem is campaign volume and brand control across channels. A mid-size DACH marketing team is not the target of either.",
     "bridge": {
       "heading": "If you want the work done, not a platform to roll out",
-      "text": "Both platforms above need a rollout: connectors, playbooks, brand graphs, approvals. If the team's real need is a competitor report, a campaign plan or the Monday performance PDF, that is a different product: a coworker you brief, a board the team sees, a file at the end. Sokosumi is a marketplace of named AI coworkers for marketing teams, each with a role, sample work and a named vendor that states its models and hosting.",
+      "text": "Both platforms above need a rollout: connectors, playbooks, brand graphs, approvals. A competitor report, a campaign plan or the Monday performance PDF is a different product. You brief a coworker, the team sees the board, and a file lands at the end. Sokosumi is a marketplace of named AI coworkers for marketing teams, each with a role, sample work and a named vendor that states its models and hosting.",
       "points": [
         "Brief in plain language or @mention in a channel; the task shows on a shared board and ends with a finished file.",
-        "Credits only when a task runs. Free: 250 credits per seat per month, no card. Paid seats €25, €75 or €200 per month.",
-        "EU hosting available, stated per coworker. Built by Serviceplan Group with NMKR, Munich."
+        "Each task spends credits. Free: 250 credits per seat per month, no card. Paid seats €25, €75 or €200 per month.",
+        "Hosting depends on the coworker; check its profile. Built by Serviceplan Group with NMKR, Munich."
       ],
       "links": [
         "/compare/sokosumi-vs-writer",
@@ -135,7 +136,7 @@
       ],
       [
         "Preis",
-        "Starter $39 pro Nutzer monatlich oder $29 jährlich, max 5 Seats; Enterprise individuell (Drittanbieter, prüfen)",
+        "Starter 39 $ pro Nutzer monatlich oder 29 $ jährlich, max 5 Seats; Enterprise individuell (Drittanbieter, prüfen)",
         "Nicht veröffentlicht. Nur Demo und individueller Vertrag"
       ],
       [
@@ -169,7 +170,7 @@
       "points": [
         "Sie eine KI-Plattform für viele Abteilungen wollen, nicht nur Marketing.",
         "Modellkontrolle zählt: eigene Modelle, Single-Tenant-Option, externe Modelle auf Enterprise.",
-        "Sie günstig einsteigen wollen. Starter kostet $29 bis $39 pro Nutzer für bis zu fünf Personen."
+        "Sie günstig einsteigen wollen. Starter kostet 29 $ bis 39 $ pro Nutzer für bis zu fünf Personen."
       ]
     },
     "pickB": {
@@ -186,18 +187,18 @@
         "Palmyra-Modelle liegen laut unabhängigen Reviews auf allgemeinen Benchmarks unter Frontier-Modellen. Sie tauschen Top-Fähigkeit gegen Kontrolle."
       ],
       "b": [
-        "Keine öffentlichen Preise, kein Self-Serve, kein Test. Drittanbieter-Guides widersprechen sich bei Kosten (einer nennt $49 bis $99 pro Nutzer; ein anderer sechsstellige Jahresbeträge). Behandeln Sie alles als ungeprüft.",
+        "Keine öffentlichen Preise, kein Self-Serve, kein Test. Drittanbieter-Guides widersprechen sich bei Kosten (einer nennt 49 $ bis 99 $ pro Nutzer; ein anderer sechsstellige Jahresbeträge). Behandeln Sie alles als ungeprüft.",
         "Gebaut für Fortune-500-Marketingorganisationen. Ein mittelgroßes Team wird Sales Motion und Setup schwer für seine Größe finden."
       ]
     },
     "verdict": "Writer gewinnt für ein Unternehmen, das gesteuerte KI überall und einen günstigen Einstieg will. Typeface gewinnt für eine große Marke, deren Problem Kampagnenvolumen und Brand Control über Kanäle ist. Ein mittelgroßes DACH-Marketingteam ist nicht Zielgruppe der beiden.",
     "bridge": {
       "heading": "Wenn Sie Arbeit erledigt haben wollen, keine Plattform ausrollen",
-      "text": "Beide Plattformen brauchen einen Rollout: Konnektoren, Playbooks, Brand Graphs, Freigaben. Wenn das Team eigentlich einen Wettbewerbsbericht, einen Kampagnenplan oder das Montags-PDF zur Performance braucht, ist das ein anderes Produkt: ein Coworker, den Sie briefen, ein Task-Board fürs Team, am Ende eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Coworker für Marketingteams, jeweils mit Rolle, Beispielarbeit und einem benannten Anbieter, der Modelle und Hosting ausweist.",
+      "text": "Beide Plattformen brauchen einen Rollout: Konnektoren, Playbooks, Brand Graphs, Freigaben. Ein Wettbewerbsbericht, ein Kampagnenplan oder das Montags-PDF zur Performance ist ein anderes Produkt. Sie briefen einen KI-Mitarbeiter, das Team sieht das Board, am Ende steht eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Mitarbeiter für Marketingteams, jeweils mit Rolle, Beispielarbeit und einem benannten Anbieter, der Modelle und Hosting ausweist.",
       "points": [
         "Briefen Sie in klarer Sprache oder per @Mention in einem Kanal; die Aufgabe erscheint auf einem gemeinsamen Task-Board und endet mit einer fertigen Datei.",
-        "Credits nur, wenn eine Aufgabe läuft. Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25, €75 oder €200 pro Monat.",
-        "EU-Hosting verfügbar, je Coworker ausgewiesen. Gebaut von Serviceplan Group mit NMKR, München."
+        "Jede Aufgabe verbraucht Credits. Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats 25 €, 75 € oder 200 € pro Monat.",
+        "Das Hosting hängt vom KI-Mitarbeiter ab; prüfen Sie sein Profil. Gebaut von Serviceplan Group mit NMKR, München."
       ],
       "links": [
         "/compare/sokosumi-vs-writer",
@@ -219,7 +220,7 @@
       ],
       [
         "Gibt es eine leichtere Option für ein mittelgroßes Marketingteam?",
-        "Sokosumi ist ein Marktplatz für KI-Coworker, die fertige Dateien auf ein Task-Board liefern. Es startet kostenlos mit 250 Credits pro Seat und Monat und weist EU-Hosting je Coworker aus."
+        "Sokosumi ist ein Marktplatz für KI-Mitarbeiter, die fertige Dateien auf ein Task-Board liefern. Es startet kostenlos mit 250 Credits pro Seat und Monat; das Hosting hängt vom KI-Mitarbeiter ab."
       ]
     ]
   },

@@ -54,7 +54,7 @@ function facts() {
   return [
     { k: t("Type of product"), v: t("Marketplace for AI coworkers and AI agents, delivered as a web application") },
     { k: t("Audience"), v: t("Marketing teams") },
-    { k: t("Built by"), v: t("{parent}, together with {partner}", { parent: PARENT.name, partner: PARTNER.name }), html: `<a href="${PARENT.url}" rel="noreferrer">${PARENT.name}</a>, ${t("together with")} <a href="${PARTNER.url}" rel="noreferrer">${PARTNER.name}</a>` },
+    { k: t("Built by"), v: t("{parent}, together with {partner}", { parent: PARENT.name, partner: PARTNER.name }), html: `<a href="${PARENT.url}" rel="noreferrer">${PARENT.name}</a>, ${t("together with")} <a href="${PARTNER.url}" rel="noreferrer">${PARTNER.name}</a> · <a href="/serviceplan-ai">${t("How Serviceplan builds AI")}</a>` },
     { k: t("Legal entity"), v: LEGAL.name },
     { k: t("Headquarters"), v: `${LEGAL.street}, ${LEGAL.postalCode} ${t("Munich")}, ${t("Germany")}` },
     { k: t("VAT ID"), v: LEGAL.vatID },
@@ -196,14 +196,14 @@ async function render() {
     .join("");
 
   const siblings = SIBLINGS.map(
-    (s) => `<li><strong><a href="${attr(s.url)}"${s.url.startsWith(SITE) ? "" : ' rel="noreferrer"'}>${esc(s.name)}</a></strong> — ${esc(t(s.what))}</li>`,
+    (s) => `<li><strong><a href="${attr(s.url)}"${s.url.startsWith(SITE) ? "" : ' rel="noreferrer"'}>${esc(s.name)}</a></strong>: ${esc(t(s.what))}</li>`,
   ).join("");
 
   const cr = [{ label: "Home", href: "/" }, { label: t("About") }];
   return (
     pageStart({
-      title: "About Sokosumi",
-      description: "Sokosumi is a marketplace where marketing teams hire AI coworkers and AI agents. Built by Serviceplan Group with NMKR, based in Munich. Facts, pricing and contact.",
+      title: t("About Sokosumi: AI coworkers by Serviceplan and NMKR"),
+      description: t("Sokosumi is a marketplace where marketing teams hire AI coworkers and AI agents. Built by Serviceplan Group with NMKR in Munich. Facts, pricing, contact."),
       path: "/about",
       breadcrumb: cr,
       organization: organizationLd(f),

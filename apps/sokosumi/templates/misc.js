@@ -106,10 +106,25 @@ Humans sign up at https://app.sokosumi.com/signup (free plan, no card).
 
 - [Product overview](https://www.sokosumi.com/product): how briefing, the task board, chat, and outputs work
 - [AI coworkers](https://www.sokosumi.com/ai-coworkers): the roster, with public profiles per coworker
+- [AI employees, explained](https://www.sokosumi.com/ai-employees): what an AI employee is, employee vs agent vs copilot, costs, and who to hire first
 - [Template tasks](https://www.sokosumi.com/tasks): ready-to-run tasks with sample outputs and credit prices
 - [Use cases](https://www.sokosumi.com/use-cases): workflows by industry
 - [Pricing](https://www.sokosumi.com/pricing): plans and credits per seat
 - [Sitemap](https://www.sokosumi.com/sitemap.xml)
+
+## Serviceplan Group and AI (parent company dossier)
+
+- [Serviceplan Group and AI](https://www.sokosumi.com/serviceplan-ai): sourced overview of the House of AI — Insight.AI, Creative.AI, Activate.AI, Agentic.AI on a Global Data Platform — with 13 chapters on Serviceplan, Mediaplus, Plan.Net, the Masumi/Kodosumi/Sokosumi stack, AI coworkers, cases, partnerships and a dated timeline. Every claim links to a primary source.
+
+## Free tools for marketing
+
+- [llms.txt checker](https://www.sokosumi.com/tools/llms-txt): validate a site's llms.txt against the llmstxt.org format and test whether the links inside it resolve; free, no sign-up
+- [Open Graph checker](https://www.sokosumi.com/tools/og-checker): preview how any URL renders on Facebook, X, LinkedIn, WhatsApp, Slack and Discord, and report every og: and twitter: meta tag problem; free, no sign-up
+- [DESIGN.md generator](https://www.sokosumi.com/tools/design-md): analyze a public website and create a portable design-system file for AI coding agents; free, no sign-up
+- [SEO.md generator](https://www.sokosumi.com/tools/seo-md): turn any public URL into an AI-readable SEO specification with scores and fixes; free, no sign-up
+- [Marketing calculators](https://www.sokosumi.com/tools/calculators): CPM, ROAS, CTR, CPC, CPA, LTV, CAC and engagement rate calculators, each with the formula and a worked example; free, no sign-up
+- [LinkedIn text formatter](https://www.sokosumi.com/tools/linkedin-formatter): bold and italic Unicode text, bullets, a character counter and a "see more" fold preview for LinkedIn posts; free, no sign-up
+- [Meta tag generator](https://www.sokosumi.com/tools/meta-description-generator): generate meta titles and descriptions from a page URL or topic, measured against Google's pixel limits; free, no sign-up
 
 ## Developer resources
 
@@ -124,8 +139,8 @@ function press() {
   const cr = [{ label: "Home", href: "/" }, { label: "Press" }];
   return (
     pageStart({
-      title: "Press | Sokosumi",
-      description: "Press information and media contact for Sokosumi, the AI coworker marketplace by Serviceplan Group.",
+      title: "Press and media resources | Sokosumi",
+      description: shell.describe(t("Press information and media contact for Sokosumi, the AI coworker marketplace by Serviceplan Group."), [t("Logos, product facts and the people behind the company.")]),
       path: "/press",
       breadcrumb: cr,
     }) +
@@ -153,11 +168,38 @@ function press() {
     </section>` +
     shell.logoRow() +
     shell.ctaBand({
-      heading: t("See the product for yourself"),
+      heading: t("Look before you sign up"),
       subheading: t("Coworker profiles, task details, and sample files are public."),
       ctaLabel: t("Start free"),
       seed: 3,
     }) +
+    pageEnd()
+  );
+}
+
+// Where the link in our onboarding emails lands. GTM's doi_confirmed tag fires
+// on this exact path, so it must stay a real page: redirecting it (as the
+// August cutover did) silently killed the event. The page cannot see whether
+// the sender recorded a confirmation, so it does not claim one.
+function thankYou() {
+  return (
+    pageStart({
+      title: "Thanks | Sokosumi",
+      description: "Thanks for following the link from our email. Open Sokosumi and give your first task to an AI coworker.",
+      path: "/thank-you",
+      noindex: true,
+    }) +
+    `<div class="notice">
+      <span class="eyebrow">${esc(t("Thanks"))}</span>
+      <h1>${esc(t("Thanks for following the link"))}</h1>
+      <p>${esc(t("Open Sokosumi and give your first task to an AI coworker. Your free plan includes 250 credits per seat each month."))}</p>
+      <a class="btn btn-primary" href="${shell.APP}" data-analytics="open_app_click" data-analytics-location="thank_you">${esc(t("Open Sokosumi"))}</a>
+      <ul class="notice-links">
+        <li><a href="/ai-coworkers">${esc(t("AI coworkers"))}</a></li>
+        <li><a href="/use-cases">${esc(t("Use cases"))}</a></li>
+        <li><a href="/pricing">${esc(t("Pricing"))}</a></li>
+      </ul>
+    </div>` +
     pageEnd()
   );
 }
@@ -201,6 +243,22 @@ async function sitemap() {
     "/legal",
     "/list-your-agent",
     "/press",
+    "/tools",
+    "/tools/llms-txt",
+    "/tools/og-checker",
+    "/tools/design-md",
+    "/tools/seo-md",
+    "/tools/calculators",
+    "/tools/linkedin-formatter",
+    "/tools/meta-description-generator",
+    ...require("./calculators").CALCS.map((c) => `/tools/${c.slug}`),
+    "/agency-run-by-ai",
+    "/european-ai",
+    "/enterprise",
+    "/ai-employees",
+    "/alternatives/copy-ai",
+    "/alternatives/manus",
+    "/alternatives/sintra",
     ...require("./comparePairs").all().map((p) => `/compare/${p.slug}`),
   ]);
   // One collection failing is tolerable (its URLs drop out this cycle); ALL
@@ -219,6 +277,16 @@ async function sitemap() {
       return [];
     }
   };
+  // The gallery pages through every saved brand, but only the curated
+  // indexable ones belong in the sitemap — everything else carries noindex
+  // (see INDEXED_HOSTS in lib/designMdArchive.js), and a sitemap that lists
+  // pages the pages themselves refuse just burns crawl budget.
+  const archive = require("../lib/designMdArchive");
+  const analyses = await archive
+    .list()
+    .then((l) => l.filter(archive.indexable).map((e) => `/tools/design-md/analysis/${e.slug}`))
+    .catch(() => []);
+  analyses.forEach((u) => urls.add(u));
   const fetchers = [
     cms.getCoworkers,
     cms.getOffers,
@@ -237,10 +305,11 @@ async function sitemap() {
 
   // Task URLs use the coworker's PUBLIC slug; offers join on catalogSlug.
   const publicSlugByAgent = new Map();
+  const { duplicateOf } = require("./coworkers");
   for (const c of coworkers) {
     if (c.active === false) continue;
     publicSlugByAgent.set(c.catalogSlug || c.slug, c.slug);
-    urls.add(`/ai-coworkers/${c.slug}`);
+    if (!duplicateOf(c, coworkers)) urls.add(`/ai-coworkers/${c.slug}`);
   }
   for (const o of offers) {
     const pub = publicSlugByAgent.get(o.agentSlug);
@@ -273,7 +342,7 @@ async function sitemap() {
     const de = esc(SITE + dePath(u));
     // An hreflang cluster claims both members are the same page in different
     // languages, so it is only emitted where the German really is German.
-    const alternates = i18n.deIndexable(u)
+    const alternates = !u.startsWith("/tools") && i18n.deIndexable(u)
       ? `<xhtml:link rel="alternate" hreflang="en" href="${en}"/>` +
         `<xhtml:link rel="alternate" hreflang="de" href="${de}"/>` +
         `<xhtml:link rel="alternate" hreflang="x-default" href="${en}"/>`
@@ -281,10 +350,11 @@ async function sitemap() {
     return `  <url><loc>${loc === "de" ? de : en}</loc>${alternates}</url>`;
   };
   const body = [...urls]
-    .flatMap((u) => (i18n.deIndexable(u) ? [entry("en", u), entry("de", u)] : [entry("en", u)]))
+    .flatMap((u) => (!u.startsWith("/tools") && i18n.deIndexable(u) ? [entry("en", u), entry("de", u)] : [entry("en", u)]))
     .join("\n");
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n${body}\n</urlset>\n`;
 }
 
 module.exports = {
+  thankYou,
   llmsTxt, notFound, serverError, serviceUnavailable, press, robots, sitemap };

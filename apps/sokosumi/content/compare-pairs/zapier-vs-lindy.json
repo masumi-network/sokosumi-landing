@@ -11,6 +11,7 @@
     "url": "https://www.lindy.ai"
   },
   "checked": "2026-08-26",
+  "published": "2026-08-26",
   "en": {
     "title": "Zapier Agents or Lindy: agents on your apps or an assistant per person?",
     "metaTitle": "Zapier Agents vs Lindy (2026): prices, activities vs credits",
@@ -87,11 +88,11 @@
     "verdict": "Zapier Agents win for a team whose work is cross-app automation and that wants a free start and cheap team pricing. Lindy wins when each person needs a personal assistant with deeper tasks and Slack onboarding. Neither publishes EU hosting, so a European team should ask both in writing.",
     "bridge": {
       "heading": "If you want the work done, not an agent to configure",
-      "text": "Both tools above give a person an agent to set up and watch. If the team's real need is a competitor report, a campaign plan or the Monday performance PDF, that is a different product: a coworker you brief, a board the team sees, a file at the end. Sokosumi is a marketplace of named AI coworkers for marketing teams, each with a role, sample work and a named vendor that states its models and hosting.",
+      "text": "Both tools above give a person an agent to set up and watch. A competitor report, a campaign plan or the Monday performance PDF is a different product. You brief a coworker, the team sees the board, and a file lands at the end. Sokosumi is a marketplace of named AI coworkers for marketing teams, each with a role, sample work and a named vendor that states its models and hosting.",
       "points": [
         "Brief in plain language or @mention in a channel; the task shows on a shared board and ends with a finished file.",
-        "Credits only when a task runs. Free: 250 credits per seat per month, no card. Paid seats €25, €75 or €200 per month.",
-        "EU hosting available, stated per coworker. Built by Serviceplan Group with NMKR, Munich."
+        "Each task spends credits. Free: 250 credits per seat per month, no card. Paid seats €25, €75 or €200 per month.",
+        "Hosting depends on the coworker; check its profile. Built by Serviceplan Group with NMKR, Munich."
       ],
       "links": [
         "/compare/sokosumi-vs-zapier-agents",
@@ -113,7 +114,7 @@
       ],
       [
         "Is there a finished-work option for marketing teams?",
-        "Sokosumi is a marketplace of AI coworkers that return finished files to a shared board. Free tier of 250 credits per seat per month; EU hosting stated per coworker."
+        "Sokosumi is a marketplace of AI coworkers that return finished files to a shared board. Free tier of 250 credits per seat per month; hosting depends on the coworker."
       ]
     ]
   },
@@ -125,7 +126,7 @@
     "glance": [
       [
         "Für wen es passt",
-        "Teams, die bereits mit Zapier automatisieren und Agents über 8,000+ Apps wollen",
+        "Teams, die bereits mit Zapier automatisieren und Agents über 8.000+ Apps wollen",
         "Einzelpersonen und kleine Teams, die einen fertigen Assistenten in Slack, E-Mail und Kalender wollen"
       ],
       [
@@ -135,8 +136,8 @@
       ],
       [
         "Preis",
-        "Free $0; Professional ab $19.99 pro Monat jährlich ($29.99 monatlich); Team ab $69 jährlich ($103.50 monatlich) für 25 Nutzer; Enterprise individuell",
-        "Plus $29.99, Pro $99.99, Max $199.99 pro Nutzer und Monat; Enterprise individuell"
+        "Free 0 $; Professional ab 19,99 $ pro Monat jährlich (29,99 $ monatlich); Team ab 69 $ jährlich (103,50 $ monatlich) für 25 Nutzer; Enterprise individuell",
+        "Plus 29,99 $, Pro 99,99 $, Max 199,99 $ pro Nutzer und Monat; Enterprise individuell"
       ],
       [
         "Free-Plan oder Test",
@@ -160,8 +161,8 @@
       ],
       [
         "Was gezählt wird",
-        "Activities: Trigger, Wissensantwort, Action, Web Browse, Web Search, Chrome-Nachricht. 400 Free, 1,500 Pro, gemeinsam auf Team",
-        "Credits pro Nutzer: 3,000 / 15,000 / 35,000 pro Monat. Einfache Aufgabe 2 bis 250 Credits; Deep Work 250 bis 1,000; große Builds 1,000 bis 2,500"
+        "Activities: Trigger, Wissensantwort, Action, Web Browse, Web Search, Chrome-Nachricht. 400 Free, 1.500 Pro, gemeinsam auf Team",
+        "Credits pro Nutzer: 3.000 / 15.000 / 35.000 pro Monat. Einfache Aufgabe 2 bis 250 Credits; Deep Work 250 bis 1.000; große Builds 1.000 bis 2.500"
       ]
     ],
     "pickA": {
@@ -169,14 +170,14 @@
       "points": [
         "Die Aufgabe Daten bewegen und Aktionen über viele SaaS-Apps ausführen ist, und Zapier sie bereits verbindet.",
         "Sie kostenlos starten wollen. 400 Activities pro Monat reichen, um einen Agent zu testen.",
-        "Sie 25 Personen auf einem Konto für $69 pro Monat wollen statt Nutzerpreis pro Person."
+        "Sie 25 Personen auf einem Konto für 69 $ pro Monat wollen statt Nutzerpreis pro Person."
       ]
     },
     "pickB": {
       "heading": "Wählen Sie Lindy, wenn …",
       "points": [
         "Jede Person einen Assistenten braucht, der Inbox liest, Meetings bucht und Antworten entwirft.",
-        "Sie tiefere Einzelaufgaben wie Recherche und Reporting wollen, die Lindy mit 250 bis 1,000 Credits bepreist.",
+        "Sie tiefere Einzelaufgaben wie Recherche und Reporting wollen, die Lindy mit 250 bis 1.000 Credits bepreist.",
         "Ihr Team in Slack lebt und Sie möchten, dass Teammitglieder von dort beitreten und testen."
       ]
     },
@@ -187,17 +188,17 @@
       ],
       "b": [
         "Kosten sind der wichtigste G2-Kritikpunkt. Credits werden nicht übertragen, und eine fehlerhafte Schleife kann tausende Credits verbrauchen, bevor es auffällt.",
-        "Keine Hosting-Region veröffentlicht; Reviews beschreiben US-Hosting als Standard. Trustpilot-Bewertung niedrig (1.7/5), meist Billing und Support."
+        "Keine Hosting-Region veröffentlicht; Reviews beschreiben US-Hosting als Standard. Trustpilot-Bewertung niedrig (1,7/5), meist Billing und Support."
       ]
     },
     "verdict": "Zapier Agents gewinnen für ein Team, dessen Arbeit App-übergreifende Automation ist und das kostenlos starten sowie günstige Teampreise will. Lindy gewinnt, wenn jede Person einen persönlichen Assistenten mit tieferen Aufgaben und Slack-Onboarding braucht. Keines veröffentlicht EU-Hosting, daher sollte ein europäisches Team beide schriftlich fragen.",
     "bridge": {
       "heading": "Wenn Sie Arbeit erledigt haben wollen, keinen Agent konfigurieren",
-      "text": "Beide Tools geben einer Person einen Agent zum Einrichten und Überwachen. Wenn das Team eigentlich einen Wettbewerbsbericht, einen Kampagnenplan oder das Montags-PDF zur Performance braucht, ist das ein anderes Produkt: ein Coworker, den Sie briefen, ein Task-Board fürs Team, am Ende eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Coworker für Marketingteams, jeweils mit Rolle, Beispielarbeit und einem benannten Anbieter, der Modelle und Hosting ausweist.",
+      "text": "Beide Tools geben einer Person einen Agent zum Einrichten und Überwachen. Ein Wettbewerbsbericht, ein Kampagnenplan oder das Montags-PDF zur Performance ist ein anderes Produkt. Sie briefen einen KI-Mitarbeiter, das Team sieht das Board, am Ende steht eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Mitarbeiter für Marketingteams, jeweils mit Rolle, Beispielarbeit und einem benannten Anbieter, der Modelle und Hosting ausweist.",
       "points": [
         "Briefen Sie in klarer Sprache oder per @Mention in einem Kanal; die Aufgabe erscheint auf einem gemeinsamen Task-Board und endet mit einer fertigen Datei.",
-        "Credits nur, wenn eine Aufgabe läuft. Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25, €75 oder €200 pro Monat.",
-        "EU-Hosting verfügbar, je Coworker ausgewiesen. Gebaut von Serviceplan Group mit NMKR, München."
+        "Jede Aufgabe verbraucht Credits. Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats 25 €, 75 € oder 200 € pro Monat.",
+        "Das Hosting hängt vom KI-Mitarbeiter ab; prüfen Sie sein Profil. Gebaut von Serviceplan Group mit NMKR, München."
       ],
       "links": [
         "/compare/sokosumi-vs-zapier-agents",
@@ -207,11 +208,11 @@
     "faq": [
       [
         "Wie viele Agent Activities bekomme ich bei Zapier?",
-        "Free enthält 400 pro Monat, Professional 1,500, und Team teilt einen Pool über das Konto. Enterprise wird über Sales vereinbart. Activities sind getrennt von Zap Tasks."
+        "Free enthält 400 pro Monat, Professional 1.500, und Team teilt einen Pool über das Konto. Enterprise wird über Sales vereinbart. Activities sind getrennt von Zap Tasks."
       ],
       [
-        "Wie weit reichen 3,000 Lindy Credits?",
-        "Lindy bepreist Alltagstasks mit 2 bis 250 Credits, Deep Work mit 250 bis 1,000 und große Builds mit 1,000 bis 2,500. Plus deckt also einige hundert einfache Aufgaben oder wenige tiefe Aufgaben pro Nutzer und Monat ab."
+        "Wie weit reichen 3.000 Lindy Credits?",
+        "Lindy bepreist Alltagstasks mit 2 bis 250 Credits, Deep Work mit 250 bis 1.000 und große Builds mit 1.000 bis 2.500. Plus deckt also einige hundert einfache Aufgaben oder wenige tiefe Aufgaben pro Nutzer und Monat ab."
       ],
       [
         "Hostet eines Daten in der EU?",
@@ -219,7 +220,7 @@
       ],
       [
         "Gibt es eine Fertigarbeits-Option für Marketingteams?",
-        "Sokosumi ist ein Marktplatz für KI-Coworker, die fertige Dateien auf ein gemeinsames Task-Board liefern. Free-Plan mit 250 Credits pro Seat und Monat; EU-Hosting je Coworker ausgewiesen."
+        "Sokosumi ist ein Marktplatz für KI-Mitarbeiter, die fertige Dateien auf ein gemeinsames Task-Board liefern. Free-Plan mit 250 Credits pro Seat und Monat; das Hosting hängt vom KI-Mitarbeiter ab."
       ]
     ]
   },

@@ -89,6 +89,30 @@ Key events on the marketing side: `sign_up_click`, `talk_to_sales_click`,
 `generate_lead`. `talk_to_sales_click` must be starred in Admin → Events once it
 has fired for the first time (GA4 only lists events it has seen).
 
+## Internal traffic
+
+Team members open any page once with `?internal=1`. That sets
+`sokosumi_internal=1` on `.sokosumi.com` for a year, and GTM is not loaded
+while it is set (`?internal=0` clears it). Before this, a handful of team and
+QA browsers produced thousands of app pageviews a month (e.g. 14 users with
+9,142 app views from one town in Q3 2026). The app will honour the same cookie
+once masumi-network/sokosumi#5259 is merged; until then only www is excluded.
+
+## Email link landing (`confirmation_link_opened`, formerly `doi_confirmed`)
+
+The confirmation link in our onboarding emails (sent from outside this repo and
+the app; referrers show Gmail and Postmark's link tracker) lands on
+`/thank-you`. GTM fires `confirmation_link_opened` on a pageview whose path is
+exactly `/thank-you` or `/de/thank-you` (v35 path rule; the event was called
+`doi_confirmed` until v37 on 27 Sep 2026, so older reports use that name). The August 2026 cutover
+redirected the page to `/` and the event stopped for seven weeks; it is a real
+noindex page again.
+
+The page itself says only "Thanks for following the link"; it does not
+claim a confirmation it cannot see. Read the event as "someone opened the
+link", not as a verified opt-in: a mail scanner, a repeat click or a typed URL counts too. A verified
+count needs the sending system to confirm the token server-side.
+
 ## Reading the reports honestly
 
 - **Always split by `hostName`.** The landing page and the app share one
@@ -105,6 +129,32 @@ has fired for the first time (GA4 only lists events it has seen).
   then publish). `gtm-container.json` is a stale 2025 snapshot — the live
   container has ~50 tags; trust the GTM UI, not the file.
 
+GTM's `GA4 - generate_lead` tag fires on the `ce - generate_lead` custom
+event (since container v34; before that it only listened for the old Webflow
+form, so no lead ever reached GA4).
+
+Only a stored lead counts. After the CMS accepts a submission the server adds a
+signed receipt (`&r=…`, `lib/leadReceipt.js`, valid 15 minutes) to the
+`?sent=1` redirect, and the success state renders the event attributes only
+when that receipt verifies. Spam and honeypot hits still see the thank-you text
+but carry no receipt, and a bare `?sent=1` URL fires nothing. Load events
+(the receipt, `view_pricing`) wait for analytics consent: they fire at once
+when consent is stored, or when the banner reports a decision (`consent.js`
+dispatches `soko:consent`), so a visitor who accepts after the page loaded is
+still counted and one who refuses is not. Only then is the receipt marked as
+spent in localStorage, so a reload does not count twice. Clicking an element
+with `data-analytics-on="load"` never fires it again.
+
+**Sales vs other forms.** `generate_lead` fires for sales, support and agent
+listing forms; `form_name` tells them apart. Only a sales inquiry is a
+conversion: GTM (v36) sends a separate `sales_inquiry` GA4 event, and the Ads
+and LinkedIn lead tags fire on `generate_lead` with `form_name =
+sales_inquiry` only. `sales_inquiry` is the GA4 key event; `generate_lead` is
+not.
+
+**User-ID.** Every GA4 event tag carries `user_id = {{DLV - user_id}}` (v36).
+Re-firing the Google tag on `set_user_id` alone did not put `uid` on later
+hits; the event parameter does.
 `generate_lead` fires on the server-rendered `?sent=1` state, not on the submit
 click, so it counts submissions the server actually accepted. A click handler
 would also count the ones that failed validation.

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Header, Footer } from "@summation/shared";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/privacy" },
   title: "Privacy Policy",
   description: "Privacy policy and data protection information for Masumi.",
 };

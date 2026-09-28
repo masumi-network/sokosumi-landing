@@ -11,6 +11,7 @@
     "url": "https://writer.com"
   },
   "checked": "2026-08-26",
+  "published": "2026-08-26",
   "en": {
     "title": "Jasper or Writer: marketing tool or enterprise AI platform?",
     "metaTitle": "Jasper vs Writer (2026): prices, agents, governance",
@@ -87,11 +88,11 @@
     "verdict": "Jasper wins for a marketing team that wants content tools it can buy today. Writer wins for an enterprise that wants governed AI across departments and is ready for a custom contract. If you are five people testing, Writer Starter is the cheaper entry.",
     "bridge": {
       "heading": "If you want the work done, not a chat window",
-      "text": "Both tools above give a person a place to prompt or an agent to build. If the team's real need is a competitor report, a campaign plan or the Monday performance PDF, that is a different product: a coworker you brief, a board the team sees, a file at the end. Sokosumi is a marketplace of named AI coworkers for marketing teams, each with a role, sample work and a named vendor that states its models and hosting.",
+      "text": "Both tools above give a person a place to prompt or an agent to build. A competitor report, a campaign plan or the Monday performance PDF is a different product. You brief a coworker, the team sees the board, and a file lands at the end. Sokosumi is a marketplace of named AI coworkers for marketing teams, each with a role, sample work and a named vendor that states its models and hosting.",
       "points": [
         "Brief in plain language or @mention in a channel; the task shows on a shared board and ends with a finished file (PDF, deck, spreadsheet, dashboard).",
-        "Credits only when a task runs. Free: 250 credits per seat per month, no card. Paid seats €25, €75 or €200 per month.",
-        "EU hosting available, stated per coworker. Built by Serviceplan Group with NMKR, Munich."
+        "Each task spends credits. Free: 250 credits per seat per month, no card. Paid seats €25, €75 or €200 per month.",
+        "Hosting depends on the coworker; check its profile. Built by Serviceplan Group with NMKR, Munich."
       ],
       "links": [
         "/compare/sokosumi-vs-jasper",
@@ -113,7 +114,7 @@
       ],
       [
         "What if we just want finished marketing work?",
-        "Sokosumi is a third option: named AI coworkers you brief, a shared task board and a finished file at the end. Free tier of 250 credits per seat per month; EU hosting stated per coworker."
+        "Sokosumi is a third option: named AI coworkers you brief, a shared task board and a finished file at the end. Free tier of 250 credits per seat per month; hosting depends on the coworker."
       ]
     ]
   },
@@ -135,8 +136,8 @@
       ],
       [
         "Preis",
-        "Pro $69 pro Seat monatlich oder $59 jährlich; Business individuell",
-        "Starter $39 pro Nutzer monatlich oder $29 jährlich, max 5 Seats; Enterprise individuell (Drittanbieter, prüfen: writer.com blockierte Abruf)"
+        "Pro 69 $ pro Seat monatlich oder 59 $ jährlich; Business individuell",
+        "Starter 39 $ pro Nutzer monatlich oder 29 $ jährlich, max 5 Seats; Enterprise individuell (Drittanbieter, prüfen: writer.com blockierte Abruf)"
       ],
       [
         "Free-Plan oder Test",
@@ -169,7 +170,7 @@
       "points": [
         "Der Käufer die Marketingleitung ist, nicht IT, und die Aufgabe Content ist: Blogs, Ads, E-Mail, Social, Bilder.",
         "Sie Brand Voice und Langform-Editor für Marketer wollen statt eines allgemeinen Agent Studio.",
-        "US-Hosting und ein Seat-Preis von $59 bis $69 für Sie passen."
+        "US-Hosting und ein Seat-Preis von 59 $ bis 69 $ für Sie passen."
       ]
     },
     "pickB": {
@@ -177,13 +178,13 @@
       "points": [
         "Sie eine Plattform für viele Abteilungen mit SSO, Audit und Knowledge Graph über Unternehmensdaten wollen.",
         "Modellkontrolle wichtig ist: Writer betreibt eigene Palmyra-Modelle und bietet Single-Tenant-Deployment auf Enterprise.",
-        "Sie günstig testen wollen. Starter kostet $29 bis $39 pro Nutzer für bis zu fünf Personen mit 14-Tage-Test."
+        "Sie günstig testen wollen. Starter kostet 29 $ bis 39 $ pro Nutzer für bis zu fünf Personen mit 14-Tage-Test."
       ]
     },
     "limits": {
       "a": [
         "Die Funktionen, die Jasper 'agentic' machen (eigene Agents, Deep Research, GEO, API), brauchen Business ohne öffentlichen Preis.",
-        "Reviews sind gespalten: 4.7/5 auf G2, aber 3.4/5 auf Trustpilot, wo Billing, Kündigung und die Preiserhöhung 2023 weiter Kritik auslösen."
+        "Reviews sind gespalten: 4,7/5 auf G2, aber 3,4/5 auf Trustpilot, wo Billing, Kündigung und die Preiserhöhung 2023 weiter Kritik auslösen."
       ],
       "b": [
         "Starter ist hart begrenzt: fünf Seats, fünf Playbooks, drei aktive Konnektoren, 1 GB Knowledge-Graph-Speicher. Ernsthafte Nutzung bedeutet Enterprise und Sales-Zyklus.",
@@ -193,11 +194,11 @@
     "verdict": "Jasper gewinnt für ein Marketingteam, das Content-Tools heute kaufen will. Writer gewinnt für ein Unternehmen, das gesteuerte KI abteilungsübergreifend will und bereit für einen individuellen Vertrag ist. Wenn Sie zu fünft testen, ist Writer Starter der günstigere Einstieg.",
     "bridge": {
       "heading": "Wenn Sie Arbeit erledigt haben wollen, kein Chatfenster",
-      "text": "Beide Tools geben einer Person einen Ort zum Prompten oder einen Agent zum Bauen. Wenn das Team eigentlich einen Wettbewerbsbericht, einen Kampagnenplan oder das Montags-PDF zur Performance braucht, ist das ein anderes Produkt: ein Coworker, den Sie briefen, ein Task-Board fürs Team, am Ende eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Coworker für Marketingteams, jeweils mit Rolle, Beispielarbeit und einem benannten Anbieter, der Modelle und Hosting ausweist.",
+      "text": "Beide Tools geben einer Person einen Ort zum Prompten oder einen Agent zum Bauen. Ein Wettbewerbsbericht, ein Kampagnenplan oder das Montags-PDF zur Performance ist ein anderes Produkt. Sie briefen einen KI-Mitarbeiter, das Team sieht das Board, am Ende steht eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Mitarbeiter für Marketingteams, jeweils mit Rolle, Beispielarbeit und einem benannten Anbieter, der Modelle und Hosting ausweist.",
       "points": [
         "Briefen Sie in klarer Sprache oder per @Mention in einem Kanal; die Aufgabe erscheint auf einem gemeinsamen Task-Board und endet mit einer fertigen Datei (PDF, Deck, Spreadsheet, Dashboard).",
-        "Credits nur, wenn eine Aufgabe läuft. Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25, €75 oder €200 pro Monat.",
-        "EU-Hosting verfügbar, je Coworker ausgewiesen. Gebaut von Serviceplan Group mit NMKR, München."
+        "Jede Aufgabe verbraucht Credits. Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats 25 €, 75 € oder 200 € pro Monat.",
+        "Das Hosting hängt vom KI-Mitarbeiter ab; prüfen Sie sein Profil. Gebaut von Serviceplan Group mit NMKR, München."
       ],
       "links": [
         "/compare/sokosumi-vs-jasper",
@@ -207,7 +208,7 @@
     "faq": [
       [
         "Veröffentlicht Writer seine Preise?",
-        "Nur teilweise. writer.com blockierte unseren Abruf; ein Drittanbieter-Guide vom May 2026 nennt Starter mit $39 pro Nutzer monatlich oder $29 jährlich, begrenzt auf fünf Seats. Enterprise ist individuell. Prüfen Sie writer.com/plans."
+        "Nur teilweise. writer.com blockierte unseren Abruf; ein Drittanbieter-Guide vom May 2026 nennt Starter mit 39 $ pro Nutzer monatlich oder 29 $ jährlich, begrenzt auf fünf Seats. Enterprise ist individuell. Prüfen Sie writer.com/plans."
       ],
       [
         "Welches Tool hat eigene KI-Modelle?",
@@ -219,7 +220,7 @@
       ],
       [
         "Was, wenn wir nur fertige Marketingarbeit wollen?",
-        "Sokosumi ist eine dritte Option: benannte KI-Coworker, die Sie briefen, ein gemeinsames Task-Board und am Ende eine fertige Datei. Free-Plan mit 250 Credits pro Seat und Monat; EU-Hosting je Coworker ausgewiesen."
+        "Sokosumi ist eine dritte Option: benannte KI-Mitarbeiter, die Sie briefen, ein gemeinsames Task-Board und am Ende eine fertige Datei. Free-Plan mit 250 Credits pro Seat und Monat; das Hosting hängt vom KI-Mitarbeiter ab."
       ]
     ]
   },

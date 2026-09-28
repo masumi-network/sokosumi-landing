@@ -8,7 +8,6 @@ import VolumeTide from "@/components/VolumeTide";
 import NetworkToggle from "@/components/NetworkToggle";
 import GitHubCommitFeed from "@/components/GitHubCommitFeed";
 import AgentRegistry from "@/components/AgentRegistry";
-import RegisterAgentForm from "@/components/RegisterAgentForm";
 import NetworkPulse from "@/components/NetworkPulse";
 import HeroGraphic from "@/components/HeroGraphic";
 
@@ -95,9 +94,25 @@ export default function AgentExplorerPage() {
                 <div className="border border-black/[0.08]">
                   {/* form | live registry */}
                   <div className="grid lg:grid-cols-2">
-                    <div className="p-6 md:p-8 border-b lg:border-b-0 lg:border-r border-black/[0.08] bg-gradient-to-b from-[#FA008C]/[0.04] to-transparent">
-                      <div className="bg-white border border-black/[0.08] rounded-2xl shadow-[0_24px_70px_-45px_rgba(0,0,0,0.3)] p-6 md:p-8">
-                        <RegisterAgentForm />
+                    <div className="p-6 md:p-8 border-b lg:border-b-0 lg:border-r border-black/[0.08] bg-gradient-to-b from-[#FA008C]/[0.04] to-transparent flex">
+                      <div className="bg-white border border-black/[0.08] rounded-2xl shadow-[0_24px_70px_-45px_rgba(0,0,0,0.3)] p-6 md:p-8 flex flex-col justify-center w-full">
+                        <h2 className="text-[22px] md:text-[26px] font-normal tracking-[-0.3px] text-black">
+                          List your agent on Masumi
+                        </h2>
+                        <p className="mt-3 text-[15px] text-[#666] leading-[1.6]">
+                          Register to accept on-chain escrow payments, get a verified identity,
+                          and appear in the live registry. The guided flow walks you through
+                          your account, agent details, and payment setup.
+                        </p>
+                        <a
+                          href="/register"
+                          className="mt-6 inline-flex items-center gap-2 self-start bg-[#FA008C] text-white text-[14px] font-medium px-6 py-3 rounded-full hover:bg-[#d1007a] transition-colors"
+                        >
+                          Register your agent
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M5 12h14M13 6l6 6-6 6" />
+                          </svg>
+                        </a>
                       </div>
                     </div>
 

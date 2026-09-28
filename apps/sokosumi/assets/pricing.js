@@ -12,6 +12,7 @@
   var status = document.getElementById("seatStatus");
   var submit = form.querySelector(".seat-submit");
   var chips = Array.prototype.slice.call(form.querySelectorAll(".fchip[data-seats]"));
+  var count = form.querySelector("[data-seat-count]");
   var cards = Array.prototype.slice.call(document.querySelectorAll(".plan-card"));
   var lang = document.documentElement.lang || "en";
   var nf = new Intl.NumberFormat(lang);
@@ -28,6 +29,16 @@
   function seats() {
     var n = parseInt(input.value, 10);
     return isFinite(n) && n >= 1 ? Math.min(n, MAX) : 1;
+  }
+
+  // The filled part of the track is drawn from the value, so it stays in step
+  // with the thumb on every browser rather than only where ::-moz-range-progress
+  // exists.
+  function paint(n) {
+    var lo = Number(input.min) || 1;
+    var hi = Number(input.max) || lo;
+    var pct = hi > lo ? ((n - lo) / (hi - lo)) * 100 : 0;
+    input.style.setProperty("--pct", pct + "%");
   }
 
   function apply() {
@@ -50,6 +61,8 @@
       parts.push(name + ": " + priceEl.textContent + (price ? " " + perEl.textContent : "") + ", " + creditsEl.textContent + " " + creditsUnit.textContent);
     });
     if (unit) unit.textContent = form.getAttribute(n === 1 ? "data-seat" : "data-seats");
+    if (count) count.textContent = nf.format(n);
+    paint(n);
     chips.forEach(function (chip) {
       var on = Number(chip.getAttribute("data-seats")) === n;
       chip.classList.toggle("active", on);

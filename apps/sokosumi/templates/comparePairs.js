@@ -1,6 +1,9 @@
 // /compare/<a>-vs-<b> — third-party style pages comparing two tools we do not
 // sell, with a clearly separated note that Sokosumi is a third option when the
-// team wants finished marketing work. Content lives in
+// team wants finished marketing work. That note, the logo row and the
+// testimonial share one dark band (.pair-offer) so the page reads
+// unambiguously as neutral comparison first, vendor second - the same
+// treatment .blk-cta and .sp-bridge already use for "this is the offer". Content lives in
 // content/compare-pairs/<slug>.json (see _BRIEF.md there): English written
 // from primary sources, German added by a copy pass. A pair without German
 // serves English on /de and stays out of the German index.
@@ -13,6 +16,10 @@ const blocks = require("./blocks");
 const i18n = require("../lib/i18n");
 const { t } = i18n;
 const { esc, attr, icon, pageStart, pageEnd, SITE } = shell;
+
+// Lazy require: compare.js requires this module at load, so taking it at the
+// top here would close the cycle before either module finished its exports.
+const compareTpl = () => require("./compare");
 
 const DIR = path.join(__dirname, "..", "content", "compare-pairs");
 const CMS_MEDIA = `${cms.CMS_URL}/api/media/file/compare-logo-`;
@@ -87,7 +94,10 @@ async function detail(ctx) {
   const p = get(ctx.params.slug);
   if (!p) return null;
   const { c, translated } = copy(p);
-  const testimonials = await cms.getTestimonials({ draft: ctx.preview }).catch(() => []);
+  const [testimonials, cmsComparisons] = await Promise.all([
+    cms.getTestimonials({ draft: ctx.preview }).catch(() => []),
+    cms.getComparisons({ draft: ctx.preview }).catch(() => []),
+  ]);
 
   const table = {
     blockType: "comparisonTable",
@@ -109,11 +119,15 @@ async function detail(ctx) {
   return (
     pageStart({
       title: c.metaTitle || c.title,
-      description: (c.description || "").slice(0, 155),
+      description: shell.truncate(c.description, 155),
       path: `/compare/${p.slug}`,
       breadcrumb: cr,
       noindex: !translated,
       og: { type: "pair", a: p.a.name, b: p.b.name, logoA: logoUrl(p.a.key), logoB: logoUrl(p.b.key), title: c.title, sub: "" },
+      // published comes from the file's first commit, checked from the last
+      // fact review — the two are genuinely different dates and Google's
+      // Article result wants both.
+      article: { published: p.published || undefined, modified: p.checked || undefined },
       jsonld: [
         blocks.faqJsonLd(faqs),
         {
@@ -152,6 +166,7 @@ async function detail(ctx) {
       <h2>${esc(t("{a} or {b}: the verdict", { a: p.a.name, b: p.b.name }))}</h2>
       <p class="pair-verdict-text">${esc(c.verdict)}</p>
     </section>
+    <section class="pair-offer">
     <section class="page-section pair-bridge" id="want-alternatives" data-reveal>
       <div class="pair-bridge-box">
         <div class="pair-bridge-head"><span class="eyebrow">${esc(t("A third option"))}</span><span class="cmp-mark cmp-mark-logo"><img src="/assets/apple-touch-icon.png" alt="" width="24" height="24">Sokosumi</span></div>
@@ -165,6 +180,7 @@ async function detail(ctx) {
       </div>
     </section>` +
     shell.proof(testimonials, p.slug.length, { heading: t("Teams already on Sokosumi") }) +
+    `</section>` +
     (faqs.length
       ? `<section class="blk" data-reveal><div class="blk-head"><h2>${esc(t("{a} vs {b}: questions", { a: p.a.name, b: p.b.name }))}</h2></div><div class="blk-faq">${faqs
           .map((f) => `<details class="faq-item"><summary>${esc(f.question)}<span class="faq-x">+</span></summary><p class="faq-a">${esc(f.answer)}</p></details>`)
@@ -173,6 +189,17 @@ async function detail(ctx) {
     (p.sources && p.sources.length
       ? `<section class="page-section pair-sources"><h2>${esc(t("Sources"))}</h2><ol>${p.sources.map((s) => `<li><a href="${attr(s)}" rel="noreferrer nofollow" target="_blank">${esc(s.replace(/^https?:\/\//, "").slice(0, 80))}</a></li>`).join("")}</ol><p class="pair-sources-note">${esc(t("Prices and features as published by the vendors on the date checked. Tell us if something changed."))}</p></section>`
       : "") +
+    (() => {
+      const cmp = compareTpl();
+      // Both sides of the pair, so a coding-vs-assistant page surfaces both.
+      const groups = [(cmp.groupOf(p.a.key) || {}).id, (cmp.groupOf(p.b.key) || {}).id];
+      const universe = cmp.comparisonUniverse(cmsComparisons, all());
+      return cmp.relatedRail(p.slug, cmp.neighbours(p.slug, groups, universe, "pair"), {
+        heading: t("Other comparisons"),
+        sub: t("Pick another tool to compare."),
+      });
+    })() +
+    shell.readNext(p.slug.startsWith("langdock-vs-") ? [["/guides/langdock-alternatives", "Langdock alternatives: 6 options for EU companies", "Prices, hosting and fit for six workspaces EU companies consider."]] : null) +
     shell.ctaBand({
       heading: t("See the difference on one task"),
       subheading: t("250 free credits per seat. Brief a coworker, get the file back, and compare."),

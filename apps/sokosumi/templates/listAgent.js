@@ -18,6 +18,7 @@ const leads = require("../lib/leads");
 const i18n = require("../lib/i18n");
 const { t } = i18n;
 const { esc, attr, icon, pageStart, pageEnd } = shell;
+const leadReceipt = require("../lib/leadReceipt");
 
 const MASUMI_DOCS = "https://www.masumi.network/dev/masumi";
 const SUPPORT_PAGE = "/contact/support";
@@ -234,8 +235,8 @@ function form(values, error) {
   </form>`;
 }
 
-function sentState() {
-  return `<div class="notice" data-reveal data-analytics="generate_lead" data-analytics-on="load" data-analytics-form-name="agent_listing">
+function sentState(receipt) {
+  return `<div class="notice" data-reveal${leadReceipt.analyticsAttrs(receipt, "agent_listing")}>
     <span class="eyebrow">${esc(t("Submission received"))}</span>
     <h1>${esc(t("Thanks — your agent is with the team."))}</h1>
     <p>${esc(t("We will review the listing and come back to you. If you need to add anything, reply to the confirmation or write to"))} <a href="mailto:${attr(leads.SUPPORT_TO)}">${esc(leads.SUPPORT_TO)}</a>.</p>
@@ -265,7 +266,7 @@ async function render(ctx) {
       breadcrumb: cr,
     }) +
     (sent
-      ? sentState()
+      ? sentState(get("r"))
       : `<div class="page-head" data-reveal>
         <span class="eyebrow">${esc(t("For vendors"))}</span>
         <h1>${esc(t("Sokosumi Agent Listing"))}</h1>

@@ -6,7 +6,7 @@
 
 const shell = require("./shell");
 const cms = require("../lib/cms");
-const { t, tp, locale } = require("../lib/i18n");
+const { t, tp, tCategory, locale } = require("../lib/i18n");
 const { esc, attr, icon, avatar, outputMeta, markdownLite, pageStart, pageEnd, APP, APP_SIGNUP } = shell;
 
 function offerOutputs(offer) {
@@ -127,12 +127,12 @@ function samplePreview(offer) {
 function taskCard(offer, coworker) {
   const om = outputMeta(offer.output);
   const href = `/ai-coworkers/${encodeURIComponent(coworker.slug)}/tasks/${encodeURIComponent(offer.slug)}`;
-  const searchText = [offer.title, offer.description, offer.category, coworker.name, coworker.role]
+  const searchText = [offer.title, offer.description, offer.category, tCategory(offer.category), coworker.name, coworker.role]
     .filter(Boolean)
     .join(" ")
     .toLowerCase();
   return `<a class="offer-card task-hit" href="${attr(href)}" data-cat="${attr(offer.category || "")}" data-out="${attr(offer.output || "text")}" data-text="${attr(searchText)}">
-    <div class="offer-meta"><span>${esc(offer.category ? t(offer.category) : t("Task"))}</span><span class="offer-type" data-out="${attr(offer.output || "text")}">${icon(om.icon, 12)}${esc(om.label)}</span></div>
+    <div class="offer-meta"><span>${esc(offer.category ? tCategory(offer.category) : t("Task"))}</span><span class="offer-type" data-out="${attr(offer.output || "text")}">${icon(om.icon, 12)}${esc(om.label)}</span></div>
     <div class="offer-title">${esc(offer.title)}</div>
     ${offer.description ? `<div class="offer-desc">${esc(offer.description)}</div>` : ""}
     <div class="offer-foot">${avatar(coworker, "sm")}<span>${esc(coworker.name)}</span><span class="go">${icon("arrow-up-right", 15)}</span></div>
@@ -165,7 +165,7 @@ async function browse(ctx) {
 
   const chips =
     `<button type="button" class="fchip" data-cat="">${esc(t("All"))} <span>${hits.length}</span></button>` +
-    cats.map(([name, n]) => `<button type="button" class="fchip" data-cat="${attr(name)}">${esc(t(name))} <span>${n}</span></button>`).join("");
+    cats.map(([name, n]) => `<button type="button" class="fchip" data-cat="${attr(name)}" data-label="${attr(tCategory(name))}">${esc(tCategory(name))} <span>${n}</span></button>`).join("");
 
   const coworkerCount = new Set(hits.map(({ c }) => c.slug)).size;
   const countLine = tp(
@@ -177,7 +177,14 @@ async function browse(ctx) {
 
   const q = ctx.query || {};
   const getQ = (k) => (typeof q.get === "function" ? q.get(k) : q[k]) || "";
-  const init = JSON.stringify({ category: getQ("category"), q: getQ("q") }).replace(/</g, "\\u003c");
+  const init = JSON.stringify({
+    category: getQ("category"),
+    q: getQ("q"),
+    one: t("{n} task"),
+    many: t("{n} tasks"),
+    inCat: t(" in {cat}"),
+    forQ: t(" for “{q}”"),
+  }).replace(/</g, "\\u003c");
 
   const cr = [{ label: "Home", href: "/" }, { label: "Template tasks" }];
   return (
@@ -276,7 +283,7 @@ function taskFacts(offer, c, om, vn, vs) {
   const rows = [[t("Type"), t("Template task")]];
   rows.push([t("Run by"), `<a href="/ai-coworkers/${encodeURIComponent(c.slug)}">${esc(c.name)}</a>${c.role ? `, ${esc(c.role)}` : ""}`]);
   if (vn) rows.push([t("Vendor"), vs ? `<a href="/vendors/${encodeURIComponent(vs)}">${esc(vn)}</a>` : esc(vn)]);
-  if (offer.category) rows.push([t("Category"), esc(t(offer.category))]);
+  if (offer.category) rows.push([t("Category"), esc(tCategory(offer.category))]);
   rows.push([t("Output format"), esc(om.label)]);
   if (offer.deliverable) rows.push([t("Deliverable"), esc(offer.deliverable)]);
   rows.push([t("Marketplace"), `<a href="/">Sokosumi</a>`]);
@@ -318,7 +325,11 @@ async function detail(ctx) {
   return (
     pageStart({
       title: t("{name} | {role}", { name: offer.title, role: c.name }),
-      description: shell.describe(offer.description || t("{title}, a template task run by {name} on Sokosumi.", { title: offer.title, name: c.name }), t("A template task by {name} on Sokosumi: brief it in plain language, follow it on the board, get the file back.", { name: c.name })),
+      description: shell.describe(offer.metaDescription || offer.description || t("{title}, a template task run by {name} on Sokosumi.", { title: offer.title, name: c.name }), [
+        t("A template task by {name} on Sokosumi: brief it in plain language, follow it on the board, get the file back.", { name: c.name }),
+        t("A template task by {name} on Sokosumi: brief it and get the file back.", { name: c.name }),
+        t("A template task run by {name} on Sokosumi.", { name: c.name }),
+      ]),
       path: `/ai-coworkers/${c.slug}/tasks/${offer.slug}`,
       breadcrumb: cr,
       jsonld: {
@@ -326,7 +337,7 @@ async function detail(ctx) {
         "@type": "Service",
         name: offer.title,
         description: offer.description || undefined,
-        category: offer.category || undefined,
+        category: offer.category ? tCategory(offer.category) : undefined,
         provider: { "@id": `${shell.SITE}/ai-coworkers/${c.slug}#app` },
         url: `${shell.SITE}/ai-coworkers/${c.slug}/tasks/${offer.slug}`,
       },
@@ -335,7 +346,7 @@ async function detail(ctx) {
       <div data-reveal>${samplePreview(offer)}</div>
       <aside class="task-side" data-reveal style="--i:1">
         <div>
-          <div class="meta-row">${offer.category ? `<span class="kicker">${esc(t(offer.category))}</span>` : ""}<span class="offer-type" data-out="${attr(offer.output || outs[0].type || "text")}">${icon(om.icon, 13)}${esc(om.label)}</span></div>
+          <div class="meta-row">${offer.category ? `<span class="kicker">${esc(tCategory(offer.category))}</span>` : ""}<span class="offer-type" data-out="${attr(offer.output || outs[0].type || "text")}">${icon(om.icon, 13)}${esc(om.label)}</span></div>
           <h1 style="margin-top:8px">${esc(offer.title)}</h1>
         </div>
         ${offer.description ? `<p class="lede">${esc(offer.description)}</p>` : ""}

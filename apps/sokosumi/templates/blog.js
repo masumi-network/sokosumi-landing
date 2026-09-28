@@ -43,15 +43,15 @@ async function index(ctx) {
   const cr = [{ label: "Home", href: "/" }, { label: "Blog" }];
   return (
     pageStart({
-      title: t("Blog | Sokosumi"),
-      description: "Articles, announcements, and press from the team behind your AI coworkers \u2014 how the marketplace works, what teams brief, and what shipped recently.",
+      title: t("Blog: AI marketing, agents and coworkers | Sokosumi"),
+      description: "Articles, announcements, and press from the team behind your AI coworkers: how the marketplace works, what teams brief, and what shipped recently.",
       path: "/blog",
       breadcrumb: cr,
       jsonld: shell.itemListLd("Sokosumi blog", "/blog", posts.map((p) => ({ name: p.title, path: `/blog/${p.slug}` }))),
     }) +
     `<div class="page-head" data-reveal>
       <h1>${esc(t("The Sokosumi blog"))}</h1>
-      <p class="sub">${esc(t("Articles, announcements, and press from the team behind your AI coworkers \u2014 how the marketplace works, what teams brief, and what shipped recently."))}</p>
+      <p class="sub">${esc(t("Articles, announcements, and press from the team behind your AI coworkers: how the marketplace works, what teams brief, and what shipped recently."))}</p>
     </div>` +
     (posts.length
       ? `<div class="page-section flush" data-reveal>
@@ -86,7 +86,7 @@ async function detail(ctx) {
   return (
     pageStart({
       title: t("{title} | Sokosumi", { title: p.title }),
-      description: (p.description || "").slice(0, 155),
+      description: shell.truncate(p.description, 155),
       path: `/blog/${p.slug}`,
       og: { type: "article", eyebrow: t("Blog"), title: p.title, sub: p.description || "", img: cover || "" },
       breadcrumb: cr,
@@ -127,8 +127,8 @@ async function detail(ctx) {
     </div>` +
     shell.logoRow() +
     shell.ctaBand({
-      heading: t("See it for yourself"),
-      subheading: t("Run one real task and judge the output for yourself."),
+      heading: t("Try one task"),
+      subheading: t("Brief a coworker and judge the output."),
       ctaLabel: t("Start free"),
       seed: p.title.length,
     }) +

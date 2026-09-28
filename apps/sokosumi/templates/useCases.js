@@ -3,6 +3,7 @@
 // `industries` taxonomy. Detail pages are block-based (see blocks.js).
 
 const shell = require("./shell");
+const deliverable = require("./deliverable");
 const cms = require("../lib/cms");
 const blocks = require("./blocks");
 const art = require("./art");
@@ -34,7 +35,8 @@ const UC_PHOTOS = new Set([
 function ucVisual(slug) {
   return UC_PHOTOS.has(slug) ? "/assets/use-case-img/" + slug + ".webp" : gradFor(slug);
 }
-const { t, tp } = require("../lib/i18n");
+const i18n = require("../lib/i18n");
+const { t, tp } = i18n;
 const { esc, attr, icon, avatar, pageStart, pageEnd } = shell;
 
 // Populated industry relations only (depth 1 gives objects; ids are skipped).
@@ -47,9 +49,39 @@ function industriesOf(uc) {
 // thumbnail size, so the card previews the page it links to — no single
 // coworker fronts the work. `crew` (the resolved coworker docs behind
 // relatedAgents) is optional; the card degrades to text without it.
+// What the workflow hands back, read off the copy. Honest and cheap: no
+// invented metrics, just the noun the brief already uses.
+function deliverableOf(uc) {
+  return t(deliverable.LABELS[deliverable.kindOf(uc)]);
+}
+
+// The study card: what comes back, and who does it. Sits on the stage in
+// place of stock imagery — the visual is the product, not a mood.
+function studyCard(uc, crew, opts) {
+  const o = opts || {};
+  const people = (crew || []).slice(0, o.compact ? 4 : 5);
+  const n = (crew || []).length;
+  const roster = o.compact
+    ? ""
+    : `<ul class="uc-study-crew">${people
+        .map((c) => `<li>${shell.avatar(c)}<span><strong>${esc(c.name)}</strong><small>${esc(c.role || c.tagline || "")}</small></span></li>`)
+        .join("")}</ul>`;
+  return `<span class="uc-stage${o.compact ? " is-compact" : ""}" aria-hidden="true">
+    <span class="uc-study">
+      <span class="uc-study-head">
+        ${deliverable.svg(deliverable.kindOf(uc), "uc-mock")}
+        <span class="uc-study-title"><strong>${esc(deliverableOf(uc))}</strong><small>${esc(t("What comes back"))}</small></span>
+        
+      </span>
+      ${roster}
+      ${n ? `<span class="uc-study-foot">${esc(tp(n, "{n} coworker on it", "{n} coworkers on it"))}</span>` : ""}
+    </span>
+  </span>`;
+}
+
 function useCaseCard(uc, crew, i) {
   const ind = industriesOf(uc)[0];
-  const media = `<span class="uc-art is-grad" aria-hidden="true"><img src="${attr(UC_PHOTOS.has(uc.slug) ? ucVisual(uc.slug) : i == null ? gradFor(uc.slug) : "/assets/gradients/g" + GRAD_POOL[i % GRAD_POOL.length] + ".webp")}" alt="" width="600" height="240" loading="lazy" decoding="async" /></span>`;
+  const media = studyCard(uc, crew, { compact: true });
   const n = (crew || []).length;
   const foot = n ? tp(n, "{n} coworker on it", "{n} coworkers on it") : t("Read the workflow");
   return `<a class="card uc-card${media ? " has-art" : ""}" href="/use-cases/${encodeURIComponent(uc.slug)}">
@@ -174,13 +206,61 @@ async function hub(ctx) {
 // for agencies") with real content: a query-led h1, what that industry uses
 // coworkers for, an FAQ (FAQPage JSON-LD), and the use-case cards as the path
 // to the long-tail pages ("AI for SEO automation" → seo-and-ai-visibility).
-// Copy is page content in the CMS style — English on both locales — and a CMS
+// German lives in templates/industryContentDe.js (same shape), because the /de
+// pages are indexed with hreflang and must not be English duplicates. A CMS
 // doc with the same slug keeps working underneath: name/description come from
 // the CMS, this layer wraps it. Facts stay Sokosumi-true: no invented stats.
+// Search titles and descriptions for the use-case pages, per locale. The CMS
+// title stays the page's H1, card title and breadcrumb; this only changes what
+// a search result shows, so it can lead with the term people type (keyword
+// research 2026-09-27, Ahrefs + Google Trends). A slug with no entry uses the
+// CMS title and description.
+// Guides that go deeper on the same job, linked under the FAQ.
+const USE_CASE_GUIDES = {
+  "competitor-monitoring": [["/guides/competitor-analysis", "How to do a competitor analysis (with template)", "A method, a CSV template and a worked example."]],
+  "seo-and-ai-visibility": [["/guides/best-ai-visibility-tools", "Best AI visibility tools in 2026: what each one measures", "Prices, engines covered and limits of the main trackers."]],
+  "market-intelligence-briefings": [["/guides/ai-in-marketing", "How to use AI in marketing: 11 examples by job", "Where AI helps in research, content and reporting, and where it doesn't."]],
+};
+
+const USE_CASE_SEO = {
+  "competitor-monitoring": {
+    en: ["Competitor monitoring tool: a weekly sourced report", "Competitor monitoring that runs every week: your competitors' launches, pricing changes, ads and messaging in one sourced report your team can forward."],
+    de: ["Wettbewerbsbeobachtung mit KI: wöchentliche Reports", "Wettbewerbsbeobachtung, die jede Woche läuft: Launches, Preisänderungen, Anzeigen und Botschaften Ihrer Konkurrenz in einem Report mit Quellen."],
+  },
+  "always-on-social-listening": {
+    en: ["Social listening tool that writes the weekly report", "Social listening without another dashboard: public posts read for sentiment, recurring themes and posts that need a reply, delivered as a weekly report."],
+    de: ["Social-Listening-Tool: Stimmung und Themen jede Woche", "Social Listening ohne weiteres Dashboard: öffentliche Posts nach Stimmung, Themen und Beiträgen mit Antwortbedarf ausgewertet, als schriftlicher Wochenreport."],
+  },
+  "market-intelligence-briefings": {
+    en: ["AI for market research: a recurring market briefing", "Use AI for market research that stays current: a recurring briefing on what changed in your market, who drove it and what it may mean for you, with sources."],
+    de: ["Marktbeobachtung mit KI: regelmäßige Briefings", "Marktbeobachtung, die aktuell bleibt: ein regelmäßiges Briefing, was sich in Ihrem Markt geändert hat, wer dahintersteckt und was es bedeuten kann."],
+  },
+  "seo-and-ai-visibility": {
+    en: ["SEO and AI visibility workflow: audit, prioritize, repeat", "Measure AI visibility next to search rankings: where ChatGPT and Google's AI Overviews cite you, where they name a competitor, and what to fix first."],
+    de: ["SEO und KI-Sichtbarkeit: Audit und Maßnahmen planen", "KI-Sichtbarkeit neben Ihren Rankings messen: zu welchen Themen ChatGPT und Googles AI Overviews Sie zitieren, wo stattdessen ein Wettbewerber auftaucht."],
+  },
+  "audience-research-sprint": {
+    en: ["Audience research: sourced profiles and message tests", "Audience research that ends in a deck: sourced audience profiles, messages tested with a synthetic panel, and the findings summarised for your team."],
+    de: ["Zielgruppenanalyse mit KI: Profile und Botschaftstests", "Zielgruppenanalyse bis zum fertigen Deck: Profile mit Quellen und Botschaften, die in einem synthetischen Panel getestet wurden."],
+  },
+  "launch-content-engine": {
+    en: ["AI launch content: copy and visuals from one brief", "Launch content from one brief: positioning, landing-page copy, social variants and visuals that your team edits before anything ships."],
+    de: ["KI-Content-Erstellung für den Launch, aus einem Briefing", "KI-Content für Ihren Launch: Aus einem Briefing entstehen Positionierung, Landingpage-Texte, Social-Varianten und Visuals, die Ihr Team prüft."],
+  },
+  "seasonal-campaign-planning": {
+    en: ["Seasonal campaign planning from search demand", "Plan seasonal campaigns from current search demand and audience signals, then get the plan, the calendar and the supporting content as files."],
+    de: ["Saisonkampagnen nach Suchnachfrage planen", "Saisonkampagnen aus aktueller Suchnachfrage und Zielgruppensignalen planen und Plan, Kalender und begleitende Inhalte als Dateien bekommen."],
+  },
+};
+
+const INDUSTRY_CONTENT_DE = require("./industryContentDe");
+
 const INDUSTRY_CONTENT = {
   agencies: {
     why: "Where agencies use Sokosumi",
     cta: "Bring a coworker into your agency",
+    ctaLabel: "Prepare your next pitch",
+    ctaHref: "/use-cases/agency-new-business-research",
     metaTitle: "AI for agencies: AI coworkers for agency teams | Sokosumi",
     metaDesc: "AI coworkers for agencies: pitch research from public sources, competitive sets per client, and production at retainer scale.",
     h1: "AI coworkers for agencies",
@@ -196,8 +276,8 @@ const INDUSTRY_CONTENT = {
         "A prospect brief before every first call, as a sourced PDF",
         "Competitive sets per client, refreshed on a schedule",
         "Content calendars and variants in each client's voice",
-        "Coworkers cost credits per run, not salaries",
-      ], eg: "\u201cHannah — before the 11:00: their market, their vendors, and the procurement angle to lead with.\u201d" },
+        "Each task costs credits, shown before it runs",
+      ], eg: "\u201cHannah, before the 11:00: their market, their vendors, and the procurement angle to lead with.\u201d" },
     },
     week: { heading: "What agencies put on a schedule", sub: "One way to set it up.", items: [
       { title: "Weekly", text: "Performance and competitor reports per account, as scheduled tasks." },
@@ -205,15 +285,15 @@ const INDUSTRY_CONTENT = {
       { title: "Per client", text: "Content calendars and campaign plans, drafted for your team to shape." },
     ] },
     deliver: { heading: "What lands on your desk", items: [
-      { title: "Prospect briefs", text: "Two pages before the first call: their market, their tooling, the angle — with sources." },
+      { title: "Prospect briefs", text: "Two pages before the first call on their market, their tooling and the angle, with sources." },
       { title: "Per-client competitive sets", text: "Pricing, positioning and gaps as a PDF your strategists annotate, not rebuild." },
       { title: "Production files", text: "Calendars, copy variants and campaign plans as documents, in the client's format." },
     ] },
     faq: [
-      ["What does AI for agencies actually look like on Sokosumi?", "Named AI coworkers join your channels and task board. Account leads brief them like junior colleagues — research, strategy drafts, production — and get finished files back per client."],
-      ["Can each client account get its own setup?", "Yes. Projects hold per-client context, briefs and outputs."],
+      ["What does AI for agencies actually look like on Sokosumi?", "Named AI coworkers join your channels and task board. Account leads brief them like junior colleagues (research, strategy drafts, production) and get finished files back per client."],
+      ["Can we keep each client's work together?", "Yes. A project per client keeps that client's briefs, tasks and files in one place."],
       ["Who builds the coworkers agencies use?", "Sokosumi is built with Serviceplan Group. Every vendor builds and runs its own coworkers."],
-      ["How do agencies charge for coworker output?", "Coworkers run on credits. Review each output before it goes into client work. Start on the free plan with one live account."],
+      ["What does Sokosumi cost for an agency team?", "Each person on the team is a seat with monthly credits: 250 on the free plan, then 1,500, 5,000 or 15,000 for €25, €75 or €200 a month. Each task spends credits and shows its price before it runs. What you charge your clients is up to you."],
     ],
   },
   "e-commerce-retail": {
@@ -222,7 +302,7 @@ const INDUSTRY_CONTENT = {
     metaTitle: "AI for e-commerce marketing | Sokosumi",
     metaDesc: "AI coworkers for e-commerce and retail: weekly competitor pricing memos, a written read of your customers, and seasonal campaign plans before the peak.",
     h1: "AI coworkers for e-commerce & retail",
-    sub: "Watch your market, your competitors and your seasons — with AI specialists that deliver reports and campaign plans, not dashboards you still have to read.",
+    sub: "Watch your market, your competitors and your seasons with AI specialists that deliver reports and campaign plans, not dashboards you still have to read.",
     split: {
       today: { label: "Your team today", line: "The season starts before the plan is ready.", items: [
         "Seasonal planning that starts late",
@@ -235,32 +315,32 @@ const INDUSTRY_CONTENT = {
         "A weekly competitor memo: launches, pricing, ads",
         "A written read of what customers actually say",
         "A weekly report on the schedule you set",
-      ], eg: "\u201cWatch our top five competitors — weekly memo on pricing moves and what to do about them.\u201d" },
+      ], eg: "\u201cWatch our top five competitors. Weekly memo on pricing moves and what to do about them.\u201d" },
     },
     week: { heading: "A week with coworkers on the team", sub: "Set once; the files keep coming.", items: [
       { title: "Weekly", text: "Performance report and competitor pricing memo, side by side." },
       { title: "Midweek", text: "The social listening read: sentiment, themes, and the reviews worth answering." },
-      { title: "Before each season", text: "Demand signals turned into a campaign plan, calendar and creative briefs — before the window." },
+      { title: "Before each season", text: "Demand signals turned into a campaign plan, calendar and creative briefs before the window." },
     ] },
     deliver: { heading: "What lands on your desk", items: [
-      { title: "Weekly performance report", text: "Reach, sign-ups and what changed vs. last week — one page, ready to forward." },
+      { title: "Weekly performance report", text: "Reach, sign-ups and what changed vs. last week on one page, ready to forward." },
       { title: "Competitor pricing memo", text: "Price moves, launches and ad angles across your set, sourced and dated." },
       { title: "Seasonal campaign pack", text: "Plan, calendar and creative briefs as documents your team executes." },
     ] },
     faq: [
       ["How is this different from an e-commerce analytics tool?", "Tools show dashboards you still have to read. Coworkers deliver the reading: a written report of what changed and what to do, on a schedule you set."],
-      ["Can it watch competitors' pricing and ads?", "Yes — competitor monitoring runs as a scheduled task and lands as a weekly sourced memo covering launches, pricing moves and messaging."],
+      ["Can it watch competitors' pricing and ads?", "Yes. Competitor monitoring runs as a scheduled task and lands as a weekly sourced memo covering launches, pricing moves and messaging."],
       ["Does it work for seasonal peaks?", "That is a core workflow: brief the seasonal plan once and coworkers deliver the plan, calendar and creative briefs ahead of the peak."],
-      ["What do we get back, concretely?", "Files: PDF reports, documents, spreadsheets and live dashboards — attached to tasks your whole team can see."],
+      ["What do we get back, concretely?", "Files: PDF reports, documents, spreadsheets and live dashboards, attached to tasks your whole team can see."],
     ],
   },
   "financial-services": {
     why: "Where financial teams use Sokosumi",
     cta: "Bring a coworker into your marketing team",
     metaTitle: "AI for financial services marketing | Sokosumi",
-    metaDesc: "AI coworkers for financial services: sourced market briefings on a schedule, run history on every task, and EU hosting stated up front.",
+    metaDesc: "AI coworkers for financial services: scheduled market briefings with source links, and a run history for every task your team starts.",
     h1: "AI coworkers for financial services",
-    sub: "Market intelligence and marketing production for teams that answer to compliance — with coworkers that state their models and hosting region before you hire them.",
+    sub: "Market intelligence and marketing production for teams that answer to compliance, with a run history for every task and the vendor named on every coworker.",
     split: {
       today: { label: "Your team today", line: "Every briefing costs analyst hours; every tool is a compliance question first.", items: [
         "Market briefings depend on scarce analyst time",
@@ -270,25 +350,25 @@ const INDUSTRY_CONTENT = {
       ], eg: "A quarterly competitor review, compiled by hand." },
       withS: { label: "With Sokosumi", line: "A sourced briefing on schedule, with the run history built in.", items: [
         "Recurring market briefings with sources attached",
-        "Files reviewed in your flow — nothing publishes itself",
-        "Models and hosting region stated on every coworker profile; EU hosting available",
+        "Files reviewed in your flow. Nothing publishes itself",
+        "Models and hosting region on the profile wherever the vendor states them",
         "Every run logged in History: brief, coworker, cost, output",
-      ], eg: "\u201cWeekly market briefing: rates, competitors, regulation-driven shifts — with sources.\u201d" },
+      ], eg: "\u201cWeekly market briefing: rates, competitors, regulation-driven shifts, with sources.\u201d" },
     },
     week: { heading: "A week with coworkers on the team", sub: "Intelligence as a schedule, not a project.", items: [
-      { title: "Monday", text: "The market briefing lands: competitors, rates context, regulatory shifts — sourced." },
+      { title: "Monday", text: "The market briefing lands: competitors, rates context, regulatory shifts, all sourced." },
       { title: "Continuous", text: "Competitor monitoring logs launches and pricing changes as they appear." },
       { title: "On demand", text: "Deep-dives for board decks and product launches, briefed like any other task." },
     ] },
     deliver: { heading: "What lands on your desk", items: [
-      { title: "Sourced market briefings", text: "A recurring document with references — readable by compliance, forwardable to the board." },
+      { title: "Sourced market briefings", text: "A recurring document with references, readable by compliance and forwardable to the board." },
       { title: "Competitor log", text: "Product launches, pricing and positioning across your set, dated and sourced." },
       { title: "Run history", text: "History keeps every run: who briefed it, which coworker ran it, what it cost, what came back." },
     ] },
     faq: [
-      ["Where does our data live?", "Coworker profiles state the models they run on and the hosting region before you hire them; EU hosting is available, and the Personal Assistant runs Swiss-hosted open-source models."],
+      ["Where does our data live?", "It depends on the coworker. Each vendor runs its own coworkers, and the profile shows the models and hosting region where the vendor states them. Check the profile before you brief it with client data."],
       ["Is every run logged?", "Yes. Every task run is logged in History with its status, coworker and credit cost, and files stay attached to the task that produced them."],
-      ["Can compliance review the output before it ships?", "Outputs land on a shared board as files — nothing publishes itself. Review happens in your normal flow, with comments on the task."],
+      ["Can compliance review the output before it ships?", "Outputs land on a shared board as files. Nothing publishes itself. Review happens in your normal flow, with comments on the task."],
       ["What do financial teams start with?", "Market intelligence briefings on a schedule: one brief, a recurring sourced document."],
     ],
   },
@@ -298,7 +378,7 @@ const INDUSTRY_CONTENT = {
     metaTitle: "AI for media & publishing teams | Sokosumi",
     metaDesc: "AI coworkers for media and publishing: launch coverage drafts from one brief, search and AI-answer visibility measured, editors keep approval.",
     h1: "AI coworkers for media & publishing",
-    sub: "Volume without losing the desk: coworkers draft, research and measure — your editors decide what ships.",
+    sub: "Volume without losing the desk: coworkers draft, research and measure. Your editors decide what ships.",
     split: {
       today: { label: "Your desk today", line: "Fewer editors, more surfaces, and AI answers taking the search traffic.", items: [
         "Every vertical needs more coverage than the desk can draft",
@@ -316,16 +396,16 @@ const INDUSTRY_CONTENT = {
     week: { heading: "A week with coworkers on the desk", sub: "Drafts arrive; judgment stays yours.", items: [
       { title: "Monday", text: "The visibility report: what ranks, what AI assistants cite, where the gaps are." },
       { title: "Per launch", text: "The content engine turns one brief into a coverage calendar with drafts attached." },
-      { title: "Per vertical", text: "Audience research sprints before you commission — sourced profiles, message tests." },
+      { title: "Per vertical", text: "Audience research sprints before you commission: sourced profiles, message tests." },
     ] },
     deliver: { heading: "What lands on the desk", items: [
       { title: "Coverage calendars with drafts", text: "Planned pieces per launch, each with a working draft to edit." },
-      { title: "Search & AI visibility reports", text: "Rankings plus how AI assistants answer questions about your titles — measured monthly." },
+      { title: "Search & AI visibility reports", text: "Rankings plus how AI assistants answer questions about your titles, measured monthly." },
       { title: "Audience profiles", text: "Sourced reader profiles and message tests as documents, per vertical." },
     ] },
     faq: [
       ["Will the output match our editorial voice?", "Workspace context carries your style guide into every task, and edits run as follow-ups on the same task until the voice is right."],
-      ["Can it help with SEO at publishing scale?", "Yes — the SEO & AI visibility workflow tracks rankings and AI-assistant visibility and returns a prioritized read, on a monthly schedule if you want it."],
+      ["Can it help with SEO at publishing scale?", "Yes. The SEO & AI visibility workflow tracks rankings and AI-assistant visibility and returns a prioritized read, on a monthly schedule if you want it."],
       ["Do editors keep control?", "Coworkers deliver drafts and files to the board; editors review, comment and approve in their normal flow."],
       ["What team size does this fit?", "The free plan works for a single desk; credits per seat scale it to a newsroom."],
     ],
@@ -340,7 +420,7 @@ const INDUSTRY_CONTENT = {
     split: {
       today: { label: "Your team today", line: "Competitors ship weekly. You find out monthly.", items: [
         "Competitor moves surface late and anecdotally",
-        "AI assistants describe your category — without you in the answer",
+        "AI assistants describe your category without you in the answer",
         "Every launch needs a content push you cannot staff",
         "Reporting is a chore that slips",
       ], eg: "A competitor pricing change, discovered in a lost deal." },
@@ -349,23 +429,23 @@ const INDUSTRY_CONTENT = {
         "AI-answer visibility measured next to search rankings",
         "A launch kit from one brief: positioning, copy, one-pagers",
         "The weekly report writes itself, on schedule",
-      ], eg: "\u201cWeekly memo on our top three competitors — what launched, what changed in pricing, what it means.\u201d" },
+      ], eg: "\u201cWeekly memo on our top three competitors: what launched, what changed in pricing, what it means.\u201d" },
     },
     week: { heading: "A week with coworkers on the team", sub: "Recurring work runs itself; launches get a kit.", items: [
       { title: "Weekly", text: "Competitor memo and performance report, side by side." },
       { title: "Monthly", text: "Search and AI visibility measured: where you rank, how assistants describe you." },
-      { title: "Per launch", text: "One brief in — positioning, landing copy, social variants and a sales one-pager out." },
+      { title: "Per launch", text: "One brief in. Positioning, landing copy, social variants and a sales one-pager out." },
     ] },
     deliver: { heading: "What lands on your desk", items: [
-      { title: "The Monday memo", text: "Competitor launches, pricing changes and positioning shifts — short, sourced, scheduled." },
+      { title: "The Monday memo", text: "Competitor launches, pricing changes and positioning shifts. Short, sourced, scheduled." },
       { title: "Visibility reports", text: "Rankings plus AI-assistant answers about your category, as a monthly document." },
       { title: "Launch kits", text: "Positioning doc, landing copy, social variants and a one-pager, from a single brief." },
     ] },
     faq: [
-      ["How is this different from hiring a contractor?", "Coworkers start in minutes, keep your context between tasks, and cost credits per run — with sample outputs you can inspect before spending anything."],
-      ["Can it track how AI assistants talk about us?", "Yes — AI visibility is part of the SEO workflow: how assistants answer questions about your category and where you appear."],
+      ["How is this different from hiring a contractor?", "Coworkers start in minutes, keep your context between tasks, and each task shows its credit price before it runs. Many tasks have a sample output you can look at first."],
+      ["Can it track how AI assistants talk about us?", "Yes. AI visibility is part of the SEO workflow: how assistants answer questions about your category and where you appear."],
       ["Does it integrate with our stack?", "Work arrives as files and live web deliverables; the Personal Assistant connects mail, calendar, docs and chat tools."],
-      ["What does a lean team start with?", "One scheduled task — usually the weekly competitor memo or the weekly performance report — then the launch workflows."],
+      ["What does a lean team start with?", "One scheduled task first, usually the weekly competitor memo or the weekly performance report. Then the launch workflows."],
     ],
   },
   "travel-hospitality": {
@@ -379,7 +459,7 @@ const INDUSTRY_CONTENT = {
       today: { label: "Your team today", line: "The booking window closes while the plan is in review.", items: [
         "Season planning trails the booking window",
         "Guest reviews pile up across five platforms",
-        "Demand shifts show up in bookings — too late",
+        "Demand shifts show up in bookings too late",
         "Two people carry the seasonal workload spike",
       ], eg: "Summer campaign approved in June." },
       withS: { label: "With Sokosumi", line: "The season is planned before the window opens.", items: [
@@ -387,7 +467,7 @@ const INDUSTRY_CONTENT = {
         "A weekly written read of guest sentiment and reviews worth answering",
         "Demand signals read early and turned into plans",
         "Coworkers absorb the spike; the team keeps the judgment",
-      ], eg: "\u201cRead this season's demand signals and draft the campaign plan — before bookings open.\u201d" },
+      ], eg: "\u201cRead this season's demand signals and draft the campaign plan before bookings open.\u201d" },
     },
     week: { heading: "A week with coworkers on the team", sub: "Small team, steady output.", items: [
       { title: "Monday", text: "The guest sentiment read: what reviews say across platforms, and which to answer." },
@@ -395,15 +475,15 @@ const INDUSTRY_CONTENT = {
       { title: "Per season", text: "Demand signals turned into the campaign plan, calendar and creative briefs." },
     ] },
     deliver: { heading: "What lands on your desk", items: [
-      { title: "Sentiment reads", text: "A weekly written summary of reviews and mentions — themes, tone, and replies worth making." },
+      { title: "Sentiment reads", text: "A weekly written summary of reviews and mentions: themes, tone, and replies worth making." },
       { title: "Seasonal campaign packs", text: "Plan, calendar and creative briefs, delivered before the booking window." },
       { title: "Market briefings", text: "Destination trends and competitor offers as a recurring, sourced document." },
     ] },
     faq: [
-      ["Can it plan around our seasons?", "Yes — seasonal campaign planning is a core workflow: brief it once per season and the plan, calendar and briefs come back before the booking window."],
+      ["Can it plan around our seasons?", "Yes. Seasonal campaign planning is a core workflow: brief it once per season and the plan, calendar and briefs come back before the booking window."],
       ["Does it read reviews and social mentions?", "Social listening covers the platforms your guests use and returns a written read: sentiment, emerging themes, and posts worth a reply."],
-      ["We are a small team — is this overkill?", "The free plan fits a small team. Start with one scheduled listening or briefing task."],
-      ["What languages does it work in?", "Coworkers brief and deliver in the language you use — English and German are first-class on Sokosumi."],
+      ["We are a small team. Is this overkill?", "The free plan fits a small team. Start with one scheduled listening or briefing task."],
+      ["What languages does it work in?", "Coworkers brief and deliver in the language you use. English and German are first-class on Sokosumi."],
     ],
   },
 };
@@ -426,7 +506,7 @@ async function industry(ctx) {
     { label: "Use cases", href: "/use-cases" },
     { label: ind.name },
   ];
-  const cc = INDUSTRY_CONTENT[ind.slug];
+  const cc = (i18n.locale() === "de" && INDUSTRY_CONTENT_DE[ind.slug]) || INDUSTRY_CONTENT[ind.slug];
   // The why: the industry's week today vs. with coworkers, as the same
   // paper/ink split panel /ai-coworkers uses — four contrasts that read
   // across, one example under each side.
@@ -449,12 +529,12 @@ async function industry(ctx) {
     ? blocks.renderBlocks([{ blockType: "featureGrid", heading: cc.deliver.heading, items: cc.deliver.items }])
     : "";
   const faqBlock = cc
-    ? blocks.renderBlocks([{ blockType: "faq", heading: "Questions we get", items: cc.faq.map(([q, a]) => ({ question: q, answer: a })) }])
+    ? blocks.renderBlocks([{ blockType: "faq", heading: t("Questions we get"), items: cc.faq.map(([q, a]) => ({ question: q, answer: a })) }])
     : "";
   return (
     pageStart({
       title: cc ? t(cc.metaTitle) : t("{name} use cases | Sokosumi", { name: ind.name }),
-      description: cc ? t(cc.metaDesc) : (ind.description || t("How {name} teams put AI coworkers to work on Sokosumi.", { name: ind.name })).slice(0, 155),
+      description: cc ? t(cc.metaDesc) : shell.truncate(ind.description || t("How {name} teams put AI coworkers to work on Sokosumi.", { name: ind.name }), 155),
       path: `/use-cases/industries/${ind.slug}`,
       breadcrumb: cr,
       jsonld: cc ? blocks.faqJsonLd(cc.faq.map(([q, a]) => ({ question: q, answer: a }))) : undefined,
@@ -470,7 +550,7 @@ async function industry(ctx) {
     splitBlock +
     weekBlock +
     `<div class="page-section">
-      ${cc ? `<h2>${esc("The workflows, ready to run")}</h2><p class="sub" style="margin-bottom:22px">${esc("Each card is a real workflow with the coworkers behind it — open one and start from its brief.")}</p>` : ""}
+      ${cc ? `<h2>${esc(t("The workflows, ready to run"))}</h2><p class="sub" style="margin-bottom:22px">${esc(t("Each card is a real workflow with the coworkers behind it. Open one and start from its brief."))}</p>` : ""}
       ${
         useCases.length
           ? `<div class="card-grid uc-grid">${useCases.map((uc, i) => useCaseCard(uc, crewOf(uc), i)).join("")}</div>`
@@ -482,9 +562,9 @@ async function industry(ctx) {
     faqBlock +
     blocks.ctaBand({
       heading: cc && cc.cta ? cc.cta : t("Bring a coworker into your {industry} team", { industry: ind.name }),
-      subheading: t("Create an account and hand over the first brief today."),
-      ctaLabel: t("Get started"),
-      ctaHref: shell.APP,
+      subheading: cc && cc.ctaHref ? t("Read the workflow and its deliverables before you sign up.") : t("Create an account and hand over the first brief today."),
+      ctaLabel: cc && cc.ctaLabel ? cc.ctaLabel : t("Get started"),
+      ctaHref: (cc && cc.ctaHref) || shell.APP_SIGNUP,
     }) +
     pageEnd()
   );
@@ -505,7 +585,7 @@ async function industry(ctx) {
 // pages, and absent (a plain hero) if generation fails. Industry rides the
 // eyebrow; both CTAs always present (the block's own when set, the site
 // defaults when not).
-function heroSection(doc, blk, inds) {
+function heroSection(doc, blk, inds, crew) {
   const b = blk || {};
   const base = b.eyebrow || "Use case";
   const eyebrow = base === "Use case" && inds[0] ? `${esc(t("Use case"))} · ${esc(inds[0].name)}` : esc(t(base));
@@ -533,7 +613,7 @@ function heroSection(doc, blk, inds) {
       <div class="cta-row">${ctas}</div>
       ${primaryHref.startsWith(shell.APP) ? shell.NO_CARD : ""}
     </div>
-    <div class="uc-hero-media" aria-hidden="true"><img src="${attr(ucVisual(doc.slug))}" alt="" width="1152" height="640" decoding="async" fetchpriority="high" /></div>
+    <div class="uc-hero-media">${studyCard(doc, crew)}</div>
   </section>`;
 }
 
@@ -639,7 +719,7 @@ function teamSection(crew, offers) {
     ? `<h2${leads.length ? ' class="uc-agents-h"' : ""}>${esc(leads.length ? t("The specialist agents they hire") : t("The specialist agents behind it"))}</h2>
       <p class="sub">${esc(
         leads.length
-          ? t("Coworkers dispatch these as subagents mid-task — you can also run any of them directly.")
+          ? t("Coworkers dispatch these as subagents mid-task. You can also run any of them directly.")
           : t("Run them directly, or let a coworker like Elena dispatch them as subagents inside a bigger brief."),
       )}</p>
       <div class="uc-team">${agents.map((c) => mateCard(c, t("Agent"))).join("")}</div>`
@@ -712,22 +792,28 @@ async function detail(ctx) {
     cr.push({ label: inds[0].name, href: `/use-cases/industries/${inds[0].slug}` });
   }
   cr.push({ label: doc.title });
+  const seoFor = USE_CASE_SEO[doc.slug] && USE_CASE_SEO[doc.slug][i18n.locale() === "de" ? "de" : "en"];
 
   return (
     pageStart({
-      title: doc.title,
-      description: shell.describe(doc.description, t("A Sokosumi use case: which coworker does it, what you brief, what comes back as a file.")),
+      title: seoFor ? seoFor[0] : doc.title,
+      description: seoFor ? seoFor[1] : shell.describe(doc.description, [
+        t("A Sokosumi use case: which coworker does it, what you brief, what comes back as a file."),
+        t("A Sokosumi use case: who does it and what comes back as a file."),
+        t("A use case for AI coworkers on Sokosumi."),
+      ]),
       path: `/use-cases/${doc.slug}`,
       og: { type: "article", eyebrow: t("Use case"), title: doc.title, sub: doc.description || "" },
       breadcrumb: cr,
       jsonld: blocks.faqJsonLd(blocks.collectFaqs(doc.layout)) || undefined,
     }) +
-    heroSection(doc, heroBlock, inds) +
+    heroSection(doc, heroBlock, inds, crew) +
     introSection(introBlock) +
     middle +
     midCta(doc, heroBlock) +
     teamSection(crew, offers) +
     (faqBlock ? blocks.renderBlocks([faqBlock]) : "") +
+    shell.readNext(USE_CASE_GUIDES[doc.slug]) +
     relatedSection(doc, inds, allCases, crewOf) +
     shell.proof(testimonials, doc.slug.length, { mode: "quote" }) +
     band +

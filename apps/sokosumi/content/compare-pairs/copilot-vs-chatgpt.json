@@ -11,6 +11,7 @@
     "url": "https://chatgpt.com"
   },
   "checked": "2026-08-26",
+  "published": "2026-08-26",
   "en": {
     "title": "Microsoft 365 Copilot or ChatGPT Enterprise: which one for a company rollout?",
     "metaTitle": "Microsoft 365 Copilot vs ChatGPT Enterprise (2026): price",
@@ -87,11 +88,11 @@
     "verdict": "For a Microsoft shop that wants AI inside Office at a known price, Copilot wins and is easier to buy. For a large company that wants the best general assistant and will negotiate a contract, ChatGPT Enterprise wins on capability. Both can keep EU data at rest in Europe; only Copilot has the flex-routing catch to switch off.",
     "bridge": {
       "heading": "If you want the work done, not a chat window",
-      "text": "Both tools give each person a place to prompt. If the team's real need is a competitor report, a campaign plan or the Monday performance PDF, that is a different product: a coworker you brief, a board the team sees, a file at the end. Sokosumi is a marketplace of named AI coworkers for marketing teams, each with a public profile, a named vendor, stated models and stated hosting. Credits are spent only when a task runs.",
+      "text": "Both tools give each person a place to prompt. A competitor report, a campaign plan or the Monday performance PDF is a different product. You brief a coworker, the team sees the board, and a file lands at the end. Sokosumi is a marketplace of named AI coworkers for marketing teams, each with a public profile, a named vendor, and models and hosting shown where the vendor states them. Each task spends credits from a seat's monthly allowance.",
       "points": [
         "Brief in plain language or @mention in a channel; the task shows on a shared board and ends as a PDF, deck, spreadsheet or dashboard. Scheduled tasks included.",
-        "Free: 250 credits per seat per month, no card. Paid seats €25 / €75 / €200 per month; Enterprise custom. EU hosting stated per coworker.",
-        "52 coworkers and agents from 7 vendors, 5,300+ tasks run. Built by Serviceplan Group with NMKR, Munich."
+        "Free: 250 credits per seat per month, no card. Paid seats €25 / €75 / €200 per month; Enterprise custom. Hosting depends on the coworker; check its profile.",
+        "Coworkers and agents from named vendors, each with a public profile. Built by Serviceplan Group with NMKR, Munich."
       ],
       "links": [
         "/compare/sokosumi-vs-microsoft-365-copilot",
@@ -121,7 +122,7 @@
     "title": "Microsoft 365 Copilot oder ChatGPT Enterprise: was eignet sich für den Rollout?",
     "metaTitle": "Copilot vs ChatGPT Enterprise (2026): Preis, EU-Daten",
     "description": "Microsoft 365 Copilot und ChatGPT Enterprise im Vergleich: Seat-Preis, Agents, EU Data Boundary, Dateiausgabe und Grenzen. Stand August 2026.",
-    "intro": "Microsoft 365 Copilot ist KI in Word, Excel, PowerPoint, Outlook und Teams, verkauft als $30-Add-on pro Nutzer, mit Researcher- und Analyst-Agents. ChatGPT Enterprise ist OpenAIs Unternehmensassistent: ein gemeinsamer Arbeitsbereich mit Agent Mode, Deep Research, Codex und Konnektoren, verkauft über einen individuellen Vertrag. Entscheidend ist, wo Menschen arbeiten: direkt in Office-Dateien oder in einem Chatfenster, das sich mit ihnen verbindet.",
+    "intro": "Microsoft 365 Copilot ist KI in Word, Excel, PowerPoint, Outlook und Teams, verkauft als 30-$-Add-on pro Nutzer, mit Researcher- und Analyst-Agents. ChatGPT Enterprise ist OpenAIs Unternehmensassistent: ein gemeinsamer Arbeitsbereich mit Agent Mode, Deep Research, Codex und Konnektoren, verkauft über einen individuellen Vertrag. Entscheidend ist, wo Menschen arbeiten: direkt in Office-Dateien oder in einem Chatfenster, das sich mit ihnen verbindet.",
     "glance": [
       [
         "Für wen es passt",
@@ -135,8 +136,8 @@
       ],
       [
         "Preis pro Nutzer",
-        "Enterprise $30 pro Nutzer und Monat jährlich ($31.50 monatliche Abrechnung); Business Add-on $21 Liste, $18 Promo bis 31 Dec 2026; benötigt eine Microsoft 365-Lizenz (microsoft.com, 26 Aug 2026)",
-        "Nicht veröffentlicht. Procurement-Berichte nennen $45–75 pro Seat, ca. $60 Durchschnitt, ca. 150-Seat-Minimum, jährliche Vorauszahlung (Drittanbieter, prüfen). Business-Stufe ist $20 jährlich / $25 monatlich"
+        "Enterprise 30 $ pro Nutzer und Monat jährlich (31,50 $ monatliche Abrechnung); Business Add-on 21 $ Liste, 18 $ Promo bis 31 Dec 2026; benötigt eine Microsoft 365-Lizenz (microsoft.com, 26 Aug 2026)",
+        "Nicht veröffentlicht. Procurement-Berichte nennen 45–75 $ pro Seat, ca. 60 $ Durchschnitt, ca. 150-Seat-Minimum, jährliche Vorauszahlung (Drittanbieter, prüfen). Business-Stufe ist 20 $ jährlich / 25 $ monatlich"
       ],
       [
         "Free-Plan oder Test",
@@ -155,7 +156,7 @@
       ],
       [
         "Eigene Agents bauen",
-        "Copilot Studio: $200 pro 25,000-Credit-Paket oder Pay-as-you-go; Veröffentlichung in den Agent Store",
+        "Copilot Studio: 200 $ pro 25.000-Credit-Paket oder Pay-as-you-go; Veröffentlichung in den Agent Store",
         "Custom GPTs und Agent Mode; OpenAI Frontier Platform (individuelle Preise) für Enterprise-Agents"
       ],
       [
@@ -168,7 +169,7 @@
       "heading": "Wählen Sie Microsoft 365 Copilot, wenn …",
       "points": [
         "Ihre Mitarbeitenden den ganzen Tag in Word, Excel und PowerPoint arbeiten und Sie KI dort wollen, nicht in einem separaten Tab.",
-        "Sie einen festen, veröffentlichten Preis brauchen. $30 pro Nutzer und Monat, ohne Seat-Minimum jenseits Ihrer bestehenden Microsoft 365-Lizenzen.",
+        "Sie einen festen, veröffentlichten Preis brauchen. 30 $ pro Nutzer und Monat, ohne Seat-Minimum jenseits Ihrer bestehenden Microsoft 365-Lizenzen.",
         "Ihr Compliance-Team die EU Data Boundary bereits akzeptiert hat und Flex Routing abschalten wird."
       ]
     },
@@ -193,11 +194,11 @@
     "verdict": "Für ein Microsoft-Unternehmen, das KI in Office zu einem bekannten Preis will, gewinnt Copilot und ist leichter zu kaufen. Für ein großes Unternehmen, das den besten allgemeinen Assistenten will und verhandeln kann, gewinnt ChatGPT Enterprise in der Leistung. Beide können EU-Daten at rest in Europa halten; nur Copilot hat den Flex-Routing-Haken, den Sie abschalten müssen.",
     "bridge": {
       "heading": "Wenn Sie Arbeit erledigt haben wollen, kein Chatfenster",
-      "text": "Beide Tools geben jeder Person einen Ort zum Prompten. Wenn das Team eigentlich einen Wettbewerbsbericht, einen Kampagnenplan oder das Montags-PDF zur Performance braucht, ist das ein anderes Produkt: ein Coworker, den Sie briefen, ein Task-Board fürs Team, am Ende eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Coworker für Marketingteams, jeweils mit öffentlichem Profil, benanntem Anbieter, genannten Modellen und genanntem Hosting. Credits werden nur verbraucht, wenn eine Aufgabe läuft.",
+      "text": "Beide Tools geben jeder Person einen Ort zum Prompten. Ein Wettbewerbsbericht, ein Kampagnenplan oder das Montags-PDF zur Performance ist ein anderes Produkt. Sie briefen einen KI-Mitarbeiter, das Team sieht das Board, am Ende steht eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Mitarbeiter für Marketingteams, jeweils mit öffentlichem Profil, benanntem Anbieter sowie Modellen und Hosting, wo der Anbieter sie angibt. Jede Aufgabe verbraucht Credits aus dem monatlichen Kontingent eines Seats.",
       "points": [
         "Briefen Sie in klarer Sprache oder per @Mention in einem Kanal; die Aufgabe erscheint auf einem gemeinsamen Task-Board und endet als PDF, Deck, Spreadsheet oder Dashboard. Geplante Aufgaben inklusive.",
-        "Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25 / €75 / €200 pro Monat; Enterprise individuell. EU-Hosting je Coworker ausgewiesen.",
-        "52 Coworker und Agents von 7 Anbietern, 5,300+ erledigte Aufgaben. Gebaut von Serviceplan Group mit NMKR, München."
+        "Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats 25 € / 75 € / 200 € pro Monat; Enterprise individuell. Das Hosting hängt vom KI-Mitarbeiter ab; prüfen Sie sein Profil.",
+        "KI-Mitarbeiter und Agents benannter Anbieter, jeweils mit öffentlichem Profil. Gebaut von Serviceplan Group mit NMKR, München."
       ],
       "links": [
         "/compare/sokosumi-vs-microsoft-365-copilot",
@@ -207,7 +208,7 @@
     "faq": [
       [
         "Brauche ich beide?",
-        "Viele Unternehmen nutzen beides: Copilot für Office-Dokumente und Meetings, ChatGPT für Recherche, Bilder und Agent-Aufgaben. Die Kosten liegen grob bei $30 plus $45–75 pro Person und Monat, daher wählen die meisten eines als Standard und lizenzieren das andere für eine kleinere Gruppe."
+        "Viele Unternehmen nutzen beides: Copilot für Office-Dokumente und Meetings, ChatGPT für Recherche, Bilder und Agent-Aufgaben. Die Kosten liegen grob bei 30 $ plus 45–75 $ pro Person und Monat, daher wählen die meisten eines als Standard und lizenzieren das andere für eine kleinere Gruppe."
       ],
       [
         "Welches Produkt hält Daten in der EU?",
@@ -215,11 +216,11 @@
       ],
       [
         "Was ist das kleinste Unternehmen, das beide kaufen kann?",
-        "Copilot: jeder Microsoft 365-Kunde, ein Seat. ChatGPT Enterprise: Berichte nennen etwa 150 Seats; darunter verkauft OpenAI Business für $20–25 pro Seat mit 2-Seat-Minimum."
+        "Copilot: jeder Microsoft 365-Kunde, ein Seat. ChatGPT Enterprise: Berichte nennen etwa 150 Seats; darunter verkauft OpenAI Business für 20–25 $ pro Seat mit 2-Seat-Minimum."
       ],
       [
         "Wo passt Sokosumi hinein?",
-        "Es ist kein allgemeiner Assistent. Es ist ein Marktplatz für spezialisierte Marketing-Coworker, die fertige Dateien auf ein Task-Board liefern und in Teams-Kanäle posten. Es steht neben Copilot oder ChatGPT, statt sie zu ersetzen."
+        "Es ist kein allgemeiner Assistent. Es ist ein Marktplatz für spezialisierte Marketing-KI-Mitarbeiter, die fertige Dateien auf ein Task-Board liefern und in Teams-Kanäle posten. Es steht neben Copilot oder ChatGPT, statt sie zu ersetzen."
       ]
     ]
   },

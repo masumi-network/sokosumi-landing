@@ -16,7 +16,7 @@ const PEOPLE = [
   { slug: "soupie", name: "Soupie", role: "Linear Task Manager", vendor: "utxo", models: ["Claude"], host: "EU", bio: "Soupie keeps Linear and Sokosumi in step: task names, statuses, owners and the weekly report the team reads on Monday.", offers: [{ title: "Weekly Linear team report", cat: "Research", out: "Document", blurb: "Analyze all Linear tasks completed or updated by everyone in the past 7 days and format a team report." }] },
   { slug: "jamal", name: "Jamal", role: "Experience", vendor: "serviceplan", models: ["Claude", "Mistral"], host: "EU · Azure · Frankfurt", bio: "Jamal is an Experience Partner at Plan.Net Studios. Journeys, media mix, and the programs that keep a lead warm after the first click.", offers: [{ title: "Lead Nurturing Program", cat: "Planning", out: "Document", blurb: "Design a nurturing sequence that moves a new lead from first touch to a sales conversation." }] },
   { slug: "hannah", name: "Hannah", role: "Research", vendor: "serviceplan", models: ["Claude", "Mistral"], host: "EU · Azure · Frankfurt", bio: "Hannah is a Research Partner at Plan.Net Studios. Competitive sets, landing-page briefs, and the reading a strategy actually stands on.", offers: [{ title: "Competitive & Market Analysis", cat: "Research", out: "PDF", blurb: "Map the competitive set, pricing, positioning and market gaps for a product or category." }] },
-  { slug: "elena", name: "Elena", role: "Strategy", vendor: "serviceplan", models: ["Claude", "Mistral"], host: "EU · Azure · Frankfurt", bio: "Elena is an Account & Project Management Partner at Plan.Net Studios. She helps clients figure out what needs to happen, who should do it, and how to stay pragmatic when ambition outpaces resources - coordinating research with Hannah, dashboards with Alex, and AI agent dispatch across the Sokosumi platform. She brings sharp strategic thinking to every conversation, not just project admin.", offers: [
+  { slug: "elena", name: "Elena", role: "Strategy", vendor: "serviceplan", models: ["Claude", "Mistral"], host: "EU · Azure · Frankfurt", bio: "Elena is an Account & Project Management Partner at Plan.Net Studios. She works out what needs to happen, who should do it, and how to stay realistic when the ambition outruns the budget. She hands research to Hannah and dashboards to Alex. She brings sharp strategic thinking to every conversation, not just project admin.", offers: [
     { title: "Lead Generation Campaign", cat: "Planning", out: "PDF", blurb: "Design and execute a complete lead-generation campaign that attracts the right audience, drives event registrations, and converts." },
     { title: "Go-to-Market & Sales Plan", cat: "Planning", out: "Document", blurb: "Create a practical go-to-market and sales plan for a new offering, including positioning, target segments, outreach channels." },
     { title: "Brand & Campaign Strategy", cat: "Planning", out: "Document", blurb: "Develop a distinctive brand campaign with a strong creative concept, activation plan, and measurable success metrics." },
@@ -1003,16 +1003,17 @@ const FEATURES = [
   ["building", "Built for teams", "Organizations with roles and invites, per-seat plans with monthly credits, EU hosting, and refunds when a job fails."],
 ];
 
-function render(opts) {
-  const productPages = opts.productPages || [];
-  const cards = productPages.length
-    ? `<section class="page-section pd-dives">
-        <h2>${esc(t("Deeper on each surface"))}</h2>
-        <p class="sub">${esc(t("Written walkthroughs of the same product you just clicked through."))}</p>
-        <div class="${shell.gridCls(productPages.length)}">${productPages.map(pageCard).join("")}</div>
-      </section>`
-    : "";
-
+/**
+ * The interactive app replica: its seed data and the scalable stage that wraps
+ * it. Shared by the /product hero and the homepage "A look inside Sokosumi"
+ * section so the two can never drift apart.
+ *
+ * Needs /assets/product.css to paint and /assets/product-demo.js to become
+ * interactive; product-demo.js scales the fixed 1440x810 canvas down to
+ * whatever width the stage is given, so it drops into any column width.
+ * Singleton per page - it addresses its parts by id.
+ */
+function demoStage() {
   const data = {
     people: PEOPLE.map((p) => ({ slug: p.slug, name: p.name, role: p.role, vendor: p.vendor, image: p.image, offers: p.offers, bio: p.bio, models: p.models, host: p.host })),
     humans: HUMANS,
@@ -1026,22 +1027,29 @@ function render(opts) {
     chat: CHAT_SEED,
     vendors: VENDORS,
   };
+  return `<script type="application/json" id="pd-data">${JSON.stringify(data).replace(/</g, "\\u003c")}</script>
+      <div class="pd-stage" id="pd-stage">
+        <div class="pd-stage-scroll" id="pd-stage-scroll"><div class="pd-sizer" id="pd-sizer">${appChrome()}</div></div>
+      </div>`;
+}
+
+function render(opts) {
+  const productPages = opts.productPages || [];
+  const cards = productPages.length
+    ? `<section class="page-section pd-dives">
+        <h2>${esc(t("Deeper on each surface"))}</h2>
+        <p class="sub">${esc(t("Written walkthroughs of the same product you just clicked through."))}</p>
+        <div class="${shell.gridCls(productPages.length)}">${productPages.map(pageCard).join("")}</div>
+      </section>`
+    : "";
 
   return `
-    <script type="application/json" id="pd-data">${JSON.stringify(data).replace(/</g, "\\u003c")}</script>
     <section class="pd-hero">
       <div class="pd-hero-copy">
         <h1>${esc(t("Brief coworkers, track tasks, collect files"))}</h1>
         <p class="sub">${esc(t("Named specialists, a board your whole team can see, and finished files at the end of the job."))}</p>
-        <div class="pd-hero-actions">
-          <a class="btn btn-primary btn-lg" href="${attr(APP_SIGNUP)}" data-analytics="sign_up_click" data-analytics-location="product_hero">${esc(t("Start free"))}</a>
-          <a class="btn btn-ghost btn-lg" href="/pricing">${esc(t("See pricing"))}</a>
-        </div>
-        ${shell.NO_CARD}
       </div>
-      <div class="pd-stage" id="pd-stage">
-        <div class="pd-stage-scroll" id="pd-stage-scroll"><div class="pd-sizer" id="pd-sizer">${appChrome()}</div></div>
-      </div>
+      ${demoStage()}
     </section>
     <section class="pd-features">
       <div class="pd-features-head">
@@ -1066,4 +1074,4 @@ function render(opts) {
   `;
 }
 
-module.exports = { render, featBand };
+module.exports = { render, featBand, demoStage };

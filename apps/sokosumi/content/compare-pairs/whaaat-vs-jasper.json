@@ -11,6 +11,7 @@
     "url": "https://www.jasper.ai"
   },
   "checked": "2026-08-26",
+  "published": "2026-08-26",
   "en": {
     "title": "Whaaat AI or Jasper: a $25 Berlin startup versus the US marketing AI leader",
     "metaTitle": "Whaaat AI vs Jasper (2026): prices, agents, brand voice",
@@ -87,10 +88,10 @@
     "verdict": "Jasper is the safer choice for a team that needs governance and scale, and the only one of the two with team admin, an agent builder and an API. Whaaat AI wins on price for small teams and agencies with several brands. For EU data protection, neither publishes EU hosting; Jasper states US data centres, Whaaat states nothing yet.",
     "bridge": {
       "heading": "If you want the work done, not a chat window",
-      "text": "Both tools above give a person agents to generate content. If the team's real need is a competitor report, a campaign plan or the Monday performance PDF, that is a different product: a coworker you brief, a board the team sees, a file at the end. Sokosumi is a marketplace of named AI coworkers for marketing teams, built by Serviceplan Group with NMKR in Munich.",
+      "text": "Both tools above give a person agents to generate content. A competitor report, a campaign plan or the Monday performance PDF is a different product. You brief a coworker, the team sees the board, and a file lands at the end. Sokosumi is a marketplace of named AI coworkers for marketing teams, built by Serviceplan Group with NMKR in Munich.",
       "points": [
-        "52 coworkers and agents from 7 vendors; each profile names the vendor, the models and the hosting, with EU hosting available.",
-        "Free: 250 credits per seat per month, no card. Paid seats €25, €75 or €200 per month; credits are used only when a task runs.",
+        "Coworkers and agents from named vendors; each profile names the vendor, the models and the hosting, with EU hosting available.",
+        "Free: 250 credits per seat per month, no card. Paid seats €25, €75 or €200 per month; each task spends credits.",
         "Tasks end with a finished PDF, deck, spreadsheet or dashboard on a shared board; scheduled tasks repeat on their own."
       ],
       "links": [
@@ -118,10 +119,10 @@
     ]
   },
   "de": {
-    "title": "Whaaat AI oder Jasper: $25-Berliner Startup oder US-Marktführer für Marketing-KI?",
+    "title": "Whaaat AI oder Jasper: 25-$-Berliner Startup oder US-Marktführer für Marketing-KI?",
     "metaTitle": "Whaaat AI vs Jasper (2026): Preise, Agents, Brand Voice",
-    "description": "Whaaat KI für $25 unlimited vs Jasper ab $59 pro Seat: Marketing-Agents, Brand Voice, US-Hosting, Teamfunktionen und Grenzen. Stand August 2026.",
-    "intro": "Whaaat AI gibt kleinen Marketingteams 28 benannte Content-Agents mit einer gemeinsamen Brand Knowledge Base für $25 pro Monat. Jasper ist die etablierte Marketing-KI-Plattform mit 100+ Agents, Canvas, Brand Voices und Enterprise Governance, ab $59 pro Seat. Der Unterschied: Preis und Tiefe. Whaaat ist günstig und einfach; Jasper kostet mehr und bietet Teamkontrollen, Agent Builder und API.",
+    "description": "Whaaat KI für 25 $ unlimited vs Jasper ab 59 $ pro Seat: Marketing-Agents, Brand Voice, US-Hosting, Teamfunktionen und Grenzen. Stand August 2026.",
+    "intro": "Whaaat AI gibt kleinen Marketingteams 28 benannte Content-Agents mit einer gemeinsamen Brand Knowledge Base für 25 $ pro Monat. Jasper ist die etablierte Marketing-KI-Plattform mit 100+ Agents, Canvas, Brand Voices und Enterprise Governance, ab 59 $ pro Seat. Der Unterschied: Preis und Tiefe. Whaaat ist günstig und einfach; Jasper kostet mehr und bietet Teamkontrollen, Agent Builder und API.",
     "glance": [
       [
         "Für wen es passt",
@@ -135,8 +136,8 @@
       ],
       [
         "Preis pro Nutzer",
-        "$25/Monat, unbegrenzte Agents (Seat-Modell nicht veröffentlicht)",
-        "Pro $69/Seat monatlich oder $59/Seat jährlich, 1 Seat; Business individuell, 12-Monatsminimum"
+        "25 $/Monat, unbegrenzte Agents (Seat-Modell nicht veröffentlicht)",
+        "Pro 69 $/Seat monatlich oder 59 $/Seat jährlich, 1 Seat; Business individuell, 12-Monatsminimum"
       ],
       [
         "Free-Plan oder Test",
@@ -161,13 +162,13 @@
       [
         "Unternehmen",
         "UFOstart GmbH, Berlin, ca. 12 Mitarbeitende, Seed-Runde 2026",
-        "Jasper AI, Austin; $125M Series A (2022); G2 4.7/5 aus 1,270 Reviews (Juni 2026)"
+        "Jasper AI, Austin; 125 Mio. $ Series A (2022); G2 4,7/5 aus 1.270 Reviews (Juni 2026)"
       ]
     ],
     "pickA": {
       "heading": "Wählen Sie Whaaat AI, wenn …",
       "points": [
-        "Sie ein Team von einer bis fünf Personen sind und $59+ pro Seat zu viel ist.",
+        "Sie ein Team von einer bis fünf Personen sind und 59 $+ pro Seat zu viel ist.",
         "Sie einen deutschen Anbieter und einen Pauschalpreis ohne Seat-Zahl wollen.",
         "Ihr Bedarf Kanal-Content ist, nicht ein gesteuerter Content-Betrieb."
       ]
@@ -193,10 +194,10 @@
     "verdict": "Jasper ist die sicherere Wahl für ein Team, das Governance und Skalierung braucht, und als einziges der beiden mit Team-Admin, Agent Builder und API. Whaaat AI gewinnt beim Preis für kleine Teams und Agenturen mit mehreren Marken. Für EU-Datenschutz veröffentlicht keines EU-Hosting; Jasper nennt US-Rechenzentren, Whaaat noch nichts.",
     "bridge": {
       "heading": "Wenn Sie Arbeit erledigt haben wollen, kein Chatfenster",
-      "text": "Beide Tools geben einer Person Agents zur Content-Erzeugung. Wenn das Team eigentlich einen Wettbewerbsbericht, einen Kampagnenplan oder das Montags-PDF zur Performance braucht, ist das ein anderes Produkt: ein Coworker, den Sie briefen, ein Task-Board fürs Team, am Ende eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Coworker für Marketingteams, gebaut von Serviceplan Group mit NMKR in München.",
+      "text": "Beide Tools geben einer Person Agents zur Content-Erzeugung. Ein Wettbewerbsbericht, ein Kampagnenplan oder das Montags-PDF zur Performance ist ein anderes Produkt. Sie briefen einen KI-Mitarbeiter, das Team sieht das Board, am Ende steht eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Mitarbeiter für Marketingteams, gebaut von Serviceplan Group mit NMKR in München.",
       "points": [
-        "52 Coworker und Agents von 7 Anbietern; jedes Profil nennt Anbieter, Modelle und Hosting, mit verfügbarem EU-Hosting.",
-        "Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25, €75 oder €200 pro Monat; Credits werden nur verbraucht, wenn eine Aufgabe läuft.",
+        "KI-Mitarbeiter und Agents benannter Anbieter; jedes Profil nennt den Anbieter sowie Modelle und Hosting, wo der Anbieter sie angibt.",
+        "Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats 25 €, 75 € oder 200 € pro Monat; jede Aufgabe verbraucht Credits aus dem monatlichen Kontingent eines Seats.",
         "Aufgaben enden mit einem fertigen PDF, Deck, Spreadsheet oder Dashboard auf einem gemeinsamen Task-Board; geplante Aufgaben wiederholen sich selbst."
       ],
       "links": [
@@ -211,7 +212,7 @@
       ],
       [
         "Können mehrere Personen Whaaat AI nutzen?",
-        "Die Site verkauft einen $25-Plan und nennt Brand Presets für mehrere Kunden, veröffentlicht aber keine Seats oder Rollen. Fragen Sie den Anbieter."
+        "Die Site verkauft einen 25-$-Plan und nennt Brand Presets für mehrere Kunden, veröffentlicht aber keine Seats oder Rollen. Fragen Sie den Anbieter."
       ],
       [
         "Was ist der Unterschied zwischen Jasper Pro und Business?",
@@ -219,7 +220,7 @@
       ],
       [
         "Welches Produkt übergibt meinem Team einen fertigen Bericht?",
-        "Keines ist darauf gebaut. Beide geben Text und Bilder in einem Arbeitsbereich zurück. Sokosumi-Coworker liefern fertige Dateien auf ein Task-Board."
+        "Keines ist darauf gebaut. Beide geben Text und Bilder in einem Arbeitsbereich zurück. Sokosumi-KI-Mitarbeiter liefern fertige Dateien auf ein Task-Board."
       ]
     ]
   },

@@ -48,9 +48,9 @@ async function productHub(ctx) {
   const cr = [{ label: "Home", href: "/" }, { label: "Product" }];
   return (
     pageStart({
-      title: t("AI coworker for marketing teams | Sokosumi"),
+      title: t("How Sokosumi works: briefs, tasks and outputs | Sokosumi"),
       description:
-        "Brief a named AI coworker, follow the work on a shared board, and get finished files back. See how Sokosumi actually works.",
+        "Brief a named AI coworker, follow the work on a shared board, and get finished files back. How Sokosumi works, from brief to file.",
       path: "/product",
       breadcrumb: cr,
       mainClass: "product-page",
@@ -87,7 +87,7 @@ async function productHub(ctx) {
 const SURFACES = {
   "product/ai-coworkers": {
     feat: "home",
-    metaTitle: "What is an AI coworker? | Sokosumi",
+    metaTitle: "AI coworker roles on Sokosumi | Sokosumi",
     related: [["product/briefing", "How you brief one"], ["product/task-board", "Where the work shows up"], ["ai-coworkers", "Meet the roster"]],
   },
   "product/briefing": {
@@ -97,6 +97,7 @@ const SURFACES = {
   },
   "product/task-board": {
     feat: "tasks",
+    panel: true,
     metaTitle: "A task board for AI work | Sokosumi",
     related: [["product/briefing", "How work gets onto the board"], ["product/outputs", "What a finished task hands back"], ["use-cases", "Boards in real workflows"]],
   },
@@ -132,10 +133,48 @@ async function surfacePage(doc, slug, ctx) {
   const related = cfg.related
     .map(([slugPath, label]) => `<a class="row-item" href="/${slugPath}"><h3>${esc(label)}</h3><span class="row-go">${shell.icon("arrow-up-right", 15)}</span></a>`)
     .join("");
+  // Panel layout (test on the task board): one soft panel carries the hero,
+  // the product stage and the first three feature points, so the page opens
+  // like a single composed spread instead of stacked sections.
+  if (cfg.panel) {
+    const grid = layout.find((b) => b.blockType === "featureGrid" && (b.items || []).length >= 3);
+    const rest = blocks.renderBlocks(layout.filter((b) => b.blockType !== "hero" && b.blockType !== "ctaBand" && b !== grid));
+    return (
+      pageStart({
+        title: t(cfg.metaTitle),
+        description: shell.describe(doc.description || "", [t("Part of the Sokosumi product tour: brief an AI coworker, follow the task on a shared board, collect the file."), t("Sokosumi: brief an AI coworker and get a finished file back."), t("AI coworkers for marketing teams.")]),
+        path: "/" + slug,
+        breadcrumb: cr,
+        stylesheets: ["/assets/product.css"],
+        mainClass: "surface-page surface-panel-page",
+        jsonld: blocks.faqJsonLd(blocks.collectFaqs(layout)),
+      }) +
+      `<section class="sk-panel">
+        <p class="sk-eyebrow">${esc(doc.title)}</p>
+        <div class="sk-head">
+          <h1>${esc((hero && hero.heading) || doc.title)}</h1>
+          <div class="sk-lead">
+            ${hero && hero.subheading ? `<p>${esc(hero.subheading)}</p>` : ""}
+            <a class="sk-link" href="${shell.APP_SIGNUP}" data-analytics="sign_up_click" data-analytics-location="surface_hero">${esc(t("Start free"))} <span aria-hidden="true">→</span></a>
+          </div>
+        </div>
+        <div class="sk-stage">${productDemo.featBand(cfg.feat)}</div>
+        ${grid ? `<div class="sk-feats">${grid.items.slice(0, 3).map((it) => `<div><h3>${esc(it.title)}</h3><p>${esc(it.text || "")}</p></div>`).join("")}</div>` : ""}
+      </section>` +
+      rest +
+      `<section class="page-section"><h2>${esc(t("Keep reading"))}</h2><div class="row-list">${related}</div></section>` +
+      shell.proof(testimonials, slug.length, { mode: "logos" }) +
+      (band
+        ? blocks.renderBlocks([band])
+        : shell.ctaBand({ heading: t("Start with one task"), subheading: t("Brief a coworker today and see what comes back."), ctaLabel: t("Start free"), seed: slug.length })) +
+      pageEnd({ scripts: ["/assets/product-feat.js"] })
+    );
+  }
+
   return (
     pageStart({
       title: t(cfg.metaTitle),
-      description: (doc.description || "").slice(0, 160),
+      description: shell.describe(doc.description || "", [t("Part of the Sokosumi product tour: brief an AI coworker, follow the task on a shared board, collect the file."), t("Sokosumi: brief an AI coworker and get a finished file back."), t("AI coworkers for marketing teams.")]),
       path: "/" + slug,
       breadcrumb: cr,
       stylesheets: ["/assets/product.css"],
@@ -171,22 +210,66 @@ async function cmsPage(ctx) {
   if (SURFACES[doc.slug]) return surfacePage(doc, doc.slug, ctx);
   if (spSection.isSection(doc.slug)) return spSection.render(doc, ctx);
 
+  // Pages that stand on their own rather than under a parent: they open on the
+  // ink band (assets/page-ink.css) and their breadcrumb is Home > page, with no
+  // section in between. /ai-marketing-agency is one — filed under the
+  // Serviceplan dossier it read, in the SERP and in the crumb, as a page about
+  // Serviceplan rather than about the category someone searched for.
+  const INK_PAGES = new Set(["ai-marketing-agency"]);
+  const ink = INK_PAGES.has(doc.slug);
+
   const cr = [{ label: "Home", href: "/" }];
-  if (doc.parent && typeof doc.parent === "object" && doc.parent.title && doc.parent.slug) {
+  if (!ink && doc.parent && typeof doc.parent === "object" && doc.parent.title && doc.parent.slug) {
     cr.push({ label: doc.parent.title, href: pagePath(doc.parent.slug) });
   }
   cr.push({ label: doc.title });
+  const englishOnly = doc.slug.startsWith("alternatives/");
 
   return (
     pageStart({
       title: t("{title} | Sokosumi", { title: doc.title }),
-      description: (doc.description || "").slice(0, 155),
+      description: shell.truncate(doc.description, 155),
       path: "/" + doc.slug,
       breadcrumb: cr,
+      // /alternatives/* has no German version (server.js 301s /de back).
+      englishOnly: englishOnly || undefined,
+      mainClass: ink ? "ink-page" : undefined,
+      stylesheets: ink ? ["/assets/page-ink.css"] : undefined,
       jsonld: blocks.faqJsonLd(blocks.collectFaqs(doc.layout)),
     }) +
-    blocks.renderBlocks(doc.layout) +
-    pageEnd()
+    // On an ink page the hero gets a product screenshot beside it, so the band
+    // is not a wide slab of empty dark on a large screen. The rest of the
+    // layout renders normally.
+    (ink
+      ? (() => {
+          const [first, ...rest] = doc.layout || [];
+          const shot = shell.SHOTS.brief;
+          const hero =
+            first && first.blockType === "hero"
+              ? `<section class="ink-hero has-media" data-reveal>
+                  <div>
+                    ${first.eyebrow ? `<span class="eyebrow">${shell.esc(first.eyebrow)}</span>` : ""}
+                    <h1>${shell.esc(first.heading)}</h1>
+                    ${first.subheading ? `<p class="sub">${shell.esc(first.subheading)}</p>` : ""}
+                  </div>
+                  <div class="ink-hero-media">
+                    <img${shell.thumbSrc(shot.src, 1200)} alt="${shell.attr(t(shot.alt))}" width="2400" height="1350" loading="eager" fetchpriority="high" decoding="async" />
+                  </div>
+                </section>`
+              : "";
+          return hero + blocks.renderBlocks(hero ? rest : doc.layout);
+        })()
+      : blocks.renderBlocks(doc.layout)) +
+    // standalone pages close with the same offer every other page does
+    (ink
+      ? shell.ctaBand({
+          heading: t("Try it on one task"),
+          subheading: t("250 free credits per seat. No card, no sales call."),
+          ctaLabel: t("Start free"),
+          seed: doc.slug.length,
+        })
+      : "") +
+    pageEnd({ englishOnly })
   );
 }
 

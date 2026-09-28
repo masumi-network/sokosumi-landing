@@ -13,13 +13,13 @@ soft glow — never heavy drop shadows, never ALL CAPS.
 
 | Token | Value | Use |
 |---|---|---|
-| `--background` | `#FFFFFF` | Page background (light sections) |
+| `--background` | `#F5F5F5` | Page background — soft grey; white cards lift off it (changed 2026-08-26) |
 | `--card` | `#FAFAFA` | Cards, panels — elevated surfaces are *lighter*, not heavier |
 | `--muted` | `#F5F5F5` | Muted fills, skeletons, secondary chips |
 | `--foreground` | `#0A0A0A` | Text, icons |
 | `--muted-foreground` | `rgba(10,10,10,.5)` | Secondary text, captions |
 | `--border` | `#E6E6E6` | Hairline borders (often at 60% opacity) |
-| `--primary` | `#6400FF` | Wisteria Purple — the one accent role: CTAs, active states, focus rings |
+| `--primary` | `#2B5C78` | Steel blue — the one accent role: active states, links, focus rings (was Wisteria Purple until 2026-08-26). `--stage` / `--stage-deep` are the dark-to-light gradients used for product stages, CTA bands and every ink surface incl. primary buttons |
 | `--primary-foreground` | `#FAFAFA` | Text on primary |
 | `--chart-1` | `#00A4FA` | kodosumi Sky Blue — category accent |
 | `--chart-2` | `#FA008C` | masumi Electric Pink — category accent |
@@ -32,7 +32,17 @@ Category accents are the **only** chromatic color beyond purple, and only where 
 
 ## Typography
 
-**Inter**, all weights. Hierarchy comes from **size + weight together**:
+**Two families, no more.** Inter carries everything a reader reads; the platform's
+own monospace carries code. There is no third face, and no second webfont download.
+
+| Token | Resolves to | Used for |
+| --- | --- | --- |
+| `--sans` | Inter (self-hosted 300/400/500) | body, UI, labels |
+| `--display` | Inter | headlines and display copy — swap here to introduce a real display face |
+| `--mono` | `ui-monospace, SFMono-Regular, Menlo, monospace` | code blocks, DESIGN.md source, prompt quotes |
+
+Never write a raw font stack in a component — reference the token, so a future
+family change is one line. Hierarchy comes from **size + weight together**:
 
 - **Light (300)** — headlines only: hero `text-2xl md:text-3xl font-light`, section headings
   `text-xl md:text-2xl font-light`. Airy, sophisticated, never bold.

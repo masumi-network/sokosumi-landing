@@ -1,4 +1,5 @@
 import { draftMode } from "next/headers";
+import { DEFAULT_LOCALE, type Locale } from "./i18n";
 
 // Payload CMS client. Content is edited at the CMS admin panel and fetched
 // here with ISR (5 min) so publishing never requires a deploy. When Next.js
@@ -18,11 +19,18 @@ export async function isDraftModeEnabled(): Promise<boolean> {
 
 export async function cmsFetch<T>(
   apiPath: string,
-  opts?: { draft?: boolean },
+  opts?: { draft?: boolean; locale?: Locale },
 ): Promise<T | null> {
   try {
+    // Payload falls back to the default locale field-by-field when a
+    // translation is missing, so requesting ?locale=de is always safe: a
+    // half-translated doc renders German where it has German and English
+    // everywhere else, rather than 404ing.
+    const params: string[] = [];
+    if (opts?.draft) params.push("draft=true");
+    if (opts?.locale && opts.locale !== DEFAULT_LOCALE) params.push(`locale=${opts.locale}`);
     const url = `${CMS_URL}/api${apiPath}${
-      opts?.draft ? (apiPath.includes("?") ? "&" : "?") + "draft=true" : ""
+      params.length ? (apiPath.includes("?") ? "&" : "?") + params.join("&") : ""
     }`;
     const res = await fetch(
       url,

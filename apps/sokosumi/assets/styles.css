@@ -4,10 +4,12 @@
    /assets/landing.css. Header/footer chrome lives in /assets/nav.css. */
 
 :root {
-  --background: #fafaf9;
+  --background: #f5f5f5;
+  --stage-deep: linear-gradient(180deg, #0a0a0a 0%, #0f1c25 45%, #2c4452 100%);
+  --stage: linear-gradient(180deg, #0a0a0a 0%, #0f1c25 22%, #2c4452 52%, #7d8f9b 78%, #d9dee2 94%, #eceef0 100%);
   --ink: #0f0e0d;
   --card: #ffffff;
-  --muted: #f2f1f0;
+  --muted: #ebeae9;
   --foreground: #0f0e0d;
   /* 0.55 measured 4.13-4.28 against the three light surfaces — under the 4.5
      WCAG AA needs for body text, which failed the whole footer and the cookie
@@ -16,21 +18,22 @@
   --muted-foreground: rgba(15, 14, 13, 0.6);
   --border: rgba(15, 14, 13, 0.12);
   --hairline-dark: rgba(255, 255, 255, 0.16);
-  --primary: #6400ff;
-  --primary-soft: rgba(100, 0, 255, 0.08);
-  /* #6400ff is a light-surface accent — luminance 0.10, so it goes muddy on
+  --primary: #2b5c78;
+  --primary-soft: rgba(43, 92, 120, 0.08);
+  /* #2b5c78 is a light-surface accent — luminance 0.10, so it goes muddy on
      ink. This is the app's own dark-theme purple, for the dark bands. */
-  --primary-on-dark: hsla(270, 64%, 63%, 1);
+  --primary-on-dark: #8fb4cc;
   --r-sm: 4px;
   --r-md: 6px;
   --r-lg: 8px;
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  /* Two families, no more: Inter for everything a reader reads, and the
+     platform's own monospace for code. --display is the same face as --sans
+     today (different weights carry the contrast); swapping in a real display
+     face later is a one-line token change, not a per-surface edit. */
   --sans: "Inter", -apple-system, system-ui, sans-serif;
-  /* Aliases so landing.css can say "serif" without shipping a second face.
-     Both resolve to Inter — a real serif later is a token change, not a
-     per-surface edit. */
-  --serif: "Inter", -apple-system, system-ui, sans-serif;
-  --mono: "Inter", -apple-system, system-ui, sans-serif;
+  --display: "Inter", -apple-system, system-ui, sans-serif;
+  --mono: ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 * { margin: 0; box-sizing: border-box; }
 /* `clip` rather than `hidden`: it stops a full-bleed band from ever producing
@@ -210,7 +213,7 @@ main.page { min-height: 60vh; }
 .cap-grid { display: grid; gap: 22px 28px; grid-template-columns: 1fr; }
 @media (min-width: 680px) { .cap-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (min-width: 1020px) { .cap-grid { grid-template-columns: repeat(3, 1fr); } }
-.cap-col { border-top: 1px solid var(--foreground); padding-top: 14px; display: flex; flex-direction: column; align-items: flex-start; }
+.cap-col { border-top: 1px solid var(--border); padding-top: 14px; display: flex; flex-direction: column; align-items: flex-start; }
 .cap-label {
   font-size: 11.5px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase;
   color: var(--muted-foreground); margin-bottom: 8px;
@@ -323,7 +326,7 @@ main.page { min-height: 60vh; }
 
 .uc-steps { list-style: none; display: grid; gap: 14px; grid-template-columns: 1fr; counter-reset: none; }
 @media (min-width: 800px) { .uc-steps { grid-template-columns: repeat(3, 1fr); gap: 28px; } }
-.uc-steps li { display: flex; flex-direction: column; gap: 7px; padding-top: 16px; border-top: 1px solid var(--foreground); }
+.uc-steps li { display: flex; flex-direction: column; gap: 7px; padding-top: 16px; border-top: 1px solid var(--border); }
 .uc-steps .n { font-size: 12px; letter-spacing: 0.08em; color: var(--muted-foreground); font-variant-numeric: tabular-nums; }
 .uc-steps strong { font-size: 16px; font-weight: 500; letter-spacing: -0.01em; }
 .uc-steps li > span:last-child { font-size: 14px; line-height: 1.55; color: var(--muted-foreground); }
@@ -386,7 +389,7 @@ main.page { min-height: 60vh; }
   display: grid; grid-template-columns: minmax(56px, 92px) minmax(0, 1fr);
   gap: 10px clamp(20px, 4vw, 48px);
   padding: clamp(26px, 4vw, 42px) 0;
-  border-top: 1px solid var(--foreground);
+  border-top: 1px solid var(--border);
 }
 .ch-num {
   font-weight: 300; font-size: clamp(28px, 3.4vw, 44px); line-height: 1;
@@ -425,13 +428,31 @@ main.page { min-height: 60vh; }
 @media (max-width: 720px) { .vendor-list .row-item { grid-template-columns: minmax(0, 1fr) auto; } }
 
 /* ===== quiet index rows (lists: guides, vendors, releases…) ===== */
-.row-list { border-top: 1px solid var(--border); }
+/* No rule of its own: the section already opens with one, and a second line
+   100px under the heading reads as clutter. The rows carry their own
+   separators and the last one drops its rule (below). */
+.row-list { border-top: 0; }
 
 /* Long lists collapse to their first 12 rows. Every row stays in the HTML —
    the rest are hidden with CSS, not withheld from the response — so crawlers
    still see all 40 specialist agents while the page stops being a 40KB wall.
    `is-collapsed` is added by site.js, so with JS off the full list renders. */
 .row-list.is-collapsed > :nth-child(n + 13) { display: none; }
+/* the list ends where the section ends: a last rule here would stack against
+   the next .page-section border-top with nothing between the two */
+.row-list > :last-child { border-bottom: 0; }
+
+/* ===== no trailing rule on a repeated list =====
+   Every list whose items carry a border-bottom ends level with the next
+   section's border-top, which stacks two rules with empty space between them.
+   The rule belongs *between* items, so the last one always drops it. Add new
+   item selectors here rather than re-solving this per component. */
+.faq-item:last-of-type,
+.blk-checklist li:last-child,
+.entity-list li:last-child,
+.data-grid .dg-row:last-child {
+  border-bottom: 0;
+}
 .row-more {
   display: inline-flex; align-items: center; gap: 8px; margin-top: 18px;
   height: 40px; padding: 0 18px; border-radius: var(--r-md);
@@ -532,6 +553,20 @@ a.card:hover .go { opacity: 1; transform: none; }
    strokes keep their weight instead of being cropped to fill a portrait frame */
 .cw-portrait.is-icon { background: var(--card); border: 1px solid var(--border); }
 .cw-portrait.is-icon img { object-fit: contain; padding: 26%; }
+/* A marketplace icon is a glyph, not a portrait: at portrait size it is a huge
+   piece of line art carrying one bit of information. Cap it and let the copy
+   lead. */
+.cw-hero .cw-portrait.is-icon { width: min(160px, 40%); aspect-ratio: 1; align-self: start; }
+/* the maker's own copy runs long; keep it to a readable measure */
+.cw-vendor-copy { max-width: 72ch; }
+/* maker-supplied tables: hairlines only, and they scroll rather than push the
+   page sideways on a phone */
+.cw-table-wrap { overflow-x: auto; margin: 1.4em 0; }
+.cw-vendor-copy table { border-collapse: collapse; width: 100%; min-width: 420px; font-size: 15px; }
+.cw-vendor-copy th, .cw-vendor-copy td { text-align: left; padding: 10px 14px 10px 0; border-bottom: 1px solid var(--border); vertical-align: top; }
+.cw-vendor-copy th { font-weight: 500; font-size: 13px; color: var(--muted-foreground); }
+.cw-vendor-copy tbody tr:last-child td { border-bottom: 0; }
+.cw-vendor-copy h3 { margin-top: 1.6em; }
 .portrait.is-icon img, .cw-tile .portrait.is-icon img { object-fit: contain; padding: 24%; }
 .avatar.is-icon { background: var(--muted); }
 .avatar.is-icon img { object-fit: contain; padding: 18%; }
@@ -541,6 +576,45 @@ a.card:hover .go { opacity: 1; transform: none; }
 .cw-info .role { font-size: 16px; color: var(--muted-foreground); }
 .cw-tags { display: flex; flex-wrap: wrap; gap: 8px; }
 .cw-desc { font-size: 15.5px; line-height: 1.65; color: var(--muted-foreground); text-wrap: pretty; }
+
+/* ---- related comparisons rail (templates/compare.js) ----
+   42 compare pages used to carry two internal links each, both to the same
+   static cards. This is the cluster they were missing. */
+.cmp-related-grid { display: grid; gap: 14px; margin-top: 24px; }
+@media (min-width: 700px) { .cmp-related-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1040px) { .cmp-related-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.cmp-related-link {
+  display: flex; flex-direction: column; gap: 3px; padding-top: 14px;
+  border-top: 1px solid var(--border); text-decoration: none; color: var(--foreground);
+  transition: border-color 160ms ease-out;
+}
+.cmp-related-link:hover { border-color: var(--primary); }
+.cmp-related-link strong { font-size: 15.5px; font-weight: 500; }
+.cmp-related-link span { font-size: 14px; color: var(--muted-foreground); line-height: 1.5; }
+.cmp-related-all { margin-top: 22px; font-size: 14.5px; }
+.cmp-related-all a { display: inline-flex; align-items: center; gap: 6px; color: var(--primary); font-weight: 500; }
+
+/* ---- editorial overlay blocks (templates/coworkerBoost.js) ----
+   Only render on the handful of profiles that have an entry; the rest of the
+   coworker pages never see these rules. */
+.cw-spec-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: var(--r-lg); margin-top: 26px; }
+.cw-spec { width: 100%; min-width: 520px; border-collapse: collapse; font-size: 15px; }
+.cw-spec th, .cw-spec td { padding: 14px 18px; border-bottom: 1px solid var(--border); text-align: left; vertical-align: top; }
+.cw-spec thead th { background: var(--card); color: var(--muted-foreground); font-size: 12.5px; font-weight: 500; }
+.cw-spec tbody tr:last-child th, .cw-spec tbody tr:last-child td { border-bottom: 0; }
+.cw-spec tbody th { width: 26%; color: var(--foreground); font-weight: 500; white-space: nowrap; }
+.cw-spec tbody td { color: var(--muted-foreground); line-height: 1.55; }
+
+.cw-boost-links { display: grid; gap: 14px; margin-top: 24px; }
+@media (min-width: 760px) { .cw-boost-links { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.cw-boost-link {
+  display: flex; flex-direction: column; gap: 4px; padding-top: 15px;
+  border-top: 1px solid var(--border); text-decoration: none; color: var(--foreground);
+  transition: border-color 160ms ease-out;
+}
+.cw-boost-link:hover { border-color: var(--primary); }
+.cw-boost-link strong { font-size: 15.5px; font-weight: 500; }
+.cw-boost-link span { font-size: 14px; color: var(--muted-foreground); line-height: 1.5; }
 .cw-cta { margin-top: 8px; }
 .cta-note { margin-top: 10px; font-size: 12.5px; line-height: 1.5; color: var(--muted-foreground); max-width: 46ch; }
 /* the reassurance line under every signup button (never in the nav).
@@ -574,7 +648,7 @@ a.card:hover .go { opacity: 1; transform: none; }
   padding: 4px 9px; border-radius: var(--r-sm);
   background: var(--muted); color: var(--muted-foreground); white-space: nowrap;
 }
-.offer-type[data-out="html"] { background: rgba(100, 0, 255, 0.07); color: #5b21c9; }
+.offer-type[data-out="html"] { background: rgba(43, 92, 120, 0.07); color: #5b21c9; }
 .offer-type[data-out="pdf"] { background: rgba(178, 60, 44, 0.08); color: #96473a; }
 .offer-type[data-out="doc"] { background: rgba(43, 84, 156, 0.08); color: #3d5d99; }
 .offer-type[data-out="slides"] { background: rgba(176, 116, 24, 0.1); color: #8a651f; }
@@ -713,7 +787,7 @@ a.card:hover .go { opacity: 1; transform: none; }
 .prose a:hover { text-decoration-color: var(--foreground); }
 /* A quote in a guide is almost always an example briefing: show it as the
    thing itself — a card you could paste into the app — not as a citation. */
-.prose blockquote { margin: 1.4em 0 !important; padding: 22px 24px 22px 26px; border: 1px solid var(--border); border-left: 2px solid var(--foreground); border-radius: var(--r-lg); background: var(--card); font-size: 16.5px; line-height: 1.7; color: var(--foreground); }
+.prose blockquote { margin: 1.4em 0 !important; padding: 22px 24px 22px 26px; border: 1px solid var(--border); border-left: 2px solid var(--primary); border-radius: var(--r-lg); background: var(--card); font-size: 16.5px; line-height: 1.7; color: var(--foreground); }
 .prose blockquote::before { content: "Example"; display: block; margin-bottom: 8px; font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted-foreground); }
 html[lang="de"] .prose blockquote::before { content: "Beispiel"; }
 .prose blockquote p { color: inherit; }
@@ -742,7 +816,7 @@ html[lang="de"] .prose blockquote::before { content: "Beispiel"; }
 
 .blk-stats { display: grid; gap: 14px; grid-template-columns: repeat(2, 1fr); }
 @media (min-width: 860px) { .blk-stats { grid-template-columns: repeat(var(--n, 4), 1fr); } }
-.stat { border-top: 1px solid var(--foreground); padding-top: 14px; }
+.stat { border-top: 1px solid var(--border); padding-top: 14px; }
 .stat .value { font-weight: 300; font-size: clamp(30px, 3.6vw, 46px); letter-spacing: -0.02em; line-height: 1.05; }
 .stat .label { margin-top: 6px; font-size: 13.5px; color: var(--muted-foreground); }
 
@@ -840,18 +914,54 @@ html[lang="de"] .prose blockquote::before { content: "Beispiel"; }
    A label, a number field and a few quick-pick chips (the task browse
    filter chips, so the picked one takes the same accent). The submit button
    only matters with script off; pricing.js hides it. */
-.seat-picker { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; padding: 6px 6px 18px; }
+/* ===== team-size slider ===== */
+.seat-picker { display: grid; gap: 14px; padding: 6px 6px 22px; max-width: 620px; }
+.seat-top { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; }
+.seat-readout { font-size: 15px; color: var(--muted-foreground); }
+.seat-readout strong { font-size: 22px; font-weight: 400; color: var(--foreground); font-variant-numeric: tabular-nums; margin-right: 4px; }
+.seat-slider { position: relative; padding-bottom: 22px; }
+.seat-range {
+  -webkit-appearance: none; appearance: none; width: 100%; height: 22px;
+  background: transparent; margin: 0; display: block; cursor: pointer;
+}
+/* the track, with the travelled part filled to --pct */
+.seat-range::-webkit-slider-runnable-track {
+  height: 4px; border-radius: 999px;
+  background: linear-gradient(to right, var(--primary) 0 var(--pct, 0%), rgba(15, 14, 13, 0.14) var(--pct, 0%) 100%);
+}
+.seat-range::-moz-range-track {
+  height: 4px; border-radius: 999px;
+  background: linear-gradient(to right, var(--primary) 0 var(--pct, 0%), rgba(15, 14, 13, 0.14) var(--pct, 0%) 100%);
+}
+.seat-range::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none;
+  width: 22px; height: 22px; margin-top: -9px; border-radius: 999px;
+  background: #fff; border: 1px solid var(--border); outline: 3px solid var(--primary); outline-offset: -3px;
+}
+.seat-range::-moz-range-thumb {
+  width: 22px; height: 22px; border-radius: 999px; box-sizing: border-box;
+  background: #fff; border: 3px solid var(--primary);
+}
+.seat-range:focus-visible { outline: none; }
+.seat-range:focus-visible::-webkit-slider-thumb { box-shadow: 0 0 0 4px var(--primary-soft); }
+.seat-range:focus-visible::-moz-range-thumb { box-shadow: 0 0 0 4px var(--primary-soft); }
+/* preset marks stay as orientation, not as controls */
+.seat-ticks { position: absolute; left: 0; right: 0; bottom: 0; height: 20px; pointer-events: none; }
+.seat-tick { position: absolute; left: var(--at); transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.seat-tick i { width: 1px; height: 4px; background: rgba(15, 14, 13, 0.18); display: block; }
+.seat-tick b { font-size: 11px; font-weight: 400; color: var(--muted-foreground); font-variant-numeric: tabular-nums; }
+.seat-picker .seat-submit { justify-self: start; }
 .seat-label { font-size: 14px; font-weight: 500; letter-spacing: -0.005em; }
 .seat-field { display: inline-flex; align-items: center; gap: 10px; }
 .seat-input {
   width: 92px; height: 40px; padding: 0 12px; font: inherit; font-size: 15px;
   font-variant-numeric: tabular-nums; color: var(--foreground);
-  background: var(--card); border: 1px solid rgba(15, 14, 13, 0.48); border-radius: var(--r-md);
+  background: var(--card); border: 1px solid var(--border); border-radius: var(--r-md);
 }
 .seat-unit { font-size: 14px; color: var(--muted-foreground); }
 .seat-presets { display: inline-flex; flex-wrap: wrap; gap: 8px; }
 .seat-presets .fchip { padding: 6px 12px; font-variant-numeric: tabular-nums; }
-.seat-presets .fchip:not(.active) { border-color: rgba(15, 14, 13, 0.48); color: var(--foreground); }
+.seat-presets .fchip:not(.active) { border-color: var(--border); color: var(--foreground); }
 .seat-submit { height: 40px; }
 .seat-submit[hidden] { display: none; }
 @media (max-width: 639px) { .seat-picker { gap: 10px 14px; } .seat-presets { flex-basis: 100%; } }
@@ -866,7 +976,7 @@ html[lang="de"] .prose blockquote::before { content: "Beispiel"; }
 /* the one accent border on the page: the plan most teams land on */
 .plan-card.featured { border-color: var(--primary); }
 .plan-name { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-size: 17px; font-weight: 500; letter-spacing: -0.01em; line-height: 1.3; }
-.plan-card.featured .chip { color: var(--primary); border-color: rgba(100, 0, 255, 0.6); }
+.plan-card.featured .chip { color: var(--primary); border-color: rgba(43, 92, 120, 0.6); }
 /* the price is the headline figure of each card, so it takes the display weight */
 .plan-price { margin-top: 18px; }
 .plan-price .amount { display: block; font-weight: 300; font-size: clamp(32px, 2.8vw, 38px); line-height: 1; letter-spacing: -0.03em; }
@@ -886,7 +996,7 @@ html[lang="de"] .prose blockquote::before { content: "Beispiel"; }
 .plan-card .btn { margin-top: 20px; width: 100%; }
 /* the outline button's hairline is 1.3:1 on white; a control's edge needs
    3:1, so the plan buttons take a firmer border (0.48 → 3.4:1) */
-.plan-card .btn-outline { border-color: rgba(15, 14, 13, 0.48); }
+.plan-card .btn-outline { border-color: var(--border); }
 .plan-card .btn-outline:hover { border-color: rgba(15, 14, 13, 0.8); }
 
 .plan-enterprise {
@@ -901,6 +1011,8 @@ html[lang="de"] .prose blockquote::before { content: "Beispiel"; }
 .plan-enterprise .btn-primary { background: #fff; color: var(--ink); }
 .plan-enterprise .btn-primary:hover { background: #e9e8e6; }
 .plan-enterprise :focus-visible { outline-color: var(--primary-on-dark); }
+.plan-enterprise .plan-more { grid-column: 1 / -1; color: rgba(255, 255, 255, 0.72); font-size: 14px; text-decoration: underline; text-underline-offset: 3px; }
+.plan-enterprise .plan-more:hover { color: #fff; }
 @media (max-width: 639px) { .plan-enterprise .btn { width: 100%; } }
 @media (min-width: 640px) {
   .plan-enterprise { grid-template-columns: minmax(0, 1fr) auto; }
@@ -945,7 +1057,7 @@ html[lang="de"] .prose blockquote::before { content: "Beispiel"; }
 .grad-band.g3 { background-image: url(/assets/gradients/g3.webp); }
 .grad-band.g4 { background-image: url(/assets/gradients/g4.webp); }
 .grad-band.g5 { background-image: url(/assets/gradients/g5.webp); }
-.grad-band > .cw-split { box-shadow: 0 24px 60px -28px rgba(40, 10, 90, 0.4); border-color: rgba(15, 14, 13, 0.1); }
+.grad-band > .cw-split { border-color: rgba(15, 14, 13, 0.1); }
 .shot-fig figcaption {
   margin-top: 12px; font-size: 14px; line-height: 1.55;
   color: var(--muted-foreground); max-width: 62ch;
@@ -993,11 +1105,16 @@ html[lang="de"] .prose blockquote::before { content: "Beispiel"; }
 .blk-cta h2 { font-weight: 300; font-size: clamp(30px, 3.5vw, 48px); letter-spacing: -0.025em; line-height: 1.1; max-width: 22ch; text-wrap: balance; }
 .blk-cta p { font-size: 16px; color: rgba(255, 255, 255, 0.6); }
 .blk-cta .btn-primary { background: #fff; color: var(--ink); }
-/* a few coworker faces so the ink band reads as people, not a wall */
+/* a few coworker faces so the ink band reads as people, not a wall.
+   No ring: an --ink border drew a hard black outline on every portrait, and
+   the band's gradient is nowhere near --ink for most of its height, so it read
+   as an outline rather than as the gap between overlapping circles it was
+   meant to be. The overlap tightens from 12px to 6px to compensate — each
+   portrait carries its own colour, which separates them well enough. */
 .cta-faces { display: inline-flex; align-items: center; }
 .cta-faces img {
   width: 40px; height: 40px; border-radius: 999px; object-fit: cover;
-  border: 2px solid var(--ink); margin-right: -12px; display: block;
+  margin-right: -6px; display: block;
 }
 .cta-faces img:last-child { margin-right: 0; }
 
@@ -1217,17 +1334,17 @@ fieldset.field > legend + * { clear: both; }
 
 /* where you can go: the arrow on a row, and a link in body copy */
 .row-item:hover .row-go { color: var(--primary); }
-a.card:hover { border-color: rgba(100, 0, 255, 0.45); }
-.prose a { text-decoration-color: rgba(100, 0, 255, 0.4); }
+a.card:hover { border-color: rgba(43, 92, 120, 0.45); }
+.prose a { text-decoration-color: rgba(43, 92, 120, 0.4); }
 .prose a:hover { color: var(--primary); text-decoration-color: var(--primary); }
-.legal-nav a[aria-current] { color: var(--primary); border-color: rgba(100, 0, 255, 0.45); }
+.legal-nav a[aria-current] { color: var(--primary); border-color: rgba(43, 92, 120, 0.45); }
 
 /* the uppercase kicker above a block, where a page uses one */
 .kicker { color: var(--primary); }
 
 /* the two remaining "this one is live" states: a task card under the pointer
    (DESIGN.md specifies hover border-primary here) and the filter you picked */
-.offer-card:hover { border-color: rgba(100, 0, 255, 0.45); }
+.offer-card:hover { border-color: rgba(43, 92, 120, 0.45); }
 .fchip.active { background: var(--primary); border-color: var(--primary); color: #fff; }
 
 /* a blog post's own tag, the one coloured mark on the index */
@@ -1243,7 +1360,7 @@ a.card:hover { border-color: rgba(100, 0, 255, 0.45); }
 .band-dark :focus-visible,
 .blk-cta :focus-visible { outline-color: var(--primary-on-dark); }
 
-::selection { background: rgba(100, 0, 255, 0.18); }
+::selection { background: rgba(43, 92, 120, 0.18); }
 
 /* ===== mobile overflow guards ==================================== */
 /* Raw URLs in legal prose and long German compounds in headings must
@@ -1271,6 +1388,9 @@ h1, h2, h3 { overflow-wrap: break-word; }
    person and to a machine alike, which is why the facts tables use it. */
 .data-grid { margin: 0; border-top: 1px solid var(--border); }
 .data-grid .dg-row { display: grid; grid-template-columns: minmax(140px, 220px) 1fr; gap: 12px 24px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+/* The grid ends where its content ends: a closing rule here would stack
+   against the next section's border-top with empty space between the two. */
+.data-grid .dg-row:last-child { border-bottom: 0; }
 .data-grid dt { font-size: 13px; color: var(--muted-foreground); padding-top: 2px; }
 .data-grid dd { margin: 0; font-size: 15px; line-height: 1.55; text-wrap: pretty; }
 .data-grid dd a { text-decoration: underline; text-underline-offset: 3px; }
@@ -1288,7 +1408,7 @@ h1, h2, h3 { overflow-wrap: break-word; }
 .cmp-mark { display: inline-flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 500; letter-spacing: -0.01em; white-space: nowrap; }
 .cmp-mark img { display: block; }
 .cmp-mark-logo img, .cmp-mark-logo b { width: 24px; height: 24px; border-radius: 6px; object-fit: contain; filter: grayscale(1) contrast(1.15); }
-.cmp-mark-logo b { display: inline-flex; align-items: center; justify-content: center; border: 1px solid var(--foreground); font-weight: 500; font-size: 12px; }
+.cmp-mark-logo b { display: inline-flex; align-items: center; justify-content: center; border: 1px solid var(--border); font-weight: 500; font-size: 12px; }
 .cmp-versus-head { padding-top: clamp(36px, 5vw, 64px); }
 .cmp-versus-head + .blk-hero { padding-top: 12px; }
 .cmp-versus.is-lg { gap: 18px; margin-bottom: 0; }
@@ -1315,8 +1435,11 @@ h1, h2, h3 { overflow-wrap: break-word; }
 
 /* ===== tool-vs-tool pages ===== */
 .pair-hero .guide-meta { margin-top: 14px; }
+/* The two column rules ARE this section's opening line — the page-section's
+   own full-width rule would sit ~70px above them with nothing in between. */
+.page-section.pair-picks { border-top: 0; }
 .pair-picks { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(20px, 3vw, 40px); }
-.pair-pick { border-top: 1px solid var(--foreground); padding-top: 18px; }
+.pair-pick { border-top: 1px solid var(--border); padding-top: 18px; }
 .pair-pick h3, .pair-limits-grid h3 { font-size: 18px; font-weight: 500; letter-spacing: -0.01em; margin-bottom: 12px; }
 .pair-pick ul, .pair-limits-grid ul { list-style: none; margin: 0; padding: 0; }
 .pair-pick li, .pair-limits-grid li { position: relative; padding-left: 22px; font-size: 15.5px; line-height: 1.6; color: rgba(15, 14, 13, 0.78); }
@@ -1326,7 +1449,7 @@ h1, h2, h3 { overflow-wrap: break-word; }
 .pair-limits h2, .pair-verdict h2 { font-weight: 300; font-size: clamp(24px, 2.8vw, 34px); letter-spacing: -0.02em; margin-bottom: 18px; }
 .pair-limits-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(20px, 3vw, 40px); }
 .pair-verdict-text { font-size: clamp(18px, 2vw, 22px); line-height: 1.5; max-width: 60ch; text-wrap: pretty; }
-.pair-bridge-box { border: 1px solid var(--foreground); border-radius: var(--r-lg); padding: clamp(24px, 3.5vw, 44px); background: var(--card); }
+.pair-bridge-box { border: 1px solid var(--border); border-radius: var(--r-lg); padding: clamp(24px, 3.5vw, 44px); background: var(--card); }
 .pair-bridge-box .eyebrow { display: block; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted-foreground); margin-bottom: 12px; }
 .pair-bridge-box h2 { font-weight: 300; font-size: clamp(24px, 2.8vw, 34px); letter-spacing: -0.02em; max-width: 30ch; text-wrap: balance; }
 .pair-bridge-box > p { margin-top: 14px; font-size: 16px; line-height: 1.65; max-width: 66ch; color: rgba(15, 14, 13, 0.78); }
@@ -1354,8 +1477,13 @@ h1, h2, h3 { overflow-wrap: break-word; }
 .cmp-group-head .sub { color: var(--muted-foreground); max-width: 60ch; margin: 0; }
 .cmp-pairs { margin-top: 32px; }
 .cmp-pairs h3 { font-size: 13px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted-foreground); margin-bottom: 12px; }
-.pair-rows { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-top: 1px solid var(--border); }
-.pair-row { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 18px; padding: 16px 4px; border-bottom: 1px solid var(--border); text-decoration: none; color: var(--foreground); }
+/* Separator on the TOP of each item, not the bottom. In a two-column grid the
+   last DOM item is not reliably the bottom row (an odd count leaves one alone),
+   but the first row is always the first N items — so this is the only side that
+   can be cleared deterministically, and the list never ends on a rule. */
+.pair-rows { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.pair-rows > :nth-child(-n + 2) { border-top: 0; }
+.pair-row { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 18px; padding: 16px 4px; border-top: 1px solid var(--border); text-decoration: none; color: var(--foreground); }
 .pair-row .cmp-versus { margin: 0; flex-shrink: 0; }
 .pair-row .cmp-mark { font-size: 0; gap: 0; }
 .pair-row .cmp-mark-logo img, .pair-row .cmp-mark-logo b { width: 28px; height: 28px; }
@@ -1365,7 +1493,10 @@ h1, h2, h3 { overflow-wrap: break-word; }
 .pair-bridge-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 12px; }
 .pair-bridge-head .eyebrow { margin: 0; }
 .pair-bridge-head .cmp-mark img { filter: none; border-radius: 6px; }
-@media (max-width: 799px) { .cmp-group-head, .pair-rows { grid-template-columns: 1fr; } }
+@media (max-width: 799px) {
+  .cmp-group-head, .pair-rows { grid-template-columns: 1fr; }
+  .pair-rows > :nth-child(2) { border-top: 1px solid var(--border); }
+}
 
 /* Serviceplan Group and AI section */
 .sp-head { position: relative; }
@@ -1392,7 +1523,7 @@ h1, h2, h3 { overflow-wrap: break-word; }
 .sp-pn-label { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted-foreground); }
 .sp-pn-title { font-size: 17px; }
 a.sp-pn:hover .sp-pn-title { text-decoration: underline; text-underline-offset: 3px; }
-.sp-bridge-box { border: 1px solid var(--foreground); border-radius: var(--r-lg); padding: clamp(24px, 3.5vw, 44px); background: var(--card); }
+.sp-bridge-box { border: 1px solid var(--border); border-radius: var(--r-lg); padding: clamp(24px, 3.5vw, 44px); background: var(--card); }
 .sp-bridge-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 12px; }
 .sp-bridge-head .eyebrow { margin: 0; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted-foreground); }
 .sp-bridge-head .cmp-mark img { filter: none; border-radius: 6px; }
@@ -1413,7 +1544,7 @@ a.sp-pn:hover .sp-pn-title { text-decoration: underline; text-underline-offset: 
 .tg-article .prose h2 { scroll-margin-top: 90px; }
 .tg-article .prose blockquote::before { content: "Prompt"; }
 html[lang="de"] .tg-article .prose blockquote::before { content: "Prompt"; }
-.tg-article .prose blockquote { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13.5px; line-height: 1.6; white-space: pre-wrap; }
+.tg-article .prose blockquote { font-family: var(--mono); font-size: 13.5px; line-height: 1.6; white-space: pre-wrap; }
 .tg-article .prose blockquote p { font-family: inherit; font-size: inherit; }
 .tg-card .tg-logo { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted-foreground); margin-bottom: 12px; }
 .tg-card .tg-logo img, .tg-card .tg-logo b { width: 28px; height: 28px; object-fit: contain; border: 1px solid var(--border); border-radius: 8px; padding: 4px; background: #fff; display: inline-flex; align-items: center; justify-content: center; font-weight: 500; color: var(--foreground); }
@@ -1421,3 +1552,135 @@ html[lang="de"] .tg-article .prose blockquote::before { content: "Prompt"; }
 .tg-index .blk-head .sub { color: var(--muted-foreground); max-width: 72ch; margin-top: 8px; }
 .tg-tool-head { font-size: 13px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted-foreground); margin: 28px 0 12px; }
 @media (max-width: 599px) { .tg-toc ol { columns: 1; } }
+
+/* One stage gradient everywhere a product visual sits on a backdrop. */
+.grad-band, .grad-band.g2, .grad-band.g3, .grad-band.g4, .grad-band.g5,
+.pd-feat, .pd-stage, .uc-art.is-grad {
+  background-color: #0f1c25 !important;
+  background-image: var(--stage) !important;
+}
+.uc-art.is-grad img { mix-blend-mode: normal; }
+/* The stage itself is square; only what floats on it is rounded. */
+.grad-band, .pd-feat, .pd-stage, .uc-art.is-grad, .sk-stage { border-radius: 0 !important; }
+
+/* Dark CTA bands share the stage, but stop before the light tail so white
+   copy stays readable. */
+.blk-cta, .sp-bridge { background: #0f1c25 var(--stage-deep) !important; }
+
+/* Every ink surface carries the deep stage gradient. */
+.btn-primary, .cw-split-side.is-coworker, .fchip.active, .prose pre, .faq-item[open] summary .faq-x,
+.cmp-yes, .plan-enterprise, .skip-link, .sp-nav a.is-current, section.band-dark, .shot-nav:hover,
+.hero.is-aurora .hero-cta-signup, .pd-btn-dark, .pd-btn-dark:hover, .pd-ib-dark, .pd-tab.is-active,
+.pd-mi.is-checked .pd-mi-check-box, .pd-bigsearch-in, .pd-nt-ctx .pd-ctx-chip, .dm-bar .dm-submit,
+.sp-map-foundation, .sp-stack-foundation, .sp-chips-row.is-dark {
+  background-color: #0f1c25 !important;
+  background-image: var(--stage-deep) !important;
+}
+.btn-primary:hover, .dm-bar .dm-submit:hover { filter: brightness(1.18); }
+/* Inside a dark surface the primary button inverts to white: never ink on ink. */
+.blk-cta .btn-primary, .sp-bridge .btn-primary, .plan-enterprise .btn-primary,
+section.band-dark .btn-primary, .cw-split-side.is-coworker .btn-primary,
+.pair-offer .btn-primary,
+.blk-cta .btn, .sp-bridge .btn, .plan-enterprise .btn {
+  background: #fff !important;
+  background-image: none !important;
+  color: var(--ink) !important;
+  border-color: #fff !important;
+}
+.blk-cta .btn-primary:hover, .sp-bridge .btn-primary:hover, .plan-enterprise .btn-primary:hover,
+.pair-offer .btn-primary:hover { background: #e9e8e6 !important; filter: none; }
+.blk-cta .btn-outline, .sp-bridge .btn-outline,
+.pair-offer .btn-outline { background: transparent !important; color: #fff !important; border-color: rgba(255, 255, 255, 0.4) !important; }
+/* The coworker half of the comparison sits on the stage: keep it separated. */
+.grad-band .cw-split-side.is-coworker { border: 1px solid rgba(255, 255, 255, 0.22); }
+
+/* ===== use-case study cards on the stage ===== */
+.uc-stage {
+  display: block; margin: 0 -22px 6px; padding: 26px 24px;
+  background: var(--stage); border: 0;
+}
+.uc-stage.is-compact { aspect-ratio: 5 / 2; display: flex; align-items: center; justify-content: center; padding: 18px 24px; }
+.uc-hero-media .uc-stage { margin: 0; padding: clamp(28px, 4vw, 48px); min-height: 100%; display: flex; align-items: center; justify-content: center; }
+.uc-study {
+  display: flex; flex-direction: column; gap: 14px; width: 100%; max-width: 380px;
+  background: #fff; border: 1px solid rgba(15, 14, 13, 0.1); border-radius: 12px; padding: 16px;
+  color: var(--foreground); text-align: left;
+}
+.uc-stage.is-compact .uc-study { max-width: 290px; padding: 10px 16px 10px 10px; gap: 0; }
+.uc-study-head { display: flex; flex-direction: column; gap: 10px; }
+.uc-stage.is-compact .uc-study-head { flex-direction: row; align-items: center; gap: 12px; }
+.uc-mock { display: block; width: 100%; height: auto; background: var(--muted); border-radius: 8px; }
+.uc-stage.is-compact .uc-mock { width: 112px; flex-shrink: 0; border-radius: 6px; }
+.uc-study-title { display: flex; flex-direction: column; line-height: 1.25; min-width: 0; }
+.uc-study-title strong { font-size: 14px; font-weight: 500; }
+.uc-study-title small { font-size: 12px; color: var(--muted-foreground); }
+.uc-study-crew { list-style: none; margin: 0; padding: 12px 0 0; border-top: 1px solid var(--border); display: grid; gap: 10px; }
+.uc-study-crew li { display: flex; align-items: center; gap: 10px; }
+.uc-study-crew .avatar { width: 32px; height: 32px; }
+.uc-study-crew .avatar img { width: 32px; height: 32px; }
+.uc-study-crew span { display: flex; flex-direction: column; line-height: 1.25; min-width: 0; }
+.uc-study-crew strong { font-size: 13.5px; font-weight: 500; }
+.uc-study-crew small { font-size: 12px; color: var(--muted-foreground); }
+.uc-study-foot { font-size: 12px; color: var(--muted-foreground); border-top: 1px solid var(--border); padding-top: 10px; }
+.uc-stage.is-compact .uc-study-foot { display: none; }
+.uc-hero-media { border-radius: 0; }
+.card.uc-card.has-art { border-top: 0; overflow: hidden; }
+.card.uc-card .uc-stage { border-bottom: 0; }
+
+/* the currency equivalent of a credit price: present, but the credits lead */
+.cw-stat-alt { color: var(--muted-foreground); }
+
+/* ---- /compare/<a>-vs-<b>: the vendor band -----------------------------
+   The comparison above it is neutral - two tools we don't sell. This band
+   is where Sokosumi speaks, so it is marked as such rather than blending
+   into the editorial: same dark stage .blk-cta and .sp-bridge already use
+   for "this is the offer". A reader can see where the comparison stops and
+   the pitch starts, which is the honest way round. */
+.pair-offer {
+  display: block;
+  margin: clamp(48px, 6vw, 88px) calc(50% - 50vw) 0;
+  padding: clamp(8px, 2vw, 24px) calc(50vw - 50%) clamp(24px, 3vw, 40px);
+  background: #0f1c25 var(--stage-deep);
+  color: #fff;
+}
+/* The band is the surface now, so the box stops drawing its own. */
+.pair-offer .pair-bridge-box {
+  border: 0;
+  background: none;
+  padding-inline: 0;
+}
+.pair-offer .pair-bridge-box .eyebrow,
+.pair-offer .quote-kicker { color: rgba(255, 255, 255, 0.62); }
+.pair-offer .pair-bridge-box h2,
+.pair-offer .pull-quote blockquote { color: #fff; }
+/* The testimonial supports the block; it does not lead it. At the shared
+   display size it ran 38px against the block's own 34px heading and took
+   532px of band for 50 words - bigger than the thing it was backing up. */
+.pair-offer .pull-quote blockquote {
+  font-size: clamp(18px, 1.7vw, 21px);
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+  max-width: 52ch;
+}
+.pair-offer .pull-quote figcaption { margin-top: 18px; }
+/* 83 characters a line is past comfortable reading; this brings the
+   paragraph back to a normal measure without cutting a word. */
+.pair-offer .pair-bridge-box > p { max-width: 68ch; }
+.pair-offer .pair-bridge-box > p { color: rgba(255, 255, 255, 0.78); }
+.pair-offer .pair-bridge-box li { color: rgba(255, 255, 255, 0.86); }
+.pair-offer .pair-bridge-box li::before { background: var(--brand, #6f5cf0); }
+.pair-offer .cmp-mark-logo { color: #fff; }
+
+/* Buttons inherit the dark-surface inversion from the shared allow-list
+   above; only the row's own rhythm is set here. */
+.pair-offer .cta-row { margin-top: 28px; align-items: center; gap: 12px; }
+
+/* Proof rides along inside the band: the client logos and the quote are
+   part of the same argument, so they take the same surface. */
+.pair-offer .plan-logos-label { color: rgba(255, 255, 255, 0.55); }
+.pair-offer .blk-logos img { filter: brightness(0) invert(1); opacity: 0.62; }
+.pair-offer .blk-logos img.logo-ink { filter: brightness(0) invert(1); }
+.pair-offer .blk-logos img:hover { opacity: 0.95; }
+.pair-offer .pull-quote figcaption,
+.pair-offer .pq-who small { color: rgba(255, 255, 255, 0.66); }
+.pair-offer .pq-who strong { color: #fff; }

@@ -291,7 +291,7 @@ For a deeper breakdown of this app, see [docs/DEV_HUB_MAP.md](DEV_HUB_MAP.md).
 
 **Exports / routes**
 
-- Client routes: `/`, `/marketplace`, `/coworkers/:slug`, `/tasks/:agent/:task`.
+- Client routes: `/`, `/marketplace`, `/ai-coworkers/:slug`, `/tasks/:agent/:task`.
 - Server route: `/api/catalog`.
 
 **Dependencies**: Node built-ins and global `fetch`; no package dependencies.

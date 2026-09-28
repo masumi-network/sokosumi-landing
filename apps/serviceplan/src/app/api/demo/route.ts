@@ -4,8 +4,16 @@ import { appendSignupRow } from "@/lib/sheets";
 const INBOUND_API_URL = "https://inbound.new/api/e2/emails";
 const INBOUND_API_KEY = process.env.INBOUND_API_KEY || "";
 const NOTIFICATION_FROM = "notifications@agents.utxoag.com";
-const NOTIFICATION_TO = "patrick@nmkr.io";
-const NOTIFICATION_CC = "agentic@house-of-communication.com";
+const NOTIFICATION_TO = process.env.DEMO_NOTIFY_TO || "patrick@nmkr.io";
+const NOTIFICATION_CC =
+  process.env.DEMO_NOTIFY_CC || "agentic@house-of-communication.com";
+
+function escapeHtml(s: string): string {
+  return String(s ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
 
 function detectLocale(req: NextRequest): string {
   const referer = req.headers.get("referer") || "";
@@ -15,7 +23,12 @@ function detectLocale(req: NextRequest): string {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const locale = detectLocale(req);
+    const locale =
+      body.locale === "de" || body.locale === "en"
+        ? body.locale
+        : body.source === "agenturen"
+          ? "de"
+          : detectLocale(req);
 
     appendSignupRow([
       new Date().toISOString(),
@@ -25,13 +38,27 @@ export async function POST(req: NextRequest) {
       body.websiteUrl ?? "",
       body.category ?? "",
       locale,
-      "request-a-demo",
+      body.source ?? "request-a-demo",
     ]).catch(() => {});
+
+    // On the audience LPs the second field is an organization name, not a URL.
+    const websiteLabel =
+      body.source === "agenturen" || body.source === "agencies"
+        ? "Agency"
+        : body.source === "enterprise"
+          ? "Company"
+          : "Website";
+    const rows: [string, string][] = [
+      ["Name", body.name ?? ""],
+      ["Email", body.email ?? ""],
+      [websiteLabel, body.websiteUrl ?? ""],
+      ["Support Area", body.category ?? ""],
+    ];
 
     const res = await fetch(INBOUND_API_URL, {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${INBOUND_API_KEY}`,
+        Authorization: `Bearer ${INBOUND_API_KEY}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -41,17 +68,22 @@ export async function POST(req: NextRequest) {
         subject: `Demo Request: ${body.name} (${body.email})`,
         html: `<h2>New Demo Request</h2>
 <table style="border-collapse:collapse;width:100%;max-width:500px;">
-<tr><td style="padding:8px;font-weight:bold;">Name</td><td style="padding:8px;">${body.name}</td></tr>
-<tr><td style="padding:8px;font-weight:bold;">Email</td><td style="padding:8px;">${body.email}</td></tr>
-<tr><td style="padding:8px;font-weight:bold;">Website</td><td style="padding:8px;">${body.websiteUrl}</td></tr>
-<tr><td style="padding:8px;font-weight:bold;">Support Area</td><td style="padding:8px;">${body.category}</td></tr>
+${rows
+  .map(
+    ([label, value]) =>
+      `<tr><td style="padding:8px;font-weight:bold;">${label}</td><td style="padding:8px;">${escapeHtml(value)}</td></tr>`
+  )
+  .join("\n")}
 </table>`,
-        text: `New Demo Request\n\nName: ${body.name}\nEmail: ${body.email}\nWebsite: ${body.websiteUrl}\nSupport Area: ${body.category}`,
+        text: `New Demo Request\n\n${rows.map(([label, value]) => `${label}: ${value}`).join("\n")}`,
       }),
     });
-    const data = await res.json();
+    const data = await res.json().catch(() => ({}));
     return NextResponse.json({ ok: res.ok, id: data.id });
   } catch {
-    return NextResponse.json({ ok: false, error: "Failed to send" }, { status: 500 });
+    return NextResponse.json(
+      { ok: false, error: "Failed to send" },
+      { status: 500 }
+    );
   }
 }

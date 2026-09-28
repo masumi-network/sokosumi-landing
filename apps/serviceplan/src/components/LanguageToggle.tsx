@@ -1,51 +1,42 @@
 "use client";
 
 import { usePathname } from "next/navigation";
+import { alternatePath } from "@/lib/routes";
 import { Locale } from "@/lib/translations";
 
+/**
+ * Real anchors, not click handlers: this is the only internal link between the
+ * English and German trees, and /de carries most of the site's search traffic.
+ */
 export default function LanguageToggle({ locale = "en" }: { locale?: Locale }) {
-  const pathname = usePathname();
+  const pathname = usePathname() || "/";
 
-  const getTargetPath = (targetLocale: Locale) => {
-    if (targetLocale === "de") {
-      if (pathname === "/" || pathname === "") return "/de";
-      if (pathname === "/request-a-demo") return "/de/request-a-demo";
-      if (pathname.startsWith("/de")) return pathname;
-      return "/de" + pathname;
-    } else {
-      if (pathname === "/de" || pathname === "/de/") return "/";
-      if (pathname === "/de/request-a-demo") return "/request-a-demo";
-      if (pathname.startsWith("/de")) return pathname.replace(/^\/de/, "") || "/";
-      return pathname;
-    }
-  };
+  const href = (target: Locale) =>
+    target === locale ? pathname : alternatePath(pathname, target);
 
-  const handleSwitch = (targetLocale: Locale) => {
-    document.cookie = `locale=${targetLocale}; path=/; max-age=31536000`;
-    window.location.href = getTargetPath(targetLocale);
+  const setCookie = (target: Locale) => {
+    document.cookie = `locale=${target}; path=/; max-age=31536000`;
   };
 
   return (
     <div className="language-toggle">
-      <span
-        role="button"
-        tabIndex={0}
-        onClick={() => handleSwitch("de")}
-        onKeyDown={(e) => e.key === "Enter" && handleSwitch("de")}
+      <a
+        href={href("de")}
+        hrefLang="de"
+        onClick={() => setCookie("de")}
         className={locale === "de" ? "active" : "inactive"}
       >
         DE
-      </span>
+      </a>
       <span className="separator">|</span>
-      <span
-        role="button"
-        tabIndex={0}
-        onClick={() => handleSwitch("en")}
-        onKeyDown={(e) => e.key === "Enter" && handleSwitch("en")}
+      <a
+        href={href("en")}
+        hrefLang="en"
+        onClick={() => setCookie("en")}
         className={locale === "en" ? "active" : "inactive"}
       >
         EN
-      </span>
+      </a>
     </div>
   );
 }

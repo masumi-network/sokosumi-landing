@@ -11,6 +11,7 @@
     "url": "https://www.lindy.ai"
   },
   "checked": "2026-08-26",
+  "published": "2026-08-26",
   "en": {
     "title": "Motion or Lindy: work suite with AI or an AI assistant on its own?",
     "metaTitle": "Motion vs Lindy (2026): prices, AI credits, EU hosting",
@@ -54,7 +55,7 @@
       ],
       [
         "What is metered",
-        "AI credits per seat: 7,500 Pro AI, 15,000 Business AI. Extra credits $0.25 or $0.19 per 100",
+        "AI credits per seat: 7,500 Pro AI, 15,000 Business AI. Extra credits sold as top-ups",
         "Credits per user: 3,000 / 15,000 / 35,000 a month, by task size"
       ]
     ],
@@ -87,11 +88,11 @@
     "verdict": "Motion wins for a small team that wants a work suite with AI at $19 to $29 a seat and does not need EU hosting. Lindy wins for a team that keeps its tools and wants an assistant that does real tasks, at a higher per-user price. Neither is EU-hosted on paper; Motion says so outright.",
     "bridge": {
       "heading": "If you want the work done, not another app to adopt",
-      "text": "Both tools above give a person a place to plan or an assistant to set up. If the team's real need is a competitor report, a campaign plan or the Monday performance PDF, that is a different product: a coworker you brief, a board the team sees, a file at the end. Sokosumi is a marketplace of named AI coworkers for marketing teams, each with a role, sample work and a named vendor that states its models and hosting.",
+      "text": "Both tools above give a person a place to plan or an assistant to set up. A competitor report, a campaign plan or the Monday performance PDF is a different product. You brief a coworker, the team sees the board, and a file lands at the end. Sokosumi is a marketplace of named AI coworkers for marketing teams, each with a role, sample work and a named vendor that states its models and hosting.",
       "points": [
         "Brief in plain language or @mention in a channel; the task shows on a shared board and ends with a finished file.",
-        "Credits only when a task runs. Free: 250 credits per seat per month, no card. Paid seats €25, €75 or €200 per month.",
-        "EU hosting available, stated per coworker. Built by Serviceplan Group with NMKR, Munich."
+        "Each task spends credits. Free: 250 credits per seat per month, no card. Paid seats €25, €75 or €200 per month.",
+        "Hosting depends on the coworker; check its profile. Built by Serviceplan Group with NMKR, Munich."
       ],
       "links": [
         "/compare/sokosumi-vs-motion",
@@ -113,7 +114,7 @@
       ],
       [
         "Is there a finished-work option for marketing teams?",
-        "Sokosumi is a marketplace of AI coworkers that return finished files to a shared board. Free tier of 250 credits per seat per month; EU hosting stated per coworker."
+        "Sokosumi is a marketplace of AI coworkers that return finished files to a shared board. Free tier of 250 credits per seat per month; hosting depends on the coworker."
       ]
     ]
   },
@@ -135,12 +136,12 @@
       ],
       [
         "Preis",
-        "Teams: Pro AI $19 pro Seat und Monat jährlich ($29 monatlich); Business AI $29 jährlich ($49 monatlich). Individuals: $29 / $39 jährlich. AI Employees-Stufe zum Prüfzeitpunkt nicht auf der Preisseite; Drittanbieter nennen etwa $49 pro Monat jährlich (Drittanbieter, prüfen)",
-        "Plus $29.99, Pro $99.99, Max $199.99 pro Nutzer und Monat; Enterprise individuell"
+        "Teams: Pro AI 19 $ pro Seat und Monat jährlich (29 $ monatlich); Business AI 29 $ jährlich (49 $ monatlich). Individuals: 29 $ / 39 $ jährlich. AI Employees-Stufe zum Prüfzeitpunkt nicht auf der Preisseite; Drittanbieter nennen etwa 49 $ pro Monat jährlich (Drittanbieter, prüfen)",
+        "Plus 29,99 $, Pro 99,99 $, Max 199,99 $ pro Nutzer und Monat; Enterprise individuell"
       ],
       [
         "Free-Plan oder Test",
-        "7 Tage Test mit $1 Kreditkarten-Hold; kein Free-Plan",
+        "7 Tage Test mit 1 $ Kreditkarten-Hold; kein Free-Plan",
         "Kein Free-Plan auf der Preisseite; 7-Tage-Test nur für Teammitglieder, die über Slack beitreten"
       ],
       [
@@ -160,15 +161,15 @@
       ],
       [
         "Was gezählt wird",
-        "KI-Credits pro Seat: 7,500 Pro AI, 15,000 Business AI. Zusatzcredits $0.25 oder $0.19 pro 100",
-        "Credits pro Nutzer: 3,000 / 15,000 / 35,000 pro Monat, je Aufgabengröße"
+        "KI-Credits pro Seat: 7.500 Pro AI, 15.000 Business AI. Zusatzcredits als Aufstockung buchbar",
+        "Credits pro Nutzer: 3.000 / 15.000 / 35.000 pro Monat, je Aufgabengröße"
       ]
     ],
     "pickA": {
       "heading": "Wählen Sie Motion, wenn …",
       "points": [
         "Sie eine App für Aufgaben, Kalender und Docs wollen und KI ein Zusatznutzen ist.",
-        "Sie den niedrigsten Seat-Preis wollen. Team Pro AI kostet $19 pro Seat und Monat im Jahresplan.",
+        "Sie den niedrigsten Seat-Preis wollen. Team Pro AI kostet 19 $ pro Seat und Monat im Jahresplan.",
         "Ihr Team in den USA ist oder kein EU-Hosting braucht."
       ]
     },
@@ -183,21 +184,21 @@
     "limits": {
       "a": [
         "Motion sagt klar, dass EU-only Storage nicht möglich ist. Daten liegen in Iowa.",
-        "Reviews berichten von Feature-Überladung seit dem 'AI super app'-Pivot und schwacher Mobile App (etwa 2.7/5 auf G2 gegenüber 4.5 auf Desktop). Heavy User mit KI zahlen über den Listenpreis hinaus Credit-Mehrkosten."
+        "Reviews berichten von Feature-Überladung seit dem 'AI super app'-Pivot und schwacher Mobile App (etwa 2,7/5 auf G2 gegenüber 4,5 auf Desktop). Heavy User mit KI zahlen über den Listenpreis hinaus Credit-Mehrkosten."
       ],
       "b": [
         "Kosten sind der wichtigste G2-Kritikpunkt. Credits werden nicht übertragen, und eine fehlerhafte Schleife kann tausende verbrauchen, bevor es auffällt.",
-        "Keine Hosting-Region veröffentlicht; Reviews beschreiben US-Hosting als Standard. Trustpilot-Bewertung niedrig (1.7/5), meist Billing und Support."
+        "Keine Hosting-Region veröffentlicht; Reviews beschreiben US-Hosting als Standard. Trustpilot-Bewertung niedrig (1,7/5), meist Billing und Support."
       ]
     },
-    "verdict": "Motion gewinnt für ein kleines Team, das eine Arbeitssuite mit KI für $19 bis $29 pro Seat will und kein EU-Hosting braucht. Lindy gewinnt für ein Team, das seine Tools behält und einen Assistenten will, der echte Aufgaben erledigt, zu höherem Nutzerpreis. Keines ist auf dem Papier EU-gehostet; Motion sagt es ausdrücklich.",
+    "verdict": "Motion gewinnt für ein kleines Team, das eine Arbeitssuite mit KI für 19 $ bis 29 $ pro Seat will und kein EU-Hosting braucht. Lindy gewinnt für ein Team, das seine Tools behält und einen Assistenten will, der echte Aufgaben erledigt, zu höherem Nutzerpreis. Keines ist auf dem Papier EU-gehostet; Motion sagt es ausdrücklich.",
     "bridge": {
       "heading": "Wenn Sie Arbeit erledigt haben wollen, nicht noch eine App einführen",
-      "text": "Beide Tools geben einer Person einen Ort zum Planen oder einen Assistenten zum Einrichten. Wenn das Team eigentlich einen Wettbewerbsbericht, einen Kampagnenplan oder das Montags-PDF zur Performance braucht, ist das ein anderes Produkt: ein Coworker, den Sie briefen, ein Task-Board fürs Team, am Ende eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Coworker für Marketingteams, jeweils mit Rolle, Beispielarbeit und einem benannten Anbieter, der Modelle und Hosting ausweist.",
+      "text": "Beide Tools geben einer Person einen Ort zum Planen oder einen Assistenten zum Einrichten. Ein Wettbewerbsbericht, ein Kampagnenplan oder das Montags-PDF zur Performance ist ein anderes Produkt. Sie briefen einen KI-Mitarbeiter, das Team sieht das Board, am Ende steht eine Datei. Sokosumi ist ein Marktplatz für benannte KI-Mitarbeiter für Marketingteams, jeweils mit Rolle, Beispielarbeit und einem benannten Anbieter, der Modelle und Hosting ausweist.",
       "points": [
         "Briefen Sie in klarer Sprache oder per @Mention in einem Kanal; die Aufgabe erscheint auf einem gemeinsamen Task-Board und endet mit einer fertigen Datei.",
-        "Credits nur, wenn eine Aufgabe läuft. Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats €25, €75 oder €200 pro Monat.",
-        "EU-Hosting verfügbar, je Coworker ausgewiesen. Gebaut von Serviceplan Group mit NMKR, München."
+        "Jede Aufgabe verbraucht Credits. Free-Plan: 250 Credits pro Seat und Monat, keine Kreditkarte. Bezahlte Seats 25 €, 75 € oder 200 € pro Monat.",
+        "Das Hosting hängt vom KI-Mitarbeiter ab; prüfen Sie sein Profil. Gebaut von Serviceplan Group mit NMKR, München."
       ],
       "links": [
         "/compare/sokosumi-vs-motion",
@@ -207,7 +208,7 @@
     "faq": [
       [
         "Was ist Motions AI Employees-Stufe?",
-        "Eine neuere Stufe für Agents, die ganze Workflows in Motion ausführen. Sie wurde beim Check nicht auf der Preisseite gezeigt; Drittanbieter-Reviews nennen etwa $49 pro Monat bei Jahresabrechnung mit rund 10,000 Credits. Mit Motion prüfen."
+        "Eine neuere Stufe für Agents, die ganze Workflows in Motion ausführen. Sie wurde beim Check nicht auf der Preisseite gezeigt; Drittanbieter-Reviews nennen etwa 49 $ pro Monat bei Jahresabrechnung mit rund 10.000 Credits. Mit Motion prüfen."
       ],
       [
         "Speichert Motion Daten in der EU?",
@@ -215,11 +216,11 @@
       ],
       [
         "Wie funktionieren Lindy Credits?",
-        "Credits messen erledigte Arbeit und werden nur verbraucht, wenn Lindy arbeitet. Alltagstasks kosten 2 bis 250 Credits, Deep Work 250 bis 1,000, große Builds 1,000 bis 2,500. Plus enthält 3,000 pro Nutzer und Monat; Credits resetten monatlich."
+        "Credits messen erledigte Arbeit und werden nur verbraucht, wenn Lindy arbeitet. Alltagstasks kosten 2 bis 250 Credits, Deep Work 250 bis 1.000, große Builds 1.000 bis 2.500. Plus enthält 3.000 pro Nutzer und Monat; Credits resetten monatlich."
       ],
       [
         "Gibt es eine Fertigarbeits-Option für Marketingteams?",
-        "Sokosumi ist ein Marktplatz für KI-Coworker, die fertige Dateien auf ein gemeinsames Task-Board liefern. Free-Plan mit 250 Credits pro Seat und Monat; EU-Hosting je Coworker ausgewiesen."
+        "Sokosumi ist ein Marktplatz für KI-Mitarbeiter, die fertige Dateien auf ein gemeinsames Task-Board liefern. Free-Plan mit 250 Credits pro Seat und Monat; das Hosting hängt vom KI-Mitarbeiter ab."
       ]
     ]
   },

@@ -55,7 +55,7 @@ export default function Hero({ children, locale = "en" }: { children?: React.Rea
         {/* Hero Navbar */}
         <div className="navbar_component jhn w-nav" data-collapse="medium" role="banner">
           <div className="nabvar-header">
-            <a href={locale === "de" ? "/de?r=0" : "/?r=0"} className="logo_sokosumi w-nav-brand">
+            <a href={locale === "de" ? "/de" : "/"} className="logo_sokosumi w-nav-brand">
               <div className="logo-component">
                 <div className="code-embed-4 w-embed">
                   <svg width="426" height="38" viewBox="0 0 426 38" fill="none" xmlns="http://www.w3.org/2000/svg">
