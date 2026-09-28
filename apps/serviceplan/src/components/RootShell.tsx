@@ -25,6 +25,7 @@ export default function RootShell({
     >
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="preconnect" href="https://cdn.prod.website-files.com" />
         <link href="/styles/webflow.css" rel="stylesheet" type="text/css" />
         {/* Consent Mode v2: denied by default, stored choice re-applied
             before GTM boots. The banner itself lives in /consent.js. */}

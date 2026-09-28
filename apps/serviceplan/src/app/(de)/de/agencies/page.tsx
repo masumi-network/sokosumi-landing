@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { absolute } from "@/lib/seo";
 import LpPage from "@/components/lp/LpPage";
 import { agenciesDe } from "@/components/lp/content-agencies";
 import "@/components/lp/lp.css";
@@ -10,6 +11,7 @@ export const metadata: Metadata = {
   title: "AI-Coworker für Agenturen | Serviceplan Agents",
   description:
     "Recherche, Analysen, Reportings, interaktive Dashboards. Beauftragung per E-Mail, kein Prompt, keine Einarbeitung. Kostenlos starten mit 200 Credits im Monat.",
+  alternates: { canonical: absolute("/de/agencies") },
   robots: { index: false, follow: false },
 };
 

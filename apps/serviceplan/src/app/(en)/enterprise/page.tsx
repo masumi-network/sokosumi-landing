@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { absolute } from "@/lib/seo";
 import LpPage from "@/components/lp/LpPage";
 import { enterpriseEn } from "@/components/lp/content-enterprise";
 import "@/components/lp/lp.css";
@@ -10,6 +11,7 @@ export const metadata: Metadata = {
   title: "AI Coworkers for Marketing Teams | Serviceplan Agents",
   description:
     "Research, analyses, reports, interactive dashboards for your marketing team. Brief by email. Start free with 200 credits a month.",
+  alternates: { canonical: absolute("/enterprise") },
   robots: { index: false, follow: false },
 };
 
