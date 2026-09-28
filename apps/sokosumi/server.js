@@ -714,6 +714,10 @@ const assetsDir = path.join(root, "assets");
     "Referrer-Policy": "strict-origin-when-cross-origin",
     "X-Frame-Options": "SAMEORIGIN",
     "Permissions-Policy": "camera=(), microphone=(), geolocation=(), interest-cohort=()",
+    // No script-src on purpose: GTM custom-HTML tags and the Meta pixel inject
+    // inline scripts, so a script allow-list would need nonces first.
+    "Content-Security-Policy":
+      "base-uri 'self'; object-src 'none'; frame-ancestors 'self'; upgrade-insecure-requests",
   };
 
   const COMPRESSIBLE = /^(?:text\/|application\/(?:json|xml|javascript|manifest))/;

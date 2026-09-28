@@ -381,7 +381,7 @@ function sidebar() {
     <div class="pd-side-scroll">
       <div class="pd-side-group pd-side-pa">
         <button type="button" class="pd-pa" data-pd-view="pa" data-pd-nav-key="pa">
-          <img class="pd-pa-face" src="/assets/product/pa-face.png" alt="" width="28" height="28" />
+          <img class="pd-pa-face" src="/assets/product/pa-face.webp" alt="" width="28" height="28" />
           <span class="pd-pa-label">Personal Assistant</span>
           <em class="pd-new">NEW</em>
         </button>
@@ -697,7 +697,7 @@ function viewPa() {
   ];
   return `<section class="pd-view pd-pa-view" data-view-panel="pa">
     <div class="pd-pa-hero">
-      <div class="pd-pa-orb"><i class="g1"></i><i class="g2"></i><i class="r1"></i><i class="r2"></i><img src="/assets/product/pa-face.png" alt="Personal Assistant" width="160" height="160" /></div>
+      <div class="pd-pa-orb"><i class="g1"></i><i class="g2"></i><i class="r1"></i><i class="r2"></i><img src="/assets/product/pa-face.webp" alt="Personal Assistant" width="160" height="160" /></div>
       <h2 class="pd-pa-h1">Meet your personal assistant.</h2>
       <p class="pd-pa-sub">Your private AI coworker and main interface to Sokosumi.</p>
       <div class="pd-pa-cta"><button type="button" class="pd-btn pd-btn-primary pd-btn-lg pd-btn-auto" data-pd-open="activate">Activate your assistant ${ico("arrow-right")}</button><p>Gets its own private computer. Connects to your tools, remembers your context, runs while you sleep.</p></div>
