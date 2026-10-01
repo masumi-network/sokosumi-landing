@@ -41,6 +41,7 @@ const aiEmployeesTpl = require("./templates/aiEmployees");
 const contactTpl = require("./templates/contact");
 const designMdTpl = require("./templates/designMd");
 const designMdArchive = require("./lib/designMdArchive");
+const { createDesignMdMcp } = require("./lib/designMdMcp");
 const seoMdTpl = require("./templates/seoMd");
 const seoExtract = require("./lib/seoExtract");
 const toolsTpl = require("./templates/tools");
@@ -68,6 +69,9 @@ const DESIGN_MD_API_BASE = (process.env.MASUMI_DESIGN_MD_API_BASE || "https://ww
 const DESIGN_MD_API_KEY = process.env.MASUMI_DESIGN_MD_API_KEY || "";
 const DESIGN_MD_RATE_LIMIT = Number(process.env.DESIGN_MD_RATE_LIMIT) || 6;
 const designMdRequests = new Map();
+// ChatGPT calls /mcp from OpenAI's servers, so a per-IP limit would be one
+// shared bucket anyway. This is a plain hourly ceiling on new generations.
+const MCP_DESIGN_MD_RATE_LIMIT = Number(process.env.MCP_DESIGN_MD_RATE_LIMIT) || 60;
 const SEO_MD_RATE_LIMIT = Number(process.env.SEO_MD_RATE_LIMIT) || 20;
 const seoMdRequests = new Map();
 // The OG checker is cheap (one page fetch plus a ranged image read) so its
@@ -191,6 +195,15 @@ function absoluteDesignMdAssets(data) {
   if (data.id && data.logoUrl) data.logoProxyUrl = logoProxy(data);
   return data;
 }
+
+const designMdMcp = createDesignMdMcp({
+  fetchUpstream: designMdFetch,
+  apiKey: DESIGN_MD_API_KEY,
+  publicWebsiteUrl,
+  absoluteAssets: absoluteDesignMdAssets,
+  archive: designMdArchive,
+  rateLimited: () => hourlyRateLimited(designMdRequests, MCP_DESIGN_MD_RATE_LIMIT, "mcp"),
+});
 
 const TYPES = {
   ".html": "text/html; charset=utf-8",
@@ -1331,6 +1344,26 @@ ${productDemoTpl.demoStage()}
               error: error.message || "That check did not work. Try again.",
             });
           }
+        }
+
+        // OpenAI's plugin review proves domain ownership by fetching this token.
+        if (urlPath === "/.well-known/openai-apps-challenge" && process.env.OPENAI_APPS_CHALLENGE) {
+          return send(req, res, 200, { "Content-Type": "text/plain; charset=utf-8", "Cache-Control": "no-store" }, process.env.OPENAI_APPS_CHALLENGE);
+        }
+
+        if (urlPath === "/mcp") {
+          const head = { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" };
+          if (req.method !== "POST") {
+            return send(req, res, 405, { ...head, Allow: "POST" }, JSON.stringify({ jsonrpc: "2.0", id: null, error: { code: -32000, message: "Use POST" } }));
+          }
+          let message;
+          try {
+            message = await readJsonBody(req, 65536);
+          } catch {
+            return send(req, res, 400, head, JSON.stringify({ jsonrpc: "2.0", id: null, error: { code: -32700, message: "Parse error" } }));
+          }
+          const reply = await designMdMcp.handle(message);
+          return reply ? send(req, res, 200, head, JSON.stringify(reply)) : send(req, res, 202, head, "");
         }
 
         if (urlPath === "/api/design-md" && req.method === "POST") {

@@ -1,0 +1,40 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "design-md",
+  "version": "1.0.0",
+  "description": "Turn any public website into a DESIGN.md: its colors, typography, spacing and components as a markdown spec coding agents can build from.",
+  "author": {
+    "name": "Sokosumi",
+    "email": "info@sokosumi.com",
+    "url": "https://www.sokosumi.com"
+  },
+  "homepage": "https://www.sokosumi.com/tools/design-md",
+  "license": "MIT",
+  "keywords": ["design-md", "design system", "brand", "design tokens", "frontend"],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "DESIGN.md Generator",
+        "shortDescription": "Get any website's design system as a DESIGN.md",
+        "longDescription": "Give ChatGPT a website URL and get back a DESIGN.md: the site's colors, typography, spacing, components and tone, written as a markdown spec. Hand it to a coding agent and the UI it builds matches the brand. A library of ready-made DESIGN.md files covers well-known sites like Linear, Stripe, Notion and Apple. Made by Sokosumi.",
+        "developerName": "Sokosumi",
+        "category": "Design",
+        "capabilities": ["Read"],
+        "websiteURL": "https://www.sokosumi.com/tools/design-md",
+        "privacyPolicyURL": "https://www.sokosumi.com/legal/privacy-policy",
+        "termsOfServiceURL": "https://www.sokosumi.com/legal/terms-of-service",
+        "defaultPrompt": [
+          "Make a DESIGN.md for https://linear.app",
+          "Build a landing page in Stripe's design style",
+          "Restyle this component to match our website's brand"
+        ],
+        "brandColor": "#2B5C78",
+        "composerIcon": "./assets/icon.png",
+        "composerIconDark": "./assets/icon-dark.png",
+        "logo": "./assets/logo.png",
+        "logoDark": "./assets/logo-dark.png",
+        "screenshots": ["./assets/screenshots/library-linear.png"]
+      }
+    }
+  }
+}
