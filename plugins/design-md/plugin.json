@@ -10,17 +10,26 @@
   },
   "homepage": "https://www.sokosumi.com/tools/design-md",
   "license": "MIT",
-  "keywords": ["design-md", "design system", "brand", "design tokens", "frontend"],
+  "keywords": [
+    "design-md",
+    "design system",
+    "brand",
+    "design tokens",
+    "frontend"
+  ],
   "extensions": {
     "com.openai": {
       "interface": {
         "displayName": "DESIGN.md Generator",
-        "shortDescription": "Get any website's design system as a DESIGN.md",
+        "shortDescription": "Any site's design as DESIGN.md",
         "longDescription": "Give ChatGPT a website URL and get back a DESIGN.md: the site's colors, typography, spacing, components and tone, written as a markdown spec. Hand it to a coding agent and the UI it builds matches the brand. A library of ready-made DESIGN.md files covers well-known sites like Linear, Stripe, Notion and Apple. Made by Sokosumi.",
         "developerName": "Sokosumi",
-        "category": "Design",
-        "capabilities": ["Read"],
+        "category": "Creativity",
+        "capabilities": [
+          "Read"
+        ],
         "websiteURL": "https://www.sokosumi.com/tools/design-md",
+        "supportURL": "https://www.sokosumi.com/contact",
         "privacyPolicyURL": "https://www.sokosumi.com/legal/privacy-policy",
         "termsOfServiceURL": "https://www.sokosumi.com/legal/terms-of-service",
         "defaultPrompt": [
@@ -33,7 +42,9 @@
         "composerIconDark": "./assets/icon-dark.png",
         "logo": "./assets/logo.png",
         "logoDark": "./assets/logo-dark.png",
-        "screenshots": ["./assets/screenshots/library-linear.png"]
+        "screenshots": [
+          "./assets/screenshots/library-linear.png"
+        ]
       }
     }
   }
