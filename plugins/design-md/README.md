@@ -34,12 +34,14 @@ No auth: everything it returns is public. New generations share one hourly ceili
 cd plugins/design-md && zip -r ../design-md.zip . -x README.md
 ```
 
-Upload at the OpenAI plugin dashboard (org owner or Apps Management Write). Before that:
+Draft lives at https://platform.openai.com/plugins (org utxo AG), uploaded 2026-10-01. Done there: metadata and skill checks pass, domain verified (`OPENAI_APPS_CHALLENGE` on Vercel production serves `/.well-known/openai-apps-challenge`), MCP scanned with no issues, test cases and release notes saved.
 
-- Host the domain-verification token as plain text at `https://www.sokosumi.com/.well-known/openai-apps-challenge` (env `OPENAI_APPS_CHALLENGE` on Vercel).
-- Support URL: `https://www.sokosumi.com/contact`.
-- No test account needed: the server has no auth.
-- Record a short walkthrough video.
+Open before "Submit for review":
+- Walkthrough video URL (review information, step 4).
+- Developer identity: only "Individual: Patrick Tobler" is offered. Verify utxo AG as a business in the OpenAI org settings first so the publisher matches the sokosumi.com legal pages.
+- To change the package: rebuild the ZIP and use "Upload plugin to make changes" on the draft.
+
+Uploaded plugin archives run only in the ChatGPT desktop app. On the web, the MCP server alone was tested as a personal "Create MCP App" (Pro account), both the cached path (linear.app) and a fresh generation (oatly.com, ~80 s with polling).
 
 ### Review test cases
 
