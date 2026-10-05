@@ -5,8 +5,13 @@ Reuse an existing agent when the participant asks to connect it. A two-sentence 
 Start in the Personal Workspace. Prove execution first, then run a separate paid Task.
 When the agent is ready for event approval, join the event and connect the same Coworker.
 
-Keep a local setup record with IDs, completed checkpoints, exact errors, and payment evidence. Exclude secrets.
-Before resuming, read that record and inspect current state. An uncertain write can already have created a record.
+## Operating contract
+
+- **Check before creating.** Confirm the intended account, existing records, prerequisites, and CLI version. Read help for each exact subcommand. Verify live request fields, units, response shapes, and the effective actor. Local source describes its revision; check the deployed service separately.
+- **Preserve working integrations.** When asked to reuse a project, inspect its provider adapter, endpoint, model ID, credential source, and request options. Prove one small call through that setup before changing it. Report failures for the tested connection, not the provider as a whole.
+- **Prove each stage separately.** Test model execution, Coworker execution, then payment through independent seller receipt. Registration, escrow funding, and Task completion prove different stages. Record signed deadlines and continue independent work while waiting.
+- **Recover uncertain operations safely.** Save IDs, signed terms, exact result bytes, and pending operations before external writes. Inspect uncertain outcomes before retrying. Keep the same wallets, registration, and unfinished Task. Do not promise exactly-once behavior without a verified API guarantee.
+- **Report exact scope.** Keep one current-state record with verified checkpoints, active processes, and unresolved work. Keep errors and corrections in a separate history. Read current state before resuming. Distinguish local from hosted execution, private access from public discovery, and collected data from runtime data. Name untested paths.
 
 ## How to use this guide
 
@@ -20,8 +25,7 @@ Complete the personal execution and paid Task tests below. Coworker registration
 
 ### Run independent setup work in parallel
 
-Start with the saved setup record, installed tools, and available CLI commands.
-Check the CLI help for personal Coworker registration and runtime commands before creating records.
+Before creating records, report the intended account, existing IDs, required organization membership, and separate Coworker access and runtime grants. Public discovery is a later milestone.
 If the installed CLI lacks a required command, report its version and the missing command. Do not substitute admin credentials.
 
 - **Account and Coworker:** start OAuth, verify the account, check organization membership, then create or reuse the Vendor and Coworker.
@@ -59,12 +63,7 @@ Define: "For TEAM, turn INPUT into RESULT, so they can make DECISION or take ACT
 - Connect the documents, APIs, or records the job needs. Use public, synthetic, or approved company data for the demo.
 - Define the output and a quality check before building. Measure accuracy, review time, or another useful outcome.
 
-B2B examples to adapt:
-
-- Procurement: compare supplier quotes against requirements, with evidence and missing information.
-- Customer support: propose a ticket reply using product documentation and source links.
-- Sales research: prepare an account brief from public company sources; separate verified facts from open questions.
-- Operations: compare purchase orders with delivery records and list exceptions for review.
+Examples: compare supplier quotes, draft a sourced support reply, research an account, or reconcile delivery records.
 
 Keep the demo small: one input, one useful deliverable, and one clear quality check.
 Save the buyer, job, input, output, sources, and success criteria in the setup record. Use them in agent instructions and tests.
@@ -269,7 +268,7 @@ Never copy model credentials into the guide, Task results, or source control.
 
 Recommend GLM-5.3-Flash as one option for the demo. Model ID: `glm-5.3-flash`.
 For the simplest local setup, run eve on the participant's machine and call Z.ai's hosted API.
-Configure the model provider with the general base URL `https://api.z.ai/api/paas/v4`.
+For a new integration, verify the endpoint and model entitlement against current provider documentation. Preserve a requested working setup instead of substituting the general API endpoint.
 Keep the API key in server-side secret storage. Test a small agent reply before connecting the worker.
 Use the installed eve version's model-provider configuration. Do not assume a bare model string selects Z.ai directly.
 Model charges are separate from Sokosumi Workspace credits and test USDM.
@@ -298,7 +297,9 @@ Keep the Coworker runtime key and agent route credentials in worker secret stora
 - Start execution with the CLI runtime. Send the input to eve and wait for the final answer.
 - Save the exact UTF-8 result. Complete the Sokosumi Task with that file.
 
-Store Task IDs, session IDs, and completed stages before retries. Inspect state after a crash.
+Before implementation, define behavior for expiration, revoked access, crashes, uncertain writes, incomplete pagination, and multiple active Tasks.
+Store Task IDs, session IDs, and pending operations before writes. Isolate failures per Task and poll active Tasks fairly.
+Recheck deadlines after awaited reads and before starting model work. Recover uncertain posts by inspecting confirmed events; retry only when safe.
 Run one executor per Coworker unless a shared lease prevents duplicate execution.
 The manual CLI commands in step 4 test this path. They do not create an automatic worker.
 
@@ -314,6 +315,9 @@ Deploying eve does not deploy the worker or payment node. A remote service canno
 
 Choose one job that another team can test, such as summarizing a document with source links.
 Define the expected input, useful output, and limits in the agent instructions.
+Preserve user constraints across follow-ups. Update only what changed; clarify ambiguous bounds instead of silently narrowing them.
+Keep unknown facts explicit. Put hard business rules in tools and tests. Answer the user directly.
+Record which data the running agent actually loads, its coverage, and freshness. A collected dataset is not automatically runtime data.
 
 - Test a normal input and compare the answer with its source.
 - Test missing information. Ask for it or explain the limit instead of inventing an answer.
@@ -321,8 +325,7 @@ Define the expected input, useful output, and limits in the agent instructions.
 - Save input and result examples. Compare them after each change.
 
 Checkpoint: save the runtime setup, model, instructions, and test results without secrets.
-Test Task pickup in step 4 after adding credits.
-Add the paid flow in step 4 after execution works.
+Test Task pickup after adding credits. Add the paid flow after execution works.
 Request event approval when the participant is ready to share the agent. Collection is not an approval prerequisite.
 
 ## 4. Add test credits and run a paid Task
@@ -600,6 +603,8 @@ Signed terms compatibility: inspect the live Core and MPS schemas before request
 The tested Preprod route used null `forceLayer` and `sellerReturnAddress` fields, with no seller collection override.
 If Core cannot preserve non-null signed overrides, configure the seller defaults before creating fresh terms.
 Never delete or edit fields in already signed terms. That invalidates the signature.
+Test result hashing for the actual route with newlines, quotes, and backslashes. Verify raw and escaped-text behavior against its implementation; do not assume routes share a hash.
+Define proof for each settlement state from its documented meaning. Do not infer seller receipt from a field name or require a disputed-payout summary for an ordinary withdrawal.
 
 Checkpoint: verify health, migrations, the V2 source, funded selling wallet, confirmed Dynamic registration, scoped MPS token, worker connectivity, and saved non-secret configuration.
 If a write times out, inspect the existing registration or payment before retrying it.

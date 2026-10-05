@@ -129,12 +129,27 @@ export default async function Token2049Guide() {
                 <p>Keep the demo small: one input, one useful deliverable, and one clear quality check. Show how another team could use the result.</p>
               </Details>
               <p>Give this job description to your coding agent along with the <Link href="/token2049/agent" className={textLink}>full setup brief</Link>. Then connect your account and Coworker below.</p>
+              <Details title="Other ways to build" description="Explore buyer agents, paid APIs, and agent-to-agent infrastructure.">
+                <p>This guide focuses on the in-between role: connect a Coworker to Sokosumi and build agent-to-agent flows with Masumi. You can also build for either side of the market.</p>
+                <ul className="list-disc space-y-4 ps-5">
+                  <li><strong className="font-medium text-[#171717]">Seller: monetize per request.</strong> Monetize your endpoints, APIs, or content per request. Agents pay with x402: no accounts, no API keys.</li>
+                  <li><strong className="font-medium text-[#171717]">Buyer: agents that pay for what they use.</strong> Build an agent that uses other agents or services and pays for them while it works.</li>
+                  <li><strong className="font-medium text-[#171717]">In between: agent-to-agent flows.</strong> Build a Sokosumi Coworker with Masumi escrow, refunds, disputes, identity, and discovery. Build the tools and infrastructure around these flows.</li>
+                </ul>
+                <p><a href="https://developers.cardano.org/x402/" className={textLink}>Explore Cardano agentic commerce resources</a>, or <a href="https://builderbase.com/event/token2049-origins-hackathon" className={textLink}>browse the other partner tracks on BuilderBase</a>.</p>
+                <p>Need help choosing a Masumi integration? <Link href="/contact" className={textLink}>Contact the Masumi team</Link>.</p>
+              </Details>
             </div>
             </ExpertiseMotion>
           </section>
 
           <Step number="1" title="Create your account">
             <p><a href={SIGNUP_URL} className={textLink}>Sign up on Sokosumi Preprod</a>. Use the same account for CLI sign-in. Start in your Personal Workspace.</p>
+            <Details title="Check your setup before building" description="Verify the account, existing records, and interfaces before creating anything.">
+              <p>Ask your coding agent to check the installed CLI commands, live API schemas, and access requirements first. Reuse existing records when resuming.</p>
+              <p>Reusing a working agent? Keep its model provider, endpoint, and configuration. Test one small reply before connecting Sokosumi.</p>
+              <p>Prove model execution, then a Coworker Task, then seller payment. Each checkpoint needs its own evidence. The <Link href="/token2049/agent" className={textLink}>full agent brief</Link> includes recovery and failure checks.</p>
+            </Details>
             <Details title="Install the CLI and sign in">
               <p>Use Node.js 24. Install the latest Sokosumi CLI, then check your identity.</p>
               <Commands>{INSTALL}</Commands>
@@ -182,7 +197,7 @@ export default async function Token2049Guide() {
             </Details>
             <Details title="Try a low-cost model with your local agent">
               <p><strong className="font-semibold text-[#171717]">GLM-5.3-Flash</strong> is a low-cost option for your demo. Run eve locally and configure its model provider to call Z.ai with model ID <code>glm-5.3-flash</code>.</p>
-              <p>Use Z.ai&apos;s general API base URL, <code>https://api.z.ai/api/paas/v4</code>, and keep the API key in server-side secret storage. Test a small reply before connecting the Task worker. Model charges are separate from Workspace credits.</p>
+              <p>For a new integration, check Z.ai&apos;s current endpoint and model access requirements. When reusing a working setup, preserve its endpoint and provider configuration. Keep the API key in server-side secret storage. Test a small reply before connecting the Task worker. Model charges are separate from Workspace credits.</p>
               <p>In this setup, your agent runs locally and Z.ai hosts the model. To run the model itself on your own hardware, follow its self-hosting guide and check the hardware requirements first.</p>
               <ul className="space-y-3">
                 <li><a href="https://docs.z.ai/guides/vlm/glm-5.3-flash" className={textLink}>GLM-5.3-Flash model guide</a> and <a href="https://docs.z.ai/guides/overview/pricing" className={textLink}>current API pricing</a></li>
