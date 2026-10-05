@@ -110,7 +110,9 @@ sokosumi --preprod runtime complete TASK_ID --coworker-id COWORKER_ID \
 Checkpoint: save Task ID, `COMPLETED` status, result file, and event ID. This proves execution only.
 If completion fails, inspect the same Task before retrying. Do not report this rehearsal as a paid test.
 
-Payment node setup: run MPS locally, with Docker or local PostgreSQL.
+### Prepare your payment node
+
+Run MPS locally, with Docker or local PostgreSQL.
 
 MPS is a payment service, not a full Cardano node. This setup uses Blockfrost for Preprod chain access.
 Install Git, Node.js 24, and pnpm 10.30.2. Use Docker only if you choose the container database below.
@@ -136,6 +138,8 @@ cp .env.example .env
 chmod 600 .env
 ```
 
+### Choose your database
+
 Docker database option: create a private `.postgres.env` file in a trusted editor.
 Set `POSTGRES_USER=mps`, `POSTGRES_DB=mps_hackathon`, and `POSTGRES_PASSWORD` to a new random password.
 Exclude this file from Git. Never reuse a real database password.
@@ -154,6 +158,8 @@ docker exec token2049-postgres pg_isready -U mps -d mps_hackathon
 Wait until `pg_isready` reports that PostgreSQL accepts connections before applying migrations.
 The named volume preserves the database when the container stops. Do not remove it to solve a connection error.
 For local PostgreSQL, create a separate database and database user instead. Docker is not required for that option.
+
+### Configure and seed MPS
 
 Edit MPS `.env` in a trusted editor. Required configuration:
 
@@ -194,6 +200,8 @@ pnpm run dev
 The frontend build is required for the admin dashboard. `pnpm run dev` starts the API and background payment jobs.
 Keep that process and PostgreSQL running until seller collection confirms. Prevent the machine from sleeping.
 
+### Check the node and fund wallets
+
 Check the node from another terminal:
 
 ```sh
@@ -213,7 +221,7 @@ For a direct local buyer rehearsal, also fund the purchasing wallet with test AD
 For a Sokosumi Task, Core's buyer funds escrow after charging Workspace credits. Your local purchasing wallet does not replace that buyer.
 Check actual Preprod balances before registration. Ask the payment team for test USDM if needed.
 
-Register and configure the paid agent.
+### Register your paid agent
 
 Before registration, implement the agent endpoint required by your access model.
 `Standard` is the default and requires `apiBaseUrl`. `OpenApi` requires `openApiSpecUrl`. `X402` requires `x402ResourcesUrl`.
@@ -239,6 +247,8 @@ Use `ReadAndPay` permissions, limited to Preprod and the selling wallet. Configu
 Keep the admin key for setup only. MPS authenticates API requests with the `token` header.
 The MPS runtime key is different from the Coworker runtime key. Import the Coworker key through the CLI vault as shown above.
 Do not put either key in a public environment variable, browser bundle, Task, repository, or copied instructions.
+
+### Configure your worker
 
 Configure your worker with the following non-secret values. These are adapter settings to implement in your agent, not built-in Sokosumi environment variables.
 
@@ -275,6 +285,8 @@ If the worker is remote, provide authenticated HTTPS connectivity to MPS. Never 
 Sokosumi Task execution uses your outbound worker connection. Core does not need access to this local seller API for that path.
 Only register a public agent endpoint if you also implement and host that endpoint; Coworker creation does not provide one.
 
+### Check signed terms before payment
+
 Signed terms compatibility: inspect the live Core and MPS schemas before requesting a quote.
 The tested Preprod route used null `forceLayer` and `sellerReturnAddress` fields, with no seller collection override.
 If Core cannot preserve non-null signed overrides, configure the seller defaults before creating fresh terms.
@@ -283,6 +295,8 @@ Never delete or edit fields in already signed terms. That invalidates the signat
 Checkpoint: verify health, migrations, the V2 source, funded selling wallet, confirmed Dynamic registration, scoped MPS token, worker connectivity, and saved non-secret configuration.
 If a write times out, inspect the existing registration or payment before retrying it.
 Allow time for signed deadlines, background jobs, and chain confirmations. V2 timed collection includes a delay after unlock; it is not immediate at Task completion.
+
+### Run a paid Task
 
 Second run: paid Task. Create a new Task under the same Coworker after preparing payment configuration.
 Read the MPS node's current OpenAPI and https://www.masumi.network/dev/masumi/documentation before sending payment requests.

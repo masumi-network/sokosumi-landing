@@ -5,6 +5,8 @@ import GuideNav from "./guide-nav";
 import { CREDITS_URL, EVENT, SIGNUP_URL } from "./flow";
 import CopyButton from "./copy-button";
 import Command from "./command";
+import Details from "./disclosure";
+import ui from "./guide-ui.module.css";
 import { readAgentGuide } from "./guide-source";
 
 const JOIN_URL = EVENT.joinUrl;
@@ -43,11 +45,11 @@ const RUN = `sokosumi --preprod tasks create \\
   --description "Write a two-sentence welcome for the hackathon." \\
   --status READY --json
 
-sokosumi runtime start TASK_ID --coworker-id COWORKER_ID \\
+sokosumi --preprod runtime start TASK_ID --coworker-id COWORKER_ID \\
   --personal --json
 
 # Your agent writes its answer into ./result.txt.
-sokosumi runtime complete TASK_ID --coworker-id COWORKER_ID \\
+sokosumi --preprod runtime complete TASK_ID --coworker-id COWORKER_ID \\
   --personal --result-file ./result.txt --json`;
 
 export const metadata: Metadata = {
@@ -57,20 +59,13 @@ export const metadata: Metadata = {
 };
 
 function Step({ number, title, children }: { number: string; title: string; children: React.ReactNode }) {
-  return <section className="scroll-mt-28 py-10 sm:py-14" aria-labelledby={`step-${number}`}>
+  return <section className="scroll-mt-28 border-b border-black/10 py-12 last:border-0 sm:py-16" aria-labelledby={`step-${number}`}>
     <div className="mb-6 flex items-start gap-4">
       <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-[#460A23] text-sm font-medium text-white" aria-hidden="true">{number}</span>
       <h2 id={`step-${number}`} className="scroll-mt-32 pt-1 text-xl font-medium tracking-tight sm:text-2xl">{title}</h2>
     </div>
     <div className="space-y-5 text-base leading-7 text-[#454545] sm:ps-[52px]">{children}</div>
   </section>;
-}
-
-function Details({ title, children }: { title: string; children: React.ReactNode }) {
-  return <details className="rounded-xl border border-[#460A23]/15 bg-white">
-    <summary className="cursor-pointer rounded-xl px-5 py-4 font-medium text-[#460A23] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#460A23]">{title}</summary>
-    <div className="space-y-5 px-5 pb-6 pt-2">{children}</div>
-  </details>;
 }
 
 const textLink = "font-medium text-[#460A23] underline decoration-[#FA008C] underline-offset-4 hover:text-black focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#460A23]";
@@ -84,13 +79,13 @@ export default async function Token2049Guide() {
       <section aria-labelledby="hackathon-title" className="mb-14 sm:mb-20">
         <p className="mb-6 text-sm font-medium text-[#460A23]">TOKEN2049 Origins Hackathon · 6 to 8 October 2026</p>
         <h1 id="hackathon-title" className="max-w-[20ch] text-balance text-4xl font-medium leading-[1.12] tracking-[-0.035em] sm:text-5xl">Build an agent that <span className="text-[#B90065]">gets paid.</span></h1>
-        <p className="mt-7 max-w-2xl text-lg leading-8 text-[#454545]">Start with your own Sokosumi account and a private Coworker. Test your agent, request event approval when ready, and submit proof of seller payment on Cardano Preprod.</p>
-        <a href={SIGNUP_URL} className="mt-8 inline-flex min-h-12 items-center justify-center rounded-full bg-[#460A23] px-7 py-3 font-medium text-white hover:bg-[#671037] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#460A23]">Create your Sokosumi account ↗</a>
+        <p className="mt-7 max-w-2xl text-lg leading-8 text-[#454545]">Connect your agent to Sokosumi and run a real Task. Start in your Personal Workspace, then bring your agent to the event. Prove that the seller received 1 test USDM on Cardano Preprod.</p>
+        <a href={SIGNUP_URL} className={`${ui.button} mt-8 !min-h-12 !px-7 !py-3 !text-base`}>Create your Sokosumi account ↗</a>
       </section>
 
-      <section aria-labelledby="agent-start" className="mb-14 rounded-2xl bg-[#F7E5EE] p-7 sm:mb-20 sm:p-10">
+      <section aria-labelledby="agent-start" className="mb-16 rounded-3xl bg-[#F7E5EE] p-7 sm:mb-24 sm:p-10">
         <h2 id="agent-start" className="text-xl font-medium tracking-tight">Using a coding agent?</h2>
-        <p className="mt-3 max-w-2xl text-base leading-7 text-[#454545]">Give it the full brief. The instructions cover account checks, setup, payment, and event approval.</p>
+        <p className="mt-3 max-w-2xl text-base leading-7 text-[#454545]">Copy the setup guide into your coding agent. It includes the CLI commands, payment-node setup, and checks for a complete paid Task.</p>
         <div className="mt-6 flex flex-wrap items-center gap-4">
           <CopyButton text={agentGuide} label="Copy agent instructions" />
           <Link href="/token2049/agent" className={textLink}>Read the guide</Link>
@@ -181,7 +176,7 @@ pnpm run dev`}</Command>
               <Command>{`curl --fail http://127.0.0.1:3012/api/v1/health
 curl --fail http://127.0.0.1:3012/api-docs -o mps-openapi.json`}</Command>
               <p>Implement and test your agent API first. A Standard registration needs its <code>apiBaseUrl</code>, which is different from the MPS URL. Open <code>http://127.0.0.1:3012/admin/</code> and register your agent with the Preprod V2 source and <code>{'{"pricingType":"Dynamic"}'}</code>. Wait for <code>RegistrationConfirmed</code>.</p>
-              <p>Give your worker the returned Masumi identifier, source index, contract address, policy ID, seller key, and seller address. Use a separate MPS key with Preprod and selling-wallet access. MPS uses the <code>token</code> header; this key is different from your Coworker key.</p>
+              <p>Configure your worker with the returned Masumi identifier and payment source. Include the contract address, policy ID, seller verification key, and seller address. Use a separate MPS key with Preprod and selling-wallet access. MPS uses the <code>token</code> header; this key is different from your Coworker key.</p>
               <p>Keep the worker and payment node on the same machine for the first test. A deployed worker needs authenticated HTTPS access to MPS. Its <code>127.0.0.1</code> points to the deployed machine, not your laptop.</p>
               <p>Seeding does not fund wallets or register your agent. Keep MPS and the database running until collection confirms. <Link href="/token2049/agent" className={textLink}>Read the full setup and agent configuration</Link>, or copy the agent instructions above.</p>
             </Details>

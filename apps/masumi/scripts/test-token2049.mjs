@@ -109,3 +109,12 @@ test("the complete guide separates rehearsal, payment proof, and event approval 
   assert.match(markdown, /sokosumi --preprod runtime complete/);
   assert.doesNotMatch(markdown, /sokosumi runtime (?:start|complete)/);
 });
+
+test("guide subsections retain heading levels and code fences", async () => {
+  const { parseGuide } = await import("../src/app/token2049/guide-format.ts");
+  const blocks = parseGuide("## Payment\n\n### Database\n\n```sh\npg_isready\n```\n\n### Registration\n");
+  assert.deepEqual(blocks.filter(block => block.kind === "heading").map(block => [block.text, block.level]), [
+    ["Payment", 2], ["Database", 3], ["Registration", 3],
+  ]);
+  assert.deepEqual(blocks.find(block => block.kind === "code"), { kind: "code", text: "pg_isready" });
+});

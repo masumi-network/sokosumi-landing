@@ -1,4 +1,4 @@
-export type GuideBlock = { kind: "heading" | "paragraph" | "list" | "code"; text: string };
+export type GuideBlock = { kind: "heading" | "paragraph" | "list" | "code"; text: string; level?: 2 | 3 };
 
 // Supports only the headings, paragraphs, lists and fences used by the local guide.
 export function parseGuide(markdown: string): GuideBlock[] {
@@ -16,8 +16,8 @@ export function parseGuide(markdown: string): GuideBlock[] {
       index++;
     } else if (line.startsWith("# ")) {
       index++;
-    } else if (line.startsWith("## ")) {
-      blocks.push({ kind: "heading", text: line.slice(3) }); index++;
+    } else if (/^#{2,3} /.test(line)) {
+      blocks.push({ kind: "heading", text: line.replace(/^#{2,3} /, ""), level: line.startsWith("### ") ? 3 : 2 }); index++;
     } else if (line.startsWith("- ")) {
       const items: string[] = [];
       while (index < lines.length && lines[index].startsWith("- ")) items.push(lines[index++].slice(2));

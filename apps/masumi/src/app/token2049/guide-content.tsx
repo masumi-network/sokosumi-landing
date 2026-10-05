@@ -16,6 +16,7 @@ function Inline({ text }: { text: string }) {
 export default function GuideContent({ markdown }: { markdown: string }) {
   return <article className="min-w-0 space-y-5 text-base leading-7 text-[#454545]">
     {parseGuide(markdown).map((block, index) => {
+      if (block.kind === "heading" && block.level === 3) return <h3 key={index} id={`guide-${index}`} className="scroll-mt-28 pt-6 text-xl font-medium leading-snug text-[#241B20]">{block.text}</h3>;
       if (block.kind === "heading") return <h2 key={index} id={`guide-${index}`} className="scroll-mt-28 border-t border-[#460A23]/15 pb-1 pt-9 text-2xl font-medium leading-tight tracking-tight text-[#241B20]">{block.text}</h2>;
       if (block.kind === "code") return <Command key={index}>{block.text}</Command>;
       if (block.kind === "list") return <ul key={index} className="list-disc space-y-2 pl-5">{block.text.split("\n").map((item, itemIndex) => <li key={itemIndex}><Inline text={item} /></li>)}</ul>;
