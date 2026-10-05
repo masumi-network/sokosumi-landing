@@ -7,11 +7,11 @@ When the agent is ready for event approval, join the event and connect the same 
 
 ## Operating contract
 
-- **Check before creating.** Confirm the intended account, existing records, prerequisites, and CLI version. Read help for each exact subcommand. Verify live request fields, units, response shapes, and the effective actor. Local source describes its revision; check the deployed service separately.
+- **Check before creating.** Confirm the checkout path, branch, intended account, existing records, prerequisites, and CLI version. Run `sokosumi --preprod auth whoami --json` before implementation. Inspect configured credential sources without printing values. Read help for each exact subcommand. Verify live request fields, units, response shapes, and the effective actor. Local source describes its revision; check the deployed service separately.
 - **Preserve working integrations.** When asked to reuse a project, inspect its provider adapter, endpoint, model ID, credential source, and request options. Prove one small call through that setup before changing it. Report failures for the tested connection, not the provider as a whole.
 - **Prove each stage separately.** Test model execution, Coworker execution, then payment through independent seller receipt. Registration, escrow funding, and Task completion prove different stages. Record signed deadlines and continue independent work while waiting.
 - **Recover uncertain operations safely.** Save IDs, signed terms, exact result bytes, and pending operations before external writes. Inspect uncertain outcomes before retrying. Keep the same wallets, registration, and unfinished Task. Do not promise exactly-once behavior without a verified API guarantee.
-- **Report exact scope.** Keep one current-state record with verified checkpoints, active processes, and unresolved work. Keep errors and corrections in a separate history. Read current state before resuming. Distinguish local from hosted execution, private access from public discovery, and collected data from runtime data. Name untested paths.
+- **Report exact scope.** Keep one current-state record with verified checkpoints, active processes, and unresolved work. Keep errors and corrections in a separate history. Read current state before resuming. Distinguish local from hosted execution, private access from public discovery, and collected data from runtime data. Name untested paths. Passing unit tests and running servers do not prove a model turn, connected Coworker, or seller receipt.
 
 ## How to use this guide
 
@@ -19,21 +19,21 @@ When the agent is ready for event approval, join the event and connect the same 
 
 After loading this guide, the participant can ask: "Create a Coworker for X."
 Treat X as the agent's purpose. Choose a clear Coworker name and a small test input for that purpose.
-Ask one question only if X does not describe a usable purpose.
+Ask one question only if X does not describe a usable purpose. For an explicit background demo request, choose reversible defaults instead of asking preference questions; required sign-in, funding, and approval still need human action.
 For a fresh setup, create a new Vendor and use Vercel eve unless the participant overrides those choices.
 Complete the personal execution and paid Task tests below. Coworker registration alone does not complete this request.
 
 ### Run independent setup work in parallel
 
 Before creating records, report the intended account, existing IDs, required organization membership, and separate Coworker access and runtime grants. Public discovery is a later milestone.
-If the installed CLI lacks a required command, report its version and the missing command. Do not substitute admin credentials.
+If the installed CLI lacks a required command, report its version and the missing command. Do not substitute admin credentials. If authentication or credentials are missing, report the blocker and exact next action immediately. Continue only a bounded independent test; do not expand features or claim readiness while blocked.
 
 - **Account and Coworker:** start OAuth, verify the account, check organization membership, then create or reuse the Vendor and Coworker.
 - **Agent:** prepare eve, instructions, and a local test while the participant completes sign-in.
 - **Payment node:** prepare MPS and a dedicated PostgreSQL database independently of Coworker registration.
 - **Worker:** connect the verified IDs, runtime key, agent, and MPS after each dependency is ready.
 
-Parallel work means independent processes or available agent tools. Each shared file, database, and wallet has one writer.
+Parallel work means independent processes or available agent tools. Each shared file, database, and wallet has one writer. Reuse existing healthy processes; record their ports and stop duplicate processes started by this run.
 Run database creation, migrations, and seeding in that order. Start MPS after those steps succeed.
 Do not start two Task executors for the same Coworker.
 While the participant funds wallets, continue local agent tests and worker implementation that need no funded wallet.
@@ -41,9 +41,9 @@ Wait for confirmed balances before registration or a paid Task. Follow each paym
 
 ### Pause only for the human steps
 
-Give the participant the exact next action when sign-in, model access, wallet seeding, or funding needs their input.
+Give the participant the exact next action when sign-in, model access, or funding needs their input.
 Configure the Coworker runtime key automatically with the private-file command in step 2.
-Keep secret output in their trusted terminal. Do not capture wallet seed output in the coding-agent transcript.
+Seed the dedicated Preprod database automatically after configuration. Suppress seed output and check the exit status; never capture mnemonics in the coding-agent transcript.
 For funding, give the actual public wallet address, Cardano Preprod network, required asset, and wallet purpose.
 Never present a placeholder or an address copied from an example as their wallet.
 After the participant replies, verify the resulting identity, service status, or wallet balance before continuing.
@@ -262,7 +262,7 @@ Initialization opens eve's terminal UI. Connect the model there and send a small
 Edit `agent/instructions.md` for the job and output format. Use `agent/agent.ts` for model configuration.
 Add a tool only when the job needs one. Keep the generated lockfile and record the installed eve version.
 Model access uses separate credentials and costs. Sokosumi credits do not pay the model provider.
-Never copy model credentials into the guide, Task results, or source control.
+Never copy model credentials into the guide, Task results, or source control. Define one configuration loader for the agent project and document variable names, file precedence, and process environment handling in a secret-free `.env.example`. Make the agent, worker, and checks use it; keep MPS configuration separate. Verify credential presence in the exact launch context and run a real model smoke test before reporting missing access. Never overwrite working secret files with examples.
 
 ### Choose a low-cost model
 
@@ -480,11 +480,11 @@ pnpm run prisma:migrate
 ```
 
 Run migration commands only against the new demo database. `prisma:migrate` applies checked-in migrations without a shadow database.
-Ask the participant to run seeding in their own trusted terminal. Generated wallet mnemonics can be printed once.
-Do not run this through a coding-agent transcript or record its secret output.
+Run seeding automatically against the dedicated Preprod demo database. It can print wallet mnemonics, so suppress stdout and stderr.
+Check the exit status. On failure, report a safe status and inspect configuration without printing secrets. Preserve the database and encryption key; do not reseed blindly.
 
 ```sh
-pnpm run prisma:seed
+pnpm run prisma:seed >/dev/null 2>&1
 ```
 
 ```sh
@@ -520,7 +520,7 @@ Seeding creates configuration and wallets. It does not fund wallets or register 
 Fund the selling wallet with test ADA for registration, collateral, and settlement fees.
 For a direct local buyer rehearsal, also fund the purchasing wallet with test ADA and at least 1 test USDM plus any fees.
 For a Sokosumi Task, Core's buyer funds escrow after charging Workspace credits. Your local purchasing wallet does not replace that buyer.
-Check actual Preprod balances before registration. Ask the payment team for test USDM if needed.
+Include https://dispenser.masumi.network in the funding request. Ask the participant to confirm Cardano Preprod and use the verification code from their registration email, or contact dispenser support for help. Check actual Preprod balances before registration; request test USDM only when the selected payment path needs it.
 
 Send the participant a funding request with values read from this node:
 
@@ -663,7 +663,7 @@ Stop the local executor before starting the hosted executor. Prevent overlap dur
 Deploy PostgreSQL using https://docs.railway.com/databases/postgresql.
 Connect MPS to the private database URL and follow https://github.com/masumi-network/masumi-payment-service/blob/main/docs/deployment.md.
 Inject backend secrets at runtime. Do not bake `.env`, wallet secrets, or keys into the image.
-Apply migrations to the intended database and perform first-time seeding in a trusted session.
+Apply migrations to the intended database. Automate first-time Preprod seeding with secret output suppressed; inspect the exit status.
 Keep wallet seed output out of deployment logs and coding-agent output.
 For an existing node, stop its worker and MPS before taking the final database copy.
 Restore that copy with the original encryption key, then start the hosted MPS and worker.
@@ -730,7 +730,7 @@ Checkpoint: save event access ID and status, eligibility result, and runtime gra
 
 ## 6. Submit code and payment proof
 
-Write a setup guide with actual commands and configuration. For each problem, record the exact error and how it was resolved.
+Write a setup guide with actual commands and configuration. For each problem, record the exact error and how it was resolved. Before publishing, inspect staged files and history for secrets, personal emails, local paths, account-linked wallet metadata, and private access URLs. Keep private setup records ignored; publish a sanitized example instead. A private repository does not make its contents safe to publish later.
 If the cause is unknown, say so. Keep secrets out of the guide.
 Use https://www.masumi.network/token2049/submission for the submission checklist.
 Submit the project on BuilderBase: https://builderbase.com/event/token2049-origins-hackathon.

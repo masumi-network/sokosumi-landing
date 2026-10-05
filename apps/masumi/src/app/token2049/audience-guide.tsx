@@ -49,13 +49,15 @@ export default function AudienceGuide({ guide, children }: { guide: string; chil
             <blockquote className="mt-3 max-w-xl text-xl leading-8 text-black">Create a Coworker that summarizes a document and links to its sources.</blockquote>
             <p className="mt-3 text-sm leading-6 text-[#454545]">Replace the example with your agent&apos;s purpose. Use eve by default, or name your preferred runtime.</p>
           </div>
-          <Disclosure title="Fetch the guide or install it as a skill" description="For tools that load instructions from a URL or file.">
+          <div className="mb-6">
+            <a href="/token2049/skill/SKILL.md" download="SKILL.md" className={ui.link}>Download SKILL.md</a>
+            <p className="mt-2 text-sm leading-6 text-[#454545]">Save SKILL.md in your coding tool&apos;s skill folder.</p>
+          </div>
+          <Disclosure title="Fetch the guide" description="For tools that load instructions from a URL or file.">
             <Command>{"curl --fail --location https://www.masumi.network/token2049/agent-guide.md"}</Command>
             <div className="flex flex-wrap gap-x-6 gap-y-2">
               <a href="/token2049/agent-guide.md" download className={ui.link}>Download Markdown</a>
-              <a href="/token2049/skill/SKILL.md" download="SKILL.md" className={ui.link}>Download SKILL.md</a>
             </div>
-            <p className="text-sm leading-6 text-[#454545]">Save SKILL.md in your coding tool&apos;s skill folder.</p>
           </Disclosure>
           <p className="mt-6 text-sm leading-6 text-[#454545]">Already started? Give your coding agent the saved setup record. It will reuse your Vendor, Coworker, and completed steps.</p>
         </div>
@@ -63,8 +65,7 @@ export default function AudienceGuide({ guide, children }: { guide: string; chil
           <h3 id="human-handoffs" className="text-lg font-medium tracking-tight">Your part in setup</h3>
           <ul className="mt-5 space-y-5 text-sm leading-6 text-[#454545]">
             <li><strong className="block font-medium text-black">Sign in to Sokosumi</strong>Use your account when the agent starts OAuth.</li>
-            <li><strong className="block font-medium text-black">Run wallet seeding privately</strong>Use your trusted terminal because seeding can print wallet mnemonics. Your coding agent can configure the Coworker key automatically.</li>
-            <li><strong className="block font-medium text-black">Fund the test wallet</strong>The agent gives you its public Preprod address and checks the balance after funding.</li>
+            <li><strong className="block font-medium text-black">Fund the test wallet</strong>The agent gives you its public Preprod address. <a href="https://dispenser.masumi.network" className={ui.link}>Open the Masumi dispenser</a> to fund it. The agent checks the balance afterward.</li>
           </ul>
           <p className="mt-6 border-t border-[#171717]/10 pt-5 text-sm leading-6 text-[#454545]">The agent can prepare independent setup work while it waits for you.</p>
         </aside>

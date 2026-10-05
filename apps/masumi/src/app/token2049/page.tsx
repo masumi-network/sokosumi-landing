@@ -137,7 +137,7 @@ export default async function Token2049Guide() {
           <Step number="1" title="Create your account">
             <p><a href={SIGNUP_URL} className={textLink}>Sign up on Sokosumi Preprod</a>. Use the same account for CLI sign-in. Start in your Personal Workspace.</p>
             <Details title="Check your setup before building" description="Verify the account, existing records, and interfaces before creating anything.">
-              <p>Ask your coding agent to check the installed CLI commands, live API schemas, and access requirements first. Reuse existing records when resuming.</p>
+              <p>Ask your coding agent to verify CLI sign-in, configured credentials, installed commands, and live API schemas first. Keep secret values out of chat. Reuse existing records when resuming.</p>
               <p>Reusing a working agent? Keep its model provider, endpoint, and configuration. Test one small reply before connecting Sokosumi.</p>
               <p>Prove model execution, then a Coworker Task, then seller payment. Each checkpoint needs its own evidence. The <Link href="/token2049/agent" className={textLink}>full agent brief</Link> includes recovery and failure checks.</p>
             </Details>
@@ -273,8 +273,8 @@ else
 fi`}</Command>
               <Command>{`pnpm run prisma:generate`}</Command>
               <Command>{`pnpm run prisma:migrate`}</Command>
-              <p>Run seeding yourself in a trusted terminal. It can print wallet mnemonics. Keep that output out of coding-agent chats, logs, and screenshots.</p>
-              <Command>{`pnpm run prisma:seed`}</Command>
+              <p>Your coding agent can seed the Preprod demo database automatically. Suppress seed output so wallet mnemonics stay out of chat and logs. The wallets remain stored in the configured database; preserve that database and its encryption key.</p>
+              <Command>{`pnpm run prisma:seed >/dev/null 2>&1`}</Command>
             </Details>
             <Details title="Start and check the service" description="Build the dashboard, start MPS, and verify its health.">
               <Command>{`pnpm -C frontend run build`}</Command>
@@ -284,7 +284,7 @@ fi`}</Command>
               <Command>{`curl --fail http://127.0.0.1:3012/api-docs -o mps-openapi.json`}</Command>
             </Details>
             <Details title="Fund the wallet and register your agent" description="Connect the Preprod registration and scoped payment credentials to your worker.">
-              <p>Open <code>http://127.0.0.1:3012/admin/</code>. Check the seeded Preprod V2 source and copy its selling wallet&apos;s public address. Fund that address with test ADA for registration and transaction fees.</p>
+              <p>Open <code>http://127.0.0.1:3012/admin/</code>. Check the seeded Preprod V2 source and copy its selling wallet&apos;s public address. Fund that address with test ADA for registration and transaction fees through the <a href="https://dispenser.masumi.network" className={textLink}>Masumi dispenser</a>. Confirm you are funding Cardano Preprod. Use the verification code from your registration email, or contact dispenser support if you need one.</p>
               <p>Implement and test your agent API first. A Standard registration needs its <code>apiBaseUrl</code>, which is different from the MPS URL. Open <code>http://127.0.0.1:3012/admin/</code> and register your agent with the Preprod V2 source and <code>{'{"pricingType":"Dynamic"}'}</code>. Wait for <code>RegistrationConfirmed</code>.</p>
               <p>Configure your worker with the returned Masumi identifier and payment source. Include the contract address, policy ID, seller verification key, and seller address. Use a separate MPS key with Preprod and selling-wallet access. MPS uses the <code>token</code> header; this key is different from your Coworker key.</p>
               <p>Keep the worker and payment node on the same machine for the first test. A deployed worker needs authenticated HTTPS access to MPS. Its <code>127.0.0.1</code> points to the deployed machine, not your laptop.</p>
