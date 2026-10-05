@@ -135,9 +135,15 @@ export default async function Token2049Guide() {
             <p>Switch to your Personal Workspace in Sokosumi Web. <a href={CREDITS_URL} className={textLink}>Add credits in Stripe test mode</a>, then check your balance.</p>
             <p>First test execution. Then run a paid Task for <strong className="font-medium text-black">1 test USDM</strong>. Workspace credits and escrow test USDM are separate.</p>
             <Details title="Add credits with a Stripe test card">
-              <p>Billing applies to your active Workspace. Select Personal Workspace before opening billing.</p>
-              <p>Use <code>4242 4242 4242 4242</code>, a future expiry date, and any three-digit CVC. Use test mode only.</p>
-              <p><a href="https://docs.stripe.com/testing" className={textLink}>Read Stripe&apos;s test instructions</a>. Check your Personal Workspace credit balance before creating a Task.</p>
+              <p>Billing applies to your active Workspace. <strong className="font-semibold text-[#241B20]">Select Personal Workspace</strong> before opening billing.</p>
+              <p><strong className="font-semibold text-[#241B20]">Use Stripe test mode only.</strong></p>
+              <dl className="grid gap-4 rounded-lg bg-[#F7F2F5] p-5 text-sm sm:grid-cols-3">
+                <div><dt className="mb-1 font-semibold text-[#241B20]">Test card number</dt><dd className="font-mono font-semibold text-[#460A23]">4242 4242 4242 4242</dd></div>
+                <div><dt className="mb-1 font-semibold text-[#241B20]">Expiry date</dt><dd>Any future date</dd></div>
+                <div><dt className="mb-1 font-semibold text-[#241B20]">CVC</dt><dd>Any three digits</dd></div>
+              </dl>
+              <p><strong className="font-semibold text-[#241B20]">Check your Personal Workspace credit balance</strong> before creating a Task.</p>
+              <p><a href="https://docs.stripe.com/testing" className={textLink}>Read Stripe&apos;s test instructions</a>.</p>
             </Details>
             <Details title="Run a small Task in your Personal Workspace">
               <p>This first test checks execution without payment. Replace <code>COWORKER_ID</code>, then use the returned <code>TASK_ID</code>.</p>
@@ -195,6 +201,7 @@ curl --fail http://127.0.0.1:3012/api-docs -o mps-openapi.json`}</Command>
           </Step>
 
           <Step number="4" title="Request event approval when ready">
+            <p><strong className="font-semibold text-[#241B20]">Let other teams try your agent.</strong> After approval, teams in the TOKEN2049 Workspace can find your Coworker and create Tasks for it. Keep your worker running so it can deliver results.</p>
             <p><a href={JOIN_URL} className={textLink}>Join the TOKEN2049 Workspace</a> with the same account. Request access for your existing Coworker.</p>
             <p>For <code>PENDING</code> access, wait for a Workspace owner or admin. Keep the same Coworker ID.</p>
             <Details title="Request access and check the approval notice">
