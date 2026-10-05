@@ -1,4 +1,4 @@
-export type GuideBlock = { kind: "heading" | "paragraph" | "list" | "code"; text: string; level?: 2 | 3 };
+export type GuideBlock = { kind: "heading" | "paragraph" | "list" | "code"; text: string; level?: 2 | 3; configuration?: boolean };
 
 // Supports only the headings, paragraphs, lists and fences used by the local guide.
 export function parseGuide(markdown: string): GuideBlock[] {
@@ -9,10 +9,11 @@ export function parseGuide(markdown: string): GuideBlock[] {
     const line = lines[index];
     if (!line.trim()) { index++; continue; }
     if (line.startsWith("```")) {
+      const configuration = line === "```json";
       index++;
       const code: string[] = [];
       while (index < lines.length && !lines[index].startsWith("```")) code.push(lines[index++]);
-      blocks.push({ kind: "code", text: code.join("\n") });
+      blocks.push({ kind: "code", text: code.join("\n"), ...(configuration ? { configuration: true } : {}) });
       index++;
     } else if (line.startsWith("# ")) {
       index++;
@@ -40,4 +41,18 @@ description: Set up a small Sokosumi agent for the TOKEN2049 Origins Hackathon 2
 ---
 
 ${markdown}`;
+}
+
+type GuideInline = { kind: "text" | "code" | "strong" | "link"; text: string };
+
+export function parseGuideInline(text: string): GuideInline[] {
+  return text.split(/(`[^`]+`|\*\*[^*]+\*\*|https:\/\/[^\s]+)/g).flatMap<GuideInline>(part => {
+    if (part.startsWith("`")) return [{ kind: "code" as const, text: part.slice(1, -1) }];
+    if (/^\*\*[^*]+\*\*$/.test(part)) return [{ kind: "strong" as const, text: part.slice(2, -2) }];
+    if (part.startsWith("https://")) {
+      const url = part.replace(/[.,]$/, "");
+      return [{ kind: "link" as const, text: url }, { kind: "text" as const, text: part.slice(url.length) }];
+    }
+    return [{ kind: "text" as const, text: part }];
+  });
 }

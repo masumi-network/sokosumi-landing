@@ -9,3 +9,7 @@ export default function Command({ children, configuration = false }: { children:
     <pre className="overflow-x-auto overscroll-x-contain p-4 text-[13px] leading-7 sm:p-5 sm:text-sm"><code>{children}</code></pre>
   </div>;
 }
+
+export function Commands({ children }: { children: string[] }) {
+  return <div className="space-y-4">{children.map((command, index) => <Command key={index}>{command}</Command>)}</div>;
+}

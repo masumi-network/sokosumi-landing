@@ -1,3 +1,4 @@
+import SkipLink from "../skip-link";
 import type { Metadata } from "next";
 import Link from "next/link";
 import GuideNav from "../guide-nav";
@@ -14,14 +15,14 @@ export const metadata: Metadata = {
 };
 
 export default function ParticipantSetup() {
-  return <><Header product="masumi" /><main className="mx-auto max-w-5xl px-6 pb-28 pt-36 sm:px-12 sm:pb-36 sm:pt-48">
+  return <><SkipLink /><Header product="masumi" /><main id="guide-main" tabIndex={-1} className="mx-auto max-w-5xl px-6 pb-28 pt-36 sm:px-12 sm:pb-36 sm:pt-48">
     <GuideNav current="/token2049/setup" />
     <h1 className="mt-8 max-w-[22ch] text-balance text-4xl font-medium leading-tight tracking-tight sm:text-5xl">Get commands for your Coworker.</h1>
-    <p className="mt-5 max-w-2xl text-lg leading-8 text-[#454545]">Enter your IDs once. Get personal setup commands, a brief for your coding agent, and a separate command block for event approval.</p>
+    <p className="mt-5 max-w-2xl text-lg leading-8 text-[#454545]">Use your Coworker and Vendor IDs to prepare personal commands and event access requests.</p>
     <div className="my-10 sm:my-14"><Disclosure title="Need your account or IDs? Start here">
     <ol className="grid gap-6 min-[1000px]:grid-cols-3">
       <li className="min-w-0"><span className="inline-flex size-8 items-center justify-center rounded-full bg-[#F7E5EE] text-xs font-medium text-[#460A23]">01</span><h2 className="my-3 text-xl font-medium">Create your account</h2><p className="text-sm leading-7 text-[#454545]">Sign up on Sokosumi Preprod. Use the same account for CLI sign-in.</p><a href={SIGNUP_URL} className={`${ui.link} mt-4`}>Create an account</a></li>
-      <li className="min-w-0"><span className="inline-flex size-8 items-center justify-center rounded-full bg-[#F7E5EE] text-xs font-medium text-[#460A23]">02</span><h2 className="my-3 text-xl font-medium">Create your Vendor</h2><p className="text-sm leading-7 text-[#454545]">Create a new Vendor for this project in the CLI. Keep its returned Vendor ID. If you are resuming setup, reuse the Vendor you already created.</p><Link href="/token2049#step-2" className={`${ui.link} mt-4`}>Read the Vendor commands</Link></li>
+      <li className="min-w-0"><span className="inline-flex size-8 items-center justify-center rounded-full bg-[#F7E5EE] text-xs font-medium text-[#460A23]">02</span><h2 className="my-3 text-xl font-medium">Create your Vendor</h2><p className="text-sm leading-7 text-[#454545]">First create or join an organization through Sokosumi&apos;s Workspace switcher. Then create a new Vendor for this project in the CLI. Continue testing in your Personal Workspace. Keep its returned Vendor ID. If you are resuming setup, reuse the Vendor you already created.</p><Link href="/token2049#step-2" className={`${ui.link} mt-4`}>Read the Vendor commands</Link></li>
       <li className="min-w-0"><span className="inline-flex size-8 items-center justify-center rounded-full bg-[#F7E5EE] text-xs font-medium text-[#460A23]">03</span><h2 className="my-3 text-xl font-medium">Create your Coworker</h2><p className="text-sm leading-7 text-[#454545]">Run coworkers register with --personal under your Vendor. Keep the returned Coworker ID. Join the event when your agent is ready for approval.</p><a href="#instructions" className={`${ui.link} mt-4`}>Enter your IDs</a></li>
     </ol>
     </Disclosure></div>

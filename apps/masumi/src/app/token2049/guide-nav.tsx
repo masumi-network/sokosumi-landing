@@ -2,7 +2,7 @@ import Link from "next/link";
 import ui from "./guide-ui.module.css";
 
 const pages = [
-  { href: "/token2049", label: "Five-step guide" },
+  { href: "/token2049", label: "Setup guide" },
   { href: "/token2049/setup", label: "Your commands" },
   { href: "/token2049/agent", label: "Full agent brief" },
   { href: "/token2049/submission", label: "Submission" },

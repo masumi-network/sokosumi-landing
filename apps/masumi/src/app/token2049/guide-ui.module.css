@@ -6,14 +6,14 @@
     0 2px 4px oklch(0 0 0 / 0.04);
 }
 .surface { border-radius: 24px; }
-.disclosure { border-radius: 28px; background: white; }
+.disclosure { border-radius: 20px; background: white; }
 .summary {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
   padding: 20px;
-  border-radius: 28px;
+  border-radius: 20px;
   cursor: pointer;
   color: #460a23;
   font-weight: 500;
@@ -21,13 +21,12 @@
   transition: color 150ms ease-out;
 }
 .summary::-webkit-details-marker { display: none; }
-.summary:hover { color: #b90065; }
 .summary:focus-visible,
 .button:focus-visible,
 .link:focus-visible { outline: 2px solid #460a23; outline-offset: 4px; }
 .chevron { flex-shrink: 0; transition: rotate 150ms ease-out; }
 .disclosure[open] > .summary .chevron { rotate: 180deg; }
-.disclosure[open] > .summary { border-radius: 28px 28px 0 0; }
+.disclosure[open] > .summary { border-radius: 20px 20px 0 0; }
 .disclosureBody { padding: 4px 20px 24px; }
 .disclosureBody p code { overflow-wrap: anywhere; }
 .button {
@@ -37,18 +36,16 @@
   gap: 8px;
   min-height: 44px;
   border-radius: 999px;
-  background: #460a23;
+  background: black;
   color: white;
   padding: 10px 20px;
   font-size: 14px;
   font-weight: 500;
   transition: scale 150ms ease-out, background-color 150ms ease-out;
 }
-.button:hover { background: #671037; }
 .button:active { scale: 0.96; }
 .static:active { scale: 1; }
 .dark { background: rgb(255 255 255 / 0.08); box-shadow: 0 0 0 1px oklch(1 0 0 / 0.13); }
-.dark:hover { background: rgb(255 255 255 / 0.14); }
 .dark:focus-visible { outline-color: white; }
 .link {
   display: inline-flex;
@@ -60,9 +57,7 @@
   text-underline-offset: 4px;
   transition: color 150ms ease-out;
 }
-.link:hover { color: #b90065; }
 .input { transition: border-color 150ms ease-out; }
-.input:hover { border-color: #460a23; }
 .icon { position: relative; width: 16px; height: 16px; flex-shrink: 0; }
 .iconLayer {
   position: absolute;
@@ -76,4 +71,103 @@
 @media (prefers-reduced-motion: reduce) {
   .button, .summary, .chevron, .iconLayer, .link, .input { transition: none; }
   .button:active { scale: 1; }
+}
+
+/* Same restrained entrance curve as the site hero and registration flow. */
+.audienceTabs {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  width: min(100%, 360px);
+  border-radius: 999px;
+  padding: 4px;
+  margin-bottom: 28px;
+  background: rgb(0 0 0 / 0.04);
+  box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.06);
+}
+.audienceIndicator {
+  position: absolute;
+  inset: 4px auto 4px 4px;
+  width: calc(50% - 4px);
+  border-radius: 999px;
+  background: black;
+  transition: translate 300ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.audienceIndicator[data-audience="agent"] { translate: 100% 0; }
+.audienceTab {
+  position: relative;
+  min-height: 44px;
+  padding: 10px 12px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  color: #454545;
+  transition: color 150ms ease-out;
+}
+.audienceTab[aria-selected="true"] { color: white; }
+.audienceTab:focus-visible { outline: 2px solid #460a23; outline-offset: 4px; }
+.guidePanel:focus-visible { outline: 2px solid #460a23; outline-offset: 8px; }
+.textHidden { opacity: 0; }
+.textVisible { opacity: 1; }
+.copyText { transition: opacity 150ms ease-out; }
+:global(html):has(.audience) { scroll-behavior: smooth; }
+@supports (interpolate-size: allow-keywords) and selector(::details-content) {
+  .disclosure { interpolate-size: allow-keywords; }
+  .disclosure::details-content {
+    height: 0;
+    overflow: clip;
+    transition: height 300ms cubic-bezier(0.22, 1, 0.36, 1),
+      content-visibility 300ms allow-discrete;
+  }
+  .disclosure[open]::details-content { height: auto; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .audienceIndicator, .audienceTab, .copyText,
+  .disclosure::details-content { transition: none; }
+  :global(html):has(.audience) { scroll-behavior: auto; }
+}
+
+@media (hover: hover) {
+  .summary:hover { color: #b90065; }
+  .button:hover { background: #241b20; }
+  .dark:hover { background: rgb(255 255 255 / 0.14); }
+  .link:hover { color: #b90065; }
+  .input:hover { border-color: #460a23; }
+  .audienceTab:hover:not([aria-selected="true"]) { color: black; }
+}
+
+.input[aria-invalid="true"] { border-color: #991b1b; }
+.skipLink { position: fixed; inset: 12px auto auto 12px; z-index: 100; translate: 0 -150%; background: #460a23; color: white; padding: 12px 20px; border-radius: 8px; }
+.skipLink:focus { translate: 0 0; outline: 2px solid white; outline-offset: 2px; }
+
+/* Enter only after a deliberate audience change. Keep the first render still. */
+.audience[data-switched="true"] .guidePanel:not([hidden]) {
+  opacity: 1;
+  translate: 0 0;
+  transition: opacity 150ms ease-out, translate 150ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+@starting-style {
+  .audience[data-switched="true"] .guidePanel:not([hidden]) {
+    opacity: 0;
+    translate: 0 4px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .audience[data-switched="true"] .guidePanel:not([hidden]) { transition: none; }
+}
+
+@media (forced-colors: active) {
+  .audienceTabs { border: 1px solid ButtonText; }
+  .audienceIndicator {
+    forced-color-adjust: none;
+    background: Highlight;
+  }
+  .audienceTab[aria-selected="true"] {
+    forced-color-adjust: none;
+    color: HighlightText;
+  }
+  .audienceTab:focus-visible { outline-color: ButtonText; }
+  .button { border: 1px solid ButtonText; }
+  .link[aria-current="page"] { outline: 1px solid LinkText; outline-offset: -2px; }
 }
