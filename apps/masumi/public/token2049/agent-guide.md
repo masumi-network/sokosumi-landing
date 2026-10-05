@@ -728,6 +728,7 @@ Checkpoint: save event access ID and status, eligibility result, and runtime gra
 Write a setup guide with actual commands and configuration. For each problem, record the exact error and how it was resolved.
 If the cause is unknown, say so. Keep secrets out of the guide.
 Use https://www.masumi.network/token2049/submission for the submission checklist.
+Submit the project on BuilderBase: https://builderbase.com/event/token2049-origins-hackathon.
 Build the submitted project during the official 36-hour hacking period. Existing libraries and developer tools are allowed.
 Follow the official rules at https://builderbase.com/event/token2049-origins-hackathon#rules.
 Show actual input and output. Explain how you checked result quality and which steps needed human help.

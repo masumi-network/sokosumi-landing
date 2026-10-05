@@ -333,7 +333,7 @@ fi`}</Command>
 
           <Step number="6" title="Submit your code and proof">
             <p>Include your code, agent demo, completed Task, seller receipt, and a Cardano Preprod payment transaction with its explorer link.</p>
-            <p><Link href="/token2049/submission" className={textLink}>Open the submission checklist</Link>. Submit on BuilderBase by <strong className="font-medium text-black">7 October, 23:59</strong>.</p>
+            <p><Link href="/token2049/submission" className={textLink}>Open the submission checklist</Link>. Submit on <a href="https://builderbase.com/event/token2049-origins-hackathon" className={textLink}>BuilderBase</a> by <strong className="font-medium text-black">7 October, 23:59</strong>.</p>
           </Step>
         </div>
       </div>
