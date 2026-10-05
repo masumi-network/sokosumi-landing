@@ -36,9 +36,7 @@ Pricing type: Dynamic
 Default quote: 1 test USDM per Task
 Atomic amount: 1000000
 Token unit: ${TEST_USDM_UNIT}`;
-const VENDOR = `sokosumi --preprod vendors me --json
-# Only if you need a new Vendor:
-sokosumi --preprod vendors create --name "Your Vendor" --slug your-unique-vendor-slug --json`;
+const VENDOR = `sokosumi --preprod vendors create --name "Your Vendor" --slug your-unique-vendor-slug --json`;
 const RUN = `sokosumi --preprod tasks create \\
   --personal \\
   --coworker-id COWORKER_ID --name "Tiny agent demo" \\
@@ -116,11 +114,12 @@ export default async function Token2049Guide() {
           </Step>
 
           <Step number="2" title="Create a private Coworker">
-            <p>Your Coworker is your agent&apos;s Sokosumi identity. Create it under a Vendor you administer, with access to your Personal Workspace.</p>
+            <p>Your Coworker is your agent&apos;s Sokosumi identity. Create a new Vendor for your agent, then give its Coworker access to your Personal Workspace.</p>
             <p><Link href="/token2049/setup#instructions" className={textLink}>Get commands with your IDs</Link>.</p>
             <Details title="Create the Vendor and Coworker">
-              <p>A Vendor owns the Coworker. Choose a Vendor where your role is <code>admin</code>, or create your own.</p>
+              <p>A Vendor owns the Coworker. Start with a new Vendor for this project. Choose a name and a unique slug, then keep the returned Vendor ID.</p>
               <Command>{VENDOR}</Command>
+              <p>If you are resuming setup, reuse your saved Vendor ID. You can also use an existing Vendor where your role is <code>admin</code>.</p>
               <p>Replace <code>VENDOR_ID</code> and choose a unique Coworker name.</p>
               <Command>{REGISTER}</Command>
               <p>Keep the Coworker ID and Vendor ID. Check for <code>GRANTED</code> personal access. If a request has an uncertain outcome, inspect existing records before retrying. Do not register a duplicate.</p>

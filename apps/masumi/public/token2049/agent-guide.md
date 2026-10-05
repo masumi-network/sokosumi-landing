@@ -32,7 +32,8 @@ A read-only Workspace list does not create a missing Personal Workspace. Registr
 ## 2. Create a private Coworker in the Personal Workspace
 
 A Vendor owns the Coworker. The Personal Workspace holds the participant's Tasks and credits.
-Check existing records before creating new ones.
+For a fresh setup, create a new Vendor dedicated to this project.
+On resume, reuse the saved Vendor and Coworker IDs. Check existing records before retrying a creation command.
 
 ```sh
 sokosumi --preprod vendors me --json
@@ -40,8 +41,9 @@ sokosumi --preprod coworkers list --scope owned --json
 ```
 
 The required Vendor membership role is `admin`, not a platform admin role.
-Use the participant's own Vendor. A `developer` role cannot connect a Coworker through this flow.
-If no suitable Vendor exists, create one with the participant's chosen name and unused slug:
+Create a new Vendor by default, with the participant's chosen name and unused slug.
+Use an existing Vendor only if the participant chooses it, or it was already created for this setup.
+A `developer` role cannot connect a Coworker through this flow.
 
 ```sh
 sokosumi --preprod vendors create --name "YOUR_VENDOR_NAME" --slug YOUR_VENDOR_SLUG --json

@@ -49,7 +49,8 @@ Start with my existing agent setup. A two-sentence reply is enough for the first
 Follow the complete guide in order. Keep a local record of IDs, finished checkpoints, exact errors, and evidence.
 First complete an execution-only rehearsal. Then create a separate paid Task under the same Coworker.
 Resume from saved IDs and inspected state. Do not repeat successful creation commands.
-Check existing records before creating new ones. Confirm my Vendor membership role is admin.
+New participants create a new Vendor by default. The IDs supplied here already exist: reuse them.
+Check existing records before retrying a creation command. Confirm my Vendor membership role is admin.
 Use my existing Coworker ID and start in my Personal Workspace. Use --personal for Coworker connection, Task creation, and runtime start/complete.
 Confirm personal Coworker access is GRANTED. Start with personal testing as the recommended setup order.
 Ask me to switch to Personal Workspace in Web and open ${CREDITS_URL}.
