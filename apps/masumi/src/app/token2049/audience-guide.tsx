@@ -45,7 +45,7 @@ export default function AudienceGuide({ guide, children }: { guide: string; chil
             <Link href="/token2049/agent" className={ui.link}>Read the full brief</Link>
           </div>
           <div className="my-10 border-l-2 border-[#B90065] ps-5">
-            <p className="text-sm font-medium text-[#460A23]">After loading the guide, give it a job</p>
+            <p className="text-sm font-medium text-[#171717]">After loading the guide, give it a job</p>
             <blockquote className="mt-3 max-w-xl text-xl leading-8 text-black">Create a Coworker that summarizes a document and links to its sources.</blockquote>
             <p className="mt-3 text-sm leading-6 text-[#454545]">Replace the example with your agent&apos;s purpose. Use eve by default, or name your preferred runtime.</p>
           </div>
@@ -57,7 +57,7 @@ export default function AudienceGuide({ guide, children }: { guide: string; chil
             </div>
             <p className="text-sm leading-6 text-[#454545]">Save SKILL.md in your coding tool&apos;s skill folder.</p>
           </Disclosure>
-          <p className="mt-6 text-sm leading-6 text-[#454545]">Already have a Coworker? <Link href="/token2049/setup#instructions" className={ui.link}>Add your IDs to the brief</Link>.</p>
+          <p className="mt-6 text-sm leading-6 text-[#454545]">Already started? Give your coding agent the saved setup record. It will reuse your Vendor, Coworker, and completed steps.</p>
         </div>
         <aside className="self-start rounded-3xl bg-[#F7E5EE] p-6 sm:p-8" aria-labelledby="human-handoffs">
           <h3 id="human-handoffs" className="text-lg font-medium tracking-tight">Your part in setup</h3>
@@ -66,7 +66,7 @@ export default function AudienceGuide({ guide, children }: { guide: string; chil
             <li><strong className="block font-medium text-black">Run wallet seeding privately</strong>Use your trusted terminal because seeding can print wallet mnemonics. Your coding agent can configure the Coworker key automatically.</li>
             <li><strong className="block font-medium text-black">Fund the test wallet</strong>The agent gives you its public Preprod address and checks the balance after funding.</li>
           </ul>
-          <p className="mt-6 border-t border-[#460A23]/10 pt-5 text-sm leading-6 text-[#454545]">The agent can prepare independent setup work while it waits for you.</p>
+          <p className="mt-6 border-t border-[#171717]/10 pt-5 text-sm leading-6 text-[#454545]">The agent can prepare independent setup work while it waits for you.</p>
         </aside>
       </section>
     </div>

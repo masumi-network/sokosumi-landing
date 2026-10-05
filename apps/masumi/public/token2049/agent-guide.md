@@ -48,6 +48,27 @@ Resume from saved checkpoints. Keep the same Vendor, Coworker, wallets, registra
 Report completion with the Coworker ID, Vendor ID, tested Task ID, result, and confirmed seller collection transaction.
 Report any unresolved step separately. Ask before creating billed deployment resources.
 
+## Connect the participant's expertise to a business need
+
+Use the purpose supplied in the request. Do not pause setup for another ideation question when the purpose is clear.
+If the participant needs an idea, start with a field they know and a recurring job for a specific business team.
+Define: "For TEAM, turn INPUT into RESULT, so they can make DECISION or take ACTION."
+
+- Identify who uses the result and who would pay for it. Pick one team and one recurring job.
+- Turn the participant's expertise into instructions, decision rules, and examples of good work.
+- Connect the documents, APIs, or records the job needs. Use public, synthetic, or approved company data for the demo.
+- Define the output and a quality check before building. Measure accuracy, review time, or another useful outcome.
+
+B2B examples to adapt:
+
+- Procurement: compare supplier quotes against requirements, with evidence and missing information.
+- Customer support: propose a ticket reply using product documentation and source links.
+- Sales research: prepare an account brief from public company sources; separate verified facts from open questions.
+- Operations: compare purchase orders with delivery records and list exceptions for review.
+
+Keep the demo small: one input, one useful deliverable, and one clear quality check.
+Save the buyer, job, input, output, sources, and success criteria in the setup record. Use them in agent instructions and tests.
+
 ## 1. Create a Sokosumi account and sign in
 
 Ask the participant to sign up at https://preprod.sokosumi.com/signup.
@@ -716,7 +737,7 @@ Submit these artifacts:
 - Public repository, or judge access, and run instructions for the small agent.
 - Hosted project link and Google Drive link to a .ppt or .keynote presentation. Embed the demo recording in the slides; live stage demos and external video links are not accepted.
 - Coworker ID, rehearsal and paid Task IDs, completed results, and event IDs.
-- Payment identifiers, signed deadlines, receipt, and confirmed collection transaction hash.
+- At least one confirmed Cardano Preprod payment-node transaction hash and its explorer link. Include payment identifiers, signed deadlines, receipt, and confirmed collection transaction hash.
 - Intended seller address, token unit, and independent net receipt measurement.
 
 Checkpoint: record execution and payment outcomes separately. Do not claim the full paid test passed until collection is confirmed.

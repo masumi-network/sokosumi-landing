@@ -35,6 +35,6 @@ export default function CopyButton({ text, label = "Copy command", dark = false,
     <span role="status" aria-live="polite" className={status === "failed" ? "mt-2 block text-sm" : "sr-only"}>
       {copied ? "Copied to clipboard." : status === "failed" ? "Copy failed. Copy the text below manually." : ""}
     </span>
-    {status === "failed" && <textarea readOnly aria-label={`Text for ${label.toLowerCase()}`} value={text} rows={4} className={`mt-3 block w-full min-w-0 rounded-lg border p-3 font-mono text-sm ${dark ? "border-white/30 bg-[#241B20] text-white" : "border-black/20 bg-white text-black"}`} />}
+    {status === "failed" && <textarea readOnly aria-label={`Text for ${label.toLowerCase()}`} value={text} rows={4} className={`mt-3 block w-full min-w-0 rounded-lg border p-3 font-mono text-sm ${dark ? "border-white/30 bg-[#171717] text-white" : "border-black/20 bg-white text-black"}`} />}
   </div>;
 }

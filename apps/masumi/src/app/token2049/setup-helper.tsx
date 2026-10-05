@@ -14,7 +14,7 @@ export default function SetupHelper() {
   const [errors, setErrors] = useState({ coworker: "", vendor: "" });
   const coworkerInput = useRef<HTMLInputElement>(null);
   const vendorInput = useRef<HTMLInputElement>(null);
-  const inputClass = "mt-2 w-full rounded-lg border border-black/20 bg-white p-3 font-mono text-base sm:text-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#460A23]";
+  const inputClass = "mt-2 w-full rounded-lg border border-black/20 bg-white p-3 font-mono text-base sm:text-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#FA008C]";
   const buttonClass = ui.button;
 
   return (

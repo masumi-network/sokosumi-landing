@@ -4,6 +4,8 @@ import Link from "next/link";
 import GuideNav from "../guide-nav";
 import { Header, Footer } from "@summation/shared";
 import ui from "../guide-ui.module.css";
+import PaymentSculpture from "../payment-sculpture";
+import motion from "../token-motion.module.css";
 
 export const metadata: Metadata = {
   title: "TOKEN2049 submission checklist",
@@ -16,24 +18,30 @@ const linkStyle = ui.link;
 export default function SubmissionGuide() {
   return <><SkipLink /><Header product="masumi" /><main id="guide-main" tabIndex={-1} className="mx-auto max-w-4xl px-6 pb-28 pt-36 sm:px-12 sm:pb-36 sm:pt-48">
     <GuideNav current="/token2049/submission" />
+    <div className={`${motion.hero} ${motion.enter}`}>
+      <div>
     <h1 className="mt-8 max-w-[20ch] text-balance text-4xl font-medium leading-tight tracking-tight sm:text-5xl">Prepare your submission.</h1>
     <p className="mt-7 max-w-2xl text-lg leading-8 text-[#454545]">Show what your agent does, the result it produced, and proof that the seller received payment.</p>
-    <p className="mt-7 inline-block rounded-full bg-[#F7E5EE] px-5 py-3 text-sm leading-6 text-[#460A23]">Submit on BuilderBase by <strong className="font-medium text-black">7 October, 23:59</strong>.</p>
+    <p className="mt-7 inline-block rounded-full bg-[#F7E5EE] px-5 py-3 text-sm leading-6 text-[#171717]">Submit on BuilderBase by <strong className="font-medium text-black">7 October, 23:59</strong>.</p>
 
-    <section aria-labelledby="checklist" className="mt-16 sm:mt-20">
+      </div>
+      <PaymentSculpture compact stage="receipt" />
+    </div>
+
+    <section aria-labelledby="checklist" className={`${motion.reveal} mt-16 sm:mt-20`}>
       <h2 id="checklist" className="text-2xl font-medium tracking-tight">Include these in your submission</h2>
       <ul className="mt-7 grid gap-5 text-base leading-7 text-[#454545] min-[850px]:grid-cols-2">
         <li className={`${ui.surface} p-6`}><strong className="font-medium text-black">Code and run instructions.</strong> Link a public repository, or grant judges access. Explain how to configure and start the worker. Keep keys and wallet secrets out of the repository.</li>
         <li className={`${ui.surface} p-6`}><strong className="font-medium text-black">Agent demo.</strong> Show the input, your agent working, and its actual result. Include your deployed agent URL, Coworker ID, and a sample Task so judges can try it. State its availability date. <Link href="/token2049#step-4" className={linkStyle}>Use the deployment checklist</Link>.</li>
         <li className={`${ui.surface} p-6`}><strong className="font-medium text-black">Completed Task.</strong> Include the Sokosumi Task ID, Coworker ID, completed result, and relevant payment event IDs.</li>
-        <li className={`${ui.surface} p-6`}><strong className="font-medium text-black">Seller payment proof.</strong> Include the receipt, confirmed collection transaction hash, seller address, test USDM token unit, and net amount received.</li>
+        <li className={`${ui.surface} p-6`}><strong className="font-medium text-black">Seller payment proof.</strong> Include at least one confirmed Cardano Preprod payment transaction from your payment node. Provide its transaction hash and explorer link. Include the seller receipt, confirmed collection transaction hash, seller address, test USDM token unit, and net amount received.</li>
         <li className={`${ui.surface} p-6`}><strong className="font-medium text-black">Presentation slides.</strong> Submit a Google Drive link to a .ppt or .keynote file. Embed your demo recording directly in the slides. Live stage demos and external video links are not accepted.</li>
       </ul>
       <p className="mt-6 text-base leading-7 text-[#454545]">Build your submitted project during the official 36-hour hacking period. Existing libraries, frameworks, and developer tools are allowed. Submit to the main track and any relevant partner track.</p>
       <p className="mt-4 text-base leading-7 text-[#454545]"><a href="https://builderbase.com/event/token2049-origins-hackathon#rules" className={linkStyle}>Read the official submission and stage rules</a>. Your slides are locked at the deadline.</p>
     </section>
 
-    <section aria-labelledby="demo" className="mt-16 sm:mt-20">
+    <section aria-labelledby="demo" className={`${motion.reveal} mt-16 sm:mt-20`}>
       <h2 id="demo" className="text-2xl font-medium tracking-tight">Help judges evaluate your agent</h2>
       <p className="mt-5 text-base leading-7 text-[#454545]">Use your demo to make these qualities visible.</p>
       <dl className="mt-8 grid gap-x-8 gap-y-9 text-base leading-7 min-[850px]:grid-cols-2">

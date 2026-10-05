@@ -8,6 +8,10 @@ import AudienceGuide from "./audience-guide";
 import Command, { Commands } from "./command";
 import Details from "./disclosure";
 import { readAgentGuide } from "./guide-source";
+import ui from "./guide-ui.module.css";
+import PaymentSculpture from "./payment-sculpture";
+import ExpertiseMotion from "./expertise-motion";
+import motion from "./token-motion.module.css";
 
 const JOIN_URL = EVENT.joinUrl;
 const ORGANIZATION_ID = EVENT.organizationId;
@@ -62,16 +66,16 @@ export const metadata: Metadata = {
 };
 
 function Step({ number, title, children }: { number: string; title: string; children: React.ReactNode }) {
-  return <section className="scroll-mt-28 border-b border-black/10 py-12 last:border-0 sm:py-16" aria-labelledby={`step-${number}`}>
+  return <section className={`${motion.reveal} scroll-mt-28 border-b border-black/10 py-12 last:border-0 sm:py-16`} aria-labelledby={`step-${number}`}>
     <div className="mb-6 flex items-start gap-4">
-      <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-[#460A23] text-sm font-medium text-white" aria-hidden="true">{number}</span>
+      <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-[#171717] text-sm font-medium text-white" aria-hidden="true">{number}</span>
       <h2 id={`step-${number}`} className="scroll-mt-32 pt-1 text-xl font-medium tracking-tight sm:text-2xl">{title}</h2>
     </div>
     <div className="space-y-5 text-base leading-7 text-[#454545] sm:ps-[52px]">{children}</div>
   </section>;
 }
 
-const textLink = "font-medium text-[#460A23] underline decoration-[#FA008C] underline-offset-4 hover:text-black focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#460A23]";
+const textLink = "font-medium text-[#171717] underline decoration-[#FA008C] underline-offset-4 hover:text-black focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#FA008C]";
 
 export default async function Token2049Guide() {
   const agentGuide = await readAgentGuide();
@@ -79,17 +83,21 @@ export default async function Token2049Guide() {
     <SkipLink /><Header product="masumi" />
     <main id="guide-main" tabIndex={-1} className="mx-auto max-w-6xl px-6 pb-28 pt-36 sm:px-12 sm:pb-36 sm:pt-48">
       <GuideNav current="/token2049" />
-      <section aria-labelledby="hackathon-title" className="mb-8 max-w-3xl sm:mb-10">
-        <p className="mb-6 animate-fade-in-up text-sm font-medium text-[#460A23]">TOKEN2049 Origins Hackathon · 6 to 8 October 2026</p>
+      <section aria-labelledby="hackathon-title" className={`${motion.hero} mb-12 sm:mb-16`}>
+        <div>
+        <p className="mb-6 animate-fade-in-up text-sm font-medium text-[#171717]">TOKEN2049 Origins Hackathon · 6 to 8 October 2026</p>
         <h1 id="hackathon-title" className="animate-fade-in-up animation-delay-100 text-balance text-4xl font-medium leading-[1.12] tracking-[-0.035em] sm:text-5xl">Build an agent that <span className="text-[#B90065]">gets paid.</span></h1>
         <p className="mt-5 animate-fade-in-up animation-delay-200 text-pretty text-lg leading-8 text-[#454545]">Run your agent in Sokosumi and earn 1 test USDM on Cardano Preprod. Test privately, then share it with the event Workspace.</p>
+        </div>
+        <PaymentSculpture />
       </section>
 
       <AudienceGuide guide={agentGuide}>
       <div className="grid gap-10 lg:grid-cols-[200px_1fr] lg:gap-16">
         <nav aria-label="Guide sections" className="self-start lg:sticky lg:top-28">
-          <p className="mb-4 text-sm font-medium">Six steps</p>
+          <p className="mb-4 text-sm font-medium">Your path</p>
           <ol className="flex flex-wrap gap-x-6 gap-y-4 text-sm leading-6 lg:block lg:space-y-5">
+            <li><a href="#expertise" className={textLink}>Start · Your expertise</a></li>
             <li><a href="#step-1" className={textLink}>01 · Account</a></li>
             <li><a href="#step-2" className={textLink}>02 · Coworker</a></li>
             <li><a href="#step-3" className={textLink}>03 · Build your agent</a></li>
@@ -99,6 +107,32 @@ export default async function Token2049Guide() {
           </ol>
         </nav>
         <div className="min-w-0">
+          <section id="expertise" aria-labelledby="expertise-title" className="scroll-mt-32 border-b border-black/10 py-12 sm:py-16">
+            <ExpertiseMotion>
+            <h2 id="expertise-title" className="mb-6 text-xl font-medium tracking-tight sm:text-2xl">Connect your expertise</h2>
+            <div className="space-y-6 text-base leading-7 text-[#454545]">
+              <p>Start with a field you know and a business problem you understand. Build an agent that helps a specific team finish a real job.</p>
+              <blockquote className={`${motion.expertiseQuote} ps-5 text-lg leading-8 text-[#171717]`}>For [team], turn [input] into [useful result], so they can [make a decision or take action].</blockquote>
+              <dl className={`${ui.surface} ${motion.expertiseTips} grid gap-x-8 gap-y-7 bg-white p-6 sm:grid-cols-2 sm:p-8`}>
+                <div><dt className="font-medium text-[#171717]">Choose the team</dt><dd className="mt-2">Think B2B: who uses the result, and who pays for it? Pick one team and a recurring task.</dd></div>
+                <div><dt className="font-medium text-[#171717]">Use what you know</dt><dd className="mt-2">Give the agent your process, decision rules, and examples of good work. A clear method matters more than extra tools.</dd></div>
+                <div><dt className="font-medium text-[#171717]">Connect useful sources</dt><dd className="mt-2">Use documents, APIs, or records that the job needs. Start with public, synthetic, or approved company data. Include source links in the result.</dd></div>
+                <div><dt className="font-medium text-[#171717]">Define a result worth paying for</dt><dd className="mt-2">Agree on the output before building. Test it against a worked example. Measure accuracy, review time, or another useful outcome.</dd></div>
+              </dl>
+              <Details title="B2B ideas you can adapt">
+                <ul className="list-disc space-y-4 ps-5">
+                  <li><strong className="font-medium text-[#171717]">Procurement:</strong> compare supplier quotes against a team&apos;s requirements. Return a comparison with evidence and missing information.</li>
+                  <li><strong className="font-medium text-[#171717]">Customer support:</strong> turn a ticket and product documentation into a proposed reply with source links.</li>
+                  <li><strong className="font-medium text-[#171717]">Sales research:</strong> prepare an account brief from public company sources. Separate verified facts from open questions.</li>
+                  <li><strong className="font-medium text-[#171717]">Operations:</strong> compare purchase orders with delivery records. Return the exceptions a person needs to review.</li>
+                </ul>
+                <p>Keep the demo small: one input, one useful deliverable, and one clear quality check. Show how another team could use the result.</p>
+              </Details>
+              <p>Give this job description to your coding agent along with the <Link href="/token2049/agent" className={textLink}>full setup brief</Link>. Then connect your account and Coworker below.</p>
+            </div>
+            </ExpertiseMotion>
+          </section>
+
           <Step number="1" title="Create your account">
             <p><a href={SIGNUP_URL} className={textLink}>Sign up on Sokosumi Preprod</a>. Use the same account for CLI sign-in. Start in your Personal Workspace.</p>
             <Details title="Install the CLI and sign in">
@@ -109,12 +143,11 @@ export default async function Token2049Guide() {
 
           <Step number="2" title="Create a private Coworker">
             <p>A Coworker connects your agent to Sokosumi. Create it under a new Vendor for this project.</p>
-            <p><Link href="/token2049/setup#instructions" className={textLink}>Get commands with your IDs</Link>.</p>
             <Details title="Create the Vendor and Coworker">
-              <p><strong className="font-semibold text-[#241B20]">You need organization membership before creating a Vendor.</strong> Check your account:</p>
+              <p><strong className="font-semibold text-[#171717]">You need organization membership before creating a Vendor.</strong> Check your account:</p>
               <Command>{`sokosumi --preprod workspaces list --json`}</Command>
               <p>If no organization appears, open Sokosumi&apos;s Workspace switcher and create a demo organization, or join an existing one. Then run the check again. You can join TOKEN2049 later.</p>
-              <p>Organization membership lets you create the Vendor. Continue testing in your <strong className="font-semibold text-[#241B20]">Personal Workspace</strong>.</p>
+              <p>Organization membership lets you create the Vendor. Continue testing in your <strong className="font-semibold text-[#171717]">Personal Workspace</strong>.</p>
               <p>Choose a Vendor name and a unique slug. Keep the returned Vendor ID.</p>
               <Command>{VENDOR}</Command>
               <p>If you are resuming setup, reuse your saved Vendor ID. You can also use an existing Vendor where your role is <code>admin</code>.</p>
@@ -125,7 +158,7 @@ export default async function Token2049Guide() {
             <Details title="Connect your Coworker and configure its worker">
               <p>Replace both IDs to connect your Coworker to your Personal Workspace.</p>
               <Commands>{PERSONAL_CONNECT}</Commands>
-              <p><strong className="font-semibold text-[#241B20]">Select Personal Workspace in Sokosumi&apos;s Workspace switcher to see your personal Coworker.</strong> It will appear in the event Workspace after event access is approved.</p>
+              <p><strong className="font-semibold text-[#171717]">Select Personal Workspace in Sokosumi&apos;s Workspace switcher to see your personal Coworker.</strong> It will appear in the event Workspace after event access is approved.</p>
               <p>Your coding agent can save the runtime key to your project&apos;s ignored <code>.env.local</code> and import it into the CLI vault. Give it the <Link href="/token2049/agent" className={textLink}>full agent brief</Link> and your IDs. Keep keys out of chat, code, logs, and screenshots.</p>
             </Details>
             <Details title="Manual alternative: import the runtime key into the CLI">
@@ -136,7 +169,7 @@ export default async function Token2049Guide() {
           </Step>
 
           <Step number="3" title="Build and connect your agent">
-            <p>Build the agent and a worker that sends it Sokosumi Tasks. Use <strong className="font-semibold text-[#241B20]">Vercel eve</strong> by default, or connect your existing agent.</p>
+            <p>Build the agent and a worker that sends it Sokosumi Tasks. Use <strong className="font-semibold text-[#171717]">Vercel eve</strong> by default, or connect your existing agent.</p>
             <Details title="Build with Vercel eve">
               <p>Use Node.js 24 or newer. Create an eve project, connect your model in its terminal UI, and send a test message.</p>
               <p>Use sfw before npx if Socket Firewall is installed.</p>
@@ -148,7 +181,7 @@ export default async function Token2049Guide() {
               <p><a href="https://github.com/vercel/eve/blob/main/docs/getting-started.mdx" className={textLink}>Follow the eve quickstart</a>. Model access has its own credentials and costs, separate from Workspace credits.</p>
             </Details>
             <Details title="Try a low-cost model with your local agent">
-              <p><strong className="font-semibold text-[#241B20]">GLM-5.3-Flash</strong> is a low-cost option for your demo. Run eve locally and configure its model provider to call Z.ai with model ID <code>glm-5.3-flash</code>.</p>
+              <p><strong className="font-semibold text-[#171717]">GLM-5.3-Flash</strong> is a low-cost option for your demo. Run eve locally and configure its model provider to call Z.ai with model ID <code>glm-5.3-flash</code>.</p>
               <p>Use Z.ai&apos;s general API base URL, <code>https://api.z.ai/api/paas/v4</code>, and keep the API key in server-side secret storage. Test a small reply before connecting the Task worker. Model charges are separate from Workspace credits.</p>
               <p>In this setup, your agent runs locally and Z.ai hosts the model. To run the model itself on your own hardware, follow its self-hosting guide and check the hardware requirements first.</p>
               <ul className="space-y-3">
@@ -188,14 +221,14 @@ export default async function Token2049Guide() {
             <p><a href={CREDITS_URL} className={textLink}>Add test credits</a> to your Personal Workspace before creating a Task.</p>
             <p>First test execution. Then run a paid Task for <strong className="font-medium text-black">1 test USDM</strong>. Workspace credits and escrow test USDM are separate.</p>
             <Details title="Add credits with a Stripe test card" description="Top up your Personal Workspace with test credits.">
-              <p>Billing applies to your active Workspace. <strong className="font-semibold text-[#241B20]">Select Personal Workspace</strong> before opening billing.</p>
-              <p><strong className="font-semibold text-[#241B20]">Use Stripe test mode only.</strong></p>
+              <p>Billing applies to your active Workspace. <strong className="font-semibold text-[#171717]">Select Personal Workspace</strong> before opening billing.</p>
+              <p><strong className="font-semibold text-[#171717]">Use Stripe test mode only.</strong></p>
               <dl className="grid gap-4 rounded-lg bg-[#F7F2F5] p-5 text-sm sm:grid-cols-3">
-                <div><dt className="mb-1 font-semibold text-[#241B20]">Test card number</dt><dd className="font-mono font-semibold text-[#460A23]">4242 4242 4242 4242</dd></div>
-                <div><dt className="mb-1 font-semibold text-[#241B20]">Expiry date</dt><dd>Any future date</dd></div>
-                <div><dt className="mb-1 font-semibold text-[#241B20]">CVC</dt><dd>Any three digits</dd></div>
+                <div><dt className="mb-1 font-semibold text-[#171717]">Test card number</dt><dd className="font-mono font-semibold text-[#171717]">4242 4242 4242 4242</dd></div>
+                <div><dt className="mb-1 font-semibold text-[#171717]">Expiry date</dt><dd>Any future date</dd></div>
+                <div><dt className="mb-1 font-semibold text-[#171717]">CVC</dt><dd>Any three digits</dd></div>
               </dl>
-              <p><strong className="font-semibold text-[#241B20]">Check your Personal Workspace credit balance</strong> before creating a Task.</p>
+              <p><strong className="font-semibold text-[#171717]">Check your Personal Workspace credit balance</strong> before creating a Task.</p>
               <p><a href="https://docs.stripe.com/testing" className={textLink}>Read Stripe&apos;s test instructions</a>.</p>
             </Details>
             <Details title="Run a small Task in your Personal Workspace" description="Your worker picks up a Task and saves the agent's answer.">
@@ -204,7 +237,12 @@ export default async function Token2049Guide() {
               <p>Your CLI login creates the Task. Your worker uses its runtime key to start it and save the exact answer in <code>result.txt</code>.</p>
               <p>If runtime returns <code>grant_required</code>, open Personal Workspace notifications. As the Workspace owner, approve your separate Vendor grant request. Retry the same Task.</p>
             </Details>
-            <Details title="Payment node: check tools and prepare configuration" description="Choose Docker or local PostgreSQL, then configure a dedicated demo database.">
+            <section aria-labelledby="payment-node-title" className={ui.disclosureGroup}>
+              <div className={ui.groupHeading}>
+                <h3 id="payment-node-title" className="text-lg font-medium tracking-tight text-[#171717]">Set up your payment node</h3>
+                <p className="mt-2 text-sm leading-6">Configure MPS, prepare its wallets, and connect it to your worker.</p>
+              </div>
+            <Details title="Check tools and prepare configuration" description="Choose Docker or local PostgreSQL, then configure a dedicated demo database.">
               <p>Run Masumi Payment Service (MPS) on your machine. It handles registration, signed payment terms, and seller collection through Cardano Preprod.</p>
               <p>You need Git, Node.js 24, pnpm 10.30.2, PostgreSQL 13 or later, and a Preprod Blockfrost key. Docker is optional: use it for PostgreSQL, or use a local database. You do not need a full Cardano node.</p>
               <Command>{`git --version`}</Command>
@@ -219,7 +257,7 @@ export default async function Token2049Guide() {
               </ol>
               <p><Link href="/token2049/agent" className={textLink}>Use the full guide for database creation and environment settings</Link>.</p>
             </Details>
-            <Details title="Payment node: install and seed the database" description="Run migrations and create the demo wallets.">
+            <Details title="Install and seed the database" description="Run migrations and create the demo wallets.">
               <p>From the MPS repository, after configuring <code>.env</code>, install locked packages and apply migrations to your dedicated demo database.</p>
               <Command>{`if command -v sfw >/dev/null 2>&1; then
   sfw pnpm install --frozen-lockfile
@@ -231,20 +269,21 @@ fi`}</Command>
               <p>Run seeding yourself in a trusted terminal. It can print wallet mnemonics. Keep that output out of coding-agent chats, logs, and screenshots.</p>
               <Command>{`pnpm run prisma:seed`}</Command>
             </Details>
-            <Details title="Payment node: start and check the service" description="Build the dashboard, start MPS, and verify its health.">
+            <Details title="Start and check the service" description="Build the dashboard, start MPS, and verify its health.">
               <Command>{`pnpm -C frontend run build`}</Command>
               <Command>{`pnpm run dev`}</Command>
               <p>Keep MPS running. Run these checks in a separate terminal:</p>
               <Command>{`curl --fail http://127.0.0.1:3012/api/v1/health`}</Command>
               <Command>{`curl --fail http://127.0.0.1:3012/api-docs -o mps-openapi.json`}</Command>
             </Details>
-            <Details title="Payment node: fund the wallet and register your agent" description="Connect the Preprod registration and scoped payment credentials to your worker.">
+            <Details title="Fund the wallet and register your agent" description="Connect the Preprod registration and scoped payment credentials to your worker.">
               <p>Open <code>http://127.0.0.1:3012/admin/</code>. Check the seeded Preprod V2 source and copy its selling wallet&apos;s public address. Fund that address with test ADA for registration and transaction fees.</p>
               <p>Implement and test your agent API first. A Standard registration needs its <code>apiBaseUrl</code>, which is different from the MPS URL. Open <code>http://127.0.0.1:3012/admin/</code> and register your agent with the Preprod V2 source and <code>{'{"pricingType":"Dynamic"}'}</code>. Wait for <code>RegistrationConfirmed</code>.</p>
               <p>Configure your worker with the returned Masumi identifier and payment source. Include the contract address, policy ID, seller verification key, and seller address. Use a separate MPS key with Preprod and selling-wallet access. MPS uses the <code>token</code> header; this key is different from your Coworker key.</p>
               <p>Keep the worker and payment node on the same machine for the first test. A deployed worker needs authenticated HTTPS access to MPS. Its <code>127.0.0.1</code> points to the deployed machine, not your laptop.</p>
               <p>Seeding does not fund wallets or register your agent. Keep MPS and the database running until collection confirms. <Link href="/token2049/agent" className={textLink}>Read the full payment-node setup</Link>.</p>
             </Details>
+            </section>
             <Details title="Run the paid Task and verify seller payment" description="A confirmed collection transaction proves the seller received test USDM.">
               <p>Use <code>Dynamic</code> pricing for your Masumi registration:</p>
               <Command configuration>{PRICING}</Command>
@@ -259,13 +298,13 @@ fi`}</Command>
               <p><a href="https://www.masumi.network/dev/masumi/documentation" className={textLink}>Open Masumi developer documentation</a> or <Link href="/token2049/agent" className={textLink}>read the full implementation guide</Link>.</p>
             </Details>
             <Details title="Deploy so others can try your agent" description="Keep your agent, worker, and payment node online for later tests.">
-              <p><strong className="font-semibold text-[#241B20]">Recommended final setup:</strong> eve on Vercel, with the worker, MPS, and PostgreSQL hosted on Railway. Keep the full path online so teams and judges can create Tasks after you leave.</p>
+              <p><strong className="font-semibold text-[#171717]">Recommended final setup:</strong> eve on Vercel, with the worker, MPS, and PostgreSQL hosted on Railway. Keep the full path online so teams and judges can create Tasks after you leave.</p>
               <ol className="list-decimal space-y-4 ps-5">
-                <li><strong className="font-semibold text-[#241B20]">Deploy eve.</strong> Follow the Vercel guide. Configure model access and route authentication. Save the deployed URL and test a real agent turn.</li>
-                <li><strong className="font-semibold text-[#241B20]">Deploy MPS and its database.</strong> Follow the MPS Docker guide. Use a private PostgreSQL connection and runtime secrets. When moving an existing node, stop its worker and MPS before the final database copy. Restore that copy with the original encryption key before starting the hosted node. Keep the old node stopped.</li>
-                <li><strong className="font-semibold text-[#241B20]">Deploy the worker.</strong> Create a persistent Railway service from your repository. Set its start command to your worker entry point. Configure hosted URLs and scoped credentials. Keep one executor active per Coworker.</li>
-                <li><strong className="font-semibold text-[#241B20]">Keep work safe across restarts.</strong> Turn off Railway Serverless for the worker and MPS. Configure restart policies. Store Task and payment progress in persistent storage. Stop the local worker before switching execution to the hosted worker.</li>
-                <li><strong className="font-semibold text-[#241B20]">Test with your laptop offline.</strong> Create a fresh Task in Sokosumi from another device. Check the answer, then verify seller collection for the paid test. Restart the hosted worker and check that it does not repeat a payment.</li>
+                <li><strong className="font-semibold text-[#171717]">Deploy eve.</strong> Follow the Vercel guide. Configure model access and route authentication. Save the deployed URL and test a real agent turn.</li>
+                <li><strong className="font-semibold text-[#171717]">Deploy MPS and its database.</strong> Follow the MPS Docker guide. Use a private PostgreSQL connection and runtime secrets. When moving an existing node, stop its worker and MPS before the final database copy. Restore that copy with the original encryption key before starting the hosted node. Keep the old node stopped.</li>
+                <li><strong className="font-semibold text-[#171717]">Deploy the worker.</strong> Create a persistent Railway service from your repository. Set its start command to your worker entry point. Configure hosted URLs and scoped credentials. Keep one executor active per Coworker.</li>
+                <li><strong className="font-semibold text-[#171717]">Keep work safe across restarts.</strong> Turn off Railway Serverless for the worker and MPS. Configure restart policies. Store Task and payment progress in persistent storage. Stop the local worker before switching execution to the hosted worker.</li>
+                <li><strong className="font-semibold text-[#171717]">Test with your laptop offline.</strong> Create a fresh Task in Sokosumi from another device. Check the answer, then verify seller collection for the paid test. Restart the hosted worker and check that it does not repeat a payment.</li>
               </ol>
               <p>A local payment node is useful for setup. For later testing, host it too or use an available team node. A laptop tunnel still depends on your laptop.</p>
               <ul className="space-y-3">
@@ -279,7 +318,7 @@ fi`}</Command>
           </Step>
 
           <Step number="5" title="Request event approval when ready">
-            <p><strong className="font-semibold text-[#241B20]">Let other teams try your agent.</strong> After approval, teams in the TOKEN2049 Workspace can find your Coworker and create Tasks for it. Keep your worker running so it can deliver results.</p>
+            <p><strong className="font-semibold text-[#171717]">Let other teams try your agent.</strong> After approval, teams in the TOKEN2049 Workspace can find your Coworker and create Tasks for it. Keep your worker running so it can deliver results.</p>
             <p><a href={JOIN_URL} className={textLink}>Join the TOKEN2049 Workspace</a> with the same account. Request access for your existing Coworker.</p>
             <Details title="Request access and check the approval notice">
               <p>Replace both IDs. Here, <code>--workspace-id</code> takes the event organization ID.</p>
@@ -293,7 +332,7 @@ fi`}</Command>
           </Step>
 
           <Step number="6" title="Submit your code and proof">
-            <p>Include your code, agent demo, completed Task, and seller receipt.</p>
+            <p>Include your code, agent demo, completed Task, seller receipt, and a Cardano Preprod payment transaction with its explorer link.</p>
             <p><Link href="/token2049/submission" className={textLink}>Open the submission checklist</Link>. Submit on BuilderBase by <strong className="font-medium text-black">7 October, 23:59</strong>.</p>
           </Step>
         </div>

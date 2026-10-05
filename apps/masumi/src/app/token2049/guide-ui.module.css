@@ -1,6 +1,7 @@
 /* Shared surfaces and interaction states for the participant guide. */
 .surface,
-.disclosure {
+.disclosure,
+.disclosureGroup {
   box-shadow: 0 0 0 1px oklch(0 0 0 / 0.06),
     0 1px 2px -1px oklch(0 0 0 / 0.06),
     0 2px 4px oklch(0 0 0 / 0.04);
@@ -15,19 +16,19 @@
   padding: 20px;
   border-radius: 20px;
   cursor: pointer;
-  color: #460a23;
+  color: #171717;
   font-weight: 500;
   list-style: none;
-  transition: color 150ms ease-out;
+  transition: color 150ms ease-out, background-color 150ms ease-out;
 }
 .summary::-webkit-details-marker { display: none; }
 .summary:focus-visible,
 .button:focus-visible,
-.link:focus-visible { outline: 2px solid #460a23; outline-offset: 4px; }
-.chevron { flex-shrink: 0; transition: rotate 150ms ease-out; }
+.link:focus-visible { outline: 2px solid #fa008c; outline-offset: 4px; }
+.chevron { flex-shrink: 0; width: 30px; height: 30px; padding: 6px; border-radius: 50%; background: rgb(0 0 0 / 0.035); transition: rotate 150ms ease-out; }
 .disclosure[open] > .summary .chevron { rotate: 180deg; }
-.disclosure[open] > .summary { border-radius: 20px 20px 0 0; }
-.disclosureBody { padding: 4px 20px 24px; }
+.disclosure[open] > .summary { border-radius: 20px 20px 0 0; background: #fbf8fa; }
+.disclosureBody { padding: 20px 20px 28px; border-top: 1px solid rgb(0 0 0 / 0.06); }
 .disclosureBody p code { overflow-wrap: anywhere; }
 .button {
   display: inline-flex;
@@ -51,10 +52,11 @@
   display: inline-flex;
   align-items: center;
   min-height: 44px;
-  color: #460a23;
+  color: #171717;
   font-weight: 500;
   text-decoration: underline;
   text-underline-offset: 4px;
+  text-decoration-color: #fa008c;
   transition: color 150ms ease-out;
 }
 .input { transition: border-color 150ms ease-out; }
@@ -106,8 +108,8 @@
   transition: color 150ms ease-out;
 }
 .audienceTab[aria-selected="true"] { color: white; }
-.audienceTab:focus-visible { outline: 2px solid #460a23; outline-offset: 4px; }
-.guidePanel:focus-visible { outline: 2px solid #460a23; outline-offset: 8px; }
+.audienceTab:focus-visible { outline: 2px solid #fa008c; outline-offset: 4px; }
+.guidePanel:focus-visible { outline: 2px solid #fa008c; outline-offset: 8px; }
 .textHidden { opacity: 0; }
 .textVisible { opacity: 1; }
 .copyText { transition: opacity 150ms ease-out; }
@@ -130,15 +132,15 @@
 
 @media (hover: hover) {
   .summary:hover { color: #b90065; }
-  .button:hover { background: #241b20; }
+  .button:hover { background: #171717; }
   .dark:hover { background: rgb(255 255 255 / 0.14); }
   .link:hover { color: #b90065; }
-  .input:hover { border-color: #460a23; }
+  .input:hover { border-color: #171717; }
   .audienceTab:hover:not([aria-selected="true"]) { color: black; }
 }
 
 .input[aria-invalid="true"] { border-color: #991b1b; }
-.skipLink { position: fixed; inset: 12px auto auto 12px; z-index: 100; translate: 0 -150%; background: #460a23; color: white; padding: 12px 20px; border-radius: 8px; }
+.skipLink { position: fixed; inset: 12px auto auto 12px; z-index: 100; translate: 0 -150%; background: #171717; color: white; padding: 12px 20px; border-radius: 8px; }
 .skipLink:focus { translate: 0 0; outline: 2px solid white; outline-offset: 2px; }
 
 /* Enter only after a deliberate audience change. Keep the first render still. */
@@ -171,3 +173,26 @@
   .button { border: 1px solid ButtonText; }
   .link[aria-current="page"] { outline: 1px solid LinkText; outline-offset: -2px; }
 }
+
+/* Related setup steps share one surface and use dividers for structure. */
+.disclosureGroup { min-width: 0; border-radius: 20px; background: white; }
+.groupHeading { padding: 24px 20px; }
+.disclosureGroup > .disclosure { border-radius: 0; box-shadow: none; border-top: 1px solid rgb(0 0 0 / 0.08); }
+.disclosureGroup > .disclosure > .summary { border-radius: 0; }
+.disclosureGroup > .disclosure:last-child,
+.disclosureGroup > .disclosure:last-child:not([open]) > .summary { border-radius: 0 0 20px 20px; }
+.disclosureGroup > .disclosure > .summary:focus-visible { outline-offset: -4px; }
+@media (min-width: 640px) {
+  .summary { padding: 24px; }
+  .disclosureBody { padding: 24px 24px 32px; }
+  .groupHeading { padding: 28px 24px; }
+}
+@media (hover: hover) {
+  .summary:hover { background: #fbf8fa; }
+}
+
+.pageLink { border-radius: 999px; transition: color 150ms ease-out, background-color 150ms ease-out; }
+.pageLink[aria-current="page"] { background: #171717; color: white; }
+@media (hover: hover) { .pageLink:not([aria-current="page"]):hover { background: #f7e5ee; } }
+@media (prefers-reduced-motion: reduce) { .pageLink { transition: none; } }
+@media (forced-colors: active) { .pageLink[aria-current="page"] { background: Highlight; color: HighlightText; forced-color-adjust: none; } }
