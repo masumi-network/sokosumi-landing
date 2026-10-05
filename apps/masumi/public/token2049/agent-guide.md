@@ -55,13 +55,13 @@ Report any unresolved step separately. Ask before creating billed deployment res
 ## Connect the participant's expertise to a business need
 
 Use the purpose supplied in the request. Do not pause setup for another ideation question when the purpose is clear.
-If the participant needs an idea, start with a field they know and a recurring job for a specific business team.
+If the participant needs an idea, start with a field they know and a business team that needs their expertise. A Coworker can cover an area of work or specialize in a particular job; choose one small Task for the demo.
 Define: "For TEAM, turn INPUT into RESULT, so they can make DECISION or take ACTION."
 
-- Identify who uses the result and who would pay for it. Pick one team and one recurring job.
+- Identify the team, its area of work, and who would pay for the results. Define the Coworker's scope separately from the demo Task.
 - Turn the participant's expertise into instructions, decision rules, and examples of good work.
 - Connect the documents, APIs, or records the job needs. Use public, synthetic, or approved company data for the demo.
-- Define the output and a quality check before building. Measure accuracy, review time, or another useful outcome.
+- Keep useful outputs in mind as goals develop. Use examples to check accuracy, review time, or another outcome that helps the team.
 
 Examples: compare supplier quotes, draft a sourced support reply, research an account, or reconcile delivery records.
 
@@ -239,7 +239,7 @@ Record whether key import succeeded. Do not put keys in logs, source, Task outpu
 
 ### Start with Vercel eve
 
-Use eve for a new agent. An existing framework can also work with the same Coworker and paid flow.
+Use eve for a new agent. An existing framework can also work with the same Coworker and paid flow. Reference: https://github.com/masumi-network/demo-agent-token2049 (will be made public when the hackathon starts).
 Follow the current quickstart: https://github.com/vercel/eve/blob/main/docs/getting-started.mdx.
 Use Node.js 24 or newer and a model connection. Run initialization interactively in a trusted terminal.
 If Socket Firewall is installed, prefix the initialization command with `sfw`.

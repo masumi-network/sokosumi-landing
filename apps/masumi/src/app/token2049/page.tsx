@@ -114,20 +114,11 @@ export default async function Token2049Guide() {
               <p>Start with a field you know and a business problem you understand. Build an agent that helps a specific team finish a real job.</p>
               <blockquote className={`${motion.expertiseQuote} ps-5 text-lg leading-8 text-[#171717]`}>For [team], turn [input] into [useful result], so they can [make a decision or take action].</blockquote>
               <dl className={`${ui.surface} ${motion.expertiseTips} grid gap-x-8 gap-y-7 bg-white p-6 sm:grid-cols-2 sm:p-8`}>
-                <div><dt className="font-medium text-[#171717]">Choose the team</dt><dd className="mt-2">Think B2B: who uses the result, and who pays for it? Pick one team and a recurring task.</dd></div>
+                <div><dt className="font-medium text-[#171717]">Choose the team</dt><dd className="mt-2">Think B2B: which team needs your expertise, and who pays for it? Your Coworker can cover an area of work or specialize in a particular job. Start with one small Task to test it.</dd></div>
                 <div><dt className="font-medium text-[#171717]">Use what you know</dt><dd className="mt-2">Give the agent your process, decision rules, and examples of good work. A clear method matters more than extra tools.</dd></div>
                 <div><dt className="font-medium text-[#171717]">Connect useful sources</dt><dd className="mt-2">Use documents, APIs, or records that the job needs. Start with public, synthetic, or approved company data. Include source links in the result.</dd></div>
-                <div><dt className="font-medium text-[#171717]">Define a result worth paying for</dt><dd className="mt-2">Agree on the output before building. Test it against a worked example. Measure accuracy, review time, or another useful outcome.</dd></div>
+                <div><dt className="font-medium text-[#171717]">Keep useful outputs in mind</dt><dd className="mt-2">Your goals can develop as you build. Keep asking what would help the team. Use examples to check accuracy, review time, or another useful outcome.</dd></div>
               </dl>
-              <Details title="B2B ideas you can adapt">
-                <ul className="list-disc space-y-4 ps-5">
-                  <li><strong className="font-medium text-[#171717]">Procurement:</strong> compare supplier quotes against a team&apos;s requirements. Return a comparison with evidence and missing information.</li>
-                  <li><strong className="font-medium text-[#171717]">Customer support:</strong> turn a ticket and product documentation into a proposed reply with source links.</li>
-                  <li><strong className="font-medium text-[#171717]">Sales research:</strong> prepare an account brief from public company sources. Separate verified facts from open questions.</li>
-                  <li><strong className="font-medium text-[#171717]">Operations:</strong> compare purchase orders with delivery records. Return the exceptions a person needs to review.</li>
-                </ul>
-                <p>Keep the demo small: one input, one useful deliverable, and one clear quality check. Show how another team could use the result.</p>
-              </Details>
               <p>Give this job description to your coding agent along with the <Link href="/token2049/agent" className={textLink}>full setup brief</Link>. Then connect your account and Coworker below.</p>
               <Details title="Other ways to build" description="Explore buyer agents, paid APIs, and agent-to-agent infrastructure.">
                 <p>This guide focuses on the in-between role: connect a Coworker to Sokosumi and build agent-to-agent flows with Masumi. You can also build for either side of the market.</p>
@@ -185,6 +176,7 @@ export default async function Token2049Guide() {
 
           <Step number="3" title="Build and connect your agent">
             <p>Build the agent and a worker that sends it Sokosumi Tasks. Use <strong className="font-semibold text-[#171717]">Vercel eve</strong> by default, or connect your existing agent.</p>
+            <p>For a reference implementation, see the <a href="https://github.com/masumi-network/demo-agent-token2049" className={textLink}>TOKEN2049 demo agent repository</a>. It will be made public when the hackathon starts.</p>
             <Details title="Build with Vercel eve">
               <p>Use Node.js 24 or newer. Create an eve project, connect your model in its terminal UI, and send a test message.</p>
               <p>Use sfw before npx if Socket Firewall is installed.</p>
