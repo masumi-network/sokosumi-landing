@@ -202,3 +202,32 @@ if (args[1] === "coworkers") {
     await fs.rm(dir, { recursive: true, force: true });
   }
 });
+
+
+test("documented MPS environment setup preserves existing secrets and creates a private file", async () => {
+  const fs = await import("node:fs/promises");
+  const { spawnSync } = await import("node:child_process");
+  const { tmpdir } = await import("node:os");
+  const { join } = await import("node:path");
+  const { parseGuide } = await import("../src/app/token2049/guide-format.ts");
+  const markdown = await fs.readFile(new URL("../public/token2049/agent-guide.md", import.meta.url), "utf8");
+  const command = parseGuide(markdown).find(block => block.kind === "code" && block.text.includes("cp .env.example .env")).text;
+  const dir = await fs.mkdtemp(join(tmpdir(), "token-mps-env-"));
+  try {
+    await fs.writeFile(join(dir, ".env.example"), "ENCRYPTION_KEY=example\n");
+    const run = () => spawnSync("sh", ["-c", command], { cwd: dir });
+    assert.equal(run().status, 0);
+    assert.equal(await fs.readFile(join(dir, ".env"), "utf8"), "ENCRYPTION_KEY=example\n");
+    assert.equal((await fs.stat(join(dir, ".env"))).mode & 0o777, 0o600);
+    await fs.writeFile(join(dir, ".env"), "ENCRYPTION_KEY=preserved\n");
+    assert.equal(run().status, 0);
+    assert.equal(await fs.readFile(join(dir, ".env"), "utf8"), "ENCRYPTION_KEY=preserved\n");
+    await fs.unlink(join(dir, ".env"));
+    await fs.symlink("missing-secret-file", join(dir, ".env"));
+    assert.equal(run().status, 0);
+    assert.equal(await fs.readlink(join(dir, ".env")), "missing-secret-file");
+    await assert.rejects(fs.stat(join(dir, "missing-secret-file")), { code: "ENOENT" });
+  } finally {
+    await fs.rm(dir, { recursive: true, force: true });
+  }
+});

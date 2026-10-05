@@ -22,7 +22,7 @@ export default function SubmissionGuide() {
       <div>
     <h1 className="mt-8 max-w-[20ch] text-balance text-4xl font-medium leading-tight tracking-tight sm:text-5xl">Prepare your submission.</h1>
     <p className="mt-7 max-w-2xl text-lg leading-8 text-[#454545]">Show what your agent does, the result it produced, and proof that the seller received payment.</p>
-    <p className="mt-7 inline-block rounded-full bg-[#F7E5EE] px-5 py-3 text-sm leading-6 text-[#171717]">Submit on <a href="https://builderbase.com/event/token2049-origins-hackathon" className={linkStyle}>BuilderBase</a> by <strong className="font-medium text-black">7 October, 23:59</strong>.</p>
+    <p className="mt-7 inline-block rounded-full bg-[#F7E5EE] px-5 py-3 text-sm leading-6 text-[#171717]"><a href="https://builderbase.com/event/token2049-origins-hackathon#rules" className={linkStyle}>View the submission deadline on BuilderBase</a>.</p>
 
       </div>
       <PaymentSculpture compact stage="receipt" />

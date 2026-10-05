@@ -20,7 +20,7 @@ When the agent is ready for event approval, join the event and connect the same 
 After loading this guide, the participant can ask: "Create a Coworker for X."
 Treat X as the agent's purpose. Choose a clear Coworker name and a small test input for that purpose.
 Ask one question only if X does not describe a usable purpose. For an explicit background demo request, choose reversible defaults instead of asking preference questions; required sign-in, funding, and approval still need human action.
-For a fresh setup, create a new Vendor and use Vercel eve unless the participant overrides those choices.
+For an account without a Vendor, create one. Otherwise reuse its administered Vendor. Use Vercel eve unless the participant overrides it.
 Complete the personal execution and paid Task tests below. Coworker registration alone does not complete this request.
 
 ### Run independent setup work in parallel
@@ -41,7 +41,7 @@ Wait for confirmed balances before registration or a paid Task. Follow each paym
 
 ### Pause only for the human steps
 
-Give the participant the exact next action when sign-in, model access, or funding needs their input.
+Give the participant the exact next action when sign-in, model access, a Blockfrost project key, or funding needs their input.
 Configure the Coworker runtime key automatically with the private-file command in step 2.
 Seed the dedicated Preprod database automatically after configuration. Suppress seed output and check the exit status; never capture mnemonics in the coding-agent transcript.
 For funding, give the actual public wallet address, Cardano Preprod network, required asset, and wallet purpose.
@@ -72,27 +72,26 @@ Save the buyer, job, input, output, sources, and success criteria in the setup r
 
 Ask the participant to sign up at https://preprod.sokosumi.com/signup.
 Use Node.js 24 and the latest Sokosumi CLI. Sign in with the same account.
+When switching accounts, clear shell credentials first. They override saved OAuth credentials.
 
+```sh
+unset SOKOSUMI_API_KEY SOKOSUMI_AUTH_TOKEN
+```
 ```sh
 npm i -g @masumi_network/sokosumi
 ```
-
 ```sh
 sokosumi --version
 ```
-
 ```sh
 sokosumi --preprod auth login
 ```
-
 ```sh
 sokosumi --preprod auth whoami --json
 ```
-
 ```sh
 sokosumi skills
 ```
-
 ```sh
 sokosumi --preprod workspaces list --personal --json
 ```
@@ -108,7 +107,7 @@ A read-only Workspace list does not create a missing Personal Workspace. Registr
 ## 2. Create a private Coworker in the Personal Workspace
 
 A Vendor owns the Coworker. The Personal Workspace holds the participant's Tasks and credits.
-For a fresh setup, create a new Vendor dedicated to this project.
+Create a Vendor if the account has none. Otherwise reuse the Vendor it already administers.
 On resume, reuse the saved Vendor and Coworker IDs. Check existing records before retrying a creation command.
 
 ### Check organization membership before creating a Vendor
@@ -135,20 +134,19 @@ If creation returns "Creating a vendor requires an organization workspace. Creat
 ```sh
 sokosumi --preprod vendors me --json
 ```
-
 ```sh
 sokosumi --preprod coworkers list --scope owned --json
 ```
 
 The required Vendor membership role is `admin`, not a platform admin role.
-Create a new Vendor by default, with the participant's chosen name and unused slug.
-Use an existing Vendor only if the participant chooses it, or it was already created for this setup.
+Each account can create one self-service Vendor. For an account without one, create it with a chosen name and unused slug.
+If the account already administers a Vendor, reuse it for this project. For another Vendor, ask a platform admin.
+If creation returns a limit conflict, inspect `vendors me` and reuse the existing ID instead of retrying creation.
 A `developer` role cannot connect a Coworker through this flow.
 
 ```sh
 sokosumi --preprod vendors create --name "YOUR_VENDOR_NAME" --slug YOUR_VENDOR_SLUG --json
 ```
-
 ```sh
 sokosumi --preprod coworkers register \
   --vendor-id VENDOR_ID --name "YOUR_COWORKER_NAME" \
@@ -164,7 +162,6 @@ When resuming, use the existing Coworker ID instead of registering again:
 sokosumi --preprod coworkers connect COWORKER_ID \
   --vendor-id VENDOR_ID --personal --json
 ```
-
 ```sh
 sokosumi --preprod workspaces list --personal --json
 ```
@@ -253,7 +250,6 @@ To return after initialization:
 ```sh
 cd my-agent
 ```
-
 ```sh
 npm run dev
 ```
@@ -337,6 +333,8 @@ See https://docs.stripe.com/testing. Check the Personal Workspace credit balance
 Workspace credits are separate from test USDM in the payment escrow.
 
 First run: execution only. This rehearsal does not pay the seller.
+Pause the automatic worker and wait for active work to finish before creating this manual rehearsal Task.
+Only the manual commands below may execute this Task. Restart the worker after the completion checkpoint.
 
 ```sh
 sokosumi --preprod tasks create --personal \
@@ -344,7 +342,6 @@ sokosumi --preprod tasks create --personal \
   --description "Write a two-sentence welcome for the hackathon." \
   --status READY --json
 ```
-
 ```sh
 sokosumi --preprod runtime start TASK_ID --coworker-id COWORKER_ID --personal --json
 ```
@@ -377,11 +374,9 @@ Check tools before creating resources:
 ```sh
 git --version
 ```
-
 ```sh
 node --version
 ```
-
 ```sh
 pnpm --version
 ```
@@ -391,7 +386,6 @@ Only for the Docker database option:
 ```sh
 docker --version
 ```
-
 ```sh
 docker info
 ```
@@ -411,7 +405,9 @@ git rev-parse HEAD
 ```
 
 ```sh
-cp .env.example .env
+if [ ! -e .env ] && [ ! -L .env ]; then
+  (umask 077; cp .env.example .env)
+fi
 ```
 
 ```sh
@@ -447,18 +443,22 @@ For local PostgreSQL, create a separate database and database user instead. Dock
 
 ### Configure and seed MPS
 
-Edit MPS `.env` in a trusted editor. Required configuration:
+Configure MPS `.env` privately. Preserve existing secrets on resume. Required configuration:
 
 - `DATABASE_URL`: for the Docker option, `postgresql://mps:URL_ENCODED_PASSWORD@127.0.0.1:5433/mps_hackathon?schema=public`. Use the same password as `.postgres.env`, percent-encoded for a URL. For local PostgreSQL, use its own host, port, and dedicated database.
-- `ENCRYPTION_KEY`: a new random secret with at least 32 characters. Keep it with the database; changing it prevents decryption of saved wallets.
+- `ENCRYPTION_KEY`: for a new node, generate a random secret with at least 32 characters. Reuse the existing key on resume. Keep it with the database; changing it prevents decryption of saved wallets.
 - `ADMIN_KEY`: a separate random secret with at least 32 characters. Replace the public example value.
-- `BLOCKFROST_API_KEY_PREPROD`: a Blockfrost project key for Cardano Preprod, from https://blockfrost.io/.
+- `BLOCKFROST_API_KEY_PREPROD`: reuse an authorized key, or ask the participant to create a free project at https://blockfrost.io/ and select Cardano Preprod. Save its API key privately in MPS `.env`; never request it in chat. Verify it before seeding or registration.
 - `PORT=3012`, `SEED_ONLY_IF_EMPTY=true`, `AUTO_WITHDRAW_PAYMENTS=true`.
 
 Leave `BLOCKFROST_API_KEY_MAINNET` and all Mainnet wallet fields empty.
 Leave `SEED_V1_LEGACY` empty. The default seed creates a `Web3CardanoV2` Preprod payment source.
 For a new demo, leave purchasing and selling mnemonic fields empty to generate dedicated test wallets.
-Leave collection address overrides empty so seller payout uses the selling wallet.
+Remove `COLLECTION_WALLET_V2_PREPROD_ADDRESS` from `.env` before seeding. Also unset it in the process environment.
+An empty string is not the same as an unset override. Keep the legacy collection override empty or unset.
+After seeding, inspect the selling wallet without secrets. Its `collectionAddress` must be `null` for default seller payout.
+For an existing empty-string value, use the wallet update API with `newCollectionAddress: null`, then verify the wallet again.
+Preserve existing wallets and request fresh signed terms after correcting the address. Do not reseed to repair it.
 Do not enter example contract addresses or policy IDs as custom overrides.
 
 Install the repository's locked packages. If Socket Firewall is installed, use it.

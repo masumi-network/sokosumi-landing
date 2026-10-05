@@ -139,6 +139,8 @@ export default async function Token2049Guide() {
             <Details title="Check your setup before building" description="Verify the account, existing records, and interfaces before creating anything.">
               <p>Ask your coding agent to verify CLI sign-in, configured credentials, installed commands, and live API schemas first. Keep secret values out of chat. Reuse existing records when resuming.</p>
               <p>Reusing a working agent? Keep its model provider, endpoint, and configuration. Test one small reply before connecting Sokosumi.</p>
+              <p>When switching CLI accounts, clear shell credentials first. They override saved OAuth credentials.</p>
+              <Command>{`unset SOKOSUMI_API_KEY SOKOSUMI_AUTH_TOKEN`}</Command>
               <p>Prove model execution, then a Coworker Task, then seller payment. Each checkpoint needs its own evidence. The <Link href="/token2049/agent" className={textLink}>full agent brief</Link> includes recovery and failure checks.</p>
             </Details>
             <Details title="Install the CLI and sign in">
@@ -148,13 +150,14 @@ export default async function Token2049Guide() {
           </Step>
 
           <Step number="2" title="Create a private Coworker">
-            <p>A Coworker connects your agent to Sokosumi. Create it under a new Vendor for this project.</p>
+            <p>A Coworker connects your agent to Sokosumi. Create it under your Vendor. New accounts create a Vendor first.</p>
             <Details title="Create the Vendor and Coworker">
               <p><strong className="font-semibold text-[#171717]">You need organization membership before creating a Vendor.</strong> Check your account:</p>
               <Command>{`sokosumi --preprod workspaces list --json`}</Command>
               <p>If no organization appears, open Sokosumi&apos;s Workspace switcher and create a demo organization, or join an existing one. Then run the check again. You can join TOKEN2049 later.</p>
               <p>Organization membership lets you create the Vendor. Continue testing in your <strong className="font-semibold text-[#171717]">Personal Workspace</strong>.</p>
-              <p>Choose a Vendor name and a unique slug. Keep the returned Vendor ID.</p>
+              <p>Each account can create one self-service Vendor. If you already administer one, reuse its ID. Ask a platform admin if you need another Vendor.</p>
+              <p>For your first Vendor, choose a name and a unique slug. Keep the returned Vendor ID.</p>
               <Command>{VENDOR}</Command>
               <p>If you are resuming setup, reuse your saved Vendor ID. You can also use an existing Vendor where your role is <code>admin</code>.</p>
               <p>Replace <code>VENDOR_ID</code> and choose a unique Coworker name.</p>
@@ -238,10 +241,12 @@ export default async function Token2049Guide() {
               <p><strong className="font-semibold text-[#171717]">Check your Personal Workspace credit balance</strong> before creating a Task.</p>
               <p><a href="https://docs.stripe.com/testing" className={textLink}>Read Stripe&apos;s test instructions</a>.</p>
             </Details>
-            <Details title="Run a small Task in your Personal Workspace" description="Your worker picks up a Task and saves the agent's answer.">
-              <p>This first test checks execution without payment. Replace <code>COWORKER_ID</code>, then use the returned <code>TASK_ID</code>.</p>
-              <Commands>{RUN}</Commands>
-              <p>Your CLI login creates the Task. Your worker uses its runtime key to start it and save the exact answer in <code>result.txt</code>.</p>
+            <Details title="Run a small Task in your Personal Workspace" description="Pause the worker for this manual execution test.">
+              <p>Pause your automatic worker and wait for active work to finish. This first test uses manual commands and checks execution without payment. Replace <code>COWORKER_ID</code>, then use the returned <code>TASK_ID</code>.</p>
+              <Commands>{RUN.slice(0, 2)}</Commands>
+              <p>Once the Task is <code>RUNNING</code>, run the agent with its input. Save the exact UTF-8 answer in <code>result.txt</code>, then complete the Task:</p>
+              <Command>{RUN[2]}</Command>
+              <p>Verify the Task is <code>COMPLETED</code>, then restart the automatic worker.</p>
               <p>If runtime returns <code>grant_required</code>, open Personal Workspace notifications. As the Workspace owner, approve your separate Vendor grant request. Retry the same Task.</p>
             </Details>
             <section aria-labelledby="payment-node-title" className={ui.disclosureGroup}>
@@ -251,7 +256,7 @@ export default async function Token2049Guide() {
               </div>
             <Details title="Check tools and prepare configuration" description="Choose Docker or local PostgreSQL, then configure a dedicated demo database.">
               <p>Run Masumi Payment Service (MPS) on your machine. It handles registration, signed payment terms, and seller collection through Cardano Preprod.</p>
-              <p>You need Git, Node.js 24, pnpm 10.30.2, PostgreSQL 13 or later, and a Preprod Blockfrost key. Docker is optional: use it for PostgreSQL, or use a local database. You do not need a full Cardano node.</p>
+              <p>You need Git, Node.js 24, pnpm 10.30.2, PostgreSQL 13 or later, and a Preprod Blockfrost key. <a href="https://blockfrost.io/" className={textLink}>Create a free Blockfrost project</a>, select Cardano Preprod, and save its API key privately as <code>BLOCKFROST_API_KEY_PREPROD</code> in MPS&apos;s <code>.env</code>. Docker is optional: use it for PostgreSQL, or use a local database. You do not need a full Cardano node.</p>
               <Command>{`git --version`}</Command>
               <Command>{`node --version`}</Command>
               <Command>{`pnpm --version`}</Command>
@@ -260,7 +265,7 @@ export default async function Token2049Guide() {
               <Command>{`docker info`}</Command>
               <ol className="list-decimal space-y-4 ps-5">
                 <li>Clone <a href="https://github.com/masumi-network/masumi-payment-service" className={textLink}>Masumi Payment Service</a>. Create a dedicated demo database. The agent guide includes the Docker command and a local PostgreSQL alternative.</li>
-                <li>Copy <code>.env.example</code> to a private <code>.env</code>. Set the database URL, a new encryption key, a new admin key, your Preprod Blockfrost key, and <code>PORT=3012</code>. Keep Mainnet settings empty.</li>
+                <li>Create a private <code>.env</code> from <code>.env.example</code> only if no <code>.env</code> exists. Preserve existing settings and the encryption key on resume. Set the database URL, your Preprod Blockfrost key, and <code>PORT=3012</code>. Generate encryption and admin keys only for a new node. Reuse existing keys on resume. Keep Mainnet settings empty. Remove <code>COLLECTION_WALLET_V2_PREPROD_ADDRESS</code> from the file and unset it in the process environment before seeding.</li>
               </ol>
               <p><Link href="/token2049/agent" className={textLink}>Use the full guide for database creation and environment settings</Link>.</p>
             </Details>
@@ -275,6 +280,7 @@ fi`}</Command>
               <Command>{`pnpm run prisma:migrate`}</Command>
               <p>Your coding agent can seed the Preprod demo database automatically. Suppress seed output so wallet mnemonics stay out of chat and logs. The wallets remain stored in the configured database; preserve that database and its encryption key.</p>
               <Command>{`pnpm run prisma:seed >/dev/null 2>&1`}</Command>
+              <p>Check the command exit status. Inspect the selling wallet without secrets and verify <code>collectionAddress</code> is <code>null</code>. If an existing wallet stores an empty string, use the wallet update API with <code>newCollectionAddress: null</code>. Verify the change and request fresh signed terms. Keep the existing wallets.</p>
             </Details>
             <Details title="Start and check the service" description="Build the dashboard, start MPS, and verify its health.">
               <Command>{`pnpm -C frontend run build`}</Command>
@@ -340,7 +346,7 @@ fi`}</Command>
 
           <Step number="6" title="Submit your code and proof">
             <p>Include your code, agent demo, completed Task, seller receipt, and a Cardano Preprod payment transaction with its explorer link.</p>
-            <p><Link href="/token2049/submission" className={textLink}>Open the submission checklist</Link>. Submit on <a href="https://builderbase.com/event/token2049-origins-hackathon" className={textLink}>BuilderBase</a> by <strong className="font-medium text-black">7 October, 23:59</strong>.</p>
+            <p><Link href="/token2049/submission" className={textLink}>Open the submission checklist</Link>. Submit on <a href="https://builderbase.com/event/token2049-origins-hackathon" className={textLink}>BuilderBase</a>. <a href="https://builderbase.com/event/token2049-origins-hackathon#rules" className={textLink}>View the official submission deadline</a>.</p>
           </Step>
         </div>
       </div>

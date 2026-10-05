@@ -47,13 +47,13 @@ Tell me to select Personal Workspace in Sokosumi to see my personal Coworker.
 Inspect saved state before retrying creation or payment. Do not register again.
 Use Vercel eve unless I request another runtime. Build the worker before the execution-only rehearsal.
 Prepare local Masumi Payment Service with a dedicated PostgreSQL database, migrations, and seeding as the guide describes.
-Keep wallet seeding in my trusted terminal. Save the Coworker runtime key automatically in an ignored .env.local using the guide command.
+Seed the dedicated Preprod database automatically with secret output suppressed. Check the exit status and preserve the database and encryption key. Save the Coworker runtime key automatically in an ignored .env.local using the guide command.
 Give me the actual public Preprod selling wallet address to fund.
 Continue independent agent tests while I fund it. Verify balances, then resume with the same wallets and saved IDs.
 Then implement masumiPayment with Dynamic pricing: 1 test USDM (1000000 atomic units) per Task.
 Verify seller receipt independently. Report payment success only when collection is confirmed.
 
-Never request secrets in chat or print private environment files. I will handle sign-in and wallet seeding in my trusted terminal.
+Never request secrets in chat or print private environment files. I will complete sign-in, provide missing model or Blockfrost access privately, and fund the public Preprod address you give me.
 For grant_required, ask me to approve the Vendor grant in Personal Workspace notifications, then retry the same Task.
 Do not bypass approval or change my platform role. Ask before creating billed resources.
 
