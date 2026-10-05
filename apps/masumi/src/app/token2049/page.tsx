@@ -96,6 +96,7 @@ export default async function Token2049Guide() {
           <Link href="/token2049/agent" className={textLink}>Read the guide</Link>
           <a href="/token2049/agent-guide.md" download className={textLink}>Download the guide</a>
         </div>
+        <p className="mt-6 max-w-2xl text-sm leading-6 text-[#454545]">Want to explore x402? <a href="https://developers.cardano.org/x402/" className={textLink}>Learn more about agentic commerce on Cardano</a>, with templates, a Masumi demo, and skills for your coding agent.</p>
         <p className="mt-6 text-sm leading-6 text-[#454545]">Already have your IDs? <Link href="/token2049/setup#instructions" className={textLink}>Prepare commands for your Coworker</Link>.</p>
       </section>
 
