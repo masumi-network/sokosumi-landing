@@ -1,4 +1,5 @@
 import test from "node:test";
+import * as flow from "../src/app/token2049/flow.ts";
 import assert from "node:assert/strict";
 import { buildAgentPrompt, buildParticipantCommands, EVENT } from "../src/app/token2049/flow.ts";
 
@@ -72,4 +73,39 @@ test("skill wraps the current guide without changing instructions", async () => 
   assert.match(markdown, /Vendor workspace access is required/);
   assert.match(markdown, /retry the same Task/);
   assert.doesNotMatch(markdown, /The organizer creates the Coworker|Ask the organizer to create/);
+});
+
+
+test("event commands reuse the Coworker and validate IDs before shell output", () => {
+  assert.equal(typeof flow.buildEventCommands, "function");
+  const commands = flow.buildEventCommands(coworker, vendor);
+  assert.match(commands, new RegExp(`connect ${coworker} --vendor-id ${vendor} --workspace-id ${EVENT.organizationId}`));
+  assert.match(commands, new RegExp(`workspaces check ${EVENT.organizationId}`));
+  assert.match(commands, /PENDING/);
+  assert.match(commands, /same Coworker ID/);
+  assert.match(commands, /separate runtime Vendor grant/);
+  assert.doesNotMatch(commands, /register|api-key|--personal/);
+  for (const value of ["$(touch /tmp/pwn)", `${coworker}\n`, "", "id; echo secret"]) {
+    assert.throws(() => flow.buildEventCommands(value, vendor));
+    assert.throws(() => flow.buildEventCommands(coworker, value));
+  }
+});
+
+test("the complete guide separates rehearsal, payment proof, and event approval checkpoints", async () => {
+  const { readFile } = await import("node:fs/promises");
+  const markdown = await readFile(new URL("../public/token2049/agent-guide.md", import.meta.url), "utf8");
+  assert.equal((markdown.match(/^## /gm) ?? []).length, 5);
+  assert.match(markdown, /Vendor membership role is `admin`, not a platform admin role/);
+  assert.match(markdown, /Checkpoint: save/);
+  assert.match(markdown, /First run: execution only/);
+  assert.match(markdown, /Second run: paid Task/);
+  assert.match(markdown, /System notification preferences/);
+  assert.match(markdown, /approved for/);
+  assert.match(markdown, /runtimeAccessStatus/);
+  assert.match(markdown, /exact UTF-8 result/);
+  assert.match(markdown, /1000000/);
+  assert.match(markdown, /masumiPayment/);
+  assert.match(markdown, /independent/);
+  assert.match(markdown, /sokosumi --preprod runtime complete/);
+  assert.doesNotMatch(markdown, /sokosumi runtime (?:start|complete)/);
 });

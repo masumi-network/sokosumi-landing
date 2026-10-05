@@ -1,9 +1,9 @@
 import Link from "next/link";
 
 const pages = [
-  { href: "/token2049", label: "Build your agent" },
-  { href: "/token2049/setup", label: "Get CLI commands" },
-  { href: "/token2049/agent", label: "Agent instructions" },
+  { href: "/token2049", label: "Five-step guide" },
+  { href: "/token2049/setup", label: "Your commands" },
+  { href: "/token2049/agent", label: "Full agent brief" },
   { href: "/token2049/submission", label: "Submission" },
 ];
 

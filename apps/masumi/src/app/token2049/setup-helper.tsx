@@ -1,12 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { buildAgentPrompt, buildParticipantCommands } from "./flow";
+import { buildAgentPrompt, buildEventCommands, buildParticipantCommands } from "./flow";
 
 export default function SetupHelper() {
   const [coworkerId, setCoworkerId] = useState("");
   const [vendorId, setVendorId] = useState("");
-  const [output, setOutput] = useState<{ commands: string; prompt: string } | null>(null);
+  const [output, setOutput] = useState<{ commands: string; eventCommands: string; prompt: string } | null>(null);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const inputClass = "mt-2 w-full rounded-lg border border-black/20 bg-white p-3 font-mono text-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#460A23]";
@@ -26,7 +26,7 @@ export default function SetupHelper() {
         event.preventDefault(); setError(""); setMessage("");
         try {
           const coworker = coworkerId.trim(), vendor = vendorId.trim();
-          setOutput({ commands: buildParticipantCommands(coworker, vendor), prompt: buildAgentPrompt(coworker, vendor) });
+          setOutput({ commands: buildParticipantCommands(coworker, vendor), eventCommands: buildEventCommands(coworker, vendor), prompt: buildAgentPrompt(coworker, vendor) });
         } catch (cause) { setOutput(null); setError(cause instanceof Error ? cause.message : "Check both IDs."); }
       }}>
         <div className="grid gap-5 md:grid-cols-2">
@@ -41,9 +41,32 @@ export default function SetupHelper() {
         {error && <p role="alert" className="mt-4 text-sm text-red-800">{error}</p>}
       </form>
       <p role="status" aria-live="polite" className="mt-4 text-sm text-[#454545]">{message}</p>
-      {output && <div className="space-y-7 border-t border-black/10 pt-6">
-        <div><h3 className="mb-3 text-lg font-medium">Run in your terminal</h3><pre className="overflow-x-auto overscroll-x-contain rounded-xl bg-[#181818] p-5 text-sm leading-7 text-white"><code>{output.commands}</code></pre><button type="button" onClick={() => copy(output.commands, "Commands")} className={`mt-3 ${buttonClass}`}>Copy commands</button></div>
-        <div><h3 className="mb-3 text-lg font-medium">Paste into your coding agent</h3><pre className="max-h-96 overflow-auto whitespace-pre-wrap break-words rounded-xl bg-[#F5F5F5] p-5 text-sm leading-7 text-[#454545]">{output.prompt}</pre><button type="button" onClick={() => copy(output.prompt, "Agent instructions")} className={`mt-3 ${buttonClass}`}>Copy agent instructions</button></div>
+      {output && <div className="mt-8 space-y-8">
+        <section aria-labelledby="personal-commands-title">
+          <h3 id="personal-commands-title" className="mb-3 text-lg font-medium">Start in your Personal Workspace</h3>
+          <button type="button" onClick={() => copy(output.commands, "Personal commands")} className={buttonClass}>Copy personal commands</button>
+          <details className="mt-4 rounded-xl border border-black/15">
+            <summary className="cursor-pointer px-5 py-4 font-medium text-[#460A23]">View personal terminal commands</summary>
+            <pre className="overflow-x-auto overscroll-x-contain p-5 text-sm leading-7"><code>{output.commands}</code></pre>
+          </details>
+        </section>
+        <section aria-labelledby="agent-prompt-title">
+          <h3 id="agent-prompt-title" className="mb-3 text-lg font-medium">Give your coding agent the full brief</h3>
+          <button type="button" onClick={() => copy(output.prompt, "Agent instructions")} className={buttonClass}>Copy agent instructions</button>
+          <details className="mt-4 rounded-xl border border-black/15">
+            <summary className="cursor-pointer px-5 py-4 font-medium text-[#460A23]">Read your agent instructions</summary>
+            <pre className="whitespace-pre-wrap break-words p-5 text-sm leading-7">{output.prompt}</pre>
+          </details>
+        </section>
+        <section aria-labelledby="event-commands-title">
+          <h3 id="event-commands-title" className="mb-3 text-lg font-medium">When ready for event approval</h3>
+          <p className="mb-4 text-sm leading-6 text-[#454545]">Use this separate command block for your existing Coworker. If access is PENDING, wait for approval. Do not register again.</p>
+          <button type="button" onClick={() => copy(output.eventCommands, "Event commands")} className={buttonClass}>Copy event commands</button>
+          <details className="mt-4 rounded-xl border border-black/15">
+            <summary className="cursor-pointer px-5 py-4 font-medium text-[#460A23]">View event approval commands</summary>
+            <pre className="overflow-x-auto overscroll-x-contain p-5 text-sm leading-7"><code>{output.eventCommands}</code></pre>
+          </details>
+        </section>
       </div>}
     </section>
   );

@@ -24,6 +24,16 @@ sokosumi --preprod coworkers api-key ${coworkerId} --json | \\
   sokosumi --preprod runtime key-import --coworker-id ${coworkerId} --api-key-stdin`;
 }
 
+export function buildEventCommands(coworkerId: string, vendorId: string) {
+  buildParticipantCommands(coworkerId, vendorId);
+  return `# Join the event with the same account before this command.
+sokosumi --preprod coworkers connect ${coworkerId} --vendor-id ${vendorId} --workspace-id ${EVENT.organizationId} --json
+sokosumi --preprod workspaces check ${EVENT.organizationId} --json
+# PENDING means the request exists. Keep the access ID and same Coworker ID.
+# Wait for the approval notification, then retry connect with the same IDs.
+# Check the separate runtime Vendor grant. Coworker approval does not approve both.`;
+}
+
 export function buildAgentPrompt(coworkerId: string, vendorId: string) {
   buildParticipantCommands(coworkerId, vendorId);
   return `Help me connect a small AI agent to Sokosumi. Complete one real Task and verify the seller payment on Cardano Preprod.
@@ -36,6 +46,9 @@ Later event organization ID: ${EVENT.organizationId}
 Later event Workspace slug: ${EVENT.workspaceSlug}
 
 Start with my existing agent setup. A two-sentence reply is enough for the first test.
+Follow the complete guide in order. Keep a local record of IDs, finished checkpoints, exact errors, and evidence.
+First complete an execution-only rehearsal. Then create a separate paid Task under the same Coworker.
+Resume from saved IDs and inspected state. Do not repeat successful creation commands.
 Check existing records before creating new ones. Confirm my Vendor membership role is admin.
 Use my existing Coworker ID and start in my Personal Workspace. Use --personal for Coworker connection, Task creation, and runtime start/complete.
 Confirm personal Coworker access is GRANTED. Start with personal testing as the recommended setup order.
@@ -60,9 +73,13 @@ When my agent is ready for event approval, ask me to join the event through ${EV
 Request event access for Coworker ${coworkerId} with coworkers connect --vendor-id ${vendorId} --workspace-id ${EVENT.organizationId}.
 If access is PENDING, keep the Coworker ID and access ID. Wait for a Workspace owner or admin to approve.
 Do not register again. Retry connect with the same ID after approval.
+Read the approval notification in app or email. Delivery follows my System notification preferences.
+Check runtimeAccessStatus separately: GRANTED, PENDING, NOT_REQUESTED, DENIED, or REVOKED.
+Coworker approval does not approve the runtime Vendor grant. Check current access before retrying the same Task.
 Check GRANTED access, event Seat eligibility, credits, and the separate Vendor Workspace grant before an event Task.
 
 Task completion and PURCHASED do not prove seller payment. Do not report payment success until collection is confirmed.
+Report execution and seller collection as separate outcomes. CLI completion does not automate MPS payment steps.
 Write a setup guide with the commands, exact errors, and steps that resolved each problem.
 Keep created IDs. Inspect state before retrying any write whose outcome is uncertain.
 
