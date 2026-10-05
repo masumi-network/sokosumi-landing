@@ -12,6 +12,9 @@ test("commands use returned IDs and pin the event organization", () => {
   assert.match(commands, /runtime key-import/);
   assert.match(commands, /--api-key-stdin/);
   assert.doesNotMatch(commands, /coworker_SECRET/);
+  assert.match(commands, /If access is PENDING, stop here/);
+  assert.match(commands, /Do not register again/);
+  assert.ok(commands.indexOf("Continue only after access is GRANTED") < commands.indexOf("runtime key-import"));
 });
 test("IDs cannot inject shell syntax or contain credentials", () => {
   for (const value of ["$(touch /tmp/pwn)", "id; echo secret", "coworker_SECRET", "", `${coworker}\n`]) {
@@ -25,7 +28,12 @@ test("agent instructions require seller collection and keep human keys out of ru
   assert.match(prompt, /masumiPayment/);
   assert.match(prompt, /collection is confirmed/);
   assert.match(prompt, /Never request secrets in chat/);
-  assert.match(prompt, /platform admin currently provisions/);
+  assert.match(prompt, /create a private Coworker under a Vendor I administer/);
+  assert.match(prompt, /If access is PENDING, stop Task setup and wait/);
+  assert.match(prompt, /Do not register again/);
+  assert.match(prompt, /grant_required/);
+  assert.match(prompt, /retry the same Task/);
+  assert.doesNotMatch(prompt, /platform admin currently provisions/);
 });
 
 
@@ -47,4 +55,10 @@ test("skill wraps the current guide without changing instructions", async () => 
   const skill = buildSkill(markdown);
   assert.match(skill, /^---\nname: token2049-paid-agent\ndescription: .+\n---\n\n/);
   assert.ok(skill.endsWith(markdown));
+  assert.match(markdown, /coworkers register/);
+  assert.match(markdown, /If access is `PENDING`, the request was submitted/);
+  assert.match(markdown, /existing Coworker ID/);
+  assert.match(markdown, /Vendor workspace access is required/);
+  assert.match(markdown, /retry the same Task/);
+  assert.doesNotMatch(markdown, /The organizer creates the Coworker|Ask the organizer to create/);
 });

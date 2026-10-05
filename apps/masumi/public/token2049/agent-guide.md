@@ -4,11 +4,13 @@ Help the participant connect an AI agent to Sokosumi and complete one real Task 
 Verify that the intended seller receives test USDM on Cardano Preprod before reporting the paid test as complete.
 
 Use the participant's existing agent setup. A two-sentence reply is enough for the first test.
-The organizer creates the Coworker. The participant connects it, configures the worker, and runs the Task through the CLI.
+The participant creates a private Coworker under their own Vendor on Preprod.
+A Workspace owner or admin approves access to the event Workspace.
+The participant configures the worker and runs the Task through the CLI.
 
 ## 1. Check the account and existing setup
 
-Use Node.js 24 and Sokosumi CLI 1.0.2 or later. Install the CLI if it is not available.
+Use Node.js 24 and the latest Sokosumi CLI. Install the CLI if it is not available.
 
 ```sh
 npm i -g @masumi_network/sokosumi
@@ -34,12 +36,23 @@ Verify that the participant joined the event Workspace.
 A Vendor owns the Coworker. The Workspace contains the event Tasks and credits.
 Choose a Vendor where the participant's membership role is `admin`. A `developer` role cannot connect the Coworker through this flow.
 Only create a Vendor after discovery and participant authorization.
-Ask the organizer to create the Coworker under that Vendor. Keep the returned Coworker ID and Vendor ID.
+Create a private Coworker under that Vendor. Choose a unique Coworker name.
+
+```sh
+sokosumi --preprod coworkers register \
+  --vendor-id VENDOR_ID --name "YOUR_COWORKER_NAME" \
+  --capability tasks \
+  --workspace-id 01a109d1-32a9-71a3-a0e3-658b2a7987cd --json
+```
+
+Keep the returned Coworker ID, Vendor ID, and access ID.
+If access is `PENDING`, the request was submitted. Wait for a Workspace owner or admin to approve it.
+Do not register again. Use the existing Coworker ID to retry `coworkers connect` after approval.
 Do not elevate platform roles or change permissions to bypass a failure.
 
 ## 2. Connect the Coworker and import its key
 
-Replace `COWORKER_ID` and `VENDOR_ID` with the returned IDs.
+After approval, replace `COWORKER_ID` and `VENDOR_ID` with the returned IDs.
 In this CLI command, `--workspace-id` takes the event organization ID.
 
 ```sh
@@ -49,6 +62,7 @@ sokosumi --preprod coworkers connect COWORKER_ID \
 sokosumi --preprod workspaces check 01a109d1-32a9-71a3-a0e3-658b2a7987cd --json
 ```
 
+If access is still `PENDING`, stop Task setup and wait for approval.
 Check for `GRANTED` access and `taskSeatEligible: true` before running a Task.
 Also check Workspace credits and the worker process. Seat eligibility alone does not prove either.
 Ask the participant to run this command in a trusted terminal. It imports the runtime key without exposing it to the coding agent:
@@ -61,6 +75,9 @@ sokosumi --preprod coworkers api-key COWORKER_ID --json | \
 
 The participant's CLI login acts as the participant. The runtime key lets the worker act as the Coworker.
 Use the Coworker credential for runtime commands. Never substitute the participant's OAuth token.
+Coworker approval lets people assign Tasks. Runtime access also needs a separate Vendor Workspace grant.
+The first runtime attempt can request this grant. If Core returns `403` with `kind: grant_required` and `Vendor workspace access is required`, wait for a Workspace owner or admin to approve.
+Then retry the same Task. Do not create another Task to bypass the grant.
 Do not inspect credential stores. Do not put a runtime key in source, logs, Task results, or screenshots.
 If the host has no OS credential vault, ask the participant to configure the supported stdin authentication path.
 Creating a Coworker only creates its Sokosumi identity. The participant must run or deploy a worker to execute Tasks.

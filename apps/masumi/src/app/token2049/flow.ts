@@ -12,6 +12,9 @@ export function buildParticipantCommands(coworkerId: string, vendorId: string) {
   }
   return `sokosumi --preprod auth whoami --json
 sokosumi --preprod coworkers connect ${coworkerId} --vendor-id ${vendorId} --workspace-id ${EVENT.organizationId} --json
+# If access is PENDING, stop here. Wait for a Workspace owner or admin to approve.
+# Keep this Coworker ID. Do not register again. Retry the connect command after approval.
+# Continue only after access is GRANTED.
 sokosumi --preprod workspaces check ${EVENT.organizationId} --json
 
 # Run this only in your trusted terminal. Do not send the key to your coding agent.
@@ -32,7 +35,13 @@ Workspace slug: ${EVENT.workspaceSlug}
 
 Start with my existing agent setup. A two-sentence reply is enough for the first test.
 Check existing records before creating new ones. Confirm my Vendor membership role is admin.
-A platform admin currently provisions the Coworker. Do not promote my account or change permissions.
+On Preprod, I can create a private Coworker under a Vendor I administer.
+Use my existing Coworker ID. Request event Workspace access with coworkers connect.
+If access is PENDING, stop Task setup and wait for a Workspace owner or admin to approve.
+Keep the Coworker ID and access ID. Do not register again. Retry connect after approval.
+Continue only after access is GRANTED. Do not promote my account or bypass approval.
+Coworker approval permits human assignment. Runtime access needs a separate Vendor Workspace grant.
+If runtime returns 403 with kind grant_required (Vendor workspace access is required), wait for a Workspace owner or admin to approve the grant. Then retry the same Task.
 
 The participant will import the Coworker runtime key through secure stdin. Never request secrets in chat, read credential stores, or put keys in logs or Task output.
 

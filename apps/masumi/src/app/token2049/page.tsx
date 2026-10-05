@@ -15,8 +15,13 @@ sokosumi --version
 sokosumi --preprod auth login
 sokosumi --preprod auth whoami
 sokosumi skills`;
+const REGISTER = `sokosumi --preprod coworkers register \\
+  --vendor-id VENDOR_ID --name "YOUR_COWORKER_NAME" \\
+  --capability tasks --workspace-id ${ORGANIZATION_ID} --json`;
 const CONNECT = `sokosumi --preprod coworkers connect COWORKER_ID \\
   --vendor-id VENDOR_ID --workspace-id ${ORGANIZATION_ID} --json
+# If PENDING, stop. Wait for approval, then retry connect with the same Coworker ID.
+# Continue only after access is GRANTED.
 sokosumi --preprod workspaces check ${ORGANIZATION_ID}
 # Run this in your trusted terminal, outside your coding agent:
 sokosumi --preprod coworkers api-key COWORKER_ID --json | \\
@@ -106,20 +111,24 @@ export default async function Token2049Guide() {
           </nav>
           <div className="min-w-0">
             <Step number="1" title="Get your Coworker">
-              <p>Join the event Workspace using the invite link above. Install Sokosumi CLI version 1.0.2 or later, then sign in with the same account.</p>
+              <p>Join the event Workspace using the invite link above. Install the latest Sokosumi CLI, then sign in with the same account.</p>
               <Command>{INSTALL}</Command>
               <p>A Vendor owns your Coworker. List your Vendors and choose one where your role is <code>admin</code>. If you do not have one, create a Vendor with a unique slug.</p>
               <Command>{VENDOR}</Command>
               <p>Join the event Workspace to use its Tasks and credits. Your Vendor is where you manage your Coworker, the Sokosumi identity for your agent.</p>
-              <p>Send the organizer your Vendor ID and the name you want for your Coworker. The organizer creates the Coworker and gives you its ID.</p>
+              <p>Create a private Coworker under your Vendor. Replace <code>VENDOR_ID</code> and choose a unique Coworker name.</p>
+              <Command>{REGISTER}</Command>
+              <p>The command requests access to the event Workspace. Keep the returned Coworker ID and access ID.</p>
               <p>Keep your Vendor ID and Coworker ID. Enter them in the <Link href="/token2049/setup#instructions" className={textLink}>setup helper</Link> to get commands and instructions with your IDs included.</p>
             </Step>
 
             <Step number="2" title="Connect your Coworker and run a Task">
-              <p>Replace <code>COWORKER_ID</code> and <code>VENDOR_ID</code> below. After connecting, check for <code>GRANTED</code> access and <code>taskSeatEligible: true</code> before you run a Task.</p>
+              <p>If access is <code>PENDING</code>, wait for a Workspace owner or admin to approve it. Keep your Coworker ID. Do not register again.</p>
+              <p>Replace <code>COWORKER_ID</code> and <code>VENDOR_ID</code> below. Retry the connect command after approval. Check for <code>GRANTED</code> access and <code>taskSeatEligible: true</code> before you run a Task.</p>
               <p>Run the key command yourself in a trusted terminal. It imports the runtime key directly, so you do not need to paste it into your coding agent.</p>
               <Command>{CONNECT}</Command>
               <p>Use your CLI login to create Tasks. Your worker uses the runtime key to read assigned Tasks and return your agent&apos;s results.</p>
+              <p>Runtime access needs a separate Vendor Workspace grant. If the first runtime attempt returns <code>grant_required</code>, wait for a Workspace owner or admin to approve it. Then retry the same Task.</p>
               <p>Keep the runtime key private. If you lose it or expose it, revoke it and create a replacement.</p>
               <p>First, check that your agent can complete a small Task. The example below asks for a two-sentence welcome message. Replace <code>TASK_ID</code> with the ID returned when you create the Task.</p>
               <Command>{RUN}</Command>

@@ -21,7 +21,7 @@ export default function SetupHelper() {
     <section aria-labelledby="helper-title" className="rounded-2xl border border-[#460A23]/10 bg-white p-6 sm:p-10">
       <h2 id="helper-title" className="text-2xl font-medium tracking-tight">Add your IDs to the instructions</h2>
       <p className="mt-3 max-w-2xl leading-7 text-[#454545]">Enter both IDs to get connection commands and instructions for your coding agent.</p>
-      <p className="mt-3 max-w-2xl text-sm leading-6 text-[#454545]">Keep API keys out of these fields. Use an existing Coworker ID from the organizer. Copy your instructions before reloading; the fields will clear.</p>
+      <p className="mt-3 max-w-2xl text-sm leading-6 text-[#454545]">Keep API keys out of these fields. Use the Coworker ID returned by coworkers register. Copy your instructions before reloading; the fields will clear.</p>
       <form className="mt-6" onSubmit={event => {
         event.preventDefault(); setError(""); setMessage("");
         try {
