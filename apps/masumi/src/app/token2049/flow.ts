@@ -1,3 +1,6 @@
+export const SIGNUP_URL = "https://preprod.sokosumi.com/signup";
+export const CREDITS_URL = "https://preprod.sokosumi.com/billing?tab=credits";
+
 export const EVENT = {
   organizationId: "01a109d1-32a9-71a3-a0e3-658b2a7987cd",
   workspaceSlug: "token2049-origins-hackathon-2026-nws2r7",
@@ -11,11 +14,10 @@ export function buildParticipantCommands(coworkerId: string, vendorId: string) {
     throw new Error("Enter the full Coworker ID and Vendor ID, including the hyphens.");
   }
   return `sokosumi --preprod auth whoami --json
-sokosumi --preprod coworkers connect ${coworkerId} --vendor-id ${vendorId} --workspace-id ${EVENT.organizationId} --json
-# If access is PENDING, stop here. Wait for a Workspace owner or admin to approve.
-# Keep this Coworker ID. Do not register again. Retry the connect command after approval.
-# Continue only after access is GRANTED.
-sokosumi --preprod workspaces check ${EVENT.organizationId} --json
+sokosumi --preprod coworkers connect ${coworkerId} --vendor-id ${vendorId} --personal --json
+sokosumi --preprod workspaces list --personal --json
+# Switch to Personal Workspace in Web before topping up credits.
+# Use Stripe test mode only. Check your credit balance before creating a Task.
 
 # Run this only in your trusted terminal. Do not send the key to your coding agent.
 sokosumi --preprod coworkers api-key ${coworkerId} --json | \\
@@ -30,18 +32,19 @@ Read https://www.masumi.network/token2049/agent-guide.md and run sokosumi skills
 
 Coworker ID: ${coworkerId}
 Vendor ID: ${vendorId}
-Organization ID: ${EVENT.organizationId}
-Workspace slug: ${EVENT.workspaceSlug}
+Later event organization ID: ${EVENT.organizationId}
+Later event Workspace slug: ${EVENT.workspaceSlug}
 
 Start with my existing agent setup. A two-sentence reply is enough for the first test.
 Check existing records before creating new ones. Confirm my Vendor membership role is admin.
-On Preprod, I can create a private Coworker under a Vendor I administer.
-Use my existing Coworker ID. Request event Workspace access with coworkers connect.
-If access is PENDING, stop Task setup and wait for a Workspace owner or admin to approve.
-Keep the Coworker ID and access ID. Do not register again. Retry connect after approval.
-Continue only after access is GRANTED. Do not promote my account or bypass approval.
+Use my existing Coworker ID and start in my Personal Workspace. Use --personal for Coworker connection, Task creation, and runtime start/complete.
+Confirm personal Coworker access is GRANTED. Start with personal testing as the recommended setup order.
+Ask me to switch to Personal Workspace in Web and open ${CREDITS_URL}.
+Use Stripe test mode only, with card 4242 4242 4242 4242, a future expiry, and any three-digit CVC.
+Check my personal credit balance before creating a Task. Credits and escrow test USDM are separate.
 Coworker approval permits human assignment. Runtime access needs a separate Vendor Workspace grant.
-If runtime returns 403 with kind grant_required (Vendor workspace access is required), wait for a Workspace owner or admin to approve the grant. Then retry the same Task.
+If runtime returns 403 with kind grant_required (Vendor workspace access is required), ask me to open Personal Workspace notifications and approve my Vendor grant request as the personal owner. Then retry the same Task.
+Do not promote my account or bypass approval.
 
 The participant will import the Coworker runtime key through secure stdin. Never request secrets in chat, read credential stores, or put keys in logs or Task output.
 
@@ -52,6 +55,12 @@ Run the paid flow in this order:
 2. Submit masumiPayment through the assigned Coworker. Wait for confirmed escrow funding.
 3. Run the agent. Submit the hash of its exact answer to MPS, then complete the Sokosumi Task.
 4. Continue monitoring through collection. Check the transaction on chain and verify the intended seller's net test USDM received.
+
+When my agent is ready for event approval, ask me to join the event through ${EVENT.joinUrl}.
+Request event access for Coworker ${coworkerId} with coworkers connect --vendor-id ${vendorId} --workspace-id ${EVENT.organizationId}.
+If access is PENDING, keep the Coworker ID and access ID. Wait for a Workspace owner or admin to approve.
+Do not register again. Retry connect with the same ID after approval.
+Check GRANTED access, event Seat eligibility, credits, and the separate Vendor Workspace grant before an event Task.
 
 Task completion and PURCHASED do not prove seller payment. Do not report payment success until collection is confirmed.
 Write a setup guide with the commands, exact errors, and steps that resolved each problem.

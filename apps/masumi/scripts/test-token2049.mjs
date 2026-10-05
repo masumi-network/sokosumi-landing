@@ -5,16 +5,17 @@ import { buildAgentPrompt, buildParticipantCommands, EVENT } from "../src/app/to
 const coworker = "01a1067e-b327-7301-97aa-c2c7a94e4669";
 const vendor = "01a1067b-245f-74cf-93e4-f204288d2d13";
 
-test("commands use returned IDs and pin the event organization", () => {
+test("commands use returned IDs and start in the Personal Workspace", () => {
   const commands = buildParticipantCommands(coworker, vendor);
-  assert.match(commands, new RegExp(`connect ${coworker} --vendor-id ${vendor} --workspace-id ${EVENT.organizationId}`));
+  assert.match(commands, new RegExp(`connect ${coworker} --vendor-id ${vendor} --personal`));
+  assert.match(commands, /workspaces list --personal/);
+  assert.doesNotMatch(commands, /--workspace-id|--organization-id/);
   assert.match(commands, /--json \| \\\n/);
   assert.match(commands, /runtime key-import/);
   assert.match(commands, /--api-key-stdin/);
   assert.doesNotMatch(commands, /coworker_SECRET/);
-  assert.match(commands, /If access is PENDING, stop here/);
-  assert.match(commands, /Do not register again/);
-  assert.ok(commands.indexOf("Continue only after access is GRANTED") < commands.indexOf("runtime key-import"));
+  assert.match(commands, /Stripe test mode only/);
+  assert.match(commands, /Check your credit balance/);
 });
 test("IDs cannot inject shell syntax or contain credentials", () => {
   for (const value of ["$(touch /tmp/pwn)", "id; echo secret", "coworker_SECRET", "", `${coworker}\n`]) {
@@ -28,8 +29,12 @@ test("agent instructions require seller collection and keep human keys out of ru
   assert.match(prompt, /masumiPayment/);
   assert.match(prompt, /collection is confirmed/);
   assert.match(prompt, /Never request secrets in chat/);
-  assert.match(prompt, /create a private Coworker under a Vendor I administer/);
-  assert.match(prompt, /If access is PENDING, stop Task setup and wait/);
+  assert.match(prompt, /start in my Personal Workspace/);
+  assert.match(prompt, /If access is PENDING, keep the Coworker ID and access ID/);
+  assert.ok(prompt.indexOf("Run the paid flow") < prompt.indexOf("ask me to join the event"));
+  assert.match(prompt, /Personal Workspace notifications and approve my Vendor grant request/);
+  assert.match(prompt, /When my agent is ready for event approval/);
+  assert.doesNotMatch(prompt, /Do not join the event yet|After the personal paid test works/);
   assert.match(prompt, /Do not register again/);
   assert.match(prompt, /grant_required/);
   assert.match(prompt, /retry the same Task/);
@@ -58,6 +63,12 @@ test("skill wraps the current guide without changing instructions", async () => 
   assert.match(markdown, /coworkers register/);
   assert.match(markdown, /If access is `PENDING`, the request was submitted/);
   assert.match(markdown, /existing Coworker ID/);
+  assert.match(markdown, /--capability tasks --personal/);
+  assert.ok(markdown.indexOf("## 3. Add test credits") < markdown.indexOf("## 4. Join the TOKEN2049"));
+  assert.match(markdown, /Billing applies to the active Workspace/);
+  assert.match(markdown, /separate from test USDM/);
+  assert.match(markdown, /When the agent is ready for event approval/);
+  assert.doesNotMatch(markdown, /Do not join the event Workspace yet|After the personal paid test works/);
   assert.match(markdown, /Vendor workspace access is required/);
   assert.match(markdown, /retry the same Task/);
   assert.doesNotMatch(markdown, /The organizer creates the Coworker|Ask the organizer to create/);
