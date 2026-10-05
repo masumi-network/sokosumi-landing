@@ -151,6 +151,40 @@ export default async function Token2049Guide() {
               <p>Your CLI login creates the Task. Your worker uses its runtime key to start it and save the exact answer in <code>result.txt</code>.</p>
               <p>If runtime returns <code>grant_required</code>, open Personal Workspace notifications. As the Workspace owner, approve your separate Vendor grant request. Retry the same Task.</p>
             </Details>
+            <Details title="Set up your payment node">
+              <p>Run Masumi Payment Service (MPS) on your machine. It handles registration, signed payment terms, and seller collection through Cardano Preprod.</p>
+              <p>You need Git, Node.js 24, pnpm 10.30.2, PostgreSQL 13 or later, and a Preprod Blockfrost key. Docker is optional: use it for PostgreSQL, or use a local database. You do not need a full Cardano node.</p>
+              <Command>{`git --version
+node --version
+pnpm --version
+# If you use Docker for PostgreSQL:
+docker --version
+docker info`}</Command>
+              <ol className="list-decimal space-y-4 ps-5">
+                <li>Clone <a href="https://github.com/masumi-network/masumi-payment-service" className={textLink}>Masumi Payment Service</a>. Create a dedicated demo database. The agent guide includes the Docker command and a local PostgreSQL alternative.</li>
+                <li>Copy <code>.env.example</code> to a private <code>.env</code>. Set the database URL, a new encryption key, a new admin key, your Preprod Blockfrost key, and <code>PORT=3012</code>. Keep Mainnet settings empty.</li>
+                <li>Install locked packages and apply migrations to the demo database. Run seeding in your own trusted terminal: it can print new wallet mnemonics. Keep that output out of coding-agent chats.</li>
+                <li>Build the admin dashboard and start MPS. Check its health and the seeded Preprod V2 source. Fund the selling wallet with test ADA before registering your agent.</li>
+              </ol>
+              <Command>{`# From the MPS repository, after configuring .env:
+if command -v sfw >/dev/null 2>&1; then
+  sfw pnpm install --frozen-lockfile
+else
+  pnpm install --frozen-lockfile
+fi
+pnpm run prisma:generate
+pnpm run prisma:migrate
+# Run this yourself in a trusted terminal:
+pnpm run prisma:seed
+pnpm -C frontend run build
+pnpm run dev`}</Command>
+              <Command>{`curl --fail http://127.0.0.1:3012/api/v1/health
+curl --fail http://127.0.0.1:3012/api-docs -o mps-openapi.json`}</Command>
+              <p>Implement and test your agent API first. A Standard registration needs its <code>apiBaseUrl</code>, which is different from the MPS URL. Open <code>http://127.0.0.1:3012/admin/</code> and register your agent with the Preprod V2 source and <code>{'{"pricingType":"Dynamic"}'}</code>. Wait for <code>RegistrationConfirmed</code>.</p>
+              <p>Give your worker the returned Masumi identifier, source index, contract address, policy ID, seller key, and seller address. Use a separate MPS key with Preprod and selling-wallet access. MPS uses the <code>token</code> header; this key is different from your Coworker key.</p>
+              <p>Keep the worker and payment node on the same machine for the first test. A deployed worker needs authenticated HTTPS access to MPS. Its <code>127.0.0.1</code> points to the deployed machine, not your laptop.</p>
+              <p>Seeding does not fund wallets or register your agent. Keep MPS and the database running until collection confirms. <Link href="/token2049/agent" className={textLink}>Read the full setup and agent configuration</Link>, or copy the agent instructions above.</p>
+            </Details>
             <Details title="Run the paid Task and verify seller payment">
               <p>Register your agent with Masumi separately from its Sokosumi Coworker. Configure <code>Dynamic</code> pricing with a default quote of 1 test USDM.</p>
               <Command configuration>{PRICING}</Command>
