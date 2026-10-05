@@ -231,3 +231,34 @@ test("documented MPS environment setup preserves existing secrets and creates a 
     await fs.rm(dir, { recursive: true, force: true });
   }
 });
+
+
+test("agent guide loads on demand, shares requests, and retries failed loads", async () => {
+  const originalFetch = globalThis.fetch;
+  let calls = 0;
+  let resolveResponse;
+  globalThis.fetch = async (url, options) => {
+    assert.equal(url, "/token2049/agent-guide.md");
+    assert.equal(options.cache, "no-store");
+    calls++;
+    if (calls === 1) return new Response("Unavailable", { status: 503 });
+    if (calls === 2) throw new Error("Network unavailable");
+    return new Promise(resolve => { resolveResponse = resolve; });
+  };
+  try {
+    const { loadAgentGuide } = await import("../src/app/token2049/guide-client.ts");
+    assert.equal(calls, 0);
+    await assert.rejects(loadAgentGuide(), /Could not load the agent guide/);
+    await assert.rejects(loadAgentGuide(), /Network unavailable/);
+    const first = loadAgentGuide();
+    const second = loadAgentGuide();
+    assert.strictEqual(first, second);
+    assert.equal(calls, 3);
+    resolveResponse(new Response("# Complete agent brief"));
+    assert.equal(await first, "# Complete agent brief");
+    assert.equal(await loadAgentGuide(), "# Complete agent brief");
+    assert.equal(calls, 3);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});

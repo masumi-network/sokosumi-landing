@@ -7,7 +7,6 @@ import { CREDITS_URL, EVENT, SIGNUP_URL } from "./flow";
 import AudienceGuide from "./audience-guide";
 import Command, { Commands } from "./command";
 import Details from "./disclosure";
-import { readAgentGuide } from "./guide-source";
 import ui from "./guide-ui.module.css";
 import PaymentSculpture from "./payment-sculpture";
 import ExpertiseMotion from "./expertise-motion";
@@ -77,8 +76,7 @@ function Step({ number, title, children }: { number: string; title: string; chil
 
 const textLink = "font-medium text-[#171717] underline decoration-[#FA008C] underline-offset-4 hover:text-black focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#FA008C]";
 
-export default async function Token2049Guide() {
-  const agentGuide = await readAgentGuide();
+export default function Token2049Guide() {
   return <>
     <SkipLink /><Header product="masumi" />
     <main id="guide-main" tabIndex={-1} className="mx-auto max-w-6xl px-6 pb-28 pt-36 sm:px-12 sm:pb-36 sm:pt-48">
@@ -92,7 +90,7 @@ export default async function Token2049Guide() {
         <PaymentSculpture />
       </section>
 
-      <AudienceGuide guide={agentGuide}>
+      <AudienceGuide>
       <div className="grid gap-10 lg:grid-cols-[200px_1fr] lg:gap-16">
         <nav aria-label="Guide sections" className="self-start lg:sticky lg:top-28">
           <p className="mb-4 text-sm font-medium">Your path</p>
@@ -119,7 +117,7 @@ export default async function Token2049Guide() {
                 <div><dt className="font-medium text-[#171717]">Connect useful sources</dt><dd className="mt-2">Use documents, APIs, or records that the job needs. Start with public, synthetic, or approved company data. Include source links in the result.</dd></div>
                 <div><dt className="font-medium text-[#171717]">Keep useful outputs in mind</dt><dd className="mt-2">Your goals can develop as you build. Keep asking what would help the team. Use examples to check accuracy, review time, or another useful outcome.</dd></div>
               </dl>
-              <p>Give this job description to your coding agent along with the <Link href="/token2049/agent" className={textLink}>full setup brief</Link>. Then connect your account and Coworker below.</p>
+              <p>Give this job description to your coding agent along with the <Link href="/token2049/agent" prefetch={false} className={textLink}>full setup brief</Link>. Then connect your account and Coworker below.</p>
               <Details title="Other ways to build" description="Explore buyer agents, paid APIs, and agent-to-agent infrastructure.">
                 <p>This guide focuses on the in-between role: connect a Coworker to Sokosumi and build agent-to-agent flows with Masumi. You can also build for either side of the market.</p>
                 <ul className="list-disc space-y-4 ps-5">
@@ -141,7 +139,7 @@ export default async function Token2049Guide() {
               <p>Reusing a working agent? Keep its model provider, endpoint, and configuration. Test one small reply before connecting Sokosumi.</p>
               <p>When switching CLI accounts, clear shell credentials first. They override saved OAuth credentials.</p>
               <Command>{`unset SOKOSUMI_API_KEY SOKOSUMI_AUTH_TOKEN`}</Command>
-              <p>Prove model execution, then a Coworker Task, then seller payment. Each checkpoint needs its own evidence. The <Link href="/token2049/agent" className={textLink}>full agent brief</Link> includes recovery and failure checks.</p>
+              <p>Prove model execution, then a Coworker Task, then seller payment. Each checkpoint needs its own evidence. The <Link href="/token2049/agent" prefetch={false} className={textLink}>full agent brief</Link> includes recovery and failure checks.</p>
             </Details>
             <Details title="Install the CLI and sign in">
               <p>Use Node.js 24. Install the latest Sokosumi CLI, then check your identity.</p>
@@ -168,7 +166,7 @@ export default async function Token2049Guide() {
               <p>Replace both IDs to connect your Coworker to your Personal Workspace.</p>
               <Commands>{PERSONAL_CONNECT}</Commands>
               <p><strong className="font-semibold text-[#171717]">Select Personal Workspace in Sokosumi&apos;s Workspace switcher to see your personal Coworker.</strong> It will appear in the event Workspace after event access is approved.</p>
-              <p>Your coding agent can save the runtime key to your project&apos;s ignored <code>.env.local</code> and import it into the CLI vault. Give it the <Link href="/token2049/agent" className={textLink}>full agent brief</Link> and your IDs. Keep keys out of chat, code, logs, and screenshots.</p>
+              <p>Your coding agent can save the runtime key to your project&apos;s ignored <code>.env.local</code> and import it into the CLI vault. Give it the <Link href="/token2049/agent" prefetch={false} className={textLink}>full agent brief</Link> and your IDs. Keep keys out of chat, code, logs, and screenshots.</p>
             </Details>
             <Details title="Manual alternative: import the runtime key into the CLI">
               <p>If you are setting up without a coding agent, run this in your project terminal. It imports the key into the CLI vault without printing it. It does not write an environment file.</p>
@@ -267,7 +265,7 @@ export default async function Token2049Guide() {
                 <li>Clone <a href="https://github.com/masumi-network/masumi-payment-service" className={textLink}>Masumi Payment Service</a>. Create a dedicated demo database. The agent guide includes the Docker command and a local PostgreSQL alternative.</li>
                 <li>Create a private <code>.env</code> from <code>.env.example</code> only if no <code>.env</code> exists. Preserve existing settings and the encryption key on resume. Set the database URL, your Preprod Blockfrost key, and <code>PORT=3012</code>. Generate encryption and admin keys only for a new node. Reuse existing keys on resume. Keep Mainnet settings empty. Remove <code>COLLECTION_WALLET_V2_PREPROD_ADDRESS</code> from the file and unset it in the process environment before seeding.</li>
               </ol>
-              <p><Link href="/token2049/agent" className={textLink}>Use the full guide for database creation and environment settings</Link>.</p>
+              <p><Link href="/token2049/agent" prefetch={false} className={textLink}>Use the full guide for database creation and environment settings</Link>.</p>
             </Details>
             <Details title="Install and seed the database" description="Run migrations and create the demo wallets.">
               <p>From the MPS repository, after configuring <code>.env</code>, install locked packages and apply migrations to your dedicated demo database.</p>
@@ -294,7 +292,7 @@ fi`}</Command>
               <p>Implement and test your agent API first. A Standard registration needs its <code>apiBaseUrl</code>, which is different from the MPS URL. Open <code>http://127.0.0.1:3012/admin/</code> and register your agent with the Preprod V2 source and <code>{'{"pricingType":"Dynamic"}'}</code>. Wait for <code>RegistrationConfirmed</code>.</p>
               <p>Configure your worker with the returned Masumi identifier and payment source. Include the contract address, policy ID, seller verification key, and seller address. Use a separate MPS key with Preprod and selling-wallet access. MPS uses the <code>token</code> header; this key is different from your Coworker key.</p>
               <p>Keep the worker and payment node on the same machine for the first test. A deployed worker needs authenticated HTTPS access to MPS. Its <code>127.0.0.1</code> points to the deployed machine, not your laptop.</p>
-              <p>Seeding does not fund wallets or register your agent. Keep MPS and the database running until collection confirms. <Link href="/token2049/agent" className={textLink}>Read the full payment-node setup</Link>.</p>
+              <p>Seeding does not fund wallets or register your agent. Keep MPS and the database running until collection confirms. <Link href="/token2049/agent" prefetch={false} className={textLink}>Read the full payment-node setup</Link>.</p>
             </Details>
             </section>
             <Details title="Run the paid Task and verify seller payment" description="A confirmed collection transaction proves the seller received test USDM.">
@@ -308,7 +306,7 @@ fi`}</Command>
               </ol>
               <p>Build these steps into your worker. Task completion does not submit seller terms or the result hash for you. A completed Task or <code>PURCHASED</code> claim does not prove seller payment.</p>
               <p>Fund the seller wallet with test ADA for transaction fees. Allow time for collection and blockchain confirmation. Preserve signature errors and ask the payment team for help.</p>
-              <p><a href="https://www.masumi.network/dev/masumi/documentation" className={textLink}>Open Masumi developer documentation</a> or <Link href="/token2049/agent" className={textLink}>read the full implementation guide</Link>.</p>
+              <p><a href="https://www.masumi.network/dev/masumi/documentation" className={textLink}>Open Masumi developer documentation</a> or <Link href="/token2049/agent" prefetch={false} className={textLink}>read the full implementation guide</Link>.</p>
             </Details>
             <Details title="Deploy so others can try your agent" description="Keep your agent, worker, and payment node online for later tests.">
               <p><strong className="font-semibold text-[#171717]">Recommended final setup:</strong> eve on Vercel, with the worker, MPS, and PostgreSQL hosted on Railway. Keep the full path online so teams and judges can create Tasks after you leave.</p>

@@ -7,16 +7,24 @@ import Command from "./command";
 import Disclosure from "./disclosure";
 import ui from "./guide-ui.module.css";
 import { SIGNUP_URL } from "./flow";
+import { loadAgentGuide } from "./guide-client";
 
 type Audience = "human" | "agent";
 
-export default function AudienceGuide({ guide, children }: { guide: string; children: ReactNode }) {
+export default function AudienceGuide({ children }: { children: ReactNode }) {
+  const [guide, setGuide] = useState<string | null>(null);
+  const [guideError, setGuideError] = useState(false);
+  function prepareGuide() {
+    setGuideError(false);
+    void loadAgentGuide().then(setGuide).catch(() => setGuideError(true));
+  }
   const [audience, setAudience] = useState<Audience>("human");
   const [hasSwitched, setHasSwitched] = useState(false);
   function selectAudience(next: Audience) {
     if (next === audience) return;
     setHasSwitched(true);
     setAudience(next);
+    if (next === "agent" && guide === null) prepareGuide();
   }
   const humanTab = useRef<HTMLButtonElement>(null);
   const agentTab = useRef<HTMLButtonElement>(null);
@@ -42,9 +50,12 @@ export default function AudienceGuide({ guide, children }: { guide: string; chil
           <h2 id="machine-guide-title" className="max-w-[24ch] text-balance text-2xl font-medium leading-tight tracking-tight sm:text-3xl">One brief, from setup to seller payment.</h2>
           <p className="mt-5 max-w-xl leading-7 text-[#454545]">Give your coding agent the full guide. It covers Sokosumi, eve, a local payment node, and a paid Task.</p>
           <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
-            <CopyButton text={guide} label="Copy agent instructions" />
-            <Link href="/token2049/agent" className={ui.link}>Read the full brief</Link>
+            {guide !== null ? <CopyButton text={guide} label="Copy agent instructions" /> : guideError ?
+              <button type="button" onClick={prepareGuide} className={ui.button}>Retry loading instructions</button> :
+              <button type="button" disabled className={`${ui.button} opacity-60`}>Loading instructions...</button>}
+            <Link href="/token2049/agent" prefetch={false} className={ui.link}>Read the full brief</Link>
           </div>
+          <p role="status" aria-live="polite" className={guideError ? "mt-3 text-sm leading-6 text-[#454545]" : "sr-only"}>{guideError ? "Instructions could not load. Retry or read the full brief." : guide !== null ? "Agent instructions ready to copy." : audience === "agent" ? "Loading agent instructions." : ""}</p>
           <div className="my-10 border-l-2 border-[#B90065] ps-5">
             <p className="text-sm font-medium text-[#171717]">After loading the guide, give it a job</p>
             <blockquote className="mt-3 max-w-xl text-xl leading-8 text-black">Create a Coworker that summarizes a document and links to its sources.</blockquote>
