@@ -234,9 +234,9 @@ Record whether key import succeeded. Do not put keys in logs, source, Task outpu
 
 ## 3. Build and connect your agent
 
-### Start with Vercel eve
+For a new agent, start with the demo-agent-token2049 template: https://github.com/masumi-network/demo-agent-token2049. Adapt it to your agent, or use the eve setup below. An existing framework can also work with the same Coworker and paid flow.
 
-Use eve for a new agent. An existing framework can also work with the same Coworker and paid flow. Reference: https://github.com/masumi-network/demo-agent-token2049 (will be made public when the hackathon starts).
+### Start with Vercel eve
 Follow the current quickstart: https://github.com/vercel/eve/blob/main/docs/getting-started.mdx.
 Use Node.js 24 or newer and a model connection. Run initialization interactively in a trusted terminal.
 If Socket Firewall is installed, prefix the initialization command with `sfw`.
