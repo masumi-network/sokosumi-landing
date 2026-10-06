@@ -177,7 +177,7 @@ export default function Token2049Guide() {
 
           <Step number="3" title="Build and connect your agent">
             <p>Build the agent and a worker that sends it Sokosumi Tasks. Use <strong className="font-semibold text-[#171717]">Vercel eve</strong> by default, or connect your existing agent.</p>
-            <p>For a reference implementation, see the <a href="https://github.com/masumi-network/demo-agent-token2049" className={textLink}>TOKEN2049 demo agent repository</a>. It will be made public when the hackathon starts.</p>
+            <p>Start with the <a href="https://github.com/masumi-network/demo-agent-token2049" className={textLink}>demo-agent-token2049 template</a> and adapt it to your agent. The repository will be public at <strong className="font-semibold text-[#171717]">12:00 on 6 October</strong>. Until then, use the setup instructions below.</p>
             <Details title="Build with Vercel eve">
               <p>Use Node.js 24 or newer. Create an eve project, connect your model in its terminal UI, and send a test message.</p>
               <p>Use sfw before npx if Socket Firewall is installed.</p>
