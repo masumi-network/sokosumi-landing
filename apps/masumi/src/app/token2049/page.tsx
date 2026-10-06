@@ -81,6 +81,10 @@ export default function Token2049Guide() {
     <SkipLink /><Header product="masumi" />
     <main id="guide-main" tabIndex={-1} className="mx-auto max-w-6xl px-6 pb-28 pt-36 sm:px-12 sm:pb-36 sm:pt-48">
       <GuideNav current="/token2049" />
+      <a href="https://github.com/masumi-network/demo-agent-token2049" className="mb-8 flex flex-wrap items-center justify-between gap-x-4 gap-y-1 rounded-xl border border-[#FA008C]/20 bg-[#FA008C]/5 px-5 py-3 text-sm text-[#171717] transition-colors hover:bg-[#FA008C]/10 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#FA008C]">
+        <span>Build faster with the demo agent template.</span>
+        <span className="font-medium">View on GitHub <span aria-hidden="true">↗</span></span>
+      </a>
       <section aria-labelledby="hackathon-title" className={`${motion.hero} mb-12 sm:mb-16`}>
         <div>
         <p className="mb-6 animate-fade-in-up text-sm font-medium text-[#171717]">TOKEN2049 Origins Hackathon · 6 to 8 October 2026</p>
@@ -176,8 +180,8 @@ export default function Token2049Guide() {
           </Step>
 
           <Step number="3" title="Build and connect your agent">
+            <p>Start with the <a href="https://github.com/masumi-network/demo-agent-token2049" className={textLink}>demo-agent-token2049 template</a> and adapt it to your agent.</p>
             <p>Build the agent and a worker that sends it Sokosumi Tasks. Use <strong className="font-semibold text-[#171717]">Vercel eve</strong> by default, or connect your existing agent.</p>
-            <p>Start with the <a href="https://github.com/masumi-network/demo-agent-token2049" className={textLink}>demo-agent-token2049 template</a> and adapt it to your agent. The repository will be public at <strong className="font-semibold text-[#171717]">12:00 on 6 October</strong>. Until then, use the setup instructions below.</p>
             <Details title="Build with Vercel eve">
               <p>Use Node.js 24 or newer. Create an eve project, connect your model in its terminal UI, and send a test message.</p>
               <p>Use sfw before npx if Socket Firewall is installed.</p>
