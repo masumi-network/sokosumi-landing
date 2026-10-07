@@ -8,10 +8,13 @@ import {
   type X402PaymentDraft,
 } from "@/lib/x402/types";
 
+export type RegistrationKind = "STANDARD" | "X402_HTTP";
+
 export const registerWizardSchema = z.object({
   name: z.string(),
   email: z.string(),
   termsAccepted: z.boolean(),
+  registrationKind: z.enum(["STANDARD", "X402_HTTP"]),
   agentName: z.string(),
   description: z.string(),
   apiBaseUrl: z.string(),
@@ -31,6 +34,7 @@ export function createRegisterWizardDefaultValues(
     name: "",
     email: "",
     termsAccepted: false,
+    registrationKind: "STANDARD",
     agentName: "",
     description: "",
     apiBaseUrl: "",
@@ -70,23 +74,37 @@ export const accountStepSchema = z.object({
 export function createAgentStepSchema(cardanoNetwork: "Preprod" | "Mainnet") {
   return z
     .object({
+      registrationKind: z.enum(["STANDARD", "X402_HTTP"]),
       agentName: z.string().trim().min(1, "Agent name is required.").max(250),
       description: z.string().trim().max(250, "Use at most 250 characters."),
-      apiBaseUrl: z.httpUrl("Enter a valid HTTP or HTTPS API URL.").trim(),
+      apiBaseUrl: z.httpUrl("Enter a valid HTTP or HTTPS URL.").trim(),
       capabilityTags: z.string().trim().min(1, "Add at least one tag."),
-      cardanoPayoutAddress: z
-        .string()
-        .trim()
-        .min(1, "Cardano payout address is required."),
+      cardanoPayoutAddress: z.string(),
       includeX402: z.boolean(),
       x402: z.custom<X402PaymentDraft>(),
     })
     .superRefine((values, ctx) => {
-      if (
-        !isValidCardanoPayoutAddress(
-          values.cardanoPayoutAddress,
-          cardanoNetwork,
-        )
+      if (values.registrationKind === "X402_HTTP") {
+        if (values.includeX402) {
+          ctx.addIssue({
+            code: "custom",
+            message:
+              "x402 HTTP resource registration uses the live 402 on your URL.",
+            path: ["includeX402"],
+          });
+        }
+        return;
+      }
+
+      const payout = values.cardanoPayoutAddress.trim();
+      if (!payout) {
+        ctx.addIssue({
+          code: "custom",
+          message: "Cardano payout address is required.",
+          path: ["cardanoPayoutAddress"],
+        });
+      } else if (
+        !isValidCardanoPayoutAddress(values.cardanoPayoutAddress, cardanoNetwork)
       ) {
         ctx.addIssue({
           code: "custom",

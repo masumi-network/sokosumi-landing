@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeft, ArrowRight, X } from "lucide-react";
+import { ArrowLeft, ArrowRight, Sparkles, X } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
@@ -9,6 +9,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Spinner } from "@/components/ui/spinner";
 import { RegisterVerifyDialog } from "@/components/register-verify-dialog";
 import { ChainIcon } from "@/components/x402/chain-icon";
+import { FieldProbeIndicator } from "@/components/x402/field-probe-indicator";
 import { TokenIcon } from "@/components/x402/token-icon";
 import { X402PaymentFields } from "@/components/x402-payment-fields";
 import { PRIVACY_POLICY_URL } from "@/lib/config/privacy-policy-url";
@@ -37,6 +38,9 @@ import {
   storeNetworkRegistrationAgentDetailsForAgent,
 } from "@/lib/network-registration-details";
 import { fetchRegisterCapabilities } from "@/lib/register-capabilities";
+import type { RegistrationKind } from "@/lib/register-wizard/schema";
+import { useRegisterX402ResourceProbe } from "@/hooks/use-register-x402-resource-probe";
+import type { X402ResourceAutofill } from "@/lib/register-x402-probe";
 
 type StepId = "account" | "agent" | "review";
 
@@ -128,6 +132,8 @@ export function RegisterWizard() {
     formState: { errors },
   } = form;
 
+  const x402ResourceUrlField = register("apiBaseUrl");
+
   const watched = useWatch({
     control: form.control,
   }) as RegisterWizardFormValues;
@@ -152,7 +158,6 @@ export function RegisterWizard() {
   const [x402SettleableCaip2Ids, setX402SettleableCaip2Ids] = useState<
     string[] | null
   >(null);
-
   useEffect(() => {
     let cancelled = false;
 
@@ -182,6 +187,43 @@ export function RegisterWizard() {
     if (x402SettleableCaip2Ids == null) return false;
     return x402SettleableCaip2Ids.length > 0;
   }, [x402SettleableCaip2Ids]);
+
+  const isX402HttpRegistration = watched.registrationKind === "X402_HTTP";
+
+  const x402ResourceProbe = useRegisterX402ResourceProbe(
+    watched.apiBaseUrl ?? "",
+    isX402HttpRegistration,
+    (url) => setValue("apiBaseUrl", url, { shouldDirty: true }),
+  );
+
+  function applyX402Autofill(data: X402ResourceAutofill) {
+    setValue("agentName", data.name, { shouldDirty: true });
+    setValue("description", data.description, { shouldDirty: true });
+    setTags(data.tags);
+    setValue("capabilityTags", data.tags.join(", "), { shouldDirty: true });
+    clearErrors("agentName");
+    clearErrors("description");
+    clearErrors("capabilityTags");
+  }
+
+  function x402ResourceUrlReady(): boolean {
+    const currentUrl = getValues("apiBaseUrl").trim();
+    return (
+      x402ResourceProbe.isResourceValidated &&
+      x402ResourceProbe.validatedResourceUrl === currentUrl
+    );
+  }
+
+  function setRegistrationKind(kind: RegistrationKind) {
+    setValue("registrationKind", kind, { shouldDirty: true });
+    if (kind === "X402_HTTP") {
+      setValue("includeX402", false, { shouldDirty: true });
+      clearErrors("cardanoPayoutAddress");
+      clearErrors("includeX402");
+    } else {
+      x402ResourceProbe.resetProbe();
+    }
+  }
 
   const currentStep = wizardSteps.findIndex((s) => s.id === step) + 1;
   const activeMeta = wizardSteps[currentStep - 1];
@@ -340,8 +382,17 @@ export function RegisterWizard() {
       setStep("account");
       return;
     }
-    if (values.includeX402 && !x402SettleableCaip2Ids?.includes(values.x402.network)) {
+    if (
+      values.registrationKind === "STANDARD" &&
+      values.includeX402 &&
+      !x402SettleableCaip2Ids?.includes(values.x402.network)
+    ) {
       setError("Select an available EVM payment network.");
+      return;
+    }
+    if (values.registrationKind === "X402_HTTP" && !x402ResourceUrlReady()) {
+      setError("Wait for a compatible 402 check on your resource URL.");
+      setStep("agent");
       return;
     }
     const agentValidation = agentStepSchema.safeParse(values);
@@ -366,13 +417,14 @@ export function RegisterWizard() {
             name: values.name.trim(),
             email: sentEmail,
             termsAccepted: true,
+            registrationKind: values.registrationKind,
             agent: {
               name: values.agentName.trim(),
               description: values.description.trim(),
               apiUrl: values.apiBaseUrl.trim(),
               tags: values.capabilityTags.trim(),
             },
-            ...(values.includeX402
+            ...(values.registrationKind === "STANDARD" && values.includeX402
               ? {
                   payment: {
                     network: values.x402.network,
@@ -386,10 +438,13 @@ export function RegisterWizard() {
                   },
                 }
               : {}),
-            mint: {
-              destination: "managed",
-              payoutAddress: values.cardanoPayoutAddress.trim(),
-            },
+            mint:
+              values.registrationKind === "X402_HTTP"
+                ? { destination: "managed" }
+                : {
+                    destination: "managed",
+                    payoutAddress: values.cardanoPayoutAddress.trim(),
+                  },
             cardanoNetwork: MASUMI_REGISTRY_NETWORK,
           }),
         },
@@ -475,6 +530,12 @@ export function RegisterWizard() {
         return false;
       }
       setX402ShowErrors(false);
+      if (values.registrationKind === "X402_HTTP" && !x402ResourceUrlReady()) {
+        setError(
+          "Wait for a compatible 402 check on your resource URL.",
+        );
+        return false;
+      }
       if (!registrationToken) {
         setError("Verify your email before continuing.");
         setVerifyDialogOpen(true);
@@ -649,6 +710,48 @@ export function RegisterWizard() {
 
           {step === "agent" ? (
             <div className="space-y-4">
+              <div>
+                <span className="block text-sm font-medium text-masumi-ink">
+                  Agent type
+                </span>
+                <div className="mt-1.5 grid gap-2 sm:grid-cols-2">
+                  <button
+                    type="button"
+                    className={cn(
+                      "rounded-lg border px-3 py-3 text-left text-sm transition-colors",
+                      watched.registrationKind === "STANDARD"
+                        ? "border-masumi-ink bg-masumi-surface/80"
+                        : "border-masumi-border bg-white hover:border-masumi-muted",
+                    )}
+                    onClick={() => setRegistrationKind("STANDARD")}
+                  >
+                    <span className="block font-medium text-masumi-ink">
+                      Standard API agent
+                    </span>
+                    <span className="mt-1 block text-xs leading-relaxed text-masumi-muted">
+                      Host a MIP API base URL with dynamic Cardano pricing.
+                    </span>
+                  </button>
+                  <button
+                    type="button"
+                    className={cn(
+                      "rounded-lg border px-3 py-3 text-left text-sm transition-colors",
+                      watched.registrationKind === "X402_HTTP"
+                        ? "border-masumi-ink bg-masumi-surface/80"
+                        : "border-masumi-border bg-white hover:border-masumi-muted",
+                    )}
+                    onClick={() => setRegistrationKind("X402_HTTP")}
+                  >
+                    <span className="block font-medium text-masumi-ink">
+                      x402 HTTP resource
+                    </span>
+                    <span className="mt-1 block text-xs leading-relaxed text-masumi-muted">
+                      Register a paid HTTP endpoint that already returns 402.
+                    </span>
+                  </button>
+                </div>
+              </div>
+
               <Field label="Agent name" error={errors.agentName?.message}>
                 <input
                   className={inputClass}
@@ -665,14 +768,76 @@ export function RegisterWizard() {
                   {...register("description")}
                 />
               </Field>
-              <Field label="API base URL" error={errors.apiBaseUrl?.message}>
-                <input
-                  className={inputClass}
-                  placeholder="https://api.example.com"
-                  aria-label="API base URL"
-                  {...register("apiBaseUrl")}
-                />
+              <Field
+                label={
+                  isX402HttpRegistration ? "x402 resource URL" : "API base URL"
+                }
+                hint={
+                  isX402HttpRegistration
+                    ? "Public HTTPS URL that returns a valid 402 payment requirement."
+                    : undefined
+                }
+                error={errors.apiBaseUrl?.message}
+              >
+                {isX402HttpRegistration ? (
+                  <div className="flex flex-col gap-2 sm:flex-row sm:items-start">
+                    <div className="relative min-w-0 flex-1">
+                      <input
+                        className={`${inputClass} pr-10 font-mono text-sm`}
+                        placeholder="https://api.example.com/paid-endpoint"
+                        aria-label="x402 resource URL"
+                        {...x402ResourceUrlField}
+                        onChange={(event) => {
+                          x402ResourceUrlField.onChange(event);
+                          x402ResourceProbe.resetProbe();
+                        }}
+                      />
+                      <div className="pointer-events-none absolute inset-y-0 right-0 flex w-10 items-center justify-center">
+                        <div className="pointer-events-auto flex items-center justify-center">
+                          <FieldProbeIndicator
+                            status={x402ResourceProbe.indicatorStatus}
+                            checkingLabel="Checking live 402…"
+                            validLabel="Compatible 402 response"
+                            invalidMessage={x402ResourceProbe.invalidMessage}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      className="btn-secondary inline-flex h-[42px] shrink-0 items-center gap-2 px-4 disabled:opacity-50"
+                      disabled={
+                        !x402ResourceProbe.canAutofillMetadata ||
+                        x402ResourceProbe.autofillInProgress
+                      }
+                      onClick={() =>
+                        void x402ResourceProbe.runAutofillMetadata(
+                          applyX402Autofill,
+                        )
+                      }
+                    >
+                      {x402ResourceProbe.autofillInProgress ? (
+                        <Spinner size={16} className="shrink-0" />
+                      ) : (
+                        <Sparkles className="size-4 shrink-0" aria-hidden />
+                      )}
+                      Autofill metadata
+                    </button>
+                  </div>
+                ) : (
+                  <input
+                    className={inputClass}
+                    placeholder="https://api.example.com"
+                    aria-label="API base URL"
+                    {...register("apiBaseUrl")}
+                  />
+                )}
               </Field>
+              {isX402HttpRegistration && x402ResourceProbe.invalidMessage ? (
+                <p className="text-xs text-red-600" role="alert">
+                  {x402ResourceProbe.invalidMessage}
+                </p>
+              ) : null}
               <div className="block">
                 <span className="text-sm font-medium text-masumi-ink">Tags</span>
                 <div className="mt-1.5 flex gap-2">
@@ -724,40 +889,44 @@ export function RegisterWizard() {
                 ) : null}
               </div>
 
-              <Field
-                label="Cardano payout address"
-                hint={`Where ${MASUMI_REGISTRY_NETWORK === "Mainnet" ? "Mainnet" : "Preprod"} ADA payments for this agent should be sent.`}
-                error={errors.cardanoPayoutAddress?.message}
-              >
-                <input
-                  className={inputClass}
-                  placeholder={
-                    MASUMI_REGISTRY_NETWORK === "Mainnet"
-                      ? "addr1…"
-                      : "addr_test1…"
-                  }
-                  aria-label="Cardano payout address"
-                  autoComplete="off"
-                  spellCheck={false}
-                  {...register("cardanoPayoutAddress")}
-                />
-              </Field>
+              {!isX402HttpRegistration ? (
+                <Field
+                  label="Cardano payout address"
+                  hint={`Where ${MASUMI_REGISTRY_NETWORK === "Mainnet" ? "Mainnet" : "Preprod"} ADA payments for this agent should be sent.`}
+                  error={errors.cardanoPayoutAddress?.message}
+                >
+                  <input
+                    className={inputClass}
+                    placeholder={
+                      MASUMI_REGISTRY_NETWORK === "Mainnet"
+                        ? "addr1…"
+                        : "addr_test1…"
+                    }
+                    aria-label="Cardano payout address"
+                    autoComplete="off"
+                    spellCheck={false}
+                    {...register("cardanoPayoutAddress")}
+                  />
+                </Field>
+              ) : null}
 
-              <div className="rounded-lg border border-masumi-border bg-masumi-surface/60 p-3">
-                <p className="text-xs font-medium uppercase tracking-wide text-masumi-muted">
-                  Pricing
-                </p>
-                <p className="mt-1 text-sm leading-relaxed text-masumi-ink">
-                  Dynamic pricing. Amounts are set per job when buyers pay via your
-                  API / MIP.
-                </p>
-              </div>
+              {!isX402HttpRegistration ? (
+                <div className="rounded-lg border border-masumi-border bg-masumi-surface/60 p-3">
+                  <p className="text-xs font-medium uppercase tracking-wide text-masumi-muted">
+                    Pricing
+                  </p>
+                  <p className="mt-1 text-sm leading-relaxed text-masumi-ink">
+                    Dynamic pricing. Amounts are set per job when buyers pay via
+                    your API / MIP.
+                  </p>
+                </div>
+              ) : null}
 
-              {x402CapabilitiesLoading ? (
+              {!isX402HttpRegistration && x402CapabilitiesLoading ? (
                 <p className="text-xs text-masumi-muted">
                   Checking available EVM payment networks…
                 </p>
-              ) : x402RegistrationAvailable ? (
+              ) : !isX402HttpRegistration && x402RegistrationAvailable ? (
                 <label className="flex w-full cursor-pointer items-start gap-3 rounded-lg border border-masumi-border bg-white px-3 py-3">
                   <Checkbox
                     className="mt-0.5"
@@ -782,7 +951,9 @@ export function RegisterWizard() {
                 </label>
               ) : null}
 
-              {watched.includeX402 && x402RegistrationAvailable ? (
+              {!isX402HttpRegistration &&
+              watched.includeX402 &&
+              x402RegistrationAvailable ? (
                 <X402PaymentFields
                   value={watched.x402}
                   onChange={(x402: X402PaymentDraft) =>
@@ -815,8 +986,20 @@ export function RegisterWizard() {
                   {watched.description.trim() || "None"}
                 </dd>
               </div>
+              <div className="rounded-lg border border-masumi-border bg-masumi-surface/60 p-3">
+                <dt className="text-xs text-masumi-muted">Agent type</dt>
+                <dd className="mt-1 font-medium">
+                  {watched.registrationKind === "X402_HTTP"
+                    ? "x402 HTTP resource"
+                    : "Standard API agent"}
+                </dd>
+              </div>
               <div className="rounded-lg border border-masumi-border bg-masumi-surface/60 p-3 sm:col-span-2">
-                <dt className="text-xs text-masumi-muted">API base URL</dt>
+                <dt className="text-xs text-masumi-muted">
+                  {watched.registrationKind === "X402_HTTP"
+                    ? "x402 resource URL"
+                    : "API base URL"}
+                </dt>
                 <dd className="mt-1 break-all font-medium">
                   {watched.apiBaseUrl.trim()}
                 </dd>
@@ -838,19 +1021,25 @@ export function RegisterWizard() {
                   )}
                 </dd>
               </div>
-              <div className="rounded-lg border border-masumi-border bg-masumi-surface/60 p-3 sm:col-span-2">
-                <dt className="text-xs text-masumi-muted">
-                  Cardano payout address
-                </dt>
-                <dd className="mt-1 break-all font-medium">
-                  {watched.cardanoPayoutAddress.trim()}
-                </dd>
-              </div>
+              {watched.registrationKind === "STANDARD" ? (
+                <div className="rounded-lg border border-masumi-border bg-masumi-surface/60 p-3 sm:col-span-2">
+                  <dt className="text-xs text-masumi-muted">
+                    Cardano payout address
+                  </dt>
+                  <dd className="mt-1 break-all font-medium">
+                    {watched.cardanoPayoutAddress.trim()}
+                  </dd>
+                </div>
+              ) : null}
               <div className="rounded-lg border border-masumi-border bg-masumi-surface/60 p-3">
                 <dt className="text-xs text-masumi-muted">Pricing</dt>
-                <dd className="mt-1 font-medium">Dynamic</dd>
+                <dd className="mt-1 font-medium">
+                  {watched.registrationKind === "X402_HTTP"
+                    ? "From live 402"
+                    : "Dynamic"}
+                </dd>
               </div>
-              {watched.includeX402 ? (
+              {watched.registrationKind === "STANDARD" && watched.includeX402 ? (
                 <div className="rounded-lg border border-masumi-border bg-masumi-surface/60 p-3 sm:col-span-2">
                   <dt className="text-xs text-masumi-muted">x402</dt>
                   <dd className="mt-1 font-medium">
