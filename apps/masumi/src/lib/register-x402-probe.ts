@@ -49,6 +49,7 @@ export async function probeNetworkX402Resource(
       message?: string;
       resourceUrl?: string;
       compatible?: boolean;
+      checks?: Record<string, unknown>;
       autofill?: X402ResourceAutofill;
     };
 
