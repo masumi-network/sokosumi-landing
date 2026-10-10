@@ -31,6 +31,8 @@ export function useRegisterX402ResourceProbe(
   const [autofillInProgress, setAutofillInProgress] = useState(false);
   const probeGenerationRef = useRef(0);
   const lastAutoProbeKeyRef = useRef<string | null>(null);
+  const onCanonicalResourceUrlRef = useRef(onCanonicalResourceUrl);
+  onCanonicalResourceUrlRef.current = onCanonicalResourceUrl;
 
   const trimmedUrl = resourceUrl.trim();
   const debouncedUrl = useDebouncedValue(trimmedUrl, 500);
@@ -39,7 +41,7 @@ export function useRegisterX402ResourceProbe(
     probeGenerationRef.current += 1;
     lastAutoProbeKeyRef.current = null;
     setAutofill(null);
-    setProbe({ status: "idle" });
+    setProbe((current) => (current.status === "idle" ? current : { status: "idle" }));
   }, []);
 
   const runProbe = useCallback(async (url: string): Promise<X402ResourceProbeViewState> => {
@@ -67,7 +69,7 @@ export function useRegisterX402ResourceProbe(
 
     const canonicalUrl = result.resourceUrl.trim();
     if (canonicalUrl !== url.trim()) {
-      onCanonicalResourceUrl?.(canonicalUrl);
+      onCanonicalResourceUrlRef.current?.(canonicalUrl);
     }
 
     const next: X402ResourceProbeViewState = {
@@ -78,7 +80,7 @@ export function useRegisterX402ResourceProbe(
     setAutofill(result.autofill);
     lastAutoProbeKeyRef.current = next.key;
     return next;
-  }, [onCanonicalResourceUrl]);
+  }, []);
 
   useEffect(() => {
     if (!enabled) {
