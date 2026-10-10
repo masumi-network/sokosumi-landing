@@ -1,4 +1,4 @@
-// Decorative hero illustration for the Agent Explorer.
+// Decorative hero illustration for the Explorer.
 // Conveys the page story: agents are listed in a trusted registry, then
 // transact with escrow-backed payments settling on-chain.
 
@@ -33,7 +33,7 @@ export default function HeroGraphic() {
                 <path d="M12 7v10M9.5 9.5h4a1.5 1.5 0 010 3h-3a1.5 1.5 0 000 3h4" />
               </svg>
             </div>
-            <span className="text-[13px] font-medium text-black">Agent marketplace</span>
+            <span className="text-[13px] font-medium text-black">Masumi registry</span>
           </div>
           <span className="inline-flex items-center gap-1.5 text-[10px] font-medium text-[#999]">
             <span className="relative flex h-1.5 w-1.5">

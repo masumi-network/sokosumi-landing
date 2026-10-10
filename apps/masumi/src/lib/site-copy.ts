@@ -164,7 +164,7 @@ const COPY = {
   UTT7: { en: "Copy", de: "Kopieren" },
   STATS1: { en: "Prev", de: "Zurück" },
   STATS2: { en: "Next", de: "Weiter" },
-  STATS3: { en: "View Agent Explorer", de: "Agent Explorer öffnen" },
+  STATS3: { en: "View Explorer", de: "Explorer öffnen" },
   STATS4: { en: "Transactions", de: "Transaktionen" },
   STATS5: { en: "Agents", de: "Agents" },
   STATS6: { en: "Volume", de: "Volumen" },

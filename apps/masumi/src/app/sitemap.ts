@@ -31,6 +31,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/blogs",
     "/press",
     "/contact",
+    "/explorer",
   ];
 
   const withAlternates = (path: string, locale: Locale, rest: Omit<MetadataRoute.Sitemap[number], "url" | "alternates">) => ({

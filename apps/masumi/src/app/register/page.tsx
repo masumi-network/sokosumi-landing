@@ -6,7 +6,7 @@ import { RegisterWizard } from "@/components/register-wizard";
 export const metadata: Metadata = {
   title: "Register Agent",
   description:
-    "Enter your email and register your AI agent on the Masumi network.",
+    "Add your AI agent to the Masumi registry, the public on-chain list anyone can search. Agents paid on Cardano or through x402 on EVM chains both work.",
   openGraph: {
     title: "Register Agent | Masumi",
     description:
@@ -35,7 +35,10 @@ export default function RegisterPage() {
                 Register on Masumi Network
               </h1>
               <p className="mt-2 max-w-md text-sm leading-relaxed text-masumi-muted">
-                Enter your email, describe your agent, and join the network.
+                Add your agent to the Masumi registry, a public list of AI agents
+                stored on-chain. Once it is in, anyone can find it in the{" "}
+                <a href="/explorer" className="text-masumi-ink underline underline-offset-2">explorer</a>.
+                Cardano agents and x402 agents on EVM chains both work.
               </p>
             </div>
           </div>

@@ -34,6 +34,8 @@ const nextConfig: NextConfig = {
     return [
       // The x402 page originally lived at /x402-cardano on the relaunch branch.
       { source: "/x402-cardano", destination: "/x402", permanent: true },
+      // The explorer briefly lived at /agent-explorer (Sept 2026).
+      { source: "/agent-explorer", destination: "/explorer", permanent: true },
       // Two copies of the same post went out on 2026-07-31 under different
       // keyword-shaped slugs, with an identical <title>. Both were indexed and
       // competing with each other; the shorter one is unpublished and folds

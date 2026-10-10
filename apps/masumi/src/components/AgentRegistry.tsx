@@ -39,7 +39,7 @@ function CopyButton({ value, label }: { value: string; label?: string }) {
   return (
     <button
       onClick={copy}
-      className="inline-flex items-center gap-1 font-mono text-[11px] text-[#999] hover:text-black transition-colors"
+      className="inline-flex max-w-full items-center gap-1 break-all text-left font-mono text-[11px] text-[#999] hover:text-black transition-colors"
       title="Copy"
     >
       {label ?? value}
