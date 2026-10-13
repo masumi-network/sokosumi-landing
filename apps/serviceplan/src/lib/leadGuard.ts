@@ -61,25 +61,9 @@ async function resolves(lookup: () => Promise<unknown[]>): Promise<boolean> {
   }
 }
 
-async function verifyTurnstile(token: unknown, ip: string): Promise<boolean> {
-  const secret = process.env.TURNSTILE_SECRET_KEY;
-  if (!secret) return true;
-  if (typeof token !== "string" || !token) return false;
-  try {
-    const res = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: new URLSearchParams({ secret, response: token, remoteip: ip }),
-    });
-    const data = (await res.json()) as { success?: boolean };
-    return data.success === true;
-  } catch {
-    return false;
-  }
-}
 
 export interface GuardOptions {
-  /** Landing-page forms carry the honeypot and the captcha token. */
+  /** Landing-page forms carry the honeypot field. */
   fromLandingPage: boolean;
   rejectFreemail: boolean;
   /** Website field to validate (free analysis only). */
@@ -99,9 +83,6 @@ export async function guardLead(
   }
   if (overLimit(`ip:${req.nextUrl.pathname}:${ip}`, MAX_PER_IP)) {
     return { ok: false, field: "form", code: "rate_limited" };
-  }
-  if (opts.fromLandingPage && !(await verifyTurnstile(body.cf_token, ip))) {
-    return { ok: false, field: "form", code: "captcha" };
   }
 
   const emailCheck = checkEmail(email, opts.rejectFreemail);

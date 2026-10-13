@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useCallback, useRef, useState } from "react";
+import { FormEvent, useRef, useState } from "react";
 import { submitLpAnalysis, submitLpDemo } from "@/lib/submitForm";
 import {
   checkEmail,
@@ -17,7 +17,6 @@ import {
   type LeadField,
 } from "@/lib/leadRules";
 import SpLogo from "@/components/SpLogo";
-import Turnstile from "@/components/lp/Turnstile";
 import { COMPANY_LOGOS } from "@/components/lp/logos";
 import type { LpContent, LpPath, LpSectionId } from "@/components/lp/types";
 
@@ -224,7 +223,6 @@ export default function LpPage({ content: c }: { content: LpContent }) {
   const [email, setEmail] = useState("");
   const [websiteUrl, setWebsiteUrl] = useState("");
   const [taskHp, setTaskHp] = useState("");
-  const [taskToken, setTaskToken] = useState("");
   const [taskErrors, setTaskErrors] = useState<Errors>({});
   const [taskState, setTaskState] = useState<"idle" | "sending" | "done">("idle");
 
@@ -245,7 +243,6 @@ export default function LpPage({ content: c }: { content: LpContent }) {
       website_url: normalizeWebsite(websiteUrl) as string,
       source: c.source,
       locale: L,
-      cf_token: taskToken,
       [HONEYPOT_FIELD]: taskHp,
     });
     if (res.ok) {
@@ -260,7 +257,6 @@ export default function LpPage({ content: c }: { content: LpContent }) {
   const [demo, setDemo] = useState({ name: "", org: "", email: "", topic: "" });
   const [demoChip, setDemoChip] = useState<string | null>(null);
   const [demoHp, setDemoHp] = useState("");
-  const [demoToken, setDemoToken] = useState("");
   const [demoErrors, setDemoErrors] = useState<Errors>({});
   const [demoWarn, setDemoWarn] = useState(false);
   const [demoState, setDemoState] = useState<"idle" | "sending" | "done">("idle");
@@ -296,7 +292,6 @@ export default function LpPage({ content: c }: { content: LpContent }) {
       category: demo.topic.trim() || `Demo (${c.source} LP, ${L})`,
       source: c.source,
       locale: L,
-      cf_token: demoToken,
       [HONEYPOT_FIELD]: demoHp,
     });
     if (res.ok) {
@@ -338,8 +333,6 @@ export default function LpPage({ content: c }: { content: LpContent }) {
 
   const [menuOpen, setMenuOpen] = useState(false);
   const closeMenu = () => setMenuOpen(false);
-  const onTaskToken = useCallback((t: string) => setTaskToken(t), []);
-  const onDemoToken = useCallback((t: string) => setDemoToken(t), []);
 
   const primary = c.primary;
   const secondary = other(primary);
@@ -500,7 +493,6 @@ export default function LpPage({ content: c }: { content: LpContent }) {
                     </div>
                     <Honeypot value={taskHp} onChange={setTaskHp} />
                   </div>
-                  <Turnstile locale={L} onToken={onTaskToken} />
                   <button
                     type="submit"
                     className="ag-btn ag-btn-red ag-btn-lg"
@@ -763,7 +755,6 @@ export default function LpPage({ content: c }: { content: LpContent }) {
                   {c.demo.chips && <p className="ag-field-hint">{c.demo.chips.hint}</p>}
                 </div>
                 <Honeypot value={demoHp} onChange={setDemoHp} />
-                <Turnstile locale={L} onToken={onDemoToken} />
                 <button
                   type="submit"
                   className={`ag-btn ag-btn-lg ${primary === "demo" ? "ag-btn-red" : "ag-btn-black"}`}

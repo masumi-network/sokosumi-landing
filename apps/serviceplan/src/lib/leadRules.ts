@@ -13,7 +13,6 @@ export type LeadErrorCode =
   | "url_invalid"
   | "url_unreachable"
   | "rate_limited"
-  | "captcha"
   | "rejected";
 
 export type LeadCheck =
@@ -142,10 +141,6 @@ const MESSAGES: Record<LeadErrorCode, { de: string; en: string }> = {
   rate_limited: {
     de: "Zu viele Anfragen in kurzer Zeit. Bitte versuchen Sie es in ein paar Minuten noch einmal.",
     en: "Too many requests in a short time. Please try again in a few minutes.",
-  },
-  captcha: {
-    de: "Die Sicherheitsprüfung hat nicht geklappt. Bitte laden Sie die Seite neu und versuchen Sie es noch einmal.",
-    en: "The security check didn't go through. Please reload the page and try again.",
   },
   rejected: {
     de: "Das hat gerade nicht geklappt. Bitte versuchen Sie es noch einmal.",

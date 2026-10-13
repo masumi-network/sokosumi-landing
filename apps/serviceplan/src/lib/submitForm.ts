@@ -66,7 +66,6 @@ export function submitLpAnalysis(payload: {
   website_url: string;
   source: "agencies" | "enterprise";
   locale: "de" | "en";
-  cf_token?: string;
   [HONEYPOT_FIELD]: string;
 }): Promise<LpResult> {
   return postLead("/api/analysis", payload, "task_start_request");
@@ -79,7 +78,6 @@ export function submitLpDemo(payload: {
   category: string;
   source: "agencies" | "enterprise";
   locale: "de" | "en";
-  cf_token?: string;
   [HONEYPOT_FIELD]: string;
 }): Promise<LpResult> {
   return postLead("/api/demo", payload, "demo_request");

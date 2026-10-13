@@ -709,10 +709,6 @@
   color: var(--base-color-brand--text-light);
 }
 
-.ag-turnstile {
-  margin-bottom: 1rem;
-}
-
 /* Honeypot: außerhalb des Bildschirms, für Menschen unsichtbar */
 .ag-hp {
   position: absolute;
