@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { appendSignupRow } from "@/lib/sheets";
+import { guardLead } from "@/lib/leadGuard";
 
 const INBOUND_API_URL = "https://inbound.new/api/e2/emails";
 const INBOUND_API_KEY = process.env.INBOUND_API_KEY || "";
@@ -23,6 +24,14 @@ function detectLocale(req: NextRequest): string {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
+    const fromLandingPage = ["agenturen", "agencies", "enterprise"].includes(body.source);
+    if (fromLandingPage && !String(body.name ?? "").trim()) {
+      return NextResponse.json({ ok: false, field: "name", code: "required" }, { status: 400 });
+    }
+    const check = await guardLead(req, body, { fromLandingPage, rejectFreemail: false });
+    if (!check.ok) {
+      return NextResponse.json(check, { status: check.code === "rate_limited" ? 429 : 400 });
+    }
     const locale =
       body.locale === "de" || body.locale === "en"
         ? body.locale

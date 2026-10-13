@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { appendSignupRow } from "@/lib/sheets";
+import { guardLead } from "@/lib/leadGuard";
+import { normalizeWebsite } from "@/lib/leadRules";
 
 const ONBOARDING_URL = "https://elena.serviceplan-agents.com/onboarding/submit";
 const INBOUND_API_URL = "https://inbound.new/api/e2/emails";
@@ -15,10 +17,21 @@ function detectLocale(req: NextRequest): string {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { email, website_url } = body;
     // The audience LPs (/agencies, /enterprise) post their source and locale.
     const LP_SOURCES = new Set(["agenturen", "agencies", "enterprise"]);
-    const source = LP_SOURCES.has(body.source) ? body.source : "free-analysis";
+    const fromLandingPage = LP_SOURCES.has(body.source);
+    const source = fromLandingPage ? body.source : "free-analysis";
+
+    const check = await guardLead(req, body, {
+      fromLandingPage,
+      rejectFreemail: fromLandingPage,
+      website: body.website_url,
+    });
+    if (!check.ok) {
+      return NextResponse.json(check, { status: check.code === "rate_limited" ? 429 : 400 });
+    }
+    const email = String(body.email).trim();
+    const website_url = normalizeWebsite(body.website_url) as string;
     const locale =
       body.locale === "de" || body.locale === "en"
         ? body.locale

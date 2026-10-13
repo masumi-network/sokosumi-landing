@@ -1,3 +1,5 @@
+import { HONEYPOT_FIELD, type LeadErrorCode, type LeadField } from "@/lib/leadRules";
+
 declare global {
   interface Window {
     dataLayer?: Record<string, unknown>[];
@@ -27,28 +29,60 @@ export async function submitAnalysisForm(
   }
 }
 
-/** Primary conversion of the audience LPs (/agencies, /enterprise): the
- *  free competitive analysis (same endpoint as the homepage form). Pushes
- *  the LPs' own `task_start_request` event so the published GTM/Meta Lead
- *  tag fires. */
-export async function submitLpAnalysis(
-  email: string,
-  websiteUrl: string,
-  source: "agencies" | "enterprise",
-  locale: "de" | "en"
-): Promise<boolean> {
+export type LpResult =
+  | { ok: true }
+  | { ok: false; field: LeadField; code: LeadErrorCode };
+
+async function postLead(
+  url: string,
+  payload: Record<string, unknown>,
+  event: string
+): Promise<LpResult> {
   try {
-    const res = await fetch("/api/analysis", {
+    const res = await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, website_url: websiteUrl, source, locale }),
+      body: JSON.stringify(payload),
     });
     const data = await res.json();
-    if (data.ok) pushDataLayerEvent("task_start_request");
-    return data.ok;
+    if (data.ok) {
+      pushDataLayerEvent(event);
+      return { ok: true };
+    }
+    return data.code
+      ? { ok: false, field: data.field ?? "form", code: data.code }
+      : { ok: false, field: "form", code: "rejected" };
   } catch {
-    return false;
+    return { ok: false, field: "form", code: "rejected" };
   }
+}
+
+/** Primary conversion of the audience LPs (/agencies, /enterprise): the
+ *  free competitive analysis (same endpoint as the homepage form). Pushes
+ *  the LPs' own `task_start_request` event — only after the server accepted
+ *  the lead — so the published GTM/Meta Lead tag fires. */
+export function submitLpAnalysis(payload: {
+  email: string;
+  website_url: string;
+  source: "agencies" | "enterprise";
+  locale: "de" | "en";
+  cf_token?: string;
+  [HONEYPOT_FIELD]: string;
+}): Promise<LpResult> {
+  return postLead("/api/analysis", payload, "task_start_request");
+}
+
+export function submitLpDemo(payload: {
+  name: string;
+  email: string;
+  websiteUrl: string;
+  category: string;
+  source: "agencies" | "enterprise";
+  locale: "de" | "en";
+  cf_token?: string;
+  [HONEYPOT_FIELD]: string;
+}): Promise<LpResult> {
+  return postLead("/api/demo", payload, "demo_request");
 }
 
 export async function sendDemoNotification(formData: {

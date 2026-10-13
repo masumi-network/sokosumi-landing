@@ -1,22 +1,25 @@
 "use client";
 
-import { FormEvent, useState } from "react";
-import { submitLpAnalysis, sendDemoNotification } from "@/lib/submitForm";
+import { FormEvent, useCallback, useRef, useState } from "react";
+import { submitLpAnalysis, submitLpDemo } from "@/lib/submitForm";
+import {
+  checkEmail,
+  checkWebsite,
+  isEmailFormat,
+  isFreemail,
+  leadMessage,
+  normalizeWebsite,
+  FREEMAIL_WARNING,
+  HONEYPOT_FIELD,
+  PRIVACY_NOTE,
+  PRIVACY_URL,
+  type LeadErrorCode,
+  type LeadField,
+} from "@/lib/leadRules";
 import SpLogo from "@/components/SpLogo";
+import Turnstile from "@/components/lp/Turnstile";
 import { COMPANY_LOGOS } from "@/components/lp/logos";
-import type { LpContent } from "@/components/lp/types";
-
-function normalizeUrl(url: string): string {
-  const trimmed = url.trim();
-  if (trimmed && !/^https?:\/\//i.test(trimmed)) return `https://${trimmed}`;
-  return trimmed;
-}
-
-function scrollToForm() {
-  document
-    .getElementById("starten")
-    ?.scrollIntoView({ behavior: "smooth", block: "start" });
-}
+import type { LpContent, LpPath, LpSectionId } from "@/components/lp/types";
 
 function ArrowCircle() {
   return (
@@ -147,251 +150,222 @@ function HeroVisual({ suffix }: { suffix: string }) {
   );
 }
 
+const PATH_HREF: Record<LpPath, string> = { demo: "#demo", start: "#starten" };
+
+function other(path: LpPath): LpPath {
+  return path === "demo" ? "start" : "demo";
+}
+
+type Errors = Partial<Record<LeadField, LeadErrorCode>>;
+
+function FieldError({
+  id,
+  code,
+  locale,
+}: {
+  id: string;
+  code?: LeadErrorCode;
+  locale: "de" | "en";
+}) {
+  if (!code) return null;
+  return (
+    <p id={id} className="ag-field-error" role="alert">
+      {leadMessage(code, locale)}
+    </p>
+  );
+}
+
+function PrivacyNote({ locale }: { locale: "de" | "en" }) {
+  const t = PRIVACY_NOTE[locale];
+  return (
+    <p className="ag-privacy">
+      {t.before}{" "}
+      <a href={PRIVACY_URL} target="_blank" rel="noopener">
+        {t.link}
+      </a>
+      {t.after}
+    </p>
+  );
+}
+
+/* Unsichtbares Honeypot-Feld: Menschen sehen es nicht, Bots füllen es. */
+function Honeypot({
+  value,
+  onChange,
+}: {
+  value: string;
+  onChange: (v: string) => void;
+}) {
+  return (
+    <div className="ag-hp" aria-hidden="true">
+      <label>
+        Fax
+        <input
+          type="text"
+          name={HONEYPOT_FIELD}
+          tabIndex={-1}
+          autoComplete="off"
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+        />
+      </label>
+    </div>
+  );
+}
+
+function scrollToId(id: string) {
+  document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
 export default function LpPage({ content: c }: { content: LpContent }) {
+  const L = c.locale;
+
+  /* ----- Kostenlose Wettbewerbsanalyse ----- */
   const [email, setEmail] = useState("");
   const [websiteUrl, setWebsiteUrl] = useState("");
-  const [taskState, setTaskState] = useState<
-    "idle" | "sending" | "done" | "error"
-  >("idle");
-
-  const [demo, setDemo] = useState({ name: "", org: "", email: "", topic: "" });
-  const [demoState, setDemoState] = useState<
-    "idle" | "sending" | "done" | "error"
-  >("idle");
+  const [taskHp, setTaskHp] = useState("");
+  const [taskToken, setTaskToken] = useState("");
+  const [taskErrors, setTaskErrors] = useState<Errors>({});
+  const [taskState, setTaskState] = useState<"idle" | "sending" | "done">("idle");
 
   async function handleAnalysisSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (taskState === "sending") return;
+    const errs: Errors = {};
+    const ec = checkEmail(email, true);
+    if (!ec.ok) errs.email = ec.code;
+    const uc = checkWebsite(websiteUrl);
+    if (!uc.ok) errs.url = uc.code;
+    setTaskErrors(errs);
+    if (Object.keys(errs).length) return;
+
     setTaskState("sending");
-    const ok = await submitLpAnalysis(
-      email,
-      normalizeUrl(websiteUrl),
-      c.source,
-      c.locale
-    );
-    setTaskState(ok ? "done" : "error");
+    const res = await submitLpAnalysis({
+      email: email.trim(),
+      website_url: normalizeWebsite(websiteUrl) as string,
+      source: c.source,
+      locale: L,
+      cf_token: taskToken,
+      [HONEYPOT_FIELD]: taskHp,
+    });
+    if (res.ok) {
+      setTaskState("done");
+    } else {
+      setTaskErrors({ [res.field]: res.code });
+      setTaskState("idle");
+    }
+  }
+
+  /* ----- Demo-Termin ----- */
+  const [demo, setDemo] = useState({ name: "", org: "", email: "", topic: "" });
+  const [demoChip, setDemoChip] = useState<string | null>(null);
+  const [demoHp, setDemoHp] = useState("");
+  const [demoToken, setDemoToken] = useState("");
+  const [demoErrors, setDemoErrors] = useState<Errors>({});
+  const [demoWarn, setDemoWarn] = useState(false);
+  const [demoState, setDemoState] = useState<"idle" | "sending" | "done">("idle");
+
+  function pickChip(label: string, text: string) {
+    setDemoChip(label);
+    setDemo((d) => ({ ...d, topic: text }));
+  }
+
+  function bringCaseToDemo(topic: string) {
+    const chip = c.demo.chips?.items.find((i) => i.text === topic);
+    setDemoChip(chip ? chip.label : null);
+    setDemo((d) => ({ ...d, topic }));
+    scrollToId("demo");
   }
 
   async function handleDemoSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (demoState === "sending") return;
+    const errs: Errors = {};
+    if (!demo.name.trim()) errs.name = "required";
+    if (!demo.org.trim()) errs.org = "required";
+    const ec = checkEmail(demo.email, false);
+    if (!ec.ok) errs.email = ec.code;
+    setDemoErrors(errs);
+    if (Object.keys(errs).length) return;
+
     setDemoState("sending");
-    const ok = await sendDemoNotification({
-      name: demo.name,
-      email: demo.email,
-      websiteUrl: demo.org,
-      category: demo.topic || `Demo (${c.source} LP, ${c.locale})`,
+    const res = await submitLpDemo({
+      name: demo.name.trim(),
+      email: demo.email.trim(),
+      websiteUrl: demo.org.trim(),
+      category: demo.topic.trim() || `Demo (${c.source} LP, ${L})`,
       source: c.source,
-      locale: c.locale,
+      locale: L,
+      cf_token: demoToken,
+      [HONEYPOT_FIELD]: demoHp,
     });
-    setDemoState(ok ? "done" : "error");
+    if (res.ok) {
+      setDemoState("done");
+    } else {
+      setDemoErrors({ [res.field]: res.code });
+      setDemoState("idle");
+    }
+  }
+
+  /* ----- Fälle: seitlich blätterbar ----- */
+  const railRef = useRef<HTMLDivElement>(null);
+  const [caseIndex, setCaseIndex] = useState(0);
+  const caseCount = c.cases.items.length;
+
+  function goToCase(i: number) {
+    const rail = railRef.current;
+    const card = rail?.children[(i + caseCount) % caseCount] as HTMLElement | undefined;
+    if (rail && card) rail.scrollTo({ left: card.offsetLeft - rail.offsetLeft, behavior: "smooth" });
+  }
+
+  function onRailScroll() {
+    const rail = railRef.current;
+    if (!rail) return;
+    const step = (rail.children[0] as HTMLElement | undefined)?.offsetWidth ?? 1;
+    setCaseIndex(Math.min(caseCount - 1, Math.round(rail.scrollLeft / step)));
+  }
+
+  /* ----- Preise: mobil aufklappbar ----- */
+  const [openPlans, setOpenPlans] = useState<Set<string>>(new Set());
+  function togglePlan(name: string) {
+    setOpenPlans((prev) => {
+      const next = new Set(prev);
+      if (next.has(name)) next.delete(name);
+      else next.add(name);
+      return next;
+    });
   }
 
   const [menuOpen, setMenuOpen] = useState(false);
   const closeMenu = () => setMenuOpen(false);
-  const home = c.locale === "de" ? "/de" : "/";
-  const navCases = c.locale === "de" ? "Anwendungsfälle" : "Use cases";
-  const navPricing = c.locale === "de" ? "Preise" : "Pricing";
+  const onTaskToken = useCallback((t: string) => setTaskToken(t), []);
+  const onDemoToken = useCallback((t: string) => setDemoToken(t), []);
 
-  return (
-    <div className="ag">
-      {/* ===== 1 Header — Navbar und Hero-Bühne der Startseite ===== */}
-      <div className="section_demo-hero">
-        <div className="hero-section-wrapper">
-          <div className="navbar_component jhn w-nav" data-collapse="medium" role="banner">
-            <div className="nabvar-header">
-              <a href={home} className="logo_sokosumi w-nav-brand" aria-label="Serviceplan Agents">
-                <div className="logo-component">
-                  <div className="code-embed-4 w-embed">
-                    <SpLogo />
-                  </div>
-                </div>
-              </a>
-              <nav
-                role="navigation"
-                className="navbar-menu-content-wrap w-nav-menu"
-                {...(menuOpen ? { "data-nav-menu-open": "" } : {})}
-              >
-                <div className="navigation-link-wrap">
-                  <a href="#cases" className="nav-menu is-white w-nav-link" onClick={closeMenu}>
-                    {navCases}
-                  </a>
-                  <a href="#preise" className="nav-menu is-white w-nav-link" onClick={closeMenu}>
-                    {navPricing}
-                  </a>
-                  <a href="#faq" className="nav-menu is-white w-nav-link" onClick={closeMenu}>
-                    FAQ
-                  </a>
-                </div>
-                <div className="nav-cta-links">
-                  <div
-                    className="button-group nav-button"
-                    style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}
-                  >
-                    <a
-                      href="#starten"
-                      className="button is-cta-red navigation w-inline-block"
-                      onClick={closeMenu}
-                    >
-                      <div>{c.topbar.cta}</div>
-                    </a>
-                    <a
-                      href="#demo"
-                      className="button navigation w-inline-block"
-                      onClick={closeMenu}
-                    >
-                      <div>{c.topbar.demoLink}</div>
-                      <div className="arrow-icon w-embed">
-                        <NavArrow />
-                      </div>
-                    </a>
-                  </div>
-                  <LangToggle paths={c.paths} locale={c.locale} />
-                </div>
-              </nav>
-              <div className="language-toggle-mobile" style={{ display: "none" }}>
-                <LangToggle paths={c.paths} locale={c.locale} />
-              </div>
-              <div
-                className={`menu-icon-wrap w-nav-button${menuOpen ? " w--open" : ""}`}
-                onClick={() => setMenuOpen(!menuOpen)}
-                style={{ cursor: "pointer" }}
-              >
-                <div className="menu-icon">
-                  <div className="menu-line-top"></div>
-                  <div className="menu-line-middle">
-                    <div className="menu-inner-line"></div>
-                  </div>
-                  <div className="menu-line-bottom"></div>
-                </div>
-              </div>
-            </div>
-          </div>
+  const primary = c.primary;
+  const secondary = other(primary);
 
-          <div className="margin-top margin-xlarge">
-            <div className="padding-global">
-              <div className="hero-content">
-                <div className="hero-text-wrap">
-                  <p className="ag-eyebrow">{c.hero.eyebrow}</p>
-                  <div className="margin-bottom margin-large">
-                    <h1>{c.hero.h1}</h1>
-                  </div>
-                  <div className="hero-description">
-                    <div className="text-size-regular is-white">{c.hero.h1Sub}</div>
-                  </div>
-                  <div className="mobile-only">
-                    <div className="heroimage-wrapper mobile">
-                      <HeroVisual suffix="m" />
-                    </div>
-                  </div>
-                  <ul className="ag-bullets">
-                  {c.hero.bullets.map((b) => (
-                    <li key={b.lead}>
-                      {b.lead} <span>{b.rest}</span>
-                    </li>
-                  ))}
-                </ul>
-                <div className="ag-btn-row">
-                  <a href="#starten" className="ag-btn ag-btn-red">
-                    {c.hero.ctaPrimary}
-                  </a>
-                  <a href="#demo" className="ag-btn ag-btn-white">
-                    {c.hero.ctaSecondary}
-                    <ArrowCircle />
-                  </a>
-                </div>
-                <div className="ag-badges">
-                  {c.hero.badges.map((b) => (
-                    <span key={b} className="ag-badge">
-                      {b}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-                <div className="heroimage-wrapper" aria-hidden="true">
-                  <HeroVisual suffix="d" />
-                </div>
-              </div>
-
-            <div className="ag-seq" aria-hidden="true">
-              <div className="ag-seq-node">
-                <svg viewBox="0 0 24 24">
-                  <rect x="3" y="5" width="18" height="14" />
-                  <path d="M3 7l9 6 9-6" />
-                </svg>
-                {c.hero.seq[0]}
-              </div>
-              <div className="ag-seq-arrow">→</div>
-              <div className="ag-seq-node">
-                <svg viewBox="0 0 24 24">
-                  <circle cx="12" cy="8" r="3.5" />
-                  <path d="M5 20c1.2-3.4 3.9-5 7-5s5.8 1.6 7 5" />
-                </svg>
-                {c.hero.seq[1]}
-              </div>
-              <div className="ag-seq-arrow">→</div>
-              <div className="ag-seq-node">
-                <svg viewBox="0 0 24 24">
-                  <path d="M6 3h8l4 4v14H6z" />
-                  <path d="M14 3v4h4" />
-                  <path d="M9 13h6M9 16h6" />
-                </svg>
-                {c.hero.seq[2]}
-              </div>
-            </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* ===== 2 Use Cases ===== */}
-      <section id="cases" className="ag-section">
+  const sections: Record<LpSectionId, React.ReactNode> = {
+    /* ===== Fälle / Beispiele ===== */
+    cases: (
+      <section id="cases" key="cases" className="ag-section">
         <div className="ag-wrap">
-          <div className="ag-band">
-            <h2 className="ag-h2">{c.problem.h2}</h2>
-            <p className="ag-lead">{c.problem.lead}</p>
-            <div className="ag-band-grid">
-              {c.problem.items.map((item) => (
-                <p key={item.ref} className="ag-band-item">
-                  {item.text}
-                  <span>{item.ref}</span>
-                </p>
-              ))}
-            </div>
-            <p className="ag-bridge">{c.problem.bridge}</p>
-          </div>
+          <h2 className="ag-h2">{c.cases.h2}</h2>
 
-          <div className="ag-rail-hint">
-            <h3 className="ag-h3">{c.rail.heading}</h3>
-            <span>{c.rail.hint}</span>
-          </div>
-
-          <div className="ag-rail">
-            {c.cases.map((k) => (
+          <div className="ag-rail" ref={railRef} onScroll={onRailScroll}>
+            {c.cases.items.map((k) => (
               <article key={k.num} className="ag-case">
                 <div className="ag-case-head">
-                  <div className="ag-case-topline">
-                    <p className="ag-case-num">{k.num}</p>
-                    <span className="ag-case-agents">
-                      {k.agents.map((a) => (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img key={a.src} src={a.src} alt={a.alt} />
-                      ))}
-                      <small>{k.agentLabel}</small>
-                    </span>
-                  </div>
+                  <p className="ag-case-num">{k.num}</p>
                   <h3 className="ag-h3">{k.title}</h3>
                   <p className="ag-case-benefit">{k.benefit}</p>
                 </div>
-                <div className="ag-case-body">
+                <div className="ag-case-mail">
                   <h4>{k.mailHeading}</h4>
                   <div className="ag-mail">
                     <div className="ag-mail-hdr">
-                      <b>{c.locale === "de" ? "An:" : "To:"}</b> {k.mailTo}
+                      <b>{L === "de" ? "An:" : "To:"}</b> {k.mailTo}
                       <br />
-                      <b>{c.locale === "de" ? "Betreff:" : "Subject:"}</b>{" "}
-                      {k.mailSubject}
+                      <b>{L === "de" ? "Betreff:" : "Subject:"}</b> {k.mailSubject}
                     </div>
                     <p className="ag-mail-body">
                       {k.mailBody}
@@ -400,7 +374,7 @@ export default function LpPage({ content: c }: { content: LpContent }) {
                           <br />
                           <br />
                           <span className="ag-faint">
-                            {c.locale === "de"
+                            {L === "de"
                               ? "--- Weitergeleitete Nachricht ---"
                               : "--- Forwarded message ---"}
                             <br />
@@ -410,12 +384,8 @@ export default function LpPage({ content: c }: { content: LpContent }) {
                       )}
                     </p>
                   </div>
-                  <h4>{k.stepsHeading}</h4>
-                  <ol className="ag-steps">
-                    {k.steps.map((s) => (
-                      <li key={s}>{s}</li>
-                    ))}
-                  </ol>
+                </div>
+                <div className="ag-case-result">
                   <h4>{k.resultHeading}</h4>
                   <ul className="ag-result">
                     {k.results.map((r) => (
@@ -429,33 +399,45 @@ export default function LpPage({ content: c }: { content: LpContent }) {
                       </span>
                     ))}
                   </p>
-                </div>
-                <div className="ag-case-foot">
-                  {k.foot.kind === "start" ? (
-                    <button
-                      type="button"
-                      className="ag-btn ag-btn-red ag-btn-case"
-                      onClick={scrollToForm}
-                    >
-                      {k.foot.label}
-                    </button>
-                  ) : (
-                    <>
-                      <p className="ag-case-later">{k.foot.note}</p>
-                      <a href="#demo" className="ag-textlink">
-                        {k.foot.linkLabel}
-                      </a>
-                    </>
-                  )}
+                  <button
+                    type="button"
+                    className="ag-btn ag-btn-red ag-btn-case"
+                    onClick={() => bringCaseToDemo(k.demoTopic)}
+                  >
+                    {c.cases.button}
+                  </button>
                 </div>
               </article>
             ))}
           </div>
+
+          <div className="ag-rail-nav">
+            <button
+              type="button"
+              className="ag-rail-arrow"
+              onClick={() => goToCase(caseIndex - 1)}
+              aria-label={c.cases.prev}
+            >
+              ←
+            </button>
+            <span className="ag-rail-count" aria-live="polite">
+              {caseIndex + 1} / {caseCount}
+            </span>
+            <button
+              type="button"
+              className="ag-rail-next"
+              onClick={() => goToCase(caseIndex + 1)}
+            >
+              {c.cases.next} →
+            </button>
+          </div>
         </div>
       </section>
+    ),
 
-      {/* ===== 4 Free start (primary conversion) ===== */}
-      <section id="starten" className="ag-section">
+    /* ===== Kostenlos starten (nur Wettbewerbsanalyse) ===== */
+    start: (
+      <section id="starten" key="start" className="ag-section">
         <div className="ag-wrap">
           <div className="ag-form-stage">
             <div className="ag-form-wrap">
@@ -473,51 +455,52 @@ export default function LpPage({ content: c }: { content: LpContent }) {
                   </p>
                 </div>
               ) : (
-                <form onSubmit={handleAnalysisSubmit}>
-                  <p className="ag-picker-label">{c.form.pickerLabel}</p>
-                  <div className="ag-chips">
-                    {c.form.topics.map((t) =>
-                      t.available ? (
-                        <span key={t.label} className="ag-chip is-active">
-                          {t.label}
-                        </span>
-                      ) : (
-                        <span key={t.label} className="ag-chip is-locked">
-                          {t.label}
-                          <small>{c.form.lockedTag}</small>
-                        </span>
-                      )
-                    )}
-                  </div>
-                  <p className="ag-picker-hint">{c.form.pickerHint}</p>
-
+                <form onSubmit={handleAnalysisSubmit} noValidate>
                   <div className="ag-form-fields">
                     <div className="ag-field">
                       <label htmlFor="ag-mail">{c.form.emailLabel}</label>
                       <input
                         type="email"
                         id="ag-mail"
+                        name="email"
+                        autoComplete="email"
                         required
                         maxLength={256}
                         placeholder={c.form.emailPlaceholder}
                         value={email}
+                        aria-invalid={!!taskErrors.email}
+                        aria-describedby={taskErrors.email ? "ag-mail-err" : undefined}
                         onChange={(e) => setEmail(e.target.value)}
                       />
+                      <FieldError id="ag-mail-err" code={taskErrors.email} locale={L} />
                     </div>
                     <div className="ag-field">
                       <label htmlFor="ag-url">{c.form.urlLabel}</label>
                       <input
-                        type="text"
+                        type="url"
                         id="ag-url"
+                        name="url"
+                        autoComplete="url"
+                        inputMode="url"
                         required
                         maxLength={256}
                         placeholder={c.form.urlPlaceholder}
                         value={websiteUrl}
+                        aria-invalid={!!taskErrors.url}
+                        aria-describedby={taskErrors.url ? "ag-url-err" : "ag-url-hint"}
                         onChange={(e) => setWebsiteUrl(e.target.value)}
                       />
-                      <p className="ag-field-hint">{c.form.urlHint}</p>
+                      {taskErrors.url ? (
+                        <FieldError id="ag-url-err" code={taskErrors.url} locale={L} />
+                      ) : (
+                        <p id="ag-url-hint" className="ag-field-hint">
+                          {c.form.urlHint}
+                        </p>
+                      )}
                     </div>
+                    <Honeypot value={taskHp} onChange={setTaskHp} />
                   </div>
+                  <Turnstile locale={L} onToken={onTaskToken} />
                   <button
                     type="submit"
                     className="ag-btn ag-btn-red ag-btn-lg"
@@ -525,9 +508,14 @@ export default function LpPage({ content: c }: { content: LpContent }) {
                   >
                     {taskState === "sending" ? c.form.submitting : c.form.submit}
                   </button>
-                  {taskState === "error" && (
-                    <p className="ag-error">{c.form.error}</p>
+                  {taskErrors.form && (
+                    <p className="ag-error" role="alert">
+                      {taskErrors.form === "rejected"
+                        ? c.form.error
+                        : leadMessage(taskErrors.form, L)}
+                    </p>
                   )}
+                  <PrivacyNote locale={L} />
                 </form>
               )}
 
@@ -541,20 +529,51 @@ export default function LpPage({ content: c }: { content: LpContent }) {
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src="/images/trust-eu-ai-act.svg" alt="EU AI Act" />
               </div>
-              <div className="ag-form-trust">
-                <span className="ag-badge">{c.form.trustBadge}</span>
-              </div>
-              <p className="ag-form-note">{c.form.freeNote}</p>
-              <p className="ag-demo-line ag-demo-line-ondark">
-                {c.form.demoLinePre} <a href="#demo">{c.form.demoLineLink}</a>
-              </p>
             </div>
           </div>
         </div>
       </section>
+    ),
 
-      {/* ===== 5 Pricing ===== */}
-      <section id="preise" className="ag-section">
+    /* ===== Unterschied zu anderen AI-Lösungen ===== */
+    compare: (
+      <section id="vergleich" key="compare" className="ag-section">
+        <div className="ag-wrap ag-wrap-narrow">
+          <h2 className="ag-h2">{c.compare.heading}</h2>
+          <table className="ag-compare">
+            <thead>
+              <tr>
+                <th>
+                  <span className="ag-sr">{L === "de" ? "Vergleichspunkt" : "Criterion"}</span>
+                </th>
+                <th>{c.compare.cols[0]}</th>
+                <th>{c.compare.cols[1]}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {c.compare.rows.map((row) => (
+                <tr key={row}>
+                  <td>{row}</td>
+                  <td className="ag-no">
+                    <span aria-hidden="true">✗</span>
+                    <span className="ag-sr">{L === "de" ? "nein" : "no"}</span>
+                  </td>
+                  <td className="ag-yes">
+                    <span aria-hidden="true">✓</span>
+                    <span className="ag-sr">{L === "de" ? "ja" : "yes"}</span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <p className="ag-compare-note">{c.compare.note}</p>
+        </div>
+      </section>
+    ),
+
+    /* ===== Preise ===== */
+    pricing: (
+      <section id="preise" key="pricing" className="ag-section">
         <div className="ag-wrap">
           <div className="ag-head ag-center">
             <p className="ag-eyebrow">{c.pricing.eyebrow}</p>
@@ -563,57 +582,44 @@ export default function LpPage({ content: c }: { content: LpContent }) {
           </div>
 
           <div className="ag-plans">
-            {c.pricing.plans.map((p) => (
-              <div
-                key={p.name}
-                className={`ag-plan${p.featured ? " is-featured" : ""}`}
-              >
-                <p className="ag-plan-name">{p.name}</p>
-                <p className="ag-plan-price">
-                  {p.price}
-                  {p.period && <small> {p.period}</small>}
-                </p>
-                <p className="ag-plan-credits">{p.credits || " "}</p>
-                <p className="ag-plan-claim">{p.claim}</p>
-                <ul className="ag-plan-feats">
-                  {p.features.map((f) => (
-                    <li key={f}>{f}</li>
-                  ))}
-                </ul>
-              </div>
-            ))}
+            {c.pricing.plans.map((p) => {
+              const open = openPlans.has(p.name);
+              const featsId = `ag-plan-${p.name.toLowerCase()}`;
+              return (
+                <div key={p.name} className={`ag-plan${p.featured ? " is-featured" : ""}`}>
+                  <p className="ag-plan-name">{p.name}</p>
+                  <p className="ag-plan-price">
+                    {p.price}
+                    {p.period && <small> {p.period}</small>}
+                  </p>
+                  {p.credits && <p className="ag-plan-credits">{p.credits}</p>}
+                  <p className="ag-plan-claim">{p.claim}</p>
+                  <button
+                    type="button"
+                    className="ag-plan-toggle"
+                    aria-expanded={open}
+                    aria-controls={featsId}
+                    onClick={() => togglePlan(p.name)}
+                  >
+                    {c.pricing.more}
+                  </button>
+                  <ul id={featsId} className={`ag-plan-feats${open ? " is-open" : ""}`}>
+                    {p.features.map((f) => (
+                      <li key={f}>{f}</li>
+                    ))}
+                  </ul>
+                </div>
+              );
+            })}
           </div>
           <p className="ag-plan-note">{c.pricing.note}</p>
-
-          <h3 className="ag-h3 ag-tbl-heading">{c.pricing.tableHeading}</h3>
-          <div className="ag-tbl-scroll">
-            <table>
-              <thead>
-                <tr>
-                  <th></th>
-                  <th>{c.pricing.tableCols[0]}</th>
-                  <th>{c.pricing.tableCols[1]}</th>
-                </tr>
-              </thead>
-              <tbody>
-                {c.pricing.tableRows.map((row) => (
-                  <tr key={row.dim}>
-                    <td className="ag-dimension">{row.dim}</td>
-                    <td className="ag-generic">{row.generic}</td>
-                    <td className="ag-ours">{row.ours}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          <a href="#starten" className="ag-backlink">
-            {c.backlink}
-          </a>
         </div>
       </section>
+    ),
 
-      {/* ===== 6 Spread ===== */}
-      <section id="kunden" className="ag-section ag-section-tight">
+    /* ===== Logo-Wand ===== */
+    logos: (
+      <section id="kunden" key="logos" className="ag-section ag-section-tight">
         <div className="ag-wrap">
           <div className="ag-head ag-center">
             <p className="ag-eyebrow">{c.spread.eyebrow}</p>
@@ -628,14 +634,16 @@ export default function LpPage({ content: c }: { content: LpContent }) {
               </div>
             ))}
           </div>
-          <a href="#starten" className="ag-backlink">
+          <a href={PATH_HREF[primary]} className="ag-backlink">
             {c.backlink}
           </a>
         </div>
       </section>
+    ),
 
-      {/* ===== 7 Demo (secondary conversion) ===== */}
-      <section id="demo" className="ag-section">
+    /* ===== Demo-Termin ===== */
+    demo: (
+      <section id="demo" key="demo" className="ag-section">
         <div className="ag-wrap">
           <div className="ag-demo-box">
             <p className="ag-eyebrow">{c.demo.eyebrow}</p>
@@ -658,33 +666,39 @@ export default function LpPage({ content: c }: { content: LpContent }) {
                 </p>
               </div>
             ) : (
-              <form onSubmit={handleDemoSubmit}>
+              <form onSubmit={handleDemoSubmit} noValidate>
                 <div className="ag-demo-fields">
                   <div className="ag-field ag-field-light">
                     <label htmlFor="ag-d-name">{c.demo.nameLabel}</label>
                     <input
                       type="text"
                       id="ag-d-name"
+                      name="name"
+                      autoComplete="name"
                       required
                       maxLength={256}
                       placeholder={c.demo.namePlaceholder}
                       value={demo.name}
-                      onChange={(e) =>
-                        setDemo({ ...demo, name: e.target.value })
-                      }
+                      aria-invalid={!!demoErrors.name}
+                      onChange={(e) => setDemo({ ...demo, name: e.target.value })}
                     />
+                    <FieldError id="ag-d-name-err" code={demoErrors.name} locale={L} />
                   </div>
                   <div className="ag-field ag-field-light">
                     <label htmlFor="ag-d-org">{c.demo.orgLabel}</label>
                     <input
                       type="text"
                       id="ag-d-org"
+                      name="organization"
+                      autoComplete="organization"
                       required
                       maxLength={256}
                       placeholder={c.demo.orgPlaceholder}
                       value={demo.org}
+                      aria-invalid={!!demoErrors.org}
                       onChange={(e) => setDemo({ ...demo, org: e.target.value })}
                     />
+                    <FieldError id="ag-d-org-err" code={demoErrors.org} locale={L} />
                   </div>
                 </div>
                 <div className="ag-field ag-field-light">
@@ -692,48 +706,89 @@ export default function LpPage({ content: c }: { content: LpContent }) {
                   <input
                     type="email"
                     id="ag-d-mail"
+                    name="email"
+                    autoComplete="email"
                     required
                     maxLength={256}
                     placeholder={c.demo.emailPlaceholder}
                     value={demo.email}
+                    aria-invalid={!!demoErrors.email}
                     onChange={(e) => setDemo({ ...demo, email: e.target.value })}
+                    onBlur={() => setDemoWarn(isEmailFormat(demo.email) && isFreemail(demo.email))}
                   />
+                  {demoErrors.email ? (
+                    <FieldError id="ag-d-mail-err" code={demoErrors.email} locale={L} />
+                  ) : (
+                    demoWarn && <p className="ag-field-warn">{FREEMAIL_WARNING[L]}</p>
+                  )}
                 </div>
+
+                {c.demo.chips && (
+                  <div className="ag-demo-chips">
+                    <p className="ag-picker-label">{c.demo.chips.lead}</p>
+                    <div className="ag-chips">
+                      {c.demo.chips.items.map((chip) => (
+                        <button
+                          key={chip.label}
+                          type="button"
+                          className={`ag-chip${demoChip === chip.label ? " is-active" : ""}`}
+                          aria-pressed={demoChip === chip.label}
+                          onClick={() => pickChip(chip.label, chip.text)}
+                        >
+                          {chip.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
                 <div className="ag-field ag-field-light">
                   <label htmlFor="ag-d-thema">
-                    {c.demo.topicLabel}{" "}
-                    <span className="ag-faint">{c.demo.topicOptional}</span>
+                    {c.demo.topicLabel}
+                    {c.demo.topicOptional && (
+                      <>
+                        {" "}
+                        <span className="ag-faint">{c.demo.topicOptional}</span>
+                      </>
+                    )}
                   </label>
-                  <input
-                    type="text"
+                  <textarea
                     id="ag-d-thema"
-                    maxLength={256}
+                    name="topic"
+                    rows={3}
+                    maxLength={1200}
                     placeholder={c.demo.topicPlaceholder}
                     value={demo.topic}
                     onChange={(e) => setDemo({ ...demo, topic: e.target.value })}
                   />
+                  {c.demo.chips && <p className="ag-field-hint">{c.demo.chips.hint}</p>}
                 </div>
+                <Honeypot value={demoHp} onChange={setDemoHp} />
+                <Turnstile locale={L} onToken={onDemoToken} />
                 <button
                   type="submit"
-                  className="ag-btn ag-btn-black ag-btn-lg"
+                  className={`ag-btn ag-btn-lg ${primary === "demo" ? "ag-btn-red" : "ag-btn-black"}`}
                   disabled={demoState === "sending"}
                 >
                   {demoState === "sending" ? c.demo.submitting : c.demo.submit}
                 </button>
-                {demoState === "error" && (
-                  <p className="ag-error">{c.demo.error}</p>
+                {demoErrors.form && (
+                  <p className="ag-error" role="alert">
+                    {demoErrors.form === "rejected"
+                      ? c.demo.error
+                      : leadMessage(demoErrors.form, L)}
+                  </p>
                 )}
+                <PrivacyNote locale={L} />
               </form>
             )}
-            <p className="ag-demo-line">
-              {c.demo.backLinePre} <a href="#starten">{c.demo.backLineLink}</a>
-            </p>
           </div>
         </div>
       </section>
+    ),
 
-      {/* ===== 8 FAQ ===== */}
-      <section id="faq" className="ag-section">
+    /* ===== FAQ + Abschluss-CTA ===== */
+    faq: (
+      <section id="faq" key="faq" className="ag-section">
         <div className="ag-wrap ag-wrap-narrow">
           <div className="ag-head ag-center">
             <p className="ag-eyebrow">{c.faq.eyebrow}</p>
@@ -748,26 +803,184 @@ export default function LpPage({ content: c }: { content: LpContent }) {
           ))}
 
           <div className="ag-faq-cta">
-            <a href="#starten" className="ag-btn ag-btn-red">
-              {c.faqCta.button}
+            <a href={PATH_HREF[primary]} className="ag-btn ag-btn-red">
+              {c.labels[primary]}
             </a>
             <p className="ag-demo-line">
-              {c.faqCta.linePre} <a href="#demo">{c.faqCta.lineLink}</a>
+              {c.closing.linePre} <a href={PATH_HREF[secondary]}>{c.labels[secondary]}</a>
             </p>
           </div>
         </div>
       </section>
+    ),
+  };
+
+  return (
+    <div className="ag">
+      {/* ===== Header — Navbar und Hero-Bühne der Startseite ===== */}
+      <div className="section_demo-hero">
+        <div className="hero-section-wrapper">
+          <div className="navbar_component jhn w-nav" data-collapse="medium" role="banner">
+            <div className="nabvar-header">
+              {/* Kein Link: die Landingpage soll nicht zur Startseite wegführen. */}
+              <div className="logo_sokosumi w-nav-brand" aria-label="Serviceplan Agents" role="img">
+                <div className="logo-component">
+                  <div className="code-embed-4 w-embed">
+                    <SpLogo />
+                  </div>
+                </div>
+              </div>
+              <nav
+                id="ag-menu"
+                className="navbar-menu-content-wrap w-nav-menu"
+                {...(menuOpen ? { "data-nav-menu-open": "" } : {})}
+              >
+                <div className="navigation-link-wrap">
+                  <a href="#cases" className="nav-menu is-white w-nav-link" onClick={closeMenu}>
+                    {c.nav.cases}
+                  </a>
+                  <a href="#preise" className="nav-menu is-white w-nav-link" onClick={closeMenu}>
+                    {c.nav.pricing}
+                  </a>
+                  <a href="#faq" className="nav-menu is-white w-nav-link" onClick={closeMenu}>
+                    FAQ
+                  </a>
+                </div>
+                <div className="nav-cta-links">
+                  <div
+                    className="button-group nav-button"
+                    style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}
+                  >
+                    <a
+                      href={PATH_HREF[primary]}
+                      className="button is-cta-red navigation w-inline-block"
+                      onClick={closeMenu}
+                    >
+                      <div>{c.hero.short[primary]}</div>
+                    </a>
+                    <a
+                      href={PATH_HREF[secondary]}
+                      className="button navigation w-inline-block"
+                      onClick={closeMenu}
+                    >
+                      <div>{c.hero.short[secondary]}</div>
+                      <div className="arrow-icon w-embed">
+                        <NavArrow />
+                      </div>
+                    </a>
+                  </div>
+                  <LangToggle paths={c.paths} locale={L} />
+                </div>
+              </nav>
+              <div className="language-toggle-mobile" style={{ display: "none" }}>
+                <LangToggle paths={c.paths} locale={L} />
+              </div>
+              <button
+                type="button"
+                className={`menu-icon-wrap w-nav-button ag-menu-button${menuOpen ? " w--open" : ""}`}
+                aria-label={c.nav.menu}
+                aria-expanded={menuOpen}
+                aria-controls="ag-menu"
+                onClick={() => setMenuOpen(!menuOpen)}
+              >
+                <div className="menu-icon">
+                  <div className="menu-line-top"></div>
+                  <div className="menu-line-middle">
+                    <div className="menu-inner-line"></div>
+                  </div>
+                  <div className="menu-line-bottom"></div>
+                </div>
+              </button>
+            </div>
+          </div>
+
+          <div className="margin-top margin-xlarge ag-hero-top">
+            <div className="padding-global">
+              <div className="hero-content">
+                <div className="hero-text-wrap">
+                  <p className="ag-eyebrow">{c.hero.eyebrow}</p>
+                  <div className="margin-bottom margin-large ag-hero-h1">
+                    <h1>{c.hero.h1}</h1>
+                  </div>
+                  <div className="hero-description">
+                    <div className="text-size-regular is-white">{c.hero.h1Sub}</div>
+                  </div>
+                  <ul className="ag-bullets">
+                    {c.hero.bullets.map((b) => (
+                      <li key={b.lead}>
+                        {b.lead} <span>{b.rest}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="ag-btn-row">
+                    <a href={PATH_HREF[primary]} className="ag-btn ag-btn-red">
+                      <span className="ag-lbl-long">{c.labels[primary]}</span>
+                      <span className="ag-lbl-short">{c.hero.short[primary]}</span>
+                    </a>
+                    <a href={PATH_HREF[secondary]} className="ag-btn ag-btn-white">
+                      <span className="ag-lbl-long">{c.labels[secondary]}</span>
+                      <span className="ag-lbl-short">{c.hero.short[secondary]}</span>
+                      <ArrowCircle />
+                    </a>
+                  </div>
+                  <div className="ag-badges">
+                    {c.hero.badges.map((b) => (
+                      <span key={b} className="ag-badge">
+                        {b}
+                      </span>
+                    ))}
+                  </div>
+                  <div className="mobile-only">
+                    <div className="heroimage-wrapper mobile">
+                      <HeroVisual suffix="m" />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="heroimage-wrapper" aria-hidden="true">
+                  <HeroVisual suffix="d" />
+                </div>
+              </div>
+
+              <div className="ag-seq" aria-hidden="true">
+                <div className="ag-seq-node">
+                  <svg viewBox="0 0 24 24">
+                    <rect x="3" y="5" width="18" height="14" />
+                    <path d="M3 7l9 6 9-6" />
+                  </svg>
+                  {c.hero.seq[0]}
+                </div>
+                <div className="ag-seq-arrow">→</div>
+                <div className="ag-seq-node">
+                  <svg viewBox="0 0 24 24">
+                    <circle cx="12" cy="8" r="3.5" />
+                    <path d="M5 20c1.2-3.4 3.9-5 7-5s5.8 1.6 7 5" />
+                  </svg>
+                  {c.hero.seq[1]}
+                </div>
+                <div className="ag-seq-arrow">→</div>
+                <div className="ag-seq-node">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M6 3h8l4 4v14H6z" />
+                    <path d="M14 3v4h4" />
+                    <path d="M9 13h6M9 16h6" />
+                  </svg>
+                  {c.hero.seq[2]}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {c.order.map((id) => sections[id])}
 
       <div className="ag-legal">
         <a href="https://www.sokosumi.com/imprint" target="_blank" rel="noopener">
           {c.legal.imprint}
         </a>
         {" · "}
-        <a
-          href="https://www.sokosumi.com/privacy-policy"
-          target="_blank"
-          rel="noopener"
-        >
+        <a href={PRIVACY_URL} target="_blank" rel="noopener">
           {c.legal.privacy}
         </a>
         {" · "}
@@ -780,7 +993,7 @@ export default function LpPage({ content: c }: { content: LpContent }) {
         </a>
         {" · "}
         <a href="#" data-cc-open>
-          {c.locale === "de" ? "Cookie-Einstellungen" : "Cookie settings"}
+          {L === "de" ? "Cookie-Einstellungen" : "Cookie settings"}
         </a>
         <br />© 2026 Plan.Net Studios GmbH &amp; Co. KG — A Serviceplan Group
         Company

@@ -5,25 +5,34 @@
 export type LpLocale = "de" | "en";
 export type LpSource = "agencies" | "enterprise";
 
+/** The two conversion paths. Each has one label per page, used everywhere
+ *  (hero, nav, links), except the short hero labels on mobile. */
+export type LpPath = "demo" | "start";
+
+export type LpSectionId =
+  | "cases"
+  | "start"
+  | "demo"
+  | "compare"
+  | "pricing"
+  | "logos"
+  | "faq";
+
 export interface LpCase {
   num: string;
   title: string;
+  /** Short subline; shown on desktop only. */
   benefit: string;
-  agents: { src: string; alt: string }[];
-  agentLabel: string;
   mailHeading: string;
   mailTo: string;
   mailSubject: string;
   mailBody: string;
   mailForwarded?: string;
-  stepsHeading: string;
-  steps: string[];
   resultHeading: string;
   results: string[];
   facts: { label: string; value: string }[];
-  foot:
-    | { kind: "start"; label: string }
-    | { kind: "demo"; note: string; linkLabel: string };
+  /** Text the case button writes into the demo form's topic field. */
+  demoTopic: string;
 }
 
 export interface LpContent {
@@ -31,38 +40,36 @@ export interface LpContent {
   source: LpSource;
   /** Paths of this page in both locales, for the language toggle. */
   paths: Record<LpLocale, string>;
+  /** Primary conversion: drives the red buttons and the section order. */
+  primary: LpPath;
+  order: LpSectionId[];
 
-  topbar: { demoLink: string; cta: string };
+  labels: Record<LpPath, string>;
+  nav: { cases: string; pricing: string; menu: string };
 
   hero: {
     eyebrow: string;
     h1: string;
     h1Sub: string;
     bullets: { lead: string; rest: string }[];
-    ctaPrimary: string;
-    ctaSecondary: string;
+    /** Mobile hero labels, short enough to sit side by side at 390 px. */
+    short: Record<LpPath, string>;
     badges: string[];
     seq: string[];
   };
 
-  problem: {
+  cases: {
     h2: string;
-    lead: string;
-    items: { text: string; ref: string }[];
-    bridge: string;
+    items: LpCase[];
+    button: string;
+    next: string;
+    prev: string;
   };
-
-  rail: { heading: string; hint: string };
-  cases: LpCase[];
 
   form: {
     eyebrow: string;
     h2: string;
     lead: string;
-    pickerLabel: string;
-    topics: { label: string; available: boolean }[];
-    lockedTag: string;
-    pickerHint: string;
     emailLabel: string;
     emailPlaceholder: string;
     urlLabel: string;
@@ -75,10 +82,13 @@ export interface LpContent {
     successBefore: string;
     successAfter: string;
     error: string;
-    trustBadge: string;
-    freeNote: string;
-    demoLinePre: string;
-    demoLineLink: string;
+  };
+
+  compare: {
+    heading: string;
+    cols: [string, string];
+    rows: string[];
+    note: string;
   };
 
   pricing: {
@@ -95,9 +105,7 @@ export interface LpContent {
       featured?: boolean;
     }[];
     note: string;
-    tableHeading: string;
-    tableCols: [string, string];
-    tableRows: { dim: string; generic: string; ours: string }[];
+    more: string;
   };
 
   spread: { eyebrow: string; h2: string; lead: string };
@@ -114,8 +122,10 @@ export interface LpContent {
     orgPlaceholder: string;
     emailLabel: string;
     emailPlaceholder: string;
+    /** Optional topic chips that prefill the topic field. */
+    chips?: { lead: string; hint: string; items: { label: string; text: string }[] };
     topicLabel: string;
-    topicOptional: string;
+    topicOptional?: string;
     topicPlaceholder: string;
     submit: string;
     submitting: string;
@@ -123,11 +133,9 @@ export interface LpContent {
     successBefore: string;
     successAfter: string;
     error: string;
-    backLinePre: string;
-    backLineLink: string;
   };
 
   faq: { eyebrow: string; h2: string; items: { q: string; a: string }[] };
-  faqCta: { button: string; linePre: string; lineLink: string };
+  closing: { linePre: string };
   legal: { imprint: string; privacy: string; agentsLegal: string };
 }

@@ -5,13 +5,20 @@ import { agenciesDe } from "@/components/lp/content-agencies";
 import "@/components/lp/lp.css";
 
 /* Meta-Ads-Landingpage "Für Agenturen" (deutsch). noindex: für
-   Kampagnen-Traffic gebaut, kein Sitemap-Eintrag, keine hreflang-Alternates. */
+   Kampagnen-Traffic gebaut, kein Sitemap-Eintrag; hreflang verknüpft DE und EN. */
 
 export const metadata: Metadata = {
   title: "AI-Coworker für Agenturen | Serviceplan Agents",
   description:
     "Recherche, Analysen, Reportings, interaktive Dashboards. Beauftragung per E-Mail, kein Prompt, keine Einarbeitung. Kostenlos starten mit 200 Credits im Monat.",
-  alternates: { canonical: absolute("/de/agencies") },
+  alternates: {
+    canonical: absolute("/de/agencies"),
+    languages: {
+      de: absolute("/de/agencies"),
+      en: absolute("/agencies"),
+      "x-default": absolute("/agencies"),
+    },
+  },
   robots: { index: false, follow: false },
 };
 

@@ -1,185 +1,190 @@
 import type { LpContent } from "@/components/lp/types";
 
-/* Enterprise-Variante der Audience-LP: gleiche Struktur und Claim-Grenzen
-   wie /agencies (LP-Briefing advalyze 2026-09-01), Zielgruppe sind
-   Marketing-Teams in Unternehmen. Im Pricing ist hier Enterprise
-   hervorgehoben statt Standard. */
+/* Enterprise-Variante der Audience-LP. Zielgruppe: kleine Marketing-Teams
+   in größeren Unternehmen. Copy-Quelle: Tayas Wireframe „Mittelstand“
+   (Anhang an Daniels Mail vom 24.09.) und Tayas Änderungsdokument vom
+   06.10. Die Demo ist hier die primäre Conversion, die kostenlose
+   Wettbewerbsanalyse die sekundäre. */
 
 const PATHS = { de: "/de/enterprise", en: "/enterprise" };
 
-const HANNAH = { src: "/images/user-image.png", alt: "Hannah" };
-const ELENA = { src: "/images/elena.png", alt: "Elena" };
-const ALEX = { src: "/images/alex-2.png", alt: "Alex" };
+const CHIPS_DE = [
+  {
+    label: "Kampagne für einen Messeauftritt",
+    text: "Kampagnenplan für unseren Auftritt auf der [Messe] im [Monat]: welche Kanäle, welche Botschaften je Zielgruppe, wie das Budget über die acht Wochen davor und vier danach aufgeteilt wird. Als Dokument für die Geschäftsführung.",
+  },
+  {
+    label: "Markt- oder Länderentscheidung",
+    text: "Entscheidungsgrundlage für [Produktlinie] in [Markt]: Marktvolumen, Wachstumsprognose, wer dort bereits stark ist, und welche Zielgruppe wir realistisch erreichen. Mit Quellen und Erhebungsjahr.",
+  },
+  {
+    label: "Reporting-Dashboard",
+    text: "Reporting-Dashboard aus Search Console und Analytics: Sichtbarkeit, Traffic und Top-Landingpages, filterbar nach Zeitraum, teilbar per Link mit Leserechten.",
+  },
+  {
+    label: "Zielgruppen-Insights",
+    text: "Zielgruppen-Insights für [Produkt/Markt]: Demografie, Einstellungen und Kaufverhalten der Kernzielgruppe, auf Basis echter Verbraucherdaten.",
+  },
+  {
+    label: "Vorlage für die Geschäftsführung",
+    text: "Vorlage für die Geschäftsführung zum Thema [Thema]: Ausgangslage, Zahlen, Optionen und eine begründete Empfehlung. Als PowerPoint, maximal zehn Seiten.",
+  },
+  {
+    label: "Landingpage für eine Produkteinführung",
+    text: "Landingpage für die Einführung von [Produkt]: Konzept, Struktur, Texte und Visuals. Zielgruppe ist [Zielgruppe].",
+  },
+  {
+    label: "Wettbewerbsbeobachtung",
+    text: "Wettbewerbsbeobachtung für [Branche]: was unsere drei wichtigsten Wettbewerber aktuell kommunizieren, wie sie positioniert sind, und was davon für uns relevant ist. Mit Quellen.",
+  },
+  { label: "Eigenes Beispiel", text: "" },
+];
+
+const CHIPS_EN = [
+  {
+    label: "Trade fair campaign",
+    text: "Campaign plan for our presence at [trade fair] in [month]: which channels, which messages per audience, and how the budget is split across the eight weeks before and four after. As a document for management.",
+  },
+  {
+    label: "Market or country decision",
+    text: "Decision basis for [product line] in [market]: market size, growth forecast, who is already strong there, and which audience we can realistically reach. With sources and survey year.",
+  },
+  {
+    label: "Reporting dashboard",
+    text: "Reporting dashboard from Search Console and Analytics: visibility, traffic and top landing pages, filterable by date range, shareable by read-only link.",
+  },
+  {
+    label: "Audience insights",
+    text: "Audience insights for [product/market]: demographics, attitudes and buying behavior of the core audience, based on real consumer data.",
+  },
+  {
+    label: "Management presentation",
+    text: "Presentation for management on [topic]: starting point, numbers, options and a reasoned recommendation. As PowerPoint, ten slides at most.",
+  },
+  {
+    label: "Product launch landing page",
+    text: "Landing page for the launch of [product]: concept, structure, copy and visuals. The audience is [audience].",
+  },
+  {
+    label: "Competitor monitoring",
+    text: "Competitor monitoring for [industry]: what our three most important competitors are communicating right now, how they are positioned, and what of it matters for us. With sources.",
+  },
+  { label: "Your own example", text: "" },
+];
 
 export const enterpriseDe: LpContent = {
   locale: "de",
   source: "enterprise",
   paths: PATHS,
+  primary: "demo",
+  order: ["cases", "demo", "compare", "pricing", "logos", "start", "faq"],
 
-  topbar: { demoLink: "Demo-Termin", cta: "Kostenlos starten" },
+  labels: {
+    demo: "Demo-Termin an Ihrem Beispiel",
+    start: "Kostenlose Wettbewerbsanalyse",
+  },
+  nav: { cases: "Beispiele", pricing: "Preise", menu: "Menü" },
 
   hero: {
-    eyebrow: "Für Unternehmen",
+    eyebrow: "Für kleine Marketing-Teams",
     h1: "AI-Coworker, die Sie bei Ihren Aufgaben unterstützen.",
-    h1Sub: "Recherche, Analysen, Reportings, interaktive Dashboards.",
+    h1Sub: "Kampagnenplanung, Marktanalysen, Präsentationen, interaktive Dashboards.",
     bullets: [
       { lead: "Kommunikation per E-Mail.", rest: "Kein Prompt, keine Einarbeitung." },
       { lead: "Entwickelt von Serviceplan.", rest: "Über 50 Jahre Marketing-Expertise." },
-      { lead: "Einfach ausprobieren.", rest: "200 Credits im Monat, ohne Kreditkarte." },
+      {
+        lead: "Erst an einem eigenen Beispiel sehen.",
+        rest: "30 Minuten, kein Pitch, keine Folien.",
+      },
     ],
-    ctaPrimary: "Erste Aufgabe kostenlos starten",
-    ctaSecondary: "Demo-Termin buchen",
+    short: { demo: "Demo an Ihrem Beispiel", start: "Kostenlose Analyse" },
     badges: ["Hosting in Deutschland", "DSGVO", "EU AI Act"],
     seq: ["Aufgabe per Mail", "AI-Coworker arbeitet", "Ergebnis im Postfach"],
   },
 
-  problem: {
-    h2: "Das kennt jedes Marketing-Team.",
-    lead: "Die Anforderungen wachsen. Das Team nicht.",
+  cases: {
+    h2: "Das kennt jedes kleine Marketing-Team.",
+    button: "Dieses Beispiel in die Demo mitbringen",
+    next: "Nächstes Beispiel",
+    prev: "Vorheriges Beispiel",
     items: [
       {
-        text: "Der Strategie-Termin steht. Die Marktrecherche fehlt noch.",
-        ref: "→ Fall 1",
+        num: "Beispiel 1: Messeauftritt",
+        title: "Der Kampagnenplan für den Messeauftritt",
+        benefit: "Ein Auftrag: Zielgruppe, Botschaften, Kanäle und Budgetaufteilung.",
+        mailHeading: "Die Mail, die Sie schreiben",
+        mailTo: "elena@serviceplan-agents.com",
+        mailSubject: "Kampagne Messeauftritt [Messe]",
+        mailBody:
+          "„Hallo Elena, wir stehen im [Monat] auf der [Messe]. Ich brauche einen Kampagnenplan für die acht Wochen davor und die vier danach: welche Kanäle, welche Botschaften je Zielgruppe, und wie das Budget aufgeteilt wird. Als Dokument für die Geschäftsführung.“",
+        resultHeading: "Was zurückkommt",
+        results: [
+          "Kampagnenplan über zwölf Wochen, Kanal für Kanal",
+          "Botschaften je Zielgruppe, mit Begründung",
+          "Vorschlag zur Budgetaufteilung",
+          "Quellenverzeichnis, jede Aussage belegt",
+        ],
+        facts: [
+          { label: "Lieferung", value: "~15 Minuten" },
+          { label: "Output", value: "PDF oder PowerPoint" },
+        ],
+        demoTopic: CHIPS_DE[0].text,
       },
       {
-        text: "„Was macht der Wettbewerb gerade?“ Die Frage aus der Geschäftsführung kostet jedes Mal einen Nachmittag.",
-        ref: "→ Fall 2",
+        num: "Beispiel 2: Die Entscheidung",
+        title: "Die Entscheidungsgrundlage für einen neuen Markt",
+        benefit: "Zahlen statt Bauchgefühl. Mit Quellen, die Sie vertreten können.",
+        mailHeading: "Die Mail, die Sie schreiben",
+        mailTo: "hannah@serviceplan-agents.com",
+        mailSubject: "Marktanalyse [Markt / Produktlinie]",
+        mailBody:
+          "„Hallo Hannah, wir überlegen, [Produktlinie] in [Markt] auszubauen. Ich brauche eine Einordnung: Marktvolumen, Wachstum, wer dort bereits stark ist, und welche Zielgruppe wir realistisch erreichen. Als Entscheidungsgrundlage für die Geschäftsführung.“",
+        resultHeading: "Was zurückkommt",
+        results: [
+          "Marktvolumen und Wachstumsprognose, mit Quelle und Erhebungsjahr",
+          "Wer dort bereits stark ist, und womit",
+          "Zielgruppenprofil: Demografie, Einstellungen, Kaufverhalten",
+          "Eine Empfehlung, die Sie in der Sitzung vertreten können",
+        ],
+        facts: [
+          { label: "Lieferung", value: "~15 Minuten" },
+          { label: "Output", value: "PDF oder PowerPoint" },
+        ],
+        demoTopic: CHIPS_DE[1].text,
       },
       {
-        text: "Das Monats-Reporting baut wieder jemand von Hand.",
-        ref: "→ Fall 3",
+        num: "Beispiel 3: Quick Dashboard",
+        title: "Das Reporting-Dashboard für die Geschäftsführung",
+        benefit: "Einmal erstellt, danach immer aktuell.",
+        mailHeading: "Die Mail, die Sie schreiben",
+        mailTo: "alex@serviceplan-agents.com",
+        mailSubject: "Dashboard Monatsbericht",
+        mailBody:
+          "„Hallo Alex, Search Console und Analytics sind verbunden. Bitte ein Dashboard mit Sichtbarkeit, Traffic und Top-Landingpages, filterbar nach Zeitraum, teilbar per Link.“",
+        resultHeading: "Was zurückkommt",
+        results: [
+          "Filterbares Dashboard statt statischem Report",
+          "Sichtbarkeit, Traffic und Top-Landingpages in einer Ansicht",
+          "Teilbar per Link mit Leserechten. Die Geschäftsführung klickt selbst.",
+          "Nächsten Monat wiederholbar, ohne neues Briefing",
+        ],
+        facts: [
+          { label: "Verbunden", value: "Search Console, Analytics" },
+          { label: "Output", value: "interaktives Dashboard" },
+        ],
+        demoTopic: CHIPS_DE[2].text,
       },
     ],
-    bridge:
-      "Für keines dieser drei Probleme brauchen Sie ein Projekt, eine Agentur oder ein neues Tool-Budget. Sie brauchen jemanden, dem Sie die Aufgabe geben können.",
   },
-
-  rail: {
-    heading: "Drei Fälle aus dem Marketing-Alltag",
-    hint: "seitlich scrollen →",
-  },
-
-  cases: [
-    {
-      num: "Fall 1: Strategie-Vorbereitung",
-      title: "Die komplette Recherche für den Strategie-Termin",
-      benefit:
-        "Ein Auftrag: Wettbewerbsanalyse, Zielgruppe und strategische Ableitung.",
-      agents: [HANNAH, ELENA],
-      agentLabel: "Hannah → Elena",
-      mailHeading: "Die Mail, die Sie schreiben",
-      mailTo: "hannah@serviceplan-agents.com",
-      mailSubject: "Recherche Strategie [Marke]",
-      mailBody:
-        "„Hannah, wir überarbeiten die Positionierung von [Marke] in [Kategorie]. Ich brauche drei Dinge: die relevantesten Wettbewerber mit Positionierung und laufenden Kampagnen, eine Zielgruppenanalyse sowie daraus abgeleitet einen Vorschlag für die Kommunikationsstrategie. Als Dokument für den Termin.“",
-      stepsHeading: "Was passiert",
-      steps: [
-        "Hannah recherchiert Wettbewerber und Zielgruppe in Statista, GWI und DataForSEO. Lizenzierter Direktzugriff, keine Web-Suche.",
-        "Elena leitet daraus die Kommunikationsstrategie ab. Sie wählt das passende Framework.",
-        "Läuft es in die falsche Richtung, lenken Sie per Kommentar um. Kein Neustart nötig.",
-      ],
-      resultHeading: "Was zurückkommt",
-      results: [
-        "Wettbewerber-Set mit Positionierung und Kernbotschaften",
-        "Zielgruppenanalyse: Demografie, Einstellungen, Kaufverhalten",
-        "Kommunikationsstrategie mit Begründung",
-        "Quellenverzeichnis, jede Aussage belegt",
-      ],
-      facts: [
-        { label: "Lieferung", value: "~15 Minuten" },
-        { label: "Output", value: "PDF oder PowerPoint" },
-      ],
-      foot: { kind: "start", label: "Mit der Wettbewerbsanalyse starten" },
-    },
-    {
-      num: "Fall 2: Die Frage aus der Geschäftsführung",
-      title: "Das Wettbewerbs-Update, das zwischendurch erwartet wird",
-      benefit: "Die Mail weiterleiten reicht. Kein Prompt, kein Briefing.",
-      agents: [HANNAH],
-      agentLabel: "Hannah",
-      mailHeading: "Die Mail, die Sie weiterleiten",
-      mailTo: "hannah@serviceplan-agents.com",
-      mailSubject: "WG: Wettbewerb [Wettbewerber]",
-      mailBody:
-        "„Hannah, weiter unten: die Geschäftsführung will wissen, was [Wettbewerber] gerade macht. Zwei Seiten reichen.“",
-      mailForwarded: "„Was macht [Wettbewerber] eigentlich gerade? Kurzer Überblick bis Freitag?“",
-      stepsHeading: "Was passiert",
-      steps: [
-        "Die weitergeleitete Mail ist das Briefing",
-        "Marke, Markt und Kernwettbewerber liegen bereits in der Wissensbibliothek. Die zweite Anfrage ist kürzer als die erste.",
-        "Den Stand fragen Sie zwischendurch per WhatsApp ab",
-      ],
-      resultHeading: "Was zurückkommt",
-      results: [
-        "Zwei Seiten, direkt weiterleitbar",
-        "Was der Wettbewerber aktuell kommuniziert, mit Belegen",
-        "Einordnung: was davon für Ihre Marke zählt",
-        "Quellen für den nächsten Termin",
-      ],
-      facts: [
-        { label: "Lieferung", value: "~15 Minuten" },
-        { label: "Output", value: "PDF oder PowerPoint" },
-      ],
-      foot: { kind: "start", label: "Mit der Wettbewerbsanalyse starten" },
-    },
-    {
-      num: "Fall 3: Quick Dashboard",
-      title: "Das Reporting-Dashboard fürs Monatsmeeting",
-      benefit: "Einmal erstellt, danach immer aktuell.",
-      agents: [ALEX],
-      agentLabel: "Alex",
-      mailHeading: "Die Mail, die Sie schreiben",
-      mailTo: "alex@serviceplan-agents.com",
-      mailSubject: "Dashboard Monatsmeeting",
-      mailBody:
-        "„Alex, Search Console und Analytics sind verbunden. Erstelle ein Dashboard mit Sichtbarkeit, Traffic und Top-Landingpages, filterbar nach Zeitraum, teilbar per Link.“",
-      stepsHeading: "Was passiert",
-      steps: [
-        "Google Search Console und Google Analytics einmal in wenigen Schritten verbinden, mit Leserechten. Danach für alle Agenten verfügbar.",
-        "Alex baut ein interaktives Dashboard. Kein Screenshot, keine Zahlenliste.",
-        "Jede Kennzahl ist bis zur Quelle nachvollziehbar",
-      ],
-      resultHeading: "Was zurückkommt",
-      results: [
-        "Filterbares Dashboard statt statischem Report",
-        "Sichtbarkeit, Traffic und Top-Landingpages in einer Ansicht",
-        "Teilbar per Link mit Leserechten. Das Management klickt selbst.",
-        "Nächsten Monat wiederholbar, ohne neues Briefing",
-      ],
-      facts: [
-        { label: "Verbunden", value: "Search Console, Analytics" },
-        { label: "Output", value: "interaktives Dashboard" },
-      ],
-      foot: {
-        kind: "demo",
-        note: "In der Plattform beauftragbar — der kostenlose Einstieg startet mit der Wettbewerbsanalyse.",
-        linkLabel: "Diesen Fall im Demo-Termin ansehen",
-      },
-    },
-  ],
 
   form: {
-    eyebrow: "Kostenlos starten",
+    eyebrow: "Oder ohne Termin",
     h2: "Ihre erste Aufgabe: eine Wettbewerbsanalyse.",
     lead: "Zwei Felder. Kein Passwort, keine Firmendaten, keine Kreditkarte.",
-    pickerLabel: "Womit Sie starten — und was danach möglich ist:",
-    topics: [
-      { label: "Wettbewerbsanalyse", available: true },
-      { label: "Recherche für eine Kampagne", available: false },
-      { label: "Kurzes Wettbewerbs-Update", available: false },
-      { label: "Reporting-Dashboard", available: false },
-      { label: "Marktüberblick & Trends", available: false },
-      { label: "Zielgruppen-Insights", available: false },
-      { label: "GEO- & KI-Sichtbarkeit", available: false },
-      { label: "Content- & Social-Media-Audit", available: false },
-    ],
-    lockedTag: "danach",
-    pickerHint:
-      "Der kostenlose Einstieg startet mit der Wettbewerbsanalyse. Alle weiteren Aufgaben beauftragen Sie danach direkt per E-Mail — so wie in den drei Fällen oben.",
-    emailLabel: "Ihre Arbeits-E-Mail",
+    emailLabel: "Ihre geschäftliche E-Mail",
     emailPlaceholder: "vorname.nachname@ihr-unternehmen.de",
     urlLabel: "Website, deren Wettbewerb analysiert werden soll",
-    urlPlaceholder: "https://ihr-unternehmen.de",
+    urlPlaceholder: "ihr-unternehmen.de",
     urlHint: "Ihre eigene Website oder die einer Ihrer Marken.",
     submit: "Kostenlose Wettbewerbsanalyse starten",
     submitting: "Wird gestartet …",
@@ -188,12 +193,22 @@ export const enterpriseDe: LpContent = {
     successAfter:
       "— in der Regel mit dem Ergebnis in etwa 15 Minuten. Ihr kostenloser Zugang mit 200 Credits pro Monat ist damit eingerichtet.",
     error:
-      "Das hat gerade nicht geklappt. Bitte versuchen Sie es noch einmal, oder buchen Sie unten einen Demo-Termin.",
-    trustBadge: "Gebaut von Serviceplan. Für Marketing-Teams.",
-    freeNote:
-      "Kostenlos starten mit 200 Credits im Monat. Keine Kreditkarte, keine Follow-up-Anrufe.",
-    demoLinePre: "Lieber erst sprechen?",
-    demoLineLink: "Demo-Termin buchen",
+      "Das hat gerade nicht geklappt. Bitte versuchen Sie es noch einmal, oder fragen Sie einen Demo-Termin an.",
+  },
+
+  compare: {
+    heading: "Was ist der Unterschied zu anderen AI-Lösungen?",
+    cols: ["Generische AI-Assistenten", "Serviceplan Agents"],
+    rows: [
+      "Gemeinsame Wissensbasis zu Marke, Markt und Wettbewerb fürs ganze Team",
+      "Fertiges Dokument statt Chat-Antwort (PDF, PowerPoint, Excel, Dashboard)",
+      "Lizenzierte Marktdaten direkt angebunden (Statista, GWI, DataForSEO)",
+      "Jeder Arbeitsschritt sichtbar, jede Aussage mit Quelle",
+      "Hosting in Deutschland, DSGVO- und EU-AI-Act-konform",
+      "Beauftragung per E-Mail, Weiterleitung, WhatsApp, OneDrive",
+      "Betrieb im eigenen Netz (VPC und On-Premise im Enterprise-Paket)",
+    ],
+    note: "Die Kreuze beziehen sich auf die Standardversionen generischer Assistenten; einzelne Business-Tarife decken manche Punkte ab.",
   },
 
   pricing: {
@@ -256,43 +271,7 @@ export const enterpriseDe: LpContent = {
       },
     ],
     note: "* Pakete bauen aufeinander auf: jedes höhere enthält alles aus dem darunter.",
-    tableHeading: "Was ist der Unterschied zu anderen AI-Lösungen?",
-    tableCols: ["Generische AI-Assistenten", "Serviceplan Agents"],
-    tableRows: [
-      {
-        dim: "Wissen über Marke, Markt, Wettbewerber",
-        generic:
-          "Gedächtnis je Nutzerkonto, keine geteilte und verwaltbare Grundlage fürs Team",
-        ours: "Wissensbibliothek für das ganze Team: einsehbar, korrigierbar, löschbar",
-      },
-      {
-        dim: "Was zurückkommt",
-        generic:
-          "Eine Antwort im Chat, die Sie noch in Form bringen, oder ein generisches Dokument",
-        ours: "PDF, PowerPoint, Excel oder ein interaktives Dashboard",
-      },
-      {
-        dim: "Datenquellen",
-        generic:
-          "Web-Recherche und Trainingsdaten. Lizenzierte Marktforschung ist nicht enthalten",
-        ours: "Premium-Daten von Statista, GWI, DataForSEO etc. im Direktzugriff. Integration in andere Systeme, bspw. Search Console und Analytics.",
-      },
-      {
-        dim: "Nachvollziehbarkeit",
-        generic: "Sie sehen das Ergebnis, nicht durchgängig den Weg dorthin",
-        ours: "Jeder Arbeitsschritt einsehbar, jede Aussage bis zur Quelle nachvollziehbar",
-      },
-      {
-        dim: "Wo die Daten liegen",
-        generic: "Je Anbieter unterschiedlich, häufig außerhalb der EU",
-        ours: "Hosting in Deutschland, DSGVO-konform, EU AI Act konform",
-      },
-      {
-        dim: "Wie beauftragt wird",
-        generic: "Ein Fenster, das Sie öffnen und in dem Sie formulieren",
-        ours: "E-Mail, Weiterleitung, ins CC setzen, WhatsApp, OneDrive",
-      },
-    ],
+    more: "Leistungen anzeigen",
   },
 
   spread: {
@@ -300,17 +279,17 @@ export const enterpriseDe: LpContent = {
     h2: "Über 500 Unternehmen nutzen Serviceplan Agents.",
     lead: "Kein Pilotprojekt mit drei Testkunden.",
   },
-  backlink: "Zurück zum Formular: kostenlos starten",
+  backlink: "Zurück zum Demo-Termin",
 
   demo: {
-    eyebrow: "Lieber sprechen?",
+    eyebrow: "Kostenlose Demo",
     h3: "Kein Pitch, keine Folien. Wir arbeiten an einer Ihrer Aufgaben.",
-    body: "Sie bringen eine Aufgabe mit, die gerade ansteht. Wir richten sie gemeinsam ein. Sie gehen mit dem Ergebnis aus dem Termin.",
+    body: "Sie bringen ein Beispiel mit, das bei Ihnen gerade ansteht. Wir richten es gemeinsam ein. Sie gehen mit dem Ergebnis aus dem Termin.",
     facts: [
       { label: "Dauer", value: "30 Minuten" },
       {
         label: "Womit Sie rausgehen",
-        value: "Sie gehen mit einem konkreten Ergebnis aus dem Termin.",
+        value: "Mit dem Ergebnis Ihres eigenen Beispiels, nicht mit einer Präsentation.",
       },
     ],
     nameLabel: "Name",
@@ -319,17 +298,19 @@ export const enterpriseDe: LpContent = {
     orgPlaceholder: "Name des Unternehmens",
     emailLabel: "Arbeits-E-Mail",
     emailPlaceholder: "vorname.nachname@ihr-unternehmen.de",
-    topicLabel: "Worüber möchten Sie sprechen?",
-    topicOptional: "(optional)",
-    topicPlaceholder: "z. B. Wettbewerbsbeobachtung für unsere Marke",
+    chips: {
+      lead: "Was steht bei Ihnen gerade an? Ein Klick befüllt das Feld.",
+      hint: "Vorbefüllt und jederzeit änderbar. Je konkreter das Beispiel, desto mehr nehmen Sie aus dem Termin mit.",
+      items: CHIPS_DE,
+    },
+    topicLabel: "Welchen Fall bringen Sie mit?",
+    topicPlaceholder: "Beschreiben Sie kurz die Aufgabe, die gerade ansteht.",
     submit: "Demo-Termin anfragen",
     submitting: "Wird gesendet …",
     successTitle: "Ihre Anfrage ist angekommen.",
     successBefore: "Wir melden uns per E-Mail an",
     successAfter: ", um einen Termin zu finden.",
     error: "Das hat gerade nicht geklappt. Bitte versuchen Sie es noch einmal.",
-    backLinePre: "Wollen Sie es einfach ausprobieren?",
-    backLineLink: "Kostenlos starten, ohne Termin",
   },
 
   faq: {
@@ -337,16 +318,24 @@ export const enterpriseDe: LpContent = {
     h2: "Was Marketing-Teams vorher wissen wollen.",
     items: [
       {
-        q: "Was kostet das, und was passiert, wenn die Credits aufgebraucht sind?",
-        a: "Der Einstieg ist kostenlos mit 200 Credits pro Monat. Danach gibt es Pakete ab 25 € im Monat mit größerem Kontingent, ab Starter lassen sich Credits bei Bedarf nachkaufen. Vor dem Start einer Aufgabe sehen Sie eine Kostenschätzung und können sie abbrechen oder ändern.",
+        q: "Müssen wir unsere Arbeitsweise umstellen?",
+        a: "Nein. Kein Login fürs Team, keine Schulung, kein Prompt-Training. Sie schreiben eine Mail, setzen den AI-Coworker ins CC oder leiten eine Mail weiter. Genau das zeigen die drei Beispiele weiter oben.",
+      },
+      {
+        q: "Braucht das eine IT-Freigabe oder ein Rollout?",
+        a: "Für den Einstieg nicht: die Beauftragung läuft über E-Mail und WhatsApp, es wird nichts installiert. Sobald Datenquellen wie Search Console oder Analytics verbunden werden, erteilen Sie den Zugriff gezielt und mit Leserechten, und können ihn jederzeit widerrufen. Wenn Ihre IT den Betrieb im eigenen Netz voraussetzt, gibt es im Enterprise-Paket VPC- und On-Premise-Deployment.",
       },
       {
         q: "Wo liegen unsere Daten, und wird damit trainiert?",
-        a: "Das Hosting liegt in Deutschland, DSGVO-konform und EU AI Act konform. Zugriffe erteilen Sie gezielt und können sie jederzeit widerrufen. Freigegebene Dateien überschreibt niemand. Die Agenten legen immer eine neue Version an.",
+        a: "Das Hosting liegt in Deutschland, DSGVO-konform und EU AI Act konform. Zugriffe erteilen Sie gezielt und können sie jederzeit widerrufen. Freigegebene Dateien überschreibt niemand. Die Agenten legen immer eine neue Version an. Es erfolgt kein Training auf Kundendaten.",
+      },
+      {
+        q: "Was kostet das, und was passiert, wenn die Credits aufgebraucht sind?",
+        a: "Der Einstieg ist kostenlos mit 200 Credits pro Monat. Danach gibt es Pakete ab 25 € im Monat mit größerem Kontingent, ab Starter lassen sich Credits bei Bedarf nachkaufen. Für größeren oder abweichenden Bedarf gibt es das Enterprise-Paket mit individuellem Preis. Vor dem Start einer Aufgabe sehen Sie eine Kostenschätzung und können sie abbrechen oder ändern.",
       },
       {
         q: "Wie unterscheiden sich die Serviceplan Agents von anderen AI-Lösungen?",
-        a: "In drei Punkten: Sie bekommen ein fertiges Dokument oder ein interaktives Dashboard statt einer Chat-Antwort. Die Recherche läuft über lizenzierte Quellen (Statista, GWI, DataForSEO) statt über Web-Suche. Das Wissen über Ihre Marke und Ihren Markt liegt als Bibliothek für das ganze Team, nicht als Gedächtnis in einem einzelnen Konto.",
+        a: "In drei Punkten: Sie bekommen ein fertiges Dokument oder ein interaktives Dashboard statt einer Chat-Antwort. Die Recherche läuft über lizenzierte Quellen (Statista, GWI, DataForSEO) statt über Web-Suche. Und Ihr Unternehmen erklären Sie einmal: Marke, Produkte, Tonalität und Regeln liegen als Bibliothek für das ganze Team, nicht als Gedächtnis in einem einzelnen Konto.",
       },
       {
         q: "Welche Tools lassen sich verbinden?",
@@ -357,12 +346,8 @@ export const enterpriseDe: LpContent = {
         a: "Dann lenken Sie um, statt neu zu starten. Eine laufende Aufgabe korrigieren Sie per Kommentar und schicken sie in eine andere Richtung. Der Mensch bleibt in der Schleife. Was zurückkommt, ist eine Arbeitsgrundlage, die Sie prüfen und freigeben. Keine Fertiglieferung ohne Ihre Kontrolle.",
       },
       {
-        q: "Müssen wir unsere Arbeitsweise umstellen?",
-        a: "Nein. Kein Login fürs Team, keine Schulung, kein Prompt-Training. Sie schreiben eine Mail, setzen den AI-Coworker ins CC oder leiten eine Anfrage weiter. Genau das zeigen die drei Fälle weiter oben.",
-      },
-      {
-        q: "DSGVO und EU AI Act: Was können wir intern zusagen?",
-        a: "Die Verarbeitung läuft in Deutschland. Jeder Arbeitsschritt ist einsehbar und korrigierbar. Jede Aussage lässt sich bis zur Quelle nachprüfen. Gegenüber Datenschutz und Compliance zeigen Sie nicht nur das Ergebnis, sondern auch den Weg dorthin.",
+        q: "Was können wir der Geschäftsführung sagen?",
+        a: "Dass die Verarbeitung in Deutschland läuft, jeder Arbeitsschritt einsehbar und korrigierbar ist und jede Aussage bis zur Quelle nachprüfbar bleibt. In der Sitzung zeigen Sie nicht nur das Ergebnis, sondern auch, woher die Zahlen kommen — inklusive Quelle und Erhebungsjahr.",
       },
       {
         q: "Wer steht dahinter?",
@@ -370,11 +355,7 @@ export const enterpriseDe: LpContent = {
       },
     ],
   },
-  faqCta: {
-    button: "Erste Aufgabe kostenlos starten",
-    linePre: "Noch Fragen?",
-    lineLink: "Demo-Termin buchen",
-  },
+  closing: { linePre: "Noch nicht so weit?" },
   legal: {
     imprint: "Impressum",
     privacy: "Datenschutz",
@@ -386,171 +367,115 @@ export const enterpriseEn: LpContent = {
   locale: "en",
   source: "enterprise",
   paths: PATHS,
+  primary: "demo",
+  order: ["cases", "demo", "compare", "pricing", "logos", "start", "faq"],
 
-  topbar: { demoLink: "Book a demo", cta: "Start for free" },
+  labels: {
+    demo: "Book a demo with your own example",
+    start: "Free competitive analysis",
+  },
+  nav: { cases: "Examples", pricing: "Pricing", menu: "Menu" },
 
   hero: {
-    eyebrow: "For enterprises",
+    eyebrow: "For small marketing teams",
     h1: "AI coworkers that help with your tasks.",
-    h1Sub: "Research, analyses, reports, interactive dashboards.",
+    h1Sub: "Campaign plans, market analyses, presentations, interactive dashboards.",
     bullets: [
       { lead: "Brief them by email.", rest: "No prompts, no onboarding." },
       { lead: "Built by Serviceplan.", rest: "50+ years of marketing expertise." },
-      { lead: "Just try it.", rest: "200 credits a month, no credit card." },
+      {
+        lead: "See it on your own example first.",
+        rest: "30 minutes, no pitch, no slides.",
+      },
     ],
-    ctaPrimary: "Start your first task for free",
-    ctaSecondary: "Book a demo",
+    short: { demo: "Book a demo", start: "Free analysis" },
     badges: ["Hosted in Germany", "GDPR", "EU AI Act"],
     seq: ["Task by email", "AI coworker at work", "Result in your inbox"],
   },
 
-  problem: {
-    h2: "Every marketing team knows this.",
-    lead: "The workload grows. The team doesn't.",
+  cases: {
+    h2: "Every small marketing team knows this.",
+    button: "Bring this example to the demo",
+    next: "Next example",
+    prev: "Previous example",
     items: [
       {
-        text: "The strategy meeting is set. The market research isn't.",
-        ref: "→ Case 1",
+        num: "Example 1: Trade fair",
+        title: "The campaign plan for the trade fair",
+        benefit: "One brief: audience, messages, channels and budget split.",
+        mailHeading: "The email you write",
+        mailTo: "elena@serviceplan-agents.com",
+        mailSubject: "Trade fair campaign [trade fair]",
+        mailBody:
+          "“Hi Elena, we're exhibiting at [trade fair] in [month]. I need a campaign plan for the eight weeks before and the four after: which channels, which messages per audience, and how to split the budget. As a document for management.”",
+        resultHeading: "What comes back",
+        results: [
+          "A twelve-week campaign plan, channel by channel",
+          "Messages per audience, with the reasoning",
+          "A proposed budget split",
+          "Source list — every claim backed",
+        ],
+        facts: [
+          { label: "Delivery", value: "~15 minutes" },
+          { label: "Output", value: "PDF or PowerPoint" },
+        ],
+        demoTopic: CHIPS_EN[0].text,
       },
       {
-        text: "“What are our competitors doing right now?” That question from management costs an afternoon every time.",
-        ref: "→ Case 2",
+        num: "Example 2: The decision",
+        title: "The decision basis for a new market",
+        benefit: "Numbers instead of gut feeling. With sources you can stand behind.",
+        mailHeading: "The email you write",
+        mailTo: "hannah@serviceplan-agents.com",
+        mailSubject: "Market analysis [market / product line]",
+        mailBody:
+          "“Hi Hannah, we're thinking about expanding [product line] in [market]. I need an assessment: market size, growth, who is already strong there, and which audience we can realistically reach. As a decision basis for management.”",
+        resultHeading: "What comes back",
+        results: [
+          "Market size and growth forecast, with source and survey year",
+          "Who is already strong there, and with what",
+          "Audience profile: demographics, attitudes, buying behavior",
+          "A recommendation you can defend in the meeting",
+        ],
+        facts: [
+          { label: "Delivery", value: "~15 minutes" },
+          { label: "Output", value: "PDF or PowerPoint" },
+        ],
+        demoTopic: CHIPS_EN[1].text,
       },
       {
-        text: "Someone is building the monthly report by hand again.",
-        ref: "→ Case 3",
+        num: "Example 3: Quick dashboard",
+        title: "The reporting dashboard for management",
+        benefit: "Built once, current from then on.",
+        mailHeading: "The email you write",
+        mailTo: "alex@serviceplan-agents.com",
+        mailSubject: "Dashboard for the monthly report",
+        mailBody:
+          "“Hi Alex, Search Console and Analytics are connected. Please build a dashboard with visibility, traffic and top landing pages, filterable by date range, shareable by link.”",
+        resultHeading: "What comes back",
+        results: [
+          "A filterable dashboard instead of a static report",
+          "Visibility, traffic and top landing pages in one view",
+          "Shareable by link, read-only. Management clicks through it themselves.",
+          "Repeatable next month, no new brief",
+        ],
+        facts: [
+          { label: "Connected", value: "Search Console, Analytics" },
+          { label: "Output", value: "interactive dashboard" },
+        ],
+        demoTopic: CHIPS_EN[2].text,
       },
     ],
-    bridge:
-      "None of these three problems needs a project, an agency or a new tool budget. You need someone you can hand the task to.",
   },
-
-  rail: {
-    heading: "Three cases from marketing life",
-    hint: "scroll sideways →",
-  },
-
-  cases: [
-    {
-      num: "Case 1: Strategy prep",
-      title: "The complete research for the strategy meeting",
-      benefit: "One brief: competitive analysis, audience, and strategy.",
-      agents: [HANNAH, ELENA],
-      agentLabel: "Hannah → Elena",
-      mailHeading: "The email you write",
-      mailTo: "hannah@serviceplan-agents.com",
-      mailSubject: "Research for [brand] strategy",
-      mailBody:
-        "“Hannah, we're reworking the positioning of [brand] in [category]. I need three things: the most relevant competitors with positioning and current campaigns, an audience analysis, and a communication strategy derived from both. As a document for the meeting.”",
-      stepsHeading: "What happens",
-      steps: [
-        "Hannah researches competitors and audience in Statista, GWI and DataForSEO. Licensed direct access, no web search.",
-        "Elena derives the communication strategy and picks the right framework.",
-        "Heading the wrong way? Redirect with a comment. No restart.",
-      ],
-      resultHeading: "What comes back",
-      results: [
-        "Competitor set with positioning and key messages",
-        "Audience analysis: demographics, attitudes, buying behavior",
-        "Communication strategy with the reasoning behind it",
-        "Source list — every claim backed",
-      ],
-      facts: [
-        { label: "Delivery", value: "~15 minutes" },
-        { label: "Output", value: "PDF or PowerPoint" },
-      ],
-      foot: { kind: "start", label: "Start with the competitive analysis" },
-    },
-    {
-      num: "Case 2: The question from management",
-      title: "The competitor update everyone expects on the side",
-      benefit: "Forwarding the email is enough. No prompt, no brief.",
-      agents: [HANNAH],
-      agentLabel: "Hannah",
-      mailHeading: "The email you forward",
-      mailTo: "hannah@serviceplan-agents.com",
-      mailSubject: "Fwd: Competitors [competitor]",
-      mailBody:
-        "“Hannah, see below: management wants to know what [competitor] is doing right now. Two pages are enough.”",
-      mailForwarded:
-        "“What is [competitor] actually up to? Quick overview by Friday?”",
-      stepsHeading: "What happens",
-      steps: [
-        "The forwarded email is the brief",
-        "Brand, market and core competitors are already in the knowledge library. The second request is shorter than the first.",
-        "Check on progress in between via WhatsApp",
-      ],
-      resultHeading: "What comes back",
-      results: [
-        "Two pages, ready to forward",
-        "What the competitor is currently communicating, with evidence",
-        "What of it matters for your brand",
-        "Sources for the next meeting",
-      ],
-      facts: [
-        { label: "Delivery", value: "~15 minutes" },
-        { label: "Output", value: "PDF or PowerPoint" },
-      ],
-      foot: { kind: "start", label: "Start with the competitive analysis" },
-    },
-    {
-      num: "Case 3: Quick dashboard",
-      title: "The reporting dashboard for the monthly meeting",
-      benefit: "Built once, current from then on.",
-      agents: [ALEX],
-      agentLabel: "Alex",
-      mailHeading: "The email you write",
-      mailTo: "alex@serviceplan-agents.com",
-      mailSubject: "Dashboard for the monthly meeting",
-      mailBody:
-        "“Alex, Search Console and Analytics are connected. Build a dashboard with visibility, traffic and top landing pages, filterable by date range, shareable by link.”",
-      stepsHeading: "What happens",
-      steps: [
-        "Connect Google Search Console and Google Analytics once, read-only, in a few steps. From then on every agent can use them.",
-        "Alex builds an interactive dashboard. No screenshot, no list of numbers.",
-        "Every metric traces back to its source",
-      ],
-      resultHeading: "What comes back",
-      results: [
-        "A filterable dashboard instead of a static report",
-        "Visibility, traffic and top landing pages in one view",
-        "Shareable by link, read-only. Management clicks through it themselves.",
-        "Repeatable next month, no new brief",
-      ],
-      facts: [
-        { label: "Connected", value: "Search Console, Analytics" },
-        { label: "Output", value: "interactive dashboard" },
-      ],
-      foot: {
-        kind: "demo",
-        note: "Available in the platform — the free start begins with the competitive analysis.",
-        linkLabel: "See this case in a demo",
-      },
-    },
-  ],
 
   form: {
-    eyebrow: "Start for free",
+    eyebrow: "Or without a meeting",
     h2: "Your first task: a competitive analysis.",
     lead: "Two fields. No password, no company data, no credit card.",
-    pickerLabel: "What you start with — and what comes after:",
-    topics: [
-      { label: "Competitive analysis", available: true },
-      { label: "Campaign research", available: false },
-      { label: "Quick competitor update", available: false },
-      { label: "Reporting dashboard", available: false },
-      { label: "Market overview & trends", available: false },
-      { label: "Audience insights", available: false },
-      { label: "GEO & AI visibility", available: false },
-      { label: "Content & social media audit", available: false },
-    ],
-    lockedTag: "later",
-    pickerHint:
-      "The free start begins with the competitive analysis. Everything after that you brief directly by email — like the three cases above.",
-    emailLabel: "Your work email",
+    emailLabel: "Your business email",
     emailPlaceholder: "first.last@your-company.com",
     urlLabel: "Website whose competition should be analyzed",
-    urlPlaceholder: "https://your-company.com",
+    urlPlaceholder: "your-company.com",
     urlHint: "Your own website or one of your brands'.",
     submit: "Start your free competitive analysis",
     submitting: "Starting …",
@@ -558,12 +483,22 @@ export const enterpriseEn: LpContent = {
     successBefore: "Your AI coworker has taken the task and will email",
     successAfter:
       "— usually with the result in about 15 minutes. Your free account with 200 credits a month is now set up.",
-    error: "That didn't go through. Please try again, or book a demo below.",
-    trustBadge: "Built by Serviceplan. For marketing teams.",
-    freeNote:
-      "Start free with 200 credits a month. No credit card, no follow-up calls.",
-    demoLinePre: "Rather talk first?",
-    demoLineLink: "Book a demo",
+    error: "That didn't go through. Please try again, or request a demo.",
+  },
+
+  compare: {
+    heading: "How is this different from other AI tools?",
+    cols: ["Generic AI assistants", "Serviceplan Agents"],
+    rows: [
+      "A shared knowledge base on brand, market and competitors for the whole team",
+      "A finished document instead of a chat answer (PDF, PowerPoint, Excel, dashboard)",
+      "Licensed market data connected directly (Statista, GWI, DataForSEO)",
+      "Every working step visible, every claim sourced",
+      "Hosted in Germany, GDPR and EU AI Act compliant",
+      "Briefing by email, forwarding, WhatsApp, OneDrive",
+      "Runs in your own network (VPC and on-premise in the Enterprise plan)",
+    ],
+    note: "The crosses refer to the standard versions of generic assistants; some business plans cover some of these points.",
   },
 
   pricing: {
@@ -626,43 +561,7 @@ export const enterpriseEn: LpContent = {
       },
     ],
     note: "* Plans build on each other: every tier includes everything below it.",
-    tableHeading: "How is this different from other AI tools?",
-    tableCols: ["Generic AI assistants", "Serviceplan Agents"],
-    tableRows: [
-      {
-        dim: "Knowledge of brand, market, competitors",
-        generic:
-          "Memory per user account, no shared and manageable base for the team",
-        ours: "A knowledge library for the whole team: visible, correctable, deletable",
-      },
-      {
-        dim: "What comes back",
-        generic:
-          "A chat answer you still have to shape, or a generic document",
-        ours: "PDF, PowerPoint, Excel or an interactive dashboard",
-      },
-      {
-        dim: "Data sources",
-        generic:
-          "Web search and training data. Licensed market research is not included",
-        ours: "Premium data from Statista, GWI, DataForSEO and more, accessed directly. Plus connections to systems like Search Console and Analytics.",
-      },
-      {
-        dim: "Traceability",
-        generic: "You see the result, not consistently the path to it",
-        ours: "Every working step visible, every claim traceable to its source",
-      },
-      {
-        dim: "Where the data lives",
-        generic: "Varies by provider, often outside the EU",
-        ours: "Hosted in Germany, GDPR-compliant, EU AI Act compliant",
-      },
-      {
-        dim: "How you brief",
-        generic: "A window you open and type into",
-        ours: "Email, forwarding, CC, WhatsApp, OneDrive",
-      },
-    ],
+    more: "Show what's included",
   },
 
   spread: {
@@ -670,17 +569,17 @@ export const enterpriseEn: LpContent = {
     h2: "Over 500 companies use Serviceplan Agents.",
     lead: "Not a pilot with three test clients.",
   },
-  backlink: "Back to the form: start for free",
+  backlink: "Back to booking a demo",
 
   demo: {
-    eyebrow: "Rather talk?",
+    eyebrow: "Free demo",
     h3: "No pitch, no slides. We work on one of your tasks.",
-    body: "Bring a task that's on your desk right now. We set it up together. You leave with the result.",
+    body: "Bring an example that's on your desk right now. We set it up together. You leave with the result.",
     facts: [
       { label: "Length", value: "30 minutes" },
       {
         label: "What you leave with",
-        value: "You leave the call with a concrete result.",
+        value: "The result of your own example, not a presentation.",
       },
     ],
     nameLabel: "Name",
@@ -689,17 +588,19 @@ export const enterpriseEn: LpContent = {
     orgPlaceholder: "Name of your company",
     emailLabel: "Work email",
     emailPlaceholder: "first.last@your-company.com",
-    topicLabel: "What would you like to talk about?",
-    topicOptional: "(optional)",
-    topicPlaceholder: "e.g. competitor monitoring for our brand",
+    chips: {
+      lead: "What's on your desk right now? One click fills in the field.",
+      hint: "Prefilled and editable at any time. The more concrete the example, the more you take away from the call.",
+      items: CHIPS_EN,
+    },
+    topicLabel: "Which example are you bringing?",
+    topicPlaceholder: "Briefly describe the task that's coming up.",
     submit: "Request a demo",
     submitting: "Sending …",
     successTitle: "Your request has arrived.",
     successBefore: "We'll email",
     successAfter: "to find a time.",
     error: "That didn't go through. Please try again.",
-    backLinePre: "Want to just try it?",
-    backLineLink: "Start for free, no meeting",
   },
 
   faq: {
@@ -707,16 +608,24 @@ export const enterpriseEn: LpContent = {
     h2: "What marketing teams want to know first.",
     items: [
       {
-        q: "What does it cost, and what happens when the credits run out?",
-        a: "The start is free with 200 credits per month. After that, plans start at €25 a month with a larger quota; from Starter up you can buy extra credits on demand. Before a task starts you see a cost estimate and can cancel or change it.",
+        q: "Do we have to change how we work?",
+        a: "No. No team logins, no training, no prompt courses. You write an email, put the AI coworker in CC, or forward an email. That's exactly what the three examples above show.",
+      },
+      {
+        q: "Does this need IT approval or a rollout?",
+        a: "Not to get started: briefing runs over email and WhatsApp, nothing gets installed. Once you connect data sources like Search Console or Analytics, you grant read-only access deliberately and can revoke it at any time. If your IT requires running in your own network, the Enterprise plan offers VPC and on-premise deployment.",
       },
       {
         q: "Where does our data live, and is it used for training?",
-        a: "Hosting is in Germany, GDPR-compliant and EU AI Act compliant. You grant access deliberately and can revoke it at any time. Nobody overwrites shared files — the agents always create a new version.",
+        a: "Hosting is in Germany, GDPR-compliant and EU AI Act compliant. You grant access deliberately and can revoke it at any time. Nobody overwrites shared files — the agents always create a new version. Customer data is not used for training.",
+      },
+      {
+        q: "What does it cost, and what happens when the credits run out?",
+        a: "The start is free with 200 credits per month. After that, plans start at €25 a month with a larger quota; from Starter up you can buy extra credits on demand. For larger or different needs there is the Enterprise plan with custom pricing. Before a task starts you see a cost estimate and can cancel or change it.",
       },
       {
         q: "How is Serviceplan Agents different from other AI tools?",
-        a: "In three ways: you get a finished document or an interactive dashboard instead of a chat answer. Research runs on licensed sources (Statista, GWI, DataForSEO) instead of web search. And the knowledge about your brand and market lives in a library for the whole team, not in the memory of one account.",
+        a: "In three ways: you get a finished document or an interactive dashboard instead of a chat answer. Research runs on licensed sources (Statista, GWI, DataForSEO) instead of web search. And you explain your company once: brand, products, tone and rules live in a library for the whole team, not in the memory of one account.",
       },
       {
         q: "Which tools can be connected?",
@@ -727,12 +636,8 @@ export const enterpriseEn: LpContent = {
         a: "Then you redirect instead of restarting. You correct a running task with a comment and send it in a different direction. A human stays in the loop. What comes back is a working draft you review and approve — nothing goes out without your sign-off.",
       },
       {
-        q: "Do we have to change how we work?",
-        a: "No. No team logins, no training, no prompt courses. You write an email, put the AI coworker in CC, or forward a request. That's exactly what the three cases above show.",
-      },
-      {
-        q: "GDPR and the EU AI Act: what can we promise internally?",
-        a: "Processing runs in Germany. Every working step is visible and correctable. Every claim can be checked back to its source. You can show privacy and compliance not just the result, but how it was made.",
+        q: "What can we tell management?",
+        a: "That processing runs in Germany, every working step is visible and correctable, and every claim can be checked back to its source. In the meeting you show not just the result but where the numbers come from — including source and survey year.",
       },
       {
         q: "Who is behind this?",
@@ -740,11 +645,7 @@ export const enterpriseEn: LpContent = {
       },
     ],
   },
-  faqCta: {
-    button: "Start your first task for free",
-    linePre: "Still have questions?",
-    lineLink: "Book a demo",
-  },
+  closing: { linePre: "Not ready yet?" },
   legal: {
     imprint: "Imprint",
     privacy: "Privacy Policy",

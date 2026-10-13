@@ -2051,7 +2051,7 @@ textarea.w-input, textarea.w-select {
 
 @font-face {
   font-family: Avenir normal;
-  src: url("/fonts/AvenirLTProRoman.otf") format("opentype");
+  src: url("/fonts/AvenirLTProRoman.woff2") format("woff2"), url("/fonts/AvenirLTProRoman.otf") format("opentype");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -2059,7 +2059,7 @@ textarea.w-input, textarea.w-select {
 
 @font-face {
   font-family: AvenirLTProLightOblique;
-  src: url("/fonts/AvenirLTProLightOblique.otf") format("opentype");
+  src: url("/fonts/AvenirLTProLightOblique.woff2") format("woff2"), url("/fonts/AvenirLTProLightOblique.otf") format("opentype");
   font-weight: 300;
   font-style: italic;
   font-display: swap;
@@ -2067,7 +2067,7 @@ textarea.w-input, textarea.w-select {
 
 @font-face {
   font-family: AvenirLTProLight;
-  src: url("/fonts/AvenirLTProLight.otf") format("opentype");
+  src: url("/fonts/AvenirLTProLight.woff2") format("woff2"), url("/fonts/AvenirLTProLight.otf") format("opentype");
   font-weight: 300;
   font-style: normal;
   font-display: swap;
@@ -2075,7 +2075,7 @@ textarea.w-input, textarea.w-select {
 
 @font-face {
   font-family: AvenirLTProBlack;
-  src: url("/fonts/AvenirLTProBlack.otf") format("opentype");
+  src: url("/fonts/AvenirLTProBlack.woff2") format("woff2"), url("/fonts/AvenirLTProBlack.otf") format("opentype");
   font-weight: 900;
   font-style: normal;
   font-display: swap;
@@ -2083,7 +2083,7 @@ textarea.w-input, textarea.w-select {
 
 @font-face {
   font-family: AvenirLTProOblique;
-  src: url("/fonts/AvenirLTProOblique.otf") format("opentype");
+  src: url("/fonts/AvenirLTProOblique.woff2") format("woff2"), url("/fonts/AvenirLTProOblique.otf") format("opentype");
   font-weight: 400;
   font-style: italic;
   font-display: swap;
@@ -2091,7 +2091,7 @@ textarea.w-input, textarea.w-select {
 
 @font-face {
   font-family: AvenirLTProMedium;
-  src: url("/fonts/AvenirLTProMedium.otf") format("opentype");
+  src: url("/fonts/AvenirLTProMedium.woff2") format("woff2"), url("/fonts/AvenirLTProMedium.otf") format("opentype");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -2099,7 +2099,7 @@ textarea.w-input, textarea.w-select {
 
 @font-face {
   font-family: AvenirLTProHeavyOblique;
-  src: url("/fonts/AvenirLTProHeavyOblique.otf") format("opentype");
+  src: url("/fonts/AvenirLTProHeavyOblique.woff2") format("woff2"), url("/fonts/AvenirLTProHeavyOblique.otf") format("opentype");
   font-weight: 900;
   font-style: italic;
   font-display: swap;
@@ -2107,7 +2107,7 @@ textarea.w-input, textarea.w-select {
 
 @font-face {
   font-family: AvenirLTProMediumOblique;
-  src: url("/fonts/AvenirLTProMediumOblique.otf") format("opentype");
+  src: url("/fonts/AvenirLTProMediumOblique.woff2") format("woff2"), url("/fonts/AvenirLTProMediumOblique.otf") format("opentype");
   font-weight: 500;
   font-style: italic;
   font-display: swap;
@@ -2115,7 +2115,7 @@ textarea.w-input, textarea.w-select {
 
 @font-face {
   font-family: AvenirLTProBookOblique;
-  src: url("/fonts/AvenirLTProBookOblique.otf") format("opentype");
+  src: url("/fonts/AvenirLTProBookOblique.woff2") format("woff2"), url("/fonts/AvenirLTProBookOblique.otf") format("opentype");
   font-weight: 400;
   font-style: italic;
   font-display: swap;
@@ -2123,7 +2123,7 @@ textarea.w-input, textarea.w-select {
 
 @font-face {
   font-family: AvenirLTProBlackOblique;
-  src: url("/fonts/AvenirLTProBlackOblique.otf") format("opentype");
+  src: url("/fonts/AvenirLTProBlackOblique.woff2") format("woff2"), url("/fonts/AvenirLTProBlackOblique.otf") format("opentype");
   font-weight: 900;
   font-style: italic;
   font-display: swap;
@@ -2131,7 +2131,7 @@ textarea.w-input, textarea.w-select {
 
 @font-face {
   font-family: AvenirLTProBook;
-  src: url("/fonts/AvenirLTProBook.otf") format("opentype");
+  src: url("/fonts/AvenirLTProBook.woff2") format("woff2"), url("/fonts/AvenirLTProBook.otf") format("opentype");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -2139,7 +2139,7 @@ textarea.w-input, textarea.w-select {
 
 @font-face {
   font-family: AvenirLTProHeavy;
-  src: url("/fonts/AvenirLTProHeavy.otf") format("opentype");
+  src: url("/fonts/AvenirLTProHeavy.woff2") format("woff2"), url("/fonts/AvenirLTProHeavy.otf") format("opentype");
   font-weight: 900;
   font-style: normal;
   font-display: swap;
