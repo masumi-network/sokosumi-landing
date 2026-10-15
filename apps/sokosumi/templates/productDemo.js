@@ -411,7 +411,7 @@ function sidebar() {
       </div>
     </div>
     <div class="pd-side-foot">
-      <button type="button" class="pd-account" data-pd-open="account" aria-label="Open account summary: Patrick Tobler, Free · 78,494 credits">
+      <button type="button" class="pd-account" data-pd-open="account">
         ${ava("patrick", 32, { status: true })}
         <span class="pd-account-copy"><span class="pd-account-name">Patrick Tobler</span><span class="pd-account-sub">Free · 78,494 credits</span></span>
         ${ico("chevron-down", 14, "pd-account-chev")}
@@ -448,7 +448,7 @@ function viewHome() {
         <div class="pd-strip">
           ${HOME_STRIP.map((s) => {
             const p = P[s];
-            return `<button type="button" class="pd-strip-item${s === "elena" ? " is-on" : ""}" data-pd-pick="${attr(s)}" aria-label="Select ${attr(p.name)}">
+            return `<button type="button" class="pd-strip-item${s === "elena" ? " is-on" : ""}" data-pd-pick="${attr(s)}">
               <span class="pd-strip-ava"><img src="${attr(p.image)}" alt="" loading="lazy" decoding="async" /></span>
               <span class="pd-strip-copy"><span class="pd-strip-name">${esc(p.name)}</span><span class="pd-strip-role">${esc(p.role)}</span></span>
             </button>`;
@@ -954,7 +954,7 @@ function chapter(num, view, title, text) {
       <p class="sub">${esc(t(text))}</p>
       <button type="button" class="pd-see" data-pd-view="${attr(view)}">${esc(t("See it in the product"))} ${icon("arrow-up-right", 14)}</button>
     </header>
-    ${f ? `<div class="pd-feat" data-pd-feature="${attr(view)}" role="button" tabindex="0" style="background-image:url(/assets/gradients/g${f.bg + 1}.webp)" aria-label="${attr(t("See it in the product"))}: ${attr(t(title))}">
+    ${f ? `<div class="pd-feat" data-pd-feature="${attr(view)}" style="background-image:url(/assets/gradients/g${f.bg + 1}.webp)">
       <div class="pd-feat-scroll"><div class="pd-feat-sizer" data-pd-fit="${f.w}x${f.h}"><div class="pd-app pd-feat-app" style="width:${f.w}px;height:${f.h}px" aria-hidden="true">${f.html().replace(/ tabindex="0" role="button"/g, "")}</div></div></div>
     </div>` : ""}
   </section>`;

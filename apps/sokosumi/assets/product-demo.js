@@ -1018,9 +1018,6 @@
       if (!t.closest(".pd-pop, .pd-dialog, .pd-sheet")) closeLayer();
     }
   });
-  document.addEventListener("keydown", (e) => {
-    if ((e.key === "Enter" || e.key === " ") && e.target instanceof Element && e.target.matches("[data-pd-feature]")) { e.preventDefault(); e.target.click(); }
-  });
   // keyboard: Enter/Space on cards
   app.addEventListener("keydown", (e) => {
     if (e.key === "Escape" && !layer.hidden) { closeLayer(); return; }
