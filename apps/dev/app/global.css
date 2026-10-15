@@ -27,6 +27,20 @@
   color: hsl(142, 70%, 45%);
 }
 
+/* Masumi docs: override fd color tokens inside docs body so Tailwind utilities resolve to our palette */
+.masumi-docs-body {
+  --color-fd-card: #ffffff;
+  --color-fd-secondary: #ffffff;
+  --color-fd-secondary-foreground: #333333;
+  --color-fd-card-foreground: #000000;
+  --color-fd-border: rgba(0, 0, 0, 0.06);
+}
+
+.masumi-docs-body figure.shiki {
+  --color-fd-card: var(--docs-terminal);
+  --color-fd-secondary: var(--docs-terminal);
+}
+
 /* Fix search field hover - only border, not full background */
 .hover\:bg-fd-accent:hover {
   background-color: transparent !important;
@@ -646,6 +660,176 @@ body:has(.devhub-docs-context) .masumi-docs-layout {
   color: var(--docs-terminal-text) !important;
 }
 
+/* Fumadocs shiki code blocks: dark terminal */
+#nd-page .masumi-docs-body figure.shiki,
+#nd-page .masumi-docs-body figure.shiki.bg-fd-card {
+  --color-fd-card: #0a0a0a;
+  --color-fd-secondary: #0a0a0a;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 10px !important;
+  background-color: #0a0a0a !important;
+  box-shadow: none !important;
+  overflow: hidden;
+  margin: 1em 0 !important;
+}
+
+#nd-page .masumi-docs-body figure.shiki > *,
+#nd-page .masumi-docs-body figure.shiki > div,
+#nd-page .masumi-docs-body figure.shiki [class*="fd-scroll"] {
+  background-color: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+
+#nd-page .masumi-docs-body figure.shiki pre {
+  border: 0 !important;
+  border-radius: 0 !important;
+  margin: 0 !important;
+  padding: 12px 16px !important;
+  background-color: transparent !important;
+}
+
+#nd-page .masumi-docs-body figure.shiki [class*="fd-scroll"] {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+#nd-page .masumi-docs-body figure.shiki code,
+#nd-page .masumi-docs-body figure.shiki code span,
+#nd-page .masumi-docs-body figure.shiki code [style] {
+  color: #e7e7e9 !important;
+}
+
+#nd-page .masumi-docs-body figure.shiki button {
+  color: rgba(255, 255, 255, 0.35) !important;
+  border: none !important;
+  background-color: transparent !important;
+}
+
+#nd-page .masumi-docs-body figure.shiki button:hover {
+  color: #e7e7e9 !important;
+  background-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Fumadocs tab/step outer wrapper */
+.masumi-docs-body [class*="rounded-xl"][class*="border"][class*="bg-fd-secondary"] {
+  border-color: var(--docs-hairline) !important;
+  border-radius: 10px !important;
+  background: var(--docs-surface) !important;
+  box-shadow: none !important;
+  overflow: hidden;
+}
+
+/* Tab bar */
+.masumi-docs-body [role="tablist"] {
+  border-bottom: 1px solid var(--docs-hairline) !important;
+  background: transparent !important;
+  padding: 0 4px !important;
+  gap: 0 !important;
+}
+
+.masumi-docs-body [role="tab"] {
+  border: none !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: var(--docs-muted) !important;
+  font-size: 13.5px !important;
+  font-weight: 500 !important;
+  padding: 10px 14px !important;
+  position: relative;
+  transition: color 0.15s ease;
+}
+
+.masumi-docs-body [role="tab"][data-state="active"],
+.masumi-docs-body [role="tab"][aria-selected="true"] {
+  color: var(--docs-pink) !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.masumi-docs-body [role="tab"][data-state="active"]::after,
+.masumi-docs-body [role="tab"][aria-selected="true"]::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 14px;
+  right: 14px;
+  height: 2px;
+  background: var(--docs-pink);
+  border-radius: 1px;
+}
+
+.masumi-docs-body [role="tab"]:hover {
+  color: var(--docs-ink) !important;
+  background: transparent !important;
+}
+
+/* Steps */
+.masumi-docs-body .fd-step::before {
+  background: rgba(0, 0, 0, 0.06) !important;
+  border: none !important;
+  border-radius: 7px !important;
+  color: var(--docs-muted) !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+}
+
+/* Accordions / collapsibles */
+.masumi-docs-body .divide-y.bg-fd-card,
+.masumi-docs-body [data-orientation="vertical"].divide-y,
+.masumi-docs-body [data-orientation="vertical"].bg-fd-card,
+.masumi-docs-body details {
+  border: 1px solid var(--docs-hairline) !important;
+  border-radius: 10px !important;
+  background: var(--docs-surface) !important;
+  box-shadow: none !important;
+  overflow: hidden;
+}
+
+.masumi-docs-body .divide-y.bg-fd-card > div,
+.masumi-docs-body [data-orientation="vertical"] > div {
+  border-color: var(--docs-hairline) !important;
+}
+
+.masumi-docs-body .divide-y.bg-fd-card button[data-state],
+.masumi-docs-body [data-orientation="vertical"] button[data-state],
+.masumi-docs-body details summary {
+  font-size: 15px !important;
+  font-weight: 500 !important;
+  color: var(--docs-ink) !important;
+  padding: 12px 16px !important;
+  background: transparent !important;
+}
+
+.masumi-docs-body .divide-y.bg-fd-card button[data-state]:hover,
+.masumi-docs-body [data-orientation="vertical"] button[data-state]:hover,
+.masumi-docs-body details summary:hover {
+  background: rgba(0, 0, 0, 0.02) !important;
+}
+
+.masumi-docs-body .divide-y.bg-fd-card [role="region"],
+.masumi-docs-body [data-orientation="vertical"] [role="region"] {
+  padding: 14px 16px !important;
+  background: transparent !important;
+}
+
+/* Callouts / admonitions */
+.masumi-docs-body [class*="callout"],
+.masumi-docs-body [class*="admonition"] {
+  border-radius: 10px !important;
+  box-shadow: none !important;
+}
+
+/* Inline code in prose */
+.masumi-docs-body :where(code):not(pre code) {
+  padding: 2px 6px !important;
+  border-radius: 5px !important;
+  font-size: 0.88em !important;
+  background: rgba(0, 0, 0, 0.05) !important;
+  border: 1px solid var(--docs-hairline) !important;
+  color: var(--docs-ink) !important;
+}
+
 .masumi-docs-body :where(pre [data-line], pre .line) {
   color: inherit !important;
 }
@@ -684,7 +868,15 @@ body:has(.devhub-docs-context) .masumi-docs-layout {
   border-radius: 8px !important;
 }
 
-.masumi-docs-body :where(.not-prose [class*='bg-fd-card'], .not-prose [class*='bg-fd-muted'], [class*='bg-fd-card']) {
+.masumi-docs-body :where(.not-prose [class*='bg-fd-card'], .not-prose [class*='bg-fd-muted'], [class*='bg-fd-card']),
+.masumi-docs-body .bg-fd-card,
+.masumi-docs-body .bg-fd-card.divide-y,
+.masumi-docs-body div.bg-fd-card,
+#nd-page .masumi-docs-body .bg-fd-card {
+  background-color: var(--docs-surface) !important;
+}
+
+#nd-page .masumi-docs-body .bg-fd-secondary {
   background-color: var(--docs-surface) !important;
 }
 
