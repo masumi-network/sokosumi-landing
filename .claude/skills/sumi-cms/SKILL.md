@@ -160,8 +160,8 @@ curl -s -o /dev/null -w '%{http_code}' https://www.masumi.network/<slug>   # exp
 curl -s https://www.masumi.network/sitemap.xml | grep <slug>
 ```
 
-Local dev (sokosumi-landing repo): masumi runs via the `masumi` launch.json
-entry (port 3008). Dev caches CMS responses ~5 min on disk; if content looks
+Local dev (sokosumi-landing repo): masumi runs with `npm run dev:masumi`
+(port 3001). Dev caches CMS responses ~5 min on disk; if content looks
 stale, delete `apps/masumi/.next` and restart.
 
 ## Schema changes (engineering only)
