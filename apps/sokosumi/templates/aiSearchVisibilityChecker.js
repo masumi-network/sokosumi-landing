@@ -62,7 +62,7 @@ function render() {
       englishOnly: true,
       breadcrumb: crumbs,
       mainClass: "tk-tool-page",
-      stylesheets: ["/assets/tool-kit.css"],
+      stylesheets: ["/assets/tool-kit.css", "/assets/ai-search-visibility.css"],
       jsonld: [appJsonLd, faqJsonLd],
       og: { type: "page", title: "AI Search Visibility Checker", sub: "A readiness proxy, not a live AI search measurement." },
     }) +
@@ -99,6 +99,7 @@ function render() {
         <div class="tk-scores" id="asvScores" role="group" aria-label="Filter checks"></div>
         <button class="tk-copy" id="asvCopy" type="button">Copy report</button>
       </div>
+      <div class="asv-viz" id="asvViz" hidden></div>
       <div class="tk-dims tk-dims-balanced tk-dims-notag" id="asvDims" data-filter=""></div>
     </section>
 

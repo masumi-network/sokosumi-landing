@@ -1,0 +1,223 @@
+/* Visuals specific to /tools/ai-search-visibility, injected into #asvViz by
+   assets/ai-search-visibility.js. Scoped under .asv- so nothing here touches
+   the other tool-kit pages. Band colours match the shared gauge:
+   strong #2f6b45, needs-work #8a6100, weak #b02a2a. */
+
+.asv-viz[hidden] {
+  display: none;
+}
+.asv-viz {
+  margin: 4px 0 30px;
+  display: grid;
+  gap: 22px;
+}
+
+/* --- Readiness pillars: three radial rings ------------------------------- */
+.asv-pillars {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.asv-pillar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 18px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--card);
+}
+
+.asv-ring {
+  --val: 0deg;
+  --ring: var(--muted-foreground);
+  position: relative;
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 54px;
+  height: 54px;
+  border-radius: 999px;
+  background: conic-gradient(var(--ring) var(--val), var(--muted) 0);
+}
+.asv-ring::after {
+  content: "";
+  position: absolute;
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
+  background: var(--card);
+}
+.asv-ring b {
+  position: relative;
+  z-index: 1;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--foreground);
+}
+.asv-ring.is-strong {
+  --ring: #2f6b45;
+}
+.asv-ring.is-needs-work {
+  --ring: #8a6100;
+}
+.asv-ring.is-weak {
+  --ring: #b02a2a;
+}
+
+.asv-pillar-meta {
+  min-width: 0;
+}
+.asv-pillar-name {
+  font-size: 14px;
+  font-weight: 550;
+  color: var(--foreground);
+}
+.asv-pillar-sub {
+  margin-top: 3px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  color: var(--muted-foreground);
+}
+.asv-pillar-tally {
+  margin-top: 2px;
+  font-size: 12px;
+  color: var(--muted-foreground);
+}
+
+.asv-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--muted-foreground);
+}
+.asv-dot.is-strong {
+  background: #2f6b45;
+}
+.asv-dot.is-needs-work {
+  background: #8a6100;
+}
+.asv-dot.is-weak {
+  background: #b02a2a;
+}
+
+/* --- AI engine access grid ---------------------------------------------- */
+.asv-block {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--card);
+  padding: 18px;
+}
+.asv-block-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.asv-block-head h3 {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--foreground);
+}
+.asv-block-sub {
+  font-size: 12.5px;
+  color: var(--muted-foreground);
+}
+
+.asv-engine-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(188px, 1fr));
+  gap: 10px;
+}
+
+.asv-engine {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--background, transparent);
+}
+
+.asv-engine-top {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+
+.asv-engine-glyph {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  background: var(--muted);
+  border: 1px solid var(--border);
+}
+/* A blocked engine reads as inactive — desaturate its logo. The red is
+   carried by the status pill below, so the tile still reads at a glance. */
+.asv-engine.is-no .asv-engine-glyph svg {
+  filter: grayscale(1);
+  opacity: 0.55;
+}
+
+.asv-engine-meta {
+  flex: 1;
+  min-width: 0;
+}
+.asv-engine-brand {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--foreground);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.asv-engine-product {
+  font-size: 11.5px;
+  color: var(--muted-foreground);
+}
+
+.asv-engine-status {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 999px;
+}
+.asv-engine-status::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+.asv-engine.is-ok .asv-engine-status {
+  color: #2f6b45;
+  background: color-mix(in srgb, #2f6b45 10%, transparent);
+}
+.asv-engine.is-no .asv-engine-status {
+  color: #b02a2a;
+  background: color-mix(in srgb, #b02a2a 10%, transparent);
+}
+
+.asv-foot {
+  margin-top: 12px;
+  font-size: 11.5px;
+  color: var(--muted-foreground);
+}
+
+@media (max-width: 620px) {
+  .asv-pillars {
+    grid-template-columns: 1fr;
+  }
+}

@@ -29,6 +29,18 @@ const AI_BOTS = [
 
 const DIMENSION_WEIGHT = { crawlers: 40, disambiguation: 30, discovery: 30 };
 
+// The recognizable AI engines to show as a status grid in the report. `brand`
+// is the engine a visitor would recognize; `token` is the robots.txt
+// user-agent it crawls as. A couple of tokens (Bytespider, Amazonbot) are
+// omitted here to keep the grid to the names people actually search for.
+const ENGINE_GRID = [
+  { brand: "OpenAI", product: "ChatGPT search", token: "GPTBot" },
+  { brand: "Anthropic", product: "Claude", token: "ClaudeBot" },
+  { brand: "Perplexity", product: "Perplexity", token: "PerplexityBot" },
+  { brand: "Google", product: "Gemini · AI Overviews", token: "Google-Extended" },
+  { brand: "Common Crawl", product: "feeds many LLMs", token: "CCBot" },
+];
+
 function band(score) {
   return score >= 80 ? "pass" : score >= 50 ? "warn" : "error";
 }
@@ -68,6 +80,24 @@ function blocksAllCrawlers(robotsTxt) {
   const blocks = robotsTxt.split(/\n(?=user-agent:)/i);
   const wildcard = blocks.find((b) => /user-agent:\s*\*/i.test(b));
   return Boolean(wildcard && /disallow:\s*\/\s*$/im.test(wildcard));
+}
+
+// Per-engine crawl access for the report's visual grid. An engine is blocked
+// if robots.txt disallows the whole site for everyone, or disallows that
+// engine's own token site-wide.
+function crawlerGrid(robotsTxt, blocked) {
+  const all = blocksAllCrawlers(robotsTxt);
+  const blockedTokens = new Set(blocked.map((b) => b.token));
+  return ENGINE_GRID.map((e) => {
+    const isBlocked = all || blockedTokens.has(e.token);
+    return {
+      brand: e.brand,
+      product: e.product,
+      token: e.token,
+      status: isBlocked ? "blocked" : "allowed",
+      reason: all && !blockedTokens.has(e.token) ? "sitewide" : isBlocked ? "token" : null,
+    };
+  });
 }
 
 // Cheap presence checks straight off the homepage HTML — no full parse needed.
@@ -189,6 +219,7 @@ async function analyze(input) {
     title,
     overall,
     dimensions: scored.map(({ weight, ...rest }) => rest),
+    engines: crawlerGrid(robotsTxt, blocked),
     recommendations: buildRecommendations(scored),
     fetchedAt: new Date().toISOString(),
   };
