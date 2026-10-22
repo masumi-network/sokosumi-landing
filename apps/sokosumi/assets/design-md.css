@@ -1206,14 +1206,69 @@
 .tool-card-doc {
   display: grid;
   place-items: center;
-  /* One height for every stage, so a taller preview cannot push its card's
-     copy out of line with the card beside it. */
-  min-height: 320px;
+  /* One FIXED height for every stage, so a taller preview (the DESIGN.md spec
+     sheet, the node graph) cannot stretch its gradient panel past the others.
+     Content is centred, so shorter mock-ups simply get more breathing room. */
+  height: 300px;
   margin: -20px -20px 0;
-  padding: 26px 22px;
-  background: var(--muted);
-  border-bottom: 1px solid var(--border);
+  padding: 20px 22px;
+  /* Every preview now sits on the same blue → dark-blue ramp the OG checker
+     draws inside its own social-card shot (.tp-shot). The mock-ups above read
+     against theme variables, so re-skinning them for the dark panel is just a
+     matter of overriding those variables here — a dark-glass palette. The two
+     previews that render a genuine white surface (the share card and the Google
+     result) opt back out below so they stay true to life on the gradient. */
+  background:
+    radial-gradient(90% 120% at 15% 10%, rgba(0, 164, 250, 0.35) 0%, transparent 60%),
+    linear-gradient(135deg, #2b5c78 0%, #12232c 55%, #0f0e0d 100%);
+  border-bottom: 1px solid rgba(15, 14, 13, 0.12);
+  --background: rgba(255, 255, 255, 0.055);
+  --card: rgba(255, 255, 255, 0.055);
+  --muted: rgba(255, 255, 255, 0.1);
+  --foreground: #eef3f8;
+  --muted-foreground: rgba(228, 238, 247, 0.62);
+  --border: rgba(255, 255, 255, 0.18);
+  --primary: #46b1ff;
 }
+
+/* Every illustration gets the same footprint so the set reads as one family on
+   the gradient: one width for all (the newer graph/bot/vitals/tag illustrations
+   were pinned narrower than the rest), and one floor height so a short mock-up
+   leaves the same breathing room as a tall one. */
+.tool-card-doc .tp {
+  width: 100%;
+  max-width: 288px;
+}
+.tool-card-doc .tp-graph-stage,
+.tool-card-doc .tp-botlist,
+.tool-card-doc .tp-vitalbox,
+.tool-card-doc .tp-tagcloud {
+  width: 100%;
+  max-width: none;
+}
+
+/* The share card and the Google result carry hardcoded light surfaces/inks from
+   their real-world origins; bring them onto the dark palette so no card reads as
+   the odd one out. The gradient inside the OG shot is the same ramp as the stage,
+   so the card melts into the panel instead of sitting on it as a white slab. */
+.tool-card-doc .tp-card {
+  background: var(--card);
+}
+.tool-card-doc .tp-meta {
+  background: rgba(255, 255, 255, 0.07);
+  border-top-color: var(--border);
+}
+.tool-card-doc .tp-serp-url {
+  color: #5fd08a;
+}
+.tool-card-doc .tp-serp-title {
+  color: #7db8ff;
+}
+
+/* Verdict pills sit directly on the gradient, so the pass/warn inks that were
+   tuned for a light card get brightened to hold contrast on dark. */
+.tool-card-doc .tp-chip.is-pass { color: #4fd08a; }
+.tool-card-doc .tp-chip.is-warn { color: #f0bd57; }
 
 .tp {
   display: grid;
@@ -1235,7 +1290,7 @@
 .tp-shot {
   position: relative;
   display: block;
-  aspect-ratio: 1200 / 630;
+  aspect-ratio: 1200 / 470;
   background:
     radial-gradient(90% 120% at 15% 10%, rgba(0, 164, 250, 0.35) 0%, transparent 60%),
     linear-gradient(135deg, #2b5c78 0%, #12232c 55%, #0f0e0d 100%);
@@ -1535,6 +1590,12 @@
   border-radius: 50%;
   background: linear-gradient(135deg, #2b5c78, #00a4fa);
   flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
 }
 
 .tp-post-name {

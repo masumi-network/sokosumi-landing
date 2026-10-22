@@ -86,7 +86,7 @@ const postCheckerPreview = () => `
   <span class="tp tp-psc">
     <span class="tp-post">
       <span class="tp-post-head">
-        <span class="tp-avatar"></span>
+        <span class="tp-avatar">JR</span>
         <span class="tp-post-name"><b>Jordan Reyes</b><i>Marketing Lead</i></span>
       </span>
       <span class="tp-post-body">Most SaaS teams ship a feature and hope someone notices.</span>
@@ -134,7 +134,7 @@ const xAlgorithmPreview = () => `
   <span class="tp tp-psc">
     <span class="tp-post">
       <span class="tp-post-head">
-        <span class="tp-avatar"></span>
+        <span class="tp-avatar">JR</span>
         <span class="tp-post-name"><b>@jordanreyes</b><i>X post</i></span>
       </span>
       <span class="tp-post-body">What's the most tedious part of your campaign setup — curious what everyone else is stuck doing manually.</span>
