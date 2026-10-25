@@ -13,7 +13,7 @@ export const dynamic = "force-dynamic";
 const CACHE_TTL_MS = 7 * 24 * 60 * 60 * 1000;
 
 // Per-IP rate limit. Every uncached call spends a Browserbase session and a
-// Haiku call with max_tokens 7000, on an endpoint with no auth — so without a
+// Haiku call with max_tokens 10000, on an endpoint with no auth — so without a
 // ceiling a single loop runs up the bill. In-memory, so it is per-instance:
 // enough to stop a naive loop, not a distributed one. Move to a shared store
 // if this ever needs to hold against real abuse.
@@ -109,25 +109,21 @@ export async function POST(req: Request) {
   try {
     const result = await extractFromUrl(url, { force });
 
-    // Persist successful LLM-extracted entries so they appear in the public
-    // gallery + can be reloaded instantly. Don't save heuristic fallbacks —
-    // they're low quality and would clutter the gallery.
+    // Saved whatever the source so the result has a shareable id; heuristic
+    // rows stay out of the gallery and the URL cache (see extractions-db).
     let savedId: number | undefined;
-    if (result.source === "llm") {
-      try {
-        const md = serializeFromExtract(result);
-        savedId = saveExtraction({
-          url,
-          name: result.frontmatter.name ?? null,
-          primaryColor: result.frontmatter.colors?.primary ?? null,
-          logoUrl: result.frontmatter.logo?.src ?? null,
-          screenshot: result.screenshot ?? null,
-          designMd: md,
-          source: result.source,
-        });
-      } catch (e) {
-        console.error("[extract] save error:", e);
-      }
+    try {
+      savedId = saveExtraction({
+        url,
+        name: result.frontmatter.name ?? null,
+        primaryColor: result.frontmatter.colors?.primary ?? null,
+        logoUrl: result.frontmatter.logo?.src ?? null,
+        screenshot: result.screenshot ?? null,
+        designMd: serializeFromExtract(result),
+        source: result.source,
+      });
+    } catch (e) {
+      console.error("[extract] save error:", e);
     }
 
     return NextResponse.json({ ...result, savedId });

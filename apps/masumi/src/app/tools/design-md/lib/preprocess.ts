@@ -57,6 +57,7 @@ export type SiteSignal = {
   computed?: {
     body?: ComputedStyle;
     h1?: ComputedStyle;
+    h2?: ComputedStyle;
     header?: ComputedStyle;
     primaryCta?: ComputedStyle;
     secondaryCta?: ComputedStyle;
@@ -215,6 +216,7 @@ const HEX_RE = /#[0-9a-fA-F]{6}\b|#[0-9a-fA-F]{3}\b/g;
 const RGB_RE = /rgba?\(\s*(\d+)[,\s]+(\d+)[,\s]+(\d+)/g;
 const CSS_VAR_RE =
   /(--[a-zA-Z0-9-_]+)\s*:\s*(#[0-9a-fA-F]{3,8}|rgba?\([^)]+\)|hsl[a]?\([^)]+\))/g;
+const WP_PRESET_RE = /--wp--preset--[\w-]+\s*:[^;}]*/g;
 const TAILWIND_HEX_CLASS_RE =
   /(?:bg|text|border|from|to|via|fill|stroke)-\[#([0-9a-fA-F]{3,8})\]/g;
 
@@ -228,6 +230,7 @@ function extractColors($: CheerioAPI, html: string, css: string) {
   let m: RegExpExecArray | null;
 
   while ((m = CSS_VAR_RE.exec(css))) {
+    if (m[1].startsWith("--wp--preset")) continue;
     const value = m[2].trim();
     cssVars.push({ name: m[1], value });
     if (value.startsWith("#")) explicit.add(normalizeHex(value));
@@ -247,7 +250,10 @@ function extractColors($: CheerioAPI, html: string, css: string) {
     }
   });
 
-  const text = html + "\n" + css;
+  // WordPress ships a fixed preset palette (vivid orange #ff6900, cyan
+  // #0693e3, ...) on every site whether the theme uses it or not, and it
+  // outnumbers the brand colours in a frequency count.
+  const text = (html + "\n" + css).replace(WP_PRESET_RE, "");
   HEX_RE.lastIndex = 0;
   while ((m = HEX_RE.exec(text))) {
     const hex = normalizeHex(m[0]);
@@ -362,8 +368,8 @@ function extractGeometry(css: string) {
   const shadows = new Set<string>();
   const shadowRe = /box-shadow\s*:\s*([^;}\n]+)/gi;
   while ((m = shadowRe.exec(css))) {
-    const value = m[1].trim();
-    if (value !== "none" && value.length < 120) shadows.add(value);
+    const value = m[1].replace(/!\s*important/i, "").trim();
+    if (!/^(none|inherit|initial|unset|var\()/i.test(value) && value.length < 120) shadows.add(value);
   }
 
   return {

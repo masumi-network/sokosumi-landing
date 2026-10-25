@@ -93,13 +93,16 @@ async function bySlug(slug) {
   return entries.find((e) => e.slug === wanted) || entries.find((e) => e.aliases.includes(wanted)) || null;
 }
 
-// Older ids of a re-analysed host resolve to that host's current entry.
+// Older ids of a re-analysed host resolve to that host's current entry. A
+// heuristic (fallback) result does not: the API hands its id out as the
+// preview of exactly that file, so it must open itself, not the gallery entry.
 async function byId(id) {
   const entries = await list();
   const direct = entries.find((e) => String(e.id) === String(id));
   if (direct) return direct;
   const data = await extraction(id).catch(() => null);
-  return data && data.hostname ? entries.find((e) => host(e.hostname) === host(data.hostname)) || null : null;
+  if (!data || !data.hostname || data.source === "heuristic") return null;
+  return entries.find((e) => host(e.hostname) === host(data.hostname)) || null;
 }
 
 async function extraction(id) {

@@ -2,9 +2,11 @@ import type { Frontmatter, Logo, Typography } from "./design-md";
 import type { SiteSignal } from "./preprocess";
 import { signalToMarkdown } from "./preprocess";
 import type { RenderedPage } from "./render";
+import { measuredScales } from "./heuristic";
 
-const MODEL = "anthropic/claude-haiku-4.5";
-const ENDPOINT = "https://openrouter.ai/api/v1/chat/completions";
+// Vercel AI Gateway, key sumi-sites-free-tools (monthly budget, masumi team).
+const MODEL = process.env.DESIGN_MD_MODEL || "anthropic/claude-haiku-5.5";
+const ENDPOINT = "https://ai-gateway.vercel.sh/v1/chat/completions";
 
 export type LlmMeta = {
   model: string;
@@ -50,7 +52,11 @@ Other rules:
 - Components must use token references like {colors.primary} so the system is wired up, not hardcoded.
 - Prose follows the canonical DESIGN.md section order: Overview (also "Brand & Style"), Colors, Typography, Layout, Elevation & Depth, Shapes, Components, Do's and Don'ts. Voice and brand personality belong inside Overview. Color usage rules belong inside Colors. Spacing rationale belongs inside Layout. Border-radius rationale belongs inside Shapes.
 - Logo: from the provided candidate list, pick the single best one for "src" — preferring a vector SVG > apple-touch-icon > header img logo > og-image. If the site appears to have a separate dark-mode logo, set "srcDark". Always copy candidate URLs verbatim. If no candidates are provided, omit the logo field entirely.
-- If something is genuinely unknowable, omit the field rather than invent a placeholder.`;
+- If something is genuinely unknowable, omit the field rather than invent a placeholder.
+
+MEASURED VALUES — every font size, weight, line height, spacing step, radius and shadow must come from the page: the "Live computed styles" and "Measured scales" blocks of the signal, or the CSS excerpt. The schema below shows the SHAPE only; its <placeholders> are not values. A type scale or spacing scale that could belong to any site is a failure. Map h1 to display, h2 to headline, body to body-md and the primary CTA to label-md, and fill the levels in between from the CSS.
+
+COOKIE AND CONSENT BANNERS are not the brand. Ignore their buttons and colours (Cookiebot, OneTrust, Usercentrics and similar), even when they are the most prominent button on the screenshot.`;
 
 const SCHEMA = `{
   "frontmatter": {
@@ -108,19 +114,19 @@ const SCHEMA = `{
       "surface-variant": "#hex"
     },
     "typography": {
-      "display":      { "fontFamily": "...", "fontSize": "60px", "fontWeight": "700", "lineHeight": "68px", "letterSpacing": "-0.04em" },
-      "headline-lg":  { "fontFamily": "...", "fontSize": "40px", "fontWeight": "600", "lineHeight": "48px", "letterSpacing": "-0.02em" },
-      "headline-md":  { "fontFamily": "...", "fontSize": "28px", "fontWeight": "600", "lineHeight": "36px" },
-      "title-lg":     { "fontFamily": "...", "fontSize": "20px", "fontWeight": "600", "lineHeight": "28px" },
-      "body-lg":      { "fontFamily": "...", "fontSize": "18px", "fontWeight": "400", "lineHeight": "28px" },
-      "body-md":      { "fontFamily": "...", "fontSize": "16px", "fontWeight": "400", "lineHeight": "24px" },
-      "label-md":     { "fontFamily": "...", "fontSize": "14px", "fontWeight": "600", "lineHeight": "20px", "letterSpacing": "0.01em" },
-      "label-sm":     { "fontFamily": "...", "fontSize": "12px", "fontWeight": "500", "lineHeight": "16px" }
+      "display":      { "fontFamily": "<measured>", "fontSize": "<px>", "fontWeight": "<100-900>", "lineHeight": "<px or unitless>", "letterSpacing": "<em, omit if normal>" },
+      "headline-lg":  { "fontFamily": "<measured>", "fontSize": "<px>", "fontWeight": "<100-900>", "lineHeight": "<px or unitless>", "letterSpacing": "<em, omit if normal>" },
+      "headline-md":  { "fontFamily": "<measured>", "fontSize": "<px>", "fontWeight": "<100-900>", "lineHeight": "<px or unitless>", "letterSpacing": "<em, omit if normal>" },
+      "title-lg":     { "fontFamily": "<measured>", "fontSize": "<px>", "fontWeight": "<100-900>", "lineHeight": "<px or unitless>", "letterSpacing": "<em, omit if normal>" },
+      "body-lg":      { "fontFamily": "<measured>", "fontSize": "<px>", "fontWeight": "<100-900>", "lineHeight": "<px or unitless>", "letterSpacing": "<em, omit if normal>" },
+      "body-md":      { "fontFamily": "<measured>", "fontSize": "<px>", "fontWeight": "<100-900>", "lineHeight": "<px or unitless>", "letterSpacing": "<em, omit if normal>" },
+      "label-md":     { "fontFamily": "<measured>", "fontSize": "<px>", "fontWeight": "<100-900>", "lineHeight": "<px or unitless>", "letterSpacing": "<em, omit if normal>" },
+      "label-sm":     { "fontFamily": "<measured>", "fontSize": "<px>", "fontWeight": "<100-900>", "lineHeight": "<px or unitless>", "letterSpacing": "<em, omit if normal>" }
     },
-    "spacing":  { "unit": "8px", "xs": "4px", "sm": "12px", "md": "24px", "lg": "40px", "xl": "64px", "gutter": "24px", "container-max": "1280px" },
-    "rounded":  { "sm": "0.25rem", "DEFAULT": "0.5rem", "md": "0.75rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px" },
-    "elevation":{ "sm": "0 1px 2px rgba(0,0,0,0.06)", "md": "0 4px 12px rgba(0,0,0,0.08)", "lg": "0 16px 40px rgba(0,0,0,0.12)" },
-    "layout":   { "containerMaxWidth": "1280px", "gridColumns": 12 },
+    "spacing":  { "unit": "<px>", "xs": "<px>", "sm": "<px>", "md": "<px>", "lg": "<px>", "xl": "<px>", "gutter": "<px>", "container-max": "<px>" },
+    "rounded":  { "sm": "<px>", "DEFAULT": "<px>", "md": "<px>", "lg": "<px>", "xl": "<px>", "full": "9999px" },
+    "elevation":{ "sm": "<box-shadow>", "md": "<box-shadow>", "lg": "<box-shadow>" },
+    "layout":   { "containerMaxWidth": "<px>", "gridColumns": "<number>" },
     "components": {
       "button-primary":           { "backgroundColor": "{colors.primary}", "textColor": "{colors.on-primary}", "typography": "{typography.label-md}", "rounded": "{rounded.lg}", "padding": "{spacing.md}", "height": "48px" },
       "button-primary-hover":     { "backgroundColor": "{colors.primary-container}", "textColor": "{colors.on-primary-container}" },
@@ -243,7 +249,7 @@ export async function llmExtract(
   rendered: RenderedPage | null,
   opts?: { force?: boolean },
 ): Promise<LlmResult> {
-  const key = process.env.OPENROUTER_API_KEY;
+  const key = process.env.AI_GATEWAY_API_KEY;
   if (!key) return null;
 
   const hasScreenshot = !!(
@@ -257,14 +263,15 @@ export async function llmExtract(
   // primary=#000 on monochrome-with-accent brands like Masumi).
   // v7: the vision input went from an 800px hero crop to a 2400px crop, so a
   // v6 entry would serve a materially worse result than a fresh run.
-  const cacheKey = `${MODEL}:v7${hasScreenshot ? ":vision" : ":text"}:${url}`;
+  // v8: measured scales in the prompt, placeholder-only schema.
+  const cacheKey = `${MODEL}:v8${hasScreenshot ? ":vision" : ":text"}:${url}`;
   if (!opts?.force) {
     const cached = cache.get(cacheKey);
     if (cached && Date.now() - cached.ts < TTL_MS) return cached.result;
   }
 
   const signalMd = signalToMarkdown(signal);
-  const prompt = buildPrompt(signalMd, rawHtml, rawCss, hasScreenshot);
+  const prompt = buildPrompt(signalMd, measuredMd(signal, rawCss), rawHtml, rawCss, hasScreenshot);
 
   // Vision input: pass screenshot as image_url with data URL.
   const userContent: Array<
@@ -288,8 +295,6 @@ export async function llmExtract(
       headers: {
         authorization: `Bearer ${key}`,
         "content-type": "application/json",
-        "x-title": "Masumi DESIGN.md Generator",
-        "http-referer": "https://www.masumi.network/tools/design-md",
       },
       body: JSON.stringify({
         model: MODEL,
@@ -299,7 +304,10 @@ export async function llmExtract(
         ],
         response_format: { type: "json_object" },
         temperature: 0.3,
-        max_tokens: 7000,
+        max_tokens: 10000,
+        // Haiku 5.5 reasons by default and spends the token budget on it,
+        // which truncated the JSON. Extraction does not need it.
+        reasoning_effort: "none",
       }),
       signal: AbortSignal.timeout(90_000),
     });
@@ -335,8 +343,8 @@ export async function llmExtract(
   const parsed = parseJsonLoose(content);
   if (!parsed || typeof parsed !== "object") {
     console.error(
-      `[llm-extract] could not parse JSON for ${url} (content len ${content.length}, first 300 chars):`,
-      content.slice(0, 300),
+      `[llm-extract] could not parse JSON for ${url} (content len ${content.length}, finish_reason=${data?.choices?.[0]?.finish_reason}, usage=${JSON.stringify(data?.usage?.completion_tokens_details ?? data?.usage ?? {})}), last 300 chars:`,
+      content.slice(-300),
     );
     return null;
   }
@@ -357,6 +365,7 @@ export async function llmExtract(
 
 function buildPrompt(
   signalMd: string,
+  measuredMd: string,
   html: string,
   css: string,
   hasScreenshot: boolean,
@@ -382,6 +391,9 @@ ${SCHEMA}
 
 # Structured signal
 ${signalMd}
+
+# Measured scales
+${measuredMd}
 
 # Raw HTML excerpt
 ${trimmedHtml}
@@ -683,4 +695,15 @@ function hostnameFromUrl(url: string): string {
   } catch {
     return "Untitled";
   }
+}
+
+function measuredMd(signal: SiteSignal, css: string): string {
+  const { typography, spacing, rounded } = measuredScales(signal, css);
+  const line = (label: string, v: Record<string, unknown>) =>
+    Object.keys(v).length ? `${label}: ${JSON.stringify(v)}` : `${label}: (not measurable)`;
+  return [
+    line("Type levels measured from the rendered page", typography),
+    line("Spacing steps most used in the stylesheets", spacing),
+    line("Corner radii most used on the page", rounded),
+  ].join("\n");
 }

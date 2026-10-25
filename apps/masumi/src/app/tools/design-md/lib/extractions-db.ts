@@ -203,7 +203,7 @@ export function getRecent(limit = 12): SavedExtraction[] {
         -- two analysis pages an identical <title>. The brand column is
         -- computed in JS by brandKey(), because the public-suffix rule is not
         -- expressible in SQL (sub.example.com must key on example, not sub).
-        SELECT MAX(id) FROM extractions GROUP BY brand
+        SELECT MAX(id) FROM extractions WHERE source = 'llm' GROUP BY brand
       )
       ORDER BY created_at DESC
       LIMIT ?
@@ -249,7 +249,7 @@ export function getRecentByUrl(
       `
       SELECT id, url, hostname, name, primary_color, logo_url, screenshot IS NOT NULL AS has_screenshot, source, design_md, created_at
       FROM extractions
-      WHERE url = ? AND created_at > ?
+      WHERE url = ? AND created_at > ? AND source = 'llm'
       ORDER BY created_at DESC
       LIMIT 1
     `,
@@ -304,7 +304,7 @@ export function getAll(limit = 100): SavedExtraction[] {
       `
       SELECT id, url, hostname, name, primary_color, logo_url, screenshot IS NOT NULL AS has_screenshot, source, created_at
       FROM extractions
-      WHERE id IN (SELECT MAX(id) FROM extractions GROUP BY brand)
+      WHERE id IN (SELECT MAX(id) FROM extractions WHERE source = 'llm' GROUP BY brand)
       ORDER BY created_at DESC
       LIMIT ?
     `,

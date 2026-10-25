@@ -62,21 +62,18 @@ async function runJob(job: Job): Promise<void> {
       raw: "",
     });
 
-    // Only LLM-source extractions go into the public gallery; heuristic
-    // fallbacks would clutter it with low-quality entries. Matches the
-    // policy in /tools/design-md/api/extract.
-    let extractionId: number | null = null;
-    if (result.source === "llm") {
-      extractionId = saveExtraction({
-        url: job.url,
-        name: result.frontmatter.name ?? null,
-        primaryColor: result.frontmatter.colors?.primary ?? null,
-        logoUrl: result.frontmatter.logo?.src ?? null,
-        screenshot: result.screenshot ?? null,
-        designMd,
-        source: result.source,
-      });
-    }
+    // Every result is saved so callers always get an extractionId and a
+    // preview link. Heuristic rows stay out of the gallery and the URL cache
+    // (see extractions-db), so a fallback never displaces a real analysis.
+    const extractionId = saveExtraction({
+      url: job.url,
+      name: result.frontmatter.name ?? null,
+      primaryColor: result.frontmatter.colors?.primary ?? null,
+      logoUrl: result.frontmatter.logo?.src ?? null,
+      screenshot: result.screenshot ?? null,
+      designMd,
+      source: result.source,
+    });
 
     completeJob(job.id, extractionId, designMd, result.source);
     console.log(`[job-worker] done ${job.id} (extraction=${extractionId}, source=${result.source})`);

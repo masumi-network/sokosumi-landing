@@ -16,6 +16,8 @@ export type ComputedStyle = {
   fontWeight?: string;
   borderRadius?: string;
   padding?: string;
+  lineHeight?: string;
+  letterSpacing?: string;
 };
 
 export type RenderedPage = {
@@ -35,6 +37,7 @@ export type RenderedPage = {
   computed: {
     body?: ComputedStyle;
     h1?: ComputedStyle;
+    h2?: ComputedStyle;
     header?: ComputedStyle;
     primaryCta?: ComputedStyle;
     secondaryCta?: ComputedStyle;
@@ -73,6 +76,8 @@ export async function renderWithBrowserbase(
       .catch(() => {});
     // Give animations / fade-ins a moment
     await page.waitForTimeout(800);
+
+    await removeConsentBanners(page);
 
     // Cheap steps first — HTML + computed styles. If these succeed we
     // already have most of what the LLM needs.
@@ -154,6 +159,42 @@ export async function renderWithBrowserbase(
   }
 }
 
+// Consent banners cover the page in the screenshot and own its most prominent
+// button, which the CTA pick and the model then read as the brand colour
+// (Cookiebot's blue "OK" on tartinebakery.com).
+const CONSENT_SELECTORS = [
+  "#CybotCookiebotDialog",
+  "#CybotCookiebotDialogBodyUnderlay",
+  "#onetrust-consent-sdk",
+  "#usercentrics-root",
+  "#usercentrics-cmp-ui",
+  "#didomi-host",
+  ".qc-cmp2-container",
+  "#truste-consent-track",
+  ".cky-consent-container",
+  "#cookie-law-info-bar",
+  ".osano-cm-window",
+  "#iubenda-cs-banner",
+  "#cmpbox",
+  ".cc-window",
+  "#klaro",
+  "[aria-label*='cookie' i][role='dialog']",
+  "[aria-label*='consent' i][role='dialog']",
+  "[id*='cookie-banner' i]",
+  "[class*='cookie-banner' i]",
+  "[id*='cookieconsent' i]",
+].join(",");
+
+async function removeConsentBanners(page: Page): Promise<void> {
+  await page
+    .evaluate((selectors) => {
+      document.querySelectorAll(selectors).forEach((el) => el.remove());
+      document.documentElement.style.overflow = "";
+      document.body.style.overflow = "";
+    }, CONSENT_SELECTORS)
+    .catch(() => {});
+}
+
 async function collectComputed(page: Page): Promise<RenderedPage["computed"]> {
   // Run in browser context. Inline to avoid TS narrowing issues.
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -166,6 +207,8 @@ async function collectComputed(page: Page): Promise<RenderedPage["computed"]> {
       "fontWeight",
       "borderRadius",
       "padding",
+      "lineHeight",
+      "letterSpacing",
     ] as const;
     const get = (sel: string) => {
       const el = document.querySelector(sel) as HTMLElement | null;
@@ -220,6 +263,7 @@ async function collectComputed(page: Page): Promise<RenderedPage["computed"]> {
     return {
       body: get("body"),
       h1: get("h1"),
+      h2: get("h2"),
       header: get("header, [role=banner], nav"),
       primaryCta: fromEl(primary),
       secondaryCta: fromEl(secondary),

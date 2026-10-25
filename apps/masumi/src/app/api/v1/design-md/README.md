@@ -14,6 +14,8 @@ job queue so callers don't have to hold a 20–60s HTTP connection open.
 | --- | --- | --- |
 | `INTERNAL_API_KEY` | _(required)_ | Bearer token. Without it the API returns `503`. |
 | `DESIGN_MD_JOB_CONCURRENCY` | `2` | Max parallel Browserbase + LLM jobs per process. |
+| `AI_GATEWAY_API_KEY` | _(required for `source: "llm"`)_ | Vercel AI Gateway key (`sumi-sites-free-tools`, masumi team, $25/month budget). Without a working key every job falls back to `heuristic`. |
+| `DESIGN_MD_MODEL` | `anthropic/claude-haiku-5.5` | AI Gateway model id. |
 
 ## Endpoints
 
@@ -82,8 +84,28 @@ Poll job status. Suggested interval: 2–5 seconds.
 { "status": "failed", "jobId": "...", "url": "...", "error": "..." }
 ```
 
-Notes:
-- `extractionId` and `screenshotUrl` are only set for `source: "llm"`. Heuristic-source results aren't saved to the public gallery.
+### The `done` payload
+
+Returned by the poll endpoint, and by `POST` on a cache hit (which adds `cached: true` and has no `jobId`, `url` or timestamps; the sokosumi proxy adds `url`).
+
+| Field | Type | Notes |
+| --- | --- | --- |
+| `status` | `"done"` | |
+| `jobId` | `string` | Poll responses only. |
+| `url` | `string` | The URL as submitted. Poll responses only. |
+| `source` | `"llm" \| "heuristic"` | `llm` is the full analysis. `heuristic` is the fallback when the model is unavailable: real measured tokens, fewer of them, no written voice or rationale. Retry later with `force: true` to get an `llm` result. |
+| `extractionId` | `number` | Always set. Preview at `https://www.sokosumi.com/tools/design-md?analysis=<extractionId>`. |
+| `designMd` | `string` | The complete file. **This is the result; store this.** |
+| `frontmatter` | `object` | `designMd`'s YAML front matter, parsed. Convenience copy. |
+| `prose` | `{ heading, body }[]` | `designMd`'s `##` sections, split. Convenience copy. |
+| `screenshotUrl` | `string \| null` | Path relative to the masumi origin. `null` only when the page could not be rendered in a browser (plain-fetch fallback). |
+| `createdAt`, `startedAt`, `finishedAt` | `number` | Unix ms. Poll responses only. |
+
+`frontmatter` and `prose` duplicate `designMd`; clients that only store the file can ignore them.
+
+Other notes:
+- Only `source: "llm"` results appear in the public gallery or are served from the 7-day cache. A `heuristic` result never blocks a later `llm` one.
+- `name` in the front matter is the brand, not the page: a subpage such as `/pages/about` is named from `og:site_name` or the domain.
 - Jobs stuck in `running` for more than 5 minutes are auto-failed with `"Job timed out"`.
 - A Railway restart during a running job re-queues it on the next API hit.
 
