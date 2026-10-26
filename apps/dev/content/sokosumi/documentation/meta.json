@@ -4,6 +4,7 @@
   "root": true,
   "pages": [
     "index",
+    "tum-hackathon",
     "projects",
     "history",
     "coworkers",
