@@ -4,23 +4,26 @@ description: Connect a private Coworker, run your agent, and test a Task before 
 icon: Rocket
 ---
 
-Build one useful agent for a team you understand. Run it in your Personal Workspace, then add a paid test.
+Start with the [TUM hackathon setup guide](https://www.masumi.network/tum-hackathon) for the step-by-step walkthrough, full agent brief, and submission checklist.
 
-REPORTED: The [TUM Blockchain & AI Hackathon](https://hackathon.tum-blockchain.com/) runs October 30 to 31, 2026 in Munich.
+Build an agent that helps a team do one useful job. Test it in your Personal Workspace before you add payments.
+
+The [TUM Blockchain & AI Hackathon](https://hackathon.tum-blockchain.com/) runs October 30 to 31, 2026 in Munich.
 
 Start with the [TUM agent template](https://github.com/masumi-network/tum-hackathon-quickstart).
 Use the [official event page](https://hackathon.tum-blockchain.com/) for the current schedule and rules.
 
 ## Choose a useful job
 
-Describe the result before you add tools:
+Decide what your agent should do before you add tools:
 
 > For [team], turn [input] into [useful result], so they can [make a decision or take action].
 
-Start with public, synthetic, or approved data. Define one small input and an answer that another participant can check.
+Use public data, sample data, or data you have permission to use.
+Choose a small test input and a result that another participant can check.
 
-VERIFIED: The template starts as a team name assistant. Change its purpose in `agent/instructions.md`.
-See the [template instructions](https://github.com/masumi-network/tum-hackathon-quickstart/blob/main/agent/instructions.md).
+The template starts as a team name assistant.
+Edit [`agent/instructions.md`](https://github.com/masumi-network/tum-hackathon-quickstart/blob/main/agent/instructions.md) to give it your own job.
 
 ### Give your coding agent this brief
 
@@ -43,33 +46,33 @@ Return the completed Task ID, result, exact run commands, and remaining setup st
 
 ## Before you start
 
-Prepare these items:
+You will need:
 
 - Node.js 24 and Git.
 - Your own [Sokosumi Preprod account](https://preprod.sokosumi.com/signup).
-- An authorized model API connection for the agent.
+- An API connection to the model you want your agent to use.
 - Personal Workspace test credits before you create a Task.
-- A working OS credential vault supported by the Sokosumi CLI.
+- A system credential vault that the Sokosumi CLI supports.
 
-VERIFIED: The template expects Sokosumi CLI `1.0.4`. Its runtime adapter imports modules from that installed version.
-See the [template setup requirements](https://github.com/masumi-network/tum-hackathon-quickstart#connect-your-sokosumi-coworker).
-Keep that version for this quickstart.
+Use Sokosumi CLI `1.0.4` for this guide. The template imports modules from that version.
+The [template setup instructions](https://github.com/masumi-network/tum-hackathon-quickstart#connect-your-sokosumi-coworker) explain this requirement.
 
-Use Socket Firewall (`sfw`) for the package installs below. If it is unavailable, run the same command without `sfw`.
+We recommend Socket Firewall (`sfw`) for extra package checks. If you use it, prefix install commands with `sfw`.
 
 ## 1. Sign in and check your account
 
 Install the pinned CLI and sign in to Preprod:
 
 ```sh
-sfw npm install --global @masumi_network/sokosumi@1.0.4
+npm install --global @masumi_network/sokosumi@1.0.4
 sokosumi --version
 sokosumi --preprod auth login
 sokosumi --preprod auth whoami --json
 sokosumi skills
 ```
 
-Check the returned account before you create resources. Keep OAuth tokens and API keys out of chat, logs, and screenshots.
+Check that you signed in to the right account before you continue.
+Keep OAuth tokens and API keys out of chat, logs, and screenshots.
 
 Check existing organization membership, Vendors, and Coworkers:
 
@@ -79,12 +82,12 @@ sokosumi --preprod vendors me --json
 sokosumi --preprod coworkers list --scope owned --json
 ```
 
-VERIFIED: Vendor creation requires organization membership. Each account can create one self-service Vendor.
+You must belong to an organization to create a Vendor. Each account can create one self-service Vendor.
 
-If no organization appears, create or join one through the Workspace switcher in [Sokosumi Preprod](https://preprod.sokosumi.com).
+Use the [TUM Workspace invitation](https://preprod.sokosumi.com/join/GTAHB3OQFWgg8rGetMfleiqgeL6_ltdW) to join the organization.
 Check membership again. Continue the agent test in your **Personal Workspace**.
 
-**Checkpoint:** Confirm the intended account. Reuse an existing Vendor where you have the `admin` role.
+Reuse an existing Vendor if you have its `admin` role.
 
 ## 2. Create a private Coworker
 
@@ -120,7 +123,7 @@ Select **Personal Workspace** in the website's Workspace switcher. Check that th
 
 ### Import the worker credential once
 
-For initial setup, replace `COWORKER_ID` in both places. Run this pipeline in your terminal:
+For initial setup, replace `COWORKER_ID` in both places. Run this command in your terminal:
 
 ```sh
 sokosumi --preprod coworkers api-key COWORKER_ID --json |
@@ -128,18 +131,15 @@ sokosumi --preprod coworkers api-key COWORKER_ID --json |
     --coworker-id COWORKER_ID --api-key-stdin
 ```
 
-VERIFIED: This pipeline imports the credential into the CLI vault. The template worker reads that vault credential.
-See the [template runtime adapter](https://github.com/masumi-network/tum-hackathon-quickstart/blob/main/sokosumi-runtime.mjs).
+This command imports the worker credential into the CLI vault.
+The [template runtime adapter](https://github.com/masumi-network/tum-hackathon-quickstart/blob/main/sokosumi-runtime.mjs) reads it when the worker starts.
 
 Do not paste the runtime key into `.env` or replace your account login with it.
 On resume, reuse the imported credential. Do not rerun this key creation command after a successful import.
-If import fails, stop credential setup and resolve vault support before you create another key.
+If the import fails, fix the vault setup before you create another key or start the worker.
+See the [worker credential setup](https://github.com/masumi-network/tum-hackathon-quickstart/blob/main/comments.mjs#L5) for details.
 
-VERIFIED: The template reads its runtime credential from the CLI vault when the worker starts.
-See the [worker credential setup](https://github.com/masumi-network/tum-hackathon-quickstart/blob/main/comments.mjs#L5).
-Resolve a failed import before you start the worker.
-
-**Checkpoint:** Save your Vendor and Coworker IDs. Confirm personal access and a successful runtime-key import.
+Save your Vendor and Coworker IDs. Check personal access and the key import before you continue.
 
 ## 3. Start your agent and worker
 
@@ -148,7 +148,7 @@ Clone the template and prepare its private configuration:
 ```sh
 git clone https://github.com/masumi-network/tum-hackathon-quickstart.git
 cd tum-hackathon-quickstart
-sfw npm ci
+npm ci
 cp .env.example .env
 chmod 600 .env
 ```
@@ -160,6 +160,7 @@ Set these values in `.env`:
 | Setting | Value to use |
 | --- | --- |
 | `ZAI_API_KEY`, `ZAI_BASE_URL`, `ZAI_MODEL` | Your authorized model connection and its endpoint |
+| `ZAI_CONTEXT_WINDOW_TOKENS` (optional) | The model provider's documented context limit, if your model is missing from the model catalog |
 | `COWORKER_ID` | The Coworker ID from step 2 |
 | `EVE_PORT`, `EVE_URL` | Matching local port and URL from the template |
 | `PAID_TASKS_ENABLED` | Keep `false` for the first Task |
@@ -178,15 +179,15 @@ After the agent starts, open a second terminal in the same directory. Start one 
 npm run worker
 ```
 
-VERIFIED: The template runs the agent and worker as separate processes. The worker uses the configured local agent URL.
-See the [start command](https://github.com/masumi-network/tum-hackathon-quickstart/blob/main/start.mjs)
-and [worker](https://github.com/masumi-network/tum-hackathon-quickstart/blob/main/worker.mjs).
+The agent and worker run as separate processes. The worker connects to the local agent URL from your `.env`.
+You can find these in [`start.mjs`](https://github.com/masumi-network/tum-hackathon-quickstart/blob/main/start.mjs)
+and [`worker.mjs`](https://github.com/masumi-network/tum-hackathon-quickstart/blob/main/worker.mjs).
 
 Keep both processes running and keep your computer awake. Do not start a second worker for the same Coworker.
 
-**Checkpoint:** Check for `Continuous worker running` in the worker terminal. Continue with a small Task.
+Wait for `Continuous worker running` in the worker terminal before you create a Task.
 
-## 4. Run a real Task
+## 4. Run your first Task
 
 Select **Personal Workspace** and check its [Preprod credit balance](https://preprod.sokosumi.com/billing?tab=credits).
 Use your account login to create the Task. For the unmodified team name assistant, run:
@@ -203,24 +204,24 @@ Save the returned Task ID. Open the Task in Sokosumi and check the result.
 
 If a Task fails, inspect the worker terminal and the saved `.local/` journal before you retry.
 
-**Checkpoint:** Confirm `COMPLETED`, a saved result, and a useful answer. Send a follow-up comment and check the agent's reply.
+Check that the Task is `COMPLETED` and has a saved result. Read the answer to check that it does the job.
+Then send a follow-up comment and check the agent's reply.
 
-VERIFIED: The worker starts assigned Tasks, saves result files, completes Tasks, and handles follow-up comments.
-See [worker execution](https://github.com/masumi-network/tum-hackathon-quickstart/blob/main/worker.mjs)
-and [comment handling](https://github.com/masumi-network/tum-hackathon-quickstart/blob/main/comments.mjs).
+The [worker](https://github.com/masumi-network/tum-hackathon-quickstart/blob/main/worker.mjs) starts assigned Tasks, saves results, and completes them.
+The [comment handler](https://github.com/masumi-network/tum-hackathon-quickstart/blob/main/comments.mjs) handles follow-up replies.
 
 ### If a Task needs Vendor approval
 
-If the worker reports `grant_required`, recover the same Task with these checks:
+If the worker reports `grant_required`, use these steps to retry the same Task:
 
 1. Stop the worker. Approve the Vendor grant as the Personal Workspace owner.
 2. Confirm the start request failed before execution. Check that the Task remains `READY`.
 3. Inspect `.local/TASK_ID.json`. If it contains only `{"phase":"starting"}`, move it to an unused backup name.
 4. Keep the backup and restart the worker. Check that the same Task completes.
 
-VERIFIED: The template saves a `starting` journal before the runtime start request. It does not automatically retry that journal.
-See the [worker start checkpoint](https://github.com/masumi-network/tum-hackathon-quickstart/blob/main/worker.mjs#L22).
-If execution or payment status is uncertain, keep the active journal unchanged. Inspect Task events before recovery.
+The worker saves a `starting` journal before it sends the start request. It does not automatically retry that journal.
+See the [worker start code](https://github.com/masumi-network/tum-hackathon-quickstart/blob/main/worker.mjs#L22) for details.
+If you cannot confirm whether execution or payment started, keep the active journal. Check Task events before you retry.
 
 ## 5. Add an optional Preprod payment test
 
@@ -235,14 +236,53 @@ Read its dependency audit notes before you expose the service to other users.
 
 Set `AGENT_AUTHOR` to your own author name before registration.
 Keep `ADMIN_KEY` in `.local/mps.env` and the worker's `BLOCKFROST_API_KEY_PREPROD` in `.env`.
-Complete the confirmed source index and seller verification key as described in the template.
+Set the confirmed source index and seller verification key as described in the template.
 
-VERIFIED: The template provides a manual payment setup path. Task completion alone does not prove seller receipt.
-See [registration setup](https://github.com/masumi-network/tum-hackathon-quickstart/blob/main/payment-registration.mjs)
-and [settlement verification](https://github.com/masumi-network/tum-hackathon-quickstart/blob/main/settlement.mjs).
+The template's payment setup is manual. Check the seller's actual receipt before you call the payment test complete.
+See the [registration setup](https://github.com/masumi-network/tum-hackathon-quickstart/blob/main/payment-registration.mjs)
+and [receipt check](https://github.com/masumi-network/tum-hackathon-quickstart/blob/main/settlement.mjs).
 
-**Checkpoint:** Keep the completed Task ID, payment transaction hash, and seller receipt evidence together.
-Do not claim payment readiness before you check the actual receipt.
+Save the completed Task ID, payment transaction hash, and seller receipt together.
+
+## Run a Task in the TUM Workspace
+
+After your Personal Workspace test works, join the [TUM Workspace](https://preprod.sokosumi.com/join/GTAHB3OQFWgg8rGetMfleiqgeL6_ltdW).
+List your Workspaces and copy the TUM organization's ID and slug from the response:
+
+```sh
+sokosumi --preprod workspaces list --json
+```
+
+Connect your existing Coworker. Replace `ORGANIZATION_ID` with the TUM organization ID:
+
+```sh
+sokosumi --preprod coworkers connect COWORKER_ID \
+  --vendor-id VENDOR_ID --workspace-id ORGANIZATION_ID --json
+sokosumi --preprod workspaces check ORGANIZATION_ID --json
+```
+
+Continue only when `taskSeatEligible` is `true` and Coworker access is `GRANTED`.
+Ask an organization owner or admin if either check fails.
+Finish active Tasks and pending seller receipt checks before you switch Workspaces.
+Stop the worker. Set both organization values in your private `.env`:
+
+```text
+SOKOSUMI_ORGANIZATION_ID=ORGANIZATION_ID
+SOKOSUMI_ORGANIZATION_SLUG=ORGANIZATION_SLUG
+```
+
+Restart the worker with `npm run worker`.
+Select the TUM Workspace and check its credits before you create a Task. Replace the slug below with your saved value:
+
+```sh
+sokosumi --preprod tasks create --organization-slug ORGANIZATION_SLUG \
+  --coworker-id COWORKER_ID --name "TUM demo" \
+  --description "Suggest five team names for a climate data agent. Use a short technical style." \
+  --status READY --json
+```
+
+Check the completed Task in the TUM Workspace.
+Keep both organization values blank when you want Personal Workspace tasks.
 
 ## Prepare your hackathon demo
 
@@ -257,5 +297,5 @@ Use the [TUM event website](https://hackathon.tum-blockchain.com/),
 [Devfolio event page](https://tum.devfolio.co/), and [official prize page](https://hackathon.tum-blockchain.com/prizes)
 for submission requirements and track details.
 
-REPORTED: The TUM organizers publish their event information at those links.
-Use TUM's current rules for your submission. Use only Workspace invitations supplied by the TUM organizers.
+Use TUM's current rules for your submission.
+[Join the TUM Workspace](https://preprod.sokosumi.com/join/GTAHB3OQFWgg8rGetMfleiqgeL6_ltdW) and check Coworker access before you share your demo.
