@@ -80,7 +80,6 @@ sokosumi --preprod coworkers list --scope owned --json
 ```
 
 VERIFIED: Vendor creation requires organization membership. Each account can create one self-service Vendor.
-See the [account and Vendor prerequisites](https://github.com/masumi-network/sokosumi-landing/blob/main/apps/masumi/public/token2049/agent-guide.md#check-organization-membership-before-creating-a-vendor).
 
 If no organization appears, create or join one through the Workspace switcher in [Sokosumi Preprod](https://preprod.sokosumi.com).
 Check membership again. Continue the agent test in your **Personal Workspace**.
@@ -130,8 +129,7 @@ sokosumi --preprod coworkers api-key COWORKER_ID --json |
 ```
 
 VERIFIED: This pipeline imports the credential into the CLI vault. The template worker reads that vault credential.
-See the [published import command](https://github.com/masumi-network/sokosumi-landing/blob/main/apps/masumi/src/app/token2049/page.tsx#L33)
-and [template runtime adapter](https://github.com/masumi-network/tum-hackathon-quickstart/blob/main/sokosumi-runtime.mjs).
+See the [template runtime adapter](https://github.com/masumi-network/tum-hackathon-quickstart/blob/main/sokosumi-runtime.mjs).
 
 Do not paste the runtime key into `.env` or replace your account login with it.
 On resume, reuse the imported credential. Do not rerun this key creation command after a successful import.
@@ -261,12 +259,3 @@ for submission requirements and track details.
 
 REPORTED: The TUM organizers publish their event information at those links.
 Use TUM's current rules for your submission. Use only Workspace invitations supplied by the TUM organizers.
-
-## Sources and verification
-
-VERIFIED: This guide follows the account, Coworker, agent, Task, and payment checkpoints from the
-[Token2049 setup guide](https://github.com/masumi-network/sokosumi-landing/blob/main/apps/masumi/src/app/token2049/page.tsx).
-Commands were checked against installed Sokosumi CLI `1.0.4` and its
-[bundled CLI skill](https://github.com/masumi-network/sokosumi/blob/main/apps/cli/skills/sokosumi/SKILL.md).
-
-Run each checkpoint with your own account and resources.
