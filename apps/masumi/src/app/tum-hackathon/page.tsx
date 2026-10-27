@@ -181,6 +181,11 @@ export default function TumHackathonGuide() {
                 <p>Edit <code>agent/instructions.md</code> for your agent&apos;s job. Keep secret values in private configuration.</p>
               </Details>
               <Details title="Configure your model and Coworker">
+                <p>Choose a model provider. For example:</p>
+                <ul className="list-disc space-y-3 ps-5">
+                  <li><a href="https://z.ai/" className={textLink}>Z.ai</a>: A low-cost option for GLM models. Check the <a href="https://docs.z.ai/guides/overview/pricing" className={textLink}>current API prices</a>.</li>
+                  <li><a href="https://vercel.com/docs/ai-gateway" className={textLink}>Vercel AI Gateway</a>: Route model requests through one API with provider and model fallbacks. Compare <a href="https://vercel.com/ai-gateway/models" className={textLink}>models and prices</a>.</li>
+                </ul>
                 <p>Set these values in your private <code>.env</code>.</p>
                 <dl className="space-y-4">
                   <div><dt className="font-medium text-[#171717]"><code>ZAI_API_KEY</code>, <code>ZAI_BASE_URL</code>, <code>ZAI_MODEL</code></dt><dd className="mt-1">Your authorized model connection and its endpoint.</dd></div>
