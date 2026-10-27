@@ -151,6 +151,11 @@ chmod 600 .env
 
 On resume, keep your existing `.env`. Do not overwrite it with the example.
 
+Choose a model provider. For example:
+
+- [Z.ai](https://z.ai/): A low-cost option for GLM models. Check the [current API prices](https://docs.z.ai/guides/overview/pricing).
+- [Vercel AI Gateway](https://vercel.com/docs/ai-gateway): Route model requests through one API with provider and model fallbacks. Compare [models and prices](https://vercel.com/ai-gateway/models).
+
 Set these values in `.env`:
 
 - `ZAI_API_KEY`, `ZAI_BASE_URL`, `ZAI_MODEL`: Your authorized model connection and its endpoint
