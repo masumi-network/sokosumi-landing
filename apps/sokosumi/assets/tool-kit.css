@@ -932,6 +932,21 @@
   font-weight: 500;
 }
 
+/* Whole-card links for the "Related tools" strip — the card is the hit target,
+   with the same hover lift as the icon feature cards. */
+.tk-card-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 160ms ease, transform 160ms ease, box-shadow 160ms ease;
+}
+
+.tk-card-link:hover {
+  border-color: var(--foreground);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px -14px rgba(0, 0, 0, 0.3);
+}
+
 .tk-card p {
   margin-top: 8px;
   color: var(--muted-foreground);

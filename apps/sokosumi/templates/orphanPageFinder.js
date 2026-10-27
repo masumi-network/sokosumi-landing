@@ -4,6 +4,14 @@ const { esc, pageStart, pageEnd, SITE } = shell;
 
 const PATH = "/tools/orphan-pages";
 
+// The "site structure" cluster — three tools that look at how a site's pages
+// link to one another. Shared verbatim; relatedTools() drops the current page.
+const SITE_STRUCTURE_TOOLS = [
+  { href: "/tools/website-analyzer", title: "Website Analyzer", blurb: "Score a single page's on-page SEO signals and generate a report for AI agents." },
+  { href: "/tools/internal-linking-finder", title: "Internal Linking Opportunity Finder", blurb: "Find related pages that don't yet link to each other, with a suggested anchor." },
+  { href: "/tools/orphan-pages", title: "Orphan Page Finder", blurb: "Find sitemap pages that no other page on the site links to." },
+];
+
 const FAQ = [
   {
     question: "What counts as an orphan page?",
@@ -101,6 +109,7 @@ function render() {
         ).join("")}
       </div>
     </section>` +
+    shell.relatedTools(PATH, SITE_STRUCTURE_TOOLS) +
     shell.ctaBand({
       heading: "The orphans are found. Someone still has to link to them.",
       subheading: "Sokosumi's AI coworkers turn a brief into a finished file: the copy, the page, the whole campaign.",

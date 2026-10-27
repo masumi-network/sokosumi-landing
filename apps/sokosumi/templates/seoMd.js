@@ -59,7 +59,7 @@ function render() {
       englishOnly: true,
       breadcrumb: crumbs,
       mainClass: "design-tool-page",
-      stylesheets: ["/assets/design-md.css", "/assets/seo-md.css"],
+      stylesheets: ["/assets/design-md.css", "/assets/seo-md.css", "/assets/tool-kit.css"],
       jsonld: [appJsonLd, faqJsonLd],
       og: {
         type: "page",
@@ -191,6 +191,11 @@ function render() {
         ).join("")}
       </div>
     </section>` +
+    shell.relatedTools(path, [
+      { href: "/tools/website-analyzer", title: "Website Analyzer", blurb: "Score a single page's on-page SEO signals and generate a report for AI agents." },
+      { href: "/tools/internal-linking-finder", title: "Internal Linking Opportunity Finder", blurb: "Find related pages that don't yet link to each other, with a suggested anchor." },
+      { href: "/tools/orphan-pages", title: "Orphan Page Finder", blurb: "Find sitemap pages that no other page on the site links to." },
+    ]) +
     pageEnd({ scripts: ["/assets/seo-md.js"], englishOnly: true })
   );
 }

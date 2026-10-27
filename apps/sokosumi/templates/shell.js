@@ -665,6 +665,25 @@ function ctaBand(b) {
     </div></section>`;
 }
 
+// A "Related tools" strip for the free-tools pages. Pass the current page's
+// path and the full set of related items; the current page is filtered out so
+// the same list can be shared verbatim across a cluster of sibling tools.
+function relatedTools(currentPath, items) {
+  const others = (items || []).filter((i) => i.href !== currentPath);
+  if (!others.length) return "";
+  return `<section class="tk-section" aria-labelledby="tk-related">
+      <h2 id="tk-related">Related tools</h2>
+      <div class="tk-cards">
+        ${others
+          .map(
+            (i) =>
+              `<a class="tk-card tk-card-link" href="${attr(i.href)}"><h3>${esc(i.title)}</h3><p>${esc(i.blurb)}</p></a>`,
+          )
+          .join("")}
+      </div>
+    </section>`;
+}
+
 const CHEV =
   '<svg class="nav-chev" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>';
 
@@ -1228,6 +1247,7 @@ module.exports = {
   vendorLogo,
   ctaFaces,
   ctaBand,
+  relatedTools,
   quoteSection,
   pickQuote,
   logoRow,
