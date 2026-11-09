@@ -1,6 +1,6 @@
 ---
 name: anti-ai-slop-writing
-description: Produces human-sounding text that avoids detectable AI writing patterns. Activates on any writing task — tweets, emails, articles, bios, captions, reports, copy, messages, LinkedIn posts, cover letters, README files, or any content where the output must not read as AI-generated. Enforces banned vocabulary, structural variety, punctuation discipline, accuracy rules, and voice calibration. Use when the user says "write," "draft," "rewrite," "make this sound human," "anti-slop," "not AI," or any variation of wanting authentic-sounding output.
+description: Produces human-sounding text that avoids detectable AI writing patterns, for personal and social writing (posts, emails, bios, cover letters, messages) where the output must not read as AI-generated. Enforces banned vocabulary, structural variety, punctuation discipline, accuracy rules, and voice calibration. Not for copy, UI strings, docs or commit messages in this repository; those follow the Obvious Adams rule in AGENTS.md.
 ---
 
 # Anti-AI-Slop Writing Directive v2
