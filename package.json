@@ -21,5 +21,12 @@
     "build:serviceplan": "npm -w @summation/serviceplan run build",
     "build:portal": "npm -w @summation/dev-portal run build",
     "lint": "npm -w @summation/sokosumi run lint && npm -w @summation/masumi run lint && npm -w @summation/kodosumi run lint && npm -w @summation/serviceplan run lint"
+  },
+  "overrides": {
+    "dompurify": "^3.4.17",
+    "ip-address": "10.7.4",
+    "@connectrpc/connect-node": {
+      "undici": "6.29.1"
+    }
   }
 }
