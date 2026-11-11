@@ -71,7 +71,10 @@ async function dataUri(url) {
 }
 
 // ---- tiny element helpers (Satori takes React-shaped objects) ----
-const h = (type, style, children, extra) => ({ type, props: { style, ...(extra || {}), children } });
+// Satori 0.63 sizes boxes as content-box, so padding and borders grow past a
+// set width/height. The layouts were drawn border-box (the Satori 0.12
+// behaviour): without this the frame overflows and the tag and URL fall off.
+const h = (type, style, children, extra) => ({ type, props: { style: { boxSizing: "border-box", ...style }, ...(extra || {}), children } });
 const text = (s, style) => h("div", { display: "flex", ...style }, String(s));
 
 function clamp(s, n) {

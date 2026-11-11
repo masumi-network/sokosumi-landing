@@ -27,6 +27,9 @@
     "ip-address": "10.7.4",
     "@connectrpc/connect-node": {
       "undici": "6.29.1"
+    },
+    "satori": {
+      "fflate": "^0.7.5"
     }
   }
 }
