@@ -20,6 +20,26 @@
     "build:kodosumi": "npm -w @summation/kodosumi run build",
     "build:serviceplan": "npm -w @summation/serviceplan run build",
     "build:portal": "npm -w @summation/dev-portal run build",
-    "lint": "npm -w @summation/sokosumi run lint && npm -w @summation/masumi run lint && npm -w @summation/kodosumi run lint && npm -w @summation/serviceplan run lint"
+    "lint": "npm -w @summation/sokosumi run lint && npm -w @summation/masumi run lint && npm -w @summation/kodosumi run lint && npm -w @summation/serviceplan run lint",
+    "postinstall": "if command -v patch-package >/dev/null 2>&1; then patch-package; fi"
+  },
+  "overrides": {
+    "dompurify": "^3.4.17",
+    "ip-address": "10.7.4",
+    "@connectrpc/connect-node": {
+      "undici": "6.29.1"
+    },
+    "satori": {
+      "fflate": "^0.7.5"
+    },
+    "@theguild/remark-mermaid": {
+      "mermaid": "^12.3.0"
+    },
+    "masumi-schema-validator-component": {
+      "zod": "^4.6.6"
+    },
+    "@typescript-eslint/typescript-estree": {
+      "minimatch": "^11.0.7"
+    }
   }
 }
