@@ -20,7 +20,11 @@
     "build:kodosumi": "npm -w @summation/kodosumi run build",
     "build:serviceplan": "npm -w @summation/serviceplan run build",
     "build:portal": "npm -w @summation/dev-portal run build",
-    "lint": "npm -w @summation/sokosumi run lint && npm -w @summation/masumi run lint && npm -w @summation/kodosumi run lint && npm -w @summation/serviceplan run lint"
+    "lint": "npm -w @summation/sokosumi run lint && npm -w @summation/masumi run lint && npm -w @summation/kodosumi run lint && npm -w @summation/serviceplan run lint",
+    "postinstall": "patch-package"
+  },
+  "devDependencies": {
+    "patch-package": "^8.0.1"
   },
   "overrides": {
     "dompurify": "^3.4.17",
@@ -33,6 +37,9 @@
     },
     "@theguild/remark-mermaid": {
       "mermaid": "^12.3.0"
+    },
+    "masumi-schema-validator-component": {
+      "zod": "^4.6.6"
     }
   }
 }
