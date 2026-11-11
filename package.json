@@ -30,6 +30,9 @@
     },
     "satori": {
       "fflate": "^0.7.5"
+    },
+    "@theguild/remark-mermaid": {
+      "mermaid": "^12.3.0"
     }
   }
 }
