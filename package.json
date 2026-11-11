@@ -21,10 +21,7 @@
     "build:serviceplan": "npm -w @summation/serviceplan run build",
     "build:portal": "npm -w @summation/dev-portal run build",
     "lint": "npm -w @summation/sokosumi run lint && npm -w @summation/masumi run lint && npm -w @summation/kodosumi run lint && npm -w @summation/serviceplan run lint",
-    "postinstall": "patch-package"
-  },
-  "devDependencies": {
-    "patch-package": "^8.0.1"
+    "postinstall": "if command -v patch-package >/dev/null 2>&1; then patch-package; fi"
   },
   "overrides": {
     "dompurify": "^3.4.17",
