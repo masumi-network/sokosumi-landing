@@ -1,4 +1,4 @@
-// /releases (index) and /releases/<slug> (detail) — CMS `releases`
+// /releases (index) and /releases/<slug> (detail): CMS `releases`
 // collection. A quiet timeline of product updates; contentHtml is
 // pre-rendered by the CMS at save time.
 

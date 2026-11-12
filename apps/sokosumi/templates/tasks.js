@@ -1,4 +1,4 @@
-// /tasks (browse) and /ai-coworkers/<slug>/tasks/<offerSlug> (detail) — CMS
+// /tasks (browse) and /ai-coworkers/<slug>/tasks/<offerSlug> (detail): CMS
 // `offers` joined with `coworkers` by agentSlug. Every card is server-
 // rendered; the browse page filters client-side via /assets/tasks-filter.js
 // (category chips + search), so ?category= and ?q= never change the
@@ -35,7 +35,7 @@ function officeViewerUrl(url, type) {
 // lazy iframe looks like a hung panel until then. Each img/iframe embed gets a
 // veil on top: the asset's own load event lifts it (an inline handler, so it
 // needs no external JS and cannot break the CSS-only tabs), and a delayed CSS
-// animation lifts it anyway after 15s if the load never fires — a dead pin or
+// animation lifts it anyway after 15s if the load never fires: a dead pin or
 // a blocked viewer must not spin forever. With JS off, a <noscript> rule in
 // samplePreview() hides the veil outright and the embed shows as before.
 const LIFT_VEIL = ` onload="this.parentElement.removeAttribute('data-loading')"`;
@@ -82,7 +82,7 @@ function embedOutput(output, title) {
 // (which renders fine on its own) is never covered.
 const VEIL_NOSCRIPT = `<noscript><style>.embed-loading{display:none}</style></noscript>`;
 
-// Preview shell — one output fills the frame; multiple outputs get CSS-only tabs.
+// Preview shell: one output fills the frame; multiple outputs get CSS-only tabs.
 function samplePreview(offer) {
   const outs = offerOutputs(offer);
   if (outs.length <= 1) {
@@ -90,7 +90,7 @@ function samplePreview(offer) {
   }
   const gid = "out";
   // Per-radio rules: checked drives which panel shows and which label reads
-  // selected; focus-visible paints the ring on the VISIBLE label — the radio
+  // selected; focus-visible paints the ring on the VISIBLE label: the radio
   // itself is transparent, so without this keyboard focus has no indicator.
   const rules = outs
     .map(
@@ -228,7 +228,7 @@ async function browse(ctx) {
 // ---- "What you get" (detail sidebar) ----
 // The CMS `deliverable` is a short phrase at best and empty on many offers,
 // so this section never leans on it alone: it is composed from what every
-// offer reliably has — the output type, the sample outputs rendered on this
+// offer reliably has: the output type, the sample outputs rendered on this
 // page, and the coworker who runs it. Nothing here claims more than the data
 // states. `longDeliverable` is a proposed editorial CMS field; the moment it
 // exists it becomes the lead paragraph with no markup change.
@@ -260,7 +260,7 @@ function whatYouGet(offer, c, om, outs) {
   const facts = [
     `<li>${icon(om.icon, 15)}<span>${esc(t("Delivered as {what}.", { what: phrase }))}</span></li>`,
     `<li>${icon("search", 15)}<span>${esc(sampleLine)}</span></li>`,
-    `<li>${icon("check", 15)}<span>${esc(t("A fixed brief run by {who} — add your details and collect the finished file from your task board.", { who }))}</span></li>`,
+    `<li>${icon("check", 15)}<span>${esc(t("A fixed brief run by {who}: add your details and collect the finished file from your task board.", { who }))}</span></li>`,
   ];
   return `<div class="deliverable wyg">
     <div class="label">${esc(t("What you get"))}</div>
@@ -269,7 +269,7 @@ function whatYouGet(offer, c, om, outs) {
   </div>`;
 }
 
-// The task as attribute/value pairs — the same facts the card and the
+// The task as attribute/value pairs: the same facts the card and the
 // "what you get" block state, in the one structure people and retrieval
 // systems read identically. Only what the catalog provides; nothing inferred.
 function taskFacts(offer, c, om, vn, vs) {

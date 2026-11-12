@@ -1,4 +1,4 @@
-/* /tools/keyword-extractor — client-only. Nothing leaves the browser: word-
+/* /tools/keyword-extractor: client-only. Nothing leaves the browser: word-
  * frequency extraction runs entirely here.
  */
 (function () {

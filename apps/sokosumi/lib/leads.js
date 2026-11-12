@@ -1,5 +1,5 @@
 // Talk-to-Sales lead handling: validate, store in the CMS, then notify by
-// email. Storing first is deliberate — if the mail provider is down or
+// email. Storing first is deliberate: if the mail provider is down or
 // unconfigured, the lead is still in the admin rather than lost.
 //
 // Env:
@@ -64,7 +64,7 @@ function validateSupport(body) {
 }
 
 async function storeLead(lead, source, kind) {
-  if (!FORMS_KEY) throw new Error("CMS_FORMS_KEY not set — cannot store the lead");
+  if (!FORMS_KEY) throw new Error("CMS_FORMS_KEY not set: cannot store the lead");
   const res = await fetch(`${CMS_URL}/api/sales-inquiries`, {
     method: "POST",
     headers: {
@@ -183,7 +183,7 @@ async function submitLead(body, source) {
 
   try {
     if (await sendEmail(v.lead, source)) await markNotified(id);
-    else console.warn("[leads] RESEND_API_KEY not set — lead stored, no email sent");
+    else console.warn("[leads] RESEND_API_KEY not set: lead stored, no email sent");
   } catch (e) {
     console.error("[leads] email failed (lead is stored):", e.message);
   }
@@ -214,7 +214,7 @@ async function submitSupport(body, source) {
 
   try {
     if (await sendSupportEmail(v.lead, source)) await markNotified(id);
-    else console.warn("[support] RESEND_API_KEY not set — request stored, no email sent");
+    else console.warn("[support] RESEND_API_KEY not set: request stored, no email sent");
   } catch (e) {
     console.error("[support] email failed (request is stored):", e.message);
   }
@@ -327,7 +327,7 @@ async function submitListing(body, source) {
 
   try {
     if (await sendListingEmail(v, source)) await markNotified(id);
-    else console.warn("[listing] RESEND_API_KEY not set — listing stored, no email sent");
+    else console.warn("[listing] RESEND_API_KEY not set: listing stored, no email sent");
   } catch (e) {
     console.error("[listing] email failed (listing is stored):", e.message);
   }

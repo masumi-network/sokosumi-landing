@@ -161,7 +161,7 @@ function matrix(cols, rows, opts = {}) {
     <tbody>${rows
       .map(
         (r) => `<tr><th scope="row">${opts.logos ? logo(r.label, 120, 26) : esc(r.label)}${r.note ? `<small>${esc(r.note)}</small>` : ""}</th>${r.cells
-          .map((c) => `<td>${c === "" ? `<span class="sp-matrix-empty" aria-label="—">—</span>` : linkTerms(c, opts.current)}</td>`)
+          .map((c) => `<td>${c === "" ? `<span class="sp-matrix-empty" aria-label=": ">: </span>` : linkTerms(c, opts.current)}</td>`)
           .join("")}</tr>`,
       )
       .join("")}</tbody>

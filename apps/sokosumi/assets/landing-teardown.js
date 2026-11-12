@@ -1,4 +1,4 @@
-/* /tools/landing-page-teardown — client. Thin wiring over
+/* /tools/landing-page-teardown: client. Thin wiring over
  * SokosumiToolKit.wireScorer(); the server does the fetching and scoring.
  */
 (function () {
@@ -22,7 +22,7 @@
     submitLabel: "Tear it down",
     busyLabel: "Tearing down…",
     reportTitle: function (data) {
-      return "Landing page conversion teardown — " + data.url + " — " + data.overall + "/100";
+      return "Landing page conversion teardown: " + data.url + ": " + data.overall + "/100";
     },
     getValue: function () {
       return urlInput.value;

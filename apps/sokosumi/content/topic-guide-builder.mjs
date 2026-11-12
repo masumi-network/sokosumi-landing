@@ -1,7 +1,7 @@
 // Topic guides: the research-led counterpart to the "How to use <tool>" pages.
 // A tool guide answers "how do I drive this product"; a topic guide answers
 // "what is actually true about this job, and what should my team do about it".
-// Same CMS collection, same markdown-in, different section order — evidence
+// Same CMS collection, same markdown-in, different section order: evidence
 // first, then the work, then how you would know it worked.
 
 const headings = {

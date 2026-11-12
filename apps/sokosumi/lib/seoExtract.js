@@ -1,8 +1,8 @@
 "use strict";
 
 // Deterministic SEO extractor. Given a public URL it fetches the page (plus
-// robots.txt), parses the real on-page signals with tolerant regexes — no
-// headless browser, no LLM, no API key — and returns both a structured object
+// robots.txt), parses the real on-page signals with tolerant regexes, no
+// headless browser, no LLM, no API key: and returns both a structured object
 // (for the live preview) and a rendered Website report. The output is meant to be
 // handed to AI agents as durable context for SEO work.
 
@@ -145,7 +145,7 @@ function collectImages(html) {
 
 // Internal-link frequency is a decent proxy for which pages a site considers
 // important: the header/footer/CTA links that repeat across the page rise to the
-// top. We rank those and keep the first descriptive anchor for each — no crawl.
+// top. We rank those and keep the first descriptive anchor for each, no crawl.
 function collectLinks(html, baseUrl) {
   let internal = 0;
   let external = 0;
@@ -201,7 +201,7 @@ function collectJsonLd(html) {
   return [...new Set(types)];
 }
 
-// Common English function words — dropped so keyword counts reflect the page's
+// Common English function words: dropped so keyword counts reflect the page's
 // actual subject matter, not "the/and/for". Deliberately small and static so the
 // extractor stays deterministic and dependency-free.
 const STOPWORDS = new Set(
@@ -449,7 +449,7 @@ async function fetchDiscoverability(origin, sitemapUrls) {
 
 // Secondary heuristic scores, each a share of concrete pass/fail factors. These
 // are separate from the SEO score and never change it. ai_readiness is an
-// honest proxy — how understandable the site is to AI, not measured AI presence.
+// honest proxy: how understandable the site is to AI, not measured AI presence.
 function scoreFrom(factors) {
   const ok = factors.filter((f) => f.ok).length;
   return { score: factors.length ? Math.round((ok / factors.length) * 100) : 0, factors };
@@ -486,13 +486,13 @@ function computeScores(d) {
   return { content, brand, ai, overall };
 }
 
-// Deterministic AEO/GEO opportunities — concrete, "you don't have X yet" gaps.
+// Deterministic AEO/GEO opportunities: concrete, "you don't have X yet" gaps.
 function buildOpportunities(d) {
   const ops = [];
-  if (!d.discovery.llmsTxt.found) ops.push("AEO: No llms.txt — add one so AI crawlers get a curated map of your key pages.");
-  if (!d.jsonLd.some((t) => /^(?:Organization|Corporation|LocalBusiness)$/i.test(t))) ops.push("AEO: No Organization schema — add it so AI systems can identify your brand as an entity.");
-  if (!d.answers.length) ops.push("AEO: No FAQ schema — add Q&A markup so your answers can surface in AI and rich results.");
-  if (!d.social.length) ops.push("Brand: No social profiles linked via sameAs — add them to strengthen your entity graph.");
+  if (!d.discovery.llmsTxt.found) ops.push("AEO: No llms.txt: add one so AI crawlers get a curated map of your key pages.");
+  if (!d.jsonLd.some((t) => /^(?:Organization|Corporation|LocalBusiness)$/i.test(t))) ops.push("AEO: No Organization schema: add it so AI systems can identify your brand as an entity.");
+  if (!d.answers.length) ops.push("AEO: No FAQ schema: add Q&A markup so your answers can surface in AI and rich results.");
+  if (!d.social.length) ops.push("Brand: No social profiles linked via sameAs: add them to strengthen your entity graph.");
   return ops;
 }
 
@@ -545,7 +545,7 @@ async function fetchRobots(origin) {
   }
 }
 
-// Rule-based checks — each is a pass/warn/fail with a short reason and a weight,
+// Rule-based checks: each is a pass/warn/fail with a short reason and a weight,
 // so the score leans on the signals that matter most (title, description,
 // indexability, HTTPS carry more than, say, a missing favicon). Deterministic:
 // the same page always scores the same way.
@@ -555,40 +555,40 @@ function buildChecks(d) {
 
   const titleLen = d.title ? d.title.length : 0;
   if (!d.title) add("fail", "Title tag", "No <title> found.", 3);
-  else if (titleLen < 30) add("warn", "Title tag", `Short at ${titleLen} chars — aim for 30–60.`, 3);
-  else if (titleLen > 60) add("warn", "Title tag", `Long at ${titleLen} chars — may truncate in search.`, 3);
+  else if (titleLen < 30) add("warn", "Title tag", `Short at ${titleLen} chars: aim for 30–60.`, 3);
+  else if (titleLen > 60) add("warn", "Title tag", `Long at ${titleLen} chars: may truncate in search.`, 3);
   else add("pass", "Title tag", `${titleLen} chars.`, 3);
 
   const descLen = d.description ? d.description.length : 0;
   if (!d.description) add("fail", "Meta description", "No meta description found.", 3);
-  else if (descLen < 70) add("warn", "Meta description", `Short at ${descLen} chars — aim for 70–160.`, 3);
-  else if (descLen > 160) add("warn", "Meta description", `Long at ${descLen} chars — may truncate.`, 3);
+  else if (descLen < 70) add("warn", "Meta description", `Short at ${descLen} chars: aim for 70–160.`, 3);
+  else if (descLen > 160) add("warn", "Meta description", `Long at ${descLen} chars: may truncate.`, 3);
   else add("pass", "Meta description", `${descLen} chars.`, 3);
 
   if (d.headings.counts.h1 === 0) add("fail", "H1 heading", "No H1 on the page.", 2);
-  else if (d.headings.counts.h1 > 1) add("warn", "H1 heading", `${d.headings.counts.h1} H1s — one is usually best.`, 2);
+  else if (d.headings.counts.h1 > 1) add("warn", "H1 heading", `${d.headings.counts.h1} H1s: one is usually best.`, 2);
   else add("pass", "H1 heading", "Exactly one H1.", 2);
 
   if (d.headings.skip) add("warn", "Heading structure", `Outline skips a level (${d.headings.skip}).`);
   else if (d.headings.counts.h2) add("pass", "Heading structure", "No skipped heading levels.");
 
-  if (!d.canonical) add("warn", "Canonical URL", "No canonical link — duplicate-content risk.", 2);
+  if (!d.canonical) add("warn", "Canonical URL", "No canonical link: duplicate-content risk.", 2);
   else if (d.canonicalOffHost) add("warn", "Canonical URL", `Points to another host (${d.canonicalOffHost}).`, 2);
   else add("pass", "Canonical URL", d.canonical, 2);
 
-  if (d.robotsMeta && /noindex/i.test(d.robotsMeta)) add("fail", "Indexability", `Meta robots is "${d.robotsMeta}" — page is blocked from search.`, 3);
-  else if (d.xRobotsTag && /noindex/i.test(d.xRobotsTag)) add("fail", "Indexability", `X-Robots-Tag header is "${d.xRobotsTag}" — page is blocked from search.`, 3);
+  if (d.robotsMeta && /noindex/i.test(d.robotsMeta)) add("fail", "Indexability", `Meta robots is "${d.robotsMeta}": page is blocked from search.`, 3);
+  else if (d.xRobotsTag && /noindex/i.test(d.xRobotsTag)) add("fail", "Indexability", `X-Robots-Tag header is "${d.xRobotsTag}": page is blocked from search.`, 3);
   else if (d.robots.blocksAll) add("fail", "Indexability", "robots.txt disallows all crawlers.", 3);
   else add("pass", "Indexability", "Open to crawlers.", 3);
 
   if (!d.lang) add("warn", "Language", "No lang attribute on <html>.");
   else add("pass", "Language", d.lang);
 
-  if (!d.viewport) add("warn", "Mobile viewport", "No viewport meta — poor mobile rendering.", 2);
+  if (!d.viewport) add("warn", "Mobile viewport", "No viewport meta: poor mobile rendering.", 2);
   else add("pass", "Mobile viewport", d.viewport, 2);
 
-  if (!d.og["og:title"] && !d.og["og:image"]) add("warn", "Open Graph", "No Open Graph tags — weak link previews.", 2);
-  else if (!d.og["og:image"]) add("warn", "Open Graph", "og:image missing — no preview image.", 2);
+  if (!d.og["og:title"] && !d.og["og:image"]) add("warn", "Open Graph", "No Open Graph tags: weak link previews.", 2);
+  else if (!d.og["og:image"]) add("warn", "Open Graph", "og:image missing, no preview image.", 2);
   else add("pass", "Open Graph", "Title and image present.", 2);
 
   if (d.images.total && d.images.missingAlt) add("warn", "Image alt text", `${d.images.missingAlt} of ${d.images.total} images missing alt.`);
@@ -612,7 +612,7 @@ function buildChecks(d) {
   return checks;
 }
 
-const FIELD = (label, value) => `- ${label}: ${value === "" || value == null ? "—" : value}`;
+const FIELD = (label, value) => `- ${label}: ${value === "" || value == null ? ": " : value}`;
 
 function renderSeoMd(d) {
   const L = [];
@@ -625,11 +625,11 @@ function renderSeoMd(d) {
   L.push(`- seo_score: ${d.score}/100 (${d.pass} passed · ${d.warn} warnings · ${d.fail} failing)`);
   L.push(`- content_score: ${d.scores.content.score}/100`);
   L.push(`- brand_clarity_score: ${d.scores.brand.score}/100`);
-  L.push(`- ai_readiness_score: ${d.scores.ai.score}/100 (proxy — how understandable the site is to AI, not measured AI presence)`);
+  L.push(`- ai_readiness_score: ${d.scores.ai.score}/100 (proxy: how understandable the site is to AI, not measured AI presence)`);
   L.push(`- url: ${d.url}`);
   if (d.finalUrl && d.finalUrl !== d.url) L.push(`- final_url: ${d.finalUrl}`);
   L.push(`- fetched: ${new Date(d.fetchedAt).toISOString()}`);
-  if (d.truncated) L.push(`- note: page exceeded 2 MB and was read partially — signals near the end may be missing.`);
+  if (d.truncated) L.push(`- note: page exceeded 2 MB and was read partially: signals near the end may be missing.`);
   L.push(``);
   L.push(`## Identity`);
   L.push(FIELD("title", d.title ? `"${d.title}"` : ""));
@@ -686,7 +686,7 @@ function renderSeoMd(d) {
   L.push(FIELD("external_links", d.links.external));
   if (d.links.topInternal.length) {
     L.push(`- important_pages:`);
-    for (const p of d.links.topInternal) L.push(`  - ${p.path}${p.anchor ? ` — "${p.anchor}"` : ""} (${p.count}×)`);
+    for (const p of d.links.topInternal) L.push(`  - ${p.path}${p.anchor ? `: "${p.anchor}"` : ""} (${p.count}×)`);
   } else {
     L.push(FIELD("important_pages", ""));
   }
@@ -718,7 +718,7 @@ function renderSeoMd(d) {
     L.push(`## Answers`);
     for (const a of d.answers) {
       L.push(`- Q: ${a.q}`);
-      L.push(`  A: ${a.a || "—"}`);
+      L.push(`  A: ${a.a || ": "}`);
     }
     L.push(``);
   }
@@ -733,7 +733,7 @@ function renderSeoMd(d) {
   L.push(``);
   L.push(`## Checklist`);
   const mark = { pass: "x", warn: "~", fail: " " };
-  for (const c of d.checks) L.push(`- [${mark[c.level]}] ${c.label} — ${c.detail}`);
+  for (const c of d.checks) L.push(`- [${mark[c.level]}] ${c.label}: ${c.detail}`);
   L.push(``);
   if (d.recommendations.length) {
     L.push(`## Recommendations`);
@@ -820,7 +820,7 @@ async function analyze(inputUrl) {
   }
 
   // Sitemaps: prefer those declared in robots.txt, fall back to the conventional
-  // path (which we don't verify here — that would be another fetch per guess).
+  // path (which we don't verify here: that would be another fetch per guess).
   const sitemaps = robots.sitemaps.length ? robots.sitemaps : [];
 
   const d = {
@@ -865,7 +865,7 @@ async function analyze(inputUrl) {
   d.warn = d.checks.filter((c) => c.level === "warn").length;
   d.fail = d.checks.filter((c) => c.level === "fail").length;
   // Weighted score: full credit for passes, half for warnings, nothing for
-  // fails — each scaled by the check's weight so critical signals dominate.
+  // fails: each scaled by the check's weight so critical signals dominate.
   const credit = { pass: 1, warn: 0.5, fail: 0 };
   const totalWeight = d.checks.reduce((sum, c) => sum + c.weight, 0);
   const earned = d.checks.reduce((sum, c) => sum + c.weight * credit[c.level], 0);

@@ -5,7 +5,7 @@
 // enough to quote in full:
 //
 //   * an optional BOM
-//   * an H1 with the name of the project — "the only required section"
+//   * an H1 with the name of the project: "the only required section"
 //   * a blockquote with a short summary
 //   * zero or more markdown sections of any type EXCEPT headings
 //   * zero or more H2-delimited sections containing file lists, each a markdown
@@ -257,7 +257,7 @@ function buildChecks(data) {
 
   // --- size --------------------------------------------------------------
   if (bytes > SIZE_LARGE) {
-    add("warn", "The file is large", "size", `${kb(bytes)}. It is meant to fit in a context window next to everything else — the detail belongs behind the links, not in the file.`);
+    add("warn", "The file is large", "size", `${kb(bytes)}. It is meant to fit in a context window next to everything else: the detail belongs behind the links, not in the file.`);
   } else if (bytes) {
     add("pass", "Comfortable size", "size", `${kb(bytes)}${bytes <= SIZE_COMFORTABLE ? "" : ", still workable"}.`);
   }
@@ -302,7 +302,7 @@ function buildChecks(data) {
 // ---------------------------------------------------------------------------
 
 // Accepts a bare domain, a page URL or the llms.txt URL itself. The bare
-// domain is the common case — the field on the page says "example.com" — so
+// domain is the common case: the field on the page says "example.com": so
 // the scheme is assumed here rather than only in the browser, which keeps a
 // pasted API URL and a shared result link working too.
 function llmsUrlFor(raw) {
@@ -335,7 +335,7 @@ async function inspect(rawUrl) {
   rawUrl = normalizeUrl(rawUrl);
   const target = llmsUrlFor(rawUrl);
   if (!target) {
-    const error = new Error("Enter a site, like example.com — we will look for its /llms.txt");
+    const error = new Error("Enter a site, like example.com: we will look for its /llms.txt");
     error.status = 400;
     throw error;
   }
@@ -365,7 +365,7 @@ async function inspect(rawUrl) {
           level: "error",
           title: "No llms.txt at this domain",
           tag: "llms.txt",
-          detail: `${origin}/llms.txt returned 404. Nothing here yet — the starter below is a working file you can put at that address.`,
+          detail: `${origin}/llms.txt returned 404. Nothing here yet: the starter below is a working file you can put at that address.`,
         },
       ],
       parsed: { title: null, summary: null, details: [], sections: [], problems: [] },

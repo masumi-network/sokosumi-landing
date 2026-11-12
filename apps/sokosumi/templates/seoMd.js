@@ -6,7 +6,7 @@ const FAQ = [
   {
     question: "What's in the Website report?",
     answer:
-      "A structured breakdown of a page's real search signals — title, meta description, canonical, Open Graph, structured data, heading structure, keywords, brand entities, navigation and indexing rules — plus SEO, content, brand-clarity and AI-readiness scores and prioritized fixes. Read it on screen, copy it, or download it.",
+      "A structured breakdown of a page's real search signals: title, meta description, canonical, Open Graph, structured data, heading structure, keywords, brand entities, navigation and indexing rules: plus SEO, content, brand-clarity and AI-readiness scores and prioritized fixes. Read it on screen, copy it, or download it.",
   },
   {
     question: "How does the Website Analyzer work?",
@@ -16,12 +16,12 @@ const FAQ = [
   {
     question: "Can I use the report with AI coding agents?",
     answer:
-      "Yes. Copy or download the report and hand it to any coding or content agent — Claude Code, Cursor, Codex, Copilot, Gemini CLI. Tell your agent to follow it when writing metadata, titles, or on-page copy, so its output matches your actual SEO state.",
+      "Yes. Copy or download the report and hand it to any coding or content agent: Claude Code, Cursor, Codex, Copilot, Gemini CLI. Tell your agent to follow it when writing metadata, titles, or on-page copy, so its output matches your actual SEO state.",
   },
   {
     question: "Is the analysis accurate?",
     answer:
-      "The analyzer reports exactly what the page's HTML contains at fetch time — it does not guess or invent values. It reads the raw markup, so client-side-rendered content that only appears after JavaScript runs may not be counted. The score is a deterministic rule-based check, not a Google ranking prediction.",
+      "The analyzer reports exactly what the page's HTML contains at fetch time: it does not guess or invent values. It reads the raw markup, so client-side-rendered content that only appears after JavaScript runs may not be counted. The score is a deterministic rule-based check, not a Google ranking prediction.",
   },
 ];
 
@@ -45,7 +45,7 @@ function render() {
     operatingSystem: "Web",
     url: `${SITE}${path}`,
     description:
-      "A free website SEO analyzer that scores a public URL's on-page signals — title, meta, Open Graph, structured data, headings — and generates a detailed Website report for use with AI agents.",
+      "A free website SEO analyzer that scores a public URL's on-page signals: title, meta, Open Graph, structured data, headings: and generates a detailed Website report for use with AI agents.",
     offers: { "@type": "Offer", price: "0", priceCurrency: "EUR" },
     creator: { "@id": `${SITE}/#organization` },
   };
@@ -54,7 +54,7 @@ function render() {
     pageStart({
       title: "Free Website Analyzer | Sokosumi",
       description:
-        "Analyze any website's on-page SEO: title, meta description, canonical, Open Graph, structured data, headings and a scored checklist — a detailed Website report for Claude Code, Cursor and other AI agents.",
+        "Analyze any website's on-page SEO: title, meta description, canonical, Open Graph, structured data, headings and a scored checklist: a detailed Website report for Claude Code, Cursor and other AI agents.",
       path,
       englishOnly: true,
       breadcrumb: crumbs,
@@ -148,7 +148,7 @@ function render() {
             <button class="dm-lead-x" id="seoMdLeadX" type="button" aria-label="Close">&times;</button>
           </div>
           <h2 id="seoMdLeadTitle">Free competitive analysis <span>+</span> your Website report</h2>
-          <p class="dm-lead-lede">Enter your website and email — our AI coworker sends a free competitive analysis to your inbox, and we generate your Website report right now.</p>
+          <p class="dm-lead-lede">Enter your website and email: our AI coworker sends a free competitive analysis to your inbox, and we generate your Website report right now.</p>
           <form class="dm-lead-form" id="seoMdLeadForm" novalidate>
             <label>
               <span>Website URL</span>
@@ -178,7 +178,7 @@ function render() {
       <h2 id="seo-md-how">A full read of your site's real SEO state.</h2>
       <ol>
         <li><span>01</span><h3>Paste a URL</h3><p>The page and its robots.txt are fetched server-side and parsed straight from the HTML.</p></li>
-        <li><span>02</span><h3>Get the report</h3><p>Title, meta, Open Graph, headings, keywords, important pages, brand entities, navigation and discoverability — with SEO, content, brand and AI-readiness scores.</p></li>
+        <li><span>02</span><h3>Get the report</h3><p>Title, meta, Open Graph, headings, keywords, important pages, brand entities, navigation and discoverability: with SEO, content, brand and AI-readiness scores.</p></li>
         <li><span>03</span><h3>Edit and download</h3><p>Copy or download the report and hand it to Claude Code, Cursor, Codex or Copilot when writing metadata and copy.</p></li>
       </ol>
     </section>

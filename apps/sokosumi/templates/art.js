@@ -1,5 +1,5 @@
 // Deterministic abstract artwork for the use-case surfaces: soft radial
-// colour fields, one thin ring, and sometimes a dotted disc — all drawn from
+// colour fields, one thin ring, and sometimes a dotted disc: all drawn from
 // the brand purple's neighbourhood. Seeded by the page slug, so a page always
 // renders the same composition and no two pages share one. Pure inline SVG:
 // no requests, no fonts, no faces, no photography. field() answers "" on any
@@ -24,7 +24,7 @@ function rng(seed) {
   };
 }
 
-// opts: { w, h, bias } — bias "edges" pushes the shapes into the outer
+// opts: { w, h, bias }: bias "edges" pushes the shapes into the outer
 // quarters, for surfaces with centred text on top of the field.
 function field(seed, opts) {
   try {
@@ -41,7 +41,7 @@ function field(seed, opts) {
       w;
 
     // Two hues out of the brand's neighbourhood: the purple itself, nudged,
-    // and a companion a step toward indigo or magenta — never far enough to
+    // and a companion a step toward indigo or magenta, never far enough to
     // read as a different brand.
     const hueA = BASE_HUE + Math.round((rand() - 0.5) * 18);
     const hueB = hueA + (rand() < 0.5 ? -30 : 26);
@@ -72,7 +72,7 @@ function field(seed, opts) {
       3,
     )}" stroke-width="1"/>`;
 
-    // Sometimes, a dotted disc — the site's dot-grid motif at a whisper.
+    // Sometimes, a dotted disc: the site's dot-grid motif at a whisper.
     if (rand() < 0.6) {
       const did = `${uid}-d`;
       defs += `<pattern id="${did}" width="11" height="11" patternUnits="userSpaceOnUse"><circle cx="1.5" cy="1.5" r="1.1" fill="hsl(${hueB} 90% 55%)" fill-opacity="0.18"/></pattern>`;

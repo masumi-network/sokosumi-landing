@@ -52,7 +52,7 @@
     try {
       window.localStorage.setItem(LEAD_STORAGE_KEY, JSON.stringify({ email: email, ts: Date.now() }));
     } catch (_error) {
-      /* private mode — fall through, the analysis still runs */
+      /* private mode: fall through, the analysis still runs */
     }
   }
 
@@ -197,8 +197,8 @@
     return ring;
   }
 
-  // One category meter: a mini score ring, a band label, and — when the server
-  // sent them — the individual pass/fail factors behind the score.
+  // One category meter: a mini score ring, a band label, and: when the server
+  // sent them: the individual pass/fail factors behind the score.
   function scoreMeter(label, value, factors, caption) {
     var cls = scoreClassFor(value);
     var wrap = el("div", "seo-meter seo-meter-" + cls);
@@ -231,7 +231,7 @@
     var overall = sc ? sc.overall : data.score;
     var block = el("section", "dm-preview-block seo-scorecard");
 
-    // Overall score as a filled gauge — the conic gradient shows the value.
+    // Overall score as a filled gauge: the conic gradient shows the value.
     var top = el("div", "seo-overall");
     var gauge = el("div", "seo-gauge seo-gauge-" + scoreClassFor(overall));
     gauge.style.setProperty("--seo-val", Math.max(0, Math.min(100, overall)) * 3.6 + "deg");
@@ -396,7 +396,7 @@
       row.appendChild(ico);
       var text = el("div", "dm-field-text");
       text.appendChild(el("dt", "", a.q));
-      text.appendChild(el("dd", "", a.a || "—"));
+      text.appendChild(el("dd", "", a.a || ": "));
       row.appendChild(text);
       list.appendChild(row);
     });
@@ -473,7 +473,7 @@
     ]);
     var topInternal = (data.links && data.links.topInternal) || [];
     renderList("Important pages", topInternal.map(function (p) {
-      return p.path + (p.anchor ? " — " + p.anchor : "") + " (" + p.count + "×)";
+      return p.path + (p.anchor ? ": " + p.anchor : "") + " (" + p.count + "×)";
     }));
     renderList("Navigation", (data.nav || []).map(function (n) { return n.label + " → " + n.path; }));
     var disc = data.discovery || { llmsTxt: {}, sitemap: {} };

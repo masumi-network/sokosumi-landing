@@ -25,7 +25,7 @@
           });
           // The GTM container gates every conversion tag behind a
           // `consent_status` event. A returning visitor already has a choice,
-          // so open the gate now — otherwise their tags never fire this session.
+          // so open the gate now: otherwise their tags never fire this session.
           window.dataLayer.push({
             event: 'consent_status',
             consent_analytics: _c.analytics ? 'granted' : 'denied',
@@ -38,14 +38,14 @@
     </script>
     <script>(function(w,d,s,l,i){
             // Production hostnames only. Preview deploys and local dev were feeding the
-      // same GA4 property as production — over the last 7 days the preview host
+      // same GA4 property as production: over the last 7 days the preview host
       // sent 366 pageviews against production's 156, plus localhost and
       // 127.0.0.1, which makes every report wrong until someone remembers to
       // filter. Nothing measures anything anywhere else.
       var TRACK_HOSTS = { "www.sokosumi.com": 1, "sokosumi.com": 1 };
       if (!TRACK_HOSTS[location.hostname]) return;
       w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});
-      // Mirrors templates/shell.js ANALYTICS_HEAD — keep the two identical.
+      // Mirrors templates/shell.js ANALYTICS_HEAD: keep the two identical.
       // ~315KB of container competing with the hero for phone bandwidth, and
       // nothing in it needs to run before paint, so it boots on idle after
       // load (or on first interaction, whichever comes first).
@@ -102,7 +102,7 @@
          sets it on .hero.is-aurora). A background image is only discovered once
          the stylesheet has arrived, which measured 1.2s of LCP "load delay" on
          mobile; preloading it here starts the fetch with the HTML. -->
-    <!-- These hrefs must equal the url() in landing.css byte for byte — the
+    <!-- These hrefs must equal the url() in landing.css byte for byte: the
          server leaves preload images unversioned for that reason. A mismatch
          downloads the photo twice. Phones get the 1080px cut (19 KB vs 176 KB):
          below 900px the photo is a band along the bottom, not the backdrop. -->
@@ -125,9 +125,9 @@
   <body>
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N7GC8SFT" height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Manager"></iframe></noscript>
     <a class="skip-link" href="#main">Skip to content</a>
-    <!-- ===== HERO — cinematic center ===== -->
+    <!-- ===== HERO: cinematic center ===== -->
     <!-- The header (and the mobile drawer it controls) is injected here by
-         server.js from templates/shell.js header("/", { overlay: true }) —
+         server.js from templates/shell.js header("/", { overlay: true }):
          the ONE source of truth for the site chrome, shared with every
          sub-page. Do not hand-write a header in this file. -->
     <!--SSR:HEADER-->
@@ -181,7 +181,7 @@
         </div>
       </div>
     </div>
-    <!-- ===== AI COWORKERS — asymmetric podium (live from /api/catalog) ===== -->
+    <!-- ===== AI COWORKERS: asymmetric podium (live from /api/catalog) ===== -->
     <section class="block" id="coworkers">
       <div class="container-app">
         <div class="section-head" data-reveal>
@@ -198,7 +198,7 @@
       </div>
     </section>
 
-    <!-- ===== HOW IT WORKS — one briefing, fanned out, delivered ===== -->
+    <!-- ===== HOW IT WORKS: one briefing, fanned out, delivered ===== -->
     <section class="block band-dark" id="how">
       <div class="container-app">
         <div class="section-head" data-reveal>
@@ -313,7 +313,7 @@
       </div>
     </section>
 
-    <!-- ===== PRODUCT — large screenshots, arrows cycle the frames ===== -->
+    <!-- ===== PRODUCT: large screenshots, arrows cycle the frames ===== -->
     <section class="block" id="product">
       <div class="container-app">
         <div class="section-head" data-reveal>
@@ -387,7 +387,7 @@
       </div>
     </section>
 
-    <!-- ===== ORG CHART — coworkers slot in under your real team ===== -->
+    <!-- ===== ORG CHART: coworkers slot in under your real team ===== -->
     <section class="block" id="org">
       <div class="container-app">
         <div class="section-head" data-reveal>
@@ -467,7 +467,7 @@
           </details>
           <details class="faq-item">
             <summary>Who builds the coworkers?<span class="faq-x">+</span></summary>
-            <p class="faq-a">A named vendor builds and runs every coworker — Serviceplan Group, utxo AG, and others. Every coworker has a public profile. Some profiles list the models and hosting region.</p>
+            <p class="faq-a">A named vendor builds and runs every coworker: Serviceplan Group, utxo AG, and others. Every coworker has a public profile. Some profiles list the models and hosting region.</p>
           </details>
           <details class="faq-item">
             <summary>What do the template tasks cover?<span class="faq-x">+</span></summary>
@@ -510,16 +510,16 @@
       </div>
     </section>
 
-    <!-- The closing CTA, like the header and footer, comes from ONE place —
-         templates/shell.js ctaBand() — injected here by server.js in place
+    <!-- The closing CTA, like the header and footer, comes from ONE place:
+         templates/shell.js ctaBand(): injected here by server.js in place
          of this placeholder. Homepage keeps its own heading and Sign Up
          label; the band itself is the shared component. -->
     <!--SSR:CTA-->
 
     </main>
 
-    <!-- The footer, like the header above, comes from ONE place —
-         templates/shell.js footerHtml() — injected here by server.js in
+    <!-- The footer, like the header above, comes from ONE place:
+         templates/shell.js footerHtml(): injected here by server.js in
          place of this placeholder. Do not hand-write a footer in this
          file. Styles live in /assets/nav.css, shared with every sub-page. -->
     <!--SSR:FOOTER-->
@@ -532,7 +532,7 @@
           });
         }
             // The catalog's portraits arrive at whatever resolution the vendor
-            // uploaded — one is a 2.1MB PNG rendered as a 34px circle. Where the
+            // uploaded: one is a 2.1MB PNG rendered as a 34px circle. Where the
             // optimizer exists, ask for the size we actually paint. Guarded by
             // hostname so `node server.js` in dev still renders every portrait.
             var IMG_OPT = /(^|\.)sokosumi\.com$/.test(location.hostname) || /\.vercel\.app$/.test(location.hostname);
@@ -689,7 +689,7 @@
               .join("");
             [].slice.call(intro.querySelectorAll("[data-reveal]")).forEach(revealNow);
 
-            /* "+ more" — a visual stack of the remaining coworkers' faces */
+            /* "+ more": a visual stack of the remaining coworkers' faces */
             var trioSlugs = {};
             trio.forEach(function (c) { trioSlugs[c.slug] = true; });
             var rest = coworkers.filter(function (c) { return !trioSlugs[c.slug]; });

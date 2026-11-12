@@ -1,4 +1,4 @@
-// /support — where someone already using Sokosumi goes when something is
+// /support: where someone already using Sokosumi goes when something is
 // wrong. Distinct from /contact, which routes new enquiries: this page is
 // about getting an existing problem resolved.
 //
@@ -66,7 +66,7 @@ function field(label, inner, hint) {
 }
 
 // Plain form POST to /api/support-request, which redirects back with ?sent=1
-// or ?error= — so it works with JavaScript disabled, like the sales form.
+// or ?error=: so it works with JavaScript disabled, like the sales form.
 function supportForm(values, error) {
   const v = values || {};
   const val = (k) => attr(v[k] || "");
@@ -101,7 +101,7 @@ function supportForm(values, error) {
 function sentState() {
   return `<div class="notice" data-reveal data-analytics="generate_lead" data-analytics-on="load" data-analytics-form-name="support_request">
     <span class="eyebrow">${esc(t("Request received"))}</span>
-    <h1>${esc(t("Thanks — that is with support."))}</h1>
+    <h1>${esc(t("Thanks: that is with support."))}</h1>
     <p>${esc(t("We have it and will come back to you within one working day. If it is urgent, write to"))} <a href="mailto:${attr(leads.SUPPORT_TO)}">${esc(leads.SUPPORT_TO)}</a> ${esc(t("and it reaches the same inbox."))}</p>
     <div class="form-actions" style="margin-top:8px">
       <a class="btn btn-primary" href="${APP}" data-analytics="sign_up_click" data-analytics-location="support_success">${esc(t("Open the app"))}</a>
@@ -174,7 +174,7 @@ async function render(ctx) {
     </section>` +
     shell.ctaBand({
       heading: t("Not a support question?"),
-      subheading: t("Rolling Sokosumi out to a team, or listing your own coworkers as a vendor — that one is for sales."),
+      subheading: t("Rolling Sokosumi out to a team, or listing your own coworkers as a vendor: that one is for sales."),
       ctaLabel: t("Talk to Sales"),
       ctaHref: SALES_URL,
       seed: 11,

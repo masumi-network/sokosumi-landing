@@ -160,7 +160,7 @@
   background: var(--muted);
   border: 1px solid var(--border);
 }
-/* A blocked engine reads as inactive — desaturate its logo. The red is
+/* A blocked engine reads as inactive: desaturate its logo. The red is
    carried by the status pill below, so the tile still reads at a glance. */
 .asv-engine.is-no .asv-engine-glyph svg {
   filter: grayscale(1);

@@ -4,7 +4,7 @@
 // /tools/internal-linking-finder. Given a site URL, this tries its
 // sitemap.xml (falling back to the homepage's own links) for up to
 // MAX_PAGES pages, fetches each (through lib/safeFetch.js), and computes a
-// simple keyword-overlap similarity between every pair — two pages that
+// simple keyword-overlap similarity between every pair: two pages that
 // share a lot of vocabulary but don't yet link to each other are a linking
 // opportunity. No LLM: similarity is a Jaccard set overlap on each page's
 // top keywords, capped and timed out so a large site can't hang the request.
@@ -63,7 +63,7 @@ async function analyze(input) {
     throw err;
   }
   if (pageUrls.length < 2) {
-    const error = new Error("Found fewer than 2 pages to compare — check the URL and try again.");
+    const error = new Error("Found fewer than 2 pages to compare: check the URL and try again.");
     error.status = 422;
     throw error;
   }

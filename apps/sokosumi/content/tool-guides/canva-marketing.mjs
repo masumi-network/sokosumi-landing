@@ -19,7 +19,7 @@ export default {
     description: "Set up brand controls, build one approved campaign system, and scale channel variants in Canva without multiplying mistakes.",
     body: article("en", {
       intro: [
-        "Canva can turn an approved campaign system into many channel-ready assets. The leverage comes from Brand Kit, controlled templates and structured variant data—not from generating dozens of unrelated designs.",
+        "Canva can turn an approved campaign system into many channel-ready assets. The leverage comes from Brand Kit, controlled templates and structured variant data, not from generating dozens of unrelated designs.",
         "Approve one master message and visual direction before bulk production. Automation amplifies whatever is in the template, including errors.",
       ],
       fit: [

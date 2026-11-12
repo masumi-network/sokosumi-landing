@@ -110,7 +110,7 @@
   var elapsedEl = null;
 
   // `status.textContent = message` wipes every child, so the elapsed counter
-  // cannot live as a sibling appended to the same node — it gets detached on
+  // cannot live as a sibling appended to the same node: it gets detached on
   // the next phase change and the ticker then updates an orphan. The message
   // and the counter each own a span.
   function setStatusText(message) {

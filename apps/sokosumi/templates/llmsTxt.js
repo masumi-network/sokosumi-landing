@@ -5,7 +5,7 @@ const { esc, pageStart, pageEnd, SITE } = shell;
 const PATH = "/tools/llms-txt";
 
 // The format, in the order the spec lays it out. This table is the reference
-// people arrive looking for — llmstxt.org has the spec but not a checklist.
+// people arrive looking for: llmstxt.org has the spec but not a checklist.
 const FORMAT = [
   {
     part: "H1",
@@ -23,7 +23,7 @@ const FORMAT = [
     part: "Detail",
     syntax: "Any markdown except headings",
     required: "Optional",
-    note: "Paragraphs and lists. No headings — the next heading starts a section.",
+    note: "Paragraphs and lists. No headings: the next heading starts a section.",
   },
   {
     part: "Sections",
@@ -49,12 +49,12 @@ const FAQ = [
   {
     question: "What is llms.txt?",
     answer:
-      "A markdown file at the root of your site — /llms.txt — that tells a language model which of your pages are worth reading and what each one covers. It exists because an LLM landing on your docs has to guess what matters; the file is you answering that directly, in a format small enough to sit in a context window.",
+      "A markdown file at the root of your site: /llms.txt: that tells a language model which of your pages are worth reading and what each one covers. It exists because an LLM landing on your docs has to guess what matters; the file is you answering that directly, in a format small enough to sit in a context window.",
   },
   {
     question: "What does this llms.txt checker look at?",
     answer:
-      "It fetches your /llms.txt, parses it against the format at llmstxt.org, and reports what a reader would actually get: whether the H1 and summary are there, whether sections and links are shaped correctly, whether the file is small enough to be useful — and whether the links in it resolve, which is the part nothing else in your stack ever tests.",
+      "It fetches your /llms.txt, parses it against the format at llmstxt.org, and reports what a reader would actually get: whether the H1 and summary are there, whether sections and links are shaped correctly, whether the file is small enough to be useful: and whether the links in it resolve, which is the part nothing else in your stack ever tests.",
   },
   {
     question: "Does llms.txt help my SEO?",
@@ -64,7 +64,7 @@ const FAQ = [
   {
     question: "Where does the file go?",
     answer:
-      "At the root: https://example.com/llms.txt. Serve it as text/plain or text/markdown. The common failure is a catch-all route returning your app's HTML shell instead of the file — this checker flags that, because it looks fine in a browser.",
+      "At the root: https://example.com/llms.txt. Serve it as text/plain or text/markdown. The common failure is a catch-all route returning your app's HTML shell instead of the file: this checker flags that, because it looks fine in a browser.",
   },
   {
     question: "What is llms-full.txt?",
@@ -74,7 +74,7 @@ const FAQ = [
   {
     question: "How many links should it have?",
     answer:
-      "As many as are genuinely worth reading, and no more — the file is supposed to fit in a context window alongside whatever else the agent is holding. Past a dozen or so links, add an \"Optional\" section and move the secondary ones there, which is the format's own way of saying what can be skipped.",
+      "As many as are genuinely worth reading, and no more: the file is supposed to fit in a context window alongside whatever else the agent is holding. Past a dozen or so links, add an \"Optional\" section and move the secondary ones there, which is the format's own way of saying what can be skipped.",
   },
 ];
 
@@ -136,7 +136,7 @@ function render() {
 
   return (
     pageStart({
-      title: "llms.txt checker — validate your llms.txt file free | Sokosumi",
+      title: "llms.txt checker: validate your llms.txt file free | Sokosumi",
       description:
         "Free llms.txt checker and validator. Paste a domain to see whether its /llms.txt exists, follows the llmstxt.org format, and whether the links inside it actually resolve. No sign-up.",
       path: PATH,
@@ -154,7 +154,7 @@ function render() {
     `<section class="lt-head" id="checker">
       <p class="lt-overline">Free · no sign-up</p>
       <h1>llms.txt checker</h1>
-      <p class="lt-lede">Paste a domain. We fetch its <code>/llms.txt</code>, check it against the format, and follow the links inside it — because a file full of 404s is the one failure nothing else in your stack will ever tell you about.</p>
+      <p class="lt-lede">Paste a domain. We fetch its <code>/llms.txt</code>, check it against the format, and follow the links inside it: because a file full of 404s is the one failure nothing else in your stack will ever tell you about.</p>
 
       <form class="lt-bar" id="ltForm" novalidate>
         <label class="sr-only" for="ltUrl">Site to check</label>
@@ -199,7 +199,7 @@ function render() {
 
     <section class="lt-section" aria-labelledby="lt-format">
       <h2 id="lt-format">The llms.txt format</h2>
-      <p class="lt-sub">Six parts, in this order. Only the first is required — everything the checker reports is measured against this.</p>
+      <p class="lt-sub">Six parts, in this order. Only the first is required: everything the checker reports is measured against this.</p>
       <div class="lt-table-wrap">
         <table class="lt-table">
           <thead>

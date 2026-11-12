@@ -2,18 +2,18 @@
 //
 // The old sitemap lists 112 URLs and only 13 of them exist here by the same
 // path, so without this table the cutover would 404 nearly the whole indexed
-// footprint — including 23 agent pages that have a direct equivalent.
+// footprint: including 23 agent pages that have a direct equivalent.
 //
 // Rules of thumb applied below:
 //   * Redirect to the specific replacement page whenever there is one.
 //   * When a product is genuinely gone, redirect to the relevant hub, never
-//     to the home page — Google reads an irrelevant redirect as a soft 404
+//     to the home page: Google reads an irrelevant redirect as a soft 404
 //     and drops the URL anyway.
 //   * The German half of the old site (55+ URLs) now has a real counterpart:
 //     /de is a first-class locale (see lib/i18n.js). server.js strips the
 //     /de prefix BEFORE this map runs and re-prefixes any relative redirect
 //     it returns, so an old /de/ai-agents/<x> lands on /de/ai-coworkers/<x>
-//     — German stays German. This module therefore never sees a "de"
+//: German stays German. This module therefore never sees a "de"
 //     segment and must not special-case one.
 //
 // To refresh after the old site changes:
@@ -35,7 +35,7 @@ const RENAMED = {
   "statista-single-answer": "statista-key-insight",
 };
 
-// Delisted from the catalog entirely — verified against the live product API,
+// Delisted from the catalog entirely: verified against the live product API,
 // not guessed. These go to the marketplace hub.
 const DELISTED = new Set(["page-content-identifier-beta", "x-analyst-for-businesses"]);
 

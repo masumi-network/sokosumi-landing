@@ -1,4 +1,4 @@
-/* /tools/internal-linking-finder — client. Uses wireSimple() + renderTable().
+/* /tools/internal-linking-finder: client. Uses wireSimple() + renderTable().
  */
 (function () {
   "use strict";

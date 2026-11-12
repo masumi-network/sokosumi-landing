@@ -81,7 +81,7 @@ function clamp(s, n) {
 
 // The card ground. Every layout sits on the same deep stage the site uses for
 // its CTA bands and product stages, which is the most recognisable thing
-// Sokosumi owns — and a dark card is the one that stops a thumb in a feed of
+// Sokosumi owns: and a dark card is the one that stops a thumb in a feed of
 // white ones. The old frame was grey paper with a 104px near-black bar welded
 // to the bottom: bottom-heavy, and it spent a sixth of the card repeating the
 // wordmark next to the domain.
@@ -287,7 +287,7 @@ async function render(query) {
 
 // Bump when the card design changes. The rendered image is cached for a week
 // at the CDN with a month of stale-while-revalidate, and the key is derived
-// only from the page's own copy — so without this a redesign keeps serving the
+// only from the page's own copy: so without this a redesign keeps serving the
 // old card until that expires. It rides in the key, so every card gets a new
 // URL, which is also what nudges the social platforms to re-scrape.
 const CARD_VERSION = "2";

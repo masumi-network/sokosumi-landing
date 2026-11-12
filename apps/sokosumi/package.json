@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "node server.js",
-    "build": "echo \"No build step — static placeholder\"",
+    "build": "echo \"No build step: static placeholder\"",
     "start": "node server.js"
   },
   "dependencies": {

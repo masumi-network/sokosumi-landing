@@ -1,4 +1,4 @@
-// /list-your-agent — the Sokosumi Agent Listing form, rebuilt natively from
+// /list-your-agent: the Sokosumi Agent Listing form, rebuilt natively from
 // the Tally form at tally.so/r/nPLBaV.
 //
 // The form keeps the source questionnaire's meaning while using concise,
@@ -129,7 +129,7 @@ const CONFIRMATIONS = [
   "You take full responsibility for the compliance of your agent with applicable laws and regulations.",
 ];
 
-// Every control gets a real <label for> — or a <legend>, for the choice
+// Every control gets a real <label for>: or a <legend>, for the choice
 // groups, since one label cannot name several inputs. The surrounding hints
 // are attached with aria-describedby instead of being left as loose text.
 // Before this, 15 of the 24 controls announced as "edit text, blank".
@@ -237,7 +237,7 @@ function form(values, error) {
 function sentState() {
   return `<div class="notice" data-reveal data-analytics="generate_lead" data-analytics-on="load" data-analytics-form-name="agent_listing">
     <span class="eyebrow">${esc(t("Submission received"))}</span>
-    <h1>${esc(t("Thanks — your agent is with the team."))}</h1>
+    <h1>${esc(t("Thanks: your agent is with the team."))}</h1>
     <p>${esc(t("We will review the listing and come back to you. If you need to add anything, reply to the confirmation or write to"))} <a href="mailto:${attr(leads.SUPPORT_TO)}">${esc(leads.SUPPORT_TO)}</a>.</p>
     <div class="form-actions" style="margin-top:8px">
       <a class="btn btn-primary" href="/ai-coworkers">${esc(t("See who is already listed"))}</a>

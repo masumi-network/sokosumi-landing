@@ -95,7 +95,7 @@ export const pages = [
         "A sourced guide to the House of AI, the work inside Serviceplan, Mediaplus and Plan.Net, and the products that make it usable.",
       ),
       richText(`## One system, several kinds of work
-Serviceplan Group describes the **House of AI** as the digital twin of its House of Communication: a connected operating system for insight, creative work, media activation and specialised agents. It is not one chatbot and it is not one agency. The public structure spans the group's three main brands — Serviceplan, Mediaplus and Plan.Net — plus a data foundation, partner technologies and products such as Sokosumi.
+Serviceplan Group describes the **House of AI** as the digital twin of its House of Communication: a connected operating system for insight, creative work, media activation and specialised agents. It is not one chatbot and it is not one agency. The public structure spans the group's three main brands: Serviceplan, Mediaplus and Plan.Net: plus a data foundation, partner technologies and products such as Sokosumi.
 
 This guide separates those layers. It is published by Sokosumi, which is operated by Plan.Net Germany and belongs to the Serviceplan AI ecosystem. Claims are linked to Serviceplan Group, partner and product sources so readers can distinguish the group's statements from independent facts. Start with the [official House of AI overview](${SOURCE.house}) and the [latest group results](${SOURCE.results}).`),
       stats("Serviceplan Group in 2026", [
@@ -173,7 +173,7 @@ Das Agenturangebot und das Self-Service-Produkt sind verbunden, aber nicht ident
       richText(`## A digital twin, not a tool catalogue
 Serviceplan calls the House of AI the **digital twin of the House of Communication**. That description matters: the model mirrors how the group already combines creative, media, data and technology disciplines. The goal is to connect those disciplines through one operating model rather than to place an AI feature in each agency independently.
 
-The official page describes three connected suites — Insight.AI, Creative.AI and Activate.AI — above a fully compliant Global Data Platform. Agentic.AI sits across the system as a layer of specialised agents. Mediaplus' Plus.AI adds a conversational intelligence layer for media work. [See Serviceplan Group's architecture](${SOURCE.house}).`),
+The official page describes three connected suites: Insight.AI, Creative.AI and Activate.AI: above a fully compliant Global Data Platform. Agentic.AI sits across the system as a layer of specialised agents. Mediaplus' Plus.AI adds a conversational intelligence layer for media work. [See Serviceplan Group's architecture](${SOURCE.house}).`),
       richText(`## What is public and what is not
 The names and high-level structure are public. Serviceplan also documents individual products and units elsewhere, including Plus.AI, Behave.AI, Agentic Services, HealthContent.AI and Sokosumi. Detailed model choices, client data architecture, governance controls and performance by client are not published as one technical specification. A useful evaluation should therefore ask for the exact data sources, approval points, hosting, measurement plan and human responsibility for the proposed use case.`),
       faq("House of AI questions", [
@@ -202,7 +202,7 @@ The names and high-level structure are public. Serviceplan also documents indivi
       richText(`## Ein digitaler Zwilling, kein Tool-Katalog
 Serviceplan nennt das House of AI den **digitalen Zwilling des House of Communication**. Das ist mehr als ein Bild: Das Modell spiegelt die bestehende Verbindung von Kreation, Media, Daten und Technologie. Diese Disziplinen sollen über ein gemeinsames Betriebsmodell zusammenspielen, statt in jeder Agentur ein isoliertes KI-Feature zu erhalten.
 
-Die offizielle Seite beschreibt drei verbundene Säulen — Insight.AI, Creative.AI und Activate.AI — auf einer als compliant bezeichneten Global Data Platform. Agentic.AI liegt als Schicht spezialisierter Agents darüber. Mediaplus ergänzt dies mit Plus.AI als dialogorientierter Intelligence-Schicht für Media. [Zur offiziellen Architektur](${SOURCE.house}).`),
+Die offizielle Seite beschreibt drei verbundene Säulen: Insight.AI, Creative.AI und Activate.AI: auf einer als compliant bezeichneten Global Data Platform. Agentic.AI liegt als Schicht spezialisierter Agents darüber. Mediaplus ergänzt dies mit Plus.AI als dialogorientierter Intelligence-Schicht für Media. [Zur offiziellen Architektur](${SOURCE.house}).`),
       richText(`## Was öffentlich ist und was nicht
 Namen und Grundstruktur sind öffentlich. Weitere Produkte und Einheiten wie Plus.AI, Behave.AI, Agentic Services, HealthContent.AI und Sokosumi dokumentiert Serviceplan an anderer Stelle. Konkrete Modellwahl, Kundendatenarchitektur, Governance-Kontrollen und Ergebnisse pro Kunde liegen jedoch nicht als gemeinsame technische Spezifikation vor. Eine belastbare Bewertung sollte deshalb Datenquellen, Freigabepunkte, Hosting, Messplan und menschliche Verantwortung für den jeweiligen Use Case einzeln prüfen.`),
       faq("Fragen zum House of AI", [
@@ -223,7 +223,7 @@ Namen und Grundstruktur sind öffentlich. Weitere Produkte und Einheiten wie Plu
       hero(
         "Serviceplan and Creative.AI",
         "Where AI meets creative craft and production",
-        "Serviceplan's public AI work spans ideation, high-volume production, specialist content and new creative units—not one universal generator.",
+        "Serviceplan's public AI work spans ideation, high-volume production, specialist content and new creative units, not one universal generator.",
       ),
       featureGrid("The documented initiatives", [
         ["Serviceplan Make and SP Gen AI", "The production unit presented a proprietary generative workflow for automated asset production, personalisation and brand-safety controls."],
@@ -265,7 +265,7 @@ Not every award-winning Serviceplan campaign is an AI case. The group won Indepe
       hero(
         "Serviceplan und Creative.AI",
         "Wo KI auf kreatives Handwerk und Produktion trifft",
-        "Serviceplans öffentliche KI-Arbeit umfasst Ideen, skalierbare Produktion, Fachcontent und neue Kreativeinheiten — nicht einen universellen Generator.",
+        "Serviceplans öffentliche KI-Arbeit umfasst Ideen, skalierbare Produktion, Fachcontent und neue Kreativeinheiten: nicht einen universellen Generator.",
       ),
       featureGrid("Die dokumentierten Initiativen", [
         ["Serviceplan Make und SP Gen AI", "Die Produktionseinheit stellte einen eigenen generativen Workflow für automatisierte Asset-Produktion, Personalisierung und Markensicherheit vor."],
@@ -426,7 +426,7 @@ Plan.Net announced **Plan.Net Agentic AI** on 8 July 2026 as a standalone busine
 The announcement says the unit is running multi-market work in banking, FMCG and automotive, but it does not name clients or publish outcomes. Those are therefore rollout claims, not case studies. Serviceplan also distinguishes this enterprise-transformation offer from standardised products for smaller organisations.
 
 ## Which buying path fits
-**Sokosumi and AI Coworkers** fit bounded work that a team wants to start without a bespoke build. **Agentic Services** fit a custom workflow or agent that needs specific data, tools and approvals. **Plan.Net Agentic AI** is positioned for enterprise-wide operating models, architecture, implementation and ongoing operation. The boundaries can overlap, but scope and integration depth—not the label “AI agent”—should drive the choice.`),
+**Sokosumi and AI Coworkers** fit bounded work that a team wants to start without a bespoke build. **Agentic Services** fit a custom workflow or agent that needs specific data, tools and approvals. **Plan.Net Agentic AI** is positioned for enterprise-wide operating models, architecture, implementation and ongoing operation. The boundaries can overlap, but scope and integration depth, not the label “AI agent”: should drive the choice.`),
       faq("Plan.Net Agentic AI questions", [
         ["What are Plan.Net Agentic Services?", "They are Plan.Net's custom AI-agent services for tasks such as research, insights, content, design and workflow automation, integrated into client systems and supervised by experts."],
         ["What is the new Plan.Net Agentic AI unit?", "It is a standalone Plan.Net business unit announced on 8 July 2026 for enterprise AI marketing transformation. Hadi Lotfi and Konrad Schreiber lead around 40 reported employees."],
@@ -551,7 +551,7 @@ Hannah kann Datenquellen wie Statista, GWI, dpa und DataForSEO nutzen. Ihre Roll
 Ein allgemeiner Assistent ist nützlich für Entwürfe und Brainstorming. Das Serviceplan-Coworker-Modell ergänzt eine benannte Rolle, wiederholbare Aufgaben, kostenpflichtige Datenquellen, Task-Status, Delegation und ein definiertes Ergebnis. Das macht nicht automatisch jede Antwort richtig. Es macht den Prozess aber leichter prüfbar und Verantwortung klarer zuordenbar.
 
 Serviceplans [Praxisbeitrag](${SOURCE.coworkerBlog}) beschreibt, wie Hannah und Elena Arbeit per E-Mail übergeben, während die Nutzerin oder der Nutzer im CC bleibt und das Task Board den Ablauf dokumentiert. Auf Sokosumi können weitere Coworker und spezialisierte Agents hinzukommen. [Aktuelle AI Coworker ansehen](/de/ai-coworkers).`),
-      checklist("Ein guter erster Task", "Beginnen Sie mit einer begrenzten Entscheidung oder einem konkreten Deliverable — nicht mit 'Mach unser Marketing'.", [
+      checklist("Ein guter erster Task", "Beginnen Sie mit einer begrenzten Entscheidung oder einem konkreten Deliverable: nicht mit 'Mach unser Marketing'.", [
         "Geschäftsfrage und Empfänger des Ergebnisses benennen",
         "Rahmenbedingungen, bekannte Evidenz und Deadline teilen",
         "Datei oder Entscheidung am Ende klar festlegen",
@@ -621,7 +621,7 @@ Masumi is intentionally usable beyond Sokosumi. The protocol can support agents 
       richText(`## Warum es drei Produkte gibt
 Ein Marktplatz für Agents braucht mehr als ein Verzeichnis. Anbieter müssen Services betreiben, Käufer brauchen eine brauchbare Oberfläche, und beide Seiten benötigen Regeln für Zahlung sowie Nachweise über einen definierten Jobstatus. Serviceplan und NMKR trennen diese Aufgaben, statt sie in einer proprietären Anwendung zu verstecken.
 
-Die [offizielle Masumi-Seite von Plan.Net](${SOURCE.masumi}) beschreibt Masumi als Vertrauens- und Zahlungsschicht für Agentic Services. Die [Sokosumi-Launch-Mitteilung](${SOURCE.sokosumi}) positioniert den Marktplatz anschließend als Zugang für Unternehmen — aufbauend auf Masumi und Kodosumi.`),
+Die [offizielle Masumi-Seite von Plan.Net](${SOURCE.masumi}) beschreibt Masumi als Vertrauens- und Zahlungsschicht für Agentic Services. Die [Sokosumi-Launch-Mitteilung](${SOURCE.sokosumi}) positioniert den Marktplatz anschließend als Zugang für Unternehmen: aufbauend auf Masumi und Kodosumi.`),
       richText(`## Die Partnerschaft hinter Masumi
 NMKR und Serviceplan Group stellten Masumi 2024 vor und kündigten später eine strategische Partnerschaft mit der Cardano Foundation an. [NMKRs Projektbericht](${SOURCE.nmkr}) veröffentlicht historische Netzwerk- und Nutzungszahlen für Januar bis Oktober 2025. Diese Werte belegen Aktivität, sind aber zeitlich begrenzte Anbieterangaben und kein aktueller auditierter Marktanteil.
 
@@ -705,7 +705,7 @@ The wider network won Independent Network of the Year at Cannes Lions 2025 and r
         ["Akkio", "Technologiepartner hinter Mediaplus' Plus.AI-Betriebssystem für Mediaplanung."],
         ["Microsoft Azure", "Serviceplan Agents nennt Hosting in Deutschland auf Azure. Das ist Hosting, kein Beleg für eine weitergehende Microsoft-KI-Partnerschaft."],
       ]),
-      richText(`## Was ein Logo belegt — und was nicht
+      richText(`## Was ein Logo belegt: und was nicht
 Partnerlogos können strategische Beziehungen, Technologieanbieter, Datenabonnements und normale Integrationen vermischen. Diese Seite nimmt nur Beziehungen auf, für die eine öffentliche Quelle die Zusammenarbeit beschreibt. Die Agentic-Services-Seite zeigt außerdem Logos von Adobe, Google, Salesforce, OpenAI, SAP und Microsoft. Ein Logo allein belegt jedoch keine formelle KI-Partnerschaft.
 
 Die klarste gruppenweite Technologieankündigung betrifft [Luma AI](${SOURCE.luma}). Die deutlichste Infrastrukturzusammenarbeit ist die Arbeit von NMKR und Serviceplan an Masumi und Sokosumi, ergänzt durch die [Partnerschaft mit der Cardano Foundation](${SOURCE.masumiPartner}). Die [GWI-Mitteilung](${SOURCE.gwi}) dokumentiert Konsumentendaten und Agent-to-Agent-Orchestrierung auf Sokosumi.`),
@@ -747,28 +747,28 @@ Das Netzwerk wurde 2025 Independent Network of the Year und meldete für 2025/26
         "The dated record shows how protocols, products, agency services and partnerships accumulated into the House of AI.",
       ),
       richText(`## Dated source record
-### 11 December 2024 — Cardano Foundation partnership
+### 11 December 2024: Cardano Foundation partnership
 Serviceplan Group, NMKR and the Cardano Foundation announced strategic collaboration around the Masumi network. [Source](${SOURCE.masumiPartner}).
 
-### 25 June 2025 — Sokosumi launch
+### 25 June 2025: Sokosumi launch
 Plan.Net Studios and NMKR launched the agent marketplace, following Masumi and Kodosumi. The announcement says Serviceplan also uses Sokosumi internally. [Source](${SOURCE.sokosumi}).
 
-### 26 November 2025 — CMO Barometer 2026
+### 26 November 2025: CMO Barometer 2026
 In a survey of 805 marketing leaders across 15 markets, 68% named AI as the defining topic for 2026. This is market research, not a measure of Serviceplan product performance. [Source](${SOURCE.cmo}).
 
-### 19 February 2026 — Luma AI partnership
+### 19 February 2026: Luma AI partnership
 Serviceplan announced group-wide adoption of Luma technology for creative workflows. [Source](${SOURCE.luma}).
 
-### 3 March 2026 — Hannah and Elena
+### 3 March 2026: Hannah and Elena
 The first small-business offer from the House of AI launched on Sokosumi. [Source](${SOURCE.coworkers}).
 
-### 17 March 2026 — HealthContent.AI
+### 17 March 2026: HealthContent.AI
 Serviceplan Content Health and AMBOSS introduced evidence-grounded medical content workflows. [Source](${SOURCE.health}).
 
-### 21 May 2026 — Behave.AI
+### 21 May 2026: Behave.AI
 Mediaplus expanded its behavioural-science unit and productised Purchase.AI, Tribes.AI and Resonance.AI. [Source](${SOURCE.behave}).
 
-### 30 July 2026 — group results
+### 30 July 2026: group results
 Serviceplan listed House of AI implementation, Luma AI, Behave.AI, Plus.AI and a new Plan.Net Agentic AI unit among the year's strategic milestones. [Source](${SOURCE.results}).`),
       featureGrid("What changed across the timeline", [
         ["Infrastructure became a product", "Masumi and Kodosumi created protocol and deployment layers; Sokosumi turned them into a workplace buyers could access."],
@@ -799,28 +799,28 @@ Serviceplan listed House of AI implementation, Luma AI, Behave.AI, Plus.AI and a
         "Die datierte Entwicklung zeigt, wie Protokolle, Produkte, Agenturleistungen und Partnerschaften zum House of AI zusammengewachsen sind.",
       ),
       richText(`## Datierte Quellen
-### 11. Dezember 2024 — Partnerschaft mit der Cardano Foundation
+### 11. Dezember 2024: Partnerschaft mit der Cardano Foundation
 Serviceplan Group, NMKR und Cardano Foundation kündigten eine strategische Zusammenarbeit zum Masumi-Netzwerk an. [Quelle](${SOURCE.masumiPartner}).
 
-### 25. Juni 2025 — Start von Sokosumi
+### 25. Juni 2025: Start von Sokosumi
 Plan.Net Studios und NMKR starteten den Agent-Marktplatz als nächste Schicht nach Masumi und Kodosumi. Laut Mitteilung nutzt Serviceplan Sokosumi auch intern. [Quelle](${SOURCE.sokosumi}).
 
-### 26. November 2025 — CMO Barometer 2026
+### 26. November 2025: CMO Barometer 2026
 In einer Befragung von 805 Marketingverantwortlichen in 15 Märkten nannten 68 Prozent KI als prägendes Thema für 2026. Das ist Marktforschung, kein Leistungsnachweis für Serviceplan-Produkte. [Quelle](${SOURCE.cmo}).
 
-### 19. Februar 2026 — Partnerschaft mit Luma AI
+### 19. Februar 2026: Partnerschaft mit Luma AI
 Serviceplan kündigte den gruppenweiten Einsatz von Luma-Technologie in kreativen Workflows an. [Quelle](${SOURCE.luma}).
 
-### 3. März 2026 — Hannah und Elena
+### 3. März 2026: Hannah und Elena
 Das erste KMU-Angebot aus dem House of AI startete auf Sokosumi. [Quelle](${SOURCE.coworkers}).
 
-### 17. März 2026 — HealthContent.AI
+### 17. März 2026: HealthContent.AI
 Serviceplan Content Health und AMBOSS stellten medizinische Content-Workflows mit Evidenzbasis vor. [Quelle](${SOURCE.health}).
 
-### 21. Mai 2026 — Behave.AI
+### 21. Mai 2026: Behave.AI
 Mediaplus baute seine Behavioral-Science-Einheit aus und bündelte Purchase.AI, Tribes.AI und Resonance.AI. [Quelle](${SOURCE.behave}).
 
-### 30. Juli 2026 — Jahresergebnisse
+### 30. Juli 2026: Jahresergebnisse
 Serviceplan nannte die Umsetzung des House of AI, Luma AI, Behave.AI, Plus.AI und eine neue Plan.Net-Agentic-AI-Einheit als strategische Meilensteine. [Quelle](${SOURCE.results}).`),
       featureGrid("Was sich entlang der Timeline verändert hat", [
         ["Infrastruktur wurde zum Produkt", "Masumi und Kodosumi schufen Protokoll- und Deployment-Schichten; Sokosumi machte sie als Arbeitsplatz zugänglich."],
@@ -927,7 +927,7 @@ Nach Angaben der Europäischen Kommission gelten die Transparenzpflichten aus Ar
 
 Serviceplans [Business Partner Code of Conduct](${SOURCE.partnerCode}) verlangt von Partnern beim KI-Einsatz die Einhaltung von Datenschutz- und Sicherheitsregeln. Das ist ein Governance-Beleg, aber keine vollständige öffentliche Responsible-AI-Policy oder Produktsicherheitsdokumentation. Diese Details sollten Käufer für ihr Projekt anfordern.`),
       faq("Fragen zur KI-Marketing-Agentur", [
-        ["Was macht eine KI-Marketing-Agentur?", "Sie nutzt KI in verantwortbaren Marketing-Workflows wie Research, Strategie, Produktion, Media-Aktivierung, Messung und Operations — mit definierten Inputs, Outputs und Freigaben."],
+        ["Was macht eine KI-Marketing-Agentur?", "Sie nutzt KI in verantwortbaren Marketing-Workflows wie Research, Strategie, Produktion, Media-Aktivierung, Messung und Operations: mit definierten Inputs, Outputs und Freigaben."],
         ["Ist eine KI-Marketing-Agentur dasselbe wie ein KI-Tool?", "Nein. Ein Tool liefert eine Fähigkeit. Eine Agentur oder ein Delivery-Partner verantwortet die Verbindung mit Daten, Prozessen, Expertise, Freigaben und Messung."],
         ["Wann passt ein AI Coworker besser?", "Für eine begrenzte Aufgabe mit definiertem Ergebnis ohne Sonderentwicklung. Individuelle Integration passt, wenn private Daten, Tools oder organisationsspezifische Freigaben zentral sind."],
         ["Wie wird KI-Agenturarbeit bepreist?", "Üblich sind Projektpreise, Retainer, nutzungsbasierte Software, Credits und Transformationsprogramme. Vergleichen Sie den vollständigen Leistungsumfang und das gemessene Ergebnis."],
@@ -1009,7 +1009,7 @@ BMW Motorrads [Discover the world](${SOURCE.bmwMotorrad}) kombinierte Studiofoto
       richText(`## Cases zur Produktions-Transformation
 Der [MAKELINE-Case für L'Oréal Belgien und Niederlande](${SOURCE.makeline}) umfasst vier Divisionen, 35 Marken und mehr als 200 Stakeholder. Serviceplan meldet über 50.000 Assets, mehr als 5.500 Projekte jährlich, 50 Prozent schnellere Produktion und 30 Prozent Kosteneinsparung. Eine unabhängige Methodik oder Vergleichsperiode fehlt; die Werte bleiben Anbieterangaben.
 
-THE MARCOM ENGINE zufolge versorgt die KI-gestützte [BMW und MINI Content Factory](${SOURCE.bmwContent}) 26 europäische Märkte mit MAKELINE als zentraler Plattform, veröffentlicht aber kein Kosten- oder Zeitergebnis. [MOMENTUM](${SOURCE.momentum}) ist eine neu angekündigte gemeinsame Produktionsorganisation für MediaMarktSaturn in elf geplanten Märkten — ein Rollout, kein abgeschlossener Ergebnis-Case.`),
+THE MARCOM ENGINE zufolge versorgt die KI-gestützte [BMW und MINI Content Factory](${SOURCE.bmwContent}) 26 europäische Märkte mit MAKELINE als zentraler Plattform, veröffentlicht aber kein Kosten- oder Zeitergebnis. [MOMENTUM](${SOURCE.momentum}) ist eine neu angekündigte gemeinsame Produktionsorganisation für MediaMarktSaturn in elf geplanten Märkten: ein Rollout, kein abgeschlossener Ergebnis-Case.`),
       checklist("Wie dieser Guide Evidenz bewertet", "KI-Nutzung und Business-Ergebnis werden getrennt erfasst.", [
         "Kunde, Workflow, Märkte und Zeitraum nennen, wenn die Quelle sie nennt",
         "Alle Case-Kennzahlen Serviceplan, Mediaplus oder dem genannten Anbieter zuschreiben",
@@ -1249,7 +1249,7 @@ Klassisches SEO misst Crawlability, Indexierung, Rankings und Klicks für defini
 Mediaplus [Search.AI](${SOURCE.searchAi}) nutzt GWI-Verhaltensdaten für statistisch plausible Audience Twins und simuliert Journeys über ChatGPT, Claude, Gemini und Perplexity. Öffentliche Outputs umfassen Mention Rate, Tonalität, Wettbewerbsposition und Content-Empfehlungen. Diese Messungen beschreiben eine kontrollierte Stichprobe von Modellantworten, keinen universellen Marktanteil oder dauerhaften Rang.`),
       featureGrid("Was gemessen werden sollte", [
         ["Präsenz", "Wie oft Marke, Produkt oder Entity für ein definiertes Prompt-Set, eine Zielgruppe und einen Markt erscheint."],
-        ["Zitat", "Welche Seiten und Domains zitiert, abgerufen oder verwendet werden — getrennt von unverlinkten Markennennungen."],
+        ["Zitat", "Welche Seiten und Domains zitiert, abgerufen oder verwendet werden: getrennt von unverlinkten Markennennungen."],
         ["Framing", "Wie die Antwort Passung, Kategorie, Stärken, Grenzen und Wettbewerber beschreibt; unbelegte Aussagen separat erfassen."],
         ["Konsistenz", "Varianz über Modell, Prompt-Formulierung, Account-Status, Region und Zeit. Ein Screenshot ist kein Benchmark."],
       ]),

@@ -1,8 +1,8 @@
-/* /tools/llms-txt — the llms.txt checker.
+/* /tools/llms-txt: the llms.txt checker.
  *
  * Shares its chrome with /tools/og-checker deliberately: the two tools do the
- * same job in the same shape — paste a URL, get a report beside a rendering of
- * what we found — and a reader who has used one should not have to relearn the
+ * same job in the same shape: paste a URL, get a report beside a rendering of
+ * what we found: and a reader who has used one should not have to relearn the
  * other. Layout, tabs, score pills and the report list are the same components
  * under a different prefix. What is specific to this tool is at the bottom:
  * the outline, the link table and the source view.

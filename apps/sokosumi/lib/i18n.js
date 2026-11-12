@@ -10,7 +10,7 @@
 //   * Templates call t("English string") for every piece of UI chrome. The
 //     English string IS the key: for EN it comes back unchanged, for DE it is
 //     looked up in the dictionary below and falls back to English when a
-//     translation is missing — a German page can never render a blank where
+//     translation is missing: a German page can never render a blank where
 //     a label should be.
 //   * localizeHtml() rewrites root-relative links (/pricing → /de/pricing)
 //     on German pages after render, so templates keep writing plain English
@@ -23,7 +23,7 @@
 // Glossary decisions (per the brand owner): Sokosumi, AI Coworker(s),
 // coworker names, vendor names, and model names stay English. Established
 // German marketing loanwords (Briefing, Task, Credits, Use Case, Research,
-// Social) stay as-is. Formal "Sie" throughout — this is a B2B site.
+// Social) stay as-is. Formal "Sie" throughout: this is a B2B site.
 
 const { AsyncLocalStorage } = require("async_hooks");
 
@@ -70,7 +70,7 @@ function interpolate(s, vars) {
   return s.replace(/\{(\w+)\}/g, (m, k) => (vars[k] == null ? m : String(vars[k])));
 }
 
-// t("English string", vars?) — the workhorse. English in, current locale out.
+// t("English string", vars?): the workhorse. English in, current locale out.
 function t(key, vars) {
   if (locale() !== "de") return interpolate(key, vars);
   const hit = DE[key];
@@ -369,7 +369,7 @@ const DE = {
     "Marktplatz-Agents",
   "Profile data as of":
     "Profildaten vom",
-  // /agency-run-by-ai — positioning page (2026-08-27). No keyword target in
+  // /agency-run-by-ai: positioning page (2026-08-27). No keyword target in
   // either locale: the German replacement cluster is ~310 searches/month and
   // "marketing ohne agentur" is 0, so this is brand copy, translated as such.
   "An agency that runs on AI coworkers | Sokosumi":
@@ -438,7 +438,7 @@ const DE = {
     "Der kostenlose Tarif enth\u00e4lt 250 Credits pro Seat \u2014 genug f\u00fcr ein echtes Briefing, bevor Sie irgendetwas entscheiden.",
   "AI marketing agency guide":
     "KI-Marketing-Agentur: Leitfaden",
-  // /european-ai — sovereignty page (2026-08-27). DE is the stronger market
+  // /european-ai: sovereignty page (2026-08-27). DE is the stronger market
   // here: "europäische ki" is 1,000/mo with a SERP that has a DR 47 and a DR 8
   // ranking, and "open source ki" is 1,000/mo with a DR 13 ranking. The title
   // carries "Europäische KI", "DSGVO" and "Open Source" for that reason.
@@ -1075,7 +1075,7 @@ const DE = {
     "Echte Beispiele sind auf dieser Seite – so können Sie das Ergebnis prüfen, bevor Sie den Task ausführen.",
   "The sample output appears on this page after the task's first run.":
     "Das Beispiel-Ergebnis erscheint auf dieser Seite nach der ersten Ausführung des Tasks.",
-  "A fixed brief run by {who} — add your details and collect the finished file from your task board.":
+  "A fixed brief run by {who}: add your details and collect the finished file from your task board.":
     "Ein festes Briefing, ausgeführt von {who} – ergänzen Sie Ihre Angaben und holen Sie die fertige Datei von Ihrem Task Board ab.",
   "Delivered by": "Ausgeführt von",
   "Try this task on Sokosumi": "Diesen Task auf Sokosumi ausprobieren",
@@ -1122,7 +1122,7 @@ const DE = {
   "Models and hosting, stated up front": "Modelle und Hosting, offen ausgewiesen",
   Models: "Modelle",
   Hosting: "Hosting",
-  "The {what} on file for {vendor}’s listings — visible before you spend a credit.":
+  "The {what} on file for {vendor}’s listings: visible before you spend a credit.":
     "{what} der Listings von {vendor} – sichtbar, bevor Sie einen Credit ausgeben.",
   "models and hosting regions": "Die hinterlegten Modelle und Hosting-Regionen",
   models: "Die hinterlegten Modelle",
@@ -1157,7 +1157,7 @@ const DE = {
   ", with {n} ready-to-run template tasks": ", mit {n} sofort startklaren Template-Tasks",
   "marketplace agents": "Marktplatz-Agents",
   "tasks run": "ausgeführte Tasks",
-  "{vendor} builds and operates {what} on the Sokosumi marketplace — hire them with one free account and pay only for the work they run.":
+  "{vendor} builds and operates {what} on the Sokosumi marketplace: hire them with one free account and pay only for the work they run.":
     "{vendor} entwickelt und betreibt {what} auf dem Sokosumi-Marktplatz – stellen Sie sie mit einem kostenlosen Konto ein und zahlen Sie nur für die Arbeit, die sie ausführen.",
   "{vendor} | Vendors on Sokosumi": "{vendor} | Anbieter auf Sokosumi",
   "Hire {what} built and operated by {vendor} on the Sokosumi marketplace. Free to sign up; credits only go on work you run.":
@@ -1379,7 +1379,7 @@ const DE = {
   "Send to support": "An den Support senden",
   "Goes straight to {email}. We reply within one working day.":
     "Geht direkt an {email}. Wir antworten innerhalb eines Werktags.",
-  "Thanks — that is with support.": "Danke – Ihre Anfrage ist beim Support.",
+  "Thanks: that is with support.": "Danke – Ihre Anfrage ist beim Support.",
   "We have it and will come back to you within one working day. If it is urgent, write to":
     "Wir haben sie erhalten und melden uns innerhalb eines Werktags. Wenn es dringend ist, schreiben Sie an",
   "Open the app": "App öffnen",
@@ -1411,7 +1411,7 @@ const DE = {
   "Every task shows its brief and its deliverable; most include a real sample output before you run it.":
     "Jeder Task zeigt sein Briefing und sein Ergebnis; die meisten enthalten ein echtes Beispiel, bevor Sie ihn ausführen.",
   "Not a support question?": "Keine Support-Frage?",
-  "Rolling Sokosumi out to a team, or listing your own coworkers as a vendor — that one is for sales.":
+  "Rolling Sokosumi out to a team, or listing your own coworkers as a vendor: that one is for sales.":
     "Sokosumi im Team einführen oder als Anbieter eigene Coworker listen – das ist ein Fall für den Vertrieb.",
 
   // ---- guides.js ----
@@ -1514,7 +1514,7 @@ const DE = {
   "Everything here is already live":
     "Alles hier ist bereits live",
   "Sign up free and the whole product is there.":
-    "Kostenlos anmelden — das ganze Produkt ist da.",
+    "Kostenlos anmelden: das ganze Produkt ist da.",
 
   // ---- compare.js ----
   "Compare | Sokosumi": "Vergleich | Sokosumi",
@@ -1576,7 +1576,7 @@ const DE = {
   "Start from the work. The bar points at the coworkers who do that kind of job, or you pick one yourself.":
     "Starten Sie bei der Arbeit. Die Leiste zeigt auf die Coworker, die genau das tun – oder Sie wählen selbst.",
   "Pick a specialist": "Wählen Sie eine Spezialistin",
-  "A coworker is a named person with a public profile — not a prompt, not a generic assistant.":
+  "A coworker is a named person with a public profile, not a prompt, not a generic assistant.":
     "Ein Coworker ist eine benannte Person mit öffentlichem Profil – kein Prompt, kein generischer Assistent.",
   "Mention them in the channel": "Erwähnen Sie sie im Channel",
   "Brief a coworker the way you brief a colleague. They answer in the same thread as everyone else.":
@@ -1585,7 +1585,7 @@ const DE = {
   "The board is the same list your team already knows: todo, in progress, needs you, done.":
     "Das Board ist die Liste, die Ihr Team schon kennt: Todo, in Arbeit, braucht Sie, fertig.",
   "Keep the work in one project": "Halten Sie die Arbeit in einem Projekt",
-  "A project holds the description, the tasks, and the jobs. Outputs live on the job — files you can open, share, or send.":
+  "A project holds the description, the tasks, and the jobs. Outputs live on the job: files you can open, share, or send.":
     "Ein Projekt hält die Beschreibung, die Tasks und die Jobs. Outputs liegen am Job – Dateien, die Sie öffnen, teilen oder weiterschicken können.",
   "A project is the folder the crew shares: the description, the tasks, and the jobs that come back.":
     "Ein Projekt ist der Ordner, den die Crew teilt: die Beschreibung, die Tasks und die Jobs, die zurückkommen.",
@@ -1666,7 +1666,7 @@ const DE = {
     "Account- und Projektpartnerin. Sie klärt, was passieren muss, wer es tut, und hält die Arbeit in Bewegung, wenn der Kalender nicht mithält.",
   "Research partner. Competitive sets, landing-page briefs, and the reading a strategy actually stands on.":
     "Research-Partnerin. Competitive Sets, Landingpage-Briefings und die Lektüre, auf der eine Strategie wirklich steht.",
-  "Builds the live dashboards the rest of the crew brief against — monitoring, funnels, SEO visibility.":
+  "Builds the live dashboards the rest of the crew brief against: monitoring, funnels, SEO visibility.":
     "Baut die Live-Dashboards, gegen die der Rest der Crew brieft – Monitoring, Funnels, SEO-Sichtbarkeit.",
   "Experience partner. Journeys, media mix, and the programs that keep a lead warm after the first click.":
     "Experience-Partner. Journeys, Media-Mix und die Programme, die einen Lead nach dem ersten Klick warmhalten.",
@@ -1726,7 +1726,7 @@ const DE = {
     "Briefen Sie einen von ihnen – er verantwortet den Workflow von Anfang bis Ende.",
   "The specialist agents they hire": "Die Spezialisten-Agents, die sie anheuern",
   "The specialist agents behind it": "Die Spezialisten-Agents dahinter",
-  "Coworkers dispatch these as subagents mid-task — you can also run any of them directly.":
+  "Coworkers dispatch these as subagents mid-task: you can also run any of them directly.":
     "Coworker setzen sie mitten im Task als Subagents ein – Sie können jeden auch direkt starten.",
   "Run them directly, or let a coworker like Elena dispatch them as subagents inside a bigger brief.":
     "Starten Sie sie direkt – oder lassen Sie eine Coworkerin wie Elena sie als Subagents in einem größeren Briefing einsetzen.",
@@ -1765,7 +1765,7 @@ const DE = {
     "Reichen Sie Deployment-Checkliste, Agent-Details, Risikoklassifizierung und Unternehmensangaben zur Prüfung ein.",
   "This section is in English.": "Dieser Abschnitt liegt derzeit auf Englisch vor.",
 
-  // section 1 — readiness
+  // section 1: readiness
   "Is your agent ready to be listed?": "Ist Ihr Agent bereit für die Listung?",
   "Before submitting your Agent, we want to make sure the following steps are complete:":
     "Bevor Sie Ihren Agent einreichen, sollten diese Schritte erledigt sein:",
@@ -1777,7 +1777,7 @@ const DE = {
   'See the <a href="{docs}" target="_blank" rel="noreferrer">Masumi Docs</a> or <a href="{support}">contact Sokosumi support</a>.':
     'Lesen Sie die <a href="{docs}" target="_blank" rel="noreferrer">Masumi Docs</a> oder <a href="{support}">kontaktieren Sie den Sokosumi Support</a>.',
 
-  // section 2 — the agent
+  // section 2: the agent
   "Please introduce your agent!": "Stellen Sie Ihren Agent vor",
   "Share more details about your agent to help us showcase it accurately on the Sokosumi marketplace.":
     "Geben Sie uns mehr Details zu Ihrem Agent, damit wir ihn auf dem Sokosumi-Marktplatz korrekt darstellen.",
@@ -1795,7 +1795,7 @@ const DE = {
   "User responsibilities": "Pflichten der Nutzer",
   "Any disclaimers or warnings": "Haftungsausschlüsse oder Warnhinweise",
 
-  // section 3 — the vendor
+  // section 3: the vendor
   "Who are you?": "Wer sind Sie?",
   "What is your full name?": "Wie lautet Ihr vollständiger Name?",
   "What is your email address?": "Wie lautet Ihre E-Mail-Adresse?",
@@ -1811,7 +1811,7 @@ const DE = {
   "Sent to {email}. We will reply about the listing.":
     "Wird an {email} gesendet. Wir melden uns zum Listing.",
   "Submission received": "Einreichung erhalten",
-  "Thanks — your agent is with the team.": "Danke – Ihr Agent liegt beim Team.",
+  "Thanks: your agent is with the team.": "Danke – Ihr Agent liegt beim Team.",
   "We will review the listing and come back to you. If you need to add anything, reply to the confirmation or write to":
     "Wir prüfen das Listing und melden uns bei Ihnen. Wenn Sie etwas ergänzen möchten, antworten Sie auf die Bestätigung oder schreiben Sie an",
   "See who is already listed": "Bereits gelistete Agents ansehen",
@@ -1868,7 +1868,7 @@ const DE = {
 // index.html is a hand-tuned static file; its German version is produced by
 // exact-string replacement at serve time (server.js serveIndex), so the two
 // locales can never structurally drift. Every pair below matches the file
-// verbatim — if index.html copy changes, the English side here must change
+// verbatim: if index.html copy changes, the English side here must change
 // with it or that string simply stays English (never breaks the page).
 const HOME_DE = [
   ["Try the interactive demo", "Zur interaktiven Demo"],
@@ -2012,7 +2012,7 @@ const HOME_DE = [
   ["<strong>Lena</strong><small>Brand &amp; Strategy</small>", "<strong>Lena</strong><small>Brand &amp; Strategie</small>"],
   ["<strong>Elena</strong><small>Strategy</small>", "<strong>Elena</strong><small>Strategie</small>"],
 
-  // FAQ (each string exists twice — in the HTML and in the FAQPage JSON-LD —
+  // FAQ (each string exists twice: in the HTML and in the FAQPage JSON-LD:
   // and both must say the same thing, so plain replaceAll is exactly right)
   [
     "Questions we <span class=\"serif-accent\">get</span>",
@@ -2030,7 +2030,7 @@ const HOME_DE = [
   ],
   ["Who builds the coworkers?", "Wer entwickelt die Coworker?"],
   [
-    "A named vendor builds and runs every coworker — Serviceplan Group, utxo AG, and others. Every coworker has a public profile. Some profiles list the models and hosting region.",
+    "A named vendor builds and runs every coworker: Serviceplan Group, utxo AG, and others. Every coworker has a public profile. Some profiles list the models and hosting region.",
     "Hinter jedem Coworker steht ein benannter Anbieter – Serviceplan Group, utxo AG und weitere. Jeder Coworker hat ein öffentliches Profil. Manche Profile nennen Modelle und Hosting-Region.",
   ],
   ["What do the template tasks cover?", "Was decken die Template-Tasks ab?"],

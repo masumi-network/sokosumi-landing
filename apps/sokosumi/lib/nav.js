@@ -9,7 +9,7 @@
 
 const cms = require("./cms");
 
-// Serviceplan Group leads the roster, the CTA faces, and the nav menu —
+// Serviceplan Group leads the roster, the CTA faces, and the nav menu:
 // regardless of headcount. Ranking the menu purely by coworker count put
 // utxo AG (8 curated) above them (5). /ai-coworkers already leads with this
 // same slug; keep the two in step.
@@ -100,7 +100,7 @@ async function buildNav(opts) {
     .slice(0, TOP_INDUSTRIES);
 
   // The jobs list that IS the Use cases menu: each use case with its primary
-  // industry (the first industry on the doc — same convention the breadcrumb
+  // industry (the first industry on the doc: same convention the breadcrumb
   // and card eyebrow use). No coworker faces here: a use case is a piece of
   // work run by a team, not one person's act. Most cross-industry work
   // first, so the menu leads with the jobs the widest audience recognises;
@@ -114,7 +114,7 @@ async function buildNav(opts) {
       return { title: uc.title, slug: uc.slug, industry: inds.length ? inds[0].name : "" };
     });
 
-  // Portraits for the CTA bands. Curated coworkers only — marketplace listings
+  // Portraits for the CTA bands. Curated coworkers only: marketplace listings
   // are line icons that read as clip art at avatar size. The featured vendor's
   // people lead, because the point of the faces is to look friendly and those
   // are the drawn portraits rather than the statue avatars.

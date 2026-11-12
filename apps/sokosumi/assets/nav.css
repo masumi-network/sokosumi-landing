@@ -1,5 +1,5 @@
-/* The site header, shared by every page. The markup comes from ONE place —
-   templates/shell.js header() — rendered server-side on sub-pages and
+/* The site header, shared by every page. The markup comes from ONE place:
+   templates/shell.js header(): rendered server-side on sub-pages and
    injected into index.html by server.js, and this file is the ONE place its
    styles live (index.html and every sub-page link here instead of
    carrying their own copy). Behaviour (dropdown grace period, burger,
@@ -36,7 +36,7 @@
   position: fixed; left: 0; right: 0;
   background: transparent; border-bottom-color: transparent;
   /* blur(0), not none. backdrop-filter makes the bar a containing block AND a
-     stacking context for its fixed descendants — the dropdown panels. The
+     stacking context for its fixed descendants: the dropdown panels. The
      paper bar always has one, so leaving the overlay state at `none` meant
      the same panel markup resolved against the viewport on the landing page
      and against the header everywhere else. Identical geometry today, but two
@@ -45,7 +45,7 @@
   backdrop-filter: blur(0px); -webkit-backdrop-filter: blur(0px);
   transition: background-color 0.4s var(--ease), border-color 0.4s var(--ease);
 }
-/* White chrome over the dark video — bar-level links only (the plain items
+/* White chrome over the dark video: bar-level links only (the plain items
    and the dropdown triggers). A bare `.site-nav a` would also catch every
    anchor INSIDE the dropdown panels, which are always a white card: vendor
    heads and the panel footer links went white-on-white on the homepage. */
@@ -64,7 +64,7 @@
 .site-header.is-overlay:not(.scrolled) .nav-burger { color: #fff; border-color: rgba(255, 255, 255, 0.4); }
 /* past the hero (nav.js adds .scrolled) the overlay bar IS the paper bar */
 /* Still over the hero, but the visitor has started scrolling. The bar keeps
-   its white chrome — the hero behind it is dark — but takes a blur and a
+   its white chrome: the hero behind it is dark, but takes a blur and a
    light ink wash so it separates from a background that is now a fast,
    colourful, moving screenshot. Without this the bar is fully transparent
    for a whole screen height, which is exactly where the nav is hardest to
@@ -95,7 +95,7 @@
 .nav-chev { transition: transform 0.25s var(--ease); opacity: 0.6; }
 .nav-drop:hover:not(.dismissed) .nav-chev, .nav-drop:focus-within:not(.dismissed) .nav-chev { transform: rotate(180deg); opacity: 1; }
 /* One box for every menu. The panel is a fixed-size surface the content lays
-   out INSIDE of — content count never drives geometry, so hovering across the
+   out INSIDE of: content count never drives geometry, so hovering across the
    bar never resizes the menu. Centred on the viewport (its `top` is the 64px
    bar plus 14px of air), which also means it can never overflow the window. */
 .nav-panel {
@@ -128,8 +128,8 @@
 .nav-intro-label { font-size: 11.5px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; color: var(--primary); padding: 0 8px; }
 .nav-intro-desc { font-size: 13.5px; line-height: 1.55; color: var(--muted-foreground); padding: 0 8px; text-wrap: pretty; }
 /* The rail's picture, pinned to the bottom so every panel's rail fills the
-   same space. The base is a finished surface on its own — a soft primary
-   tint with a dot grid — which is both the deliberate placeholder (Use
+   same space. The base is a finished surface on its own: a soft primary
+   tint with a dot grid: which is both the deliberate placeholder (Use
    cases, until real artwork exists) and what remains if an image inside a
    variant is missing or fails to load. Fixed height on purpose: the visual
    must never drive the 880x356 panel geometry. */
@@ -149,7 +149,7 @@
 }
 .nav-visual-face + .nav-visual-face { margin-left: -12px; }
 .nav-visual-face img { width: 100%; height: 100%; object-fit: cover; display: block; }
-/* Product: a zoomed detail of the task-board render, not the whole shot —
+/* Product: a zoomed detail of the task-board render, not the whole shot:
    at rail size the full frame reads as white mush */
 .nav-visual-shot img {
   position: absolute; inset: 0; width: 100%; height: 100%;
@@ -159,7 +159,7 @@
 /* Use cases: the rail carries the section's own abstract field (inline SVG
    from templates/art.js) over the dot-grid base */
 .nav-visual-abstract svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
-/* The Use cases panel: one grid of jobs, two columns of three — each job's
+/* The Use cases panel: one grid of jobs, two columns of three: each job's
    seeded abstract swatch, its title, and its primary industry underneath */
 .nav-jobs-col { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
 .nav-jobs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px 16px; align-content: start; }
@@ -175,7 +175,7 @@
 .nav-swatch svg { width: 100%; height: 100%; display: block; }
 .nav-swatch.is-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .nav-visual-ucphoto img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; transform: none; }
-/* a full-width strip above the foot — the most-used work as a wrapping row of
+/* a full-width strip above the foot: the most-used work as a wrapping row of
    links, so it never dictates the panel's height the way a column would */
 .nav-strip { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 6px; margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--border); }
 .nav-strip-label { font-size: 11.5px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted-foreground); padding: 0 8px; margin-right: 6px; }
@@ -205,11 +205,11 @@
   transition: background-color 0.2s var(--ease);
 }
 .nav-col-link:hover { background: var(--muted); }
-/* a portrait next to each coworker in the menu — a name alone gives no sense
+/* a portrait next to each coworker in the menu: a name alone gives no sense
    of who is on the other side of the link */
 .nav-col-link.has-face { flex-direction: row; align-items: center; gap: 10px; }
-/* Product menu: each surface leads with a miniature of the thing itself —
-   coworker portraits, the dark briefing bar, a micro board, a tiny document —
+/* Product menu: each surface leads with a miniature of the thing itself:
+   coworker portraits, the dark briefing bar, a micro board, a tiny document:
    stacked above the text like a small illustrated card */
 .nav-col-link.has-ico { flex-direction: column; align-items: flex-start; justify-content: flex-start; gap: 16px; }
 .nav-mini { width: 64px; height: 44px; flex-shrink: 0; display: inline-flex; align-items: flex-end; justify-content: flex-start; }
@@ -280,7 +280,7 @@
 .nav-col-link span { font-size: 14px; font-weight: 400; color: var(--foreground); }
 .nav-col-link small { font-size: 12px; color: var(--muted-foreground); }
 /* The Product items: the page name sits quiet on top, the one-line
-   explanation under it carries the weight — the item reads as what the page
+   explanation under it carries the weight: the item reads as what the page
    IS, not as a bare link */
 .nav-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: 1fr; gap: 6px 12px; align-content: stretch; }
 .nav-grid .nav-col-link { padding: 10px 12px; gap: 3px; }
@@ -377,7 +377,7 @@
 /* The scroll lock while the drawer is open. `overflow: hidden` on body alone
    does NOT lock anything here: body's overflow only propagates to the viewport
    when <html>'s overflow is `visible`, and styles.css puts overflow-x: clip on
-   html — so the page happily scrolled behind the open drawer and the visitor
+   html: so the page happily scrolled behind the open drawer and the visitor
    closed it somewhere else entirely. Lock the real scroller (html), and pin
    body with position: fixed, which is the one approach iOS Safari actually
    honours for touch (overflow: hidden famously is not). nav.js records the
@@ -385,7 +385,7 @@
    and restores the scroll position on close. */
 html.nav-locked { overflow: hidden; }
 body.nav-locked { position: fixed; left: 0; right: 0; width: 100%; overflow: hidden; }
-/* Inside a position: fixed body a position: sticky header stops sticking — its
+/* Inside a position: fixed body a position: sticky header stops sticking: its
    static position is the top of the pinned body, which sits at -scrollY, so
    the bar (and the close button in it) slid off screen the moment the drawer
    opened anywhere but the top of a sub-page. While the lock is on, the bar is
@@ -394,8 +394,8 @@ body.nav-locked { position: fixed; left: 0; right: 0; width: 100%; overflow: hid
 body.nav-locked .site-header { position: fixed; top: 0; left: 0; right: 0; }
 
 /* ===== the footer ===== */
-/* Same deal as the header above: markup comes from ONE place —
-   templates/shell.js footerHtml() — rendered server-side on sub-pages and
+/* Same deal as the header above: markup comes from ONE place:
+   templates/shell.js footerHtml(): rendered server-side on sub-pages and
    injected into index.html by server.js, and this file is the ONE place its
    styles live.
    The hairline sits on the footer itself so it spans the window rather than

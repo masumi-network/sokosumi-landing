@@ -1,4 +1,4 @@
-/* /tools/x-algorithm-analyzer — client. Thin wiring over
+/* /tools/x-algorithm-analyzer: client. Thin wiring over
  * SokosumiToolKit.wireScorer(); the server does the scoring. Two input modes:
  * "write" (draft text + media flag) and "link" (a published post URL the
  * server fetches and scores).
@@ -48,7 +48,7 @@
     submitLabel: "Score my post",
     busyLabel: mode === "link" ? "Fetching…" : "Scoring…",
     reportTitle: function (data) {
-      return "X algorithm analyzer — " + data.overall + "/100";
+      return "X algorithm analyzer: " + data.overall + "/100";
     },
     getValue: function () {
       return mode === "link" ? urlInput.value : textInput.value;
@@ -63,7 +63,7 @@
     },
     examples: {
       weak: "Check out our new product at https://example.com/product #marketing #sales #growth #startup #b2b #saas #tech",
-      strong: "Most teams still copy-paste campaign briefs into five different tools by hand. What's the most tedious part of your setup process — curious what everyone else is stuck doing manually.",
+      strong: "Most teams still copy-paste campaign briefs into five different tools by hand. What's the most tedious part of your setup process: curious what everyone else is stuck doing manually.",
     },
   });
 })();

@@ -4,7 +4,7 @@
 // /tools/competitor-positioning. Fetches two public URLs (through
 // lib/safeFetch.js) and diffs what each page actually says: title, meta
 // description, H1, content depth, CTA presence, pricing/proof mentions, and
-// the vocabulary each emphasizes that the other doesn't. No LLM — every
+// the vocabulary each emphasizes that the other doesn't. No LLM: every
 // signal here is a word count, a regex, or a set difference.
 
 const { fetchPage, collectTitle, collectMeta, collectHeadings, collectLinks, collectImages, collectJsonLd, visibleText, wordCount, normalizeUrl } = require("./htmlExtract");
@@ -73,16 +73,16 @@ function gapsFor(mine, theirs, myLabel, theirLabel) {
   const add = (level, title, detail) => items.push({ level, title, detail });
 
   if (!mine.h1Count && theirs.h1Count) add("warn", "No H1", `${theirLabel} has a clear H1; ${myLabel} doesn't.`);
-  if (!mine.description && theirs.description) add("warn", "No meta description", `${theirLabel} has one set; ${myLabel} doesn't — it controls the search-result snippet.`);
+  if (!mine.description && theirs.description) add("warn", "No meta description", `${theirLabel} has one set; ${myLabel} doesn't: it controls the search-result snippet.`);
   if (mine.words < theirs.words * 0.6 && theirs.words > 200) add("warn", "Thinner content", `${myLabel} has ${mine.words} words on the page vs ${theirs.words} for ${theirLabel}.`);
   if (!mine.ctaCount && theirs.ctaCount) add("error", "No CTA detected", `${theirLabel} has a clear call to action; ${myLabel} doesn't.`);
   if (!mine.hasPricing && theirs.hasPricing) add("warn", "No pricing shown", `${theirLabel} shows pricing or plan language; ${myLabel} doesn't.`);
   if (!mine.hasProof && theirs.hasProof) add("warn", "No social proof", `${theirLabel} has testimonials or customer counts; ${myLabel} doesn't.`);
-  if (!mine.hasSchema && theirs.hasSchema) add("warn", "No structured data", `${theirLabel} ships JSON-LD schema${theirs.schemaTypes.length ? ` (${theirs.schemaTypes.join(", ")})` : ""}; ${myLabel} doesn't — it powers rich results.`);
+  if (!mine.hasSchema && theirs.hasSchema) add("warn", "No structured data", `${theirLabel} ships JSON-LD schema${theirs.schemaTypes.length ? ` (${theirs.schemaTypes.join(", ")})` : ""}; ${myLabel} doesn't: it powers rich results.`);
   if (!mine.hasOgImage && theirs.hasOgImage) add("warn", "No Open Graph image", `${theirLabel} sets an og:image for link previews; ${myLabel} doesn't, so its shared links look bare.`);
-  if (mine.h2Count < theirs.h2Count * 0.5 && theirs.h2Count > 2) add("warn", "Thin heading structure", `${myLabel} has ${mine.h2Count} H2 section(s) vs ${theirs.h2Count} for ${theirLabel} — less scannable structure.`);
+  if (mine.h2Count < theirs.h2Count * 0.5 && theirs.h2Count > 2) add("warn", "Thin heading structure", `${myLabel} has ${mine.h2Count} H2 section(s) vs ${theirs.h2Count} for ${theirLabel}: less scannable structure.`);
   if (mine.images && theirs.images && mine.imagesWithAlt / mine.images < 0.5 && theirs.imagesWithAlt / theirs.images >= 0.6) add("warn", "Images missing alt text", `${myLabel} has alt text on ${mine.imagesWithAlt} of ${mine.images} images; ${theirLabel} covers most of theirs.`);
-  if (!mine.hasCanonical && theirs.hasCanonical) add("warn", "No canonical URL", `${theirLabel} sets a canonical link; ${myLabel} doesn't — a duplicate-content risk.`);
+  if (!mine.hasCanonical && theirs.hasCanonical) add("warn", "No canonical URL", `${theirLabel} sets a canonical link; ${myLabel} doesn't: a duplicate-content risk.`);
 
   const theirWords = new Set(theirs.keywords.map((k) => k.label));
   const myWords = new Set(mine.keywords.map((k) => k.label));

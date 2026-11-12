@@ -1,11 +1,11 @@
-// /european-ai — the trust page.
+// /european-ai: the trust page.
 //
 // Design note. The first two versions were six near-identical white card grids
 // stacked on grey: badges, run, models, tiers, repos, legal. Every section the
 // same shape and the same weight, so the page had no rhythm and nothing to look
-// at. This version gives each section its own structure — a spec strip, three
+// at. This version gives each section its own structure: a spec strip, three
 // typeset columns, a name row, a numbered progression, mono repo rows, a link
-// list — and alternates paper against the site's own ink bands (.full-bleed +
+// list: and alternates paper against the site's own ink bands (.full-bleed +
 // .band-dark + --stage-deep, the surfaces the landing page and the CTA already
 // use) so the page has a rhythm instead of scrolling flat.
 //
@@ -14,15 +14,15 @@
 //   DE  open source ki      1,000  KD 7   TP 250   SERP DR floor 13
 //   DE  dsgvo konforme ki     200  KD 0   $3.00    SERP unformed
 //   EN  gdpr compliant ai     800  KD 0            SERP unformed
-// Rejected: digitale souveränität (DE 3,000) — DR floor 63, bmds.bund.de at DR 94;
-// data sovereignty (US 2,500) — DR floor 88, IBM and AWS; eu ai act — KD 90-96.
+// Rejected: digitale souveränität (DE 3,000): DR floor 63, bmds.bund.de at DR 94;
+// data sovereignty (US 2,500): DR floor 88, IBM and AWS; eu ai act: KD 90-96.
 //
 // EVIDENCE DISCIPLINE. Checked against the CMS on 2026-08-28:
-//   profileLlm     9 of 52 active coworkers filled — Claude, Mistral, Grok, OpenAI Codex
-//   profileHosting 3 of 52 filled — all "EU · Azure · Frankfurt"
+//   profileLlm     9 of 52 active coworkers filled: Claude, Mistral, Grok, OpenAI Codex
+//   profileHosting 3 of 52 filled: all "EU · Azure · Frankfurt"
 // So this page says models and hosting are stated "where the vendor has filled
 // them in", never "every coworker states its model". MODELS lists only names
-// that actually appear in profileLlm — the row is a claim about the catalogue,
+// that actually appear in profileLlm: the row is a claim about the catalogue,
 // so do not add one to make it look fuller.
 //
 // No ISO 27001, no SOC 2, no "GDPR certified" badge: none exist to show, and a
@@ -53,7 +53,7 @@ const hasLogo = (slug) => {
 // Masumi side is the payment service; kodosumi (the runtime) is dropped here
 // and still reachable from GitHub.
 const REPOS = [
-  { repo: "sokosumi", licence: "MIT", stars: 12, what: "The marketplace itself — the web app, the roster, the task board." },
+  { repo: "sokosumi", licence: "MIT", stars: 12, what: "The marketplace itself: the web app, the roster, the task board." },
   { repo: "masumi-payment-service", licence: "MIT", stars: 14, what: "The Masumi payment layer that settles every agent run." },
 ];
 
@@ -61,7 +61,7 @@ const REPOS = [
 // headers (x-vercel-id: fra1 = Frankfurt); the Neon region is Sokosumi's own
 // configuration.
 const INFRA = [
-  { slug: "vercel", name: "Vercel", role: "Application hosting", where: "EU region — Frankfurt (fra1)" },
+  { slug: "vercel", name: "Vercel", role: "Application hosting", where: "EU region: Frankfurt (fra1)" },
   { slug: "neon", name: "Neon", role: "Database", where: "EU region" },
   { slug: "azure", name: "Microsoft Azure", role: "Serviceplan's own coworkers", where: "EU · Azure · Frankfurt" },
 ];

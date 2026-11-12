@@ -12,11 +12,11 @@ const FAQ = [
   },
   {
     question: "Does it check design or layout?",
-    answer: "No — it only reads the page's text, not how it looks: where the CTA button sits, how it's styled, or what's above the fold. Pair it with the Landing Page Conversion Teardown for a layout-aware pass.",
+    answer: "No: it only reads the page's text, not how it looks: where the CTA button sits, how it's styled, or what's above the fold. Pair it with the Landing Page Conversion Teardown for a layout-aware pass.",
   },
   {
-    question: "It couldn't read my page — why?",
-    answer: "It reads the HTML the server returns, so copy that only appears after JavaScript runs in the browser won't be counted. If a page comes back empty, its copy is likely client-rendered — the Landing Page Conversion Teardown has the same limitation, noted there too.",
+    question: "It couldn't read my page: why?",
+    answer: "It reads the HTML the server returns, so copy that only appears after JavaScript runs in the browser won't be counted. If a page comes back empty, its copy is likely client-rendered: the Landing Page Conversion Teardown has the same limitation, noted there too.",
   },
   {
     question: "Why does it flag \"we/our\" language?",
@@ -25,7 +25,7 @@ const FAQ = [
   },
   {
     question: "Is the page stored anywhere?",
-    answer: "No. The page is fetched and scored in memory for that one request only — nothing is written to disk or a log.",
+    answer: "No. The page is fetched and scored in memory for that one request only: nothing is written to disk or a log.",
   },
 ];
 
@@ -68,7 +68,7 @@ function render() {
 
   return (
     pageStart({
-      title: "Landing Page Copy Analyzer — score your page copy | Sokosumi",
+      title: "Landing Page Copy Analyzer: score your page copy | Sokosumi",
       description:
         "Free landing page copy analyzer. Enter a URL and get scores on the page's clarity, benefit focus, specificity, and CTA strength, plus a ranked list of fixes. No sign-up.",
       path: PATH,
@@ -86,7 +86,7 @@ function render() {
     `<section class="tk-head" id="analyzer">
       <p class="tk-overline">Free · no sign-up</p>
       <h1>Landing Page Copy Analyzer</h1>
-      <p class="tk-lede">Enter a landing page URL and get a score on its copy's clarity, its benefit focus, its specificity, and its CTA — with the exact lines that are costing you conversions.</p>
+      <p class="tk-lede">Enter a landing page URL and get a score on its copy's clarity, its benefit focus, its specificity, and its CTA: with the exact lines that are costing you conversions.</p>
 
       <form class="tk-form" id="lcaForm" novalidate>
         <label class="sr-only" for="lcaUrl">Landing page URL</label>
@@ -120,9 +120,9 @@ function render() {
 
     <section class="tk-section" aria-labelledby="lca-how">
       <h2 id="lca-how">What gets scored</h2>
-      <p class="tk-sub">Four dimensions, each built from concrete, checkable signals — not a guess at how a reader will feel.</p>
+      <p class="tk-sub">Four dimensions, each built from concrete, checkable signals, not a guess at how a reader will feel.</p>
       <div class="tk-cards">
-        <div class="tk-card"><h3>Clarity</h3><p>Sentence length, corporate jargon, and passive voice — the things that make copy exhausting to read.</p></div>
+        <div class="tk-card"><h3>Clarity</h3><p>Sentence length, corporate jargon, and passive voice: the things that make copy exhausting to read.</p></div>
         <div class="tk-card"><h3>Benefit focus</h3><p>Whether the copy talks to the reader ("you'll save") or about the company ("we built").</p></div>
         <div class="tk-card"><h3>Specificity</h3><p>Concrete numbers and timeframes vs vague qualifiers like "various" or "best-in-class".</p></div>
         <div class="tk-card"><h3>CTA strength</h3><p>Whether there's a clear, specific next step rather than a generic "learn more".</p></div>

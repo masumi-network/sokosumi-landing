@@ -3,14 +3,14 @@
 // The coworker profiles are built from the nightly catalog sync: name, role,
 // description, portrait, credits and runs all arrive from the product, and the
 // page around them is one template shared by 50+ pages. That is the right
-// default — a new agent appears overnight with a working page and nobody has to
-// write anything — but it means every page is named after the SKU rather than
+// default: a new agent appears overnight with a working page and nobody has to
+// write anything, but it means every page is named after the SKU rather than
 // after anything a person searches for, and every heading on it is scaffolding.
 //
 // `/ai-coworkers/youtube-channel-analysis` is the case in point: 240 GSC
 // impressions in a week from position 64.6, on a query (`youtube channel
 // analyzer`, KD 3, no SERP features) that nothing was structurally blocking.
-// Its <title> was "YouTube Channel Analysis | AI coworker on Sokosumi" — the
+// Its <title> was "YouTube Channel Analysis | AI coworker on Sokosumi": the
 // product name, which nobody types.
 //
 // This file is the layer that fixes that WITHOUT taking the automation away.
@@ -24,8 +24,8 @@
 //   3. Named slots. An entry may only fill slots the template knows about. It
 //      cannot restructure a page, so one bad entry cannot break the others.
 //
-// Same idea as templates/serviceplanFigures.js — template-owned data keyed by
-// slug — and it replaces the hardcoded `slug === "instagram-page-analysis"`
+// Same idea as templates/serviceplanFigures.js: template-owned data keyed by
+// slug: and it replaces the hardcoded `slug === "instagram-page-analysis"`
 // ternary that used to sit inline in the title of templates/coworkers.js.
 //
 // Only add an entry where keyword research says a real query exists. There are
@@ -51,8 +51,8 @@ const BOOST = {
       de: "Was der YouTube-Kanal-Analyzer misst",
     },
     intro: {
-      en: "Point it at any public YouTube channel and it pulls the 30 most recent uploads by default, reads the performance signals off them, and writes the result to a file. Ask for more and it takes more. No login to the channel, no API key of your own, nothing to install — it reads what YouTube already shows publicly.",
-      de: "Auf einen beliebigen öffentlichen YouTube-Kanal richten: Er liest standardmäßig die 30 neuesten Uploads, wertet ihre Performance-Signale aus und schreibt das Ergebnis in eine Datei. Auf Wunsch auch mehr. Kein Kanal-Login, kein eigener API-Key, nichts zu installieren — er liest nur, was YouTube ohnehin öffentlich zeigt.",
+      en: "Point it at any public YouTube channel and it pulls the 30 most recent uploads by default, reads the performance signals off them, and writes the result to a file. Ask for more and it takes more. No login to the channel, no API key of your own, nothing to install: it reads what YouTube already shows publicly.",
+      de: "Auf einen beliebigen öffentlichen YouTube-Kanal richten: Er liest standardmäßig die 30 neuesten Uploads, wertet ihre Performance-Signale aus und schreibt das Ergebnis in eine Datei. Auf Wunsch auch mehr. Kein Kanal-Login, kein eigener API-Key, nichts zu installieren: er liest nur, was YouTube ohnehin öffentlich zeigt.",
     },
     // A real table of what comes back. This is the substance the templated
     // page was missing; it is also the part most likely to be quoted by an
@@ -73,15 +73,15 @@ const BOOST = {
       {
         question: { en: "What does a YouTube channel analyzer do?", de: "Was macht ein YouTube-Kanal-Analyzer?" },
         answer: {
-          en: "It reads the public data on a channel — recent uploads, views, likes, comments, titles and upload dates — and turns it into a summary you can act on: what is working, how often they post, and which videos beat the channel's own average. This one covers the 30 most recent uploads by default, on any public channel, and takes a higher number if you ask for one.",
-          de: "Er liest die öffentlichen Daten eines Kanals — aktuelle Uploads, Views, Likes, Kommentare, Titel und Veröffentlichungsdaten — und macht daraus eine Zusammenfassung, mit der sich arbeiten lässt: was funktioniert, wie oft veröffentlicht wird und welche Videos über dem Schnitt des Kanals liegen. Dieser hier deckt standardmäßig die 30 neuesten Uploads jedes öffentlichen Kanals ab — auf Wunsch auch mehr.",
+          en: "It reads the public data on a channel: recent uploads, views, likes, comments, titles and upload dates: and turns it into a summary you can act on: what is working, how often they post, and which videos beat the channel's own average. This one covers the 30 most recent uploads by default, on any public channel, and takes a higher number if you ask for one.",
+          de: "Er liest die öffentlichen Daten eines Kanals: aktuelle Uploads, Views, Likes, Kommentare, Titel und Veröffentlichungsdaten: und macht daraus eine Zusammenfassung, mit der sich arbeiten lässt: was funktioniert, wie oft veröffentlicht wird und welche Videos über dem Schnitt des Kanals liegen. Dieser hier deckt standardmäßig die 30 neuesten Uploads jedes öffentlichen Kanals ab: auf Wunsch auch mehr.",
         },
       },
       {
         question: { en: "Do I need access to the channel to analyse it?", de: "Brauche ich Zugang zum Kanal?" },
         answer: {
           en: "No. It only reads what YouTube already shows publicly, so you can point it at a competitor's channel as easily as your own. There is nothing to connect and no API key to supply.",
-          de: "Nein. Er liest nur, was YouTube ohnehin öffentlich zeigt — der Kanal eines Wettbewerbers geht also genauso wie der eigene. Es gibt nichts zu verbinden und keinen API-Key anzugeben.",
+          de: "Nein. Er liest nur, was YouTube ohnehin öffentlich zeigt: der Kanal eines Wettbewerbers geht also genauso wie der eigene. Es gibt nichts zu verbinden und keinen API-Key anzugeben.",
         },
       },
       {
@@ -99,7 +99,7 @@ const BOOST = {
         },
       },
       {
-        question: { en: "What do I get back — a dashboard or a file?", de: "Was bekomme ich zurück — ein Dashboard oder eine Datei?" },
+        question: { en: "What do I get back: a dashboard or a file?", de: "Was bekomme ich zurück: ein Dashboard oder eine Datei?" },
         answer: {
           en: "A file. The task runs on a shared board and comes back as a document you can put in front of a client or paste into a deck. There is no dashboard to log into and no seat to keep paying for.",
           de: "Eine Datei. Die Aufgabe läuft auf einem gemeinsamen Board und kommt als Dokument zurück, das direkt zum Kunden oder in eine Präsentation kann. Kein Dashboard zum Einloggen und kein Seat, der weiterläuft.",
@@ -108,7 +108,7 @@ const BOOST = {
       {
         question: { en: "What does it cost to run?", de: "Was kostet ein Lauf?" },
         answer: {
-          en: "It is priced per run in credits, shown on this page before you start, and the free plan includes credits — so the first runs cost nothing. You only spend on work you actually run.",
+          en: "It is priced per run in credits, shown on this page before you start, and the free plan includes credits: so the first runs cost nothing. You only spend on work you actually run.",
           de: "Der Preis gilt pro Lauf in Credits und steht auf dieser Seite, bevor Sie starten. Der kostenlose Plan enthält Credits, die ersten Läufe kosten also nichts. Bezahlt wird nur, was tatsächlich läuft.",
         },
       },
@@ -132,7 +132,7 @@ const BOOST = {
 // Any string in an entry may instead be an { en, de } object. Germany is the
 // site's largest market by impressions and /de carries a quarter of them, so an
 // overlay that only spoke English would have put English headings on the German
-// page — which is exactly what the first version of this did.
+// page: which is exactly what the first version of this did.
 //
 // A missing locale falls back to English rather than to the generated default,
 // because a hand-written English heading still beats a templated one.

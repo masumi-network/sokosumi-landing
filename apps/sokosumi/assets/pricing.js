@@ -1,5 +1,5 @@
 // Team-size calculator on /pricing. The server has already rendered every
-// figure for the seat count in the URL (?seats=, default 1) — this only
+// figure for the seat count in the URL (?seats=, default 1): this only
 // recomputes the same seats × price and seats × credits in place as the
 // number changes, so the page is complete without it. Bases come from the
 // data-price / data-credits attributes the template wrote off PLANS; nothing

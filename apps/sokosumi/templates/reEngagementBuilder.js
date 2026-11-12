@@ -7,15 +7,15 @@ const PATH = "/tools/re-engagement-builder";
 const FAQ = [
   {
     question: "What does it generate?",
-    answer: "A 3-email re-engagement sequence structure — a friendly reminder, an incentive email, and a last-chance email — each with a suggested subject line and angle, built around the product or topic name it finds in your pasted email.",
+    answer: "A 3-email re-engagement sequence structure: a friendly reminder, an incentive email, and a last-chance email: each with a suggested subject line and angle, built around the product or topic name it finds in your pasted email.",
   },
   {
     question: "Will it write the full emails for me?",
-    answer: "No — it gives you a subject line and a one-line angle for each of the 3 emails. You still write the actual body copy.",
+    answer: "No: it gives you a subject line and a one-line angle for each of the 3 emails. You still write the actual body copy.",
   },
   {
     question: "Does anything leave my browser?",
-    answer: "No — the whole thing runs in JavaScript in your browser.",
+    answer: "No: the whole thing runs in JavaScript in your browser.",
   },
 ];
 
@@ -63,7 +63,7 @@ function render() {
     `<section class="tk-head" id="analyzer">
       <p class="tk-overline">Free · no sign-up · nothing leaves your browser</p>
       <h1>Re-engagement Campaign Builder</h1>
-      <p class="tk-lede">Paste an old email — a newsletter, a product update, an announcement — and get a 3-part re-engagement sequence with a suggested subject line and angle for each email.</p>
+      <p class="tk-lede">Paste an old email: a newsletter, a product update, an announcement: and get a 3-part re-engagement sequence with a suggested subject line and angle for each email.</p>
 
       <form class="tk-form is-stacked" id="rebForm" novalidate>
         <label class="sr-only" for="rebText">Old email</label>

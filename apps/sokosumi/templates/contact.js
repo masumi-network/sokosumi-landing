@@ -1,4 +1,4 @@
-// /contact — static page, no CMS fetch. Sales for teams and vendors,
+// /contact: static page, no CMS fetch. Sales for teams and vendors,
 // support for existing users, plus quiet pointers into the site.
 
 const shell = require("./shell");

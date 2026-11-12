@@ -2,7 +2,7 @@
 //
 // Serves: the static landing page (index.html + /assets), /api/catalog (live
 // product catalog, cached to disk), and the server-rendered sub-pages, which
-// are CMS-backed (see lib/cms.js — same Payload instance as masumi.network).
+// are CMS-backed (see lib/cms.js: same Payload instance as masumi.network).
 //
 //   node server.js          → run the site + background catalog refresh
 //   node server.js --once   → fetch + write data/catalog.json once, then exit
@@ -92,26 +92,26 @@ const seoLeadRequests = new Map();
 // Same onboarding sink the DESIGN.md generator forwards leads to; overridable.
 const ONBOARDING_URL = process.env.ONBOARDING_WEBHOOK_URL || "https://elena.serviceplan-agents.com/onboarding/submit";
 // The OG checker is cheap (one page fetch plus a ranged image read) so its
-// ceiling is far higher than the generator's — high enough that nobody
+// ceiling is far higher than the generator's: high enough that nobody
 // checking their own site in a normal session will ever meet it.
 const OG_CHECK_RATE_LIMIT = Number(process.env.OG_CHECK_RATE_LIMIT) || 60;
 const ogCheckRequests = new Map();
 // The llms.txt check fans out to a dozen link probes per run, so its ceiling
-// is lower than the OG checker's — still far above anything a person doing
+// is lower than the OG checker's: still far above anything a person doing
 // their own site will reach.
 const LLMS_CHECK_RATE_LIMIT = Number(process.env.LLMS_CHECK_RATE_LIMIT) || 30;
 const llmsCheckRequests = new Map();
-// Pure in-process text scoring, no fetch — cheaper than any other tool here,
+// Pure in-process text scoring, no fetch: cheaper than any other tool here,
 // so the ceiling is generous.
 const POST_CHECK_RATE_LIMIT = Number(process.env.POST_CHECK_RATE_LIMIT) || 40;
 const postCheckRequests = new Map();
-// This is the most expensive tool on the site — up to 20 page fetches plus a
-// handful of image probes per run, all inside one request — so its ceiling
+// This is the most expensive tool on the site: up to 20 page fetches plus a
+// handful of image probes per run, all inside one request: so its ceiling
 // is the lowest of any of them.
-// Pure in-process text scoring, no fetch — same cost profile as the other
+// Pure in-process text scoring, no fetch: same cost profile as the other
 // text checkers, so the same generous ceiling.
-// Cheap, in-process image encoding, no fetch — generous ceiling.
-// Pure in-process text scoring, no fetch — same ceiling as the headline checker.
+// Cheap, in-process image encoding, no fetch: generous ceiling.
+// Pure in-process text scoring, no fetch: same ceiling as the headline checker.
 const LANDING_COPY_CHECK_RATE_LIMIT = Number(process.env.LANDING_COPY_CHECK_RATE_LIMIT) || 40;
 const landingCopyCheckRequests = new Map();
 const X_ALGORITHM_CHECK_RATE_LIMIT = Number(process.env.X_ALGORITHM_CHECK_RATE_LIMIT) || 40;
@@ -119,14 +119,14 @@ const xAlgorithmCheckRequests = new Map();
 // One page fetch, same cost profile as the OG checker / llms.txt checker.
 const LANDING_TEARDOWN_CHECK_RATE_LIMIT = Number(process.env.LANDING_TEARDOWN_CHECK_RATE_LIMIT) || 30;
 const landingTeardownCheckRequests = new Map();
-// Two page fetches per request — half the OG checker's ceiling.
+// Two page fetches per request: half the OG checker's ceiling.
 const COMPETITOR_POSITIONING_CHECK_RATE_LIMIT = Number(process.env.COMPETITOR_POSITIONING_CHECK_RATE_LIMIT) || 15;
 const competitorPositioningCheckRequests = new Map();
 // Up to 5 page fetches per request.
-// Crawls up to 12 pages per request — a much lower ceiling than a single fetch.
+// Crawls up to 12 pages per request: a much lower ceiling than a single fetch.
 const INTERNAL_LINKING_CHECK_RATE_LIMIT = Number(process.env.INTERNAL_LINKING_CHECK_RATE_LIMIT) || 8;
 const internalLinkingCheckRequests = new Map();
-// Crawls seed pages plus up to 40 link checks per request — a low ceiling.
+// Crawls seed pages plus up to 40 link checks per request: a low ceiling.
 const ORPHAN_PAGES_CHECK_RATE_LIMIT = Number(process.env.ORPHAN_PAGES_CHECK_RATE_LIMIT) || 8;
 const orphanPageCheckRequests = new Map();
 // Up to 20 page fetches per request.
@@ -196,7 +196,7 @@ function readJsonBody(req, maxBytes = 8192) {
 }
 
 // Same shape as readJsonBody, but for a raw binary body (the image
-// compressor's upload) — no JSON.parse, just the capped Buffer.
+// compressor's upload), no JSON.parse, just the capped Buffer.
 function readRawBody(req, maxBytes) {
   return new Promise((resolve, reject) => {
     const chunks = [];
@@ -231,7 +231,7 @@ function hourlyRateLimited(store, limit, ip) {
 const LEAD_EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 // Fire the Website Analyzer lead at the onboarding webhook. Never throws and
-// never blocks the user-facing response — a delivery failure is logged, not
+// never blocks the user-facing response: a delivery failure is logged, not
 // surfaced, because the analysis should still run.
 async function forwardSeoLead(email, websiteUrl) {
   try {
@@ -321,7 +321,7 @@ try {
 } catch {
   try {
     catalog = JSON.parse(fs.readFileSync(seedFile, "utf8"));
-    console.log(`[catalog] no disk cache — loaded committed seed from ${catalog.fetchedAt}`);
+    console.log(`[catalog] no disk cache: loaded committed seed from ${catalog.fetchedAt}`);
   } catch {
     /* no cache, no seed */
   }
@@ -347,7 +347,7 @@ function ensureCatalogEditorial() {
 }
 
 // Lets the legacy redirect map check a target exists before sending anyone
-// there — a 301 into a 404 is worse than a 301 to the hub. The coworker pages
+// there: a 301 into a 404 is worse than a 301 to the hub. The coworker pages
 // are CMS-backed (catalog.coworkers is only the dozen curated personas), and
 // lib/cms serves this from memory, so it costs nothing on the 404 path.
 async function coworkerSlugs() {
@@ -512,10 +512,10 @@ async function attachBlurbs(coworkers) {
 }
 
 // ── platform stats (two numbers, one API request each) ───────────────────
-//   tasks — every task ever briefed on the platform, from
+//   tasks: every task ever briefed on the platform, from
 //     /v1/admin/tasks meta.pagination.total. Needs an admin-scoped key; if
 //     the key lacks that scope the number is simply omitted (never faked).
-//   jobs  — the sum of every marketplace agent's public execution count.
+//   jobs: the sum of every marketplace agent's public execution count.
 //     Verified global rather than org-scoped: one agent reports 249
 //     executions while this org's whole /v1/jobs feed holds 3 of them.
 //     Coworker-dispatched jobs are not exposed globally, so this figure can
@@ -599,7 +599,7 @@ withFallbackOffers(catalog);
 // the other (a bad key once pinned the whole catalog to a stale snapshot).
 async function refresh() {
   if (!CORE_KEY) {
-    console.log("[catalog] SOKOSUMI_CORE_KEY not set — serving cached data only");
+    console.log("[catalog] SOKOSUMI_CORE_KEY not set: serving cached data only");
     return false;
   }
   let cwRaw = null;
@@ -640,7 +640,7 @@ async function refresh() {
   fs.mkdirSync(dataDir, { recursive: true });
   fs.writeFileSync(cacheFile, JSON.stringify(catalog));
   console.log(
-    `[catalog] refreshed${cwRaw ? "" : " (coworkers STALE — check SOKOSUMI_CORE_KEY)"}: ` +
+    `[catalog] refreshed${cwRaw ? "" : " (coworkers STALE: check SOKOSUMI_CORE_KEY)"}: ` +
       `${catalog.coworkers.length} coworkers @ ${catalog.coworkersFetchedAt}, ` +
       `${catalog.agents.length} agents @ ${catalog.agentsFetchedAt}, ` +
       `${catalog.stats.tasks ?? "?"} tasks / ${catalog.stats.jobs ?? "?"} jobs`,
@@ -731,10 +731,10 @@ const routes = [
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "design-md" && {}, h: designMdTpl.render },
   { m: (s) => s.length === 4 && s[0] === "tools" && s[1] === "design-md" && s[2] === "analysis" && { slug: s[3] }, h: designMdTpl.analysis },
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "website-analyzer" && {}, h: seoMdTpl.render },
-  // renamed from /tools/seo-md — 301 so old links and the indexed footprint carry over
+  // renamed from /tools/seo-md: 301 so old links and the indexed footprint carry over
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "seo-md" && {}, h: () => ({ redirect: "/tools/website-analyzer" }) },
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "linkedin-post-checker" && {}, h: postCheckerTpl.render },
-  // renamed from /tools/social-post-checker — 301 so old links and the indexed footprint carry over
+  // renamed from /tools/social-post-checker: 301 so old links and the indexed footprint carry over
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "social-post-checker" && {}, h: () => ({ redirect: "/tools/linkedin-post-checker" }) },
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "robots-txt-generator" && {}, h: robotsGeneratorTpl.render },
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "landing-page-copy-analyzer" && {}, h: landingCopyCheckerTpl.render },
@@ -780,10 +780,10 @@ const routes = [
 // serverless host (Vercel) can `require()` this file and call handler(req, res)
 // per request. The standalone HTTP listener and the background catalog refresh
 // live at the very bottom and run ONLY when this file is executed directly
-// (Railway, or `node server.js`) — never when it is imported.
+// (Railway, or `node server.js`), never when it is imported.
 
 // Static files come out of assets/ and nowhere else. Resolving against the
-// app root instead would hand out the entire source tree — every module, the
+// app root instead would hand out the entire source tree: every module, the
 // catalog cache, package.json, and any .env sitting in the working copy that
 // a `railway up` tarball happened to carry along.
 const assetsDir = path.join(root, "assets");
@@ -888,7 +888,7 @@ const assetsDir = path.join(root, "assets");
     s = s
       .replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">")
       .replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&nbsp;/g, " ")
-      .replace(/&mdash;/g, "—").replace(/&ldquo;/g, "\u201c").replace(/&rdquo;/g, "\u201d");
+      .replace(/&mdash;/g, ": ").replace(/&ldquo;/g, "\u201c").replace(/&rdquo;/g, "\u201d");
     s = s.replace(/[ \t]+/g, " ").replace(/ ?\n ?/g, "\n").replace(/\n{3,}/g, "\n\n").trim();
     const head = [title ? `# ${title}` : "", canonical ? `<${canonical}>` : ""].filter(Boolean).join("\n");
     return (head ? head + "\n\n" : "") + s + "\n";
@@ -898,7 +898,7 @@ const assetsDir = path.join(root, "assets");
   // *.vercel.app deployment URLs and any other alias serve this same code, so
   // without this they are a full, crawlable duplicate of the site competing
   // with it in search. robots.txt is per-host, so www's file cannot cover
-  // them — the host has to answer for itself.
+  // them: the host has to answer for itself.
   const CANONICAL_HOST = (process.env.CANONICAL_HOST || "www.sokosumi.com").toLowerCase();
   function isPublicHost(req) {
     const host = String(req.headers["x-forwarded-host"] || req.headers.host || "").toLowerCase().split(":")[0];
@@ -965,7 +965,7 @@ const assetsDir = path.join(root, "assets");
     try {
       v = crypto.createHash("sha1").update(fs.readFileSync(path.join(root, rel))).digest("hex").slice(0, 8);
     } catch {
-      /* referenced but missing — leave the URL alone */
+      /* referenced but missing: leave the URL alone */
     }
     assetVersions.set(rel, v);
     return v;
@@ -1060,7 +1060,7 @@ const assetsDir = path.join(root, "assets");
       .replace("<!--SSR:FOOTER-->", shell.footerHtml())
       // The hero's face row used to wait for /api/catalog, so the first thing
       // above the headline popped in a second late. The catalog is already in
-      // memory here — render it with the document.
+      // memory here: render it with the document.
       .replace("<!--SSR:HERO_SOCIAL-->", heroSocialHtml());
     // Editor-owned hero positioning: when the sokosumi-site-config global has
     // a hero subtitle, it replaces the built-in line (per locale via cms's
@@ -1100,7 +1100,7 @@ const assetsDir = path.join(root, "assets");
       // max-age=0 so a browser revalidates the document on every load, and
       // s-maxage so the CDN still absorbs the traffic. Assets are versioned by
       // content hash, so a stale document is the one thing that keeps serving
-      // last deploy's CSS and JS — which looked exactly like a deploy that had
+      // last deploy's CSS and JS: which looked exactly like a deploy that had
       // not happened. Revalidation is a cheap 304; the CDN does the real work.
       // stale-while-revalidate: the CDN answers from its copy at once and
       // re-renders in the background, so a visitor never waits on a function
@@ -1112,7 +1112,7 @@ const assetsDir = path.join(root, "assets");
 
   const handler = async (req, res) => {
       // Fallback only. vercel.json now redirects the apex at the edge, before a
-      // function boots — answering it here instead measured 771ms of the mobile
+      // function boots: answering it here instead measured 771ms of the mobile
       // Lighthouse run, because a 301 that costs a cold lambda is not cheap.
       // Kept so the behaviour is still correct under `node server.js` and if the
       // edge rule is ever removed. Exact-match: preview hosts and localhost are
@@ -1126,7 +1126,7 @@ const assetsDir = path.join(root, "assets");
       }
       const [rawPath, rawQuery] = (req.url || "/").split("?");
       // decodeURIComponent throws on a malformed escape ("/%zz"), and this
-      // runs before the try below — an uncaught throw here took the whole
+      // runs before the try below: an uncaught throw here took the whole
       // process down, so one bad link from a crawler was a site outage.
       let urlPath;
       try {
@@ -1135,7 +1135,7 @@ const assetsDir = path.join(root, "assets");
         return send(req, res, 400, { "Content-Type": "text/plain; charset=utf-8" }, "Bad Request");
       }
       // A NUL byte reaches fs.statSync and throws a TypeError the catch below
-      // turns into a 500 — an unauthenticated 5xx generator. It is simply not
+      // turns into a 500: an unauthenticated 5xx generator. It is simply not
       // a valid path.
       if (urlPath.includes("\0")) {
         return send(req, res, 400, { "Content-Type": "text/plain; charset=utf-8" }, "Bad Request");
@@ -1169,7 +1169,7 @@ const assetsDir = path.join(root, "assets");
       // it survives every await without leaking into concurrent requests).
       // Every handler below then serves both locales unchanged; lib/i18n.js
       // rewrites the links and lib/cms.js asks Payload for the right locale.
-      // English stays at the un-prefixed root — those URLs carry the ranking.
+      // English stays at the un-prefixed root: those URLs carry the ranking.
       let locale = "en";
       if (urlPath === "/de" || urlPath.startsWith("/de/")) {
         locale = "de";
@@ -1199,7 +1199,7 @@ const assetsDir = path.join(root, "assets");
         // Shared files must live at ONE url: /de/assets/…, /de/robots.txt,
         // /de/sitemap.xml and friends would be crawlable duplicates, so they
         // bounce to the canonical un-prefixed copy. (Extension-less /de/api/*
-        // stays served — the lead forms post there so their redirects can
+        // stays served: the lead forms post there so their redirects can
         // stay in German.)
         if (locale === "de" && (urlPath.startsWith("/assets/") || path.extname(urlPath))) {
           return send(req, res, 301, { Location: encodeURI(urlPath) + qs, "Cache-Control": "public, max-age=3600" }, "");
@@ -1263,7 +1263,7 @@ const assetsDir = path.join(root, "assets");
           if (seoLeadRateLimited(clientIp(req))) {
             return send(req, res, 429, { ...jsonHead, "Retry-After": "3600" }, JSON.stringify({ error: "Too many submissions. Try again later." }));
           }
-          // Don't make the browser wait on the webhook — record and respond.
+          // Don't make the browser wait on the webhook: record and respond.
           forwardSeoLead(email, targetUrl);
           return send(req, res, 200, jsonHead, JSON.stringify({ ok: true }));
         }
@@ -1819,7 +1819,7 @@ const assetsDir = path.join(root, "assets");
           // prefix; on every page the language switcher's /en marker collapses.
           const finalHtml = versionAssets(i18n.localizeHtml(html));
           // Pages negotiate on Accept (text/markdown for agents), so every
-          // page response varies on it — otherwise a shared cache can hand
+          // page response varies on it: otherwise a shared cache can hand
           // the HTML variant to an agent that asked for markdown.
           if (wantsMarkdown(req)) {
             return send(req, res, code || 200, { "Content-Type": "text/markdown; charset=utf-8", "Cache-Control": cache, Vary: "Accept" }, htmlToMarkdown(finalHtml));
@@ -1839,7 +1839,7 @@ const assetsDir = path.join(root, "assets");
           // The site's own JS/CSS are unhashed and get edited (the cookie
           // banner lives in consent.js). Caching them hard once stranded a fix
           // in every returning visitor's browser for a day. `no-cache` here
-          // does NOT mean "don't cache" — it means "revalidate every load",
+          // does NOT mean "don't cache": it means "revalidate every load",
           // and because we send an ETag that revalidation is a tiny 304 when
           // nothing changed, so a fix ships on the next navigation. Fonts,
           // images, video and icons rarely change, so they keep the long,
@@ -1932,7 +1932,7 @@ const assetsDir = path.join(root, "assets");
         const html = await pagesTpl.cmsPage({ ...ctx, params: { slug: seg.join("/") } });
         if (html) return sendHtml(html);
 
-        // Nothing here by that name — but the site this one replaces may have
+        // Nothing here by that name, but the site this one replaces may have
         // published it. Check the legacy map before giving up, so the indexed
         // footprint survives the cutover.
         // The locale prefix was stripped above, so old German URLs resolve
@@ -1953,7 +1953,7 @@ const assetsDir = path.join(root, "assets");
           // The CMS not answering is an upstream outage, not a bug here, and
           // MUST NOT surface as a 404 (tells Google to deindex) or a plain
           // 500 (reads as our code crashing). A 503 with Retry-After is the
-          // one status that says "temporary, come back" — crawlers keep the
+          // one status that says "temporary, come back": crawlers keep the
           // URL indexed and retry. Every route that could reach the CMS with
           // a cold cache lands here via the cmsUnavailable tag; anything with
           // a warm cache never throws at all (stale-on-error in lib/cms.js).
@@ -1979,7 +1979,7 @@ if (process.argv.includes("--once")) {
 } else if (require.main === module) {
   // Executed directly (Railway / local): a long-running server plus the
   // background catalog refresh. A serverless host imports this file instead of
-  // running it, so neither of these fires there — the platform invokes the
+  // running it, so neither of these fires there: the platform invokes the
   // exported handler per request, and the catalog comes from the committed
   // seed loaded at module init.
   http.createServer(handler).listen(port, () => {
@@ -1989,7 +1989,7 @@ if (process.argv.includes("--once")) {
   // key is missing or its API is down refresh() never replaces it. Attach the
   // CMS blurbs to whatever we booted with, so the homepage is not blurbless
   // just because the product API is unreachable. If refresh() wins the race
-  // and swaps the catalog first, this mutates the discarded array — harmless.
+  // and swaps the catalog first, this mutates the discarded array: harmless.
   ensureCatalogEditorial();
   refresh();
   setInterval(refresh, REFRESH_MS);

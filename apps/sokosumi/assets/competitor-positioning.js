@@ -1,4 +1,4 @@
-/* /tools/competitor-positioning — client. A head-to-head comparison in three
+/* /tools/competitor-positioning: client. A head-to-head comparison in three
  * scannable zones: a verdict hero (who leads, big numbers), side-by-side
  * messaging panels (the actual copy), and an icon scoreboard that marks the
  * winner of each measurable signal. Built to be read at a glance, not parsed.

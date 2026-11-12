@@ -56,5 +56,5 @@ for (const url of pages) {
   }
 }
 await b.close();
-console.log(fails ? `\nFAIL — ${fails} viewport(s) with a problem` : `\nOK — ${pages.length} pages x ${WIDTHS.length} widths, aligned and no overflow`);
+console.log(fails ? `\nFAIL: ${fails} viewport(s) with a problem` : `\nOK: ${pages.length} pages x ${WIDTHS.length} widths, aligned and no overflow`);
 process.exit(fails ? 1 : 0);

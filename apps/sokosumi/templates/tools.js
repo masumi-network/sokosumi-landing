@@ -64,7 +64,7 @@ const designMdPreview = () => `
   </span>`;
 
 // The SEO Analyzer scores what a page shows up as in search, so the preview
-// is the search snippet itself, plus a Lighthouse-style score ring — the way
+// is the search snippet itself, plus a Lighthouse-style score ring: the way
 // the OG checker draws the social card it's actually grading.
 const seoMdPreview = () => `
   <span class="tp tp-seo">
@@ -98,7 +98,7 @@ const postCheckerPreview = () => `
   </span>`;
 
 // The robots.txt generator hands back a text file, the same shape as the
-// llms.txt checker's file card — a genuine match, since both are files a
+// llms.txt checker's file card: a genuine match, since both are files a
 // crawler reads, rather than a reused shortcut.
 const robotsGeneratorPreview = () => `
   <span class="tp tp-rg">
@@ -119,7 +119,7 @@ const robotsGeneratorPreview = () => `
 const landingCopyPreview = () => `
   <span class="tp tp-ha">
     <span class="tp-headline">
-      <span class="tp-headline-text">You'll cut campaign setup time in half — start your free trial today.</span>
+      <span class="tp-headline-text">You'll cut campaign setup time in half: start your free trial today.</span>
     </span>
     <span class="tp-verdict">
       <span class="tp-gauge" style="--score:81"><b>81</b></span>
@@ -137,7 +137,7 @@ const xAlgorithmPreview = () => `
         <span class="tp-avatar">JR</span>
         <span class="tp-post-name"><b>@jordanreyes</b><i>X post</i></span>
       </span>
-      <span class="tp-post-body">What's the most tedious part of your campaign setup — curious what everyone else is stuck doing manually.</span>
+      <span class="tp-post-body">What's the most tedious part of your campaign setup: curious what everyone else is stuck doing manually.</span>
       <span class="tp-post-foot"><span>💬 61</span><span>🔁 12</span></span>
     </span>
     <span class="tp-verdict">
@@ -200,7 +200,7 @@ const internalLinkingPreview = () => `
   </span>`;
 
 // The keyword extractor ranks a page's own words, so the preview is a tag
-// cloud sized by frequency — the shape of the output itself.
+// cloud sized by frequency: the shape of the output itself.
 const keywordExtractorPreview = () => `
   <span class="tp tp-tags">
     <span class="tp-tagcloud">
@@ -237,7 +237,7 @@ const orphanPageFinderPreview = () => `
   </span>`;
 
 // Core Web Vitals are three measured signals, so the preview is three labelled
-// bars — LCP, CLS, INP — not another search snippet.
+// bars: LCP, CLS, INP, not another search snippet.
 const coreWebVitalsPreview = () => `
   <span class="tp tp-vitals">
     <span class="tp-vitalbox">
@@ -268,7 +268,7 @@ const TOOLS = [
   {
     href: "/tools/llms-txt",
     name: "llms.txt checker",
-    text: "Validate your llms.txt — and find the links inside it that no longer resolve.",
+    text: "Validate your llms.txt: and find the links inside it that no longer resolve.",
     meta: "Free · no sign-up",
     preview: llmsPreview,
   },

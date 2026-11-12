@@ -13,7 +13,7 @@ const { t } = i18n;
 const APP = "https://app.sokosumi.com";
 // The app serves a dedicated page for each half of the auth split: /signup is
 // "Register", /signin is "Login". Linking to the bare origin instead sends a
-// logged-out visitor through the auth guard to /signin?returnUrl=/ — i.e. a
+// logged-out visitor through the auth guard to /signin?returnUrl=/: i.e. a
 // "Sign Up" button that lands on the login form. Point conversion CTAs at
 // SIGNUP and the header's "Log In" at SIGNIN; keep bare APP only for links
 // that mean "open the product" (existing users), where the guard's returnUrl
@@ -23,8 +23,8 @@ const APP_SIGNIN = `${APP}/signin`;
 
 // Analytics: one GTM container (GTM-N7GC8SFT) and one GA4 property
 // (G-G4BW0XC76M) span this marketing site AND app.sokosumi.com. See
-// TRACKING.md for the whole design. These IDs are public — they ship in every
-// page's HTML — so keeping them in source is fine.
+// TRACKING.md for the whole design. These IDs are public: they ship in every
+// page's HTML: so keeping them in source is fine.
 const GTM_ID = "GTM-N7GC8SFT";
 
 // Runs in <head> BEFORE the GTM loader. Establishes Google Consent Mode v2 in
@@ -32,7 +32,7 @@ const GTM_ID = "GTM-N7GC8SFT";
 // browser until the visitor opts in), then re-applies a stored choice so a
 // returning visitor is not blocked for a frame. assets/consent.js draws the
 // banner and flips the state on a choice. This snippet is mirrored in the app
-// (apps/web) — keep the two in sync.
+// (apps/web): keep the two in sync.
 const ANALYTICS_HEAD = `<script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
@@ -63,7 +63,7 @@ const ANALYTICS_HEAD = `<script>
   </script>
   <script>(function(w,d,s,l,i){
         // Production hostnames only. Preview deploys and local dev were feeding the
-    // same GA4 property as production — over the last 7 days the preview host
+    // same GA4 property as production: over the last 7 days the preview host
     // sent 366 pageviews against production's 156, plus localhost and
     // 127.0.0.1, which makes every report wrong until someone remembers to
     // filter. Nothing measures anything anywhere else.
@@ -120,8 +120,8 @@ const attr = esc;
 // Meta descriptions between ~110 and 158 characters: pad a short CMS
 // sentence with a page-type sentence, cut a long one at a word.
 // `extra` may be one sentence or several, longest first. A description between
-// 90 and 110 characters used to keep none of them — the long sentence did not
-// fit and there was nothing shorter to fall back to — so it stayed too short
+// 90 and 110 characters used to keep none of them: the long sentence did not
+// fit and there was nothing shorter to fall back to: so it stayed too short
 // for search results. Now the first tail that fits whole is the one used.
 function describe(main, extra, max) {
   let s = String(main || "").trim();
@@ -279,7 +279,7 @@ const OG_FALLBACK = { url: `${SITE}/assets/og-image.jpg`, width: 1200, height: 6
 
 // A share image has to survive Facebook, LinkedIn, X and Slack fetching it
 // from the open internet. Three things disqualify a candidate:
-//   * SVG — every major platform rejects it outright, so the card renders
+//   * SVG: every major platform rejects it outright, so the card renders
 //     blank. 39 coworker pages were pointing at one.
 //   * a hostname only reachable from a dev environment.
 //   * a relative path, which a crawler on another origin cannot resolve.
@@ -407,7 +407,7 @@ function head(opts) {
   if (opts.jsonld) graph.push(...(Array.isArray(opts.jsonld) ? opts.jsonld : [opts.jsonld]));
   // Google's Article rich result requires an image and a publication date. Every
   // page already resolves a share card above, and article pages already declare
-  // their dates for og:article — so fill both in here rather than asking each
+  // their dates for og:article: so fill both in here rather than asking each
   // template to remember. Only fills what is missing; a template that states its
   // own cover or date keeps it.
   for (const node of graph) {
@@ -622,9 +622,9 @@ function shotGallery(keys) {
 // Lives here rather than in blocks.js so templates that render no CMS blocks
 // can use it too; blocks.ctaBand() delegates to this so a CMS-authored band
 // and a hand-built one are the same markup.
-// Sits under any button that starts a signup. The nav is the one exception —
+// Sits under any button that starts a signup. The nav is the one exception:
 // a bar of chrome is not the place for a reassurance line.
-// Locale-dependent, so functions — exported through getters below to keep
+// Locale-dependent, so functions: exported through getters below to keep
 // every `shell.NO_CARD` call site working unchanged.
 const noCard = () => `<p class="no-card">${esc(t("*No Credit Card required"))}</p>`;
 // Same line, but as a span so it can sit inside an existing note paragraph
@@ -697,7 +697,7 @@ function navVisual(variant, inner) {
   return `<div class="nav-visual${variant ? ` nav-visual-${variant}` : ""}" aria-hidden="true">${inner || ""}</div>`;
 }
 
-// A few coworker portraits for the AI Coworkers rail — the same drawn faces
+// A few coworker portraits for the AI Coworkers rail: the same drawn faces
 // the CTA bands use, which are the imagery this menu is actually about.
 function navVisualFaces() {
   const pool = (navModel().faces || []).slice(0, 4);
@@ -737,7 +737,7 @@ function agentsPanel() {
                 p.image
                   // data-src, not src: these are full-size portraits painted
                   // at 30px inside a closed menu. loading="lazy" does NOT stop
-                  // the fetch — the hidden panel still has geometry, so every
+                  // the fetch: the hidden panel still has geometry, so every
                   // desktop page view pulled ~7 MB of avatars for a menu most
                   // visitors never open. nav.js promotes them on first open.
                   ? `<span class="nav-face"><img data-src="${attr(thumb(p.image, 96))}" alt="" width="30" height="30" decoding="async" /></span>`
@@ -772,7 +772,7 @@ function agentsPanel() {
 // so a page added there shows up here without a code change.
 function productPanel() {
   // The menu is a way in, not a sitemap. It carries the four surfaces that
-  // make up the core loop — brief, roster, board, output — and leaves the rest
+  // make up the core loop: brief, roster, board, output: and leaves the rest
   // to /product, which the foot link goes to. Anything beyond four rows made
   // the panel taller than the hero and forced blurbs to truncate mid-sentence.
   const CORE = ["product/ai-coworkers", "product/briefing", "product/task-board", "product/outputs"];
@@ -780,9 +780,9 @@ function productPanel() {
   const bySlug = new Map(all.map((p) => [p.slug, p]));
   const pages = [...CORE.map((slug) => bySlug.get(slug)).filter(Boolean), ...all.filter((p) => !CORE.includes(p.slug))].slice(0, 4);
   if (!pages.length) return "";
-  // Each surface leads with a miniature of the thing itself — coworker
+  // Each surface leads with a miniature of the thing itself: coworker
   // portraits for the roster, the dark briefing bar, a micro task board, a
-  // tiny document — drawn from the same assets/CSS language as the demo.
+  // tiny document: drawn from the same assets/CSS language as the demo.
   // Keyword match with a safe fallback so CMS-added pages still render.
   const miniFor = (pg) => {
     const k = (pg.slug + " " + pg.title).toLowerCase();
@@ -796,7 +796,7 @@ function productPanel() {
     if (/chat|channel/.test(k)) return `<span class="nav-mini nav-mini-chat"><i></i><i></i></span>`;
     return `<span class="nav-mini nav-mini-doc"><b><i class="h"></i><i></i><i></i><i class="s"></i></b></span>`;
   };
-  // Menu blurbs are written for the menu — complete phrases, no mid-sentence
+  // Menu blurbs are written for the menu: complete phrases, no mid-sentence
   // cut. The SEO description is a fallback for CMS-added pages, trimmed at a
   // word boundary.
   const BLURBS = {
@@ -841,7 +841,7 @@ function shell_truncate(s, n) {
 }
 
 // The Use cases menu: six jobs, each with its primary industry under the
-// title and a seeded abstract swatch beside it — the same field the page's
+// title and a seeded abstract swatch beside it: the same field the page's
 // own hero and card carry (templates/art.js), so the menu previews the page
 // rather than fronting one coworker's face. The industry caption is what
 // tells a visitor which vertical each job belongs to without leaving the
@@ -921,7 +921,7 @@ function navItems(currentPath) {
   ].join("\n            ");
 }
 
-// The drawer the burger opens below 900px. Same links as index.html's copy —
+// The drawer the burger opens below 900px. Same links as index.html's copy:
 // both surfaces share /assets/nav.css and /assets/nav.js.
 const MOBILE_LINKS = [
   ["/ai-coworkers", "AI Coworkers", "Named specialists you can hire"],
@@ -980,10 +980,10 @@ function header(currentPath, opts) {
 // The footer markup, shared the same way as header(): sub-pages get it from
 // footer() below, the homepage gets this exact markup injected by server.js
 // (serveIndex) in place of index.html's <!--SSR:FOOTER--> placeholder, so the
-// two surfaces cannot drift. Styles live in /assets/nav.css — the one chrome
+// two surfaces cannot drift. Styles live in /assets/nav.css: the one chrome
 // stylesheet both surfaces load.
 // The language switcher: same page, other locale. The EN link is written as
-// /en/<path> — a marker lib/i18n.js localizeHtml() collapses to /<path>
+// /en/<path>: a marker lib/i18n.js localizeHtml() collapses to /<path>
 // AFTER the /de link-rewrite pass, so it can never be double-prefixed.
 function langSwitcher() {
   const path = i18n.currentPath();
@@ -1127,7 +1127,7 @@ function crumbs(items) {
 // Standard page opening: head + skip link + header + breadcrumbs + <main>.
 // Close with pageEnd(). `cr` doubles as the BreadcrumbList JSON-LD source.
 // The skip link is the first focusable thing on the page and targets the
-// shared <main id="main"> — same mechanism as the landing page's own link.
+// shared <main id="main">: same mechanism as the landing page's own link.
 function pageStart(opts) {
   const mainCls = ["page", "container-app", opts.mainClass].filter(Boolean).join(" ");
   return (
@@ -1200,7 +1200,7 @@ function avatar(entity, cls) {
 // A vendor wordmark. Two sources with opposite polarity: an editor's upload and
 // the product's own vendor artwork are dark on transparent, while the synced
 // marketplace wordmarks are white on transparent and would vanish on paper.
-// `.invert` flattens those to ink — the mirror of the landing page's
+// `.invert` flattens those to ink: the mirror of the landing page's
 // `.band-dark .trust-logo { filter: brightness(0) invert(1) }`.
 // Returns "" when there is no artwork: the vendor name always carries the page,
 // so a missing logo must leave no empty box behind.
@@ -1264,7 +1264,7 @@ module.exports = {
 };
 
 // Locale-dependent snippets, kept as properties so every existing
-// `shell.NO_CARD` interpolation keeps working — the getter renders for the
+// `shell.NO_CARD` interpolation keeps working: the getter renders for the
 // locale of the request that is reading it.
 Object.defineProperties(module.exports, {
   NO_CARD: { enumerable: true, get: noCard },

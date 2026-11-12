@@ -4,7 +4,7 @@
 // (internal linking finder, 404 checker, orphan page finder, content decay
 // detector): try /sitemap.xml (following one level into a sitemap index),
 // falling back to the links found on the homepage itself. Capped and timed
-// out so a large site can't hang the request — every one of these tools
+// out so a large site can't hang the request: every one of these tools
 // only gets a sample, not a full site audit.
 
 const { safeFetch, readCapped, fetchErrorMessage } = require("./safeFetch");
@@ -27,7 +27,7 @@ async function fetchXmlLocs(url, timeoutMs = 8000) {
   return { locs, isSitemapIndex };
 }
 
-// Returns { pages, viaSitemap } — pages capped at maxPages. Falls back to
+// Returns { pages, viaSitemap }: pages capped at maxPages. Falls back to
 // the homepage's own internal links when no sitemap exists.
 async function discoverPages(startUrl, maxPages = 12) {
   const origin = new URL(startUrl).origin;

@@ -8,11 +8,11 @@ const FAQ = [
   {
     question: "What does it chart?",
     answer:
-      "It detects which columns are numeric, which look like dates, and which are plain text. It shows a stat tile per numeric column, a bar chart of your first text column grouped against your first numeric column, and — if a date-like column exists — a line chart of that numeric column over time.",
+      "It detects which columns are numeric, which look like dates, and which are plain text. It shows a stat tile per numeric column, a bar chart of your first text column grouped against your first numeric column, and: if a date-like column exists: a line chart of that numeric column over time.",
   },
   {
     question: "Does my file get uploaded anywhere?",
-    answer: "No — the CSV is parsed and charted entirely in your browser with the File API. Nothing is sent to our server.",
+    answer: "No: the CSV is parsed and charted entirely in your browser with the File API. Nothing is sent to our server.",
   },
   {
     question: "What CSV format does it expect?",
@@ -20,7 +20,7 @@ const FAQ = [
   },
   {
     question: "How large a file can I use?",
-    answer: "It's fine well into the tens of thousands of rows, since it's just parsing and aggregating in memory — but very large files (tens of megabytes) may be slow in the browser.",
+    answer: "It's fine well into the tens of thousands of rows, since it's just parsing and aggregating in memory, but very large files (tens of megabytes) may be slow in the browser.",
   },
 ];
 
@@ -38,7 +38,7 @@ function render() {
     applicationCategory: "DeveloperApplication",
     operatingSystem: "Web",
     url: `${SITE}${PATH}`,
-    description: "A free tool that turns an uploaded CSV file into an instant dashboard — stat tiles, a bar chart and a time-series chart — entirely in your browser.",
+    description: "A free tool that turns an uploaded CSV file into an instant dashboard: stat tiles, a bar chart and a time-series chart: entirely in your browser.",
     offers: { "@type": "Offer", price: "0", priceCurrency: "EUR" },
     creator: { "@id": `${SITE}/#organization` },
   };
@@ -68,7 +68,7 @@ function render() {
     `<section class="tk-head" id="analyzer">
       <p class="tk-overline">Free · no sign-up · nothing leaves your browser</p>
       <h1>CSV to Instant Dashboard</h1>
-      <p class="tk-lede">Upload a CSV and get stat tiles, a bar chart and — if it has dates — a time-series chart, built entirely in your browser. Nothing is uploaded anywhere.</p>
+      <p class="tk-lede">Upload a CSV and get stat tiles, a bar chart and: if it has dates: a time-series chart, built entirely in your browser. Nothing is uploaded anywhere.</p>
 
       <form class="tk-form" id="cdForm" novalidate>
         <input id="cdFile" type="file" accept=".csv,text/csv" required />

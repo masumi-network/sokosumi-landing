@@ -145,7 +145,7 @@ ${sections}
 
 1. Write down the output: an answer, an editable file, a scheduled workflow, or a finished deliverable.
 2. Decide who owns prompting, quality control and maintenance after launch.
-3. Check data location, subprocessors, retention and model-training terms for the exact plan—not only the vendor homepage.
+3. Check data location, subprocessors, retention and model-training terms for the exact plan, not only the vendor homepage.
 4. Run the same real brief through two finalists and score source quality, edit time and total cost.
 5. Keep a human approval step for claims, personal data, regulated work and anything published under your brand.
 

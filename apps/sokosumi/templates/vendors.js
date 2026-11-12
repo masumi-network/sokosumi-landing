@@ -1,7 +1,7 @@
-// /vendors (index) and /vendors/<slug> (detail) — the teams that build and
+// /vendors (index) and /vendors/<slug> (detail): the teams that build and
 // operate the AI coworkers on the marketplace. CMS `vendors` collection;
 // coworkers are joined client-side by vendor slug, offers by the coworkers'
-// catalog slug — so every number on these pages is computed from the live
+// catalog slug: so every number on these pages is computed from the live
 // catalog and stays true without editing.
 
 const shell = require("./shell");
@@ -19,7 +19,7 @@ function offerKey(c) {
   return c.catalogSlug || c.slug;
 }
 
-// "AI coworkers & agents" / "AI coworkers" / "AI agents" — whatever the
+// "AI coworkers & agents" / "AI coworkers" / "AI agents": whatever the
 // vendor actually ships, so a heading never claims a thing that is not on
 // the page below it. HTML-escaped, for direct use in the h1.
 function kindLabel(curatedCount, agentCount) {
@@ -75,7 +75,7 @@ async function index(ctx) {
         taskCount: offers.filter((o) => keys.has(o.agentSlug)).length,
       };
     })
-    // A vendor with nothing listed is not shown — an empty storefront reads
+    // A vendor with nothing listed is not shown: an empty storefront reads
     // as broken, and inactive/placeholder records never render.
     .filter((v) => v.curatedCount + v.agentCount > 0)
     // CMS `order` first, so an editor can pin a vendor to the top. Everyone
@@ -148,7 +148,7 @@ function coworkerCard(c, taskCount, i) {
     </span>
     ${
       /* seoDescription is the purpose-written short blurb (complete sentence,
-         card-sized) — verbatim when present; truncating the bio is the fallback */
+         card-sized): verbatim when present; truncating the bio is the fallback */
       c.seoDescription
         ? `<p>${esc(c.seoDescription)}</p>`
         : c.description
@@ -160,7 +160,7 @@ function coworkerCard(c, taskCount, i) {
 }
 
 // One capability column: an offer category, how many tasks the vendor's
-// coworkers carry in it, and the first few — each linking to its task page.
+// coworkers carry in it, and the first few: each linking to its task page.
 function capabilityCol(category, offers, ownerOf, i) {
   const shown = offers.slice(0, 4);
   const rest = offers.length - shown.length;
@@ -234,7 +234,7 @@ async function detail(ctx) {
     agents.length ? tp(agents.length, "{n} specialist AI agent", "{n} specialist AI agents") : "",
   ].filter(Boolean);
   const computedSub = subParts.length
-    ? t("{vendor} builds and operates {what} on the Sokosumi marketplace — hire them with one free account and pay only for the work they run.", {
+    ? t("{vendor} builds and operates {what} on the Sokosumi marketplace: hire them with one free account and pay only for the work they run.", {
         vendor: v.name,
         what: subParts.join(t(" and ")),
       })
@@ -297,7 +297,7 @@ async function detail(ctx) {
   const stackSection = stackRows.length
     ? `<section class="page-section${flush()}">
         <h2>${esc(t("Models and hosting, stated up front"))}</h2>
-        <p class="sub">${esc(t("The {what} on file for {vendor}’s listings — visible before you spend a credit.", { what: stackWhat, vendor: v.name }))}</p>
+        <p class="sub">${esc(t("The {what} on file for {vendor}’s listings: visible before you spend a credit.", { what: stackWhat, vendor: v.name }))}</p>
         <div class="stack-rows">${stackRows.join("")}</div>
       </section>`
     : "";
@@ -324,7 +324,7 @@ async function detail(ctx) {
   // ── head ──
   // Title case for the <title>; the h1 keeps sentence case like the rest of
   // the site. Both carry the "<Vendor> AI Coworkers / AI Agents" phrasing the
-  // page is meant to answer for — computed from what the vendor actually ships.
+  // page is meant to answer for: computed from what the vendor actually ships.
   const titleKinds =
     curated.length && agents.length
       ? t("AI Coworkers & Agents")
@@ -369,10 +369,10 @@ async function detail(ctx) {
   if (listLd) jsonld.push(listLd);
 
   // ctaBand escapes its heading, so this is plain text (curly apostrophe
-  // included) — entities here would render literally.
+  // included): entities here would render literally.
   //
   // A vendor with nothing listed cannot be hired, so the empty case does not
-  // sell the vendor — it points at the coworkers you actually can hire.
+  // sell the vendor: it points at the coworkers you actually can hire.
   const hasListings = curated.length > 0 || agents.length > 0;
   const ctaHeading = curated.length
     ? t("Put {vendor}’s AI coworkers to work", { vendor: v.name })

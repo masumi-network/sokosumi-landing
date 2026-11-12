@@ -1,4 +1,4 @@
-// /about — the entity page for Sokosumi itself, written to the Grounding Page
+// /about: the entity page for Sokosumi itself, written to the Grounding Page
 // checklist (groundingpage.com/spec): the h1 is the entity name and nothing
 // else, a plain definition comes first, every h2 names the entity, the facts
 // are a <dl> people and machines read the same way, similar entities are
@@ -14,7 +14,7 @@ const i18n = require("../lib/i18n");
 const { t, locale } = i18n;
 const { esc, attr, pageStart, pageEnd, SITE, ORGANIZATION } = shell;
 
-// Editorial review date — a human checked every fact on this page. Bump it
+// Editorial review date: a human checked every fact on this page. Bump it
 // when you re-verify, not when the file happens to be touched.
 const REVIEWED = "2026-08-25";
 
@@ -196,7 +196,7 @@ async function render() {
     .join("");
 
   const siblings = SIBLINGS.map(
-    (s) => `<li><strong><a href="${attr(s.url)}"${s.url.startsWith(SITE) ? "" : ' rel="noreferrer"'}>${esc(s.name)}</a></strong> — ${esc(t(s.what))}</li>`,
+    (s) => `<li><strong><a href="${attr(s.url)}"${s.url.startsWith(SITE) ? "" : ' rel="noreferrer"'}>${esc(s.name)}</a></strong>: ${esc(t(s.what))}</li>`,
   ).join("");
 
   const cr = [{ label: "Home", href: "/" }, { label: t("About") }];

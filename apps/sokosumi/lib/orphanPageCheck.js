@@ -1,7 +1,7 @@
 "use strict";
 
 // Deterministic orphan-page finder for /tools/orphan-pages. Reads a site's
-// sitemap.xml (via lib/siteCrawl.js) — the "should exist" set — then crawls
+// sitemap.xml (via lib/siteCrawl.js): the "should exist" set: then crawls
 // a sample of those pages and unions every internal link found on them. Any
 // sitemap URL that never shows up in that union, other than linking to
 // itself, is flagged as an orphan: reachable only through the sitemap, not
@@ -33,7 +33,7 @@ async function analyze(input) {
     throw err;
   }
   if (!discovery.viaSitemap) {
-    const error = new Error("No sitemap.xml found on that site — orphan detection needs a sitemap to know which pages should exist.");
+    const error = new Error("No sitemap.xml found on that site: orphan detection needs a sitemap to know which pages should exist.");
     error.status = 422;
     throw error;
   }

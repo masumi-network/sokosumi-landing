@@ -1,4 +1,4 @@
-/* /tools/core-web-vitals — client. Thin wiring over
+/* /tools/core-web-vitals: client. Thin wiring over
  * SokosumiToolKit.wireScorer(); the server does the fetching and scoring.
  */
 (function () {
@@ -22,7 +22,7 @@
     submitLabel: "Explain this page",
     busyLabel: "Fetching…",
     reportTitle: function (data) {
-      return "Core Web Vitals explainer (proxy) — " + data.url + " — " + data.overall + "/100";
+      return "Core Web Vitals explainer (proxy): " + data.url + ": " + data.overall + "/100";
     },
     getValue: function () {
       return urlInput.value;

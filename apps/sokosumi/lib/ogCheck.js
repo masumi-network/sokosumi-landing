@@ -255,7 +255,7 @@ function buildChecks(data) {
   const add = (level, checkTitle, tag, detail) => out.push({ level, title: checkTitle, tag, detail });
 
   if (status === 403 || status === 429 || status === 401) {
-    add("error", `The page returns HTTP ${status}`, "http", "The site turned us away rather than serving the page — usually a bot filter or a login wall. Social crawlers hit the same wall, so the card they build will be whatever this error page contains. Allow the crawler user agents through if you want previews to work.");
+    add("error", `The page returns HTTP ${status}`, "http", "The site turned us away rather than serving the page: usually a bot filter or a login wall. Social crawlers hit the same wall, so the card they build will be whatever this error page contains. Allow the crawler user agents through if you want previews to work.");
   } else if (status >= 400) {
     add("error", `The page returns HTTP ${status}`, "http", "Everything below describes markup a crawler will most likely never index. Fix the status first.");
   } else if (data.redirected) {
@@ -279,43 +279,43 @@ function buildChecks(data) {
   // --- title -----------------------------------------------------------
   if (!ogTitle) {
     if (title) {
-      add("error", "og:title is missing", "og:title", `Crawlers fall back to <title> — ${quote(title)} — but that title is written for a search result, not a share card. Set og:title explicitly.`);
+      add("error", "og:title is missing", "og:title", `Crawlers fall back to <title>: ${quote(title)}, but that title is written for a search result, not a share card. Set og:title explicitly.`);
     } else {
       add("error", "No title at all", "og:title", "Neither og:title nor <title> is set. Most platforms will show the bare URL instead of a headline.");
     }
   } else if (ogTitle.length > 70) {
     add("warn", "og:title is long", "og:title", `${ogTitle.length} characters. X cuts around 70 and WhatsApp around 65, so the end of this headline will be clipped.`);
   } else if (ogTitle.length < 15) {
-    add("warn", "og:title is very short", "og:title", `${quote(ogTitle)} — ${ogTitle.length} characters. There is room for a headline that earns the click.`);
+    add("warn", "og:title is very short", "og:title", `${quote(ogTitle)}: ${ogTitle.length} characters. There is room for a headline that earns the click.`);
   } else {
-    add("pass", "og:title reads well", "og:title", `${quote(ogTitle)} — ${ogTitle.length} characters, inside every platform's limit.`);
+    add("pass", "og:title reads well", "og:title", `${quote(ogTitle)}: ${ogTitle.length} characters, inside every platform's limit.`);
   }
 
   // --- description -----------------------------------------------------
   if (!ogDesc) {
     if (metaDesc) {
-      add("warn", "og:description is missing", "og:description", `Falling back to the meta description — ${quote(metaDesc, 60)}. LinkedIn and Discord read og:description first and may show nothing.`);
+      add("warn", "og:description is missing", "og:description", `Falling back to the meta description: ${quote(metaDesc, 60)}. LinkedIn and Discord read og:description first and may show nothing.`);
     } else {
       add("error", "No description at all", "og:description", "Neither og:description nor meta description is set. The card will be a headline with empty space under it.");
     }
   } else if (ogDesc.length > 200) {
-    add("warn", "og:description is long", "og:description", `${ogDesc.length} characters. Facebook shows about 200 on desktop and roughly 110 on mobile — the rest is cut.`);
+    add("warn", "og:description is long", "og:description", `${ogDesc.length} characters. Facebook shows about 200 on desktop and roughly 110 on mobile: the rest is cut.`);
   } else if (ogDesc.length < 50) {
     add("warn", "og:description is short", "og:description", `${ogDesc.length} characters. Two lines of copy convert better than one fragment.`);
   } else {
-    add("pass", "og:description is a good length", "og:description", `${ogDesc.length} characters — enough to say something, short enough to survive mobile truncation.`);
+    add("pass", "og:description is a good length", "og:description", `${ogDesc.length} characters: enough to say something, short enough to survive mobile truncation.`);
   }
 
   // --- image -----------------------------------------------------------
   if (!ogImage) {
     add("error", "og:image is missing", "og:image", "Without an image the link renders as a plain text row. This is the single biggest lever on social click-through.");
   } else if (!isAbsolute(ogImage)) {
-    add("error", "og:image is not an absolute URL", "og:image", `${quote(ogImage, 60)} is relative. Facebook, X and LinkedIn all require a full https:// URL — they do not resolve it against the page.`);
+    add("error", "og:image is not an absolute URL", "og:image", `${quote(ogImage, 60)} is relative. Facebook, X and LinkedIn all require a full https:// URL: they do not resolve it against the page.`);
   } else if (!image || !image.ok) {
     const why =
       image && image.reason === "status"
         ? image.status === 403 || image.status === 401
-          ? `The image URL returned HTTP ${image.status} — it is behind a bot filter or a login. Crawlers get the same refusal.`
+          ? `The image URL returned HTTP ${image.status}: it is behind a bot filter or a login. Crawlers get the same refusal.`
           : `The image URL returned HTTP ${image.status}.`
         : image && image.reason === "blocked"
           ? "The image URL points somewhere we will not fetch."
@@ -345,7 +345,7 @@ function buildChecks(data) {
       } else if (ratio < 1.6 || ratio > 2.2) {
         add("warn", "og:image aspect ratio is off", "og:image", `${image.width}×${image.height} is ${ratio.toFixed(2)}:1. Cards are cropped to 1.91:1, so the top and bottom of this image will be cut.`);
       } else {
-        add("pass", "og:image dimensions work", "og:image", `${image.width}×${image.height} — close enough to 1.91:1 that cropping will not hurt. 1200×630 is the safest exact size.`);
+        add("pass", "og:image dimensions work", "og:image", `${image.width}×${image.height}: close enough to 1.91:1 that cropping will not hurt. 1200×630 is the safest exact size.`);
       }
     } else {
       add("warn", "og:image dimensions unknown", "og:image", "The file loads but its header did not declare a size. Platforms that pre-check dimensions may skip it.");
@@ -371,7 +371,7 @@ function buildChecks(data) {
   if (ogImage && !ogAlt) {
     add("warn", "og:image:alt is missing", "og:image:alt", "Screen readers on Facebook, LinkedIn and Mastodon read this. One sentence describing the image is enough.");
   } else if (ogAlt) {
-    add("pass", "og:image:alt is set", "og:image:alt", `${quote(ogAlt, 60)} — the card is readable to someone who cannot see it.`);
+    add("pass", "og:image:alt is set", "og:image:alt", `${quote(ogAlt, 60)}: the card is readable to someone who cannot see it.`);
   }
 
   // --- identity --------------------------------------------------------
@@ -380,7 +380,7 @@ function buildChecks(data) {
   } else if (!isAbsolute(ogUrl)) {
     add("warn", "og:url is not absolute", "og:url", `${quote(ogUrl, 60)} needs to be a full https:// URL.`);
   } else {
-    add("pass", "og:url is set", "og:url", `${ogUrl} — shares of this page consolidate onto one URL.`);
+    add("pass", "og:url is set", "og:url", `${ogUrl}: shares of this page consolidate onto one URL.`);
   }
 
   if (!ogType) {
@@ -392,7 +392,7 @@ function buildChecks(data) {
   if (!ogSite) {
     add("warn", "og:site_name is missing", "og:site_name", "Discord and Slack print this above the title as the source label. Without it they fall back to the bare domain.");
   } else {
-    add("pass", "og:site_name is set", "og:site_name", `${quote(ogSite, 40)} — Discord and Slack use it as the eyebrow above the title.`);
+    add("pass", "og:site_name is set", "og:site_name", `${quote(ogSite, 40)}: Discord and Slack use it as the eyebrow above the title.`);
   }
 
   // --- X ---------------------------------------------------------------
@@ -407,7 +407,7 @@ function buildChecks(data) {
   if (twTitle || twDesc || twImage) {
     add("pass", "X overrides are present", "twitter:title", `${[twTitle && "title", twDesc && "description", twImage && "image"].filter(Boolean).join(", ")} set specifically for X.`);
   } else if (ogTitle) {
-    add("pass", "X falls back to the og: tags", "twitter:title", "No twitter:* overrides, which is fine — X reads og:title, og:description and og:image when they are missing.");
+    add("pass", "X falls back to the og: tags", "twitter:title", "No twitter:* overrides, which is fine: X reads og:title, og:description and og:image when they are missing.");
   }
 
   // --- search-side basics ----------------------------------------------
@@ -416,7 +416,7 @@ function buildChecks(data) {
   } else if (title.length > 60) {
     add("warn", "<title> is long for search", "title", `${title.length} characters. Google truncates around 60 in the blue link.`);
   } else {
-    add("pass", "<title> is set", "title", `${quote(title)} — ${title.length} characters.`);
+    add("pass", "<title> is set", "title", `${quote(title)}: ${title.length} characters.`);
   }
 
   if (!metaDesc) {
@@ -427,7 +427,7 @@ function buildChecks(data) {
 
   if (canonical) add("pass", "canonical is set", "link[rel=canonical]", canonical);
   if (ogLocale) add("pass", "og:locale is set", "og:locale", `"${ogLocale}".`);
-  else if (lang) add("pass", "html lang is set", "html[lang]", `"${lang}" — platforms use it to pick a locale when og:locale is absent.`);
+  else if (lang) add("pass", "html lang is set", "html[lang]", `"${lang}": platforms use it to pick a locale when og:locale is absent.`);
 
   // Only the tags a social card actually reads. Repeated verification and
   // analytics tags are normal and not this tool's business.
@@ -436,7 +436,7 @@ function buildChecks(data) {
     (key) => /^(og:|twitter:)/.test(key) || key === "description" ? !REPEATABLE.has(key) && allValues(tags, key).length > 1 : false,
   );
   if (duplicates.length) {
-    add("warn", "Duplicate meta tags", duplicates[0], `${duplicates.slice(0, 4).join(", ")} appear more than once. Crawlers pick one — usually the first — and which one is not guaranteed.`);
+    add("warn", "Duplicate meta tags", duplicates[0], `${duplicates.slice(0, 4).join(", ")} appear more than once. Crawlers pick one: usually the first: and which one is not guaranteed.`);
   }
 
   const order = { error: 0, warn: 1, pass: 2 };

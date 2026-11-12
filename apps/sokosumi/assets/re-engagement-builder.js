@@ -1,4 +1,4 @@
-/* /tools/re-engagement-builder — client-only. Nothing leaves the browser. */
+/* /tools/re-engagement-builder: client-only. Nothing leaves the browser. */
 (function () {
   "use strict";
   var tk = window.SokosumiToolKit;
@@ -35,7 +35,7 @@
       {
         day: "Day 1",
         subject: "Still thinking about " + topic + "?",
-        angle: "Friendly reminder of the value — reference: \"" + hook + "\"",
+        angle: "Friendly reminder of the value: reference: \"" + hook + "\"",
       },
       {
         day: "Day 4",
@@ -45,7 +45,7 @@
       {
         day: "Day 8",
         subject: "Should we close your account?",
-        angle: "Last-chance email with a clear deadline — give a real reason to act now, not just urgency for its own sake.",
+        angle: "Last-chance email with a clear deadline: give a real reason to act now, not just urgency for its own sake.",
       },
     ];
   }
@@ -62,7 +62,7 @@
           (i + 1) +
           "</span><h3>" +
           tk.esc(email.day) +
-          " — " +
+          ": " +
           tk.esc(email.subject) +
           "</h3><p>" +
           tk.esc(email.angle) +

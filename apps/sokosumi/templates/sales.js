@@ -1,4 +1,4 @@
-// /talk-to-sales — the sales enquiry form and its confirmation state.
+// /talk-to-sales: the sales enquiry form and its confirmation state.
 // Plain HTML form posting to /api/sales-inquiry: it works with JavaScript
 // disabled, and the endpoint redirects back here with ?sent=1 or ?error=.
 

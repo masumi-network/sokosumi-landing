@@ -1,4 +1,4 @@
-// /compare/<a>-vs-<b> — third-party style pages comparing two tools we do not
+// /compare/<a>-vs-<b>: third-party style pages comparing two tools we do not
 // sell, with a clearly separated note that Sokosumi is a third option when the
 // team wants finished marketing work. Content lives in
 // content/compare-pairs/<slug>.json (see _BRIEF.md there): English written
@@ -122,7 +122,7 @@ async function detail(ctx) {
       noindex: !translated,
       og: { type: "pair", a: p.a.name, b: p.b.name, logoA: logoUrl(p.a.key), logoB: logoUrl(p.b.key), title: c.title, sub: "" },
       // published comes from the file's first commit, checked from the last
-      // fact review — the two are genuinely different dates and Google's
+      // fact review: the two are genuinely different dates and Google's
       // Article result wants both.
       article: { published: p.published || undefined, modified: p.checked || undefined },
       jsonld: [

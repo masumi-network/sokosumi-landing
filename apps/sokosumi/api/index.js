@@ -4,7 +4,7 @@
 // ../server.js). That file defines the handler at module scope and exports it;
 // importing it does NOT start a listener, so Vercel can invoke handler(req,res)
 // per request. Railway and `node server.js` still run it as a long-running
-// server — same code, two hosts.
+// server: same code, two hosts.
 //
 // The catch-all rewrite in vercel.json sends every path here, so this one
 // function serves pages, assets, the JSON APIs, redirects, sitemap and the

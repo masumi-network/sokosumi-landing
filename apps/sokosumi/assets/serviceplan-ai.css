@@ -29,7 +29,7 @@ body:has(.sp-page) {
   --sp-font-display: var(--display);
   --sp-font-body: var(--sans);
   /* One type ladder for the whole dossier. Four body steps and four heading
-     steps — nothing else. A surface that wants "slightly smaller" picks the
+     steps: nothing else. A surface that wants "slightly smaller" picks the
      step below, it does not invent 12.5px. */
   --sp-xs: 12px;      /* uppercase eyebrows, numbers, table heads */
   --sp-sm: 14px;      /* captions, meta, secondary copy */
@@ -2395,7 +2395,7 @@ a.sp-pn:hover strong {
   }
 }
 
-/* official House of Communication lockups are ~10:1 — give them their width */
+/* official House of Communication lockups are ~10:1: give them their width */
 .sp-hero-logo:not(.sp-logo-count-2):not(.sp-logo-count-3):not(:has(> .sp-glyph)) { width: auto; padding: 0; background: none; border: 0; height: auto; }
 .sp-hero-logo:not(.sp-logo-count-2):not(.sp-logo-count-3) > img { width: auto; max-width: 260px; height: 25px; object-position: left center; }
 .sp-chapter-logo:not(.sp-logo-count-2):not(.sp-logo-count-3) > img { width: auto; max-width: 200px; height: 20px; object-position: left center; }

@@ -8,22 +8,22 @@ const FAQ = [
   {
     question: "What does this LinkedIn post checker look at?",
     answer:
-      "Paste a post — as text, or as a link to one that's already live — and it reads the text for five things: hook quality (does the first line earn a click before \"see more\" cuts it), CTA clarity (is there a specific ask at the end), engagement-shaping formatting (length, paragraph rhythm, outbound links, hashtag count, tone), readability (sentence length, active vs passive voice), and specificity and credibility (concrete numbers, cited evidence).",
+      "Paste a post: as text, or as a link to one that's already live: and it reads the text for five things: hook quality (does the first line earn a click before \"see more\" cuts it), CTA clarity (is there a specific ask at the end), engagement-shaping formatting (length, paragraph rhythm, outbound links, hashtag count, tone), readability (sentence length, active vs passive voice), and specificity and credibility (concrete numbers, cited evidence).",
   },
   {
     question: "How does the LinkedIn link option work?",
     answer:
-      "Paste the URL of a public LinkedIn post — a linkedin.com/posts/... or /feed/update/... link — and we read the post's text server-side, the same way a search engine would, then score it exactly like pasted text. No login, no LinkedIn account connected. It only works on posts LinkedIn serves publicly; a post visible to connections only, or one that's been removed, will fail and you can paste its text instead.",
+      "Paste the URL of a public LinkedIn post: a linkedin.com/posts/... or /feed/update/... link: and we read the post's text server-side, the same way a search engine would, then score it exactly like pasted text. No login, no LinkedIn account connected. It only works on posts LinkedIn serves publicly; a post visible to connections only, or one that's been removed, will fail and you can paste its text instead.",
   },
   {
     question: "Is this actually predicting engagement?",
     answer:
-      "No — it isn't a black-box engagement predictor and doesn't claim to know how your specific audience will react. It checks concrete, well-documented signals that correlate with reach on LinkedIn-style feeds: whether the hook survives truncation, whether there's a real call to action, whether the post has an outbound link (a known reach suppressor), formatting rhythm, and hashtag count. Think of it as a linter for your post, not a crystal ball.",
+      "No: it isn't a black-box engagement predictor and doesn't claim to know how your specific audience will react. It checks concrete, well-documented signals that correlate with reach on LinkedIn-style feeds: whether the hook survives truncation, whether there's a real call to action, whether the post has an outbound link (a known reach suppressor), formatting rhythm, and hashtag count. Think of it as a linter for your post, not a crystal ball.",
   },
   {
     question: "Does it work for platforms other than LinkedIn?",
     answer:
-      "The hook-truncation length is tuned for LinkedIn's B2B feed specifically. The rest — a clear CTA, short skimmable paragraphs, not burying the post under hashtags, watching for shouting — applies to short-form posts on most platforms.",
+      "The hook-truncation length is tuned for LinkedIn's B2B feed specifically. The rest: a clear CTA, short skimmable paragraphs, not burying the post under hashtags, watching for shouting: applies to short-form posts on most platforms.",
   },
   {
     question: "Is my post text stored anywhere?",
@@ -47,7 +47,7 @@ function render() {
     operatingSystem: "Web",
     url: `${SITE}${PATH}`,
     description:
-      "A free LinkedIn post checker that scores a pasted LinkedIn post — or a link to one that's already live — on hook quality, CTA clarity, engagement-shaping formatting, readability, and specificity/credibility.",
+      "A free LinkedIn post checker that scores a pasted LinkedIn post: or a link to one that's already live: on hook quality, CTA clarity, engagement-shaping formatting, readability, and specificity/credibility.",
     featureList: [
       "Score a draft by pasting its text, or a live post by pasting its link",
       "Hook quality scoring against LinkedIn's truncation point",
@@ -72,9 +72,9 @@ function render() {
 
   return (
     pageStart({
-      title: "LinkedIn post checker — score your post before you publish | Sokosumi",
+      title: "LinkedIn post checker: score your post before you publish | Sokosumi",
       description:
-        "Free LinkedIn post checker. Paste a LinkedIn post — or a link to one already live — and get scores on hook quality, CTA clarity, engagement-shaping formatting, readability, and specificity/credibility. No sign-up.",
+        "Free LinkedIn post checker. Paste a LinkedIn post: or a link to one already live: and get scores on hook quality, CTA clarity, engagement-shaping formatting, readability, and specificity/credibility. No sign-up.",
       path: PATH,
       englishOnly: true,
       breadcrumb: crumbs,
@@ -134,12 +134,12 @@ function render() {
 
     <section class="psc-section" aria-labelledby="psc-how">
       <h2 id="psc-how">What gets scored</h2>
-      <p class="psc-sub">Five dimensions, each built from concrete, checkable signals — not a guess at what a reader will feel.</p>
+      <p class="psc-sub">Five dimensions, each built from concrete, checkable signals, not a guess at what a reader will feel.</p>
       <div class="psc-cards">
-        <div class="psc-card"><h3>Hook quality</h3><p>Does the first line fit before LinkedIn's "see more" truncation, and does it give a reader a reason to keep reading — a question, a number, a claim — rather than opening with a cliché.</p></div>
-        <div class="psc-card"><h3>CTA clarity</h3><p>Is there one clear, specific ask near the end — comment, reply, follow, tag someone — or does the post just stop.</p></div>
-        <div class="psc-card"><h3>Engagement potential</h3><p>Length, paragraph rhythm, outbound links in the body, hashtag count, and tone — the formatting signals that shape how far a post travels.</p></div>
-        <div class="psc-card"><h3>Readability</h3><p>Sentence length and active-vs-passive voice — how fast the post reads in a scrolling feed.</p></div>
+        <div class="psc-card"><h3>Hook quality</h3><p>Does the first line fit before LinkedIn's "see more" truncation, and does it give a reader a reason to keep reading: a question, a number, a claim, rather than opening with a cliché.</p></div>
+        <div class="psc-card"><h3>CTA clarity</h3><p>Is there one clear, specific ask near the end: comment, reply, follow, tag someone: or does the post just stop.</p></div>
+        <div class="psc-card"><h3>Engagement potential</h3><p>Length, paragraph rhythm, outbound links in the body, hashtag count, and tone: the formatting signals that shape how far a post travels.</p></div>
+        <div class="psc-card"><h3>Readability</h3><p>Sentence length and active-vs-passive voice: how fast the post reads in a scrolling feed.</p></div>
         <div class="psc-card"><h3>Specificity &amp; credibility</h3><p>Does it back its claim with a concrete number or cited evidence, or ask the reader to take it on faith.</p></div>
       </div>
     </section>

@@ -1,4 +1,4 @@
-// /compare (index) and /compare/<slug> (detail) — product-vs-product
+// /compare (index) and /compare/<slug> (detail): product-vs-product
 // comparison pages in the HubSpot style (hubspot.com/comparisons/…): a vs
 // hero, an at-a-glance strip, one big feature table with Sokosumi
 // highlighted, a "why teams switch" grid, pricing side by side, FAQ, CTA.
@@ -6,7 +6,7 @@
 // Content comes from the CMS `comparisons` collection when a doc exists.
 // Until those are written, PLACEHOLDERS below ships the same page shape with
 // local data. ⚠ The competitor cells are deliberately hedged ("Varies",
-// "Partial") — verify every claim against the competitor's current product
+// "Partial"): verify every claim against the competitor's current product
 // before publishing real copy, and replace the placeholder quotes/FAQ.
 
 const shell = require("./shell");
@@ -61,7 +61,7 @@ const GROUPS = [
 ];
 // "<tool> alternatives" pages. A different question from the X-vs-Y pages
 // above: not "how do these two differ" but "what else is in this field".
-// English-only — German demand for these terms is 0-60/month (see
+// English-only: German demand for these terms is 0-60/month (see
 // scripts/cms-alternatives.mjs for the validation).
 const ALTERNATIVES = [
   { href: "/alternatives/copy-ai", name: "Copy.ai alternatives", note: "Copy.ai, Jasper, Writer, HubSpot Breeze and Sokosumi on price, metering and hosting." },
@@ -205,7 +205,7 @@ function different(name, items) {
 // Sibling comparisons, drawn from the same GROUPS bucket as this page.
 //
 // GSC 2026-08-31: /compare/* is 42 pages taking 706 impressions a week at an
-// average position of 8.9 — the best-ranking cluster on the site, on keywords
+// average position of 8.9: the best-ranking cluster on the site, on keywords
 // worth 3.3K-7.6K US searches a month at KD 8-23. And each of those pages
 // carried exactly two internal links, both to the same three static cards
 // below, identical on all 42. The cluster had no internal shape at all: no
@@ -283,7 +283,7 @@ function neighbours(slug, groups, universe, kind) {
   // Inside the group, same-kind first. The X-vs-Y pages are the ones ranking
   // (codex-vs-claude-code at position 8.8 on 7.6K searches), and left to
   // alphabetical order they linked only to Sokosumi-vs-X pages and never to
-  // each other — so the cluster that actually ranks stayed unconnected.
+  // each other: so the cluster that actually ranks stayed unconnected.
   const rank = (x) => (kind && x.kind === kind ? 0 : 1);
   const same = universe.filter((x) => x.slug !== slug && hit(x)).sort((a, b) => rank(a) - rank(b));
   const rest = universe.filter((x) => x.slug !== slug && !hit(x));
@@ -316,7 +316,7 @@ async function detail(ctx) {
   if (!doc) return pairs.detail(ctx);
   const name = doc.competitor || doc.title;
 
-  // CMS layout: hero, table, "in practice" grid, faq, cta band — in that order.
+  // CMS layout: hero, table, "in practice" grid, faq, cta band: in that order.
   const body = [...(doc.layout || [])];
   const bandBlock = body.length && body[body.length - 1].blockType === "ctaBand" ? body.pop() : null;
   const hero = body.filter((b) => b.blockType === "hero");

@@ -1,4 +1,4 @@
-/* /tools/orphan-pages — client. Uses wireSimple() + renderGroups().
+/* /tools/orphan-pages: client. Uses wireSimple() + renderGroups().
  */
 (function () {
   "use strict";

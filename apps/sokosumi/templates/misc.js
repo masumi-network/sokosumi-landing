@@ -53,7 +53,7 @@ function serverError() {
 
 // The CMS-outage page: content exists but cannot be fetched right now. Sent
 // with HTTP 503 + Retry-After (see server.js) so crawlers treat it as
-// temporary and keep the URL indexed — never a 404, never a bare 500.
+// temporary and keep the URL indexed, never a 404, never a bare 500.
 function serviceUnavailable() {
   return (
     pageStart({
@@ -72,7 +72,7 @@ function serviceUnavailable() {
 }
 
 
-// /llms.txt — the agent-facing index of the site (llmstxt.org format).
+// /llms.txt: the agent-facing index of the site (llmstxt.org format).
 // Pages also answer `Accept: text/markdown` with a markdown rendering.
 function llmsTxt() {
   return `# Sokosumi
@@ -91,7 +91,7 @@ Do not use it for: general chat, coding assistants, or non-marketing workloads.
 
 ## How Sokosumi differs from ChatGPT, Claude and Claude Code
 
-ChatGPT and Claude are general assistants that one person prompts; Claude Code (like Codex or Cursor) is an agent for developers working in a codebase. Sokosumi is a marketplace of named coworkers, each built and operated by a vendor, that a marketing team briefs in plain language and that return finished files to a shared task board. Credits only go on work that runs; general assistants charge a flat seat. Several coworkers run on OpenAI or Anthropic models — the model is not what you buy. Side-by-side pages: https://www.sokosumi.com/compare
+ChatGPT and Claude are general assistants that one person prompts; Claude Code (like Codex or Cursor) is an agent for developers working in a codebase. Sokosumi is a marketplace of named coworkers, each built and operated by a vendor, that a marketing team briefs in plain language and that return finished files to a shared task board. Credits only go on work that runs; general assistants charge a flat seat. Several coworkers run on OpenAI or Anthropic models: the model is not what you buy. Side-by-side pages: https://www.sokosumi.com/compare
 
 ## Not to be confused with
 
@@ -113,7 +113,7 @@ Humans sign up at https://app.sokosumi.com/signup (free plan, no card).
 
 ## Serviceplan Group and AI (parent company dossier)
 
-- [Serviceplan Group and AI](https://www.sokosumi.com/serviceplan-ai): sourced overview of the House of AI — Insight.AI, Creative.AI, Activate.AI, Agentic.AI on a Global Data Platform — with 13 chapters on Serviceplan, Mediaplus, Plan.Net, the Masumi/Kodosumi/Sokosumi stack, AI coworkers, cases, partnerships and a dated timeline. Every claim links to a primary source.
+- [Serviceplan Group and AI](https://www.sokosumi.com/serviceplan-ai): sourced overview of the House of AI: Insight.AI, Creative.AI, Activate.AI, Agentic.AI on a Global Data Platform: with 13 chapters on Serviceplan, Mediaplus, Plan.Net, the Masumi/Kodosumi/Sokosumi stack, AI coworkers, cases, partnerships and a dated timeline. Every claim links to a primary source.
 
 ## Free tools for marketing
 
@@ -127,7 +127,7 @@ Humans sign up at https://app.sokosumi.com/signup (free plan, no card).
 ## Developer resources
 
 - [Sokosumi API documentation](https://api.sokosumi.com): the Sokosumi REST API reference
-- MCP server: https://mcp.sokosumi.com/mcp (Streamable HTTP; OAuth — authenticate, then list tools)
+- MCP server: https://mcp.sokosumi.com/mcp (Streamable HTTP; OAuth: authenticate, then list tools)
 - [Contact](https://www.sokosumi.com/contact) · sales and support
 `;
 }
@@ -176,7 +176,7 @@ function press() {
 }
 
 function robots() {
-  // The JSON endpoints exist to feed the landing page, not to be indexed —
+  // The JSON endpoints exist to feed the landing page, not to be indexed:
   // /api/catalog alone is 250 KB of duplicate content. The form confirmation
   // and error states are the same page with a query string; letting them be
   // crawled just splits signals across near-identical URLs.
@@ -299,7 +299,7 @@ async function sitemap() {
   for (const p of pages) urls.add(`/${p.slug}`);
   for (const slug of require("./legal").SLUGS) urls.add(`/legal/${slug}`);
 
-  // Both locales of every page, each carrying the full hreflang cluster —
+  // Both locales of every page, each carrying the full hreflang cluster:
   // Google wants the alternates repeated on every member of the pair.
   const dePath = (u) => (u === "/" ? "/de" : `/de${u}`);
   const entry = (loc, u) => {

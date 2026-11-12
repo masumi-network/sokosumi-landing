@@ -1,7 +1,7 @@
 // Fetching arbitrary user-supplied URLs, safely.
 //
-// Both free tools point our server at a URL a stranger typed — /tools/og-checker
-// at their page, /tools/llms-txt at their llms.txt — which makes this the SSRF
+// Both free tools point our server at a URL a stranger typed: /tools/og-checker
+// at their page, /tools/llms-txt at their llms.txt: which makes this the SSRF
 // surface for the whole site. It lived inside lib/ogCheck.js until the second
 // tool needed it; two copies of a security boundary is one copy too many.
 //
@@ -82,7 +82,7 @@ function normalizeUrl(value) {
   return /^https?:\/\//i.test(v) ? v : "https://" + v;
 }
 
-// "ok" | "blocked" | "dns" — the caller needs to tell "this host does not
+// "ok" | "blocked" | "dns": the caller needs to tell "this host does not
 // exist" from "this host resolves somewhere we refuse to connect to", because
 // those are very different messages to put in front of a user.
 async function resolvesPublicly(hostname) {

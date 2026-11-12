@@ -1,6 +1,6 @@
 // Curated pre-built tasks for Sokosumi AI coworkers (public marketing content,
 // ported from the parked src/data/tasks.ts at commit 83d1eeb).
-// coworkerSlug matches slugs returned by /api/catalog — NEVER wire this to the
+// coworkerSlug matches slugs returned by /api/catalog: NEVER wire this to the
 // Core API's /v1/tasks (that endpoint returns private user tasks).
 window.SOKOSUMI_TASKS = [
   {
@@ -8,7 +8,7 @@ window.SOKOSUMI_TASKS = [
     title: "Competitive analysis",
     category: "Market research",
     output: "PDF report",
-    short: "A sourced, side-by-side look at your top competitors — how they position, price, and win — plus the gaps you can move on.",
+    short: "A sourced, side-by-side look at your top competitors: how they position, price, and win: plus the gaps you can move on.",
     coworkerSlug: "elena",
   },
   {
@@ -16,7 +16,7 @@ window.SOKOSUMI_TASKS = [
     title: "Audience deep-dive",
     category: "Market research",
     output: "PDF report",
-    short: "A grounded profile of your target audience — needs, objections, and the messages that move them.",
+    short: "A grounded profile of your target audience: needs, objections, and the messages that move them.",
     coworkerSlug: "hannah",
   },
   {
@@ -24,7 +24,7 @@ window.SOKOSUMI_TASKS = [
     title: "Campaign brief",
     category: "Content creation",
     output: "Document",
-    short: "A ready-to-use brief — positioning, channels, and messaging pillars — so the team can execute without guesswork.",
+    short: "A ready-to-use brief: positioning, channels, and messaging pillars: so the team can execute without guesswork.",
     coworkerSlug: "hannah",
   },
   {
@@ -32,7 +32,7 @@ window.SOKOSUMI_TASKS = [
     title: "Trend report",
     category: "Market research",
     output: "Slides",
-    short: "A scan of what's gaining traction in your market — signals, sources, and what each one means for you.",
+    short: "A scan of what's gaining traction in your market: signals, sources, and what each one means for you.",
     coworkerSlug: "hannah",
   },
   {
@@ -40,7 +40,7 @@ window.SOKOSUMI_TASKS = [
     title: "Project plan from a goal",
     category: "Planning",
     output: "Document",
-    short: "Turns a fuzzy goal into a sequenced plan — milestones, owners, and dependencies mapped so everyone knows what happens next.",
+    short: "Turns a fuzzy goal into a sequenced plan: milestones, owners, and dependencies mapped so everyone knows what happens next.",
     coworkerSlug: "elena",
   },
   {
@@ -48,7 +48,7 @@ window.SOKOSUMI_TASKS = [
     title: "Weekly status summary",
     category: "Reporting",
     output: "Document",
-    short: "A clear read on where every workstream stands — what shipped, what's at risk, and what's next — in one shareable update.",
+    short: "A clear read on where every workstream stands: what shipped, what's at risk, and what's next: in one shareable update.",
     coworkerSlug: "elena",
   },
   {
@@ -56,7 +56,7 @@ window.SOKOSUMI_TASKS = [
     title: "Kickoff deck",
     category: "Presentations",
     output: "Slides",
-    short: "A crisp kickoff deck — goals, scope, timeline, and owners — ready to present to stakeholders.",
+    short: "A crisp kickoff deck: goals, scope, timeline, and owners: ready to present to stakeholders.",
     coworkerSlug: "elena",
   },
   {
@@ -64,7 +64,7 @@ window.SOKOSUMI_TASKS = [
     title: "Code review",
     category: "Engineering",
     output: "Document",
-    short: "A thorough pass over a pull request — bugs, edge cases, and security risks flagged, each with a concrete fix.",
+    short: "A thorough pass over a pull request: bugs, edge cases, and security risks flagged, each with a concrete fix.",
     coworkerSlug: "alex",
   },
   {
@@ -72,7 +72,7 @@ window.SOKOSUMI_TASKS = [
     title: "Scaffold a feature",
     category: "Engineering",
     output: "Code",
-    short: "Turns a short spec into a working scaffold — files, types, and tests laid out so you can start building.",
+    short: "Turns a short spec into a working scaffold: files, types, and tests laid out so you can start building.",
     coworkerSlug: "alex",
   },
   {
@@ -80,7 +80,7 @@ window.SOKOSUMI_TASKS = [
     title: "Tech stack deep-dive",
     category: "Engineering",
     output: "PDF report",
-    short: "A clear-eyed comparison of the tools and frameworks for the job — trade-offs, risks, and a recommendation.",
+    short: "A clear-eyed comparison of the tools and frameworks for the job: trade-offs, risks, and a recommendation.",
     coworkerSlug: "alex",
   },
 ];

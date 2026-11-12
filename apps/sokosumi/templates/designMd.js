@@ -18,14 +18,14 @@ const FAQ = [
   {
     question: "Which AI coding agents can use DESIGN.md?",
     answer:
-      "DESIGN.md is designed as durable repository context for coding agents and tools. Add the file to your project and tell your agent—such as Claude Code, Cursor, Codex, Copilot, or Gemini CLI—to follow it when implementing interface work.",
+      "DESIGN.md is designed as durable repository context for coding agents and tools. Add the file to your project and tell your agent: such as Claude Code, Cursor, Codex, Copilot, or Gemini CLI: to follow it when implementing interface work.",
   },
 ];
 
 async function render() {
   // The analysis pages were reachable only after this gallery had been filled by
   // script, which left 100+ indexable pages with no link to them in the HTML.
-  // They are rendered server-side and collapsed with CSS — the same pattern the
+  // They are rendered server-side and collapsed with CSS: the same pattern the
   // agent and guide lists use, so a crawler sees them while a reader gets twelve.
   //
   // Bounded, though. The archive is past a thousand brands, and rendering all of
@@ -289,7 +289,7 @@ async function analysis(ctx) {
   return (
     pageStart({
       // The brand name is variable-length and the descriptor was fixed, so a
-      // long name pushed the title well past what Google renders — the worst
+      // long name pushed the title well past what Google renders: the worst
       // was 101 characters. Take the longest variant that still fits 60, so
       // the name and "DESIGN.md" (the part someone searches) always survive
       // and only the tail is sacrificed.

@@ -12,7 +12,7 @@
 // sokosumi.com is DR 33, so both SERPs have pages ranking at or below our own
 // authority. Rejected: `jasper alternatives` (250 vol but SERP DR floor 48
 // with G2 at #1), `lindy ai alternatives` (DR floor 54), `motion alternatives`
-// (ambiguous term, Reddit at #1), and `canva`/`zapier`/`n8n alternatives` —
+// (ambiguous term, Reddit at #1), and `canva`/`zapier`/`n8n alternatives`:
 // high volume, wrong intent: those searchers want a design tool or an
 // automation platform, not a marketplace. `writesonic alternatives` scored
 // well (250 vol, DR floor 27) but we hold no sourced research on Writesonic,
@@ -55,7 +55,7 @@ const SOKO = {
   price: "Free (250 credits per seat); Starter €25, Standard €75, Pro €200 per seat monthly",
   free: "Free plan, 250 credits per seat",
   eu: "Operated in the EU; each coworker states its own model and data handling",
-  metered: "Credits per task run — catalogue tasks cost 30–1,850 credits ($0.30–$18.50)",
+  metered: "Credits per task run: catalogue tasks cost 30–1,850 credits ($0.30–$18.50)",
 };
 
 const PAGES = [
@@ -92,7 +92,7 @@ const PAGES = [
         "28-day trial of Customer and Prospecting Agents on Pro and Enterprise"]],
       ["EU hosting", [SOKO.eu,
         "Not published",
-        "No — data hosted in US data centres",
+        "No: data hosted in US data centres",
         "Not published; single-tenant deployment on Enterprise",
         "CRM data in Frankfurt if chosen at setup, but Breeze AI features run outside the EU"]],
       ["What is metered", [SOKO.metered,
@@ -103,14 +103,14 @@ const PAGES = [
     ],
     pick: [
       ["Stay on Copy.ai", "You are on Chat at $29, five seats covers you, and you are not hitting workflow credit limits. Nothing below is worth a migration for that."],
-      ["Jasper", "Writing volume is the job and brand consistency matters more than hosting. Note US-only data centres — that decides it for some EU teams before anything else does."],
+      ["Jasper", "Writing volume is the job and brand consistency matters more than hosting. Note US-only data centres: that decides it for some EU teams before anything else does."],
       ["Writer", "You need governance, single-tenant deployment and a procurement process to point at. Expect an enterprise contract rather than a card."],
-      ["HubSpot Breeze", "Your CRM is already HubSpot and you want agents switched on rather than built. Outcome pricing is unusually legible — you pay per resolved conversation, not per seat."],
+      ["HubSpot Breeze", "Your CRM is already HubSpot and you want agents switched on rather than built. Outcome pricing is unusually legible: you pay per resolved conversation, not per seat."],
       ["Sokosumi", "You want a finished deliverable rather than a writing surface: a competitor memo, an audience deck, a launch content set. Priced per task, so one job costs a few dollars rather than a tier."],
     ],
     faq: [
-      ["Does Copy.ai have a free plan?", `No free plan was shown on the Copy.ai pricing page when we checked on ${CHECKED}. There is a paid Chat tier at $29 a month covering 5 seats. Verify before you plan around it — pricing pages move.`],
-      ["Why is the jump from $29 to $1,000 such a problem?", "Because workflows — the reason most teams want Copy.ai — sit on Growth. There is no mid-priced tier, so a team of ten that needs workflows pays for a plan sized at 75 seats. That single gap drives most of the alternative-shopping."],
+      ["Does Copy.ai have a free plan?", `No free plan was shown on the Copy.ai pricing page when we checked on ${CHECKED}. There is a paid Chat tier at $29 a month covering 5 seats. Verify before you plan around it: pricing pages move.`],
+      ["Why is the jump from $29 to $1,000 such a problem?", "Because workflows: the reason most teams want Copy.ai: sit on Growth. There is no mid-priced tier, so a team of ten that needs workflows pays for a plan sized at 75 seats. That single gap drives most of the alternative-shopping."],
       ["Does Copy.ai host in the EU?", "Not published. A SOC 2 report is available. If EU hosting is a procurement requirement, get it in writing rather than inferring it from a trust page."],
       ["Is Sokosumi a replacement for Copy.ai?", "Only if what you want is a finished file. Copy.ai is a surface you write in; Sokosumi is a marketplace where you brief a named coworker and a deck, report or content set comes back. If you want to sit and write with AI assistance, Copy.ai or Jasper is the closer fit."],
     ],
@@ -138,7 +138,7 @@ const PAGES = [
         "Individuals wanting a ready assistant in Slack, email and calendar"]],
       ["Price", [SOKO.price,
         "Free $0; Standard $20/mo (4,000 credits); Customizable $40 (8,000); Extended $200 (40,000)",
-        "Free (100 daily credits); Plus from 10,000 credits, Pro from 125,000 — dollar prices shown only after signup",
+        "Free (100 daily credits); Plus from 10,000 credits, Pro from 125,000: dollar prices shown only after signup",
         "Free $0; Pro $19/mo annual or $29 monthly; Team $234 annual or $349 monthly",
         "Plus $29.99, Pro $99.99, Max $199.99 per user monthly; Enterprise custom"]],
       ["Free plan or trial", [SOKO.free,
@@ -154,15 +154,15 @@ const PAGES = [
       ["What happens when a task fails", ["You are charged for the task run; the roster and price are visible before you start",
         "Failed multi-step tasks reported with no refund",
         "Failed tasks are still charged; credits do not roll over",
-        "Metered in actions — 200, 2,500 or 7,000 a month, plus top-ups",
+        "Metered in actions: 200, 2,500 or 7,000 a month, plus top-ups",
         "Credits per user: 3,000 / 15,000 / 35,000 a month, by task size"]],
     ],
     pick: [
       ["Stay on Manus", "The free tier's 300 daily credits covers your usage, and long autonomous runs are exactly the job. The ownership question is worth watching, not necessarily acting on."],
-      ["Genspark", "You mainly want finished slides and docs. Note that dollar prices only appear after signup and failed tasks are still charged — check the credit maths before committing."],
+      ["Genspark", "You mainly want finished slides and docs. Note that dollar prices only appear after signup and failed tasks are still charged: check the credit maths before committing."],
       ["Relevance AI", "You want to build and operate your own agents, and you need to choose your data region up front. It is the only tool here that lets you pick EU/UK hosting at signup on a self-serve plan."],
       ["Lindy", "The assistant should live in Slack, email and calendar rather than in its own workspace. There is no free plan, so budget for a paid seat from day one."],
-      ["Sokosumi", "You want a specific marketing deliverable rather than a general-purpose agent — and you want to see the price of a job before it runs. Tasks are priced individually, from $0.30 to $18.50."],
+      ["Sokosumi", "You want a specific marketing deliverable rather than a general-purpose agent: and you want to see the price of a job before it runs. Tasks are priced individually, from $0.30 to $18.50."],
     ],
     faq: [
       ["What happened to Manus in 2026?", `Meta's roughly $2bn purchase was blocked by Chinese regulators in April 2026 and Manus is returning to independent operation. The process involved deleting user data created since 29 December 2025. Checked ${CHECKED}.`],
@@ -184,9 +184,9 @@ function layout(p) {
       rows: p.rows.map(([label, cells]) => ({ label, note: null, cells: cells.map((value) => ({ value })) })),
     },
     { blockType: "featureGrid", heading: "Which one to pick", items: p.pick.map(([title, text]) => ({ title, text })) },
-    { blockType: "richText", content: lexical(`Every price and hosting claim on this page was checked on ${CHECKED} against each vendor's own pricing and trust pages, except where marked as coming from a third-party tracker. Vendors change pricing without notice — verify before you buy.`) },
+    { blockType: "richText", content: lexical(`Every price and hosting claim on this page was checked on ${CHECKED} against each vendor's own pricing and trust pages, except where marked as coming from a third-party tracker. Vendors change pricing without notice: verify before you buy.`) },
     { blockType: "faq", heading: `${p.tool} alternatives: common questions`, items: p.faq.map(([question, answer]) => ({ question, answer })) },
-    { blockType: "ctaBand", heading: "Brief a coworker instead.", subheading: "The free plan carries 250 credits per seat — enough to run a real task and compare the output yourself.", ctaLabel: "Sign Up", ctaHref: SIGNUP },
+    { blockType: "ctaBand", heading: "Brief a coworker instead.", subheading: "The free plan carries 250 credits per seat: enough to run a real task and compare the output yourself.", ctaLabel: "Sign Up", ctaHref: SIGNUP },
   ];
 }
 

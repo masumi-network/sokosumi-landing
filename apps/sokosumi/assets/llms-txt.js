@@ -1,4 +1,4 @@
-/* /tools/llms-txt — client.
+/* /tools/llms-txt: client.
  *
  * The server fetches, parses and judges; this renders. Three views: the parsed
  * outline of the file, the link table with each link's status, and the raw
@@ -66,7 +66,7 @@
     var out = '<div class="lt-outline">';
     out +=
       '<div class="lt-outline-row"><span class="lt-tag">H1</span><div>' +
-      (p.title ? "<strong>" + esc(p.title) + "</strong>" : '<em class="lt-missing">missing — this is the one required part</em>') +
+      (p.title ? "<strong>" + esc(p.title) + "</strong>" : '<em class="lt-missing">missing: this is the one required part</em>') +
       "</div></div>";
     out +=
       '<div class="lt-outline-row"><span class="lt-tag">&gt;</span><div>' +

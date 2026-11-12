@@ -255,7 +255,7 @@
 }
 
 /* Steps carry their own state now. Marking only the current one threw away
- * the thing a stepper is for — the sense that something is behind you. */
+ * the thing a stepper is for: the sense that something is behind you. */
 .dm-progress li[data-state="active"],
 .dm-progress li[data-state="done"] {
   color: var(--foreground);
@@ -1197,11 +1197,11 @@
   color: var(--foreground);
 }
 /* The card's own display:grid outranks the UA [hidden] rule, so filtering had
-   to hide cards explicitly — otherwise search/category filters did nothing. */
+   to hide cards explicitly: otherwise search/category filters did nothing. */
 .tools-list .tool-card[hidden] { display: none; }
 
 /* The preview stage. Light, hairlined, the same surface language as the rest
-   of the site — the old ink panel was the heaviest thing on the page and it
+   of the site: the old ink panel was the heaviest thing on the page and it
    framed both tools identically. */
 .tool-card-doc {
   display: grid;
@@ -1215,7 +1215,7 @@
   /* Every preview now sits on the same blue → dark-blue ramp the OG checker
      draws inside its own social-card shot (.tp-shot). The mock-ups above read
      against theme variables, so re-skinning them for the dark panel is just a
-     matter of overriding those variables here — a dark-glass palette. The two
+     matter of overriding those variables here: a dark-glass palette. The two
      previews that render a genuine white surface (the share card and the Google
      result) opt back out below so they stay true to life on the gradient. */
   background:
@@ -2079,7 +2079,7 @@
    past the first twelve they are hidden until "Show all". */
 .dm-gallery.is-collapsed > :nth-child(n + 13) { display: none; }
 
-/* /tools controls — search box on the left, category tabs filling the right. */
+/* /tools controls: search box on the left, category tabs filling the right. */
 .tools-controls {
   display: flex;
   align-items: center;
@@ -2121,7 +2121,7 @@
   color: var(--muted-foreground);
 }
 
-/* /tools category filter tabs — pill row under the search box. */
+/* /tools category filter tabs: pill row under the search box. */
 .tools-tabs {
   display: flex;
   flex-wrap: wrap;

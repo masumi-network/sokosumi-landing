@@ -4,7 +4,7 @@
  * "tk-" prefix so a dozen-plus analyzer/checker/generator tools don't each
  * carry their own near-identical 450-line stylesheet. A tool page that needs
  * a genuinely new shape (a table, a carousel) still gets its own small CSS
- * file layered on top of this one — this file only covers what's common.
+ * file layered on top of this one: this file only covers what's common.
  */
 
 .tk-tool-page {
@@ -249,7 +249,7 @@
   font-size: 14.5px;
 }
 
-/* Overall score gauge — a conic ring fills in proportion to the score, so the
+/* Overall score gauge: a conic ring fills in proportion to the score, so the
    headline number reads as a visual at a glance, not just text. */
 .tk-gauge {
   --tk-val: 0deg;
@@ -406,7 +406,7 @@
 }
 
 /* For tools whose per-check tag just repeats the dimension name, hide it and
-   left-align the title for a cleaner row. (Some tools use distinct sub-tags —
+   left-align the title for a cleaner row. (Some tools use distinct sub-tags:
    those keep the tag, so this is opt-in per tool, not global.) */
 .tk-dims-notag .tk-check-tag {
   display: none;
@@ -471,7 +471,7 @@
   color: #b02a2a;
 }
 
-/* Per-dimension score meter — a filled bar under the head so the score is
+/* Per-dimension score meter: a filled bar under the head so the score is
    visible without reading the number. Colour tracks the band. */
 .tk-dim-meter {
   height: 6px;
@@ -932,7 +932,7 @@
   font-weight: 500;
 }
 
-/* Whole-card links for the "Related tools" strip — the card is the hit target,
+/* Whole-card links for the "Related tools" strip: the card is the hit target,
    with the same hover lift as the icon feature cards. */
 .tk-card-link {
   display: block;
@@ -954,7 +954,7 @@
   line-height: 1.55;
 }
 
-/* Icon feature cards — scoped variant: an accent-tinted icon tile, a 3-up
+/* Icon feature cards: scoped variant: an accent-tinted icon tile, a 3-up
    grid and a subtle hover lift, so the "what gets checked" grid reads as a
    set of features rather than plain text boxes. */
 @media (min-width: 760px) {
@@ -963,8 +963,8 @@
   }
 }
 
-/* Any card with an icon gets the feature treatment — extra padding and a hover
-   lift — regardless of how many columns the grid uses (3-up for the AI search
+/* Any card with an icon gets the feature treatment: extra padding and a hover
+   lift: regardless of how many columns the grid uses (3-up for the AI search
    tool, 2×2 for the teardown). */
 .tk-card:has(.tk-card-icon) {
   padding: 24px 22px;

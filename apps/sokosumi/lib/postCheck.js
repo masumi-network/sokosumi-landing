@@ -1,12 +1,12 @@
 "use strict";
 
 // Deterministic social-post scorer for /tools/linkedin-post-checker. Given a
-// pasted post draft this scores five dimensions — hook quality, CTA clarity,
-// engagement-shaping formatting, readability, and specificity/credibility —
+// pasted post draft this scores five dimensions: hook quality, CTA clarity,
+// engagement-shaping formatting, readability, and specificity/credibility:
 // from static rules against the text alone. The scoring itself makes no network calls,
 // no LLM: every check here is a regex or a threshold, the same way
 // seoExtract.js and ogCheck.js score their own inputs. fetchPostText() below
-// is the one exception — it turns a public LinkedIn post URL into the same
+// is the one exception: it turns a public LinkedIn post URL into the same
 // plain text, for a post that's already live.
 
 const { safeFetch, readCapped, fetchErrorMessage } = require("./safeFetch");
@@ -49,7 +49,7 @@ const DIMENSION_WEIGHT = { hook: 20, cta: 15, engagement: 25, readability: 15, s
 const CREDIBILITY_PATTERN = /\bwe (surveyed|analyzed|studied|tracked)\b|according to|data (shows|from)|\b\d+% of\b|\bcase study\b|\bcustomers? (told|said)\b/i;
 
 // ---------------------------------------------------------------------------
-// Dimension builders — each returns an array of { level, title, tag, detail,
+// Dimension builders: each returns an array of { level, title, tag, detail,
 // weight }, the same shape (minus "weight") that ogCheck.js/llmsCheck.js use.
 
 function firstLine(text) {
@@ -66,19 +66,19 @@ function buildHookChecks(text) {
   const len = hook.length;
 
   if (!hook) {
-    add("error", "No hook", "hook", "The post doesn't open with a distinct first line — nothing to earn the click past \"see more\".", 2);
+    add("error", "No hook", "hook", "The post doesn't open with a distinct first line: nothing to earn the click past \"see more\".", 2);
   } else if (len < 15) {
-    add("warn", "Hook is very short", "hook", `"${hook}" — ${len} characters. Too thin to create curiosity before the fold.`, 2);
+    add("warn", "Hook is very short", "hook", `"${hook}": ${len} characters. Too thin to create curiosity before the fold.`, 2);
   } else if (len > HOOK_TRUNCATE) {
-    add("warn", "Hook runs past the fold", "hook", `${len} characters before the first line break. LinkedIn truncates around ${HOOK_TRUNCATE} characters on desktop, less on mobile — tighten the opening line.`, 2);
+    add("warn", "Hook runs past the fold", "hook", `${len} characters before the first line break. LinkedIn truncates around ${HOOK_TRUNCATE} characters on desktop, less on mobile: tighten the opening line.`, 2);
   } else {
-    add("pass", "Hook fits before the fold", "hook", `${len} characters — visible before "see more" cuts in.`, 2);
+    add("pass", "Hook fits before the fold", "hook", `${len} characters: visible before "see more" cuts in.`, 2);
   }
 
   if (hook && CLICHE_OPENERS.some((re) => re.test(hook))) {
     add("error", "Opens with a cliché", "hook", "\"Excited to announce\"-style openers are among the most-skipped lines on LinkedIn. Lead with the claim, the number, or the tension instead.", 3);
   } else if (hook && HOOK_TRIGGER.test(hook)) {
-    add("pass", "Hook has a trigger", "hook", "The opening line asks a question, states a number, or promises an explanation — a reason to keep reading.", 2);
+    add("pass", "Hook has a trigger", "hook", "The opening line asks a question, states a number, or promises an explanation: a reason to keep reading.", 2);
   } else if (hook) {
     add("warn", "Hook has no obvious trigger", "hook", "No question, number, or curiosity gap in the first line. Readers scroll past a flat statement.", 2);
   }
@@ -93,9 +93,9 @@ function buildCtaChecks(text) {
   const matches = CTA_PATTERNS.filter((re) => re.test(tail));
 
   if (matches.length === 0) {
-    add("error", "No call to action", "cta", "Nothing here asks for a response — no question, no \"comment/DM/follow\", nothing that invites a reply. Early replies are what the feed uses to decide who else sees this.", 3);
+    add("error", "No call to action", "cta", "Nothing here asks for a response, no question, no \"comment/DM/follow\", nothing that invites a reply. Early replies are what the feed uses to decide who else sees this.", 3);
   } else if (matches.length === 1) {
-    add("pass", "Clear call to action", "cta", "The close asks for one specific response — the easiest kind for a reader to act on.", 3);
+    add("pass", "Clear call to action", "cta", "The close asks for one specific response: the easiest kind for a reader to act on.", 3);
   } else {
     add("warn", "Multiple calls to action", "cta", `${matches.length} different asks stacked at the end. One clear ask converts better than several competing ones.`, 2);
   }
@@ -113,7 +113,7 @@ function buildEngagementChecks(text) {
   if (len < 300) {
     add("warn", "Post is short", "length", `${len} characters. Short posts can work, but there's often not enough here to build the dwell time the feed rewards.`, 2);
   } else if (len > 3000) {
-    add("warn", "Post is very long", "length", `${len} characters. Long-form can work — check the first two lines are doing the work of holding attention that far.`, 1);
+    add("warn", "Post is very long", "length", `${len} characters. Long-form can work: check the first two lines are doing the work of holding attention that far.`, 1);
   } else {
     add("pass", "Post length is in a solid range", "length", `${len} characters.`, 2);
   }
@@ -131,16 +131,16 @@ function buildEngagementChecks(text) {
   if (/https?:\/\/\S+/.test(trimmed)) {
     add("warn", "Contains an outbound link", "links", "LinkedIn's feed is well documented to suppress reach on posts with an outbound link in the body. Put the link in the first comment instead and say so in the post.", 2);
   } else {
-    add("pass", "No outbound link in the body", "links", "Nothing pulling attention — or reach — off the platform.", 1);
+    add("pass", "No outbound link in the body", "links", "Nothing pulling attention: or reach: off the platform.", 1);
   }
 
   const hashtags = trimmed.match(/#\w+/g) || [];
   if (hashtags.length === 0) {
     add("warn", "No hashtags", "hashtags", "A few relevant hashtags help the post surface outside your immediate network.", 1);
   } else if (hashtags.length > 8) {
-    add("warn", "Too many hashtags", "hashtags", `${hashtags.length} hashtags. Past 5 or so it reads as spam rather than topic-tagging — 3–5 relevant tags is the commonly cited sweet spot.`, 1);
+    add("warn", "Too many hashtags", "hashtags", `${hashtags.length} hashtags. Past 5 or so it reads as spam rather than topic-tagging: 3–5 relevant tags is the commonly cited sweet spot.`, 1);
   } else {
-    add("pass", "Hashtags present", "hashtags", `${hashtags.length} hashtag(s)${hashtags.length >= 3 && hashtags.length <= 5 ? " — in the commonly cited sweet spot." : "."}`, 1);
+    add("pass", "Hashtags present", "hashtags", `${hashtags.length} hashtag(s)${hashtags.length >= 3 && hashtags.length <= 5 ? ": in the commonly cited sweet spot." : "."}`, 1);
   }
 
   if (/[A-Z]{6,}/.test(trimmed) || /!{2,}/.test(trimmed)) {
@@ -159,7 +159,7 @@ function buildEngagementChecks(text) {
 
 // Folds in the Notion brief's separate "LinkedIn Post Analyzer" (score hook,
 // readability, specificity, credibility, CTA, engagement potential) rather
-// than shipping it as a second, near-duplicate tool — these two checks are
+// than shipping it as a second, near-duplicate tool: these two checks are
 // the only real gap between that spec and what hook/cta/engagement already
 // covered above.
 function buildReadabilityChecks(text) {
@@ -170,7 +170,7 @@ function buildReadabilityChecks(text) {
   const avgWords = sentences.length ? words / sentences.length : words;
 
   if (avgWords > 22) {
-    add("warn", "Sentences run long", "readability", `Averaging ${avgWords.toFixed(1)} words per sentence — long sentences read slower in a fast-scrolling feed.`, 2);
+    add("warn", "Sentences run long", "readability", `Averaging ${avgWords.toFixed(1)} words per sentence: long sentences read slower in a fast-scrolling feed.`, 2);
   } else {
     add("pass", "Sentences are a readable length", "readability", `Averaging ${avgWords.toFixed(1)} words per sentence.`, 2);
   }
@@ -193,13 +193,13 @@ function buildSpecificityChecks(text) {
   if (/\d/.test(text)) {
     add("pass", "Backs the claim with a number", "specificity", "A specific figure reads as more credible than a vague claim.", 2);
   } else {
-    add("warn", "No concrete numbers", "specificity", "Nothing here is a specific figure, price, or count — every claim is qualitative.", 2);
+    add("warn", "No concrete numbers", "specificity", "Nothing here is a specific figure, price, or count: every claim is qualitative.", 2);
   }
 
   if (CREDIBILITY_PATTERN.test(text)) {
     add("pass", "Cites evidence", "specificity", "The post points to data, a source, or a named result rather than asserting the claim alone.", 2);
   } else {
-    add("warn", "No cited evidence", "specificity", 'No "according to", data reference, or named result found — a reader has to take the claim on faith.', 2);
+    add("warn", "No cited evidence", "specificity", 'No "according to", data reference, or named result found: a reader has to take the claim on faith.', 2);
   }
 
   return checks;
@@ -208,7 +208,7 @@ function buildSpecificityChecks(text) {
 // ---------------------------------------------------------------------------
 // Fetching a post's text from a public LinkedIn URL, for a post that's
 // already live. LinkedIn server-renders the full post body into a plain
-// <meta name="description"> tag on a public post's page — no login, no JS
+// <meta name="description"> tag on a public post's page, no login, no JS
 // required to read it, verified against live posts at /posts/... and
 // /feed/update/... URLs. A post that requires login to view (removed, or
 // visible to connections only) renders without that tag, which is the signal
@@ -226,8 +226,8 @@ const decodeEntities = (s) =>
     .replace(/&amp;/g, "&");
 
 // Accepts the URL forms LinkedIn actually hands out for a post: /posts/...,
-// /feed/update/..., and pulse/ articles. Anything else — a profile, a company
-// page, a non-LinkedIn URL — is out of scope for "paste a post link".
+// /feed/update/..., and pulse/ articles. Anything else: a profile, a company
+// page, a non-LinkedIn URL: is out of scope for "paste a post link".
 function linkedInPostUrl(raw) {
   let parsed;
   try {
@@ -246,7 +246,7 @@ function linkedInPostUrl(raw) {
 async function fetchPostText(rawUrl) {
   const url = linkedInPostUrl(rawUrl);
   if (!url) {
-    const error = new Error("Paste a public LinkedIn post link — linkedin.com/posts/... or /feed/update/...");
+    const error = new Error("Paste a public LinkedIn post link: linkedin.com/posts/... or /feed/update/...");
     error.status = 400;
     throw error;
   }
@@ -279,11 +279,11 @@ async function fetchPostText(rawUrl) {
   const match = /<meta\s+name="description"\s+content="([^"]*)"/i.exec(html);
   const text = match ? decodeEntities(match[1]).trim() : "";
 
-  // A login wall or a removed post still answers 200 with a generic page —
+  // A login wall or a removed post still answers 200 with a generic page:
   // the tell is that the description is missing or too thin to be a post.
   if (text.length < 20) {
     const error = new Error(
-      "Couldn't read that post automatically — it may require login to view. Paste the text instead.",
+      "Couldn't read that post automatically: it may require login to view. Paste the text instead.",
     );
     error.status = 502;
     throw error;
@@ -308,7 +308,7 @@ function buildRecommendations(dimensions) {
     .flatMap((d) => d.checks.map((c) => ({ ...c, dimension: d.label })))
     .filter((c) => c.level !== "pass")
     .sort((a, b) => priority[a.level] - priority[b.level])
-    .map((c) => `${c.dimension} — ${c.title}: ${c.detail}`);
+    .map((c) => `${c.dimension}: ${c.title}: ${c.detail}`);
 }
 
 function analyze(input) {
@@ -321,7 +321,7 @@ function analyze(input) {
     throw error;
   }
   if (trimmed.length > MAX_TEXT_LENGTH) {
-    const error = new Error(`That's ${trimmed.length} characters — keep it under ${MAX_TEXT_LENGTH}.`);
+    const error = new Error(`That's ${trimmed.length} characters: keep it under ${MAX_TEXT_LENGTH}.`);
     error.status = 400;
     throw error;
   }

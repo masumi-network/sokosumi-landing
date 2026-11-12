@@ -1,4 +1,4 @@
-/* /tools/ai-search-visibility — client. Thin wiring over
+/* /tools/ai-search-visibility: client. Thin wiring over
  * SokosumiToolKit.wireScorer(); the server does the fetching and scoring.
  */
 (function () {
@@ -68,7 +68,7 @@
 
   var WEIGHT = { "AI crawler access": 40, "Brand disambiguation": 30, Discoverability: 30 };
 
-  // Three radial rings — a dashboard summary of the dimension scores that sits
+  // Three radial rings: a dashboard summary of the dimension scores that sits
   // above the detailed check cards.
   function pillars(dims) {
     var cards = (dims || [])
@@ -93,7 +93,7 @@
     return '<div class="asv-pillars">' + cards + "</div>";
   }
 
-  // Status grid of the recognizable AI engines — the signature visual: which
+  // Status grid of the recognizable AI engines: the signature visual: which
   // engines robots.txt lets crawl the site.
   function engines(list) {
     if (!list || !list.length) return "";
@@ -120,7 +120,7 @@
       '<div class="asv-block-head"><h3>AI engine access</h3>' +
       '<span class="asv-block-sub">' + allowed + " of " + list.length + " can crawl you</span></div>" +
       '<div class="asv-engine-grid">' + tiles + "</div>" +
-      '<p class="asv-foot">Crawl access from robots.txt only — not a measure of whether these engines actually mention you.</p>' +
+      '<p class="asv-foot">Crawl access from robots.txt only, not a measure of whether these engines actually mention you.</p>' +
       "</div>"
     );
   }
@@ -140,7 +140,7 @@
     submitLabel: "Check readiness",
     busyLabel: "Checking…",
     reportTitle: function (data) {
-      return "AI search visibility readiness (proxy) — " + data.url + " — " + data.overall + "/100";
+      return "AI search visibility readiness (proxy): " + data.url + ": " + data.overall + "/100";
     },
     getValue: function () {
       return urlInput.value;

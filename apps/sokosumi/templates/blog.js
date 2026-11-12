@@ -1,4 +1,4 @@
-// /blog (index) and /blog/<slug> (detail) — CMS `posts` collection.
+// /blog (index) and /blog/<slug> (detail): CMS `posts` collection.
 // contentHtml is pre-rendered by the CMS at save time.
 
 const shell = require("./shell");

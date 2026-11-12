@@ -1,10 +1,10 @@
-// /agency-run-by-ai — the positioning page for "Sokosumi instead of an agency".
+// /agency-run-by-ai: the positioning page for "Sokosumi instead of an agency".
 //
 // Deliberately NOT an SEO page. Ahrefs (2026-08-27) puts the whole German
 // replacement cluster at roughly 310 searches a month: `marketing ohne agentur`
 // and `marketing selber machen` are 0, and `agentur ersetzen`, `ki statt
 // agentur`, `werbeagentur alternative` are not in the index at all. English is
-// no better — `replace marketing agency` is 40. So this page is a brand and
+// no better: `replace marketing agency` is 40. So this page is a brand and
 // conversion asset: it is linked, not ranked, and it carries no keyword target.
 // `ai marketing agency` belongs to /ai-marketing-agency, which is the buyer
 // guide; pointing this page at the same term would cannibalise it.
@@ -18,7 +18,7 @@ const { t } = require("../lib/i18n");
 
 const { esc, attr, pageStart, pageEnd, SITE } = shell;
 
-// 100 credits = US$1.00, the marketplace's stated credit price — the same
+// 100 credits = US$1.00, the marketplace's stated credit price: the same
 // constant templates/coworkers.js derives listing prices from.
 const CREDITS_PER_USD = 100;
 
@@ -178,7 +178,7 @@ function render(ctx) {
           {
             question: t("Is this actually an agency?"),
             answer: t(
-              "No. Sokosumi is a marketplace: you hire named AI coworkers by the task and the file comes back to you. We describe it against an agency because that is the budget it usually comes out of, and because the output is the same kind of thing — a deck, a plan, a report.",
+              "No. Sokosumi is a marketplace: you hire named AI coworkers by the task and the file comes back to you. We describe it against an agency because that is the budget it usually comes out of, and because the output is the same kind of thing: a deck, a plan, a report.",
             ),
           },
           {

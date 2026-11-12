@@ -12,11 +12,11 @@ const FAQ = [
   },
   {
     question: "What counts as a \"gap\"?",
-    answer: "Something the other site has that yours doesn't, from the list above — no H1, no meta description, thinner content, no CTA, no pricing shown, no social proof. It's a checklist of loopholes to look at, not a verdict on which site is better.",
+    answer: "Something the other site has that yours doesn't, from the list above, no H1, no meta description, thinner content, no CTA, no pricing shown, no social proof. It's a checklist of loopholes to look at, not a verdict on which site is better.",
   },
   {
     question: "Is this reading with an LLM?",
-    answer: "No — every signal is a word count, a regex match, or a set difference between the two pages' vocabulary. Nothing is sent to a model.",
+    answer: "No: every signal is a word count, a regex match, or a set difference between the two pages' vocabulary. Nothing is sent to a model.",
   },
   {
     question: "Are the URLs or page content stored anywhere?",
@@ -68,7 +68,7 @@ function render() {
     `<section class="tk-head" id="analyzer">
       <p class="tk-overline">Free · no sign-up</p>
       <h1>Competitor Positioning Teardown</h1>
-      <p class="tk-lede">Enter your URL and a competitor's URL and see side by side what each page says — and the exact loopholes each one leaves open.</p>
+      <p class="tk-lede">Enter your URL and a competitor's URL and see side by side what each page says: and the exact loopholes each one leaves open.</p>
 
       <form class="tk-form" id="cptForm" novalidate>
         <div class="tk-field"><label for="cptUrlA">Your URL</label><input id="cptUrlA" type="url" placeholder="https://yoursite.com" required /></div>

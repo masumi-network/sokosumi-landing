@@ -1,4 +1,4 @@
-/* /product — interactive replica of app.sokosumi.com (utxo AG workspace).
+/* /product: interactive replica of app.sokosumi.com (utxo AG workspace).
  * The app is authored at 1440×810 (16:9) with the live app's Tailwind values
  * (shadcn tokens, lucide icons, Inter) and scaled as one unit via
  * .pd-scale-wrap. Everything below .pd-app is app UI; the marketing frame
@@ -756,7 +756,7 @@ body:has(.cc-banner) .product-page .pd-stage { margin-bottom: 220px; }
 .pd-tab:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
 
 /* Features: a numbered 3×3 board of hairline cells. One monoline icon per
-   cell, ink on paper — the only "visual" is the line itself. */
+   cell, ink on paper: the only "visual" is the line itself. */
 .pd-features { margin: clamp(36px, 6vw, 72px) 0; }
 .pd-features-head { display: flex; align-items: baseline; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 22px; }
 .pd-features-head h2 { font-size: clamp(28px, 3.4vw, 40px); font-weight: 300; letter-spacing: -0.03em; }

@@ -1,7 +1,7 @@
 // Interactive mini-app for /product. A 1440×810 (16:9) replica of app.sokosumi.com
 // (workspace utxo AG) scaled as one unit. Markup, spacing and icons follow the
 // live app's DOM (shadcn + lucide + Tailwind tokens) so it reads as the real
-// product, smaller — not a sketch of it. Every control does something; the
+// product, smaller, not a sketch of it. Every control does something; the
 // behaviour lives in assets/product-demo.js.
 
 const shell = require("./shell");
@@ -25,9 +25,9 @@ const PEOPLE = [
   { slug: "maya", name: "Maya", role: "Creative", vendor: "serviceplan", models: ["Claude"], host: "EU · Azure · Frankfurt", bio: "Maya is a Creative Partner at Plan.Net Studios. On-brand visual work, press kits, and the assets a campaign is judged by.", offers: [{ title: "Branded Team Avatars", cat: "Social", out: "Web", blurb: "A consistent set of team avatars in the brand's visual language, ready for Slack, LinkedIn and the website." }] },
   { slug: "noodles", name: "Noodles", role: "Your data analyst", vendor: "utxo", models: ["Claude"], host: "EU", bio: "Noodles reads the numbers and puts them in a form you can send: weekly performance reports, baselines and what changed.", offers: [{ title: "Weekly performance report", cat: "Research", out: "PDF", blurb: "Compare the last 7 complete days with the prior 7 across reach, engagement and growth." }] },
   { slug: "hepha", name: "Hepha", role: "Claude Code", vendor: "utxo", models: ["Claude"], host: "EU", bio: "Hepha is a Full-Stack Build Partner at utxo AG who runs on Anthropic's Claude Code, building inside isolated sprites.dev sandboxes and shipping working web apps.", offers: [
-    { title: "Marketing Analytics Dashboard", cat: "Research", out: "Web", blurb: "A presentation-ready marketing dashboard — KPIs, channel breakdowns, trends and a filterable campaign table on realistic data." },
+    { title: "Marketing Analytics Dashboard", cat: "Research", out: "Web", blurb: "A presentation-ready marketing dashboard: KPIs, channel breakdowns, trends and a filterable campaign table on realistic data." },
     { title: "UTM Campaign-Link Toolkit", cat: "Engineering", out: "Web", blurb: "A practical marketing-ops tool to build, validate and copy trackable UTM campaign links, with presets and a saved-links list." },
-    { title: "Brand Archetype Lead Quiz", cat: "Social", out: "Web", blurb: "A shareable 'brand archetype' quiz built to capture leads — 7 questions, instant results, and an email gate." },
+    { title: "Brand Archetype Lead Quiz", cat: "Social", out: "Web", blurb: "A shareable 'brand archetype' quiz built to capture leads: 7 questions, instant results, and an email gate." },
   ] },
   { slug: "apol", name: "Apol (Beta)", role: "Photo Editor and Retoucher", vendor: "utxo", models: ["Claude"], host: "EU", bio: "Apol edits and retouches product and portrait photography to a brief: crops, color, backgrounds and clean-ups.", offers: [{ title: "Product photo clean-up", cat: "Social", out: "Web", blurb: "Background removal, color correction and consistent crops for a batch of product photos." }] },
   { slug: "bront", name: "Bront", role: "OpenAI Codex", vendor: "utxo", models: ["GPT"], host: "EU", bio: "Bront is a coding partner at utxo AG running on OpenAI Codex. Writes, refactors and documents code against a ticket.", offers: [{ title: "Write x402 article on test page", cat: "Engineering", out: "Web", blurb: "Draft a developer article and publish it to a test page with working code samples." }] },
@@ -80,22 +80,22 @@ const DMS = [
 ];
 
 const TASKS = [
-  { id: "t1", credits: 46, lane: "backlog", status: "queued", title: "Weekly performance report — Sokosumi and Masumi channels", blurb: "Compare the last 7 complete days with the prior 7: reach, sign-ups, activation and what changed. One page with charts, ready to forward.", sched: "Weekly (Monday, 8:00)", next: "Aug 25, 8:00 AM", who: ["noodles", "mara"], date: "Aug 12", project: "Marketing", created: "Aug 12, 9:14 AM", updated: "Aug 18, 8:00 AM" },
-  { id: "t2", credits: 121, lane: "backlog", status: "queued", title: "Weekly competitor intelligence — top 3 launches, pricing and market gaps", blurb: "Track Relevance AI, Lindy and Manus. New launches, pricing changes, positioning shifts and the gaps we can own. Short memo plus a table.", sched: "Weekly (Monday, 9:00)", next: "Aug 25, 9:00 AM", who: ["hannah", "mara"], date: "Aug 11", project: "Research", created: "Aug 11, 9:03 AM", updated: "Aug 18, 9:02 AM" },
-  { id: "t3", credits: 38, lane: "backlog", status: "queued", title: "Weekly Linear team report — what shipped, what slipped", blurb: "Analyze all Linear tasks completed or updated in the past 7 days, grouped by team. Leaderboard, blockers and a one-paragraph summary for the Monday weekly.", sched: "Weekly (Monday, 7:00)", next: "Aug 25, 7:00 AM", who: ["soupie", "patrick"], date: "Aug 16", project: "Marketing", created: "Aug 16, 7:07 AM", updated: "Aug 18, 7:00 AM" },
+  { id: "t1", credits: 46, lane: "backlog", status: "queued", title: "Weekly performance report: Sokosumi and Masumi channels", blurb: "Compare the last 7 complete days with the prior 7: reach, sign-ups, activation and what changed. One page with charts, ready to forward.", sched: "Weekly (Monday, 8:00)", next: "Aug 25, 8:00 AM", who: ["noodles", "mara"], date: "Aug 12", project: "Marketing", created: "Aug 12, 9:14 AM", updated: "Aug 18, 8:00 AM" },
+  { id: "t2", credits: 121, lane: "backlog", status: "queued", title: "Weekly competitor intelligence: top 3 launches, pricing and market gaps", blurb: "Track Relevance AI, Lindy and Manus. New launches, pricing changes, positioning shifts and the gaps we can own. Short memo plus a table.", sched: "Weekly (Monday, 9:00)", next: "Aug 25, 9:00 AM", who: ["hannah", "mara"], date: "Aug 11", project: "Research", created: "Aug 11, 9:03 AM", updated: "Aug 18, 9:02 AM" },
+  { id: "t3", credits: 38, lane: "backlog", status: "queued", title: "Weekly Linear team report: what shipped, what slipped", blurb: "Analyze all Linear tasks completed or updated in the past 7 days, grouped by team. Leaderboard, blockers and a one-paragraph summary for the Monday weekly.", sched: "Weekly (Monday, 7:00)", next: "Aug 25, 7:00 AM", who: ["soupie", "patrick"], date: "Aug 16", project: "Marketing", created: "Aug 16, 7:07 AM", updated: "Aug 18, 7:00 AM" },
   { id: "t4", credits: 74, lane: "backlog", status: "queued", title: "Two-week social calendar with copy and visuals to brief", blurb: "LinkedIn and X. One post per weekday in the brand voice, plus the visual to brief for each post. Deliver as a calendar doc.", sched: "Every 2 weeks (Friday, 15:00)", next: "Aug 29, 3:00 PM", who: ["pheme", "nina"], date: "Aug 15", project: "Marketing", created: "Aug 15, 3:02 PM", updated: "Aug 15, 3:02 PM" },
-  { id: "t5", credits: 9, lane: "backlog", status: "queued", title: "Monthly SEO visibility check — rankings, new pages, backlinks", blurb: "Rankings for the 40 tracked keywords, pages that gained or lost, new referring domains. Flag anything that dropped more than 5 positions.", sched: "Monthly (1st, 6:00)", next: "Sep 1, 6:00 AM", who: ["hannah", "jonas"], date: "Aug 14", project: "Website & SEO", created: "Aug 14, 6:10 PM", updated: "Aug 14, 6:10 PM" },
+  { id: "t5", credits: 9, lane: "backlog", status: "queued", title: "Monthly SEO visibility check: rankings, new pages, backlinks", blurb: "Rankings for the 40 tracked keywords, pages that gained or lost, new referring domains. Flag anything that dropped more than 5 positions.", sched: "Monthly (1st, 6:00)", next: "Sep 1, 6:00 AM", who: ["hannah", "jonas"], date: "Aug 14", project: "Website & SEO", created: "Aug 14, 6:10 PM", updated: "Aug 14, 6:10 PM" },
   { id: "t6", credits: 88, lane: "backlog", status: "queued", title: "Research: agentic commerce and agent-to-agent payments", blurb: "Find the newest developments in agentic commerce and agent-to-agent payments. Who is building what, what it means for us, three things to watch.", who: ["hannah", "priya"], date: "Aug 18", project: "Research", created: "Aug 18, 4:40 PM", updated: "Aug 18, 4:40 PM" },
   { id: "t7", credits: 0, lane: "todo", status: "queued", title: "Press and media kit page for the Q3 launch", blurb: "Logo pack, founder photos, boilerplate in EN and DE, product screenshots. One page we can send to journalists.", who: ["maya", "lea"], date: "Aug 19", project: "Launch Q3", created: "Aug 19, 10:02 AM", updated: "Aug 19, 10:02 AM" },
-  { id: "t8", credits: 210, lane: "progress", status: "running", title: "Build the interactive measurement dashboard — North Star, leading and lagging indicators", blurb: "Live dashboard for the marketing engine: North Star, funnel by channel, weekly trend. Reads from the analytics export, refreshes nightly.", who: ["alex", "jonas"], comments: 9, date: "Aug 19", project: "Marketing", created: "Aug 19, 9:12 AM", updated: "Aug 19, 10:14 AM" },
+  { id: "t8", credits: 210, lane: "progress", status: "running", title: "Build the interactive measurement dashboard: North Star, leading and lagging indicators", blurb: "Live dashboard for the marketing engine: North Star, funnel by channel, weekly trend. Reads from the analytics export, refreshes nightly.", who: ["alex", "jonas"], comments: 9, date: "Aug 19", project: "Marketing", created: "Aug 19, 9:12 AM", updated: "Aug 19, 10:14 AM" },
   { id: "t9", credits: 176, lane: "progress", status: "running", title: "Go-to-market and sales plan for the EU launch", blurb: "Positioning, target segments, outreach channels and a first-week calendar. Tom needs a first cut for Thursday's sales call.", who: ["elena", "tom"], comments: 4, date: "Aug 19", project: "Launch Q3", created: "Aug 19, 9:15 AM", updated: "Aug 19, 9:58 AM" },
-  { id: "t10", credits: 0, lane: "input", status: "input", title: "Which three brand keywords should the dashboard track? I have the SEO set, the launch set and the competitor set ready.", blurb: "Build the interactive measurement dashboard — keyword tracking tab", who: ["alex", "jonas"], comments: 2, date: "Aug 19", project: "Marketing", created: "Aug 19, 10:20 AM", updated: "Aug 19, 10:24 AM" },
-  { id: "t11", credits: 198, lane: "done", status: "completed", title: "Competitive and market analysis — Q3 launch", blurb: "Competitive set for the launch: pricing, positioning and the three gaps we can own. 12 pages, pricing table, sources linked.", who: ["hannah", "mara"], comments: 12, date: "Aug 18", project: "Launch Q3", created: "Aug 18, 9:04 AM", updated: "Aug 18, 9:27 AM" },
-  { id: "t12", credits: 176, lane: "done", status: "completed", title: "Lead generation campaign plan — events track", blurb: "Campaign that drives registrations for the three autumn events: audience, channels, landing page brief, follow-up sequence.", who: ["elena", "tom"], comments: 6, date: "Aug 16", project: "Sales outreach", created: "Aug 15, 2:10 PM", updated: "Aug 16, 11:40 AM" },
+  { id: "t10", credits: 0, lane: "input", status: "input", title: "Which three brand keywords should the dashboard track? I have the SEO set, the launch set and the competitor set ready.", blurb: "Build the interactive measurement dashboard: keyword tracking tab", who: ["alex", "jonas"], comments: 2, date: "Aug 19", project: "Marketing", created: "Aug 19, 10:20 AM", updated: "Aug 19, 10:24 AM" },
+  { id: "t11", credits: 198, lane: "done", status: "completed", title: "Competitive and market analysis: Q3 launch", blurb: "Competitive set for the launch: pricing, positioning and the three gaps we can own. 12 pages, pricing table, sources linked.", who: ["hannah", "mara"], comments: 12, date: "Aug 18", project: "Launch Q3", created: "Aug 18, 9:04 AM", updated: "Aug 18, 9:27 AM" },
+  { id: "t12", credits: 176, lane: "done", status: "completed", title: "Lead generation campaign plan: events track", blurb: "Campaign that drives registrations for the three autumn events: audience, channels, landing page brief, follow-up sequence.", who: ["elena", "tom"], comments: 6, date: "Aug 16", project: "Sales outreach", created: "Aug 15, 2:10 PM", updated: "Aug 16, 11:40 AM" },
   { id: "t13", credits: 240, lane: "done", status: "completed", title: "UTM campaign-link toolkit with presets", blurb: "Small web tool to build, validate and copy trackable UTM links, with presets per channel and a saved-links list.", who: ["hepha", "jonas"], comments: 4, date: "Aug 15", project: "Website & SEO", created: "Aug 14, 4:10 PM", updated: "Aug 15, 7:55 AM" },
   { id: "t14", credits: 92, lane: "done", status: "completed", title: "Branded team avatars for the website and LinkedIn", blurb: "Consistent avatar set in the brand's visual language for the whole team, exported for Slack, LinkedIn and the website.", who: ["maya", "lea"], comments: 3, date: "Aug 13", project: "Brand", created: "Aug 13, 10:00 AM", updated: "Aug 13, 2:35 PM" },
-  { id: "t15", credits: 223, lane: "done", status: "completed", title: "SEO foundation — keyword strategy and content architecture", blurb: "Keyword clusters, page map and the content calendar for the next quarter, based on the competitor and search data.", who: ["hannah", "nina"], comments: 7, date: "Aug 12", project: "Website & SEO", created: "Aug 11, 3:30 PM", updated: "Aug 12, 9:38 AM" },
-  { id: "t16", credits: 310, lane: "done", status: "completed", title: "Marketing analytics dashboard — presentation-ready", blurb: "KPIs, channel breakdowns, trends and a filterable campaign table for the board meeting, on the last quarter's data.", who: ["hepha", "mara"], comments: 5, date: "Aug 8", project: "Marketing", created: "Aug 7, 11:00 AM", updated: "Aug 8, 8:12 AM" },
+  { id: "t15", credits: 223, lane: "done", status: "completed", title: "SEO foundation: keyword strategy and content architecture", blurb: "Keyword clusters, page map and the content calendar for the next quarter, based on the competitor and search data.", who: ["hannah", "nina"], comments: 7, date: "Aug 12", project: "Website & SEO", created: "Aug 11, 3:30 PM", updated: "Aug 12, 9:38 AM" },
+  { id: "t16", credits: 310, lane: "done", status: "completed", title: "Marketing analytics dashboard: presentation-ready", blurb: "KPIs, channel breakdowns, trends and a filterable campaign table for the board meeting, on the last quarter's data.", who: ["hepha", "mara"], comments: 5, date: "Aug 8", project: "Marketing", created: "Aug 7, 11:00 AM", updated: "Aug 8, 8:12 AM" },
 ];
 function laneCount(id) { return TASKS.filter((t) => t.lane === id).length; }
 const LANES = [
@@ -139,51 +139,51 @@ const ACTS = {
   t1: [
     { who: "noodles", when: "Yesterday", text: "Weekly performance report is ready. Reach up 12% week over week, driven by the launch teaser; activation flat. Two channels on page 2 are worth a decision this week.", file: { name: "weekly-performance-w34.pdf", meta: "PDF · 6 pages · 1.1 MB" } },
     { who: "mara", when: "Yesterday", text: "Good report. Can you add a cohort split for signups from the teaser next run?" },
-    { who: "noodles", when: "Yesterday", text: "Added to the brief — the Monday run will carry a cohort section from now on. No other changes." },
+    { who: "noodles", when: "Yesterday", text: "Added to the brief: the Monday run will carry a cohort section from now on. No other changes." },
   ],
   t2: [
-    { who: "hannah", when: "Yesterday", text: "This week: two pricing changes and one new launch across the set. The launch overlaps with our events track — short read on page 3.", file: { name: "competitor-intelligence-w34.pdf", meta: "PDF · 4 pages · 620 KB" }, expand: true },
-    { who: "mara", when: "Yesterday", text: "Flagging the pricing move to Tom — that changes the objection handling for Thursday." },
+    { who: "hannah", when: "Yesterday", text: "This week: two pricing changes and one new launch across the set. The launch overlaps with our events track: short read on page 3.", file: { name: "competitor-intelligence-w34.pdf", meta: "PDF · 4 pages · 620 KB" }, expand: true },
+    { who: "mara", when: "Yesterday", text: "Flagging the pricing move to Tom: that changes the objection handling for Thursday." },
   ],
   t3: [
     { who: "soupie", when: "Yesterday", text: "Linear report: 23 shipped, 4 slipped, one blocker older than a week. Leaderboard and the blocker list are in the doc.", file: { name: "linear-team-report-w34.pdf", meta: "PDF · 3 pages · 410 KB" } },
-    { who: "patrick", when: "Yesterday", text: "The old blocker is the export ticket — Samuel takes it this sprint. Good catch." },
+    { who: "patrick", when: "Yesterday", text: "The old blocker is the export ticket: Samuel takes it this sprint. Good catch." },
   ],
   t8: [
     { who: "alex", when: "Aug 19", text: "Dashboard skeleton is up: North Star on top, funnel by channel, weekly trend. Data refreshes nightly from the analytics export.", file: { name: "sokosumi-measurement-dashboard", meta: "Web · Live dashboard" } },
     { who: "jonas", when: "Aug 19", text: "Looks great. Can we get funnel drop-off per channel as its own tab?" },
-    { who: "alex", when: "Aug 19", text: "Shipped — second tab, same link. I also added a CSV download per chart while I was in there." },
-    { who: "jonas", when: "Aug 19", text: "Perfect. Last thing: the keyword tracking tab — see my answer on the other card." },
+    { who: "alex", when: "Aug 19", text: "Shipped: second tab, same link. I also added a CSV download per chart while I was in there." },
+    { who: "jonas", when: "Aug 19", text: "Perfect. Last thing: the keyword tracking tab: see my answer on the other card." },
     { who: "alex", when: "Aug 19", text: "Building it against the launch keyword set now. Expect it by end of day.", expand: true },
   ],
   t9: [
     { who: "elena", when: "Aug 19", text: "First cut of the go-to-market plan: positioning, three target segments, outreach channels, first-week calendar. Pricing objection handling per segment is drafted but needs Tom's read.", file: { name: "gtm-sales-plan-eu-draft.docx", meta: "Document · 14 pages" }, expand: true },
-    { who: "tom", when: "Aug 19", text: "Objection sections are exactly what I hit in calls. Segment two needs the procurement angle — see my note in the doc." },
+    { who: "tom", when: "Aug 19", text: "Objection sections are exactly what I hit in calls. Segment two needs the procurement angle: see my note in the doc." },
     { who: "elena", when: "Aug 19", text: "Folded in. Final for Thursday lands tomorrow morning; I'll pull Hannah's competitive set into the appendix." },
   ],
   t10: [
-    { who: "alex", when: "Aug 19", text: "Which three brand keywords should the dashboard track? I have the SEO set, the launch set and the competitor set ready — say the word and the tab ships today." },
+    { who: "alex", when: "Aug 19", text: "Which three brand keywords should the dashboard track? I have the SEO set, the launch set and the competitor set ready: say the word and the tab ships today." },
     { who: "jonas", when: "Aug 19", text: "Go with the launch set. SEO set moves to the monthly visibility check instead." },
   ],
   t11: [
     { who: "hannah", when: "Aug 18", text: "Competitive and market analysis is done: pricing table, positioning map, and the three gaps we can own. Sources are footnoted; raw notes are in the appendix.", file: { name: "competitive-analysis-q3-launch.pdf", meta: "PDF · 12 pages · 1.8 MB" }, expand: true },
     { who: "mara", when: "Aug 18", text: "Page 4 is the story. Can you turn the second gap into one slide for the board deck?" },
-    { who: "hannah", when: "Aug 18", text: "Slide attached — same chart, one sentence of framing. Tell me if the board wants the long version.", file: { name: "gap-2-board-slide.pdf", meta: "PDF · 1 page" } },
+    { who: "hannah", when: "Aug 18", text: "Slide attached: same chart, one sentence of framing. Tell me if the board wants the long version.", file: { name: "gap-2-board-slide.pdf", meta: "PDF · 1 page" } },
     { who: "patrick", when: "Aug 18", text: "This is strong work. Elena is reframing the plan around gap two." },
   ],
   t12: [
     { who: "elena", when: "Aug 16", text: "Events campaign plan: audience, channel plan, landing page brief and a five-step follow-up sequence, mapped to the three autumn events.", file: { name: "events-campaign-plan.pdf", meta: "PDF · 9 pages" } },
-    { who: "tom", when: "Aug 16", text: "Sequence is in the CRM as of today. First event opens registration Monday — we'll see the numbers in Noodles' report." },
+    { who: "tom", when: "Aug 16", text: "Sequence is in the CRM as of today. First event opens registration Monday: we'll see the numbers in Noodles' report." },
   ],
   t13: [
-    { who: "hepha", when: "Aug 15", text: "UTM toolkit is live: build, validate and copy links with presets per channel, plus a saved-links list. It's a static web tool — no login, no server.", file: { name: "utm-campaign-toolkit", meta: "Web · Live tool" } },
+    { who: "hepha", when: "Aug 15", text: "UTM toolkit is live: build, validate and copy links with presets per channel, plus a saved-links list. It's a static web tool, no login, no server.", file: { name: "utm-campaign-toolkit", meta: "Web · Live tool" } },
     { who: "jonas", when: "Aug 15", text: "Added launch presets? We start tagging teaser links this week." },
-    { who: "hepha", when: "Aug 15", text: "Yes — launch presets are in, and the saved list exports to CSV." },
+    { who: "hepha", when: "Aug 15", text: "Yes: launch presets are in, and the saved list exports to CSV." },
   ],
   t14: [
     { who: "maya", when: "Aug 13", text: "Avatar set for the whole team: same grid background, same crop, three sizes each, exported for Slack, LinkedIn and the website.", file: { name: "team-avatars-v1.zip", meta: "ZIP · 24 files · 8.2 MB" } },
-    { who: "lea", when: "Aug 13", text: "They look great together on the team page. Two new hires start next week — can we extend the set then?" },
-    { who: "maya", when: "Aug 13", text: "Of course. Send one photo each and they'll match — I keep the template in this task's context." },
+    { who: "lea", when: "Aug 13", text: "They look great together on the team page. Two new hires start next week: can we extend the set then?" },
+    { who: "maya", when: "Aug 13", text: "Of course. Send one photo each and they'll match: I keep the template in this task's context." },
   ],
   t15: [
     { who: "hannah", when: "Aug 12", text: "SEO foundation: keyword clusters, a page map, and a quarter of content calendar. The three clusters with the best effort-to-volume ratio are marked.", file: { name: "seo-foundation-keywords.xlsx", meta: "Sheet · 6 tabs" }, expand: true },
@@ -191,18 +191,18 @@ const ACTS = {
   ],
   t16: [
     { who: "hepha", when: "Aug 8", text: "Board-ready analytics dashboard: KPIs, channel breakdowns, trends and a filterable campaign table on last quarter's data.", file: { name: "marketing-analytics-dashboard", meta: "Web · Live dashboard" } },
-    { who: "mara", when: "Aug 8", text: "Presented it this morning — the filterable table saved us twenty minutes of questions. Keep it updated monthly?" },
+    { who: "mara", when: "Aug 8", text: "Presented it this morning: the filterable table saved us twenty minutes of questions. Keep it updated monthly?" },
     { who: "hepha", when: "Aug 8", text: "Scheduled: it now rebuilds on the 1st with the previous month's data." },
   ],
 };
 
 const NOTES = [
   ["Alex needs your input on Build the interactive measurement dashboard", "24 minutes ago", "t10"],
-  ["Hannah completed Competitive and market analysis — Q3 launch", "1 day ago", "t11"],
-  ["Noodles completed Weekly performance report — Sokosumi and Masumi channels", "1 day ago", "t1"],
-  ["Soupie completed Weekly Linear team report — what shipped, what slipped", "1 day ago", "t3"],
-  ["Hannah completed Weekly competitor intelligence — top 3 launches, pricing and market gaps", "1 day ago", "t2"],
-  ["Elena completed Lead generation campaign plan — events track", "3 days ago", "t12"],
+  ["Hannah completed Competitive and market analysis: Q3 launch", "1 day ago", "t11"],
+  ["Noodles completed Weekly performance report: Sokosumi and Masumi channels", "1 day ago", "t1"],
+  ["Soupie completed Weekly Linear team report: what shipped, what slipped", "1 day ago", "t3"],
+  ["Hannah completed Weekly competitor intelligence: top 3 launches, pricing and market gaps", "1 day ago", "t2"],
+  ["Elena completed Lead generation campaign plan: events track", "3 days ago", "t12"],
   ["Hepha completed UTM campaign-link toolkit with presets", "4 days ago", "t13"],
   ["Maya completed Branded team avatars for the website and LinkedIn", "6 days ago", "t14"],
 ];
@@ -632,7 +632,7 @@ function viewProjects() {
         ${PROJECTS.map((r) => `<article class="pd-proj-row" data-pd-project="${attr(r.name)}">
           <button type="button" class="pd-proj-main" data-pd-openproject="${attr(r.name)}">
             <span class="pd-proj-mark">${esc(r.n)}</span>
-            <span class="pd-proj-copy"><span class="pd-proj-name">${esc(r.name)}</span><span class="pd-proj-desc">${esc(r.d || "—")}</span></span>
+            <span class="pd-proj-copy"><span class="pd-proj-name">${esc(r.name)}</span><span class="pd-proj-desc">${esc(r.d || ": ")}</span></span>
             <span class="pd-proj-meta"><span class="pd-pill">${ico("list-todo", 14)}${r.t}</span><span class="pd-pill">${ico("briefcase", 14)}0</span></span>
           </button>
           <button type="button" class="pd-ib pd-ib-8" data-pd-menu="project" data-pd-project-ref="${attr(r.name)}" aria-label="Project actions">${ico("ellipsis")}</button>
@@ -715,24 +715,24 @@ function viewPa() {
 // by the script from this seed data instead.
 const CHAT_SEED = {
   everyone: [
-    { who: "mara", time: "09:02", text: "Morning all — the Q3 launch is four weeks out. I've asked the coworkers to take the research and the reporting so we can focus on the story. 🚀", react: ["🎉", 4] },
-    { who: "mara", time: "09:04", text: "@Hannah can you pull the competitive set for the launch — pricing, positioning and the three gaps we can own?" },
+    { who: "mara", time: "09:02", text: "Morning all: the Q3 launch is four weeks out. I've asked the coworkers to take the research and the reporting so we can focus on the story. 🚀", react: ["🎉", 4] },
+    { who: "mara", time: "09:04", text: "@Hannah can you pull the competitive set for the launch: pricing, positioning and the three gaps we can own?" },
     { who: "hannah", time: "09:04", text: "On it. I'm running this as a task so the PDF lands on your board. First cut in about 20 minutes.", thread: 3 },
-    { who: "hannah", time: "09:27", text: "Done — Competitive and market analysis — Q3 launch is on the board. 12 pages, three gaps, pricing table on page 4.", file: { name: "competitive-analysis-q3-launch.pdf", kind: "PDF", meta: "12 pages · 1.8 MB" }, react: ["👍", 3], task: "t11" },
+    { who: "hannah", time: "09:27", text: "Done: Competitive and market analysis: Q3 launch is on the board. 12 pages, three gaps, pricing table on page 4.", file: { name: "competitive-analysis-q3-launch.pdf", kind: "PDF", meta: "12 pages · 1.8 MB" }, react: ["👍", 3], task: "t11" },
     { who: "jonas", time: "10:12", text: "@Alex the measurement dashboard looks great. Can you add funnel drop-off by channel?" },
-    { who: "alex", time: "10:14", text: "Shipped. Funnel by channel is the second tab — same link, refreshes nightly.", file: { name: "sokosumi-measurement-dashboard", kind: "Web", meta: "Live dashboard" }, task: "t8" },
+    { who: "alex", time: "10:14", text: "Shipped. Funnel by channel is the second tab: same link, refreshes nightly.", file: { name: "sokosumi-measurement-dashboard", kind: "Web", meta: "Live dashboard" }, task: "t8" },
     { who: "alex", time: "10:20", text: "@Jonas one question before I finish the keyword tab: which three brand keywords should it track? I have the SEO set, the launch set and the competitor set ready. Answer here or on the task.", task: "t10" },
     { who: "patrick", time: "11:30", text: "@Noodles from now on I'd like the weekly performance report every Monday at 8." },
     { who: "noodles", time: "11:30", text: "Scheduled: Weekly (Monday, 8:00). First run Aug 25, 8:00 AM. You'll get it here and on the board.", task: "t1" },
-    { who: "tom", time: "13:53", html: "Closed the <strong>Plan.Net pilot</strong> today — they started with Elena's go-to-market plan and want the full rollout in Q4. 🙌", react: ["😎", 5], mine: true },
+    { who: "tom", time: "13:53", html: "Closed the <strong>Plan.Net pilot</strong> today: they started with Elena's go-to-market plan and want the full rollout in Q4. 🙌", react: ["😎", 5], mine: true },
   ],
   marketing: [
-    { who: "mara", time: "Yesterday", text: "Weekly reminder: coworker outputs land in this channel every Monday morning — performance report, Linear report, competitor intel." },
+    { who: "mara", time: "Yesterday", text: "Weekly reminder: coworker outputs land in this channel every Monday morning: performance report, Linear report, competitor intel." },
     { who: "noodles", time: "08:00", text: "Weekly performance report is ready. Reach up 12% on the back of the launch teaser; activation flat; two channels worth a look on page 2.", file: { name: "weekly-performance-w34.pdf", kind: "PDF", meta: "PDF · 6 pages" }, task: "t1", react: ["🙏", 2] },
     { who: "soupie", time: "08:05", text: "Linear team report: 23 tasks shipped last week, 4 slipped. Blockers and the leaderboard are in the doc.", file: { name: "linear-team-report-w34.pdf", kind: "PDF", meta: "PDF · 3 pages" }, task: "t3" },
-    { who: "nina", time: "08:40", text: "@Pheme two-week social calendar for the launch, please — LinkedIn and X, one post per weekday, copy per post." },
+    { who: "nina", time: "08:40", text: "@Pheme two-week social calendar for the launch, please: LinkedIn and X, one post per weekday, copy per post." },
     { who: "pheme", time: "08:41", text: "Queued as a task. You'll get a calendar doc plus the visual to brief for each post.", task: "t4" },
-    { who: "mara", time: "08:52", text: "@Maya press kit page after that — logo pack, founder photos, boilerplate in EN and DE." },
+    { who: "mara", time: "08:52", text: "@Maya press kit page after that: logo pack, founder photos, boilerplate in EN and DE." },
     { who: "maya", time: "08:53", text: "Got it. I'll start from the brand avatars from last week so everything stays consistent.", thread: 2, task: "t7" },
   ],
   "launch-q3": [
@@ -740,51 +740,51 @@ const CHAT_SEED = {
     { who: "elena", time: "Mon", text: "Plan structure is up: positioning, target segments, outreach channels, first-week calendar. I'll post the first full cut for Thursday's sales call.", task: "t9", thread: 4 },
     { who: "hannah", time: "Tue", text: "Competitive set is done. Short version: we win on named coworkers and finished files; the three gaps we can own are on page 4.", file: { name: "competitive-analysis-q3-launch.pdf", kind: "PDF", meta: "PDF · 12 pages" }, task: "t11", react: ["🔥", 3] },
     { who: "priya", time: "Tue", text: "@Elena can you fold the pricing objection handling into the plan? Tom keeps hitting it in first calls." },
-    { who: "elena", time: "Tue", text: "Yes — adding a one-pager per segment. I'll flag you when it's in the draft, @Priya." },
-    { who: "maya", time: "13:10", text: "Press kit draft: logo pack, founder photos and EN/DE boilerplate. Missing product screenshots — pulling them from the live app tomorrow.", task: "t7" },
+    { who: "elena", time: "Tue", text: "Yes: adding a one-pager per segment. I'll flag you when it's in the draft, @Priya." },
+    { who: "maya", time: "13:10", text: "Press kit draft: logo pack, founder photos and EN/DE boilerplate. Missing product screenshots: pulling them from the live app tomorrow.", task: "t7" },
   ],
   sales: [
-    { who: "tom", time: "Yesterday", text: "@Elena the events campaign plan was exactly what I needed — the follow-up sequence is already in the CRM." },
-    { who: "elena", time: "Yesterday", text: "Glad it landed. If you want, I can draft the three event landing pages next — say the word." },
+    { who: "tom", time: "Yesterday", text: "@Elena the events campaign plan was exactly what I needed: the follow-up sequence is already in the CRM." },
+    { who: "elena", time: "Yesterday", text: "Glad it landed. If you want, I can draft the three event landing pages next: say the word." },
     { who: "tom", time: "08:20", text: "@Hannah before the 11:00 call with the retail group: can you pull who their current tooling vendors are and any public AI initiatives?" },
     { who: "hannah", time: "08:34", text: "Brief is ready: vendors, two live AI pilots, and the procurement angle to lead with. Three sources linked.", file: { name: "prospect-brief-retail-group.pdf", kind: "PDF", meta: "PDF · 2 pages" }, react: ["💪", 2] },
-    { who: "tom", time: "11:45", text: "That brief carried the call. They asked for a pilot proposal by Friday — @Elena can you draft it from the go-to-market plan?" },
+    { who: "tom", time: "11:45", text: "That brief carried the call. They asked for a pilot proposal by Friday: @Elena can you draft it from the go-to-market plan?" },
     { who: "elena", time: "11:46", text: "On it. Draft proposal will be on your board tomorrow morning, built from the plan plus Hannah's brief." },
   ],
   "dm-mara": [
     { who: "mara", time: "12:05", text: "Can you check Hannah's competitive analysis before it goes into the board deck? Page 4 is the one that matters." },
-    { who: "patrick", time: "12:11", text: "Read it. Page 4 is strong — let's lead with the second gap in the deck." },
+    { who: "patrick", time: "12:11", text: "Read it. Page 4 is strong: let's lead with the second gap in the deck." },
     { who: "mara", time: "12:12", text: "Agreed. I've asked Elena to reframe the plan around it. The board version goes out Thursday.", react: ["👍", 1] },
   ],
   "dm-jonas": [
     { who: "jonas", time: "Yesterday", text: "The dashboard Alex built is now my default tab. Funnel by channel finally in one place. 📊" },
-    { who: "patrick", time: "Yesterday", text: "Same. Answer his keyword question on the board when you get a minute — it's the last thing blocking the keyword tab.", task: "t10" },
-    { who: "jonas", time: "09:02", text: "Done — went with the launch set. He's already building." },
+    { who: "patrick", time: "Yesterday", text: "Same. Answer his keyword question on the board when you get a minute: it's the last thing blocking the keyword tab.", task: "t10" },
+    { who: "jonas", time: "09:02", text: "Done: went with the launch set. He's already building." },
   ],
   "dm-priya": [
-    { who: "priya", time: "Tue", text: "Elena's plan draft covers the pricing objection now — exactly what Tom needed. Worth reading before the board deck." },
-    { who: "patrick", time: "Tue", text: "Will do. Also: Samuel's CSV export idea — post-launch, but I want it on the roadmap." },
+    { who: "priya", time: "Tue", text: "Elena's plan draft covers the pricing objection now: exactly what Tom needed. Worth reading before the board deck." },
+    { who: "patrick", time: "Tue", text: "Will do. Also: Samuel's CSV export idea: post-launch, but I want it on the roadmap." },
   ],
   "dm-tom": [
     { who: "tom", time: "11:50", text: "Hannah's prospect briefs are changing my calls. I brief her the evening before, the PDF is there at 8." },
-    { who: "patrick", time: "11:58", text: "That's the pattern — make it a scheduled task and it runs without you asking. 😄" },
+    { who: "patrick", time: "11:58", text: "That's the pattern: make it a scheduled task and it runs without you asking. 😄" },
     { who: "tom", time: "12:01", text: "Just did. Every call day, 7:30." },
   ],
   "dm-group": [
     { who: "lea", time: "Mon", text: "Design + engineering + content sync: launch assets land Thursday, Dite's landing page directions Friday." },
-    { who: "samuel", time: "Mon", text: "Deploy freeze starts Wednesday — anything for the launch page needs to be merged Tuesday night." },
+    { who: "samuel", time: "Mon", text: "Deploy freeze starts Wednesday: anything for the launch page needs to be merged Tuesday night." },
     { who: "nina", time: "Mon", text: "Copy is done and Pheme's social calendar covers the first two weeks. We're ahead for once. 🎉", react: ["🎉", 2] },
   ],
   "dm-felix": [
     { who: "felix", time: "Fri", text: "Credits check: we used 61% of the monthly allowance, mostly Hannah and Hepha. Well inside budget." },
-    { who: "patrick", time: "Fri", text: "Good — the scheduled reports are worth every credit. Keep an eye on it through launch week." },
+    { who: "patrick", time: "Fri", text: "Good: the scheduled reports are worth every credit. Keep an eye on it through launch week." },
   ],
   "dm-nina": [
-    { who: "nina", time: "Wed", text: "The 'how to brief a coworker' guide is drafted — Pheme's social versions came back in 20 minutes and needed almost no edits." },
+    { who: "nina", time: "Wed", text: "The 'how to brief a coworker' guide is drafted: Pheme's social versions came back in 20 minutes and needed almost no edits." },
     { who: "patrick", time: "Wed", text: "Nice. Ship the newsletter version with the launch announcement." },
   ],
   "dm-lea": [
-    { who: "lea", time: "Thu", text: "Dite's two landing directions are in — I lean loud. Look when you have a minute?" },
+    { who: "lea", time: "Thu", text: "Dite's two landing directions are in: I lean loud. Look when you have a minute?" },
     { who: "patrick", time: "Thu", text: "Loud one, agreed. The conservative one can be the fallback for the partner co-brand." },
   ],
 };
@@ -872,9 +872,9 @@ function featChat() {
   return `<div class="pd-feat-chat">
     <header class="pd-chat-head"><div class="pd-chat-title"><span class="pd-chat-title-ico">${ico("hash", 14)}</span><p>Everyone</p></div><div class="pd-chat-head-end"><span class="pd-chat-members">${["mara", "jonas", "priya"].map((w) => ava(w, 28, { cls: "is-ring" })).join("")}<span class="pd-ava is-ring pd-more" style="--s:28px">+5</span></span></div></header>
     <div class="pd-thread pd-feat-thread">
-      ${msg("mara", "09:04", `<span class="pd-at">@Hannah</span> can you pull the competitive set for the launch — pricing, positioning and the three gaps we can own?`)}
+      ${msg("mara", "09:04", `<span class="pd-at">@Hannah</span> can you pull the competitive set for the launch: pricing, positioning and the three gaps we can own?`)}
       ${msg("hannah", "09:04", `On it. I'm running this as a task so the PDF lands on your board. First cut in about 20 minutes.`, `<span class="pd-replies">3 replies</span>`)}
-      ${msg("hannah", "09:27", `Done — Competitive and market analysis — Q3 launch is on the board. 12 pages, three gaps, pricing table on page 4.`, `<span class="pd-msg-file"><span class="pd-msg-file-ico">${ico("file-text", 18)}</span><span class="pd-msg-file-copy"><b>competitive-analysis-q3-launch.pdf</b><small>PDF · 12 pages · 1.8 MB</small></span><span class="pd-msg-file-go">${ico("arrow-up-right", 14)}</span></span><div class="pd-reacts"><span class="pd-react is-on"><span class="e">👍</span><span>3</span></span></div>`)}
+      ${msg("hannah", "09:27", `Done: Competitive and market analysis: Q3 launch is on the board. 12 pages, three gaps, pricing table on page 4.`, `<span class="pd-msg-file"><span class="pd-msg-file-ico">${ico("file-text", 18)}</span><span class="pd-msg-file-copy"><b>competitive-analysis-q3-launch.pdf</b><small>PDF · 12 pages · 1.8 MB</small></span><span class="pd-msg-file-go">${ico("arrow-up-right", 14)}</span></span><div class="pd-reacts"><span class="pd-react is-on"><span class="e">👍</span><span>3</span></span></div>`)}
     </div>
     <div class="pd-composer pd-feat-composer"><div class="pd-composer-box"><div class="pd-composer-field"><span class="pd-composer-ph">Message #Everyone</span></div><div class="pd-composer-foot"><div class="pd-composer-left"><span class="pd-ib pd-ib-8 pd-ib-round">${ico("paperclip")}</span><span class="pd-ib pd-ib-8 pd-ib-round">${ico("smile-plus")}</span><span class="pd-ib pd-ib-8 pd-ib-round">${ico("at-sign")}</span></div><span class="pd-ib pd-ib-8 pd-ib-round pd-ib-primary">${ico("arrow-up")}</span></div></div></div>
   </div>`;
@@ -897,9 +897,9 @@ function featProject() {
 }
 function featSchedule() {
   const rows = [
-    { t: "Weekly performance report — Sokosumi and Masumi channels", sched: "Weekly (Monday, 8:00)", next: "Next run: Aug 25, 8:00 AM", who: ["noodles", "mara"] },
-    { t: "Weekly competitor intelligence — launches, pricing, market gaps", sched: "Weekly (Monday, 9:00)", next: "Next run: Aug 25, 9:00 AM", who: ["hannah", "mara"] },
-    { t: "Monthly SEO visibility check — rankings, pages, backlinks", sched: "Monthly (1st, 6:00)", next: "Next run: Sep 1, 6:00 AM", who: ["hannah", "jonas"] },
+    { t: "Weekly performance report: Sokosumi and Masumi channels", sched: "Weekly (Monday, 8:00)", next: "Next run: Aug 25, 8:00 AM", who: ["noodles", "mara"] },
+    { t: "Weekly competitor intelligence: launches, pricing, market gaps", sched: "Weekly (Monday, 9:00)", next: "Next run: Aug 25, 9:00 AM", who: ["hannah", "mara"] },
+    { t: "Monthly SEO visibility check: rankings, pages, backlinks", sched: "Monthly (1st, 6:00)", next: "Next run: Sep 1, 6:00 AM", who: ["hannah", "jonas"] },
   ];
   return `<div class="pd-feat-sched">
     ${rows.map((r) => `<article class="pd-card is-static">
@@ -960,7 +960,7 @@ function chapter(num, view, title, text) {
   </section>`;
 }
 
-// The dive cards reuse the nav menu's product minis at card scale — the same
+// The dive cards reuse the nav menu's product minis at card scale: the same
 // visual per surface everywhere it appears.
 const DIVE = {
   "product/ai-coworkers": { mini: '<span class="nav-mini nav-mini-faces"><img src="/assets/product/coworkers/elena.webp" alt="" width="24" height="24" loading="lazy" /><img src="/assets/product/coworkers/hannah.webp" alt="" width="24" height="24" loading="lazy" /><img src="/assets/product/coworkers/alex.webp" alt="" width="24" height="24" loading="lazy" /></span>', blurb: "Named specialists with real roles and public profiles." },

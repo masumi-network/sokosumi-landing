@@ -1,4 +1,4 @@
-// /pricing — the subscription plans, exactly as the product's own plan
+// /pricing: the subscription plans, exactly as the product's own plan
 // picker lists them: a monthly price and the credits a seat gets. The tiers
 // differ only by price and credits here, so the page compares those and
 // nothing else.
@@ -13,7 +13,7 @@ const { esc, attr, icon, pageStart, pageEnd, APP_SIGNUP, SALES_URL } = shell;
 
 // The page publishes five priced tiers and carried no price markup at all.
 // Prices are read back off the same PLANS array the page renders, so the
-// markup cannot drift from what a visitor sees — the mismatch Google
+// markup cannot drift from what a visitor sees: the mismatch Google
 // penalises. "Free" becomes 0; "Custom" has no price and is left as an Offer
 // without one, which is the correct way to say "contact us".
 function planOffer(p) {
@@ -103,7 +103,7 @@ const ENTERPRISE = {
 // ── team-size calculator ────────────────────────────────────────────────
 // Honest arithmetic on the figures the cards already publish: seats × price
 // and seats × credits, per plan, monthly. There is no annual billing, no
-// volume break, no minimum and no cap in the product, so none appears here —
+// volume break, no minimum and no cap in the product, so none appears here:
 // the only clamp is a sanity ceiling on the query value so ?seats=1e9 cannot
 // render a nonsense page. The count comes from ?seats= so the page is fully
 // usable with JavaScript off (the form submits, the presets are plain links);
@@ -125,7 +125,7 @@ function creditsAmount(p) {
   return Number((p.credits.match(/^([\d,]+)/) || ["0"])[0].replace(/,/g, ""));
 }
 
-// Intl does the separators — 1,500 on /pricing, 1.500 on /de/pricing — and
+// Intl does the separators: 1,500 on /pricing, 1.500 on /de/pricing: and
 // the currency placement (€125 vs 125 €) for the same reason. The per-seat
 // price on the card goes through the same formatter so a German card does
 // not say "€25" above "125 €": same amount, one convention per locale.
@@ -174,13 +174,13 @@ function teamBlock(p, seats) {
 
 // The plans as a row of cards on one tinted board, the way a plan picker
 // lays them out: name, price, who the plan is for, what a seat gets, and one
-// action — all four read at a glance and their buttons sit on one line. The
+// action: all four read at a glance and their buttons sit on one line. The
 // card body carries only what the product itself publishes for a tier: the
-// credits a seat gets — plus the team-size block, which is that figure and
+// credits a seat gets: plus the team-size block, which is that figure and
 // the price multiplied by the chosen seat count. There are no per-plan
 // feature lists, so none are shown.
 // Free has no "per month", so its unit slot carries the site's no-card line
-// instead — the same fine print every signup button on the site sits over.
+// instead: the same fine print every signup button on the site sits over.
 // Standard is the plan most teams land on and takes the one accent border.
 function planCard(p, i, seats) {
   const id = `plan-${p.name.toLowerCase()}`;
@@ -203,7 +203,7 @@ function planCard(p, i, seats) {
 }
 
 // Enterprise is the fifth plan, not a footnote: it closes the board as an
-// ink band — same name, tagline and price anatomy as the cards, a different
+// ink band: same name, tagline and price anatomy as the cards, a different
 // route in. Its credits are tailored like its price, and the tagline already
 // says so, so the band carries no credits figure.
 function enterpriseBand(p) {

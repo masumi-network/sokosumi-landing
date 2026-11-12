@@ -1,5 +1,5 @@
 /* Homepage-only styles. Shared tokens, buttons, reveals, FAQ items, the
-   skip link, and the CTA band live in /assets/styles.css — both surfaces
+   skip link, and the CTA band live in /assets/styles.css: both surfaces
    load that file. This sheet is the landing page's own composition:
    hero, Ken Burns shots, coworker intro, how-it-works tickets, shots
    carousel, trust band, org chart, and the Florian Haller quote. */
@@ -9,14 +9,14 @@
 
 /* ===== hero: left-aligned serif statement over a drifting product shot ===== */
 /* The homepage header is a fixed transparent overlay, so it takes no
-   layout space above the hero — the hero is a full screen on its own. */
+   layout space above the hero: the hero is a full screen on its own. */
 .hero { position: relative; min-height: 100dvh; display: flex; flex-direction: column; overflow: hidden; background: var(--ink); }
 
 /* Default treatment: the four product screenshots in a Ken Burns drift
    under a dark scrim, cross-fading between shots on a 4.5s cadence (JS
    below drives the .is-active class; fade is a 1.1s opacity transition).
    The shots are LIGHT UI, so unlike the video they are dimmed hard
-   (low opacity over the ink ground) and the scrim covers the whole frame —
+   (low opacity over the ink ground) and the scrim covers the whole frame:
    the goal is "clean dark hero with a hint of product behind it", not
    "look at the screenshot". Only transform and opacity are animated
    (GPU-composited); the pan travels one way only and is restarted as each
@@ -31,8 +31,8 @@
      than a picture, and brightness is cut to hold the contrast. */
   opacity: 0; filter: brightness(calc(var(--shot-b, 0.92) * 0.86)) contrast(1.02) saturate(0.88);
   transform: scale(var(--shot-s)) translate3d(var(--shot-x, 0%), var(--shot-y, 0%), 0);
-  /* One-way pan that never resets on screen. A shot is visible for 5.6s —
-     its 4.5s hold plus the 1.1s fade-out — so a 4.5s animation snapped back
+  /* One-way pan that never resets on screen. A shot is visible for 5.6s:
+     its 4.5s hold plus the 1.1s fade-out: so a 4.5s animation snapped back
      to the start while the outgoing layer was still fading, which is the jump
      you could see. At 9s the reset lands 3.4s after the shot is fully gone.
      Travel is scaled with the duration (+-9% x, +-7% y) so apparent speed is
@@ -54,8 +54,8 @@
    - roster: nudged right so the SERVICEPLAN logo + "Your AI coworkers"
      heading stay in the heavily-scrimmed top strip, leaving the blurred
      coworker list behind the headline.
-   - brief: zoomed and lifted so the black search bar — the darkest, most
-     text-friendly region — backs the headline, pushing the giant "What
+   - brief: zoomed and lifted so the black search bar: the darkest, most
+     text-friendly region: backs the headline, pushing the giant "What
      do you want to get done?" up into the top scrim; dimmed a touch
      harder so the residual letters read as texture.
    - chat2: wall-to-wall readable chat, so it leans on treatment instead
@@ -90,7 +90,7 @@
 .hero.bg-video .hero-shot, .hero.bg-ink .hero-shot, .hero.bg-color .hero-shot, .hero.bg-duo .hero-shot, .hero.bg-blur .hero-shot { display: none; }
 
 /* The scrim over the screenshot. The vignette recipe below (kept for the
-   video modes) leaves the centre transparent — fine over dark footage,
+   video modes) leaves the centre transparent: fine over dark footage,
    dirty over light UI. Here the whole frame carries weight: heaviest
    where the left-aligned copy sits and where the transparent header
    needs contrast, easing toward the right so the shot still reads. */
@@ -99,7 +99,7 @@
   background:
     /* Top to bottom: light at the top so the product is actually visible,
        deepening to near-solid ink at the base where the trust band takes
-       over. The one exception is the first ~120px — the header sits there in
+       over. The one exception is the first ~120px: the header sits there in
        white chrome, so a short strip keeps enough weight for the nav to read
        against a moving colour screenshot. */
     linear-gradient(to bottom, rgba(0, 0, 0, 0.5) 0px, rgba(0, 0, 0, 0.26) 110px, rgba(0, 0, 0, 0.34) 22%, rgba(0, 0, 0, 0.62) 48%, rgba(0, 0, 0, 0.82) 74%, rgba(0, 0, 0, 0.94) 100%),
@@ -107,13 +107,13 @@
        weight independent of the vertical fade */
     linear-gradient(to right, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.28) 52%, rgba(0, 0, 0, 0.06) 80%, rgba(0, 0, 0, 0));
 }
-/* Video-mode scrim — shading at the edges, not over the whole frame. Two
+/* Video-mode scrim: shading at the edges, not over the whole frame. Two
    flat gradients used to cover the entire hero, so even the lightest
    point sat at ~70% black and the footage barely read. A vignette does
    the work instead: the middle stays open, the edges carry the tint. */
 .hero.bg-video .scrim, .hero.bg-color .scrim {
   background:
-    /* the vignette — transparent centre, tint rolling in at the edges */
+    /* the vignette: transparent centre, tint rolling in at the edges */
     radial-gradient(125% 105% at 50% 45%, transparent 34%, rgba(0, 0, 0, 0.34) 68%, rgba(0, 0, 0, 0.74) 100%),
     /* just enough weight behind the left-aligned headline to keep it legible */
     linear-gradient(to right, rgba(0, 0, 0, 0.62), rgba(0, 0, 0, 0.2) 55%, rgba(0, 0, 0, 0) 80%),
@@ -159,7 +159,7 @@
   max-width: 20ch; text-wrap: balance; margin: 0 0 clamp(15px, 1.2vw, 17px);
   /* carries the contrast where the video is brightest, so the scrim does
      not have to darken the whole frame to keep the line readable */
-  /* one wide, soft pass only — a tight second shadow reads as an outline */
+  /* one wide, soft pass only: a tight second shadow reads as an outline */
   text-shadow: 0 4px 44px rgba(0, 0, 0, 0.62);
 }
 .hero-title .serif-accent { font-size: 1em; letter-spacing: inherit; }
@@ -169,7 +169,7 @@
      two lines inside a 1240px hero and left "chat log." stranded on its own.
      Measured at the 17px top of the clamp: English needs 56ch, German 62ch
      (82 characters against English's 76). 64ch clears both with headroom, and
-     the German line is the one that sets the floor — sizing to English alone
+     the German line is the one that sets the floor: sizing to English alone
      would have left /de wrapping forever.
      `balance` rather than `pretty` for the narrow widths where it does wrap:
      pretty optimises only the last line and left a stub, which is what made
@@ -273,7 +273,7 @@ section.band-dark {
      cross-fades in place rather than several sliding through. */
 }
 .rot-word {
-  /* start, not stretch — otherwise each span fills the slot and measuring
+  /* start, not stretch: otherwise each span fills the slot and measuring
      it for the width transition just returns the slot back */
   grid-area: 1 / 1; justify-self: start; white-space: nowrap;
   opacity: 0; transform: translateY(0.12em);
@@ -286,7 +286,7 @@ section.band-dark {
 /* The rotating discipline carries the brand colour; the full stop stays
    white so the line still ends on the headline's own voice.
    Not --primary itself: #2b5c78 has a relative luminance of 0.10, which
-   against this hero measures 1.5:1 on the dark areas — invisible. Same
+   against this hero measures 1.5:1 on the dark areas: invisible. Same
    hue, lifted for a dark surface, plus a stronger halo than the white
    text needs because a saturated colour loses more against the video. */
 .rot-word { color: var(--primary-on-dark); text-shadow: 0 4px 44px rgba(0, 0, 0, 0.72); }
@@ -301,7 +301,7 @@ section.band-dark {
   display: grid; gap: clamp(24px, 4vw, 40px); grid-template-columns: 1fr;
   max-width: 100%; margin: 0;
   /* top-aligned: portraits and headings line up no matter how many
-     lines a blurb takes (or whether a coworker has one at all) —
+     lines a blurb takes (or whether a coworker has one at all):
      with align-items: end a longer blurb shoved its portrait up */
   align-items: start;
 }
@@ -572,7 +572,7 @@ section.band-dark {
 .quote-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
 /* ===== the light hero: paper ground, ink type, photograph on the right =====
-   Same hero as the default — same left-aligned composition, same type scale,
+   Same hero as the default: same left-aligned composition, same type scale,
    same CTA order. The ONLY thing that changes is what sits behind it: the
    screenshot cycle is swapped for a fine-line colour sweep on paper, and the
    type flips from white to ink because it now sits on light. Everything that
@@ -584,14 +584,14 @@ section.band-dark {
 .hero.is-aurora .hero-shot,
 .hero.is-aurora video,
 .hero.is-aurora .scrim,
-/* The sweep is a static SVG — nothing to pause, so the media control is
+/* The sweep is a static SVG: nothing to pause, so the media control is
    meaningless here (and it is styled white-on-dark for the video hero). */
 .hero.is-aurora .vid-toggle { display: none; }
 
 .hero.is-aurora .hero-inner { position: relative; z-index: 1; color: var(--ink); }
 
 /* Ink instead of white, and none of the glow the dark hero needs to survive
-   the video — on paper that reads as a smudge. Sizes, weights, widths and
+   the video: on paper that reads as a smudge. Sizes, weights, widths and
    spacing are untouched. */
 .hero.is-aurora .hero-title,
 .hero.is-aurora .hero-title .rot-word,
@@ -599,7 +599,7 @@ section.band-dark {
 .hero.is-aurora .hero-social,
 .hero.is-aurora .hero-note,
 .hero.is-aurora .hero-note .no-card { text-shadow: none; }
-/* The whole headline is ink — rotator word and dot included. */
+/* The whole headline is ink: rotator word and dot included. */
 .hero.is-aurora .hero-title { color: var(--ink); }
 .hero.is-aurora .hero-title .rot-word { color: var(--ink); }
 .hero.is-aurora .hero-title .hero-dot { color: var(--ink); text-shadow: none; }
@@ -625,7 +625,7 @@ section.band-dark {
    instead of shouting. Applies to the trust band lower down too, which uses
    the same knockout asset. */
 /* Hero logos only. The trust band further down is band-dark and keeps its
-   white logo — blackening it there made it vanish into the background. */
+   white logo: blackening it there made it vanish into the background. */
 .hero.is-aurora .hero-logos .is-brand { filter: brightness(0); opacity: 0.41; }
 .hero.is-aurora .hl-label { color: var(--muted-foreground); }
 

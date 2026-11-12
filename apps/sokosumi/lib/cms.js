@@ -4,7 +4,7 @@
 //
 // Caching: every query is cached in memory for TTL_MS and mirrored to
 // data/cms-cache.json. On CMS failure the last good value is served
-// indefinitely (stale-on-error), and the disk mirror survives restarts —
+// indefinitely (stale-on-error), and the disk mirror survives restarts:
 // the site never goes down because the CMS does.
 //
 // Draft preview: pass { draft: true } to any fetcher (the server does this
@@ -23,8 +23,8 @@ const TTL_MS = Number(process.env.CMS_TTL_MS) || 5 * 60 * 1000;
 const cacheFile = path.join(__dirname, "..", "data", "cms-cache.json");
 // Committed snapshot of the same cache (refresh it by crawling the site
 // against a healthy CMS and copying the warm data/cms-cache.json over this
-// file — see CMS.md). It exists so that a COLD START
-// DURING A CMS OUTAGE — new deploy, no data/ volume, CMS down — still renders
+// file: see CMS.md). It exists so that a COLD START
+// DURING A CMS OUTAGE: new deploy, no data/ volume, CMS down: still renders
 // every page from the last committed content instead of failing. The seed is
 // only a floor: entries are stamped far in the past, so the first request per
 // path still asks the CMS and replaces them the moment it answers.
@@ -57,7 +57,7 @@ function persist() {
   }, 2000);
 }
 
-// A CMS that fails is survivable — the stale cache covers it. A CMS that
+// A CMS that fails is survivable: the stale cache covers it. A CMS that
 // merely hangs is not: without a deadline every HTML route waits on it
 // forever, and the whole site stops responding while looking perfectly
 // healthy. Fail fast and let the stale-on-error path do its job.
@@ -77,7 +77,7 @@ async function rawFetch(pathname, draft) {
 const inFlight = new Map();
 
 // The cache is keyed on the request path, and 404 handling queries the CMS for
-// whatever slug was asked for — so a crawler walking nonsense URLs could grow
+// whatever slug was asked for: so a crawler walking nonsense URLs could grow
 // it without limit, and it is mirrored to disk. Bound it, evicting whatever
 // was least recently used.
 const MAX_ENTRIES = Number(process.env.CMS_CACHE_MAX) || 500;
@@ -95,7 +95,7 @@ function remember(pathname, entry) {
 // The request's locale rides in on AsyncLocalStorage (lib/i18n.js), so no
 // call site had to change. German requests ask Payload for the de values
 // with an English fallback; requests to a CMS that does not know these
-// params yet simply get English back — never an error, never a blank.
+// params yet simply get English back, never an error, never a blank.
 //
 // Locale safety of the cache: the locale params are appended to the path
 // BEFORE it is used as the cache key, so /api/pages?...&locale=de and the
@@ -111,7 +111,7 @@ function withLocale(pathname) {
 //
 // German failure ladder: a CMS without the locale config yet answers a
 // ?locale=de query with an error (the live instance 500s on it today), and
-// that must NEVER take a German page down — the brief for /de is "English
+// that must NEVER take a German page down: the brief for /de is "English
 // content, German chrome" until translations exist. So a failed localized
 // fetch falls back to the plain English query (which is usually already in
 // cache), and only after THAT fails does the stale-on-error path throw.
@@ -125,7 +125,7 @@ async function cmsGet(rawPathname, opts) {
       return await rawFetch(withDraft(pathname), true);
     } catch (e) {
       if (!fallbackPathname) throw e;
-      console.error(`[cms] ${e.message} — draft falling back to the default locale`);
+      console.error(`[cms] ${e.message}: draft falling back to the default locale`);
       return rawFetch(withDraft(fallbackPathname), true);
     }
   }
@@ -144,8 +144,8 @@ function cachedGet(pathname, fallbackPathname) {
     .then((data) => {
       // A find on a healthy payload ALWAYS answers { docs: [...] }. A 200
       // without one is a half-deployed CMS (schema migrated ahead of its
-      // code, an error body, a proxy interstitial). Throwing HERE — before
-      // remember() — keeps the garbage out of the cache and routes the
+      // code, an error body, a proxy interstitial). Throwing HERE: before
+      // remember(): keeps the garbage out of the cache and routes the
       // request through the stale-on-error path like any other CMS failure,
       // instead of letting it masquerade as an authoritative empty result.
       if (!data || !Array.isArray(data.docs)) {
@@ -157,11 +157,11 @@ function cachedGet(pathname, fallbackPathname) {
     })
     .catch((e) => {
       if (hit) {
-        console.error(`[cms] ${e.message} — serving stale data for ${pathname}`);
+        console.error(`[cms] ${e.message}: serving stale data for ${pathname}`);
         return hit.data;
       }
       if (fallbackPathname) {
-        console.error(`[cms] ${e.message} — falling back to the default locale`);
+        console.error(`[cms] ${e.message}: falling back to the default locale`);
         return cachedGet(fallbackPathname, null);
       }
       // No previous good value to fall back on. Whatever the route does with
@@ -201,7 +201,7 @@ async function findAll(collection, params, opts) {
   const data = await cmsGet(`/api/${collection}?${qs(params)}`, opts);
   // A find on a healthy payload ALWAYS answers { docs: [...] }. A 200 without
   // a docs array is a half-deployed CMS (schema migrated ahead of its code,
-  // an error body, a proxy interstitial) — treating it as an authoritative
+  // an error body, a proxy interstitial): treating it as an authoritative
   // empty result is how a CMS blip once turned into template-level 404s that
   // told Google to deindex real pages. Malfunction, not "does not exist".
   if (!data || !Array.isArray(data.docs)) {
@@ -231,7 +231,7 @@ const getVendors = (opts) =>
   findAll("vendors", { ...siteWhere({ active: "true" }), limit: 200, depth: 1, sort: "order" }, opts);
 
 // Single-doc lookups keyed on a slug have a cache entry only for slugs that
-// have actually been visited — so during an outage a never-visited profile
+// have actually been visited: so during an outage a never-visited profile
 // used to throw even though the COLLECTION list was sitting warm in the cache
 // (every index page refreshes it, and the committed seed always carries it).
 // When the direct query cannot be answered, answer from that list instead:
@@ -244,7 +244,7 @@ async function findOne(direct, list, match) {
     if (!isCmsUnavailable(e)) throw e;
     const docs = await list().catch(() => null);
     if (!docs) throw e;
-    console.error(`[cms] ${e.message} — resolved from the cached collection list`);
+    console.error(`[cms] ${e.message}: resolved from the cached collection list`);
     return docs.find(match) || null;
   }
 }
@@ -278,7 +278,7 @@ const getCoworker = (slug, opts) =>
     (c) => c.slug === slug,
   );
 
-// Lookup by the product's internal slug (offers.agentSlug join key) — used
+// Lookup by the product's internal slug (offers.agentSlug join key): used
 // to 301 old URLs after a public slug diverges from the catalog slug.
 const getCoworkerByCatalogSlug = (catalogSlug, opts) =>
   findOne(
@@ -298,7 +298,7 @@ const getOffersFor = async (agentSlug, opts) => {
     if (!isCmsUnavailable(e)) throw e;
     const all = await getOffers(opts).catch(() => null);
     if (!all) throw e;
-    console.error(`[cms] ${e.message} — resolved from the cached offers list`);
+    console.error(`[cms] ${e.message}: resolved from the cached offers list`);
     return all.filter((o) => o.agentSlug === agentSlug);
   }
 };

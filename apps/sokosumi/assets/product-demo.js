@@ -1,4 +1,4 @@
-/* /product interactive demo — behaviour for the 1440×810 (16:9) app replica.
+/* /product interactive demo: behaviour for the 1440×810 (16:9) app replica.
  * Everything renders inside #pd-app; popovers/dialogs live in #pd-layer so
  * they scale with the frame. State is in-memory only. */
 (function () {
@@ -246,14 +246,14 @@
       const p = P[m.slug];
       const offer = (p.offers && p.offers[0]) || null;
       // A coworker DM opens on an example exchange: brief in, task queued,
-      // deliverable back — the loop the whole product is about.
+      // deliverable back: the loop the whole product is about.
       S.rooms[id] = offer
         ? [
-            { id: id + "-0", who: "patrick", time: "Yesterday", text: `Hi ${p.name} — can you take this? ${offer.title}. Use the workspace context, and ask here if anything is unclear.` },
-            { id: id + "-1", who: m.slug, time: "Yesterday", text: `On it. I've queued “${offer.title}” as a task on your board — I'll post the deliverable here the moment it's done.` },
-            { id: id + "-2", who: m.slug, time: "09:12", text: `Done — the deliverable is on the task and attached here. Tell me if you want anything changed; edits run as follow-ups on the same task.`, file: { name: offer.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") + (offer.out === "Web" ? "" : offer.out === "PDF" ? ".pdf" : ".docx"), kind: offer.out, meta: offer.out === "Web" ? "Live deliverable" : offer.out }, react: ["🙏", 1] },
+            { id: id + "-0", who: "patrick", time: "Yesterday", text: `Hi ${p.name}: can you take this? ${offer.title}. Use the workspace context, and ask here if anything is unclear.` },
+            { id: id + "-1", who: m.slug, time: "Yesterday", text: `On it. I've queued “${offer.title}” as a task on your board: I'll post the deliverable here the moment it's done.` },
+            { id: id + "-2", who: m.slug, time: "09:12", text: `Done: the deliverable is on the task and attached here. Tell me if you want anything changed; edits run as follow-ups on the same task.`, file: { name: offer.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") + (offer.out === "Web" ? "" : offer.out === "PDF" ? ".pdf" : ".docx"), kind: offer.out, meta: offer.out === "Web" ? "Live deliverable" : offer.out }, react: ["🙏", 1] },
           ]
-        : [{ id: id + "-0", who: m.slug, time: "now", text: `Hi Patrick, I'm ${p.name} — ${p.role}. Tell me what you need and I'll either answer here or turn it into a task on your board.` }];
+        : [{ id: id + "-0", who: m.slug, time: "now", text: `Hi Patrick, I'm ${p.name}: ${p.role}. Tell me what you need and I'll either answer here or turn it into a task on your board.` }];
     } else if (m.kind === "dm") {
       S.rooms[id] = [];
     } else {
@@ -361,7 +361,7 @@
       setTimeout(() => {
         const isTask = /\b(report|research|build|analy|write|create|plan|dashboard|campaign|draft)\w*/i.test(text);
         const reply = isTask
-          ? `On it. I've created a task for this on your board — "${text.length > 58 ? text.slice(0, 58).replace(/\s+\S*$/, "") + "…" : text}". I'll post here when the first cut is ready.`
+          ? `On it. I've created a task for this on your board: "${text.length > 58 ? text.slice(0, 58).replace(/\s+\S*$/, "") + "…" : text}". I'll post here when the first cut is ready.`
           : `Got it, Patrick. Anything else you want me to fold into this?`;
         msgs.push({ id: S.room + "-r" + Date.now(), who: responder, time: "now", text: reply });
         renderThread();
@@ -579,7 +579,7 @@
   }
   function projectRowHtml(pr) {
     return `<article class="pd-proj-row" data-pd-project="${esc(pr.name)}">
-      <button type="button" class="pd-proj-main" data-pd-openproject="${esc(pr.name)}"><span class="pd-proj-mark">${esc(pr.n)}</span><span class="pd-proj-copy"><span class="pd-proj-name">${esc(pr.name)}</span><span class="pd-proj-desc">${esc(pr.d || "—")}</span></span><span class="pd-proj-meta"><span class="pd-pill">${ico("list-todo", 14)}${pr.t}</span><span class="pd-pill">${ico("briefcase", 14)}0</span></span></button>
+      <button type="button" class="pd-proj-main" data-pd-openproject="${esc(pr.name)}"><span class="pd-proj-mark">${esc(pr.n)}</span><span class="pd-proj-copy"><span class="pd-proj-name">${esc(pr.name)}</span><span class="pd-proj-desc">${esc(pr.d || ": ")}</span></span><span class="pd-proj-meta"><span class="pd-pill">${ico("list-todo", 14)}${pr.t}</span><span class="pd-pill">${ico("briefcase", 14)}0</span></span></button>
       <button type="button" class="pd-ib pd-ib-8" data-pd-menu="project" data-pd-project-ref="${esc(pr.name)}" aria-label="Project actions">${ico("ellipsis")}</button>
     </article>`;
   }
@@ -1087,7 +1087,7 @@
       case "more-dms": { const ul = $("[data-pd-dms]"); ["samuel"].forEach((k) => { const id = "dm-" + k; if (S.roomMeta[id]) return; S.roomMeta[id] = { kind: "dm", who: [k], name: H[k].name }; ul.insertAdjacentHTML("beforeend", `<li class="pd-room" data-pd-room-li="${id}"><button type="button" class="pd-nav pd-room-btn" data-pd-room="${id}"><span class="pd-room-lead pd-room-faces">${ava(k, 20, { status: true })}</span><span class="pd-room-name">${esc(H[k].name)}</span><span class="pd-room-trail"></span></button><span class="pd-room-actions"><button type="button" class="pd-ib pd-ib-7" data-pd-menu="room" data-pd-room-ref="${id}" aria-label="Chat actions">${ico("ellipsis")}</button></span></li>`); }); el.disabled = true; el.textContent = "All conversations loaded"; break; }
       case "more-history": { const ul = $("[data-pd-history]"); const rows = $$(".pd-hist-row", ul).slice(0, 6); rows.forEach((r) => { const c = r.cloneNode(true); c.querySelector(".pd-hist-when").textContent = "Last week"; ul.appendChild(c); }); el.disabled = true; el.textContent = "No more history"; break; }
       case "more-companies": { el.hidden = true; toast("Masumi Network coworkers are in the marketplace"); break; }
-      case "logout": { closeLayer(); toast("You stay signed in — this is a demo"); break; }
+      case "logout": { closeLayer(); toast("You stay signed in: this is a demo"); break; }
       case "activate": { closeLayer(); toast("Your assistant is being set up"); const pa = $(".pd-pa-label"); if (pa) pa.textContent = "Setting up…"; setTimeout(() => { if (pa) pa.textContent = "Personal Assistant"; const nw = $(".pd-new"); if (nw) nw.remove(); }, 2500); break; }
       case "download": { toast("Download started"); break; }
       case "expand": { const li = el.closest(".pd-act"); if (li) { li.classList.remove("is-clamped"); el.remove(); } break; }

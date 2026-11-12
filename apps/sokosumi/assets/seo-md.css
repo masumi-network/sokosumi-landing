@@ -1,4 +1,4 @@
-/* Website Analyzer — additions on top of design-md.css. Reuses the dm-* tool
+/* Website Analyzer: additions on top of design-md.css. Reuses the dm-* tool
    shell and only styles the SEO-specific report pieces: score, checklist and
    recommendations. Colours come from the shared design tokens. */
 
@@ -106,7 +106,7 @@
   color: var(--seo-accent, var(--muted-foreground));
 }
 
-/* Mini score ring — same conic-gradient technique as the overall gauge. */
+/* Mini score ring: same conic-gradient technique as the overall gauge. */
 .seo-ring {
   --seo-val: 0deg;
   --seo-ring-color: var(--border);
@@ -292,7 +292,7 @@
   overflow-wrap: anywhere;
 }
 
-/* .dm-preview sets display:grid, which overrides the UA [hidden] rule — so the
+/* .dm-preview sets display:grid, which overrides the UA [hidden] rule: so the
    Report panel would stay visible under the Edit tab. Restore hiding for both
    tab panels explicitly (the attribute selector outranks the base class). */
 .dm-preview[hidden],
@@ -351,7 +351,7 @@
   .dm-preview .dm-type-list { column-count: 1; }
 }
 
-/* Lead-capture modal — mirrors the DESIGN.md generator's email gate. */
+/* Lead-capture modal: mirrors the DESIGN.md generator's email gate. */
 .dm-lead {
   position: fixed;
   inset: 0;

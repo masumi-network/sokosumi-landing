@@ -3,12 +3,12 @@
 // The <head> snippet in templates/shell.js already set Consent Mode to its
 // denied-by-default state and re-applied any stored choice. This file draws
 // the banner, records the visitor's choice, and flips Consent Mode when they
-// choose. Nothing here loads a third-party service — it is ~150 lines of
+// choose. Nothing here loads a third-party service: it is ~150 lines of
 // vanilla JS, no dependencies.
 //
 // The choice is stored in one cookie, `sokosumi_consent`, scoped to
 // `.sokosumi.com` so a single decision covers both this site and
-// app.sokosumi.com. The app ships an identical cookie contract (apps/web) —
+// app.sokosumi.com. The app ships an identical cookie contract (apps/web):
 // keep the shape below in sync with it.
 (function () {
   "use strict";
@@ -30,7 +30,7 @@
     {
       key: "necessary",
       title: tr("Strictly necessary", "Unbedingt erforderlich"),
-      body: tr("Required for the site to work — security, and remembering this choice. Always on.", "Nötig, damit die Website funktioniert – Sicherheit und das Speichern dieser Auswahl. Immer aktiv."),
+      body: tr("Required for the site to work: security, and remembering this choice. Always on.", "Nötig, damit die Website funktioniert – Sicherheit und das Speichern dieser Auswahl. Immer aktiv."),
       locked: true,
     },
     {
@@ -38,7 +38,7 @@
       title: tr("Analytics", "Analyse"),
       // Not "anonymous": Google Analytics sets a persistent identifier, so the
       // measurement is pseudonymous. The app says the same thing about its
-      // signed-in User-ID — keep the two claims consistent.
+      // signed-in User-ID: keep the two claims consistent.
       body: tr("Usage measurement with Google Analytics, using a pseudonymous ID so we can see which pages help and which do not.", "Nutzungsmessung mit Google Analytics über eine pseudonyme ID, damit wir sehen, welche Seiten helfen und welche nicht."),
     },
     {
@@ -67,7 +67,7 @@
     try {
       var parsed = JSON.parse(decodeURIComponent(m[1]));
       // A choice recorded against an older schema is not a choice about the
-      // current categories — ask again. Mirrors readConsent() in the app
+      // current categories: ask again. Mirrors readConsent() in the app
       // (apps/web/src/lib/analytics/consent.ts); the two must agree because
       // they read the same .sokosumi.com cookie.
       if (parsed.v !== VERSION) return null;
@@ -120,13 +120,13 @@
     // the <head> snippet on every load that finds a stored cookie, so a GTM
     // trigger on that would fire the GA4 tag twice for every returning visitor.
     // `consent_decision` comes only from apply(), and apply() is only reached
-    // from decide(), which is only reached from the three banner buttons — so
+    // from decide(), which is only reached from the three banner buttons: so
     // it means "the visitor just chose", exactly once per decision.
     //
     // GTM fires the GA4 configuration tag on this. Without it the landing
     // pageview of every session is lost: Consent Mode blocks the tag at
     // gtm.init (wait_for_update is 500ms; nobody reads a banner that fast) and
-    // GTM never retries — measured still zero 30 seconds after accepting. A
+    // GTM never retries: measured still zero 30 seconds after accepting. A
     // visitor who landed, accepted and left was recorded as nothing at all.
     // Consent Mode still enforces the categories, so someone who rejects fires
     // this event and GA4 still sends nothing.

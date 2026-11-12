@@ -8,16 +8,16 @@ const FAQ = [
   {
     question: "Does this tell me where I'm actually mentioned in ChatGPT or Perplexity?",
     answer:
-      "No — it has no access to any AI search engine's index, training data, or answer logs, and can't tell you where you're mentioned, where a competitor is mentioned instead, or which queries you're invisible for. That would need direct access to those systems, which no free tool has.",
+      "No: it has no access to any AI search engine's index, training data, or answer logs, and can't tell you where you're mentioned, where a competitor is mentioned instead, or which queries you're invisible for. That would need direct access to those systems, which no free tool has.",
   },
   {
     question: "So what does it actually check?",
     answer:
-      "Three groups of signals this tool CAN see. AI crawler access: whether your robots.txt blocks the crawlers that feed these engines (GPTBot, ClaudeBot, PerplexityBot, Google-Extended and others), whether it blocks all crawlers site-wide, and whether the homepage is set to noindex. Brand disambiguation: whether the homepage gives an engine a clean brand signal — title, a single H1, meta description, canonical URL, Organization and WebSite schema, sameAs links, and a declared logo. Discoverability: a sitemap.xml, a Sitemap: line in robots.txt, llms.txt and llms-full.txt, and HTTPS. It's a readiness proxy, not a visibility measurement.",
+      "Three groups of signals this tool CAN see. AI crawler access: whether your robots.txt blocks the crawlers that feed these engines (GPTBot, ClaudeBot, PerplexityBot, Google-Extended and others), whether it blocks all crawlers site-wide, and whether the homepage is set to noindex. Brand disambiguation: whether the homepage gives an engine a clean brand signal: title, a single H1, meta description, canonical URL, Organization and WebSite schema, sameAs links, and a declared logo. Discoverability: a sitemap.xml, a Sitemap: line in robots.txt, llms.txt and llms-full.txt, and HTTPS. It's a readiness proxy, not a visibility measurement.",
   },
   {
     question: "Why does it check for llms.txt?",
-    answer: "It's an emerging, informal convention — a plain-text index some sites publish specifically for LLM-based crawlers and assistants. Having one is a low-cost signal that you've thought about AI discoverability; not having one isn't a penalty most engines apply today.",
+    answer: "It's an emerging, informal convention: a plain-text index some sites publish specifically for LLM-based crawlers and assistants. Having one is a low-cost signal that you've thought about AI discoverability; not having one isn't a penalty most engines apply today.",
   },
   {
     question: "Is the URL or page content stored anywhere?",
@@ -69,7 +69,7 @@ function render() {
     `<section class="tk-head" id="analyzer">
       <p class="tk-overline">Free · no sign-up</p>
       <h1>AI Search Visibility Checker</h1>
-      <p class="tk-lede">Enter your site and get a readiness check: whether AI crawlers are blocked, whether your brand is set up to be disambiguated, and whether you're discoverable. This can't see live AI search results — see the FAQ for exactly what it does check.</p>
+      <p class="tk-lede">Enter your site and get a readiness check: whether AI crawlers are blocked, whether your brand is set up to be disambiguated, and whether you're discoverable. This can't see live AI search results: see the FAQ for exactly what it does check.</p>
 
       <form class="tk-form" id="asvForm" novalidate>
         <label class="sr-only" for="asvUrl">Website URL</label>

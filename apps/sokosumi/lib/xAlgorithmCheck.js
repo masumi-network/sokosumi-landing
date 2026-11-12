@@ -6,7 +6,7 @@
 // documented to use: a real penalty on off-platform links, a boost for
 // native media and for posts that generate reply conversation, and a penalty
 // on spam-shaped formatting (hashtag/mention stuffing, shouting). No network
-// call, no LLM — every check here is a regex or a threshold, the same
+// call, no LLM: every check here is a regex or a threshold, the same
 // approach postCheck.js and headlineCheck.js use.
 
 const { decodeEntities } = require("./htmlExtract");
@@ -18,7 +18,7 @@ const UA = "Mozilla/5.0 (compatible; SokosumiBot/1.0; +https://sokosumi.com/tool
 const X_STATUS_RE = /^https?:\/\/(?:www\.|mobile\.)?(?:twitter\.com|x\.com)\/[^/]+\/status(?:es)?\/\d+/i;
 
 // Read a published post's text (and whether it carries media) from X's public
-// oEmbed endpoint — no login, no API key. Only ever fetches publish.twitter.com,
+// oEmbed endpoint, no login, no API key. Only ever fetches publish.twitter.com,
 // never the user-supplied host directly, so there's no SSRF surface.
 async function fetchTweet(url) {
   const oembed = "https://publish.twitter.com/oembed?omit_script=1&dnt=true&url=" + encodeURIComponent(url);
@@ -33,7 +33,7 @@ async function fetchTweet(url) {
   } catch (_e) {
     throw fail("Couldn't reach X to read that post. Paste the post text instead.");
   }
-  if (res.status === 404) throw fail("That post couldn't be found — it may be deleted or from a private account. Paste the text instead.");
+  if (res.status === 404) throw fail("That post couldn't be found: it may be deleted or from a private account. Paste the text instead.");
   if (!res.ok) throw fail("X wouldn't return that post right now. Paste the post text instead.");
   const data = await res.json().catch(() => null);
   if (!data || !data.html) throw fail("Couldn't read that post from X. Paste the post text instead.");
@@ -66,7 +66,7 @@ function buildConversationChecks(text) {
   const add = (level, title, tag, detail, weight = 1) => checks.push({ level, title, tag, detail, weight });
 
   if (REPLY_TRIGGER.test(text.trim())) {
-    add("pass", "Invites replies", "conversation", "A question or reply prompt is present — the algorithm's public code weights reply engagement well above likes or reposts.", 3);
+    add("pass", "Invites replies", "conversation", "A question or reply prompt is present: the algorithm's public code weights reply engagement well above likes or reposts.", 3);
   } else {
     add("warn", "No reply hook", "conversation", "Nothing here prompts a reply. Posts that spark a reply thread are documented to rank higher than ones that only collect likes.", 3);
   }
@@ -80,7 +80,7 @@ function buildLinksChecks(text) {
   const links = text.match(URL_PATTERN) || [];
 
   if (links.length > 0) {
-    add("warn", "Contains an off-platform link", "links", `${links.length} link(s) found. The ranking model applies a documented penalty to posts with outbound links, since it optimizes for time spent on X — put the link in the first reply instead.`, 4);
+    add("warn", "Contains an off-platform link", "links", `${links.length} link(s) found. The ranking model applies a documented penalty to posts with outbound links, since it optimizes for time spent on X: put the link in the first reply instead.`, 4);
   } else {
     add("pass", "No off-platform link diluting reach", "links", "The post keeps readers on-platform.", 4);
   }
@@ -96,13 +96,13 @@ function buildFormatChecks(text, hasMedia) {
   if (hasMedia) {
     add("pass", "Includes native media", "format", "Photos, GIFs and video get a documented boost over text-only posts.", 3);
   } else {
-    add("warn", "Text-only post", "format", "Consider attaching an image, GIF or video — native media gets algorithmic preference over plain text.", 3);
+    add("warn", "Text-only post", "format", "Consider attaching an image, GIF or video: native media gets algorithmic preference over plain text.", 3);
   }
 
   if (chars < 40) {
     add("warn", "Very short post", "format", `${chars} characters. Very short, low-substance posts tend to get less algorithmic reach than posts with real content.`, 2);
   } else if (chars > 640 && !text.includes("\n")) {
-    add("warn", "Long, unbroken text", "format", `${chars} characters with no line breaks — hard to skim. A blank line between ideas reads easier and holds attention longer.`, 2);
+    add("warn", "Long, unbroken text", "format", `${chars} characters with no line breaks: hard to skim. A blank line between ideas reads easier and holds attention longer.`, 2);
   } else {
     add("pass", "Length is in a solid range", "format", `${chars} characters.`, 2);
   }
@@ -117,19 +117,19 @@ function buildSpamChecks(text) {
   const mentions = text.match(MENTION_PATTERN) || [];
 
   if (hashtags.length >= 3) {
-    add("warn", "Too many hashtags", "spam", `${hashtags.length} hashtags reads as spam to both readers and the ranking model — one or two focused tags outperform a stack of them.`, 2);
+    add("warn", "Too many hashtags", "spam", `${hashtags.length} hashtags reads as spam to both readers and the ranking model: one or two focused tags outperform a stack of them.`, 2);
   } else if (hashtags.length > 0) {
-    add("pass", "Hashtag use is restrained", "spam", `${hashtags.length} hashtag(s) — within the one or two that still work on X.`, 2);
+    add("pass", "Hashtag use is restrained", "spam", `${hashtags.length} hashtag(s): within the one or two that still work on X.`, 2);
   } else {
-    add("pass", "No hashtags", "spam", "No hashtags — a safe default, since X ranks on the post itself, not tags.", 2);
+    add("pass", "No hashtags", "spam", "No hashtags: a safe default, since X ranks on the post itself, not tags.", 2);
   }
 
   if (mentions.length >= 5) {
     add("warn", "Mention-heavy", "spam", `${mentions.length} @mentions in one post reads as a tagging spree rather than a genuine reply to those people.`, 1);
   } else if (mentions.length > 0) {
-    add("pass", "Mentions look genuine", "spam", `${mentions.length} @mention(s) — reads like a real reply, not a tagging spree.`, 1);
+    add("pass", "Mentions look genuine", "spam", `${mentions.length} @mention(s): reads like a real reply, not a tagging spree.`, 1);
   } else {
-    add("pass", "No mention stuffing", "spam", "No @mentions — nothing that reads as a tagging spree.", 1);
+    add("pass", "No mention stuffing", "spam", "No @mentions: nothing that reads as a tagging spree.", 1);
   }
 
   if (/[A-Z]{6,}/.test(text) || /!{2,}/.test(text)) {
@@ -155,7 +155,7 @@ function buildRecommendations(dimensions) {
     .flatMap((d) => d.checks.map((c) => ({ ...c, dimension: d.label })))
     .filter((c) => c.level !== "pass")
     .sort((a, b) => priority[a.level] - priority[b.level])
-    .map((c) => `${c.dimension} — ${c.title}: ${c.detail}`);
+    .map((c) => `${c.dimension}: ${c.title}: ${c.detail}`);
 }
 
 async function analyze(input) {
@@ -180,12 +180,12 @@ async function analyze(input) {
   }
 
   if (!trimmed) {
-    const error = new Error("Paste the post — or a link to one you've published — that you want scored.");
+    const error = new Error("Paste the post: or a link to one you've published: that you want scored.");
     error.status = 400;
     throw error;
   }
   if (trimmed.length > MAX_TEXT_LENGTH) {
-    const error = new Error(`That's ${trimmed.length} characters — keep it under ${MAX_TEXT_LENGTH}.`);
+    const error = new Error(`That's ${trimmed.length} characters: keep it under ${MAX_TEXT_LENGTH}.`);
     error.status = 400;
     throw error;
   }

@@ -4,7 +4,7 @@ const { esc, pageStart, pageEnd, SITE } = shell;
 
 const PATH = "/tools/orphan-pages";
 
-// The "site structure" cluster — three tools that look at how a site's pages
+// The "site structure" cluster: three tools that look at how a site's pages
 // link to one another. Shared verbatim; relatedTools() drops the current page.
 const SITE_STRUCTURE_TOOLS = [
   { href: "/tools/website-analyzer", title: "Website Analyzer", blurb: "Score a single page's on-page SEO signals and generate a report for AI agents." },
@@ -76,7 +76,7 @@ function render() {
     `<section class="tk-head" id="analyzer">
       <p class="tk-overline">Free · no sign-up</p>
       <h1>Orphan Page Finder</h1>
-      <p class="tk-lede">Enter a site URL and find pages listed in its sitemap that no other page on the site links to — reachable by URL, but not by browsing.</p>
+      <p class="tk-lede">Enter a site URL and find pages listed in its sitemap that no other page on the site links to: reachable by URL, but not by browsing.</p>
 
       <form class="tk-form" id="opfForm" novalidate>
         <label class="sr-only" for="opfUrl">Site URL</label>

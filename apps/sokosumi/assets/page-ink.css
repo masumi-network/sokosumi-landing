@@ -42,7 +42,7 @@ body:has(main.ink-page) .crumbs a:hover { color: #fff; }
      the sub on different left edges, because they have different natural
      widths).
      `100%` here resolved against the CONTAINING BLOCK, which is still the
-     1240px main — so the sum was always zero and at 1920px the hero copy sat
+     1240px main: so the sum was always zero and at 1920px the hero copy sat
      at 56px while every other section sat at 333px. --vw is the real viewport
      width, which is what the gutter has to be measured from. */
   padding-block: clamp(34px, 6vw, 76px) clamp(40px, 6vw, 72px);

@@ -1,4 +1,4 @@
-/* /tools/landing-page-copy-analyzer — client. Thin wiring over
+/* /tools/landing-page-copy-analyzer: client. Thin wiring over
  * SokosumiToolKit.wireScorer(); the server does the scoring.
  */
 (function () {
@@ -22,7 +22,7 @@
     submitLabel: "Analyze copy",
     busyLabel: "Analyzing…",
     reportTitle: function (data) {
-      return "Landing page copy analyzer — " + (data.url || "") + " — " + data.overall + "/100";
+      return "Landing page copy analyzer: " + (data.url || "") + ": " + data.overall + "/100";
     },
     getValue: function () {
       return urlInput.value;

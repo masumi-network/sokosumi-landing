@@ -13,11 +13,11 @@ const FAQ = [
   {
     question: "Does it actually see the rendered page, like a screenshot?",
     answer:
-      "No — it has no headless browser and doesn't render JavaScript or CSS. \"Appears early\" is approximated by position in the raw HTML, which is usually a good proxy but isn't the same as true above-the-fold layout. For a client-side app that renders everything with JavaScript, this will under-report what's actually visible.",
+      "No: it has no headless browser and doesn't render JavaScript or CSS. \"Appears early\" is approximated by position in the raw HTML, which is usually a good proxy but isn't the same as true above-the-fold layout. For a client-side app that renders everything with JavaScript, this will under-report what's actually visible.",
   },
   {
     question: "Why does it flag long forms?",
-    answer: "Every additional form field is a well-documented drop-off point before submission. It isn't a hard rule — a form for a $50,000 enterprise deal can justify more fields than a newsletter signup — so treat it as a flag to double-check, not a verdict.",
+    answer: "Every additional form field is a well-documented drop-off point before submission. It isn't a hard rule: a form for a $50,000 enterprise deal can justify more fields than a newsletter signup: so treat it as a flag to double-check, not a verdict.",
   },
   {
     question: "Is the URL or page content stored anywhere?",
@@ -82,7 +82,7 @@ function render() {
     `<section class="tk-head" id="analyzer">
       <p class="tk-overline">Free · no sign-up</p>
       <h1>Landing Page Conversion Teardown</h1>
-      <p class="tk-lede">Enter a landing page URL and get a teardown of its headline clarity, its CTA, its social proof, and its trust signals — with the exact things costing you conversions.</p>
+      <p class="tk-lede">Enter a landing page URL and get a teardown of its headline clarity, its CTA, its social proof, and its trust signals: with the exact things costing you conversions.</p>
 
       <form class="tk-form" id="ltcForm" novalidate>
         <label class="sr-only" for="ltcUrl">Landing page URL</label>

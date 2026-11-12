@@ -1,4 +1,4 @@
-// /ai-coworkers (index) and /ai-coworkers/<slug> (profile) — CMS-backed via the
+// /ai-coworkers (index) and /ai-coworkers/<slug> (profile): CMS-backed via the
 // nightly catalog sync. Curated coworkers (kind=coworker) show their
 // template tasks; marketplace agents (kind=agent) show stats + vendor.
 
@@ -13,7 +13,7 @@ const { esc, attr, icon, avatar, vendorLogo, pageStart, pageEnd, APP } = shell;
 const FEATURED_VENDOR = "serviceplan-group";
 
 // Marketplace coworkers have their own page in the app, so the CTA deep-links
-// straight to it — a signed-out visitor gets /signin?returnUrl=… and lands back
+// straight to it: a signed-out visitor gets /signin?returnUrl=… and lands back
 // there after signing up. Curated coworkers are a different product entity with
 // no such route, so they open the app itself.
 function tryUrl(c) {
@@ -53,7 +53,7 @@ function agentRow(c) {
 
 
 // The agent-vs-coworker explainer. The terms overlap and there is no settled
-// technical line, so this does not pretend there is one — it is the product
+// technical line, so this does not pretend there is one: it is the product
 // distinction in the fewest words that still land: one line per side, four
 // contrasts that read across the split, one example each. Agent on paper,
 // coworker on ink: the contrast is the point, and ink is the house emphasis
@@ -97,7 +97,7 @@ function indexFaqSection() {
 
 async function index(ctx) {
   const opts = { draft: ctx.preview };
-  // The vendor object on catalog items carries no description — that lives in
+  // The vendor object on catalog items carries no description: that lives in
   // the CMS vendors collection (see templates/vendors.js). Joined by slug
   // below; the roster must render even if this extra call fails, so it
   // degrades to no descriptions rather than an error page.
@@ -166,7 +166,7 @@ async function index(ctx) {
         }</p>
     </div>
     ${
-      /* The roster query answered but came back empty — a sync hiccup, not a
+      /* The roster query answered but came back empty: a sync hiccup, not a
          marketplace with nobody on it. Say something sane instead of "0
          specialists" over a blank grid, and keep the page a 200 so the URL
          stays indexed. A CMS that could not answer at all never reaches this
@@ -241,13 +241,13 @@ function profileStats(c) {
   return stats.length ? `<div class="cw-stats">${stats.join("")}</div>` : "";
 }
 
-// These pages were typed as schema:Person — which told Google that "Advanced
+// These pages were typed as schema:Person: which told Google that "Advanced
 // Web Research" is a human being who worksFor Serviceplan Group. They are
 // software you run for credits, so SoftwareApplication is the honest type.
 //
 // Only facts the page actually displays go in here: the run count and rating
 // come from profileStats() above, and nothing is asserted that a reader cannot
-// see. The credits price is deliberately NOT expressed as an Offer — schema
+// see. The credits price is deliberately NOT expressed as an Offer: schema
 // prices need an ISO-4217 currency and credits are not one, so stating a
 // number there would be inventing a price.
 function profileLd(c, vendorName, vendorSlug) {
@@ -314,7 +314,7 @@ function profileLd(c, vendorName, vendorSlug) {
 // ---- vendor-written listing copy -------------------------------------------
 // The marketplace record carries the maker's own markdown description. It is
 // third-party text, so it is escaped first and only a fixed set of constructs
-// is rebuilt afterwards — headings, emphasis, lists, links and paragraphs.
+// is rebuilt afterwards: headings, emphasis, lists, links and paragraphs.
 // Anything else survives as plain text rather than as markup.
 function vendorMarkdown(src) {
   const raw = String(src || "").trim();
@@ -337,7 +337,7 @@ function vendorMarkdown(src) {
     const line = lineRaw.trim();
     if (!line) { closeList(); continue; }
     // GFM table: a header row, a divider, then body rows. Makers use these for
-    // the facts worth having — hosting, retention, models — so they are worth
+    // the facts worth having: hosting, retention, models: so they are worth
     // rebuilding rather than dumping as pipes.
     if (line.includes("|") && lines[i + 1] && isDivider(lines[i + 1].trim())) {
       closeList();
@@ -462,8 +462,8 @@ function offerCard(agentSlug, o) {
 // The maker's own description of the listing. Rendered under its own heading so
 // it reads as the vendor's words rather than as Sokosumi copy.
 // `alt` is set when the editorial overlay already opened the page with its own
-// "what this does" section. Both are legitimate — ours targets the query, this
-// one is the maker's own words — but they cannot both be called the same thing.
+// "what this does" section. Both are legitimate: ours targets the query, this
+// one is the maker's own words, but they cannot both be called the same thing.
 function vendorSection(c, cat, alt) {
   const md = cat && cat.description ? String(cat.description) : "";
   // A stub like "## Overview" on its own carries nothing; require real prose.

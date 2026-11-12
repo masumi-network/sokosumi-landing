@@ -82,8 +82,8 @@ async function productHub(ctx) {
 // ---- /product/* surface pages -------------------------------------------
 // The surfaces are CMS pages. This layer adds what only the code can add:
 // the live demo visual for each surface, a query-targeting <title>, and
-// cross-links between the surfaces. Everything a reader sees — hero, blocks,
-// FAQ, CTA — comes from the page document in the CMS.
+// cross-links between the surfaces. Everything a reader sees: hero, blocks,
+// FAQ, CTA: comes from the page document in the CMS.
 const SURFACES = {
   "product/ai-coworkers": {
     feat: "home",
@@ -212,7 +212,7 @@ async function cmsPage(ctx) {
 
   // Pages that stand on their own rather than under a parent: they open on the
   // ink band (assets/page-ink.css) and their breadcrumb is Home > page, with no
-  // section in between. /ai-marketing-agency is one — filed under the
+  // section in between. /ai-marketing-agency is one: filed under the
   // Serviceplan dossier it read, in the SERP and in the crumb, as a page about
   // Serviceplan rather than about the category someone searched for.
   const INK_PAGES = new Set(["ai-marketing-agency"]);

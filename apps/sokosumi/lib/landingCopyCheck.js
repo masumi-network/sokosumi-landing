@@ -2,8 +2,8 @@
 
 // Deterministic landing-page-copy scorer for /tools/landing-page-copy-analyzer.
 // Given a landing page URL, fetches it (through lib/safeFetch.js) and scores
-// the page's visible copy on four dimensions — clarity, benefit focus,
-// specificity, and CTA strength — from static rules against the text alone,
+// the page's visible copy on four dimensions: clarity, benefit focus,
+// specificity, and CTA strength: from static rules against the text alone,
 // the same tolerant-regex approach headlineCheck.js and postCheck.js use.
 
 const { fetchPage, visibleText, collectTitle, normalizeUrl } = require("./htmlExtract");
@@ -19,7 +19,7 @@ const CTA_STRONG = /\b(start (?:your )?free trial|get started free|book a demo|t
 const CTA_ANY = /\b(get started|sign up|start (?:your|a) (?:trial|free)|try (?:it )?free|book a demo|buy now|download|contact us|request a demo|schedule a call|learn more|submit|click here|read more)\b/i;
 const CTA_WEAK_ONLY = /\b(learn more|submit|click here|read more)\b/i;
 
-// A "concrete number" is one that reads as an actual claim — a percentage,
+// A "concrete number" is one that reads as an actual claim: a percentage,
 // a price, a multiplier, a scaled count (10k/5M) or a number bound to a unit.
 // Bare digits (SVG coordinates, ids, style values) are deliberately excluded,
 // since matching every "\d+" pulls in page junk the reader never sees as copy.
@@ -38,7 +38,7 @@ function sentences(text) {
     .filter(Boolean);
 }
 
-// Distinct matches, lower-cased, in first-seen order — for listing evidence.
+// Distinct matches, lower-cased, in first-seen order: for listing evidence.
 function uniqueMatches(matches) {
   return Array.from(new Set(matches.map((m) => m.toLowerCase().replace(/\s+/g, " ").trim())));
 }
@@ -68,7 +68,7 @@ function copyText(text) {
 
 // Pull the page's actual marketing copy by reading only semantic copy tags
 // (headings, paragraphs, list items, quotes) after dropping regions that never
-// hold landing copy — nav, footer, forms, code and embedded app/demo widgets.
+// hold landing copy: nav, footer, forms, code and embedded app/demo widgets.
 // This is what separates real copy from the UI chrome that flat text mixes in.
 function extractCopyBlocks(html) {
   const stripped = html
@@ -86,7 +86,7 @@ function extractCopyBlocks(html) {
 }
 
 // The copy the tool actually scores: semantic blocks when the page exposes
-// enough of them, otherwise the flat visible text — always run through the
+// enough of them, otherwise the flat visible text: always run through the
 // prose filter so demo/log/code lines never reach the scorer either way.
 function pageCopy(html) {
   const blocks = extractCopyBlocks(html);
@@ -99,7 +99,7 @@ function pageCopy(html) {
 }
 
 // Activity feeds, changelogs and embedded product demos leak into a page's
-// visible text but aren't marketing copy — de-prioritise them as evidence so
+// visible text but aren't marketing copy: de-prioritise them as evidence so
 // the examples we surface are the real sentences a reader would judge.
 function looksNoisy(s) {
   const middots = (s.match(/[·•|]/g) || []).length;
@@ -109,7 +109,7 @@ function looksNoisy(s) {
 }
 
 // Up to `limit` distinct sentences the reader can actually find on the page,
-// each carrying a match — the evidence behind a verdict. Clean marketing lines
+// each carrying a match: the evidence behind a verdict. Clean marketing lines
 // come first; noisy UI/log lines only fill in if nothing cleaner matched.
 function matchingSentences(ev, re, limit, max) {
   const clean = [];
@@ -162,7 +162,7 @@ function buildClarityChecks(text, evSents) {
   if (jargonMatches.length >= 3) {
     add("warn", "Heavy on corporate buzzwords", "clarity", `Corporate buzzwords appear ${jargonMatches.length} times across ${jargonWords.length} term(s): ${jargonWords.map((w) => `"${w}"`).join(", ")}. These read as filler rather than a concrete claim.`, 2, matchingSentences(ev, JARGON, 8));
   } else if (jargonMatches.length > 0) {
-    add("pass", "Buzzwords under control", "clarity", `Only ${jargonMatches.length} buzzword(s) — ${jargonWords.map((w) => `"${w}"`).join(", ")} — not enough to drown out the actual claim.`, 1, matchingSentences(ev, JARGON, 8));
+    add("pass", "Buzzwords under control", "clarity", `Only ${jargonMatches.length} buzzword(s): ${jargonWords.map((w) => `"${w}"`).join(", ")}, not enough to drown out the actual claim.`, 1, matchingSentences(ev, JARGON, 8));
   } else {
     add("pass", "Plain, concrete wording", "clarity", "No overused corporate buzzwords (synergy, leverage, best-in-class, seamless…) in the copy.", 1);
   }
@@ -193,18 +193,18 @@ function buildBenefitChecks(text, evSents) {
   const YOU = /\b(you|your|you're|yours)\b/gi;
 
   if (total === 0) {
-    add("warn", "No first- or second-person language", "benefit", "The copy doesn't address the reader directly at all — hard to tell whose problem it's solving.", 3);
+    add("warn", "No first- or second-person language", "benefit", "The copy doesn't address the reader directly at all: hard to tell whose problem it's solving.", 3);
   } else if (ratio >= 0.6) {
-    add("pass", "Reads customer-centric", "benefit", `"You/your" outnumbers "we/our" ${youCount}-to-${weCount} — the copy is talking about the reader's outcome, not the company.`, 3, matchingSentences(ev, YOU, 8));
+    add("pass", "Reads customer-centric", "benefit", `"You/your" outnumbers "we/our" ${youCount}-to-${weCount}: the copy is talking about the reader's outcome, not the company.`, 3, matchingSentences(ev, YOU, 8));
   } else if (ratio >= 0.3) {
-    add("warn", "Mixed focus", "benefit", `"You/your" appears ${youCount} times against "we/our" ${weCount} times — leaning company-centric. These "we/our" sentences are the ones to consider rewriting as "you" sentences.`, 3, matchingSentences(ev, WE, 8));
+    add("warn", "Mixed focus", "benefit", `"You/your" appears ${youCount} times against "we/our" ${weCount} times: leaning company-centric. These "we/our" sentences are the ones to consider rewriting as "you" sentences.`, 3, matchingSentences(ev, WE, 8));
   } else {
-    add("error", "Reads company-centric", "benefit", `"We/our" (${weCount}) heavily outnumbers "you/your" (${youCount}) — this reads like an about-us page, not a pitch to the reader.`, 3, matchingSentences(ev, WE, 8));
+    add("error", "Reads company-centric", "benefit", `"We/our" (${weCount}) heavily outnumbers "you/your" (${youCount}): this reads like an about-us page, not a pitch to the reader.`, 3, matchingSentences(ev, WE, 8));
   }
 
   const verbMatches = text.match(BENEFIT_VERB) || [];
   if (verbMatches.length === 0) {
-    add("warn", "No outcome verbs", "benefit", 'No words like "save", "grow", "reduce" or "unlock" — nothing here names the outcome the reader gets.', 2);
+    add("warn", "No outcome verbs", "benefit", 'No words like "save", "grow", "reduce" or "unlock": nothing here names the outcome the reader gets.', 2);
   } else {
     add("pass", "Names an outcome", "benefit", `Uses outcome verbs: ${uniqueMatches(verbMatches).slice(0, 5).join(", ")}.`, 2, matchingSentences(ev, BENEFIT_VERB, 8));
   }
@@ -220,10 +220,10 @@ function buildSpecificityChecks(text, evSents) {
   const ev = evSents && evSents.length ? evSents : sents;
   const numberMatches = (text.match(STAT_NUMBER) || []).map((m) => m.replace(/\s+/g, " ").trim());
   if (numberMatches.length === 0) {
-    add("warn", "No concrete numbers", "specificity", "No stats, prices, timeframes or counts (e.g. \"40% faster\", \"$9/mo\", \"10,000 teams\") — every claim is qualitative, which is easy to skim past.", 3);
+    add("warn", "No concrete numbers", "specificity", "No stats, prices, timeframes or counts (e.g. \"40% faster\", \"$9/mo\", \"10,000 teams\"): every claim is qualitative, which is easy to skim past.", 3);
   } else {
     const shown = uniqueMatches(numberMatches).slice(0, 6);
-    add("pass", "Backs claims with numbers", "specificity", `Uses ${numberMatches.length} concrete figure(s) — e.g. ${shown.join(", ")}.`, 3, matchingSentences(ev, STAT_NUMBER, 8));
+    add("pass", "Backs claims with numbers", "specificity", `Uses ${numberMatches.length} concrete figure(s): e.g. ${shown.join(", ")}.`, 3, matchingSentences(ev, STAT_NUMBER, 8));
   }
 
   const vagueMatches = text.match(VAGUE_QUALIFIER) || [];
@@ -251,13 +251,13 @@ function buildCtaChecks(text, evSents) {
   const weakOnly = hasAny && !hasStrong && !!weakMatch;
 
   if (!hasAny) {
-    add("error", "No call to action found", "cta", 'No CTA phrasing detected (no "get started", "sign up", "book a demo" or similar) — a reader who is convinced has nothing to click.', 4);
+    add("error", "No call to action found", "cta", 'No CTA phrasing detected (no "get started", "sign up", "book a demo" or similar): a reader who is convinced has nothing to click.', 4);
   } else if (hasStrong) {
-    add("pass", "Clear, specific call to action", "cta", `Found a concrete, low-friction CTA — "${strongMatch[0].trim()}".`, 4, matchingSentences(ev, CTA_STRONG, 8));
+    add("pass", "Clear, specific call to action", "cta", `Found a concrete, low-friction CTA: "${strongMatch[0].trim()}".`, 4, matchingSentences(ev, CTA_STRONG, 8));
   } else if (weakOnly) {
-    add("warn", "CTA is generic", "cta", `The strongest CTA phrasing found is "${weakMatch[0].trim()}" — naming the actual next step ("start your free trial", "book a 15-minute demo") usually converts better.`, 4, matchingSentences(ev, CTA_WEAK_ONLY, 8));
+    add("warn", "CTA is generic", "cta", `The strongest CTA phrasing found is "${weakMatch[0].trim()}": naming the actual next step ("start your free trial", "book a 15-minute demo") usually converts better.`, 4, matchingSentences(ev, CTA_WEAK_ONLY, 8));
   } else {
-    add("pass", "Has a call to action", "cta", `The copy includes CTA-style phrasing — "${anyMatch[0].trim()}".`, 4, matchingSentences(ev, CTA_ANY, 8));
+    add("pass", "Has a call to action", "cta", `The copy includes CTA-style phrasing: "${anyMatch[0].trim()}".`, 4, matchingSentences(ev, CTA_ANY, 8));
   }
 
   return checks;
@@ -277,7 +277,7 @@ function buildRecommendations(dimensions) {
     .flatMap((d) => d.checks.map((c) => ({ ...c, dimension: d.label })))
     .filter((c) => c.level !== "pass")
     .sort((a, b) => priority[a.level] - priority[b.level])
-    .map((c) => `${c.dimension} — ${c.title}: ${c.detail}`);
+    .map((c) => `${c.dimension}: ${c.title}: ${c.detail}`);
 }
 
 async function analyze(input) {
@@ -298,17 +298,17 @@ async function analyze(input) {
   }
 
   const title = collectTitle(html);
-  // Score the page's real copy blocks (headings, paragraphs, quotes) — not the
+  // Score the page's real copy blocks (headings, paragraphs, quotes), not the
   // nav, footer, or embedded demo/code/calendar chrome that flat text mixes in.
   const text = pageCopy(html);
   if (!text) {
-    const error = new Error("That page had no readable copy to analyze — it may render its text with JavaScript after load.");
+    const error = new Error("That page had no readable copy to analyze: it may render its text with JavaScript after load.");
     error.status = 422;
     throw error;
   }
   // Scoring runs on the strict copy blocks (`text`). Evidence is drawn from a
-  // wider, still prose-filtered pool — the copy blocks first, then any other
-  // real sentences from the full page — so a verdict can show several examples
+  // wider, still prose-filtered pool: the copy blocks first, then any other
+  // real sentences from the full page: so a verdict can show several examples
   // even when the strict extraction is sparse. Copy-block sentences rank first.
   const evPool = Array.from(
     new Set(sentences(text).concat(sentences(copyText(visibleText(html).replace(/\s+/g, " ").trim())))),

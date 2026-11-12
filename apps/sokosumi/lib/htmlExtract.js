@@ -1,12 +1,12 @@
 "use strict";
 
 // Shared HTML-parsing primitives for the batch of URL-crawling /tools added
-// after seo-md.js/ogCheck.js — tolerant regexes, no headless browser, no
+// after seo-md.js/ogCheck.js: tolerant regexes, no headless browser, no
 // LLM, the same approach those two use. Where seoExtract.js has its own
 // private copies of some of these, this module exists so the dozen-plus
 // crawler tools that came after it (competitor teardown, 404 checker,
 // internal linking finder, etc.) share ONE copy rather than each growing its
-// own. Fetching always goes through lib/safeFetch.js — every one of these
+// own. Fetching always goes through lib/safeFetch.js: every one of these
 // tools points our server at a URL a stranger typed, so none of them get to
 // skip the SSRF guard.
 
@@ -210,8 +210,8 @@ async function fetchPage(url, { maxBytes = 2 * 1024 * 1024, timeoutMs = 10000 } 
   };
 }
 
-// Looks for a publish/modified date in the page's own markup — a meta tag or
-// JSON-LD — for pages that don't send a Last-Modified header (most don't).
+// Looks for a publish/modified date in the page's own markup: a meta tag or
+// JSON-LD: for pages that don't send a Last-Modified header (most don't).
 function collectDateMeta(html, jsonLdBlocks) {
   const meta = collectMeta(html);
   const metaDate = meta["article:modified_time"] || meta["article:published_time"] || meta.date || meta["og:updated_time"];

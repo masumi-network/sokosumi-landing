@@ -1,4 +1,4 @@
-/* /tools — live client-side filtering. Cards show when they match BOTH the
+/* /tools: live client-side filtering. Cards show when they match BOTH the
  * active category tab and the typed search query (name + description + meta). */
 (function () {
   "use strict";

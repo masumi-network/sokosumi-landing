@@ -39,7 +39,7 @@ export default {
         "Run Research for current external evidence. Keep first-party documentation, filings and original studies ahead of summaries where available.",
         "Ask for an evidence ledger with claim, source, date, direct support, caveat and confidence.",
         "Synthesize patterns only after reviewing the ledger. Require a counterargument and evidence that would change each conclusion.",
-        "Translate findings into implications for audience, promise, proof, channel and test—not finished creative copy.",
+        "Translate findings into implications for audience, promise, proof, channel and test, not finished creative copy.",
         "Export the dossier and store it with a research date and owner so the campaign can be audited later.",
       ],
       prompt: [

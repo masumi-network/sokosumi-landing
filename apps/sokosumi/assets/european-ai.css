@@ -1,4 +1,4 @@
-/* /european-ai — trust page.
+/* /european-ai: trust page.
    Every colour references a token in styles.css. The page alternates the site's
    own ink bands against paper, and each section has a different structure, so
    nothing here is another white card grid. */
@@ -10,7 +10,7 @@
   border-top: none;
   padding: clamp(34px, 6vw, 76px) 0 clamp(44px, 6vw, 76px);
   /* the ring is deliberately bled past the right edge, so the band clips it
-     itself rather than leaning on html{overflow-x:clip} — without this it
+     itself rather than leaning on html{overflow-x:clip}, without this it
      added 15px of horizontal scroll at 375px */
   overflow: hidden;
 }
@@ -101,7 +101,7 @@
   border-bottom: 1px solid var(--border);
 }
 .eu-model {
-  /* left, like every other block on the page — a centred island in a
+  /* left, like every other block on the page: a centred island in a
      left-aligned column was the one thing reading as off */
   display: flex;
   flex-direction: column;

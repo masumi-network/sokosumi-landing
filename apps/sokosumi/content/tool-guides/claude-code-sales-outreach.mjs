@@ -19,7 +19,7 @@ export default {
     description: "Build a controlled local pipeline that validates account inputs and prepares outreach drafts without turning an agent into an unsafe sender.",
     body: article("en", {
       intro: [
-        "Claude Code can help non-developers operate repeatable data workflows from a repository. For outreach, the safe use case is preparing and validating research or draft files—not letting an agent scrape indiscriminately or send messages on its own.",
+        "Claude Code can help non-developers operate repeatable data workflows from a repository. For outreach, the safe use case is preparing and validating research or draft files, not letting an agent scrape indiscriminately or send messages on its own.",
         "Keep the workflow local and reviewable first. Every account should retain its source, transformation result and rejection reason.",
       ],
       fit: [

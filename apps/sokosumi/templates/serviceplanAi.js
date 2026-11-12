@@ -26,11 +26,11 @@ const localText = (value) => (value && typeof value === "object" ? value[i18n.lo
 const HUB = () => config().hub;
 // Chapters promoted out of the dossier to a top-level URL. The buyer guides
 // target queries ("ai marketing agency") where a /serviceplan-ai/ prefix reads
-// as "a page about Serviceplan" in the SERP, so the doc slug drops the hub —
+// as "a page about Serviceplan" in the SERP, so the doc slug drops the hub:
 // but the page keeps the dossier layout and stays in the chapter index, so it
 // loses none of its internal links.
 // Chapters promoted out of the dossier. Empty today: ai-marketing-agency was
-// promoted with the dossier chrome kept, then made fully standalone — it is a
+// promoted with the dossier chrome kept, then made fully standalone: it is a
 // buyer guide in its own right, and the Serviceplan breadcrumb was telling a
 // searcher the page was about Serviceplan.
 const PROMOTED = new Set();
@@ -435,7 +435,7 @@ function bridge() {
       <span class="eyebrow">${esc(ui("From agency practice to a product", "Von der Agenturpraxis zum Produkt"))}</span>
       <h2>${esc(ui("Put the operating model to work", "Setzen Sie das Betriebsmodell praktisch ein"))}</h2>
       <p>${esc(ui(
-        "Sokosumi gives teams direct access to named AI coworkers built for bounded marketing work — with briefs, deliverables and costs visible on one shared board.",
+        "Sokosumi gives teams direct access to named AI coworkers built for bounded marketing work: with briefs, deliverables and costs visible on one shared board.",
         "Sokosumi gibt Teams direkten Zugang zu benannten AI Coworkern für klar abgegrenzte Marketingaufgaben – mit Briefings, Ergebnissen und Kosten auf einem gemeinsamen Board.",
       ))}</p>
     </div>

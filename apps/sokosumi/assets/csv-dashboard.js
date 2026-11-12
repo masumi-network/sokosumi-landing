@@ -1,4 +1,4 @@
-/* /tools/csv-dashboard — client-only. Nothing leaves the browser: the file
+/* /tools/csv-dashboard: client-only. Nothing leaves the browser: the file
  * is read, parsed and charted entirely here with the File API.
  */
 (function () {

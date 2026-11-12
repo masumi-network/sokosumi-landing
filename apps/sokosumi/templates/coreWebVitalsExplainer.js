@@ -8,11 +8,11 @@ const FAQ = [
   {
     question: "Is this real Core Web Vitals data?",
     answer:
-      "No. Real Core Web Vitals come from Chrome's field data (CrUX) or a lab tool like Lighthouse running an actual browser — this tool has neither. It fetches the page's HTML document and reads structural signals well-documented to affect LCP, CLS and INP: document weight, render-blocking CSS, resource hints, a lazy-loaded hero image, images and iframes missing explicit dimensions, the viewport tag, font-display, total and parser-blocking scripts, and third-party tags. Treat it as a plain-English proxy, not a report card.",
+      "No. Real Core Web Vitals come from Chrome's field data (CrUX) or a lab tool like Lighthouse running an actual browser: this tool has neither. It fetches the page's HTML document and reads structural signals well-documented to affect LCP, CLS and INP: document weight, render-blocking CSS, resource hints, a lazy-loaded hero image, images and iframes missing explicit dimensions, the viewport tag, font-display, total and parser-blocking scripts, and third-party tags. Treat it as a plain-English proxy, not a report card.",
   },
   {
     question: "Why doesn't it measure image or font download time?",
-    answer: "It only fetches the HTML document itself, not every image, script and font the page would also load in a browser — that would need a real browser to run. Document weight and render-blocking resource counts are what's actually measurable from markup alone.",
+    answer: "It only fetches the HTML document itself, not every image, script and font the page would also load in a browser: that would need a real browser to run. Document weight and render-blocking resource counts are what's actually measurable from markup alone.",
   },
   {
     question: "What should I use instead for real numbers?",
@@ -38,7 +38,7 @@ function render() {
     applicationCategory: "DeveloperApplication",
     operatingSystem: "Web",
     url: `${SITE}${PATH}`,
-    description: "A free tool that reads a page's HTML for structural signals tied to LCP, CLS and INP — document weight, render-blocking resources, image dimensions, viewport tag — and explains them in plain English. A structural proxy, not real CrUX or Lighthouse data.",
+    description: "A free tool that reads a page's HTML for structural signals tied to LCP, CLS and INP: document weight, render-blocking resources, image dimensions, viewport tag: and explains them in plain English. A structural proxy, not real CrUX or Lighthouse data.",
     offers: { "@type": "Offer", price: "0", priceCurrency: "EUR" },
     creator: { "@id": `${SITE}/#organization` },
   };
@@ -56,7 +56,7 @@ function render() {
   return (
     pageStart({
       title: "Core Web Vitals Explainer | Sokosumi",
-      description: "Free Core Web Vitals explainer. Enter a URL and get plain-English fixes for structural signals tied to LCP, CLS and INP. Not real CrUX or Lighthouse data — a fast first pass. No sign-up.",
+      description: "Free Core Web Vitals explainer. Enter a URL and get plain-English fixes for structural signals tied to LCP, CLS and INP. Not real CrUX or Lighthouse data: a fast first pass. No sign-up.",
       path: PATH,
       englishOnly: true,
       breadcrumb: crumbs,
@@ -68,7 +68,7 @@ function render() {
     `<section class="tk-head" id="analyzer">
       <p class="tk-overline">Free · no sign-up</p>
       <h1>Core Web Vitals Explainer</h1>
-      <p class="tk-lede">Enter a URL and get plain-English fixes for the structural signals that drive LCP, CLS and INP — not real CrUX or Lighthouse numbers, but a fast first pass.</p>
+      <p class="tk-lede">Enter a URL and get plain-English fixes for the structural signals that drive LCP, CLS and INP, not real CrUX or Lighthouse numbers, but a fast first pass.</p>
 
       <form class="tk-form" id="cwvForm" novalidate>
         <label class="sr-only" for="cwvUrl">Page URL</label>
@@ -108,17 +108,17 @@ function render() {
         <div class="tk-card">
           <span class="tk-card-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m13 2-3 7h5l-3 7"/><path d="M4 14a8 8 0 0 0 14 5"/><path d="M20 10a8 8 0 0 0-14-5"/></svg></span>
           <h3>LCP (proxy)</h3>
-          <p>Document weight, render-blocking CSS, resource hints, and whether the hero image is lazy-loaded — what delays first paint.</p>
+          <p>Document weight, render-blocking CSS, resource hints, and whether the hero image is lazy-loaded: what delays first paint.</p>
         </div>
         <div class="tk-card">
           <span class="tk-card-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg></span>
           <h3>CLS (proxy)</h3>
-          <p>Images and iframes missing dimensions, a missing viewport tag, and no font-display — what makes the layout jump.</p>
+          <p>Images and iframes missing dimensions, a missing viewport tag, and no font-display: what makes the layout jump.</p>
         </div>
         <div class="tk-card">
           <span class="tk-card-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H5a2 2 0 0 0-2 2v4"/><path d="M15 3h4a2 2 0 0 1 2 2v4"/><path d="M9 21H5a2 2 0 0 1-2-2v-4"/><path d="M15 21h4a2 2 0 0 0 2-2v-4"/><path d="m9 9 3 3-3 3"/></svg></span>
           <h3>INP (proxy)</h3>
-          <p>Total scripts, parser-blocking scripts in the head, and third-party tags — what competes for the main thread.</p>
+          <p>Total scripts, parser-blocking scripts in the head, and third-party tags: what competes for the main thread.</p>
         </div>
       </div>
     </section>

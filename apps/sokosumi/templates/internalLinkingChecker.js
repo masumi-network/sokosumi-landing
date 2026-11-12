@@ -4,7 +4,7 @@ const { esc, pageStart, pageEnd, SITE } = shell;
 
 const PATH = "/tools/internal-linking-finder";
 
-// The "site structure" cluster — three tools that look at how a site's pages
+// The "site structure" cluster: three tools that look at how a site's pages
 // link to one another. Shared verbatim; relatedTools() drops the current page.
 const SITE_STRUCTURE_TOOLS = [
   { href: "/tools/website-analyzer", title: "Website Analyzer", blurb: "Score a single page's on-page SEO signals and generate a report for AI agents." },
@@ -21,11 +21,11 @@ const FAQ = [
   {
     question: "How does it decide two pages should link to each other?",
     answer:
-      "Each page's top 20 non-stopword keywords are compared against every other page's using a Jaccard overlap — the more keywords two pages share, the higher the similarity. Anything over 15% overlap, where the source page doesn't already link to the target, is surfaced as a suggestion.",
+      "Each page's top 20 non-stopword keywords are compared against every other page's using a Jaccard overlap: the more keywords two pages share, the higher the similarity. Anything over 15% overlap, where the source page doesn't already link to the target, is surfaced as a suggestion.",
   },
   {
     question: "Is this reading the pages with an LLM?",
-    answer: "No — similarity is a set overlap on word frequency, not a semantic read. Two pages that use different words for the same topic won't be recognized as related.",
+    answer: "No: similarity is a set overlap on word frequency, not a semantic read. Two pages that use different words for the same topic won't be recognized as related.",
   },
   {
     question: "Is any of this stored?",
@@ -77,7 +77,7 @@ function render() {
     `<section class="tk-head" id="analyzer">
       <p class="tk-overline">Free · no sign-up</p>
       <h1>Internal Linking Opportunity Finder</h1>
-      <p class="tk-lede">Enter a site URL and get suggested internal links — pages that share a lot of vocabulary but don't yet link to each other — with a suggested anchor text for each.</p>
+      <p class="tk-lede">Enter a site URL and get suggested internal links: pages that share a lot of vocabulary but don't yet link to each other: with a suggested anchor text for each.</p>
 
       <form class="tk-form" id="ilfForm" novalidate>
         <label class="sr-only" for="ilfUrl">Site URL</label>

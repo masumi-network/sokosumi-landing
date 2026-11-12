@@ -11,7 +11,7 @@
   --card: #ffffff;
   --muted: #ebeae9;
   --foreground: #0f0e0d;
-  /* 0.55 measured 4.13-4.28 against the three light surfaces — under the 4.5
+  /* 0.55 measured 4.13-4.28 against the three light surfaces: under the 4.5
      WCAG AA needs for body text, which failed the whole footer and the cookie
      banner. 0.60 clears it on all three (4.90-5.03) and is a small enough step
      from 0.55 to leave the hierarchy looking the same. */
@@ -20,7 +20,7 @@
   --hairline-dark: rgba(255, 255, 255, 0.16);
   --primary: #2b5c78;
   --primary-soft: rgba(43, 92, 120, 0.08);
-  /* #2b5c78 is a light-surface accent — luminance 0.10, so it goes muddy on
+  /* #2b5c78 is a light-surface accent: luminance 0.10, so it goes muddy on
      ink. This is the app's own dark-theme purple, for the dark bands. */
   --primary-on-dark: #8fb4cc;
   --r-sm: 4px;
@@ -41,7 +41,7 @@
 html { scroll-behavior: smooth; overflow-x: clip; }
 /* No overflow-x on body: html's clip above already contains horizontal
    overflow, and overflow-x: hidden here made <body> its own (never-scrolling)
-   scroll container — which silently broke the sticky header, so it scrolled
+   scroll container: which silently broke the sticky header, so it scrolled
    away with the page instead of pinning to the top. */
 body {
   font-family: var(--sans); font-size: 15px;
@@ -67,7 +67,7 @@ button { font-family: inherit; }
 }
 /* The first block on the page is the LCP element on nearly every route, and
    starting it at opacity 0 meant the largest paint could not happen until the
-   deferred site.js had run its observer — about half a second of LCP bought
+   deferred site.js had run its observer: about half a second of LCP bought
    for an animation nobody sees, because it is already in view on load.
    Everything below the fold still animates. */
 .page-head[data-reveal],
@@ -80,7 +80,7 @@ button { font-family: inherit; }
   transform: none;
 }
 
-/* ===== buttons — same scale and states as the landing page ===== */
+/* ===== buttons: same scale and states as the landing page ===== */
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 8px;
   height: 40px; padding: 0 18px; border-radius: var(--r-md);
@@ -101,8 +101,8 @@ button { font-family: inherit; }
 .btn .orb { display: none; }
 
 /* ===== header =====
-   The whole site header — bar, dropdown panels, burger, mobile drawer, and
-   the homepage's transparent overlay state — lives in /assets/nav.css, the
+   The whole site header: bar, dropdown panels, burger, mobile drawer, and
+   the homepage's transparent overlay state: lives in /assets/nav.css, the
    one stylesheet both index.html and the server-rendered sub-pages load.
    Do not re-add header rules here: that is exactly how the two surfaces
    drifted apart before. */
@@ -157,7 +157,7 @@ main.page { min-height: 60vh; }
 /* ===== vendor wordmarks =====
    Aspect ratios vary wildly, so height is fixed and width follows.
    .invert flattens white-on-transparent marketplace artwork to ink so it
-   reads on paper — the mirror of .band-dark .trust-logo on the landing page. */
+   reads on paper: the mirror of .band-dark .trust-logo on the landing page. */
 .vendor-logo { display: inline-flex; align-items: center; flex-shrink: 0; }
 .vendor-logo img { height: 22px; width: auto; max-width: 190px; object-fit: contain; display: block; }
 .vendor-logo.sm { margin-right: 11px; vertical-align: middle; }
@@ -167,7 +167,7 @@ main.page { min-height: 60vh; }
 .vendor-logo.invert img { filter: brightness(0); }
 
 /* a vendor section head: wordmark, name, and the featured chip on one line.
-   The name is a group label over a grid, not a headline — so it takes the
+   The name is a group label over a grid, not a headline: so it takes the
    quiet uppercase label treatment (.filter-label, .nav-intro-label) instead
    of the display h2. The tag stays an h2 for the document outline. */
 .vendor-head { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 8px; }
@@ -187,7 +187,7 @@ main.page { min-height: 60vh; }
 .vendor-desc { font-size: 14.5px; line-height: 1.6; color: var(--muted-foreground); max-width: 60ch; margin-bottom: 6px; }
 
 /* ===== vendor pages (/vendors, /vendors/<slug>) ===== */
-/* the computed facts row in the hero — counts derived from the catalog, so
+/* the computed facts row in the hero: counts derived from the catalog, so
    the line is always true without editing (reuses the .cw-stats look) */
 .vendor-facts { margin-top: 20px; }
 
@@ -209,7 +209,7 @@ main.page { min-height: 60vh; }
 .vcw-foot { margin-top: auto; padding-top: 4px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 
 /* what the vendor's coworkers can do: one column per offer category, on the
-   .uc-steps/.stat pattern — a rule, a quiet label with the count, the tasks */
+   .uc-steps/.stat pattern: a rule, a quiet label with the count, the tasks */
 .cap-grid { display: grid; gap: 22px 28px; grid-template-columns: 1fr; }
 @media (min-width: 680px) { .cap-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (min-width: 1020px) { .cap-grid { grid-template-columns: repeat(3, 1fr); } }
@@ -302,7 +302,7 @@ main.page { min-height: 60vh; }
 @media (min-width: 1100px) { .uc-grid { grid-template-columns: repeat(3, 1fr); } }
 .uc-card { padding-top: 20px; }
 /* The card's banner is the page's own seeded abstract field (templates/
-   art.js) at thumbnail size — the card previews the page it links to, and
+   art.js) at thumbnail size: the card previews the page it links to, and
    the composition varies per slug, so the colour still does the
    distinguishing without putting one coworker's face on the work. */
 .uc-card.has-art { padding-top: 0; }
@@ -333,12 +333,12 @@ main.page { min-height: 60vh; }
 
 /* ===== use-case detail: the HubSpot-shaped hero =====
    Centred, outcome-led copy over a seeded abstract field (templates/art.js)
-   — the platform is what the hero names, the way HubSpot's hero names the
+: the platform is what the hero names, the way HubSpot's hero names the
    Hub; no coworker portrait fronts the page. The art layer is decorative
    and absolutely positioned, so a page whose field fails to generate is
    simply a plain centred hero. */
 /* The art is an absolutely positioned panel filling this section, and .crumbs
-   has no bottom padding, so the tinted block sat flush against the breadcrumb —
+   has no bottom padding, so the tinted block sat flush against the breadcrumb:
    measured gap: 0px. The section's own top padding only moves the text, not the
    panel, so the breathing room has to come from a margin. */
 .uc-hero-hs {
@@ -357,7 +357,7 @@ main.page { min-height: 60vh; }
 .uc-hero-hs .no-card { margin-top: 10px; }
 
 /* ===== use-case detail: the centred value-prop intro =====
-   The page's first rich text block, hoisted under the hero — HubSpot's
+   The page's first rich text block, hoisted under the hero: HubSpot's
    "Use the Hub to…" paragraph. A centred measure, a touch larger than
    body prose; pages without rich text simply have no intro. */
 .uc-intro .prose { max-width: 68ch; margin: 0; font-size: 16.5px; line-height: 1.7; }
@@ -365,7 +365,7 @@ main.page { min-height: 60vh; }
 
 /* ===== use-case detail: the mid-page CTA =====
    The outcome restated after the capability sections, with the same two
-   doors as the hero — HubSpot's mid-page close, kept lighter than the ink
+   doors as the hero: HubSpot's mid-page close, kept lighter than the ink
    band the page still ends with. */
 .uc-mid-cta { text-align: left; }
 /* industry why-panel: same split as /ai-coworkers, list items slightly tighter */
@@ -403,7 +403,7 @@ main.page { min-height: 60vh; }
 @media (max-width: 640px) { .chapter { grid-template-columns: 1fr; gap: 8px; } }
 
 /* ===== use-case detail: the team and their tasks =====
-   Named coworkers with the template tasks behind the workflow — the proof
+   Named coworkers with the template tasks behind the workflow: the proof
    this site can honestly make: real work a visitor can open and run. */
 .uc-team { display: grid; gap: 14px; grid-template-columns: 1fr; }
 @media (min-width: 760px) { .uc-team { grid-template-columns: repeat(2, 1fr); } }
@@ -433,8 +433,8 @@ main.page { min-height: 60vh; }
    separators and the last one drops its rule (below). */
 .row-list { border-top: 0; }
 
-/* Long lists collapse to their first 12 rows. Every row stays in the HTML —
-   the rest are hidden with CSS, not withheld from the response — so crawlers
+/* Long lists collapse to their first 12 rows. Every row stays in the HTML:
+   the rest are hidden with CSS, not withheld from the response: so crawlers
    still see all 40 specialist agents while the page stops being a 40KB wall.
    `is-collapsed` is added by site.js, so with JS off the full list renders. */
 .row-list.is-collapsed > :nth-child(n + 13) { display: none; }
@@ -517,7 +517,7 @@ a.card:hover .go { opacity: 1; transform: none; }
 
 /* article lead image, sized to the prose measure rather than the full grid */
 .post-cover { margin: 0 0 clamp(28px, 4vw, 44px); max-width: 900px; }
-/* aspect-ratio, not height:auto — the cover sits above the fold on articles,
+/* aspect-ratio, not height:auto: the cover sits above the fold on articles,
    and without a reserved box the whole article jumped down by ~480px the
    moment the image arrived. The product screenshots are already 16:9, so
    cover crops nothing for them. */
@@ -741,7 +741,7 @@ a.card:hover .go { opacity: 1; transform: none; }
 }
 @keyframes embed-spin { to { transform: rotate(360deg); } }
 @media (prefers-reduced-motion: reduce) {
-  /* no spin — the veil becomes a static "Loading the sample…" notice; the
+  /* no spin: the veil becomes a static "Loading the sample…" notice; the
      delayed timeout keyframe stays, because it is a state change, not motion */
   .embed-spinner { animation: none; }
 }
@@ -786,7 +786,7 @@ a.card:hover .go { opacity: 1; transform: none; }
 .prose a { text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--border); transition: text-decoration-color 0.25s var(--ease); }
 .prose a:hover { text-decoration-color: var(--foreground); }
 /* A quote in a guide is almost always an example briefing: show it as the
-   thing itself — a card you could paste into the app — not as a citation. */
+   thing itself: a card you could paste into the app, not as a citation. */
 .prose blockquote { margin: 1.4em 0 !important; padding: 22px 24px 22px 26px; border: 1px solid var(--border); border-left: 2px solid var(--primary); border-radius: var(--r-lg); background: var(--card); font-size: 16.5px; line-height: 1.7; color: var(--foreground); }
 .prose blockquote::before { content: "Example"; display: block; margin-bottom: 8px; font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted-foreground); }
 html[lang="de"] .prose blockquote::before { content: "Beispiel"; }
@@ -867,25 +867,52 @@ html[lang="de"] .prose blockquote::before { content: "Beispiel"; }
 .faq-item summary::-webkit-details-marker { display: none; }
 .faq-item summary:hover { color: rgba(15, 14, 13, 0.65); }
 .faq-item summary .faq-x {
-  flex-shrink: 0; width: 28px; height: 28px; border-radius: var(--r-sm);
-  border: 1px solid var(--border); display: inline-flex; align-items: center; justify-content: center;
-  font-size: 15px; font-weight: 300; color: var(--muted-foreground);
-  transition: transform 0.35s var(--ease), background-color 0.35s var(--ease), color 0.35s var(--ease);
+  position: relative; flex-shrink: 0; width: 28px; height: 28px;
+  border-radius: var(--r-sm); border: 1px solid var(--border); display: inline-flex;
+  /* The "+" in the markup is decorative: the glyph is drawn from the two bars
+     below, so only the bars rotate (+ -> x) while the box stays square. The old
+     rule rotated the whole bordered box, which turned it into a diamond. */
+  font-size: 0; color: var(--muted-foreground);
+  transition: color 0.3s var(--ease), background-color 0.3s var(--ease), border-color 0.3s var(--ease);
 }
-.faq-item[open] summary .faq-x { transform: rotate(45deg); background: var(--ink); color: #fff; border-color: var(--ink); }
+.faq-item summary .faq-x::before,
+.faq-item summary .faq-x::after {
+  content: ""; position: absolute; inset: 0; margin: auto;
+  width: 11px; height: 1.6px; border-radius: 2px; background: currentColor;
+  transition: transform 0.3s var(--ease);
+}
+.faq-item summary .faq-x::after { transform: rotate(90deg); }
+.faq-item summary:hover .faq-x { color: var(--foreground); border-color: currentColor; }
+.faq-item[open] summary .faq-x {
+  color: var(--foreground); border-color: currentColor;
+  background: color-mix(in srgb, currentColor 8%, transparent);
+}
+.faq-item[open] summary .faq-x::before { transform: rotate(45deg); }
+.faq-item[open] summary .faq-x::after { transform: rotate(135deg); }
 .faq-item .faq-a { padding: 0 44px 24px 4px; font-size: 15px; line-height: 1.7; color: var(--muted-foreground); max-width: 64ch; }
+/* Smooth open/close height where the browser supports it (Chromium/Safari);
+   a graceful instant toggle everywhere else. */
+@supports (interpolate-size: allow-keywords) {
+  :root { interpolate-size: allow-keywords; }
+  .faq-item::details-content {
+    block-size: 0; overflow: hidden; opacity: 0;
+    transition: block-size 0.32s var(--ease), opacity 0.28s var(--ease), content-visibility 0.32s allow-discrete;
+  }
+  .faq-item[open]::details-content { block-size: auto; opacity: 1; }
+}
 /* Homepage #faq is an ink band. Without these the shared paper FAQ
    colours would sit dark-on-ink and the questions would vanish. */
 .band-dark .faq-item { border-color: var(--hairline-dark); }
 .band-dark .faq-item summary:hover { color: rgba(255, 255, 255, 0.75); }
-.band-dark .faq-item summary .faq-x { border-color: var(--hairline-dark); color: rgba(255, 255, 255, 0.6); }
-.band-dark .faq-item[open] summary .faq-x { background: #fff; color: var(--ink); border-color: #fff; }
+.band-dark .faq-item summary .faq-x { border-color: var(--hairline-dark); color: rgba(255, 255, 255, 0.55); }
+.band-dark .faq-item summary:hover .faq-x { color: #fff; }
+.band-dark .faq-item[open] summary .faq-x { color: #fff; border-color: rgba(255, 255, 255, 0.7); background: rgba(255, 255, 255, 0.1); }
 .band-dark .faq-item .faq-a { color: rgba(255, 255, 255, 0.6); }
 
 .cmp-table-wrap { position: relative; overflow-x: auto; border: 1px solid var(--border); border-radius: var(--r-lg); background: var(--card); }
 .cmp-table { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 560px; }
 .cmp-table th, .cmp-table td { padding: 14px 18px; text-align: left; border-bottom: 1px solid var(--border); }
-/* column separators — without them the highlighted column floats */
+/* column separators, without them the highlighted column floats */
 .cmp-table tr > * + * { border-left: 1px solid var(--border); }
 .cmp-table tbody tr:last-child th, .cmp-table tbody tr:last-child td { border-bottom: none; }
 .cmp-table thead td, .cmp-table thead th { border-bottom-color: rgba(15, 14, 13, 0.22); }
@@ -907,7 +934,7 @@ html[lang="de"] .prose blockquote::before { content: "Beispiel"; }
    out: name, price, who it is for, what a seat gets, one action. Name and
    price sit at the top of each card; the included line and the button are
    pinned to the foot, so across a row the buttons share a baseline however
-   long a tagline runs. Enterprise closes the board as an ink band — the fifth
+   long a tagline runs. Enterprise closes the board as an ink band: the fifth
    plan, a peer with a different route in, not a footnote. */
 .plan-board { background: var(--muted); border-radius: var(--r-lg); padding: clamp(12px, 1.6vw, 20px); }
 /* ── team-size control, at the head of the board ──
@@ -1107,7 +1134,7 @@ html[lang="de"] .prose blockquote::before { content: "Beispiel"; }
    No ring: an --ink border drew a hard black outline on every portrait, and
    the band's gradient is nowhere near --ink for most of its height, so it read
    as an outline rather than as the gap between overlapping circles it was
-   meant to be. The overlap tightens from 12px to 6px to compensate — each
+   meant to be. The overlap tightens from 12px to 6px to compensate: each
    portrait carries its own colour, which separates them well enough. */
 .cta-faces { display: inline-flex; align-items: center; }
 .cta-faces img {
@@ -1160,7 +1187,7 @@ html[lang="de"] .prose blockquote::before { content: "Beispiel"; }
 /* ===== agent listing form ===== */
 .list-form { max-width: 720px; }
 .form-section { border: none; padding: 0; margin: 0 0 clamp(34px, 4vw, 48px); display: flex; flex-direction: column; gap: 20px; }
-/* A <legend> is not a flex item — in a flex fieldset it renders at the top of
+/* A <legend> is not a flex item: in a flex fieldset it renders at the top of
    the box and the first real item slides underneath it. Floating it puts it
    back in flow so the intro below clears instead of overlapping. */
 .form-section legend {
@@ -1186,7 +1213,7 @@ html[lang="de"] .prose blockquote::before { content: "Beispiel"; }
 
 /* ===== legal documents =====
    Long contracts: a tighter measure than marketing prose, and numbering that
-   survives — the Terms carry clause numbers via <ol start> and cross-reference
+   survives: the Terms carry clause numbers via <ol start> and cross-reference
    themselves, so the counters must not restart. */
 .legal-nav {
   display: flex; flex-wrap: wrap; gap: 8px;
@@ -1215,7 +1242,7 @@ html[lang="de"] .prose blockquote::before { content: "Beispiel"; }
 .legal-doc .prose th, .legal-doc .prose td { padding: 10px 14px; text-align: left; border: 1px solid var(--border); vertical-align: top; }
 .legal-doc .prose th { font-weight: 500; background: var(--muted); }
 
-/* .foot-social / .foot-legal rules moved to nav.css — the footer is shared
+/* .foot-social / .foot-legal rules moved to nav.css: the footer is shared
    chrome and index.html does not load this sheet. */
 
 /* ===== Talk to Sales form ===== */
@@ -1300,7 +1327,7 @@ fieldset.field > legend + * { clear: both; }
   overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
 }
 
-/* Skip link for keyboard users — first focusable element on every
+/* Skip link for keyboard users: first focusable element on every
    server-rendered page (templates/shell.js pageStart); the landing page
    carries its own identical copy in its inline style block. */
 .skip-link {
@@ -1310,17 +1337,17 @@ fieldset.field > legend + * { clear: both; }
 }
 .skip-link:focus { top: 16px; }
 
-/* The cookie-consent banner styles itself — assets/consent.js injects them
+/* The cookie-consent banner styles itself: assets/consent.js injects them
    so a missing stylesheet cannot leave the banner unstyled. */
 
 
 /* ===== accent =====================================================
    Purple earns its place in four roles and stays out of everything else:
    the eyebrow that opens a section, the arrow on a row you can follow,
-   the focus ring, and text selection. Everything else stays ink on paper —
+   the focus ring, and text selection. Everything else stays ink on paper:
    the accent only reads as an accent while it is rare. */
 
-/* the small label above a heading — the one mark on nearly every page */
+/* the small label above a heading: the one mark on nearly every page */
 .page-head .eyebrow,
 .cw-info .eyebrow,
 .blk-hero .eyebrow,
@@ -1368,7 +1395,7 @@ h1, h2, h3 { overflow-wrap: break-word; }
 @media (max-width: 859px) {
   h1, h2, h3 { hyphens: auto; }
   /* CTA labels carry coworker names ("Product Reality Check (Bansumi)
-     kostenlos testen") — on a phone the button wraps instead of forcing
+     kostenlos testen"): on a phone the button wraps instead of forcing
      the whole column past the viewport. */
   .cw-cta, .cta-inner .btn, .blk-hero .btn {
     white-space: normal; height: auto; min-height: 44px;
@@ -1376,7 +1403,7 @@ h1, h2, h3 { overflow-wrap: break-word; }
   }
 }
 
-/* 404 recovery links — for people and for agents reading the markdown variant */
+/* 404 recovery links: for people and for agents reading the markdown variant */
 .notice-links { list-style: none; display: flex; flex-wrap: wrap; gap: 8px 20px; justify-content: center; padding: 22px 0 0; margin: 0; }
 .notice-links a { font-size: 14px; color: var(--muted-foreground); text-decoration: underline; }
 .notice-links a:hover { color: var(--foreground); }
@@ -1433,7 +1460,7 @@ h1, h2, h3 { overflow-wrap: break-word; }
 
 /* ===== tool-vs-tool pages ===== */
 .pair-hero .guide-meta { margin-top: 14px; }
-/* The two column rules ARE this section's opening line — the page-section's
+/* The two column rules ARE this section's opening line: the page-section's
    own full-width rule would sit ~70px above them with nothing in between. */
 .page-section.pair-picks { border-top: 0; }
 .pair-picks { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(20px, 3vw, 40px); }
@@ -1477,7 +1504,7 @@ h1, h2, h3 { overflow-wrap: break-word; }
 .cmp-pairs h3 { font-size: 13px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted-foreground); margin-bottom: 12px; }
 /* Separator on the TOP of each item, not the bottom. In a two-column grid the
    last DOM item is not reliably the bottom row (an odd count leaves one alone),
-   but the first row is always the first N items — so this is the only side that
+   but the first row is always the first N items: so this is the only side that
    can be cleared deterministically, and the list never ends on a rule. */
 .pair-rows { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .pair-rows > :nth-child(-n + 2) { border-top: 0; }

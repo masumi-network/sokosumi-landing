@@ -8,15 +8,15 @@ const FAQ = [
   {
     question: "How does it pick keywords?",
     answer:
-      "It counts how often each word and two-word phrase appears after stripping common stopwords (\"the\", \"and\", \"of\"…), then ranks by frequency. It's the same word-frequency approach classic keyword-density tools use — not a semantic or topic-modeling read of the text.",
+      "It counts how often each word and two-word phrase appears after stripping common stopwords (\"the\", \"and\", \"of\"…), then ranks by frequency. It's the same word-frequency approach classic keyword-density tools use, not a semantic or topic-modeling read of the text.",
   },
   {
     question: "Does anything leave my browser?",
-    answer: "No — the whole extraction runs in JavaScript in your browser. Nothing is sent to our server.",
+    answer: "No: the whole extraction runs in JavaScript in your browser. Nothing is sent to our server.",
   },
   {
     question: "Why did it pick a phrase that isn't important?",
-    answer: "Frequency isn't the same as importance — a phrase that's repeated often but isn't central to the piece (a recurring product name in an aside, for example) can still rank highly. Treat the list as a starting point, not a final answer.",
+    answer: "Frequency isn't the same as importance: a phrase that's repeated often but isn't central to the piece (a recurring product name in an aside, for example) can still rank highly. Treat the list as a starting point, not a final answer.",
   },
 ];
 
@@ -51,8 +51,8 @@ function render() {
 
   return (
     pageStart({
-      title: "Keyword Extractor — pull keywords from any article | Sokosumi",
-      description: "Free keyword extractor. Paste an article and get its most frequent keywords and phrases, ranked by count. Runs entirely in your browser — nothing leaves your browser.",
+      title: "Keyword Extractor: pull keywords from any article | Sokosumi",
+      description: "Free keyword extractor. Paste an article and get its most frequent keywords and phrases, ranked by count. Runs entirely in your browser: nothing leaves your browser.",
       path: PATH,
       englishOnly: true,
       breadcrumb: crumbs,
@@ -64,7 +64,7 @@ function render() {
     `<section class="tk-head" id="analyzer">
       <p class="tk-overline">Free · no sign-up · nothing leaves your browser</p>
       <h1>Keyword Extractor</h1>
-      <p class="tk-lede">Paste an article and get its most frequent keywords and two-word phrases, ranked by count — entirely in your browser.</p>
+      <p class="tk-lede">Paste an article and get its most frequent keywords and two-word phrases, ranked by count: entirely in your browser.</p>
 
       <form class="tk-form is-stacked" id="keForm" novalidate>
         <label class="sr-only" for="keText">Article text</label>

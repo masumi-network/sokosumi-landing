@@ -1,9 +1,9 @@
-/* /tools/og-checker — the social-card checker.
+/* /tools/og-checker: the social-card checker.
  *
  * Same language as the DESIGN.md tool: a workbench above the fold, hairline
  * borders, one accent, Inter Light for headings. The platform previews are the
- * one place that deliberately breaks the system — a Discord embed has to look
- * like a Discord embed or the preview is worthless — so each card carries its
+ * one place that deliberately breaks the system: a Discord embed has to look
+ * like a Discord embed or the preview is worthless: so each card carries its
  * own local tokens and nothing leaks out of `.ogc-card`.
  */
 
@@ -473,7 +473,7 @@
   aspect-ratio: 1200 / 628;
 }
 /* X's own overlay: bottom-left, 12px in from both edges, ~20px tall.
- * Measured values, not invented — see polypane.app's writeup of the redesign. */
+ * Measured values, not invented: see polypane.app's writeup of the redesign. */
 .ogc-x .ogc-host-pill {
   position: absolute;
   left: 12px;

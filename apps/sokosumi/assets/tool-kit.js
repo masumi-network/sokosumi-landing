@@ -22,7 +22,7 @@
 
   var MARK = { error: "!", warn: "!", pass: "✓" };
 
-  // "Strong" -> "strong", "Needs work" -> "needs-work" — the band as a CSS
+  // "Strong" -> "strong", "Needs work" -> "needs-work": the band as a CSS
   // modifier class, shared by the gauge, the meters and the dim scores.
   function bandClass(score) {
     return bandLabel(score).toLowerCase().replace(" ", "-");
@@ -76,7 +76,7 @@
       (data.dimensions || []).forEach(function (d) {
         lines.push(d.label + ": " + d.score + "/100");
         (d.checks || []).forEach(function (c) {
-          lines.push("  [" + c.level + "] " + c.title + " — " + c.detail);
+          lines.push("  [" + c.level + "] " + c.title + ": " + c.detail);
           (c.evidence || []).forEach(function (e) {
             lines.push("      • " + e);
           });
@@ -336,7 +336,7 @@
 
   // Renders the { groups:[{title, items:[{level,title,detail}]}] } shape used
   // by crawler/list-style tools (404 checker, orphan finder, internal
-  // linking, content decay, competitor gap) — a report of flagged rows rather
+  // linking, content decay, competitor gap): a report of flagged rows rather
   // than a pass/fail score.
   function renderGroups(container, groups) {
     container.innerHTML = (groups || [])
@@ -392,7 +392,7 @@
   }
 
   // Generic fetch → render wiring for tools whose result ISN'T the scorer
-  // shape wireScorer() handles — a generated block of text, a tag cloud, a
+  // shape wireScorer() handles: a generated block of text, a tag cloud, a
   // list of report groups, a table. `onData(data, els)` paints the result;
   // `els` exposes the raw resultId element plus any ids listed in
   // config.extraIds so onData can grab them without another lookup.

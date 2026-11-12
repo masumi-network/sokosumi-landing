@@ -1,4 +1,4 @@
-// /guides (index) and /guides/<slug> (detail) — CMS `guides` collection.
+// /guides (index) and /guides/<slug> (detail): CMS `guides` collection.
 // contentHtml is pre-rendered by the CMS at save time.
 
 const shell = require("./shell");

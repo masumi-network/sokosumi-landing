@@ -1,6 +1,6 @@
-/* /tools/robots-txt-generator — client.
+/* /tools/robots-txt-generator: client.
  *
- * Plain string assembly in the browser, same as the UTM builder — no fetch,
+ * Plain string assembly in the browser, same as the UTM builder, no fetch,
  * no server. The output updates on every keystroke, with light syntax
  * highlighting on the directive keywords.
  */
@@ -20,6 +20,9 @@
   var blockAllBtn = document.getElementById("rgBlockAll");
   var clearBotsBtn = document.getElementById("rgClearBots");
   var botCount = document.getElementById("rgBotCount");
+  var quickWrap = document.getElementById("rgQuick");
+  var advanced = document.getElementById("rgAdvanced");
+  var policyNote = document.getElementById("rgPolicyNote");
 
   var currentText = "";
 
@@ -30,6 +33,67 @@
         return s.trim();
       })
       .filter(Boolean);
+  }
+
+  function currentPolicy() {
+    var r = form.querySelector('input[name="rgPolicy"]:checked');
+    return r ? r.value : "except";
+  }
+
+  function presetBoxes() {
+    return Array.prototype.slice.call(form.querySelectorAll('input[name="rgPreset"]'));
+  }
+
+  // Paths from every ticked quick-block preset, de-duplicated so two presets
+  // that share a path don't emit it twice.
+  function presetPaths() {
+    var seen = {};
+    var out = [];
+    presetBoxes().forEach(function (el) {
+      if (!el.checked) return;
+      (el.getAttribute("data-paths") || "").split("|").forEach(function (p) {
+        if (p && !seen[p]) {
+          seen[p] = 1;
+          out.push(p);
+        }
+      });
+    });
+    return out;
+  }
+
+  function dedupe(arr) {
+    var seen = {};
+    return arr.filter(function (p) {
+      if (seen[p]) return false;
+      seen[p] = 1;
+      return true;
+    });
+  }
+
+  // Quick blocks and the advanced custom paths only shape the output under the
+  // "Allow except" policy; dim and disable them otherwise so the UI can't lie
+  // about what will end up in the file.
+  function syncPolicyUI() {
+    var guided = currentPolicy() === "except";
+    if (quickWrap) quickWrap.classList.toggle("is-disabled", !guided);
+    presetBoxes().forEach(function (el) {
+      el.disabled = !guided;
+    });
+    if (advanced) {
+      advanced.classList.toggle("is-disabled", !guided);
+      [disallowInput, allowInput, crawlDelayInput].forEach(function (el) {
+        el.disabled = !guided;
+      });
+    }
+    if (policyNote) {
+      var p = currentPolicy();
+      policyNote.textContent =
+        p === "allow"
+          ? "Every crawler may read the whole site. Quick blocks are off."
+          : p === "block"
+            ? "Disallow: / keeps every crawler out: use this for staging only."
+            : "Pick the areas below to hide from all crawlers; everything else stays open.";
+    }
   }
 
   function botBoxes() {
@@ -70,19 +134,26 @@
 
   function build() {
     var blocks = [];
-    var disallow = lines(disallowInput);
-    var allow = lines(allowInput);
+    var policy = currentPolicy();
 
     var mainLines = ["User-agent: *"];
-    disallow.forEach(function (path) {
-      mainLines.push("Disallow: " + path);
-    });
-    allow.forEach(function (path) {
-      mainLines.push("Allow: " + path);
-    });
-    if (disallow.length === 0 && allow.length === 0) mainLines.push("Disallow:");
-    var delay = crawlDelayInput.value.trim();
-    if (delay && Number(delay) >= 0) mainLines.push("Crawl-delay: " + Number(delay));
+    if (policy === "block") {
+      mainLines.push("Disallow: /");
+    } else if (policy === "allow") {
+      mainLines.push("Disallow:");
+    } else {
+      var disallow = dedupe(presetPaths().concat(lines(disallowInput)));
+      var allow = lines(allowInput);
+      disallow.forEach(function (path) {
+        mainLines.push("Disallow: " + path);
+      });
+      allow.forEach(function (path) {
+        mainLines.push("Allow: " + path);
+      });
+      if (disallow.length === 0 && allow.length === 0) mainLines.push("Disallow:");
+      var delay = crawlDelayInput.value.trim();
+      if (delay && Number(delay) >= 0) mainLines.push("Crawl-delay: " + Number(delay));
+    }
     blocks.push(mainLines.join("\n"));
 
     checkedBots().forEach(function (bot) {
@@ -102,7 +173,10 @@
   [disallowInput, allowInput, sitemapInput, crawlDelayInput].forEach(function (el) {
     el.addEventListener("input", build);
   });
-  form.addEventListener("change", build);
+  form.addEventListener("change", function () {
+    syncPolicyUI();
+    build();
+  });
 
   if (blockAllBtn) {
     blockAllBtn.addEventListener("click", function () {
@@ -144,5 +218,6 @@
     }, 1000);
   });
 
+  syncPolicyUI();
   build();
 })();

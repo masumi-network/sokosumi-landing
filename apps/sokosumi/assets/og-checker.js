@@ -1,10 +1,10 @@
-/* /tools/og-checker — client.
+/* /tools/og-checker: client.
  *
  * The server does the fetching and the judging; this file only renders what
  * comes back. Six platform previews plus the HTML tab, and the inspector list.
  *
  * The previews are imitations, not screenshots: same crop, same clamp, same
- * order of information as the real product. That is what makes them useful —
+ * order of information as the real product. That is what makes them useful:
  * you see the sentence that gets cut, not a mockup of a nice card.
  *
  * They track each platform's current DESKTOP rendering, which is a moving

@@ -1,4 +1,4 @@
-/* /tools/robots-txt-generator — same language as the other tools: a
+/* /tools/robots-txt-generator: same language as the other tools: a
  * workbench above the fold, hairline borders, one accent, Inter Light for
  * headings. Unique to this tool: a two-column form + live preview layout.
  */
@@ -113,6 +113,197 @@
 .rg-field textarea:focus {
   outline: 2px solid var(--primary);
   outline-offset: -1px;
+}
+
+/* ---- guided builder: policy + quick blocks + advanced --------------------- */
+
+.rg-block {
+  display: grid;
+  gap: 10px;
+}
+.rg-block-title {
+  font-size: 13px;
+  font-weight: 550;
+  color: var(--foreground);
+}
+.rg-block-hint {
+  margin-left: 6px;
+  font-size: 11.5px;
+  font-weight: 400;
+  color: var(--muted-foreground);
+}
+
+/* Segmented radio control for the crawl policy. */
+.rg-policy {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+}
+.rg-seg {
+  flex: 1;
+  cursor: pointer;
+}
+.rg-seg input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+}
+.rg-seg span {
+  display: block;
+  padding: 8px 6px;
+  border-radius: 999px;
+  text-align: center;
+  white-space: nowrap;
+  font-size: 12.5px;
+  color: var(--muted-foreground);
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.rg-seg:has(input:checked) span {
+  background: var(--primary);
+  color: #fff;
+  font-weight: 500;
+}
+.rg-seg:has(input:focus-visible) span {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+.rg-policy-note {
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--muted-foreground);
+}
+
+/* Quick-block preset chips. */
+.rg-chips {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 560px) {
+  .rg-chips {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+.rg-chip {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  column-gap: 11px;
+  row-gap: 1px;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  background: var(--background);
+  cursor: pointer;
+  transition: border-color 0.12s ease, background 0.12s ease;
+}
+.rg-chip:hover {
+  border-color: color-mix(in srgb, var(--primary) 45%, var(--border));
+}
+.rg-chip input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+}
+.rg-chip-box {
+  grid-row: 1 / span 2;
+  width: 20px;
+  height: 20px;
+  display: grid;
+  place-items: center;
+  border: 1.5px solid var(--border);
+  border-radius: 6px;
+  transition: border-color 0.12s ease, background 0.12s ease;
+}
+.rg-chip-box::after {
+  content: "✓";
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  opacity: 0;
+  transform: scale(0.6);
+  transition: opacity 0.12s ease, transform 0.12s ease;
+}
+.rg-chip:has(input:checked) {
+  border-color: var(--primary);
+  background: color-mix(in srgb, var(--primary) 7%, transparent);
+}
+.rg-chip:has(input:checked) .rg-chip-box {
+  background: var(--primary);
+  border-color: var(--primary);
+}
+.rg-chip:has(input:checked) .rg-chip-box::after {
+  opacity: 1;
+  transform: scale(1);
+}
+.rg-chip:has(input:focus-visible) {
+  outline: 2px solid var(--primary);
+  outline-offset: 1px;
+}
+.rg-chip-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--foreground);
+}
+.rg-chip-paths {
+  grid-column: 2;
+  font-family: var(--mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+  font-size: 11px;
+  color: var(--muted-foreground);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Advanced custom-paths drawer. */
+.rg-advanced {
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  background: var(--background);
+}
+.rg-advanced > summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 13px;
+  cursor: pointer;
+  list-style: none;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--foreground);
+}
+.rg-advanced > summary::-webkit-details-marker {
+  display: none;
+}
+.rg-advanced > summary::before {
+  content: "›";
+  color: var(--muted-foreground);
+  font-size: 16px;
+  line-height: 1;
+  transition: transform 0.2s ease;
+}
+.rg-advanced[open] > summary::before {
+  transform: rotate(90deg);
+}
+.rg-advanced-body {
+  display: grid;
+  gap: 14px;
+  padding: 2px 13px 14px;
+}
+
+/* Off when the policy isn't "Allow except": they can't affect the output. */
+.rg-quick.is-disabled,
+.rg-advanced.is-disabled {
+  opacity: 0.45;
+  pointer-events: none;
 }
 
 .rg-bots {
@@ -241,6 +432,20 @@
 }
 .rg-bot:has(input:checked) .rg-bot-check { opacity: 1; transform: scale(1); }
 
+/* The controls column runs long with 25 crawlers: a two-up bot grid halves its
+   height (group headings still span the full width), and on desktop the preview
+   sticks so it stays in view while you scroll the controls instead of being
+   stranded at the top. */
+@media (min-width: 720px) {
+  .rg-bots {
+    grid-template-columns: 1fr 1fr;
+  }
+  .rg-bots-head,
+  .rg-bots-group {
+    grid-column: 1 / -1;
+  }
+}
+
 .rg-preview {
   display: flex;
   flex-direction: column;
@@ -248,6 +453,14 @@
   border: 1px solid var(--border);
   border-radius: var(--r-lg);
   overflow: hidden;
+}
+
+@media (min-width: 900px) {
+  .rg-preview {
+    position: sticky;
+    top: 88px;
+    max-height: calc(100vh - 108px);
+  }
 }
 
 .rg-preview-head {
@@ -349,9 +562,9 @@
   margin-top: 30px;
 }
 
-@media (min-width: 760px) {
+@media (min-width: 620px) {
   .rg-cards {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
   }
 }
 

@@ -3,7 +3,7 @@
 // Any element carrying `data-analytics="event_name"` pushes that event to the
 // dataLayer when clicked; extra `data-analytics-*` attributes become event
 // parameters (e.g. data-analytics-location="hero" -> { location: "hero" }).
-// GTM turns those dataLayer events into GA4 events — see TRACKING.md.
+// GTM turns those dataLayer events into GA4 events: see TRACKING.md.
 //
 // Page-view-shaped events (view_pricing, page_view) need no code here: GTM
 // derives them from the URL. This file only covers interactions.
@@ -23,7 +23,7 @@
 
   // Some events are outcomes, not clicks. A lead form here is a plain POST that
   // redirects back with ?sent=1, so the honest place to record it is the success
-  // state the server rendered — firing on click would also count submissions
+  // state the server rendered: firing on click would also count submissions
   // that failed validation. Mark an element data-analytics-on="load" and it
   // fires once on load instead of on click.
   function firePageLoadEvents() {

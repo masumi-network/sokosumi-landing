@@ -2,7 +2,7 @@
 // several people append to one object literal: a duplicate key (the later one
 // silently wins, so a fix can be undone by an older entry further down) and a
 // key whose German is identical to the English (usually a placeholder someone
-// meant to come back to — the deliberate ones are listed below).
+// meant to come back to: the deliberate ones are listed below).
 const path = require("path");
 const { DE } = require(path.join(__dirname, "..", "lib", "i18n"));
 const fs = require("fs");
@@ -43,5 +43,5 @@ const identical = Object.entries(DE).filter(([k, v]) => k === v && !INTENTIONAL.
 for (const d of dupes) console.error(`DUPLICATE key ${JSON.stringify(d.key)} at lines ${d.first} and ${d.again}`);
 for (const [k] of identical) console.error(`UNTRANSLATED (German === English): ${JSON.stringify(k)}`);
 const bad = dupes.length + identical.length;
-console.log(bad ? `FAIL — ${dupes.length} duplicate(s), ${identical.length} untranslated` : `OK — ${seen.size} keys, no duplicates, no accidental pass-throughs`);
+console.log(bad ? `FAIL: ${dupes.length} duplicate(s), ${identical.length} untranslated` : `OK: ${seen.size} keys, no duplicates, no accidental pass-throughs`);
 process.exit(bad ? 1 : 0);

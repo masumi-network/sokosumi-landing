@@ -19,7 +19,7 @@ export default {
     description: "Build a sourced marketing brief in ChatGPT, turn it into a campaign plan, and review every claim before your team ships the work.",
     body: article("en", {
       intro: [
-        "ChatGPT is useful for marketing when you give it a bounded decision to support, the evidence it may use, and the format your team needs. Treat it as a working session for research, synthesis and drafting—not as the owner of the strategy.",
+        "ChatGPT is useful for marketing when you give it a bounded decision to support, the evidence it may use, and the format your team needs. Treat it as a working session for research, synthesis and drafting, not as the owner of the strategy.",
         "The workflow below starts with a campaign brief and ends with a reviewable plan. It works best inside a dedicated Project so the brief, source files, instructions and follow-up chats stay together.",
       ],
       fitIntro: ["Use ChatGPT where iteration is more valuable than one perfect first answer."],

@@ -37,7 +37,7 @@ export default {
       workflow: [
         "Ask ChatGPT to group only the supplied queries and explain which ones appear to share a search intent. Challenge ambiguous clusters manually.",
         "Create an intent statement with reader, situation, desired outcome and expected page type.",
-        "Compare the supplied ranking-page notes. Identify table stakes, unanswered questions and evidence formats—not phrases to imitate.",
+        "Compare the supplied ranking-page notes. Identify table stakes, unanswered questions and evidence formats, not phrases to imitate.",
         "Build an outline around the reader's decision sequence. Give every section a purpose, question, required source and approximate depth.",
         "Add title options, description, internal-link targets, schema opportunities and a claim-verification checklist.",
         "After publication, compare actual queries and engagement with the brief; revise the page when evidence changes.",

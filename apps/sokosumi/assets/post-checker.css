@@ -1,6 +1,6 @@
-/* /tools/linkedin-post-checker — same language as the other tools: a workbench
+/* /tools/linkedin-post-checker: same language as the other tools: a workbench
  * above the fold, hairline borders, one accent, Inter Light for headings. No
- * platform-imitation cards here (unlike og-checker) — this tool never fetches
+ * platform-imitation cards here (unlike og-checker): this tool never fetches
  * anything, so the result surface is just the checks.
  */
 

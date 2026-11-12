@@ -1,6 +1,6 @@
 // requestIdleCallback's second argument is an IdleRequestOptions object, so the
 // old `(rIC || setTimeout)(fn, 1)` shorthand passed a number where an object
-// belongs — coerced away by most browsers, a TypeError in the ones that check.
+// belongs: coerced away by most browsers, a TypeError in the ones that check.
 function onIdle(fn) {
   if (window.requestIdleCallback) window.requestIdleCallback(fn);
   else window.setTimeout(fn, 1);
@@ -26,7 +26,7 @@ function onIdle(fn) {
 })();
 
 // Dropdown menus. CSS :hover alone opens them, and still does without JS, but
-// it closes the instant the pointer leaves the trigger — so moving diagonally
+// it closes the instant the pointer leaves the trigger: so moving diagonally
 // towards a far column, or clipping the edge on the way down, snaps the panel
 // shut. This adds a short grace period on the way out and closes any sibling
 // on the way in, which is what makes the menus feel steady.
@@ -62,7 +62,7 @@ function onIdle(fn) {
   // Hydrating only on pointerenter lost the race it was in: CSS reveals the
   // panel on :hover in 0.2s while the image request had not even started, so
   // the FIRST hover showed empty placeholder circles and the pictures popped
-  // in afterwards — or never, if the pointer moved on. Every later hover was
+  // in afterwards: or never, if the pointer moved on. Every later hover was
   // instant off cache, which is why the menu looked like it had images
   // sometimes and not others. Hydrate every panel once the page is idle
   // instead: still nothing on first paint, but the pictures are there before
@@ -105,7 +105,7 @@ function onIdle(fn) {
     d.addEventListener("pointerleave", function () { close(d); });
     // keyboard users get the same panel without a pointer ever being involved.
     // `.dismissed` marks a drop Escape just closed while focus went back to
-    // its trigger — that focus move re-fires focusin, which must not reopen.
+    // its trigger: that focus move re-fires focusin, which must not reopen.
     d.addEventListener("focusin", function () {
       if (d.classList.contains("dismissed")) return;
       open(d);
@@ -119,7 +119,7 @@ function onIdle(fn) {
   });
 
   // Escape dismisses for real: `.open` goes, but the CSS :focus-within rule
-  // would keep the panel visible while focus is anywhere inside the drop —
+  // would keep the panel visible while focus is anywhere inside the drop:
   // `.dismissed` suppresses that rule (see nav.css) and focus returns to the
   // trigger, so aria-expanded="false" and what is on screen finally agree.
   document.addEventListener("keydown", function (e) {
@@ -139,7 +139,7 @@ function onIdle(fn) {
 // The homepage's overlay header: transparent over the dark video hero, then
 // the standard paper bar once the hero scrolls away. Sub-pages render the
 // same header without .is-overlay and are always paper, so this block is a
-// no-op there. Lives here — the one script both surfaces load — so the flip
+// no-op there. Lives here: the one script both surfaces load: so the flip
 // cannot exist on one surface and not the other.
 (function () {
   var bar = document.querySelector(".site-header.is-overlay");
@@ -160,7 +160,7 @@ function onIdle(fn) {
   ).observe(hero);
 
   // The hero is a full screen tall, so the observer above does not fire until
-  // a whole viewport has gone by — leaving the bar completely transparent
+  // a whole viewport has gone by: leaving the bar completely transparent
   // over a moving colour screenshot for that entire first screen. Blur it as
   // soon as the visitor actually starts scrolling. Passive listener, one
   // class toggle, no layout read beyond scrollY.
@@ -186,7 +186,7 @@ function onIdle(fn) {
 
   // On the landing page the bar is transparent over the video and its buttons
   // are inverted for it. An open drawer puts paper behind the bar, so it has
-  // to take the same `scrolled` state the hero observer normally sets — and
+  // to take the same `scrolled` state the hero observer normally sets: and
   // give it back on close, since no intersection fires while the page stays put.
   var hero = document.querySelector(".hero");
   function restoreBarState() {
@@ -195,8 +195,8 @@ function onIdle(fn) {
   }
 
   // The page must not scroll behind the open drawer. body { overflow: hidden }
-  // alone does nothing here — html carries overflow-x: clip (styles.css), so
-  // body's overflow never propagates to the viewport — and on iOS Safari it
+  // alone does nothing here: html carries overflow-x: clip (styles.css), so
+  // body's overflow never propagates to the viewport: and on iOS Safari it
   // never worked anyway. Lock html (the real scroller) AND pin body with
   // position: fixed at the current offset, which iOS does honour; put the
   // offset back on close so the visitor stays where they were.

@@ -59,6 +59,6 @@ function check(name, ok, detail) {
     check(`${p} 200 with 500+ chars`, r.status === 200 && text.length > 500, `${r.status}, ${text.length} chars`);
   }
 
-  console.log(fails.length ? `\n${fails.length} FAILURES` : "\nOK — all agent-readiness checks passed");
+  console.log(fails.length ? `\n${fails.length} FAILURES` : "\nOK: all agent-readiness checks passed");
   process.exit(fails.length ? 1 : 0);
 })();

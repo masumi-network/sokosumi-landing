@@ -1,4 +1,4 @@
-// Renders CMS layout blocks (payload's shared 15-block library — see
+// Renders CMS layout blocks (payload's shared 15-block library: see
 // payload-cms/src/blocks/layout.ts) to static HTML in the site's design
 // language. richText arrives pre-rendered as contentHtml (a save-time hook
 // in the CMS), so no Lexical parsing happens at request time.
@@ -107,7 +107,7 @@ const RENDER = {
         const cells = (r.cells || [])
           .map((cell, i) => {
             const v = String(cell.value || "").trim();
-            // The yes/no glyphs are visual only — the sr-only text is what a
+            // The yes/no glyphs are visual only: the sr-only text is what a
             // crawler or screen reader gets; before, "no" cells were literally
             // empty and "yes" cells were an unlabeled icon.
             const inner =

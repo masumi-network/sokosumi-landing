@@ -631,7 +631,7 @@ for (const p of PAGES) {
   }
   // Block structure is shared across locales; only text fields are localized.
   // The DE write must therefore reuse the ids Payload assigned to the EN
-  // blocks, rows, cells and items — new ids would create new blocks with
+  // blocks, rows, cells and items: new ids would create new blocks with
   // empty English text.
   const saved = await api(`/api/comparisons/${id}?locale=en&depth=0&draft=true`);
   const de = withIds(saved.layout, layout(p, "de"));

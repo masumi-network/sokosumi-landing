@@ -1,7 +1,7 @@
 // Shared scroll reveals (IntersectionObserver, transform/opacity only,
 // honors prefers-reduced-motion). Both the homepage and every sub-page
 // load this file. The homepage catalog injects extra [data-reveal]
-// nodes after this has run — window.sokosumiReveal observes those.
+// nodes after this has run: window.sokosumiReveal observes those.
 (function () {
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   function markIn(el) { el.classList.add("in"); }
@@ -26,6 +26,25 @@
   }
   [].slice.call(document.querySelectorAll("[data-reveal]")).forEach(observe);
   window.sokosumiReveal = observe;
+})();
+
+// FAQ accordions open one at a time. Native <details> lets several stay open
+// at once; when a visitor opens one, close the others in the same .faq-list.
+// Progressive enhancement: without JS every answer is still reachable.
+(function () {
+  "use strict";
+  var items = document.querySelectorAll(".faq-list .faq-item");
+  for (var i = 0; i < items.length; i++) {
+    items[i].addEventListener("toggle", function (e) {
+      if (!e.target.open) return;
+      var list = e.target.closest(".faq-list");
+      if (!list) return;
+      var open = list.querySelectorAll(".faq-item[open]");
+      for (var j = 0; j < open.length; j++) {
+        if (open[j] !== e.target) open[j].open = false;
+      }
+    });
+  }
 })();
 
 // Collapse long row lists to their first N rows behind a toggle.

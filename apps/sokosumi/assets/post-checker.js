@@ -1,9 +1,9 @@
-/* /tools/linkedin-post-checker — client.
+/* /tools/linkedin-post-checker: client.
  *
  * The server does all the scoring (and, in link mode, the fetch that turns a
  * LinkedIn URL into text); this file only renders what comes back, switches
  * between the two input modes, and wires up the two "Try" examples. POSTs a
- * JSON body rather than a GET with a query string — pasted post text runs
+ * JSON body rather than a GET with a query string: pasted post text runs
  * long, and there's no fetched resource here to make a shareable/cacheable
  * GET worthwhile (see /api/post-check in server.js for the reasoning).
  */
@@ -46,7 +46,7 @@
     },
     strong: {
       text:
-        "Most SaaS teams ship a feature and hope someone notices.\n\nWe tried something different for our last release: we told 20 customers exactly what was changing before it shipped, and asked one question — \"what would make this useless to you?\"\n\nThree answers changed the release. One killed a feature entirely.\n\nThe update went out last week with zero support tickets about it. That's never happened before.\n\nWhat's one thing you changed after asking customers a blunt question instead of a survey?\n\n#producttalk #saas #customerresearch",
+        "Most SaaS teams ship a feature and hope someone notices.\n\nWe tried something different for our last release: we told 20 customers exactly what was changing before it shipped, and asked one question: \"what would make this useless to you?\"\n\nThree answers changed the release. One killed a feature entirely.\n\nThe update went out last week with zero support tickets about it. That's never happened before.\n\nWhat's one thing you changed after asking customers a blunt question instead of a survey?\n\n#producttalk #saas #customerresearch",
     },
   };
 
@@ -77,14 +77,14 @@
     return score >= 80 ? "Strong" : score >= 50 ? "Needs work" : "Weak";
   }
 
-  // A plain-text version of the report, for the copy button — same content
+  // A plain-text version of the report, for the copy button: same content
   // as the on-page cards, but readable pasted into a doc or a chat message.
   function reportText() {
-    var lines = ["LinkedIn post checker — " + data.overall + "/100 (" + bandLabel(data.overall) + ")", ""];
+    var lines = ["LinkedIn post checker: " + data.overall + "/100 (" + bandLabel(data.overall) + ")", ""];
     data.dimensions.forEach(function (d) {
       lines.push(d.label + ": " + d.score + "/100");
       d.checks.forEach(function (c) {
-        lines.push("  [" + c.level + "] " + c.title + " — " + c.detail);
+        lines.push("  [" + c.level + "] " + c.title + ": " + c.detail);
       });
       lines.push("");
     });

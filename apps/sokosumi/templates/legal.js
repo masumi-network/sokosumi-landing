@@ -1,7 +1,7 @@
 // The six legal documents, ported verbatim from sokosumi.com.
 //
 // The text in content/legal.json is a mechanical extraction of the live
-// Webflow pages — see content/extract-legal.py for how, and for the traps it
+// Webflow pages: see content/extract-legal.py for how, and for the traps it
 // avoids (the Terms ship two contracts in two tab panes, the DPA ships a stale
 // hidden revision, two pages carry a German copy of every table). Nothing here
 // is rewritten: this template only wraps it in the site's chrome.

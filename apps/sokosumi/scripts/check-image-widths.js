@@ -1,6 +1,6 @@
 // Vercel 400s any /_vercel/image width missing from vercel.json images.sizes,
 // and a 400 is an invisible image, not a slow one. thumbSrc() emits both w and
-// w*2 (retina), so BOTH must be declared — 384*2 and 828*2 were not, and that
+// w*2 (retina), so BOTH must be declared: 384*2 and 828*2 were not, and that
 // blanked 55 portraits in production. Run this after touching either side.
 const fs = require("fs");
 const path = require("path");
@@ -29,5 +29,5 @@ for (const rel of files) {
 }
 const missing = [...wanted].filter(([w]) => !sizes.has(w));
 for (const [w, where] of missing) console.error(`MISSING width ${w} (requested by ${where})`);
-console.log(missing.length ? `FAIL — ${missing.length} undeclared width(s)` : `OK — all ${wanted.size} requested widths are declared`);
+console.log(missing.length ? `FAIL: ${missing.length} undeclared width(s)` : `OK: all ${wanted.size} requested widths are declared`);
 process.exit(missing.length ? 1 : 0);
