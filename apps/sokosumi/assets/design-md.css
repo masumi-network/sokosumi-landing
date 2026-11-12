@@ -2127,12 +2127,11 @@
   flex-wrap: wrap;
   gap: 8px;
   margin: 0;
-  flex: 1 1 auto;
-  justify-content: flex-end;
+  flex: 1 1 100%;
+  justify-content: flex-start;
 }
 @media (max-width: 640px) {
   .tools-search { flex-basis: 100%; }
-  .tools-tabs { justify-content: flex-start; }
 }
 .tools-tab {
   padding: 7px 15px;

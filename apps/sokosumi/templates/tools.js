@@ -467,8 +467,7 @@ function render() {
     // h1, a sub, then the collection. The old centred hero and floating card
     // were the only ones of their kind on the site.
     `<div class="page-head" data-reveal>
-      <span class="eyebrow">Free tools</span>
-      <h1>Tools you can use without an account</h1>
+      <h1>Free tools for marketing and design</h1>
       <p class="sub">Small, single-purpose tools we built for our own marketing and design work. No sign-up, no credits, nothing to install.</p>
     </div>
     <section class="page-section flush" data-reveal aria-label="Tools">
