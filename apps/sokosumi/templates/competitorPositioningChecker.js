@@ -66,7 +66,6 @@ function render() {
       og: { type: "page", title: "Competitor Positioning Teardown", sub: "Compare two pages side by side." },
     }) +
     `<section class="tk-head" id="analyzer">
-      <p class="tk-overline">Free · no sign-up</p>
       <h1>Competitor Positioning Teardown</h1>
       <p class="tk-lede">Enter your URL and a competitor's URL and see side by side what each page says: and the exact loopholes each one leaves open.</p>
 

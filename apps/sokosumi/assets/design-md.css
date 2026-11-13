@@ -2075,6 +2075,24 @@
   line-height: 1.55;
 }
 
+.dm-tool-lede {
+  margin-top: 14px;
+  color: var(--foreground);
+  font-size: 18px;
+  line-height: 1.5;
+}
+
+.dm-tool-sub a {
+  color: var(--primary);
+  text-decoration: underline;
+  text-decoration-color: var(--primary);
+  text-underline-offset: 2px;
+}
+
+.dm-tool-sub a:hover {
+  text-decoration-color: transparent;
+}
+
 /* Every saved analysis ships in the HTML so each one has a link pointing at it;
    past the first twelve they are hidden until "Show all". */
 .dm-gallery.is-collapsed > :nth-child(n + 13) { display: none; }

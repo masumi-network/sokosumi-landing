@@ -267,35 +267,35 @@ const aiSearchVisibilityPreview = () => `
 const TOOLS = [
   {
     href: "/tools/llms-txt",
-    name: "llms.txt checker",
+    name: "Llms.txt Validator",
     text: "Validate your llms.txt: and find the links inside it that no longer resolve.",
     meta: "Free · no sign-up",
     preview: llmsPreview,
   },
   {
     href: "/tools/og-checker",
-    name: "Open Graph checker",
+    name: "Link Previewer",
     text: "See how any link will look on Facebook, X, LinkedIn, WhatsApp, Slack and Discord.",
     meta: "Free · no sign-up",
     preview: ogPreview,
   },
   {
     href: "/tools/design-md",
-    name: "DESIGN.md generator",
+    name: "Brand Guide Generator",
     text: "Turn any website into design context for AI coding agents.",
     meta: "Free · no sign-up",
     preview: designMdPreview,
   },
   {
     href: "/tools/website-analyzer",
-    name: "Website Analyzer",
+    name: "Website Audit",
     text: "Turn any website into an AI-readable SEO specification.",
     meta: "Free · no sign-up",
     preview: seoMdPreview,
   },
   {
     href: "/tools/linkedin-post-checker",
-    name: "LinkedIn post checker",
+    name: "LinkedIn Post Analyzer",
     text: "Score a post's hook, CTA and formatting before you publish.",
     meta: "Free · no sign-up",
     preview: postCheckerPreview,
@@ -309,14 +309,14 @@ const TOOLS = [
   },
   {
     href: "/tools/landing-page-copy-analyzer",
-    name: "Landing Page Copy Analyzer",
+    name: "Website Copy Analyzer",
     text: "Score your hero copy or full page on clarity, benefit focus, specificity and CTA strength.",
     meta: "Free · no sign-up",
     preview: landingCopyPreview,
   },
   {
     href: "/tools/x-algorithm-analyzer",
-    name: "X Algorithm Analyzer",
+    name: "X Post Analyzer",
     text: "Score a post against X's own open-sourced ranking signals before you post it.",
     meta: "Free · no sign-up",
     preview: xAlgorithmPreview,
@@ -454,7 +454,7 @@ function render() {
   return (
     pageStart({
       title: "Free tools | Sokosumi",
-      description: "Free, no-sign-up tools from Sokosumi for marketing and design work, starting with the DESIGN.md generator that turns any website into design context for AI coding agents.",
+      description: "Free, no-sign-up tools from Sokosumi for marketing and design work, starting with the Brand Guide Generator that turns any website into design context for AI coding agents.",
       path,
       englishOnly: true,
       breadcrumb: [{ label: "Home", href: "/" }, { label: "Free tools" }],

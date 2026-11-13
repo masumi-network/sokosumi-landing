@@ -6,7 +6,7 @@ const PATH = "/tools/linkedin-post-checker";
 
 const FAQ = [
   {
-    question: "What does this LinkedIn post checker look at?",
+    question: "What does this LinkedIn Post Analyzer look at?",
     answer:
       "Paste a post: as text, or as a link to one that's already live: and it reads the text for five things: hook quality (does the first line earn a click before \"see more\" cuts it), CTA clarity (is there a specific ask at the end), engagement-shaping formatting (length, paragraph rhythm, outbound links, hashtag count, tone), readability (sentence length, active vs passive voice), and specificity and credibility (concrete numbers, cited evidence).",
   },
@@ -36,18 +36,18 @@ function render() {
   const crumbs = [
     { label: "Home", href: "/" },
     { label: "Free tools", href: "/tools" },
-    { label: "LinkedIn post checker" },
+    { label: "LinkedIn Post Analyzer" },
   ];
 
   const appJsonLd = {
     "@type": "SoftwareApplication",
     "@id": `${SITE}${PATH}#software`,
-    name: "Sokosumi LinkedIn Post Checker",
+    name: "Sokosumi LinkedIn Post Analyzer",
     applicationCategory: "DeveloperApplication",
     operatingSystem: "Web",
     url: `${SITE}${PATH}`,
     description:
-      "A free LinkedIn post checker that scores a pasted LinkedIn post: or a link to one that's already live: on hook quality, CTA clarity, engagement-shaping formatting, readability, and specificity/credibility.",
+      "A free LinkedIn Post Analyzer that scores a pasted LinkedIn post: or a link to one that's already live: on hook quality, CTA clarity, engagement-shaping formatting, readability, and specificity/credibility.",
     featureList: [
       "Score a draft by pasting its text, or a live post by pasting its link",
       "Hook quality scoring against LinkedIn's truncation point",
@@ -72,9 +72,9 @@ function render() {
 
   return (
     pageStart({
-      title: "LinkedIn post checker: score your post before you publish | Sokosumi",
+      title: "LinkedIn Post Analyzer: score your post before you publish | Sokosumi",
       description:
-        "Free LinkedIn post checker. Paste a LinkedIn post: or a link to one already live: and get scores on hook quality, CTA clarity, engagement-shaping formatting, readability, and specificity/credibility. No sign-up.",
+        "Free LinkedIn Post Analyzer. Paste a LinkedIn post: or a link to one already live: and get scores on hook quality, CTA clarity, engagement-shaping formatting, readability, and specificity/credibility. No sign-up.",
       path: PATH,
       englishOnly: true,
       breadcrumb: crumbs,
@@ -83,14 +83,13 @@ function render() {
       jsonld: [appJsonLd, faqJsonLd],
       og: {
         type: "page",
-        title: "LinkedIn post checker",
+        title: "LinkedIn Post Analyzer",
         sub: "Score your post's hook, CTA, formatting and readability before you publish.",
       },
     }) +
     `<section class="psc-head" id="checker">
-      <p class="psc-overline">Free · no sign-up</p>
-      <h1>LinkedIn post checker</h1>
-      <p class="psc-lede">Paste a draft, or a link to a post that's already live, and get a score on its hook, its call to action, and its formatting.</p>
+      <h1>LinkedIn Post Analyzer</h1>
+      <p class="psc-lede">Paste a draft or a live LinkedIn post URL. Get a score based on hook quality, engagement potential, specificity and credibility, CTA clarity and readability. This tool will show what to fix before you post, or what to improve next time.</p>
 
       <form class="psc-form" id="pscForm" novalidate>
         <div class="psc-mode" role="tablist" aria-label="How to give us the post">

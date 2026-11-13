@@ -243,7 +243,7 @@
 
     var meta = el("div", "seo-overall-meta");
     meta.appendChild(el("p", "seo-overall-label", "Overall score"));
-    meta.appendChild(el("h3", "", data.hostname || "Website report"));
+    meta.appendChild(el("h3", "", data.hostname || "Website audit"));
     var tally = el("p", "seo-tally");
     tally.appendChild(el("span", "seo-pill seo-pill-pass", data.pass + " passed"));
     tally.appendChild(el("span", "seo-pill seo-pill-warn", data.warn + " warnings"));

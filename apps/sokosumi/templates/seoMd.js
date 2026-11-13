@@ -4,30 +4,30 @@ const { esc, pageStart, pageEnd, SITE } = shell;
 
 const FAQ = [
   {
-    question: "What's in the Website report?",
+    question: "What's in the website audit?",
     answer:
       "A structured breakdown of a page's real search signals: title, meta description, canonical, Open Graph, structured data, heading structure, keywords, brand entities, navigation and indexing rules: plus SEO, content, brand-clarity and AI-readiness scores and prioritized fixes. Read it on screen, copy it, or download it.",
   },
   {
-    question: "How does the Website Analyzer work?",
+    question: "How does the website audit work?",
     answer:
-      "Paste a public URL. The analyzer fetches the page and its robots.txt on the server, parses the on-page SEO signals directly from the HTML, scores them against best-practice rules, and produces a structured Website report you can review, edit, copy, or download. No sign-up, no browser extension, no API key.",
+      "Paste a public URL. The tool fetches the page and its robots.txt on the server, parses the on-page SEO signals directly from the HTML, scores them against best-practice rules, and produces a structured website audit you can review, edit, copy, or download. No sign-up, no browser extension, no API key.",
   },
   {
-    question: "Can I use the report with AI coding agents?",
+    question: "Can I use the audit with AI coding agents?",
     answer:
-      "Yes. Copy or download the report and hand it to any coding or content agent: Claude Code, Cursor, Codex, Copilot, Gemini CLI. Tell your agent to follow it when writing metadata, titles, or on-page copy, so its output matches your actual SEO state.",
+      "Yes. Copy or download the audit and hand it to any coding or content agent: Claude Code, Cursor, Codex, Copilot, Gemini CLI. Tell your agent to follow it when writing metadata, titles, or on-page copy, so its output matches your actual SEO state.",
   },
   {
-    question: "Is the analysis accurate?",
+    question: "Is the audit accurate?",
     answer:
-      "The analyzer reports exactly what the page's HTML contains at fetch time: it does not guess or invent values. It reads the raw markup, so client-side-rendered content that only appears after JavaScript runs may not be counted. The score is a deterministic rule-based check, not a Google ranking prediction.",
+      "The audit reports exactly what the page's HTML contains at fetch time: it does not guess or invent values. It reads the raw markup, so client-side-rendered content that only appears after JavaScript runs may not be counted. The score is a deterministic rule-based check, not a Google ranking prediction.",
   },
 ];
 
 function render() {
   const path = "/tools/website-analyzer";
-  const crumbs = [{ label: "Home", href: "/" }, { label: "Free tools", href: "/tools" }, { label: "Website Analyzer" }];
+  const crumbs = [{ label: "Home", href: "/" }, { label: "Free tools", href: "/tools" }, { label: "Website Audit" }];
   const faqJsonLd = {
     "@type": "FAQPage",
     "@id": `${SITE}${path}#faq`,
@@ -40,21 +40,21 @@ function render() {
   const appJsonLd = {
     "@type": "SoftwareApplication",
     "@id": `${SITE}${path}#software`,
-    name: "Sokosumi Website Analyzer",
+    name: "Sokosumi Website Audit",
     applicationCategory: "DeveloperApplication",
     operatingSystem: "Web",
     url: `${SITE}${path}`,
     description:
-      "A free website SEO analyzer that scores a public URL's on-page signals: title, meta, Open Graph, structured data, headings: and generates a detailed Website report for use with AI agents.",
+      "A free website audit that scores a public URL's on-page SEO signals: title, meta, Open Graph, structured data, headings: and generates a detailed SEO and AI readiness audit for use with AI agents.",
     offers: { "@type": "Offer", price: "0", priceCurrency: "EUR" },
     creator: { "@id": `${SITE}/#organization` },
   };
 
   return (
     pageStart({
-      title: "Free Website Analyzer | Sokosumi",
+      title: "Free Website Audit | Sokosumi",
       description:
-        "Analyze any website's on-page SEO: title, meta description, canonical, Open Graph, structured data, headings and a scored checklist: a detailed Website report for Claude Code, Cursor and other AI agents.",
+        "Audit any website's on-page SEO: title, meta description, canonical, Open Graph, structured data, headings and a scored checklist: a detailed SEO and AI readiness audit for Claude Code, Cursor and other AI agents.",
       path,
       englishOnly: true,
       breadcrumb: crumbs,
@@ -63,15 +63,16 @@ function render() {
       jsonld: [appJsonLd, faqJsonLd],
       og: {
         type: "page",
-        title: "Free Website Analyzer",
+        title: "Free Website Audit",
         sub: "Turn any website into an AI-readable SEO specification.",
       },
     }) +
     `<section class="dm-tool" id="generator">
       <header class="dm-tool-head">
         <div>
-          <p class="dm-overline">Tool · Free</p>
-          <h1>Website Analyzer</h1>
+          <h1>Website Audit</h1>
+          <p class="dm-tool-sub dm-tool-lede">This tool reviews a website and gives you a full SEO and AI readiness audit. Paste a website URL to get started.</p>
+          <p class="dm-tool-sub">New to website audits? <a href="#faq">Read the Q&amp;A</a></p>
         </div>
         <p class="dm-tool-meta"><span class="dm-live">Live</span></p>
       </header>
@@ -96,8 +97,8 @@ function render() {
       <div class="dm-output" id="seoMdOutput" data-state="empty">
         <div class="dm-output-empty" id="seoMdEmpty">
           <span aria-hidden="true">↑</span>
-          <strong>Output will appear here.</strong>
-          <small>Paste a URL to read its title, meta, Open Graph, headings, keywords, important pages and declared entities, score them, and get a Website report you can edit, copy or download.</small>
+          <strong>Your audit will appear here.</strong>
+          <small>Paste a URL above to run the audit, then edit, copy or download it.</small>
         </div>
 
         <div class="dm-progress" id="seoMdProgress" aria-live="polite" hidden>
@@ -114,8 +115,8 @@ function render() {
           <header class="dm-result-head">
             <span id="seoMdBrand"></span>
             <div>
-              <p class="dm-result-label">Website Analyzer</p>
-              <h2 id="seoMdResultTitle">Website report</h2>
+              <p class="dm-result-label">Website Audit</p>
+              <h2 id="seoMdResultTitle">Website audit</h2>
               <a id="seoMdSource" href="#" target="_blank" rel="noopener noreferrer nofollow"></a>
             </div>
             <div class="dm-result-actions">
@@ -123,13 +124,13 @@ function render() {
               <button class="btn btn-primary" id="seoMdDownload" type="button">Download</button>
             </div>
           </header>
-          <div class="dm-tabs" role="tablist" aria-label="Website report views">
+          <div class="dm-tabs" role="tablist" aria-label="Website audit views">
             <button id="seoMdPreviewTab" type="button" role="tab" aria-selected="true" aria-controls="seoMdPreview">Report</button>
             <button id="seoMdFileTab" type="button" role="tab" aria-selected="false" aria-controls="seoMdFile">Edit</button>
           </div>
           <div class="dm-preview" id="seoMdPreview" role="tabpanel" aria-labelledby="seoMdPreviewTab"></div>
           <div class="dm-file" id="seoMdFile" role="tabpanel" aria-labelledby="seoMdFileTab" hidden>
-            <label for="seoMdEditor" class="sr-only">Website report contents</label>
+            <label for="seoMdEditor" class="sr-only">Website audit contents</label>
             <textarea id="seoMdEditor" spellcheck="false" aria-describedby="seoMdEditorHelp"></textarea>
             <p id="seoMdEditorHelp">Edit, then copy or download.</p>
           </div>
@@ -147,8 +148,8 @@ function render() {
             <p class="dm-overline">Almost there</p>
             <button class="dm-lead-x" id="seoMdLeadX" type="button" aria-label="Close">&times;</button>
           </div>
-          <h2 id="seoMdLeadTitle">Free competitive analysis <span>+</span> your Website report</h2>
-          <p class="dm-lead-lede">Enter your website and email: our AI coworker sends a free competitive analysis to your inbox, and we generate your Website report right now.</p>
+          <h2 id="seoMdLeadTitle">Free competitive analysis <span>+</span> your website audit</h2>
+          <p class="dm-lead-lede">Enter your website and email: our AI coworker sends a free competitive analysis to your inbox, and we generate your website audit right now.</p>
           <form class="dm-lead-form" id="seoMdLeadForm" novalidate>
             <label>
               <span>Website URL</span>
@@ -192,7 +193,7 @@ function render() {
       </div>
     </section>` +
     shell.relatedTools(path, [
-      { href: "/tools/website-analyzer", title: "Website Analyzer", blurb: "Score a single page's on-page SEO signals and generate a report for AI agents." },
+      { href: "/tools/website-analyzer", title: "Website Audit", blurb: "Score a single page's on-page SEO signals and generate an audit for AI agents." },
       { href: "/tools/internal-linking-finder", title: "Internal Linking Opportunity Finder", blurb: "Find related pages that don't yet link to each other, with a suggested anchor." },
       { href: "/tools/orphan-pages", title: "Orphan Page Finder", blurb: "Find sitemap pages that no other page on the site links to." },
     ]) +

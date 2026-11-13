@@ -80,7 +80,7 @@
   // A plain-text version of the report, for the copy button: same content
   // as the on-page cards, but readable pasted into a doc or a chat message.
   function reportText() {
-    var lines = ["LinkedIn post checker: " + data.overall + "/100 (" + bandLabel(data.overall) + ")", ""];
+    var lines = ["LinkedIn Post Analyzer: " + data.overall + "/100 (" + bandLabel(data.overall) + ")", ""];
     data.dimensions.forEach(function (d) {
       lines.push(d.label + ": " + d.score + "/100");
       d.checks.forEach(function (c) {
@@ -167,7 +167,16 @@
       .join("");
 
     dimsEl.setAttribute("data-filter", filter);
-    dimsEl.innerHTML = data.dimensions.map(renderDim).join("");
+    // Worst-first: the lowest-scoring dimension is the one worth fixing before
+    // posting, so it leads. slice() keeps data.dimensions in its original order
+    // for the counts above and the copied report.
+    dimsEl.innerHTML = data.dimensions
+      .slice()
+      .sort(function (a, b) {
+        return a.score - b.score;
+      })
+      .map(renderDim)
+      .join("");
     result.hidden = false;
   }
 

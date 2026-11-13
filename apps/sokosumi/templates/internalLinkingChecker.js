@@ -7,7 +7,7 @@ const PATH = "/tools/internal-linking-finder";
 // The "site structure" cluster: three tools that look at how a site's pages
 // link to one another. Shared verbatim; relatedTools() drops the current page.
 const SITE_STRUCTURE_TOOLS = [
-  { href: "/tools/website-analyzer", title: "Website Analyzer", blurb: "Score a single page's on-page SEO signals and generate a report for AI agents." },
+  { href: "/tools/website-analyzer", title: "Website Audit", blurb: "Score a single page's on-page SEO signals and generate an audit for AI agents." },
   { href: "/tools/internal-linking-finder", title: "Internal Linking Opportunity Finder", blurb: "Find related pages that don't yet link to each other, with a suggested anchor." },
   { href: "/tools/orphan-pages", title: "Orphan Page Finder", blurb: "Find sitemap pages that no other page on the site links to." },
 ];
@@ -75,7 +75,6 @@ function render() {
       og: { type: "page", title: "Internal Linking Opportunity Finder", sub: "Find pages that should link to each other." },
     }) +
     `<section class="tk-head" id="analyzer">
-      <p class="tk-overline">Free · no sign-up</p>
       <h1>Internal Linking Opportunity Finder</h1>
       <p class="tk-lede">Enter a site URL and get suggested internal links: pages that share a lot of vocabulary but don't yet link to each other: with a suggested anchor text for each.</p>
 

@@ -4,7 +4,18 @@ const { esc, pageStart, pageEnd, SITE } = shell;
 
 const PATH = "/tools/x-algorithm-analyzer";
 
+// X's ranking signals change often, so this tool is reviewed monthly against
+// X's open-sourced code and any publicly reported changes since. On each
+// review, bump LAST_UPDATED (ISO) and LAST_UPDATED_LABEL (human) together.
+const LAST_UPDATED = "2026-11-14";
+const LAST_UPDATED_LABEL = "14 November 2026";
+
 const FAQ = [
+  {
+    question: "How current is this?",
+    answer:
+      `X changes its ranking often, so we review this tool every month against X's open-sourced ranking code ("the-algorithm", released March 2023) and the public reporting on changes since. It was last updated on ${LAST_UPDATED_LABEL}. Scores compare your post to the signals documented as of that date, not to any private or real-time version of the algorithm.`,
+  },
   {
     question: "What is this checking against?",
     answer:
@@ -29,13 +40,13 @@ function render() {
   const crumbs = [
     { label: "Home", href: "/" },
     { label: "Free tools", href: "/tools" },
-    { label: "X Algorithm Analyzer" },
+    { label: "X Post Analyzer" },
   ];
 
   const appJsonLd = {
     "@type": "SoftwareApplication",
     "@id": `${SITE}${PATH}#software`,
-    name: "Sokosumi X Algorithm Analyzer",
+    name: "Sokosumi X Post Analyzer",
     applicationCategory: "DeveloperApplication",
     operatingSystem: "Web",
     url: `${SITE}${PATH}`,
@@ -64,7 +75,7 @@ function render() {
 
   return (
     pageStart({
-      title: "X Algorithm Analyzer: score a post before you post it | Sokosumi",
+      title: "X Post Analyzer: score a post before you post it | Sokosumi",
       description:
         "Free X (Twitter) post analyzer. Paste a post and get scores against the ranking signals documented in X's open-sourced algorithm: reply hooks, off-platform links, native media and spam formatting. No sign-up.",
       path: PATH,
@@ -75,33 +86,22 @@ function render() {
       jsonld: [appJsonLd, faqJsonLd],
       og: {
         type: "page",
-        title: "X Algorithm Analyzer",
+        title: "X Post Analyzer",
         sub: "Score a post against X's documented ranking signals.",
       },
     }) +
     `<section class="tk-head" id="analyzer">
-      <p class="tk-overline">Free · no sign-up</p>
-      <h1>X Algorithm Analyzer</h1>
-      <p class="tk-lede">Paste a post: or a link to one you've already published on X: and get a score against the ranking signals documented in X's open-sourced recommendation algorithm: reply hooks, off-platform links, native media, and spam-shaped formatting.</p>
-
-      <div class="xaa-tabs" role="tablist" aria-label="Choose how to score a post">
-        <button class="xaa-tab is-active" type="button" role="tab" aria-selected="true" data-mode="write">Write a post</button>
-        <button class="xaa-tab" type="button" role="tab" aria-selected="false" data-mode="link">I already posted it</button>
-      </div>
+      <h1>X Post Analyzer</h1>
+      <p class="tk-lede">Paste a draft or a published X post URL. Get a score based on reply hooks, off-platform links, native media and spam signals, based on X's open sourced algorithm. See what to fix before you post, or what to change next time.</p>
+      <p class="tk-updated">Last updated <time datetime="${LAST_UPDATED}">${LAST_UPDATED_LABEL}</time> · scored against X's open-sourced algorithm (March 2023 release) and public changes since.</p>
 
       <form class="tk-form is-stacked" id="xaaForm" novalidate>
-        <div class="xaa-panel" data-mode="write">
-          <label class="sr-only" for="xaaText">Post text</label>
-          <textarea id="xaaText" name="text" maxlength="2000" placeholder="Write or paste your draft post here…" aria-describedby="xaaError"></textarea>
-          <label style="display:flex;align-items:center;gap:8px;margin-top:10px;font-size:13.5px;color:var(--muted-foreground)">
-            <input type="checkbox" id="xaaMedia" style="width:auto" /> This post has an image, GIF or video attached
-          </label>
-        </div>
-        <div class="xaa-panel" data-mode="link" hidden>
-          <label class="sr-only" for="xaaUrl">Published post link</label>
-          <input id="xaaUrl" type="url" inputmode="url" placeholder="https://x.com/you/status/123…" aria-describedby="xaaError" />
-          <p class="xaa-hint">Paste the link to a post you've already published on X: we'll fetch it and score the real text (media is detected automatically).</p>
-        </div>
+        <label class="sr-only" for="xaaText">Paste text, or an X link</label>
+        <textarea id="xaaText" name="text" maxlength="2000" placeholder="Paste text, or paste an X link to score a published post…" aria-describedby="xaaError"></textarea>
+        <label class="xaa-media" id="xaaMediaRow" style="display:flex;align-items:center;gap:8px;margin-top:10px;font-size:13.5px;color:var(--muted-foreground)">
+          <input type="checkbox" id="xaaMedia" style="width:auto" /> This post has an image, GIF or video attached
+        </label>
+        <p class="xaa-hint" id="xaaLinkHint" hidden>X link detected: we'll fetch and score the live post, with media detected automatically.</p>
         <button class="tk-submit" id="xaaSubmit" type="submit">Score my post</button>
       </form>
 

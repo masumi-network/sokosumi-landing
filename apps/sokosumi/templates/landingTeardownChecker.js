@@ -80,7 +80,6 @@ function render() {
       },
     }) +
     `<section class="tk-head" id="analyzer">
-      <p class="tk-overline">Free · no sign-up</p>
       <h1>Landing Page Conversion Teardown</h1>
       <p class="tk-lede">Enter a landing page URL and get a teardown of its headline clarity, its CTA, its social proof, and its trust signals: with the exact things costing you conversions.</p>
 

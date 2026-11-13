@@ -208,7 +208,9 @@
           "</b><i>/100</i></span></span>" +
           '<span class="tk-gauge-label"><strong>' +
           esc(bandLabel(data.overall)) +
-          "</strong>overall readiness</span>";
+          "</strong>" +
+          esc(config.scoreLabel || "overall readiness") +
+          "</span>";
       }
 
       if (scores) {

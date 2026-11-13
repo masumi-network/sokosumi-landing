@@ -240,14 +240,14 @@
 
 .psc-summary {
   display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 10px 20px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
   padding: 22px 0;
 }
 
 .psc-summary-score {
-  flex: 1;
+  flex: none;
   min-width: 220px;
   color: var(--muted-foreground);
   font-size: 14.5px;

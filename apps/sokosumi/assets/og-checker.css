@@ -41,6 +41,15 @@
   color: var(--muted-foreground);
   text-wrap: pretty;
 }
+.ogc-lede a {
+  color: var(--foreground);
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.ogc-lede a:hover {
+  text-decoration: none;
+}
 
 .ogc-bar {
   display: flex;
@@ -189,15 +198,16 @@
 
 .ogc-summary {
   display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 10px 20px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
   padding: 22px 0;
 }
 
 .ogc-summary-url {
-  flex: 1;
-  min-width: 220px;
+  flex: none;
+  max-width: 100%;
+  min-width: 0;
   overflow: hidden;
   color: var(--muted-foreground);
   font-size: 13.5px;
@@ -214,6 +224,7 @@
 
 .ogc-scores {
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
 }
 

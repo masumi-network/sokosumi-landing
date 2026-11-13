@@ -6,7 +6,7 @@ const PATH = "/tools/landing-page-copy-analyzer";
 
 const FAQ = [
   {
-    question: "What does the landing page copy analyzer check?",
+    question: "What does the Website Copy Analyzer check?",
     answer:
       "Enter a landing page URL and it fetches the page and reads its visible copy, then scores four things: clarity (sentence length, jargon, passive voice), benefit focus (whether the copy talks to the reader or about the company), specificity (concrete numbers vs vague qualifiers), and CTA strength (whether there's a clear, specific next step).",
   },
@@ -33,18 +33,18 @@ function render() {
   const crumbs = [
     { label: "Home", href: "/" },
     { label: "Free tools", href: "/tools" },
-    { label: "Landing Page Copy Analyzer" },
+    { label: "Website Copy Analyzer" },
   ];
 
   const appJsonLd = {
     "@type": "SoftwareApplication",
     "@id": `${SITE}${PATH}#software`,
-    name: "Sokosumi Landing Page Copy Analyzer",
+    name: "Sokosumi Website Copy Analyzer",
     applicationCategory: "DeveloperApplication",
     operatingSystem: "Web",
     url: `${SITE}${PATH}`,
     description:
-      "A free landing page copy analyzer: enter a URL and it scores the page's copy on clarity, benefit focus, specificity, and CTA strength, with a full breakdown and fixes.",
+      "A free website copy analyzer: enter a URL and it scores the page's copy on clarity, benefit focus, specificity, and CTA strength, with a full breakdown and fixes.",
     featureList: [
       "Sentence length, jargon, and passive-voice detection",
       "You/your vs we/our benefit-focus ratio",
@@ -68,9 +68,9 @@ function render() {
 
   return (
     pageStart({
-      title: "Landing Page Copy Analyzer: score your page copy | Sokosumi",
+      title: "Website Copy Analyzer: score your page copy | Sokosumi",
       description:
-        "Free landing page copy analyzer. Enter a URL and get scores on the page's clarity, benefit focus, specificity, and CTA strength, plus a ranked list of fixes. No sign-up.",
+        "Free website copy analyzer. Enter a URL and get scores on the page's clarity, benefit focus, specificity, and CTA strength, plus a ranked list of fixes. No sign-up.",
       path: PATH,
       englishOnly: true,
       breadcrumb: crumbs,
@@ -79,14 +79,13 @@ function render() {
       jsonld: [appJsonLd, faqJsonLd],
       og: {
         type: "page",
-        title: "Landing Page Copy Analyzer",
+        title: "Website Copy Analyzer",
         sub: "Score your copy's clarity, benefit focus, specificity and CTA strength.",
       },
     }) +
     `<section class="tk-head" id="analyzer">
-      <p class="tk-overline">Free · no sign-up</p>
-      <h1>Landing Page Copy Analyzer</h1>
-      <p class="tk-lede">Enter a landing page URL and get a score on its copy's clarity, its benefit focus, its specificity, and its CTA: with the exact lines that are costing you conversions.</p>
+      <h1 class="tk-head-oneline">Website Copy Analyzer</h1>
+      <p class="tk-lede">Paste a website URL and get a score on the copy's clarity, focus, specificity and CTA strength. We show the exact lines to fix so your copy works harder.</p>
 
       <form class="tk-form" id="lcaForm" novalidate>
         <label class="sr-only" for="lcaUrl">Landing page URL</label>

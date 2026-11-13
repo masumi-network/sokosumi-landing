@@ -119,9 +119,9 @@ Humans sign up at https://app.sokosumi.com/signup (free plan, no card).
 
 - [llms.txt checker](https://www.sokosumi.com/tools/llms-txt): validate a site's llms.txt against the llmstxt.org format and test whether the links inside it resolve; free, no sign-up
 - [Open Graph checker](https://www.sokosumi.com/tools/og-checker): preview how any URL renders on Facebook, X, LinkedIn, WhatsApp, Slack and Discord, and report every og: and twitter: meta tag problem; free, no sign-up
-- [DESIGN.md generator](https://www.sokosumi.com/tools/design-md): analyze a public website and create a portable design-system file for AI coding agents; free, no sign-up
-- [Website Analyzer](https://www.sokosumi.com/tools/website-analyzer): score a public URL's on-page SEO signals and generate a detailed Website report for AI agents; free, no sign-up
-- [LinkedIn post checker](https://www.sokosumi.com/tools/linkedin-post-checker): score a pasted LinkedIn post, or a link to one already live, on hook, CTA and formatting; free, no sign-up
+- [Brand Guide Generator](https://www.sokosumi.com/tools/design-md): analyze a public website and create a portable design-system file for AI coding agents; free, no sign-up
+- [Website Audit](https://www.sokosumi.com/tools/website-analyzer): score a public URL's on-page SEO signals and generate a detailed SEO and AI readiness audit for AI agents; free, no sign-up
+- [LinkedIn Post Analyzer](https://www.sokosumi.com/tools/linkedin-post-checker): score a pasted LinkedIn post, or a link to one already live, on hook, CTA and formatting; free, no sign-up
 - [Robots.txt Generator](https://www.sokosumi.com/tools/robots-txt-generator): generate a robots.txt with a one-click checklist to block AI-training crawlers; free, no sign-up
 
 ## Developer resources

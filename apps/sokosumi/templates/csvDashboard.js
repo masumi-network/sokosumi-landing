@@ -66,7 +66,6 @@ function render() {
       og: { type: "page", title: "CSV to Instant Dashboard", sub: "Upload a CSV, get a dashboard, in your browser." },
     }) +
     `<section class="tk-head" id="analyzer">
-      <p class="tk-overline">Free · no sign-up · nothing leaves your browser</p>
       <h1>CSV to Instant Dashboard</h1>
       <p class="tk-lede">Upload a CSV and get stat tiles, a bar chart and: if it has dates: a time-series chart, built entirely in your browser. Nothing is uploaded anywhere.</p>
 

@@ -8,11 +8,11 @@ const PATH = "/tools/robots-txt-generator";
 // this one" line shown next to it.
 const AI_BOTS = [
   // Training & dataset crawlers
-  { name: "GPTBot", provider: "OpenAI", group: "training", why: "OpenAI's crawler for training data" },
-  { name: "CCBot", provider: "Common Crawl", group: "training", why: "Common Crawl, whose dataset feeds many other models' training data" },
-  { name: "Google-Extended", provider: "Google", group: "training", why: "Controls use in Google's Gemini/AI features, separate from Googlebot search indexing" },
+  { name: "GPTBot", provider: "OpenAI", group: "training", why: "OpenAI's crawler for training data", default: true },
+  { name: "CCBot", provider: "Common Crawl", group: "training", why: "Common Crawl, whose dataset feeds many other models' training data", default: true },
+  { name: "Google-Extended", provider: "Google", group: "training", why: "Controls use in Google's Gemini/AI features, separate from Googlebot search indexing", default: true },
   { name: "anthropic-ai", provider: "Anthropic", group: "training", why: "Anthropic's crawler for training data (legacy identifier)" },
-  { name: "ClaudeBot", provider: "Anthropic", group: "training", why: "Anthropic's crawler for training data (current identifier)" },
+  { name: "ClaudeBot", provider: "Anthropic", group: "training", why: "Anthropic's crawler for training data (current identifier)", default: true },
   { name: "Applebot-Extended", provider: "Apple", group: "training", why: "Controls use of your pages to train Apple Intelligence" },
   { name: "Amazonbot", provider: "Amazon", group: "training", why: "Amazon's crawler, used to improve Alexa and AI answers" },
   { name: "Meta-ExternalAgent", provider: "Meta", group: "training", why: "Meta's crawler for training its Llama / Meta AI models" },
@@ -65,7 +65,7 @@ function botCard(b) {
   const color = PROVIDER_COLOR[b.provider] || "#666";
   const initial = b.provider.charAt(0).toUpperCase();
   return `<label class="rg-bot">
-    <input type="checkbox" name="aiBot" value="${attr(b.name)}" />
+    <input type="checkbox" name="aiBot" value="${attr(b.name)}"${b.default ? " checked" : ""} />
     <span class="rg-bot-badge" style="--rg-badge:${color}" title="${attr(b.provider)}" aria-hidden="true">${esc(initial)}</span>
     <span class="rg-bot-text"><b>${esc(b.name)}</b><i>${esc(b.why)}</i></span>
     <span class="rg-bot-check" aria-hidden="true">✓</span>
@@ -76,7 +76,7 @@ function botCard(b) {
 // visitor picks instead of knowing the robots.txt path syntax. The paths ride
 // in a data-attribute so the JS stays dumb: it just reads what's ticked.
 const QUICK_BLOCKS = [
-  { id: "admin", label: "Admin & dashboards", paths: ["/admin/", "/wp-admin/"] },
+  { id: "admin", label: "Admin & dashboards", paths: ["/admin/", "/wp-admin/"], default: true },
   { id: "cart", label: "Cart & checkout", paths: ["/cart/", "/checkout/"] },
   { id: "account", label: "Login & account", paths: ["/login", "/account/"] },
   { id: "search", label: "Search & filtered URLs", paths: ["/search", "/*?*"] },
@@ -86,7 +86,7 @@ const QUICK_BLOCKS = [
 
 function quickChip(b) {
   return `<label class="rg-chip">
-    <input type="checkbox" name="rgPreset" value="${attr(b.id)}" data-paths="${attr(b.paths.join("|"))}" />
+    <input type="checkbox" name="rgPreset" value="${attr(b.id)}" data-paths="${attr(b.paths.join("|"))}"${b.default ? " checked" : ""} />
     <span class="rg-chip-box" aria-hidden="true"></span>
     <span class="rg-chip-label">${esc(b.label)}</span>
     <span class="rg-chip-paths">${esc(b.paths.join("  "))}</span>
@@ -171,27 +171,12 @@ function render() {
       },
     }) +
     `<section class="rg-head" id="generator">
-      <p class="rg-overline">Free · no sign-up</p>
       <h1>Robots.txt Generator</h1>
-      <p class="rg-lede">Pick what to hide and which AI crawlers to keep out, no syntax to learn: and get a ready-to-paste robots.txt. Runs entirely in your browser.</p>
+      <p class="rg-lede">Robots.txt is a file that tells search engines and AI crawlers which pages they can access. Control which bots can read your website. Choose what to block, and we'll write the robots.txt file for you to copy and upload. Runs entirely in your browser.</p>
+      <p class="rg-lede rg-lede-sub">New to Robots.txt? <a href="#faq">Read the Q&amp;A</a></p>
 
       <div class="rg-layout">
         <form class="rg-form" id="rgForm" novalidate>
-          <div class="rg-block">
-            <span class="rg-block-title">Crawl policy</span>
-            <div class="rg-policy" role="radiogroup" aria-label="Crawl policy">
-              <label class="rg-seg"><input type="radio" name="rgPolicy" value="allow" /><span>Allow all</span></label>
-              <label class="rg-seg"><input type="radio" name="rgPolicy" value="except" checked /><span>Allow except</span></label>
-              <label class="rg-seg"><input type="radio" name="rgPolicy" value="block" /><span>Block all</span></label>
-            </div>
-            <p class="rg-policy-note" id="rgPolicyNote"></p>
-          </div>
-
-          <div class="rg-block rg-quick" id="rgQuick">
-            <span class="rg-block-title">Quick blocks <span class="rg-block-hint">tap what to hide from every crawler</span></span>
-            <div class="rg-chips">${QUICK_BLOCKS.map(quickChip).join("")}</div>
-          </div>
-
           <div class="rg-bots" role="group" aria-label="Block AI and SEO crawlers">
             <div class="rg-bots-head">
               <span class="rg-bots-title">Block AI &amp; SEO crawlers</span>
@@ -207,6 +192,21 @@ function render() {
             ${AI_BOTS.filter((b) => b.group === "agent").map(botCard).join("")}
             <p class="rg-bots-group">SEO &amp; backlink crawlers</p>
             ${AI_BOTS.filter((b) => b.group === "seo").map(botCard).join("")}
+          </div>
+
+          <div class="rg-block">
+            <span class="rg-block-title">Crawl policy</span>
+            <div class="rg-policy" role="radiogroup" aria-label="Crawl policy">
+              <label class="rg-seg"><input type="radio" name="rgPolicy" value="allow" /><span>Allow all</span></label>
+              <label class="rg-seg"><input type="radio" name="rgPolicy" value="except" checked /><span>Allow except</span></label>
+              <label class="rg-seg"><input type="radio" name="rgPolicy" value="block" /><span>Block all</span></label>
+            </div>
+            <p class="rg-policy-note" id="rgPolicyNote"></p>
+          </div>
+
+          <div class="rg-block rg-quick" id="rgQuick">
+            <span class="rg-block-title">Quick blocks <span class="rg-block-hint">tap what to hide from every crawler</span></span>
+            <div class="rg-chips">${QUICK_BLOCKS.map(quickChip).join("")}</div>
           </div>
 
           <div class="rg-field">
@@ -244,6 +244,7 @@ function render() {
               <button class="rg-btn" id="rgDownload" type="button">Download</button>
             </div>
           </div>
+          <p class="rg-preview-hint">Where to put this: upload this file to <code>yoursite.com/robots.txt</code></p>
           <pre class="rg-preview-body" id="rgOutput"></pre>
         </div>
       </div>

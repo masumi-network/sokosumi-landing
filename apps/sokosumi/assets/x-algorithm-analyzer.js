@@ -1,37 +1,34 @@
 /* /tools/x-algorithm-analyzer: client. Thin wiring over
- * SokosumiToolKit.wireScorer(); the server does the scoring. Two input modes:
- * "write" (draft text + media flag) and "link" (a published post URL the
- * server fetches and scores).
+ * SokosumiToolKit.wireScorer(); the server does the scoring. One input: paste
+ * post text, or paste a link to a published X post and the server fetches and
+ * scores its real text. We detect a pasted X link to tailor the UI (hide the
+ * manual media toggle, show a hint), but the server auto-detects either way.
  */
 (function () {
   "use strict";
   if (!window.SokosumiToolKit) return;
 
   var textInput = document.getElementById("xaaText");
-  var urlInput = document.getElementById("xaaUrl");
   var mediaInput = document.getElementById("xaaMedia");
-  var tabs = Array.prototype.slice.call(document.querySelectorAll(".xaa-tab"));
-  var panels = Array.prototype.slice.call(document.querySelectorAll(".xaa-panel"));
-  var submitBtn = document.getElementById("xaaSubmit");
-  var mode = "write";
+  var mediaRow = document.getElementById("xaaMediaRow");
+  var linkHint = document.getElementById("xaaLinkHint");
 
-  function setMode(m) {
-    mode = m;
-    tabs.forEach(function (t) {
-      var on = t.getAttribute("data-mode") === m;
-      t.classList.toggle("is-active", on);
-      t.setAttribute("aria-selected", on ? "true" : "false");
-    });
-    panels.forEach(function (p) {
-      p.hidden = p.getAttribute("data-mode") !== m;
-    });
-    if (submitBtn) submitBtn.textContent = m === "link" ? "Get the report" : "Score my post";
+  // A link to an already-published post on x.com / twitter.com. Mirrors the
+  // server's X_STATUS_RE so the UI and the scorer agree on what a link is.
+  var X_LINK_RE = /^https?:\/\/(?:www\.|mobile\.)?(?:twitter\.com|x\.com)\/[^/]+\/status(?:es)?\/\d+/i;
+  function isLink(value) {
+    return X_LINK_RE.test(String(value || "").trim());
   }
-  tabs.forEach(function (t) {
-    t.addEventListener("click", function () {
-      setMode(t.getAttribute("data-mode"));
-    });
-  });
+
+  // Paste text -> show the media toggle; paste an X link -> hide it (media is
+  // detected server-side) and show a hint that we'll fetch the live post.
+  function reflect() {
+    var link = isLink(textInput && textInput.value);
+    if (mediaRow) mediaRow.hidden = link;
+    if (linkHint) linkHint.hidden = !link;
+  }
+  if (textInput) textInput.addEventListener("input", reflect);
+  reflect();
 
   window.SokosumiToolKit.wireScorer({
     formId: "xaaForm",
@@ -46,20 +43,22 @@
     endpoint: "/api/x-algorithm-check",
     method: "POST",
     submitLabel: "Score my post",
-    busyLabel: mode === "link" ? "Fetching…" : "Scoring…",
+    busyLabel: "Scoring…",
+    scoreLabel: "Post score",
     reportTitle: function (data) {
-      return "X algorithm analyzer: " + data.overall + "/100";
+      return "X Post Analyzer: " + data.overall + "/100";
     },
     getValue: function () {
-      return mode === "link" ? urlInput.value : textInput.value;
+      return textInput.value;
     },
     setValue: function (value) {
-      // Examples always populate the "write" tab.
-      setMode("write");
       textInput.value = value;
+      reflect();
     },
     buildBody: function (value) {
-      return mode === "link" ? { text: value } : { text: value, hasMedia: mediaInput.checked };
+      // The server fetches and scores a pasted X link; the manual media flag
+      // only applies to pasted text.
+      return isLink(value) ? { text: value } : { text: value, hasMedia: mediaInput.checked };
     },
     examples: {
       weak: "Check out our new product at https://example.com/product #marketing #sales #growth #startup #b2b #saas #tech",

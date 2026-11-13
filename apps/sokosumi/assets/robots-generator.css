@@ -36,6 +36,21 @@
   text-wrap: pretty;
 }
 
+.rg-lede-sub {
+  margin-top: 12px;
+  font-size: 15px;
+}
+
+.rg-lede a {
+  color: var(--primary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.rg-lede a:hover {
+  text-decoration-color: transparent;
+}
+
 .rg-layout {
   display: grid;
   gap: 18px;
@@ -463,6 +478,24 @@
   }
 }
 
+/* Single column: the bot list is long, so pin the preview above the form and
+   let it stay in view while the controls scroll underneath it. Without this the
+   preview sat after the whole list and scrolled away before you could watch it
+   change. */
+@media (max-width: 899px) {
+  .rg-preview {
+    position: sticky;
+    top: 60px;
+    order: -1;
+    max-height: 42vh;
+    z-index: 2;
+    box-shadow: 0 12px 24px -18px rgba(0, 0, 0, 0.55);
+  }
+  .rg-preview-body {
+    min-height: 0;
+  }
+}
+
 .rg-preview-head {
   display: flex;
   align-items: center;
@@ -496,6 +529,22 @@
 .rg-preview-actions {
   display: flex;
   gap: 6px;
+}
+
+/* "Where to put this" step, directly under the Copy/Download row: the piece
+   first-timers miss once they have the file in hand. */
+.rg-preview-hint {
+  margin: 0;
+  padding: 9px 14px;
+  border-bottom: 1px solid var(--border);
+  background: var(--background);
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 1.5;
+}
+.rg-preview-hint code {
+  font-family: var(--mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+  color: var(--foreground);
 }
 
 .rg-btn {

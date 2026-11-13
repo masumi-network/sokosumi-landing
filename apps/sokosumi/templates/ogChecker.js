@@ -130,13 +130,13 @@ function render() {
   const crumbs = [
     { label: "Home", href: "/" },
     { label: "Free tools", href: "/tools" },
-    { label: "Open Graph checker" },
+    { label: "Link Previewer" },
   ];
 
   const appJsonLd = {
     "@type": "SoftwareApplication",
     "@id": `${SITE}${PATH}#software`,
-    name: "Sokosumi Open Graph Checker",
+    name: "Sokosumi Link Previewer",
     alternateName: "OG image checker and social preview tester",
     applicationCategory: "DeveloperApplication",
     operatingSystem: "Web",
@@ -165,7 +165,7 @@ function render() {
 
   return (
     pageStart({
-      title: "Open Graph checker: free OG image and social preview tester | Sokosumi",
+      title: "Link Previewer: free OG image and social preview tester | Sokosumi",
       description:
         "Free Open Graph checker. Paste a URL to see how it looks on Facebook, X, LinkedIn, WhatsApp, Slack and Discord, and get every og:image, og:title and twitter:card problem in one report. No sign-up.",
       path: PATH,
@@ -176,15 +176,14 @@ function render() {
       jsonld: [appJsonLd, faqJsonLd],
       og: {
         type: "page",
-        title: "Open Graph checker",
+        title: "Link Previewer",
         sub: "See your link the way Facebook, X, LinkedIn, WhatsApp, Slack and Discord will.",
       },
     }) +
     LOGO_SPRITE +
     `<section class="ogc-head" id="checker">
-      <p class="ogc-overline">Free · no sign-up</p>
-      <h1>Open Graph checker</h1>
-      <p class="ogc-lede">Paste a URL and see the card Facebook, X, LinkedIn, WhatsApp, Slack and Discord will each build from your tags, plus every og: and twitter: problem worth fixing.</p>
+      <h1>Link Previewer</h1>
+      <p class="ogc-lede">Review how your web page looks when shared as a rich preview card on social media and messaging apps like Facebook, X, LinkedIn, WhatsApp, Slack and Discord. We also check your Open Graph tags and suggest what to fix. Paste any URL to get started. New to Open Graphs? Read the <a href="#faq">Q&amp;A</a>.</p>
 
       <form class="ogc-bar" id="ogcForm" novalidate>
         <label class="sr-only" for="ogcUrl">URL to check</label>

@@ -31,6 +31,20 @@
   text-wrap: balance;
 }
 
+/* Opt-in for short titles that should stay on one line on wide screens; the
+   wider cap lets the line fit instead of balancing into two, while narrow
+   screens still wrap it within the container. */
+.tk-head h1.tk-head-oneline {
+  max-width: 26ch;
+  text-wrap: nowrap;
+}
+
+@media (max-width: 560px) {
+  .tk-head h1.tk-head-oneline {
+    text-wrap: balance;
+  }
+}
+
 .tk-lede {
   max-width: 62ch;
   margin-top: 22px;
@@ -38,6 +52,19 @@
   line-height: 1.55;
   color: var(--muted-foreground);
   text-wrap: pretty;
+}
+
+/* "Last updated …" line under the lede: a quiet, dated provenance note. */
+.tk-updated {
+  max-width: 62ch;
+  margin-top: 10px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--muted-foreground);
+}
+.tk-updated time {
+  color: var(--foreground);
+  font-weight: 500;
 }
 
 /* ---- form ------------------------------------------------------------- */
@@ -233,14 +260,14 @@
 
 .tk-summary {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 10px 20px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
   padding: 22px 0;
 }
 
 .tk-summary-score {
-  flex: 1;
+  flex: none;
   min-width: 220px;
   display: flex;
   align-items: center;
@@ -1474,38 +1501,7 @@
   color: var(--muted-foreground);
 }
 
-/* ---- X Algorithm Analyzer: write / link input tabs ------------------------ */
-.xaa-tabs {
-  display: inline-flex;
-  gap: 4px;
-  margin: clamp(26px, 3.5vw, 40px) 0 12px;
-  padding: 4px;
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  background: var(--card);
-}
-.xaa-tab {
-  padding: 8px 18px;
-  border: 0;
-  border-radius: 999px;
-  background: transparent;
-  color: var(--muted-foreground);
-  font: inherit;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: color 0.12s ease, background 0.12s ease;
-}
-.xaa-tab:hover { color: var(--foreground); }
-.xaa-tab.is-active {
-  background: var(--primary);
-  color: #fff;
-}
-.xaa-tabs + .tk-form { margin-top: 0; }
-.xaa-panel { width: 100%; }
-.xaa-panel[hidden] { display: none; }
-.xaa-panel textarea,
-.xaa-panel input[type="url"] { width: 100%; }
+/* ---- X Post Analyzer: link-detected hint --------------------------------- */
 .xaa-hint {
   margin: 10px 2px 0;
   font-size: 13px;

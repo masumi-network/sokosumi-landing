@@ -62,7 +62,6 @@ function render() {
       og: { type: "page", title: "Keyword Extractor", sub: "Pull the most frequent keywords out of any text." },
     }) +
     `<section class="tk-head" id="analyzer">
-      <p class="tk-overline">Free · no sign-up · nothing leaves your browser</p>
       <h1>Keyword Extractor</h1>
       <p class="tk-lede">Paste an article and get its most frequent keywords and two-word phrases, ranked by count: entirely in your browser.</p>
 

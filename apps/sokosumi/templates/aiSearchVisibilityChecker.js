@@ -67,7 +67,6 @@ function render() {
       og: { type: "page", title: "AI Search Visibility Checker", sub: "A readiness proxy, not a live AI search measurement." },
     }) +
     `<section class="tk-head" id="analyzer">
-      <p class="tk-overline">Free · no sign-up</p>
       <h1>AI Search Visibility Checker</h1>
       <p class="tk-lede">Enter your site and get a readiness check: whether AI crawlers are blocked, whether your brand is set up to be disambiguated, and whether you're discoverable. This can't see live AI search results: see the FAQ for exactly what it does check.</p>
 

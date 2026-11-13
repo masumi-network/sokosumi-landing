@@ -42,6 +42,15 @@
   color: var(--muted-foreground);
   text-wrap: pretty;
 }
+.lt-lede a {
+  color: var(--foreground);
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.lt-lede a:hover {
+  text-decoration: none;
+}
 
 .lt-bar {
   display: flex;
@@ -190,15 +199,16 @@
 
 .lt-summary {
   display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 10px 20px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
   padding: 22px 0;
 }
 
 .lt-summary-url {
-  flex: 1;
-  min-width: 220px;
+  flex: none;
+  max-width: 100%;
+  min-width: 0;
   overflow: hidden;
   color: var(--muted-foreground);
   font-size: 13.5px;
@@ -215,6 +225,7 @@
 
 .lt-scores {
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
 }
 

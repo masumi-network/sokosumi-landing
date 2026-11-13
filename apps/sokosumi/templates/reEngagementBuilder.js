@@ -61,7 +61,6 @@ function render() {
       og: { type: "page", title: "Re-engagement Campaign Builder", sub: "Turn an old email into a 3-part sequence." },
     }) +
     `<section class="tk-head" id="analyzer">
-      <p class="tk-overline">Free · no sign-up · nothing leaves your browser</p>
       <h1>Re-engagement Campaign Builder</h1>
       <p class="tk-lede">Paste an old email: a newsletter, a product update, an announcement: and get a 3-part re-engagement sequence with a suggested subject line and angle for each email.</p>
 

@@ -21,8 +21,9 @@
     method: "POST",
     submitLabel: "Analyze copy",
     busyLabel: "Analyzing…",
+    scoreLabel: "Copy score",
     reportTitle: function (data) {
-      return "Landing page copy analyzer: " + (data.url || "") + ": " + data.overall + "/100";
+      return "Website Copy Analyzer: " + (data.url || "") + ": " + data.overall + "/100";
     },
     getValue: function () {
       return urlInput.value;

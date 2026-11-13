@@ -66,7 +66,6 @@ function render() {
       og: { type: "page", title: "Core Web Vitals Explainer", sub: "Plain-English fixes for LCP, CLS and INP signals." },
     }) +
     `<section class="tk-head" id="analyzer">
-      <p class="tk-overline">Free · no sign-up</p>
       <h1>Core Web Vitals Explainer</h1>
       <p class="tk-lede">Enter a URL and get plain-English fixes for the structural signals that drive LCP, CLS and INP, not real CrUX or Lighthouse numbers, but a fast first pass.</p>
 

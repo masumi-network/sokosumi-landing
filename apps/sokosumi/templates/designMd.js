@@ -11,7 +11,7 @@ const FAQ = [
       "DESIGN.md is a plain-text design-system file for AI coding agents. It combines machine-readable tokens with human-readable guidance for colors, typography, spacing, shapes, components, and the visual decisions behind them.",
   },
   {
-    question: "How does the DESIGN.md generator work?",
+    question: "How does the Brand Guide Generator work?",
     answer:
       "Enter a public website URL. The generator opens the page in a remote browser, reads its visual signals, and produces a structured DESIGN.md that you can review, edit, copy, or download.",
   },
@@ -40,7 +40,7 @@ async function render() {
     ? `${archiveList.length} ${archiveList.length === 1 ? "saved analysis" : "saved analyses"}`
     : "No saved analyses yet";
   const path = "/tools/design-md";
-  const crumbs = [{ label: "Home", href: "/" }, { label: "Free tools", href: "/tools" }, { label: "DESIGN.md generator" }];
+  const crumbs = [{ label: "Home", href: "/" }, { label: "Free tools", href: "/tools" }, { label: "Brand Guide Generator" }];
   const faqJsonLd = {
     "@type": "FAQPage",
     "@id": `${SITE}${path}#faq`,
@@ -53,7 +53,7 @@ async function render() {
   const appJsonLd = {
     "@type": "SoftwareApplication",
     "@id": `${SITE}${path}#software`,
-    name: "Sokosumi DESIGN.md Generator",
+    name: "Sokosumi Brand Guide Generator",
     applicationCategory: "DeveloperApplication",
     operatingSystem: "Web",
     url: `${SITE}${path}`,
@@ -65,7 +65,7 @@ async function render() {
 
   return (
     pageStart({
-      title: "Free DESIGN.md generator for AI coding agents | Sokosumi",
+      title: "Brand Guide Generator: free DESIGN.md for AI coding agents | Sokosumi",
       description:
         "Generate a DESIGN.md from any website URL: colors, typography, spacing, components and design guidance for Claude Code, Cursor, Codex and other coding agents.",
       path,
@@ -76,16 +76,16 @@ async function render() {
       jsonld: [appJsonLd, faqJsonLd],
       og: {
         type: "page",
-        title: "Free DESIGN.md generator",
+        title: "Brand Guide Generator",
         sub: "Turn a website into portable design context for AI coding agents.",
       },
     }) +
     `<section class="dm-tool" id="generator">
       <header class="dm-tool-head">
         <div>
-          <p class="dm-overline">Tool · Free</p>
-          <h1>DESIGN.md Generator</h1>
-          <p class="dm-tool-sub">Paste any website and get a DESIGN.md back: its colours, type, spacing and components written up as context you can hand to an AI coding agent.</p>
+          <h1>Brand Guide Generator</h1>
+          <p class="dm-tool-sub dm-tool-lede">Paste any URL and we'll generate a DESIGN.md file for you. It captures your colors, fonts and style so AI tools like Claude, Cursor and ChatGPT know how your brand looks. Hand the file to any AI agent and it can build consistent assets in that style.</p>
+          <p class="dm-tool-sub">New to DESIGN.mds? <a href="#faq">Read the Q&amp;A</a></p>
         </div>
         <p class="dm-tool-meta"><span class="dm-live">Live</span><a href="https://github.com/google-labs-code/design.md" rel="noopener noreferrer">Spec <span aria-hidden="true">↗</span></a></p>
       </header>
@@ -283,7 +283,7 @@ async function analysis(ctx) {
       about: { "@type": "Organization", name, url: data.url || `https://${entry.hostname}/` },
       ...(created && !Number.isNaN(created.getTime()) ? { dateCreated: created.toISOString().slice(0, 10) } : {}),
       creator: { "@id": `${SITE}/#organization` },
-      isPartOf: { "@type": "WebPage", "@id": `${SITE}/tools/design-md#page`, name: "DESIGN.md Generator" },
+      isPartOf: { "@type": "WebPage", "@id": `${SITE}/tools/design-md#page`, name: "Brand Guide Generator" },
     },
   ];
   return (
@@ -307,7 +307,7 @@ async function analysis(ctx) {
       description: description.slice(0, 160),
       path,
       englishOnly: true,
-      breadcrumb: [{ label: "Home", href: "/" }, { label: "Free tools", href: "/tools" }, { label: "DESIGN.md generator", href: "/tools/design-md" }, { label: name }],
+      breadcrumb: [{ label: "Home", href: "/" }, { label: "Free tools", href: "/tools" }, { label: "Brand Guide Generator", href: "/tools/design-md" }, { label: name }],
       mainClass: "design-tool-page dm-analysis-page",
       stylesheets: ["/assets/design-md.css"],
       jsonld,

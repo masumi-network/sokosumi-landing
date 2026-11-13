@@ -101,13 +101,13 @@ function render() {
   const crumbs = [
     { label: "Home", href: "/" },
     { label: "Free tools", href: "/tools" },
-    { label: "llms.txt checker" },
+    { label: "Llms.txt Validator" },
   ];
 
   const appJsonLd = {
     "@type": "SoftwareApplication",
     "@id": `${SITE}${PATH}#software`,
-    name: "Sokosumi llms.txt Checker",
+    name: "Sokosumi Llms.txt Validator",
     alternateName: "llms.txt validator and generator",
     applicationCategory: "DeveloperApplication",
     operatingSystem: "Web",
@@ -136,7 +136,7 @@ function render() {
 
   return (
     pageStart({
-      title: "llms.txt checker: validate your llms.txt file free | Sokosumi",
+      title: "Llms.txt Validator: validate your llms.txt file free | Sokosumi",
       description:
         "Free llms.txt checker and validator. Paste a domain to see whether its /llms.txt exists, follows the llmstxt.org format, and whether the links inside it actually resolve. No sign-up.",
       path: PATH,
@@ -147,14 +147,13 @@ function render() {
       jsonld: [appJsonLd, faqJsonLd],
       og: {
         type: "page",
-        title: "llms.txt checker",
+        title: "Llms.txt Validator",
         sub: "Validate the file, and find the links inside it that no longer resolve.",
       },
     }) +
     `<section class="lt-head" id="checker">
-      <p class="lt-overline">Free · no sign-up</p>
-      <h1>llms.txt checker</h1>
-      <p class="lt-lede">Paste a domain. We fetch its <code>/llms.txt</code>, check it against the format, and follow the links inside it: because a file full of 404s is the one failure nothing else in your stack will ever tell you about.</p>
+      <h1>Llms.txt Validator</h1>
+      <p class="lt-lede">Broken links are the worst, check yours in seconds. Paste any URL to check the <code>llms.txt</code> file. We test the format and every link, so broken links don’t go unnoticed. New to <code>llms.txt</code>? Read the <a href="#faq">Q&amp;A</a>.</p>
 
       <form class="lt-bar" id="ltForm" novalidate>
         <label class="sr-only" for="ltUrl">Site to check</label>
