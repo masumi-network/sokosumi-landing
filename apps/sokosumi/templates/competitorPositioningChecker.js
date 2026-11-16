@@ -12,7 +12,7 @@ const FAQ = [
   },
   {
     question: "What counts as a \"gap\"?",
-    answer: "Something the other site has that yours doesn't, from the list above, no H1, no meta description, thinner content, no CTA, no pricing shown, no social proof. It's a checklist of loopholes to look at, not a verdict on which site is better.",
+    answer: "Something the other site has that yours doesn't, from the list above, no H1, no meta description, thinner content, no CTA, no pricing shown, no social proof. It's a checklist of gaps to look at, not a verdict on which site is better.",
   },
   {
     question: "Is this reading with an LLM?",
@@ -28,13 +28,13 @@ function render() {
   const crumbs = [
     { label: "Home", href: "/" },
     { label: "Free tools", href: "/tools" },
-    { label: "Competitor Positioning Teardown" },
+    { label: "Competitor Website Comparison" },
   ];
 
   const appJsonLd = {
     "@type": "SoftwareApplication",
     "@id": `${SITE}${PATH}#software`,
-    name: "Sokosumi Competitor Positioning Teardown",
+    name: "Sokosumi Competitor Website Comparison",
     applicationCategory: "DeveloperApplication",
     operatingSystem: "Web",
     url: `${SITE}${PATH}`,
@@ -55,19 +55,19 @@ function render() {
 
   return (
     pageStart({
-      title: "Competitor Positioning Teardown | Sokosumi",
-      description: "Free competitor positioning teardown. Enter two URLs and see side by side what each page says, and what each is missing that the other has. No sign-up.",
+      title: "Competitor Website Comparison | Sokosumi",
+      description: "Free competitor website comparison. Enter two URLs and see side by side what each page says, and what each is missing that the other has. No sign-up.",
       path: PATH,
       englishOnly: true,
       breadcrumb: crumbs,
       mainClass: "tk-tool-page",
       stylesheets: ["/assets/tool-kit.css"],
       jsonld: [appJsonLd, faqJsonLd],
-      og: { type: "page", title: "Competitor Positioning Teardown", sub: "Compare two pages side by side." },
+      og: { type: "page", title: "Competitor Website Comparison", sub: "Compare two pages side by side." },
     }) +
     `<section class="tk-head" id="analyzer">
-      <h1>Competitor Positioning Teardown</h1>
-      <p class="tk-lede">Enter your URL and a competitor's URL and see side by side what each page says: and the exact loopholes each one leaves open.</p>
+      <h1>Competitor Website Comparison</h1>
+      <p class="tk-lede">Paste your website URL and a competitor's website URL. See side by side how they compare against 12 key factors, and where each one leaves gaps.</p>
 
       <form class="tk-form" id="cptForm" novalidate>
         <div class="tk-field"><label for="cptUrlA">Your URL</label><input id="cptUrlA" type="url" placeholder="https://yoursite.com" required /></div>
@@ -89,7 +89,7 @@ function render() {
         <div id="cptTable"></div>
       </div>
       <div class="tk-output">
-        <div class="tk-output-head"><h2>Gaps and loopholes</h2></div>
+        <div class="tk-output-head"><h2>Gaps</h2></div>
         <div class="tk-groups" id="cptGroups"></div>
       </div>
     </section>

@@ -1,4 +1,5 @@
 const shell = require("./shell");
+const { MAX_PAGES } = require("../lib/internalLinkingCheck");
 
 const { esc, pageStart, pageEnd, SITE } = shell;
 
@@ -8,7 +9,7 @@ const PATH = "/tools/internal-linking-finder";
 // link to one another. Shared verbatim; relatedTools() drops the current page.
 const SITE_STRUCTURE_TOOLS = [
   { href: "/tools/website-analyzer", title: "Website Audit", blurb: "Score a single page's on-page SEO signals and generate an audit for AI agents." },
-  { href: "/tools/internal-linking-finder", title: "Internal Linking Opportunity Finder", blurb: "Find related pages that don't yet link to each other, with a suggested anchor." },
+  { href: "/tools/internal-linking-finder", title: "Internal Link Finder", blurb: "Find related pages that don't yet link to each other, with a suggested anchor." },
   { href: "/tools/orphan-pages", title: "Orphan Page Finder", blurb: "Find sitemap pages that no other page on the site links to." },
 ];
 
@@ -16,7 +17,7 @@ const FAQ = [
   {
     question: "How does it find pages to compare?",
     answer:
-      "It tries /sitemap.xml first (following one level into a sitemap index if needed), and falls back to the links found on your homepage if no sitemap exists. Either way it caps the crawl at 12 pages, so a large site only gets a sample, not a full audit.",
+      `It tries /sitemap.xml first (following one level into a sitemap index if needed), and falls back to the links found on your homepage if no sitemap exists. Either way it caps the crawl at ${MAX_PAGES} pages, so a large site only gets a sample, not a full audit.`,
   },
   {
     question: "How does it decide two pages should link to each other?",
@@ -37,17 +38,17 @@ function render() {
   const crumbs = [
     { label: "Home", href: "/" },
     { label: "Free tools", href: "/tools" },
-    { label: "Internal Linking Opportunity Finder" },
+    { label: "Internal Link Finder" },
   ];
 
   const appJsonLd = {
     "@type": "SoftwareApplication",
     "@id": `${SITE}${PATH}#software`,
-    name: "Sokosumi Internal Linking Opportunity Finder",
+    name: "Sokosumi Internal Link Finder",
     applicationCategory: "DeveloperApplication",
     operatingSystem: "Web",
     url: `${SITE}${PATH}`,
-    description: "A free tool that crawls up to 12 pages of a site (via sitemap.xml or the homepage's own links) and suggests internal links between pages that share vocabulary but don't yet link to each other.",
+    description: `A free tool that crawls up to ${MAX_PAGES} pages of a site (via sitemap.xml or the homepage's own links) and suggests internal links between pages that share vocabulary but don't yet link to each other.`,
     offers: { "@type": "Offer", price: "0", priceCurrency: "EUR" },
     creator: { "@id": `${SITE}/#organization` },
   };
@@ -64,7 +65,7 @@ function render() {
 
   return (
     pageStart({
-      title: "Internal Linking Opportunity Finder | Sokosumi",
+      title: "Internal Link Finder | Sokosumi",
       description: "Free internal linking opportunity finder. Enter a site URL and get suggested internal links, with anchor text, between pages that share vocabulary but don't yet link to each other. No sign-up.",
       path: PATH,
       englishOnly: true,
@@ -72,11 +73,12 @@ function render() {
       mainClass: "tk-tool-page",
       stylesheets: ["/assets/tool-kit.css"],
       jsonld: [appJsonLd, faqJsonLd],
-      og: { type: "page", title: "Internal Linking Opportunity Finder", sub: "Find pages that should link to each other." },
+      og: { type: "page", title: "Internal Link Finder", sub: "Find pages that should link to each other." },
     }) +
     `<section class="tk-head" id="analyzer">
-      <h1>Internal Linking Opportunity Finder</h1>
-      <p class="tk-lede">Enter a site URL and get suggested internal links: pages that share a lot of vocabulary but don't yet link to each other: with a suggested anchor text for each.</p>
+      <h1>Internal Link Finder</h1>
+      <p class="tk-lede">Paste a website URL and get internal link suggestions. We find pages that cover similar topics but don't link to each other yet, and give you anchor text for each link.</p>
+      <p class="tk-sub">New to anchor text? Read the <a href="#faq">Q&amp;A</a></p>
 
       <form class="tk-form" id="ilfForm" novalidate>
         <label class="sr-only" for="ilfUrl">Site URL</label>
@@ -89,7 +91,7 @@ function render() {
 
     <div class="tk-loading" id="ilfLoading" hidden>
       <span class="tk-spin" aria-hidden="true"></span>
-      <span>Crawling up to 12 pages…</span>
+      <span>Crawling up to ${MAX_PAGES} pages…</span>
     </div>
 
     <section class="tk-result" id="ilfResult" aria-label="Results" hidden>

@@ -6,9 +6,14 @@ const PATH = "/tools/landing-page-teardown";
 
 const FAQ = [
   {
-    question: "What does the conversion teardown check?",
+    question: "What does the conversion audit check?",
     answer:
       "Enter a landing page URL and it fetches the page and audits four conversion dimensions from the real markup. Headline clarity: a single, concise H1, a supporting subheadline, and a sequential heading outline. Call to action: whether a real button exists, how early the CTA appears, and whether it's repeated. Social proof: testimonials, customer counts, case studies, press mentions, and star ratings. Trust signals: risk-reversal language (guarantees, no-credit-card, cancel-anytime), HTTPS, privacy/terms links, and form length.",
+  },
+  {
+    question: "How is this different from the copy analyzer?",
+    answer:
+      "The Website Copy Analyzer scores the wording on the page: clarity, benefit focus, specificity, and CTA strength. This audit checks the page's conversion elements instead: its headline structure, whether a real CTA exists and repeats, the social proof on the page, and its trust signals. Use the copy analyzer for how the page reads, and this one for how the page is built to convert.",
   },
   {
     question: "Does it actually see the rendered page, like a screenshot?",
@@ -29,18 +34,18 @@ function render() {
   const crumbs = [
     { label: "Home", href: "/" },
     { label: "Free tools", href: "/tools" },
-    { label: "Landing Page Conversion Teardown" },
+    { label: "Landing Page Conversion Audit" },
   ];
 
   const appJsonLd = {
     "@type": "SoftwareApplication",
     "@id": `${SITE}${PATH}#software`,
-    name: "Sokosumi Landing Page Conversion Teardown",
+    name: "Sokosumi Landing Page Conversion Audit",
     applicationCategory: "DeveloperApplication",
     operatingSystem: "Web",
     url: `${SITE}${PATH}`,
     description:
-      "A free landing page conversion teardown that audits a URL's headline clarity, CTA presence, social proof, and trust signals, with a full breakdown and fixes.",
+      "A free landing page conversion audit that checks a URL's headline clarity, CTA presence, social proof, and trust signals, with a full breakdown and fixes.",
     featureList: [
       "Headline and heading-outline checks",
       "CTA presence and position detection",
@@ -64,9 +69,9 @@ function render() {
 
   return (
     pageStart({
-      title: "Landing Page Conversion Teardown | Sokosumi",
+      title: "Landing Page Conversion Audit | Sokosumi",
       description:
-        "Free landing page conversion teardown. Enter a URL and get scores on headline clarity, CTA presence, social proof, and trust signals, plus a ranked list of fixes. No sign-up.",
+        "Free landing page conversion audit. Enter a URL and get scores on headline clarity, CTA presence, social proof, and trust signals, plus a ranked list of fixes. No sign-up.",
       path: PATH,
       englishOnly: true,
       breadcrumb: crumbs,
@@ -75,18 +80,18 @@ function render() {
       jsonld: [appJsonLd, faqJsonLd],
       og: {
         type: "page",
-        title: "Landing Page Conversion Teardown",
+        title: "Landing Page Conversion Audit",
         sub: "Audit a landing page's headline, CTA, social proof and trust signals.",
       },
     }) +
     `<section class="tk-head" id="analyzer">
-      <h1>Landing Page Conversion Teardown</h1>
-      <p class="tk-lede">Enter a landing page URL and get a teardown of its headline clarity, its CTA, its social proof, and its trust signals: with the exact things costing you conversions.</p>
+      <h1>Landing Page Conversion Audit</h1>
+      <p class="tk-lede">Paste a landing page URL and get a score for headline clarity, call to action, social proof and trust signals. We show what's missing and what to fix, so more visitors convert.</p>
 
       <form class="tk-form" id="ltcForm" novalidate>
         <label class="sr-only" for="ltcUrl">Landing page URL</label>
         <input id="ltcUrl" name="url" type="url" placeholder="https://example.com/landing-page" aria-describedby="ltcError" required />
-        <button class="tk-submit" id="ltcSubmit" type="submit">Tear it down</button>
+        <button class="tk-submit" id="ltcSubmit" type="submit">Audit My Page</button>
       </form>
 
       <div class="tk-try">
@@ -104,7 +109,7 @@ function render() {
 
     <div class="tk-loading" id="ltcLoading" hidden>
       <span class="tk-spin" aria-hidden="true"></span>
-      <span>Fetching and tearing down the page…</span>
+      <span>Fetching and auditing the page…</span>
     </div>
 
     <section class="tk-result" id="ltcResult" aria-label="Results" hidden>
@@ -114,11 +119,12 @@ function render() {
         <button class="tk-copy" id="ltcCopy" type="button">Copy report</button>
       </div>
       <div class="tk-dims tk-dims-notag" id="ltcDims" data-filter=""></div>
+      <p class="tk-sibling">Want the wording scored too? <a href="/tools/landing-page-copy-analyzer">Run the Website Copy Analyzer</a>.</p>
     </section>
 
     <section class="tk-section" aria-labelledby="ltc-how">
       <h2 id="ltc-how">What gets checked</h2>
-      <p class="tk-sub">Four conversion dimensions, each pulled from the page's actual markup.</p>
+      <p class="tk-sub">Four conversion elements, pulled from the page's actual markup: its structure, proof and trust. This audits how the page is built to convert, not the wording on it. For the words themselves, use the <a href="/tools/landing-page-copy-analyzer">Website Copy Analyzer</a>.</p>
       <div class="tk-cards">
         <div class="tk-card">
           <span class="tk-card-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7V5h16v2"/><path d="M9 20h6"/><path d="M12 5v15"/></svg></span>
@@ -153,7 +159,7 @@ function render() {
       </div>
     </section>` +
     shell.ctaBand({
-      heading: "The teardown is done. Someone still has to rebuild the page.",
+      heading: "The audit is done. Someone still has to rebuild the page.",
       subheading: "Sokosumi's AI coworkers turn a brief into a finished file: the copy, the page, the whole campaign.",
       ctaLabel: "Sign up free",
     }) +

@@ -113,6 +113,7 @@ async function analyze(input) {
 
   return {
     pagesCrawled: ok.length,
+    maxPages: MAX_PAGES,
     suggestions: suggestions.slice(0, MAX_SUGGESTIONS),
     fetchedAt: new Date().toISOString(),
   };

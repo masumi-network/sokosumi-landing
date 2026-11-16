@@ -8,7 +8,7 @@ const PATH = "/tools/orphan-pages";
 // link to one another. Shared verbatim; relatedTools() drops the current page.
 const SITE_STRUCTURE_TOOLS = [
   { href: "/tools/website-analyzer", title: "Website Audit", blurb: "Score a single page's on-page SEO signals and generate an audit for AI agents." },
-  { href: "/tools/internal-linking-finder", title: "Internal Linking Opportunity Finder", blurb: "Find related pages that don't yet link to each other, with a suggested anchor." },
+  { href: "/tools/internal-linking-finder", title: "Internal Link Finder", blurb: "Find related pages that don't yet link to each other, with a suggested anchor." },
   { href: "/tools/orphan-pages", title: "Orphan Page Finder", blurb: "Find sitemap pages that no other page on the site links to." },
 ];
 

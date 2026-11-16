@@ -107,7 +107,7 @@ async function analyze(input) {
   if (SOCIAL_PROOF_PATTERN.test(bodyText)) {
     addP("pass", "Has social proof", "proof", 'Found trusted-by, customer-count, case-study or "as seen in" language.', 3);
   } else {
-    addP("warn", "No social proof detected", "proof", "No customer counts, case studies, or press mentions detected: a well-documented trust lever for a first-time visitor.", 3);
+    addP("warn", "No customer counts, case studies or press mentions", "proof", "No customer counts, case studies, or press mentions detected: a well-documented trust lever for a first-time visitor.", 3);
   }
   if (/<blockquote/i.test(html) || /\btestimonials?\b/i.test(bodyText)) {
     addP("pass", "Shows testimonials", "proof", "Found testimonial or quote markup: a specific customer voice is stronger than a generic claim.", 2);

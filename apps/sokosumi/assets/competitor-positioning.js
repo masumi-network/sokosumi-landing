@@ -169,8 +169,9 @@
           '<div class="cpt-hero-side' + (isWin ? " is-winner" : "") + '">' +
           favicon(hostName, tag) +
           '<span class="cpt-hero-host">' + tk.esc(hostName) + "</span>" +
+          '<span class="cpt-hero-label">Leads on</span>' +
           '<span class="cpt-hero-score">' + lead + "</span>" +
-          '<span class="cpt-hero-sub">of ' + total + " signals</span>" +
+          '<span class="cpt-hero-sub">of ' + total + " factors</span>" +
           "</div>"
         );
       }
@@ -193,7 +194,7 @@
           })
           .join("");
 
-      var board = '<p class="cpt-sec">Signal scoreboard</p><div class="cpt-board">' + boardRows + "</div>";
+      var board = '<p class="cpt-sec">Factor scoreboard</p><div class="cpt-board">' + boardRows + "</div>";
 
       tableEl.innerHTML =
         hero +

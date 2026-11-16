@@ -53,6 +53,126 @@
   color: var(--muted-foreground);
   text-wrap: pretty;
 }
+.tk-lede a,
+.tk-sub a {
+  color: var(--foreground);
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.tk-lede a:hover,
+.tk-sub a:hover {
+  text-decoration: none;
+}
+
+/* Sibling-tool link shown with results (e.g. audit -> copy analyzer). */
+.tk-sibling {
+  margin: 18px 0 0;
+  padding: 12px 16px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--card);
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--muted-foreground);
+}
+.tk-sibling a {
+  color: var(--foreground);
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.tk-sibling a:hover {
+  text-decoration: none;
+}
+
+/* Internal Link Finder: one suggestion per row + copy actions. */
+.ilf-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 12px;
+}
+.ilf-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.ilf-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 20px;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--card);
+}
+.ilf-cell {
+  flex: 1 1 180px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.ilf-cell-anchor {
+  flex: 1 1 150px;
+}
+.ilf-cell-label {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+.ilf-cell a {
+  color: var(--foreground);
+  font-weight: 500;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+.ilf-cell a:hover {
+  text-decoration: underline;
+}
+.ilf-anchor {
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+.ilf-copy {
+  flex: 0 0 auto;
+  margin-left: auto;
+  padding: 7px 14px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--background);
+  color: var(--foreground);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.ilf-copy:hover {
+  border-color: var(--foreground);
+}
+.ilf-empty {
+  padding: 18px 20px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--card);
+  color: var(--muted-foreground);
+  line-height: 1.55;
+}
+.ilf-empty p {
+  margin: 0 0 8px;
+}
+.ilf-empty p:last-child {
+  margin-bottom: 0;
+}
+.ilf-empty a {
+  color: var(--foreground);
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
 
 /* "Last updated …" line under the lede: a quiet, dated provenance note. */
 .tk-updated {
@@ -1356,6 +1476,14 @@
   font-size: 15px;
   font-weight: 600;
   overflow-wrap: anywhere;
+}
+.cpt-hero-label {
+  margin-top: 4px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
 }
 .cpt-hero-score {
   font-size: 40px;

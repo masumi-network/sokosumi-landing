@@ -19,10 +19,11 @@
     copyId: "ltcCopy",
     endpoint: "/api/landing-teardown-check",
     method: "POST",
-    submitLabel: "Tear it down",
-    busyLabel: "Tearing down…",
+    submitLabel: "Audit My Page",
+    busyLabel: "Auditing…",
+    scoreLabel: "Conversion score",
     reportTitle: function (data) {
-      return "Landing page conversion teardown: " + data.url + ": " + data.overall + "/100";
+      return "Landing page conversion audit: " + data.url + ": " + data.overall + "/100";
     },
     getValue: function () {
       return urlInput.value;

@@ -88,7 +88,7 @@ function gapsFor(mine, theirs, myLabel, theirLabel) {
   const myWords = new Set(mine.keywords.map((k) => k.label));
   const onlyTheirs = theirs.keywords.filter((k) => !myWords.has(k.label)).slice(0, 5);
   if (onlyTheirs.length) {
-    add("pass", "Vocabulary they emphasize that you don't", onlyTheirs.map((k) => k.label).join(", "));
+    add("pass", "Words they use that you don't", onlyTheirs.map((k) => k.label).join(", "));
   }
   void theirWords;
   return items;

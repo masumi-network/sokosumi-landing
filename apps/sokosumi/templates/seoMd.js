@@ -194,7 +194,7 @@ function render() {
     </section>` +
     shell.relatedTools(path, [
       { href: "/tools/website-analyzer", title: "Website Audit", blurb: "Score a single page's on-page SEO signals and generate an audit for AI agents." },
-      { href: "/tools/internal-linking-finder", title: "Internal Linking Opportunity Finder", blurb: "Find related pages that don't yet link to each other, with a suggested anchor." },
+      { href: "/tools/internal-linking-finder", title: "Internal Link Finder", blurb: "Find related pages that don't yet link to each other, with a suggested anchor." },
       { href: "/tools/orphan-pages", title: "Orphan Page Finder", blurb: "Find sitemap pages that no other page on the site links to." },
     ]) +
     pageEnd({ scripts: ["/assets/seo-md.js"], englishOnly: true })
