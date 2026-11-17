@@ -60,6 +60,8 @@ async function analyze(input) {
 
   return {
     sitemapPageCount: sitemapPages.length,
+    sitemapTotal: discovery.total || sitemapPages.length,
+    maxPages: MAX_PAGES,
     orphanCount: orphans.length,
     orphans,
     fetchedAt: new Date().toISOString(),

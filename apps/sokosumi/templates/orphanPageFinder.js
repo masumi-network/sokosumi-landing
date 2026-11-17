@@ -75,7 +75,7 @@ function render() {
     }) +
     `<section class="tk-head" id="analyzer">
       <h1>Orphan Page Finder</h1>
-      <p class="tk-lede">Enter a site URL and find pages listed in its sitemap that no other page on the site links to: reachable by URL, but not by browsing.</p>
+      <p class="tk-lede">Upload a website URL and this tool will find orphan pages. They are pages in your sitemap that no other page links to. People can reach them by URL, but not by browsing.</p>
 
       <form class="tk-form" id="opfForm" novalidate>
         <label class="sr-only" for="opfUrl">Site URL</label>
@@ -96,6 +96,17 @@ function render() {
         <div class="tk-output-head"><h2>Orphan pages</h2></div>
         <p class="tk-sub" id="opfNote" style="margin-bottom:14px"></p>
         <div class="tk-groups" id="opfGroups"></div>
+        <p class="tk-sibling" id="opfNext" hidden>Found orphans? <a href="/tools/internal-linking-finder">Link to them with the Internal Link Finder</a>.</p>
+      </div>
+    </section>
+
+    <section class="tk-section" aria-labelledby="opf-why">
+      <h2 id="opf-why">Why orphan pages matter</h2>
+      <p class="tk-sub">A page nothing links to is a page working against you, three ways at once.</p>
+      <div class="tk-cards">
+        <div class="tk-card"><h3>Search engines crawl them less</h3><p>Crawlers follow links. A page reachable only through the sitemap gets discovered late and recrawled rarely, so its updates are slow to show up in search.</p></div>
+        <div class="tk-card"><h3>No internal link value</h3><p>Internal links pass ranking signals between pages. An orphan receives none, so even strong content starts from behind.</p></div>
+        <div class="tk-card"><h3>Visitors can't find them</h3><p>Someone browsing your site will never land on a page nothing links to. The only way in is already knowing the URL.</p></div>
       </div>
     </section>
 

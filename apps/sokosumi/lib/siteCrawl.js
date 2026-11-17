@@ -35,9 +35,9 @@ async function discoverPages(startUrl, maxPages = 12) {
     const { locs, isSitemapIndex } = await fetchXmlLocs(`${origin}/sitemap.xml`);
     if (isSitemapIndex && locs.length) {
       const first = await fetchXmlLocs(locs[0]);
-      if (first.locs.length) return { pages: first.locs.slice(0, maxPages), viaSitemap: true };
+      if (first.locs.length) return { pages: first.locs.slice(0, maxPages), viaSitemap: true, total: first.locs.length };
     }
-    if (locs.length) return { pages: locs.slice(0, maxPages), viaSitemap: true };
+    if (locs.length) return { pages: locs.slice(0, maxPages), viaSitemap: true, total: locs.length };
   } catch {
     /* fall through to homepage-link discovery */
   }
@@ -45,7 +45,8 @@ async function discoverPages(startUrl, maxPages = 12) {
   const { html, finalUrl } = await fetchPage(startUrl);
   const links = collectLinks(html, finalUrl);
   const pages = [finalUrl, ...links.internalUrls.slice(0, maxPages - 1)];
-  return { pages: [...new Set(pages)].slice(0, maxPages), viaSitemap: false };
+  const deduped = [...new Set(pages)].slice(0, maxPages);
+  return { pages: deduped, viaSitemap: false, total: deduped.length };
 }
 
 module.exports = { discoverPages, fetchXmlLocs };
