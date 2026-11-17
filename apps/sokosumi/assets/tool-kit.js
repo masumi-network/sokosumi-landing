@@ -127,42 +127,66 @@
       );
     }
 
-    function renderDim(dim) {
-      var checksHtml = (dim.checks || [])
-        .map(function (check) {
-          var evi = "";
-          if (check.evidence && check.evidence.length) {
-            var n = check.evidence.length;
-            var items = check.evidence
-              .map(function (e) { return '<li class="tk-evi-item">' + esc(e) + "</li>"; })
-              .join("");
-            evi =
-              '<details class="tk-evi"><summary class="tk-evi-summary">' +
-              (check.level === "pass" ? "Show examples" : "Show " + n + " example" + (n > 1 ? "s" : "")) +
-              " from the page</summary><ul class=\"tk-evi-list\">" +
-              items +
-              "</ul></details>";
-          }
-          return (
-            '<div class="tk-check is-' +
-            check.level +
-            '"><span class="tk-check-mark" aria-hidden="true">' +
-            MARK[check.level] +
-            '</span><p class="tk-check-title">' +
-            esc(check.title) +
-            '<code class="tk-check-tag">' +
-            esc(check.tag || "") +
-            '</code></p><p class="tk-check-detail">' +
-            esc(check.detail) +
-            "</p>" +
-            evi +
-            "</div>"
-          );
-        })
-        .join("");
+    function checkHtml(check) {
+      var evi = "";
+      if (check.evidence && check.evidence.length) {
+        var n = check.evidence.length;
+        var items = check.evidence
+          .map(function (e) { return '<li class="tk-evi-item">' + esc(e) + "</li>"; })
+          .join("");
+        evi =
+          '<details class="tk-evi"><summary class="tk-evi-summary">' +
+          (check.level === "pass" ? "Show examples" : "Show " + n + " example" + (n > 1 ? "s" : "")) +
+          " from the page</summary><ul class=\"tk-evi-list\">" +
+          items +
+          "</ul></details>";
+      }
+      // An optional one-line "how to fix it", shown under the detail for any
+      // check that ships a fix (problems and warnings). Additive: checks
+      // without a fix render exactly as before.
+      var fix = check.fix ? '<p class="tk-check-fix"><span>Fix</span>' + esc(check.fix) + "</p>" : "";
+      return (
+        '<div class="tk-check is-' +
+        check.level +
+        '"><span class="tk-check-mark" aria-hidden="true">' +
+        MARK[check.level] +
+        '</span><p class="tk-check-title">' +
+        esc(check.title) +
+        '<code class="tk-check-tag">' +
+        esc(check.tag || "") +
+        '</code></p><p class="tk-check-detail">' +
+        esc(check.detail) +
+        "</p>" +
+        fix +
+        evi +
+        "</div>"
+      );
+    }
 
-      var pass = (dim.checks || []).filter(function (c) { return c.level === "pass"; }).length;
-      var total = (dim.checks || []).length;
+    function renderDim(dim) {
+      var all = dim.checks || [];
+      var checksHtml;
+      // Opt-in (config.collapsePass): fold the passing checks behind a toggle so
+      // the problems and warnings lead. Skipped while a score filter is active,
+      // so clicking the "passing" chip still reveals them inline.
+      if (config.collapsePass && !filter) {
+        var nonPass = all.filter(function (c) { return c.level !== "pass"; });
+        var passed = all.filter(function (c) { return c.level === "pass"; });
+        checksHtml = nonPass.map(checkHtml).join("");
+        if (passed.length) {
+          checksHtml +=
+            '<details class="tk-pass-fold"><summary>' +
+            passed.length +
+            " passing · show</summary>" +
+            passed.map(checkHtml).join("") +
+            "</details>";
+        }
+      } else {
+        checksHtml = all.map(checkHtml).join("");
+      }
+
+      var pass = all.filter(function (c) { return c.level === "pass"; }).length;
+      var total = all.length;
 
       return (
         '<div class="tk-dim">' +

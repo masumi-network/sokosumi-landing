@@ -28,13 +28,13 @@ function render() {
   const crumbs = [
     { label: "Home", href: "/" },
     { label: "Free tools", href: "/tools" },
-    { label: "Core Web Vitals Explainer" },
+    { label: "Web Vitals Explainer" },
   ];
 
   const appJsonLd = {
     "@type": "SoftwareApplication",
     "@id": `${SITE}${PATH}#software`,
-    name: "Sokosumi Core Web Vitals Explainer",
+    name: "Sokosumi Web Vitals Explainer",
     applicationCategory: "DeveloperApplication",
     operatingSystem: "Web",
     url: `${SITE}${PATH}`,
@@ -55,7 +55,7 @@ function render() {
 
   return (
     pageStart({
-      title: "Core Web Vitals Explainer | Sokosumi",
+      title: "Web Vitals Explainer | Sokosumi",
       description: "Free Core Web Vitals explainer. Enter a URL and get plain-English fixes for structural signals tied to LCP, CLS and INP. Not real CrUX or Lighthouse data: a fast first pass. No sign-up.",
       path: PATH,
       englishOnly: true,
@@ -63,11 +63,11 @@ function render() {
       mainClass: "tk-tool-page",
       stylesheets: ["/assets/tool-kit.css"],
       jsonld: [appJsonLd, faqJsonLd],
-      og: { type: "page", title: "Core Web Vitals Explainer", sub: "Plain-English fixes for LCP, CLS and INP signals." },
+      og: { type: "page", title: "Web Vitals Explainer", sub: "Plain-English fixes for LCP, CLS and INP signals." },
     }) +
     `<section class="tk-head" id="analyzer">
-      <h1>Core Web Vitals Explainer</h1>
-      <p class="tk-lede">Enter a URL and get plain-English fixes for the structural signals that drive LCP, CLS and INP, not real CrUX or Lighthouse numbers, but a fast first pass.</p>
+      <h1>Web Vitals Explainer</h1>
+      <p class="tk-lede">Paste a website URL and get simple explanations of what slows down your page. This tool will give you a quick estimate from the page's HTML. For real Google data, use PageSpeed Insights.</p>
 
       <form class="tk-form" id="cwvForm" novalidate>
         <label class="sr-only" for="cwvUrl">Page URL</label>
@@ -97,7 +97,9 @@ function render() {
         <div class="tk-scores" id="cwvScores" role="group" aria-label="Filter checks"></div>
         <button class="tk-copy" id="cwvCopy" type="button">Copy report</button>
       </div>
+      <div id="cwvFixFirst"></div>
       <div class="tk-dims tk-dims-balanced tk-dims-notag" id="cwvDims" data-filter=""></div>
+      <p class="tk-sibling" id="cwvPsi">Want real field data? <a href="https://pagespeed.web.dev/" target="_blank" rel="noopener noreferrer">Check this page on PageSpeed Insights</a>.</p>
     </section>
 
     <section class="tk-section" aria-labelledby="cwv-how">

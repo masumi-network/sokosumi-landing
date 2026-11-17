@@ -399,7 +399,7 @@ const TOOLS = [
   },
   {
     href: "/tools/core-web-vitals",
-    name: "Core Web Vitals Explainer",
+    name: "Web Vitals Explainer",
     text: "Plain-English fixes for structural signals tied to LCP, CLS and INP. Not real CrUX data.",
     meta: "Free · no sign-up",
     preview: coreWebVitalsPreview,
