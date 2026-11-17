@@ -1031,6 +1031,40 @@
   font-size: 12px;
 }
 
+/* ---- keyword extractor: word count, result controls, grouped clouds ------- */
+
+.ke-wordcount {
+  margin-top: 8px;
+  font-size: 12.5px;
+  color: var(--muted-foreground);
+}
+
+.ke-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.ke-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 13px;
+  color: var(--muted-foreground);
+  cursor: pointer;
+}
+
+.tk-group .tk-cloud {
+  padding: 16px 18px;
+}
+
+.ke-none {
+  padding: 16px 18px;
+  color: var(--muted-foreground);
+  font-size: 13.5px;
+}
+
 /* ---- prose sections -------------------------------------------------------- */
 
 .tk-section {

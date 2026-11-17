@@ -63,19 +63,27 @@ function render() {
     }) +
     `<section class="tk-head" id="analyzer">
       <h1>Keyword Extractor</h1>
-      <p class="tk-lede">Paste an article and get its most frequent keywords and two-word phrases, ranked by count: entirely in your browser.</p>
+      <p class="tk-lede">Paste an article or any text and get its most frequent keywords and phrases, ranked by count. Use this tool to start a list of tags, meta keywords, content briefs, and understand the target topics.</p>
 
       <form class="tk-form is-stacked" id="keForm" novalidate>
         <label class="sr-only" for="keText">Article text</label>
         <textarea id="keText" style="min-height:220px" placeholder="Paste your article here…" required></textarea>
+        <p class="ke-wordcount" id="keWordCount" aria-live="polite">0 words</p>
         <button class="tk-submit" id="keSubmit" type="submit">Extract keywords</button>
       </form>
     </section>
 
     <section class="tk-result" id="keResult" aria-label="Results" hidden>
       <div class="tk-output">
-        <div class="tk-output-head"><h2>Top keywords</h2><button class="tk-copy" id="keCopy" type="button">Copy list</button></div>
-        <div class="tk-cloud" id="keCloud"></div>
+        <div class="tk-output-head">
+          <h2>Top keywords</h2>
+          <div class="ke-actions">
+            <label class="ke-toggle"><input type="checkbox" id="keHideCommon" checked /> Hide common words</label>
+            <button class="tk-copy" id="keCopy" type="button">Copy list</button>
+            <button class="tk-copy" id="keCsv" type="button">Download CSV</button>
+          </div>
+        </div>
+        <div class="tk-groups" id="keGroups"></div>
       </div>
     </section>
 
