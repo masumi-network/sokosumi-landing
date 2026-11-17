@@ -26,7 +26,7 @@
 .site-nav { display: flex; align-items: center; gap: 26px; }
 .site-nav a { font-size: 14px; color: rgba(15, 14, 13, 0.62); transition: color 0.25s var(--ease); white-space: nowrap; }
 .site-nav a:hover, .site-nav a[aria-current] { color: var(--foreground); }
-.site-nav a[aria-current] { color: var(--primary); }
+.site-nav a[aria-current] { color: var(--primary-ink); }
 .site-header .actions { margin-left: auto; display: flex; gap: 8px; align-items: center; }
 /* the nav buttons sit a notch above .btn-sm */
 .site-header .btn-sm { height: 36px; }
@@ -125,7 +125,7 @@
    reads as air inside the same panel rather than a smaller panel. */
 .nav-panel-body { flex: 1; display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: 28px; align-items: stretch; }
 .nav-intro { display: flex; flex-direction: column; gap: 10px; padding: 4px 28px 4px 0; border-right: 1px solid var(--border); min-width: 0; }
-.nav-intro-label { font-size: 11.5px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; color: var(--primary); padding: 0 8px; }
+.nav-intro-label { font-size: 11.5px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; color: var(--primary-ink); padding: 0 8px; }
 .nav-intro-desc { font-size: 13.5px; line-height: 1.55; color: var(--muted-foreground); padding: 0 8px; text-wrap: pretty; }
 /* The rail's picture, pinned to the bottom so every panel's rail fills the
    same space. The base is a finished surface on its own: a soft primary
@@ -305,8 +305,8 @@
 }
 .nav-panel-foot a:hover { color: var(--foreground); }
 /* the one accent in the panel: the strongest way onward, in Sokosumi purple */
-.nav-panel-foot .nav-foot-accent { color: var(--primary); }
-.nav-panel-foot .nav-foot-accent:hover { color: var(--primary); opacity: 0.75; }
+.nav-panel-foot .nav-foot-accent { color: var(--primary-ink); }
+.nav-panel-foot .nav-foot-accent:hover { color: var(--primary-ink); opacity: 0.75; }
 /* .site-nav a sets nowrap for the bar itself; inside a panel that stops the
    use-case titles wrapping and they run into the next column */
 .nav-panel a, .nav-panel span { white-space: normal; }

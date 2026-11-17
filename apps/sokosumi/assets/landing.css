@@ -5,7 +5,7 @@
    carousel, trust band, org chart, and the Florian Haller quote. */
 
 .serif-accent { font-family: var(--display); font-style: normal; font-weight: inherit; letter-spacing: inherit; }
-.eyebrow { font-size: 13px; font-weight: 400; letter-spacing: 0; text-transform: none; color: var(--primary); }
+.eyebrow { font-size: 13px; font-weight: 400; letter-spacing: 0; text-transform: none; color: var(--primary-ink); }
 
 /* ===== hero: left-aligned serif statement over a drifting product shot ===== */
 /* The homepage header is a fixed transparent overlay, so it takes no
@@ -249,7 +249,7 @@ section.band-dark {
 .band-dark .btn-outline { color: #fff; border-color: rgba(255, 255, 255, 0.35); }
 .band-dark .btn-outline:hover { border-color: rgba(255, 255, 255, 0.65); }
 .section-head { max-width: 760px; margin: 0 0 clamp(44px, 6vw, 68px); text-align: left; display: flex; flex-direction: column; gap: 16px; align-items: flex-start; }
-.link-arrow { display: inline-flex; align-items: center; gap: 6px; font-size: 15px; font-weight: 500; color: var(--primary); }
+.link-arrow { display: inline-flex; align-items: center; gap: 6px; font-size: 15px; font-weight: 500; color: var(--primary-ink); }
 .link-arrow:hover { text-decoration: underline; }
 .section-head h2 {
   font-family: var(--display); font-weight: 300;
@@ -336,7 +336,7 @@ section.band-dark {
   font-size: 14px; font-weight: 500;
   transition: border-color 0.3s var(--ease);
 }
-.intro-more:hover { border-color: var(--primary); box-shadow: none; transform: none; }
+.intro-more:hover { border-color: var(--primary-ink); box-shadow: none; transform: none; }
 .intro-more .stack { display: flex; }
 .intro-more .stack img,
 .intro-more .stack .more-count {
@@ -346,7 +346,7 @@ section.band-dark {
 .intro-more .stack img:first-child { margin-left: 0; }
 .intro-more .stack .more-count {
   display: flex; align-items: center; justify-content: center;
-  background: var(--primary); color: #fff; font-size: 10.5px; font-weight: 500;
+  background: var(--primary); color: var(--primary-foreground); font-size: 10.5px; font-weight: 500;
 }
 .intro-more .label { display: inline-flex; align-items: center; gap: 8px; color: var(--foreground); transition: none; }
 .intro-more .label .arrow { color: var(--muted-foreground); }
@@ -547,7 +547,7 @@ section.band-dark {
 .org-tag {
   margin-left: auto; flex-shrink: 0; font-size: 10.5px; letter-spacing: 0.05em;
   padding: 2px 7px; border: 1px solid transparent; border-radius: var(--r-sm);
-  color: var(--primary); background: var(--primary-soft);
+  color: var(--primary-ink); background: var(--primary-soft);
 }
 @media (max-width: 760px) {
   .org-stem, .org-branch::before, .org-branch::after { display: none; }
@@ -756,4 +756,4 @@ body.hero-bg-photowelcome2 .hero.is-aurora { background-image: url("/assets/hero
 .org .org-root .org-card .org-ava { background: var(--ink); color: #fff; }
 .org .org-who strong { font-size: 14px; }
 .org .org-who small { font-size: 12.5px; }
-.org .org-tag { background: var(--primary-soft); color: var(--primary); border: 0; font-size: 11px; font-weight: 600; letter-spacing: 0.04em; padding: 3px 8px; border-radius: 6px; }
+.org .org-tag { background: var(--primary-soft); color: var(--primary-ink); border: 0; font-size: 11px; font-weight: 600; letter-spacing: 0.04em; padding: 3px 8px; border-radius: 6px; }

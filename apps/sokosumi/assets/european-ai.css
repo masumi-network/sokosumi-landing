@@ -86,7 +86,7 @@
   font-size: 12px;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--primary);
+  color: var(--primary-ink);
 }
 .eu-run-item p { font-size: 15px; line-height: 1.6; margin: 0; max-width: 62ch; }
 
@@ -135,7 +135,7 @@
   color: var(--muted-foreground);
   max-width: 66ch;
 }
-.eu-note a { color: var(--primary); text-decoration: underline; text-underline-offset: 2px; }
+.eu-note a { color: var(--primary-ink); text-decoration: underline; text-underline-offset: 2px; }
 .eu-note a .icon { vertical-align: -2px; }
 
 /* ── EU AI Act: numbered rows ───────────────────────────────────────────── */
@@ -246,8 +246,8 @@
   transition: border-color 0.3s var(--ease), color 0.3s var(--ease);
 }
 .eu-legal-list a .icon { color: var(--muted-foreground); }
-.eu-legal-list a:hover { border-color: rgba(43, 92, 120, 0.45); color: var(--primary); }
-.eu-legal-list a:hover .icon { color: var(--primary); }
+.eu-legal-list a:hover { border-color: rgba(43, 92, 120, 0.45); color: var(--primary-ink); }
+.eu-legal-list a:hover .icon { color: var(--primary-ink); }
 
 
 /* ── the stack ──────────────────────────────────────────────────────────── */
@@ -282,7 +282,7 @@
   margin-top: 6px;
   font-family: var(--mono);
   font-size: 11.5px;
-  color: var(--primary);
+  color: var(--primary-ink);
 }
 /* ── responsive ─────────────────────────────────────────────────────────── */
 @media (min-width: 620px) {

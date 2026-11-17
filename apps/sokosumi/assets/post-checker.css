@@ -15,7 +15,7 @@
 }
 
 .psc-overline {
-  color: var(--primary);
+  color: var(--primary-ink);
   font-size: 13px;
   font-weight: 500;
   margin-bottom: 14px;
@@ -71,12 +71,12 @@
 .psc-mode button[aria-selected="true"] {
   color: #fff;
   background: var(--primary);
-  border-color: var(--primary);
+  border-color: var(--primary-ink);
 }
 
 .psc-mode button:not([aria-selected="true"]):hover {
   color: var(--foreground);
-  border-color: var(--primary);
+  border-color: var(--primary-ink);
 }
 
 .psc-form input[type="text"] {
@@ -136,7 +136,7 @@
   border: 0;
   border-radius: var(--r-md);
   background: var(--primary);
-  color: #fff;
+  color: var(--primary-foreground);
   font: inherit;
   font-size: 15px;
   font-weight: 500;
@@ -145,7 +145,7 @@
 }
 
 .psc-submit:hover:not(:disabled) {
-  background: #24506a;
+  background: var(--primary-hover);
 }
 
 .psc-submit:disabled {
@@ -179,7 +179,7 @@
 
 .psc-try button:hover {
   color: var(--foreground);
-  border-color: var(--primary);
+  border-color: var(--primary-ink);
 }
 
 .psc-error {
@@ -213,7 +213,7 @@
   width: 16px;
   height: 16px;
   border: 2px solid var(--border);
-  border-top-color: var(--primary);
+  border-top-color: var(--primary-ink);
   border-radius: 50%;
   animation: psc-spin 700ms linear infinite;
 }
@@ -322,7 +322,7 @@
 
 .psc-copy:hover {
   color: var(--foreground);
-  border-color: var(--primary);
+  border-color: var(--primary-ink);
 }
 
 /* ---- per-dimension scorecards ---------------------------------------------- */

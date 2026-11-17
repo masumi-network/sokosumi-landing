@@ -21,7 +21,7 @@
 
 .dm-overline,
 .dm-result-label {
-  color: var(--primary);
+  color: var(--primary-ink);
   font-size: 13px;
   font-weight: 500;
   line-height: 1.4;
@@ -60,7 +60,7 @@
 .dm-standard a {
   color: var(--foreground);
   text-decoration: underline;
-  text-decoration-color: var(--primary);
+  text-decoration-color: var(--primary-ink);
   text-underline-offset: 3px;
 }
 
@@ -122,7 +122,7 @@
 .dm-form input:focus-visible {
   background: var(--card);
   border-color: var(--foreground);
-  outline-color: var(--primary);
+  outline-color: var(--primary-ink);
 }
 
 .dm-form input[aria-invalid="true"] {
@@ -264,7 +264,7 @@
 .dm-progress li[data-state="active"] span {
   color: var(--card);
   background: var(--primary);
-  border-color: var(--primary);
+  border-color: var(--primary-ink);
 }
 
 .dm-progress li[data-state="active"] span::after {
@@ -282,8 +282,8 @@
 }
 
 .dm-progress li[data-state="done"] span {
-  color: var(--primary);
-  border-color: var(--primary);
+  color: var(--primary-ink);
+  border-color: var(--primary-ink);
   background: var(--primary-soft);
 }
 
@@ -551,7 +551,7 @@
 .dm-file textarea:focus-visible {
   background: var(--card);
   border-color: var(--foreground);
-  outline-color: var(--primary);
+  outline-color: var(--primary-ink);
 }
 
 .dm-another {
@@ -645,7 +645,7 @@
 }
 
 .dm-process li > span {
-  color: var(--primary);
+  color: var(--primary-ink);
   font-size: 12px;
   font-variant-numeric: tabular-nums;
 }
@@ -694,7 +694,7 @@
 
 @media (hover: hover) and (pointer: fine) {
   .dm-gallery-card:hover {
-    border-color: var(--primary);
+    border-color: var(--primary-ink);
   }
 }
 
@@ -1122,7 +1122,7 @@
 }
 
 .dm-how li span {
-  color: var(--primary);
+  color: var(--primary-ink);
   display: block;
   font-family: var(--mono);
   font-size: 12px;
@@ -1220,7 +1220,7 @@
      result) opt back out below so they stay true to life on the gradient. */
   background:
     radial-gradient(90% 120% at 15% 10%, rgba(0, 164, 250, 0.35) 0%, transparent 60%),
-    linear-gradient(135deg, #2b5c78 0%, #12232c 55%, #0f0e0d 100%);
+    linear-gradient(135deg, #ff51ff 0%, #460a23 55%, #0c0c0c 100%);
   border-bottom: 1px solid rgba(15, 14, 13, 0.12);
   --background: rgba(255, 255, 255, 0.055);
   --card: rgba(255, 255, 255, 0.055);
@@ -1293,7 +1293,7 @@
   aspect-ratio: 1200 / 470;
   background:
     radial-gradient(90% 120% at 15% 10%, rgba(0, 164, 250, 0.35) 0%, transparent 60%),
-    linear-gradient(135deg, #2b5c78 0%, #12232c 55%, #0f0e0d 100%);
+    linear-gradient(135deg, #ff51ff 0%, #460a23 55%, #0c0c0c 100%);
 }
 
 .tp-pill {
@@ -1403,7 +1403,7 @@
 }
 
 .tp-file-line b {
-  color: var(--primary);
+  color: var(--primary-ink);
   font-weight: 400;
 }
 
@@ -1588,7 +1588,7 @@
   width: 26px;
   height: 26px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #2b5c78, #00a4fa);
+  background: linear-gradient(135deg, #ff51ff, #fa008c);
   flex-shrink: 0;
   display: grid;
   place-items: center;
@@ -1750,7 +1750,7 @@
 }
 
 .tp-urlbar-text b {
-  color: var(--primary);
+  color: var(--primary-ink);
   font-weight: 400;
 }
 
@@ -1774,12 +1774,12 @@
 
 .tp-headline-text::before {
   content: "“";
-  color: var(--primary);
+  color: var(--primary-ink);
 }
 
 .tp-headline-text::after {
   content: "”";
-  color: var(--primary);
+  color: var(--primary-ink);
 }
 
 /* --- QR Code Generator: a decorative code pattern ----------------------- */
@@ -1841,7 +1841,7 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  color: var(--primary);
+  color: var(--primary-ink);
 }
 
 .tool-card:hover .tool-card-copy em { text-decoration: underline; }
@@ -2083,9 +2083,9 @@
 }
 
 .dm-tool-sub a {
-  color: var(--primary);
+  color: var(--primary-ink);
   text-decoration: underline;
-  text-decoration-color: var(--primary);
+  text-decoration-color: var(--primary-ink);
   text-underline-offset: 2px;
 }
 

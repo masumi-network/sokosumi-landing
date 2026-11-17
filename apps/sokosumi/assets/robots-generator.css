@@ -12,7 +12,7 @@
 }
 
 .rg-overline {
-  color: var(--primary);
+  color: var(--primary-ink);
   font-size: 13px;
   font-weight: 500;
   margin-bottom: 14px;
@@ -42,7 +42,7 @@
 }
 
 .rg-lede a {
-  color: var(--primary);
+  color: var(--primary-ink);
   text-decoration: underline;
   text-underline-offset: 2px;
 }
@@ -180,7 +180,7 @@
 }
 .rg-seg:has(input:checked) span {
   background: var(--primary);
-  color: #fff;
+  color: var(--primary-foreground);
   font-weight: 500;
 }
 .rg-seg:has(input:focus-visible) span {
@@ -248,12 +248,12 @@
   transition: opacity 0.12s ease, transform 0.12s ease;
 }
 .rg-chip:has(input:checked) {
-  border-color: var(--primary);
+  border-color: var(--primary-ink);
   background: color-mix(in srgb, var(--primary) 7%, transparent);
 }
 .rg-chip:has(input:checked) .rg-chip-box {
   background: var(--primary);
-  border-color: var(--primary);
+  border-color: var(--primary-ink);
 }
 .rg-chip:has(input:checked) .rg-chip-box::after {
   opacity: 1;
@@ -363,7 +363,7 @@
 }
 .rg-mini:hover {
   color: var(--foreground);
-  border-color: var(--primary);
+  border-color: var(--primary-ink);
 }
 
 .rg-bots-group {
@@ -397,7 +397,7 @@
   pointer-events: none;
 }
 .rg-bot:has(input:checked) {
-  border-color: var(--primary);
+  border-color: var(--primary-ink);
   background: color-mix(in srgb, var(--primary) 7%, transparent);
 }
 .rg-bot:has(input:focus-visible) { outline: 2px solid var(--primary); outline-offset: 1px; }
@@ -438,7 +438,7 @@
   place-items: center;
   border-radius: 50%;
   background: var(--primary);
-  color: #fff;
+  color: var(--primary-foreground);
   font-size: 12px;
   font-weight: 700;
   opacity: 0;
@@ -560,7 +560,7 @@
 
 .rg-btn:hover {
   color: var(--foreground);
-  border-color: var(--primary);
+  border-color: var(--primary-ink);
 }
 
 .rg-preview-body {
@@ -577,7 +577,7 @@
   white-space: pre-wrap;
   word-break: break-word;
 }
-.rg-preview-body .tok-key { color: var(--primary); font-weight: 600; }
+.rg-preview-body .tok-key { color: var(--primary-ink); font-weight: 600; }
 .rg-preview-body .tok-val { color: var(--foreground); }
 .rg-preview-body .tok-blank { display: block; height: 0.6em; }
 

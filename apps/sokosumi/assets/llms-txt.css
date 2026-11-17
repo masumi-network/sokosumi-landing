@@ -19,7 +19,7 @@
 }
 
 .lt-overline {
-  color: var(--primary);
+  color: var(--primary-ink);
   font-size: 13px;
   font-weight: 500;
   margin-bottom: 14px;
@@ -91,7 +91,7 @@
   border: 0;
   border-radius: var(--r-md);
   background: var(--primary);
-  color: #fff;
+  color: var(--primary-foreground);
   font: inherit;
   font-size: 15px;
   font-weight: 500;
@@ -100,7 +100,7 @@
 }
 
 .lt-submit:hover:not(:disabled) {
-  background: #24506a;
+  background: var(--primary-hover);
 }
 
 .lt-submit:disabled {
@@ -134,7 +134,7 @@
 
 .lt-try button:hover {
   color: var(--foreground);
-  border-color: var(--primary);
+  border-color: var(--primary-ink);
 }
 
 .lt-error {
@@ -171,7 +171,7 @@
   width: 16px;
   height: 16px;
   border: 2px solid var(--border);
-  border-top-color: var(--primary);
+  border-top-color: var(--primary-ink);
   border-radius: 50%;
   animation: ogc-spin 700ms linear infinite;
 }
@@ -427,7 +427,7 @@
 
 .lt-copy:hover {
   color: var(--foreground);
-  border-color: var(--primary);
+  border-color: var(--primary-ink);
 }
 
 /* ---- inspector --------------------------------------------------------- */
@@ -703,7 +703,7 @@
 
 .lt-section-chip.is-optional {
   background: var(--primary-soft);
-  color: var(--primary);
+  color: var(--primary-ink);
 }
 
 /* ---- link table -------------------------------------------------------- */
@@ -845,7 +845,7 @@
 }
 
 .lt-cmt {
-  color: var(--primary);
+  color: var(--primary-ink);
 }
 
 .lt-table code {

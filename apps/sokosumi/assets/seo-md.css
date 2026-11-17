@@ -410,7 +410,7 @@
   line-height: 1.25;
   color: var(--foreground);
 }
-.dm-lead-card h2 span { color: var(--primary); }
+.dm-lead-card h2 span { color: var(--primary-ink); }
 .dm-lead-lede {
   margin: 0 0 22px;
   font-size: 14px;
@@ -457,7 +457,7 @@
   text-transform: none !important;
   letter-spacing: 0 !important;
 }
-.dm-lead-check input { margin-top: 3px; accent-color: var(--primary); }
+.dm-lead-check input { margin-top: 3px; accent-color: var(--primary-ink); }
 .dm-lead #seoMdLeadSubmit { width: 100%; justify-content: center; }
 .dm-lead-fine {
   margin: 4px 0 0;
