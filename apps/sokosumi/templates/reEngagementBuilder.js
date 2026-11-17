@@ -23,13 +23,13 @@ function render() {
   const crumbs = [
     { label: "Home", href: "/" },
     { label: "Free tools", href: "/tools" },
-    { label: "Re-engagement Campaign Builder" },
+    { label: "Win-back Email Generator" },
   ];
 
   const appJsonLd = {
     "@type": "SoftwareApplication",
     "@id": `${SITE}${PATH}#software`,
-    name: "Sokosumi Re-engagement Campaign Builder",
+    name: "Sokosumi Win-back Email Generator",
     applicationCategory: "DeveloperApplication",
     operatingSystem: "Web",
     url: `${SITE}${PATH}`,
@@ -50,23 +50,29 @@ function render() {
 
   return (
     pageStart({
-      title: "Re-engagement Campaign Builder | Sokosumi",
-      description: "Free re-engagement campaign builder. Paste an old email and get a 3-part re-engagement sequence with suggested subject lines and angles. Runs entirely in your browser.",
+      title: "Win-back Email Generator | Sokosumi",
+      description: "Free win-back email generator. Paste an old email and get a 3-part re-engagement sequence with suggested subject lines and angles. Runs entirely in your browser.",
       path: PATH,
       englishOnly: true,
       breadcrumb: crumbs,
       mainClass: "tk-tool-page",
       stylesheets: ["/assets/tool-kit.css"],
       jsonld: [appJsonLd, faqJsonLd],
-      og: { type: "page", title: "Re-engagement Campaign Builder", sub: "Turn an old email into a 3-part sequence." },
+      og: { type: "page", title: "Win-back Email Generator", sub: "Turn an old email into a 3-part sequence." },
     }) +
     `<section class="tk-head" id="analyzer">
-      <h1>Re-engagement Campaign Builder</h1>
-      <p class="tk-lede">Paste an old email: a newsletter, a product update, an announcement: and get a 3-part re-engagement sequence with a suggested subject line and angle for each email.</p>
+      <h1>Win-back Email Generator</h1>
+      <p class="tk-lede">Paste an old email, like a newsletter, product update or announcement, and get a re-engagement sequence that spans 3 emails. Each email comes with a suggested subject line and angle.</p>
 
       <form class="tk-form is-stacked" id="rebForm" novalidate>
         <label class="sr-only" for="rebText">Old email</label>
         <textarea id="rebText" style="min-height:180px" placeholder="Paste your old email here…" required></textarea>
+        <div class="reb-audience" role="radiogroup" aria-label="Who is this for?">
+          <span class="reb-audience-label">Who is this for?</span>
+          <label><input type="radio" name="rebAudience" value="subscribers" checked /> Subscribers</label>
+          <label><input type="radio" name="rebAudience" value="customers" /> Customers</label>
+          <label><input type="radio" name="rebAudience" value="guests" /> Event guests</label>
+        </div>
         <button class="tk-submit" id="rebSubmit" type="submit">Build the sequence</button>
       </form>
     </section>
@@ -74,7 +80,18 @@ function render() {
     <section class="tk-result" id="rebResult" aria-label="Results" hidden>
       <div class="tk-output">
         <div class="tk-output-head"><h2>3-email sequence</h2><button class="tk-copy" id="rebCopy" type="button">Copy sequence</button></div>
+        <p class="tk-sub reb-outline-note">This is an outline: subject lines and angles to write from, not finished emails.</p>
         <div class="tk-steps" id="rebSteps"></div>
+      </div>
+    </section>
+
+    <section class="tk-section" aria-labelledby="reb-how">
+      <h2 id="reb-how">How the sequence works</h2>
+      <p class="tk-sub">Three emails over eight days is enough to win someone back without nagging: a gentle reminder, then a reason to return, then a clear last call. Spacing them out gives each message room to land.</p>
+      <div class="tk-cards">
+        <div class="tk-card"><h3>Day 1 — Reminder</h3><p>A low-pressure nudge that reminds them who you are and the value they originally signed up for.</p></div>
+        <div class="tk-card"><h3>Day 4 — Incentive</h3><p>A concrete reason to come back: an offer, a resource, or a highlight they may have missed.</p></div>
+        <div class="tk-card"><h3>Day 8 — Last chance</h3><p>A clear final call with a deadline, so the sequence ends on a decision instead of fading out.</p></div>
       </div>
     </section>
 

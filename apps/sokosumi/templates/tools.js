@@ -351,7 +351,7 @@ const TOOLS = [
   },
   {
     href: "/tools/re-engagement-builder",
-    name: "Re-engagement Campaign Builder",
+    name: "Win-back Email Generator",
     text: "Paste an old email and get a 3-part re-engagement sequence with subject lines.",
     meta: "Free · no sign-up",
     preview: () => `

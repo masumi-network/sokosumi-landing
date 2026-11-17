@@ -1065,6 +1065,36 @@
   font-size: 13.5px;
 }
 
+/* ---- win-back email generator: audience picker + outline note ------------- */
+
+.reb-audience {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+  margin-top: 2px;
+}
+
+.reb-audience-label {
+  font-size: 13px;
+  font-weight: 550;
+  color: var(--foreground);
+  margin-right: 2px;
+}
+
+.reb-audience label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13.5px;
+  color: var(--muted-foreground);
+  cursor: pointer;
+}
+
+.reb-outline-note {
+  margin: -4px 0 16px;
+}
+
 /* ---- prose sections -------------------------------------------------------- */
 
 .tk-section {
