@@ -74,6 +74,11 @@
   font-weight: 550;
   color: var(--foreground);
 }
+.asv-pillar-plain {
+  margin-top: 1px;
+  font-size: 12.5px;
+  color: var(--muted-foreground);
+}
 .asv-pillar-sub {
   margin-top: 3px;
   display: flex;
@@ -86,6 +91,26 @@
   margin-top: 2px;
   font-size: 12px;
   color: var(--muted-foreground);
+}
+
+/* How the overall score is weighted + what the bands mean, said once. */
+.asv-scale {
+  margin-top: 14px;
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--muted-foreground);
+}
+.asv-scale b {
+  font-weight: 600;
+}
+.asv-scale b.is-strong {
+  color: #2f6b45;
+}
+.asv-scale b.is-needs-work {
+  color: #8a6100;
+}
+.asv-scale b.is-weak {
+  color: #b02a2a;
 }
 
 .asv-dot {

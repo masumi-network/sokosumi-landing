@@ -406,7 +406,7 @@ const TOOLS = [
   },
   {
     href: "/tools/ai-search-visibility",
-    name: "AI Search Visibility Checker",
+    name: "Website AI Readiness Analyzer",
     text: "Check whether AI crawlers are blocked and your brand is set up to be disambiguated. Not a live AI search measurement.",
     meta: "Free · no sign-up",
     preview: aiSearchVisibilityPreview,

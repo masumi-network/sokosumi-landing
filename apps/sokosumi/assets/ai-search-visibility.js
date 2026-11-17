@@ -68,6 +68,14 @@
 
   var WEIGHT = { "AI crawler access": 40, "Brand disambiguation": 30, Discoverability: 30 };
 
+  // Plain-language gloss for each category label, so "AI crawler access" reads
+  // as the question it answers.
+  var SUBS = {
+    "AI crawler access": "Can AI bots read your site?",
+    "Brand disambiguation": "Is your brand clearly identified?",
+    Discoverability: "Is your site easy to find?",
+  };
+
   // Three radial rings: a dashboard summary of the dimension scores that sits
   // above the detailed check cards.
   function pillars(dims) {
@@ -76,21 +84,26 @@
         var b = bandOf(d.score);
         var pass = (d.checks || []).filter(function (c) { return c.level === "pass"; }).length;
         var total = (d.checks || []).length;
-        var w = WEIGHT[d.label];
         return (
           '<div class="asv-pillar">' +
           '<span class="asv-ring is-' + b.cls + '" style="--val:' + (d.score * 3.6).toFixed(1) + 'deg">' +
           '<b>' + d.score + '</b></span>' +
           '<div class="asv-pillar-meta">' +
           '<p class="asv-pillar-name">' + esc(d.label) + '</p>' +
-          '<p class="asv-pillar-sub"><span class="asv-dot is-' + b.cls + '"></span>' + b.label +
-          (w ? ' · ' + w + '% of score' : '') + '</p>' +
+          (SUBS[d.label] ? '<p class="asv-pillar-plain">' + esc(SUBS[d.label]) + '</p>' : '') +
+          '<p class="asv-pillar-sub"><span class="asv-dot is-' + b.cls + '"></span>' + b.label + '</p>' +
           '<p class="asv-pillar-tally">' + pass + ' of ' + total + ' passing</p>' +
           '</div></div>'
         );
       })
       .join("");
-    return '<div class="asv-pillars">' + cards + "</div>";
+    // Said once: how the overall score is weighted, and what the bands mean.
+    var scale =
+      '<p class="asv-scale">Overall score = AI crawler access ' + WEIGHT["AI crawler access"] +
+      '% + brand disambiguation ' + WEIGHT["Brand disambiguation"] +
+      '% + discoverability ' + WEIGHT.Discoverability +
+      '%. Bands: <b class="is-strong">Strong</b> 80–100, <b class="is-needs-work">Needs work</b> 50–79, <b class="is-weak">Weak</b> under 50.</p>';
+    return '<div class="asv-pillars">' + cards + "</div>" + scale;
   }
 
   // Status grid of the recognizable AI engines: the signature visual: which
@@ -140,7 +153,7 @@
     submitLabel: "Check readiness",
     busyLabel: "Checking…",
     reportTitle: function (data) {
-      return "AI search visibility readiness (proxy): " + data.url + ": " + data.overall + "/100";
+      return "Website AI Readiness Analyzer (proxy): " + data.url + ": " + data.overall + "/100";
     },
     getValue: function () {
       return urlInput.value;
@@ -153,7 +166,9 @@
     },
     onData: function (data) {
       if (!viz) return;
-      viz.innerHTML = pillars(data.dimensions) + engines(data.engines);
+      // Engines first: the "can crawl" grid is the clearest part, so it sits
+      // directly under the overall score, ahead of the ring pillars.
+      viz.innerHTML = engines(data.engines) + pillars(data.dimensions);
       viz.hidden = false;
     },
     examples: {

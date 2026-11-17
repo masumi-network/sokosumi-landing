@@ -29,13 +29,13 @@ function render() {
   const crumbs = [
     { label: "Home", href: "/" },
     { label: "Free tools", href: "/tools" },
-    { label: "AI Search Visibility Checker" },
+    { label: "Website AI Readiness Analyzer" },
   ];
 
   const appJsonLd = {
     "@type": "SoftwareApplication",
     "@id": `${SITE}${PATH}#software`,
-    name: "Sokosumi AI Search Visibility Checker",
+    name: "Sokosumi Website AI Readiness Analyzer",
     applicationCategory: "DeveloperApplication",
     operatingSystem: "Web",
     url: `${SITE}${PATH}`,
@@ -56,7 +56,7 @@ function render() {
 
   return (
     pageStart({
-      title: "AI Search Visibility Checker | Sokosumi",
+      title: "Website AI Readiness Analyzer | Sokosumi",
       description: "Free AI search visibility readiness checker. Enter your site and see whether AI crawlers are blocked, whether your brand is disambiguated, and whether you're discoverable. Not a measurement of live AI search results. No sign-up.",
       path: PATH,
       englishOnly: true,
@@ -64,11 +64,11 @@ function render() {
       mainClass: "tk-tool-page",
       stylesheets: ["/assets/tool-kit.css", "/assets/ai-search-visibility.css"],
       jsonld: [appJsonLd, faqJsonLd],
-      og: { type: "page", title: "AI Search Visibility Checker", sub: "A readiness proxy, not a live AI search measurement." },
+      og: { type: "page", title: "Website AI Readiness Analyzer", sub: "A readiness proxy, not a live AI search measurement." },
     }) +
     `<section class="tk-head" id="analyzer">
-      <h1>AI Search Visibility Checker</h1>
-      <p class="tk-lede">Enter your site and get a readiness check: whether AI crawlers are blocked, whether your brand is set up to be disambiguated, and whether you're discoverable. This can't see live AI search results: see the FAQ for exactly what it does check.</p>
+      <h1>Website AI Readiness Analyzer</h1>
+      <p class="tk-lede">Check if AI search engines can access and understand your website. Enter your website URL and we test if crawlers are blocked, if your brand is clearly identified, and if your site is easy to discover.</p>
 
       <form class="tk-form" id="asvForm" novalidate>
         <label class="sr-only" for="asvUrl">Website URL</label>
@@ -100,27 +100,12 @@ function render() {
       </div>
       <div class="asv-viz" id="asvViz" hidden></div>
       <div class="tk-dims tk-dims-balanced tk-dims-notag" id="asvDims" data-filter=""></div>
+      <p class="tk-sibling">Missing an llms.txt or want to check the one you have? <a href="/tools/llms-txt">Use the llms.txt Validator</a>.</p>
     </section>
 
     <section class="tk-section" aria-labelledby="asv-how">
       <h2 id="asv-how">What gets checked</h2>
-      <div class="tk-cards tk-cards-features">
-        <div class="tk-card">
-          <span class="tk-card-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg></span>
-          <h3>AI crawler access</h3>
-          <p>Whether robots.txt blocks GPTBot, ClaudeBot, PerplexityBot, Google-Extended and other known AI crawlers.</p>
-        </div>
-        <div class="tk-card">
-          <span class="tk-card-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><path d="m9 12 2 2 4-4"/></svg></span>
-          <h3>Brand disambiguation</h3>
-          <p>Title, meta description, and Organization schema with sameAs links.</p>
-        </div>
-        <div class="tk-card">
-          <span class="tk-card-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg></span>
-          <h3>Discoverability</h3>
-          <p>A sitemap.xml and an llms.txt at your site root.</p>
-        </div>
-      </div>
+      <p class="tk-sub">Three groups of signals: whether AI crawlers can reach you, whether your brand is clearly identified, and whether your site is easy to discover. Run a check above for the full breakdown with fixes.</p>
     </section>
 
     <section class="tk-section" id="faq" aria-labelledby="asv-faq">
