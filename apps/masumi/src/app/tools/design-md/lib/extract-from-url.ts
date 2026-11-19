@@ -1,5 +1,6 @@
 import * as cheerio from "cheerio";
-import type { Frontmatter } from "./design-md";
+import type { Frontmatter, Logo } from "./design-md";
+import { saveLogoAsset } from "./extractions-db";
 import { brandName, buildHeuristic, tidyFrontmatter, withMeasuredType } from "./heuristic";
 import { llmExtract, type LlmMeta } from "./llm-extract";
 import { preprocessSite } from "./preprocess";
@@ -94,26 +95,52 @@ export async function extractFromUrl(
   const screenshot =
     thumbBase64 && thumbMime ? { mime: thumbMime, base64: thumbBase64 } : undefined;
 
+  const hosted = (result: ExtractResult): ExtractResult =>
+    result.frontmatter.logo
+      ? { ...result, frontmatter: { ...result.frontmatter, logo: hostLogo(result.frontmatter.logo) } }
+      : result;
+
   if (llm) {
     // On a subpage the model tends to name the brand after the page title
     // ("About Us"), so there the name comes from og:site_name or the domain.
     const isHome = new URL(url).pathname.replace(/\/+$/, "") === "";
     const name =
       isHome && !signal.meta.siteName ? llm.frontmatter.name : brandName(signal);
-    return {
+    return hosted({
       frontmatter: tidyFrontmatter(withMeasuredType({ ...llm.frontmatter, name }, signal)),
       prose: llm.prose,
       source: "llm",
       meta: llm.meta,
       ...(screenshot ? { screenshot } : {}),
-    };
+    });
   }
 
   console.warn(`[extract] LLM unavailable for ${url}, using heuristic fallback`);
-  return {
+  return hosted({
     ...buildHeuristic(signal, allCss),
     source: "heuristic",
     ...(screenshot ? { screenshot } : {}),
+  });
+}
+
+/** Where this service serves an inline SVG logo it stored. */
+const LOGO_ASSET_BASE = "https://www.masumi.network/tools/design-md/api/logo-assets";
+const INLINE_SVG = "data:image/svg+xml;utf8,";
+
+/**
+ * The logo with every inline SVG stored here and named by its address: a
+ * drawing of tens of kilobytes does not belong in a DESIGN.md.
+ */
+function hostLogo(logo: Logo): Logo {
+  const host = (url: string | undefined) =>
+    url?.startsWith(INLINE_SVG)
+      ? `${LOGO_ASSET_BASE}/${saveLogoAsset(decodeURIComponent(url.slice(INLINE_SVG.length)))}`
+      : url;
+  return {
+    ...logo,
+    src: host(logo.src) ?? logo.src,
+    ...(logo.srcDark ? { srcDark: host(logo.srcDark) } : {}),
+    ...(logo.mark ? { mark: host(logo.mark) } : {}),
   };
 }
 

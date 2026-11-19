@@ -117,7 +117,7 @@ function BrandHero({
 }: {
   name?: string;
   description?: string;
-  logo?: { src: string; srcDark?: string; alt?: string };
+  logo?: { src: string; srcDark?: string; mark?: string; alt?: string };
   primary?: string;
   headingFont?: string;
 }) {
@@ -125,14 +125,8 @@ function BrandHero({
     ? `"${headingFont}", system-ui, sans-serif`
     : undefined;
   const onPrimary = primary ? bestTextOn(primary) : "#000";
-  // Pick light vs dark logo variant based on background
-  const logoSrc =
-    logo &&
-    (onPrimary === "#ffffff" && logo.src
-      ? logo.src
-      : onPrimary === "#000000" && logo.srcDark
-        ? logo.srcDark
-        : logo.src);
+  // White text means a dark background, where the dark-background logo belongs.
+  const logoSrc = logo && (onPrimary === "#ffffff" ? (logo.srcDark ?? logo.src) : logo.src);
 
   return (
     <header className="relative overflow-hidden border border-black/[0.06]">

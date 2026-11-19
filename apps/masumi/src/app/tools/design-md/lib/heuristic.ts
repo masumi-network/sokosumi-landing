@@ -2,9 +2,9 @@ import {
   contrastRatio,
   type ComponentTokens,
   type Frontmatter,
-  type Logo,
   type Typography,
 } from "./design-md";
+import { pickLogo } from "./logos";
 import type { SiteSignal } from "./preprocess";
 import type { ComputedStyle } from "./render";
 import { brandKey } from "./url-guard";
@@ -64,7 +64,7 @@ export function buildHeuristic(
   );
   const containerMaxWidth = signal.geometry.containerMaxWidths[0];
   const components = buildComponents(computed, colors, rounded, typography);
-  const logo = pickLogo(signal);
+  const logo = pickLogo(signal.logos);
 
   const frontmatter: Frontmatter = tidyFrontmatter({
     version: "alpha",
@@ -386,24 +386,6 @@ function buildComponents(
     });
   }
   return out;
-}
-
-const LOGO_ORDER = [
-  "icon-svg",
-  "header-svg",
-  "mask-icon",
-  "apple-touch-icon",
-  "header-img",
-  "icon-png",
-  "og-image",
-  "favicon-ico",
-];
-
-function pickLogo(signal: SiteSignal): Logo | undefined {
-  const best = [...signal.logos].sort(
-    (a, b) => LOGO_ORDER.indexOf(a.source) - LOGO_ORDER.indexOf(b.source),
-  )[0];
-  return best ? { src: best.url, ...(best.alt ? { alt: best.alt } : {}) } : undefined;
 }
 
 function buildProse(signal: SiteSignal, fm: Frontmatter): Prose {

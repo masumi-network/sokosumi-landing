@@ -1,4 +1,5 @@
 import Database from "better-sqlite3";
+import { createHash } from "crypto";
 import { brandKey } from "./url-guard";
 import fs from "fs";
 import path from "path";
@@ -44,6 +45,16 @@ function db(): Database.Database {
       screenshot_mime TEXT,
       design_md TEXT NOT NULL,
       source TEXT NOT NULL,
+      created_at INTEGER NOT NULL
+    );
+  `);
+
+  // Inline SVG logos, kept by the hash of their markup so DESIGN.md can point
+  // at a file instead of carrying the whole drawing in its front matter.
+  conn.exec(`
+    CREATE TABLE IF NOT EXISTS logo_assets (
+      hash TEXT PRIMARY KEY,
+      svg TEXT NOT NULL,
       created_at INTEGER NOT NULL
     );
   `);
@@ -382,4 +393,20 @@ export function getScreenshot(
     .get(id) as { screenshot: Buffer | null; screenshot_mime: string | null } | undefined;
   if (!row || !row.screenshot) return null;
   return { buffer: row.screenshot, mime: row.screenshot_mime ?? "image/jpeg" };
+}
+
+/** Stores an inline SVG logo and returns the hash it is served under. */
+export function saveLogoAsset(svg: string): string {
+  const hash = createHash("sha256").update(svg).digest("hex").slice(0, 32);
+  db()
+    .prepare("INSERT OR IGNORE INTO logo_assets (hash, svg, created_at) VALUES (?, ?, ?)")
+    .run(hash, svg, Date.now());
+  return hash;
+}
+
+export function getLogoAsset(hash: string): string | null {
+  const row = db().prepare("SELECT svg FROM logo_assets WHERE hash = ?").get(hash) as
+    | { svg: string }
+    | undefined;
+  return row?.svg ?? null;
 }

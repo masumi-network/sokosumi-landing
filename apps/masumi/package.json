@@ -7,6 +7,7 @@
     "build": "next build --webpack",
     "start": "next start -p ${PORT:-3001}",
     "lint": "eslint",
+    "test:design-md": "node --import tsx --test src/app/tools/design-md/lib/logos.test.ts",
     "test:register": "node scripts/test-register.mjs",
     "test:learn": "node scripts/test-learn.mjs",
     "test:tum": "node scripts/test-tum-hackathon.mjs",
@@ -53,6 +54,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
     "tailwindcss": "^4",
+    "tsx": "^4.19.2",
     "typescript": "^5"
   }
 }

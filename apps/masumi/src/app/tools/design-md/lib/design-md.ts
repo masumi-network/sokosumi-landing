@@ -27,8 +27,12 @@ export type Layout = {
 };
 
 export type Logo = {
+  /** The fullest logo the site shows: its lockup when it has one. */
   src: string;
+  /** The same logo for a dark background. */
   srcDark?: string;
+  /** The square symbol alone, when `src` is a lockup. */
+  mark?: string;
   alt?: string;
 };
 

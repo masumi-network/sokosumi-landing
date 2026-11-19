@@ -1,4 +1,5 @@
-import type { Frontmatter, Logo, Typography } from "./design-md";
+import type { Frontmatter, Typography } from "./design-md";
+import { pickLogo } from "./logos";
 import type { SiteSignal } from "./preprocess";
 import { signalToMarkdown } from "./preprocess";
 import type { RenderedPage } from "./render";
@@ -51,7 +52,6 @@ Other rules:
 - Pick brand-distinctive accents — skip near-black and near-white when picking primary/secondary/tertiary. Look for CSS vars named --primary/--brand/--accent, Tailwind bg-[#xxx] classes in hero/CTA, and the "Live computed styles" block.
 - Components must use token references like {colors.primary} so the system is wired up, not hardcoded.
 - Prose follows the canonical DESIGN.md section order: Overview (also "Brand & Style"), Colors, Typography, Layout, Elevation & Depth, Shapes, Components, Do's and Don'ts. Voice and brand personality belong inside Overview. Color usage rules belong inside Colors. Spacing rationale belongs inside Layout. Border-radius rationale belongs inside Shapes.
-- Logo: from the provided candidate list, pick the single best one for "src" — preferring a vector SVG > apple-touch-icon > header img logo > og-image. If the site appears to have a separate dark-mode logo, set "srcDark". Always copy candidate URLs verbatim. If no candidates are provided, omit the logo field entirely.
 - If something is genuinely unknowable, omit the field rather than invent a placeholder.
 
 MEASURED VALUES — every font size, weight, line height, spacing step, radius and shadow must come from the page: the "Live computed styles" and "Measured scales" blocks of the signal, or the CSS excerpt. The schema below shows the SHAPE only; its <placeholders> are not values. A type scale or spacing scale that could belong to any site is a failure. Map h1 to display, h2 to headline, body to body-md and the primary CTA to label-md, and fill the levels in between from the CSS.
@@ -63,7 +63,6 @@ const SCHEMA = `{
     "version": "alpha",
     "name": "Brand name",
     "description": "1-2 sentence brand summary.",
-    "logo": { "src": "https://...", "srcDark": "https://..." },
     "colors": {
       "surface": "#hex",
       "surface-dim": "#hex",
@@ -431,7 +430,7 @@ function shape(
 
   const name = sanitizeString(fmRaw.name) || hostnameFromUrl(url);
   const description = sanitizeString(fmRaw.description, 320);
-  const logo = sanitizeLogo(fmRaw.logo, signal);
+  const logo = pickLogo(signal.logos);
   const colors = sanitizeColors(fmRaw.colors);
   const typography = sanitizeTypography(fmRaw.typography);
   const rounded = sanitizeStringMap(fmRaw.rounded);
@@ -580,34 +579,6 @@ function sanitizeLayout(raw: unknown):
   return Object.keys(out).length ? out : undefined;
 }
 
-function sanitizeLogo(raw: unknown, signal: SiteSignal): Logo | undefined {
-  const candidates = signal.logos.map((l) => l.url);
-  const candidateSet = new Set(candidates);
-
-  if (raw && typeof raw === "object") {
-    const r = raw as Record<string, unknown>;
-    const src =
-      typeof r.src === "string" && (candidateSet.has(r.src) || isHttpUrl(r.src))
-        ? r.src
-        : undefined;
-    const srcDark =
-      typeof r.srcDark === "string" &&
-      (candidateSet.has(r.srcDark) || isHttpUrl(r.srcDark))
-        ? r.srcDark
-        : undefined;
-    const alt = typeof r.alt === "string" ? r.alt.slice(0, 200) : undefined;
-    if (src) return { src, ...(srcDark ? { srcDark } : {}), ...(alt ? { alt } : {}) };
-  }
-
-  if (signal.logos.length > 0) {
-    return { src: signal.logos[0].url };
-  }
-  return undefined;
-}
-
-function isHttpUrl(s: string): boolean {
-  return /^https?:\/\//i.test(s) || s.startsWith("data:");
-}
 
 function sanitizeComponents(
   raw: unknown,
