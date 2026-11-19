@@ -103,6 +103,19 @@ Returned by the poll endpoint, and by `POST` on a cache hit (which adds `cached:
 
 `frontmatter` and `prose` duplicate `designMd`; clients that only store the file can ignore them.
 
+### The logo
+
+`frontmatter.logo` is read from the page, not chosen by the model:
+
+| Field | Notes |
+| --- | --- |
+| `src` | The fullest logo the site shows. First the logo in its header: an image or inline SVG in the link home, or one whose class, id, file name or alt text says logo or names the brand. Then the icons in its head (SVG icon, apple-touch-icon, icon, mask-icon), and last its `og:image`. |
+| `srcDark` | The same logo for a dark background, when the page has one: a `<picture>` source for `prefers-color-scheme: dark`, a Tailwind `dark:` twin, a file named white or inverse (often the footer's), or an inline SVG that takes its colour from the page, drawn in white. |
+| `mark` | The square symbol alone (usually the favicon), when `src` is a lockup. Absent when `src` is itself the mark. |
+| `alt` | The logo's alt text or its link's label. |
+
+An inline SVG is stored and served from `/tools/design-md/api/logo-assets/<hash>` (public, `image/svg+xml`), with scripts, event handlers and outside references removed and symbols it `<use>`s pulled in. Logos of other companies (customer, partner and press sections) are skipped.
+
 Other notes:
 - Only `source: "llm"` results appear in the public gallery or are served from the 7-day cache. A `heuristic` result never blocks a later `llm` one.
 - `name` in the front matter is the brand, not the page: a subpage such as `/pages/about` is named from `og:site_name` or the domain.

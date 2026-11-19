@@ -43,7 +43,14 @@ export async function GET(_req: Request, ctx: { params: Promise<{ id: string }> 
     const match = /^data:(image\/[a-z+.-]+)(;base64)?,(.*)$/i.exec(src);
     if (match) {
       const body = match[2] ? Buffer.from(match[3], "base64") : Buffer.from(decodeURIComponent(match[3]));
-      return new Response(new Uint8Array(body), { headers: { ...HEADERS, "content-type": match[1] } });
+      // A site's own markup: the policy keeps an SVG from running when opened directly.
+      return new Response(new Uint8Array(body), {
+        headers: {
+          ...HEADERS,
+          "content-type": match[1],
+          "content-security-policy": "default-src 'none'; style-src 'unsafe-inline'; sandbox",
+        },
+      });
     }
   }
   if (/^https?:\/\//i.test(src)) {
