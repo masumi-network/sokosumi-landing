@@ -764,13 +764,14 @@ function agentsPanel() {
 // so a page added there shows up here without a code change.
 function productPanel() {
   // The menu is a way in, not a sitemap. It carries the four surfaces that
-  // make up the core loop — brief, roster, board, output — and leaves the rest
-  // to /product, which the foot link goes to. Anything beyond four rows made
-  // the panel taller than the hero and forced blurbs to truncate mid-sentence.
-  const CORE = ["product/ai-coworkers", "product/briefing", "product/task-board", "product/outputs"];
+  // make up the core loop — brief, roster, board, output — plus the two ways
+  // in from outside the app (CLI, MCP), and leaves the rest to /product,
+  // which the foot link goes to. Three rows of two make the panel about
+  // 480px tall; a fourth row would push its foot below a laptop's fold.
+  const CORE = ["product/ai-coworkers", "product/briefing", "product/task-board", "product/outputs", "product/cli", "product/mcp"];
   const all = navModel().productPages || [];
   const bySlug = new Map(all.map((p) => [p.slug, p]));
-  const pages = [...CORE.map((slug) => bySlug.get(slug)).filter(Boolean), ...all.filter((p) => !CORE.includes(p.slug))].slice(0, 4);
+  const pages = [...CORE.map((slug) => bySlug.get(slug)).filter(Boolean), ...all.filter((p) => !CORE.includes(p.slug))].slice(0, CORE.length);
   if (!pages.length) return "";
   // Each surface leads with a miniature of the thing itself — coworker
   // portraits for the roster, the dark briefing bar, a micro task board, a
@@ -778,6 +779,8 @@ function productPanel() {
   // Keyword match with a safe fallback so CMS-added pages still render.
   const miniFor = (pg) => {
     const k = (pg.slug + " " + pg.title).toLowerCase();
+    if (pg.slug === "product/cli") return `<span class="nav-mini nav-mini-term"><b><i></i><i class="s"></i></b></span>`;
+    if (pg.slug === "product/mcp") return `<span class="nav-mini nav-mini-mcp"><i></i><b></b></span>`;
     if (/coworker|agent/.test(k))
       return `<span class="nav-mini nav-mini-faces">${["elena", "hannah", "alex"]
         .map((sl) => `<img src="/assets/product/coworkers/${sl}.webp" alt="" width="24" height="24" loading="lazy" />`)
@@ -796,6 +799,8 @@ function productPanel() {
     "product/briefing": t("Hand over work like you brief a colleague."),
     "product/task-board": t("Every task shows who has it and where it stands."),
     "product/outputs": t("Finished files back: reports, decks, dashboards."),
+    "product/cli": t("Every API action as a terminal command."),
+    "product/mcp": t("Your Tasks and Jobs inside Claude or ChatGPT."),
   };
   const blurbFor = (pg) => BLURBS[pg.slug] || (pg.description ? shell_truncate(pg.description, 60) : "");
   const rows = pages

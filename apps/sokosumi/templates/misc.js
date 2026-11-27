@@ -237,6 +237,8 @@ async function sitemap() {
     "/product",
     "/product/chat",
     "/product/scheduled-tasks",
+    "/product/cli",
+    "/product/mcp",
     "/contact",
     "/contact/sales",
     "/contact/support",

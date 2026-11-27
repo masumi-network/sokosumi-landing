@@ -26,6 +26,8 @@ not CMS docs. Everything else below is yours.
 | `/releases`, `/releases/<slug>` | editorial | `releases` |
 | `/compare`, `/compare/<slug>` | editorial | `comparisons` |
 | `/product` | hub for `pages` whose slug starts with `product/` | `pages` |
+| `/product/cli`, `/product/mcp` | code (`templates/connect.js`), not the CMS | — |
+| `/cli/install.sh` | code (`assets/cli/install.sh`), the CLI installer | — |
 | `/<any-slug>` | catch-all landing pages (block builder) | `pages` |
 | `/press` | `pages` doc with slug `press`, else a static fallback | `pages` |
 | `/contact`, `/talk-to-sales` | static templates | — |

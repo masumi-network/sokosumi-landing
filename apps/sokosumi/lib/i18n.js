@@ -1361,6 +1361,8 @@ const DE = {
   "Hand over work like you brief a colleague.": "Übergeben Sie Arbeit wie an eine Kollegin.",
   "Every task shows who has it and where it stands.": "Jeder Task zeigt, wer ihn hat und wo er steht.",
   "Finished files back: reports, decks, dashboards.": "Fertige Dateien zurück: Reports, Decks, Dashboards.",
+  "Every API action as a terminal command.": "Jede API-Aktion als Befehl im Terminal.",
+  "Your Tasks and Jobs inside Claude or ChatGPT.": "Ihre Tasks und Jobs direkt in Claude oder ChatGPT.",
   Assistant: "Assistent",
   "Interactive demo of the Sokosumi workspace. Click anything.": "Interaktive Demo des Sokosumi-Workspace. Klicken Sie, was Sie möchten.",
   "Brand & Campaign Strategy": "Brand- und Kampagnenstrategie",
@@ -1780,8 +1782,9 @@ const DE_INDEXABLE = true;
 // though the chrome around it is German. /alternatives/* is the same shape for a
 // different reason: Ahrefs shows 0\u201360 searches/month for these terms in
 // German ("copy ai alternative" is 0), so the pages are written in English only
-// and the German twin must not be indexed as a duplicate.
-const DE_ENGLISH_PATHS = [/^\/legal(\/|$)/, /^\/alternatives(\/|$)/];
+// and the German twin must not be indexed as a duplicate. /product/cli and
+// /product/mcp are English because the commands and host menus they quote are.
+const DE_ENGLISH_PATHS = [/^\/legal(\/|$)/, /^\/alternatives(\/|$)/, /^\/product\/(cli|mcp)$/];
 
 // Should this path advertise and index a German alternate?
 function deIndexable(path) {
