@@ -4,7 +4,7 @@
 //
 //   node --test apps/sokosumi/scripts/install-sh.test.js
 
-const { test } = require("node:test");
+const { test, after } = require("node:test");
 const assert = require("node:assert/strict");
 const { spawnSync } = require("node:child_process");
 const fs = require("node:fs");
@@ -23,14 +23,24 @@ const has = (bin) => Boolean(which(bin));
 // A sandbox: a bin dir of stubs on PATH, an npm prefix, and a log of every
 // npm call. `node` reports `nodeVersion`; `npm install -g` writes a fake
 // `sokosumi` into the prefix's bin unless `installFails` is set.
-function sandbox({ nodeVersion = "26.1.0", withNode = true, withNpm = true, prefixWritable = true, installFails = false } = {}) {
+const dirs = [];
+after(() => dirs.forEach((d) => fs.rmSync(d, { recursive: true, force: true })));
+
+// `prefixMissing`: the npm prefix does not exist yet (a fresh
+// `npm config set prefix ~/.npm-global`). `shadowed`: an older sokosumi
+// sits earlier on PATH than the prefix's bin. `prefixFails`: npm cannot
+// even report its prefix.
+function sandbox({ nodeVersion = "26.1.0", withNode = true, withNpm = true, prefixWritable = true, installFails = false, prefixMissing = false, shadowed = false, prefixFails = false } = {}) {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), "soko-install-"));
+  dirs.push(dir);
   const bin = path.join(dir, "bin");
   const prefix = path.join(dir, "prefix");
   const log = path.join(dir, "npm.log");
   fs.mkdirSync(bin);
-  fs.mkdirSync(path.join(prefix, "bin"), { recursive: true });
-  fs.mkdirSync(path.join(prefix, "lib", "node_modules"), { recursive: true });
+  if (!prefixMissing) {
+    fs.mkdirSync(path.join(prefix, "bin"), { recursive: true });
+    fs.mkdirSync(path.join(prefix, "lib", "node_modules"), { recursive: true });
+  }
   const stub = (name, body) => fs.writeFileSync(path.join(bin, name), `#!/bin/sh\n${body}\n`, { mode: 0o755 });
 
   if (withNode) stub("node", `case "$*" in *process.versions.node*) echo ${nodeVersion.split(".")[0]} ;; *) echo v${nodeVersion} ;; esac`);
@@ -39,13 +49,14 @@ function sandbox({ nodeVersion = "26.1.0", withNode = true, withNpm = true, pref
       "npm",
       `echo "$*" >> "${log}"
 case "$1" in
-  prefix) echo "${prefix}" ;;
+  prefix) ${prefixFails ? "echo 'npm error config' >&2; exit 1" : `echo "${prefix}"`} ;;
   --version) echo 11.0.0 ;;
   install)
-    ${installFails ? "echo 'npm error 404' >&2; exit 1" : `printf '#!/bin/sh\\necho 2.0.0\\n' > "${prefix}/bin/sokosumi"; /bin/chmod +x "${prefix}/bin/sokosumi"`} ;;
+    ${installFails ? "echo 'npm error 404' >&2; exit 1" : `/bin/mkdir -p "${prefix}/bin"; printf '#!/bin/sh\\necho 2.0.0\\n' > "${prefix}/bin/sokosumi"; /bin/chmod +x "${prefix}/bin/sokosumi"`} ;;
 esac`,
     );
   }
+  if (shadowed) stub("sokosumi", "echo 1.1.0");
   if (!prefixWritable) fs.chmodSync(path.join(prefix, "lib", "node_modules"), 0o555);
   // Only the stubs: the real node or npm (in /usr/bin on many Linux hosts)
   // must never be found. The script uses nothing but shell builtins otherwise.
@@ -157,4 +168,26 @@ test("also runs under bash, as with `curl … | bash`", { skip: !has("bash") && 
   const box = sandbox();
   const r = run(box, { shell: "bash" });
   assert.equal(r.code, 0, r.out);
+});
+
+test("a prefix that does not exist yet is fine when its parent is yours", () => {
+  const box = sandbox({ prefixMissing: true });
+  const r = run(box);
+  assert.equal(r.code, 0, r.out);
+  assert.ok(r.npmCalls.some((c) => c.startsWith("install")), "npm install must run");
+});
+
+test("reports the version it installed, and warns about an older sokosumi earlier on PATH", () => {
+  const box = sandbox({ shadowed: true });
+  const r = run(box);
+  assert.equal(r.code, 0, r.out);
+  assert.match(r.out, /Sokosumi CLI 2\.0\.0 is installed/);
+  assert.match(r.out, /older|another/i);
+});
+
+test("an npm that cannot report its prefix fails with a message", () => {
+  const box = sandbox({ prefixFails: true });
+  const r = run(box);
+  assert.notEqual(r.code, 0);
+  assert.match(r.out, /prefix/);
 });

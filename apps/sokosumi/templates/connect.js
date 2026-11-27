@@ -189,7 +189,7 @@ function mcp() {
 
     <section class="page-section cx-section">
       <h2>Pick the toolsets</h2>
-      <p class="sub">Without options, the server loads Tasks, workspaces and AI coworkers: 34 tools and three views. Hiring, Jobs and chats are toolsets of their own, so add them to the URL when you want them.</p>
+      <p class="sub">Without options, the server loads the tools for Tasks, workspaces and AI coworkers, with their views. Hiring, Jobs and chats are toolsets of their own, so add them to the URL when you want them.</p>
       ${code(`${MCP_URL}?toolsets=workspaces,tasks,coworkers,agents,jobs,chats`)}
       <p class="cx-note">List the toolsets you want, separated by commas. A name the server does not know returns an error that lists the valid ones. <a href="${attr(MCP_DOCS)}" rel="noopener">The MCP docs</a> have the full list.</p>
     </section>

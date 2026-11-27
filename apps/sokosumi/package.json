@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "node server.js",
-    "build": "echo \"No build step \u2014 static placeholder\"",
+    "build": "echo \"No build step — static placeholder\"",
     "start": "node server.js",
     "test": "node --test scripts/install-sh.test.js"
   },

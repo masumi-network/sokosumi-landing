@@ -66,11 +66,16 @@ main() {
 
   # npm installs global packages under its prefix. When that belongs to root
   # (a system Node), say so and stop: running sudo is the user's call.
-  prefix="$(npm prefix -g)"
-  modules="$prefix/lib/node_modules"
-  [ -d "$modules" ] || modules="$prefix"
-  if [ ! -w "$modules" ]; then
-    say "npm installs global packages into $modules, and your user cannot write there." >&2
+  prefix="$(npm prefix -g)" || fail "npm could not report its global prefix. Run \`npm prefix -g\` to see why."
+  # npm creates whatever is missing below the nearest folder that exists, so
+  # that folder is the one that has to be writable.
+  target="$prefix/lib/node_modules"
+  while [ ! -e "$target" ]; do
+    target="${target%/*}"
+    [ -n "$target" ] || target=/
+  done
+  if [ ! -w "$target" ]; then
+    say "npm installs global packages into $prefix, and your user cannot write to $target." >&2
     say "Pick one, then run this installer again:" >&2
     say "  - install Node.js with a version manager (fnm or nvm), which keeps npm in your home folder" >&2
     say "  - point npm at a folder you own: npm config set prefix \"\$HOME/.npm-global\"" >&2
@@ -89,15 +94,21 @@ main() {
   say "Installing $spec with npm (Node.js $major)..."
   npm install -g --no-fund --no-audit "$spec" || fail "npm install failed. The npm output above says why."
 
-  if ! command -v sokosumi >/dev/null 2>&1; then
-    say "Installed, but \`sokosumi\` is not on your PATH." >&2
-    say "Add $prefix/bin to your PATH, open a new terminal, and run: sokosumi --version" >&2
+  bin="$prefix/bin/sokosumi"
+  installed="$("$bin" --version)" || fail "\`$bin --version\` failed after the install."
+  say ""
+  say "Sokosumi CLI $installed is installed in $prefix/bin."
+
+  # The shell runs the first sokosumi on PATH, which may be another install.
+  found="$(command -v sokosumi || true)"
+  if [ -z "$found" ]; then
+    say "\`sokosumi\` is not on your PATH yet. Add $prefix/bin to your PATH and open a new terminal." >&2
     exit 1
   fi
-  installed="$(sokosumi --version)" || fail "\`sokosumi --version\` failed after the install."
-
-  say ""
-  say "Sokosumi CLI $installed is installed."
+  if [ "$found" != "$bin" ]; then
+    say "Note: your shell finds another sokosumi first, at $found." >&2
+    say "Put $prefix/bin earlier in your PATH, or remove the older install." >&2
+  fi
   say "Next, sign in:"
   say "  sokosumi auth login"
 }
