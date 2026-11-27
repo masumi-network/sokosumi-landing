@@ -1,0 +1,75 @@
+/* /product/cli and /product/mcp (templates/connect.js): code blocks, the
+   host list, and the view screenshots. Everything else comes from
+   styles.css and product.css. */
+
+.connect-page code { font-family: var(--mono); font-size: 0.9em; background: var(--muted); border-radius: var(--r-sm); padding: 1px 5px; }
+
+.cx-section > h2 { margin-bottom: 8px; }
+.cx-section > .sub { margin-bottom: 20px; }
+
+/* One column for everything a reader follows in order: commands, notes and
+   the client list all end at the same edge. */
+.cx-code, .cx-note, .cx-hosts { max-width: 680px; }
+.cx-note { margin-top: 12px; font-size: 14.5px; line-height: 1.6; color: var(--muted-foreground); }
+.cx-note a, .cx-split a { color: var(--primary); text-decoration: underline; text-underline-offset: 3px; }
+
+/* A command: ink panel with the text and Copy side by side. Copy is its own
+   column, so text never runs under it. Commands break only at spaces; a
+   token wider than the box (a long URL) scrolls sideways instead of
+   splitting. Copy always takes the exact text from data-copy. */
+.cx-code + .cx-code, .cx-note + .cx-code { margin-top: 28px; }
+.cx-label { font-size: 13px; color: var(--muted-foreground); margin-bottom: 8px; }
+.cx-box { display: flex; align-items: center; gap: 4px; background: var(--ink); border-radius: var(--r-lg); }
+.cx-code pre {
+  flex: 1; min-width: 0; margin: 0; padding: 14px 16px; overflow-x: auto;
+  color: #f5f5f5; font-family: var(--mono); font-size: 13.5px; line-height: 1.7;
+}
+.cx-code.is-single pre { padding-top: 10px; padding-bottom: 10px; line-height: 1.6; }
+.cx-code pre code { background: none; padding: 0; font-size: inherit; color: inherit; white-space: pre-wrap; overflow-wrap: normal; word-break: normal; }
+/* A multi-line listing keeps its lines and scrolls. */
+.cx-code:not(.is-single) .cx-box { align-items: flex-start; }
+.cx-code:not(.is-single) pre code { white-space: pre; }
+.cx-code .cx-c { color: rgba(255, 255, 255, 0.45); }
+.cx-code .cx-w { white-space: nowrap; }
+.cx-copy {
+  flex-shrink: 0; height: 26px; margin: 0 8px; padding: 0 10px;
+  border: 1px solid rgba(255, 255, 255, 0.16); border-radius: var(--r-md);
+  background: transparent; color: rgba(255, 255, 255, 0.8); font: 500 12px var(--sans); cursor: pointer;
+  transition: background-color 0.15s ease-out, color 0.15s ease-out;
+}
+.cx-code:not(.is-single) .cx-copy { margin-top: 10px; }
+.cx-copy:hover { background: rgba(255, 255, 255, 0.08); color: #fff; }
+.cx-copy:focus-visible { outline: 2px solid var(--primary-on-dark); outline-offset: 2px; }
+
+/* Clients: the same block for each, hairlines between. */
+.cx-hosts { margin-top: 32px; }
+.cx-host { padding: 20px 0; border-top: 1px solid var(--border); }
+.cx-host h3 { font-size: 15px; font-weight: 500; margin-bottom: 4px; }
+.cx-host p { font-size: 15px; line-height: 1.55; color: var(--muted-foreground); }
+.cx-host .cx-code { margin-top: 12px; }
+
+/* View screenshots: the tall board on the left, two short views stacked. */
+.cx-shots { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; align-items: start; max-width: 1080px; }
+.cx-shots-col { display: grid; gap: 24px; }
+.cx-shot figcaption { font-size: 14px; color: var(--muted-foreground); margin-bottom: 10px; }
+.cx-frame { background: var(--card); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+.cx-frame img { display: block; width: 100%; height: auto; }
+
+.cx-views { margin-top: 40px; max-width: 980px; }
+.cx-views > div { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 24px; padding: 16px 0; border-top: 1px solid var(--border); }
+.cx-views dt { font-size: 15px; font-weight: 500; }
+.cx-views dd { font-size: 15px; line-height: 1.55; color: var(--muted-foreground); }
+.cx-ask { color: var(--foreground); }
+
+.cx-split { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(28px, 5vw, 64px); }
+.cx-split h2 { font-size: clamp(20px, 2.2vw, 24px); font-weight: 300; letter-spacing: -0.015em; margin-bottom: 12px; }
+.cx-split p { font-size: 15.5px; line-height: 1.65; color: var(--muted-foreground); max-width: 60ch; }
+
+@media (max-width: 760px) {
+  .cx-views > div { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  .cx-shots, .cx-split { grid-template-columns: minmax(0, 1fr); }
+  .cx-code pre { font-size: 12.5px; }
+}
+
+/* A short inline command reads as one token; never break it mid-command. */
+.cx-host p code, .cx-note code { white-space: nowrap; }

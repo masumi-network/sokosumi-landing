@@ -269,6 +269,22 @@
 .nav-mini-chat { flex-direction: column; gap: 3px; align-items: flex-start; justify-content: flex-end; padding-left: 8px; }
 .nav-mini-chat i { display: block; height: 9px; border-radius: 5px 5px 5px 1px; background: var(--muted); width: 30px; border: 1px solid var(--border); }
 .nav-mini-chat i + i { width: 22px; margin-left: 8px; background: rgba(43, 92, 120, 0.16); border-color: rgba(43, 92, 120, 0.2); }
+/* mcp: a question bubble answered by a small view card */
+.nav-mini-mcp { flex-direction: column; align-items: flex-start; justify-content: flex-end; gap: 4px; }
+.nav-mini-mcp i { display: block; width: 28px; height: 9px; margin-left: 18px; border-radius: 5px 5px 1px 5px; background: rgba(43, 92, 120, 0.16); border: 1px solid rgba(43, 92, 120, 0.2); }
+.nav-mini-mcp b {
+  display: flex; flex-direction: column; justify-content: center; gap: 3px; width: 46px; height: 22px; padding: 0 6px;
+  border-radius: 4px; background: var(--card); border: 1px solid var(--border); box-shadow: 0 2px 5px rgba(15, 14, 13, 0.08);
+}
+.nav-mini-mcp b::before, .nav-mini-mcp b::after { content: ""; display: block; height: 2.5px; border-radius: 1px; background: rgba(15, 14, 13, 0.16); }
+.nav-mini-mcp b::after { width: 60%; }
+/* cli: a small ink terminal with a prompt line */
+.nav-mini-term > b {
+  width: 46px; height: 32px; border-radius: 5px; background: var(--ink);
+  display: flex; flex-direction: column; justify-content: center; gap: 4px; padding: 0 7px; margin-bottom: 4px;
+}
+.nav-mini-term i { display: block; height: 2.5px; width: 70%; border-radius: 1px; background: rgba(255, 255, 255, 0.55); }
+.nav-mini-term i.s { width: 40%; background: rgba(143, 180, 204, 0.8); }
 .nav-face {
   width: 30px; height: 30px; border-radius: 999px; overflow: hidden; flex-shrink: 0;
   background: var(--muted); display: block;

@@ -25,6 +25,13 @@ function vendorSlugOf(c) {
   return c.vendor && typeof c.vendor === "object" ? c.vendor.slug : null;
 }
 
+// Product pages that live in code rather than the CMS (templates/connect.js).
+// They join the CMS product pages so the Product menu lists them.
+const CODE_PRODUCT_PAGES = [
+  { title: "CLI", slug: "product/cli", description: "" },
+  { title: "MCP server", slug: "product/mcp", description: "" },
+];
+
 async function buildNav(opts) {
   const [vendors, coworkers, industries, useCases, pages] = await Promise.all([
     cms.getVendors(opts).catch(() => []),
@@ -140,7 +147,9 @@ async function buildNav(opts) {
       const bi = PRODUCT_ORDER.indexOf(b.slug);
       return (ai === -1 ? 99 : ai) - (bi === -1 ? 99 : bi);
     })
-    .map((p) => ({ title: p.title, slug: p.slug, description: p.description || "" }));
+    .map((p) => ({ title: p.title, slug: p.slug, description: p.description || "" }))
+    .filter((p) => !CODE_PRODUCT_PAGES.some((c) => c.slug === p.slug))
+    .concat(CODE_PRODUCT_PAGES);
 
   return { vendors: ranked, industries: shownIndustries, popularUseCases: popular, productPages, faces };
 }

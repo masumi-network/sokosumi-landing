@@ -34,6 +34,7 @@ const releasesTpl = require("./templates/releases");
 const compareTpl = require("./templates/compare");
 const pagesTpl = require("./templates/pagesCms");
 const productDemoTpl = require("./templates/productDemo");
+const connectTpl = require("./templates/connect");
 const agencyRunByAiTpl = require("./templates/agencyRunByAi");
 const europeanAiTpl = require("./templates/europeanAi");
 const enterpriseTpl = require("./templates/enterprise");
@@ -224,6 +225,9 @@ const TYPES = {
   ".webmanifest": "application/manifest+json",
   ".xml": "application/xml; charset=utf-8",
   ".txt": "text/plain; charset=utf-8",
+  // Plain text, so a browser shows the installer instead of downloading it:
+  // reading a script before piping it to sh is the point.
+  ".sh": "text/plain; charset=utf-8",
 };
 
 // ── catalog cache (landing page + nightly CMS sync source) ───────────────
@@ -656,6 +660,12 @@ const routes = [
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "linkedin-formatter" && {}, h: linkedinFormatterTpl.render },
   { m: (s) => s.length === 2 && s[0] === "tools" && s[1] === "meta-description-generator" && {}, h: metaTagsTpl.render },
   { m: (s) => s.length === 1 && s[0] === "product" && {}, h: pagesTpl.productHub },
+  // The CLI and MCP pages live in code (templates/connect.js), ahead of the
+  // CMS catch-all. /cli is a short form, since the installer lives at
+  // /cli/install.sh. /mcp cannot get one: it is the DESIGN.md MCP endpoint.
+  { m: (s) => s.length === 2 && s[0] === "product" && s[1] === "cli" && {}, h: connectTpl.cli },
+  { m: (s) => s.length === 2 && s[0] === "product" && s[1] === "mcp" && {}, h: connectTpl.mcp },
+  { m: (s) => s.length === 1 && s[0] === "cli" && {}, h: () => ({ redirect: "/product/cli" }) },
   { m: (s) => s.length === 1 && s[0] === "pricing" && {}, h: pricingTpl.render },
   // The entity page for Sokosumi itself lives in code so its JSON-LD is
   // generated from the same facts as the visible text (see templates/about.js).
@@ -704,6 +714,8 @@ const assetsDir = path.join(root, "assets");
     "/apple-touch-icon.png": "apple-touch-icon.png",
     "/apple-touch-icon-precomposed.png": "apple-touch-icon.png",
     "/site.webmanifest": "site.webmanifest",
+    // The CLI installer: `curl -fsSL https://www.sokosumi.com/cli/install.sh | sh`.
+    "/cli/install.sh": "cli/install.sh",
   };
 
   function resolveFile(urlPath) {
@@ -780,9 +792,15 @@ const assetsDir = path.join(root, "assets");
       .replace(/<style[\s\S]*?<\/style>/gi, "")
       .replace(/<svg[\s\S]*?<\/svg>/gi, "")
       .replace(/<noscript[\s\S]*?<\/noscript>/gi, "")
+      .replace(/<button class="cx-copy"[\s\S]*?<\/button>/gi, "")
       .replace(/<!--[\s\S]*?-->/g, "");
     const inner = (t) => t.replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim();
     s = s
+      // Commands keep their lines, as a fenced block (/product/cli, /product/mcp).
+      .replace(/<pre[^>]*>([\s\S]*?)<\/pre>/gi, (m, t) => {
+        const code = t.replace(/<[^>]+>/g, "").trim();
+        return code ? `\n\`\`\`\n${code}\n\`\`\`\n` : "";
+      })
       .replace(/<h1[^>]*>([\s\S]*?)<\/h1>/gi, (m, t) => `\n# ${inner(t)}\n`)
       .replace(/<h2[^>]*>([\s\S]*?)<\/h2>/gi, (m, t) => `\n## ${inner(t)}\n`)
       .replace(/<h3[^>]*>([\s\S]*?)<\/h3>/gi, (m, t) => `\n### ${inner(t)}\n`)
@@ -1692,7 +1710,8 @@ ${productDemoTpl.demoStage()}
           // nothing changed, so a fix ships on the next navigation. Fonts,
           // images, video and icons rarely change, so they keep the long,
           // revalidate-in-background cache.
-          const isAppCode = ext === ".js" || ext === ".css";
+          // The installer counts as app code too: a fix must reach the next curl.
+          const isAppCode = ext === ".js" || ext === ".css" || ext === ".sh";
           // A `?v=` that matches the current content hash names this exact
           // byte sequence, and every edit or deploy changes the hash (the
           // rendered HTML always links the current one), so that URL can be
