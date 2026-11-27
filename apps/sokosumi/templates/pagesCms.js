@@ -8,6 +8,7 @@ const blocks = require("./blocks");
 const spSection = require("./serviceplanAi");
 const productDemo = require("./productDemo");
 const { t } = require("../lib/i18n");
+const { CODE_PRODUCT_PAGES } = require("../lib/nav");
 const { esc, pageStart, pageEnd } = shell;
 
 function pagePath(slug) {
@@ -36,13 +37,19 @@ async function productHub(ctx) {
     "product/task-board",
     "product/outputs",
     "product/scheduled-tasks",
+    "product/cli",
+    "product/mcp",
   ];
   const rank = (p) => {
     const i = ORDER.indexOf(p.slug);
     return i === -1 ? ORDER.length : i;
   };
+  // The CLI and MCP pages live in code (templates/connect.js), not the CMS,
+  // so they join here the same way they join the Product menu.
   const productPages = pages
     .filter((p) => typeof p.slug === "string" && p.slug.startsWith("product/"))
+    .filter((p) => !CODE_PRODUCT_PAGES.some((c) => c.slug === p.slug))
+    .concat(CODE_PRODUCT_PAGES)
     .sort((a, b) => rank(a) - rank(b) || String(a.title || "").localeCompare(String(b.title || "")));
 
   const cr = [{ label: "Home", href: "/" }, { label: "Product" }];

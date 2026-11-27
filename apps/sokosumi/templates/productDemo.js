@@ -967,6 +967,8 @@ const DIVE = {
   "product/briefing": { mini: '<span class="nav-mini nav-mini-brief"><b><i></i></b></span>', blurb: "Hand over work like you brief a colleague." },
   "product/task-board": { mini: '<span class="nav-mini nav-mini-board"><i class="c1"><b></b><b></b></i><i class="c2"><b></b></i><i class="c3"><b></b><b></b></i></span>', blurb: "Every task shows who has it and where it stands." },
   "product/outputs": { mini: '<span class="nav-mini nav-mini-doc"><b><i class="h"></i><i></i><i></i><i class="s"></i></b></span>', blurb: "Finished files back: reports, decks, dashboards." },
+  "product/cli": { mini: '<span class="nav-mini nav-mini-term"><b><i></i><i class="s"></i></b></span>', blurb: "Every API action as a terminal command." },
+  "product/mcp": { mini: '<span class="nav-mini nav-mini-mcp"><i></i><b></b></span>', blurb: "Your Tasks and Jobs inside Claude or ChatGPT." },
   "product/chat": { mini: '<span class="nav-mini nav-mini-chat"><i></i><i></i></span>', blurb: "Coworkers answer in your team's channels." },
   "product/scheduled-tasks": { mini: '<span class="nav-mini nav-mini-sched"><i class="cal"></i><i class="dot"></i></span>', blurb: "Set it once. The file arrives every Monday at 8." },
 };
@@ -1033,13 +1035,19 @@ function demoStage() {
       </div>`;
 }
 
+// Four across when the cards fill rows of four but not of three (8 today),
+// so the last row is never left with an empty slot.
+function diveGridCls(n) {
+  return n % 3 !== 0 && n % 4 === 0 ? "card-grid cols-4" : shell.gridCls(n);
+}
+
 function render(opts) {
   const productPages = opts.productPages || [];
   const cards = productPages.length
     ? `<section class="page-section pd-dives">
         <h2>${esc(t("Deeper on each surface"))}</h2>
         <p class="sub">${esc(t("Written walkthroughs of the same product you just clicked through."))}</p>
-        <div class="${shell.gridCls(productPages.length)}">${productPages.map(pageCard).join("")}</div>
+        <div class="${diveGridCls(productPages.length)}">${productPages.map(pageCard).join("")}</div>
       </section>`
     : "";
 

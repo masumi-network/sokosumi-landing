@@ -154,4 +154,4 @@ async function buildNav(opts) {
   return { vendors: ranked, industries: shownIndustries, popularUseCases: popular, productPages, faces };
 }
 
-module.exports = { buildNav };
+module.exports = { buildNav, CODE_PRODUCT_PAGES };
