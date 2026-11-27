@@ -1035,13 +1035,19 @@ function demoStage() {
       </div>`;
 }
 
+// Four across when the cards fill rows of four but not of three (8 today),
+// so the last row is never left with an empty slot.
+function diveGridCls(n) {
+  return n % 3 !== 0 && n % 4 === 0 ? "card-grid cols-4" : shell.gridCls(n);
+}
+
 function render(opts) {
   const productPages = opts.productPages || [];
   const cards = productPages.length
     ? `<section class="page-section pd-dives">
         <h2>${esc(t("Deeper on each surface"))}</h2>
         <p class="sub">${esc(t("Written walkthroughs of the same product you just clicked through."))}</p>
-        <div class="${shell.gridCls(productPages.length)}">${productPages.map(pageCard).join("")}</div>
+        <div class="${diveGridCls(productPages.length)}">${productPages.map(pageCard).join("")}</div>
       </section>`
     : "";
 
