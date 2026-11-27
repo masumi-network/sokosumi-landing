@@ -153,7 +153,7 @@ const VIEWS = [
 const c = (t) => `<code>${esc(t)}</code>`;
 const HOSTS = [
   ["Claude.ai and Claude Desktop", "In Settings → Connectors, choose Add custom connector, paste the server URL and connect.", null],
-  ["ChatGPT", "Turn on developer mode in ChatGPT's settings, then create a connector with the server URL.", null],
+  ["ChatGPT", "In Customize → Plugins, choose Add, then Add custom MCP server, paste the server URL and sign in.", null],
   ["Claude Code", `Run this in a terminal, then type ${c("/mcp")} in Claude Code, pick ${c("sokosumi")} and sign in.`, `claude mcp add --transport http sokosumi ${MCP_URL}`],
   ["Codex", `Run this in a terminal. Codex opens the sign-in; if you close it early, run ${c("codex mcp login sokosumi")}.`, `codex mcp add sokosumi --url ${MCP_URL}`],
 ];
