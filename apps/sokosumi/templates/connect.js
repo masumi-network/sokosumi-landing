@@ -23,9 +23,10 @@ function code(text, { copy = true, label } = {}) {
     .split("\n")
     .map((l) => (l.startsWith("#") ? `<span class="cx-c">${esc(l)}</span>` : esc(l)))
     .join("\n");
-  return `<div class="cx-code">${label ? `<p class="cx-label">${esc(label)}</p>` : ""}<pre><code>${body}</code></pre>${
+  const single = !String(text).includes("\n");
+  return `<div class="cx-code${single ? " is-single" : ""}">${label ? `<p class="cx-label">${esc(label)}</p>` : ""}<div class="cx-box"><pre><code>${body}</code></pre>${
     copy ? `<button class="cx-copy" type="button" data-copy="${attr(text)}">Copy</button>` : ""
-  }</div>`;
+  }</div></div>`;
 }
 
 function keepReading(rows) {
@@ -142,11 +143,14 @@ const VIEWS = [
   ["Social posts waiting for review", "Social posts", "The posts that need approval and when they are scheduled. Cancel one there, or review it in Sokosumi."],
 ];
 
+// Every client gets the same block: name, one instruction, then the command
+// if it has one. Instructions are trusted HTML written here, for inline code.
+const c = (t) => `<code>${esc(t)}</code>`;
 const HOSTS = [
-  ["Claude.ai and Claude Desktop", "Settings → Connectors → Add custom connector. Paste the URL and connect.", null],
-  ["ChatGPT", "Turn on developer mode in ChatGPT's settings, then create a connector with the URL.", null],
-  ["Claude Code", "Then run /mcp, pick sokosumi and sign in.", `claude mcp add --transport http sokosumi ${MCP_URL}`],
-  ["Codex", "Codex opens the sign-in itself. If you close it early, run codex mcp login sokosumi.", `codex mcp add sokosumi --url ${MCP_URL}`],
+  ["Claude.ai and Claude Desktop", "In Settings → Connectors, choose Add custom connector, paste the server URL and connect.", null],
+  ["ChatGPT", "Turn on developer mode in ChatGPT's settings, then create a connector with the server URL.", null],
+  ["Claude Code", `Run this in a terminal, then type ${c("/mcp")} in Claude Code, pick ${c("sokosumi")} and sign in.`, `claude mcp add --transport http sokosumi ${MCP_URL}`],
+  ["Codex", `Run this in a terminal. Codex opens the sign-in; if you close it early, run ${c("codex mcp login sokosumi")}.`, `codex mcp add sokosumi --url ${MCP_URL}`],
 ];
 
 function shot(src, alt, ask, w, h) {
@@ -166,7 +170,8 @@ function mcp() {
         ${HOSTS.map(
           ([name, text, cmd]) => `<div class="cx-host">
           <h3>${esc(name)}</h3>
-          <div>${cmd ? code(cmd) : ""}<p>${esc(text)}</p></div>
+          <p>${text}</p>
+          ${cmd ? code(cmd) : ""}
         </div>`,
         ).join("")}
       </div>

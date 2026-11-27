@@ -6,35 +6,47 @@
 
 .cx-section > h2 { margin-bottom: 8px; }
 .cx-section > .sub { margin-bottom: 20px; }
-.cx-note { margin-top: 12px; font-size: 14.5px; line-height: 1.6; color: var(--muted-foreground); max-width: 68ch; }
+
+/* One column for everything a reader follows in order: commands, notes and
+   the client list all end at the same edge. */
+.cx-code, .cx-note, .cx-hosts { max-width: 680px; }
+.cx-note { margin-top: 12px; font-size: 14.5px; line-height: 1.6; color: var(--muted-foreground); }
 .cx-note a, .cx-split a { color: var(--primary); text-decoration: underline; text-underline-offset: 3px; }
 
-/* A command: ink panel, mono, copy button on the right. */
-.cx-code { position: relative; max-width: 820px; }
+/* A command: ink panel, mono, Copy on the right. Single-line commands get a
+   compact panel with Copy centred; a multi-line block keeps it top right. */
+.cx-box { position: relative; }
 .cx-code + .cx-code, .cx-note + .cx-code { margin-top: 28px; }
 .cx-label { font-size: 13px; color: var(--muted-foreground); margin-bottom: 8px; }
 .cx-code pre {
-  margin: 0; padding: 14px 88px 14px 18px; overflow-x: auto;
+  margin: 0; padding: 14px 84px 14px 16px;
   background: var(--ink); color: #f5f5f5; border-radius: var(--r-lg);
   font-family: var(--mono); font-size: 13.5px; line-height: 1.7;
 }
-.cx-code pre code { background: none; padding: 0; font-size: inherit; color: inherit; white-space: pre; }
+.cx-code.is-single pre { padding-top: 10px; padding-bottom: 10px; line-height: 1.6; }
+/* A multi-line listing has no Copy button, so it keeps its lines and scrolls. */
+.cx-code:not(.is-single) pre { overflow-x: auto; padding-right: 16px; }
+.cx-code:not(.is-single) pre code { white-space: pre; }
+/* Long commands wrap inside the box rather than scroll under Copy. Copy
+   still takes the exact text from data-copy. */
+.cx-code pre code { background: none; padding: 0; font-size: inherit; color: inherit; white-space: pre-wrap; overflow-wrap: anywhere; }
 .cx-code .cx-c { color: rgba(255, 255, 255, 0.45); }
 .cx-copy {
-  position: absolute; right: 8px; bottom: 8px; height: 28px; padding: 0 10px;
+  position: absolute; right: 8px; top: 8px; height: 26px; padding: 0 10px;
   border: 1px solid rgba(255, 255, 255, 0.16); border-radius: var(--r-md);
-  background: transparent; color: rgba(255, 255, 255, 0.8); font: 500 12px var(--sans); cursor: pointer;
+  background: var(--ink); color: rgba(255, 255, 255, 0.8); font: 500 12px var(--sans); cursor: pointer;
   transition: background-color 0.15s ease-out, color 0.15s ease-out;
 }
-.cx-copy:hover { background: rgba(255, 255, 255, 0.08); color: #fff; }
+.cx-code.is-single .cx-copy { top: 50%; transform: translateY(-50%); }
+.cx-copy:hover { background: #262524; color: #fff; }
 .cx-copy:focus-visible { outline: 2px solid var(--primary-on-dark); outline-offset: 2px; }
 
-/* Hosts: name on the left, the step on the right, hairlines between. */
-.cx-hosts { margin-top: 32px; max-width: 980px; }
-.cx-host { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 24px; padding: 20px 0; border-top: 1px solid var(--border); }
-.cx-host h3 { font-size: 15px; font-weight: 500; }
+/* Clients: the same block for each, hairlines between. */
+.cx-hosts { margin-top: 32px; }
+.cx-host { padding: 20px 0; border-top: 1px solid var(--border); }
+.cx-host h3 { font-size: 15px; font-weight: 500; margin-bottom: 4px; }
 .cx-host p { font-size: 15px; line-height: 1.55; color: var(--muted-foreground); }
-.cx-host .cx-code + p { margin-top: 10px; }
+.cx-host .cx-code { margin-top: 12px; }
 
 /* View screenshots: the tall board on the left, two short views stacked. */
 .cx-shots { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; align-items: start; max-width: 1080px; }
@@ -54,7 +66,10 @@
 .cx-split p { font-size: 15.5px; line-height: 1.65; color: var(--muted-foreground); max-width: 60ch; }
 
 @media (max-width: 760px) {
-  .cx-host, .cx-views > div { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  .cx-views > div { grid-template-columns: minmax(0, 1fr); gap: 8px; }
   .cx-shots, .cx-split { grid-template-columns: minmax(0, 1fr); }
-  .cx-code pre { font-size: 12.5px; padding-right: 18px; padding-bottom: 46px; }
+  .cx-code pre { font-size: 12.5px; }
 }
+
+/* A short inline command reads as one token; never break it mid-command. */
+.cx-host p code, .cx-note code { white-space: nowrap; }
