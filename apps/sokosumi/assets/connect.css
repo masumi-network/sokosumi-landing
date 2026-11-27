@@ -13,32 +13,32 @@
 .cx-note { margin-top: 12px; font-size: 14.5px; line-height: 1.6; color: var(--muted-foreground); }
 .cx-note a, .cx-split a { color: var(--primary); text-decoration: underline; text-underline-offset: 3px; }
 
-/* A command: ink panel, mono, Copy on the right. Single-line commands get a
-   compact panel with Copy centred; a multi-line block keeps it top right. */
-.cx-box { position: relative; }
+/* A command: ink panel with the text and Copy side by side. Copy is its own
+   column, so text never runs under it. Commands break only at spaces; a
+   token wider than the box (a long URL) scrolls sideways instead of
+   splitting. Copy always takes the exact text from data-copy. */
 .cx-code + .cx-code, .cx-note + .cx-code { margin-top: 28px; }
 .cx-label { font-size: 13px; color: var(--muted-foreground); margin-bottom: 8px; }
+.cx-box { display: flex; align-items: center; gap: 4px; background: var(--ink); border-radius: var(--r-lg); }
 .cx-code pre {
-  margin: 0; padding: 14px 84px 14px 16px;
-  background: var(--ink); color: #f5f5f5; border-radius: var(--r-lg);
-  font-family: var(--mono); font-size: 13.5px; line-height: 1.7;
+  flex: 1; min-width: 0; margin: 0; padding: 14px 16px; overflow-x: auto;
+  color: #f5f5f5; font-family: var(--mono); font-size: 13.5px; line-height: 1.7;
 }
 .cx-code.is-single pre { padding-top: 10px; padding-bottom: 10px; line-height: 1.6; }
-/* A multi-line listing has no Copy button, so it keeps its lines and scrolls. */
-.cx-code:not(.is-single) pre { overflow-x: auto; padding-right: 16px; }
+.cx-code pre code { background: none; padding: 0; font-size: inherit; color: inherit; white-space: pre-wrap; overflow-wrap: normal; word-break: normal; }
+/* A multi-line listing keeps its lines and scrolls. */
+.cx-code:not(.is-single) .cx-box { align-items: flex-start; }
 .cx-code:not(.is-single) pre code { white-space: pre; }
-/* Long commands wrap inside the box rather than scroll under Copy. Copy
-   still takes the exact text from data-copy. */
-.cx-code pre code { background: none; padding: 0; font-size: inherit; color: inherit; white-space: pre-wrap; overflow-wrap: anywhere; }
 .cx-code .cx-c { color: rgba(255, 255, 255, 0.45); }
+.cx-code .cx-w { white-space: nowrap; }
 .cx-copy {
-  position: absolute; right: 8px; top: 8px; height: 26px; padding: 0 10px;
+  flex-shrink: 0; height: 26px; margin: 0 8px; padding: 0 10px;
   border: 1px solid rgba(255, 255, 255, 0.16); border-radius: var(--r-md);
-  background: var(--ink); color: rgba(255, 255, 255, 0.8); font: 500 12px var(--sans); cursor: pointer;
+  background: transparent; color: rgba(255, 255, 255, 0.8); font: 500 12px var(--sans); cursor: pointer;
   transition: background-color 0.15s ease-out, color 0.15s ease-out;
 }
-.cx-code.is-single .cx-copy { top: 50%; transform: translateY(-50%); }
-.cx-copy:hover { background: #262524; color: #fff; }
+.cx-code:not(.is-single) .cx-copy { margin-top: 10px; }
+.cx-copy:hover { background: rgba(255, 255, 255, 0.08); color: #fff; }
 .cx-copy:focus-visible { outline: 2px solid var(--primary-on-dark); outline-offset: 2px; }
 
 /* Clients: the same block for each, hairlines between. */

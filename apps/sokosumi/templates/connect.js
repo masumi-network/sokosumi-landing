@@ -21,7 +21,12 @@ const NPM_PAGE = "https://www.npmjs.com/package/@masumi_network/sokosumi";
 function code(text, { copy = true, label } = {}) {
   const body = String(text)
     .split("\n")
-    .map((l) => (l.startsWith("#") ? `<span class="cx-c">${esc(l)}</span>` : esc(l)))
+    // Each word is unbreakable, so a long command wraps only at its spaces
+    // and a URL never splits at "/" or "?".
+    .map((l) => {
+      const words = l.split(" ").map((w) => (w ? `<span class="cx-w">${esc(w)}</span>` : "")).join(" ");
+      return l.startsWith("#") ? `<span class="cx-c">${words}</span>` : words;
+    })
     .join("\n");
   const single = !String(text).includes("\n");
   return `<div class="cx-code${single ? " is-single" : ""}">${label ? `<p class="cx-label">${esc(label)}</p>` : ""}<div class="cx-box"><pre><code>${body}</code></pre>${
